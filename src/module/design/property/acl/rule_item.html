@@ -3,15 +3,15 @@
     <div class="tooltip acl-rule-number" data-id="{{ruleNumber}}" data-tooltip="Rule Number">{{ruleNumber}}</div>
     <div class="acl-rule-details">
       <div class="rule-list-row">
-        <div href="#" class="acl-rule-allow-cb tooltip {{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip="{{ruleAction}}"></div>
-        <div class="{{#ifCond egress "false"}}acl-rule-inbound{{else}}acl-rule-outbound{{/ifCond}} tooltip acl-rule-direction" data-id="{{egress}}" data-tooltip="Inbound/Outbound"></div>
+        <div href="#" class="acl-rule-allow-cb tooltip icon-{{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip="{{ruleAction}}"></div>
+        <div class="{{#ifCond egress "false"}}icon-inbound{{else}}icon-outbound{{/ifCond}} tooltip acl-rule-direction" data-id="{{egress}}" data-tooltip="{{#ifCond egress "false"}}Inbound{{else}}Outbound{{/ifCond}}"></div>
         <div class="acl-rule-reference tooltip" data-id="{{cidrBlock}}" data-tooltip="CIDR Block">{{cidrBlock}}</div>
       </div>
       <div class="rule-list-row">       
-        <div class="acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip="Protocol">{{protocol}}</div>
+        <span class="rule-protocol acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip="Protocol">{{protocol}}</span>
         <div class="acl-rule-port tooltip" data-id="{{port}}" data-tooltip="Port">{{port}}</div>
       </div>
-      {{#unless isStarRule}}<a class="rule-remove-icon property-rule-delete-btn tooltip" data-tooltip="Remove rule"></a>{{/unless}}
+      {{#unless isStarRule}}<a class="icon-remove rule-remove-icon property-rule-delete-btn tooltip" data-tooltip="Remove rule"></a>{{/unless}}
     </div>
   </li>
 {{/each}}

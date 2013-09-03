@@ -88,9 +88,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 		radioSgModalChange : (event) ->
 			if $('#sg-modal-direction input:checked').val() is "inbound"
-				$('#rule-modle-title2').text "Source"
+				$('#rule-modal-ip-range').text "Source"
 			else
-				$('#rule-modle-title2').text "Destination"
+				$('#rule-modal-ip-range').text "Destination"
 
 		sgModalSelectboxChange : (event, id) ->
 			$('#sg-protocol-select-result').find('.show').removeClass('show')

@@ -30,14 +30,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 dnsHosts       : component.resource.EnableDnsHostnames == "true"
                 defaultTenancy : component.resource.InstanceTenancy    == "default"
                 dhcp           : this.getDHCPOptions uid
-                hasDhcp        : true
             }
-
-            if not data.dhcp
-                data.hasDhcp = false
-                data.dhcp =
-                    domainName   : this.defaultDomainName vpcUid
-                    useAmazonDns : true
 
             this.set data
             null
@@ -95,10 +88,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             return MC.canvas_data.component[ dhcpid ]
 
-        removeDhcp : () ->
+        removeDhcp : ( isDefault ) ->
             component = MC.canvas_data.component[ this.attributes.uid ]
             dhcpid = MC.extractID component.resource.DhcpOptionsId
-            component.resource.DhcpOptionsId = "default"
+
+            # DhcpOptionsId is "default" means use no dhcp
+            # DhcpOPtionsId is "" means use default dhcp
+            component.resource.DhcpOptionsId = if isDefault then "" else "default"
             delete MC.canvas_data.component[ dhcpid ]
 
         # DHCP Options Setting
@@ -152,17 +148,20 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             components = MC.canvas_data.component
             dhcpid = MC.extractID components[ vpcUid ].resource.DhcpOptionsId
 
+            mock =
+                domainName   : this.defaultDomainName vpcUid
+                useAmazonDns : true
+
             if dhcpid is "default"
-                return null
+                mock.none = true
+                return mock
+
+            if dhcpid is ""
+                mock.default = true
+                return mock
 
             dhcp   = components[ dhcpid ]
             config = dhcp.resource.DhcpConfigurationSet
-
-            if config.length == 0
-                mock =
-                    domainName   : this.defaultDomainName vpcUid
-                    useAmazonDns : true
-                return mock
 
             keyMap =
                 "domain-name-servers"  : "domainServers"
@@ -188,7 +187,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                             data.useAmazonDns = true
                         else
                             values.push value.Value
-
             data
     }
 

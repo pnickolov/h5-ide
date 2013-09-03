@@ -29,8 +29,16 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                         MC.aws.aws.cacheResource resource_source, region
                         me.describeInstancesOfASG region
 
+                    #update instance icon of app
+                    MC.aws.instance.updateStateIcon app_id
+
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+
+                    #update property panel
+                    uid = MC.canvas_property.selected_node[0]
+                    if uid
+                        MC.canvas.select uid
 
                 else
                     #TO-DO
@@ -52,8 +60,10 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
         readTab : ( type, tab_id ) ->
             console.log 'readTab'
-            #set snapshot|data vo
-            if MC.tab[ tab_id ].snapshot is this.get 'snapshot' then this.set 'snapshot', null
+            #set random number
+            this.set 'snapshot', Math.round(+new Date())
+            #
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
             this.set 'snapshot',      MC.tab[ tab_id ].snapshot
             #

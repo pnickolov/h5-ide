@@ -813,20 +813,30 @@
 
 .node-sg-color-border {
 	stroke: white;
-	stroke-width: 2px;
+	stroke-width: 0px;
 }
 
 .node-label-rtb-name {
 	fill: white;
 }
 
+
 .node-label-hostname {
-	fill: white;
+	fill: black;
 }
 
 .node-label-hostname-bg {
+	fill: none;
+}
+
+.selected .node-label-hostname {
+	fill: white;
+}
+
+.selected .node-label-hostname-bg {
 	fill: #008ae3;
 }
+
 
 .instance-number-bg {
 	stroke-width:0;

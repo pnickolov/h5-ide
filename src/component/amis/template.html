@@ -1,108 +1,158 @@
-
-<div style="width:820px; height:500px;" id="modal-browse-community-ami">
+<div style="width:850px; height:500px;" id="modal-browse-community-ami">
 	<div class="modal-header">
 		<h3>Community AMIs</h3>
 		<i class="modal-close">×</i>
 	</div>
+
 	<div class="modal-body">
 		<div class="content-wrap">
-			<div class="ami-left-col">
+			<div id="ami-search-option">
 				<div>
 					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
 				</div>
+
 				<div id="selectbox-ami-platform" class="selectbox">
-          <div class="selection">All Platforms</div>
-			  	<ul class="dropdown" tabindex="-1">
-			    	<li class="item selected" data-id="">All Platforms</li>
-			    	<li class="item" data-id="amazonlinux"><i class="icon-amz-linux icon-ami-os"></i>Amazon Linux</li>
-			    	<li class="item" data-id="centos"><i class="icon-cent icon-ami-os"></i>Cent OS</li>
-			    	<li class="item" data-id="debian"><i class="icon-debian icon-ami-os"></i>Debian</li>
-			    	<li class="item" data-id="fedora"><i class="icon-fedora icon-ami-os"></i>Fedora</li>
-			    	<li class="item" data-id="gentoo"><i class="icon-gentoo icon-ami-os"></i>Gentoo</li>
-			    	<li class="item" data-id="opensuse"><i class="icon-open-suse icon-ami-os"></i>OpenSUSE</li>
-			    	<li class="item" data-id="ubuntu"><i class="icon-open-suse icon-ami-os"></i>Ubuntu</li>
-			    	<li class="item" data-id="redhat"><i class="icon-redhat icon-ami-os"></i>Red Hat</li>
-			    	<li class="item" data-id="windows"><i class="icon-win icon-ami-os"></i>Windows</li>
-			    	<li class="item" data-id="otherlinux"><i class="icon-other-linux icon-ami-os"></i>Other Linux</li>
-			  	</ul>
+					<div class="selection">All Platforms</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="item selected" data-id="">All Platforms</li>
+						<li class="item" data-id="amazonlinux">
+							<i class="icon-amz-linux icon-ami-os"></i>
+							<span>Amazon Linux</span>
+						</li>
+						<li class="item" data-id="centos">
+							<i class="icon-cent icon-ami-os"></i>
+							<span>Cent OS</span>
+						</li>
+						<li class="item" data-id="debian">
+							<i class="icon-debian icon-ami-os"></i>
+							<span>Debian</span>
+						</li>
+						<li class="item" data-id="fedora">
+							<i class="icon-fedora icon-ami-os"></i>
+							<span>Fedora</span>
+						</li>
+						<li class="item" data-id="gentoo">
+							<i class="icon-gentoo icon-ami-os"></i>
+							<span>Gentoo</span>
+						</li>
+						<li class="item" data-id="opensuse">
+							<i class="icon-open-suse icon-ami-os"></i>
+							<span>OpenSUSE</span>
+						</li>
+						<li class="item" data-id="ubuntu">
+							<i class="icon-open-suse icon-ami-os"></i>
+							<span>Ubuntu</span>
+						</li>
+						<li class="item" data-id="redhat">
+							<i class="icon-redhat icon-ami-os"></i>
+							<span>Red Hat</span>
+						</li>
+						<li class="item" data-id="windows">
+							<i class="icon-win icon-ami-os"></i>
+							<span>Windows</span>
+						</li>
+						<li class="item" data-id="otherlinux">
+							<i class="icon-other-linux icon-ami-os"></i>
+							<span>Other Linux</span>
+						</li>
+					</ul>
 				</div>
-				<div class="filter-radio-group">
-					<div class="filter-radio-label">Architecture</div>
-					<div class="radiobuttons" id="filter-ami-32bit-64bit">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">32-bit</button>
-						<button type="button" class="btn btn-silver">64-bit</button>
+
+				<div class="ami-option-group">
+					<h5>Visibility</h5>
+					<div class="ami-option-wrap" id="filter-ami-type">
+						<button type="button" class="btn active">Public</button>
+						<button type="button" class="btn">Private</button>
 					</div>
 				</div>
-				<div class="filter-radio-group">
-					<div class="filter-radio-label">Root Device Type</div>
-					<div class="radiobuttons" id="filter-ami-EBS-Instance">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">EBS</button>
-						<button type="button" class="btn btn-silver">Instance Store</button>
+
+				<div class="ami-option-group">
+					<h5>Architecture</h5>
+					<div class="ami-option-wrap" id="filter-ami-32bit-64bit">
+						<button type="button" class="btn active">32-bit</button>
+						<button type="button" class="btn">64-bit</button>
 					</div>
 				</div>
-				<div id="ami-count">
-				  Total: 0
+
+				<div class="ami-option-group">
+					<h5>Root Device Type</h5>
+					<div class="ami-option-wrap" id="filter-ami-EBS-Instance">
+						<button type="button" class="btn active">EBS</button>
+						<button type="button" class="btn">Instance Store</button>
+					</div>
 				</div>
-				<div id="btn-search-ami" class="btn btn-silver" disabled>Searching...</div>
+
+				<!-- <div id="ami-count">Total: 0</div> -->
+
+				<div id="btn-search-ami" class="btn btn-blue">Searching...</div>
 			</div>
-			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:400px; width:580px; float:left;">
-				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-				<div class="show-loading"><div class="loading-spinner"></div></div>
-				<div class="scroll-content" style="display:none;">
-					<table id="community-ami-filter" class="table filter table-light" style="height: 400px;">
+
+			<div id="ami-data-wrap">
+				<div id="ami-table-wrap" class="table-head-fix">
+					<table class="table-head">
 						<thead>
 							<tr>
-							<th style="width:20px"></th>
-							<th style="width:90px">AMI ID</th>
-							<th style="width:200px">AMI Name</th>
-							<th style="width:50px" class="sortable">Arch</th>
+								<th style="width: 40px;"></th>
+								<th style="width: 104px;">AMI ID</th>
+								<th>AMI Name</th>
+								<th style="width: 62px;" class="sortable">Arch</th>
 							</tr>
 						</thead>
-						<tbody id="community_ami_table">
-							<!--
-							{{#each community_ami}}
-							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
-								<td>{{id}}</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
-									<div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
-								</td>
-								<td>32</td>
-							</tr>
-							{{/each}}
-							-->
-
-							<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>-->
-
-
-						</tbody>
 					</table>
-				</div>
+					<div class="scroll-wrap">
+						<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+						<div class="show-loading"><div class="loading-spinner"></div></div>
+						<div class="scroll-content" style="display:block;">
+							<table class="table table-light">
+								<thead>
+									<tr>
+										<th style="width: 16px;"><div class="th-inner"></div></th>
+										<th style="width: 80px;"><div class="th-inner"></div></th>
+										<th><div class="th-inner"></div></th>
+										<th style="width: 38px;"><div class="th-inner"></div></th>
+									</tr>
+								</thead>
+								<tbody id="community_ami_table">
+									<!--
+									{{#each community_ami}}
+									<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
+										<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
+										<td>{{id}}</td>
+										<td>
+											<div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
+											<div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
+										</td>
+										<td>32</td>
+									</tr>
+									{{/each}}
+									-->
 
-
-
-			</div>
-			<div id="community-ami-page">
-					<div class="page-tip" style="display: none;"></div>
-					<div class="pagination" style="display: none;">
-					    <a href="#" class="first" data-action="first">&laquo;</a>
-					    <a href="#" class="previous" data-action="previous">&lsaquo;</a>
-					    <input type="text" readonly="readonly" data-max-page="40" />
-					    <a href="#" class="next" data-action="next">&rsaquo;</a>
-					    <a href="#" class="last" data-action="last">&raquo;</a>
+									<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
+										<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
+										<td>ami-34567890</td>
+										<td>
+											<div><i class="icon-ubuntu icon-ami-os"></i>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
+											<div class="ami-meta">private | 32-bit | Instance</div>
+										</td>
+										<td>32</td>
+									</tr>-->
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
+
+				<div id="community-ami-page">
+					<div class="page-tip" style="display: none;"></div>
+					<div class="pagination" style="display: none;">
+						<!-- <a href="#" class="first" data-action="first">&laquo;</a> -->
+						<a href="#" class="previous" data-action="previous">&lsaquo;</a>
+						<input type="text" readonly="readonly" data-max-page="40" />
+						<a href="#" class="next" data-action="next">&rsaquo;</a>
+						<!-- <a href="#" class="last" data-action="last">&raquo;</a> -->
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

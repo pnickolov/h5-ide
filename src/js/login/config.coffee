@@ -9,7 +9,7 @@ require.config {
 
 	locale                : 'en-us'
 
-	urlArgs               : 'v=130829.1544'
+	urlArgs               : 'v=' + version
 
 	paths                 :
 
@@ -46,6 +46,8 @@ require.config {
 
 		#login
 		'login'           : 'js/login/login'
+
+		'forge_handle'    : 'lib/forge/main'
 
 	shim                  :
 

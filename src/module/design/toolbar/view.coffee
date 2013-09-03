@@ -42,6 +42,7 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
+            'click .icon-refresh'           : 'clickRefreshApp'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -58,7 +59,8 @@ define [ 'MC', 'event',
             ### env:dev:end ###
 
             # add by song
-            $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
+            if !$('#phantom-frame')[0]
+                $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -81,7 +83,7 @@ define [ 'MC', 'event',
             else
                 # set total fee
                 cost = MC.aws.aws.getCost MC.canvas_data
-                $('#label-total-fee b').text(cost.total_fee)
+                $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
@@ -130,7 +132,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
 
             else if name.indexOf(' ') >= 0
-                notification 'warning', 'stack name contains white space.'
+                notification 'warning', 'Stack name contains white space.'
 
             else if not MC.aws.aws.checkStackName id, name
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
@@ -173,7 +175,7 @@ define [ 'MC', 'event',
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'stack name contains white space.'
+                    notification 'warning', 'Stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
@@ -360,6 +362,9 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 
+        clickRefreshApp         : (event) ->
+            console.log 'toolbar clickRefreshApp'
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
     }
 

@@ -4,25 +4,28 @@
 	<div class="option-group" data-bind="true" >
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Name</label>
-			<span class="required-input right">(Required)</span>
+			<span class="required-input right">Required</span>
 			<input data-ignore="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
-		{{# if component.resource.VpcId}}
+		{{# if have_vpc}}
 		<section class="property-control-group" id="property-control-group-elb-scheme">
-      <label>Scheme</label>
-      <div class="context">
-        <div class="radio elb-volume-type-radio">
-            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
-            <label for="elb-scheme-select1"></label>
+      <label class="left">Scheme</label>
+      <div class="context elb-scheme-type-radio">
+      	<div class="elb-scheme-radio-group">
+	        <div class="radio">
+	            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} name="elb-scheme-select" value="internet" id="elb-scheme-select1"/>
+	            <label for="elb-scheme-select1"></label>
+	        </div>
+	        <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet-facing</label>
         </div>
-        <label for="elb-scheme-select1" class="elb-volume-type-radio-text">Internet Facing</label>
-        <div></div>
-        <div class="radio elb-volume-type-radio">
-            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
-            <label for="elb-scheme-select2"></label>
-        </div>
-        <label for="elb-scheme-select2" class="elb-volume-type-radio-text">Internal</label>
+        <div class="elb-scheme-radio-group">
+	        <div class="radio">
+	            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} name="elb-scheme-select" value="internal" id="elb-scheme-select2"/>
+	            <label for="elb-scheme-select2"></label>
+	        </div>
+	        <label for="elb-scheme-select2" class="elb-volume-type-radio-text">Internal</label>
+	    </div>
       </div>
 		</section>
 		{{/if}}
@@ -31,12 +34,12 @@
 	<div class="option-group-head"> Listener Configuration </div>
 	<div class="option-group">
 		<div id="accordion-group-elb-property-listener"></div>
-		<div id="elb-property-listener-content-add">
-			+Add listener
-		</div>
+		<a href="javascript:void(0)" id="elb-property-listener-content-add" class="add-to-list action-link">
+			+ Add listener
+		</a>
 		<div id="elb-property-listener-cert-main">
 			<div class="property-control-group clearfix">
-				<label class="left"  >Add Server Certificate</label>
+				<h5 >Add Server Certificate</h5>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >Name</label>
@@ -60,7 +63,7 @@
 	<div class="option-group-head"> Health Check Configuration </div>
 	<div class="option-group pos-r" data-bind="true" data-validate="parsley" >
 		<section class="property-control-group">
-			<label>Ping Protocol</label>
+			<label class="left">Ping Protocol</label>
 			<div class="selectbox selectbox-mega" id="elb-property-health-protocol-select">
 				<div class="selection">{{health_detail.protocol}}</div>
 				<ul class="dropdown" tabindex="-1">
@@ -72,27 +75,27 @@
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Ping Port</label>
-			<input class="input" tooltip="1-65535" data-range="[1, 65535]" type="text" required="required" value="{{ health_detail.port }}" name="property-elb-name" id="property-elb-health-port"/>
+			<label class="left" for="property-elb-health-port" >Ping Port</label>
+			<input class="input" tooltip="1-65535" data-range="[1, 65535]" type="text" required="required" value="{{ health_detail.port }}" name="property-elb-health-port" id="property-elb-health-port"/>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Ping Path</label>
+			<label class="left" for="property-elb-health-path" >Ping Path</label>
 			<span class="required-input right">(Required)</span>
-			<input class="input elb-name" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-name" id="property-elb-health-path"/>
+			<input class="input" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-health-path" id="property-elb-health-path"/>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Health Check Interval</label>
-			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.interval }}" name="property-elb-name" id="property-elb-health-interval"/>
-			<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+			<label class="left" for="property-elb-health-interval" >Health Check Interval</label>
+			<input class="input input-short"  type="text" required="required" value="{{ health_detail.interval }}" name="property-elb-health-interval" id="property-elb-health-interval"/>
+			<label class="elb-property-right-text" for="property-elb-health-interval" >Seconds</label>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Response Timeout</label>
-			<input class="input elb-name"  type="text" required="required" value="{{ health_detail.timeout }}" name="property-elb-name" id="property-elb-health-timeout"/>
-			<label class="left elb-property-right-text" for="property-elb-name" >Seconds</label>
+			<label class="left" for="property-elb-health-timout" >Response Timeout</label>
+			<input class="input input-short"  type="text" required="required" value="{{ health_detail.timeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout"/>
+			<label class="elb-property-right-text" for="property-elb-health-timeout" >Seconds</label>
 		</section>
 
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Unhealthy Threshold</label>
+			<label class="left" for="property-elb-slider-unhealthy" >Unhealthy Threshold</label>
 			<div class="slider-container">
 				<div class="slider" id="elb-property-slider-unhealthy">
 					<a class="slider-controll"></a>
@@ -112,7 +115,7 @@
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >Healthy Threshold</label>
+			<label class="left" for="property-elb-slider-healthy" >Healthy Threshold</label>
 			<div class="slider-container">
 				<div class="slider" id="elb-property-slider-healthy">
 					<a class="slider-controll"></a>
@@ -139,17 +142,17 @@
 		{{#each az_detail}}
 		<section class="property-control-group">
 			<div class="checkbox">
-				<input class="property-elb-az-{{az_name}}" type="checkbox" {{#if instance_num}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_name}}" id="property-elb-az-{{az_name}}"/>
-				<label for="property-elb-az-{{az_name}}"></label>
+				<input class="property-elb-az-checkbox property-elb-az-{{az_inner_name}}" type="checkbox" {{#if disable_selected}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_inner_name}}" id="property-elb-az-{{az_inner_name}}"/>
+				<label for="property-elb-az-{{az_inner_name}}"></label>
 			</div>
-			<label for="property-elb-az-{{az_name}}" class="checkbox-label-main">{{az_name}}</label>
-			<label for="property-elb-az-{{az_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
+			<label for="property-elb-az-{{az_inner_name}}" class="checkbox-label-main">{{az_name}}</label>
+			<label for="property-elb-az-{{az_inner_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
 		</section>
 		{{/each}}
 	</div>
 	{{/if}}
 
-	{{# if component.resource.VpcId}}
+	{{# if have_vpc}}
 	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group">loading...</div>
 	{{/if}}

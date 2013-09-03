@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130829
+#* Date: 20130902
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -46,7 +46,9 @@ var scrollbar = {
 						offsetHeight = target.offsetHeight,
 						offsetWidth = target.offsetWidth,
 						scrollbar_height,
-						scrollbar_width;
+						scrollbar_width,
+						wrap_height,
+						wrap_width;
 
 					if (scroll_content_elem && wrap.css('display') === 'block')
 					{
@@ -55,12 +57,15 @@ var scrollbar = {
 
 						if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 						{
-							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap.height())
+							wrap_height = wrap.height();
+
+							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap_height)
 							{
 								veritical_thumb.parent().hide();
+
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0, 0)');
+									scroll_content.css('transform', 'translate(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0)');
 								}
 								else
 								{
@@ -77,7 +82,7 @@ var scrollbar = {
 
 								if (
 									scroll_content_elem.realScrollTop !== 0 &&
-									wrap.height() - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
+									wrap_height - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
 								)
 								{
 									scrollbar.scrollTop({
@@ -92,12 +97,14 @@ var scrollbar = {
 
 						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
 						{
-							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap.width())
+							wrap_width = wrap.width();
+
+							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap_width)
 							{
 								horizontal_thumb.parent().hide();
 								if (scrollbar.isTransform)
 								{
-									scroll_content.css('transform', 'translate3d(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px, 0)');
+									scroll_content.css('transform', 'translate(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px)');
 								}
 								else
 								{
@@ -114,7 +121,7 @@ var scrollbar = {
 
 								if (
 									scroll_content_elem.realScrollLeft !== 0 &&
-									wrap.width() - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
+									wrap_width - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
 								)
 								{
 									scrollbar.scrollLeft({
@@ -129,7 +136,7 @@ var scrollbar = {
 					}
 				}
 			}
-		}, 2500);
+		}, 800);
 
 		return true;
 	},
@@ -148,7 +155,7 @@ var scrollbar = {
 			return false;
 		}
 
-		$(document.body).addClass('disable-event');
+		$(document.body).append('<div id="overlayer"></div>');
 
 		target.addClass('scrolling');
 
@@ -202,8 +209,11 @@ var scrollbar = {
 				'mouseup': scrollbar.mouseup
 			});
 
+		$('#overlayer').remove();
+
 		event.data.scroll_target.removeClass('scrolling');
-		$(document.body).removeClass('disable-event');
+
+		return true;
 	},
 
 	scrollTo: function (target, direction)
@@ -224,7 +234,7 @@ var scrollbar = {
 					'scrollbar_wrap': scrollbar_wrap,
 					'thumb': thumb,
 					'scroll_target': target
-				}, direction.left);
+				}, direction.left / (scroll_content[0].scrollWidth / scrollbar_wrap.width()));
 			}
 		}
 
@@ -240,7 +250,7 @@ var scrollbar = {
 					'scrollbar_wrap': scrollbar_wrap,
 					'thumb': thumb,
 					'scroll_target': target
-				}, direction.top);
+				}, direction.top / (scroll_content[0].scrollHeight / scrollbar_wrap.height()));
 			}
 		}
 
@@ -280,7 +290,7 @@ var scrollbar = {
 
 		if (scrollbar.isTransform)
 		{
-			scroll_content.css('transform', 'translate3d(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px, 0)');
+			scroll_content.css('transform', 'translate(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px)');
 		}
 		else
 		{
@@ -325,7 +335,7 @@ var scrollbar = {
 
 		if (scrollbar.isTransform)
 		{
-			scroll_content.css('transform', 'translate3d(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + 'px, ' + scroll_value + 'px, 0)');
+			scroll_content.css('transform', 'translate(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + 'px, ' + scroll_value + 'px)');
 		}
 		else
 		{

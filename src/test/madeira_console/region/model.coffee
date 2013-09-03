@@ -563,7 +563,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
 
             current_region = region
 
-            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms"]
+            vpc_model.DescribeAccountAttributes { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null,  ["supported-platforms", "default-vpc"]
 
             me.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
 

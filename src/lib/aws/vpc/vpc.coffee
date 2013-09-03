@@ -22,7 +22,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				oldSubnetAry.push(subnetCIDR)
 				if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
 					needUpdateAllSubnetCIDR = true
-					return
+
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+				compObj.resource.RouteSet[0].DestinationCidrBlock = vpcCIDR
 			null
 
 		if !needUpdateAllSubnetCIDR then return
@@ -74,10 +76,15 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		else
 			return false
 
-	getSubnetForDefaultVPC = (instanceUID) ->
+	getSubnetForDefaultVPC = (instanceOrEniUID) ->
 
-		instanceComp = MC.canvas_data.component[instanceUID]
-		instanceAZ = instanceComp.resource.Placement.AvailabilityZone
+		instanceComp = MC.canvas_data.component[instanceOrEniUID]
+
+		instanceAZ = ''
+		if instanceComp.resource.AvailabilityZone
+			instanceAZ = instanceComp.resource.AvailabilityZone
+		else
+			instanceAZ = instanceComp.resource.Placement.AvailabilityZone
 
 		currentRegion = MC.canvas_data.region
 		accountData = MC.data.account_attribute[currentRegion]
@@ -89,8 +96,20 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return subnetObj
 
+	getAZSubnetForDefaultVPC = (azName) ->
+
+		currentRegion = MC.canvas_data.region
+		accountData = MC.data.account_attribute[currentRegion]
+
+		defaultSubnetObj = accountData.default_subnet
+
+		subnetObj = defaultSubnetObj[azName]
+
+		return subnetObj
+
 	#public
 	getVPCUID : getVPCUID
 	updateAllSubnetCIDR : updateAllSubnetCIDR
 	checkFullDefaultVPC : checkFullDefaultVPC
 	getSubnetForDefaultVPC : getSubnetForDefaultVPC
+	getAZSubnetForDefaultVPC : getAZSubnetForDefaultVPC

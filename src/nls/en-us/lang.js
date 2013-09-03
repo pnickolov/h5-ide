@@ -116,6 +116,64 @@ define({
 		'CVS_TIP_SHRINK_H'   					: 'Decrease Canvas Height',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+
+		/****** toolbar module ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		//run stack
+		'TOOL_BTN_RUN_STACK'                    : 'Run Stack',
+		'TOOL_TIP_BTN_RUN_STACK'                : 'Run this stack into an app',
+		'TOOL_POP_TIT_RUN_STACK'                : 'Run Stack',
+
+		//save stack
+		'TOOL_TIP_SAVE_STACK'                   : 'Save Stack',
+
+		//delete stack
+		'TOOL_TIP_DELETE_STACK'                 : 'Delete Stack',
+		'TOOL_TIP_DELETE_NEW_STACK'             : 'This stack is not saved yet.',
+		'TOOL_POP_TIT_DELETE_STACK'             : 'Delete Stack',
+		'TOOL_POP_BODY_DELETE_STACK'            : 'Do you confirm to delete stack',
+		'TOOL_POP_BTN_DELETE_STACK'             : 'Delete',
+
+		//duplicate stack
+		'TOOL_TIP_DUPLICATE_STACK'              : 'Duplicate Stack',
+		'TOOL_POP_TIT_DUPLICATE_STACK'          : 'Duplicate Stack',
+		'TOOL_POP_BODY_DUPLICATE_STACK'         : 'New Stack Name:',
+		'TOOL_POP_BTN_DUPLICATE_STACK'          : 'Duplicate',
+
+		//create stack
+		'TOOL_TIP_CREATE_STACK'                 : 'Create New Stack',
+
+		//zoom
+		'TOOL_TIP_ZOOM_IN'                      : 'Zoom In',
+		'TOOL_TIP_ZOOM_OUT'                     : 'Zoom Out',
+
+		//export
+		'TOOL_EXPORT'                           : 'Export...',
+		'TOOL_EXPORT_AS_JSON'                   : 'Export as JSON',
+		'TOOL_POP_TIT_EXPORT_AS_JSON'           : 'Export JSON',
+		'TOOL_POP_BODY_EXPORT_AS_JSON'          : 'Do you confirm to download the json file?',
+		'TOOL_POP_BTN_DOWNLOAD'                 : 'Download',
+		'TOOL_EXPORT_AS_PNG'                    : 'Export as PNG',
+
+		//stop app
+		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
+		'TOOL_POP_TIT_STOP_APP'                 : 'Confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP'                : 'Do you confirm to stop app',
+		'TOOL_POP_BTN_STOP_APP'                 : 'Stop',
+
+		//start app
+		'TOOL_TIP_START_APP'                    : "Start this app's resources.",
+		'TOOL_POP_TIT_START_APP'                : 'Confirm to start app',
+		'TOOL_POP_BODY_START_APP'               : 'Do you confirm to start app',
+		'TOOL_POP_BTN_START_APP'                : 'Start',
+
+		//terminate app
+		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
+		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app?',
+		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
+
 		/******property module******/
 		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
@@ -125,9 +183,14 @@ define({
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
-		'PROP_TEXT_DEFAULT_SG_DESC'             : 'VPC Default Security Group',
+		'PROP_TEXT_DEFAULT_SG_DESC'             : 'Stack Default Security Group',
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		// sg property
+		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
@@ -158,7 +221,7 @@ define({
 		'ERROR_CODE_2_MESSAGE'  : 'Invalid API Parameters',
 		'ERROR_CODE_3_MESSAGE'  : '',//no use
 		'ERROR_CODE_4_MESSAGE'  : '',//no use
-		'ERROR_CODE_5_MESSAGE'  : 'External error',
+		'ERROR_CODE_5_MESSAGE'  : 'Request AWS resource exception',
 		'ERROR_CODE_6_MESSAGE'  : '',//no use
 		'ERROR_CODE_7_MESSAGE'  : '',//for guest
 		'ERROR_CODE_8_MESSAGE'  : '',//no use

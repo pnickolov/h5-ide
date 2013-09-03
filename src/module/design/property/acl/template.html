@@ -5,7 +5,7 @@
     <input class="input" type="text" value="{{component.name}}" {{#if is_default}}disabled{{/if}} id="property-acl-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
   </section>
 
-  <div class="option-group-head acl-header">Rule
+  <div class="option-group-head acl-header expand">Rule
     <span class="property-head-num-wrap">(<span id="acl-rule-count">{{component.resource.entrySet.length}}</span>)</span>
     <a href="#" class="icon-add add-rule tooltip action-link" id="acl-add-rule-icon" data-tooltip="Create new Network ACL Rule"></a>
   </div>

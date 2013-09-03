@@ -49,10 +49,17 @@
        <div class="modal-body">
        		<div class="modal-text-wraper">
        			<div class="modal-center-align-helper">
-		            <div class="modal-text">{{body}}</div>
-		            {{#if input}}
-	                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-	            	{{/if}}
+       				{{#if input}}
+       				<div class="modal-control-group">
+       					<label class="modal-text-major">{{body}}</label>
+		                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
+       				</div>
+       				{{else}}
+       				<div class="modal-text-major">
+       					{{{body}}}
+       				</div>
+		          {{/if}}
+
 	            </div>
 
             </div>
@@ -293,23 +300,23 @@
 <!-- bubbleAMIInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>Name</dt>
-		<dd>{{name}}</dd>
-		<dt>Description</dt>
-		<dd>{{description}}</dd>
-       <dt>Architecture</dt>
-       <dd>{{architecture}}</dd>
-       <dt>Image Location</dt>
-       <dd>{{imageLocation}}</dd>
-       <dt>Public</dt>
-       <dd>{{isPublic}}</dd>
-       <dt>KernelId</dt>
-       <dd>{{kernelId}}</dd>
-       <dt>Root Device Name</dt>
-       <dd>{{rootDeviceName}}</dd>
-       <dt>Root Device Type</dt>
-       <dd>{{rootDeviceType}}</dd>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{name}}</dd>
+        <dt>Description</dt>
+        <dd>{{description}}</dd>
+        <dt>Architecture</dt>
+        <dd>{{architecture}}</dd>
+        <dt>Image Location</dt>
+        <dd>{{imageLocation}}</dd>
+        <dt>Public</dt>
+        <dd>{{isPublic}}</dd>
+        <dt>KernelId</dt>
+        <dd>{{kernelId}}</dd>
+        <dt>Root Device Name</dt>
+        <dd>{{rootDeviceName}}</dd>
+        <dt>Root Device Type</dt>
+        <dd>{{rootDeviceType}}</dd>
 	</dl>
 </div>
 
@@ -681,13 +688,11 @@ Additional Notes and Questions
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
-		<div class="bg-blue" data-bind="true">
-			<div class="property-control-group clearfix">
-				<label class="left" for="app-name">App Name</label>
-				<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
-			</div>
+		<div class="modal-control-group clearfix" data-bind="true">
+			<label class="label modal-text-major" for="app-name">App Name</label>
+			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
-		<div class="stack-validation">
+		<!-- <div class="stack-validation">
 			<details open>
 				<summary>Stack Validation</summary>
 				<div class="validation-content">
@@ -711,7 +716,7 @@ Additional Notes and Questions
 
 				</div>
 			</details>
-		</div>
+		</div> -->
 
 		<div class="estimate clearfix">
 			<span class="title">Estimated Cost</span>
@@ -743,11 +748,11 @@ Additional Notes and Questions
 <!-- networkListItem -->
 <li class="input-ip-item">
     <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-    <label for="instance-ip-1" class="input-ip-prefix">10.0.0.</label>
-    <input type="text" class="input input-ip" value="x" id="instance-ip-1">
+    <label for="instance-ip-1" class="input-ip-prefix">{{ipPrefix}}</label>
+    <input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1">
     </div>
     <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-    <div class="network-remove-icon icon-remove"></div>
+    <div class="icon-remove"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -761,40 +766,44 @@ Additional Notes and Questions
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<div class="property-control-group clearfix">
-        	<label class="left">Direction</label>
-        	<div class="context" id="sg-modal-direction">
-            	<div class="radio">
-            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
-                	<label for="radio_inbound"></label>
-            	</div>
-            	<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
-            	{{#if isclassic}}
+		<div class="modal-control-group clearfix">
+        	<label class="label-short">Direction</label>
+        	<div id="sg-modal-direction">
+        		{{#if isclassic}}
+        		<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>Inbound</div>
 				{{else}}
-				<div class="radio">
-            		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
-                	<label for="radio_outbound"></label>
-            	</div>
-            	<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
+				<div class="radio-group-horizontal">
+					<div class="radio">
+	            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
+	                	<label for="radio_inbound"></label>
+	            	</div>
+	            	<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
+	            </div>
+
+            	<div class="radio-group-horizontal">
+					<div class="radio">
+	            		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
+	                	<label for="radio_outbound"></label>
+	            	</div>
+	            	<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
+	            </div>
 				{{/if}}
         	</div>
     	</div>
-    	<div class="property-control-group clearfix">
-			<label class="left" for="securitygroup-modal-description" id="rule-modle-title2">Description</label>
+    	<div class="modal-control-group clearfix">
+			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			{{#if isAdd}}
-			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.0.1/24" />
+			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.1.0/24" />
 			{{else}}
-			<div class='editable-label' id="securitygroup-modal-description">IP Range.eg,10.0.0.1/24</div>
+			<div id="securitygroup-modal-description">IP Range.eg,10.0.1.0/24</div>
 			{{/if}}
 		</div>
-		<div class="property-control-group clearfix">
-			<label class="left" >Protocol</label>
-			<div class="context" >
+		<div class="modal-control-group clearfix">
+			<label class="label-short" >Protocol</label>
 				<div class="modal-protocol-select">
-					<div class="selectbox " id="modal-protocol-select"  data-protocal-type="tcp">
-            <div class="selection">TCP</div>
-						<ul class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" tabindex="-1">
-    					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="selectbox" id="modal-protocol-select"  data-protocal-type="tcp">
+			            <div class="selection">TCP</div>
+						<ul class="dropdown" tabindex="-1">
 						  <li class="selected item" data-id="tcp">TCP</li>
 							<li class="item" data-id="udp">UDP</li>
 							<li class="item" data-id="icmp">ICMP</li>
@@ -807,86 +816,86 @@ Additional Notes and Questions
 					</div>
 				</div>
 			<div id="sg-protocol-select-result">
-					<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
-						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
-					</div>
-					<div class="sg-protocol-option-input" id="sg-protocol-udp">
-						<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
-					</div>
-					<div class="sg-protocol-option-input" id="sg-protocol-icmp">
-						<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
-              <div class="selection">Echo Reply(0)</div>
-	   					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
-		    				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    						<ul tabindex="-1" class=“scroll-content”>
-    							<li class="item selected" data-id="0">Echo Reply(0)</li>
-    							<li class="item" data-id="3">Destination Unreachable(3) ...</li>
-    							<li class="item" data-id="4">Source Quench(4)</li>
-    							<li class="item" data-id="5">Redirect Message(5) ...</li>
-    							<li class="item" data-id="6">Alternate Host Address(6)</li>
-    							<li class="item" data-id="8">Echo Request(8)</li>
-    							<li class="item" data-id="9">Router Advertisement(9)</li>
-    							<li class="item" data-id="10">Router Solicitation(10)</li>
-    							<li class="item" data-id="11">Time Exceeded(11) ...</li>
-    							<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
-    							<li class="item" data-id="13">Timestamp(13)</li>
-    							<li class="item" data-id="14">Timestamp Reply(14)</li>
-    							<li class="item" data-id="15">Information Request(15)</li>
-    							<li class="item" data-id="16">Information Reply(16)</li>
-    							<li class="item" data-id="17">Address Mask Request(17)</li>
-    							<li class="item" data-id="18">Address Mask Reply(18)</li>
-    							<li class="item" data-id="30">Traceroute(30)</li>
-    							<li class="item" data-id="31">Datagram Conversion Error(31)</li>
-    							<li class="item" data-id="32">Mobile Host Redirect(32)</li>
-    							<li class="item" data-id="33">Where Are You(33)</li>
-    							<li class="item" data-id="34">Here I Am(34)</li>
-    							<li class="item" data-id="35">Mobile Registration Request(35)</li>
-    							<li class="item" data-id="36">Mobile Registration Reply(36)</li>
-    							<li class="item" data-id="37">Domain Name Request(37)</li>
-    							<li class="item" data-id="38">Domain Name Reply(38)</li>
-    							<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
-    							<li class="item" data-id="40">Photuris Security Failures(40)</li>
-    							<li class="item" data-id="-1">All(-1)</li>
-    						</ul>
-    					</div>
-					</div>
-					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
-            <div class="selection">All(-1</div>
-						<ul class="dropdown" tabindex="-1">
-							<li class="item selected" data-id="-1">All(-1)</li>
-							<li class="item" data-id="0">destination network unreachable(0)</li>
-							<li class="item" data-id="1">destination host unreachable(1)</li>
-							<li class="item" data-id="2">destination protocol unreachable(2)</li>
-							<li class="item" data-id="3">destination port unreachable(3)</li>
-							<li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
-							<li class="item" data-id="5">source route failed(5)</li>
-							<li class="item" data-id="6">destination network unknown(6)</li>
-							<li class="item" data-id="7">destination host unknown(7)</li>
-							<li class="item" data-id="8">source host isolated(8)</li>
-							<li class="item" data-id="9">network administratively prohibited(9)</li>
-							<li class="item" data-id="10">host administratively prohibited(10)</li>
-							<li class="item" data-id="11">network unreachable for TOS(11)</li>
-							<li class="item" data-id="12">host unreachable for TOS(12)</li>
-							<li class="item" data-id="13">communication administratively prohibited(13)</li>
-						</ul>
-					</div>
-					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
-            <div class="selection">All(-1)</div>
-						<ul class="dropdown" tabindex="-1">
-							<li class="selected item" data-id="-1">All(-1)</li>
-							<li class="item" data-id="0">redirect datagram for the network(0)</li>
-							<li class="item" data-id="1">redirect datagram for the host(1)</li>
-							<li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
-							<li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
-						</ul>
+				<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+					<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+				</div>
+				<div class="sg-protocol-option-input" id="sg-protocol-udp">
+					<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+				</div>
+				<div class="sg-protocol-option-input" id="sg-protocol-icmp">
+					<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
+		              <div class="selection">Echo Reply(0)</div>
+					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+    				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<ul tabindex="-1" class="scroll-content">
+						<li class="item selected" data-id="0">Echo Reply(0)</li>
+						<li class="item" data-id="3">Destination Unreachable(3) ...</li>
+						<li class="item" data-id="4">Source Quench(4)</li>
+						<li class="item" data-id="5">Redirect Message(5) ...</li>
+						<li class="item" data-id="6">Alternate Host Address(6)</li>
+						<li class="item" data-id="8">Echo Request(8)</li>
+						<li class="item" data-id="9">Router Advertisement(9)</li>
+						<li class="item" data-id="10">Router Solicitation(10)</li>
+						<li class="item" data-id="11">Time Exceeded(11) ...</li>
+						<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+						<li class="item" data-id="13">Timestamp(13)</li>
+						<li class="item" data-id="14">Timestamp Reply(14)</li>
+						<li class="item" data-id="15">Information Request(15)</li>
+						<li class="item" data-id="16">Information Reply(16)</li>
+						<li class="item" data-id="17">Address Mask Request(17)</li>
+						<li class="item" data-id="18">Address Mask Reply(18)</li>
+						<li class="item" data-id="30">Traceroute(30)</li>
+						<li class="item" data-id="31">Datagram Conversion Error(31)</li>
+						<li class="item" data-id="32">Mobile Host Redirect(32)</li>
+						<li class="item" data-id="33">Where Are You(33)</li>
+						<li class="item" data-id="34">Here I Am(34)</li>
+						<li class="item" data-id="35">Mobile Registration Request(35)</li>
+						<li class="item" data-id="36">Mobile Registration Reply(36)</li>
+						<li class="item" data-id="37">Domain Name Request(37)</li>
+						<li class="item" data-id="38">Domain Name Reply(38)</li>
+						<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+						<li class="item" data-id="40">Photuris Security Failures(40)</li>
+						<li class="item" data-id="-1">All(-1)</li>
+					</ul>
+				</div>
+				</div>
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
+		            <div class="selection">All(-1)</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="item selected" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">destination network unreachable(0)</li>
+						<li class="item" data-id="1">destination host unreachable(1)</li>
+						<li class="item" data-id="2">destination protocol unreachable(2)</li>
+						<li class="item" data-id="3">destination port unreachable(3)</li>
+						<li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+						<li class="item" data-id="5">source route failed(5)</li>
+						<li class="item" data-id="6">destination network unknown(6)</li>
+						<li class="item" data-id="7">destination host unknown(7)</li>
+						<li class="item" data-id="8">source host isolated(8)</li>
+						<li class="item" data-id="9">network administratively prohibited(9)</li>
+						<li class="item" data-id="10">host administratively prohibited(10)</li>
+						<li class="item" data-id="11">network unreachable for TOS(11)</li>
+						<li class="item" data-id="12">host unreachable for TOS(12)</li>
+						<li class="item" data-id="13">communication administratively prohibited(13)</li>
+					</ul>
+				</div>
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
+		              <div class="selection">All(-1)</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="selected item" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">redirect datagram for the network(0)</li>
+						<li class="item" data-id="1">redirect datagram for the host(1)</li>
+						<li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+						<li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+					</ul>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
-            <div class="selection">All(-1)</div>
-						<ul class="dropdown" tabindex="-1">
-							<li class="item selected" data-id="-1">All(-1)</li>
-							<li class="item" data-id="0">TTL expired transit(0)</li>
-							<li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
-						</ul>
+			            <div class="selection">All(-1)</div>
+					<ul class="dropdown" tabindex="-1">
+						<li class="item selected" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">TTL expired transit(0)</li>
+						<li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+					</ul>
 					</div>
 					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
 						<div class="selection">All(-1)</div>
@@ -897,14 +906,13 @@ Additional Notes and Questions
 							<li class="item" data-id="2">bad length(2)</li>
 						</ul>
 					</div>
-					</div>
-					<div class="sg-protocol-option-input" id="sg-protocol-custom">
-						<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
-					</div>
-					<div class="sg-protocol-option-input" id="sg-protocol-all">
-						Port Range:<span>0-65535</span>
-					</div>
-			</div>
+				</div>
+				<div class="sg-protocol-option-input" id="sg-protocol-custom">
+					<input class="input" name="protocol-custom-ranged" placeholder="1-255" required>
+				</div>
+				<div class="sg-protocol-option-input" id="sg-protocol-all">
+					Port Range:<span>0-65535</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -977,22 +985,22 @@ Additional Notes and Questions
         <dt>Volume ID</dt>
         <dd>{{volumeId}}</dd>
         <dt>Description</dt>
-        <dd>{{description}}</dd>
+        <dd>{{emptyStr description}}</dd>
         <dt>Capacity</dt>
-        <dd>{{volumeSize}}GB</dd>
+        <dd>{{emptyStr volumeSize}}GB</dd>
         <dt>Owner</dt>
-        <dd>{{ownerId}}</dd>
+        <dd>{{emptyStr ownerId}}</dd>
         <dt>Started</dt>
-        <dd>{{startTime}}</dd>
+        <dd>{{emptyStr startTime}}</dd>
     </dl>
 </article>
 
 <!-- elbPropertyListenerItem -->
 <div class="elb-property-listener-main" data-bind="true">
-	{{#if Canremove}}<div class="elb-property-listener-item-remove">×</div>{{/if}}
+	{{#if Canremove}}<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listner"></div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
-			<label>Load Balancer Protocol</label>
+			<label class="left">Load Balancer Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
 				<div class="selection">{{Protocol}}</div>
 				<ul class="dropdown">
@@ -1010,7 +1018,7 @@ Additional Notes and Questions
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
-			<label>Instance Protocol</label>
+			<label class="left">Instance Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
         <div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
@@ -1068,8 +1076,8 @@ Additional Notes and Questions
   <div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
   <div class="modal-body">
     <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text">{{main_content}}</div>
-      <div class="modal-text">{{desc_content}}</div>
+      <div class="modal-text-major">{{main_content}}</div>
+      <div class="modal-text-minor">{{desc_content}}</div>
     </div> </div>
   </div>
   <div class="modal-footer">
@@ -1078,8 +1086,8 @@ Additional Notes and Questions
   </div>
 </div>
 
-<!-- disconnectedNotiﬁcation -->
-<div class="disconnected-notiﬁcation">
+<!-- disconnectedNotification -->
+<div class="disconnected-notification">
 	<p>Connection lost. Attempting to reconnect…</p>
 	<p>Changes made now may not be saved.</p>
 </div>
@@ -1106,12 +1114,10 @@ Additional Notes and Questions
     <div class="modal-body">
         <div class="modal-text-wraper">
             <div class="modal-center-align-helper">
-                <div class="modal-text">stack name {{stack_name}} is already used by another stack. Please change a different name.</div>
-                <div class="bg-blue" data-bind="true">
-                    <div class="property-control-group clearfix">
-                        <label class="left" for="stack-name">Stack Name</label>
-                        <input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
-                    </div>
+                <div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
+                <div class="modal-control-group modal-control-group-bg-blue" data-bind="true">
+                    <label for="new-stack-name">Stack Name</label>
+                    <input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
                 </div>
             </div>
         </div>

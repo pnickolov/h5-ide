@@ -95,6 +95,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
+        if !current_view then return
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()

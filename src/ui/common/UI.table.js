@@ -3,7 +3,7 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130823
+#* Date: 20130831
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -24,16 +24,22 @@
 					row_height = row.css('height'),
 					input = row.html('<input class="table-input" type="text" value="' + row.text() + '"/>').children(':first');
 
-				$(input).css({
-					'color': row.css('color'),
-					'font-size': row.css('font-size')
-				}).focus();
+				$(input)
+					.css({
+						'color': row.css('color'),
+						'font-size': row.css('font-size')
+					})
+					.focus();
 			}
+
+			return true;
 		},
 
 		update: function (event)
 		{
 			$(this).parent().text(this.value);
+
+			return true;
 		},
 
 		sort: function (event)
@@ -41,10 +47,23 @@
 			var target = $(this),
 				index = target.index() + 1,
 				thead = target.parent().parent(),
-				tbody = thead.parent().find('tbody'),
-				rows = tbody.find('tr'),
-				order = target.hasClass('desc-sort') ? 'DESC' : 'ASC';
-				stack = [];
+				table = thead.parent(),
+				order = target.hasClass('desc-sort') ? 'DESC' : 'ASC',
+				fragment = document.createDocumentFragment(),
+				stack = [],
+				tbody,
+				rows;
+
+			if (table.hasClass('table-head'))
+			{
+				tbody = table.parent().find('.table tbody');
+				rows = tbody.find('tr');
+			}
+			else
+			{
+				tbody = table.find('tbody');
+				rows = tbody.find('tr');
+			}
 
 			thead.find('.active').removeClass('active');
 			target.addClass('active');
@@ -90,11 +109,16 @@
 				target.addClass('desc-sort');
 			}
 
-			tbody.empty();
 			$.each(stack, function (i, row)
 			{
-				tbody.append(row.item);
+				fragment.appendChild(row.item);
 			});
+
+			tbody.empty().append(fragment);
+
+			fragment = null;
+
+			return true;
 		}
 	};
 
@@ -102,7 +126,7 @@
 	{
 		$(document.body)
 			.on('click', '.table td.editable', table.edit)
-			.on('click', '.table .sortable', table.sort)
+			.on('click', '.table .sortable, .table-head .sortable', table.sort)
 			.on('blur', '.table-input', table.update);
 	});
 })();

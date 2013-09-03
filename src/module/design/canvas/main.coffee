@@ -32,6 +32,9 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
                         platform : current_platform
                     }
                 else if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                    #compact components
+                    MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
                     MC.canvas.layout.init()
                     model.initLine()
                     model.reDrawSgLine()
@@ -96,6 +99,7 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             #listen CANVAS_EIP_STATE_CHANGE
             view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
                 model.setEip option.id, option.eip_state
+                ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
                 console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
                 null
 

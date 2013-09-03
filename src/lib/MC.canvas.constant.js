@@ -14,15 +14,15 @@ var constant_data = {
 
 	COMPONENT_SIZE:
 	{
-		'AWS.ELB': [10, 10],
-		'AWS.EC2.Instance': [10, 10],
+		'AWS.ELB': [9, 9],
+		'AWS.EC2.Instance': [9, 9],
 		'AWS.EC2.EBS.Volume': [10, 10],
-		'AWS.VPC.NetworkInterface': [10, 10],
+		'AWS.VPC.NetworkInterface': [9, 9],
 		'AWS.VPC.CustomerGateway': [17, 10],
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8],
-		'AWS.AutoScaling.LaunchConfiguration': [10, 10]
+		'AWS.AutoScaling.LaunchConfiguration': [9, 9]
 	},
 
 	COMPONENT_TYPE:
@@ -62,9 +62,9 @@ var constant_data = {
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [22, 22],
-		'AWS.VPC.Subnet': [18, 18],
-		'AWS.AutoScaling.Group' : [14, 14]
+		'AWS.EC2.AvailabilityZone': [21, 21],
+		'AWS.VPC.Subnet': [17, 17],
+		'AWS.AutoScaling.Group' : [13, 13]
 	},
 
 	SG_MAX_NUM: 5,
@@ -135,7 +135,7 @@ var constant_data = {
 	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle
 	PATH_D_PORT2: "M 10 8 l -6 -6 l -6 6 l 6 6 l 6 -6 z", //diamond
 
-	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 130 0 a 5 5 0 0 1 5 5 l 0 15 z",
+	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
 
 
 	PORT_PADDING: 4, //port padding (to point of junction)
@@ -716,7 +716,7 @@ var constant_data = {
 	STACK_PROPERTY:
 	{
 		sg_list: [],
-		kp_list: [],
+		kp_list: {},
 		original_json: '',
 		SCALE_RATIO: 1,
 		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt
@@ -823,16 +823,22 @@ var constant_data = {
 			"rootDeviceType": "", //ebs|instance-store
 			"groupUId": "",
 			"connection": [],
-			"instanceList": []
+			"instanceList": [], //store uid of each instance in server group
+			"volumeList" : {},
+			"eipList" : [],
+			'eniList' : []
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.EC2.Instance",
-			"name": "",
-			"number": 1,
+			"name": "", 			//if number >1 then it's server group name
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"state": "",
-			"platform": "32",
+			//"platform": "32",
 			"software":
 			{},
 			"resource":
@@ -960,8 +966,11 @@ var constant_data = {
 		{
 			"uid": "",
 			"type": "AWS.EC2.EBS.Volume",
-			"name": "/dev/sdf",
-			'number': 1,
+			"name": "/dev/sdf", //if number >1 then it's server group name
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"resource":
 			{
 				"VolumeId": "",
@@ -1264,14 +1273,18 @@ var constant_data = {
 			"coordinate": [0, 0],
 			"groupUId": "",
 			"connection": [],
-			"eniList": []
+			"eniList": [],
+			"eipList" : {}
 		},
 		data:
 		{
 			"uid": "",
 			"type": "AWS.VPC.NetworkInterface",
-			"name": "eni1",
-			"number": 1,
+			"name": "eni1", //if number >1 then it's server group name
+			"serverGroupUid": "", 	//uid of servergroup(index is 0)
+			"serverGroupName": "",  //name of servergroup
+			"number": 1,			//if number >1 then it's server group
+			"index": 0, 			//index in server group
 			"resource":
 			{
 				"PrivateIpAddressSet": [

@@ -8,59 +8,55 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model ) ->
+		 'forge_handle', 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
 
 	console.info canvas_layout
 
-	getMadeiracloudIDESessionID = ( ) ->
-
-		result = null
-
-		madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
-		if madeiracloud_ide_session_id
-			try
-				result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
-			catch err
-				result = null
-
-		if result and $.type result == "array" and result.length == 7
-			{
-				userid      : result[0] ,
-				usercode    : result[1] ,
-				session_id  : result[2] ,
-				region_name : result[3] ,
-				email       : result[4] ,
-				has_cred    : result[5] ,
-				account_id	: result[6] ,
-			}
-		else
-			null
+	#getMadeiracloudIDESessionID = ( ) ->
+	#
+	#	result = null
+	#
+	#	madeiracloud_ide_session_id = $.cookie 'madeiracloud_ide_session_id'
+	#	if madeiracloud_ide_session_id
+	#		try
+	#			result = JSON.parse ( MC.base64Decode madeiracloud_ide_session_id )
+	#		catch err
+	#			result = null
+	#
+	#	if result and $.type result == "array" and result.length == 7
+	#		{
+	#			userid      : result[0] ,
+	#			usercode    : result[1] ,
+	#			session_id  : result[2] ,
+	#			region_name : result[3] ,
+	#			email       : result[4] ,
+	#			has_cred    : result[5] ,
+	#			account_id	: result[6] ,
+	#		}
+	#	else
+	#		null
 
 	initialize : () ->
+
+		#############################
+		#  check network
+		#############################
+
+		_.delay () ->
+			console.log '---------- check network ----------'
+			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
+				ide_event.trigger ide_event.SWITCH_MAIN
+				notification 'error', 'Connection Failed. Please try again', true
+		, 50 * 1000
 
 		#############################
 		#  validation cookie
 		#############################
 
-		madeiracloud_ide_session_id = getMadeiracloudIDESessionID()
-
-		if madeiracloud_ide_session_id
-
-			#session exist
-			result = madeiracloud_ide_session_id
-
-			$.cookie 'userid',      result.userid,      { expires: 1 }
-			$.cookie 'usercode',    result.usercode,    { expires: 1 }
-			$.cookie 'session_id',  result.session_id,  { expires: 1 }
-			$.cookie 'region_name', result.region_name, { expires: 1 }
-			$.cookie 'email',       result.email,       { expires: 1 }
-			$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
-			$.cookie 'username',    MC.base64Decode(result.usercode), { expires: 1 }
-			$.cookie 'account_id', 	result.account_id,	{ expires: 1 }
-
+		if forge_handle.cookie.getIDECookie()
+			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else
-
 			#user session not exist, go to login page
 			window.location.href = 'login.html'
 
@@ -99,6 +95,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.loading_wrapper_html = null
 		#
 		MC.data.is_reset_session = false
+		#
+		MC.data.is_loading_complete = false
 
 		#temp
 		MC.data.IDEView = view
@@ -126,7 +124,7 @@ define [ 'MC', 'event', 'handlebars'
 		status = () ->
 			websocket.status false, ()->
 				# do thing alert here, may trigger several time
-				console.log 'connection failed'
+				console.log '---------- connection failed ----------'
 				view.disconnectedMessage 'show'
 			websocket.status true, ()->
 				if initialize == false
@@ -140,7 +138,7 @@ define [ 'MC', 'event', 'handlebars'
 		setTimeout status, 10000
 
 		subScriptionError = ( error ) ->
-			console.log 'session invalid'
+			console.log '---------- session invalid ----------'
 			console.log error
 			#redirect to page ide.html
 			if MC.data.is_reset_session
@@ -181,6 +179,7 @@ define [ 'MC', 'event', 'handlebars'
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
+		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 
 		#############################
 		#  load module

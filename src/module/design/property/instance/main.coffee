@@ -5,9 +5,10 @@
 define [ 'jquery',
          'text!/module/design/property/instance/template.html',
          'text!/module/design/property/instance/app_template.html',
+         'text!/module/design/property/instance/ip_list_template.html',
          'event',
          'UI.notification'
-], ( $, template, app_template, ide_event ) ->
+], ( $, template, app_template, ip_list_template, ide_event ) ->
 
     #
     current_view     = null
@@ -17,9 +18,11 @@ define [ 'jquery',
     #add handlebars script
     template = '<script type="text/x-handlebars-template" id="property-instance-tmpl">' + template + '</script>'
     app_template = '<script type="text/x-handlebars-template" id="property-instance-app-tmpl">' + app_template + '</script>'
+    ip_list_template = '<script type="text/x-handlebars-template" id="property-ip-list-tmpl">' + ip_list_template + '</script>'
     #load remote html template
     $( 'head' ).append template
     $( 'head' ).append app_template
+    $( 'head' ).append ip_list_template
 
     #private
     loadModule = ( uid, instance_expended_id, current_main, tab_type ) ->
@@ -51,19 +54,13 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            view.on 'REFRESH_KEYPAIR', () ->
-                model.getKerPair()
-                view.render()
-                sglist_main.loadModule model
-                ide_event.trigger ide_event.RELOAD_PROPERTY
-
             model.getUID  uid
             model.getName()
             model.getInstanceType()
             model.getAmiDisp()
             model.getAmi()
             model.getComponent()
-            model.getKerPair()
+            model.getKeyPair()
             # model.getSgDisp()
             model.getCheckBox()
             model.getEni()
@@ -73,6 +70,9 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model
+
+            model.set 'type', 'stack'
+
             #
             model.listen()
             #
@@ -84,6 +84,9 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RELOAD_PROPERTY
 
             ide_event.trigger ide_event.RELOAD_PROPERTY
+
+            ide_event.onLongListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST, () ->
+                view.refreshIPList()
 
             view.on 'ATTACH_EIP', ( eip_index, attach ) ->
 
@@ -140,6 +143,8 @@ define [ 'jquery',
 
             model.init(uid)
 
+            model.set 'type', 'app'
+
             view.render()
             # Set title
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
@@ -156,12 +161,13 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
+        if !current_view then return
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()
         #
         current_sub_main.unLoadModule()
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        ide_event.offListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST
 
     #public
     loadModule   : loadModule

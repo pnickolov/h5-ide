@@ -15,12 +15,14 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
         ###
 
-
+        defaults :
+            'id' : null
 
         init : ( instance_id )->
 
 
             me = this
+            me.set 'id', instance_id
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
                 keypairname = result.param[4]
@@ -113,6 +115,32 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]
+
+        getSGList : () ->
+
+            # resourceId = this.get 'id'
+
+            # # find stack by resource id
+            # resourceCompObj = null
+            # _.each MC.canvas_data.component, (compObj, uid) ->
+            #     if compObj.resource.InstanceId is resourceId
+            #         resourceCompObj = compObj
+            #     null
+
+            # sgAry = []
+            # if resourceCompObj
+            #     sgAry = resourceCompObj.resource.SecurityGroupId
+
+            uid = this.get 'id'
+            sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+            sgUIDAry = []
+            _.each sgAry, (value) ->
+                sgUID = value.slice(1).split('.')[0]
+                sgUIDAry.push sgUID
+                null
+
+            return sgUIDAry
 
     }
 

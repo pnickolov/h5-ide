@@ -131,7 +131,7 @@ MC.canvas = {
 
 	},
 
-	updateInstanceState: function (instance_id)
+	updateInstanceState: function ()
 	{
 		var comp_data = MC.canvas.data.get('component'),
 			instance_id,
@@ -139,19 +139,19 @@ MC.canvas = {
 
 		$.each( comp_data, function(uid, comp)
 		{
-			if (comp_data.type === "AWS.EC2.Instance")
+			if (comp.type === "AWS.EC2.Instance")
 			{
-				instance_id = comp_data.resource.InstanceId;
-				instance_data = MC.data.resource_list[instance_id];
-				if ($('#' + instance_id + '_instance-state').length === 1)
+				instance_id = comp.resource.InstanceId;
+				instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
+				if ( $('#' + uid + '_instance-state').length  === 1)
 				{
 					if ( instance_data )
 					{//instance data exist
-						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
 					}
 					else
 					{//instance data not exist, unknown state
-						$('#' + instance_id + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
 					}
 				}
 				else
@@ -1813,9 +1813,7 @@ MC.canvas.layout = {
 		{
 			if (value.type === 'AWS.EC2.KeyPair')
 			{
-				tmp = {};
-				tmp[value.name] = value.uid;
-				MC.canvas_property.kp_list.push(tmp);
+				MC.canvas_property.kp_list[ value.name ] = value.uid;
 			}
 			if (value.type === "AWS.EC2.SecurityGroup")
 			{
@@ -1893,18 +1891,6 @@ MC.canvas.layout = {
 					rand = '0' + rand;
 				}
 				MC.canvas_property.sg_list[key].color = rand;
-			}
-		});
-
-		$.each(MC.canvas_property.kp_list, function (key, value)
-		{
-			if (value.DefaultKP !== undefined && key !== 0)
-			{
-				tmp = value;
-				MC.canvas_property.kp_list.splice(key, 1);
-				MC.canvas_property.kp_list.unshift(value);
-
-				return false;
 			}
 		});
 
@@ -1993,9 +1979,7 @@ MC.canvas.layout = {
 
 		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
 		kp.uid = uid;
-		tmp = {};
-		tmp[kp.name] = kp.uid;
-		MC.canvas_property.kp_list.push(tmp);
+		MC.canvas_property.kp_list[kp.name] = kp.uid;
 
 		sg_uid = MC.guid();
 		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
@@ -2039,17 +2023,6 @@ MC.canvas.layout = {
 			};
 			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
 			MC.canvas_property.main_route = node_rt.id;
-
-			// Create a default DHCP component for the user if we are in 'VPC' mode
-			if ( MC.canvas_data.platform === "custom-vpc" || MC.canvas_data.platform === "ec2-vpc" ) {
-
-				var dhcp = $.extend( true, {}, MC.canvas.DHCP_JSON.data );
-				dhcp.uid = MC.guid();
-				dhcp.resource.VpcId = "@" + vpc_group.id + ".resource.VpcId";
-
-				data[ dhcp.uid ] = dhcp;
-				data[ vpc_group.id ].resource.DhcpOptionsId = "@" + dhcp.uid + ".resource.DhcpOptionsId";
-			}
 
 			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
 			acl.uid = MC.guid();
@@ -2890,7 +2863,7 @@ MC.canvas.event.dragable = {
 			var originalTarget = event.data.originalTarget,
 				originalTargetNode = $(originalTarget),
 				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
-			
+
 			MC.canvas.select( target_id );
 			MC.canvas.volume.close();
 		}
@@ -3732,7 +3705,7 @@ MC.canvas.event.drawConnection = {
 			to_node = $(match_node);
 
 			if (
-				from_node.data('class') === 'AWS.EC2.Instance' &&
+				$.inArray(from_node.data('class'), ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1 &&
 				to_node.data('class') === 'AWS.ELB'
 			)
 			{

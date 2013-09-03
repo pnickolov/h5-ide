@@ -85,7 +85,7 @@ var slider = {
 		event.preventDefault();
 		slider.sliderMousedown = false;
 		var that = event.data.sliderElem;
-		that.find('.slider-controll').css('background-color', '#aaa');
+		that.find('.slider-controll').css('background-color', '#B25b91');
 		that.data('value', slider.value);
 		that.trigger('SLIDER_CHANGE', slider.value);
 		$(document).off({

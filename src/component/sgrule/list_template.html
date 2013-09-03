@@ -1,6 +1,7 @@
 <div class="sidebar-wrap">
   <header class="sg-create-sb-h">Related Rule(<span>{{ruleCount}}</span>)</header>
   {{#each sg_group}}
+    {{#if rules.length}}
     <h3 class="sg-create-group">{{name}}</h3>
     <ul>
       {{#each rules}}
@@ -17,5 +18,6 @@
         </li>
       {{/each}}
     </ul>
+    {{/if}}
   {{/each}}
 </div>

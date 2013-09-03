@@ -50,9 +50,11 @@ define [ 'jquery',
             model.getAmiDisp()
             model.getAmi()
             model.getComponent()
-            model.getKerPair()
+            model.getKeyPair()
             # model.getSgDisp()
             model.getCheckBox()
+
+            model.set 'type', 'stack'
 
             #view
             view.model    = model
@@ -85,6 +87,8 @@ define [ 'jquery',
             current_view  = view
             current_model = model
 
+            model.set 'type', 'app'
+
             model.getAppLaunch uid
             #view
             view.model    = model
@@ -100,6 +104,7 @@ define [ 'jquery',
 
 
     unLoadModule = () ->
+        if !current_view then return
         current_view.off()
         current_model.off()
         current_view.undelegateEvents()

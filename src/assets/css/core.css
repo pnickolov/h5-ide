@@ -1,5 +1,5 @@
 /* Fonts */
-@font-face
+/*@font-face
 {
 	font-family: Nunito-Light;
 	src: url('../fonts/Nunito-Light.ttf') format('truetype');
@@ -9,9 +9,9 @@
 {
 	font-family: Nunito-Regular;
 	src: url('../fonts/Nunito-Regular.ttf') format('truetype');
-}
+}*/
 
-@font-face
+/*@font-face
 {
 	font-family: VeraMono;
 	src: url('../fonts/VeraMono.ttf') format('truetype');
@@ -23,16 +23,16 @@
 	font-style: normal;
 	font-weight: 400;
 	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
-}
+}*/
 
-@font-face
+/*@font-face
 {
 	font-family: 'Titillium Web';
 	font-style: normal;
 	font-weight: 400;
 	src: local('Titillium'), url('../fonts/TitilliumWeb-Regular.ttf') format('truetype');
 }
-
+*/
 @font-face
 {
 	font-family: 'Lato';
@@ -44,8 +44,8 @@
 @font-face
 {
 	font-family: 'Lato';
-	font-style: bold;
-	font-weight: 700;
+	font-style: normal;
+	font-weight: bold;
 	src: local('Lato'), url('../fonts/Lato-Bold.ttf') format('truetype');
 }
 
@@ -254,7 +254,6 @@ body {
 }
 
 /* Hide Selection */
-
 ::selection {
 	background: transparent;
 }

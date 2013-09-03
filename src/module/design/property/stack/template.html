@@ -24,19 +24,28 @@
 	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">(<span id="property-stack-sns-num">{{subscription.length}}</span>)</span></div>
   <div class="option-group">
 
-  	<ul id="property-sub-list">
+  	<ul id="property-sub-list" class="property-list">
       <li class="pos-r hide">
-        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol"></span></p>
-        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint"></span></p>
-        <i class="icon-edit"></i>
-        <i class="icon-del"></i>
+      	<dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol"></dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint"></dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
+        
       </li>
       {{#each subscription}}
       <li class="pos-r" data-uid="{{uid}}">
-        <p>Protocol&nbsp;&nbsp;&nbsp;&nbsp;<span class="protocol">{{protocol}}</span></p>
-        <p>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;<span class="endpoint">{{endpoint}}</span></p>
-        <i class="icon-edit"></i>
-        <i class="icon-del"></i>
+        <dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
       </li>
       {{/each}}
   	</ul>
@@ -49,18 +58,18 @@
 
       <div id="property-sns-no-asg" class="property-info"><p>There is no auto scaling group in this stack using notification. If there is no usage of SNS topic, the topic will not be created when the stack runs into an app.</p></div>
 
-      <div id="property-sns-no-sub" class="property-info"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
+      <div id="property-sns-no-sub"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
     </section>
 	<div class="tac property-control-group"><button id="property-create-asg" class="btn btn-blue" style="width:180px">Add Subscription</button></div>
   	
   </div>
 
-	<div class="option-group-head expand">
-		Cost Estimation <a href="###"><i class="icon-question-sign"></i></a>
-		{{#if total_fee}}${{total_fee}}/month{{/if}}
+	<div class="option-group-head">
+		Cost Estimation
+		<span class="cost-counter right">{{#if total_fee}}${{total_fee}}/month{{/if}}</span>
 	</div>
 	<div class="option-group">
-		<table class="table">
+		<table class="table cost-estimation-table">
 			<thead>
 				<tr>
 					<th style="">Resource</th>
@@ -85,7 +94,9 @@
 			</tbody>
 
 		</table>
-		<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite" target="_blank">AWS EC2 Pricing</a> <i class="icon-popup"></i>
+		<div class="property-control-group tac">
+			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+		</div>
 	</div>
 
 </article>

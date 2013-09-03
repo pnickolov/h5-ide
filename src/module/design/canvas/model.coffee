@@ -145,7 +145,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 		beforeD_Eni : ( component, tgt_parent ) ->
 			# Eni can only be in subnet
-			if MC.canvas_data.component[ tgt_parent ].resource.AvailabilityZone == component.resource.AvailabilityZone
+			if MC.canvas_data.component[tgt_parent] and MC.canvas_data.component[tgt_parent].resource.AvailabilityZone == component.resource.AvailabilityZone
 				return
 
 			if component.resource.Attachment.InstanceId
@@ -255,17 +255,44 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			resource_type = constant.AWS_RESOURCE_TYPE
 			parent        = MC.canvas_data.layout.component.group[ tgt_parent ]
 
+			defaultVPC = false
+			if MC.aws.aws.checkDefaultVPC()
+				defaultVPC = true
+
 			# Parent can be AvailabilityZone or Subnet
-			if parent.type == resource_type.AWS_VPC_Subnet
-				parent = MC.canvas_data.component[ tgt_parent ]
+			if parent.type == resource_type.AWS_VPC_Subnet or defaultVPC
+				if !defaultVPC
+					parent = MC.canvas_data.component[ tgt_parent ]
 
-				# Nothing is changed
-				if component.resource.SubnetId.indexOf( tgt_parent ) != -1
-					return
+				subnetUID = ''
+				newAZ = ''
+				if !defaultVPC
+					subnetUID = tgt_parent
+					# Nothing is changed
+					if component.resource.SubnetId.indexOf(subnetUID) != -1
+						return
+					# Update instance's subnet
+					component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+					newAZ = parent.resource.AvailabilityZone
+				else
+					newAZ = parent.name
 
-				newAZ = parent.resource.AvailabilityZone
-				# Update instance's subnet
-				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				component.resource.Placement.AvailabilityZone = newAZ
+
+				instanceUID = component.uid
+				# update instance default eni
+				eniComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+				if eniComp
+					eniUID = eniComp.uid
+					MC.canvas_data.component[eniUID].resource.AvailabilityZone = newAZ
+					if !defaultVPC
+						MC.canvas_data.component[eniUID].resource.SubnetId = "@" + subnetUID + ".resource.SubnetId"
+
+				# update IP List
+				if defaultVPC
+					MC.aws.subnet.updateAllENIIPList(newAZ)
+				else
+					MC.aws.subnet.updateAllENIIPList(subnetUID)
 			else
 
 				# Nothing is changed
@@ -273,8 +300,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					return
 
 				newAZ = parent.name
-
-			component.resource.Placement.AvailabilityZone = newAZ
+				component.resource.Placement.AvailabilityZone = newAZ
 
 			# Update ELB's AZ property
 			console.log "morris", component
@@ -347,8 +373,26 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			null
 
 		changeP_Eni : ( component, tgt_parent ) ->
-			component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
-			component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+
+			defaultVPC = false
+			if MC.aws.aws.checkDefaultVPC()
+				defaultVPC = true
+			if !defaultVPC
+				# parent is subnet
+				component.resource.AvailabilityZone = MC.canvas_data.component[tgt_parent].resource.AvailabilityZone
+			else
+				# parent is az
+				component.resource.AvailabilityZone = MC.canvas_data.layout.component.group[tgt_parent].name
+
+			# Update IP List
+			if defaultVPC
+				eniNewAZ = component.resource.AvailabilityZone
+				MC.aws.subnet.updateAllENIIPList(eniNewAZ)
+			else
+				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
+				subnetUID = tgt_parent
+				MC.aws.subnet.updateAllENIIPList(subnetUID)
+
 			null
 
 		changeP_ASG : ( component, tgt_parent ) ->
@@ -460,14 +504,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				asg_comp = MC.canvas_data.component[ layout_data.originalId ]
 				vpcs = asg_comp.resource.VPCZoneIdentifier.split " , "
 				for subnet, i in vpcs
-					if subnet.indexOf layout_data.groupUId
+					if subnet.indexOf( layout_data.groupUId ) != -1
 						vpcs.splice i, 1
 						break
 				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
 				return
 
+
 			# Ask user to comfirm the delete operation
-			if not force
+			if not force and asg_comp.resource.LaunchConfigurationName.length
 				return sprintf lang.ide.CVS_CFM_DEL_ASG, component.name
 
 			###################################
@@ -575,6 +620,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 						else
 							# Hide eni number
 							MC.canvas.display( key, 'eni-number-group', false )
+							MC.canvas.display( key, 'port-eni-rtb', true )
 
 				# remove instance relate volume
 
@@ -800,10 +846,29 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
 				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
+			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
+
+				lc_uid  = portMap['launchconfig-sg']
+				lc = MC.canvas_data.layout.component.node[lc_uid]
+				if lc
+					asg_uid = lc.groupUId
+				else
+					asg_uid = MC.canvas_data.layout.component.group[lc_uid].originalId
+
+				elb_uid = portMap['elb-sg-out']
+
+				MC.aws.elb.removeASGFromELB elb_uid, asg_uid
+
+				# Disconnect ASG Expand
+				for uid, connection of MC.canvas_data.layout.connection
+					if connection.type is "association" and connection.target[ asg_uid ] and connection.target[ elb_uid ]
+						MC.canvas.remove $("#" + uid)[0]
+
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				# Hide Eni Number
 				MC.canvas.display portMap['eni-attach'], 'eni-number-group', false
+				MC.canvas.display portMap['eni-attach'], 'port-eni-rtb', true
 
 				MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = ''
 				MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_UNATTACHED
@@ -1130,6 +1195,20 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					this.deleteObject null, { type : "line", id : i.line }
 					break
 
+			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
+				lc_uid = portMap['launchconfig-sg']
+
+				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], lc_uid
+				for sb in linkedSubnets
+					MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", sb, "subnet-assoc-in"
+
+				asg_uid = MC.canvas_data.layout.component.node[lc_uid].groupUId
+
+				# Link ASG Expand
+				for uid, group of MC.canvas_data.layout.component.group
+					if group.originalId is asg_uid
+						MC.canvas.connect portMap['elb-sg-out'], "elb-sg-out", uid, "launchconfig-sg"
+
 			# Instance <==> Eni
 			else if portMap['instance-attach'] and portMap['eni-attach']
 
@@ -1308,7 +1387,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
-					'DestinationCidrBlock' : "0.0.0.0/0",
+					'DestinationCidrBlock' : "",
 					'GatewayId'            : "",
 					'InstanceId'           : "",
 					'InstanceOwnerId'      : "",
@@ -1376,9 +1455,32 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			switch componentType
 
 				when resource_type.AWS_EC2_Instance
-					subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
-					subnetUID = subnetUIDRef.split('.')[0].slice(1)
-					MC.aws.subnet.updateAllENIIPList(subnetUID)
+
+					defaultVPC = false
+					if MC.aws.aws.checkDefaultVPC()
+						defaultVPC = true
+
+					if defaultVPC
+						azName = MC.canvas_data.component[uid].resource.Placement.AvailabilityZone
+						MC.aws.subnet.updateAllENIIPList(azName)
+					else
+						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+						subnetUID = subnetUIDRef.split('.')[0].slice(1)
+						MC.aws.subnet.updateAllENIIPList(subnetUID)
+
+				when resource_type.AWS_VPC_NetworkInterface
+
+					defaultVPC = false
+					if MC.aws.aws.checkDefaultVPC()
+						defaultVPC = true
+
+					if defaultVPC
+						eniAZName = MC.canvas_data.component[uid].resource.AvailabilityZone
+						MC.aws.subnet.updateAllENIIPList(eniAZName)
+					else
+						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
+						subnetUID = subnetUIDRef.split('.')[0].slice(1)
+						MC.aws.subnet.updateAllENIIPList(subnetUID)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -1856,8 +1958,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 				MC.canvas.update uid,'eip','eip_status', 'on'
 
-				# Ask the user the add IGW
-				this.askToAddIGW 'Elastic IP'
+
+				defaultVPC = false
+				if MC.aws.aws.checkDefaultVPC()
+					defaultVPC = true
+
+				if !defaultVPC
+					# Ask the user the add IGW
+					this.askToAddIGW 'Elastic IP'
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
@@ -1895,26 +2003,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			$("#canvas-op-confirm").one "click", ()->
 				modal.close()
 
-				# THIS PIECE OF CODE SHOULD NOT EXIST HERE.
-				# BECAUSE THE MODEL DON'T CARE HOW TO CREATE A IGW
-
-				vpc_id   = $('.AWS-VPC-VPC').attr 'id'
-				vpc_data = MC.canvas.data.get "layout.component.group.#{vpc_id}"
-				vpc_coor = vpc_data.coordinate
-
-				component_size = MC.canvas.COMPONENT_SIZE[ resource_type.AWS_VPC_InternetGateway ]
-
-				node_option =
-					groupUId : vpc_id
-					name     : "IGW"
-
-				coordinate =
-					x : vpc_coor[0] - component_size[1] / 2
-					y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
-
-				MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
-
-
+				# modify by song
+				MC.aws.igw.addIGWToCanvas()
 
 		zoomedDropError : () ->
 

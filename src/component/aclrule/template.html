@@ -1,19 +1,23 @@
 <div id="modal-acl-rule">
   <div class="modal-header"><h3>Add Network ACL Rule</h3><i class="modal-close">&times;</i></div>
-  <div class="modal-body">
-	<div class="modal-row">
-	  <label for="modal-acl-number">Rule Number</label>
-	  <input class="input" type="text" maxLength="5" id="modal-acl-number">
+  <div class="modal-body" style="width:450px;">
+	<div class="modal-control-group clearfix">
+	  <label class="label-short" for="modal-acl-number">Rule Number</label>
+	  <div class="prefix-input left">
+	  		<label for="modal-acl-number">#</label>
+	  		<input class="input" type="text" maxLength="5" id="modal-acl-number" required>
+	  </div>
 	</div>
-	<div class="modal-row acl-modal-one-row-left">
-		<label>Action</label>
-		<div class="modal-acl-source-wrapper">
-			<div class="radio acl-float-left">
+	<div class="modal-control-group clearfix">
+		<label class="label-short">Action</label>
+		<div class="radio-group-horizontal">
+			<div class="radio">
 				<input type="radio" id="acl-add-model-action-allow" checked="checked" name="acl-add-model-action-select"/>
 				<label for="acl-add-model-action-allow"></label>
 			</div>
-			<label class="radio-label acl-float-left" for="acl-add-model-action-allow">Allow</label>
-			<div></div>
+			<label class="radio-label" for="acl-add-model-action-allow">Allow</label>
+		</div>
+		<div class="radio-group-horizontal">
 			<div class="radio">
 				<input type="radio" id="acl-add-model-action-deny" name="acl-add-model-action-select"/>
 				<label for="acl-add-model-action-deny"></label>
@@ -21,15 +25,16 @@
 			<label class="radio-label" for="acl-add-model-action-deny">Deny</label>
 		</div>
 	</div>
-	<div class="modal-row acl-modal-one-row-left">
-		<label>Direction</label>
-		<div class="modal-acl-source-wrapper">
-			<div class="radio acl-float-left">
+	<div class="modal-control-group clearfix">
+		<label class="label-short">Direction</label>
+		<div class="radio-group-horizontal">
+			<div class="radio">
 				<input type="radio" id="acl-add-model-direction-inbound" checked="checked" name="acl-add-model-direction-select"/>
 				<label for="acl-add-model-direction-inbound"></label>
 			</div>
-			<label class="radio-label acl-float-left" for="acl-add-model-direction-inbound">Inbound</label>
-			<div></div>
+			<label class="radio-label" for="acl-add-model-direction-inbound">Inbound</label>
+		</div>
+		<div class="radio-group-horizontal">
 			<div class="radio">
 				<input type="radio" id="acl-add-model-direction-outbound" name="acl-add-model-direction-select"/>
 				<label for="acl-add-model-direction-outbound"></label>
@@ -37,15 +42,13 @@
 			<label class="radio-label" for="acl-add-model-direction-outbound">Outbound</label>
 		</div>
 	</div>
-	<div class="modal-row">
-	  <label>Source</label>
-	  <div class="modal-acl-source-wrapper property-control-group">
-		<div class="selectbox selectbox-mega" id="acl-add-model-source-select">
+	<div class="modal-control-group acl-sourece-dest clearfix">
+	  <label class="label-short">Source</label>
+		<div class="selectbox" id="acl-add-model-source-select">
 			<div class="selection">Custom</div>
 			<ul class="dropdown">
 
 			</ul>
-		</div>
 	  </div>
 	  <input class="input" type="text" maxLength="5" id="modal-acl-source-input">
 	</div>
@@ -83,11 +86,11 @@
 
 
 
-	<div class="property-control-group clearfix">
-	  <label class="left" >Protocol</label>
-	  <div class="context" >
-		<div class="modal-protocol-select">
-		  <div class="selectbox " id="modal-protocol-select"  data-protocal-type="tcp">
+	<div class="modal-control-group clearfix">
+	  <label class="label-short" >Protocol</label>
+	  <!-- <div class="context" > -->
+		<!-- <div class="modal-protocol-select"> -->
+		  <div class="selectbox modal-protocol-select" id="modal-protocol-select"  data-protocal-type="tcp">
 			<div class="selection">TCP</div>
 			<ul class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" tabindex="-1">
 			  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -101,7 +104,7 @@
 			  {{/if}}
 			</ul>
 		  </div>
-		</div>
+		<!-- </div> -->
 	  <div id="sg-protocol-select-result">
 		  <div class="sg-protocol-option-input show" id="sg-protocol-tcp">
 			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
@@ -147,7 +150,7 @@
 			  </div>
 		  </div>
 		  <div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
-			<div class="selection">All(-1</div>
+			<div class="selection">All(-1)</div>
 			<ul class="dropdown" tabindex="-1">
 			  <li class="item selected" data-id="-1">All(-1)</li>
 			  <li class="item" data-id="0">destination network unreachable(0)</li>
@@ -200,7 +203,7 @@
 		  <div class="sg-protocol-option-input" id="sg-protocol-all">
 			Port Range:<span>0-65535</span>
 		  </div>
-	  </div>
+	  <!-- </div> -->
 	  </div>
 	</div>
 

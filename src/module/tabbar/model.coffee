@@ -61,6 +61,9 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                     console.log 'no find tab type'
 
             console.log 'event_type = ' + event_type
+            #
+            MC.data.current_tab_type = event_type
+            #
             this.trigger event_type, newer
 
             ###

@@ -59,7 +59,7 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
                     #
-                    ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
+                    #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
                         #when OPEN_STACK or OPEN_APP result is resolved_data
@@ -87,13 +87,11 @@ define [ 'jquery', 'text!/module/design/template.html', 'MC.canvas.constant' ], 
                 null
 
             #listen
-            # ide_event.onLongListen ide_event.UPDATA_TAB_ICON, ( flag, id, region ) ->
-            #     console.log 'UPDATE_TAB_ICON, flag:' + flag + ', id:' + id
-            #     if id.indexOf('app-') == 0
-            #         model.getAppResourcesService region_name, id
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
+                model.getAppResourcesService region_name, app_id
 
-            #     null
-
+                null
     #private
     unLoadModule = () ->
         #view.remove()

@@ -5,8 +5,9 @@
 define [ 'text!./template.html',
          'text!./list_template.html',
          'text!./delete_rule_dialog.html',
+         'i18n!/nls/lang.js',
          'event'
-], ( template, list_template, delete_template, ide_event ) ->
+], ( template, list_template, delete_template, lang, ide_event ) ->
 
     template      = Handlebars.compile template
     list_template = Handlebars.compile list_template
@@ -17,10 +18,8 @@ define [ 'text!./template.html',
         events    :
           'closed'                           : 'onClose'
           'click .sg-rule-create-add'        : 'addRule'
-          'click .sg-rule-create-node'       : 'switchNode'
           'click .sg-rule-create-readd'      : 'readdRule'
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
-          'click .sg-rule-create'            : 'onDirChange'
           'click .sg-rule-delete'            : 'deleteRule'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
           'click #confirm-delete-sg-line'    : 'deleteSGLine'
@@ -47,27 +46,40 @@ define [ 'text!./template.html',
           # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
           this.trigger 'CLOSE_POPUP'
 
-
-        switchNode : ( event ) ->
-
-          $node = $( event.currentTarget ).toggleClass "selected", true
-          $node.siblings().removeClass "selected"
-          $node.find("input").prop 'checked', true
-
-          outward = $("#sg-rule-create-tgt-o").is(":checked")
-          $(".sg-rule-create-out").toggle( outward )
-          $(".sg-rule-create-in").toggle( !outward)
-          null
-
         addRule : ( event ) ->
           # Extract the data from the view
           data = this.extractRuleData()
 
-          this.trigger 'ADD_RULE', data
+          # Generate Ouput Info
+          if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+            rule_count = 1
+          else
+            rule_count = 2
+
+          if data.direction == "both"
+            rule_count *= 2
+
+          out_target = $("#sg-create-sg-out").find(".selected").text()
+          in_target  = $("#sg-create-sg-in").find(".selected").text()
+          action     = $("#sg-create-direction").find(".selected").text()
+
+          if rule_count == 1
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+
+          else if data.inSg is data.outSg
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
+
+          else
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target
+
+          $("#sg-rule-create-msg").text info
+
+
 
           # Switch to done view.
           this.$el.find('#modal-box').toggleClass('done', true)
 
+          this.trigger 'ADD_RULE', data
           this.trigger 'UPDATE_LINE_ID'
 
           # Update sidebar
@@ -83,7 +95,6 @@ define [ 'text!./template.html',
           this.trigger 'DELETE_RULE', $(event.currentTarget).closest('.sg-create-rule-item').attr("data-uid")
 
           this.trigger 'UPDATE_SLIDE_BAR'
-          #this.updateSidebar()
           false
 
         onDirChange : () ->
@@ -98,7 +109,13 @@ define [ 'text!./template.html',
           $("#sg-proto-input-sub-" + id).show()
 
         updateSidebar : () ->
-          this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( this.model.attributes ) )
+          data = $.extend true, {}, this.model.attributes
+
+          data.ruleCount = _.reduce data.sg_group, ( count, item )->
+            item.rules.length + count
+          , 0
+
+          this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( data ) )
           rule_count = $(".sg-create-rule-item").length
 
           $sidebar = $(".sg-rule-create-sidebar")
@@ -119,9 +136,9 @@ define [ 'text!./template.html',
           outward = if $("#sg-rule-create-tgt-o").is(":checked") then "out" else "in"
 
           data =
-            sgId      : $("#sg-create-sg-" + outward).find( ".selected" ).attr("data-id")
-            isInbound : $("#sg-rule-create-dir-i").is(":checked")
-            direction : $("#sg-create-dir-"+ outward).find( ".selected" ).attr("data-id")
+            outSg     : $("#sg-create-sg-out").find(".selected").attr("data-id")
+            direction : $("#sg-create-direction").find(".selected").attr("data-id")
+            inSg      : $("#sg-create-sg-in").find(".selected").attr("data-id")
             protocol  : $("#sg-create-proto").find( ".selected" ).attr("data-id")
 
           $protoIptWrap = $("#sg-proto-ipt-"+data.protocol)

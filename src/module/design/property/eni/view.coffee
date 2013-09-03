@@ -15,22 +15,22 @@ define [ 'event',
         tagName  : $ '.property-details'
 
         template : Handlebars.compile $( '#property-eni-tmpl' ).html()
+        ip_list_template : Handlebars.compile $( '#property-eni-ip-list-tmpl' ).html()
 
         events   :
 
-            "change #property-eni-desc" : "setEniDesc"
-            "change #property-eni-source-check" : "setEniSourceDestCheck"
-
-            'click #property-eni-ip-add' : "addIPtoList"
-            'click #property-eni-list .network-remove-icon' : "removeIPfromList"
-
-            'click .toggle-eip' : 'addEIP'
-
-            'blur .input-ip' : 'updateEIPList'
+            "change #property-eni-desc"             : "setEniDesc"
+            "change #property-eni-source-check"     : "setEniSourceDestCheck"
+            'click #property-eni-ip-add'            : "addIPtoList"
+            'click #property-eni-list .icon-remove' : "removeIPfromList"
+            'click .toggle-eip'                     : 'addEIP'
+            'blur .input-ip'                        : 'updateEIPList'
 
         render     : () ->
             console.log 'property:eni render'
             $('.property-details').html this.template this.model.attributes
+
+            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
 
         setEniDesc : ( event ) ->
 
@@ -46,11 +46,21 @@ define [ 'event',
 
         addIPtoList : ( event ) ->
 
-            tmpl = $(MC.template.networkListItem())
+            subnetCIDR = ''
+            eniUID = this.model.get 'uid'
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            if defaultVPCId
+                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(eniUID)
+                subnetCIDR = subnetObj.cidrBlock
+            else
+                subnetUID = MC.canvas_data.component[eniUID].resource.SubnetId.split('.')[0][1...]
+                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
-            index = $('#property-eni-list').children().length
-
-            tmpl.children()[1] = $(tmpl.children()[1]).data("index", index).attr('data-index', index)[0]
+            ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+            tmpl = $(MC.template.networkListItem({
+                ipPrefix: ipPrefixSuffix[0],
+                ipSuffix: ipPrefixSuffix[1]
+            }))
 
             $('#property-eni-list').append tmpl
 
@@ -63,7 +73,7 @@ define [ 'event',
         addEIP : ( event ) ->
 
             # todo, need a index of eip
-            index = parseInt event.target.dataset.index, 10
+            index = $(event.currentTarget).closest("li").index()
 
             if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
 
@@ -75,15 +85,9 @@ define [ 'event',
 
         removeIPfromList: (event) ->
 
-            index = $($(event.target).parents('li').first().children()[1]).data().index
-
-            $(event.target).parents('li').first().remove()
-
-            $.each $("#property-eni-list").children(), (idx, val) ->
-
-                $($(val).children()[1]).data('index', idx)
-
-                $($(val).children()[1]).attr('data-index', idx)
+            $li = $(event.currentTarget).closest("li")
+            index = $li.index()
+            $li.remove()
 
             uid = $("#property-eni-attach-info").attr "component"
 
@@ -107,6 +111,11 @@ define [ 'event',
                 null
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
+
+        refreshIPList : ( event ) ->
+            eniUID = this.model.get 'uid'
+            this.model.getENIDisplay(eniUID)
+            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
 
     }
 

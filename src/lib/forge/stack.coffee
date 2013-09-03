@@ -300,6 +300,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				json_data.component[vol_uid].number = vol_number
 
+				json_data.component[vol_uid].resource.AttachmentSet.VolumeId = "@#{vol_uid}.resource.VolumeId"
+
 
 		#return
 		null

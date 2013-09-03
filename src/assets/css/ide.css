@@ -402,8 +402,7 @@ a {
 	height           : 100%;
 
 	background-color : #302E30;
-	border           : solid 1px #202020;
-	border-left      : none;
+	border-right: 1px solid #202020;
 }
 
 #navigation .sub-menu-wrapper {
@@ -3754,8 +3753,30 @@ a.sidebar-hider {
 	display : none;
 }
 
-/* End of Instance Property */
+#keypair-select .dropdown {
+	top: 30px;
+}
 
+#keypair-select .editor .input {
+	background-color: #f3f3f3;
+	font-size: 12px;
+	color: #999;
+	border: 1px solid #ccc;
+}
+
+#keypair-select .editor .input:focus {
+	color: #333 !important;
+	border: 1px solid #aaa;
+	box-shadow: none;
+}
+
+#keypair-select .icon-remove {
+	position: absolute;
+	right: 5px;
+	top: 7px;
+}
+
+/* End of Instance Property */
 #security-group-select {
 	position: absolute;
 	top: 0;

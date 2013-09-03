@@ -16,6 +16,7 @@ define [ 'backbone', 'jquery', 'underscore',
             'in_dashboard'  : true
             'has_cred'      : true      # default has credential
             'user_name'     : null
+            'user_email'    : null
 
         initialize : ->
 
@@ -51,6 +52,10 @@ define [ 'backbone', 'jquery', 'underscore',
         getUserName : ->
             console.log 'getUserName'
             this.set 'user_name', MC.base64Decode $.cookie( 'usercode' )
+
+        getUserEmail : ->
+            this.set 'user_email', MC.base64Decode $.cookie( 'email' )
+
             null
 
         getInfoList : () ->

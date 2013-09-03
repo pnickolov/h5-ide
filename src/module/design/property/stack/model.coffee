@@ -174,7 +174,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     sub_list.push tmp
 
-                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
                     has_asg = true
 

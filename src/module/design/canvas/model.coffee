@@ -510,8 +510,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
 				return
 
+
 			# Ask user to comfirm the delete operation
-			if not force
+			if not force and asg_comp.resource.LaunchConfigurationName.length
 				return sprintf lang.ide.CVS_CFM_DEL_ASG, component.name
 
 			###################################

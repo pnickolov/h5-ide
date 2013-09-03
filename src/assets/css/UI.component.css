@@ -1250,22 +1250,24 @@ textarea {
 
 /* Notification */
 #notification_wrap {
-    color: #FFF;
-    overflow: auto;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: auto;
-    text-align: center;
-    z-index: 100;
+	margin-left: -425px;
+	left: 50%;
+	color: #FFF;
+	overflow: auto;
+	position: fixed;
+	top: 0;
+	width: 850px;
+	height: auto;
+	text-align: center;
+	z-index: 100;
 }
 
 .notification_item {
-    height: 35px;
-    line-height: 35px;
-    width: 850px;
-    position: relative;
-    margin: 0 auto;
+	height: 35px;
+	line-height: 35px;
+	width: 850px;
+	position: relative;
+	margin: 0 auto;
 }
 
 #notification_wrap .error_item {

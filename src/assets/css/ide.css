@@ -5365,7 +5365,8 @@ a.action-link:hover {
 	background: url('../images/ide/icon/icon-stack.png') center center no-repeat;
 }
 
-.icon-app-running {
+.icon-app-running,
+.icon-app-Running {
 	background: url('../images/ide/icon/icon-app-running.png') center center no-repeat;
 }
 
@@ -5377,7 +5378,10 @@ a.action-link:hover {
 .icon-app-pending,
 .icon-app-starting,
 .icon-app-stopping,
-.icon-app-terminating {
+.icon-app-terminating,
+.icon-app-Starting,
+.icon-app-Stopping,
+.icon-app-Terminating  {
 	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
 }
 /* Nav Icon */

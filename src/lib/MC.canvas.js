@@ -72,6 +72,10 @@ MC.canvas = {
 			case 'color':
 				target.attr('style', 'fill:' + value);
 				break;
+
+			case 'tooltip'://add tooltip
+				target.addClass('tooltip').attr( id + '_' + key, value );
+				break;
 		}
 
 		return true;
@@ -82,7 +86,7 @@ MC.canvas = {
 		var comp_data = MC.canvas.data.get('component.' + uid),
 			comp_sg_list = [],
 			SG_list = MC.canvas_property.sg_list,
-			colors = [],
+			colors_label = [],
 			i = 0;
 
 		if (!comp_data) {
@@ -94,6 +98,7 @@ MC.canvas = {
 				comp_sg_list = comp_data.resource.SecurityGroupId;
 				break;
 			case 'AWS.ELB':
+			case 'AWS.AutoScaling.LaunchConfiguration':
 				comp_sg_list = comp_data.resource.SecurityGroups;
 				break;
 			case 'AWS.VPC.NetworkInterface':
@@ -109,20 +114,22 @@ MC.canvas = {
 			$.each(SG_list, function(i, SG_data)
 			{
 				if (SG_data.uid === SG_uid) {
-					colors.push("#" + SG_data.color);
+					colors_label.push({
+						color: "#" + SG_data.color,
+						name: SG_data.name
+					});
 					return false;
 				}
 			});
 		});
-		console.info(uid + ":" + colors);
 
 		while (i < MC.canvas.SG_MAX_NUM) {
-			if (i < colors.length && colors[i]) {
-				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors[i]);
-				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "node-sg-color-border");
+			if (i < colors_label.length && colors_label[i]) {
+				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors_label[i].color);
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", colors_label[i].name );
 			} else {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
-				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "");
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", "");
 				//show
 				//hide
 			}

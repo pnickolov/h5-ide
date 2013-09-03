@@ -821,19 +821,19 @@
 }
 
 
-.node-label-hostname {
+.node-label-name {
 	fill: black;
 }
 
-.node-label-hostname-bg {
+.node-label-name-bg {
 	fill: none;
 }
 
-.selected .node-label-hostname {
+.selected .node-label-name {
 	fill: white;
 }
 
-.selected .node-label-hostname-bg {
+.selected .node-label-name-bg {
 	fill: #008ae3;
 }
 

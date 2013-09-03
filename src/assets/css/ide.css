@@ -6006,10 +6006,11 @@ a.action-link:hover {
 #asg-termination-policy .selectbox {
 	display: inline;
 	margin: 0 5px;
+	line-height: 16px;
 }
 
 #asg-termination-policy .selection {
-	display: inline;
+	display: inline-block;
 	padding: 4px 20px 4px 5px;
 	border: 1px solid #ccc;
 	border-radius: 2px;

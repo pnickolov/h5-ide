@@ -62,8 +62,8 @@ var constant_data = {
 	GROUP_DEFAULT_SIZE:
 	{
 		'AWS.VPC.VPC': [60, 60], //[width, height]
-		'AWS.EC2.AvailabilityZone': [22, 22],
-		'AWS.VPC.Subnet': [18, 18],
+		'AWS.EC2.AvailabilityZone': [21, 21],
+		'AWS.VPC.Subnet': [17, 17],
 		'AWS.AutoScaling.Group' : [13, 13]
 	},
 

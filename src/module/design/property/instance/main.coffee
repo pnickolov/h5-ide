@@ -70,6 +70,9 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
             sglist_main.loadModule model
+
+            model.set 'type', 'stack'
+
             #
             model.listen()
             #
@@ -139,6 +142,8 @@ define [ 'jquery',
                 }
 
             model.init(uid)
+
+            model.set 'type', 'app'
 
             view.render()
             # Set title

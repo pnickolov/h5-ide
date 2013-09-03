@@ -89,7 +89,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					++enabledSGCount
 
 				sgHideCheck = false
-				if parent_model.attributes.type is 'stack'
+				if parent_model.get('type') is 'app'
 					sgHideCheck = true
 
 				sgIsDefault = false

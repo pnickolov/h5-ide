@@ -62,6 +62,7 @@ define [ 'jquery',
                 if value isnt 'internal' and !defaultVPC
                     ide_event.trigger ide_event.NEED_IGW, elbComponent
 
+                return true
 
             view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
                 model.setHealthProtocol uid, value

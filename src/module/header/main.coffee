@@ -24,6 +24,7 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
 
             model.on 'change:user_name', () -> view.render()
             model.getUserName()
+            model.getUserEmail()
 
             logout = -> model.logout()
 

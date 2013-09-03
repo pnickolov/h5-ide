@@ -43,7 +43,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log '---------- check network failed ----------'
 			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
 				ide_event.trigger ide_event.SWITCH_MAIN
-				notification 'error', 'Network problems. Please try again', true
+				notification 'error', 'Connection Failed. Please try again', true
 		, 35 * 1000
 
 		#############################

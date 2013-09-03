@@ -114,10 +114,18 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             data = result.resolved_data
             region = result.param[ 3 ]
             if region is null
+                # update regionlist for optimize network
+                regionList = @get 'region_list'
+                _.each data, ( resource, region ) =>
+                    if not regionList[ region ]
+                        regionList[ region ] = @regionHandel resource
+                    null
+                @set 'region_list', regionList
+
                 globalData = @globalRegionhandle data
                 @set 'global_list', globalData
             else
-                regionData = @regionHandel data, region
+                regionData = @regionHandel data[ region ]
                 oriRegionList = @get 'region_list'
                 oriRegionList[ region ] = regionData
                 @set 'region_list', oriRegionList
@@ -169,8 +177,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
 
 
-        regionHandel: ( data, region ) ->
-            data = data[ region ]
+        regionHandel: ( data ) ->
             retData = {}
 
             _.each data, ( value, type ) ->
@@ -179,6 +186,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                     total: value and value.length or 0
                 null
             retData
+
+        loadResource: ( region ) ->
+            if ( @get 'region_list' )[ region ]
+                @set 'cur_region_list', ( @get 'region_list' )[ region ]
+                return
+
+            @describeAWSResourcesService region
+
 
         # get current region's app/stack list
         getItemList : ( flag, region, result ) ->

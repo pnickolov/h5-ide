@@ -434,7 +434,7 @@ a {
 .first-level-nav-label {
 	display: block;
 	background: #3D3C3D;
-	width: 217px;
+	width: 216px;
 	height: 18px;
 	font-size: 18px;
 	border: solid 1px #3D3C3D;
@@ -596,6 +596,10 @@ a {
 
 .nav-head a {
 	z-index: 3;
+}
+
+.nav-region-empty-list {
+	width: 244px;
 }
 
 .nav-empty {

@@ -15,6 +15,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'uid'       :   null
             'is_elb'    :   true
             'server_cert' : null
+            'have_vpc' : null
 
         init : ( uid ) ->
 
@@ -156,6 +157,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 return key1.slice(length1) - key2.slice(length2)
 
             this.set 'az_detail', azObjAry
+
+            defaultVPC = false
+            if MC.aws.aws.checkDefaultVPC()
+                defaultVPC = true
+
+            if defaultVPC or component.resource.VpcId
+                this.set 'have_vpc', true
+            else
+                this.set 'have_vpc', false
 
             null
 

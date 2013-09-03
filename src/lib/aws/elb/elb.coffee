@@ -13,7 +13,12 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		allComp = MC.canvas_data.component
 		vpcUIDRef = elbComp.resource.VpcId
-		if !vpcUIDRef
+
+		defaultVPC = false
+		if MC.aws.aws.checkDefaultVPC()
+			defaultVPC = true
+
+		if !vpcUIDRef and !defaultVPC
 			MC.canvas_data.component[uid].resource.Scheme = ''
 
 		# have igw ?
@@ -26,7 +31,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		# create elb default sg
 
-		if MC.aws.vpc.getVPCUID()
+		if MC.aws.vpc.getVPCUID() or defaultVPC
 			sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
 			sgComp.uid = MC.guid()
 			sgComp.name = newELBName + '-sg'

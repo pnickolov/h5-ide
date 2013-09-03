@@ -12,7 +12,8 @@ define ['MC',
 		'lib/aws/vpc/subnet',
 		'lib/aws/vpc/rtb',
 		'lib/aws/autoscaling/asg',
-		'lib/aws/autoscaling/launchconfiguration'], (MC, aws_handler, aws_handle_instance, aws_handle_ebs, aws_handle_elb, aws_handle_vpn, aws_handle_acl, aws_handle_securitygroup, aws_handle_keypair,aws_handle_eni, aws_handle_vpc, aws_handle_subnet, aws_handle_rtb, aws_handler_asg, aws_handler_lc) ->
+		'lib/aws/autoscaling/launchconfiguration',
+		'lib/aws/vpc/igw'], (MC, aws_handler, aws_handle_instance, aws_handle_ebs, aws_handle_elb, aws_handle_vpn, aws_handle_acl, aws_handle_securitygroup, aws_handle_keypair,aws_handle_eni, aws_handle_vpc, aws_handle_subnet, aws_handle_rtb, aws_handler_asg, aws_handler_lc, aws_handle_igw) ->
 	MC.aws = {
 		instance: aws_handle_instance,
 		asg: aws_handler_asg,
@@ -27,5 +28,6 @@ define ['MC',
 		eni: aws_handle_eni,
 		vpc: aws_handle_vpc,
 		subnet: aws_handle_subnet,
-		rtb: aws_handle_rtb
+		rtb: aws_handle_rtb,
+		igw: aws_handle_igw
 	}

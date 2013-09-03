@@ -52,8 +52,12 @@ define [ 'jquery',
             view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
                 elbComponent = model.setScheme uid, value
 
+                defaultVPC = false
+                if MC.aws.aws.checkDefaultVPC()
+                    defaultVPC = true
+                
                 # Trigger an event to tell canvas that we want an IGW
-                if value isnt 'internal'
+                if value isnt 'internal' and !defaultVPC
                     ide_event.trigger ide_event.NEED_IGW, elbComponent
 
 

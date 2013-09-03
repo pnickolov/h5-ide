@@ -1219,6 +1219,38 @@ a {
 	z-index: 10;
 }
 
+.dashboard-loading {
+	background: #f1f1f1;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ccc;
+}
+
+.dashboard-loading .loading-spinner {
+	margin: 0 auto;
+	display: block;
+	margin-top: 80px;
+}
+
+#global-view .dashboard-loading {
+	height: 811px;
+	margin-top: 20px;
+}
+
+#region-view #region-app-stack-wrap .dashboard-loading {
+	height: 189px;
+}
+
+#region-view #region-resource-wrap .dashboard-loading {
+	height: 492px;
+	margin-top: 80px;
+}
+
+#region-view #region-resource-wrap .loading-spinner {
+	margin: 0 auto;
+	display: block;
+	margin-top: 80px;
+}
+
 #global-region-resource-list {
 	margin: 20px auto;
 }
@@ -1272,6 +1304,10 @@ a {
 .global-region-resource-count {
 	margin-left: 60px;
 	font-size: 40px;
+}
+
+#region-aws-resource-tab .global-region-resource-icon {
+	background: none;
 }
 
 #global-region-resource-instance,
@@ -1446,7 +1482,7 @@ a {
 	background: #fff;
 	padding: 20px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-	border-radius: 5px 0 5px 5px;
+	/*border-radius: 5px 0 5px 5px;*/
 	border: 1px solid #ddd;
 	border-top: none;
 }
@@ -1622,6 +1658,7 @@ a {
 	font-size: 12px;
 	display: block;
 	text-align: center;
+/*	width: 80px;*/
 }
 
 #region-aws-resource-data {
@@ -3095,6 +3132,10 @@ a.sidebar-hider {
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
+}
+
+.firefox .resource-item {
+	width: 60px;
 }
 
 .resource-item:hover {

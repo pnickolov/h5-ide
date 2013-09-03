@@ -5,7 +5,7 @@ body {
 }
 
 #body {
-	background: #f0f0f0;
+	background: #f1f1f1;
 	color: #212021;
 }
 
@@ -48,12 +48,12 @@ header {
 
 #main-body {
 	overflow: auto;
-	padding-bottom: 150px;
+	padding-bottom: 30px;
 }
 
 #login-box {
 	position: relative;
-	margin: 250px auto 0;
+	margin: 20% auto 0;
 	width: 370px;
 	padding: 20px;
 }
@@ -149,6 +149,10 @@ header {
 	color: #666;
 }
 
+#login-btn-wrap {
+	position: relative;
+}
+
 #login-footer {
 	position: relative;
 	height: 50px;
@@ -166,8 +170,14 @@ header {
 #footer-push {
 	height: 80px;
 	clear: both;
-	text-align: center;
 	color: #999;
+}
+
+#footer {
+	position: relative;
+	text-align: center;
+	color: #aaa;
+	font-size: 12px;
 }
 
 .demo-only {

@@ -30,6 +30,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				expandVolume json_data, uid
 
+			if comp.type is res_type.AWS_EC2_EIP
+
+				expandEIP json_data, uid
+
 		json_data
 
 
@@ -137,10 +141,19 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if comp_data[ uid ].resource.Attachment.DeviceIndex in [0,'0']
 
-			eni_list = json_data.component[instance_uid].eniList = [ uid ]
+			eni_list = json_data.layout.component.node[instance_uid].eniList
+
+			if eni_list.length is 0
+
+				eni_list = json_data.layout.component.node[instance_uid].eniList = [ uid ]
 
 		else
 			eni_list = json_data.layout.component.node[ uid ].eniList
+
+			if eni_list.length is 0
+
+				eni_list = json_data.layout.component.node[uid].eniList = [ uid ]
+
 
 		eni_comp_number = eni_list.length
 
@@ -290,8 +303,129 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		null
 
 
+	#expand a eip to a server group
+	expandEIP = ( json_data, uid ) ->
+
+		comp_data   = json_data.component
+
+		layout_data = json_data.layout
+
+		instance_uid = json_data.component[uid].resource.InstanceId
+
+		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
+
+		eni_uid 	 = json_data.component[uid].resource.NetworkInterfaceId
+
+		eni_uid 	 = if eni_uid then eni_uid.split('.')[0][1...] else null
+
+		eip_number 	 = 0
+
+		eip_comp_number = 0
+
+		eip_list = []
+
+		ref_list = []
+
+		instance_list = []
+
+		eni_list = []
+
+		if not eni_uid
+
+			instance_list = json_data.layout.component.node[ instance_uid ].instanceList
+
+			eip_number = json_data.component[instance_uid].number
+
+			eip_list = json_data.layout.component.node[ instance_uid ].eipList
+
+			if eip_list.length is 0
+
+				eip_list = json_data.layout.component.node[ instance_uid ].eipList = [ uid ]
+
+			eip_comp_number = eip_list.length
+
+		else
+
+			eni_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eniList else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eniList
+
+			eip_number = json_data.component[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].number
+
+			eip_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eipList[ uid ] else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList
+
+			if (eip_list and eip_list.length is 0) or not eip_list
+
+				eip_list =  [ uid ]
 
 
+			eip_comp_number = eip_list.length
+
+		if eip_comp_number > eip_number
+
+			i = eip_number
+
+			while i > eip_comp_number
+
+				eip_list.splice (i-1), 1
+
+				i--
+
+		else if eip_number > eip_comp_number
+
+			i = 0
+
+			while i < eip_number-1
+
+				new_eip_uid = MC.guid()
+
+				eip_list.push new_eip_uid
+
+				i++
+
+		if json_data.layout.component.node[ eni_uid ]
+
+			json_data.layout.component.node[ eni_uid ].eipList[ uid ] = eip_list
+
+		else
+			if not eni_uid
+
+				json_data.layout.component.node[instance_uid].eipList = eip_list
+			else
+				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList = eip_list
+
+		$.each eip_list, ( idx, eip_uid ) ->
+
+			if not json_data.component[eip_uid]
+
+				origin_eip = $.extend true, {}, json_data.component[uid]
+
+				origin_eip.uid = eip_uid
+
+				origin_eip.index = idx
+
+				origin_eip.number = eip_number
+
+				if eni_uid
+
+					if origin_eip.resource.InstanceId
+
+						origin_eip.resource.InstanceId = "@#{json_data.component[eni_list[idx]].resource.Attachment.InstanceId.split('.')[0].slice(1)}.resource.InstanceId"
+
+					origin_eip.resource.NetworkInterfaceId = "@#{eni_list[idx]}.resource.NetworkInterfaceId"
+
+					origin_eip.resource.PrivateIpAddress = origin_eip.resource.PrivateIpAddress.replace(eni_list[0], eni_list[idx])
+
+				else
+
+					origin_eip.resource.InstanceId = "@#{instance_list[idx]}.resource.InstanceId"
+
+				comp_data[eip_uid] = origin_eip
+			else
+
+				json_data.component[eip_uid].index = idx
+				json_data.component[eip_uid].number = eip_number
+
+
+		null
 
 	#compact instance,eni and volume in server group after load
 	compactServerGroup = ( canvas_data ) ->
@@ -327,10 +461,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		vol_list 	  = json_data.layout.component.node[ uid ].volumeList
 		ins_num       = ins_comp.number
 
-		if instance_list.length != ins_num and instance_list > 0
-
-			console.error '[expandInstance]instance number not match'
-
 		instance_ref_list = []
 
 		for instance_id in instance_list
@@ -338,6 +468,26 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			if instance_id isnt uid
 
 				instance_ref_list.push "@#{instance_id}.resource.InstanceId"
+
+		eni_ref_list = []
+
+		if eni_list.length > 0
+
+			for eni in eni_list
+
+				if eni_list.indexOf(eni) != 0
+
+					eni_ref_list.push "@#{eni}.resource.NetworkInterfaceId"
+
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId in instance_ref_list
+
+				eni = "@#{comp_uid}.resource.NetworkInterfaceId"
+
+				if eni not in eni_ref_list
+
+					eni_ref_list.push eni
 
 
 		# remove eni
@@ -353,6 +503,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				else
 					comp.name = comp.serverGroupName
 
+			else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and (comp.resource.InstanceId in instance_ref_list or comp.resource.NetworkInterfaceId in eni_ref_list)
+
+				delete comp_data[comp_uid]
 
 		# remove volume
 		for vol_uid, vol_data of vol_list

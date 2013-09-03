@@ -2,9 +2,9 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event',
+define [ 'event', 'constant'
          'backbone', 'jquery', 'handlebars', 'UI.notification'
-], ( ide_event ) ->
+], ( ide_event, constant ) ->
 
     NavigationView = Backbone.View.extend {
 
@@ -24,6 +24,7 @@ define [ 'event',
             'click .app-list a'             : 'appListItemsClick'
             'click .show-unused-region a'   : 'showEmptyRegionClick'
             'click .create-new-stack'       : 'createNewStackClick'
+            'click .create-new-empty-stack' : 'createNewEmptyStackClick'
             'click .region-name'            : 'regionNameClick'
 
         initialize : ->
@@ -99,6 +100,20 @@ define [ 'event',
             #
             #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
             this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().find( 'li a' ).first().attr( 'data-region-name' )
+
+        createNewEmptyStackClick  : ( event ) ->
+            console.log 'createNewEmptyStackClick'
+            console.log $( event.currentTarget ).attr( 'data-empty-region-label' )
+            region_label         = $( event.currentTarget ).attr( 'data-empty-region-label' )
+            current_region_name  = null
+            _.map constant.REGION_SHORT_LABEL, ( value, key ) ->
+                if value is region_label
+                    current_region_name = key
+                    return current_region_name
+            console.log 'current_region_name = ' + current_region_name
+            #
+            #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
+            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, current_region_name
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'

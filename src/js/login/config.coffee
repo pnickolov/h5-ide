@@ -47,6 +47,8 @@ require.config {
 		#login
 		'login'           : 'js/login/login'
 
+		'forge_handle'    : 'lib/forge/main'
+
 	shim                  :
 
 		'jquery'          :

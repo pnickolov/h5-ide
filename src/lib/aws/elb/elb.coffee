@@ -210,7 +210,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 			return []
 
 		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
-			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerNames"
+			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
 
 		subnets = asg.resource.VPCZoneIdentifier.split ","
 		subnets = _.map subnets, MC.extractID
@@ -238,7 +238,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 	removeASGFromELB = ( elb_uid, asg_uid ) ->
 		asg = MC.canvas_data.component[ asg_uid]
-		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerNames", "")
+		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerName", "")
 		asg.resource.LoadBalancerNames = if names.length is 0 then [] else names.split(" ")
 
 		null

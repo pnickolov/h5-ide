@@ -31,6 +31,9 @@ define [ 'event', 'constant'
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', this.hideNavigation
 
+            Handlebars.registerHelper 'tolower', ( result ) ->
+                return new Handlebars.SafeString result.toLowerCase()
+
         render     : ( template ) ->
             #render html
             console.log 'navigation render'

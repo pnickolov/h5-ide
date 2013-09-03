@@ -209,7 +209,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if not asg
 			return []
 
-		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) isnt -1
+		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
 			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerNames"
 
 		subnets = asg.resource.VPCZoneIdentifier.split ","

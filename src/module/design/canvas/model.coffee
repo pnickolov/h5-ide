@@ -1177,9 +1177,18 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					break
 
 			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
-				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], portMap['launchconfig-sg']
+				lc_uid = portMap['launchconfig-sg']
+
+				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], lc_uid
 				for sb in linkedSubnets
 					MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", sb, "subnet-assoc-in"
+
+				asg_uid = MC.canvas_data.layout.component.node[lc_uid].groupUId
+
+				# Link ASG Expand
+				for uid, group of MC.canvas_data.layout.component.group
+					if group.originalId is asg_uid
+						MC.canvas.connect portMap['elb-sg-out'], "elb-sg-out", uid, "launchconfig-sg"
 
 			# Instance <==> Eni
 			else if portMap['instance-attach'] and portMap['eni-attach']
@@ -1930,7 +1939,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 				MC.canvas.update uid,'eip','eip_status', 'on'
 
-				
+
 				defaultVPC = false
 				if MC.aws.aws.checkDefaultVPC()
 					defaultVPC = true

@@ -30,7 +30,7 @@ define [ 'jquery',
         #load remote html ovverview_tmpl
         #$( overview_tmpl ).appendTo 'head'
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl', 'loading': 'loading-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl', '.loading': 'loading-tmpl' }
 
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
 
@@ -77,6 +77,15 @@ define [ 'jquery',
                     #view.renderPlatformAttrs(true)
                 #
                 if region_view then region_view.checkCreateStack MC.data.supported_platforms
+
+                # display refresh time
+                (->
+                    loadTime = $.now() / 1000
+                    setInterval ( ->
+                        view.updateLoadTime MC.intervalDate( loadTime )
+                        console.log 'timeupdate', loadTime
+                    ), 60001
+                )()
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
@@ -161,9 +170,10 @@ define [ 'jquery',
             # switch region tab
             view.on 'SWITCH_REGION', ( region ) ->
                 model.describeAWSResourcesService region
-
+                model.describeAWSStatusService region
                 @model.getItemList 'app', region, overview_app
                 @model.getItemList 'stack', region, overview_stack
+
 
             model.on 'UPDATE_REGION_APP_LIST', () ->
                 view.renderRegionStatApp()

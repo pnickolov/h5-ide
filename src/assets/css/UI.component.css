@@ -885,7 +885,10 @@ textarea {
 	border-radius: 6px;
 }
 
-.status-green {
+.status-green,
+.status-running,
+.status-in-use,
+.status-attached {
 	background-color: #78d248;
 	background-image: -webkit-linear-gradient(bottom, #11a64d, #05d013);
 	background-image: -moz-linear-gradient(bottom, #11a64d, #05d013);
@@ -894,7 +897,9 @@ textarea {
 	background-image: linear-gradient(to top, #11a64d, #05d013);
 }
 
-.status-red {
+.status-red,
+.status-stopped,
+.status-terminated {
 	background-color: #f34c39;
 	background-image: -webkit-linear-gradient(bottom, #e72222, #ff8d6f);
 	background-image: -moz-linear-gradient(bottom, #e72222, #ff8d6f);
@@ -903,7 +908,8 @@ textarea {
 	background-image: linear-gradient(to top, #e72222, #ff8d6f);
 }
 
-.status-blue {
+.status-blue,
+.status-available {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
 	background-image: -moz-linear-gradient(bottom, #008dde, #58cdfe);
@@ -912,7 +918,10 @@ textarea {
 	background-image: linear-gradient(to top, #008dde, #58cdfe);
 }
 
-.status-yellow {
+.status-yellow,
+.status-pending,
+.status-shutting-down,
+.status-stopping {
 	background-color: #d2c748;
 	background-image: -webkit-linear-gradient(bottom, #d3be5c, #fbf819);
 	background-image: -moz-linear-gradient(bottom, #d3be5c, #fbf819);
@@ -921,7 +930,8 @@ textarea {
 	background-image: linear-gradient(to top, #d3be5c, #fbf819);
 }
 
-.status-grey {
+.status-grey,
+.status-unknown {
 	background-color: #a0a0a0;
 	background-image: -webkit-linear-gradient(bottom, #808080, #bababa);
 	background-image: -moz-linear-gradient(bottom, #808080, #bababa);
@@ -977,7 +987,8 @@ textarea {
 }
 
 .modal-header h3 {
-	font-size: 16px;
+	color: #666;
+	font-size: 14px;
 	cursor: pointer;
 }
 

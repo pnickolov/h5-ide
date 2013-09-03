@@ -300,23 +300,23 @@
 <!-- bubbleAMIInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>Name</dt>
-		<dd>{{name}}</dd>
-		<dt>Description</dt>
-		<dd>{{description}}</dd>
-       <dt>Architecture</dt>
-       <dd>{{architecture}}</dd>
-       <dt>Image Location</dt>
-       <dd>{{imageLocation}}</dd>
-       <dt>Public</dt>
-       <dd>{{isPublic}}</dd>
-       <dt>KernelId</dt>
-       <dd>{{kernelId}}</dd>
-       <dt>Root Device Name</dt>
-       <dd>{{rootDeviceName}}</dd>
-       <dt>Root Device Type</dt>
-       <dd>{{rootDeviceType}}</dd>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{name}}</dd>
+        <dt>Description</dt>
+        <dd>{{description}}</dd>
+        <dt>Architecture</dt>
+        <dd>{{architecture}}</dd>
+        <dt>Image Location</dt>
+        <dd>{{imageLocation}}</dd>
+        <dt>Public</dt>
+        <dd>{{isPublic}}</dd>
+        <dt>KernelId</dt>
+        <dd>{{kernelId}}</dd>
+        <dt>Root Device Name</dt>
+        <dd>{{rootDeviceName}}</dd>
+        <dt>Root Device Type</dt>
+        <dd>{{rootDeviceType}}</dd>
 	</dl>
 </div>
 
@@ -688,13 +688,11 @@ Additional Notes and Questions
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
-		<div class="bg-blue" data-bind="true">
-			<div class="property-control-group clearfix">
-				<label class="left" for="app-name">App Name</label>
-				<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
-			</div>
+		<div class="modal-control-group clearfix" data-bind="true">
+			<label class="label modal-text-major" for="app-name">App Name</label>
+			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
-		<div class="stack-validation">
+		<!-- <div class="stack-validation">
 			<details open>
 				<summary>Stack Validation</summary>
 				<div class="validation-content">
@@ -718,7 +716,7 @@ Additional Notes and Questions
 
 				</div>
 			</details>
-		</div>
+		</div> -->
 
 		<div class="estimate clearfix">
 			<span class="title">Estimated Cost</span>

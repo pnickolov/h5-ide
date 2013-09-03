@@ -3700,7 +3700,7 @@ MC.canvas.event.drawConnection = {
 			to_node = $(match_node);
 
 			if (
-				from_node.data('class') === 'AWS.EC2.Instance' &&
+				$.inArray(from_node.data('class'), ['AWS.EC2.Instance', 'AWS-AutoScaling-LaunchConfiguration']) > -1 &&
 				to_node.data('class') === 'AWS.ELB'
 			)
 			{

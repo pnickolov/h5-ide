@@ -1,7 +1,7 @@
-<article id='property-panel-volume'>
+<article id='property-panel-volume' data-bind="true">
     <section class="property-control-group">
         <label>Device Name</label>
-        <div class="name" data-bind="true">
+        <div class="name">
             {{#if volume_detail.isWin}}
             <label for="volume-device">xvd</label>
             <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1"/>

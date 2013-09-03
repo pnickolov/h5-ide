@@ -209,7 +209,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if not asg
 			return []
 
-		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) isnt -1
+		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
 			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerNames"
 
 		subnets = asg.resource.VPCZoneIdentifier.split ","
@@ -235,6 +235,14 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		# Returns subnets that should linked to the elb
 		subnets
+
+	removeASGFromELB = ( elb_uid, asg_uid ) ->
+		asg = MC.canvas_data.component[ asg_uid]
+		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerNames", "")
+		asg.resource.LoadBalancerNames = if names.length is 0 then [] else names.split(" ")
+
+		null
+
 
 	updateRuleToElbSG = (elbUID) ->
 
@@ -388,6 +396,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 	addSubnetToELB            : addSubnetToELB
 	removeSubnetFromELB       : removeSubnetFromELB
 	addLCToELB                : addLCToELB
+	removeASGFromELB           :removeASGFromELB
 	getNewName                : getNewName
 	getElbDefaultSG           : getElbDefaultSG
 	updateRuleToElbSG         : updateRuleToElbSG

@@ -14,6 +14,7 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             'is_unread'     : null
             'in_dashboard'  : true
             'has_cred'      : true      # default has credential
+            'user_name'     : null
 
         initialize : ->
 
@@ -43,6 +44,10 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
 
                 return false
 
+        getUserName : ->
+            console.log 'getUserName'
+            this.set 'user_name', MC.base64Decode $.cookie( 'usercode' )
+            null
 
         getInfoList : () ->
             me = this

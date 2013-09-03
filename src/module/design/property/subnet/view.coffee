@@ -24,6 +24,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "click .item-networkacl input" : 'onChangeACL'
             "click .item-networkacl" : 'onClickACL'
             "change #networkacl-create"    : 'onCreateACL'
+            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
 
         initialize : () ->
             that = this
@@ -130,6 +131,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             MC.aws.aws.disabledAllOperabilityArea(true)
 
             null
+
+        deleteNetworkAcl : (event) ->
+            aclUID = $(event.target).attr('acl-uid')
+            delete MC.canvas_data.component[aclUID]
+            this.refreshACLList()
 
         onBlurCIDR : ( event ) ->
 

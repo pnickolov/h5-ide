@@ -291,12 +291,16 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.resource.AttachmentSet.InstanceId = attach_instance
 
+				origin_eni.resource.AttachmentSet.VolumeId = "@#{vol_uid}.resource.VolumeId"
+
 				comp_data[vol_uid] = origin_eni
 			else
 
 				json_data.component[vol_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].serverGroupName}" else json_data.component[vol_uid].name
 
 				json_data.component[vol_uid].number = vol_number
+
+				json_data.component[vol_uid].resource.AttachmentSet.VolumeId = "@#{vol_uid}.resource.VolumeId"
 
 
 		#return

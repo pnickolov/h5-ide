@@ -51,15 +51,27 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			console.error '[expandInstance]instance number not match'
 
-		#init instance_list
-		if instance_list.length != ins_num
+		ins_comp_number = instance_list.length
 
-			instance_list = [ uid ]
+		if ins_comp_number > ins_num
 
-			i = 1
-			while i < ins_num
+			i = ins_comp_number
 
-				instance_list[ i ] = ''
+			while i > ins_num
+
+				instance_list.splice (i-1), 1
+
+				i--
+
+		else if ins_num > ins_comp_number
+
+			i = 0
+
+			while i < ins_num-1
+
+				new_eni_uid = MC.guid()
+
+				instance_list.push new_eni_uid
 
 				i++
 
@@ -80,25 +92,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if ins_num
 
-			i = 1
-			while i < ins_num
+			for i, instance_id of instance_list
 
 				new_comp = $.extend( true, {}, ins_comp )
 
-				if !instance_list[i]
-					instance_list[i] = MC.guid()
-
 				#generate uid
-				new_comp.uid = instance_list[i]
+				new_comp.uid = instance_id
 
 				#generate name
 				new_comp.name = server_group_name + '-' + i
 
 				#index in server group
-				new_comp.index = i
+				new_comp.index = parseInt(i, 10)
 
 				comp_data[ new_comp.uid ] = new_comp
-				i++
 
 				if elbs.length > 0
 
@@ -159,9 +166,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if eni_comp_number > eni_number
 
-			i = eni_number
+			i = eni_comp_number
 
-			while i > eni_comp_number
+			while i > eni_number
 
 				eni_list.splice (i-1), 1
 
@@ -253,9 +260,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if vol_comp_number > vol_number
 
-			i = vol_number
+			i = vol_comp_number
 
-			while i > vol_comp_number
+			while i > vol_number
 
 				vol_list.splice (i-1), 1
 
@@ -365,9 +372,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if eip_comp_number > eip_number
 
-			i = eip_number
+			i = eip_comp_number
 
-			while i > eip_comp_number
+			while i > eip_number
 
 				eip_list.splice (i-1), 1
 

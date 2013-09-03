@@ -116,16 +116,12 @@ define ['event', 'MC',
             console.log 'schemeSelectChange'
             value = event.target.value
             cid = $( '#elb-property-detail' ).attr 'component'
-            this.trigger 'SCHEME_SELECT_CHANGED', value
-
-            if value is 'internal'
-                MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
-                MC.canvas.display(cid, 'port-elb-sg-in', true)
-            else
-                MC.canvas.update cid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
-                MC.canvas.display(cid, 'port-elb-sg-in', false)
 
             ide_event.trigger ide_event.REDRAW_SG_LINE
+
+            this.trigger 'SCHEME_SELECT_CHANGED', value
+
+            return false
 
         healthProtocolSelect : ( evnet, value ) ->
             console.log 'healthProtocolSelect'

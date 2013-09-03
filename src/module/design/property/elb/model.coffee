@@ -206,6 +206,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             else
                 component.resource.Scheme = 'internet-facing'
 
+            if value is 'internal'
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+                MC.canvas.display(uid, 'port-elb-sg-in', true)
+            else
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
+                MC.canvas.display(uid, 'port-elb-sg-in', false)
+
             component
 
         setHealthProtocol   : ( uid, value ) ->

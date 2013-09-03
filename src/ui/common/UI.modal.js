@@ -75,9 +75,6 @@ modal.keyup = function (event)
 	if (event.which === 27)
 	{
 		modal.close();
-		$(document)
-			.off('click', modal.dismiss)
-			.off('keyup', modal.keyup);
 	}
 
 	return false;
@@ -88,12 +85,9 @@ modal.dismiss = function (event)
 	if (event.target.id === 'modal-wrap')
 	{
 		modal.close();
-		$(document)
-			.off('click', modal.dismiss)
-			.off('keyup', modal.keyup);
 	}
 
-	return false;
+	return true;
 };
 
 modal.close = function ()

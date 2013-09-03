@@ -32,7 +32,7 @@
       return json_data;
     };
     expandInstance = function(json_data, uid) {
-      var comp, comp_data, comp_uid, elb, elbs, i, ins_comp, ins_num, instance_list, instance_reference, new_comp, server_group_name, _i, _len, _ref;
+      var comp, comp_data, comp_uid, elb, elbs, i, ins_comp, ins_num, instance, instance_list, instance_reference, new_comp, server_group_name, _i, _j, _len, _len1, _ref, _ref1;
       comp_data = json_data.component;
       ins_comp = comp_data[uid];
       ins_num = ins_comp.number;
@@ -50,14 +50,18 @@
           i++;
         }
       }
-      instance_reference = "@" + ins_comp + ".resource.InstanceId";
+      instance_reference = "@" + ins_comp.uid + ".resource.InstanceId";
       elbs = [];
       _ref = MC.canvas_data.component;
       for (comp_uid in _ref) {
         comp = _ref[comp_uid];
         if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_ELB) {
-          if (__indexOf.call(comp.resource.Instances, instance_reference) >= 0) {
-            elbs.push(comp_uid);
+          _ref1 = comp.resource.Instances;
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            instance = _ref1[_i];
+            if (instance_reference === instance.InstanceId) {
+              elbs.push(comp_uid);
+            }
           }
         }
       }
@@ -74,9 +78,11 @@
           comp_data[new_comp.uid] = new_comp;
           i++;
           if (elbs.length > 0) {
-            for (_i = 0, _len = elbs.length; _i < _len; _i++) {
-              elb = elbs[_i];
-              json_data.component[elb].resource.Instances.push("@" + new_comp.uid + ".resource.InstanceId");
+            for (_j = 0, _len1 = elbs.length; _j < _len1; _j++) {
+              elb = elbs[_j];
+              json_data.component[elb].resource.Instances.push({
+                "InstanceId": "@" + new_comp.uid + ".resource.InstanceId"
+              });
             }
           }
         }
@@ -211,7 +217,7 @@
       return json_data;
     };
     compactInstance = function(json_data, uid) {
-      var comp, comp_data, comp_uid, eni_list, i, ins_comp, ins_num, instance_id, instance_list, instance_ref_list, new_comp, remove_idx, vol_data, vol_list, vol_uid, _i, _len, _ref, _ref1, _ref2;
+      var comp, comp_data, comp_uid, eni_list, i, ins_comp, ins_num, instance_id, instance_list, instance_ref_list, new_comp, remove_idx, vol_data, vol_list, vol_uid, _i, _len, _ref, _ref1;
       comp_data = json_data.component;
       ins_comp = comp_data[uid];
       ins_comp.name = ins_comp.serverGroupName;
@@ -231,28 +237,44 @@
       }
       for (comp_uid in comp_data) {
         comp = comp_data[comp_uid];
-        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface && ((_ref = comp.resource.Attachment.DeviceIndex) === 0 || _ref === '0') && (_ref1 = comp.resource.Attachment.InstanceId, __indexOf.call(instance_ref_list, _ref1) >= 0)) {
+        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface && (_ref = comp.resource.Attachment.InstanceId, __indexOf.call(instance_ref_list, _ref) >= 0)) {
           delete comp_data[comp_uid];
+        } else if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface && (_ref1 = comp.resource.Attachment.InstanceId, __indexOf.call(instance_ref_list, _ref1) < 0)) {
+          if (comp.name.indexOf("eni0") >= 0) {
+            comp.name = "eni0";
+          } else {
+            comp.name = comp.serverGroupName;
+          }
         }
       }
       for (vol_uid in vol_list) {
         vol_data = vol_list[vol_uid];
-        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume && (_ref2 = comp.resource.AttachmentSet.InstanceId, __indexOf.call(instance_ref_list, _ref2) >= 0)) {
-          delete comp_data[comp_uid];
+        for (comp_uid in comp_data) {
+          comp = comp_data[comp_uid];
+          if (__indexOf.call(vol_data, comp_uid) >= 0 && comp_uid !== vol_uid) {
+            delete comp_data[comp_uid];
+          }
+        }
+      }
+      for (comp_uid in comp_data) {
+        comp = comp_data[comp_uid];
+        if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume) {
+          comp.name = comp.serverGroupName;
         }
       }
       for (comp_uid in comp_data) {
         comp = comp_data[comp_uid];
         if (comp.type === constant.AWS_RESOURCE_TYPE.AWS_ELB) {
           remove_idx = [];
-          $.each(comp.resource.Instances, function(i, instance_id) {
-            if (__indexOf.call(instance_ref_list, instance_id) >= 0) {
+          $.each(comp.resource.Instances, function(i, instance) {
+            var _ref2;
+            if (_ref2 = instance.InstanceId, __indexOf.call(instance_ref_list, _ref2) >= 0) {
               return remove_idx.push(i);
             }
           });
           if (remove_idx.length > 0) {
-            $.each(remove.sort().reverse(), function(idx, instance_ref) {
-              return comp.resource.Instances.splice(idx, 1);
+            $.each(remove_idx.sort().reverse(), function(idx, instance_ref) {
+              return comp.resource.Instances.splice(instance_ref, 1);
             });
           }
         }
@@ -291,3 +313,7 @@
   });
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=stack.js.map
+*/

@@ -845,6 +845,24 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
 				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
+			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
+
+				lc_uid  = portMap['launchconfig-sg']
+				lc = MC.canvas_data.layout.component.node[lc_uid]
+				if lc
+					asg_uid = lc.groupUId
+				else
+					asg_uid = MC.canvas_data.layout.component.group[lc_uid].originalId
+
+				elb_uid = portMap['elb-sg-out']
+
+				MC.aws.elb.removeASGFromELB elb_uid, asg_uid
+
+				# Disconnect ASG Expand
+				for uid, connection of MC.canvas_data.layout.connection
+					if connection.type is "association" and connection.target[ asg_uid ] and connection.target[ elb_uid ]
+						MC.canvas.remove $("#" + uid)[0]
+
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				# Hide Eni Number

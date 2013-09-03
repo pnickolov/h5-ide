@@ -169,8 +169,8 @@ define [ 'jquery',
 
             # switch region tab
             view.on 'SWITCH_REGION', ( region ) ->
-                model.describeAWSResourcesService region
-                model.describeAWSStatusService region
+                model.loadResource region
+                #model.describeAWSStatusService region
                 @model.getItemList 'app', region, overview_app
                 @model.getItemList 'stack', region, overview_stack
 

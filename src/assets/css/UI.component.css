@@ -987,7 +987,8 @@ textarea {
 }
 
 .modal-header h3 {
-	font-size: 16px;
+	color: #666;
+	font-size: 14px;
 	cursor: pointer;
 }
 

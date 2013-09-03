@@ -655,6 +655,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             flag_list.app_id = app_id
                             flag_list.is_done = true
 
+                            me.setFlag app_id, 'RUNNING_APP', region
+
                         when 'START_APP'
                             me.setFlag id, 'RUNNING_APP', region
                             ide_event.trigger ide_event.STARTED_APP, name, id

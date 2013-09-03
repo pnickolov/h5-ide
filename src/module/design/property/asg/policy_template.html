@@ -1,127 +1,150 @@
-<div style="width:420px;">
-   <div class="modal-header">
-      <h3>{{title}} Termination Policy</h3>
-      <i class="modal-close">&times;</i>
-   </div>
-  <div class="scroll-wrap" style="max-height:500px;">
-    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-   <div class="modal-body scroll-content" id="property-asg-policy" data-uid="{{uid}}">
+<div id="asg-termination-policy" style="width:480px;">
+	 <div class="modal-header">
+			<h3>{{title}} Termination Policy</h3>
+			<i class="modal-close">&times;</i>
+	 </div>
+	<div class="scroll-wrap" style="max-height:500px;">
+		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+		 <div class="modal-body scroll-content" id="property-asg-policy" data-uid="{{uid}}">
 
-      <label for="asg-policy-name">Policy Name</label>
-      <input type="text" class="input" value="{{name}}" id="asg-policy-name">
+				<label for="asg-policy-name">Policy Name</label>
+				<input type="text" class="input" value="{{name}}" id="asg-policy-name">
 
-      <section class="dialog-group">
-        <h5>Alarm</h5>
-        <div><span>When</span>
-        <div class="selectbox" id="asg-policy-metric">
-          <div class="selection">CPU Utillization</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id="CPUUtilization" class="item selected">CPU Utilization</li>
-            <li data-id="DiskReadBytes" class="item">Disk Reads</li>
-            <li data-id="DiskReadOps" class="item">Disk Read Operations</li>
-            <li data-id="DiskWriteBytes" class="item">Disk Writes</li>
-            <li data-id="DiskWriteOps" class="item">Disk Write Operations</li>
-            <li data-id="NetworkIn" class="item">Network In</li>
-            <li data-id="NetworkOut" class="item">Network Out</li>
-            {{#unless detail_monitor}}
-            <li data-id="StatusCheckFailed" class="item">Status Check Failed (Any)</li>
-            <li data-id="StatusCheckFailed_Instance" class="item">Status Check Failed (Instance)</li>
-            <li data-id="StatusCheckFailed_System" class="item">Status Check Failed (System)</li>
-            {{/unless}}
-          </ul>
-        </div>
-        <span>is</span>
-        <div class="selectbox" id="asg-policy-eval">
-          <div class="selection">&gt;=</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id=">" class="item">&gt;</li>
-            <li data-id=">=" class="item selected">&gt;=</li>
-            <li data-id="<" class="item">&lt;</li>
-            <li data-id="<=" class="item">&lt;=</li>
-          </ul>
-        </div>
-        <input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="Threshold">
-        <span id="asg-policy-unit">%</span>
-        <span>for</span>
-        <input type="text" class="input" id="asg-policy-periods" value="{{periods}}">
-        <span>periods of</span>
-        <input type="text" class="input" id="asg-policy-second" value="{{second}}">
-        <span>seconds, enter ALARM state. Start scaling activity when in</span>
-        <div class="selectbox" id="asg-policy-trigger">
-          <div class="selection">ALARM</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id="ALARM" class="item selected">ALARM</li>
-            <li data-id="INSUFFICIANT_DATA" class="item">INSUFFICIANT_DATA</li>
-            <li data-id="OK" class="item">OK</li>
-          </ul>
-          <span>state.</span>
-        </div>
-        </div>
-      </section>
+				<section class="modal-control-group">
+					<h5>Alarm</h5>
+					<div class="control-sentence">
+						<span>When</span>
 
-      <section class="dialog-group">
-        <h5>Scaling Activity</h5>
-        <span>Adjust number of instances by</span>
-        <div class="selectbox" id="asg-policy-adjust-type">
-          <div class="selection">Change in Capacity</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id="ChangeInCapacity" class="item selected">Change in Capacity</li>
-            <li data-id="ExactCapacity" class="item">Exact Capacity</li>
-            <li data-id="PercentChangeInCapacity" class="item">Percent Change in Capacity</li>
-          </ul>
-        </div>
-        <span>of</span>
-        <input type="text" id="asg-policy-adjust" value="{{adjustment}}" placeholder="e.g. -30">
-        <span>.</span>
-      </section>
+						<div class="selectbox" id="asg-policy-metric">
+							<div class="selection">CPU Utillization</div>
+							<ul class="dropdown" tabindex="-1">
+								<li data-id="CPUUtilization" class="item selected">CPU Utilization</li>
+								<li data-id="DiskReadBytes" class="item">Disk Reads</li>
+								<li data-id="DiskReadOps" class="item">Disk Read Operations</li>
+								<li data-id="DiskWriteBytes" class="item">Disk Writes</li>
+								<li data-id="DiskWriteOps" class="item">Disk Write Operations</li>
+								<li data-id="NetworkIn" class="item">Network In</li>
+								<li data-id="NetworkOut" class="item">Network Out</li>
+								{{#unless detail_monitor}}
+								<li data-id="StatusCheckFailed" class="item">Status Check Failed (Any)</li>
+								<li data-id="StatusCheckFailed_Instance" class="item">Status Check Failed (Instance)</li>
+								<li data-id="StatusCheckFailed_System" class="item">Status Check Failed (System)</li>
+								{{/unless}}
+							</ul>
+						</div>
+						
+						<span>is</span>
+						
+						<div class="selectbox" id="asg-policy-eval">
+							<div class="selection">&gt;=</div>
+							<ul class="dropdown" tabindex="-1">
+								<li data-id=">" class="item">&gt;</li>
+								<li data-id=">=" class="item selected">&gt;=</li>
+								<li data-id="<" class="item">&lt;</li>
+								<li data-id="<=" class="item">&lt;=</li>
+							</ul>
+						</div>
+						
+						<input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="Threshold">
+						
+						<span id="asg-policy-unit">%</span>
+						
+						<br />
+						
+						<span>for</span>
+						
+						<input type="text" class="input" id="asg-policy-periods" value="{{periods}}">
+						
+						<span>periods of</span>
+						
+						<input type="text" class="input" id="asg-policy-second" value="{{second}}">
+						
+						<span>seconds, enter ALARM state.</span>
+						
+						<br />
+						
+						<span>Start scaling activity when in</span>
+						
+						<div class="selectbox" id="asg-policy-trigger">
+							<div class="selection">ALARM</div>
+							<ul class="dropdown" tabindex="-1">
+								<li data-id="ALARM" class="item selected">ALARM</li>
+								<li data-id="INSUFFICIANT_DATA" class="item">INSUFFICIANT_DATA</li>
+								<li data-id="OK" class="item">OK</li>
+							</ul>
+						</div>
+						
+						<span>state.</span>
+					</div>
+				</section>
 
-      <div class="asg-policy-advanced">
-        <a href="#" class="js-toggle-dropdown" data-toggle="self-only">Advanced</a>
-        <section class="dialog-group">
-          <h5>Alarm Options</h5>
-          <label>Statistics</label>
-          <div class="selectbox" id="asg-policy-statistics">
-          <div class="selection">Average</div>
-          <ul class="dropdown" tabindex="-1">
-            <li data-id="Average" class="item">Average</li>
-            <li data-id="Maximum" class="item">Maximum</li>
-            <li data-id="Minimum" class="item">Minimum</li>
-            <li data-id="SampleCount" class="item">SampleCount</li>
-            <li data-id="Sum" class="item">Sum</li>
-          </ul>
-        </div>
-        </section>
+				<section class="modal-control-group">
+					<h5>Scaling Activity</h5>
+					<div class="control-sentence">
+						<span>Adjust number of instances by</span>
+						<div class="selectbox" id="asg-policy-adjust-type">
+							<div class="selection">Change in Capacity</div>
+							<ul class="dropdown" tabindex="-1">
+								<li data-id="ChangeInCapacity" class="item selected">Change in Capacity</li>
+								<li data-id="ExactCapacity" class="item">Exact Capacity</li>
+								<li data-id="PercentChangeInCapacity" class="item">Percent Change in Capacity</li>
+							</ul>
+						</div>
+						<span>of</span>
+						<input type="text" class="input" id="asg-policy-adjust" value="{{adjustment}}" placeholder="e.g. -30">
+						<span>.</span>
+					</div>
+				</section>
 
-        <section class="dialog-group">
-          <h5>Scaling Options</h5>
-          <label for="asg-policy-cooldown">Cooldown Period</label>
-          <input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
-          <span>seconds</span>
+				<h5>Advanced</h5>
+				<div class="asg-policy-advanced">
+					<section class="modal-control-group">
+						<h5>Alarm Options</h5>
+						<label>Statistics</label>
+						<div class="selectbox" id="asg-policy-statistics">
+						<div class="selection">Average</div>
+						<ul class="dropdown" tabindex="-1">
+							<li data-id="Average" class="item">Average</li>
+							<li data-id="Maximum" class="item">Maximum</li>
+							<li data-id="Minimum" class="item">Minimum</li>
+							<li data-id="SampleCount" class="item">SampleCount</li>
+							<li data-id="Sum" class="item">Sum</li>
+						</ul>
+					</div>
+					</section>
 
-          <span id="asg-policy-step-wrapper" class="hide">
-            <label for="asg-policy-step">Minimum Adjust Step</label>
-            <input type="text" class="input" id="asg-policy-step" value="{{step}}">
-          </span>
-        </section>
+					<section class="modal-control-group">
+						<h5>Scaling Options</h5>
+						<div>
+							<label for="asg-policy-cooldown">Cooldown Period</label>
+							<input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
+							<span>seconds</span>
+						</div>
 
-        <section class="dialog-group">
-          <h5>Notification</h5>
-          <div class="checkbox">
-            <input id="asg-policy-notify" type="checkbox" {{#if notify}}checked="checked"{{/if}}/>
-            <label for="asg-policy-notify"></label>
-          </div>
-          <label for="asg-policy-notify">Send notification via SNS topic</label>
+						<div id="asg-policy-step-wrapper" class="hide">
+							<label for="asg-policy-step">Minimum Adjust Step</label>
+							<input type="text" class="input" id="asg-policy-step" value="{{step}}">
+						</div>
+					</section>
 
-          {{#if noSNS}}
-          <p {{#unless notify}}class="hide property-warning"{{/unless}} id="asg-policy-no-sns">There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
-          {{/if}}
-        </section>
-      </div>
-   </div>
-    </div>
-   </div>
-   <div class="modal-footer">
-      <button id="property-asg-policy-done" class="btn btn-blue">Done</button>
-      <button class="btn modal-close btn-silver">Cancel</button>
-   </div>
+					<section class="modal-control-group">
+						<h5>Notification</h5>
+						<div class="checkbox">
+							<input id="asg-policy-notify" type="checkbox" {{#if notify}}checked="checked"{{/if}}/>
+							<label for="asg-policy-notify"></label>
+						</div>
+						<label id="asg-policy-notify-label" for="asg-policy-notify">Send notification via SNS topic</label>
+
+						{{#if noSNS}}
+						<p {{#unless notify}}class="hide property-warning"{{/unless}} id="asg-policy-no-sns">There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.</p>
+						{{/if}}
+					</section>
+				</div>
+		 </div>
+		</div>
+	 </div>
+	 <div class="modal-footer">
+			<button id="property-asg-policy-done" class="btn btn-blue">Done</button>
+			<button class="btn modal-close btn-silver">Cancel</button>
+	 </div>
 </div>

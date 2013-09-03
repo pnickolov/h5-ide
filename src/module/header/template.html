@@ -66,8 +66,9 @@
 		</div>
 	</li>
 	<li class="dropdown">
-		<a href="#" id="header--user" class="js-toggle-dropdown" role="button">
-			<img src="./assets/images/ide/dummy/face-30x30.jpg" alt="" class="avatar" width="30" height="30">
+		<a href="#" id="header--user" class="js-toggle-dropdown tooltip" data-tooltip="{{ user_email }}" role="button">
+			{{ user_name }}
+			<!-- <img src="./assets/images/ide/dummy/face-30x30.jpg" alt="" class="avatar" width="30" height="30"> -->
 			{{#if has_cred}}
 			{{else}}
 			<span class="no-credential"></span>
@@ -77,20 +78,20 @@
 		<div id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
 			<ul>
 				<li>
-					<a href="javascript:void(0)"><i class="icon-settings icon-label"></i>{{ i18n "account-settings" }}</a>
+					<a href="javascript:void(0)">{{ i18n "account-settings" }}</a>
 				</li>
 				<li>
-					<a href="javascript:void(0)"><i class="icon-question-sign icon-label"></i>Documetation</a>
+					<a href="javascript:void(0)">Documetation</a>
 				</li>
 				<li>
 					{{#if has_cred}}
 					{{else}}
 					<span class="no-credential"></span>
 					{{/if}}
-					<a href="javascript:void(0)" id="awscredential-modal"><i class="icon-question-sign icon-label"></i>AWS Credential</a>
+					<a href="javascript:void(0)" id="awscredential-modal">AWS Credential</a>
 				</li>
 				<li>
-					<a id="btn-logout" href="javascript:void(0)"><i class="icon-user-2 icon-label"></i>Logout</a>
+					<a id="btn-logout" href="javascript:void(0)">Logout</a>
 				</li>
 			</ul>
 		</div>

@@ -1,19 +1,32 @@
 <!--{{ .app-list-data }}-->
-{{#each app_list }}
-<li>
-	<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
-	<ul class="nav-region-list-items app-list">
-		{{#each region_name_group }}
-		<li>
-			<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
-				<i class="status status-{{ state }} icon-nav-status"></i>
-				{{ name }}
-			</a>
-		</li>
-		{{/each}}
-	</ul>
-</li>
-{{/each}}
+
+{{#if app_list}}
+
+	{{#each app_list }}
+	<li>
+		<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
+		<ul class="nav-region-list-items app-list">
+
+			{{#each region_name_group }}
+			<li>
+				<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
+					<i class="icon-app-{{ tolower state }} icon-sub-nav-label"></i>
+					{{ name }}
+				</a>
+			</li>
+			{{/each}}
+
+		</ul>
+	</li>
+	{{/each}}
+
+{{else}}
+
+	<li>
+		<span>Currently you have no app. You can launch a stack into app.</span>
+	</li>
+
+{{/if}}
 
 <!--{{ .stack-list-data }}-->
 {{#each stack_list }}
@@ -33,25 +46,41 @@
 {{/each}}
 
 <!--{{ .region-empty-list }}-->
-{{#if region_empty_list }}
-<ul class="sub-menu nav-region-list accordion-bod">
-	{{#each region_empty_list }}
-	
-	<li class="hide">
-		<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">
-			{{ this }} (0)
-			<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
-		</a>
-	</li>
-	{{/each}}
-</ul>
+{{#if stack_list }}
+	{{#if region_empty_list }}
+		<ul class="sub-menu nav-region-list accordion-bod">
+			{{#each region_empty_list }}
 
-<div class="show-unused-region">
-	<a href="javascript:void(0)">
-		Show unused regions
-		<!-- <i class="icon-double-angle-down tooltip" data-tooltip="Show unused regions"></i> -->
-	</a>
-</div>
+				<li class="hide">
+					<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
+						{{ this }} (0)
+						<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+					</a>
+				</li>
+
+			{{/each}}
+		</ul>
+
+		<div class="show-unused-region">
+			<a href="javascript:void(0)">
+				Show unused regions
+			</a>
+		</div>
+
+	{{/if}}
+{{else}}
+	<ul class="sub-menu nav-region-list accordion-bod">
+		{{#each region_empty_list }}
+
+			<li class="show">
+				<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
+					{{ this }} (0)
+					<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+				</a>
+			</li>
+
+		{{/each}}
+	</ul>
 {{/if}}
 
 <!--{{ .region-list }}-->

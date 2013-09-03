@@ -297,9 +297,10 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
                 $("#asg-policy-step-wrapper").toggle( $(this).find(".selected").data("id") == "PercentChangeInCapacity" )
 
-            $("#asg-policy-notify").on "click", ()->
+            $("#asg-policy-notify").on "click", ( evt )->
                 $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
-                true
+                evt.stopPropagation()
+                null
 
             $("#asg-policy-metric").on "OPTION_CHANGE", ()->
                 $("#asg-policy-unit").html( unitMap[$(this).find(".selected").data("id")] || "" )

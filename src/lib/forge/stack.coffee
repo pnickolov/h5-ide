@@ -444,8 +444,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			switch comp.type
 
 				when res_type.AWS_EC2_Instance
-					if comp.number > 1 and comp.index == 0
-						compactInstance json_data, uid
+					#if comp.number > 1 and comp.index == 0
+					compactInstance json_data, uid
 
 				#when res_type.AWS_VPC_NetworkInterface and comp.number > 1 and comp.index == 0  then compactENI json_data, uid
 

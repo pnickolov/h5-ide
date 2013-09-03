@@ -299,6 +299,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             $("#asg-policy-notify").on "click", ()->
                 $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
+                true
 
             $("#asg-policy-metric").on "OPTION_CHANGE", ()->
                 $("#asg-policy-unit").html( unitMap[$(this).find(".selected").data("id")] || "" )

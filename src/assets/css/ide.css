@@ -5604,11 +5604,11 @@ a.action-link:hover {
 	color : #222;
 }
 
-.asg-policy-advanced .dialog-group {
+.asg-policy-advanced .modal-control-group {
 	display : none;
 }
 
-.asg-policy-advanced.open .dialog-group {
+.asg-policy-advanced.open .modal-control-group {
 	display : block;
 }
 
@@ -5975,4 +5975,94 @@ a.action-link:hover {
 	bottom: 0;
 	left: 0;
 	z-index: 70;
+}
+
+/* Add Termination Policy popup */
+#asg-policy-name {
+	font-size: 12px;
+	margin-left: 5px;
+	padding: 5px;
+	width: 120px;
+}
+
+#asg-termination-policy h5 {
+	color: #555;
+	font-size: 14px;
+}
+
+#asg-termination-policy .modal-control-group {
+	border: 1px solid #ccc;
+	margin: 10px 0;
+	background-color: #f3f3f3;
+}
+
+#asg-termination-policy .modal-control-group label {
+	color: #999;
+	font-size: 14px;
+}
+
+.control-sentence {
+	font-size: 12px;
+	line-height: 40px;
+	color: #999;
+}
+
+#asg-termination-policy .selectbox {
+	display: inline;
+	margin: 0 5px;
+}
+
+#asg-termination-policy .selection {
+	display: inline;
+	padding: 4px 20px 4px 5px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF), to(#E6E6E6));
+	background-image: -webkit-linear-gradient(top, #FFF, #E6E6E6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #FFF, #E6E6E6);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#asg-policy-second,
+#asg-policy-periods,
+#asg-policy-threshold,
+#asg-policy-adjust,
+#asg-policy-cooldown {
+	padding: 4px 5px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	text-align: center;
+	color: #666;
+	margin: 0 5px;
+	font-size: 12px;
+}
+
+#asg-policy-second {
+	width: 30px;
+}
+
+#asg-policy-periods {
+	width: 30px;
+}
+
+#asg-policy-threshold {
+	width: 80px;
+}
+
+#asg-policy-adjust {
+	width: 60px;
+}
+
+#asg-policy-cooldown {
+	padding: 5px;
+	width: 100px;
+}
+
+#asg-policy-notify-label {
+	display: inline;
 }

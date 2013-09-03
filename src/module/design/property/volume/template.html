@@ -24,7 +24,7 @@
     {{#if volume_detail.Ebs.SnapshotId}}
     <section class="property-control-group">
         <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+        <div id="snapshot-info-group" class="property-block-wrap secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
             <div>{{volume_detail.Ebs.SnapshotId}}</div>
         </div>
     </section>
@@ -53,7 +53,7 @@
     {{#if volume_detail.resource.SnapshotId}}
     <section class="property-control-group">
         <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+        <div id="snapshot-info-group" class="property-block-wrap secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
             <div>{{volume_detail.resource.SnapshotId}}</div>
         </div>
     </section>

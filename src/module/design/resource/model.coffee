@@ -250,9 +250,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'Add AMI to favorite succeed'
+                    notification 'info', 'AMI is added to Favorite AMI'
                 else
-                    notification 'error', 'Add AMI to favorite failed'
+                    notification 'error', 'Failed to add AMI to Favorite'
                 null
 
             #listen FAVORITE_REMOVE_RETURN
@@ -263,9 +263,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'Remove AMI to favorite succeed'
+                    notification 'info', 'AMI is removed from Favorite AMI'
                 else
-                    notification 'error', 'Remove AMI to favorite succeed'
+                    notification 'error', 'Failed to remove AMI from Favorite'
 
 
                 null

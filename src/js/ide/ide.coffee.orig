@@ -47,8 +47,13 @@ define [ 'MC', 'event', 'handlebars'
 			console.log '---------- check network ----------'
 			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
 				ide_event.trigger ide_event.SWITCH_MAIN
-				notification 'error', 'Connection Failed. Please try again', true
+<<<<<<< HEAD
+				notification 'error', 'Network problems. Please try again', true
 		, 50 * 1000
+=======
+				notification 'error', 'Connection Failed. Please try again', true
+		, 35 * 1000
+>>>>>>> origin/develop
 
 		#############################
 		#  validation cookie

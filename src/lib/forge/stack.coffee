@@ -291,6 +291,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.resource.AttachmentSet.InstanceId = attach_instance
 
+				origin_eni.resource.AttachmentSet.VolumeId = "@#{vol_uid}.resource.VolumeId"
+
 				comp_data[vol_uid] = origin_eni
 			else
 

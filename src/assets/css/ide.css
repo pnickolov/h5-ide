@@ -1591,6 +1591,7 @@ a {
 #region-aws-resource-tab .global-resource-icon {
 	margin: 10px auto 0;
 	position: relative;
+	display: block;
 }
 
 .region-resource-count-wrap {

@@ -55,51 +55,22 @@ define [ 'jquery',
             renderPropertyPanel( uid )
 
             view.on "DEVICE_NAME_CHANGED", ( name )->
-
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                model.setDeviceName volume_uid, name
-
-                # retrive again due to uid may be change in launch configuration
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                renderPropertyPanel( volume_uid )
+                model.setDeviceName name
 
             view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
-
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                model.setVolumeSize volume_uid, value
-
-                MC.canvas.update volume_uid, "text", "volume_size", value + "GB"
-
-                #renderPropertyPanel( volume_uid )
+                model.setVolumeSize value
+                MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
 
             view.on 'VOLUME_TYPE_STANDARD', ()->
-
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                model.setVolumeTypeStandard volume_uid
+                model.setVolumeTypeStandard()
 
             view.on 'VOLUME_TYPE_IOPS', ( value )->
-
-
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                model.setVolumeTypeIops volume_uid, value
-
-                #renderPropertyPanel( volume_uid )
+                model.setVolumeTypeIops value
 
             view.on 'IOPS_CHANGED' , ( value ) ->
-
-                volume_uid = $("#property-panel-volume").attr 'uid'
-
-                model.setVolumeIops volume_uid, value
-
-                #renderPropertyPanel( volume_uid )
+                model.setVolumeIops value
 
             model.once 'REFRESH_PANEL', ()->
-
                 view.render()
 
     loadAppModule = ( uid ) ->

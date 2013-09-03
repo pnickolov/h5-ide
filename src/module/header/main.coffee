@@ -18,12 +18,12 @@ define [ 'jquery', 'text!/module/header/template.html', 'event', 'i18n!/nls/lang
         #load remote module1.js
         require [ './module/header/view', './module/header/model' ], ( View, model ) ->
 
-            #console.log 'asdfasdfasdf = ' + lang.header
-            
             #view
             view       = new View()
             view.model = model
-            view.render()
+
+            model.on 'change:user_name', () -> view.render()
+            model.getUserName()
 
             logout = -> model.logout()
 

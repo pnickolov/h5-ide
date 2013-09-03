@@ -1214,6 +1214,38 @@ a {
 	z-index: 10;
 }
 
+.dashboard-loading {
+	background: #f1f1f1;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ccc;
+}
+
+.dashboard-loading .loading-spinner {
+	margin: 0 auto;
+	display: block;
+	margin-top: 80px;
+}
+
+#global-view .dashboard-loading {
+	height: 811px;
+	margin-top: 20px;
+}
+
+#region-view #region-app-stack-wrap .dashboard-loading {
+	height: 189px;
+}
+
+#region-view #region-resource-wrap .dashboard-loading {
+	height: 492px;
+	margin-top: 80px;
+}
+
+#region-view #region-resource-wrap .loading-spinner {
+	margin: 0 auto;
+	display: block;
+	margin-top: 80px;
+}
+
 #global-region-resource-list {
 	margin: 20px auto;
 }

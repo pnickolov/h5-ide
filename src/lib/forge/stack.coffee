@@ -60,7 +60,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				i++
 
 		# collect using elb
-		instance_reference = "@#{ins_comp}.resource.InstanceId"
+		instance_reference = "@#{ins_comp.uid}.resource.InstanceId"
 
 		elbs = []
 
@@ -68,9 +68,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-				if instance_reference in comp.resource.Instances
+				for instance in comp.resource.Instances
 
-					elbs.push comp_uid
+					if instance_reference is instance.InstanceId
+
+						elbs.push comp_uid
 
 		if ins_num
 
@@ -98,7 +100,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					for elb in elbs
 
-						json_data.component[elb].resource.Instances.push "@#{new_comp.uid}.resource.InstanceId"
+						json_data.component[elb].resource.Instances.push {"InstanceId": "@#{new_comp.uid}.resource.InstanceId"}
 
 		else
 
@@ -338,19 +340,35 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				instance_ref_list.push "@#{instance_id}.resource.InstanceId"
 
 
-		# remove eni0
+		# remove eni
 		for comp_uid, comp of comp_data
 
-			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.DeviceIndex in [0, '0'] and comp.resource.Attachment.InstanceId in instance_ref_list
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId in instance_ref_list
 
 				delete comp_data[comp_uid]
+
+			else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId not in instance_ref_list
+				if comp.name.indexOf("eni0") >=0
+					comp.name = "eni0"
+				else
+					comp.name = comp.serverGroupName
+
 
 		# remove volume
 		for vol_uid, vol_data of vol_list
 
-			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume and comp.resource.AttachmentSet.InstanceId in instance_ref_list
+			for comp_uid, comp of comp_data
 
-				delete comp_data[comp_uid]
+				if comp_uid in vol_data and comp_uid isnt vol_uid
+
+					delete comp_data[comp_uid]
+
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+
+				comp.name = comp.serverGroupName
+
 
 		for comp_uid, comp of comp_data
 
@@ -358,17 +376,17 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				remove_idx = []
 
-				$.each comp.resource.Instances, ( i, instance_id ) ->
+				$.each comp.resource.Instances, ( i, instance ) ->
 
-					if instance_id in instance_ref_list
+					if instance.InstanceId in instance_ref_list
 
 						remove_idx.push i
 
 				if remove_idx.length > 0
 
-					$.each remove.sort().reverse(), (idx, instance_ref) ->
+					$.each remove_idx.sort().reverse(), (idx, instance_ref) ->
 
-						comp.resource.Instances.splice idx, 1
+						comp.resource.Instances.splice instance_ref, 1
 
 
 

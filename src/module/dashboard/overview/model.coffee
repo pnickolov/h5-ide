@@ -107,20 +107,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
             null
 
-
-        appInfoHandler: ( result ) ->
-
         awsReturnHandler: ( result ) ->
             data = result.resolved_data
             region = result.param[ 3 ]
             if region is null
                 # update regionlist for optimize network
-                regionList = @get 'region_list'
-                _.each data, ( resource, region ) =>
-                    if not regionList[ region ]
-                        regionList[ region ] = @regionHandel resource
-                    null
-                @set 'region_list', regionList
+                @cacheResource data
 
                 globalData = @globalRegionhandle data
                 @set 'global_list', globalData
@@ -131,7 +123,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                 @set 'region_list', oriRegionList
                 @set 'cur_region_list', regionData
 
-
+        cacheResource: ( data ) ->
+            regionList = @get 'region_list'
+            _.each data, ( resource, region ) =>
+                if not regionList[ region ]
+                    regionList[ region ] = @regionHandel resource
+                null
+            @set 'region_list', regionList
 
         globalRegionhandle: ( data ) ->
             midData = retData = {}
@@ -139,8 +137,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             console.log(data)
             console.log('=========tim=========')
             # initial
-            _.each data, ( value, region ) ->
-                _.each value, ( v, type ) ->
+            regions = _.keys constant.REGION_LABEL
+            types = [ 'DescribeInstances', 'DescribeAddresses', 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeVpnConnections' ]
+
+            _.each regions, ( region ) ->
+                value = data[ region ]
+                _.each types, ( type ) ->
+                    v = value[ type ]
                     if type is 'DescribeInstances'
                         v = _.filter v, ( vv ) ->
                             return vv.instanceState.name is 'running'
@@ -468,7 +471,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
 
         describeAWSResourcesService : ( region )->
-
             me = this
             region = region or null
             current_region = region
@@ -482,42 +484,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             resources[res_type.VPC]       =   {}
             resources[res_type.VPN]       =   {}
             resources[res_type.ELB]       =   {}
-
-            #resources[res_type.KP]        =   {}
-            #resources[res_type.SG]        =   {}
-            #resources[res_type.ACL]       =   {}
-            #resources[res_type.CGW]       =   {}
-            #resources[res_type.DHCP]      =   {}
-            #resources[res_type.ENI]       =   {}
-            #resources[res_type.IGW]       =   {}
-            #resources[res_type.RT]        =   {}
-            #resources[res_type.SUBNET]    =   {}
-            #resources[res_type.VGW]       =   {}
-            #
-
             resources[res_type.ASG]       =   {}
-            #resources[res_type.ASL_LC]    =   {}
-            #resources[res_type.ASL_NC]    =   {}
-            #resources[res_type.ASL_SP]    =   {}
-            #resources[res_type.ASL_SA]    =   {}
             resources[res_type.CLW]       =   {}
             resources[res_type.SNS_SUB]   =   {}
-            #resources[res_type.SNS_TOPIC] =   {}
-            #resources[res_type.ASL_ACT]   =   {}
-
-            #app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
-
-        describeAWSStatusService : ( region )->
-
-            me = this
-
-            current_region = region
-
-            aws_model.status { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
-
-            null
 
 
     }

@@ -5410,12 +5410,25 @@ a.action-link:hover {
 }
 
 /* Auto Scaling Group Property */
+
 .property-asg-ep.http:before {
 	content : "http";
-	display : inline-block;
 }
-.property-asg-ep.https:before {
-	content : "https";
+
+.property-asg-ep.https:before,
+.property-asg-ep.http:before {
+	content       : "https";
+	display       : inline-block;
+	background    : #f3f3f3;
+	padding       : 5px 6px 9px 6px;
+	margin-bottom : -2px;
+	border        : 1px solid #ccc;
+	border-right  : none;
+	color         : #999;
+}
+
+.modal-sns-protocol .selectbox .selection {
+	width: 205px;
 }
 
 .property-asg-size {

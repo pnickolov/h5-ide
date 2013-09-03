@@ -113,7 +113,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
         awsReturnHandler: ( result ) ->
             data = result.resolved_data
             region = result.param[ 3 ]
-
             if region is null
                 globalData = @globalRegionhandle data
                 @set 'global_list', globalData
@@ -128,6 +127,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
         globalRegionhandle: ( data ) ->
             midData = retData = {}
+            console.log('=========tim=========')
+            console.log(data)
+            console.log('=========tim=========')
             # initial
             _.each data, ( value, region ) ->
                 _.each value, ( v, type ) ->
@@ -491,6 +493,16 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             #app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
+
+        describeAWSStatusService : ( region )->
+
+            me = this
+
+            current_region = region
+
+            aws_model.status { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+
+            null
 
 
     }

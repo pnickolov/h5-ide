@@ -1,5 +1,4 @@
-<article id='property-panel-volume' uid='{{volume_detail.uid}}'>
-    {{#if volume_detail.isLC}}
+<article id='property-panel-volume'>
     <section class="property-control-group">
         <label>Device Name</label>
         <div class="name" data-bind="true">
@@ -16,48 +15,25 @@
         <label>Volume Size</label>
         <div class="ranged-number-input">
             <label for="volume-size-ranged"></label>
-            <input id="volume-size-ranged" type="number" value="{{volume_detail.Ebs.VolumeSize}}" name="volume-size-ranged" min="1" max="1024" required="">
+            <input id="volume-size-ranged" type="text" class="input" value="{{volume_detail.volume_size}}" name="volume-size-ranged" min="1" max="1024" required="">
         <label for="volume-property-ranged-number" >GB</label>
         </div>
     </section>
 
-    {{#if volume_detail.Ebs.SnapshotId}}
+    {{#if volume_detail.snapshot_id}}
     <section class="property-control-group">
         <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
-            <div>{{volume_detail.Ebs.SnapshotId}}</div>
+        <div id="snapshot-info-group" class="secondary-panel clearfix property-block-wrap" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
+            <div>
+                <span>{{volume_detail.snapshot_id}}</span>
+                <span>{{volume_detail.snapshot_size}}GB</span>
+                <span>{{volume_detail.snapshot_desc}}</span>
+            </div>
         </div>
     </section>
     {{/if}}
-    {{else}}
-    <section class="property-control-group">
-        <label>Device Name</label>
-        <div class="name">
-        	{{#if volume_detail.isWin}}
-        	<label for="volume-device">xvd</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1"/>
-        	{{else}}
-            <label for="volume-device">/dev/</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5"/>
-        	{{/if}}
-        </div>
-    </section>
-    <section class="property-control-group">
-        <label>Volume Size</label>
-        <div class="ranged-number-input">
-            <label for="volume-size-ranged"></label>
-            <input id="volume-size-ranged" type="number" value="{{volume_detail.resource.Size}}" name="volume-size-ranged" min="1" max="1024" required="">
-        <label for="volume-property-ranged-number" >GB</label>
-        </div>
-    </section>
-    {{#if volume_detail.resource.SnapshotId}}
-    <section class="property-control-group">
-        <label>Snapshot</label>
-        <div id="snapshot-info-group" class="secondary-panel clearfix" data-secondarypanel-data='{{{volume_detail.snapshot}}}'>
-            <div>{{volume_detail.resource.SnapshotId}}</div>
-        </div>
-    </section>
-    {{/if}}
+
+    {{#unless volume_detail.isLC}}
     <section class="property-control-group">
         <label>Volume Type</label>
         <div class="context" id="volume-type-radios">
@@ -83,12 +59,12 @@
         <div class="ranged-number-input">
             <label for="iops-ranged"></label>
             {{#if volume_detail.isStandard}}
-            <input id="iops-ranged" type="number" value="100" name="iops-ranged" min="100" max="2000" required="">
+            <input id="iops-ranged" type="text" class="input" value="100" name="iops-ranged" min="100" max="2000" required="">
             {{else}}
-            <input id="iops-ranged" type="number" value="{{volume_detail.resource.Iops}}" name="iops-ranged" min="100" max="2000" required="">
+            <input class="input" id="iops-ranged" type="text" value="{{volume_detail.iops}}" name="iops-ranged" min="100" max="2000" required="">
             {{/if}}
         <label for="volume-property-ranged-number" ></label>
         </div>
     </section>
-    {{/if}}
+    {{/unless}}
 </article>

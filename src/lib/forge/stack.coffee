@@ -60,7 +60,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				i++
 
 		# collect using elb
-		instance_reference = "@#{ins_comp}.resource.InstanceId"
+		instance_reference = "@#{ins_comp.uid}.resource.InstanceId"
 
 		elbs = []
 
@@ -68,9 +68,11 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-				if instance_reference in comp.resource.Instances
+				for instance in comp.resource.Instances
 
-					elbs.push comp_uid
+					if instance_reference is instance.InstanceId
+
+						elbs.push comp_uid
 
 		if ins_num
 
@@ -98,7 +100,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					for elb in elbs
 
-						json_data.component[elb].resource.Instances.push "@#{new_comp.uid}.resource.InstanceId"
+						json_data.component[elb].resource.Instances.push {"InstanceId": "@#{new_comp.uid}.resource.InstanceId"}
 
 		else
 
@@ -126,6 +128,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			console.error "Eni(#{uid}) do not attach to any instance"
 
 		server_group_name = json_data.component[instance_uid].serverGroupName
+
+		eni_name = json_data.component[ uid ].name
 
 		instance_list = json_data.layout.component.node[ instance_uid ].instanceList
 
@@ -174,7 +178,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.number = eni_number
 
-				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.name}" else origin_eni.name
+				origin_eni.serverGroupENIName = eni_name
+
+				origin_eni.name = if "#{server_group_name}-#{idx}" not in eni_name then "#{server_group_name}-#{idx}-#{eni_name}" else eni_name
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
@@ -183,7 +189,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				comp_data[eni_uid] = origin_eni
 			else
 
-				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[eni_uid].name}" else json_data.component[eni_uid].name
+				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{eni_name}" else json_data.component[eni_uid].name
 
 				json_data.component[eni_uid].number = eni_number
 
@@ -223,7 +229,12 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		vol_number = json_data.component[instance_uid].number
 
-		vol_list = comp_data[ uid ].resource.volumeList
+
+		vol_list = json_data.layout.component.node[ instance_uid ].volumeList[ uid ]
+
+		if not vol_list
+
+			vol_list = json_data.layout.component.node[ instance_uid ].volumeList[ uid ] = [ uid ]
 
 		vol_comp_number = vol_list.length
 
@@ -261,7 +272,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.number = vol_number
 
-				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.name}" else origin_eni.name
+				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.serverGroupName}" else origin_eni.name
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
@@ -270,7 +281,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				comp_data[vol_uid] = origin_eni
 			else
 
-				json_data.component[vol_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].name}" else json_data.component[vol_uid].name
+				json_data.component[vol_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].serverGroupName}" else json_data.component[vol_uid].name
 
 				json_data.component[vol_uid].number = vol_number
 
@@ -312,11 +323,72 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		ins_comp      = comp_data[uid]
 		ins_comp.name = ins_comp.serverGroupName
 		instance_list = json_data.layout.component.node[ uid ].instanceList
+		eni_list 	  = json_data.layout.component.node[ uid ].eniList
+		vol_list 	  = json_data.layout.component.node[ uid ].volumeList
 		ins_num       = ins_comp.number
 
 		if instance_list.length != ins_num and instance_list > 0
 
 			console.error '[expandInstance]instance number not match'
+
+		instance_ref_list = []
+
+		for instance_id in instance_list
+
+			if instance_id isnt uid
+
+				instance_ref_list.push "@#{instance_id}.resource.InstanceId"
+
+
+		# remove eni
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId in instance_ref_list
+
+				delete comp_data[comp_uid]
+
+			else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId not in instance_ref_list
+				if comp.name.indexOf("eni0") >=0
+					comp.name = "eni0"
+				else
+					comp.name = comp.serverGroupName
+
+
+		# remove volume
+		for vol_uid, vol_data of vol_list
+
+			for comp_uid, comp of comp_data
+
+				if comp_uid in vol_data and comp_uid isnt vol_uid
+
+					delete comp_data[comp_uid]
+
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+
+				comp.name = comp.serverGroupName
+
+
+		for comp_uid, comp of comp_data
+
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+				remove_idx = []
+
+				$.each comp.resource.Instances, ( i, instance ) ->
+
+					if instance.InstanceId in instance_ref_list
+
+						remove_idx.push i
+
+				if remove_idx.length > 0
+
+					$.each remove_idx.sort().reverse(), (idx, instance_ref) ->
+
+						comp.resource.Instances.splice instance_ref, 1
+
+
 
 		#init instance_list
 		if instance_list.length != ins_num

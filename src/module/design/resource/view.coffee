@@ -325,7 +325,7 @@ define [ 'event',
                     bit         = if value.architecture == 'i386' then '32' else '64'
                     visibility  = if value.isPublic then 'public' else 'private'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
                     this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"

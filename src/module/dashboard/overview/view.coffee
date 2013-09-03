@@ -45,12 +45,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .data 'region', region
 
             if region is 'global'
-                @$el.find( '#global-region-resource-data-wrap' ).show()
+                @$el.find( '#global-view' ).show()
                 @$el.find( '#region-view' ).hide()
             else
-                @showLoading('#region-resource-wrap')
-                @$el.find( '#global-region-resource-data-wrap' ).hide()
+                #@showLoading('#global-view')
+                @$el.find( '#global-view' ).hide()
                 @$el.find( '#region-view' ).show()
+
                 @trigger 'SWITCH_REGION', region
                 @renderRegionAppStack()
 

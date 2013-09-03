@@ -387,6 +387,10 @@
                                         <td>{{ placement.availabilityZone}}</td>
                                         <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="btn btn-silver modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                                     </tr>
+                                {{else}}
+                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                        <p>There is no instance in this region.</p>
+                                    </div>
                                 {{/each}}
 
                                 </tbody>
@@ -935,4 +939,7 @@
 {{/if}}
 
 <!--{{ .loading }}-->
-<div style="margin-top:30px">loading...</div>
+<div class="dashboard-loading clearfix">
+    <i class="loading-spinner"></i>
+</div>
+

@@ -3,9 +3,14 @@
 ####################################
 
 define [ 'jquery',
+<<<<<<< HEAD
+         'text!./template.html',
+         'text!./app_template.html',
+=======
          'text!/module/design/property/eni/template.html',
          'text!/module/design/property/eni/app_template.html',
          'text!/module/design/property/eni/ip_list_template.html',
+>>>>>>> develop
          'event'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->
 
@@ -50,8 +55,6 @@ define [ 'jquery',
             view.model    = model
 
             model.set 'uid', uid
-
-            model.set 'type', 'stack'
 
             model.getENIDisplay uid
             #render
@@ -106,9 +109,6 @@ define [ 'jquery',
             view.model    = model
 
             model.init uid
-
-            model.set 'type', 'app'
-
             view.render()
 
             # Set title

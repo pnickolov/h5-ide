@@ -136,4 +136,6 @@ define [ 'jquery', 'handlebars',
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )
-		$( '#login-footer' ).html 'version ' + version
+		$( '#footer' ).text 'version ' + version
+
+		return true

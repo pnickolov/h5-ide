@@ -4,9 +4,11 @@
 
 define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
+    current_region = null
+
     OverviewView = Backbone.View.extend {
 
-        el       : $( '#tab-content-dashboard' )
+        el              : $( '#tab-content-dashboard' )
 
         #template : Handlebars.compile $( '#overview-tmpl' ).html()
 
@@ -27,6 +29,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
             'click #region-aws-resource-tab a'          : 'switchRegionResource'
+
+            'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
 
 
         showLoading: ( selector ) ->
@@ -172,6 +176,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         mapRegionClick : ( event ) ->
             region = event.currentTarget.id
+            current_region = region
+
             $( "#region-switch-list li[data-region=#{region}]" ).click()
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': $('#global-region-tabbar-wrap')[0].offsetTop - 80 } )
             false
@@ -196,6 +202,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
             else if id.indexOf('stack-') == 0
                 ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+
+            null
+
+        clickRegionResourceThumbnail : (event) ->
+            console.log 'click app/stack thumbnail'
+
+            me = this
+
+            item_info   = $(event.currentTarget).next('.region-resource-info')[0]
+            id          = $(item_info).find('.modal')[0].id
+            name        = $($(item_info).find('.region-resource-item-name')[0]).text()
+
+            ##check params:region, id, name
+
+            if id.indexOf('app-') is 0
+                ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+
+            else
+                ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
 
             null
 

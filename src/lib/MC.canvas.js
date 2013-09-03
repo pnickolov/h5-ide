@@ -2696,6 +2696,60 @@ MC.canvas.asgList = {
 	}
 };
 
+MC.canvas.instanceList = {
+	show: function (event)
+	{
+		if (event.which === 1)
+		{
+			MC.canvas.instanceList.close();
+
+			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
+			{
+				MC.canvas.select( this.id );
+
+				return false;
+			}
+
+			var target = this,
+				target_offset = Canvon(target).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			$('#canvas_container').append( MC.template.instanceList() );
+
+			$('#instanceList-wrap')
+				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
+				});
+
+			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
+
+			return false;
+		}
+	},
+
+	close: function ()
+	{
+		$('#instanceList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#instanceList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
 MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)

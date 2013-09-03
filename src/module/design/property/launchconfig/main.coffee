@@ -54,6 +54,8 @@ define [ 'jquery',
             # model.getSgDisp()
             model.getCheckBox()
 
+            model.set 'type', 'stack'
+
             #view
             view.model    = model
             view.render()
@@ -84,6 +86,8 @@ define [ 'jquery',
             #
             current_view  = view
             current_model = model
+
+            model.set 'type', 'app'
 
             model.getAppLaunch uid
             #view

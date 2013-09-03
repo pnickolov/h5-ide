@@ -62,10 +62,10 @@ define [ 'jquery',
             model.getCost()
 
             if view_type == 'app_view'
-
+                model.set 'type', 'app'
                 model.getAppSubscription()
-
             else
+                model.set 'type', 'stack'
                 model.getSubscription()
 
             if tab_type is 'OPEN_APP'

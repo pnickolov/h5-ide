@@ -5690,7 +5690,7 @@ a.action-link:hover {
 }
 
 #modal-run-stack .modal-body > div {
-	padding: 5px 15px 10px 15px;
+	/*padding: 5px 15px 10px 15px;*/
 }
 
 #modal-run-stack .modal-body > div.stack-validation {
@@ -5764,7 +5764,7 @@ a.action-link:hover {
 
 #modal-run-stack .modal-body div.estimate {
 	background-color: rgb(215, 227, 235);
-	padding: 15px;
+	padding: 15px 10px;
 }
 
 #modal-run-stack .estimate .title {
@@ -5776,12 +5776,10 @@ a.action-link:hover {
 }
 
 #modal-run-stack .estimate .price b {
-	color: rgb(0, 123, 255);
+	color: #3781C9;
 }
 
-#modal-run-stack label {
-	margin: 9px 18px 0 0;
-}
+
 /* run stack into app process panel*/
 #process-panel #process-container {
 	width: 600px;

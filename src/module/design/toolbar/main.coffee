@@ -123,9 +123,9 @@ define [ 'jquery',
                 model.saveStack()
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
-                    info = flag.replace /_/g, ' '
-                    if info
-                        view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
+                info = flag.replace /_/g, ' '
+                if info
+                    view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '

@@ -519,7 +519,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         cost_list.sort (a, b) ->
             return if a.type <= b.type then 1 else -1
 
-        return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(3) }
+        return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(2) }
 
     checkDefaultVPC = () ->
 

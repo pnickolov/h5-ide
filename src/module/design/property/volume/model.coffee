@@ -2,201 +2,224 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ 'ebs_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( ebs_model ) ->
+define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     VolumeModel = Backbone.Model.extend {
 
+        ###
         defaults :
+            'uid' : null
             'volume_detail' : null
-            'get_xxx'       : null
-
-        initialize : ->
-            #listen
+        ###
 
         getVolume : ( uid ) ->
 
-            me = this
+            components = MC.canvas_data.component
 
-            volume_detail = null
+            if not components[ uid ]
 
-            if uid.indexOf('_') > 0
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
 
-                tmp = uid.split('_')
+                for block in components[realuid].resource.BlockDeviceMapping
 
-                realuid = tmp[0]
+                    if block.DeviceName.indexOf(device_name) is -1
+                        continue
 
-                device_name = tmp[2]
+                    volume_detail =
+                        isWin       : block.DeviceName[0] != '/'
+                        isLC        : true
+                        volume_size : block.Ebs.VolumeSize
+                        snapshot_id : block.Ebs.SnapshotId
 
-                lc_block_device = MC.canvas_data.component[realuid].resource.BlockDeviceMapping
+                    if volume_detail.isWin
+                        volume_detail.editName = block.DeviceName.slice(-1)
 
-                $.each lc_block_device, ( i, block ) ->
+                    else
+                        volume_detail.editName = block.DeviceName.slice(5)
 
-                    if block.DeviceName.indexOf(device_name) >=0
-
-                        volume_detail = $.extend true, {}, block
-
-                        volume_detail.uid = uid
-
-                        volume_detail.isWin = true if volume_detail.DeviceName.slice(0,1) != '/'
-
-                        if volume_detail.isWin
-
-                            volume_detail.editName = volume_detail.DeviceName.slice(-1)
-
-                        else
-                            volume_detail.editName = volume_detail.DeviceName.slice(5)
-
-                        volume_detail.isLC = true
-
-                        return false
-
-
+                    break
 
             else
-                volume_detail = $.extend true, {}, MC.canvas_data.component[uid]
 
-                volume_detail.isLC = false
+                res = components[ uid ].resource
 
-                volume_detail.isStandard = true if volume_detail.resource.VolumeType == 'standard'
+                volume_detail =
+                    isLC        : false
+                    isWin       : res.AttachmentSet.Device[0] != '/'
+                    isStandard  : res.VolumeType is 'standard'
+                    iops        : res.Iops
+                    volume_size : res.Size
+                    snapshot_id : res.SnapshotId
 
-                volume_detail.isWin = true if volume_detail.resource.AttachmentSet.Device.slice(0,1) != '/'
 
                 if volume_detail.isWin
-
-                    volume_detail.editName = volume_detail.resource.AttachmentSet.Device.slice(-1)
+                    volume_detail.editName = res.AttachmentSet.Device.slice(-1)
 
                 else
-                    volume_detail.editName = volume_detail.resource.AttachmentSet.Device.slice(5)
+                    volume_detail.editName = res.AttachmentSet.Device.slice(5)
 
 
-            snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
-            if volume_detail.resource and volume_detail.resource.SnapshotId
-                ssid = volume_detail.resource.SnapshotId
+            # Snapshot
+            if volume_detail.snapshot_id
+                snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
 
-            else if volume_detail.Ebs and volume_detail.Ebs.SnapshotId
-                ssid = volume_detail.Ebs.SnapshotId
-
-            if ssid
                 for item in snapshot_list.item
-                    if item.snapshotId is ssid
+                    if item.snapshotId is volume_detail.snapshot_id
+                        volume_detail.snapshot_size = item.volumeSize
+                        volume_detail.snapshot_desc = item.description
                         volume_detail.snapshot = JSON.stringify item
                         break
 
-            me.set 'volume_detail', volume_detail
+            @set 'volume_detail', volume_detail
+            @set 'uid', uid
             null
 
-        setDeviceName : ( uid, name ) ->
+        setDeviceName : ( name ) ->
 
-            me = this
+            components = MC.canvas_data.component
+            uid        = @get "uid"
 
-            if uid.indexOf('_') >0
+            if not components[ uid ]
 
-                tmp = uid.split('_')
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
 
-                realuid = tmp[0]
+                for block in components[realuid].resource.BlockDeviceMapping
 
-                device_name = tmp[2]
+                    if block.DeviceName.indexOf( device_name ) is -1
+                        continue
 
-                lc_block_device = MC.canvas_data.component[realuid].resource.BlockDeviceMapping
-
-                $.each lc_block_device, ( i, block ) ->
-
-                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf(device_name)>=0
-
+                    if block.DeviceName[0] != '/'
                         block.DeviceName = 'xvd' + name
+                        newId = "#{realuid}_volume_xvd#{name}"
 
-                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + 'xvd' + name)
-
-                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + 'xvd' + name
-
-                        MC.canvas.update(realuid,'text','volume_' + block.DeviceName, block.DeviceName)
-
-                    else if block.DeviceName.slice(0,1) == '/' and block.DeviceName.indexOf(device_name)>=0
-
+                    else
                         block.DeviceName = '/dev/' + name
+                        newId = "#{realuid}_volume_#{name}"
 
-                        MC.canvas.update(realuid,'id','volume_' + device_name, realuid + '_volume_' + name)
+                    MC.canvas.update uid, 'text', "volume_name", block.DeviceName
+                    MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
 
-                        $("#property-panel-volume").attr 'uid', realuid + '_volume_' + name
+                    @set 'uid', newId
 
-                        MC.canvas.update(realuid,'text','volume_' + name, block.DeviceName)
-
-                    null
-
-
+                    break
 
             else
 
-                if MC.canvas_data.component[uid].resource.AttachmentSet.Device.slice(0,1) != '/'
+                volume_comp = components[ uid ]
+
+                if volume_comp.resource.AttachmentSet.Device[0] != '/'
 
                     device_name = 'xvd' + name
 
-                    MC.canvas_data.component[uid].name = device_name
+                    volume_comp.name = device_name
 
                 else
                     device_name = '/dev/' + name
 
-                    MC.canvas_data.component[uid].name = name
+                    volume_comp.name = name
 
 
-                MC.canvas_data.component[uid].resource.AttachmentSet.Device = device_name
+                MC.canvas.update uid, 'text', "volume_name", device_name
+
+                volume_comp.resource.AttachmentSet.Device = device_name
 
             null
 
-        setVolumeSize : ( uid, value ) ->
+        setVolumeSize : ( value ) ->
 
-            me = this
+            components = MC.canvas_data.component
+            uid        = @get "uid"
 
-            if uid.indexOf('_') >0
+            if not components[ uid ]
 
-                tmp = uid.split('_')
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
 
-                realuid = tmp[0]
+                for block in components[realuid].resource.BlockDeviceMapping
 
-                device_name = tmp[2]
+                    if block.DeviceName.indexOf(device_name) >= 0
 
-                lc_block_device = MC.canvas_data.component[realuid].resource.BlockDeviceMapping
+                        if block.DeviceName[0] != '/'
+                            block.Ebs.VolumeSize = value
+                        else
+                            block.Ebs.VolumeSize = value
 
-                $.each lc_block_device, ( i, block ) ->
-
-                    if block.DeviceName.slice(0,1) != '/' and block.DeviceName.indexOf('xvd'+device_name)>=0
-
-                        block.Ebs.VolumeSize = value
-
-                    else if block.DeviceName.slice(0,1) == '/' and block.DeviceName.indexOf(device_name)>=0
-
-                        block.Ebs.VolumeSize = value
-
-                    null
+                        break
 
             else
-
-                MC.canvas_data.component[uid].resource.Size = value
-
-            null
-
-        setVolumeTypeStandard : ( uid ) ->
-
-            MC.canvas_data.component[uid].resource.VolumeType = 'standard'
-
-            MC.canvas_data.component[uid].resource.Iops = ''
+                components[ uid ].resource.Size = value
 
             null
 
-        setVolumeTypeIops : ( uid, value ) ->
+        setVolumeTypeStandard : () ->
 
-            MC.canvas_data.component[uid].resource.VolumeType = 'iops'
+            uid = @get "uid"
+            comp_res = MC.canvas_data.component[uid].resource
 
+            comp_res.VolumeType = 'standard'
+            comp_res.Iops = ''
+
+            null
+
+        setVolumeTypeIops : ( value ) ->
+
+            uid = @get "uid"
+            comp_res = MC.canvas_data.component[uid].resource
+
+            comp_res.VolumeType = 'iops'
+            comp_res.Iops = value
+
+            null
+
+        setVolumeIops : ( value )->
+
+            uid = @get "uid"
             MC.canvas_data.component[uid].resource.Iops = value
 
             null
 
-        setVolumeIops : ( uid, value )->
+        isDuplicate : ( name ) ->
 
-            MC.canvas_data.component[uid].resource.Iops = value
+            uid = @get "uid"
+            component = MC.canvas_data.component[ uid ]
 
-            null
+            if component
+                instanceId = component.resource.AttachmentSet.InstanceId
+                for comp_uid, comp of MC.canvas_data.component
+                    if comp_uid is uid
+                        continue
 
+                    if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                        continue
+
+                    if comp.resource.AttachmentSet.InstanceId isnt instanceId
+                        continue
+
+                    if comp.name[0] != '/'
+                        if comp.name == "xvd" + name
+                            return true
+                    else if comp.name.indexOf( name ) isnt -1
+                        return true
+
+            else
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                realuid     = realuid[0]
+
+                for block in MC.canvas_data.component[realuid].resource.BlockDeviceMapping
+
+                    if block.DeviceName[0] != '/'
+                        if block.DeviceName == "xvd" + name
+                            return true
+                    else if block.DeviceName.indexOf( name ) isnt -1
+                        return true
+
+            return false
     }
 
     model = new VolumeModel()

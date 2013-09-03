@@ -20,19 +20,19 @@
 					<div class="notification-message">
 						{{#if is_error}}
 							<i class="icon-error"></i>
-							<div class="content">{{name}} failed to {{operation}} in {{region_label}}.</div>
+							<div class="content"><span class="resource-name-label">{{name}}</span> failed to {{operation}} in {{region_label}}.</div>
 						{{else}}
 							{{#if is_request}}
 								<i class="icon-pending"></i>
-								<div class="content">Sending request to {{operation}} {{name}} in {{region_label}}.</div>
+								<div class="content">Sending request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
 							{{else}}
 								{{#if is_process}}
 									<i class="icon-pending"></i>
-									<div class="content">Processing request to {{operation}} {{name}} in {{region_label}}.</div>
+									<div class="content">Processing request to {{operation}} <span class="resource-name-label">{{name}}</span> in {{region_label}}.</div>
 								{{else}}
 									<i class="icon-success"></i>
 									{{#if is_terminated}}
-										<div class="content">{{name}} {{operation}} successfully in {{region_label}}.</div>
+										<div class="content"><span class="resource-name-label">{{name}}</span> {{operation}} successfully in {{region_label}}.</div>
 									{{else}}
 										<div class="content"><a href="javascript:void(0);" class="dropdown-app-name" id="{{id}}">{{name}}</a> {{operation}} successfully in {{region_label}}.</div>
 									{{/if}}

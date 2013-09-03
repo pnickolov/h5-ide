@@ -1306,6 +1306,10 @@ a {
 	font-size: 40px;
 }
 
+#region-aws-resource-tab .global-region-resource-icon {
+	background: none;
+}
+
 #global-region-resource-instance,
 #global-region-resource-instance .global-region-resource-location-count {
 	color: #46c189;
@@ -1478,7 +1482,7 @@ a {
 	background: #fff;
 	padding: 20px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-	border-radius: 5px 0 5px 5px;
+	/*border-radius: 5px 0 5px 5px;*/
 	border: 1px solid #ddd;
 	border-top: none;
 }
@@ -1654,6 +1658,7 @@ a {
 	font-size: 12px;
 	display: block;
 	text-align: center;
+/*	width: 80px;*/
 }
 
 #region-aws-resource-data {
@@ -3127,6 +3132,10 @@ a.sidebar-hider {
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
+}
+
+.firefox .resource-item {
+	width: 60px;
 }
 
 .resource-item:hover {

@@ -67,7 +67,6 @@ define [ 'jquery',
 					stack_main.loadModule stack_main, type
 
 				catch error
-					null
 
 				null
 

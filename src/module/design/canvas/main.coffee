@@ -42,7 +42,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
                         model.reDrawSgLine()
 
                 catch error
-                    null
+
                 #
                 #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null

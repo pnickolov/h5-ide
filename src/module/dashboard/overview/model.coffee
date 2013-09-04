@@ -133,13 +133,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
         globalRegionhandle: ( data ) ->
             midData = retData = {}
-            console.log('=========tim=========')
-            console.log(data)
-            console.log('=========tim=========')
-            # initial
+            # region and type maps
             regions = _.keys constant.REGION_LABEL
             types = [ 'DescribeInstances', 'DescribeAddresses', 'DescribeVolumes', 'DescribeLoadBalancers', 'DescribeVpnConnections' ]
-
+            # initial
             _.each regions, ( region ) ->
                 value = data[ region ]
                 _.each types, ( type ) ->
@@ -147,17 +144,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                     if type is 'DescribeInstances'
                         v = _.filter v, ( vv ) ->
                             return vv.instanceState.name is 'running'
-
                     midData[ type ] = {} if not midData[ type ]
                     midData[ type ][ region ] = v
-
                     null
 
             # structure for handlebars
             _.each midData, ( value, type ) ->
-                retData[ type ] =
-                    data: []
-                    total: 0
+                retData[ type ] = { data: [], total: 0 }
 
                 _.each value, ( v, region ) ->
                     vTotal = v and v.length or 0
@@ -171,10 +164,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             # sort
             _.each retData, ( value, type ) ->
                 value.data = _.sortBy value.data, ( v ) ->
-                    -v.total
+                    - v.total
                 null
-
-
 
             retData
 

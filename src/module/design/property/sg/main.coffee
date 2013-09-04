@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-		 'text!/module/design/property/sg/template.html',
-		 'text!/module/design/property/sg/app_template.html',
+		 'text!./template.html',
+		 'text!./app_template.html',
 		 'event'
 ], ( $, template, app_template, ide_event ) ->
 
@@ -36,7 +36,7 @@ define [ 'jquery',
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
 				#
-				
+
 				if current_view then view.delegateEvents view.events
 				#
 				current_view  = view

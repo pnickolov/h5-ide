@@ -28,7 +28,7 @@ var modal = function (template, dismiss, callback)
 	{
 		$("#modal-wrap")
 			.on('click', modal.dismiss);
-		$("#modal-box")
+		$(document)
 			.on('keyup', modal.keyup);
 	}
 
@@ -76,12 +76,14 @@ modal.keyup = function (event)
 	if (event.which === 27)
 	{
 		modal.close();
-	} else if ( event.which == 13 ) {
-		var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")
-		if ( btns.length == 1 ) {
-			btns.click()
-		}
 	}
+
+	// else if ( event.which == 13 ) {
+	// 	var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")
+	// 	if ( btns.length == 1 ) {
+	// 		btns.click()
+	// 	}
+	// }
 
 	return false;
 };
@@ -93,26 +95,29 @@ modal.dismiss = function (event)
 		modal.close();
 	}
 
-	return true;
+	if ( event && event.preventDefault ) {
+		event.preventDefault();
+	}
 };
 
-modal.close = function ()
+modal.close = function ( evt )
 {
 	$(window).off('resize', modal.position);
 
 	// $('#wrapper').removeClass('blur-effect');
 
-	// $(document)
+	$(document).off('keyup', modal.keyup);
 	// 	.off('click', '.modal-close', modal.close)
 	// 	.off('mousedown', '.modal-header', modal.drag.mousedown)
 	// 	.off('click', modal.dismiss)
-	// 	.off('keyup', modal.keyup);
 
 	$('#modal-wrap')
 		.trigger('closed')
 		.remove();
 
-	return false;
+	if ( evt && evt.preventDefault ) {
+		evt.preventDefault();
+	}
 };
 
 modal.isPopup = function ()

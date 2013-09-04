@@ -3737,8 +3737,8 @@ width = 960;
 unicode = F141;
 },
 {
-glyphname = uniF142.001;
-lastChange = "2013-09-04 04:34:16 +0800";
+glyphname = uniF142;
+lastChange = "2013-09-04 14:19:50 +0800";
 layers = (
 {
 layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
@@ -3849,6 +3849,7 @@ nodes = (
 width = 960;
 }
 );
+unicode = F142;
 }
 );
 gridLength = 60;

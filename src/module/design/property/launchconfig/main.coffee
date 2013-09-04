@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/launchconfig/template.html',
+         'text!./template.html',
          'text!./app_template.html',
          'event'
 ], ( $, template, app_template, ide_event ) ->

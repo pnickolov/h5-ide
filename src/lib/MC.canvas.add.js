@@ -628,7 +628,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.dragger
 				Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
 					'class': 'asg-resource-dragger tooltip',
-					'data-tooltip': 'Expand the group by dragging and drop in other subnet.',
+					'data-tooltip': 'Expand the group by drag-and-drop in other availability zone.',
 					'id': group.id + '_asg_resource_dragger',
 					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
 				}),
@@ -839,7 +839,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
 				component_layout.eniList = (component_layout.eniList && component_layout.eniList.length > 0) ? component_layout.eniList : [];
 				component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
-				component_layout.volumeList = (component_layout.volumeList && component_layout.volumeList.length > 0) ? component_layout.volumeList : [];
+				component_layout.volumeList = component_layout.volumeList ? component_layout.volumeList : [];
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];

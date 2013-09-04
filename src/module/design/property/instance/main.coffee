@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/instance/template.html',
-         'text!/module/design/property/instance/app_template.html',
-         'text!/module/design/property/instance/ip_list_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
+         'text!./ip_list_template.html',
          'event',
          'UI.notification'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->

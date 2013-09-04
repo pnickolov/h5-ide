@@ -2,7 +2,7 @@
 #  Controller for design/property module
 ####################################
 define [ 'jquery',
-		 'text!/module/design/property/template.html',
+		 'text!./module/design/property/template.html',
 		 'event',
 		 'constant',
 		 'MC'
@@ -53,15 +53,22 @@ define [ 'jquery',
 
 			#show stack property
 			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
-				console.log 'property:OPEN_DESIGN, type = ' + type
-				#check re-render
-				view.reRender template
-				#
-				tab_type = type
-				#
-				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-				#
-				stack_main.loadModule stack_main, type
+
+				try
+
+					console.log 'property:OPEN_DESIGN, type = ' + type
+					#check re-render
+					view.reRender template
+					#
+					tab_type = type
+					#
+					if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+					#
+					stack_main.loadModule stack_main, type
+
+				catch error
+
+				null
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
@@ -101,7 +108,7 @@ define [ 'jquery',
 					if MC.canvas_data.component[ uid ]
 
 						console.log 'type = ' + MC.canvas_data.component[ uid ].type
-						
+
 						#components except AvailabilityZone
 						switch MC.canvas_data.component[ uid ].type
 							#show instance property
@@ -220,7 +227,8 @@ define [ 'jquery',
 			#listen SHOW_PROPERTY_PANEL
 			ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, ( ) ->
 				$( '#canvas-panel' ).removeClass 'right-hiden'
-				$( '#property-panel' ).removeClass 'hiden'
+				$( '#property-panel' ).removeClass 'hiden transition'
+				$( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
 				null
 
 			ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->

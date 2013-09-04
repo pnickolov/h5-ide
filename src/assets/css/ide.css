@@ -1223,7 +1223,7 @@ a {
 
 #region-view {
 	position: relative;
-	top: -70px;
+	top: -65px;
 	width: 1280px;
 	padding: 0 0 20px 0;
 	margin: 20px auto;
@@ -2922,7 +2922,6 @@ td.table-action a.btn {
 	background      : #f0f0f0;
 	/*border-bottom : 2px solid #d3d3d3;*/
 	box-shadow      : 0 2px 0 #d3d3d3;
-	border-radius   : 2px 2px 0 0;
 }
 
 .toolbar-btn-group {
@@ -2946,7 +2945,7 @@ td.table-action a.btn {
 }
 
 .toolbar-btn-group .selectbox .dropdown {
-	border     : 1px solid #E0E0E0;
+	border     : 1px solid #aaa;
 	width      : auto;
 	margin-top : 5px;
 }
@@ -2961,6 +2960,7 @@ td.table-action a.btn {
 	line-height   : 42px;
 	padding-left  : 40px;
 	padding-right : 10px;
+	font-size: 12px
 }
 
 .toolbar-btn-group .dropdown > li > i {
@@ -2973,6 +2973,7 @@ td.table-action a.btn {
 
 
 .btn-toolbar {
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 	width       : 30px;
 	height      : 24px;
 
@@ -3024,7 +3025,10 @@ td.table-action a.btn {
 }
 
 .btn-toolbar.open {
-	background-color : #d0d0d0;
+	/*background-color : #d0d0d0;*/
+
+	box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1);
+	background-color: #FFF;
 	border-radius    : 4px;
 }
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
@@ -3048,7 +3052,7 @@ td.table-action a.btn {
 }
 
 .toolbar-btn-group .dropdown > li:hover {
-	background-color: #eee;
+	background-color: #f3f3f3;
 }
 
 #toolbar-run {
@@ -3280,7 +3284,7 @@ a.sidebar-hider {
 	padding-bottom: 5px;
 	margin-left: -5px;
 	width: 70px;
-	height: 22px;
+	height: 36px;
 	word-wrap: break-word;
 	overflow: hidden;
 	line-height: 14px;
@@ -3379,7 +3383,9 @@ a.sidebar-hider {
 	right        : 0;
 	margin-right : 0;
 	/*border-left  : 1px solid #d1d1d1;*/
+}
 
+#property-panel.transition {
 	-webkit-transition: margin-right 0.1s;
 	   -moz-transition: margin-right 0.1s;
 	    -ms-transition: margin-right 0.1s;
@@ -3599,12 +3605,13 @@ a.sidebar-hider {
 
 .property-control-group .selectbox.selectbox-mega .main {
 	/*width: 230px;*/
-	font-size: 13px;
+	font-size: 14px;
+	color: #F8F8F8;
 }
 
 .property-control-group .selectbox.selectbox-mega .sub span {
 	font-size: 12px;
-	color: #999;
+	color: #CCC;
 	margin-right: 5px;
 }
 
@@ -5164,6 +5171,10 @@ a.action-link:hover {
 	padding       : 5px 10px;
 	position      : relative;
 	background    : #414141;
+}
+
+.sg-create-rule-item .sg-rule-connection {
+	width: 113px;
 }
 
 .sg-rule-col1 {

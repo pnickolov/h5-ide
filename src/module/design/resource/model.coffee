@@ -39,7 +39,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.config[region_name].snapshot_list = result.resolved_data
 
                     #
-                    me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+                    #me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
                 null
 
@@ -334,7 +334,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                             null
                 #
-                me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                me._checkRequireServiceCount( 'describeAvailableZonesService:OLD' )
                 #
                 me.set 'availability_zone', res
 
@@ -374,7 +374,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         #cache az to MC.data.config[region_name].zone
                         MC.data.config[region_name].zone = result.resolved_data
                         #
-                        me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                        me._checkRequireServiceCount( 'describeAvailableZonesService:NEW' )
                         #
                         null
                     else

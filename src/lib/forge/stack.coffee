@@ -55,7 +55,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			i = 0
 
-			while i < ins_num-1
+			while i < ins_num-ins_comp_number
 
 				new_eni_uid = MC.guid()
 
@@ -136,7 +136,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				comp_data[ new_comp.uid ] = new_comp
 
-				if elbs.length > 0
+				if elbs.length > 0 and new_comp.uid isnt uid
 
 					for elb in elbs
 
@@ -498,6 +498,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		#expand an instance to a server group
 	compactInstance = ( json_data, uid ) ->
 
+		json_data.layout.component.node[ uid ].instanceList = if json_data.layout.component.node[ uid ].instanceList then json_data.layout.component.node[ uid ].instanceList else []
+		json_data.layout.component.node[ uid ].eniList = if json_data.layout.component.node[ uid ].eniList then json_data.layout.component.node[ uid ].eniList else []
+		json_data.layout.component.node[ uid ].volumeList = if json_data.layout.component.node[ uid ].volumeList then json_data.layout.component.node[ uid ].volumeList else []
+
 		comp_data     = json_data.component
 		ins_comp      = comp_data[uid]
 		ins_comp.name = ins_comp.serverGroupName
@@ -505,6 +509,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		eni_list 	  = json_data.layout.component.node[ uid ].eniList
 		vol_list 	  = json_data.layout.component.node[ uid ].volumeList
 		ins_num       = ins_comp.number
+
 
 		instance_ref_list = []
 
@@ -543,7 +548,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				delete comp_data[comp_uid]
 
 			else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId not in instance_ref_list
-				if comp.name.indexOf("eni0") >=0
+				if !comp.name || comp.name.indexOf("eni0") >=0
 					comp.name = "eni0"
 				else
 					comp.name = comp.serverGroupName

@@ -2,7 +2,7 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->
@@ -106,12 +106,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log model.get 'current_platform'
                 console.log model.get 'tab_name'
                 console.log tab_id
+                #
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
                 #push event
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
-                #
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->

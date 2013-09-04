@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-		 'text!/module/design/property/sgrule/template.html',
-		 'text!/module/design/property/sgrule/app_template.html',
+		 'text!./template.html',
+		 'text!./app_template.html',
 		 'event'
 ], ( $, template, app_template, ide_event ) ->
 

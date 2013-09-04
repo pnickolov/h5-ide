@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/resource/template.html',
-         'text!/module/design/resource/template_data.html',
+         'text!./module/design/resource/template.html',
+         'text!./module/design/resource/template_data.html',
          'event',
          'MC.ide.template'
 ], ( $, template, template_data, ide_event ) ->
@@ -88,7 +88,7 @@ define [ 'jquery',
                     ide_event.trigger ide_event.SWITCH_MAIN
                     model.service_count = 0
 
-                else if model.get( 'check_required_service_count' ) is 3      # has setted credential
+                else if model.get( 'check_required_service_count' ) is 2      # has setted credential
                     console.log 'set credential and described require service'
                     ide_event.trigger ide_event.SWITCH_MAIN
                     model.service_count = 0

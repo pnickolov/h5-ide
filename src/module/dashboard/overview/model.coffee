@@ -198,61 +198,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             @describeAWSResourcesService region
 
 
-        # get current region's app/stack list
-        getItemList : ( flag, region, result ) ->
-            me = this
 
-            item_list = regions.region_name_group for regions in result when constant.REGION_SHORT_LABEL[ region ] == regions.region_group
 
-            cur_item_list = []
-            _.map item_list, (value) ->
-                item = me.parseItemList(value, flag)
-                if item
-                    cur_item_list.push item
+        ############################################################################################
 
-                    null
-
-            if cur_item_list
-                #sort
-                cur_item_list.sort (a,b) ->
-                    return if a.create_time <= b.create_time then 1 else -1
-
-                if flag == 'app'
-                    #difference
-                    if _.difference me.get('cur_app_list'), cur_item_list
-                        me.set 'cur_app_list', cur_item_list
-                        me.trigger 'UPDATE_REGION_APP_LIST'
-
-                else if flag == 'stack'
-                    if _.difference me.get('cur_stack_list'), cur_item_list
-                        me.set 'cur_stack_list', cur_item_list
-                        me.trigger 'UPDATE_REGION_STACK_LIST'
-
-        #temp
-        resultListListener : ->
-
-            me = this
-
-            ###
-            #get service(model)
-            ide_event.onListen 'RESULT_APP_LIST', ( result ) ->
-
-                me.updateMap( me, result )
-
-                me.updateRecentList( me, result, 'recent_launched_apps' )
-                me.updateRecentList( me, result, 'recent_stoped_apps' )
-
-                null
-
-            ide_event.onListen 'RESULT_STACK_LIST', ( result ) ->
-
-                me.updateRecentList( me, result, 'recent_edited_stacks' )
-
-                null
-            ###
-            null
-
-        #result list
+         #result list
         updateMap : ( me, app_list, stack_list ) ->
 
             #init
@@ -335,26 +285,37 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
             null
 
-        #empty list
-        emptyListListener : ->
-
+        # get current region's app/stack list
+        getItemList : ( flag, region, result ) ->
             me = this
 
-            #get service(model)
-            ide_event.onListen 'RESULT_EMPTY_REGION_LIST', () ->
+            item_list = regions.region_name_group for regions in result when constant.REGION_SHORT_LABEL[ region ] == regions.region_group
 
-                console.log 'RESULT_EMPTY_REGION_LIST'
+            cur_item_list = []
+            _.map item_list, (value) ->
+                item = me.parseItemList(value, flag)
+                if item
+                    cur_item_list.push item
 
-                diff       = _.difference _.keys( constant.REGION_SHORT_LABEL ), region_aws_list
-                empty_list = _.map diff, ( value ) ->
-                    return { 'region_name' : value, 'region_city' : constant.REGION_SHORT_LABEL[ value ] }
+                    null
 
-                #set vo
-                me.set 'region_empty_list', empty_list
+            if cur_item_list
+                #sort
+                cur_item_list.sort (a,b) ->
+                    return if a.create_time <= b.create_time then 1 else -1
 
-                null
+                if flag == 'app'
+                    #difference
+                    if _.difference me.get('cur_app_list'), cur_item_list
+                        me.set 'cur_app_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_APP_LIST'
 
-            null
+                else if flag == 'stack'
+                    if _.difference me.get('cur_stack_list'), cur_item_list
+                        me.set 'cur_stack_list', cur_item_list
+                        me.trigger 'UPDATE_REGION_STACK_LIST'
+
+
 
         #region list
         describeAccountAttributesService : ()->
@@ -490,6 +451,23 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
+        updateAppList : (flag, app_id) ->
+            me = this
+
+            cur_app_list = me.get 'cur_app_list'
+
+            if flag is 'pending'
+                for item in cur_app_list
+                    if item.id == app_id
+                        idx = cur_app_list.indexOf item
+                        if idx>=0
+                            cur_app_list[idx].status = "pending"
+                            cur_app_list[idx].ispending = true
+
+                            me.set 'cur_app_list', cur_app_list
+                            #me.trigger 'UPDATE_REGION_APP_LIST'
+
+            null
 
     }
 

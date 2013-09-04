@@ -212,8 +212,11 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
 			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
 
-		subnets = asg.resource.VPCZoneIdentifier.split ","
-		subnets = _.map subnets, MC.extractID
+		if asg.resource.VPCZoneIdentifier.length
+			subnets = asg.resource.VPCZoneIdentifier.split ","
+			subnets = _.map subnets, MC.extractID
+		else
+			subnets = []
 
 		azs = {}
 		for sb in subnets

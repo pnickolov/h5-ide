@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], ( $, template, ide_event, MC ) ->
+define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ], ( $, template, ide_event, MC ) ->
 
     #private
     loadModule = () ->
@@ -21,23 +21,28 @@ define [ 'jquery', 'text!/module/design/canvas/template.html', 'event', 'MC' ], 
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'canvas:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
-                #check re-render
-                view.reRender template
-                #
-                if type is 'NEW_STACK'
-                    MC.canvas.layout.create {
-                        id       : tab_id
-                        name     : tab_name,
-                        region   : region_name,
-                        platform : current_platform
-                    }
-                else if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                    #compact components
-                    MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
 
-                    MC.canvas.layout.init()
-                    model.initLine()
-                    model.reDrawSgLine()
+                try
+                    #check re-render
+                    view.reRender template
+                    #
+                    if type is 'NEW_STACK'
+                        MC.canvas.layout.create {
+                            id       : tab_id
+                            name     : tab_name,
+                            region   : region_name,
+                            platform : current_platform
+                        }
+                    else if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                        #compact components
+                        MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                        MC.canvas.layout.init()
+                        model.initLine()
+                        model.reDrawSgLine()
+
+                catch error
+
                 #
                 #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null

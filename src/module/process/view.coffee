@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!/module/process/template.html',
+         'text!./template.html',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template ) ->
 

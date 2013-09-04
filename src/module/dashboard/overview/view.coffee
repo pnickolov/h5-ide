@@ -10,8 +10,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         el              : $( '#tab-content-dashboard' )
 
-        #template : Handlebars.compile $( '#overview-tmpl' ).html()
-
         overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
         global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
@@ -133,6 +131,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             tmpl = @region_resource @model.toJSON()
             $( this.el ).find('#region-resource-wrap').html tmpl
 
+        renderRecent: ->
+            $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
+            null
 
         renderRegionStatApp : ->
             null
@@ -143,6 +144,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         updateLoadTime: ( time ) ->
             @$el.find('#global-refresh span').text time
 
+
+        ############################################################################################
+
         renderMapResult : ->
             console.log 'dashboard overview-result render'
 
@@ -150,11 +154,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             $( this.el ).find('#global-region-spot').html cur_tmpl
 
-            null
-
-
-        renderRecent: ->
-            $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
         renderRecentLaunchedApp : ->
@@ -223,7 +222,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'dashboard delete stack'
-                
+
                 modal.close()
                 ide_event.trigger ide_event.DELETE_STACK, current_region, id, name
 
@@ -331,4 +330,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     }
 
-    return OverviewView
+    OverviewView

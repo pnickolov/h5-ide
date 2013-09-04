@@ -17,7 +17,7 @@ define [ 'event',
         showMain : ->
             console.log 'showMain'
             #
-            $("#waiting-bar-wrapper").removeClass "waiting-bar"
+            @toggleWaiting() if $( '#waiting-bar-wrapper' ).hasClass 'waiting-bar'
             #
             clearTimeout @delay if @delay
             #

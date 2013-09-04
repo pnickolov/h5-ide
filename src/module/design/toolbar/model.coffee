@@ -418,12 +418,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id = data.id
             name = data.name
 
+            #instance store ami check
             data.has_instance_store_ami = me.isInstanceStore data
+
+            #expand components
+            json_data = MC.forge.stack.expandServerGroup data
+
             if id.indexOf('stack-', 0) == 0   #save
-                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
 
             else    #new
-                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
+                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->
@@ -594,6 +599,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'STOPPED_APP', region
 
+                else
+                    # remove the app name from app_list
+                    if name in MC.data.app_list[region]
+                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
         reqHanle : (flag, id, name, req, dag) ->
             me = this
 
@@ -637,6 +647,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if flag is 'RUN_STACK'
                         flag_list.is_failed = true
                         flag_list.err_detail = req.data
+
+                        # remove the app name from app_list
+                        if name in MC.data.app_list[region]
+                            MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
                     else
                         me.setFlag id, 'STOPPED_APP', region
 
@@ -654,6 +669,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         when 'RUN_STACK'
                             flag_list.app_id = app_id
                             flag_list.is_done = true
+
+                            me.setFlag app_id, 'RUNNING_APP', region
 
                         when 'START_APP'
                             me.setFlag id, 'RUNNING_APP', region

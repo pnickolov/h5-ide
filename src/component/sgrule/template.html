@@ -24,7 +24,7 @@
         <div class="selection">initiate traffic to</div>
         <ul class="dropdown">
           <li class="item selected" data-id="out">initiate traffic to</li>
-          <li class="item" data-id="in">initiate traffic from</li>
+          <li class="item" data-id="in">accept traffic from</li>
           <li class="item" data-id="both">have 2-way traffic with</li>
         </ul>
       </div>
@@ -32,7 +32,7 @@
       {{else}}
 
       <div id="sg-create-sg-out">
-        <div class="sg-create-selection">{{sg_detail.elb_name}}</div>
+        <div class="sg-create-selection">{{sg_detail.[0].name}}</div>
       </div>
 
       <div id="sg-create-direction">
@@ -171,7 +171,7 @@
 
     {{#if isnt_classic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
-            <input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
+            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-all">
@@ -180,17 +180,17 @@
     {{/if}}
       </div>
     </section>
-
     <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
-    <!-- <button class="btn btn-silver sg-rule-create-add">Close</button> -->
   </section>
 
   <section class="sg-rule-create-done-wrap">
     <p id="sg-rule-create-msg"></p>
     <button class="btn btn-silver sg-rule-create-readd">Create another rule</button>
-
     <button class="btn btn-silver modal-close">Close</button>
   </section>
 </article>
-
 <aside class="sg-rule-create-sidebar"></aside>
+<!-- <section class="modal-footer">
+      <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
+      <button class="btn btn-silver modal-close">Close</button>
+</section> -->

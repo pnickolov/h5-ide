@@ -2,7 +2,8 @@
 #  View Mode for header module
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event' ], (Backbone, $, _, session_model, constant, ide_event) ->
+define [ 'backbone', 'jquery', 'underscore',
+         'session_model', 'constant', 'event', 'forge_handle' ], ( Backbone, $, _, session_model, constant, ide_event, forge_handle ) ->
 
     #ws = MC.data.websocket
 
@@ -14,6 +15,8 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
             'is_unread'     : null
             'in_dashboard'  : true
             'has_cred'      : true      # default has credential
+            'user_name'     : null
+            'user_email'    : null
 
         initialize : ->
 
@@ -28,18 +31,32 @@ define [ 'backbone', 'jquery', 'underscore', 'session_model', 'constant', 'event
                     result = forge_result.resolved_data
 
                 #delete cookies
-                $.cookie 'userid',      null, { expires: 0 }
-                $.cookie 'usercode',    null, { expires: 0 }
-                $.cookie 'session_id',  null, { expires: 0 }
-                $.cookie 'region_name', null, { expires: 0 }
-                $.cookie 'email',       null, { expires: 0 }
-                $.cookie 'has_cred',    null, { expires: 0 }
+                #$.cookie 'userid',      null, { expires: 0 }
+                #$.cookie 'usercode',    null, { expires: 0 }
+                #$.cookie 'session_id',  null, { expires: 0 }
+                #$.cookie 'region_name', null, { expires: 0 }
+                #$.cookie 'email',       null, { expires: 0 }
+                #$.cookie 'has_cred',    null, { expires: 0 }
+
+                #
+                forge_handle.cookie.deleteCookie()
+
+                #SSO
+                $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
 
                 #redirect to page login.html
                 window.location.href = 'login.html'
 
                 return false
 
+        getUserName : ->
+            console.log 'getUserName'
+            this.set 'user_name', MC.base64Decode $.cookie( 'usercode' )
+
+        getUserEmail : ->
+            this.set 'user_email', MC.base64Decode $.cookie( 'email' )
+
+            null
 
         getInfoList : () ->
             me = this

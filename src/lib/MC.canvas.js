@@ -72,6 +72,10 @@ MC.canvas = {
 			case 'color':
 				target.attr('style', 'fill:' + value);
 				break;
+
+			case 'tooltip'://add tooltip
+				target.addClass('tooltip').attr( id + '_' + key, value );
+				break;
 		}
 
 		return true;
@@ -82,7 +86,7 @@ MC.canvas = {
 		var comp_data = MC.canvas.data.get('component.' + uid),
 			comp_sg_list = [],
 			SG_list = MC.canvas_property.sg_list,
-			colors = [],
+			colors_label = [],
 			i = 0;
 
 		if (!comp_data) {
@@ -94,6 +98,7 @@ MC.canvas = {
 				comp_sg_list = comp_data.resource.SecurityGroupId;
 				break;
 			case 'AWS.ELB':
+			case 'AWS.AutoScaling.LaunchConfiguration':
 				comp_sg_list = comp_data.resource.SecurityGroups;
 				break;
 			case 'AWS.VPC.NetworkInterface':
@@ -109,20 +114,22 @@ MC.canvas = {
 			$.each(SG_list, function(i, SG_data)
 			{
 				if (SG_data.uid === SG_uid) {
-					colors.push("#" + SG_data.color);
+					colors_label.push({
+						color: "#" + SG_data.color,
+						name: SG_data.name
+					});
 					return false;
 				}
 			});
 		});
-		console.info(uid + ":" + colors);
 
 		while (i < MC.canvas.SG_MAX_NUM) {
-			if (i < colors.length && colors[i]) {
-				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors[i]);
-				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "node-sg-color-border");
+			if (i < colors_label.length && colors_label[i]) {
+				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors_label[i].color);
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", colors_label[i].name );
 			} else {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
-				$("#" + uid + "_" + "sg-color-label" + (i + 1)).attr("class", "");
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", "");
 				//show
 				//hide
 			}
@@ -166,6 +173,7 @@ MC.canvas = {
 	resize: function (target, type)
 	{
 		var canvas_size = MC.canvas.data.get("layout.size"),
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			key = target === 'width' ? 0 : 1,
 			value,
 			target_value;
@@ -226,14 +234,16 @@ MC.canvas = {
 			}
 		}
 
+		$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
 		$('#svg_canvas').attr({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
-		$('#canvas_container').css({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
+		$('#canvas_container, #canvas_body').css({
+			'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
 		MC.canvas.data.set("layout.size", canvas_size);
@@ -243,23 +253,31 @@ MC.canvas = {
 
 	zoomIn: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size');
+		var canvas_size = MC.canvas.data.get('layout.size'),
+			scale_ratio;
 
 		if (MC.canvas_property.SCALE_RATIO > 1)
 		{
 			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 - 2) / 10;
 
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+			scale_ratio = MC.canvas_property.SCALE_RATIO;
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
-				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+			});
+
+			$('#svg_canvas').attr({
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
 		}
 
-		if (MC.canvas_property.SCALE_RATIO === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
+		if (scale_ratio === 1 && $('#canvas_body').hasClass('canvas_zoomed'))
 		{
 			$('#canvas_body')
 				.removeClass('canvas_zoomed');
@@ -274,19 +292,27 @@ MC.canvas = {
 
 	zoomOut: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size');
+		var canvas_size = MC.canvas.data.get('layout.size'),
+			scale_ratio;
 
 		if (MC.canvas_property.SCALE_RATIO < 1.6)
 		{
 			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 + 2) / 10;
 
-			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] * MC.canvas_property.SCALE_RATIO + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1] * MC.canvas_property.SCALE_RATIO);
+			scale_ratio = MC.canvas_property.SCALE_RATIO;
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + MC.canvas_property.SCALE_RATIO + '.png")');
+			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
+
+			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
-				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / MC.canvas_property.SCALE_RATIO,
-				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
+			});
+
+			$('#svg_canvas').attr({
+				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
+				'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 			});
 		}
 
@@ -2388,10 +2414,7 @@ MC.canvas.volume = {
 					'left': event.pageX - 50
 				});
 
-			$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
-			{
-				return 'attachable ' + key;
-			});
+			Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
 
 			$(document).on({
 				'mousemove': MC.canvas.volume.mousemove,
@@ -2456,20 +2479,17 @@ MC.canvas.volume = {
 			target_component_type = target.data('component-type'),
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
-			volume_type,
-			target_id,
-			volume_id,
-			target_az,
+			original_node_volume_data,
 			target_volume_data,
+			original_node_id,
+			volume_type,
 			new_volume,
 			data_option,
-			original_node_id,
-			original_node_volume_data;
+			volume_id,
+			target_id,
+			target_az;
 
-		$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
-		{
-			return key.replace('attachable ', '');
-		});
+		Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').removeClass('attachable');
 
 		if (bubble_box[0])
 		{
@@ -2683,6 +2703,60 @@ MC.canvas.asgList = {
 	}
 };
 
+MC.canvas.instanceList = {
+	show: function (event)
+	{
+		if (event.which === 1)
+		{
+			MC.canvas.instanceList.close();
+
+			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
+			{
+				MC.canvas.select( this.id );
+
+				return false;
+			}
+
+			var target = this,
+				target_offset = Canvon(target).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			$('#canvas_container').append( MC.template.instanceList() );
+
+			$('#instanceList-wrap')
+				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
+				});
+
+			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
+
+			return false;
+		}
+	},
+
+	close: function ()
+	{
+		$('#instanceList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#instanceList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
 MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
@@ -2747,10 +2821,7 @@ MC.canvas.event.dragable = {
 				{
 					if (item !== 'AWS.AutoScaling.Group' && item !== 'Canvas')
 					{
-						$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-						{
-							return 'dropable-group ' + key;
-						});
+						Canvon('.' + item.replace(/\./ig, '-')).addClass('dropable-group');
 					}
 				});
 			}
@@ -3135,7 +3206,11 @@ MC.canvas.event.dragable = {
 						MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 
 						// Re-draw group connection
-						if (node_data.type === 'AWS.VPC.Subnet' || child_type === 'node' || node_data.type === 'AWS.AutoScaling.Group')
+						if (
+							node_data.type === 'AWS.VPC.Subnet' ||
+							 node_data.type === 'AWS.AutoScaling.Group' ||
+							child_type === 'node'
+						)
 						{
 							$.each(node_data.connection, function (i, data)
 							{
@@ -3236,10 +3311,7 @@ MC.canvas.event.dragable = {
 
 		$('#overlayer').remove();
 
-		$('.dropable-group').attr('class', function (index, key)
-		{
-			return key.replace('dropable-group ', '');
-		});
+		Canvon('.dropable-group').removeClass('dropable-group');
 
 		$(document).off({
 			'mousemove': MC.canvas.event.dragable.mousemove,
@@ -3308,10 +3380,7 @@ MC.canvas.event.dragable = {
 
 		MC.canvas.select(target_id);
 
-		$('.dropable-group').attr('class', function (index, key)
-		{
-			return key.replace('dropable-group ', '');
-		});
+		Canvon('.dropable-group').removeClass('dropable-group');
 
 		event.data.shadow.remove();
 
@@ -3371,10 +3440,7 @@ MC.canvas.event.dragable = {
 			}
 		}
 
-		$('.dropable-group').attr('class', function (index, key)
-		{
-			return key.replace('dropable-group ', '');
-		});
+		Canvon('.dropable-group').removeClass('dropable-group');
 
 		event.data.shadow.remove();
 
@@ -3700,7 +3766,7 @@ MC.canvas.event.drawConnection = {
 			to_node = $(match_node);
 
 			if (
-				from_node.data('class') === 'AWS.EC2.Instance' &&
+				$.inArray(from_node.data('class'), ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1 &&
 				to_node.data('class') === 'AWS.ELB'
 			)
 			{
@@ -3813,10 +3879,7 @@ MC.canvas.event.siderbarDrag = {
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
-				$('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').attr('class', function (index, key)
-				{
-					return 'attachable ' + key;
-				});
+				Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
 
 				shadow.addClass('AWS-EC2-EBS-Volume');
 
@@ -3840,10 +3903,7 @@ MC.canvas.event.siderbarDrag = {
 					{
 						if (item !== 'Canvas')
 						{
-							$('.' + item.replace(/\./ig, '-')).attr('class', function (i, key)
-							{
-								return 'dropable-group ' + key;
-							});
+							Canvon('.' + item.replace(/\./ig, '-')).addClass('dropable-group');
 						}
 					});
 				}
@@ -4048,10 +4108,7 @@ MC.canvas.event.siderbarDrag = {
 			event.data.shadow.remove();
 		}
 
-		$('.dropable-group').attr('class', function (index, key)
-		{
-			return key.replace('dropable-group ', '');
-		});
+		Canvon('.dropable-group').removeClass('dropable-group');
 
 		$('#overlayer').remove();
 

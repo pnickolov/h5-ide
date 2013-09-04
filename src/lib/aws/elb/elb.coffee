@@ -13,7 +13,12 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		allComp = MC.canvas_data.component
 		vpcUIDRef = elbComp.resource.VpcId
-		if !vpcUIDRef
+
+		defaultVPC = false
+		if MC.aws.aws.checkDefaultVPC()
+			defaultVPC = true
+
+		if !vpcUIDRef and !defaultVPC
 			MC.canvas_data.component[uid].resource.Scheme = ''
 
 		# have igw ?
@@ -26,7 +31,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		# create elb default sg
 
-		if MC.aws.vpc.getVPCUID()
+		if MC.aws.vpc.getVPCUID() or defaultVPC
 			sgComp = $.extend(true, {}, MC.canvas.SG_JSON.data)
 			sgComp.uid = MC.guid()
 			sgComp.name = newELBName + '-sg'
@@ -204,8 +209,8 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if not asg
 			return []
 
-		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) isnt -1
-			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerNames"
+		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
+			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
 
 		subnets = asg.resource.VPCZoneIdentifier.split ","
 		subnets = _.map subnets, MC.extractID
@@ -230,6 +235,14 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		# Returns subnets that should linked to the elb
 		subnets
+
+	removeASGFromELB = ( elb_uid, asg_uid ) ->
+		asg = MC.canvas_data.component[ asg_uid]
+		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerName", "")
+		asg.resource.LoadBalancerNames = if names.length is 0 then [] else names.split(" ")
+
+		null
+
 
 	updateRuleToElbSG = (elbUID) ->
 
@@ -383,6 +396,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 	addSubnetToELB            : addSubnetToELB
 	removeSubnetFromELB       : removeSubnetFromELB
 	addLCToELB                : addLCToELB
+	removeASGFromELB           :removeASGFromELB
 	getNewName                : getNewName
 	getElbDefaultSG           : getElbDefaultSG
 	updateRuleToElbSG         : updateRuleToElbSG

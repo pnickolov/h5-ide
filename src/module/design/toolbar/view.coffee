@@ -132,7 +132,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
 
             else if name.indexOf(' ') >= 0
-                notification 'warning', 'stack name contains white space.'
+                notification 'warning', 'Stack name contains white space.'
 
             else if not MC.aws.aws.checkStackName id, name
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
@@ -175,7 +175,7 @@ define [ 'MC', 'event',
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'stack name contains white space.'
+                    notification 'warning', 'Stack name contains white space.'
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else

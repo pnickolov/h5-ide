@@ -80,11 +80,23 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                     #sort ami list
                     ami_list.sort (a, b) ->
-                        return if a.osType >= b.osType then 1 else -1
+                        if a.osType > b.osType
+                            return 1
+                        else if a.osType < b.osType
+                            return -1
+                        else
+                            return if a.architecture >= b.architecture then 1 else -1
+
+                    # filter nat ami when in classic style
+                    quickstart_amis = []
+                    if MC.canvas_data.platform is 'ec2-classic'
+                        quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
+                    else
+                        quickstart_amis =  ami_list
 
                     console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
                     if region_name == MC.canvas.data.get('region')
-                        me.set 'quickstart_ami', ami_list
+                        me.set 'quickstart_ami', quickstart_amis
 
                     #cache config data for current region
                     MC.data.config[region_name].ami                 = result.resolved_data.ami
@@ -224,8 +236,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     #cache favorite ami item to MC.data.dict_ami
 
 
-                    value.resource_info.instanceType = me._getInstanceType value.resource_info
-                    MC.data.dict_ami[value.resource_info.imageId] = value.resource_info
+                    value.resource_info.instanceType    = me._getInstanceType value.resource_info
+                    value.resource_info.imageId         = value.resource_id
+                    MC.data.dict_ami[value.resource_id] = value.resource_info
 
                     null
 
@@ -249,9 +262,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'Add AMI to favorite succeed'
+                    notification 'info', 'AMI is added to Favorite AMI'
                 else
-                    notification 'error', 'Add AMI to favorite failed'
+                    notification 'error', 'Failed to add AMI to Favorite'
                 null
 
             #listen FAVORITE_REMOVE_RETURN
@@ -262,9 +275,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'Remove AMI to favorite succeed'
+                    notification 'info', 'AMI is removed from Favorite AMI'
                 else
-                    notification 'error', 'Remove AMI to favorite succeed'
+                    notification 'error', 'Failed to remove AMI from Favorite'
 
 
                 null
@@ -397,7 +410,16 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             #check cached data
             if (MC.data.config[region_name] and MC.data.config[region_name].ami_list )
 
-                me.set 'quickstart_ami', MC.data.config[region_name].ami_list
+                ami_list = MC.data.config[region_name].ami_list
+
+                # filter nat ami when in classic style
+                quickstart_amis = []
+                if MC.canvas_data.platform is 'ec2-classic'
+                    quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
+                else
+                    quickstart_amis =  ami_list
+
+                me.set 'quickstart_ami', quickstart_amis
 
                 #get my AMI
                 me.myAmiService region_name
@@ -459,7 +481,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             if stack_ami_list.length !=0
                 ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
 
-        describeCommunityAmiService : ( region_name, name, platform, architecture, rootDeviceType, perPageNum, returnPage ) ->
+        describeCommunityAmiService : ( region_name, name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage ) ->
 
             me = this
 
@@ -475,6 +497,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 ami : {
                     name            :   name
                     platform        :   platform
+                    isPublic        :   isPublic
                     architecture    :   architecture
                     rootDeviceType  :   rootDeviceType
                     perPageNum      :   parseInt(perPageNum, 10)
@@ -492,53 +515,6 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
 
             null
-            #        _.map result.resolved_data.ami, ( value, key ) ->
-            #             if value.isPublic == 'true' then value.isPublic = 'public' else value.isPublic = 'private'
-            #             if value.architecture == 'x86_64' then value.architecture = '64-bit' else value.architecture = '32-bit'
-            #             if value.rootDeviceType == 'ebs' then value.rootDeviceType = 'ebs' else value.rootDeviceType = 'instancestore'
-
-            #             if value.name == undefined or value.name == null
-            #                 value.name = 'None'
-            #             low_case_name = value.name.toLowerCase()
-            #             if 'ubuntu' in low_case_name
-            #                 value.platform = 'ubuntu'
-            #             else if 'centos' in low_case_name
-            #                 value.platform = 'centos'
-            #             else if 'redhat' in low_case_name
-            #                 value.platform = 'redhat'
-            #             else if 'windows' in low_case_name
-            #                 value.platform = 'windows'
-            #             else if 'suse' in low_case_name
-            #                 value.platform = 'suse'
-            #             else if 'amazonlinux' in low_case_name
-            #                 value.platform = 'amazonlinux'
-            #             else if 'fedora' in low_case_name
-            #                 value.platform = 'fedora'
-            #             else if 'gentoo' in low_case_name
-            #                 value.platform = 'gentoo'
-            #             else if 'debian' in low_case_name
-            #                 value.platform = 'debian'
-            #             else
-            #                 value.platform = 'otherlinux'
-
-            #             value.id = key
-            #             value.instance_type = me._getInstanceType value
-
-            #             _.map value, ( val, k ) ->
-
-            #                 if val == ''
-            #                     value[k] = 'None'
-
-            #                 null
-
-            #             ami_list.push value
-
-            #         community_ami[region_name] = ami_list
-            #         me.set 'community_ami', ami_list
-            #         null
-
-            # else
-            #     me.set 'community_ami', community_ami[region_name]
 
         #call service
         favoriteAmiService : ( region_name ) ->
@@ -677,6 +653,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             #
             @set 'check_required_service_count', @service_count
             #
+            MC.data.resouceapi.push name
             null
 
 

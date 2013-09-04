@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130902
+#* Date: 20130904
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -440,7 +440,7 @@ var scrollbar = {
 				}
 				else
 				{
-					return false;
+					return true;
 				}
 			}
 		}

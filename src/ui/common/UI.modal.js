@@ -26,16 +26,17 @@ var modal = function (template, dismiss, callback)
 
 	if (dismiss === true)
 	{
-		$(document)
-			.on('click', modal.dismiss)
+		$("#modal-wrap")
+			.on('click', modal.dismiss);
+		$("#modal-box")
 			.on('keyup', modal.keyup);
 	}
 
 	$(window).on('resize', modal.position);
 
-	$('#wrapper').addClass('blur-effect');
+	// $('#wrapper').addClass('blur-effect');
 
-	$(document)
+	$("#modal-box")
 		.on('click', '.modal-close', modal.close)
 		.on('mousedown', '.modal-header', modal.drag.mousedown);
 
@@ -75,9 +76,11 @@ modal.keyup = function (event)
 	if (event.which === 27)
 	{
 		modal.close();
-		$(document)
-			.off('click', modal.dismiss)
-			.off('keyup', modal.keyup);
+	} else if ( event.which == 13 ) {
+		var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")
+		if ( btns.length == 1 ) {
+			btns.click()
+		}
 	}
 
 	return false;
@@ -88,25 +91,22 @@ modal.dismiss = function (event)
 	if (event.target.id === 'modal-wrap')
 	{
 		modal.close();
-		$(document)
-			.off('click', modal.dismiss)
-			.off('keyup', modal.keyup);
 	}
 
-	return false;
+	return true;
 };
 
 modal.close = function ()
 {
 	$(window).off('resize', modal.position);
 
-	$('#wrapper').removeClass('blur-effect');
+	// $('#wrapper').removeClass('blur-effect');
 
-	$(document)
-		.off('click', '.modal-close', modal.close)
-		.off('mousedown', '.modal-header', modal.drag.mousedown)
-		.off('click', modal.dismiss)
-		.off('keyup', modal.keyup);
+	// $(document)
+	// 	.off('click', '.modal-close', modal.close)
+	// 	.off('mousedown', '.modal-header', modal.drag.mousedown)
+	// 	.off('click', modal.dismiss)
+	// 	.off('keyup', modal.keyup);
 
 	$('#modal-wrap')
 		.trigger('closed')

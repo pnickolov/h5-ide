@@ -87,7 +87,7 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'UI.tabbar', '
                     stack_type: platform,
                     stack_region: view.temp_region_name
                 #tabbar api
-                Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled
+                Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
                 #MC.data.untitled ++
                 MC.data.untitled = MC.data.untitled + 1
                 #
@@ -107,7 +107,7 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'UI.tabbar', '
                 console.log model.get 'tab_name'
                 console.log tab_id
                 #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
                 #

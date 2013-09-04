@@ -65,6 +65,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     if component.name == "DefaultACL"
                         defaultACLIdx = networkACLs.length
 
+                    if component.resource.AssociationSet.length isnt 0
+                        acl.isUsed = true
+
+                    if component.name == "DefaultACL"
+                        acl.isUsed = true
+                        defaultACLIdx = networkACLs.length
+
                     networkACLs.push acl
 
             if defaultACLIdx == -1

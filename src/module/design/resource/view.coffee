@@ -22,37 +22,21 @@ define [ 'event',
 
 
         initialize : ->
-            #listen
-            #$( window   ).on 'resize', fixedaccordion.resize
-            #$( document ).on 'ready',  toggleicon.init
-            #$( document ).on 'ready',  searchbar.init
-            #$( document ).on 'ready',  selectbox.init
-            #$( document ).on 'ready',  radiobuttons.init
-            ###
-            $( document ).delegate '#hide-resource-panel', 'click',         this.toggleResourcePanel
-            $( document ).delegate '#resource-select',     'OPTION_CHANGE', this, this.resourceSelectEvent
-            $( document ).delegate '#resource-panel',     'SEARCHBAR_SHOW', this.searchBarShowEvent
-            $( document ).delegate '#resource-panel',     'SEARCHBAR_HIDE', this.searchBarHideEvent
-            $( document ).delegate '#resource-panel',   'SEARCHBAR_CHANGE', this.searchBarChangeEvent
-            $( document ).delegate '#btn-browse-community-ami',   'click' , this, this.openBrowseCommunityAMIsModal
-            $( document ).delegate '#btn-search-ami',   'click'  , this, this.searchCommunityAmi
-            $( document ).delegate '#community_ami_page_preview',   'click'  , this, this.searchCommunityAmiPreview
-            $( document ).delegate '#community_ami_page_next',   'click'  , this, this.searchCommunityAmiNext
-            ###
 
             #listen
             $( document )
-                .on( 'click',            '#hide-resource-panel',              this.toggleResourcePanel )
-                .on( 'OPTION_CHANGE',    '#resource-select',            this, this.resourceSelectEvent )
-                .on( 'SEARCHBAR_SHOW',   '#resource-select',                  this.searchBarShowEvent )
-                .on( 'SEARCHBAR_HIDE',   '#resource-select',                  this.searchBarHideEvent )
-                .on( 'SEARCHBAR_CHANGE', '#resource-select',                  this.searchBarChangeEvent )
-                .on( 'click',            '#btn-browse-community-ami',   this, this.openBrowseCommunityAMIsModal )
-                .on( 'click',            '#btn-search-ami',             this, this.searchCommunityAmiCurrent )
-                .on( 'click',            '#community_ami_page_preview', this, this.searchCommunityAmiPreview )
-                .on( 'click',            '#community_ami_page_next',    this, this.searchCommunityAmiNext )
-                .on( 'click',            '#community_ami_table .toggle-fav',                 this, this.toggleFav )
-                .on( 'click',            '.favorite-ami-list .faved', this, this.removeFav )
+                .on( 'click',            '#hide-resource-panel',                      this.toggleResourcePanel )
+                .on( 'OPTION_CHANGE',    '#resource-select',                    this, this.resourceSelectEvent )
+                .on( 'SEARCHBAR_SHOW',   '#resource-select',                          this.searchBarShowEvent )
+                .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
+                .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
+                .on( 'click',            '#btn-browse-community-ami',           this, this.openBrowseCommunityAMIsModal )
+                .on( 'click',            '#btn-search-ami',                     this, this.searchCommunityAmiCurrent )
+                .on( 'click',            '#community_ami_page_preview',         this, this.searchCommunityAmiPreview )
+                .on( 'click',            '#community_ami_page_next',            this, this.searchCommunityAmiNext )
+                .on( 'click',            '#community_ami_table .toggle-fav',    this, this.toggleFav )
+                .on( 'click',            '.favorite-ami-list .faved',           this, this.removeFav )
+                .on( 'keypress',         '#community-ami-input',                this, this.searchCommunityAmiCurrent)
 
             $( window ).on "resize", _.bind( this.resizeAccordion, this )
             $( "#tab-content-design" ).on "click", ".fixedaccordion-head", this.updateAccordion
@@ -283,7 +267,8 @@ define [ 'event',
             #
             require [ 'component/amis/main' ], ( amis_main ) ->
                 amis_main.loadModule()
-                resourceView.searchCommunityAmi {data: resourceView}
+                resourceView.searchCommunityAmi()
+                #resourceView.searchCommunityAmiCurrent {data : resourceView}
 
         # todo
         communityShowLoading: () ->
@@ -324,7 +309,7 @@ define [ 'event',
                 paged: ((current_page, max_page) ->
                     (page) ->
                         if page isnt current_page and max_page >= page > 0
-                            resourceView.searchCommunityAmi {data: resourceView}, page
+                            resourceView.searchCommunityAmi page
                     )(current_page, max_page)
 
             })
@@ -337,12 +322,12 @@ define [ 'event',
                 this_tr = ""
                 _.map this.model.attributes.community_ami.result, ( value, key ) ->
                     fav_class = if value.favorite then 'faved' else ''
-                    bit = '64'
-                    if value.architecture == 'i386' then bit = '32'
+                    bit         = if value.architecture == 'i386' then '32' else '64'
+                    visibility  = if value.isPublic then 'public' else 'private'
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
-                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="add to Favorite" data-id="'+key+'"></div></td>'
+                    this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
-                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>public | '+value.architecture+' | '+value.rootDeviceType+'</span></div></td>'
+                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"
                     # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
                     #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
@@ -392,95 +377,65 @@ define [ 'event',
             $list = $( '.resource-vpc-list' ).html this.resource_vpc_tmpl data
             $list.toggle $list.children().length > 0
 
-        searchCommunityAmi : ( event, pageNum) ->
+        searchCommunityAmi : ( pageNum ) ->
+            me = this
             if not pageNum
                 pageNum = 1
 
-            resourceView = event.data
-            resourceView.communityShowLoading()
+            #resourceView = event.data
+            me.communityShowLoading()
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, pageNum
+            name            = $('#community-ami-input').val()
+            platform        = $('#selectbox-ami-platform').find('.selected').data('id')
+
+            isPublic        = 'true'
+            architecture    = '32-bit'
+            rootDeviceType  = 'EBS'
+            if $('#filter-ami-type').find('.active').length is 1
+                visibility      = radiobuttons.data($('#filter-ami-type'))
+                isPublic = if visibility is 'Private' then 'false' else 'true'
+            else if $('#filter-ami-type').find('.active').length is 2
+                isPublic = null
+
+            if $('#filter-ami-32bit-64bit').find('.active').length is 1
+                architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
+            else if $('#filter-ami-32bit-64bit').find('.active').length is 2
+                architecture = null
+
+            if $('#filter-ami-EBS-Instance').find('.active').length is 1
+                rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
+            else if $('#filter-ami-EBS-Instance').find('.active').length is 2
+                rootDeviceType = null
+
+            me.trigger 'LOADING_COMMUNITY_AMI' , MC.canvas_data.region, name, platform, isPublic, architecture, rootDeviceType, null, pageNum
+
+            #event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, pageNum
 
 
         searchCommunityAmiCurrent : ( event ) ->
-            resourceView = event.data
-            resourceView.communityShowLoading()
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 0
+            #check enter key
+            if event.keyCode and event.keyCode isnt 13
+                return
+
+            resourceView = event.data
+            event.data.searchCommunityAmi 0
 
         searchCommunityAmiNext : ( event ) ->
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, 1
+            resourceView = event.data
+
+            page = parseInt $('#community_ami_page_current').attr("page"), 10
+
+            resourceView.searchCommunityAmi page + 1
 
         searchCommunityAmiPreview : ( event ) ->
 
-            event.data.trigger 'LOADING_COMMUNITY_AMI', event.data.region, -1
+            resourceView = event.data
 
-            # modal(MC.template.browseCommunityAmi(this.model.attributes), false)
-            # $($('#selectbox-ami-platform').find('.selection')[0]).html($($('#selectbox-ami-platform').find('.selected')[0]).html())
-            # $('#community-ami-input').on 'keyup', (event)->
-            #     filter.update $('#community-ami-filter'), {
-            #         value: $(this).val()
-            #         type:{
-            #             publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-            #             platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-            #         }
-            #     }
+            page = parseInt $('#community_ami_page_current').attr("page"), 10
 
-            # $('#filter-ami-public-private').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
-
-            #         result_set = {
-            #             value:$('#community-ami-input').val()
-            #             type:{
-            #                 publicprivate:cur_radion
-            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data 'id'
-            #             }
-            #         }
-
-            #         filter.update($('#community-ami-filter'), result_set)
-
-            # $('#filter-ami-EBS-Instance').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
-
-            #         result_set = {
-            #             value:$('#community-ami-input').val(),
-            #             type:{
-            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-            #                 ebs: cur_radion
-            #                 bit: radiobuttons.data($('#filter-ami-32bit-64bit'))
-            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-            #             }
-            #         }
-
-            #         filter.update($('#community-ami-filter'), result_set)
-
-            # $('#filter-ami-32bit-64bit').on 'RADIOBTNS_CLICK', (event, cur_radion) ->
-            #         result_set = {
-            #             value:$('#community-ami-input').val()
-            #             type:{
-            #                 publicprivate: radiobuttons.data($('#filter-ami-public-private'))
-            #                 ebs: radiobuttons.data($('#filter-ami-EBS-Instance'))
-            #                 bit: cur_radion
-            #                 platform: $($('#selectbox-ami-platform').find('.selected a')[0]).data('id')
-            #             }
-            #         }
-            #         filter.update($('#community-ami-filter'), result_set)
-
-            # $('#selectbox-ami-platform').on 'OPTION_CHANGE', (event, id) ->
-            #     result_set = {
-            #         value:$('#community-ami-input').val(),
-            #         type:{
-            #             publicprivate: radiobuttons.data($('#filter-ami-public-private')),
-            #             ebs: radiobuttons.data($('#filter-ami-EBS-Instance')),
-            #             bit: radiobuttons.data($('#filter-ami-32bit-64bit')),
-            #             platform: id
-            #         } }
-
-            #     filter.update($('#community-ami-filter'), result_set)
-            null
+            resourceView.searchCommunityAmi page - 1
 
         enableItem  : ( type, filterFunc ) ->
             this.toggleItem type, filterFunc, true

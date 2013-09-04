@@ -504,14 +504,15 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				asg_comp = MC.canvas_data.component[ layout_data.originalId ]
 				vpcs = asg_comp.resource.VPCZoneIdentifier.split " , "
 				for subnet, i in vpcs
-					if subnet.indexOf layout_data.groupUId
+					if subnet.indexOf( layout_data.groupUId ) != -1
 						vpcs.splice i, 1
 						break
 				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
 				return
 
+
 			# Ask user to comfirm the delete operation
-			if not force
+			if not force and asg_comp.resource.LaunchConfigurationName.length
 				return sprintf lang.ide.CVS_CFM_DEL_ASG, component.name
 
 			###################################
@@ -845,6 +846,24 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
 				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
 
+			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
+
+				lc_uid  = portMap['launchconfig-sg']
+				lc = MC.canvas_data.layout.component.node[lc_uid]
+				if lc
+					asg_uid = lc.groupUId
+				else
+					asg_uid = MC.canvas_data.layout.component.group[lc_uid].originalId
+
+				elb_uid = portMap['elb-sg-out']
+
+				MC.aws.elb.removeASGFromELB elb_uid, asg_uid
+
+				# Disconnect ASG Expand
+				for uid, connection of MC.canvas_data.layout.connection
+					if connection.type is "association" and connection.target[ asg_uid ] and connection.target[ elb_uid ]
+						MC.canvas.remove $("#" + uid)[0]
+
 			# Eni <==> Instance
 			else if portMap['instance-attach'] and portMap['eni-attach']
 				# Hide Eni Number
@@ -1177,9 +1196,18 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 					break
 
 			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
-				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], portMap['launchconfig-sg']
+				lc_uid = portMap['launchconfig-sg']
+
+				linkedSubnets = MC.aws.elb.addLCToELB portMap['elb-sg-out'], lc_uid
 				for sb in linkedSubnets
 					MC.canvas.connect portMap['elb-sg-out'], "elb-assoc", sb, "subnet-assoc-in"
+
+				asg_uid = MC.canvas_data.layout.component.node[lc_uid].groupUId
+
+				# Link ASG Expand
+				for uid, group of MC.canvas_data.layout.component.group
+					if group.originalId is asg_uid
+						MC.canvas.connect portMap['elb-sg-out'], "elb-sg-out", uid, "launchconfig-sg"
 
 			# Instance <==> Eni
 			else if portMap['instance-attach'] and portMap['eni-attach']
@@ -1845,29 +1873,39 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# 	MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
 		setEip : ( uid, state ) ->
-			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-				if state == 'on'
+			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+				@setEipClassic uid, state
+
+			else
+				@setEipVPC uid, state
+
+		setEipClassic : ( uid, state ) ->
+			if state == 'on'
 					for comp_uid, comp of MC.canvas_data.component
-						if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP or MC.extractID( comp.resource.InstanceId ) isnt uid
-							delete 	MC.canvas_data.component[comp_uid]
+						if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and MC.extractID( comp.resource.InstanceId ) is uid
+							delete MC.canvas_data.component[comp_uid]
 							break
 
-				else if state == 'off'
+					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+					MC.canvas.update uid,'eip','eip_status', 'off'
 
-					eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
-					eip_json.uid = MC.guid()
-					eip_json.resource.InstanceId = "@#{uid}.resource.InstanceId"
+			else if state == 'off'
 
-					data = MC.canvas.data.get('component')
-					data[ eip_json.uid ] = eip_json
-					MC.canvas.data.set('component', data)
+				eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+				eip_json.uid = MC.guid()
+				eip_json.resource.InstanceId = "@#{uid}.resource.InstanceId"
 
-				return
+				data = MC.canvas.data.get('component')
+				data[ eip_json.uid ] = eip_json
+				MC.canvas.data.set('component', data)
+
+				MC.canvas.update uid, 'image', 'eip_status', MC.canvas.IMAGE.EIP_ON
+				MC.canvas.update uid, 'eip',   'eip_status', 'on'
 
 
-			## ## ## ## ## ##
-			# For VPC stack
+		setEipVPC : ( uid, state ) ->
+
 			existing_eip_ref = []
 			instanceId = ""
 
@@ -1930,8 +1968,14 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 				MC.canvas.update uid,'eip','eip_status', 'on'
 
-				# Ask the user the add IGW
-				this.askToAddIGW 'Elastic IP'
+
+				defaultVPC = false
+				if MC.aws.aws.checkDefaultVPC()
+					defaultVPC = true
+
+				if !defaultVPC
+					# Ask the user the add IGW
+					this.askToAddIGW 'Elastic IP'
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
@@ -1969,26 +2013,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			$("#canvas-op-confirm").one "click", ()->
 				modal.close()
 
-				# THIS PIECE OF CODE SHOULD NOT EXIST HERE.
-				# BECAUSE THE MODEL DON'T CARE HOW TO CREATE A IGW
-
-				vpc_id   = $('.AWS-VPC-VPC').attr 'id'
-				vpc_data = MC.canvas.data.get "layout.component.group.#{vpc_id}"
-				vpc_coor = vpc_data.coordinate
-
-				component_size = MC.canvas.COMPONENT_SIZE[ resource_type.AWS_VPC_InternetGateway ]
-
-				node_option =
-					groupUId : vpc_id
-					name     : "IGW"
-
-				coordinate =
-					x : vpc_coor[0] - component_size[1] / 2
-					y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
-
-				MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
-
-
+				# modify by song
+				MC.aws.igw.addIGWToCanvas()
 
 		zoomedDropError : () ->
 

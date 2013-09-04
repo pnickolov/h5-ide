@@ -1,5 +1,9 @@
-define ['MC',
-		'lib/forge/stack'], (MC, forge_handler_stack) ->
+define [ 'MC',
+		'lib/forge/stack'
+		'lib/forge/cookie'
+], ( MC, forge_handler_stack, cookie ) ->
+
 	MC.forge = {
-		stack: forge_handler_stack
+		stack  : forge_handler_stack
+		cookie : cookie
 	}

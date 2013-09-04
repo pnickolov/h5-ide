@@ -45,29 +45,30 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 define [ 'jquery', 'handlebars',
          'MC', 'session_model',
          'i18n!/nls/lang.js',
-         'text!./js/login/template.html'
-], ( $, Handlebars, MC, session_model, lang, template ) ->
+         'text!./js/login/template.html',
+         'forge_handle'
+], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
 
 
-	setMadeiracloudIDESessionID = ( result ) ->
-
-		madeiracloud_ide_session_id = [
-			result.userid,
-			result.usercode,
-			result.session_id,
-			result.region_name,
-			result.email,
-			result.has_cred,
-			result.account_id
-		]
-
-		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
-			path: '/',
-			#domain: '.madeiracloud.com', #temp comment
-			expires: 1
-		}
-
-		null
+	#setMadeiracloudIDESessionID = ( result ) ->
+	#
+	#	madeiracloud_ide_session_id = [
+	#		result.userid,
+	#		result.usercode,
+	#		result.session_id,
+	#		result.region_name,
+	#		result.email,
+	#		result.has_cred,
+	#		result.account_id
+	#	]
+	#
+	#	$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
+	#		path: '/',
+	#		#domain: '.madeiracloud.com', #temp comment
+	#		expires: 1
+	#	}
+	#
+	#	null
 
 	#private method
 	MC.login = ( event ) ->
@@ -98,17 +99,11 @@ define [ 'jquery', 'handlebars',
 				result = forge_result.resolved_data
 
 				#set cookies
-				$.cookie 'userid',      result.userid,      { expires: 1 }
-				$.cookie 'usercode',    result.usercode,    { expires: 1 }
-				$.cookie 'session_id',  result.session_id,  { expires: 1 }
-				$.cookie 'region_name', result.region_name, { expires: 1 }
-				$.cookie 'email',       result.email,       { expires: 1 }
-				$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
-				$.cookie 'username',    username,           { expires: 1 }
-				$.cookie 'account_id',	result.account_id,  { expires: 1 }
+				forge_handle.cookie.setCookie result
 
 				#set madeiracloud_ide_session_id
-				setMadeiracloudIDESessionID result
+				#setMadeiracloudIDESessionID result
+				forge_handle.cookie.setIDECookie result
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'
@@ -136,4 +131,6 @@ define [ 'jquery', 'handlebars',
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )
-		$( '#footer-push' ).html 'version ' + version
+		$( '#footer' ).text 'version ' + version
+
+		return true

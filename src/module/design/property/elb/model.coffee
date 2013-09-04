@@ -15,6 +15,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             'uid'       :   null
             'is_elb'    :   true
             'server_cert' : null
+            'have_vpc' : null
 
         init : ( uid ) ->
 
@@ -97,7 +98,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             if MC.aws.vpc.getVPCUID()
                 this.set 'az_detail', null
-                return
+                # return
 
             #AZ & Instance Info
             azObj = {}
@@ -122,40 +123,52 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     azObj[azName]++
                 null
 
-            azAry = MC.canvas_data.component[uid].resource.AvailabilityZones
-            _.each azObj, (value, key) ->
-                obj = {}
-                obj[key] = value
+            defaultVPC = false
+            if MC.aws.aws.checkDefaultVPC()
+                defaultVPC = true
 
-                selected = (key in azAry)
+            # have az ##################################################################
+            if !MC.canvas_data.component[uid].resource.VpcId
+                azAry = MC.canvas_data.component[uid].resource.AvailabilityZones
+                _.each azObj, (value, key) ->
+                    obj = {}
+                    obj[key] = value
 
-                # keep az name to short name
-                # us-east-1a -> US East 1a
+                    selected = (key in azAry)
 
-                keyAry = key.split('-')
-                keyAry[0] = keyAry[0].toUpperCase()
-                keyAry[1] = keyAry[1][0].toUpperCase() + keyAry[1].slice(1)
-                keyStr = keyAry.join(' ')
+                    # keep az name to short name
+                    # us-east-1a -> US East 1a
 
-                disable_selected = MC.aws.elb.haveAssociateInAZ(uid, key)
+                    keyAry = key.split('-')
+                    keyAry[0] = keyAry[0].toUpperCase()
+                    keyAry[1] = keyAry[1][0].toUpperCase() + keyAry[1].slice(1)
+                    keyStr = keyAry.join(' ')
 
-                azObjAry.push({
-                    az_name: keyStr,
-                    az_inner_name: key,
-                    disable_selected: disable_selected,
-                    instance_num: value,
-                    selected: selected
-                })
-                null
+                    disable_selected = MC.aws.elb.haveAssociateInAZ(uid, key)
 
-            azObjAry.sort (obj1, obj2) ->
-                key1 = obj1.az_name
-                length1 = key1.length
-                key2 = obj2.az_name
-                length2 = key2.length
-                return key1.slice(length1) - key2.slice(length2)
+                    azObjAry.push({
+                        az_name: keyStr,
+                        az_inner_name: key,
+                        disable_selected: disable_selected,
+                        instance_num: value,
+                        selected: selected
+                    })
+                    null
 
-            this.set 'az_detail', azObjAry
+                azObjAry.sort (obj1, obj2) ->
+                    key1 = obj1.az_name
+                    length1 = key1.length
+                    key2 = obj2.az_name
+                    length2 = key2.length
+                    return key1.slice(length1) - key2.slice(length2)
+
+                this.set 'az_detail', azObjAry
+            # have az ##################################################################
+
+            if defaultVPC or MC.canvas_data.component[uid].resource.VpcId
+                this.set 'have_vpc', true
+            else
+                this.set 'have_vpc', false
 
             null
 
@@ -192,6 +205,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 component.resource.Scheme = 'internal'
             else
                 component.resource.Scheme = 'internet-facing'
+
+            if value is 'internal'
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+                MC.canvas.display(uid, 'port-elb-sg-in', true)
+            else
+                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
+                MC.canvas.display(uid, 'port-elb-sg-in', false)
 
             component
 

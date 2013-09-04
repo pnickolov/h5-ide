@@ -62,10 +62,10 @@ define [ 'jquery',
             model.getCost()
 
             if view_type == 'app_view'
-
+                model.set 'type', 'app'
                 model.getAppSubscription()
-
             else
+                model.set 'type', 'stack'
                 model.getSubscription()
 
             if tab_type is 'OPEN_APP'
@@ -98,7 +98,7 @@ define [ 'jquery',
                 renderPropertyPanel()
 
                 ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, title + name
-                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name
+                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name + ' - stack'
 
             view.on 'DELETE_STACK_SG', (uid) ->
                 model.deleteSecurityGroup uid

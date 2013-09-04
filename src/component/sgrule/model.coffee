@@ -298,21 +298,38 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-                out_sg_rule_existing = this.checkRuleExistingBySG out_sg_rule, sg_id, true
+                if sg_id
 
-                in_sg_rule_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, true
+                    out_sg_rule_existing = this.checkRuleExistingBySG out_sg_rule, sg_id, true
 
-                if rule_data.direction is 'in' and not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
+                    in_sg_rule_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, true
+
+                    if rule_data.direction is 'in' and not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
 
 
-                if rule_data.direction is 'out' and not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+                    if rule_data.direction is 'out' and not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
 
 
-                if rule_data.direction is 'both'
+                    if rule_data.direction is 'both'
 
-                    if not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
+                        if not out_sg_rule_existing then MC.canvas_data.component[sg_id].resource.IpPermissions.push out_sg_rule
+
+                        if not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+
+                else
+                    #elb and instance classic mode sg
+
+                    in_sg_rule = {
+                        "IpProtocol": rule_data.protocol
+                        "IpRanges": "amazon-elb/amazon-elb-sg"
+                        "FromPort": from_port
+                        "ToPort": to_port
+                    }
+
+                    in_sg_rule_existing = this.checkRuleExistingBySG in_sg_rule, in_sg_id, true
 
                     if not in_sg_rule_existing then MC.canvas_data.component[in_sg_id].resource.IpPermissions.push in_sg_rule
+
 
             else
 

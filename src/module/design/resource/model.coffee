@@ -39,7 +39,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.config[region_name].snapshot_list = result.resolved_data
 
                     #
-                    me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+                    #me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
                 null
 

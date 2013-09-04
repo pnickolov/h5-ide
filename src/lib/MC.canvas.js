@@ -2852,7 +2852,7 @@ MC.canvas.event.dragable = {
 			{
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
+					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default

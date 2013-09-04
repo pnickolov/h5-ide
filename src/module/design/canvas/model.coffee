@@ -510,6 +510,9 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
 				return
 
+			else
+				asg_comp = component
+
 
 			# Ask user to comfirm the delete operation
 			if not force and asg_comp.resource.LaunchConfigurationName.length
@@ -719,9 +722,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			elbSGObj = MC.aws.elb.getElbDefaultSG component.uid
 			delete MC.canvas_data.component[ component.uid ]
 			delete MC.canvas_data.component[ elbSGObj.uid ]
+			null
 
 		deleteGroup : ( component, force ) ->
-			nodes  = MC.canvas.groupChild( $("#" + (component.uid) )[0] )
+
+			group_elem = $("##{component.uid}")[0]
+			nodes  = MC.canvas.groupChild( group_elem )
 
 			handler = this.beforeDeleteMap[ component.type ]
 			if handler
@@ -745,7 +751,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				handler.call this, component
 
 			# Delete all the children
-			for node, index in nodes
+			while nodes.length
+				node = nodes[0]
 				op =
 					type  : $(node).data().type
 					id    : node.id
@@ -754,6 +761,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# Recursively delete children in this group
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
+
+				nodes  = MC.canvas.groupChild( group_elem )
 
 			null
 

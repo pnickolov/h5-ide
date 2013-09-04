@@ -11,40 +11,22 @@ define [ 'jquery',
     'MC'
 ], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
 
-
     current_region = null
-
     overview_app    = null
     overview_stack  = null
     should_update_overview = false
 
-    #private
+    # private
     loadModule = () ->
-        #add handlebars script
-        #overview_tmpl = '<script type="text/x-handlebars-template" id="overview-tmpl">' + overview_tmpl + '</script>'
-        #load remote html ovverview_tmpl
-        #$( overview_tmpl ).appendTo 'head'
-
-        #add handlebars script
-        #overview_tmpl = '<script type="text/x-handlebars-template" id="region-tmpl">' + region_tmpl + '</script>'
-        #load remote html ovverview_tmpl
-        #$( overview_tmpl ).appendTo 'head'
 
         MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl', '.loading': 'loading-tmpl' }
-
         MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
-
         #load remote ./module/dashboard/overview/view.js
         require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
-
-            console.log '------------ overview view load ------------ '
-
-            #
             region_view = null
-
             #view
             view       = new View()
             view.model = model
@@ -58,9 +40,6 @@ define [ 'jquery',
                 should_update_overview = true
                 #refresh view
                 view.renderMapResult()
-
-            model.on 'change:region_empty_list', () ->
-                console.log 'dashboard_change:region_empty'
 
             model.on 'change:region_classic_list', () ->
                 console.log 'dashboard_region_classic_list'
@@ -110,7 +89,6 @@ define [ 'jquery',
             model.on 'change:cur_region_list', () ->
                 view.renderRegionResource()
 
-
             # update aws credential
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
@@ -124,8 +102,6 @@ define [ 'jquery',
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             #model
-            model.resultListListener()
-            model.emptyListListener()
             model.describeAccountAttributesService()
 
             model.describeAWSResourcesService()
@@ -382,8 +358,7 @@ define [ 'jquery',
                         model.updateAppList flag, app_id
 
     unLoadModule = () ->
-        #view.remove()
 
-    #public
+    # public
     loadModule   : loadModule
     unLoadModule : unLoadModule

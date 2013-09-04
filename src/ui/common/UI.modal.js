@@ -76,12 +76,14 @@ modal.keyup = function (event)
 	if (event.which === 27)
 	{
 		modal.close();
-	} else if ( event.which == 13 ) {
-		var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")
-		if ( btns.length == 1 ) {
-			btns.click()
-		}
 	}
+
+	// else if ( event.which == 13 ) {
+	// 	var btns = $("#modal-wrap").find(".modal-footer").find(".btn").filter(":not(.btn-silver,.modal-close)")
+	// 	if ( btns.length == 1 ) {
+	// 		btns.click()
+	// 	}
+	// }
 
 	return false;
 };
@@ -93,10 +95,12 @@ modal.dismiss = function (event)
 		modal.close();
 	}
 
-	return true;
+	if ( event.preventDefault ) {
+		event.preventDefault();
+	}
 };
 
-modal.close = function ()
+modal.close = function ( evt )
 {
 	$(window).off('resize', modal.position);
 
@@ -112,7 +116,8 @@ modal.close = function ()
 		.trigger('closed')
 		.remove();
 
-	return false;
+	if ( evt && evt.preventDefault )
+		evt.preventDefault();
 };
 
 modal.isPopup = function ()

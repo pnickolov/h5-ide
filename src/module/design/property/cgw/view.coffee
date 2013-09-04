@@ -109,13 +109,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 }
                 modal template, false, () ->
 
-                    $('.modal-close, #cidr-return').click () ->
+                    $('.modal-close').click () ->
                         $('#property-cgw-ip').focus()
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
                         ide_event.trigger ide_event.DELETE_COMPONENT, cgwUID, 'node'
                         MC.aws.aws.disabledAllOperabilityArea(false)
+                        modal.close()
             else
                 change.value = event.target.value
                 change.event = "CHANGE_IP"

@@ -6,7 +6,7 @@ define [ 'jquery',
          'text!./template.html',
          'text!./app_template.html',
          'text!./rule_item.html',
-         'text!./template.html',
+         'text!acl_template',
          'event'
 ], ( $, template, app_template, rule_template, acl_popup_template, ide_event ) ->
 

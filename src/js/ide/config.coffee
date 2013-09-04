@@ -132,6 +132,11 @@ require.config {
 		'toolbar'            : 'module/design/toolbar/main'
 
 		#############################################
+		# component
+		#############################################
+		'acl_template'       : 'component/aclrule/template.html'
+
+		#############################################
 		# events
 		#############################################
 		'event'              : 'event/ide_event'

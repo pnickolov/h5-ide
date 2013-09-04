@@ -66,13 +66,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger 'VOLUME_SIZE_CHANGED', size
 
         iopsChanged : ( event ) ->
-            iops_size = parseInt( $( '#iops-ranged' ).val(), 10 )
+            target = $ event.currentTarget
+
+            iops_size = parseInt( target.val(), 10 )
             volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-            if(iops_size > 2000 || iops_size < 1 )
-                console.log 'IOPS must be between 100 and 2000'
-            else if(iops_size > 10 * volume_size)
-                console.log 'IOPS must be less than 10 times of volume size.'
-            else
+
+            target.parsley 'custom', ( val ) ->
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if( val > 4000 || val < 100 )
+                    return 'IOPS must be between 100 and 4000'
+                else if( val > 10 * volume_size)
+                    return 'IOPS must be less than 10 times of volume size.'
+
+            if target.parsley 'validate'
                 this.trigger 'IOPS_CHANGED', "" + iops_size
 
         showSnapshotDetail : ( event ) ->

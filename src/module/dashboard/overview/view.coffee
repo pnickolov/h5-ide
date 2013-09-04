@@ -32,7 +32,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #global-refresh'                     : 'refreshAll'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
-
+            'modal-shown .start-app'                    : 'startAppClick'
+            'modal-shown .stop-app'                     : 'stopAppClick'
+            'modal-shown .terminate-app'                : 'terminateAppClick'
+            'modal-shown .duplicate-stack'              : 'duplicateStackClick'
+            'modal-shown .delete-stack'                 : 'deleteStackClick'
 
         refreshAll: ->
             location.reload()
@@ -89,22 +93,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             currentIndex = @$el.find('#region-resource-tab a').index target
 
             @switchTab event, '#region-resource-tab a', '.region-resource-list'
-            ###
-            if target.hasClass 'on'
-                @$el.find( '#region-resource-tab a' )
-                    .eq( 1 - currentIndex )
-                    .addClass( 'on' )
-                    .end()
-                    .eq( currentIndex )
-                    .removeClass( 'on' )
-
-                @$el.find( '.region-resource-list')
-                    .eq( 1 - currentIndex )
-                    .hide()
-                    .end()
-                    .eq( currentIndex )
-                    .show()
-            ###
 
         switchRegionResource: ( event ) ->
             @switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
@@ -213,8 +201,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         clickRegionResourceThumbnail : (event) ->
             console.log 'click app/stack thumbnail'
 
-            me = this
-
             item_info   = $(event.currentTarget).next('.region-resource-info')[0]
             id          = $(item_info).find('.modal')[0].id
             name        = $($(item_info).find('.region-resource-item-name')[0]).text()
@@ -226,6 +212,120 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             else
                 ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+
+            null
+
+        deleteStackClick : (event) ->
+            console.log 'click to delete stack'
+
+            id      = $(event.currentTarget).attr('id')
+            name    = $(event.currentTarget).attr('name')
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard delete stack'
+                
+                modal.close()
+                ide_event.trigger ide_event.DELETE_STACK, current_region, id, name
+
+            null
+
+        duplicateStackClick : (event) ->
+            console.log 'click to duplicate stack'
+
+            id      = $(event.currentTarget).attr('id')
+            name    = $(event.currentTarget).attr('name')
+
+            # set default name
+            new_name = MC.aws.aws.getDuplicateName(name)
+            $('#modal-input-value').val(new_name)
+
+            $('#btn-confirm').on 'click', { target : this }, (event) ->
+                console.log 'dashboard duplicate stack'
+                new_name = $('#modal-input-value').val()
+
+                #check duplicate stack name
+                if not new_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
+                else if new_name.indexOf(' ') >= 0
+                    notification 'warning', 'stack name contains white space.'
+                else if not MC.aws.aws.checkStackName null, new_name
+                    notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
+                else
+                    modal.close()
+
+                    ide_event.trigger ide_event.DUPLICATE_STACK, current_region, id, new_name, name
+
+            null
+
+        startAppClick : (event) ->
+            console.log 'click to start app'
+
+            id      = $(event.currentTarget).attr('id')
+            name    = $(event.currentTarget).attr('name')
+
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
+                modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region start app'
+                    modal.close()
+                    ide_event.trigger ide_event.START_APP, current_region, id, name
+
+            null
+
+        stopAppClick : (event) ->
+            console.log 'click to stop app'
+
+            id      = $(event.currentTarget).attr('id')
+            name    = $(event.currentTarget).attr('name')
+
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
+                modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region stop app'
+                    modal.close()
+                    ide_event.trigger ide_event.STOP_APP, current_region, id, name
+
+            null
+
+        terminateAppClick : (event) ->
+            console.log 'click to terminate app'
+
+            id      = $(event.currentTarget).attr('id')
+            name    = $(event.currentTarget).attr('name')
+
+            # check credential
+            if $.cookie('has_cred') isnt 'true'
+                modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'dashboard region terminal app'
+                    modal.close()
+                    ide_event.trigger ide_event.TERMINATE_APP, current_region, id, name
+
+            null
+
+        updateThumbnail : ( url ) ->
+            console.log 'updateThumbnail, url = ' + url
+            _.each $( '#region-stat-stack' ).children(), ( item ) ->
+                $item = $ item
+                if $item.attr('style').indexOf( url ) isnt -1
+                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
+                    console.log 'new_url = ' + new_url
+                    $item.removeAttr 'style'
+                    $item.css 'background-image', 'url(' + new_url + ')'
 
             null
 

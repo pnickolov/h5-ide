@@ -20,7 +20,8 @@ var listen = function ()
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
 			.on('selectstart', returnFalse)
-			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show);
+			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
+			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show);
 
 		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 	}

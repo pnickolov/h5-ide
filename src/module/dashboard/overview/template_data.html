@@ -196,11 +196,11 @@
                                     <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
                                     <div class="region-resource-action clearfix">
                                         {{#if isrunning}}
-                                            <i class="icon-stop modal" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"></i>
                                         {{else}}
-                                            <i class="icon-play modal" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"></i>
                                         {{/if}}
-                                        <i class="modal icon-terminate" id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>
@@ -233,9 +233,9 @@
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
                                     <div class="region-resource-action clearfix">
-                                        <i class="icon-duplicate modal" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Duplicate Stack", "body":"Stack Name:", "input":"{{name}}-copy", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></i>
+                                        <i class="icon-duplicate modal duplicate-stack" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Duplicate Stack", "body":"Stack Name:", "input":"{{name}}-copy", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></i>
 
-                                        <i class="icon-delete modal"  id="{{id}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="icon-delete modal delete-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>
@@ -940,6 +940,6 @@
 
 <!--{{ .loading }}-->
 <div class="dashboard-loading clearfix">
-    <i class="loading-spinner"></i>
+    <img src="./assets/images/ide/loading-logo-white.gif"/>
 </div>
 

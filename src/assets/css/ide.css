@@ -407,7 +407,6 @@ a {
 
 #navigation .sub-menu-wrapper {
 	background: #505050;
-	border: solid 1px #434343;
 
 	opacity: 0;
 
@@ -435,7 +434,7 @@ a {
 .first-level-nav-label {
 	display: block;
 	background: #3D3C3D;
-	width: 217px;
+	width: 216px;
 	height: 18px;
 	font-size: 18px;
 	border: solid 1px #3D3C3D;
@@ -597,6 +596,10 @@ a {
 
 .nav-head a {
 	z-index: 3;
+}
+
+.nav-region-empty-list {
+	width: 244px;
 }
 
 .nav-empty {
@@ -1231,13 +1234,16 @@ a {
 	background: #fff;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 	border: 1px solid #ccc;
+<<<<<<< HEAD
+=======
+	padding-top: 50px;
+>>>>>>> develop
 	text-align: center;
 }
 
-.dashboard-loading .loading-spinner {
-	margin: 0 auto;
-	display: block;
-	margin-top: 80px;
+.dashboard-loading img {
+	width: 31px;
+	height: 34px;
 }
 
 #global-view .dashboard-loading {

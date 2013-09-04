@@ -10,6 +10,7 @@
     <div class="col2" for="property-acl-{{@index}}">
       <div class="col2-1 truncate">{{name}}</div>
       <div class="col2-2 truncate">{{rule}} rules, {{association}} association</div>
+      <div class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</div>
     </div>
 
   </li>

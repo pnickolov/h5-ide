@@ -599,6 +599,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'STOPPED_APP', region
 
+                else
+                    # remove the app name from app_list
+                    if name in MC.data.app_list[region]
+                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
         reqHanle : (flag, id, name, req, dag) ->
             me = this
 
@@ -642,6 +647,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if flag is 'RUN_STACK'
                         flag_list.is_failed = true
                         flag_list.err_detail = req.data
+
+                        # remove the app name from app_list
+                        if name in MC.data.app_list[region]
+                            MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
                     else
                         me.setFlag id, 'STOPPED_APP', region
 

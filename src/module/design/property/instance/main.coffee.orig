@@ -3,14 +3,10 @@
 ####################################
 
 define [ 'jquery',
-<<<<<<< HEAD
-         'text!./template.html',
-         'text!./app_template.html',
-=======
+
          'text!/module/design/property/instance/template.html',
          'text!/module/design/property/instance/app_template.html',
          'text!/module/design/property/instance/ip_list_template.html',
->>>>>>> develop
          'event',
          'UI.notification'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->

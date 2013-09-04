@@ -627,7 +627,8 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////3.dragger
 				Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
-					'class': 'asg-resource-dragger',
+					'class': 'asg-resource-dragger tooltip',
+					'data-tooltip': 'Expand the group by dragging and drop in other subnet.',
 					'id': group.id + '_asg_resource_dragger',
 					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
 				}),
@@ -836,6 +837,9 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout = layout.node[group.id];
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
+				component_layout.eniList = (component_layout.eniList && component_layout.eniList.length > 0) ? component_layout.eniList : [];
+				component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				component_layout.volumeList = (component_layout.volumeList && component_layout.volumeList.length > 0) ? component_layout.volumeList : [];
 
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
@@ -868,36 +872,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-background',
 					'rx': 5,
 					'ry': 5
-				}),
-
-
-				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
-					//sg label
-					Canvon.rectangle(10, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1'
-					}),
-					Canvon.rectangle(20, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2'
-					}),
-					Canvon.rectangle(30, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3'
-					}),
-					Canvon.rectangle(40, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4'
-					}),
-					Canvon.rectangle(50, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5'
-					})
-				).attr({
-					'class': 'node-sg-color-group',
-					'id': group.id + '_node-sg-color-group',
-					'transform': 'translate(8, 62)'
 				}),
 
 				Canvon.image(MC.IMG_URL + 'ide/icon/instance-canvas.png', 15, 9, 61, 62),
@@ -996,15 +970,45 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////hostname bg
-				Canvon.rectangle(3, 75, 84, 15).attr({
-					'class': 'node-label-hostname-bg',
-					'rx': 6,
-					'ry': 6
+				Canvon.rectangle(2, 76, 86, 13).attr({
+					'class': 'node-label-name-bg',
+					'rx': 3,
+					'ry': 3
 				}),
 				////10. hostname
 				Canvon.text(45, 86, option.name).attr({
-					'class': 'node-label node-label-hostname',
+					'class': 'node-label node-label-name',
 					'id': group.id + '_hostname'
+				}),
+
+
+				//g for sg color label
+				Canvon.group( 0, 0, 100, 9, {} ).append(
+					//sg label
+					Canvon.rectangle(10, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label1'
+					}),
+					Canvon.rectangle(20, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label2'
+					}),
+					Canvon.rectangle(30, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label3'
+					}),
+					Canvon.rectangle(40, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label4'
+					}),
+					Canvon.rectangle(50, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label5'
+					})
+				).attr({
+					'class': 'node-sg-color-group',
+					'id': group.id + '_node-sg-color-group',
+					'transform': 'translate(8, 62)'
 				}),
 
 
@@ -1028,7 +1032,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				////instance-state
-				Canvon.circle(65, 20, 5,{}).attr({
+				Canvon.circle(68, 15, 5,{}).attr({
 					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState(),
 					'id' : group.id + '_instance-state'
 				})
@@ -1300,35 +1304,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 5
 				}),
 
-				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
-					//sg label
-					Canvon.rectangle(10, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1'
-					}),
-					Canvon.rectangle(20, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2'
-					}),
-					Canvon.rectangle(30, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3'
-					}),
-					Canvon.rectangle(40, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4'
-					}),
-					Canvon.rectangle(50, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5'
-					})
-				).attr({
-					'class': 'node-sg-color-group',
-					'id': group.id + '_node-sg-color-group',
-					'transform': 'translate(4, 55)'
-				}),
-
 				Canvon.image(MC.IMG_URL + 'ide/icon/elb-' + icon_scheme + '-canvas.png', 10, 12, 70, 53).attr({
 					'id' : group.id + '_elb_scheme'
 				}),
@@ -1382,11 +1357,48 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 
+				//eni_name bg
+				Canvon.rectangle(2, 76, 86, 13).attr({
+					'class': 'node-label-name-bg',
+					'rx': 3,
+					'ry': 3
+				}),
 				////6. elb_name
-				Canvon.text(45, 80, option.name).attr({
-					'class': 'node-label name',
+				Canvon.text(45, 86, option.name).attr({
+					'class': 'node-label node-label-name',
 					'id' : group.id + '_elb_name'
+				}),
+
+				//g for sg color label
+				Canvon.group( 0, 0, 100, 9, {} ).append(
+					//sg label
+					Canvon.rectangle(10, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label1'
+					}),
+					Canvon.rectangle(20, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label2'
+					}),
+					Canvon.rectangle(30, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label3'
+					}),
+					Canvon.rectangle(40, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label4'
+					}),
+					Canvon.rectangle(50, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label5'
+					})
+				).attr({
+					'class': 'node-sg-color-group',
+					'id': group.id + '_node-sg-color-group',
+					'transform': 'translate(4, 55)'
 				})
+
+
 			).attr({
 				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
@@ -1903,35 +1915,6 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 5
 				}),
 
-				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
-					//sg label
-					Canvon.rectangle(10, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label1'
-					}),
-					Canvon.rectangle(20, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label2'
-					}),
-					Canvon.rectangle(30, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label3'
-					}),
-					Canvon.rectangle(40, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label4'
-					}),
-					Canvon.rectangle(50, 6, 7 , 5).attr({
-						'class': 'node-sg-color-border',
-						'id': group.id + '_sg-color-label5'
-					})
-				).attr({
-					'class': 'node-sg-color-group',
-					'id': group.id + '_node-sg-color-group',
-					'transform': 'translate(8, 62)'
-				}),
-
 				Canvon.image(MC.IMG_URL + 'ide/icon/eni-canvas-'+attached+'.png', 16, 18, 58, 49).attr({
 					'id': group.id + '_eni_status'
 				}),
@@ -2014,12 +1997,49 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 
+				//eni_name bg
+				Canvon.rectangle(2, 76, 86, 13).attr({
+					'class': 'node-label-name-bg',
+					'rx': 3,
+					'ry': 3
+				}),
 				////6. eni_name
-				Canvon.text(45, 85, option.name, {
+				Canvon.text(45, 86, option.name, {
 					'text-anchor': 'middle' // start, middle(default), end, inherit
 				}).attr({
-					'class': 'node-label name'
+					'class': 'node-label node-label-name'
+				}),
+
+				//g for sg color label
+				Canvon.group( 0, 0, 100, 9, {} ).append(
+					//sg label
+					Canvon.rectangle(10, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label1'
+					}),
+					Canvon.rectangle(20, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label2'
+					}),
+					Canvon.rectangle(30, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label3'
+					}),
+					Canvon.rectangle(40, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label4'
+					}),
+					Canvon.rectangle(50, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label5'
+					})
+				).attr({
+					'class': 'node-sg-color-group',
+					'id': group.id + '_node-sg-color-group',
+					'transform': 'translate(8, 62)'
 				})
+
+
 			).attr({
 				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
@@ -2235,11 +2255,49 @@ MC.canvas.add = function (flag, option, coordinate)
 					'fill': 'none'
 				}),
 
+				//lc name bg
+				Canvon.rectangle(2, 76, 86, 13).attr({
+					'class': 'node-label-name-bg',
+					'rx': 3,
+					'ry': 3
+				}),
 				////10. lc name
-				Canvon.text(45, 90, option.name).attr({
-					'class': 'name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
+				Canvon.text(45, 86, option.name).attr({
+					'class': 'name node-label-name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
+				}),
+
+				//g for sg color label
+				Canvon.group( 0, 0, 100, 9, {} ).append(
+					//sg label
+					Canvon.rectangle(10, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label1'
+					}),
+					Canvon.rectangle(20, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label2'
+					}),
+					Canvon.rectangle(30, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label3'
+					}),
+					Canvon.rectangle(40, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label4'
+					}),
+					Canvon.rectangle(50, 6, 7 , 5).attr({
+						'class': 'node-sg-color-border tooltip',
+						'id': group.id + '_sg-color-label5'
+					})
+				).attr({
+					'class': 'node-sg-color-group',
+					'id': group.id + '_node-sg-color-group',
+					'transform': 'translate(8, 63)'
 				})
+
+
+
 			).attr({
 				'class': 'dragable node ' + class_type,
 				'data-type': 'node',
@@ -2276,6 +2334,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			type === 'AWS.EC2.Instance'
 			|| type === 'AWS.ELB'
 			|| type === 'AWS.VPC.NetworkInterface'
+			|| type === 'AWS.AutoScaling.LaunchConfiguration'
 		)
 	{
 		MC.canvas.updateSG( group.id );

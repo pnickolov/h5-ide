@@ -128,7 +128,7 @@ define [ 'jquery',
             model.emptyListListener()
             model.describeAccountAttributesService()
 
-            #model.describeAWSResourcesService()
+            model.describeAWSResourcesService()
 
             # ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
             #     console.log 'overview UPDATE_AWS_CREDENTIAL'

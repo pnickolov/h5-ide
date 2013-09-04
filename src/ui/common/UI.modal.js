@@ -95,7 +95,9 @@ modal.dismiss = function (event)
 		modal.close();
 	}
 
-	return false;
+	if ( event && event.preventDefault ) {
+		event.preventDefault();
+	}
 };
 
 modal.close = function ( evt )
@@ -113,7 +115,9 @@ modal.close = function ( evt )
 		.trigger('closed')
 		.remove();
 
-	return false;
+	if ( event && event.preventDefault ) {
+		event.preventDefault();
+	}
 };
 
 modal.isPopup = function ()

@@ -2887,7 +2887,7 @@ MC.canvas.event.dragable = {
 		if (
 			event.pageX !== event_data.originalPageX &&
 			event.pageY !== event_data.originalPageY &&
-			event_data.shadow[0].getAttribute('class').indexOf('shadow') === -1
+			!Canvon(event_data.shadow).hasClass('shadow')
 		)
 		{
 			Canvon(event_data.shadow).addClass('shadow');

@@ -288,7 +288,7 @@ Canvon.fn = Canvon.prototype = {
 		return this;
 	},
 
-	hasClass: function ()
+	hasClass: function (name)
 	{
 		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.attr('class') );
 	},

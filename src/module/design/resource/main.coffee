@@ -31,7 +31,8 @@ define [ 'jquery',
                 #check re-render
                 view.reRender template
                 #init resoruce service count
-                model.service_count = 0
+                #when OPEN_APP set service_count = 10; OPEN_STACK or NEW_STACK set service_count = 0
+                model.service_count = if type is 'OPEN_APP' then 10 else 0
                 model.set 'check_required_service_count', -1
                 MC.data.resouceapi = []
                 #

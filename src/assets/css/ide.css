@@ -3384,7 +3384,9 @@ a.sidebar-hider {
 	right        : 0;
 	margin-right : 0;
 	/*border-left  : 1px solid #d1d1d1;*/
+}
 
+#property-panel.transition {
 	-webkit-transition: margin-right 0.1s;
 	   -moz-transition: margin-right 0.1s;
 	    -ms-transition: margin-right 0.1s;

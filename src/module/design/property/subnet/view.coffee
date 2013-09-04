@@ -61,9 +61,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
                 if focusCIDR
                     MC.canvas.update subnetUID, 'text', 'name', subnetName + ' ()'
-                    $('#property-cidr-block').val('')
-                    $('#property-cidr-block').focus()
                     ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    $('#property-cidr-block').val('').focus()
             else
                 $( '.property-details' ).html this.template data
 

@@ -870,15 +870,16 @@ textarea {
 /* Tooltip */
 #tooltip_box {
 	background: #333;
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.85);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 	color: #ccc;
 	font-size: 12px;
 	position: absolute;
 	padding: 5px 10px;
 	border-radius: 2px;
-	z-index: 90;
+	z-index: 95;
 	max-width: 250px;
+	word-break: break-all;
 }
 
 .arrow-up {

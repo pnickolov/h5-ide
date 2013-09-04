@@ -2628,6 +2628,7 @@ MC.canvas.asgList = {
 	{
 		if (event.which === 1)
 		{
+			MC.canvas.instanceList.close();
 			MC.canvas.asgList.close();
 
 			var target = this.parentNode,
@@ -2709,6 +2710,7 @@ MC.canvas.instanceList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.asgList.close();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
 			{
@@ -2717,8 +2719,7 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			var target = this,
-				target_offset = Canvon(target).offset(),
+			var target_offset = Canvon('#' + this.id).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			$('#canvas_container').append( MC.template.instanceList() );

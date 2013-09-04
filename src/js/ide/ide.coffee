@@ -97,6 +97,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.is_reset_session = false
 		#
 		MC.data.is_loading_complete = false
+		#save resouce service name
+		MC.data.resouceapi = []
 
 		#temp
 		MC.data.IDEView = view

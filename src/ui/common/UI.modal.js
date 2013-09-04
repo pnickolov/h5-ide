@@ -115,8 +115,8 @@ modal.close = function ( evt )
 		.trigger('closed')
 		.remove();
 
-	if ( event && event.preventDefault ) {
-		event.preventDefault();
+	if ( evt && evt.preventDefault ) {
+		evt.preventDefault();
 	}
 };
 

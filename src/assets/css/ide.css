@@ -1223,7 +1223,7 @@ a {
 
 #region-view {
 	position: relative;
-	top: -70px;
+	top: -65px;
 	width: 1280px;
 	padding: 0 0 20px 0;
 	margin: 20px auto;
@@ -2922,7 +2922,6 @@ td.table-action a.btn {
 	background      : #f0f0f0;
 	/*border-bottom : 2px solid #d3d3d3;*/
 	box-shadow      : 0 2px 0 #d3d3d3;
-	border-radius   : 2px 2px 0 0;
 }
 
 .toolbar-btn-group {

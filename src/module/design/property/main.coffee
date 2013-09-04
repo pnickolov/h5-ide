@@ -53,15 +53,23 @@ define [ 'jquery',
 
 			#show stack property
 			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->
-				console.log 'property:OPEN_DESIGN, type = ' + type
-				#check re-render
-				view.reRender template
-				#
-				tab_type = type
-				#
-				if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
-				#
-				stack_main.loadModule stack_main, type
+
+				try
+
+					console.log 'property:OPEN_DESIGN, type = ' + type
+					#check re-render
+					view.reRender template
+					#
+					tab_type = type
+					#
+					if MC.data.current_sub_main then MC.data.current_sub_main.unLoadModule()
+					#
+					stack_main.loadModule stack_main, type
+
+				catch error
+					null
+
+				null
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->

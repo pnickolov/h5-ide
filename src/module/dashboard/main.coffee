@@ -111,14 +111,6 @@ define [ 'jquery',
                 view.renderRegionResource()
 
 
-
-
-            #model
-            model.resultListListener()
-            model.emptyListListener()
-            model.describeAccountAttributesService()
-
-            #model.describeAWSResourcesService()
             # update aws credential
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
@@ -131,10 +123,17 @@ define [ 'jquery',
                     console.log 'show credential setting dialog'
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
-                console.log 'overview UPDATE_AWS_CREDENTIAL'
+            #model
+            model.resultListListener()
+            model.emptyListListener()
+            model.describeAccountAttributesService()
 
-                model.describeAccountAttributesService()
+            #model.describeAWSResourcesService()
+
+            # ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+            #     console.log 'overview UPDATE_AWS_CREDENTIAL'
+
+            #     model.describeAccountAttributesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 console.log 'overview RESULT_APP_LIST'
@@ -196,11 +195,11 @@ define [ 'jquery',
             model.on 'change:cur_stack_list', () ->
                 view.renderRegionAppStack()
 
-            model.on 'UPDATE_REGION_APP_LIST', () ->
-                view.renderRegionStatApp()
+            # model.on 'UPDATE_REGION_APP_LIST', () ->
+            #     view.renderRegionStatApp()
 
-            model.on 'UPDATE_REGION_STACK_LIST', () ->
-                view.renderRegionStatStack()
+            # model.on 'UPDATE_REGION_STACK_LIST', () ->
+            #     view.renderRegionStatStack()
                 #region_view.checkCreateStack MC.data.supported_platforms
 
             # update region thumbnail
@@ -211,8 +210,7 @@ define [ 'jquery',
 
                 null
 
-            # update region app state
-            update region app state when pending
+            #update region app state when pending
             ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
                 console.log 'UPDATE_TAB_ICON'
 

@@ -5867,7 +5867,7 @@ a.action-link:hover {
 #process-panel h1.title {
 	font-size: 24px;
 	padding-left: 8px;
-	color: #999;
+	color: #666;
 }
 
 #process-panel .loading-spinner {
@@ -5929,8 +5929,11 @@ a.action-link:hover {
 }
 
 #process-panel .result-error-info {
-	background-color: #f9f9f9;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+	background-color: #FCFCFC;
+	border: 1px solid #CCC;
 	padding: 10px;
+	border-radius: 3px;
 }
 
 #process-panel .result-error-info .title {

@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/navigation/template.html',
-         'text!/module/navigation/template_data.html',
+         'text!./module/navigation/template.html',
+         'text!./module/navigation/template_data.html',
          '/module/navigation/model.js',
          'event',
          'MC.ide.template'

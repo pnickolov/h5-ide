@@ -4,7 +4,7 @@
 
 define [ 'constant',
          'jquery',
-         'text!/module/design/property/az/template.html',
+         'text!./template.html',
          'event'
 ], ( constant, $, template, ide_event ) ->
 

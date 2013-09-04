@@ -1,6 +1,7 @@
 
 module.exports = {
 
-	clean: [ '<%= release %>' ]
+	release : [ '<%= release %>' ],
+	temp    : [ '<%= temp %>' ]
 
 };

@@ -5,7 +5,7 @@ module.exports = {
 		options: {
 			appDir         : './<%= release %>',
 			baseUrl        : './',
-			dir            : './<%= publish %>',
+			dir            : './<%= temp %>',
 			optimize       : 'none',
 			mainConfigFile : './<%= src %>/js/login/config.js',
 			modules        : [{

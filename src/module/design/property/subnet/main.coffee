@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/subnet/template.html',
-         'text!/module/design/property/subnet/acl_template.html',
-         'text!/module/design/property/subnet/app_template.html',
+         'text!./template.html',
+         'text!./acl_template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, acl_template, app_template, ide_event ) ->
     #

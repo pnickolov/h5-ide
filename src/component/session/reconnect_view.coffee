@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!/component/session/reconnect_template.html'
+         'text!./reconnect_template.html'
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.parsley'
 ], ( ide_event, reconnect_template ) ->

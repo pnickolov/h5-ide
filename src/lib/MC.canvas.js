@@ -2852,7 +2852,7 @@ MC.canvas.event.dragable = {
 			{
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
+					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default
@@ -2887,7 +2887,7 @@ MC.canvas.event.dragable = {
 		if (
 			event.pageX !== event_data.originalPageX &&
 			event.pageY !== event_data.originalPageY &&
-			event_data.shadow[0].getAttribute('class').indexOf('shadow') === -1
+			!Canvon(event_data.shadow).hasClass('shadow')
 		)
 		{
 			Canvon(event_data.shadow).addClass('shadow');

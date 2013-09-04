@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/eni/template.html',
-         'text!/module/design/property/eni/app_template.html',
-         'text!/module/design/property/eni/ip_list_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
+         'text!./ip_list_template.html',
          'event'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->
 

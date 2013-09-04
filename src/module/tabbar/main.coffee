@@ -2,7 +2,7 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
 
     #private
     loadModule = () ->

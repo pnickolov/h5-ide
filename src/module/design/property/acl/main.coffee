@@ -3,10 +3,10 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/acl/template.html',
-         'text!/module/design/property/acl/app_template.html',
-         'text!/module/design/property/acl/rule_item.html',
-         'text!/component/aclrule/template.html',
+         'text!./template.html',
+         'text!./app_template.html',
+         'text!./rule_item.html',
+         'text!./template.html',
          'event'
 ], ( $, template, app_template, rule_template, acl_popup_template, ide_event ) ->
 

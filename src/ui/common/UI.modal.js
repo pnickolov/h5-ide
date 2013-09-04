@@ -28,7 +28,7 @@ var modal = function (template, dismiss, callback)
 	{
 		$("#modal-wrap")
 			.on('click', modal.dismiss);
-		$("#modal-box")
+		$(document)
 			.on('keyup', modal.keyup);
 	}
 
@@ -95,9 +95,7 @@ modal.dismiss = function (event)
 		modal.close();
 	}
 
-	if ( event.preventDefault ) {
-		event.preventDefault();
-	}
+	return false;
 };
 
 modal.close = function ( evt )
@@ -106,18 +104,16 @@ modal.close = function ( evt )
 
 	// $('#wrapper').removeClass('blur-effect');
 
-	// $(document)
+	$(document).off('keyup', modal.keyup);
 	// 	.off('click', '.modal-close', modal.close)
 	// 	.off('mousedown', '.modal-header', modal.drag.mousedown)
 	// 	.off('click', modal.dismiss)
-	// 	.off('keyup', modal.keyup);
 
 	$('#modal-wrap')
 		.trigger('closed')
 		.remove();
 
-	if ( evt && evt.preventDefault )
-		evt.preventDefault();
+	return false;
 };
 
 modal.isPopup = function ()

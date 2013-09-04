@@ -735,7 +735,7 @@ var constant_data = {
 		"state": "Enabled",
 		"username": "",
 		"owner": "",
-		"version": "5.0",
+		"version": "2013-09-04",
 		"tag": "",
 		"usage": "",
 		"has_instance_store_ami": "", //true|false

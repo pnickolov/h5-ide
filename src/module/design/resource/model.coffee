@@ -2,9 +2,10 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
+define [ 'i18n!/nls/lang.js',
+         'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
          'backbone', 'jquery', 'underscore'
-], ( ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
+], ( lang, ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
 
     #private
     ami_instance_type = null
@@ -208,7 +209,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 else
 
-                    notification 'warning', 'Get Community AMIs failed'
+                    notification 'warning', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
 
 
                 null
@@ -262,9 +263,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'AMI is added to Favorite AMI'
+                    notification 'info', lang.ide.RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS
                 else
-                    notification 'error', 'Failed to add AMI to Favorite'
+                    notification 'error', lang.ide.RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED
                 null
 
             #listen FAVORITE_REMOVE_RETURN
@@ -275,9 +276,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'AMI is removed from Favorite AMI'
+                    notification 'info', lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
                 else
-                    notification 'error', 'Failed to remove AMI from Favorite'
+                    notification 'error', lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
 
 
                 null

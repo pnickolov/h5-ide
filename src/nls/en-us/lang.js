@@ -83,6 +83,13 @@ define({
 		'RES_TIP_DRAG_HAS_VGW'          : 'This VPC already has a virtual gateway.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: 'Get Community AMIs failed',
+		'RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS'		: 'AMI is added to Favorite AMI',
+		'RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED'		: 'Failed to add AMI to Favorite',
+		'RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS'	: 'AMI is removed from Favorite AMI',
+		'RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED'	: 'Failed to remove AMI from Favorite',
+		// Add new strings below this comment. Move above once English has been confirmed
+
 		/******canvas module******/
 		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volumes and snapshots must be dragged to an instance or image.',
 		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : 'Subnets must be dragged to an availability zone.',
@@ -110,10 +117,10 @@ define({
 		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
 		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
 		'CVS_MSG_ERR_ZOOMED_DROP_ERROR'         : 'Please reset the zoom to 100% before adding new resources.',
-		'CVS_TIP_EXPAND_W'   					: 'Increase Canvas Width',
-		'CVS_TIP_SHRINK_W'   					: 'Decrease Canvas Width',
-		'CVS_TIP_EXPAND_H'   					: 'Increase Canvas Height',
-		'CVS_TIP_SHRINK_H'   					: 'Decrease Canvas Height',
+		'CVS_TIP_EXPAND_W'						: 'Increase Canvas Width',
+		'CVS_TIP_SHRINK_W'						: 'Decrease Canvas Width',
+		'CVS_TIP_EXPAND_H'						: 'Increase Canvas Height',
+		'CVS_TIP_SHRINK_H'						: 'Decrease Canvas Height',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 
@@ -185,6 +192,7 @@ define({
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
 		'PROP_TEXT_DEFAULT_SG_DESC'             : 'Stack Default Security Group',
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
+		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		// sg property
@@ -212,8 +220,15 @@ define({
 		'CFM_BTN_DELETE'   : 'Delete',
 		'CFM_BTN_CANCEL'   : 'Cancel',
 		'CFM_BTN_ADD'      : 'Add',
-		'CFM_BTN_DONT_ADD' : "Don't add"
+		'CFM_BTN_DONT_ADD' : "Don't add",
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** credential module ******/
+		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID'		: 'Invalid accout id',
+		'HEAD_MSG_ERR_INVALID_ACCESS_KEY'		: 'Invalid access key',
+		'HEAD_MSG_ERR_INVALID_SECRET_KEY'		: 'Invalid secret key'
+		// Add new strings below this comment. Move above once English has been confirmed
+
 	},
 	'service' : {
 		'ERROR_CODE_0_MESSAGE'  : '',//invoke API succeeded

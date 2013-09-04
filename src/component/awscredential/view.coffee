@@ -3,9 +3,10 @@
 #############################
 
 define [ 'event',
+         'i18n!/nls/lang.js',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
-], ( ide_event ) ->
+], ( ide_event, lang ) ->
 
     AWSCredentialView = Backbone.View.extend {
 
@@ -68,11 +69,11 @@ define [ 'event',
             secret_key = $('#aws-credential-secret-key').val().trim()
 
             if not account_id
-                notification 'error', 'Invalid accout id.'
+                notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCOUNT_ID
             else if not access_key
-                notification 'error', 'Invalid access key.'
+                notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCESS_KEY
             else if not secret_key
-                notification 'error', 'Invalid secret key.'
+                notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SECRET_KEY
 
             # show AWSCredentials-submiting
             me.showSubmit()

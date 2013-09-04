@@ -132,7 +132,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
 
             else if name.indexOf(' ') >= 0
-                notification 'warning', 'Stack name contains white space.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
 
             else if not MC.aws.aws.checkStackName id, name
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
@@ -152,22 +152,23 @@ define [ 'MC', 'event',
                         MC.canvas_data.name = new_name
 
                         #expand components
-                        json_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                        MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                        #save stack
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                         #compact and update canvas
                         MC.canvas_data = MC.forge.stack.compactServerGroup json_data
 
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                         true
 
             else
                 MC.canvas_data.name = name
 
                 #expand components
-                json_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                #compact and update canvas
-                MC.canvas_data = MC.forge.stack.compactServerGroup json_data
-
+                MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                #save stack
                 ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                #compact and update canvas
+                MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
 
             true
 
@@ -186,7 +187,7 @@ define [ 'MC', 'event',
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'Stack name contains white space.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else

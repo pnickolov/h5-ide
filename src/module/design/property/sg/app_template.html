@@ -30,13 +30,16 @@
     <ul class="sg-rule-list property-list" id="sg-rule-list">
       {{#each sg_app_detail.rules}}
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
-        <i class="icon-{{direction}}" data-tooltip="{{direction}}"></i>
-        <div class='rule-protocol'>{{ipProtocol}}</div>
-        <div class='rule-source'>
-          <div class="rule-source-icon"></div>
-          <span>{{ipRanges}}</span>
-        </div>
-        <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+      <div class="rule-list-row">
+          <div class="icon-{{direction}}" data-tooltip="{{direction}}"></div>
+          <div class='rule-source'>
+           {{ipRanges}}
+          </div>
+      </div>
+      <div class="rule-list-row">
+          <span class='rule-protocol'>{{ipProtocol}}</span>
+          <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+      </div>
       </li>
       {{/each}}
     </ul>

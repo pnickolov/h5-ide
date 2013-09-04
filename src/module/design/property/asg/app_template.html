@@ -70,7 +70,7 @@
   <div class="option-group">
     {{#if sendNotify}}
     <div class="property-asg-notification-wrap property-control-group">
-      <p>Send notification via SNS topic for:</p>
+      <label class="left">Send notification via SNS topic for:</label>
       <section>
         {{#if notifies.[0]}}<p>Successful instance launch</p>{{/if}}
         {{#if notifies.[1]}}<p>Failed instance launch</p>{{/if}}
@@ -79,7 +79,7 @@
         {{#if notifies.[4]}}<p>Validating a configuraed SNS Topic</p>{{/if}}
       </section>
       {{else}}
-      <p>No notification configured for this auto scaling group</p>
+      <p class="property-info tac">No notification configured for this auto scaling group</p>
       {{/if}}
     </div>
   </div>

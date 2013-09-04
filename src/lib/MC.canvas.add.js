@@ -628,7 +628,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.dragger
 				Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 22, 0, 22, 20).attr({
 					'class': 'asg-resource-dragger tooltip',
-					'data-tooltip': 'Expand the group by dragging and drop in other subnet.',
+					'data-tooltip': 'Expand the group by drag-and-drop in other availability zone.',
 					'id': group.id + '_asg_resource_dragger',
 					'display': !option['originalId'] && (option['launchConfig'] || (component_data && (component_data.resource.LaunchConfigurationName!==''))) ? 'inline' : 'none'
 				}),

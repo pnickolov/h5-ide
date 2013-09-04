@@ -5174,6 +5174,10 @@ a.action-link:hover {
 	background    : #414141;
 }
 
+.sg-create-rule-item .sg-rule-connection {
+	width: 113px;
+}
+
 .sg-rule-col1 {
 	width : 50px;
 	border-right : 1px solid #999;

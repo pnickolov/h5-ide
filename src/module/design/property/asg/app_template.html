@@ -6,7 +6,7 @@
       <dd>{{asg.AutoScalingGroupName}}</dd>
       <dt>Auto Scaling Group ARN</dt>
       <dd>
-        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
+        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
       </dd>
       <dt>Created Time</dt>
       <dd>{{asg.CreatedTime}}</dd>
@@ -34,10 +34,10 @@
   <div class="option-group-head">Instance ({{instance_count}})</div>
   <div class="option-group">
     {{#each subnets}}
-    <h5>{{name}}</h5>
-    <ul>
+    <div class="property-group-head">{{name}}</div>
+    <ul class="property-list">
       {{#each instances}}
-        <li><i class="status status-{{status}}"></i>{{name}}</li>
+        <li><i class="status status-{{status}} icon-label"></i>{{name}}</li>
       {{/each}}
     </ul>
     {{/each}}

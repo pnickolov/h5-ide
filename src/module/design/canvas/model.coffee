@@ -722,6 +722,7 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			elbSGObj = MC.aws.elb.getElbDefaultSG component.uid
 			delete MC.canvas_data.component[ component.uid ]
 			delete MC.canvas_data.component[ elbSGObj.uid ]
+			null
 
 		deleteGroup : ( component, force ) ->
 

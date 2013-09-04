@@ -151,11 +151,22 @@ define [ 'MC', 'event',
 
                         MC.canvas_data.name = new_name
 
+                        #expand components
+                        json_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                        #compact and update canvas
+                        MC.canvas_data = MC.forge.stack.compactServerGroup json_data
+
                         ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                         true
 
             else
                 MC.canvas_data.name = name
+
+                #expand components
+                json_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                #compact and update canvas
+                MC.canvas_data = MC.forge.stack.compactServerGroup json_data
+
                 ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
 
             true

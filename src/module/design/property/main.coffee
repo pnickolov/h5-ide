@@ -101,7 +101,7 @@ define [ 'jquery',
 					if MC.canvas_data.component[ uid ]
 
 						console.log 'type = ' + MC.canvas_data.component[ uid ].type
-						
+
 						#components except AvailabilityZone
 						switch MC.canvas_data.component[ uid ].type
 							#show instance property
@@ -220,7 +220,8 @@ define [ 'jquery',
 			#listen SHOW_PROPERTY_PANEL
 			ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, ( ) ->
 				$( '#canvas-panel' ).removeClass 'right-hiden'
-				$( '#property-panel' ).removeClass 'hiden'
+				$( '#property-panel' ).removeClass 'hiden transition'
+				$( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
 				null
 
 			ide_event.onLongListen ide_event.RELOAD_PROPERTY, () ->

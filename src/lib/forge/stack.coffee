@@ -55,7 +55,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			i = 0
 
-			while i < ins_num-1
+			while i < ins_num-ins_comp_number
 
 				new_eni_uid = MC.guid()
 

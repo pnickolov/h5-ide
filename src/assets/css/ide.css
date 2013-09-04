@@ -1234,10 +1234,7 @@ a {
 	background: #fff;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 	border: 1px solid #ccc;
-<<<<<<< HEAD
-=======
 	padding-top: 50px;
->>>>>>> develop
 	text-align: center;
 }
 
@@ -5069,7 +5066,11 @@ a.action-link:hover {
 }
 
 .sg-create-proto-inputs .sg-proto-input {
-	display : none;
+	display: none;
+}
+
+.sg-create-proto-inputs .sg-proto-input .input {
+	width: 304px;
 }
 
 .sg-proto-input .selectbox {
@@ -5174,7 +5175,7 @@ a.action-link:hover {
 
 .sg-rule-delete {
 	position    : absolute;
-	right       : 5px;
+	right       : 10px;
 	bottom      : 16px;
 	line-height : 16px;
 	color       : #999;

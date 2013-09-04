@@ -95,14 +95,22 @@
 	right: 5px;
 	opacity: 0.5;
 	font-size: 18px;
+	border: 5px solid rgba(0, 0, 0, 0);
+	content: " ";
 }
 
 .sortable:after {
-	content: "▾";
+	/*content: "▾";*/
+
+	margin-top: 8px;
+	border-top: 5px solid #FFF;
 }
 
 .sortable.desc-sort:after {
-	content: "▴" !important;
+	/*content: "▴" !important;*/
+
+	margin-top: 3px;
+	border-bottom: 5px solid #FFF;
 }
 
 .sortable.active:after {

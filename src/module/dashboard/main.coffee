@@ -139,6 +139,8 @@ define [ 'jquery',
                 if should_update_overview
                     view.renderMapResult()
 
+                model.getItemList 'app', current_region, overview_app
+
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
@@ -158,6 +160,8 @@ define [ 'jquery',
                 if should_update_overview
                     view.renderMapResult()
 
+                model.getItemList 'stack', current_region, overview_stack
+
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
@@ -169,11 +173,17 @@ define [ 'jquery',
 
             # switch region tab
             view.on 'SWITCH_REGION', ( region ) ->
+                current_region = region
                 model.loadResource region
                 #model.describeAWSStatusService region
                 @model.getItemList 'app', region, overview_app
                 @model.getItemList 'stack', region, overview_stack
 
+            model.on 'change:cur_app_list', () ->
+                view.renderRegionAppStack()
+
+            model.on 'change:cur_stack_list', () ->
+                view.renderRegionAppStack()
 
             model.on 'UPDATE_REGION_APP_LIST', () ->
                 view.renderRegionStatApp()
@@ -185,9 +195,9 @@ define [ 'jquery',
             # update region thumbnail
             ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
                 console.log 'UPDATE_REGION_THUMBNAIL'
-                
+
                 view.updateThumbnail url
-                
+
                 null
 
             # update region app state when pending
@@ -252,7 +262,8 @@ define [ 'jquery',
                         null
 
                     #listen
-                    #model.on 'change:cur_app_list', () ->
+
+
                     model.on 'UPDATE_REGION_APP_LIST', () ->
                         console.log 'dashboard_region_change:cur_app_list'
                         #model.get 'cur_app_list'

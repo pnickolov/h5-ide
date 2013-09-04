@@ -92,6 +92,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				if parent_model.get('type') is 'app'
 					sgHideCheck = true
 
+				if parent_model.get('is_stack') is true
+					sgHideCheck = true
+
 				sgIsDefault = false
 				if sgComp.name is 'DefaultSG'
 					sgIsDefault = true

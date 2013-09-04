@@ -206,17 +206,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				json_data.component[eni_uid].number = eni_number
 
+		# stage canvas comps
+		temp_comps = $.extend( true, {}, MC.canvas_data.component )
+		MC.canvas_data.component = comp_data
 
 		# generate eni ip
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
-
 			az = layout_data.groupUId
-
 			MC.aws.subnet.updateAllENIIPList(az)
-
 		else
-
 			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1))
+
+		# restore canvas comps
+		comp_data = $.extend( true, {}, MC.canvas_data.component )
+		MC.canvas_data.component = temp_comps
 
 		#return
 		null

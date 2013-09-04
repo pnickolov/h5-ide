@@ -6,7 +6,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
     ElbAppModel = Backbone.Model.extend {
 
+        defaults :
+            'id'    : null
+
         init : ( elb_uid )->
+
+            this.set 'id', elb_uid
 
             myElbComponent = MC.canvas_data.component[ elb_uid ]
 
@@ -46,6 +51,15 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
             else
               elb.isClassic = true
+
+            defaultVPC = false
+            if MC.aws.aws.checkDefaultVPC()
+                defaultVPC = true
+
+            if defaultVPC or MC.canvas_data.component[elb_uid].resource.VpcId
+                this.set 'have_vpc', true
+            else
+                this.set 'have_vpc', false
 
             elb.distribution = []
             $.each elb.AvailabilityZones.member, (i, zone_name) ->
@@ -101,6 +115,32 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
 
             this.set elb
+
+        getSGList : () ->
+
+            # resourceId = this.get 'id'
+
+            # # find stack by resource id
+            # resourceCompObj = null
+            # _.each MC.canvas_data.component, (compObj, uid) ->
+            #     if compObj.resource.InstanceId is resourceId
+            #         resourceCompObj = compObj
+            #     null
+
+            # sgAry = []
+            # if resourceCompObj
+            #     sgAry = resourceCompObj.resource.SecurityGroupId
+
+            uid = this.get 'id'
+            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+
+            sgUIDAry = []
+            _.each sgAry, (value) ->
+                sgUID = value.slice(1).split('.')[0]
+                sgUIDAry.push sgUID
+                null
+
+            return sgUIDAry
     }
 
     new ElbAppModel()

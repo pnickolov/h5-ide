@@ -33,6 +33,7 @@ define [ 'jquery',
                 #init resoruce service count
                 model.service_count = 0
                 model.set 'check_required_service_count', -1
+                MC.data.resouceapi = []
                 #
                 ide_event.onListen ide_event.RESOURCE_QUICKSTART_READY, (region_name) ->
                     console.log 'resource:RESOURCE_QUICKSTART_READY'

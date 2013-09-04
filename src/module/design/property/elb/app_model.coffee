@@ -99,6 +99,7 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
                     return false
 
+            elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
 
             this.set elb
     }

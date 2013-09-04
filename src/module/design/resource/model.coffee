@@ -653,6 +653,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
             #
             @set 'check_required_service_count', @service_count
             #
+            MC.data.resouceapi.push name
             null
 
 

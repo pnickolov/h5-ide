@@ -1873,29 +1873,39 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			# 	MC.canvas.connect $("#"+line_data[0]), line_data[2], $("#"+line_data[1]), line_data[3]
 
 		setEip : ( uid, state ) ->
-			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-				if state == 'on'
+			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+				@setEipClassic uid, state
+
+			else
+				@setEipVPC uid, state
+
+		setEipClassic : ( uid, state ) ->
+			if state == 'on'
 					for comp_uid, comp of MC.canvas_data.component
-						if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP or MC.extractID( comp.resource.InstanceId ) isnt uid
-							delete 	MC.canvas_data.component[comp_uid]
+						if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and MC.extractID( comp.resource.InstanceId ) is uid
+							delete MC.canvas_data.component[comp_uid]
 							break
 
-				else if state == 'off'
+					MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+					MC.canvas.update uid,'eip','eip_status', 'off'
 
-					eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
-					eip_json.uid = MC.guid()
-					eip_json.resource.InstanceId = "@#{uid}.resource.InstanceId"
+			else if state == 'off'
 
-					data = MC.canvas.data.get('component')
-					data[ eip_json.uid ] = eip_json
-					MC.canvas.data.set('component', data)
+				eip_json = $.extend true, {}, MC.canvas.EIP_JSON.data
+				eip_json.uid = MC.guid()
+				eip_json.resource.InstanceId = "@#{uid}.resource.InstanceId"
 
-				return
+				data = MC.canvas.data.get('component')
+				data[ eip_json.uid ] = eip_json
+				MC.canvas.data.set('component', data)
+
+				MC.canvas.update uid, 'image', 'eip_status', MC.canvas.IMAGE.EIP_ON
+				MC.canvas.update uid, 'eip',   'eip_status', 'on'
 
 
-			## ## ## ## ## ##
-			# For VPC stack
+		setEipVPC : ( uid, state ) ->
+
 			existing_eip_ref = []
 			instanceId = ""
 

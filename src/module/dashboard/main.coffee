@@ -118,7 +118,18 @@ define [ 'jquery',
             model.emptyListListener()
             model.describeAccountAttributesService()
 
-            model.describeAWSResourcesService()
+            #model.describeAWSResourcesService()
+            # update aws credential
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
+
+                if $.cookie('has_cred') is 'true'   # update aws resource
+                    model.describeAWSResourcesService
+                    #model.describeRegionAccountAttributesService
+
+                else    # set aws credential
+                    console.log 'show credential setting dialog'
+                    require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'overview UPDATE_AWS_CREDENTIAL'
@@ -185,18 +196,19 @@ define [ 'jquery',
             # update region thumbnail
             ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
                 console.log 'UPDATE_REGION_THUMBNAIL'
-                
+
                 view.updateThumbnail url
-                
+
                 null
 
-            # update region app state when pending
-            # ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
-            #     console.log 'UPDATE_TAB_ICON'
+            # update region app state
+            update region app state when pending
+            ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
+                console.log 'UPDATE_TAB_ICON'
 
-            #     model.updateAppList flag, app_id
+                model.updateAppList flag, app_id
 
-            #     null
+                null
 
             #listen
             view.on 'RETURN_REGION_TAB', ( region ) ->

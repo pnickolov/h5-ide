@@ -490,6 +490,23 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
+        updateAppList : (flag, app_id) ->
+            me = this
+
+            cur_app_list = me.get 'cur_app_list'
+
+            if flag is 'pending'
+                for item in cur_app_list
+                    if item.id == app_id
+                        idx = cur_app_list.indexOf item
+                        if idx>=0
+                            cur_app_list[idx].status = "pending"
+                            cur_app_list[idx].ispending = true
+
+                            me.set 'cur_app_list', cur_app_list
+                            #me.trigger 'UPDATE_REGION_APP_LIST'
+
+            null
 
     }
 

@@ -288,10 +288,10 @@
 }
 
 .node-dragging .attachable .node-background {
-	fill-opacity: 0.5;
-	fill: #F2F8FF;
+	fill-opacity: 1;
+	fill: #fff;
 	stroke-width: 1;
-	stroke: #59b;
+	stroke: #659FFF;
 }
 
 .selected .node-background {

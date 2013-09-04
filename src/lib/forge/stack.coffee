@@ -136,7 +136,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				comp_data[ new_comp.uid ] = new_comp
 
-				if elbs.length > 0
+				if elbs.length > 0 and new_comp.uid isnt uid
 
 					for elb in elbs
 

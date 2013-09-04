@@ -182,6 +182,22 @@ define [ 'jquery',
                 view.renderRegionStatStack()
                 #region_view.checkCreateStack MC.data.supported_platforms
 
+            # update region thumbnail
+            ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
+                console.log 'UPDATE_REGION_THUMBNAIL'
+                
+                view.updateThumbnail url
+                
+                null
+
+            # update region app state when pending
+            # ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
+            #     console.log 'UPDATE_TAB_ICON'
+
+            #     model.updateAppList flag, app_id
+
+            #     null
+
             #listen
             view.on 'RETURN_REGION_TAB', ( region ) ->
                 console.log 'RETURN_REGION_TAB'

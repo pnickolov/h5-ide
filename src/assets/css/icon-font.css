@@ -57,7 +57,9 @@
 .icon-sort,
 .icon-detail, 
 .ipt-controls > .icon-del:before,
-.ipt-controls > .icon-add:before
+.ipt-controls > .icon-add:before,
+.icon-line-shape,
+.icon-clip
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -113,3 +115,5 @@
 .ipt-controls > .icon-add:before {content: "\F13D";}
 .ipt-controls > .icon-del:before {content: "\F13E";}
 .icon-detail:before {content: "\F140";}
+.icon-line-shape:before {content: "\F141";}
+.icon-clip:before {content: "\F142";}

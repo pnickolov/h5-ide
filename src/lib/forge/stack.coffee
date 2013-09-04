@@ -37,6 +37,34 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		json_data
 
 
+	gernerateUId = ( ins_num, instance_list ) ->
+
+		ins_comp_number = instance_list.length
+
+		if ins_comp_number > ins_num
+
+			i = ins_comp_number
+
+			while i > ins_num
+
+				instance_list.splice (i-1), 1
+
+				i--
+
+		else if ins_num > ins_comp_number
+
+			i = 0
+
+			while i < ins_num-1
+
+				new_eni_uid = MC.guid()
+
+				instance_list.push new_eni_uid
+
+				i++
+
+		instance_list
+
 	#expand an instance to a server group
 	expandInstance = ( json_data, uid ) ->
 
@@ -51,17 +79,30 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			console.error '[expandInstance]instance number not match'
 
-		#init instance_list
-		if instance_list.length != ins_num
+		gernerateUId ins_num, instance_list
+		# ins_comp_number = instance_list.length
 
-			instance_list = [ uid ]
+		# if ins_comp_number > ins_num
 
-			i = 1
-			while i < ins_num
+		# 	i = ins_comp_number
 
-				instance_list[ i ] = ''
+		# 	while i > ins_num
 
-				i++
+		# 		instance_list.splice (i-1), 1
+
+		# 		i--
+
+		# else if ins_num > ins_comp_number
+
+		# 	i = 0
+
+		# 	while i < ins_num-1
+
+		# 		new_eni_uid = MC.guid()
+
+		# 		instance_list.push new_eni_uid
+
+		# 		i++
 
 		# collect using elb
 		instance_reference = "@#{ins_comp.uid}.resource.InstanceId"
@@ -80,25 +121,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if ins_num
 
-			i = 1
-			while i < ins_num
+			for i, instance_id of instance_list
 
 				new_comp = $.extend( true, {}, ins_comp )
 
-				if !instance_list[i]
-					instance_list[i] = MC.guid()
-
 				#generate uid
-				new_comp.uid = instance_list[i]
+				new_comp.uid = instance_id
 
 				#generate name
 				new_comp.name = server_group_name + '-' + i
 
 				#index in server group
-				new_comp.index = i
+				new_comp.index = parseInt(i, 10)
 
 				comp_data[ new_comp.uid ] = new_comp
-				i++
 
 				if elbs.length > 0
 
@@ -154,30 +190,30 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				eni_list = json_data.layout.component.node[uid].eniList = [ uid ]
 
+		gernerateUId eni_number, eni_list
+		# eni_comp_number = eni_list.length
 
-		eni_comp_number = eni_list.length
+		# if eni_comp_number > eni_number
 
-		if eni_comp_number > eni_number
+		# 	i = eni_comp_number
 
-			i = eni_number
+		# 	while i > eni_number
 
-			while i > eni_comp_number
+		# 		eni_list.splice (i-1), 1
 
-				eni_list.splice (i-1), 1
+		# 		i--
 
-				i--
+		# else if eni_number > eni_comp_number
 
-		else if eni_number > eni_comp_number
+		# 	i = 0
 
-			i = 0
+		# 	while i < eni_number-1
 
-			while i < eni_number-1
+		# 		new_eni_uid = MC.guid()
 
-				new_eni_uid = MC.guid()
+		# 		eni_list.push new_eni_uid
 
-				eni_list.push new_eni_uid
-
-				i++
+		# 		i++
 
 		$.each eni_list, ( idx, eni_uid ) ->
 
@@ -252,29 +288,30 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			vol_list = json_data.layout.component.node[ instance_uid ].volumeList[ uid ] = [ uid ]
 
-		vol_comp_number = vol_list.length
+		gernerateUId vol_number, vol_list
+		# vol_comp_number = vol_list.length
 
-		if vol_comp_number > vol_number
+		# if vol_comp_number > vol_number
 
-			i = vol_number
+		# 	i = vol_comp_number
 
-			while i > vol_comp_number
+		# 	while i > vol_number
 
-				vol_list.splice (i-1), 1
+		# 		vol_list.splice (i-1), 1
 
-				i--
+		# 		i--
 
-		else if vol_number > vol_comp_number
+		# else if vol_number > vol_comp_number
 
-			i = 0
+		# 	i = 0
 
-			while i < vol_number-1
+		# 	while i < vol_number-1
 
-				new_vol_uid = MC.guid()
+		# 		new_vol_uid = MC.guid()
 
-				vol_list.push new_vol_uid
+		# 		vol_list.push new_vol_uid
 
-				i++
+		# 		i++
 
 		$.each vol_list, ( idx, vol_uid ) ->
 
@@ -366,27 +403,28 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			eip_comp_number = eip_list.length
 
-		if eip_comp_number > eip_number
+		gernerateUId eip_number, eip_list
+		# if eip_comp_number > eip_number
 
-			i = eip_number
+		# 	i = eip_comp_number
 
-			while i > eip_comp_number
+		# 	while i > eip_number
 
-				eip_list.splice (i-1), 1
+		# 		eip_list.splice (i-1), 1
 
-				i--
+		# 		i--
 
-		else if eip_number > eip_comp_number
+		# else if eip_number > eip_comp_number
 
-			i = 0
+		# 	i = 0
 
-			while i < eip_number-1
+		# 	while i < eip_number-1
 
-				new_eip_uid = MC.guid()
+		# 		new_eip_uid = MC.guid()
 
-				eip_list.push new_eip_uid
+		# 		eip_list.push new_eip_uid
 
-				i++
+		# 		i++
 
 		if json_data.layout.component.node[ eni_uid ]
 

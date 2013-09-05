@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, constant, lang ) ->
+define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, constant, lang ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 
@@ -47,25 +47,31 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
             app_data = MC.data.resource_list[ MC.canvas_data.region ]
 
-            instance = $.extend true, {}, app_data[ instance_id ]
-            instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
+            if app_data[ instance_id ]
 
-            # Possible value : running, stopped, pending...
-            instance.isRunning = instance.instanceState.name == "running"
-            instance.isPending = instance.instanceState.name == "pending"
-            instance.instanceState.name = MC.capitalize instance.instanceState.name
-            instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
+                instance = $.extend true, {}, app_data[ instance_id ]
+                instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
 
-            # Keypair Component
-            # keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
-            # myKeypairComponent = MC.canvas_data.component[ keypairUid ]
+                # Possible value : running, stopped, pending...
+                instance.isRunning = instance.instanceState.name == "running"
+                instance.isPending = instance.instanceState.name == "pending"
+                instance.instanceState.name = MC.capitalize instance.instanceState.name
+                instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
 
-            # instance.keyName = myKeypairComponent.resource.KeyName
+                # Keypair Component
+                # keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
+                # myKeypairComponent = MC.canvas_data.component[ keypairUid ]
 
-            # Eni Data
-            instance.eni = this.getEniData instance
+                # instance.keyName = myKeypairComponent.resource.KeyName
 
-            this.set instance
+                # Eni Data
+                instance.eni = this.getEniData instance
+
+                this.set instance
+
+            else
+
+                console.log 'Can not found data for this instance: ' + instance_id
 
             null
 

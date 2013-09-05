@@ -44,7 +44,7 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 
 define [ 'jquery', 'handlebars',
          'MC', 'session_model',
-         'i18n!/nls/lang.js',
+         'i18n!./nls/lang.js',
          'text!./js/login/template.html',
          'forge_handle'
 ], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->

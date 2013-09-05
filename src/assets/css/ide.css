@@ -4522,7 +4522,7 @@ a.action-link:hover {
 }
 
 .property-warning {
-	font-size: 13px;
+	font-size: 12px;
 	color: #DD8D00;
 	padding: 5px;
 	border-radius: 2px;
@@ -6082,7 +6082,7 @@ a.action-link:hover {
 
 #asg-termination-policy .modal-control-group label {
 	color: #999;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .control-sentence {
@@ -6121,7 +6121,8 @@ a.action-link:hover {
 #asg-policy-periods,
 #asg-policy-threshold,
 #asg-policy-adjust,
-#asg-policy-cooldown {
+#asg-policy-cooldown,
+#asg-policy-step {
 	padding: 4px 5px;
 	border: 1px solid #ccc;
 	border-radius: 2px;
@@ -6152,8 +6153,24 @@ a.action-link:hover {
 	width: 100px;
 }
 
+#asg-policy-step {
+	width: 30px;
+}
+
 #asg-policy-notify-label {
 	display: inline;
+}
+
+#asg-policy-statistics label,
+#asg-policy-scaling label {
+	float: left;
+	position: relative;
+	width: 120px;
+	top: 6px;
+}
+
+#asg-policy-step-wrapper {
+	margin-top: 5px;
 }
 
 .icon-remove,

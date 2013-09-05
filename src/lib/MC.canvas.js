@@ -3409,6 +3409,14 @@ MC.canvas.event.dragable = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
 			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
+			areaChild = MC.canvas.areaChild(
+				target_id,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + component_size[0],
+				coordinate.y + component_size[1]
+			),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3428,6 +3436,7 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
+			areaChild.length === 0 &&
 			match_place.is_matched &&
 			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()

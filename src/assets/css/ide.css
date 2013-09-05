@@ -1310,6 +1310,10 @@ a {
 	background-image: url('../images/ide/global-region-icon.png');
 }
 
+.firefox #global-region-resource-list .global-resource-icon {
+	top: -26px;
+}
+
 .global-region-resource-count {
 	margin-left: 60px;
 	font-size: 40px;

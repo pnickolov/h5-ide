@@ -2656,6 +2656,12 @@ MC.canvas.asgList = {
 			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
+			var appData = MC.data.resource_list[ MC.canvas_data.region ];
+			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
+
+			if ( !asgData ) {
+				return true;
+			}
 
 			var statusMap = {
 					 "Pending"     : "orange"
@@ -2674,7 +2680,7 @@ MC.canvas.asgList = {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
+			var instances = asgData.Instances.member;
 			if ( instances )
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {

@@ -186,6 +186,15 @@ define({
 		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app?',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
+
+
+		//toolbar handler
+		'TOOL_MSG_INFO_REQ_SUCCESS'				: 'Sending request to %s %s...',
+		'TOOL_MSG_ERR_REQ_FAILED'				: 'Sending request to %s %s failed.',
+		'TOOL_MSG_INFO_HDL_SUCCESS'				: '%s %s successfully.',
+		'TOOL_MSG_ERR_HDL_FAILED'				: '%s %s failed.',
+
+
 		/******property module******/
 		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',

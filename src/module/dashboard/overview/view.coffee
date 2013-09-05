@@ -45,6 +45,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         switchRegion: ( event ) ->
             target = $ event.currentTarget
             region = target.data 'region'
+            current_region = region
             regionName = target.find('a').text()
 
             if regionName is @$el.find( '#region-switch span' ).text()
@@ -131,6 +132,22 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             tmpl = @region_resource @model.toJSON()
             $( this.el ).find('#region-resource-wrap').html tmpl
 
+        reRenderRegionPartial: ( type, data ) ->
+            tmplAll = $( '#region-resource-tmpl' ).html()
+            beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
+            endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
+
+            startPos = @_regexIndexOf tmplAll, beginRegex
+            endPos = tmplAll.indexOf '</tbody>', startPos
+
+            tmpl = tmplAll.slice startPos, endPos
+            template = Handlebars.compile tmpl
+
+            $( this.el ).find("##{type} tbody").html template data
+
+            null
+
+
         renderRecent: ->
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
@@ -144,6 +161,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         updateLoadTime: ( time ) ->
             @$el.find('#global-refresh span').text time
 
+        _regexIndexOf: (str, regex, startpos) ->
+            indexOf = str.substring(startpos || 0).search(regex)
+            if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
 
         ############################################################################################
 

@@ -125,23 +125,38 @@ define [ 'jquery',
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
+                    msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+                    #view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
+                    view.notify 'info', msg
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
+                    msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
+                    #view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
+                    view.notify 'error', msg
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
+
+                    info = info.toLowerCase()
+                    info[0] = info[0].toUpperCase()
+
+                    msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
+                    #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
+                    view.notify 'info', msg
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
 
+                    info = info.toLowerCase()
+                    info[0] = info[0].toUpperCase()
+
+                    msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
+                    #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
+                    view.notify 'error', msg
 
     unLoadModule = () ->
         #view.remove()

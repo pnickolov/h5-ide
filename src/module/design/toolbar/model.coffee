@@ -425,7 +425,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             ori_data = MC.canvas_property.original_json
             new_data = JSON.stringify(data)
             if ori_data == new_data
-                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name + ' already'
+                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
                 return
 
             if id.indexOf('stack-', 0) == 0   #save

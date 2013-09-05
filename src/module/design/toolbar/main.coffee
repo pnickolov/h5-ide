@@ -58,13 +58,20 @@ define [ 'jquery',
 
             #save
             ide_event.onLongListen ide_event.SAVE_STACK, (data) ->
-            #view.on 'TOOLBAR_SAVE_CLICK', (data) ->
                 console.log ide_event.SAVE_STACK
-                model.saveStack(data)
+
+                #expand components
+                MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                #save stack
+                model.saveStack MC.canvas.layout.save()
+                #compact and update canvas
+                MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                #model.saveStack(data)
+                null
 
             #duplicate
             ide_event.onLongListen ide_event.DUPLICATE_STACK, (region, id, new_name, name) ->
-            #view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name, data) ->
                 console.log ide_event.DUPLICATE_STACK + ':' + region + ',' + id + ',' + new_name + ',' + name
                 model.duplicateStack(region, id, new_name, name)
 

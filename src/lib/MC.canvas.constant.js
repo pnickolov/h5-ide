@@ -738,7 +738,7 @@ var constant_data = {
 		"version": "2013-09-04",
 		"tag": "",
 		"usage": "",
-		"has_instance_store_ami": "", //true|false
+		//"has_instance_store_ami": "", //true|false
 		"component":
 		{},
 		"layout":

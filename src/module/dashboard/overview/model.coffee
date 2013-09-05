@@ -1186,7 +1186,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                 start_time = null
                 stop_time = null
 
-                has_instance_store_ami = if 'has_instance_store_ami' of item and item.has_instance_store_ami then item.has_instance_store_ami else false
+                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
+                    has_instance_store_ami = true
 
                 if item.last_start
                     date.setTime(item.last_start*1000)

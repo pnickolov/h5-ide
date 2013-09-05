@@ -887,7 +887,7 @@
 /* instance state */
 .instance-state {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 	display: block;
 }
@@ -922,7 +922,7 @@
 
 .volume-status {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 }
 

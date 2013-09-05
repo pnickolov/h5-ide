@@ -5322,19 +5322,7 @@ a.action-link:hover {
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */
-.app-panel-li {
-	background    : #fcfcfc;
-	border-bottom : 1px solid #BBB;
-	padding       : 10px;
-}
-.app-panel-li:after {
-	display : block;
-	content : " ";
-	clear   : both;
-}
-.app-panel-li:hover {
-	background : #f7f7f7;
-}
+
 .app-panel-li-col2-1 {
 	float : left;
 	width : 60%;
@@ -5342,6 +5330,12 @@ a.action-link:hover {
 .app-panel-li-col2-2  {
 	float : left;
 	width : 40%;
+}
+
+.app-panel-li-col2-1 label,
+.app-panel-li-col2-2 label {
+	font-size : 12px;
+	color     : #999;
 }
 
 .property-app {

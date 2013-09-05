@@ -1508,10 +1508,10 @@ a {
 	display: block;
 	width: 220px;
 /*	height: 172px;*/
-	border: 1px solid #ccc;
+	border: 1px solid #8a8a8a;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-	opacity: .8;
+	opacity: .95;
 }
 
 .region-resource-list-item:hover {
@@ -1528,6 +1528,8 @@ a {
 	width: 220px;
 	height: 145px;
 	border-radius: 5px 5px 0 0;
+	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+	background-size: 225px auto;
 }
 
 .region-resource-thumbnail img {
@@ -1863,7 +1865,7 @@ a {
 		left: 45px;
 	}
 
-	.region-resource-list li {
+	.region-resource-list li {.region-resource-list-item
 		margin: 0 10px 15px 10px;
 	}
 
@@ -1874,6 +1876,7 @@ a {
 	.region-resource-thumbnail {
 		width: 195px;
 		height: 136px;
+		background-size: 200px auto;
 	}
 
 	.region-resource-thumbnail img {

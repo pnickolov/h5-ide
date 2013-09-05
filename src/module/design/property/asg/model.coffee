@@ -30,7 +30,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       asg_comp = MC.canvas_data.component[uid]
       asg_data = MC.data.resource_list[MC.canvas_data.region][asg_comp.resource.AutoScalingGroupARN]
 
-      if not asg
+      if not asg_data
         this.set 'asg', null
         this.set 'asg_name', asg_comp.name
         return

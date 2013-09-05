@@ -4070,7 +4070,8 @@ a.sidebar-hider {
 	height: 15px;*/
 	/*background-color: #eee;*/
 	position: absolute;
-	top: 22px;
+	top: 50%;
+	margin-top: -6px;
 	right: 5px;
 	cursor: pointer;
 }
@@ -5653,6 +5654,11 @@ a.action-link:hover {
 .asg-p-action .icon-remove,
 .sns-action .icon-remove {
 	margin-left: 5px;
+}
+
+.asg-p-action .icon-remove:hover,
+.sns-action .icon-remove:hover {
+	color: #F74A48;
 }
 
 /*.property-term-p:hover .asg-p-action,

@@ -2,7 +2,7 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'i18n!/nls/lang.js',
+define [ 'i18n!../../../nls/lang.js',
          'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
          'backbone', 'jquery', 'underscore'
 ], ( lang, ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->

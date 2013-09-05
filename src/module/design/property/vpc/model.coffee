@@ -168,7 +168,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 "netbios-name-servers" : "netbiosServers"
                 "ntp-servers"          : "ntpServers"
 
-            data = { useAmazonDns : false }
+            data = {
+                useAmazonDns : false
+                hasDhcp      : true
+            }
             for i in config
                 if i.Key == "domain-name"
                     data.domainName  = i.ValueSet[0].Value

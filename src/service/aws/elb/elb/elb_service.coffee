@@ -221,4 +221,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeLoadBalancers        : DescribeLoadBalancers
 	#
 	resolveDescribeLoadBalancersResult : resolveDescribeLoadBalancersResult
+	resolveDescribeInstanceHealthResult: resolveDescribeInstanceHealthResult
 

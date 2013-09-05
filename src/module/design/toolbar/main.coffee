@@ -6,7 +6,7 @@ define [ 'jquery',
          'text!./module/design/toolbar/stack_template.html',
          'text!./module/design/toolbar/app_template.html',
          'event',
-         'i18n!/nls/lang.js'
+         'i18n!./nls/lang.js'
 ], ( $, stack_template, app_template, ide_event, lang ) ->
 
     #private
@@ -58,13 +58,20 @@ define [ 'jquery',
 
             #save
             ide_event.onLongListen ide_event.SAVE_STACK, (data) ->
-            #view.on 'TOOLBAR_SAVE_CLICK', (data) ->
                 console.log ide_event.SAVE_STACK
-                model.saveStack(data)
+
+                #expand components
+                MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                #save stack
+                model.saveStack MC.canvas.layout.save()
+                #compact and update canvas
+                MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                #model.saveStack(data)
+                null
 
             #duplicate
             ide_event.onLongListen ide_event.DUPLICATE_STACK, (region, id, new_name, name) ->
-            #view.on 'TOOLBAR_DUPLICATE_CLICK', (new_name, data) ->
                 console.log ide_event.DUPLICATE_STACK + ':' + region + ',' + id + ',' + new_name + ',' + name
                 model.duplicateStack(region, id, new_name, name)
 
@@ -125,23 +132,38 @@ define [ 'jquery',
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
+                    msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+                    #view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
+                    view.notify 'info', msg
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
+                    msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
+                    #view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
+                    view.notify 'error', msg
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
+
+                    info = info.toLowerCase()
+                    info = info[0].toUpperCase() + info.substr(1)
+
+                    msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
+                    #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
+                    view.notify 'info', msg
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
-                    view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
 
+                    info = info.toLowerCase()
+                    info = info[0].toUpperCase() + info.substr(1)
+
+                    msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
+                    #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
+                    view.notify 'error', msg
 
     unLoadModule = () ->
         #view.remove()

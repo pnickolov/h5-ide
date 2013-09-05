@@ -62,15 +62,15 @@
 
     <section class="property-control-group">
       <div class="radio property-dhcp">
-        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#unless dhcp.none}}{{#unless dhcp.default}}checked="checked"{{/unless}}{{/unless}} value="specified"/>
+        <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if dhcp.hasDhcp}}checked="checked"{{/if}} value="specified"/>
         <label for="property-dhcp-spec"></label>
       </div>
       <label for="property-dhcp-spec">Specified DHCP Options Set</label>
 
-      <div class="property-info {{#if hasDhcp}}hide{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
+      <div class="property-info {{#if dhcp.hasDhcp}}hide{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
     </section>
 
-    <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub {{#unless hasDhcp}}hide{{/unless}}">
+    <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub {{#unless dhcp.hasDhcp}}hide{{/unless}}">
       <div class="property-control-group">
         <label class="left" for="property-dhcp-domain">Domain Name</label>
         <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="Enter the domain name that should be used for your hosts" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>

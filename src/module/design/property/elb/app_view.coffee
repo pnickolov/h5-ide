@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event', 'MC', 'UI.zeroclipboard', 'UI.notification'
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, zeroclipboard ) ->
 
     ElbAppView = Backbone.View.extend {
 
@@ -17,7 +17,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'UI.notification'
             $( '.property-details' ).html this.template this.model.attributes
 
             # Init Clipbard
-            new ZeroClipboard( $("#property-app-elb-dnss .icon-copy") )
+            zeroclipboard.copy $("#property-app-elb-dnss .icon-copy")
             null
     }
 

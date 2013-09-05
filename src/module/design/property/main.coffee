@@ -178,14 +178,14 @@ define [ 'jquery',
 										break
 
 									else if value.port.indexOf('subnet') >= 0
-										rtb_main.loadModule uid, rtb_main
+										rtb_main.loadModule uid, rtb_main, "OPEN_STACK"
 										break
 
 							else if key.indexOf( "eni-attach" ) >= 0
-								eni_main.loadModule uid, eni_main, tab_type
+								eni_main.loadModule uid, eni_main, "OPEN_STACK"
 
 							else if key.indexOf( "subnet-assoc-in" ) >= 0
-								subnet_main.loadModule uid, eni_main, tab_type
+								subnet_main.loadModule uid, eni_main, "OPEN_STACK"
 
 							else if key.indexOf('sg') >=0
 

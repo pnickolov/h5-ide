@@ -643,7 +643,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     if flag is 'RUN_STACK'
                         flag_list.is_failed = true
-                        flag_list.err_detail = req.data
+                        flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
                         # remove the app name from app_list
                         if name in MC.data.app_list[region]

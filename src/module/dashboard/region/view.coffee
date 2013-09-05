@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, lang ) ->
+define [ 'event', 'i18n!../../../nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, lang ) ->
 
     GegionView = Backbone.View.extend {
         time_stamp : new Date().getTime()

@@ -2247,6 +2247,23 @@ MC.canvas.volume = {
 
 		if (!bubble_box[0])
 		{
+			if (MC.canvas.getState() === 'app')
+			{
+				if ($('#' + target_id + '_instance-number').text() * 1 > 1)
+				{
+					MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+
+					return false;
+				}
+
+				if ($('#' + target_id).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+				{
+					MC.canvas.asgList.show.call( $('#' + target_id)[0], event );
+
+					return false;
+				}
+			}
+
 			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
@@ -2636,7 +2653,7 @@ MC.canvas.asgList = {
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( event.currentTarget.id );
+			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 

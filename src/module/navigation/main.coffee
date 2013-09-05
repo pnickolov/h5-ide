@@ -5,7 +5,7 @@
 define [ 'jquery',
          'text!./module/navigation/template.html',
          'text!./module/navigation/template_data.html',
-         '/module/navigation/model.js',
+         './module/navigation/model.js',
          'event',
          'MC.ide.template'
 ], ( $, template, template_data, model, ide_event ) ->

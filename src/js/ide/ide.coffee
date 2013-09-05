@@ -3,7 +3,7 @@
 #############################
 
 define [ 'MC', 'event', 'handlebars'
-		 'i18n!/nls/lang.js',
+		 'i18n!./nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',

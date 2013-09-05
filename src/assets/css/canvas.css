@@ -727,9 +727,9 @@
 	border: 2px solid #83CBF9;
 	width: 376px;
 	z-index: 30;
-	background: rgba(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.9);
 	border-radius: 4px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #asgList-header,
@@ -765,10 +765,10 @@
 #asgList .status,
 #instanceList .status {
 	position: absolute;
-	right: 22px;
-	top: 17px;
-	width: 8px;
-	height: 8px;
+	right: 27px;
+	top: 16px;
+	width: 6px;
+	height: 6px;
 }
 
 .asgList-item,
@@ -887,7 +887,7 @@
 /* instance state */
 .instance-state {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 	display: block;
 }
@@ -922,7 +922,7 @@
 
 .volume-status {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 }
 

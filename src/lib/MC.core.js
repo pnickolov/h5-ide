@@ -12,8 +12,8 @@ var MC = {
 	version: '0.2.8',
 
 	// Global Variable
-	API_URL: 'https://api.madeiracloud.com/',
-	IMG_URL: '../assets/images/',
+	API_URL: 'https://api.madeiracloud.com/html/',
+	IMG_URL: './assets/images/',
 	WS_URL: 'https://api.madeiracloud.com/ws',//-> 8300
 	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/',
 

@@ -51,7 +51,6 @@ a {
 
 .lh30  { line-height : 30px; }
 
-.hide  { display : none; }
 .left  { float   : left; }
 .right { float   : right; }
 
@@ -1509,10 +1508,10 @@ a {
 	display: block;
 	width: 220px;
 /*	height: 172px;*/
-	border: 1px solid #ccc;
+	border: 1px solid #8a8a8a;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-	opacity: .8;
+	opacity: .95;
 }
 
 .region-resource-list-item:hover {
@@ -1529,6 +1528,8 @@ a {
 	width: 220px;
 	height: 145px;
 	border-radius: 5px 5px 0 0;
+	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+	background-size: 225px auto;
 }
 
 .region-resource-thumbnail img {
@@ -1844,7 +1845,7 @@ a {
 	}
 
 	.global-region-resource-location-count {
-		font-size: 22x;
+		font-size: 22px;
 	}
 
 	.global-region-resource-content h4  {
@@ -1864,7 +1865,7 @@ a {
 		left: 45px;
 	}
 
-	.region-resource-list li {
+	.region-resource-list li {.region-resource-list-item
 		margin: 0 10px 15px 10px;
 	}
 
@@ -1875,6 +1876,7 @@ a {
 	.region-resource-thumbnail {
 		width: 195px;
 		height: 136px;
+		background-size: 200px auto;
 	}
 
 	.region-resource-thumbnail img {
@@ -3624,20 +3626,20 @@ a.sidebar-hider {
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
 	position     : absolute;
-  top          : 0;
-  left         : 0;
-  right        : 0;
-  bottom       : 0;
-  margin-left  : 246px;
-  margin-right : 280px;
+	top          : 0;
+	left         : 0;
+	right        : 0;
+	bottom       : 0;
+	margin-left  : 246px;
+	margin-right : 280px;
 
-/*  -webkit-transition : margin, width 0s linear;
-  -moz-transition    : margin, width 0s linear;
-  -ms-transition     : margin, width 0s linear;
-  -o-transition      : margin, width 0s linear;
-  transition         : margin, width 0s linear;*/
+	/*  -webkit-transition : margin, width 0s linear;
+	-moz-transition    : margin, width 0s linear;
+	-ms-transition     : margin, width 0s linear;
+	-o-transition      : margin, width 0s linear;
+	transition         : margin, width 0s linear;*/
 
-  background : #313131;
+	background : #313131;
 }
 
 #canvas-panel.left-hiden {
@@ -3708,7 +3710,6 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-
 }
 
 .property-block-wrap:hover {
@@ -5324,19 +5325,7 @@ a.action-link:hover {
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */
-.app-panel-li {
-	background    : #fcfcfc;
-	border-bottom : 1px solid #BBB;
-	padding       : 10px;
-}
-.app-panel-li:after {
-	display : block;
-	content : " ";
-	clear   : both;
-}
-.app-panel-li:hover {
-	background : #f7f7f7;
-}
+
 .app-panel-li-col2-1 {
 	float : left;
 	width : 60%;
@@ -5344,6 +5333,12 @@ a.action-link:hover {
 .app-panel-li-col2-2  {
 	float : left;
 	width : 40%;
+}
+
+.app-panel-li-col2-1 label,
+.app-panel-li-col2-2 label {
+	font-size : 12px;
+	color     : #999;
 }
 
 .property-app {

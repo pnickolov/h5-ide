@@ -51,7 +51,6 @@ a {
 
 .lh30  { line-height : 30px; }
 
-.hide  { display : none; }
 .left  { float   : left; }
 .right { float   : right; }
 
@@ -3624,20 +3623,20 @@ a.sidebar-hider {
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
 	position     : absolute;
-  top          : 0;
-  left         : 0;
-  right        : 0;
-  bottom       : 0;
-  margin-left  : 246px;
-  margin-right : 280px;
+	top          : 0;
+	left         : 0;
+	right        : 0;
+	bottom       : 0;
+	margin-left  : 246px;
+	margin-right : 280px;
 
-/*  -webkit-transition : margin, width 0s linear;
-  -moz-transition    : margin, width 0s linear;
-  -ms-transition     : margin, width 0s linear;
-  -o-transition      : margin, width 0s linear;
-  transition         : margin, width 0s linear;*/
+	/*  -webkit-transition : margin, width 0s linear;
+	-moz-transition    : margin, width 0s linear;
+	-ms-transition     : margin, width 0s linear;
+	-o-transition      : margin, width 0s linear;
+	transition         : margin, width 0s linear;*/
 
-  background : #313131;
+	background : #313131;
 }
 
 #canvas-panel.left-hiden {
@@ -3708,7 +3707,6 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-
 }
 
 .property-block-wrap:hover {

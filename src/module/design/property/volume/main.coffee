@@ -34,6 +34,9 @@ define [ 'jquery',
                   './module/design/property/volume/model'
         ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -77,6 +80,9 @@ define [ 'jquery',
         require [ './module/design/property/volume/app_view',
                   './module/design/property/volume/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

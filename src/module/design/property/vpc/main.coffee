@@ -33,6 +33,9 @@ define [ 'jquery',
                   './module/design/property/vpc/model'
         ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -57,6 +60,9 @@ define [ 'jquery',
         require [ './module/design/property/vpc/app_view',
                   './module/design/property/vpc/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

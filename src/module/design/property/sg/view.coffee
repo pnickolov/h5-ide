@@ -173,6 +173,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			this.trigger "SET_SG_RULE", rule
 
+			modal.close()
 
 		editablelabelClick : ( event ) ->
 			editablelabel.create.call $(event.target)

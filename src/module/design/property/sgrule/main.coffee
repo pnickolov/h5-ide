@@ -32,6 +32,8 @@ define [ 'jquery',
 		#
 		require [ './module/design/property/sgrule/model', './module/design/property/sgrule/' + view_type, './component/sgrule/main' ], ( model, view, sgrule_main ) ->
 
+			# added by song
+			model.clear({silent: true})
 			#
 			if current_view then view.delegateEvents view.events
 
@@ -57,6 +59,9 @@ define [ 'jquery',
 	loadAppModule = (line_uid) ->
 
 		require ['./module/design/property/sgrule/model', './module/design/property/sgrule/app_view'], (model, view) ->
+
+			# added by song
+			model.clear({silent: true})
 
 			model.getAppDispSGList line_uid
 

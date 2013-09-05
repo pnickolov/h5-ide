@@ -49,7 +49,8 @@ define [ 'jquery',
 			view  = new View { 'model' : model }
 			view.render template
 
-			MC.data.propertyHeadStateMap = {}
+			if !MC.data.propertyHeadStateMap
+				MC.data.propertyHeadStateMap = {}
 
 			#show stack property
 			ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type ) ->

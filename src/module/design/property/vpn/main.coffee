@@ -25,6 +25,9 @@ define [ 'jquery',
         #
         require [ './module/design/property/vpn/view', './module/design/property/vpn/model' ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+
             #
             if current_view then view.delegateEvents view.events
 

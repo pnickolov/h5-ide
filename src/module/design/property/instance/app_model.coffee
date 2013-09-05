@@ -77,12 +77,13 @@ define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone',
 
         getEniData : ( instance_data ) ->
 
-            if  !instance_data.networkInterfaceSet
+            if not instance_data.networkInterfaceSet
                 return null
 
             for i in instance_data.networkInterfaceSet.item
                 if i.attachment.deviceIndex == "0"
                     id = i.networkInterfaceId
+                    data = i
                     break
 
             TYPE_ENI = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
@@ -95,10 +96,14 @@ define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone',
                     component = value
                     break
 
-            data = $.extend true, {}, MC.data.resource_list[ MC.canvas_data.region ][ id ]
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-            if not data
-                return null
+            if not appData[id]
+                # Use data inside networkInterfaceSet
+                data = $.extend true, {}, data
+            else
+                # Use data inside appData
+                data = $.extend true, {}, appData[ id ]
 
             data.name = if component then component.name else id
             if data.status == "in-use"

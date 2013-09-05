@@ -47,8 +47,8 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
-		'IDE_MSG_ERR_OPEN_TAB'        : 'Open Tab error, please open again',
-		'IDE_MSG_ERR_CONNECTION'      : 'Connection Failed. Please try again',
+		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
+		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
 
 		/******resource panel module******/
 		'RES_TIT_RESOURCES'           : 'Resources',
@@ -60,16 +60,16 @@ define({
 		'RES_LBL_QUICK_START_AMI'     : 'Quick Start Images',
 		'RES_LBL_MY_AMI'              : 'My Images',
 		'RES_LBL_FAVORITE_AMI'        : 'Favorite Images',
-		'RES_LBL_NEW_VOL'             : 'New Volume',
-		'RES_LBL_NEW_ELB'             : 'New Load Balancer',
-		'RES_LBL_NEW_ASG'             : 'New Auto Scaling Group',
+		'RES_LBL_NEW_VOL'             : 'Volume',
+		'RES_LBL_NEW_ELB'             : 'Load Balancer',
+		'RES_LBL_NEW_ASG'             : 'Auto Scaling Group',
 		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',
-		'RES_LBL_NEW_SUBNET'          : 'New Subnet',
-		'RES_LBL_NEW_RTB'             : 'New Route Table',
-		'RES_LBL_NEW_IGW'             : 'New Internet Gateway',
-		'RES_LBL_NEW_VGW'             : 'New Virtual Gateway',
-		'RES_LBL_NEW_CGW'             : 'New Customer Gateway',
-		'RES_LBL_NEW_ENI'             : 'New Network Interface',
+		'RES_LBL_NEW_SUBNET'          : 'Subnet',
+		'RES_LBL_NEW_RTB'             : 'Route Table',
+		'RES_LBL_NEW_IGW'             : 'Internet Gateway',
+		'RES_LBL_NEW_VGW'             : 'Virtual Gateway',
+		'RES_LBL_NEW_CGW'             : 'Customer Gateway',
+		'RES_LBL_NEW_ENI'             : 'Network Interface',
 		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community Images',
 		// Add new strings below this comment. Move above once English has been confirmed
 
@@ -88,7 +88,7 @@ define({
 		'RES_TIP_DRAG_HAS_VGW'          : 'This VPC already has a virtual gateway.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: 'Get Community AMIs failed',
+		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: 'Unable to load community AMIs',
 		'RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS'		: 'AMI is added to Favorite AMI',
 		'RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED'		: 'Failed to add AMI to Favorite',
 		'RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS'	: 'AMI is removed from Favorite AMI',
@@ -162,11 +162,11 @@ define({
 
 		//export
 		'TOOL_EXPORT'                           : 'Export...',
-		'TOOL_EXPORT_AS_JSON'                   : 'Export as JSON',
-		'TOOL_POP_TIT_EXPORT_AS_JSON'           : 'Export JSON',
-		'TOOL_POP_BODY_EXPORT_AS_JSON'          : 'Do you confirm to download the json file?',
+		'TOOL_EXPORT_AS_JSON'                   : 'Export to JSON',
+		'TOOL_POP_TIT_EXPORT_AS_JSON'           : 'Export',
+		'TOOL_POP_BODY_EXPORT_AS_JSON'          : 'Do you confirm to download this file?',
 		'TOOL_POP_BTN_DOWNLOAD'                 : 'Download',
-		'TOOL_EXPORT_AS_PNG'                    : 'Export as PNG',
+		'TOOL_EXPORT_AS_PNG'                    : 'Export to PNG',
 
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
@@ -186,11 +186,14 @@ define({
 		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app?',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
+
+
 		//toolbar handler
 		'TOOL_MSG_INFO_REQ_SUCCESS'				: 'Sending request to %s %s...',
 		'TOOL_MSG_ERR_REQ_FAILED'				: 'Sending request to %s %s failed.',
 		'TOOL_MSG_INFO_HDL_SUCCESS'				: '%s %s successfully.',
 		'TOOL_MSG_ERR_HDL_FAILED'				: '%s %s failed.',
+
 
 		/******property module******/
 		// instance property module
@@ -243,28 +246,27 @@ define({
 	},
 	'service' : {
 		'ERROR_CODE_0_MESSAGE'  : '',//invoke API succeeded
-		'ERROR_CODE_1_MESSAGE'  : 'No data',
-		'ERROR_CODE_2_MESSAGE'  : 'Invalid API Parameters',
+		'ERROR_CODE_1_MESSAGE'  : 'Sorry, AWS is suffering from some technical issues, please try again later',
+		'ERROR_CODE_2_MESSAGE'  : 'Sorry, we are suffering from some technical issues, please try again later',
 		'ERROR_CODE_3_MESSAGE'  : '',//no use
 		'ERROR_CODE_4_MESSAGE'  : '',//no use
-		'ERROR_CODE_5_MESSAGE'  : 'Request AWS resource exception',
+		'ERROR_CODE_5_MESSAGE'  : 'Sorry, AWS is suffering from some technical issues, please try again later',
 		'ERROR_CODE_6_MESSAGE'  : '',//no use
 		'ERROR_CODE_7_MESSAGE'  : '',//for guest
 		'ERROR_CODE_8_MESSAGE'  : '',//no use
-		'ERROR_CODE_9_MESSAGE'  : 'Insufficient permissions',
+		'ERROR_CODE_9_MESSAGE'  : 'Sorry, your AWS credentials have not sufficient permissions',
 		'ERROR_CODE_10_MESSAGE' : '',//no use
 		'ERROR_CODE_11_MESSAGE' : '',//no use
 		'ERROR_CODE_12_MESSAGE' : 'Sorry, we are suffering from some technical issues, please try again later',
 		'ERROR_CODE_13_MESSAGE' : '',//no use
 		'ERROR_CODE_14_MESSAGE' : '',//no use
-		'ERROR_CODE_15_MESSAGE' : 'Unknown AWS Error',
+		'ERROR_CODE_15_MESSAGE' : 'Sorry, AWS is suffering from some technical issues, please try again later',
 		'ERROR_CODE_16_MESSAGE' : 'Sorry, AWS is suffering from some technical issues, please try again later',
 		'ERROR_CODE_17_MESSAGE' : '',//no use
-		'ERROR_CODE_18_MESSAGE' : 'Invalid API Parameters',
-		'ERROR_CODE_19_MESSAGE' : 'Invalid session, please login again',
+		'ERROR_CODE_18_MESSAGE' : 'Sorry, AWS is suffering from some technical issues, please try again later',
+		'ERROR_CODE_19_MESSAGE' : 'Sorry, your session has expired, please login again',
 		'ERROR_CODE_20_MESSAGE' : 'Sorry, this invitation has finished',//for guest
-		'ERROR_CODE_21_MESSAGE' : 'User has been blocked',
-		'ERROR_CODE_21_MESSAGE' : ''//no use
+		'ERROR_CODE_21_MESSAGE' : 'User has been blocked'
 		// Add new strings below this comment. Move above once English has been confirmed
 	}
 });

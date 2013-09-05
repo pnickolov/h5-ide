@@ -421,6 +421,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #instance store ami check
             data.has_instance_store_ami = me.isInstanceStore data
 
+            #check whether data change
+            ori_data = MC.canvas_property.original_json
+            new_data = JSON.stringify(data)
+            if ori_data == new_data
+                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
+                return
+
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 

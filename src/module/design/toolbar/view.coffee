@@ -107,13 +107,13 @@ define [ 'MC', 'event',
 
                     modal.close()
 
-                    # check change and save stack
-                    ori_data = MC.canvas_property.original_json
-                    new_data = JSON.stringify( MC.canvas_data )
-                    id = MC.canvas_data.id
-                    if ori_data != new_data or id.indexOf('stack-') isnt 0
+                    # # check change and save stack
+                    # ori_data = MC.canvas_property.original_json
+                    # new_data = JSON.stringify( MC.canvas_data )
+                    # id = MC.canvas_data.id
+                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
                         #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     # hold on 0.5 second for data update
                     setTimeout () ->
@@ -203,11 +203,11 @@ define [ 'MC', 'event',
                     name    = MC.canvas_data.name
 
                     # check change and save stack
-                    ori_data = MC.canvas_property.original_json
-                    new_data = JSON.stringify( MC.canvas.layout.save() )
-                    if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    # ori_data = MC.canvas_property.original_json
+                    # new_data = JSON.stringify( MC.canvas.layout.save() )
+                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
+                    #     #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     setTimeout () ->
                         ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name

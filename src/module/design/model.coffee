@@ -32,6 +32,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     #update instance icon of app
                     MC.aws.instance.updateStateIcon app_id
 
+                    MC.aws.asg.updateASGCount app_id
+
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
@@ -180,6 +182,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     else
                         #DescribeInstances failed
                         console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+
+            else
+
             null
 
         getAppResourcesService : ( region, app_id )->

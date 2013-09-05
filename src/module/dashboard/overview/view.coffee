@@ -36,6 +36,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+
+
         refreshAll: ->
             location.reload()
 
@@ -126,8 +128,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             context = _.extend {}, @model.toJSON()
             context[ tab ] = true
             tmpl = @region_app_stack context
-            $( this.el ).find('#region-app-stack-wrap').html tmpl
+            $( this.el )
+                .find('#region-app-stack-wrap')
+                .html( tmpl )
+                .find('.region-resource-thumbnail img')
+                .error @_thumbError
 
+        _thumbError: ( event ) ->
+            target = $ event.currentTarget
+            target.hide()
 
         renderRegionResource: ( event ) ->
             tmpl = @region_resource @model.toJSON()
@@ -186,10 +195,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             current_region = region
 
             $( "#region-switch-list li[data-region=#{region}]" ).click()
-            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': $('#global-region-tabbar-wrap')[0].offsetTop - 80 } )
-            false
-            #this.trigger 'RETURN_REGION_TAB', region
+            scrollbar.scrollTo($('#global-region-wrap'), {'top': $('#global-region-tabbar-wrap')[0].offsetTop + 200})
 
+            false
 
         createStackClick : ( event ) ->
             console.log 'dashboard region create stack'

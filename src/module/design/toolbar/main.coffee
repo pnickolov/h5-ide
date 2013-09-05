@@ -141,7 +141,7 @@ define [ 'jquery',
                 if info
 
                     info = info.toLowerCase()
-                    info[0] = info[0].toUpperCase()
+                    info = info[0].toUpperCase() + info.substr(1)
 
                     msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
                     #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
@@ -152,7 +152,7 @@ define [ 'jquery',
                 if info
 
                     info = info.toLowerCase()
-                    info[0] = info[0].toUpperCase()
+                    info = info[0].toUpperCase() + info.substr(1)
 
                     msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
                     #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'

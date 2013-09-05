@@ -129,7 +129,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             context[ tab ] = true
             tmpl = @region_app_stack context
             $( this.el )
-                .find('#region-view')
+                .find('#region-app-stack-wrap')
                 .html( tmpl )
                 .find('.region-resource-thumbnail img')
                 .error @_thumbError

@@ -95,7 +95,7 @@ modal.dismiss = function (event)
 		modal.close();
 	}
 
-	if ( event && event.preventDefault ) {
+	if ( event.target.tagName === "A" && event.preventDefault ) {
 		event.preventDefault();
 	}
 };
@@ -115,7 +115,7 @@ modal.close = function ( evt )
 		.trigger('closed')
 		.remove();
 
-	if ( evt && evt.preventDefault ) {
+	if ( evt && evt.target.tagName === "A" && evt.preventDefault ) {
 		evt.preventDefault();
 	}
 };

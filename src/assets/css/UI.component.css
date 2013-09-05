@@ -888,7 +888,6 @@ textarea {
 	border-radius: 2px;
 	z-index: 95;
 	max-width: 250px;
-	word-break: break-all;
 }
 
 .arrow-up {

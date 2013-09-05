@@ -183,7 +183,7 @@ define({
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
 		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
-		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app?',
+		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
 

@@ -267,6 +267,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
         awsReturnHandler: ( result ) ->
             data = result.resolved_data
+            if not _.size data
+                return
             region = result.param[ 3 ]
 
             if region is null

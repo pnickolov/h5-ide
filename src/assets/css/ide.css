@@ -1532,6 +1532,10 @@ a {
 	background-size: 225px auto;
 }
 
+.region-resource-thumbnail.app-thumbnail {
+	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
+}
+
 .region-resource-thumbnail img {
 	border-radius: 5px 5px 0 0;
 	width: 220px;

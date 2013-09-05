@@ -394,7 +394,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			eip_number = json_data.component[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].number
 
-			eip_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eipList[ uid ] else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList
+			eip_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eipList[ uid ] else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ]
 
 			if (eip_list and eip_list.length is 0) or not eip_list
 
@@ -435,7 +435,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				json_data.layout.component.node[instance_uid].eipList = eip_list
 			else
-				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList = eip_list
+				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ] = eip_list
 
 		$.each eip_list, ( idx, eip_uid ) ->
 

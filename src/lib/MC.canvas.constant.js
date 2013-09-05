@@ -825,7 +825,7 @@ var constant_data = {
 			"connection": [],
 			"instanceList": [], //store uid of each instance in server group
 			"volumeList" : {},
-			"eipList" : [],
+			"eipList" : null,
 			'eniList' : []
 		},
 		data:

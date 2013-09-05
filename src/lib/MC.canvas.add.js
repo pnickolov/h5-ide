@@ -817,6 +817,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;
 
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				}
+				else{
+					component_layout.eipList = (component_layout.eipList) ? component_layout.eipList : {};
+				}
+
 				//add to instanceList
 				component_layout.instanceList = [ group.id ];
 
@@ -852,7 +859,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
 				component_layout.eniList = (component_layout.eniList && component_layout.eniList.length > 0) ? component_layout.eniList : [];
-				component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				}
+				else{
+					component_layout.eipList = (component_layout.eipList) ? component_layout.eipList : {};
+				}
+
 				component_layout.volumeList = component_layout.volumeList ? component_layout.volumeList : [];
 
 				coordinate.x = component_layout.coordinate[0];

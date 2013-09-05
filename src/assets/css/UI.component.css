@@ -1400,6 +1400,10 @@ textarea {
 	background: rgba(255,255,255,.05);
 }
 
+.property-app .dl-vertical .truncate {
+	width: 230px;
+}
+
 .dl-vertical .truncate {
 	width : 100%;
 	margin-bottom : 0;
@@ -2014,15 +2018,7 @@ textarea {
 }
 
 /* TEMPARORY PROPERTY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-.icon-copy {
-	position   : absolute;
-	right      : -16px;
-	top        : 2px;
-	background : red;
-	width      : 16px;
-	height     : 16px;
-	cursor     : pointer;
-}
+
 
 /* jqPagination */
 .pagination {

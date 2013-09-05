@@ -123,7 +123,7 @@ define [ 'jquery',
 
             # added by song
             model.clear({silent: true})
-            
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -136,7 +136,7 @@ define [ 'jquery',
 
             view.model    = model
 
-            model.on "KP_DOWNLOADED", (data)-> view.updateKPModal(data)
+            model.on "KP_DOWNLOADED", (data, win_passwd)-> view.updateKPModal(data, win_passwd)
             view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
             view.on "OPEN_AMI", (id) ->
                 data = model.getAMI id

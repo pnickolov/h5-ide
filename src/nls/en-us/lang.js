@@ -208,6 +208,7 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
 
 		// sg property
 		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",

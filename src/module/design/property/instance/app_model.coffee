@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, constant, lang ) ->
+define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, instance_model, constant, lang ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 
@@ -25,17 +25,53 @@ define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone',
             me.set 'id', instance_id
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
+                region_name = result.param[3]
                 keypairname = result.param[4]
+                os_type = ''
+                key_data= ''
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
+                    key_data = null
+                else
+
+                    key_data = result.resolved_data
+
+
+                if MC.data.resource_list[ region_name ][ instance_id ]
+                    image_id = MC.data.resource_list[ region_name ][ instance_id ].imageId
+                    if image_id
+                        os_type = MC.data.dict_ami[ image_id ].osType
+
+                #get password for windows AMI
+                #if (os_type == 'win' and key_data
+                    #me.getPasswordData instance_id, key_data.replace(/\n/g,'')
+                    #me.getPasswordData instance_id, key_data
+
+                #else
+
+                me.trigger "KP_DOWNLOADED", key_data
+
+                null
+
+
+
+            me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
+
+                instance_id = result.param[4]
+                keypairname = result.param[5]
+
+                if result.is_error
+                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
                     data = null
                 else
 
-                    data = result.resolved_data
-                me.trigger "KP_DOWNLOADED", data
+                    win_passwd = result.resolved_data
+
+                me.trigger "KP_DOWNLOADED", data, win_passwd
 
                 null
+
 
 
 
@@ -123,6 +159,18 @@ define ['keypair_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone',
             me = this
             keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
             null
+
+
+        #get windows login password
+        getPasswordData : ( instance_id, key_data ) ->
+
+            username = $.cookie "usercode"
+            session  = $.cookie "session_id"
+
+            me = this
+            instance_model.GetPasswordData {sender:me}, username, session, MC.canvas_data.region, instance_id, key_data
+            null
+
 
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]

@@ -27,7 +27,15 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
     getASGDetailApp : ( uid ) ->
 
-      asg = $.extend true, {}, MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.AutoScalingGroupARN]
+      asg_comp = MC.canvas_data.component[uid]
+      asg_data = MC.data.resource_list[MC.canvas_data.region][asg_comp.resource.AutoScalingGroupARN]
+
+      if not asg
+        this.set 'asg', null
+        this.set 'asg_name', asg_comp.name
+        return
+
+      asg = $.extend true, {}, asg_data
 
       asg.TerminationPolicies = asg.TerminationPolicies.member
 

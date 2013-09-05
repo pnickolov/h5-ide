@@ -59,16 +59,20 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
         render     : ( isApp ) ->
             console.log 'property:asg render'
-            data = $.extend true, {}, this.model.attributes
+            data = this.model.attributes
 
-            policies = []
-            for uid, policy of data.policies
-                policy.metric     = metricMap[ policy.metric ]
-                policy.adjusttype = adjustMap[ policy.adjusttype ]
-                policy.unit       = unitMap[ policy.metric ]
-                policies.push policy
+            if data.asg
 
-            data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+                data = $.extend true, {}, this.model.attributes
+
+                policies = []
+                for uid, policy of data.policies
+                    policy.metric     = metricMap[ policy.metric ]
+                    policy.adjusttype = adjustMap[ policy.adjusttype ]
+                    policy.unit       = unitMap[ policy.metric ]
+                    policies.push policy
+
+                data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
 
             template = if isApp then this.app_template else this.template
 

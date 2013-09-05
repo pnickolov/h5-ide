@@ -68,6 +68,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			uid = this.get 'get_uid'
 
 			MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
+			MC.canvas_data.component[ this.get( 'get_uid' )].serverGroupName = this.get 'name'
 			this.set 'update_instance_title', this.get 'name'
 
 			MC.canvas.update(uid,'text','hostname', this.get('name'))

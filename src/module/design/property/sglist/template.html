@@ -15,15 +15,15 @@
 						{{#if sgChecked}}
 						<div class="checkbox-wrap col1 ">
 							<div class="checkbox">
-								<input class="sg-list-association-check" type="checkbox" checked="checked" sg-uid="{{sgUID}}" id="sg-list-{{sgUID}}"/>
+								<input class="sg-list-association-check" type="checkbox" checked="checked" sg-uid="{{sgUID}}" id="sg-list-{{sgUID}}" {{#if ../../../only_one_sg}}disabledx="disabled"{{/if}}/>
 								<label for="sg-list-{{sgUID}}"></label>
 							</div>
 						</div>
 						{{else}}
 							<span class="tooltip col1 sg-list-association-check" data-tooltip="Resource can have 5 security groups at most.">
-								<div class="checkbox-wrap disabled">
+								<div class="checkbox-wrap">
 									<div class="checkbox">
-										<input type="checkbox" disabled="disabled" style="vertical-align:top;" id="sg-list-{{sgUID}}">
+										<input type="checkbox" style="vertical-align:top;" id="sg-list-{{sgUID}}">
 										<label for="sg-list-{{sgUID}}"></label>
 									</div>
 								</div>

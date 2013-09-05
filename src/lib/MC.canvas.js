@@ -2247,6 +2247,13 @@ MC.canvas.volume = {
 
 		if (!bubble_box[0])
 		{
+			if ($('#' + target_id + '_instance-number').text() * 1 > 1 && MC.canvas.getState() === 'app')
+			{
+				MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+
+				return false;
+			}
+
 			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(

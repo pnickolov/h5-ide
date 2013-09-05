@@ -154,11 +154,18 @@ MC.canvas = {
 				{
 					if ( instance_data )
 					{//instance data exist
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+							'data-tooltip' : instance_data.instanceState.name
+						});
+
 					}
 					else
 					{//instance data not exist, unknown state
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+							'data-tooltip': ''
+						});
 					}
 				}
 				else

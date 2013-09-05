@@ -1060,7 +1060,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////instance-state
 				Canvon.circle(68, 15, 5,{}).attr({
-					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState(),
+					'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
 					'id' : group.id + '_instance-state'
 				})
 

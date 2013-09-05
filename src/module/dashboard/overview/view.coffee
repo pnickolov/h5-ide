@@ -246,7 +246,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'stack name contains white space.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else

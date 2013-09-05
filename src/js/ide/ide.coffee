@@ -47,7 +47,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log '---------- check network ----------'
 			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
 				ide_event.trigger ide_event.SWITCH_MAIN
-				notification 'error', 'Connection Failed. Please try again', true
+				notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
 		, 50 * 1000
 
 		#############################

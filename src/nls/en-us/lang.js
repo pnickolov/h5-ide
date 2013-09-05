@@ -45,6 +45,11 @@ define({
 		 *
 		 */
 
+		/******ide******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_TAB'        : 'Open Tab error, please open again',
+		'IDE_MSG_ERR_CONNECTION'      : 'Connection Failed. Please try again',
+
 		/******resource panel module******/
 		'RES_TIT_RESOURCES'           : 'Resources',
 		'RES_TIT_AZ'                  : 'Availability Zones',

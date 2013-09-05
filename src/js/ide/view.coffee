@@ -38,7 +38,7 @@ define [ 'event',
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
                     ide_event.trigger ide_event.STACK_DELETE, null, tab_id
-                    notification 'error', 'Open Tab error, please open again', true
+                    notification 'error', ide.lang.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
             null
 

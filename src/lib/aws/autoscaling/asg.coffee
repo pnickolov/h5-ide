@@ -35,7 +35,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		for uid, comp of component
 			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-				asg_comp = component[ layout.component.node[uid].groupUId ];
+				asg_comp = component[ layout.component.node[uid].groupUId ]
 				asg_data = appData[ asg_comp.resource.AutoScalingGroupARN ]
 
 				if asg_data

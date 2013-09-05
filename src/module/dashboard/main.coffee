@@ -156,11 +156,11 @@ define [ 'jquery',
                 @model.getItemList 'stack', region, overview_stack
 
             model.on 'change:cur_app_list', () ->
-                view.renderRegionAppStack()
+                view.renderRegionAppStack( 'app' )
                 model.describeAWSResourcesService()
 
             model.on 'change:cur_stack_list', () ->
-                view.renderRegionAppStack()
+                view.renderRegionAppStack( 'stack' )
 
             model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
                 console.log 'region resource table render'

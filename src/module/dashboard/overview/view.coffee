@@ -88,9 +88,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                             .removeClass 'on'
 
         switchAppStack: ( event ) ->
-            target = $ event.currentTarget
-            currentIndex = @$el.find('#region-resource-tab a').index target
-
             @switchTab event, '#region-resource-tab a', '.region-resource-list'
 
         switchRegionResource: ( event ) ->
@@ -123,10 +120,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             tmpl = @global_list @model.toJSON()
             $( this.el ).find('#global-view').html tmpl
 
-        renderRegionAppStack: ( event ) ->
+        renderRegionAppStack: ( tab ) ->
             @regionAppStackRendered = true
-            tmpl = @region_app_stack @model.toJSON()
+            tab = 'stack' if not tab
+            context = _.extend {}, @model.toJSON()
+            context[ tab ] = true
+            tmpl = @region_app_stack context
             $( this.el ).find('#region-app-stack-wrap').html tmpl
+
 
         renderRegionResource: ( event ) ->
             tmpl = @region_resource @model.toJSON()
@@ -150,12 +151,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         renderRecent: ->
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
-            null
-
-        renderRegionStatApp : ->
-            null
-
-        renderRegionStatStack : () ->
             null
 
         updateLoadTime: ( time ) ->

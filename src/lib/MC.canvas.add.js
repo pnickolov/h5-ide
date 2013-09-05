@@ -2169,7 +2169,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					}
 					else
 					{
-						option.name = "? in service";
+						option.name = "0 in service";
 					}
 				}
 

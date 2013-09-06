@@ -32,6 +32,7 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 instance    = null
                 public_dns  = null
                 cmd_line    = null
+                login_user  = null
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
@@ -59,13 +60,20 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                         instance_state = instance.instanceState.name
 
                     if instance_state == 'running'
+                        switch os_type
+                            when 'amazon' then login_user = 'ec2-user'
+                            when 'ubuntu' then login_user = 'ubuntu'
+                            else
+                                login_user = 'root'
+
                         public_dns = instance.dnsName
-                        cmd_line   = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, 'ec2-user', instance.dnsName
+                        cmd_line   = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.dnsName
 
 
                     option =
-                        type : 'linux'
-                        cmd_line: cmd_line
+                        type      : 'linux'
+                        cmd_line  : cmd_line
+                        public_dns: public_dns
 
                     me.trigger "KP_DOWNLOADED", key_data, option
 
@@ -79,7 +87,9 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 key_data       = result.param[5]
                 instance       = null
                 instance_state = null
+                win_passwd     = null
                 rdp            = null
+                public_dns     = null
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
@@ -91,15 +101,17 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                         instance_state = instance.instanceState.name
 
                     if instance_state == 'running'
-                        rdp = sprintf constant.RDP_TMPL, instance.dnsName
+                        public_dns = instance.dnsName
+                        rdp        = sprintf constant.RDP_TMPL, public_dns
 
                     win_passwd = result.resolved_data.passwordData
 
 
                 option =
-                    type   : 'win'
-                    passwd : win_passwd,
-                    rdp    : rdp
+                    type      : 'win'
+                    passwd    : win_passwd,
+                    rdp       : rdp
+                    public_dns: public_dns
 
                 me.trigger "KP_DOWNLOADED", key_data, option
 

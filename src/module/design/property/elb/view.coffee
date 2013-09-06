@@ -117,9 +117,9 @@ define ['event', 'MC',
             value = event.target.value
             cid = $( '#elb-property-detail' ).attr 'component'
 
-            ide_event.trigger ide_event.REDRAW_SG_LINE
-
             this.trigger 'SCHEME_SELECT_CHANGED', value
+
+            ide_event.trigger ide_event.REDRAW_SG_LINE
 
             return false
 

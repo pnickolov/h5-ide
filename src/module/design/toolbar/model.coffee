@@ -454,7 +454,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             region  = data.region
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
-            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+            if MC.aws.aws.checkDefaultVPC()
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC()
+
+            else
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
 
             # save stack data
             if not (region of run_stack_map) then run_stack_map[region] = {}

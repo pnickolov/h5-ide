@@ -107,7 +107,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
                 }
                 modal template, false, () ->
 
-                    $('.modal-close, #cidr-return').click () ->
+                    $('.modal-close').click () ->
                         inputElem.focus()
 
                     $('#cidr-remove').click () ->
@@ -120,6 +120,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
                                 'type': 'line'
                             })
                         MC.aws.aws.disabledAllOperabilityArea(false)
+                        modal.close()
             else
                 ips = []
                 $("#property-vpn-ips input").each ()->

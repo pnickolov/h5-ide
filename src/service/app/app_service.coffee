@@ -367,6 +367,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
             "ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
             "ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
             "DescribeAutoScalingInstancesResponse"         :   autoscaling_service.resolveDescribeAutoScalingInstancesResult
+            #
+            "DescribeInstanceHealthResponse"       : elb_service.resolveDescribeInstanceHealthResult
 
         }
 

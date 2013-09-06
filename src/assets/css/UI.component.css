@@ -663,20 +663,26 @@ textarea {
 	border-radius: 100%;
 }
 
-.property-content .disabled .radio label {
+.property-content .radio input:disabled + label,
+.property-content .radio input[disabled] + label  {
 	background: #616161;
 	border: 1px solid transparent;
 }
 
-.property-content .disabled .radio label:after {
+.property-content .radio input:disabled + label:after,
+.property-content .radio input[disabled] + label:after {
 	background: #484343;
 }
 
-.property-content .checkbox label {
-	width: 14px;
-	height: 14px;
-	border-radius: 2px;
-	/*border: 1px solid #343334;*/
+.property-content .checkbox input:disabled + label,
+.property-content .checkbox input[disabled] + label {
+	background: #616161;
+	border: 1px solid transparent;
+}
+
+.property-content .checkbox input:disabled + label:after,
+.property-content .checkbox input[disabled] + label:after {
+	background: #484343;
 }
 
 .property-content .checkbox label,
@@ -888,7 +894,6 @@ textarea {
 	border-radius: 2px;
 	z-index: 95;
 	max-width: 250px;
-	word-break: break-all;
 }
 
 .arrow-up {
@@ -1065,7 +1070,7 @@ textarea {
 }
 
 .modal-body {
-	padding: 15px 15px 10px 15px;
+	padding: 20px;
 	background: #fcfcfc;
 	border-bottom: 1px solid #cfcfcf;
 	min-height: 100px;
@@ -1351,7 +1356,7 @@ textarea {
 }
 
 #notification_wrap .info_item {
-    background: #4B9655;
+    background: #3781C9;
 }
 
 .notification_item .notification_close {

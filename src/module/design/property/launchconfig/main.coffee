@@ -34,6 +34,9 @@ define [ 'jquery',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
 
+            # added by song
+            model.clear({silent: true})
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -77,6 +80,10 @@ define [ 'jquery',
                   './module/design/property/launchconfig/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
+            
              #
             if current_view then view.delegateEvents view.events
 

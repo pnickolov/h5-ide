@@ -293,6 +293,15 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 MC.data.resource_list[region][res.ActivityId] = res
                 null
 
+        #instance health(elb)
+        if resources.DescribeInstanceHealth
+
+            if !MC.data.resource_list[region].instance_health
+                MC.data.resource_list[region].instance_health = {}
+
+            _.map resources.DescribeInstanceHealth, ( res, i ) ->
+                MC.data.resource_list[region].instance_health[res.InstanceId] = res
+                null
 
 
 

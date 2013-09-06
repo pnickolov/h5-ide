@@ -62,6 +62,8 @@ define [ 'backbone', 'underscore', 'vpc_service', 'base_model' ], ( Backbone, _,
                     console.log 'vpc.DescribeAccountAttributes failed, error is ' + aws_result.error_message
                     me.pub aws_result
 
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', aws_result
+
 
 
         #DescribeVpcAttribute api (define function)

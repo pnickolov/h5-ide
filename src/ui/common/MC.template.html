@@ -458,7 +458,7 @@
 -->
 
 <!-- createNewStackClassic -->
-<div style="width:650px">
+<div style="width:660px">
 	<div class="modal-header">
 		<h3>Create this stack in:</h3>
 		<i class="modal-close">×</i>
@@ -484,7 +484,7 @@
 </div>
 
 <!-- createNewStackVPC -->
-<div style="width:650px">
+<div style="width:660px">
 	<div class="modal-header">
 		<h3>Create this stack in:</h3>
 		<i class="modal-close">×</i>
@@ -802,7 +802,7 @@ Additional Notes and Questions
 			<label class="label-short" >Protocol</label>
 				<div class="modal-protocol-select">
 					<div class="selectbox" id="modal-protocol-select"  data-protocal-type="tcp">
-			            <div class="selection">TCP</div>
+			      <div class="selection">TCP</div>
 						<ul class="dropdown" tabindex="-1">
 						  <li class="selected item" data-id="tcp">TCP</li>
 							<li class="item" data-id="udp">UDP</li>
@@ -822,46 +822,51 @@ Additional Notes and Questions
 				<div class="sg-protocol-option-input" id="sg-protocol-udp">
 					<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
 				</div>
+
 				<div class="sg-protocol-option-input" id="sg-protocol-icmp">
 					<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
-		              <div class="selection">Echo Reply(0)</div>
+		      <div class="selection">Echo Reply(0)</div>
 					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
     				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<ul tabindex="-1" class="scroll-content">
-						<li class="item selected" data-id="0">Echo Reply(0)</li>
-						<li class="item" data-id="3">Destination Unreachable(3) ...</li>
-						<li class="item" data-id="4">Source Quench(4)</li>
-						<li class="item" data-id="5">Redirect Message(5) ...</li>
-						<li class="item" data-id="6">Alternate Host Address(6)</li>
-						<li class="item" data-id="8">Echo Request(8)</li>
-						<li class="item" data-id="9">Router Advertisement(9)</li>
-						<li class="item" data-id="10">Router Solicitation(10)</li>
-						<li class="item" data-id="11">Time Exceeded(11) ...</li>
-						<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
-						<li class="item" data-id="13">Timestamp(13)</li>
-						<li class="item" data-id="14">Timestamp Reply(14)</li>
-						<li class="item" data-id="15">Information Request(15)</li>
-						<li class="item" data-id="16">Information Reply(16)</li>
-						<li class="item" data-id="17">Address Mask Request(17)</li>
-						<li class="item" data-id="18">Address Mask Reply(18)</li>
-						<li class="item" data-id="30">Traceroute(30)</li>
-						<li class="item" data-id="31">Datagram Conversion Error(31)</li>
-						<li class="item" data-id="32">Mobile Host Redirect(32)</li>
-						<li class="item" data-id="33">Where Are You(33)</li>
-						<li class="item" data-id="34">Here I Am(34)</li>
-						<li class="item" data-id="35">Mobile Registration Request(35)</li>
-						<li class="item" data-id="36">Mobile Registration Reply(36)</li>
-						<li class="item" data-id="37">Domain Name Request(37)</li>
-						<li class="item" data-id="38">Domain Name Reply(38)</li>
-						<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
-						<li class="item" data-id="40">Photuris Security Failures(40)</li>
-						<li class="item" data-id="-1">All(-1)</li>
-					</ul>
-				</div>
-				</div>
+  					<ul tabindex="-1" class="scroll-content">
+  						<li class="item selected" data-id="0">Echo Reply(0)</li>
+  						<li class="item" data-id="3">Destination Unreachable(3) ...</li>
+  						<li class="item" data-id="4">Source Quench(4)</li>
+  						<li class="item" data-id="5">Redirect Message(5) ...</li>
+  						<li class="item" data-id="6">Alternate Host Address(6)</li>
+  						<li class="item" data-id="8">Echo Request(8)</li>
+  						<li class="item" data-id="9">Router Advertisement(9)</li>
+  						<li class="item" data-id="10">Router Solicitation(10)</li>
+  						<li class="item" data-id="11">Time Exceeded(11) ...</li>
+  						<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+  						<li class="item" data-id="13">Timestamp(13)</li>
+  						<li class="item" data-id="14">Timestamp Reply(14)</li>
+  						<li class="item" data-id="15">Information Request(15)</li>
+  						<li class="item" data-id="16">Information Reply(16)</li>
+  						<li class="item" data-id="17">Address Mask Request(17)</li>
+  						<li class="item" data-id="18">Address Mask Reply(18)</li>
+  						<li class="item" data-id="30">Traceroute(30)</li>
+  						<li class="item" data-id="31">Datagram Conversion Error(31)</li>
+  						<li class="item" data-id="32">Mobile Host Redirect(32)</li>
+  						<li class="item" data-id="33">Where Are You(33)</li>
+  						<li class="item" data-id="34">Here I Am(34)</li>
+  						<li class="item" data-id="35">Mobile Registration Request(35)</li>
+  						<li class="item" data-id="36">Mobile Registration Reply(36)</li>
+  						<li class="item" data-id="37">Domain Name Request(37)</li>
+  						<li class="item" data-id="38">Domain Name Reply(38)</li>
+  						<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+  						<li class="item" data-id="40">Photuris Security Failures(40)</li>
+  						<li class="item" data-id="-1">All(-1)</li>
+  					</ul>
+				  </div>
+				  </div>
+        </div>
+
 				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
-		            <div class="selection">All(-1)</div>
-					<ul class="dropdown" tabindex="-1">
+		      <div class="selection">All(-1)</div>
+          <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<ul class="dropdown scroll-content" tabindex="-1">
 						<li class="item selected" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">destination network unreachable(0)</li>
 						<li class="item" data-id="1">destination host unreachable(1)</li>
@@ -878,9 +883,11 @@ Additional Notes and Questions
 						<li class="item" data-id="12">host unreachable for TOS(12)</li>
 						<li class="item" data-id="13">communication administratively prohibited(13)</li>
 					</ul>
+          </div>
 				</div>
+
 				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
-		              <div class="selection">All(-1)</div>
+		      <div class="selection">All(-1)</div>
 					<ul class="dropdown" tabindex="-1">
 						<li class="selected item" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">redirect datagram for the network(0)</li>
@@ -888,9 +895,10 @@ Additional Notes and Questions
 						<li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
 						<li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
 					</ul>
-					</div>
-					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
-			            <div class="selection">All(-1)</div>
+				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
+			    <div class="selection">All(-1)</div>
 					<ul class="dropdown" tabindex="-1">
 						<li class="item selected" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">TTL expired transit(0)</li>
@@ -917,7 +925,7 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue modal-close" id='sg-modal-save'>Save</button>
+		<button class="btn btn-blue" id='sg-modal-save'>Save</button>
 		<button class="btn btn-silver modal-close">Cancel</button>
 	</div>
 </div>
@@ -929,6 +937,7 @@ Additional Notes and Questions
     <i class="modal-close">&times;</i>
   </div>
   <div class="modal-body">loading...</div>
+  <div id="model-login-info">{{login_info}}</div>
   <div class="modal-footer">
     <a class="btn disabled" href="#" id="property-app-save-kp">Save</a>
     <button class="btn modal-close btn-silver">Cancel</button>
@@ -961,19 +970,19 @@ Additional Notes and Questions
       <dt>Name</dt>
       <dd>{{name}}</dd>
       <dt>Description</dt>
-      <dd>{{description}}</dd>
+      <dd>{{emptyStr description}}</dd>
       <dt>Root Device Type</dt>
-      <dd>{{rootDeviceType}}</dd>
+      <dd>{{emptyStr rootDeviceType}}</dd>
       <dt>Architecture</dt>
       <dd>{{architecture}}</dd>
       <dt>Virtualization</dt>
-      <dd>{{virtualizationType}}</dd>
+      <dd>{{emptyStr virtualizationType}}</dd>
       <dt>Kernel ID</dt>
-      <dd>{{kernelId}}</dd>
+      <dd>{{emptyStr kernelId}}</dd>
       <dt>Type</dt>
-      <dd>{{osType}}</dd>
+      <dd>{{emptyStr osType}}</dd>
       <dt>Support Instance</dt>
-      <dd>{{instance_type}}</dd>
+      <dd>{{emptyStr instance_type}}</dd>
   </dl>
 </article>
 
@@ -1053,7 +1062,7 @@ Additional Notes and Questions
 <div id="asgList-wrap">
 	<div id="asgList-header">
 		<span id="asgList-title">{{name}}</span>
-		<a id="asgList-close" href="javascrpit:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
+		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
     {{#each instances}}
@@ -1061,9 +1070,9 @@ Additional Notes and Questions
         <a href="#" class="asgList-item" data-id="{{id}}">
           <i class="asgList-item-status status status-{{status}}"></i>
           <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-          <span class="asgList-item-volume">
+          <div class="asgList-item-volume">
             <span class="asgList-item-number">0</span>
-          </span>
+          </div>
           <span class="asgList-item-label">{{id}}</span>
         </a>
       </li>
@@ -1075,17 +1084,50 @@ Additional Notes and Questions
 <div id="instanceList-wrap">
 	<div id="instanceList-header">
 		<span id="instanceList-title">Instance List</span>
-		<a id="instanceList-close" href="javascrpit:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
+		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
 	</div>
 	<ul id="instanceList" class="clearfix">
 		<li>
-			<a href="#" class="instanceList-item" data-id="">
-				<i class="instanceList-item-status status status-xxx"></i>
+			<a href="#" class="instanceList-item" data-id="xxxxxx">
+				<i class="instanceList-item-status status status-green"></i>
 				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
-				<span class="instanceList-item-volume">
-				<span class="instanceList-item-number">0</span>
-				</span>
+				<div class="instanceList-item-volume" data-target-id="xxxxxx">
+					<span class="instanceList-item-number">0</span>
+				</div>
 				<span class="instanceList-item-label">id</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="#" class="instanceList-item" data-id="xxxxxx">
+				<i class="instanceList-item-status status status-green"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
+				<div class="instanceList-item-volume" data-target-id="xxxxxx">
+					<span class="instanceList-item-number">0</span>
+				</div>
+				<span class="instanceList-item-label">id 2</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="#" class="instanceList-item" data-id="xxxxxx">
+				<i class="instanceList-item-status status status-green"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
+				<div class="instanceList-item-volume" data-target-id="xxxxxx">
+					<span class="instanceList-item-number">0</span>
+				</div>
+				<span class="instanceList-item-label">id 3</span>
+			</a>
+		</li>
+
+		<li>
+			<a href="#" class="instanceList-item" data-id="xxxxxx">
+				<i class="instanceList-item-status status status-green"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
+				<div class="instanceList-item-volume" data-target-id="xxxxxx">
+					<span class="instanceList-item-number">0</span>
+				</div>
+				<span class="instanceList-item-label">id 4</span>
 			</a>
 		</li>
 	</ul>
@@ -1101,7 +1143,7 @@ Additional Notes and Questions
     </div> </div>
   </div>
   <div class="modal-footer">
-  	<a id="cidr-remove" class="modal-close link-red left link-modal-danger">{{remove_content}}</a>
+  	<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
     <button id="cidr-return" class="btn modal-close btn-blue">OK</button>
   </div>
 </div>

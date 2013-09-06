@@ -172,6 +172,7 @@ require.config {
 		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
 		'sns_model'              : 'model/aws/sns/sns_model'
 		'subnet_model'           : 'model/aws/vpc/subnet_model'
+		'instance_model'         : 'model/aws/ec2/instance_model'
 
 		#result_vo
 		'result_vo'              : 'service/result_vo'

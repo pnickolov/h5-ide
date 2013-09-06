@@ -13,12 +13,12 @@
     {{#each vpn_detail.ips}}
     <div class="multi-ipt-row">
       <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
+      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
     </div>
     {{else}}
     <div class="multi-ipt-row">
       <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" type="text"></span>
+      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" type="text"></span>
     </div>
     {{/each}}
   </div>

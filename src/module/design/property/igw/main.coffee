@@ -25,6 +25,9 @@ define [ 'jquery',
         #
         require [ './module/design/property/igw/view', './module/design/property/igw/model' ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+            
             #
             if current_view then view.delegateEvents view.events
 

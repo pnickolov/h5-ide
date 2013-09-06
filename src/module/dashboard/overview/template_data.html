@@ -161,14 +161,14 @@
     <div id="region-resource-tab">
         <ul class="clearfix">
             <li>
-                <a href="javascript:void(0)" class="on">
+                <a href="javascript:void(0)" {{#if app}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-app"></i>
                     <span class="region-resource-tab-number">{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">App</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="javascript:void(0)" {{#if stack}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">Stack</span>
@@ -179,7 +179,7 @@
     <!-- Resource tab -->
 
     <!-- Resource App -->
-    <div id="region-resource-app-wrap" class="region-resource-list">
+    <div id="region-resource-app-wrap" class="region-resource-list" {{#if stack}} style="display: none;"{{/if}}>
         <div class="scroll-wrap" style="max-height:335px">
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content">
@@ -188,7 +188,7 @@
                     {{#each cur_app_list}}
                         <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
-                                <div class="region-resource-thumbnail">
+                                <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
                                 </div>
                                 <div class="region-resource-info">
@@ -219,7 +219,7 @@
     <!-- Resource App -->
 
     <!-- Resource Stack -->
-    <div id="region-resource-stack-wrap" class="region-resource-list" style="display: none">
+    <div id="region-resource-stack-wrap" class="region-resource-list" {{#if app}} style="display: none;"{{/if}}>
         <div class="scroll-wrap" style="max-height:335px">
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content">
@@ -259,85 +259,87 @@
 <!--{{ .region-resource }}-->
 
 <!-- Region AWS resource -->
-{{#with cur_region_list}}
 <div id="region-aws-resource-wrap">
-    <div id="region-aws-resource-tab">
-        <ul class="clearfix">
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item on">
-                    <i id="global-resource-icon-instance" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeInstances.total}}</span>
-                    <span class="region-resource-name">Instance</span>
-                </a>
-            </li>
+    {{#with cur_region_resource_info}}
+        <div id="region-aws-resource-tab">
+            <ul class="clearfix">
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item on">
+                        <i id="global-resource-icon-instance" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{Instance}}</span>
+                        <span class="region-resource-name">Instance</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-eip" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeAddresses.total}}</span>
-                    <span class="region-resource-name">Elastic IP</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-eip" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{EIP}}</span>
+                        <span class="region-resource-name">Elastic IP</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-vol" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeVolumes.total}}</span>
-                    <span class="region-resource-name">Volume</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-vol" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{Volume}}</span>
+                        <span class="region-resource-name">Volume</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeVpcs.total}}</span>
-                    <span class="region-resource-name">VPC</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{VPC}}</span>
+                        <span class="region-resource-name">VPC</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeVpnConnections.total}}</span>
-                    <span class="region-resource-name">VPN</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{VPN}}</span>
+                        <span class="region-resource-name">VPN</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-elb" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeLoadBalancers.total}}</span>
-                    <span class="region-resource-name">Load Balancer</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-elb" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{ELB}}</span>
+                        <span class="region-resource-name">Load Balancer</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-asg" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeAutoScalingGroups.total}}</span>
-                    <span class="region-resource-name">Auto Scaling Group</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-asg" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{AutoScalingGroup}}</span>
+                        <span class="region-resource-name">Auto Scaling Group</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{DescribeAlarms.total}}</span>
-                    <span class="region-resource-name">CloudWatch Alarm</span>
-                </a>
-            </li>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{CW}}</span>
+                        <span class="region-resource-name">CloudWatch Alarm</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:void(0)" class="region-resource-tab-item">
-                    <i id="global-resource-icon-sns" class="global-resource-icon"></i>
-                    <span class="region-resource-count">{{ListSubscriptions.total}}</span>
-                    <span class="region-resource-name">SNS Subscription</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+                <li>
+                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                        <i id="global-resource-icon-sns" class="global-resource-icon"></i>
+                        <span class="region-resource-count">{{SNS}}</span>
+                        <span class="region-resource-name">SNS Subscription</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {{/with}}
 
-    <div id="region-aws-resource-data">
+    {{#with cur_region_resource}}
+        <div id="region-aws-resource-data">
             <!-- Instance -->
             <div class="table-head-fix" style="display:block;">
                     <table class="table-head">
@@ -355,7 +357,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeInstances">
                                 <thead>
                                     <tr>
                                         <th style="width: 30%"><span class="th-inner"></span></th>
@@ -366,7 +368,7 @@
                                         <th style="width: 8%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeInstances.data }}
+                                {{#each DescribeInstances }}
                                     <tr>
                                         <td>
                                             {{#if app}}
@@ -413,7 +415,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeAddresses">
                                 <thead>
                                     <tr>
                                         <th style="width: 40%"><span class="th-inner"></span></th>
@@ -421,7 +423,7 @@
                                         <th style="width: 20%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeAddresses.data }}
+                                {{#each DescribeAddresses }}
                                 <tr>
                                     <td>
                                         {{ publicIp }}
@@ -458,7 +460,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeVolumes">
                                 <thead>
                                     <tr>
                                         <th style="width: 20%"><span class="th-inner"></span></th>
@@ -469,7 +471,7 @@
                                         <th style="width: 15%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeVolumes.data }}
+                                {{#each DescribeVolumes }}
                                 <tr>
                                     <td>
                                         {{#if app}}
@@ -517,7 +519,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeVpcs">
                                 <thead>
                                     <tr>
                                         <th style="width: 25%"><span class="th-inner"></span></th>
@@ -527,7 +529,7 @@
                                         <th style="width: 10%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeVpcs.data }}
+                                {{#each DescribeVpcs }}
                                 <tr>
                                     <td>
                                         {{#if app}}
@@ -578,7 +580,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeVpnConnections">
                                 <thead>
                                     <tr>
                                         <th style="width: 25%"><span class="th-inner"></span></th>
@@ -589,7 +591,7 @@
                                     </tr>
                                 <tbody>
 
-                                {{#each DescribeVpnConnections.data }}
+                                {{#each DescribeVpnConnections }}
                                     <tr>
                                         <td>
                                             {{#if app}}
@@ -636,7 +638,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeLoadBalancers">
                                 <thead>
                                     <tr>
                                         <th style="width: 25%"><span class="th-inner"></span></th>
@@ -647,7 +649,7 @@
                                     </tr>
                                 <tbody>
 
-                                {{#each DescribeLoadBalancers.data }}
+                                {{#each DescribeLoadBalancers }}
                                     <tr>
                                         <td>{{ DNSName }}</td>
                                         <td>{{ CreatedTime }}</td>
@@ -682,7 +684,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeAutoScalingGroups">
                                 <thead>
                                     <tr>
                                         <th style="width: 20%"><span class="th-inner"></span></th>
@@ -691,7 +693,7 @@
                                         <th style="width: 10%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeAutoScalingGroups.data}}
+                                {{#each DescribeAutoScalingGroups}}
                                     <tr>
                                         <td>
                                         {{#if app}}
@@ -738,7 +740,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="DescribeAlarms">
                                 <thead>
                                     <tr>
                                         <th style="width: 20%"><span class="th-inner"></span></th>
@@ -748,7 +750,7 @@
                                         <th style="width: 10%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each DescribeAlarms.data}}
+                                {{#each DescribeAlarms}}
                                     <tr>
                                         <td>
                                         {{AlarmName}}
@@ -786,7 +788,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table">
+                            <table class="table" id="ListSubscriptions">
                                 <thead>
                                     <tr>
                                         <th style="width: 30%"><span class="th-inner"></span></th>
@@ -795,7 +797,7 @@
                                         <th style="width: 10%"><span class="th-inner"></span></th>
                                     </tr>
                                 <tbody>
-                                {{#each region_resource.ListSubscriptions}}
+                                {{#each ListSubscriptions}}
                                     <tr>
                                         <td>{{topic}}
                                         </td>
@@ -817,10 +819,10 @@
                         </div>
                     </div>
                 </div>
-
+    {{/with}}
 
     </div>
-{{/with}}
+
 
 <!--{{ .recent }}-->
 

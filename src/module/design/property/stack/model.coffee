@@ -199,10 +199,14 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     topic_arn = comp.resource.TopicArn
 
-                    snstopic.name = MC.data.resource_list[MC.canvas_data.region][topic_arn].Name
+                    topic_data = MC.data.resource_list[MC.canvas_data.region][topic_arn]
 
-                    snstopic.arn = topic_arn
+                    # The data is not prepared
+                    if not topic_data
+                        return false
 
+                    snstopic.name = topic_data.Name
+                    snstopic.arn  = topic_arn
                     me.set 'snstopic', snstopic
 
                     return false

@@ -5,15 +5,16 @@
 // Dom Ready
 var listen = function ()
 {
-	var canvas_state = MC.canvas.getState();
+	var canvas_state = MC.canvas.getState(),
+		canvas_container = $('#canvas_container');
 
 	MC.paper = Canvon('#svg_canvas');
 
 	if (canvas_state === 'app')
 	{
-		$('#canvas_body')
+		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown', '.instance-volume', MC.canvas.volume.show)
+			.on('mousedown', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
 			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)
@@ -22,16 +23,12 @@ var listen = function ()
 			.on('selectstart', returnFalse)
 			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
 			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show);
-
-		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 	}
 
 	if (canvas_state === 'stack')
 	{
-		$('#canvas_body')
+		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			//.on('mousedown', '.instance-volume', MC.canvas.volume.show)
-			//.on('mousedown', '.eip-status', MC.canvas.event.EIPstatus)
 			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
 			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -40,10 +37,9 @@ var listen = function ()
 			.on('mousedown', MC.canvas.event.clearSelected)
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('selectstart', returnFalse);
-
-		$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
-
 	}
+
+	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
 };
 
 // Dom Ready

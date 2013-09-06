@@ -35,7 +35,8 @@ define [ 'jquery',
 		if !is_app_view
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
 
-				#
+				# added by song
+				model.clear({silent: true})
 
 				if current_view then view.delegateEvents view.events
 				#
@@ -78,6 +79,9 @@ define [ 'jquery',
 		else
 
 			require [ './module/design/property/sg/view', './module/design/property/sg/model' ], ( view, model ) ->
+
+				# added by song
+				model.clear({silent: true})
 
 				view.model = model
 

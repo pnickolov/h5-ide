@@ -30,6 +30,9 @@ define [ 'constant',
         #
         require [ './module/design/property/az/view', './module/design/property/az/model' ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+            
             #
             if current_view then view.delegateEvents view.events
 

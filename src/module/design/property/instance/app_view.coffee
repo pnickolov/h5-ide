@@ -29,7 +29,7 @@ define [ 'event', 'MC',
             }
             false
 
-        updateKPModal : ( data ) ->
+        updateKPModal : ( data, win_passwd ) ->
             if not data
                 modal.close()
                 return
@@ -37,6 +37,10 @@ define [ 'event', 'MC',
             $saveBtn = $("#property-app-save-kp")
             $model   = $saveBtn.closest "#modal-box"
             $model.find(".modal-body").html("Key pair data is ready. Click save button to download.")
+
+            if win_passwd
+                $model.find(".model-login-info").html(win_passwd)
+
             $saveBtn.removeClass("disabled").addClass("btn-blue")
                     .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
                     .attr("download", $("#property-keypair-name").html() + ".pem" )

@@ -60,26 +60,33 @@
 
 			$(document.body).on('mouseleave', '.tooltip', tooltip.clear);
 
-			tooltip.timer = setInterval(function ()
-			{
-				if (target.closest('html').length === 0)
+			tooltip.timer.push(
+				setInterval(function ()
 				{
-					tooltip.clear();
-				}
-			}, 1000);
+					if (target.closest('html').length === 0)
+					{
+						tooltip.clear();
+					}
+				}, 1000)
+			);
 		}
 
 		return true;
 	};
+
+	tooltip.timer = [],
 
 	tooltip.clear = function ()
 	{
 		$(document.body).off('mouseleave', '.tooltip', tooltip.clear);
 		$('#tooltip_box').remove();
 
-		clearInterval(tooltip.timer);
+		$.each(tooltip.timer, function (index, timer)
+		{
+			clearInterval(timer);
+		});
 
-		return true;
+		return false;
 	};
 
 	$(document).ready(function ()

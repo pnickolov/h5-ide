@@ -94,13 +94,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 		sgModalSelectboxChange : (event, id) ->
 			$('#sg-protocol-select-result').find('.show').removeClass('show')
+			$('.sg-protocol-option-input').removeClass("show")
 			$('#sg-protocol-' + id).addClass('show')
 			$('#modal-protocol-select').data('protocal-type', id)
 			null
 
 		icmpMainSelect : ( event, id ) ->
 			$("#protocol-icmp-main-select").data('protocal-main', id)
-			if id is 3 || id is 5 || id is 11 || id is 12
+			if id is "3" || id is "5" || id is "11" || id is "12"
 				$( '#protocol-icmp-sub-select-' + id).addClass('shown')
 			else
 				$('.protocol-icmp-sub-select').removeClass('shown')
@@ -172,6 +173,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			this.trigger "SET_SG_RULE", rule
 
+			modal.close()
 
 		editablelabelClick : ( event ) ->
 			editablelabel.create.call $(event.target)

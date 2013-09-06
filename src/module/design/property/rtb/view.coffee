@@ -159,7 +159,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                 }
                 modal template, false, () ->
 
-                    $('.modal-close, #cidr-return').click () ->
+                    $('.modal-close').click () ->
                         inputElem.focus()
 
                     $('#cidr-remove').click () ->
@@ -172,6 +172,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                                 'type': 'line'
                             })
                         MC.aws.aws.disabledAllOperabilityArea(false)
+                        modal.close()
             else
                 data = event.target.parentNode.parentNode.parentNode.dataset
                 children = event.target.parentNode.parentNode.parentNode.children

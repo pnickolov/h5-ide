@@ -123,10 +123,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     azObj[azName]++
                 null
 
-            defaultVPC = false
-            if MC.aws.aws.checkDefaultVPC()
-                defaultVPC = true
-
             # have az ##################################################################
             if !MC.canvas_data.component[uid].resource.VpcId
                 azAry = MC.canvas_data.component[uid].resource.AvailabilityZones
@@ -165,6 +161,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 this.set 'az_detail', azObjAry
             # have az ##################################################################
 
+            defaultVPC = false
+            if MC.aws.aws.checkDefaultVPC()
+                defaultVPC = true
+            
             if defaultVPC or MC.canvas_data.component[uid].resource.VpcId
                 this.set 'have_vpc', true
             else

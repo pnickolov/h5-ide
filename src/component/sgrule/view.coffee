@@ -5,7 +5,7 @@
 define [ 'text!./template.html',
          'text!./list_template.html',
          'text!./delete_rule_dialog.html',
-         'i18n!/nls/lang.js',
+         'i18n!../../nls/lang.js',
          'event'
 ], ( template, list_template, delete_template, lang, ide_event ) ->
 
@@ -63,11 +63,14 @@ define [ 'text!./template.html',
           in_target  = $("#sg-create-sg-in").find(".selected").text()
           action     = $("#sg-create-direction").find(".selected").text()
 
+          $("#sg-rule-self-ref").hide()
+
           if rule_count == 1
             info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
 
           else if data.inSg is data.outSg
             info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
+            $("#sg-rule-self-ref").show()
 
           else
             info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target

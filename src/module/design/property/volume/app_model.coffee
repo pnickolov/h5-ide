@@ -27,7 +27,9 @@ define [ 'backbone', 'MC' ], () ->
 
                 device_name = tmp[2]
 
-                lc_block_device = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[realuid].resource.LaunchConfigurationARN].BlockDeviceMappings.member
+                lc_comp = MC.canvas_data.component[realuid]
+
+                lc_block_device = MC.data.resource_list[MC.canvas_data.region][lc_comp.resource.LaunchConfigurationARN].BlockDeviceMappings.member
 
                 $.each lc_block_device, ( i, block ) ->
 
@@ -38,6 +40,8 @@ define [ 'backbone', 'MC' ], () ->
                         volume_detail.uid = volume_uid
 
                         volume_detail.isLC = true
+
+                        volume_detail.name = "Volume of " + lc_comp.name
 
                         me.set volume_detail
 

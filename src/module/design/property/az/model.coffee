@@ -80,7 +80,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     if placement.AvailabilityZone == oldZoneName
                         placement.AvailabilityZone = newZone
 
-                if component.type == resource_type.AWS_ELB
+                else if component.type == resource_type.AWS_AutoScaling_Group
+                    azs = component.resource.AvailabilityZones.join(",")
+                    if azs.indexOf( oldZoneName ) isnt -1
+                        azs = azs.replace oldZoneName, newZone
+                        component.resource.AvailabilityZones = azs.split(",")
+
+                else if component.type == resource_type.AWS_ELB
                     idx = component.resource.AvailabilityZones.indexOf oldZoneName
                     if idx != -1
                         component.resource.AvailabilityZones.splice idx, 1, newZone

@@ -59,7 +59,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	resolveDescribeInstanceHealthResult = ( result ) ->
 		#resolve result
 		#return vo
-		result_set = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates.member
+		instance_state = ($.xml2json ($.parseXML result[1])).DescribeInstanceHealthResponse.DescribeInstanceHealthResult.InstanceStates
+		result_set = if instance_state and 'member' of instance_state then instance_state.member  else null
 
 		if $.type(result_set) == "object"
 
@@ -220,4 +221,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	DescribeLoadBalancers        : DescribeLoadBalancers
 	#
 	resolveDescribeLoadBalancersResult : resolveDescribeLoadBalancersResult
+	resolveDescribeInstanceHealthResult: resolveDescribeInstanceHealthResult
 

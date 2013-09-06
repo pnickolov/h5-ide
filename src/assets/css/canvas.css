@@ -50,30 +50,16 @@
 	position: absolute;
 	width: 32px;
 	height: 32px;
-
 	background-color: #f5f5f5;
-
-	/*border: 1px solid #333;
-
-	background-color: #363636;
-	background-image: -moz-linear-gradient(top, #888, #555);
-	background-image: -webkit-linear-gradient(top, #888, #555);
-	background-image: -o-linear-gradient(top, #888, #555);
-	background-image: linear-gradient(to bottom, #888, #555);
-
-	border-radius: 3px;*/
-
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-
 	cursor: pointer;
-
 	line-height: 32px;
 	text-align: center;
 	padding: 0;
 }
 
 .svg_resizer:hover {
-	 color: #3781C9;
+	color: #3781C9;
 }
 
 .svg_resizer_height {
@@ -727,9 +713,9 @@
 	border: 2px solid #83CBF9;
 	width: 376px;
 	z-index: 30;
-	background: rgba(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.9);
 	border-radius: 4px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #asgList-header,
@@ -765,10 +751,10 @@
 #asgList .status,
 #instanceList .status {
 	position: absolute;
-	right: 22px;
-	top: 17px;
-	width: 8px;
-	height: 8px;
+	right: 27px;
+	top: 16px;
+	width: 6px;
+	height: 6px;
 }
 
 .asgList-item,
@@ -778,7 +764,7 @@
 	border: 2px solid rgba(255, 255, 255, 0);
 	width: 98px;
 	height: 98px;
-	background: url('../images/ide/icon/instance-canvas.png') 15px 10px no-repeat;
+	background: url('../images/ide/icon/instance-canvas.png') 18px 10px no-repeat;
 }
 
 .asgList-item.selected,
@@ -887,7 +873,7 @@
 /* instance state */
 .instance-state {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 	display: block;
 }
@@ -922,7 +908,7 @@
 
 .volume-status {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 }
 

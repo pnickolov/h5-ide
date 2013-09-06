@@ -122,6 +122,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     volume_comp.name = name
 
+                #serverGroupName
+                volume_comp.serverGroupName = volume_comp.name
 
                 MC.canvas.update uid, 'text', "volume_name", device_name
 

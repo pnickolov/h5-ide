@@ -99,31 +99,33 @@
 
 				<h5>Advanced</h5>
 				<div class="asg-policy-advanced">
-					<section class="modal-control-group">
+					<section id="asg-policy-statistics" class="modal-control-group">
 						<h5>Alarm Options</h5>
-						<label>Statistics</label>
-						<div class="selectbox" id="asg-policy-statistics">
-						<div class="selection">Average</div>
-						<ul class="dropdown" tabindex="-1">
-							<li data-id="Average" class="item">Average</li>
-							<li data-id="Maximum" class="item">Maximum</li>
-							<li data-id="Minimum" class="item">Minimum</li>
-							<li data-id="SampleCount" class="item">SampleCount</li>
-							<li data-id="Sum" class="item">Sum</li>
-						</ul>
+						<div class="clearfix">
+							<label>Statistics</label>
+							<div class="selectbox" id="asg-policy-statistics">
+							<div class="selection">Average</div>
+							<ul class="dropdown" tabindex="-1">
+								<li data-id="Average" class="item">Average</li>
+								<li data-id="Maximum" class="item">Maximum</li>
+								<li data-id="Minimum" class="item">Minimum</li>
+								<li data-id="SampleCount" class="item">SampleCount</li>
+								<li data-id="Sum" class="item">Sum</li>
+							</ul>
+						</div>
 					</div>
 					</section>
 
-					<section class="modal-control-group">
+					<section id="asg-policy-scaling" class="modal-control-group">
 						<h5>Scaling Options</h5>
-						<div>
-							<label for="asg-policy-cooldown">Cooldown Period</label>
+						<div class="clearfix">
+							<label>Cooldown Period</label>
 							<input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
 							<span>seconds</span>
 						</div>
 
-						<div id="asg-policy-step-wrapper" class="hide">
-							<label for="asg-policy-step">Minimum Adjust Step</label>
+						<div id="asg-policy-step-wrapper" class="hide clearfix">
+							<label>Minimum Adjust Step</label>
 							<input type="text" class="input" id="asg-policy-step" value="{{step}}">
 						</div>
 					</section>

@@ -1,6 +1,6 @@
 <article data-bind="true">
   {{#if association}}
-  <div class="property-control-group">{{association.elb}} will be launched into {{association.subnet}}</div>
+  <div class="property-control-group">A Virtual Network Interface is placed in {{association.subnet}} for {{association.elb}} to allow traffic be routed to this availability zone.</div>
   {{else}}
   <div class="option-group-head expand" id="subnet-property-detail">Subnet Details</div>
   <div class="option-group">

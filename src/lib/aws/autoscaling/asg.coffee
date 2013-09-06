@@ -24,6 +24,24 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		#return
 		tgt_az
 
+	updateASGCount = ( app_id ) ->
+		if MC.canvas.getState() == 'stack'
+			return null
+
+		appData   = MC.data.resource_list[MC.canvas_data.region]
+		component = MC.canvas_data.component
+		layout    = MC.canvas_data.layout
+
+		for uid, comp of component
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+				asg_comp = component[ layout.component.node[uid].groupUId ]
+				asg_data = appData[ asg_comp.resource.AutoScalingGroupARN ]
+
+				if asg_data
+					MC.canvas.update uid, 'text', 'lc_name', asg_data.Instances.member.length + " in service"
+		null
+
 
 	getASGInAZ = ( orig_uid, az ) ->
 		#uid is original asg uid
@@ -77,4 +95,5 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	#public
 	getAZofASGNode      : getAZofASGNode
 	getASGInAZ          : getASGInAZ
+	updateASGCount      : updateASGCount
 

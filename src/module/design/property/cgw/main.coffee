@@ -22,7 +22,6 @@ define [ 'jquery',
     loadModule = ( uid, current_main, tab_type ) ->
 
         console.log 'tab_type = ' + tab_type
-
         #
         MC.data.current_sub_main = current_main
 
@@ -35,6 +34,9 @@ define [ 'jquery',
         require [ './module/design/property/cgw/view',
                   './module/design/property/cgw/model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -77,6 +79,9 @@ define [ 'jquery',
                   './module/design/property/cgw/app_model'
         ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+            
             #
             if current_view then view.delegateEvents view.events
 

@@ -78,13 +78,17 @@ define [ './temp_view',
 
             $toggle.toggleClass("expand")
 
+            stackId = MC.canvas_data.id
+            if !MC.data.propertyHeadStateMap[stackId]
+                MC.data.propertyHeadStateMap[stackId] = {}
+
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
                 # record head state
                 headElemAry = $('#property-panel').find('.option-group-head')
                 headExpandStateAry = []
                 headCompUID = $('#property-panel').attr('component-uid')
-                if !headCompUID then headCompUID = 'stack'
+                if !headCompUID then headCompUID = stackId
 
                 _.each headElemAry, (headElem) ->
                     $headElem = $(headElem)
@@ -93,7 +97,7 @@ define [ './temp_view',
                     null
 
                 if headCompUID
-                    MC.data.propertyHeadStateMap[headCompUID] = headExpandStateAry
+                    MC.data.propertyHeadStateMap[stackId][headCompUID] = headExpandStateAry
 
                 console.log(headExpandStateAry)
                 # added by song ######################################
@@ -146,12 +150,27 @@ define [ './temp_view',
             #console.log event.target
             #console.log event.data.back_dom
 
+            #
+            back_dom = event.data.back_dom
+            #
+            # return if back_dom is 'none'
+            ###
+            temp = $( event.data.back_dom ).find( '#property-second-panel' ).find( '.property-content' ).html()
+            if temp isnt ''
+                event.data.back_dom = 'none'
+                $( '.property-content' ).html temp
+            ###
+
+            stackId = MC.canvas_data.id
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
                 # restore head state
                 headCompUID = $('#property-panel').attr('component-uid')
-                if !headCompUID then headCompUID = 'stack'
-                headExpandStateAry = MC.data.propertyHeadStateMap[headCompUID]
+                if !headCompUID then headCompUID = stackId
+
+                headExpandStateAry = null
+                if MC.data.propertyHeadStateMap[stackId]
+                    headExpandStateAry = MC.data.propertyHeadStateMap[stackId][headCompUID]
 
                 if headExpandStateAry
                     headElemAry = $('#property-panel').find('.option-group-head')
@@ -164,25 +183,16 @@ define [ './temp_view',
                         null
 
                 # clear invalid state in map
-                _.each MC.data.propertyHeadStateMap, (stateAry, compUID) ->
-                    if !MC.canvas_data.component[compUID] and compUID isnt 'stack'
-                        delete MC.data.propertyHeadStateMap[compUID]
-                    null
+                if MC.data.propertyHeadStateMap[stackId]
+                    _.each MC.data.propertyHeadStateMap[stackId], (stateAry, compUID) ->
+                        if !MC.canvas_data.component[compUID] and compUID isnt stackId
+                            delete MC.data.propertyHeadStateMap[stackId][compUID]
+                        null
                 # added by song ######################################
 
 
-            #
-            back_dom = event.data.back_dom
-            #
-            return if back_dom is 'none'
-            ###
-            temp = $( event.data.back_dom ).find( '#property-second-panel' ).find( '.property-content' ).html()
-            if temp isnt ''
-                event.data.back_dom = 'none'
-                $( '.property-content' ).html temp
-            ###
             event.data.back_dom = 'none'
-            $( '#property-panel' ).html back_dom
+            # $( '#property-panel' ).html back_dom
 
             null
     }

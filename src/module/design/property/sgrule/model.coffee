@@ -165,6 +165,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
                         rules.push tmp_rule
 
+                    if rule.IpRanges is 'amazon-elb/amazon-elb-sg'
+
+                        tmp_rule.connection = rule.IpRanges
+
+                        rules.push tmp_rule
+
             #get sg name
             sg_app_detail =
                 name : MC.canvas_data.component[sgUID].resource.GroupName

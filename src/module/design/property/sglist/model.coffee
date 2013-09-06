@@ -13,6 +13,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			'is_stack_sg' : null
 			'sg_rule_list' : null
 			'app_view' : null
+			'only_one_sg' : null
 
 		initialize : ->
 			null
@@ -92,6 +93,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				if parent_model.get('type') is 'app'
 					sgHideCheck = true
 
+				if parent_model.get('is_stack') is true
+					sgHideCheck = true
+
 				sgIsDefault = false
 				if sgComp.name is 'DefaultSG'
 					sgIsDefault = true
@@ -128,9 +132,21 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				# In VPC, user can only select 5 SG
 				sg_full.full = true
 
+			isAppView = that.get 'app_view'
+
+			refSGLength = 0
+			if stackType and !isAppView
+				refSGLength = displaySGAry.length
+			else
+				refSGLength = enabledSGCount
+
+			if enabledSGCount is 1
+				that.set 'only_one_sg', true
+			else
+				that.set 'only_one_sg', false
 
 			that.set 'sg_list', displaySGAry
-			that.set 'sg_length', if stackType then displaySGAry.length else enabledSGCount
+			that.set 'sg_length', refSGLength
 
 			null
 

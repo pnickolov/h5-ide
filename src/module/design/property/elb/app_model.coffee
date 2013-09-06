@@ -6,7 +6,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
     ElbAppModel = Backbone.Model.extend {
 
+        defaults :
+            'id'    : null
+
         init : ( elb_uid )->
+
+            this.set 'id', elb_uid
 
             myElbComponent = MC.canvas_data.component[ elb_uid ]
 
@@ -47,7 +52,22 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
             else
               elb.isClassic = true
 
+            defaultVPC = false
+            if MC.aws.aws.checkDefaultVPC()
+                defaultVPC = true
+
+            if defaultVPC or MC.canvas_data.component[elb_uid].resource.VpcId
+                this.set 'have_vpc', true
+            else
+                this.set 'have_vpc', false
+
             elb.distribution = []
+
+            subnetMap = {}
+            for uid, comp of MC.canvas_data.component
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                    subnetMap[ comp.resource.SubnetId ] = comp.name
+
             $.each elb.AvailabilityZones.member, (i, zone_name) ->
               tmp = {}
               tmp.zone = zone_name
@@ -62,7 +82,7 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
                         if MC.data.resource_list[MC.canvas_data.region][subnet_id].availabilityZone == zone_name
 
-                            tmp.subnet = subnet_id
+                            tmp.subnet = subnetMap[ subnet_id ]
 
                             return false
 
@@ -102,6 +122,32 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
             elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
 
             this.set elb
+
+        getSGList : () ->
+
+            # resourceId = this.get 'id'
+
+            # # find stack by resource id
+            # resourceCompObj = null
+            # _.each MC.canvas_data.component, (compObj, uid) ->
+            #     if compObj.resource.InstanceId is resourceId
+            #         resourceCompObj = compObj
+            #     null
+
+            # sgAry = []
+            # if resourceCompObj
+            #     sgAry = resourceCompObj.resource.SecurityGroupId
+
+            uid = this.get 'id'
+            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+
+            sgUIDAry = []
+            _.each sgAry, (value) ->
+                sgUID = value.slice(1).split('.')[0]
+                sgUIDAry.push sgUID
+                null
+
+            return sgUIDAry
     }
 
     new ElbAppModel()

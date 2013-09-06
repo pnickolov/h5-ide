@@ -486,19 +486,33 @@ MC.canvas.add = function (flag, option, coordinate)
 						component_layout.originalId = option['originalId'];
 						option.name = data[option.originalId].name;//use original name
 						layout_group = MC.canvas_data.layout.component.group[option.groupUId];
-						if(layout_group.type === 'AWS.EC2.AvailabilityZone'){
-							MC.canvas_data.component[component_layout.originalId].resource.AvailabilityZones.push(layout_group.name);
+						switch (layout_group.type)
+						{
+							case 'AWS.EC2.AvailabilityZone':
+								MC.canvas_data.component[component_layout.originalId].resource.AvailabilityZones.push(layout_group.name);
+								break;
+							case 'AWS.VPC.Subnet':
+								layout_group = MC.canvas_data.layout.component.group[layout_group.groupUId];
+								if (layout_group.type === 'AWS.EC2.AvailabilityZone')
+								{
+									MC.canvas_data.component[component_layout.originalId].resource.AvailabilityZones.push(layout_group.name);
+								}
+								break;
 						}
-						else{
-							var defaultVPC = false;
-							if (MC.aws.aws.checkDefaultVPC()) {
-								defaultVPC = true
-							}
 
-							if (!defaultVPC) {
-								MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
-							}
+						var defaultVPC = false;
+						if (MC.aws.aws.checkDefaultVPC()) {
+							defaultVPC = true
 						}
+
+						if (!defaultVPC) {
+							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
+						}
+						else
+						{//defaultVPC
+							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = '';
+						}
+
 						// if(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames.length > 0){
 						// 	$.each(MC.canvas_data.component[component_layout.originalId].resource.LoadBalancerNames, function(idx, loadbalancername){
 						// 		lb_uid = loadbalancername.split('.')[0].slice(1);
@@ -803,6 +817,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;
 
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				}
+				else{
+					component_layout.eipList = (component_layout.eipList) ? component_layout.eipList : {};
+				}
+
 				//add to instanceList
 				component_layout.instanceList = [ group.id ];
 
@@ -838,7 +859,13 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.uid = component_layout.uid ? component_layout.uid : group.id;
 				component_layout.instanceList = (component_layout.instanceList && component_layout.instanceList.length > 0) ? component_layout.instanceList : [ group.id ];
 				component_layout.eniList = (component_layout.eniList && component_layout.eniList.length > 0) ? component_layout.eniList : [];
-				component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				if(MC.canvas_data.platform === MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+					component_layout.eipList = (component_layout.eipList && component_layout.eipList.length > 0) ? component_layout.eipList : [];
+				}
+				else{
+					component_layout.eipList = (component_layout.eipList) ? component_layout.eipList : {};
+				}
+
 				component_layout.volumeList = component_layout.volumeList ? component_layout.volumeList : [];
 
 				coordinate.x = component_layout.coordinate[0];
@@ -1033,7 +1060,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////instance-state
 				Canvon.circle(68, 15, 5,{}).attr({
-					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState(),
+					'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
 					'id' : group.id + '_instance-state'
 				})
 
@@ -1422,19 +1449,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			{
 				case 'ec2-classic':
 				case 'default-vpc':
-					// MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
-					// MC.canvas.display(group.id,'elb_assoc',false);//hide port elb_assoc
-					if (icon_scheme === "internet")
-					{
-						MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
-					}
-					$('#' + group.id + '_elb_sg_out').attr('transform','translate(84, 39)');//move port to middle
+					MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
+					MC.canvas.display(group.id,'port-elb-assoc',false);//hide port elb_assoc
+					$('#' + group.id + '_port-elb-sg-out').attr('transform','translate(79, 28)');//move port to middle
 					break;
 				case 'custom-vpc':
-					if (icon_scheme === "internet")
-					{
-						MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
-					}
 				case 'ec2-vpc':
 					if (icon_scheme === "internet")
 					{
@@ -2163,7 +2182,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					}
 					else
 					{
-						option.name = "? in service";
+						option.name = "0 in service";
 					}
 				}
 

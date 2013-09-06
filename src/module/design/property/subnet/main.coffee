@@ -34,6 +34,9 @@ define [ 'jquery',
                   './module/design/property/subnet/model'
         ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -75,6 +78,9 @@ define [ 'jquery',
         require [ './module/design/property/subnet/app_view',
                   './module/design/property/subnet/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

@@ -2,7 +2,7 @@
 #  Controller for header module
 ####################################
 
-define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!/nls/lang.js' ], ( $, template, ide_event, lang ) ->
+define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!./nls/lang.js' ], ( $, template, ide_event, lang ) ->
 
     view = null
 

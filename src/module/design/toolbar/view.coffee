@@ -3,7 +3,7 @@
 #############################
 
 define [ 'MC', 'event',
-         'i18n!/nls/lang.js',
+         'i18n!../../../nls/lang.js',
          'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'
@@ -107,12 +107,13 @@ define [ 'MC', 'event',
 
                     modal.close()
 
-                    # check change and save stack
-                    ori_data = MC.canvas_property.original_json
-                    new_data = JSON.stringify( MC.canvas_data )
-                    id = MC.canvas_data.id
-                    if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                    # # check change and save stack
+                    # ori_data = MC.canvas_property.original_json
+                    # new_data = JSON.stringify( MC.canvas_data )
+                    # id = MC.canvas_data.id
+                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
+                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     # hold on 0.5 second for data update
                     setTimeout () ->
@@ -132,7 +133,7 @@ define [ 'MC', 'event',
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
 
             else if name.indexOf(' ') >= 0
-                notification 'warning', 'Stack name contains white space.'
+                notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
 
             else if not MC.aws.aws.checkStackName id, name
                 #notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
@@ -151,12 +152,28 @@ define [ 'MC', 'event',
 
                         MC.canvas_data.name = new_name
 
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                        # #expand components
+                        # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                        # #save stack
+                        # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                        # #compact and update canvas
+                        # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
+
+                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
                         true
 
             else
                 MC.canvas_data.name = name
-                ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+
+                # #expand components
+                # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                # #save stack
+                # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                # #compact and update canvas
+                # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
             true
 
@@ -175,7 +192,7 @@ define [ 'MC', 'event',
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'Stack name contains white space.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
@@ -186,10 +203,11 @@ define [ 'MC', 'event',
                     name    = MC.canvas_data.name
 
                     # check change and save stack
-                    ori_data = MC.canvas_property.original_json
-                    new_data = JSON.stringify( MC.canvas.layout.save() )
-                    if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                    # ori_data = MC.canvas_property.original_json
+                    # new_data = JSON.stringify( MC.canvas.layout.save() )
+                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
+                    #     #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     setTimeout () ->
                         ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name

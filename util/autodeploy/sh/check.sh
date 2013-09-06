@@ -28,6 +28,12 @@ then
             mkdir -p bak
         fi
         mv ${FILENAME} bak/
+
+        #change version
+        cd lib
+        VER=`date "+%y%m%d.%H%M"`
+        sed -i "/  version = '/c   version = '${VER}'" version.js
+
         echo "[`date`] updated succeed"
     else
         echo "[`date`] updated failed"

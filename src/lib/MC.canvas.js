@@ -154,11 +154,18 @@ MC.canvas = {
 				{
 					if ( instance_data )
 					{//instance data exist
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+							'data-tooltip' : instance_data.instanceState.name
+						});
+
 					}
 					else
 					{//instance data not exist, unknown state
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+							'data-tooltip': ''
+						});
 					}
 				}
 				else
@@ -2247,6 +2254,23 @@ MC.canvas.volume = {
 
 		if (!bubble_box[0])
 		{
+			if (MC.canvas.getState() === 'app')
+			{
+				if ($('#' + target_id + '_instance-number').text() * 1 > 1)
+				{
+					MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+
+					return false;
+				}
+
+				if ($('#' + target_id).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+				{
+					MC.canvas.asgList.show.call( $('#' + target_id)[0], event );
+
+					return false;
+				}
+			}
+
 			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
@@ -2628,6 +2652,7 @@ MC.canvas.asgList = {
 	{
 		if (event.which === 1)
 		{
+			MC.canvas.instanceList.close();
 			MC.canvas.asgList.close();
 
 			var target = this.parentNode,
@@ -2635,9 +2660,15 @@ MC.canvas.asgList = {
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( event.currentTarget.id );
+			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
+			var appData = MC.data.resource_list[ MC.canvas_data.region ];
+			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
+
+			if ( !asgData ) {
+				return true;
+			}
 
 			var statusMap = {
 					 "Pending"     : "orange"
@@ -2656,7 +2687,7 @@ MC.canvas.asgList = {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
+			var instances = asgData.Instances.member;
 			if ( instances )
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {
@@ -2709,6 +2740,7 @@ MC.canvas.instanceList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.asgList.close();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
 			{
@@ -2717,8 +2749,7 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			var target = this,
-				target_offset = Canvon(target).offset(),
+			var target_offset = Canvon('#' + this.id).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			$('#canvas_container').append( MC.template.instanceList() );
@@ -3408,6 +3439,14 @@ MC.canvas.event.dragable = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
 			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
+			areaChild = MC.canvas.areaChild(
+				target_id,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + component_size[0],
+				coordinate.y + component_size[1]
+			),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3427,6 +3466,7 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
+			areaChild.length === 0 &&
 			match_place.is_matched &&
 			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()

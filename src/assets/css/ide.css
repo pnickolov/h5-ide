@@ -51,7 +51,6 @@ a {
 
 .lh30  { line-height : 30px; }
 
-.hide  { display : none; }
 .left  { float   : left; }
 .right { float   : right; }
 
@@ -636,7 +635,7 @@ a {
 	font-size: 13px;
 	padding: 21px 20px 0 0;
 	width: 100%;
-	height: 40px;
+	height: 29px;
 }
 
 .tabbar-group {
@@ -1223,7 +1222,7 @@ a {
 
 #region-view {
 	position: relative;
-	top: -70px;
+	top: -65px;
 	width: 1280px;
 	padding: 0 0 20px 0;
 	margin: 20px auto;
@@ -1308,6 +1307,10 @@ a {
 	height: 55px;
 	background-repeat: no-repeat;
 	background-image: url('../images/ide/global-region-icon.png');
+}
+
+.firefox #global-region-resource-list .global-resource-icon {
+	top: -26px;
 }
 
 .global-region-resource-count {
@@ -1505,10 +1508,10 @@ a {
 	display: block;
 	width: 220px;
 /*	height: 172px;*/
-	border: 1px solid #ccc;
+	border: 1px solid #8a8a8a;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-	opacity: .8;
+	opacity: .95;
 }
 
 .region-resource-list-item:hover {
@@ -1525,6 +1528,12 @@ a {
 	width: 220px;
 	height: 145px;
 	border-radius: 5px 5px 0 0;
+	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+	background-size: 225px auto;
+}
+
+.region-resource-thumbnail.app-thumbnail {
+	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
 }
 
 .region-resource-thumbnail img {
@@ -1840,7 +1849,7 @@ a {
 	}
 
 	.global-region-resource-location-count {
-		font-size: 22x;
+		font-size: 22px;
 	}
 
 	.global-region-resource-content h4  {
@@ -1860,7 +1869,7 @@ a {
 		left: 45px;
 	}
 
-	.region-resource-list li {
+	.region-resource-list li {.region-resource-list-item
 		margin: 0 10px 15px 10px;
 	}
 
@@ -1871,6 +1880,7 @@ a {
 	.region-resource-thumbnail {
 		width: 195px;
 		height: 136px;
+		background-size: 200px auto;
 	}
 
 	.region-resource-thumbnail img {
@@ -3620,20 +3630,20 @@ a.sidebar-hider {
 /* Canvas and Toolbar Wrapper */
 #canvas-panel {
 	position     : absolute;
-  top          : 0;
-  left         : 0;
-  right        : 0;
-  bottom       : 0;
-  margin-left  : 246px;
-  margin-right : 280px;
+	top          : 0;
+	left         : 0;
+	right        : 0;
+	bottom       : 0;
+	margin-left  : 246px;
+	margin-right : 280px;
 
-/*  -webkit-transition : margin, width 0s linear;
-  -moz-transition    : margin, width 0s linear;
-  -ms-transition     : margin, width 0s linear;
-  -o-transition      : margin, width 0s linear;
-  transition         : margin, width 0s linear;*/
+	/*  -webkit-transition : margin, width 0s linear;
+	-moz-transition    : margin, width 0s linear;
+	-ms-transition     : margin, width 0s linear;
+	-o-transition      : margin, width 0s linear;
+	transition         : margin, width 0s linear;*/
 
-  background : #313131;
+	background : #313131;
 }
 
 #canvas-panel.left-hiden {
@@ -3704,7 +3714,6 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-
 }
 
 .property-block-wrap:hover {
@@ -3793,8 +3802,9 @@ a.sidebar-hider {
 	display: none;
 	position: absolute;
 	right: 5px;
-	top: 7px;
+	top: 50%;
 	color: #999;
+	margin-top: -6px;
 }
 
 #keypair-select .item:hover .icon-remove {
@@ -4065,7 +4075,8 @@ a.sidebar-hider {
 	height: 15px;*/
 	/*background-color: #eee;*/
 	position: absolute;
-	top: 22px;
+	top: 50%;
+	margin-top: -6px;
 	right: 5px;
 	cursor: pointer;
 }
@@ -4238,7 +4249,7 @@ li:hover .rule-remove-icon {
 	position   : absolute;
 	right      : 5px;
 	top        : 50%;
-	margin-top : -8px;
+	margin-top : -6px;
 	cursor     : pointer;
 }
 
@@ -4519,7 +4530,7 @@ a.action-link:hover {
 }
 
 .property-warning {
-	font-size: 13px;
+	font-size: 12px;
 	color: #DD8D00;
 	padding: 5px;
 	border-radius: 2px;
@@ -5318,19 +5329,7 @@ a.action-link:hover {
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */
-.app-panel-li {
-	background    : #fcfcfc;
-	border-bottom : 1px solid #BBB;
-	padding       : 10px;
-}
-.app-panel-li:after {
-	display : block;
-	content : " ";
-	clear   : both;
-}
-.app-panel-li:hover {
-	background : #f7f7f7;
-}
+
 .app-panel-li-col2-1 {
 	float : left;
 	width : 60%;
@@ -5338,6 +5337,12 @@ a.action-link:hover {
 .app-panel-li-col2-2  {
 	float : left;
 	width : 40%;
+}
+
+.app-panel-li-col2-1 label,
+.app-panel-li-col2-2 label {
+	font-size : 12px;
+	color     : #999;
 }
 
 .property-app {
@@ -5650,6 +5655,11 @@ a.action-link:hover {
 	margin-left: 5px;
 }
 
+.asg-p-action .icon-remove:hover,
+.sns-action .icon-remove:hover {
+	color: #F74A48;
+}
+
 /*.property-term-p:hover .asg-p-action,
 #property-asg-policies li:hover .asg-p-action {
 	display: inline-block;
@@ -5728,7 +5738,7 @@ a.action-link:hover {
 	margin  : 7px 8px 0 0;
 	display : none;
 	color   : #ccc;
-	cursor  : pointer;
+	cursor  : move;
 }
 
 .drag-sort-list .drag-handle:hover {
@@ -6079,7 +6089,7 @@ a.action-link:hover {
 
 #asg-termination-policy .modal-control-group label {
 	color: #999;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .control-sentence {
@@ -6118,7 +6128,8 @@ a.action-link:hover {
 #asg-policy-periods,
 #asg-policy-threshold,
 #asg-policy-adjust,
-#asg-policy-cooldown {
+#asg-policy-cooldown,
+#asg-policy-step {
 	padding: 4px 5px;
 	border: 1px solid #ccc;
 	border-radius: 2px;
@@ -6149,8 +6160,24 @@ a.action-link:hover {
 	width: 100px;
 }
 
+#asg-policy-step {
+	width: 30px;
+}
+
 #asg-policy-notify-label {
 	display: inline;
+}
+
+#asg-policy-statistics label,
+#asg-policy-scaling label {
+	float: left;
+	position: relative;
+	width: 120px;
+	top: 6px;
+}
+
+#asg-policy-step-wrapper {
+	margin-top: 5px;
 }
 
 .icon-remove,

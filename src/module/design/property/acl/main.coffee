@@ -39,6 +39,9 @@ define [ 'jquery',
                   './module/design/property/acl/model'
         ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+            
             #
             if current_view then view.delegateEvents view.events
 

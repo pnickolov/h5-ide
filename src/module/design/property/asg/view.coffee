@@ -46,9 +46,9 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             "change #property-asg-elb"                     : "setHealthyCheckELBType"
             "change #property-asg-ec2"                     : "setHealthyCheckEC2Type"
             "change #property-asg-name"                    : "setASGName"
-            "change #property-asg-min"                     : "setASGMin"
-            "change #property-asg-max"                     : "setASGMax"
-            "change #property-asg-capacity"                : "setASGDesireCapacity"
+            "change #property-asg-min"                     : "setSizeGroup"
+            "change #property-asg-max"                     : "setSizeGroup"
+            "change #property-asg-capacity"                : "setSizeGroup"
             "change #property-asg-cooldown"                : "setASGCoolDown"
             "change #property-asg-healthcheck"             : "setHealthCheckGrace"
             "click #property-asg-policy-add"               : "addScalingPolicy"
@@ -59,16 +59,20 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
         render     : ( isApp ) ->
             console.log 'property:asg render'
-            data = $.extend true, {}, this.model.attributes
+            data = this.model.attributes
 
-            policies = []
-            for uid, policy of data.policies
-                policy.metric     = metricMap[ policy.metric ]
-                policy.adjusttype = adjustMap[ policy.adjusttype ]
-                policy.unit       = unitMap[ policy.metric ]
-                policies.push policy
+            if data.asg
 
-            data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+                data = $.extend true, {}, this.model.attributes
+
+                policies = []
+                for uid, policy of data.policies
+                    policy.metric     = metricMap[ policy.metric ]
+                    policy.adjusttype = adjustMap[ policy.adjusttype ]
+                    policy.unit       = unitMap[ policy.metric ]
+                    policies.push policy
+
+                data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
 
             template = if isApp then this.app_template else this.template
 
@@ -92,45 +96,33 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             if target.parsley 'validate'
                 this.trigger 'SET_ASG_NAME', event.target.value
 
-        setASGMin : ( event ) ->
-            min = $( event.currentTarget )
+        setSizeGroup: ( event ) ->
+            $min        = @$el.find '#property-asg-min'
+            $max        = @$el.find '#property-asg-max'
+            $capacity   = @$el.find '#property-asg-capacity'
 
-            min.parsley 'custom', ( val ) =>
-                if +val < 1
+            $min.parsley 'custom', ( val ) =>
+                if + val < 1
                     return 'ASG size must be equal or greater than 1'
-                max = @$el.find '#property-asg-max'
-                if +val >= +max.val()
+                if + val >= + $max.val()
                     return 'Minimum Size must be <= Maximum Size.'
 
-            if min.parsley 'validateForm'
-                @trigger 'SET_ASG_MIN', min.val()
-
-        setASGMax : ( event ) ->
-            max = $( event.currentTarget )
-
-            max.parsley 'custom', ( val ) =>
-                if +val < 1
+            $max.parsley 'custom', ( val ) =>
+                if + val < 1
                     return 'ASG size must be equal or greater than 1'
-                min = @$el.find '#property-asg-min'
-                if +val <= +min.val()
+                if + val <= + $min.val()
                     return 'Minimum Size must be <= Maximum Size'
 
-            if max.parsley 'validateForm'
-                @trigger 'SET_ASG_MAX', max.val()
-
-        setASGDesireCapacity : ( event ) ->
-            target = $ event.currentTarget
-            min = @$el.find '#property-asg-min'
-            max = @$el.find '#property-asg-max'
-
-            target.parsley 'custom', ( val ) ->
-                if +val < 1
+            $capacity.parsley 'custom', ( val ) ->
+                if + val < 1
                     return 'Desired Capacity must be equal or greater than 1'
-                if +val < +min.val() or +val > max.val()
+                if + val < + $min.val() or + val > + $max.val()
                     return 'Desired Capacity must be >= Minimal Size and <= Maximum Size'
 
-            if target.parsley 'validate'
-                @trigger 'SET_DESIRE_CAPACITY', target.val()
+            if $( event.currentTarget ).parsley 'validateForm'
+                @trigger 'SET_ASG_MIN', $min.val()
+                @trigger 'SET_ASG_MAX', $max.val()
+                @trigger 'SET_DESIRE_CAPACITY', $capacity.val()
 
         setHealthCheckGrace : ( event ) ->
 

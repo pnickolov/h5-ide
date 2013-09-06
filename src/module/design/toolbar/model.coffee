@@ -419,7 +419,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             name = data.name
 
             #instance store ami check
-            data.has_instance_store_ami = me.isInstanceStore data
+            #data.has_instance_store_ami = me.isInstanceStore data
 
             #check whether data change
             ori_data = MC.canvas_property.original_json
@@ -715,11 +715,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             is_instance_store = false
 
-            if 'component' of data.layout and 'node' of data.layout.component
-                for k, node of data.layout.component.node
-                    if node.rootDeviceType == 'instance-store'
-                        is_instance_store = true
-                        break
+            if 'property' of data and 'stoppable' of data.property and data.property.stoppable is 'false'
+                is_instance_store = true
 
             is_instance_store
 

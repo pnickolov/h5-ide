@@ -48,6 +48,10 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                         rule.protocol_display = 'all'
 
+                        rule.FromPort = 0
+
+                        rule.ToPort = 65535
+
                     else if rule.IpProtocol not in ['tcp', 'udp', 'icmp', -1, '-1']
 
                         rule.protocol_display = "custom(#{rule.IpProtocol})"

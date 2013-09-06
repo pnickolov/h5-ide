@@ -2265,7 +2265,7 @@ MC.canvas.volume = {
 
 				if ($('#' + target_id).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
 				{
-					MC.canvas.asgList.show.call( $('#' + target_id)[0], event );
+					MC.canvas.asgList.show.call( this, event );
 
 					return false;
 				}
@@ -2653,6 +2653,7 @@ MC.canvas.asgList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
 			MC.canvas.asgList.close();
 
 			var target = this.parentNode,
@@ -2740,6 +2741,7 @@ MC.canvas.instanceList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
 			MC.canvas.asgList.close();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
@@ -2811,6 +2813,54 @@ MC.canvas.instanceList = {
 		var target = $(this);
 
 		$('#instanceList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
+MC.canvas.eniList = {
+	show: function (event)
+	{
+		if (event.which === 1)
+		{
+			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
+			MC.canvas.asgList.close();
+
+			var target_offset = Canvon('#' + this.id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			$('#canvas_container').append( MC.template.eniList() );
+
+			$('#eniList-wrap')
+				.on('click', '.eniList-item', MC.canvas.eniList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
+				});
+
+			MC.canvas.eniList.select.call($('#eniList-wrap .eniList-item').first());
+
+			return false;
+		}
+	},
+
+	close: function ()
+	{
+		$('#eniList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#eniList-wrap .selected').removeClass('selected');
 
 		target.addClass('selected');
 

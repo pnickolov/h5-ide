@@ -706,8 +706,9 @@
 	/*display: none;*/
 }
 
-/* asgList & instanceList */
+/* asgList & instanceList & eniList */
 #asgList-wrap,
+#eniList-wrap,
 #instanceList-wrap {
 	position: absolute;
 	border: 2px solid #83CBF9;
@@ -719,6 +720,7 @@
 }
 
 #asgList-header,
+#eniList-header,
 #instanceList-header {
 	background-color: #83CBF9;
 	color: #fff;
@@ -726,6 +728,7 @@
 }
 
 #asgList-close,
+#eniList-close,
 #instanceList-close {
 	position: absolute;
 	right: 5px;
@@ -737,11 +740,13 @@
 }
 
 #asgList,
+#eniList,
 #instanceList {
 	padding: 8px 20px 3px;
 }
 
 #asgList li,
+#eniList li,
 #instanceList li {
 	float: left;
 	margin: 0 10px 10px 0;
@@ -749,6 +754,7 @@
 }
 
 #asgList .status,
+#eniList .status,
 #instanceList .status {
 	position: absolute;
 	right: 27px;
@@ -767,13 +773,38 @@
 	background: url('../images/ide/icon/instance-canvas.png') 18px 10px no-repeat;
 }
 
+.eniList-item {
+	border-radius: 5px;
+	display: block;
+	border: 2px solid rgba(255, 255, 255, 0);
+	width: 98px;
+	height: 98px;
+	background: url('../images/ide/icon/eni-canvas-attached.png') 20px 20px no-repeat;
+}
+
+.eniList-item-eip-status {
+	left: 48px;
+	top: 43px;
+	position: absolute;
+	width: 12px;
+	height: 14px;
+	display: block;
+	background: url('../images/ide/icon/eip-off.png') 0px 0px no-repeat;
+}
+
+.eniList-item-eip-status.on {
+	background: url('../images/ide/icon/eip-on.png') 0px 0px no-repeat;
+}
+
 .asgList-item.selected,
+.eniList-item.selected,
 .instanceList-item.selected {
 	border: 2px solid rgba(101, 159, 255, 0.6);
 	background-color: rgba(242, 248, 255, 0.6);
 }
 
 .asgList-item-icon,
+.eniList-item-icon,
 .instanceList-item-icon {
 	position: absolute;
 	top: 15px;
@@ -783,6 +814,7 @@
 }
 
 .asgList-item-volume,
+.eniList-item-volume,
 .instanceList-item-volume {
 	position: absolute;
 	top: 48px;
@@ -794,12 +826,14 @@
 }
 
 .asgList-item-number,
+.eniList-item-number,
 .instanceList-item-number {
 	font-size: 12px;
 	color: #74B1FD;
 }
 
 .asgList-item-label,
+.eniList-item-label,
 .instanceList-item-label {
 	color: #333;
 	width: 100px;
@@ -868,7 +902,6 @@
     margin-top: 4px;
     margin-right: 5px;
 }
-
 
 /* instance state */
 .instance-state {

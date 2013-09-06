@@ -52,7 +52,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 				$dom = this.template this.model.attributes
 
-			$('#securitygroup-name').focus()
+			# Right now, hack to focus the input. Find a better way later
+			setTimeout ()->
+				input = $('#securitygroup-name').focus()[0]
+				input.focus() if input
+			, 200
 
 			$dom
 

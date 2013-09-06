@@ -55,21 +55,21 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
 
-            view.on "CHANGE_NAME", ( change ) ->
-                model.setName change.value
+            view.on "CHANGE_NAME", ( value ) ->
+                model.setName value
                 # Sync the name to canvas
-                MC.canvas.update uid, "text", "name", change.value
+                MC.canvas.update uid, "text", "name", value
 
                 # Set title
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, change.value
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
                 null
 
-            view.on "CHANGE_IP", ( change ) ->
-                model.setIP change.value
+            view.on "CHANGE_IP", ( value ) ->
+                model.setIP value
                 null
 
-            view.on "CHANGE_BGP", ( change ) ->
-                change.done( model.setBGP change.value )
+            view.on "CHANGE_BGP", ( value ) ->
+                model.setBGP value
                 null
 
             null
@@ -81,7 +81,7 @@ define [ 'jquery',
 
             # added by song
             model.clear({silent: true})
-            
+
             #
             if current_view then view.delegateEvents view.events
 

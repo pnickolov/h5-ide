@@ -1067,11 +1067,11 @@ Additional Notes and Questions
 	<ul id="asgList" class="clearfix">
     {{#each instances}}
       <li>
-        <a href="#" class="asgList-item" data-id="{{id}}">
+        <a href="#" class="asgList-item" id="{{id}}">
           <i class="asgList-item-status status status-{{status}}"></i>
           <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-          <div class="asgList-item-volume">
-            <span class="asgList-item-number">0</span>
+          <div class="asgList-item-volume" data-target-id={{id}}>
+            <span class="asgList-item-number">{{volume}}</span>
           </div>
           <span class="asgList-item-label">{{id}}</span>
         </a>
@@ -1083,51 +1083,57 @@ Additional Notes and Questions
 <!-- instanceList -->
 <div id="instanceList-wrap">
 	<div id="instanceList-header">
-		<span id="instanceList-title">Instance List</span>
+		<span id="instanceList-title">{{name}}</span>
 		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
 	</div>
 	<ul id="instanceList" class="clearfix">
+    {{#each instances}}
+    <li>
+      <a href="#" class="instanceList-item" id="{{id}}">
+        <i class="instanceList-item-status status status-{{status}}"></i>
+        <span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+        <div class="instanceList-item-volume" data-target-id="{{id}}">
+          <span class="instanceList-item-number">{{volume}}</span>
+        </div>
+        <span class="instanceList-item-label">{{name}}</span>
+      </a>
+    </li>
+    {{/each}}
+	</ul>
+</div>
+
+<!-- eniList -->
+<div id="eniList-wrap">
+	<div id="eniList-header">
+		<span id="eniList-title">ENI List</span>
+		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
+	</div>
+	<ul id="eniList" class="clearfix">
 		<li>
-			<a href="#" class="instanceList-item" data-id="xxxxxx">
-				<i class="instanceList-item-status status status-green"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
-				<div class="instanceList-item-volume" data-target-id="xxxxxx">
-					<span class="instanceList-item-number">0</span>
-				</div>
-				<span class="instanceList-item-label">id</span>
+			<a href="#" class="eniList-item" data-id="xxxxxx">
+				<i class="eniList-item-eip-status on"></i>
+				<span class="eniList-item-label">id</span>
 			</a>
 		</li>
 
 		<li>
-			<a href="#" class="instanceList-item" data-id="xxxxxx">
-				<i class="instanceList-item-status status status-green"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
-				<div class="instanceList-item-volume" data-target-id="xxxxxx">
-					<span class="instanceList-item-number">0</span>
-				</div>
-				<span class="instanceList-item-label">id 2</span>
+			<a href="#" class="eniList-item" data-id="xxxxxx">
+				<i class="eniList-item-eip-status on"></i>
+				<span class="eniList-item-label">id 2</span>
 			</a>
 		</li>
 
 		<li>
-			<a href="#" class="instanceList-item" data-id="xxxxxx">
-				<i class="instanceList-item-status status status-green"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
-				<div class="instanceList-item-volume" data-target-id="xxxxxx">
-					<span class="instanceList-item-number">0</span>
-				</div>
-				<span class="instanceList-item-label">id 3</span>
+			<a href="#" class="eniList-item" data-id="xxxxxx">
+				<i class="eniList-item-eip-status"></i>
+				<span class="eniList-item-label">id 3</span>
 			</a>
 		</li>
 
 		<li>
-			<a href="#" class="instanceList-item" data-id="xxxxxx">
-				<i class="instanceList-item-status status status-green"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/amazon.i386.ebs.png')"></span>
-				<div class="instanceList-item-volume" data-target-id="xxxxxx">
-					<span class="instanceList-item-number">0</span>
-				</div>
-				<span class="instanceList-item-label">id 4</span>
+			<a href="#" class="eniList-item" data-id="xxxxxx">
+				<i class="eniList-item-eip-status"></i>
+				<span class="eniList-item-label">id 4</span>
 			</a>
 		</li>
 	</ul>

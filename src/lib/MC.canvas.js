@@ -2265,7 +2265,7 @@ MC.canvas.volume = {
 
 				if ($('#' + target_id).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
 				{
-					MC.canvas.asgList.show.call( $('#' + target_id)[0], event );
+					MC.canvas.asgList.show.call( this, event );
 
 					return false;
 				}
@@ -2653,6 +2653,7 @@ MC.canvas.asgList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
 			MC.canvas.asgList.close();
 
 			var target = this.parentNode,
@@ -2740,6 +2741,7 @@ MC.canvas.instanceList = {
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
 			MC.canvas.asgList.close();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
@@ -2750,9 +2752,41 @@ MC.canvas.instanceList = {
 			}
 
 			var target_offset = Canvon('#' + this.id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
+			   	canvas_offset = $('#svg_canvas').offset();
 
-			$('#canvas_container').append( MC.template.instanceList() );
+			var uid     = MC.extractID( this.id ),
+			    layout  = MC.canvas_data.layout.component.node[ uid ];
+
+			var temp_data = {
+				  instances : []
+				, name      : "Server Group List"
+			};
+			var statusMap = {
+					 "pending"       : "orange"
+				 , "stopping"      : "orange"
+				 , "shutting-down" : "orange"
+				 , "running"       : "green"
+				 , "stopped"       : "red"
+				 , "terminated"    : "red"
+			};
+
+			if ( layout ) {
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
+			}
+
+			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				temp_data.name = inst_comp.serverGroupName;
+				temp_data.instances.push( {
+					  status : statusMap[ inst_comp.state ]
+					, id     : inst_comp.uid
+					, volume : inst_comp.resource.BlockDeviceMapping.length
+					, name   : inst_comp.name
+				} );
+			}
+
+			$('#canvas_container').append( MC.template.instanceList( temp_data ) );
 
 			$('#instanceList-wrap')
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
@@ -2782,7 +2816,62 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
+MC.canvas.eniList = {
+	show: function (event)
+	{
+		if (event.which === 1)
+		{
+			MC.canvas.instanceList.close();
+			MC.canvas.eniList.close();
+			MC.canvas.asgList.close();
+
+			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			{
+				MC.canvas.select( this.id );
+				
+				return false;
+			}
+
+			var target_offset = Canvon('#' + this.id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			$('#canvas_container').append( MC.template.eniList() );
+
+			$('#eniList-wrap')
+				.on('click', '.eniList-item', MC.canvas.eniList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
+				});
+
+			MC.canvas.eniList.select.call($('#eniList-wrap .eniList-item').first());
+
+			return false;
+		}
+	},
+
+	close: function ()
+	{
+		$('#eniList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#eniList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
 
 		return false;
 	}

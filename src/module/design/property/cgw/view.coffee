@@ -35,33 +35,33 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')
-
-            change.value = ""
-            change.event = "CHANGE_BGP"
-            this.trigger "CHANGE_BGP", change
+            this.trigger "CHANGE_BGP", ""
 
         onChangeBGP : ( event ) ->
+            $target = $ event.currentTarget
+            region = MC.canvas_data.region
+            $target.parsley 'custom', ( val ) ->
+                val = + val
+                if val < 1 or val > 65534
+                    return 'Must be between 1 and 65534'
+                if val is 7224 and region is 'us-east-1'
+                    return 'ASN number 7224 is reserved in Virginia'
+                if val is 9059 and region is 'eu-west-1'
+                    return 'ASN number 9059 is reserved in Ireland'
 
-            change.handled = false
-            change.value   = event.target.value
-            change.event   = "CHANGE_BGP"
-
-            this.trigger "CHANGE_BGP", change
+            if $target.parsley 'validate'
+                this.trigger "CHANGE_BGP", $target.val()
 
         onChangeName : ( event ) ->
+            $target = $ event.currentTarget
+            id = @model.get 'uid'
+            MC.validate.preventDupname $target, id, 'Customer Gateway'
 
-            change.value = event.target.value
-            change.event = "CHANGE_NAME"
-
-            this.trigger "CHANGE_NAME", change
+            if $target.parsley 'validate'
+                @trigger "CHANGE_NAME", $target.val()
 
         onChangeIP   : ( event ) ->
-
-            # TODO : Validate IP
-            change.value = event.target.value
-            change.event = "CHANGE_IP"
-
-            this.trigger "CHANGE_IP", change
+            this.trigger "CHANGE_IP", event.currentTarget.value
 
         setBGP : ( bgp ) ->
             dynamic = false
@@ -118,10 +118,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else
-                change.value = event.target.value
-                change.event = "CHANGE_IP"
-
-                this.trigger "CHANGE_IP", change
+                this.trigger "CHANGE_IP", event.target.value
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
                 # $('#property-cidr-block').blur()
@@ -133,25 +130,5 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         "CHANGE_BGP"  : "#property-cgw-bgp"
         "CHANGE_NAME" : "#property-cgw-name"
         "CHANGE_IP"   : "#property-cgw-ip"
-
-    change =
-        value   : ""
-        event   : ""
-        handled : true
-        done    : ( error ) ->
-            if this.handled
-                return
-
-            if error
-                # TODO : show error on the input
-
-                # Restore last value
-                $ipt = $( eventTgtMap[ this.event ] )
-                $ipt.val( $ipt.attr "lastValue" )
-            else
-                $( eventTgtMap[ this.event ] ).attr "lastValue", this.value
-
-            this.handled = true
-            null
 
     return view

@@ -501,23 +501,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                     is_managed = false
 
                     if ins.tagSet != undefined
-                        _.map ins.tagSet, ( tag )->
-                            if tag
-                                if tag.key == 'app'
-
-                                    is_managed = true
-
-                                    resources.DescribeInstances[i].app = tag.value
-
-                                if tag.key == 'name'
-
-                                    resources.DescribeInstances[i].host = tag.value
-
-                                if tag.key == 'Created by' and tag.value == owner
-
-                                    resources.DescribeInstances[i].owner = tag.value
-
-                            null
+                        tag = ins.tagSet
+                        if ins.tagSet.app
+                            is_managed = true
+                            resources.DescribeInstances[i].app = tag.app
+                            resources.DescribeInstances[i].host = tag.name
+                            if tag[ 'Created by' ] is owner
+                                resources.DescribeInstances[i].owner = tag[ 'Created by' ]
 
                     if not resources.DescribeInstances[i].host
                         resources.DescribeInstances[i].host = ''

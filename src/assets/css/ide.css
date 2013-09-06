@@ -262,7 +262,7 @@ a {
 }
 
 #notification-panel-wrapper {
-	width: 300px;
+	width: 400px;
 }
 
 #notification-panel-wrapper tbody tr td:first-child {
@@ -1509,7 +1509,7 @@ a {
 	width: 220px;
 /*	height: 172px;*/
 	border: 1px solid #8a8a8a;
-	border-radius: 5px;
+	border-radius: 6px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 	opacity: .95;
 }
@@ -1534,6 +1534,7 @@ a {
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
+	background-size: 225px auto;
 }
 
 .region-resource-thumbnail img {
@@ -1592,7 +1593,7 @@ a {
 .region-resource-item-name {
 	color: #eee;
 	font-size: 12px;
-	width: 134px;
+	width: 120px;
 }
 
 #region-aws-resource-wrap {

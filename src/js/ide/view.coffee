@@ -3,8 +3,9 @@
 #############################
 
 define [ 'event',
+         'i18n!../../nls/lang.js',
          'UI.notification',
-         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event ) ->
+         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang ) ->
 
     MainView = Backbone.View.extend {
 

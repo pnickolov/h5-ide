@@ -6,6 +6,37 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     current_region = null
 
+    ### helper ###
+    Helper =
+        switchTab: ( event, tabSelector, listSelector ) ->
+            tabSelector =  if tabSelector instanceof $ then tabSelector else $( tabSelector )
+            listSelector =  if listSelector instanceof $ then listSelector else $( listSelector )
+
+            $target = $ event.currentTarget
+            currentIndex = $(tabSelector).index $target
+
+            if not $target.hasClass 'on'
+                tabSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).addClass( 'on' )
+                    else
+                        $( @ ).removeClass( 'on' )
+
+                listSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).show()
+                    else
+                        $( @ ).hide()
+            null
+
+        thumbError: ( event ) ->
+            $target = $ event.currentTarget
+            $target.hide()
+
+        regexIndexOf: (str, regex, startpos) ->
+            indexOf = str.substring(startpos || 0).search(regex)
+            if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
+
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
@@ -35,8 +66,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .terminate-app'                : 'terminateAppClick'
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
-
-
 
         refreshAll: ->
             location.reload()
@@ -68,55 +97,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 @trigger 'SWITCH_REGION', region
                 @renderRegionAppStack()
 
-
         switchRecent: ( event ) ->
-            target = $ event.currentTarget
-            id = target.attr 'id'
-
-            tabContentMap =
-                'global-region-status-tab-app': 'global-region-status-app-content'
-                'global-region-status-tab-stack': 'global-region-status-stack-content'
-
-            if not target.hasClass 'on'
-                _.each tabContentMap, ( cid, tid ) =>
-                    if tid is id
-                        @$el.find( "##{cid}" ).show()
-                        target.addClass 'on'
-                    else
-                        @$el.find( "##{cid}" )
-                            .hide()
-                            .end()
-                            .find( "##{tid}" )
-                            .removeClass 'on'
+            Helper.switchTab event, '#global-region-status-tab-wrap a', '#global-region-status-content-wrap > div'
 
         switchAppStack: ( event ) ->
-            @switchTab event, '#region-resource-tab a', '.region-resource-list'
+            Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
 
         switchRegionResource: ( event ) ->
-            @switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
-
-
-        # switch tab helper
-        switchTab: ( event, tabSelector, listSelector ) ->
-            tabSelector =  if tabSelector instanceof $ then tabSelector else $( tabSelector )
-            listSelector =  if listSelector instanceof $ then listSelector else $( listSelector )
-
-            target = $ event.currentTarget
-            currentIndex = @$el.find(tabSelector).index target
-
-            if not target.hasClass 'on'
-                tabSelector.each ( index ) ->
-                    if index is currentIndex
-                        $( @ ).addClass( 'on' )
-                    else
-                        $( @ ).removeClass( 'on' )
-
-                listSelector.each ( index ) ->
-                    if index is currentIndex
-                        $( @ ).show()
-                    else
-                        $( @ ).hide()
-            null
+            Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
 
         renderGlobalList: ( event ) ->
             tmpl = @global_list @model.toJSON()
@@ -132,11 +120,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .find('#region-app-stack-wrap')
                 .html( tmpl )
                 .find('.region-resource-thumbnail img')
-                .error @_thumbError
-
-        _thumbError: ( event ) ->
-            target = $ event.currentTarget
-            target.hide()
+                .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
             tmpl = @region_resource @model.toJSON()
@@ -147,7 +131,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
             endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
 
-            startPos = @_regexIndexOf tmplAll, beginRegex
+            startPos = Helper.regexIndexOf tmplAll, beginRegex
             endPos = tmplAll.indexOf '</tbody>', startPos
 
             tmpl = tmplAll.slice startPos, endPos
@@ -157,17 +141,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
-
         renderRecent: ->
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
         updateLoadTime: ( time ) ->
             @$el.find('#global-refresh span').text time
-
-        _regexIndexOf: (str, regex, startpos) ->
-            indexOf = str.substring(startpos || 0).search(regex)
-            if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
 
         ############################################################################################
 

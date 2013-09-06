@@ -936,8 +936,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
 
         # setResource method class
 
-
-
         vpcAccountAttrsReturnHandler: ( result ) ->
             me = @
             console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
@@ -985,6 +983,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                 me.set 'region_classic_list', region_classic_vpc_result
 
          #result list
+
         updateMap : ( me, app_list, stack_list ) ->
 
             #init
@@ -1096,8 +1095,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                     if _.difference me.get('cur_stack_list'), cur_item_list
                         me.set 'cur_stack_list', cur_item_list
                         me.trigger 'UPDATE_REGION_STACK_LIST'
-
-
 
         #region list
         describeAccountAttributesService : ()->

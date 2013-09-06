@@ -1162,7 +1162,9 @@
     */
     , ulErrorManagement: function () {
       this.ulError = '#' + this.hash;
-      this.ulTemplate = $( this.options.errors.errorsWrapper ).attr( 'id', this.hash ).addClass( 'parsley-error-list' );
+      this.ulTemplate = $( this.options.errors.errorsWrapper )
+                          .attr( 'id', this.hash )
+                          .addClass( 'parsley-error-list' );
     }
 
     /**
@@ -1240,7 +1242,7 @@
       if ( !$( this.ulError ).length ) {
         this.manageErrorContainer();
       }
-
+      this.ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
       // TODO: refacto properly
       // if required constraint but field is not null, do not display
       if ( 'required' === constraint.name && null !== this.getVal() && this.getVal().length > 0 ) {
@@ -1275,6 +1277,7 @@
         , ulTemplate = this.options.animate ? this.ulTemplate.show() : this.ulTemplate;
 
       if ( 'undefined' !== typeof errorContainer ) {
+        ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
         $( errorContainer ).append( ulTemplate );
         return;
       }
@@ -1867,13 +1870,28 @@ errortip.timer = {};
 errortip.firstTimer = {};
 errortip.isEnter = false;
 
-errortip.findError = function( target ) {
-  return target.next('.parsley-error-list');
+errortip.findError = function( $target ) {
+  return $target.next('.parsley-error-list');
+}
+
+errortip.getEid = function ( target ) {
+  $target = target instanceof $ ? target : $( target );
+  return errortip.findError( $target ).attr( 'id' )
+}
+
+errortip.getUid = function ( event ) {
+  var id;
+  if ( event === Object( event ) ) {
+    id = errortip.getEid( event.currentTarget );
+  } else {
+    id = event
+  }
+  return $( '#' + id ).data( 'uid' );
 }
 
 errortip.first = function( target ) {
   errortip.call(target)
-  id = errortip.findError( target ).attr( 'id' );
+  id = errortip.getEid( target )
   errortip.firstTimer[ id ] = setTimeout(function() {
     errortip.clear({currentTarget: target});
   }, 2000);
@@ -1881,7 +1899,7 @@ errortip.first = function( target ) {
 
 errortip.clear = function ( event )
 {
-  var id, force = false;
+  var id, uid, force = false;
   if ( event ){
     var errorPrefix = 'errortip-';
     if ( event === Object( event ) ) {
@@ -1892,16 +1910,18 @@ errortip.clear = function ( event )
       id = event;
     }
 
+    uid = errortip.getUid( id );
     setTimeout( function() {
-      if ( !errortip.isEnter || force ) {
+      if ( errortip.enterUid !== uid  || force ) {
         $( '#' + errorPrefix + id ).remove();
       }
-      errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
     }, 100);
+
   } else {
     $('.errortip_box').remove();
   }
 
+  errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
   errortip.removeInterval( id )
 
 };
@@ -1917,12 +1937,12 @@ errortip.removeInterval = function ( id ) {
 }
 
 errortip.enter = function ( event ) {
-  errortip.isEnter = true;
+  errortip.enterUid = errortip.getUid( event );
   errortip.call( this, event );
 }
 
 errortip.leave = function ( event ) {
-  errortip.isEnter = false;
+  errortip.enterUid = false;
   errortip.clear.call( this, event );
 }
 

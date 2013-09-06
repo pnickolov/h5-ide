@@ -2253,6 +2253,7 @@ MC.canvas.volume = {
 	{
 		var bubble_box = $('#volume-bubble-box'),
 			target_id = $(this).data('target-id'),
+			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
 			bubble_target_id;
 
 		if (!bubble_box[0])
@@ -2277,7 +2278,7 @@ MC.canvas.volume = {
 			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
+					document.getElementById( target_uid )
 				);
 			}
 			else
@@ -2297,12 +2298,12 @@ MC.canvas.volume = {
 			if (target_id !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
+					document.getElementById( target_uid )
 				);
 			}
 			else
 			{
-				MC.canvas.select(target_id);
+				MC.canvas.select( target_uid );
 			}
 		}
 

@@ -1483,10 +1483,10 @@ MC.canvas = {
 
 			if (
 				node_coordinate &&
-				node_coordinate[0] < coordinate.x &&
-				node_coordinate[0] + component_size[0] > coordinate.x &&
-				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + component_size[1] > coordinate.y
+				node_coordinate[0] <= coordinate.x &&
+				node_coordinate[0] + component_size[0] >= coordinate.x &&
+				node_coordinate[1] <= coordinate.y &&
+				node_coordinate[1] + component_size[1] >= coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -3846,8 +3846,8 @@ MC.canvas.event.drawConnection = {
 		event.data.draw_line.remove();
 
 		var match_node = MC.canvas.matchPoint(
-				event.pageX - event.data.canvas_offset.left,
-				event.pageY - event.data.canvas_offset.top
+				Math.round(event.pageX - event.data.canvas_offset.left),
+				Math.round(event.pageY - event.data.canvas_offset.top)
 			),
 			svg_canvas = $('#svg_canvas'),
 			from_node = event.data.originalTarget,

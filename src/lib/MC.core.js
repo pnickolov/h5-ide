@@ -16,7 +16,7 @@ var MC = {
 	IMG_URL: './assets/images/',
 	WS_URL: 'https://api.madeiracloud.com/ws',//-> 8300
 	//SAVEPNG_URL: 'https://api.madeiracloud.com/savepng/',//->8400
-	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/',
+	SAVEPNG_URL: 'http://api.madeiracloud.com:8400/',
 
 	current_module : {},
 

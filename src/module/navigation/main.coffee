@@ -7,20 +7,32 @@ define [ 'jquery',
          'text!./module/navigation/template_data.html',
          './module/navigation/model.js',
          'event',
+         'base_main',
          'MC.ide.template'
-], ( $, template, template_data, model, ide_event ) ->
+], ( $, template, template_data, model, ide_event, base_main ) ->
 
     #private
-    loadModule = () ->
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
 
         #compile partial template
         MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
+
+    initialize()
+
+    #private
+    loadModule = () ->
 
         #load remote /module/navigation/view.js
         require [ './module/navigation/view', 'UI.tooltip', 'hoverIntent' ], ( View ) ->
 
             #view
-            view       = new View()
+            #view       = new View()
+
+            view = loadSuperModule loadModule, 'navigation', View, null
+            return if !view
+
             view.model = model
             #refresh view
             view.render template

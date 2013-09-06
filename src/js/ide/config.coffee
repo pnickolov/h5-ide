@@ -118,6 +118,7 @@ require.config {
 		#############################################
 		# module
 		#############################################
+		'base_main'          : 'module/base/base_main'
 		'header'             : 'module/header/main'
 		'navigation'         : 'module/navigation/main'
 		'tabbar'             : 'module/tabbar/main'

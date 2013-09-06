@@ -27,8 +27,11 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
 
                 region_name = result.param[3]
                 keypairname = result.param[4]
-                os_type = ''
-                key_data= ''
+                os_type     = null
+                key_data    = null
+                instance    = null
+                public_dns  = null
+                cmd_line    = null
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
@@ -50,24 +53,55 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
 
                 else
                     #linux
-                    me.trigger "KP_DOWNLOADED", key_data
+
+                    instance = MC.data.resource_list[ region_name ][ instance_id ]
+                    if instance
+                        instance_state = instance.instanceState.name
+
+                    if instance_state == 'running'
+                        public_dns = instance.dnsName
+                        cmd_line   = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, 'ec2-user', instance.dnsName
+
+
+                    option =
+                        type : 'linux'
+                        cmd_line: cmd_line
+
+                    me.trigger "KP_DOWNLOADED", key_data, option
 
                 null
 
 
             me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
 
-                instance_id = result.param[4]
-                key_data = result.param[5]
+                region_name    = result.param[3]
+                instance_id    = result.param[4]
+                key_data       = result.param[5]
+                instance       = null
+                instance_state = null
+                rdp            = null
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
                     key_data = null
                 else
                     #right
+                    instance = MC.data.resource_list[ region_name ][ instance_id ]
+                    if instance
+                        instance_state = instance.instanceState.name
+
+                    if instance_state == 'running'
+                        rdp = sprintf constant.RDP_TMPL, instance.dnsName
+
                     win_passwd = result.resolved_data.passwordData
 
-                me.trigger "KP_DOWNLOADED", key_data, win_passwd
+
+                option =
+                    type   : 'win'
+                    passwd : win_passwd,
+                    rdp    : rdp
+
+                me.trigger "KP_DOWNLOADED", key_data, option
 
                 null
 

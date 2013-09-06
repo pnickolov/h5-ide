@@ -29,7 +29,7 @@ define [ 'event', 'MC',
             }
             false
 
-        updateKPModal : ( data, win_passwd ) ->
+        updateKPModal : ( data, option ) ->
             if not data
                 modal.close()
                 return
@@ -38,8 +38,20 @@ define [ 'event', 'MC',
             $model   = $saveBtn.closest "#modal-box"
             $model.find(".modal-body").html("Key pair data is ready. Click save button to download.")
 
-            if win_passwd
-                $model.find(".model-login-info").html(win_passwd)
+            if option.type == 'win'
+            #windows AMI
+                #option.passwd
+                #option.rdp
+
+                #to-do
+
+                $model.find(".model-login-info").html(option.passwd)
+            else
+            #linux AMI
+                #option.cmd_line
+                #to-do
+
+
 
             $saveBtn.removeClass("disabled").addClass("btn-blue")
                     .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )

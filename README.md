@@ -45,7 +45,7 @@ npm --version
 * Install:
 <pre>
 windows command shell or use sudo (for OSX, *nix, BSD etc)
-npm install grunt-cli bower -g
+npm install grunt-cli bower coffee-script -g
 </pre>
 
 * Validation:

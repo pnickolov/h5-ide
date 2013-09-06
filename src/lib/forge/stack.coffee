@@ -248,7 +248,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		# generate eni ip
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
-			az = layout_data.groupUId
+			az = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			MC.aws.subnet.updateAllENIIPList(az)
 		else
 			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1))

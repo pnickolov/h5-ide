@@ -144,7 +144,6 @@ a {
 }
 
 .header-menu .dropdown {
-
 	position           : relative;
 	float              : left;
 	line-height        : 50px;
@@ -207,7 +206,6 @@ a {
 
 	position : absolute;
 
-	border        : 1px solid #fff;
 	border-radius : 50%;
 
 	background-image : -o-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
@@ -218,13 +216,13 @@ a {
 }
 
 #header--user > .no-credential {
-	top  : 10px;
-	left : 45px;
+	top: 20px;
+	right: 5px;
 }
 
 #user-dropdown-wrapper .no-credential {
-	right : 18px;
-	top   : 12px;
+	top: 20px;
+	right: 5px;
 }
 
 .avatar {

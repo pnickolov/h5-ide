@@ -2816,7 +2816,7 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -2830,6 +2830,13 @@ MC.canvas.eniList = {
 			MC.canvas.instanceList.close();
 			MC.canvas.eniList.close();
 			MC.canvas.asgList.close();
+
+			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			{
+				MC.canvas.select( this.id );
+				
+				return false;
+			}
 
 			var target_offset = Canvon('#' + this.id).offset(),
 				canvas_offset = $('#svg_canvas').offset();
@@ -2864,7 +2871,7 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
 
 		return false;
 	}

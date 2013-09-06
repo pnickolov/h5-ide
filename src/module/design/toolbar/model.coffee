@@ -57,7 +57,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         data.key = key
 
                     #call save png
-                    me.savePNG true, data
+                    _.delay () ->
+                        me.savePNG true, data
+                    , 500
 
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
@@ -108,7 +110,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    me.savePNG true, MC.canvas_data
+                    _.delay () ->
+                        me.savePNG true, MC.canvas_data
+                    , 500
 
                     #set toolbar flag
                     me.setFlag id, 'CREATE_STACK', MC.canvas_data

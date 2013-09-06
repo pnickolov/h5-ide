@@ -29,10 +29,9 @@ define [ 'backbone', 'MC' ], () ->
           propagate = {}
 
           # Find out which route is propagated.
-          for i in myRTBComponent.resource.RouteSet
-            if i.GatewayId in myRTBComponent.resource.PropagatingVgwSet
-              uid = MC.extractID( i.GatewayId )
-              propagate[ components[ uid ].resource.CustomerGatewayId ] = true
+          if rtb.propagatingVgwSet and rtb.propagatingVgwSet.item
+            for i in rtb.propagatingVgwSet.item
+              propagate[ i.gatewayId ] = true
 
           for value, key in rtb.routeSet.item
             if propagate[ value.gatewayId ]

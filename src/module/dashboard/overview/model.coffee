@@ -2,7 +2,10 @@
 #  View Mode for dashboard(overview)
 #############################
 
-define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service', ], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service ) ->
+define [ 'MC', 'event', 'constant', 'vpc_model',
+         'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
+         'i18n!../../../nls/lang.js'
+], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang ) ->
 
     #private
     #region map
@@ -965,8 +968,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                 null
 
             else
-                # set cookie
-                if $.cookie('has_cred') isnt 'false'
+                # check whether invalid session
+                if result.return_code isnt lang.service.ERROR_CODE_19_MESSAGE and $.cookie('has_cred') isnt 'false'
                     $.cookie 'has_cred', false,    { expires: 1 }
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 

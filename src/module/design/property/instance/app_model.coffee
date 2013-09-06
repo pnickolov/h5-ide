@@ -44,31 +44,30 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                         os_type = MC.data.dict_ami[ image_id ].osType
 
                 #get password for windows AMI
-                #if (os_type == 'win' and key_data
+                if os_type == 'win' and key_data
                     #me.getPasswordData instance_id, key_data.replace(/\n/g,'')
-                    #me.getPasswordData instance_id, key_data
+                    me.getPasswordData instance_id, key_data
 
-                #else
-
-                me.trigger "KP_DOWNLOADED", key_data
+                else
+                    #linux
+                    me.trigger "KP_DOWNLOADED", key_data
 
                 null
-
 
 
             me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
 
                 instance_id = result.param[4]
-                keypairname = result.param[5]
+                key_data = result.param[5]
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
-                    data = null
+                    key_data = null
                 else
+                    #right
+                    win_passwd = result.resolved_data.passwordData
 
-                    win_passwd = result.resolved_data
-
-                me.trigger "KP_DOWNLOADED", data, win_passwd
+                me.trigger "KP_DOWNLOADED", key_data, win_passwd
 
                 null
 

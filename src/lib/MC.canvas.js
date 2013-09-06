@@ -1429,15 +1429,15 @@ MC.canvas = {
 				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
 
 			if (
+				(
+					node_type === 'AWS.VPC.Subnet' ||
 					(
-						node_type === 'AWS.VPC.Subnet'
-						|| (
-							node_type === 'AWS.AutoScaling.Group'
-							&& group_data.originalId !== ""
-						)
+						node_type === 'AWS.AutoScaling.Group' &&
+						group_data.originalId !== ""
 					)
-					&& group_data.connection.length > 0
 				)
+				&& group_data.connection.length > 0
+			)
 			{
 				$.each(group_data.connection, function (index, data)
 				{
@@ -1846,7 +1846,7 @@ MC.canvas.layout = {
 							{
 								tmp.member.push(v.uid);
 							}
-						})
+						});
 					}
 					if (v.type === "AWS.AutoScaling.LaunchConfiguration")
 					{
@@ -1857,7 +1857,7 @@ MC.canvas.layout = {
 							{
 								tmp.member.push(v.uid);
 							}
-						})
+						});
 					}
 				});
 				MC.canvas_property.sg_list.push(tmp);
@@ -2242,7 +2242,10 @@ MC.canvas.volume = {
 				.css(coordinate)
 				.show();
 
-			MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
+			if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+			{
+				MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
+			}
 		}
 	},
 
@@ -2250,6 +2253,7 @@ MC.canvas.volume = {
 	{
 		var bubble_box = $('#volume-bubble-box'),
 			target_id = $(this).data('target-id'),
+			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
 			bubble_target_id;
 
 		if (!bubble_box[0])
@@ -2274,12 +2278,15 @@ MC.canvas.volume = {
 			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
+					document.getElementById( target_uid )
 				);
 			}
 			else
 			{
-				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+				if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+				{
+					MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+				}
 			}
 		}
 		else
@@ -2291,12 +2298,12 @@ MC.canvas.volume = {
 			if (target_id !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
+					document.getElementById( target_uid )
 				);
 			}
 			else
 			{
-				MC.canvas.select(target_id);
+				MC.canvas.select( target_uid );
 			}
 		}
 
@@ -2351,7 +2358,10 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			bubble_box.remove();
 
-			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			if ($('#' + target_id).prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+			{
+				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			}
 
 			$(document)
 				.off('keyup', MC.canvas.volume.remove)
@@ -2834,7 +2844,7 @@ MC.canvas.eniList = {
 			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
 			{
 				MC.canvas.select( this.id );
-				
+
 				return false;
 			}
 

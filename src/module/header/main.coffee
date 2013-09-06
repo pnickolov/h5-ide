@@ -2,24 +2,31 @@
 #  Controller for header module
 ####################################
 
-define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!./nls/lang.js' ], ( $, template, ide_event, lang ) ->
+define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!./nls/lang.js', 'base_main' ], ( $, template, ide_event, lang, base_main ) ->
 
-    view = null
-
-    #private
-    loadModule = () ->
-
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
+        #
+        view  = null
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="header-tmpl">' + template + '</script>'
 
         #load remote html template
         $( template ).appendTo '#header'
 
-        #load remote module1.js
+    initialize()
+
+    #private
+    loadModule = () ->
+
+        console.log 'load header module'
+
+        #load header module
         require [ './module/header/view', './module/header/model' ], ( View, model ) ->
 
-            #view
-            view       = new View()
+            view = loadSuperModule loadModule, 'header', View, null
+            return if !view
             view.model = model
 
             model.on 'change:user_name', () -> view.render()
@@ -93,6 +100,8 @@ define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!./nls/la
             model.on 'change:has_cred', () ->
                 console.log 'awscredential change'
                 view.render()
+
+            null
 
     unLoadModule = () ->
         #

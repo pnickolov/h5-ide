@@ -126,9 +126,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     view = new CGWView()
 
-    eventTgtMap =
-        "CHANGE_BGP"  : "#property-cgw-bgp"
-        "CHANGE_NAME" : "#property-cgw-name"
-        "CHANGE_IP"   : "#property-cgw-ip"
-
     return view

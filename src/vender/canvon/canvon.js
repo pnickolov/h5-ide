@@ -16,19 +16,6 @@ Canvon.fn = Canvon.prototype = {
 	init: function (selector)
 	{
 		var elem = $(selector);
-
-		// if (typeof selector === 'string')
-		// {
-		// 	elem = document.getElementById( selector );
-		// }
-		// else if (selector instanceof SVGElement)
-		// {
-		// 	elem = selector;
-		// }
-		// else
-		// {
-		// 	return false;
-		// }
 		
 		$.each(Canvon.prototype, function (name, fn)
 		{

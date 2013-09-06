@@ -1824,7 +1824,8 @@ var errortip = function (event)
 
   if (content.length)
   {
-    tipId = 'errortip-' + content.attr('id');
+    id = content.attr('id');
+    tipId = 'errortip-' + id;
 
     if ( $('#' + tipId).length ) return;
 
@@ -1851,19 +1852,18 @@ var errortip = function (event)
 
     }).show();
 
-
-    errortip.timer = setInterval(function ()
+    errortip.timer[ id ] = setInterval(function ()
       {
         if (content.closest('html').length === 0)
         {
-          errortip.clear();
+          errortip.clear( content.attr('id') );
         }
       }, 200);
 
   }
 };
 
-errortip.timer = null;
+errortip.timer = {};
 errortip.firstTimer = {};
 errortip.isEnter = false;
 
@@ -1881,10 +1881,9 @@ errortip.first = function( target ) {
 
 errortip.clear = function ( event )
 {
+  var id, force = false;
   if ( event ){
     var errorPrefix = 'errortip-';
-    var id, force = false;
-
     if ( event === Object( event ) ) {
       id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
     }
@@ -1897,15 +1896,25 @@ errortip.clear = function ( event )
       if ( !errortip.isEnter || force ) {
         $( '#' + errorPrefix + id ).remove();
       }
+      errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
     }, 100);
-    errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
   } else {
     $('.errortip_box').remove();
   }
 
-  clearInterval(errortip.timer);
+  errortip.removeInterval( id )
 
 };
+
+errortip.removeInterval = function ( id ) {
+  if ( id ) {
+    clearInterval( errortip.timer[ id ] );
+  } else {
+    for ( var id in errortip.timer ) {
+      clearInterval( errortip.timer[ id ] );
+    }
+  }
+}
 
 errortip.enter = function ( event ) {
   errortip.isEnter = true;

@@ -384,8 +384,19 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 	resolveGetPasswordDataResult = ( result ) ->
 		#resolve result
 
+		aws_result = null
+
 		#return vo
-		($.xml2json ($.parseXML result[1])).GetPasswordDataResponse
+		data = ($.xml2json($.parseXML(result[1])))["ns0:GetPasswordDataResponse"]
+		if data
+			aws_result = {
+				instanceId   : data["ns0:instanceId"]
+				passwordData : data["ns0:passwordData"]
+				requestId    : data["ns0:requestId"]
+				timestamp    : data["ns0:timestamp"]
+			}
+
+		aws_result
 
 	#private (parser GetPasswordData return)
 	parserGetPasswordDataReturn = ( result, return_code, param ) ->

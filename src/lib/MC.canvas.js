@@ -2750,9 +2750,41 @@ MC.canvas.instanceList = {
 			}
 
 			var target_offset = Canvon('#' + this.id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
+			   	canvas_offset = $('#svg_canvas').offset();
 
-			$('#canvas_container').append( MC.template.instanceList() );
+			var uid     = MC.extractID( this.id ),
+			    layout  = MC.canvas_data.layout.component.node[ uid ];
+
+			var temp_data = {
+				  instances : []
+				, name      : "Server Group List"
+			};
+			var statusMap = {
+					 "pending"       : "orange"
+				 , "stopping"      : "orange"
+				 , "shutting-down" : "orange"
+				 , "running"       : "green"
+				 , "stopped"       : "red"
+				 , "terminated"    : "red"
+			};
+
+			if ( layout ) {
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
+			}
+
+			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				temp_data.name = inst_comp.serverGroupName;
+				temp_data.instances.push( {
+					  status : statusMap[ inst_comp.state ]
+					, id     : inst_comp.uid
+					, volume : inst_comp.resource.BlockDeviceMapping.length
+					, name   : inst_comp.name
+				} );
+			}
+
+			$('#canvas_container').append( MC.template.instanceList( temp_data ) );
 
 			$('#instanceList-wrap')
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)

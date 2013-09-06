@@ -33,6 +33,7 @@ define [ 'event', 'MC',
             me = this
             $('#modal-wrap').on "closed", ()->
                 me.kpModalClosed = true
+                null
 
             kpModalClosed = false
 

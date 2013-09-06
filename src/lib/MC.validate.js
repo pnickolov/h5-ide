@@ -109,7 +109,10 @@ var MC = MC || {};
 	// helper
 
 	MC.validate.preventDupname = function( target, id, name, type ) {
-		target.parsley('custom', function( val ) {
+		$target = target instanceof $ ? target : $( target )
+		if ( arguments.length === 3 ) type = name;
+
+		$target.parsley('custom', function( val ) {
 			if ( val && !MC.validate( 'awsName',  val ) ) {
 				return 'This value should be a valid ' + type + ' name.';
 			}

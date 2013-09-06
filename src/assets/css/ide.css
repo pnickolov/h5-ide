@@ -321,7 +321,7 @@ a {
 	right: 0;
 	top: 4px;
 	margin-right: 0;
-	color: #3781C9;
+	color: #5791CA;
 }
 
 #AWSCredential-setting label {
@@ -331,7 +331,8 @@ a {
 }
 
 #AWSCredential-setting .input {
-	width: 390px;
+	width: 382px;
+	border-radius: 2px;
 	margin-bottom: 10px;
 }
 

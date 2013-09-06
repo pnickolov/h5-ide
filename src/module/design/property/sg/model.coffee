@@ -44,6 +44,17 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                         rule.ip_display = rule.IpRanges
 
+                    if rule.IpProtocol in [-1, '-1']
+
+                        rule.protocol_display = 'all'
+
+                    else if rule.IpProtocol not in ['tcp', 'udp', 'icmp', -1, '-1']
+
+                        rule.protocol_display = "custom(#{rule.IpProtocol})"
+
+                    else
+                        rule.protocol_display = rule.IpProtocol
+
                     null
 
 

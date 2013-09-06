@@ -19,6 +19,11 @@ a {
 	color: #ccc;
 }
 
+/* reset */
+button:focus {
+	outline : none;
+}
+
 #overlayer {
 	width: 100%;
 	height: 100%;

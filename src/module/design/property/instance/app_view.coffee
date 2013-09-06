@@ -3,7 +3,8 @@
 #############################
 
 define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+         'UI.zeroclipboard',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, zeroclipboard ) ->
 
     InstanceAppView = Backbone.View.extend {
 
@@ -12,21 +13,29 @@ define [ 'event', 'MC',
 
         events   :
             "click #property-app-keypair" : "downloadKeypair"
-            "click #property-app-ami"     : "openAmiPanel"
+            "click #property-app-ami" : "openAmiPanel"
 
         template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
+
+        kpModalClosed : false
 
         render     : () ->
             console.log 'property:instance app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
 
+
         downloadKeypair : ( event ) ->
             keypair = $( event.currentTarget ).html()
             this.trigger "REQUEST_KEYPAIR", keypair
 
-            modal MC.template.modalDownloadKP {
-                keypairname : keypair
-            }
+            modal MC.template.modalDownloadKP { name  : keypair }
+
+            me = this
+            $('#modal-wrap').on "closed", ()->
+                me.kpModalClosed = true
+
+            kpModalClosed = false
+
             false
 
         updateKPModal : ( data, option ) ->
@@ -34,28 +43,41 @@ define [ 'event', 'MC',
                 modal.close()
                 return
 
-            $saveBtn = $("#property-app-save-kp")
-            $model   = $saveBtn.closest "#modal-box"
-            $model.find(".modal-body").html("Key pair data is ready. Click save button to download.")
+            if this.kpModalClosed
+                return
 
-            if option.type == 'win'
-            #windows AMI
-                #option.passwd
-                #option.rdp
-
-                #to-do
-
-                $model.find(".model-login-info").html(option.passwd)
+            if option.passwd
+                copybtn = $("#keypair-pwd").val( option.passwd ).siblings("a").attr("data-clipboard-text", option.passwd )
+                zeroclipboard.copy copybtn
             else
-            #linux AMI
-                #option.cmd_line
-                #to-do
+                $("#keypair-login").hide()
+
+            if option.cmd_line
+                copybtn = $("#keypair-cmd").val( option.cmd_line ).siblings("a").attr("data-clipboard-text", option.cmd_line )
+                zeroclipboard.copy copybtn
+            else
+                $("#keypair-remote").hide()
+
+            if option.dns
+                copybtn = $("#keypair-dns").val( option.dns ).siblings("a").attr("data-clipboard-text", option.dns )
+                zeroclipboard.copy copybtn
+
+            if option.rdp
+                $("#keypair-rdp")
+                    .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent( option.rdp ) )
+                    .attr("download", $("#keypair-name").text() + ".rdp" )
+            else
+                $("#keypair-rdp").hide()
 
 
+            $("#keypair-kp")
+                .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
+                .attr("download", $("#keypair-name").text() + ".pem" )
 
-            $saveBtn.removeClass("disabled").addClass("btn-blue")
-                    .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
-                    .attr("download", $("#property-keypair-name").html() + ".pem" )
+            $("#keypair-private-key").val( data )
+
+            $("#keypair-loading").hide()
+            $("#keypair-body-" + option.type ).show()
 
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.target ).data("uid")

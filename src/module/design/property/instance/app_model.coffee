@@ -20,9 +20,8 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
 
         init : ( instance_id )->
 
-
             me = this
-            me.set 'id', instance_id
+
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
                 region_name = result.param[3]
@@ -34,6 +33,19 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 cmd_line    = null
                 login_user  = null
 
+                instance_id      = me.get "instanceId"
+                curr_keypairname = me.get "keyName"
+
+                # The user has closed the dialog
+                # Do nothing
+                if curr_keypairname isnt keypairname
+                    return
+
+                ###
+                # The EC2_KPDOWNLOAD_RETURN event won't fire when the result.is_error
+                # is true. According to bugs in service models.
+                ###
+
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
                     key_data = null
@@ -42,10 +54,10 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                     key_data = result.resolved_data
 
 
-                if MC.data.resource_list[ region_name ][ instance_id ]
-                    image_id = MC.data.resource_list[ region_name ][ instance_id ].imageId
-                    if image_id
-                        os_type = MC.data.dict_ami[ image_id ].osType
+                instance_data = MC.data.resource_list[ region_name ][ instance_id ]
+
+                if instance_data && instance_data.imageId
+                    os_type = MC.data.dict_ami[ instance_data.imageId ].osType
 
                 #get password for windows AMI
                 if os_type == 'win' and key_data
@@ -79,7 +91,6 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
 
                 null
 
-
             me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
 
                 region_name    = result.param[3]
@@ -90,6 +101,15 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 win_passwd     = null
                 rdp            = null
                 public_dns     = null
+
+
+                curr_instance_id = me.get "instanceId"
+
+                # The user has closed the dialog
+                # Do nothing
+                if curr_instance_id isnt instance_id
+                    return
+
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
@@ -118,7 +138,7 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 null
 
 
-
+            @set 'id', instance_id
 
             myInstanceComponent = MC.canvas_data.component[ instance_id ]
 
@@ -201,8 +221,7 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            me = this
-            keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
+            keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
             null
 
 

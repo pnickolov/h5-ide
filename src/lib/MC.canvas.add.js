@@ -455,6 +455,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{
 
+				var defaultVPC = false;
+				if (MC.aws.aws.checkDefaultVPC()) {
+					defaultVPC = true
+				}
+
 				//init layout data
 				component_layout = $.extend(true, {}, MC.canvas.ASG_JSON.layout);
 				component_layout.uid = group.id;
@@ -500,11 +505,6 @@ MC.canvas.add = function (flag, option, coordinate)
 								break;
 						}
 
-						var defaultVPC = false;
-						if (MC.aws.aws.checkDefaultVPC()) {
-							defaultVPC = true
-						}
-
 						if (!defaultVPC) {
 							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
 						}
@@ -548,7 +548,11 @@ MC.canvas.add = function (flag, option, coordinate)
 					//vpc
 					if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC)
 					{
-						component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+						if (!defaultVPC) {
+							component_data.resource.VPCZoneIdentifier = '@' + option.group.subnetUId + '.resource.SubnetId';
+						} else {
+							component_data.resource.VPCZoneIdentifier = '';
+						}
 					}
 				}
 			}

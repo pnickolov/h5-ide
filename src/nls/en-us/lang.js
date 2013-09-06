@@ -60,7 +60,7 @@ define({
 		'RES_LBL_QUICK_START_AMI'     : 'Quick Start Images',
 		'RES_LBL_MY_AMI'              : 'My Images',
 		'RES_LBL_FAVORITE_AMI'        : 'Favorite Images',
-		'RES_LBL_NEW_VOL'             : 'Volume',
+		'RES_LBL_NEW_VOL'             : 'New Volume',
 		'RES_LBL_NEW_ELB'             : 'Load Balancer',
 		'RES_LBL_NEW_ASG'             : 'Auto Scaling Group',
 		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',

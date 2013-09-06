@@ -1714,6 +1714,7 @@ textarea {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 8px;
 	font-size: 12px;
+	position: relative;
 }
 
 .property-content .selectbox .dropdown .item:hover,

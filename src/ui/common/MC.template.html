@@ -1127,10 +1127,10 @@ Additional Notes and Questions
 	<ul id="instanceList" class="clearfix">
     {{#each instances}}
     <li>
-      <a href="#" class="instanceList-item" id="{{id}}">
+      <a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
         <i class="instanceList-item-status status status-{{status}}"></i>
         <span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-        <div class="instanceList-item-volume" data-target-id="{{id}}">
+        <div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
           <span class="instanceList-item-number">{{volume}}</span>
         </div>
         <span class="instanceList-item-label">{{name}}</span>
@@ -1143,37 +1143,18 @@ Additional Notes and Questions
 <!-- eniList -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
-		<span id="eniList-title">ENI List</span>
+		<span id="eniList-title">{{name}}</span>
 		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
 	</div>
 	<ul id="eniList" class="clearfix">
+    {{#each enis}}
 		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status on"></i>
-				<span class="eniList-item-label">id</span>
+			<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+				<i class="eniList-item-eip-status{{#if eip}} on{{/if}}"></i>
+				<span class="eniList-item-label">{{name}}</span>
 			</a>
 		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status on"></i>
-				<span class="eniList-item-label">id 2</span>
-			</a>
-		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status"></i>
-				<span class="eniList-item-label">id 3</span>
-			</a>
-		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status"></i>
-				<span class="eniList-item-label">id 4</span>
-			</a>
-		</li>
+    {{/each}}
 	</ul>
 </div>
 

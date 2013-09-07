@@ -178,7 +178,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
                     asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
                     asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
-                    instance_memeber = if asg_res then asg_res.Instances.member else null
+                    instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
 
                     #find instance in ASG
                     if instance_memeber

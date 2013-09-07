@@ -273,7 +273,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if not _.size data
                 return
             region = result.param[ 3 ]
-
             if region is null
                 # update regionlist for optimize network
                 @cacheResource 'raw', data

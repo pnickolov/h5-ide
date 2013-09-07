@@ -9,8 +9,6 @@ define [ 'MC' ], ( MC) ->
 
 		osType = 'linux-other'
 
-		found  = []
-
 		if  ami.platform and ami.platform == 'windows'
 
 			found.push 'win'
@@ -28,10 +26,10 @@ define [ 'MC' ], ( MC) ->
 			if found.length == 0
 				found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
 
-		if found.length == 0
-			osType = 'unknown'
-		else
-			osType = found[0]
+			if found.length == 0
+				osType = 'unknown'
+			else
+				osType = found[0]
 
 		osType
 

@@ -705,6 +705,10 @@
 	display: none;
 }
 
+.canvas_state_app .asg-resource-dragger {
+	cursor: default;
+}
+
 .canvas_zoomed .resizer-wrap {
 	/*display: none;*/
 }

@@ -13,7 +13,7 @@ define [ 'MC' ], ( MC) ->
 
 		if  ami.platform and ami.platform == 'windows'
 
-			osType = 'win'
+			found.push 'win'
 
 		else
 

@@ -2161,7 +2161,8 @@ MC.canvas.volume = {
 				canvas_container = $('#canvas_container'),
 				canvas_offset = canvas_container.offset(),
 				component_data = MC.canvas.data.get('component'),
-				target_data = component_data[ node.id ],
+				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
+				target_data = component_data[ node_uid ],
 				node_volume_data = target_data.resource.BlockDeviceMapping,
 				data = {'list': []},
 				coordinate = {},
@@ -2179,7 +2180,7 @@ MC.canvas.volume = {
 			{
 				$.each(node_volume_data, function (index, item)
 				{
-					volume_id = node.id + '_volume_' + item.DeviceName.replace('/dev/', '');
+					volume_id = node_uid + '_volume_' + item.DeviceName.replace('/dev/', '');
 
 					data.list.push({
 						'volume_id': volume_id,
@@ -2187,7 +2188,7 @@ MC.canvas.volume = {
 						'size': item.Ebs.VolumeSize,
 						'snapshotId': item.Ebs.SnapshotId,
 						'json': JSON.stringify({
-							'instance_id': node.id,
+							'instance_id': node_uid,
 							'id': volume_id,
 							'name': item.DeviceName,
 							'snapshotId': item.Ebs.SnapshotId,
@@ -2209,7 +2210,7 @@ MC.canvas.volume = {
 						'size': volume_data.resource.Size,
 						'snapshotId': volume_data.resource.SnapshotId,
 						'json': JSON.stringify({
-							'instance_id': node.id,
+							'instance_id': node_uid,
 							'id': volume_id,
 							'name': volume_data.name,
 							'snapshotId': volume_data.resource.SnapshotId,
@@ -2238,7 +2239,7 @@ MC.canvas.volume = {
 			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
 
 			bubble_box
-				.data('target-id', node.id)
+				.data('target-id', node_uid)
 				.css(coordinate)
 				.show();
 
@@ -2275,15 +2276,15 @@ MC.canvas.volume = {
 				}
 			}
 
-			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
+			if (MC.canvas.data.get('component.' + target_uid  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_uid )
+					document.getElementById( target_id )
 				);
 			}
 			else
 			{
-				if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+				if ($('#' + target_id ).prop('namespaceURI') === 'http://www.w3.org/2000/svg')
 				{
 					MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
 				}
@@ -2692,9 +2693,12 @@ MC.canvas.asgList = {
 			};
 
 			var temp_data = {
-				name: lc_comp.name,
-				instances: []
+				name      : lc_comp.name,
+				instances : []
 			};
+
+			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
+			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
 
 			if ( layout ) {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
@@ -2811,7 +2815,7 @@ MC.canvas.instanceList = {
 
 			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
 		}
-		
+
 		return false;
 	},
 
@@ -2856,6 +2860,27 @@ MC.canvas.eniList = {
 
 			var target_offset = Canvon('#' + this.id).offset(),
 				canvas_offset = $('#svg_canvas').offset();
+
+
+			var uid     = MC.extractID( this.id ),
+			    layout  = MC.canvas_data.layout.component.node[ uid ];
+
+			var temp_data = {
+				  instances : []
+				, name      : "Server Group Eni List"
+			};
+
+			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				temp_data.name = inst_comp.serverGroupName;
+				temp_data.instances.push( {
+					  status : statusMap[ inst_comp.state ]
+					, id     : inst_comp.uid
+					, volume : inst_comp.resource.BlockDeviceMapping.length
+					, name   : inst_comp.name
+				} );
+			}
 
 			$('#canvas_container').append( MC.template.eniList() );
 

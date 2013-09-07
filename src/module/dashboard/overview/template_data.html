@@ -128,7 +128,7 @@
             </li>
         {{/with}}
 
-        {{#with global_list.DescribeLoadBalancers}}
+        {{#with global_list.DescribeVpnConnections}}
             <li id="global-region-resource-vpn"> <div class="global-region-resource-header"> <h5>VPN</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
@@ -172,7 +172,7 @@
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">Stack</span>
-                    <button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard btn-primary" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack">+</button>
+                    <button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard btn-primary" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"><i class="icon-new-stack"></i></button>
                 </a>
             </li>
         </ul>
@@ -242,8 +242,8 @@
                         </li>
                     {{else}}
                         <div class="blank-widget">
-                            There is no stack in this region yet.<br />Create a new stack from the top left button.
-                           <!--  <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute"> -->
+                            There is no stack in this region yet.<br />Create a new stack from here.
+                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
                         </div>
                     {{/each}}
 

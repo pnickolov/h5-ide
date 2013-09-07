@@ -107,7 +107,7 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
                 #MC.data.untitled ++
-                MC.data.untitled = MC.data.untitled + 1
+                #MC.data.untitled = MC.data.untitled + 1
                 #
                 modal.close()
 

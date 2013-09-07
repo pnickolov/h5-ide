@@ -2,7 +2,7 @@
 #  Controller for base_main
 ####################################
 
-define [ 'jquery', 'underscore', 'UI.notification' ], ( $, _ ) ->
+define [ 'jquery', 'underscore', 'i18n!../../nls/lang.js', 'UI.notification' ], ( $, _, lang ) ->
 
     #error_repeat = 0
     error_repeat = {}
@@ -35,12 +35,12 @@ define [ 'jquery', 'underscore', 'UI.notification' ], ( $, _ ) ->
             console.log error
             error_repeat[ type ] = error_repeat[ type ] + 1
             if error_repeat[ type ] < 4
-                notification 'warning', "Load #{ type } module failed, reload after 5 seconds.", true
+                notification 'warning', lang.ide.MODULE_RELOAD_MESSAGE, false
                 _.delay () ->
                     target()
                 , 5 * 1000
             else
-                notification 'error', "Network problems have happened, #{ type } module Load failed.", true
+                notification 'error', lang.ide.MODULE_RELOAD_FAILED, true
             return null
 
         null

@@ -942,7 +942,7 @@ Additional Notes and Questions
     </section>
 
     <section id="keypair-body-linux" class="hide">
-      <p>Key pair data is ready <a href="#" class="btn btn-blue" id="keypair-kp">Download</a></p>
+      <p>Key pair data is ready <a href="#" class="btn btn-blue" id="keypair-kp-linux">Download</a></p>
       <div id="keypair-remote">
         <p>Remote access</p>
         <p>
@@ -955,10 +955,10 @@ Additional Notes and Questions
     <section id="keypair-body-win" class="hide">
       <p>Remote access</p>
       <p>Private key</p>
-      <textarea id="keypair-private-key"></textarea>
+      <textarea id="keypair-private-key" readonly="readonly"></textarea>
       <p>
         <a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
-        <a href="#" id="keypair-kp" class="btn btn-blue">Download Key Pair</a>
+        <a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
       </p>
       <div id="keypair-login">
         <p>Windows Login Password</p>
@@ -967,11 +967,13 @@ Additional Notes and Questions
           <a href="#" class="icon-copy btn btn-silver" title="Login password">Copy</a>
         </p>
       </div>
-      <p>Public DNS</p>
-      <p>
-        <input type="text" disabled="disabled" id="keypair-dns">
-        <a href="#" class="icon-copy btn btn-silver" title="Public DNS">Copy</a>
-      </p>
+      <div id="#keypair-public">
+        <p>Public DNS</p>
+        <p>
+          <input type="text" disabled="disabled" id="keypair-dns">
+          <a href="#" class="icon-copy btn btn-silver" title="Public DNS">Copy</a>
+        </p>
+      </div>
     </section>
   </div>
 
@@ -1103,11 +1105,11 @@ Additional Notes and Questions
 	<ul id="asgList" class="clearfix">
     {{#each instances}}
       <li>
-        <a href="#" class="asgList-item" id="{{id}}">
+        <a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
           <i class="asgList-item-status status status-{{status}}"></i>
           <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
           <div class="asgList-item-volume" data-target-id={{id}}>
-            <span class="asgList-item-number">{{volume}}</span>
+            <span class="asgList-item-number">{{../volume}}</span>
           </div>
           <span class="asgList-item-label">{{id}}</span>
         </a>
@@ -1125,10 +1127,10 @@ Additional Notes and Questions
 	<ul id="instanceList" class="clearfix">
     {{#each instances}}
     <li>
-      <a href="#" class="instanceList-item" id="{{id}}">
+      <a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
         <i class="instanceList-item-status status status-{{status}}"></i>
         <span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-        <div class="instanceList-item-volume" data-target-id="{{id}}">
+        <div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
           <span class="instanceList-item-number">{{volume}}</span>
         </div>
         <span class="instanceList-item-label">{{name}}</span>
@@ -1141,37 +1143,18 @@ Additional Notes and Questions
 <!-- eniList -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
-		<span id="eniList-title">ENI List</span>
+		<span id="eniList-title">{{name}}</span>
 		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
 	</div>
 	<ul id="eniList" class="clearfix">
+    {{#each enis}}
 		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status on"></i>
-				<span class="eniList-item-label">id</span>
+			<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+				<i class="eniList-item-eip-status{{#if eip}} on{{/if}}"></i>
+				<span class="eniList-item-label">{{name}}</span>
 			</a>
 		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status on"></i>
-				<span class="eniList-item-label">id 2</span>
-			</a>
-		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status"></i>
-				<span class="eniList-item-label">id 3</span>
-			</a>
-		</li>
-
-		<li>
-			<a href="#" class="eniList-item" data-id="xxxxxx">
-				<i class="eniList-item-eip-status"></i>
-				<span class="eniList-item-label">id 4</span>
-			</a>
-		</li>
+    {{/each}}
 	</ul>
 </div>
 

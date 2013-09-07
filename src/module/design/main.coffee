@@ -91,6 +91,9 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                 console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
                 model.getAppResourcesService region_name, app_id
 
+                # update app data from mongo
+                model.updateAppTab region_name, app_id
+
                 null
     #private
     unLoadModule = () ->

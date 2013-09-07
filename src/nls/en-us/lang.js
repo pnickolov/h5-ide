@@ -189,10 +189,10 @@ define({
 
 
 		//toolbar handler
-		'TOOL_MSG_INFO_REQ_SUCCESS'				: 'Sending request to %s %s...',
-		'TOOL_MSG_ERR_REQ_FAILED'				: 'Sending request to %s %s failed.',
-		'TOOL_MSG_INFO_HDL_SUCCESS'				: '%s %s successfully.',
-		'TOOL_MSG_ERR_HDL_FAILED'				: '%s %s failed.',
+		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
+		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
+		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
+		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
 
 
 		/******property module******/
@@ -239,10 +239,16 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** credential module ******/
-		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID'		: 'Invalid accout id',
-		'HEAD_MSG_ERR_INVALID_ACCESS_KEY'		: 'Invalid access key',
-		'HEAD_MSG_ERR_INVALID_SECRET_KEY'		: 'Invalid secret key'
+		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
+		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
+		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** base_main.cofffee for module(x) ******/
+		'MODULE_RELOAD_MESSAGE'           : 'Sorry, there is some connectivity issue, IDE is trying to reload',
+		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser'
+		// Add new strings below this comment. Move above once English has been confirmed
+
 
 	},
 	'service' : {

@@ -156,7 +156,7 @@ define [ 'i18n!../../../nls/lang.js',
                         _.map result.resolved_data.item, (value)->
                             #cache my ami item to MC.data.dict_ami
                             value.instanceType = me._getInstanceType value
-                            value.osType = me._getOSType value
+                            value.osType = MC.aws.ami.getOSType value
                             MC.data.dict_ami[value.imageId] = value
                             null
 
@@ -301,6 +301,8 @@ define [ 'i18n!../../../nls/lang.js',
                         $.each result.resolved_data, (idx, value) ->
 
                             MC.data.account_attribute[region_name].default_subnet[value.availabilityZone] = value
+
+                            MC.data.resource_list[region_name][value.subnetId] = value
 
                             null
 
@@ -615,37 +617,7 @@ define [ 'i18n!../../../nls/lang.js',
 
             instance_type.join ', '
 
-        _getOSType : ( ami ) ->
 
-            #return osType by ami.name | ami.description | ami.imageLocation
-
-            osTypeList = ['centos', 'redhat', 'redhat', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensus', 'suse','amazon', 'amazon']
-
-            osType = 'linux-other'
-
-            if  ami.platform and ami.platform == 'windows'
-
-                osType = 'win'
-
-            else
-
-                #check ami.name
-                found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
-
-                #check ami.description
-                if found.length == 0
-                    found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
-
-                #check ami.imageLocation
-                if found.length == 0
-                    found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
-
-            if found.length == 0
-                osType = 'unknown'
-            else
-                osType = found[0]
-
-            osType
 
         _checkRequireServiceCount : ( name ) ->
             console.log '_checkRequireServiceCount, name = ' + name

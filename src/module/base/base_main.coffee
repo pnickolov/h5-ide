@@ -35,12 +35,12 @@ define [ 'jquery', 'underscore', 'i18n!../../nls/lang.js', 'UI.notification' ], 
             console.log error
             error_repeat[ type ] = error_repeat[ type ] + 1
             if error_repeat[ type ] < 4
-                notification 'warning', sprintf( lang.ide.MODULE_RELOAD_MESSAGE, type ), false
+                notification 'warning', lang.ide.MODULE_RELOAD_MESSAGE, false
                 _.delay () ->
                     target()
                 , 5 * 1000
             else
-                notification 'error', sprintf( lang.ide.MODULE_RELOAD_FAILED, type ), true
+                notification 'error', lang.ide.MODULE_RELOAD_FAILED, true
             return null
 
         null

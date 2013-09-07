@@ -245,8 +245,10 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/
-		'MODULE_RELOAD_MESSAGE'           : 'Load %s module failed, reload after 5 seconds.',
-		'MODULE_RELOAD_FAILED'            : 'Network problems have happened, %s module Load failed.'
+		'MODULE_RELOAD_MESSAGE'           : 'Sorry, there is some connectivity issue, IDE is trying to reload',
+		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser'
+		// Add new strings below this comment. Move above once English has been confirmed
+
 
 	},
 	'service' : {

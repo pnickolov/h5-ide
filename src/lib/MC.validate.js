@@ -123,20 +123,35 @@ var MC = MC || {};
 	};
 
 	MC.validate.portRange = function ( value ) {
-		if (value.indexOf('-') !== -1) {
-			if (isNaN(Number(value))) {
+		var portAry = []
+		if (value.indexOf('-') === -1) {
+			if (!value || isNaN(Number(value))) {
 				return false;
 			}
+			portAry[0] = Number(value);
 		} else {
-			valueAry = value.split('-')
-			if (valueAry.length !== 2) {
+			valueAry = value.split('-');
+			if (valueAry.length !== 2 || !valueAry[0] || !valueAry[1]) {
 				return false;
 			}
 			if (isNaN(Number(valueAry[0])) || isNaN(Number(valueAry[1]))) {
 				return false;
 			}
+			portAry[0] = Number(valueAry[0]);
+			portAry[1] = Number(valueAry[1]);
 		}
-		return true;
+		return portAry;
+	};
+
+	MC.validate.port = function ( value ) {
+		var portValue = null
+
+		if (!value || isNaN(Number(value))) {
+			return false;
+		}
+
+		portValue = Number(value);
+		return portValue;
 	};
 
 })( MC );

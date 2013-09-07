@@ -141,64 +141,36 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 				sg_descrition = descrition_dom.html()
 
 			# validation #####################################################
+			validateMap =
+				'custom':
+					dom: custom_protocal_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of number.'
+						null
+				'tcp':
+					dom: tcp_port_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of port range.'
+						null
+				'udp':
+					dom: udp_port_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of port range.'
+						null
 
-			descrition_dom.parsley('removeConstraint', 'required')
-
-			tcp_port_dom.parsley('removeConstraint', 'required')
-
-			udp_port_dom.parsley('removeConstraint', 'required')
-
-			custom_protocal_dom.parsley('removeConstraint', 'required')
-
-			descrition_dom.parsley('addConstraint', {
-				required: true
-			})
-
-			tcp_port_dom.parsley('addConstraint', {
-				required: true
-			})
-
-			udp_port_dom.parsley('addConstraint', {
-				required: true
-			})
-
-			custom_protocal_dom.parsley('addConstraint', {
-				required: true
-			})
-
-			if protocol_type is 'icmp'
-				tcp_port_dom.parsley('removeConstraint', 'required')
-				udp_port_dom.parsley('removeConstraint', 'required')
-				custom_protocal_dom.parsley('removeConstraint', 'required')
-
-			else if protocol_type is 'custom'
-				tcp_port_dom.parsley('removeConstraint', 'required')
-				udp_port_dom.parsley('removeConstraint', 'required')
-				custom_protocal_dom.parsley 'custom', ( val ) ->
-					if !MC.validate.portRange(val)
-						return 'Must be a valid format of number.'
-					null
-			else if protocol_type is 'tcp'
-				custom_protocal_dom.parsley('removeConstraint', 'required')
-				udp_port_dom.parsley('removeConstraint', 'required')
-				tcp_port_dom.parsley 'custom', ( val ) ->
-					if !MC.validate.portRange(val)
-						return 'Must be a valid format of port range.'
-					null
-			else if protocol_type is 'udp'
-				custom_protocal_dom.parsley('removeConstraint', 'required')
-				tcp_port_dom.parsley('removeConstraint', 'required')
-				udp_port_dom.parsley 'custom', ( val ) ->
-					if !MC.validate.portRange(val)
-						return 'Must be a valid format of port range.'
-					null
+			if protocol_type of validateMap
+				needValidate = validateMap[ protocol_type ]
+				needValidate.dom.parsley 'custom', needValidate.method
 
 			descrition_dom.parsley 'custom', ( val ) ->
 				if !MC.validate 'cidr', val
 					return 'Must be a valid form of CIDR block.'
 				null
 
-			if !descrition_dom.parsley 'validateForm'
+			if (not descrition_dom.parsley 'validate') or (needValidate and not needValidate.dom.parsley 'validate')
 				return
 			# validation #####################################################
 

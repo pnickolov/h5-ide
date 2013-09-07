@@ -214,7 +214,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         if resources.DescribeImages
             _.map resources.DescribeImages, ( res, i ) ->
                 if !MC.data.dict_ami[res.imageId]
+                    if !res.osType
+                      res = $.extend true, {}, res
+                      res.osType = MC.aws.ami.getOSType res
+
                     MC.data.dict_ami[res.imageId] = res
+
                 #MC.data.resource_list[region][res.imageId] = res
                 null
 

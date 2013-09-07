@@ -83,7 +83,7 @@ define [ 'jquery',
 
             # added by song
             model.clear({silent: true})
-            
+
              #
             if current_view then view.delegateEvents view.events
 
@@ -97,6 +97,10 @@ define [ 'jquery',
             model.set 'type', 'app'
 
             model.getAppLaunch uid
+
+            model.on "KP_DOWNLOADED", (data, option)-> view.updateKPModal(data, option)
+            view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
+
             #view
             view.model    = model
             view.render()

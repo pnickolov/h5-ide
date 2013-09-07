@@ -345,8 +345,8 @@
                     <table class="table-head">
                         <thead>
                             <tr>
-                                <th class="sortable" style="width: 30%">Instance Name/ID</th>
-                                <th class="sortable" style="width: 12%">Status</th>
+                                <th class="sortable" style="width: 25%">Instance Name/ID</th>
+                                <th class="sortable" style="width: 17%">Status</th>
                                 <th class="sortable" style="width: 20%">Launch Time</th>
                                 <th class="sortable" style="width: 15%">AMI</th>
                                 <th class="sortable" style="width: 15%">Availability Zone</th>
@@ -360,8 +360,8 @@
                             <table class="table" id="DescribeInstances">
                                 <thead>
                                     <tr>
-                                        <th style="width: 30%"><span class="th-inner"></span></th>
-                                        <th style="width: 12%"><span class="th-inner"></span></th>
+                                        <th style="width: 25%"><span class="th-inner"></span></th>
+                                        <th style="width: 17%"><span class="th-inner"></span></th>
                                         <th style="width: 20%"><span class="th-inner"></span></th>
                                         <th style="width: 15%"><span class="th-inner"></span></th>
                                         <th style="width: 15%"><span class="th-inner"></span></th>
@@ -371,17 +371,21 @@
                                 {{#each DescribeInstances }}
                                     <tr>
                                         <td>
-                                            {{#if app}}
-                                                {{#if owner}}
-                                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                            <div>
+                                                {{#if app}}
+                                                    {{#if owner}}
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                    {{else}}
+                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    {{/if}}
                                                 {{else}}
-                                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
                                                 {{/if}}
-                                            {{else}}
-                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                            {{/if}}
-                                            {{ host }}
-                                            <span class="resource-id">( {{ instanceId }} )</span>
+                                            </div>
+                                            <div>
+                                                {{ host }}
+                                                <span class="resource-id">( {{ instanceId }} )</span>
+                                            </div>
                                         </td>
                                         <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
                                         <td>{{ launchTime }}</td>
@@ -433,7 +437,7 @@
                                 </tr>
                                 {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no eip in this region.</p>
+                                        <p>There is no Elastic IP in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -448,9 +452,9 @@
                     <table class="table-head">
                         <thead>
                             <tr>
-                                <th class="sortable" style="width:20%">Name/ID</th>
-                                <th class="sortable" style="width:15%">Status</th>
-                                <th class="sortable" style="width:20%">Create Time</th>
+                                <th class="sortable" style="width:16%">Name/ID</th>
+                                <th class="sortable" style="width:18%">Status</th>
+                                <th class="sortable" style="width:21%">Create Time</th>
                                 <th class="sortable" style="width:15%">Device Name</th>
                                 <th class="sortable" style="width:15%">Attachment Status</th>
                                 <th style="width:15%">Detail</th>
@@ -463,9 +467,9 @@
                             <table class="table" id="DescribeVolumes">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
+                                        <th style="width: 16%"><span class="th-inner"></span></th>
+                                        <th style="width: 18%"><span class="th-inner"></span></th>
+                                        <th style="width: 21%"><span class="th-inner"></span></th>
                                         <th style="width: 15%"><span class="th-inner"></span></th>
                                         <th style="width: 15%"><span class="th-inner"></span></th>
                                         <th style="width: 15%"><span class="th-inner"></span></th>
@@ -474,6 +478,7 @@
                                 {{#each DescribeVolumes }}
                                 <tr>
                                     <td>
+                                        <div>
                                         {{#if app}}
                                             {{#if owner}}
                                                 <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
@@ -483,7 +488,10 @@
                                         {{else}}
                                             <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
                                         {{/if}}
+                                        </div>
+                                        <div>
                                         {{ volumeId }}
+                                        </div>
                                     </td>
                                     <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
                                     <td>{{ createTime }}</td>
@@ -532,6 +540,7 @@
                                 {{#each DescribeVpcs }}
                                 <tr>
                                     <td>
+                                        <div>
                                         {{#if app}}
                                             {{#if owner}}
                                                 <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
@@ -541,7 +550,10 @@
                                         {{else}}
                                             <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
                                         {{/if}}
+                                        </div>
+                                        <div>
                                         {{ vpcId }}
+                                        </div>
                                     </td>
                                     <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
                                     <td>{{ cidrBlock }}</td>
@@ -554,7 +566,7 @@
                                 </tr>
                                 {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no vpc in this region.</p>
+                                        <p>There is no VPC in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -594,16 +606,20 @@
                                 {{#each DescribeVpnConnections }}
                                     <tr>
                                         <td>
-                                            {{#if app}}
-                                                {{#if owner}}
-                                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                            <div>
+                                                {{#if app}}
+                                                    {{#if owner}}
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                    {{else}}
+                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    {{/if}}
                                                 {{else}}
-                                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
                                                 {{/if}}
-                                            {{else}}
-                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                            {{/if}}
-                                            {{ vpnConnectionId }}
+                                            </div>
+                                            <div>
+                                                {{ vpnConnectionId }}
+                                            </div>
                                         </td>
                                         <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
                                         <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
@@ -612,7 +628,7 @@
                                     </tr>
                                 {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no vpn in this region.</p>
+                                        <p>There is no VPN in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -659,7 +675,7 @@
                                     </tr>
                                 {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no elb in this region.</p>
+                                        <p>There is no Load Balancer in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -696,16 +712,20 @@
                                 {{#each DescribeAutoScalingGroups}}
                                     <tr>
                                         <td>
-                                        {{#if app}}
-                                            {{#if owner}}
-                                                <a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
-                                            {{else}}
-                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
-                                            {{/if}}
-                                        {{else}}
-                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
-                                        {{/if}}
-                                        {{AutoScalingGroupName}}
+                                            <div>
+                                                {{#if app}}
+                                                    {{#if owner}}
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
+                                                    {{else}}
+                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    {{/if}}
+                                                {{else}}
+                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
+                                                {{/if}}
+                                            </div>
+                                            <div>
+                                                {{AutoScalingGroupName}}
+                                            </div>
                                         </td>
                                         <td>{{last_activity}}</td>
                                         <td>{{activity_state}}</td>
@@ -714,7 +734,7 @@
                                 {{else}}
                                     <!-- Blank Slate -->
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no auto scaling group in this region.</p>
+                                        <p>There is no Auto Scaling Group in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -763,7 +783,7 @@
                                 {{else}}
                                     <!-- Blank Slate -->
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no auto scaling group in this region.</p>
+                                        <p>There is no CloudWatch Alarm in this region.</p>
                                     </div>
                                 {{/each}}
 
@@ -808,7 +828,7 @@
                                 {{else}}
                                     <!-- Blank Slate -->
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no auto scaling group in this region.</p>
+                                        <p>There is no SNS Subscription in this region.</p>
                                     </div>
 
                                 {{/each}}

@@ -1373,7 +1373,7 @@ button:focus {
 	background-position: -330px 0;
 }
 
-#global-resource-icon-cw {
+#global-resource-icon-cwa {
 	background-position: -385px 0;
 }
 
@@ -1548,6 +1548,7 @@ button:focus {
 	border-radius: 5px 5px 0 0;
 	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
+	background-color: #55626e;
 }
 
 .region-resource-thumbnail.app-thumbnail {
@@ -1680,12 +1681,12 @@ button:focus {
 
 .region-resource-count {
 	border-radius: 4px;
-	padding: 3px 8px;
+	padding: 2px 6px;
 	background: #F0F0F3;
 	color: #5382E5;
-	top: 12px;
+	top: 8px;
 	position: absolute;
-	font-size: 16px;
+	font-size: 14px;
 	right: 40px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
 	border: 1px solid #C9CFD6;
@@ -1702,6 +1703,10 @@ button:focus {
 
 #region-aws-resource-data {
 	/*height: 340px;*/
+}
+
+#region-aws-resource-data .table td {
+	vertical-align: middle;
 }
 
 #region-aws-resource-data .table-head-fix {
@@ -5412,7 +5417,7 @@ a.action-link:hover {
 }
 
 .property-app ::selection {
-	background: #888;
+	background: #3781C9;
 	color: #fcfcfc;
 }
 

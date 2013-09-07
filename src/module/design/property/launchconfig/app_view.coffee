@@ -68,7 +68,7 @@ define [ 'event', 'MC',
                 $("#keypair-rdp").hide()
 
 
-            $("#keypair-kp")
+            $("#keypair-kp-" + option.type )
                 .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
                 .attr("download", $("#keypair-name").text() + ".pem" )
 

@@ -937,42 +937,40 @@ Additional Notes and Questions
     <i class="modal-close">&times;</i>
   </div>
   <div class="modal-body">
-    <section id='keypair-loading'>
-      <i class="loading-spinner"></i>
+    <section id='keypair-loading' class="tac">
+      <img width="31" height="34" src="./assets/images/ide/loading-logo-white.gif"/>
     </section>
 
     <section id="keypair-body-linux" class="hide">
-      <p>Key pair data is ready <a href="#" class="btn btn-blue" id="keypair-kp-linux">Download</a></p>
-      <div id="keypair-remote">
-        <p>Remote access</p>
-        <p>
-          <input id="keypair-cmd" type="text" disabled="disabled">
-          <a href="#" class="icon-copy btn btn-silver" title="Remote access comand line">Copy</a>
-        </p>
+      <div class="keypair-download clearfix modal-control-group">
+      	<p class="modal-text-major left">Key Pair data is ready</p>
+      	 <a href="#" class="btn btn-blue right" id="keypair-kp-linux">Download</a>
+  	  </div>
+      <div id="keypair-remote" class="modal-control-group clearfix">
+        <label for="keypair-cmd">Remote Access</label>
+	    <input class="input" id="keypair-cmd" type="text" disabled="disabled">
+	    <a href="#" class="icon-copy kp-copy-btn btn btn-silver right" title="Copy remote access command line"></i> Copy</a>
       </div>
 
     </section>
     <section id="keypair-body-win" class="hide">
-      <p>Remote access</p>
-      <p>Private key</p>
-      <textarea id="keypair-private-key" readonly="readonly"></textarea>
-      <p>
-        <a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
-        <a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
-      </p>
-      <div id="keypair-login">
-        <p>Windows Login Password</p>
-        <p>
-          <input type="password" disabled="disabled" id="keypair-pwd">
-          <a href="#" class="icon-copy btn btn-silver" title="Login password">Copy</a>
-        </p>
+    	<div class="modal-control-group">
+    		<h4>Remote Access</h4>
+    		<label for="keypair-private-key">Private Key</label>
+    		<textarea id="keypair-private-key" readonly="readonly"></textarea>
+    		<a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
+	        <a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
+    	</div>
+
+      <div id="keypair-login" class="modal-control-group clearfix">
+        <label for="keypair-pw" style="width:200px;">Windows Login Password</label>
+          <input type="password" disabled="disabled" id="keypair-pwd" class="input">
+          <a href="#" class="icon-copy btn btn-silver right kp-copy-btn" title="Login password">Copy</a>
       </div>
-      <div id="#keypair-public">
-        <p>Public DNS</p>
-        <p>
-          <input type="text" disabled="disabled" id="keypair-dns">
-          <a href="#" class="icon-copy btn btn-silver" title="Public DNS">Copy</a>
-        </p>
+      <div id="keypair-public" class="modal-control-group clearfix">
+        <label for="keypair-dns">Public DNS</label>
+        <input type="text" disabled="disabled" id="keypair-dns" class="input">
+        <a href="#" class="icon-copy btn btn-silver kp-copy-btn right" title="Public DNS">Copy</a>
       </div>
     </section>
   </div>

@@ -484,7 +484,6 @@ button:focus {
 	font-size: 12px;
 	color: #999;
 	display: block;
-	margin-left: 29px;
 }
 
 .icon-nav-label {
@@ -2431,21 +2430,19 @@ button:focus {
 	background: #fff;
 }
 
-.btn.btn-region-dashboard {
-	font-size: 18px;
-	float: right;
-	box-shadow: none;
-	/*border: none;*/
-	padding: 8px 0;
-	width: 40px;
-	height: 36px;
-	/*margin: auto 5px;*/
-	text-shadow: none;
-	line-height: 12px;
+#btn-create-stack {
+	border: none;
+	background: none;
 	position: absolute;
-	right: 4px;
-	top: 4px;
-	color: #f0f0f0;
+	right: 10px;
+	top: 50%;
+	margin-top: -8px;
+	color: #999;
+	cursor: pointer;
+}
+
+#btn-create-stack:hover {
+	color: #b25b91;
 }
 
 .thumbnail-container {
@@ -5442,7 +5439,7 @@ a.action-link:hover {
 	color: #fcfcfc;
 }
 
-.icon-copy {
+.property-app .icon-copy {
 	position   : absolute;
 	right      : -2px;
 	top        : 2px;
@@ -5451,9 +5448,28 @@ a.action-link:hover {
 	cursor     : pointer;
 }
 
-/*.property-app .property-control-group {
-	padding: 2px 0;
-}*/
+.btn.kp-copy-btn {
+	width   : 80px;
+	padding : 9px 0;
+}
+
+#keypair-loading {
+	padding: 40px 0;
+}
+
+#keypair-cmd {
+	width: 240px;
+}
+
+#keypair-private-key {
+	width: 340px;
+	font-size: 12px;
+}
+
+#keypair-kp-win {
+	width: 140px;
+	margin-left: 10px;
+}
 
 .hidden-details > .dl-vertical {
 	display : none;

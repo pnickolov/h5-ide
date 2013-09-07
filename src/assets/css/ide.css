@@ -5048,6 +5048,11 @@ a.action-link:hover {
 	display: block;
 }
 
+#acl-add-model-source-select .selection {
+	width: 68px;
+	margin-right: 7px;
+}
+
 /*.stack-property-acl-list .property-item {
 	height: 30px;
 }*/

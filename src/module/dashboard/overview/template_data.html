@@ -187,6 +187,27 @@
                 <ul class="clearfix">
 
                     {{#each cur_app_list}}
+                        {{#if ispending}}
+                        <li>
+                            <a href="javascript:void(0)" class="region-resource-list-item">
+                                <div class="region-resource-thumbnail app-thumbnail disabled">
+                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                </div>
+                                <div class="region-resource-info">
+                                    <span class="region-resource-item-name truncate">{{name}}</span>
+                                    <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
+                                    <div class="region-resource-action clearfix">
+                                        {{#if isrunning}}
+                                            <i class="icon-stop stop-app" id="{{id}}" name="{{name}}"></i>
+                                        {{else}}
+                                            <i class="icon-play start-app" id="{{id}}" name="{{name}}"></i>
+                                        {{/if}}
+                                        <i class="icon-terminate terminate-app" id="{{id}}" name="{{name}}"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        {{else}}
                         <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail app-thumbnail">
@@ -206,6 +227,7 @@
                                 </div>
                             </a>
                         </li>
+                        {{/if}}
                     {{else}}
                         <div class="blank-widget">
                             There is no App in this region.<br />You can run app from a stack.
@@ -845,8 +867,6 @@
 
 
 <!--{{ .recent }}-->
-
-
 <div id="global-region-status-tab-wrap" class="clearfix">
     <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">
         <h5>App</h5>
@@ -892,7 +912,7 @@
         {{else}}
             <div class="global-region-status-body">
                 <div class="global-region-status-empty">
-                    <span>No recently edited stack in 30 days</span>
+                    <span>No recently launched app in 30 days</span>
                 </div>
             </div>
         {{/if}}
@@ -931,11 +951,6 @@
 
 
 </div>
-
-
-
-
-
 
 
 <!--{{ .recent-launched-app }}-->

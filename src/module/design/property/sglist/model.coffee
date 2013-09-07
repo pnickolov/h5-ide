@@ -237,8 +237,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 
 		deleteSGFromComp : (sgUID) ->
-			delete MC.canvas_data.component[sgUID]
 
+			MC.aws.sg.deleteRefInAllComp(sgUID)
+			delete MC.canvas_data.component[sgUID]
 			parent_model = this.get 'parent_model'
 			#update sg color label
 			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'

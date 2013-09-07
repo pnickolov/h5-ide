@@ -34,6 +34,9 @@ define [ 'event',
 
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
+            'change #acl-add-model-direction-outbound'   : 'changeBoundInModal'
+            'change #acl-add-model-direction-inbound'    : 'changeBoundInModal'
+
         render     : () ->
             console.log 'property:acl render'
 
@@ -75,15 +78,19 @@ define [ 'event',
 
         saveRule : () ->
 
+            rule_number_dom =  $('#modal-acl-number')
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
             inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
             source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-id'))
+            custom_source_dom = $('#modal-acl-source-input')
 
-            if $('#modal-acl-source-input').is(':visible')
-                source = $('#modal-acl-source-input').val()
+            if custom_source_dom.is(':visible')
+                source = custom_source_dom.val()
 
-            protocol = $.trim($('#modal-protocol-select').find('.selected').attr('data-id'))
+            protocol_dom = $('#modal-protocol-select').find('.selected')
+            protocol = $.trim(protocol_dom.attr('data-id'))
+            protocolStr = $.trim(protocol_dom.attr('data-id'))
 
             port = $('#acl-rule-modal-port-input').val()
 
@@ -119,6 +126,41 @@ define [ 'event',
             else
                 egress = 'true'
 
+            # validation #####################################################
+            validateMap =
+                'tcp':
+                    dom: $('#sg-protocol-tcp input')
+                    method: ( val ) ->
+                        if not MC.validate.portRange(val)
+                            return 'Must be a valid format of number.'
+                        null
+                'udp':
+                    dom: $('#sg-protocol-udp input')
+                    method: ( val ) ->
+                        if not MC.validate.portRange(val)
+                            return 'Must be a valid format of port range.'
+                        null
+                'custom':
+                    dom: $('#sg-protocol-custom input')
+                    method: ( val ) ->
+                        if not MC.validate.port(val)
+                            return 'Must be a valid format of port.'
+                        null
+
+            if protocolStr of validateMap
+                needValidate = validateMap[ protocolStr ]
+                needValidate.dom.parsley 'custom', needValidate.method
+
+            custom_source_dom.parsley 'custom', ( val ) ->
+                if !MC.validate 'cidr', val
+                    return 'Must be a valid form of CIDR block.'
+                null
+
+            if (not rule_number_dom.parsley 'validate') or (custom_source_dom.is(':visible') and not custom_source_dom.parsley 'validate') or
+                (needValidate and not needValidate.dom.parsley 'validate')
+                    return
+            # validation #####################################################
+
             this.trigger 'ADD_RULE_TO_ACL', {
                 rule: ruleNumber,
                 action: ruleAction,
@@ -131,7 +173,7 @@ define [ 'event',
                 code: icmpCode
             }
 
-            $('#modal-wrap').trigger('closed').remove()
+            modal.close()
 
             null
 
@@ -231,6 +273,14 @@ define [ 'event',
             $('.protocol-icmp-sub-select').hide()
             subSelectElem.show()
             null
+
+        changeBoundInModal : (event) ->
+
+            inbound = $('#acl-add-model-direction-inbound').prop('checked')
+            if inbound
+                $('#acl-add-model-bound-label').text('Source')
+            else
+                $('#acl-add-model-bound-label').text('Destination')
 
         sortACLRule : ( event ) ->
             sg_rule_list = $('#acl-rule-list')

@@ -2664,9 +2664,7 @@ MC.canvas.asgList = {
 
 		if (event.which === 1)
 		{
-			MC.canvas.instanceList.close();
-			MC.canvas.eniList.close();
-			MC.canvas.asgList.close();
+			MC.canvas.event.clearList();
 
 			var target = this.parentNode,
 				target_offset = Canvon(target).offset(),
@@ -2757,9 +2755,7 @@ MC.canvas.instanceList = {
 
 		if (event.which === 1)
 		{
-			MC.canvas.instanceList.close();
-			MC.canvas.eniList.close();
-			MC.canvas.asgList.close();
+			MC.canvas.event.clearList();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
 			{
@@ -2846,9 +2842,7 @@ MC.canvas.eniList = {
 
 		if (event.which === 1)
 		{
-			MC.canvas.instanceList.close();
-			MC.canvas.eniList.close();
-			MC.canvas.asgList.close();
+			MC.canvas.event.clearList();
 
 			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
 			{
@@ -4858,7 +4852,6 @@ MC.canvas.event.selectLine = function (event)
 
 MC.canvas.event.selectNode = function (event)
 {
-	console.info("selectNode ----------------");
 	if (event.which === 1)
 	{
 		MC.canvas.event.clearSelected();
@@ -4866,6 +4859,14 @@ MC.canvas.event.selectNode = function (event)
 	}
 
 	return false;
+};
+
+MC.canvas.event.clearList = function ()
+{
+	MC.canvas.instanceList.close();
+	MC.canvas.eniList.close();
+	MC.canvas.asgList.close();
+	MC.canvas.event.clearSelected();
 };
 
 MC.canvas.event.nodeHover = function (event)

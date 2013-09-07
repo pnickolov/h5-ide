@@ -391,6 +391,22 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		return haveAssociate
 
+	getAZAryForDefaultVPC = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbInstances = elbComp.resource.Instances
+		azNameAry = []
+
+		_.each elbInstances, (instanceRefObj) ->
+			instanceRef = instanceRefObj.InstanceId
+			instanceUID = instanceRef.slice(1).split('.')[0]
+			instanceAZName = MC.canvas_data.component[instanceUID].resource.Placement.AvailabilityZone
+			if !(instanceAZName in azNameAry)
+				azNameAry.push(instanceAZName)
+			null
+
+		return azNameAry
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -408,3 +424,4 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 	isELBDefaultSG            : isELBDefaultSG
 	removeAllELBForInstance   : removeAllELBForInstance
 	haveAssociateInAZ         : haveAssociateInAZ
+	getAZAryForDefaultVPC     : getAZAryForDefaultVPC

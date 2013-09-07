@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 
 	#private
 	getVPCUID = () ->
@@ -107,9 +107,69 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return subnetObj
 
+	generateComponentForDefaultVPC = () ->
+
+		resType = constant.AWS_RESOURCE_TYPE
+
+		originComps = MC.canvas_data.component
+		currentComps = _.extend(originComps, {})
+
+		defaultVPCId = MC.aws.aws.checkDefaultVPC()
+
+		azObjAry = MC.data.config[MC.canvas_data.region].zone.item
+		azSubnetIdMap = {}
+		_.each azObjAry, (azObj) ->
+			azName = azObj.zoneName
+			resultObj = {}
+			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			subnetId = null
+			if subnetObj
+				subnetId = subnetObj.subnetId
+			else
+				subnetId = ''
+			azSubnetIdMap[azName] = subnetId
+			null
+
+		_.each currentComps, (compObj) ->
+
+			compType = compObj.type
+			compUID = compObj.uid
+
+			if compType is resType.AWS_EC2_Instance
+				instanceAZName = compObj.resource.Placement.AvailabilityZone
+				currentComps[compUID].resource.VpcId = defaultVPCId
+				currentComps[compUID].resource.SubnetId = azSubnetIdMap[instanceAZName]
+
+			else if compType is resType.AWS_VPC_NetworkInterface
+				eniAZName = compObj.resource.AvailabilityZone
+				currentComps[compUID].resource.VpcId = defaultVPCId
+				currentComps[compUID].resource.SubnetId = azSubnetIdMap[eniAZName]
+
+			else if compType is resType.AWS_ELB
+				currentComps[compUID].resource.VpcId = defaultVPCId
+				azNameAry = MC.aws.elb.getAZAryForDefaultVPC(compUID)
+				subnetIdAry = _.map azNameAry, (azName) ->
+					return azSubnetIdMap[azName]
+				currentComps[compUID].resource.Subnets = subnetIdAry
+
+			else if compType is resType.AWS_EC2_SecurityGroup
+				currentComps[compUID].resource.VpcId = defaultVPCId
+
+			else if compType is resType.AWS_AutoScaling_Group
+				asgAZAry = compObj.resource.AvailabilityZones
+				asgSubnetIdAry = _.map asgAZAry, (azName) ->
+					return azSubnetIdMap[azName]
+				asgSubnetIdStr = asgSubnetIdAry.join(' , ')
+				currentComps[compUID].resource.VPCZoneIdentifier = asgSubnetIdStr
+
+			null
+
+		return currentComps
+
 	#public
 	getVPCUID : getVPCUID
 	updateAllSubnetCIDR : updateAllSubnetCIDR
 	checkFullDefaultVPC : checkFullDefaultVPC
 	getSubnetForDefaultVPC : getSubnetForDefaultVPC
 	getAZSubnetForDefaultVPC : getAZSubnetForDefaultVPC
+	generateComponentForDefaultVPC : generateComponentForDefaultVPC

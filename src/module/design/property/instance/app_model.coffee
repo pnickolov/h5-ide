@@ -78,14 +78,13 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                             else
                                 login_user = 'root'
 
-                        public_dns = instance.dnsName
-                        cmd_line   = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.dnsName
+                    if instance.dnsName
+                        cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.dnsName
 
 
                     option =
                         type      : 'linux'
                         cmd_line  : cmd_line
-                        public_dns: public_dns
 
                     me.trigger "KP_DOWNLOADED", key_data, option
 

@@ -346,48 +346,48 @@ define [], () ->
 	RECENT_NUM		= 5
 	RECENT_DAYS		= 30
 
-	RDP_TMPL = "\
-		screen mode id:i:2\
-		use multimon:i:0\
-		desktopwidth:i:1024\
-		desktopheight:i:768\
-		session bpp:i:32\
-		winposstr:s:0,3,0,0,1024,768\
-		compression:i:1\
-		keyboardhook:i:2\
-		audiocapturemode:i:0\
-		videoplaybackmode:i:1\
-		connection type:i:2\
-		displayconnectionbar:i:1\
-		disable wallpaper:i:1\
-		allow font smoothing:i:0\
-		allow desktop composition:i:0\
-		disable full window drag:i:1\
-		disable menu anims:i:1\
-		disable themes:i:0\
-		disable cursor setting:i:0\
-		bitmapcachepersistenable:i:1\
-		full address:s:%s\
-		audiomode:i:0\
-		redirectprinters:i:1\
-		redirectcomports:i:0\
-		redirectsmartcards:i:1\
-		redirectclipboard:i:1\
-		redirectposdevices:i:0\
-		redirectdirectx:i:1\
-		autoreconnection enabled:i:1\
-		authentication level:i:2\
-		prompt for credentials:i:0\
-		negotiate security layer:i:1\
-		remoteapplicationmode:i:0\
-		alternate shell:s:\
-		shell working directory:s:\
-		gatewayhostname:s:\
-		gatewayusagemethod:i:4\
-		gatewaycredentialssource:i:4\
-		gatewayprofileusagemethod:i:0\
-		promptcredentialonce:i:1\
-		use redirection server name:i:0"
+	RDP_TMPL = "\n
+screen mode id:i:2\n
+use multimon:i:0\n
+desktopwidth:i:1024\n
+desktopheight:i:768\n
+session bpp:i:32\n
+winposstr:s:0,3,0,0,1024,768\n
+compression:i:1\n
+keyboardhook:i:2\n
+audiocapturemode:i:0\n
+videoplaybackmode:i:1\n
+connection type:i:2\n
+displayconnectionbar:i:1\n
+disable wallpaper:i:1\n
+allow font smoothing:i:0\n
+allow desktop composition:i:0\n
+disable full window drag:i:1\n
+disable menu anims:i:1\n
+disable themes:i:0\n
+disable cursor setting:i:0\n
+bitmapcachepersistenable:i:1\n
+full address:s:%s\n
+audiomode:i:0\n
+redirectprinters:i:1\n
+redirectcomports:i:0\n
+redirectsmartcards:i:1\n
+redirectclipboard:i:1\n
+redirectposdevices:i:0\n
+redirectdirectx:i:1\n
+autoreconnection enabled:i:1\n
+authentication level:i:2\n
+prompt for credentials:i:0\n
+negotiate security layer:i:1\n
+remoteapplicationmode:i:0\n
+alternate shell:s:\n
+shell working directory:s:\n
+gatewayhostname:s:\n
+gatewayusagemethod:i:4\n
+gatewaycredentialssource:i:4\n
+gatewayprofileusagemethod:i:0\n
+promptcredentialonce:i:1\n
+use redirection server name:i:0\n"
 
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE

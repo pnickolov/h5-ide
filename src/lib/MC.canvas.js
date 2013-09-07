@@ -2862,27 +2862,27 @@ MC.canvas.eniList = {
 				canvas_offset = $('#svg_canvas').offset();
 
 
-			var uid     = MC.extractID( this.id ),
-			    layout  = MC.canvas_data.layout.component.node[ uid ];
+			var uid      = MC.extractID( this.id ),
+			    layout   = MC.canvas_data.layout.component.node[ uid ],
+			    eni_comp = MC.canvas_data.component[ uid ];
 
 			var temp_data = {
-				  instances : []
-				, name      : "Server Group Eni List"
+				  enis : []
+				, name : eni_comp.serverGroupName
+				, eip  : layout.eniList.length === layout.eipList.length
 			};
 
-			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+			for ( var i = 0; i < layout.eniList.length; ++i ) {
 
-				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
-				temp_data.name = inst_comp.serverGroupName;
-				temp_data.instances.push( {
-					  status : statusMap[ inst_comp.state ]
-					, id     : inst_comp.uid
-					, volume : inst_comp.resource.BlockDeviceMapping.length
-					, name   : inst_comp.name
+				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ]
+				temp_data.name = eni_comp.serverGroupName;
+				temp_data.enis.push( {
+					  id   : eni_comp.uid
+					, name : eni_comp.resource.NetworkInterfaceId
 				} );
 			}
 
-			$('#canvas_container').append( MC.template.eniList() );
+			$('#canvas_container').append( MC.template.eniList( temp_data ) );
 
 			$('#eniList-wrap')
 				.on('click', '.eniList-item', MC.canvas.eniList.select)

@@ -835,7 +835,7 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{//read
 				component_data = data[group.id];
-				option.name = component_data.name;
+				option.name = component_data.serverGroupName || component_data.name;
 
 				//server group
 				component_data.serverGroupName = component_data.serverGroupName ? component_data.serverGroupName : option.name;

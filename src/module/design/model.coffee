@@ -49,6 +49,23 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
                 null
 
+            #listen APP_INFO_RETURN
+            me.on 'APP_INFO_RETURN', ( result ) ->
+                console.log 'APP_INFO_RETURN'
+
+                app_id = reuslt.param[4]
+
+                if !result.is_error
+                    # update canvas_data when on current tab
+                    if app_id == MC.canvas_data.id
+                        MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+
+                    # update MC.Tab[app_id]
+                    else
+                        MC.tab[app_id] = $.extend(true, {}, result.resolved_data[0])
+
+                null
+
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
             console.log 'saveTab'
             MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property }
@@ -85,6 +102,12 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property }
             #
             this.deleteTab old_tab_id
+
+        updateAppTab : ( region_name, app_id ) ->
+            console.log 'updateAppTab'
+
+            app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, [ app_id ]
+
 
         deleteTab    : ( tab_id ) ->
             console.log 'deleteTab'

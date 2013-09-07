@@ -131,10 +131,24 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			sg_direction = $('#sg-modal-direction input:checked').val()
 			descrition_dom = $('#securitygroup-modal-description')
 			rule = {}
-			if(descrition_dom.hasClass('input'))
+			if descrition_dom.hasClass('input')
 				sg_descrition = descrition_dom.val()
 			else
 				sg_descrition = descrition_dom.html()
+
+			MC.validate.required descrition_dom.val()
+			
+
+
+			descrition_dom.parsley 'custom', ( val ) ->
+				if !val
+					return 'This field is required.'
+				if !MC.validate 'cidr', val
+					return 'Must be a valid form of CIDR block.'
+				return true
+
+			if !descrition_dom.parsley 'validate'
+				return
 
 			protocol_type =  $('#modal-protocol-select').data('protocal-type')
 			rule.protocol = protocol_type

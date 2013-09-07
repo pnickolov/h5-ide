@@ -446,12 +446,20 @@ textarea:focus {
 }
 
 .input.disabled,
-.input[disabled] {
+.input[disabled]
+ {
 	box-shadow: none;
 	border: 1px solid #ccc;
 	background-color: #eee;
 }
 
+
+textarea[readonly]  {
+	box-shadow: none;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	color: #a2a2a2;
+}
 
 
 .property-content .input,
@@ -1075,7 +1083,7 @@ textarea {
 }
 
 .modal-body {
-	padding: 20px;
+	padding: 12px 20px;
 	background: #fcfcfc;
 	border-bottom: 1px solid #cfcfcf;
 	min-height: 100px;
@@ -2163,10 +2171,11 @@ textarea {
 /* parsley */
 
 input.parsley-error {
-	background-image: url(../images/ide/icon/icon-validate-error.png) !important;
+/*	background-image: url(../images/ide/icon/icon-validate-error.png) !important;
 	background-repeat: no-repeat !important;
-	background-position: 97% !important;
+	background-position: 97% !important;*/
 	border: 1px solid #F74A48 !important;
+	background-color: 
 }
 
 .parsley-error-list {

@@ -78,8 +78,8 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                             else
                                 login_user = 'root'
 
-                    if instance.dnsName
-                        cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.dnsName
+                    if instance.ipAddress
+                        cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.ipAddress
 
 
                     option =
@@ -99,7 +99,6 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                 instance_state = null
                 win_passwd     = null
                 rdp            = null
-                public_dns     = null
 
 
                 curr_instance_id = me.get "instanceId"
@@ -120,17 +119,16 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                         instance_state = instance.instanceState.name
 
                     if instance_state == 'running'
-                        public_dns = instance.dnsName
-                        rdp        = sprintf constant.RDP_TMPL, public_dns
+                        rdp = sprintf constant.RDP_TMPL, instance.ipAddress
 
                     win_passwd = result.resolved_data.passwordData
 
 
                 option =
-                    type      : 'win'
-                    passwd    : win_passwd,
-                    rdp       : rdp
-                    public_dns: public_dns
+                    type       : 'win'
+                    passwd     : win_passwd,
+                    rdp        : rdp
+                    public_dns : instance.ipAddress
 
                 me.trigger "KP_DOWNLOADED", key_data, option
 

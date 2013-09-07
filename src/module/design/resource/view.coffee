@@ -272,7 +272,7 @@ define [ 'event',
 
         # todo
         communityShowLoading: () ->
-            $( ".ami-right-col .scroll-content" ).hide()
+            $( "#ami-table-wrap .scroll-content" ).hide()
             $( ".show-loading" ).show()
             $( "#btn-search-ami" ).text( "Searching..." ).attr( "disabled", "" )
             $( "#community-ami-page>div" ).hide()
@@ -281,7 +281,7 @@ define [ 'event',
         # todo
         communityShowContent: () ->
             $( ".show-loading" ).hide()
-            $( ".ami-right-col .scroll-content" ).show()
+            $( "#ami-table-wrap .scroll-content" ).show()
             $( "#btn-search-ami" ).text( "Search" ).removeAttr( "disabled" )
             $( "#community-ami-page>div" ).show()
 
@@ -327,17 +327,9 @@ define [ 'event',
                     this_tr += '<tr class="item" data-id="'+key+' '+value.name+'" data-publicprivate="public" data-platform="'+value.osType+'" data-ebs="'+value.rootDeviceType+'" data-bit="'+bit+'">'
                     this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
-                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-ubuntu icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
+                    this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-' + value.osType + ' icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
                     this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"
-                    # <tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
-                    #                     <td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
-                    #                     <td>{{id}}</td>
-                    #                     <td>
-                    #                         <div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
-                    #                         <div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
-                    #                     </td>
-                    #                     <td>32</td>
-                    #                 </tr>
+
                 currentPageNum = this.model.attributes.community_ami.curPageNum
                 page = "<div>page #{currentPageNum}</div>"
                 totalNum = this.model.attributes.community_ami.totalNum

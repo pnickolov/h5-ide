@@ -88,23 +88,23 @@ var MC = MC || {};
 
 	MC.validate.http = function( value ) {
 		return regExp.urlstrict.test( value ) && value.slice(0, 4) === 'http';
-	}
+	};
 
 	MC.validate.https = function( value ) {
 		return regExp.urlstrict.test( value ) && value.slice(0, 5) === 'https';
-	}
+	};
 
 	MC.validate.deviceName = function ( value, type, addPrefix ) {
 		if ( type === 'linux' ) {
-			addPrefix && ( value = '/dev/' + value )
+			addPrefix && ( value = '/dev/' + value );
 			return regExp.deviceLinux.test( value );
 		} else if ( type === 'windows') {
-			addPrefix && ( value = 'xvd' + value )
+			addPrefix && ( value = 'xvd' + value );
 			return regExp.deviceWindows.test( value );
 		}
 
 		return false;
-	}
+	};
 
 	// helper
 
@@ -117,9 +117,26 @@ var MC = MC || {};
 				return 'This value should be a valid ' + type + ' name.';
 			}
             if ( !MC.aws.aws.checkIsRepeatName( id, val ) ) {
-                return type + ' name " ' + val + ' " is already in using. Please use another one.'
+                return type + ' name " ' + val + ' " is already in using. Please use another one.';
             }
 		})
+	};
+
+	MC.validate.portRange = function ( value ) {
+		if (value.indexOf('-') !== -1) {
+			if (isNaN(Number(value))) {
+				return false;
+			}
+		} else {
+			valueAry = value.split('-')
+			if (valueAry.length !== 2) {
+				return false;
+			}
+			if (isNaN(Number(valueAry[0])) || isNaN(Number(valueAry[1]))) {
+				return false;
+			}
+		}
+		return true;
 	};
 
 })( MC );

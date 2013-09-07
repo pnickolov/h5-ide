@@ -136,21 +136,30 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			else
 				sg_descrition = descrition_dom.html()
 
-			MC.validate.required descrition_dom.val()
+			descrition_dom.parsley('addConstraint', {
+				required: true
+			})
 			
-
-
 			descrition_dom.parsley 'custom', ( val ) ->
-				if !val
-					return 'This field is required.'
+				# if !val
+				# 	return 'This field is required.'
 				if !MC.validate 'cidr', val
 					return 'Must be a valid form of CIDR block.'
-				return true
-
-			if !descrition_dom.parsley 'validate'
-				return
+				null
 
 			protocol_type =  $('#modal-protocol-select').data('protocal-type')
+
+			port_dom = $('#sg-protocol-tcp input')
+			if protocol_type is 'icmp'
+				port_dom.parsley('removeConstraint', 'required')
+			else
+				port_dom.parsley('addConstraint', {
+					required: true
+				})
+
+			if !descrition_dom.parsley 'validateForm'
+				return
+
 			rule.protocol = protocol_type
 			protocol_val = $("#protocol-icmp-main-select").data('protocal-main')
 			protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')

@@ -8,6 +8,10 @@
 	color: #C7CAC8;
 }
 
+.table-small {
+	font-size: 12px;
+}
+
 .table th {
 	font-weight: 700;
 }
@@ -986,7 +990,8 @@ textarea {
 }
 
 .status-blue,
-.status-available {
+.status-available,
+.status-not-attached {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
 	background-image: -moz-linear-gradient(bottom, #008dde, #58cdfe);

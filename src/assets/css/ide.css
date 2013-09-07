@@ -178,24 +178,24 @@ button:focus {
 }
 
 .notification-counter {
-	display: inline-block;
-	line-height: 1;
-	padding: 4px 3px;
-	min-width: 12px;
-	border-radius: 12px;
-	background-color: #ff6151;
-	box-shadow: 0 1px rgba(0,0,0,.25);
-	border: 1px solid #711212;
-	background-image: -webkit-linear-gradient(bottom, #e81414, #fa4a2d);
+	line-height: 14px;
+	top: 5px;
+	right: 5px;
+	position: absolute;
+	display: block;
+	padding: 1px 4px;
+	border-radius: 4px;
+	background-color: #FF6151;
+	box-shadow: 0 1px rgba(0, 0, 0, 0.25);
+	background-image: -webkit-linear-gradient(bottom, #E81414, #FA4A2D);
 	background-image: -moz-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: -o-linear-gradient(bottom, #e81414, #fa4a2d);
 	background-image: -ms-linear-gradient(bottom, #e81414, #fa4a2d);
-	background-image: linear-gradient(to top, #e81414, #fa4a2d);
+	background-image: linear-gradient(to top, #E81414, #FA4A2D);
 	font-size: 12px;
 	font-weight: 700;
-	color: #fff;
+	color: #FFF;
 	text-align: center;
-	margin-left: 8px;
 }
 
 .notification-counter:empty {

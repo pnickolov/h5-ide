@@ -34,6 +34,9 @@ define [ 'event',
 
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
+            'change #acl-add-model-direction-outbound'   : 'changeBoundInModal'
+            'change #acl-add-model-direction-inbound'    : 'changeBoundInModal'
+
         render     : () ->
             console.log 'property:acl render'
 
@@ -231,6 +234,14 @@ define [ 'event',
             $('.protocol-icmp-sub-select').hide()
             subSelectElem.show()
             null
+
+        changeBoundInModal : (event) ->
+
+            inbound = $('#acl-add-model-direction-inbound').prop('checked')
+            if inbound
+                $('#acl-add-model-bound-label').text('Source')
+            else
+                $('#acl-add-model-bound-label').text('Destination')
 
         sortACLRule : ( event ) ->
             sg_rule_list = $('#acl-rule-list')

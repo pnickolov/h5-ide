@@ -112,7 +112,7 @@ module.exports = {
 			dest   : '<%= release %>/lib/',
 			filter : function ( filepath ) {
 				if ( filepath.indexOf('_') != -1 ) {
-					fs.unlink( fs.realpathSync( '.' ) + '\\' + filepath );
+					fs.unlink( fs.realpathSync( '.' ) + '/' + filepath );
 				}
 			}
 		}]
@@ -153,7 +153,7 @@ module.exports = {
 			dest   : '<%= release %>/ui/common/',
 			filter : function ( filepath ) {
 				if ( filepath.indexOf('_') != -1 ) {
-					fs.unlink( fs.realpathSync( '.' ) + '\\' + filepath );
+					fs.unlink( fs.realpathSync( '.' ) + '/' + filepath );
 				}
 			}
 		}]

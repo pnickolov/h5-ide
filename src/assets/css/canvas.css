@@ -706,7 +706,7 @@
 }
 
 .canvas_state_app .asg-resource-dragger {
-	cursor: default;
+	display: none;
 }
 
 .canvas_zoomed .resizer-wrap {

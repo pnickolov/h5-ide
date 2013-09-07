@@ -170,7 +170,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
             $( "#region-switch-list li[data-region=#{region}]" ).click()
 
-            scrollTo = $( '#global-region-tabbar-wrap' )[ 0 ].offsetTop + 200
+            scrollTo = $('#global-region-map-wrap').height()
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
         ############################################################################################

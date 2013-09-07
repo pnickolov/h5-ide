@@ -2872,10 +2872,16 @@ MC.canvas.eniList = {
 				, eip  : layout.eniList.length === layout.eipList.length
 			};
 
+			// if ( eni_comp.resource.Attachment && eni_comp.resource.Attachment.InstanceId ) {
+			// 	var ins_comp = MC.canvas_data.component[ MC.extractID( eni_comp.resource.Attachment.InstanceId ) ];
+			// 	if ( ins_comp.serverGroupName ) {
+			// 		temp_data.name += " - " + ins_comp.serverGroupName;
+			// 	}
+			// }
+
 			for ( var i = 0; i < layout.eniList.length; ++i ) {
 
 				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ]
-				temp_data.name = eni_comp.serverGroupName;
 				temp_data.enis.push( {
 					  id   : eni_comp.uid
 					, name : eni_comp.resource.NetworkInterfaceId

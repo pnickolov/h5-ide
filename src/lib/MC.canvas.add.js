@@ -1888,11 +1888,14 @@ MC.canvas.add = function (flag, option, coordinate)
 			else
 			{//read
 				component_data = data[group.id];
-				option.name = component_data.name;
+				option.name = component_data.serverGroupName || component_data.name;
 
 				ins_id = component_data.resource.Attachment.InstanceId;
 				if(ins_id){
-					component_data.number = MC.canvas_data.component[ins_id.split('.')[0].slice(1)].number;
+					var ins_comp = MC.canvas_data.component[ MC.extractID( ins_id ) ];
+					component_data.number = ins_comp.number;
+
+					// option.name += " - " + ins_comp.serverGroupName;
 				}
 				else{
 					component_data.number = component_data.number ? component_data.number : 1;

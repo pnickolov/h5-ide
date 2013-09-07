@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, instance_model, constant, lang ) ->
+define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, instance_model, constant, lang ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 

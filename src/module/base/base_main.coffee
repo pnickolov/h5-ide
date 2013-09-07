@@ -2,7 +2,7 @@
 #  Controller for base_main
 ####################################
 
-define [ 'jquery', 'underscore', 'i18n!../../nls/lang.js', 'UI.notification' ], ( $, _, lang ) ->
+define [ 'jquery', 'underscore', 'i18n!nls/lang.js', 'UI.notification' ], ( $, _, lang ) ->
 
     #error_repeat = 0
     error_repeat = {}

@@ -1007,7 +1007,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 3
 				}),
 				////10. hostname
-				Canvon.text(45, 86, option.name).attr({
+				Canvon.text(45, 86, MC.truncate(option.name,10)).attr({
 					'class': 'node-label node-label-name',
 					'id': group.id + '_hostname'
 				}),

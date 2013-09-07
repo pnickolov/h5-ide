@@ -11,6 +11,8 @@
 var MC = {
 	version: '0.2.8',
 
+	NLS_ROOT: '/v2',
+
 	// Global Variable
 	API_URL: 'https://api.madeiracloud.com/v2/',
 	IMG_URL: './assets/images/',

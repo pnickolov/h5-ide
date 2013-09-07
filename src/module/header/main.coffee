@@ -2,7 +2,7 @@
 #  Controller for header module
 ####################################
 
-define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!./nls/lang.js', 'base_main' ], ( $, template, ide_event, lang, base_main ) ->
+define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!nls/lang.js', 'base_main' ], ( $, template, ide_event, lang, base_main ) ->
 
     initialize = ->
         #extend parent

@@ -1,4 +1,4 @@
-define [ 'i18n!../../../nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
+define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 	#private
 	getAllRefComp = (sgUID) ->

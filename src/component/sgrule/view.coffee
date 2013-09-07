@@ -5,7 +5,7 @@
 define [ 'text!./template.html',
          'text!./list_template.html',
          'text!./delete_rule_dialog.html',
-         'i18n!../../nls/lang.js',
+         'i18n!nls/lang.js',
          'event'
 ], ( template, list_template, delete_template, lang, ide_event ) ->
 

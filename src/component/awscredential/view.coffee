@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'i18n!../../nls/lang.js',
+         'i18n!nls/lang.js',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
 ], ( ide_event, lang ) ->

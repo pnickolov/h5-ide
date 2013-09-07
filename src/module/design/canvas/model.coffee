@@ -1,7 +1,7 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'event', 'i18n!../../../nls/lang.js',
+define [ 'constant', 'event', 'i18n!nls/lang.js',
 		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event, lang ) ->
 
 	CanvasModel = Backbone.Model.extend {

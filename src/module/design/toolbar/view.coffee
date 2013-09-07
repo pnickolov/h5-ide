@@ -3,7 +3,7 @@
 #############################
 
 define [ 'MC', 'event',
-         'i18n!../../../nls/lang.js',
+         'i18n!nls/lang.js',
          'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'

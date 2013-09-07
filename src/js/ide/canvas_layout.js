@@ -44,7 +44,7 @@ var listen = function ()
 };
 
 // Dom Ready
-var ready = function ()
+var initialize = function ()
 {
 	$(document).on('keydown', MC.canvas.event.keyEvent);
 
@@ -65,8 +65,8 @@ var connect = function ()
 
 define( ['jquery'], function() {
 	return {
-		'listen' : listen,
-		'ready'  : ready,
-		'connect': connect
+		'listen'     : listen,
+		'initialize' : initialize,
+		'connect'    : connect
 	};
 });

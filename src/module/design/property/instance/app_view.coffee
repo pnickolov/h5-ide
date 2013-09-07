@@ -62,6 +62,8 @@ define [ 'event', 'MC',
             if option.public_dns
                 copybtn = $("#keypair-dns").val( option.public_dns ).siblings("a").attr("data-clipboard-text", option.public_dns )
                 zeroclipboard.copy copybtn
+            else
+                $("#keypair-public").hide()
 
             if option.rdp
                 $("#keypair-rdp")

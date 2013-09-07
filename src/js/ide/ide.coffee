@@ -209,7 +209,7 @@ define [ 'MC', 'event', 'handlebars'
 				#load layout
 				console.log 'layout'
 				layout.ready()
-				canvas_layout.initialize()
+				canvas_layout.canvas_initialize()
 			, 2000
 
 		#listen DESIGN_COMPLETE

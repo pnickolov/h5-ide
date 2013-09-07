@@ -220,7 +220,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                     MC.data.dict_ami[res.imageId] = res
 
-                #MC.data.resource_list[region][res.imageId] = res
+                MC.data.resource_list[region][res.imageId] = res
                 null
 
 

@@ -302,6 +302,8 @@ define [ 'i18n!../../../nls/lang.js',
 
                             MC.data.account_attribute[region_name].default_subnet[value.availabilityZone] = value
 
+                            MC.data.resource_list[region_name][value.subnetId] = value
+
                             null
 
                     else

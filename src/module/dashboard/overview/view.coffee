@@ -51,8 +51,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         loading: $( '#loading-tmpl' ).html()
 
         events   :
-            'click #global-region-spot > li'            : 'mapRegionClick'
-            'click #global-region-create-stack-list li' : 'createStackClick'
+            'click #global-region-spot > li'            : 'gotoRegion'
+            'click #global-region-create-stack-list li' : 'createStack'
+            'click #btn-create-stack'                   : 'createStack'
             'click .global-region-status-content li a'  : 'openItem'
             'click .global-region-status-tab-item'      : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
@@ -66,6 +67,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .terminate-app'                : 'terminateAppClick'
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
+
+        initialize: ->
+            $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
         refreshAll: ->
             location.reload()
@@ -148,7 +152,29 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         updateLoadTime: ( time ) ->
             @$el.find('#global-refresh span').text time
 
+        enableCreateStack : ( platforms ) ->
+            $middleButton = $( "#btn-create-stack" )
+            $topButton = $( "#global-create-stack" )
+
+            $middleButton.removeAttr 'disabled'
+            $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+
+        createStack: ( event ) ->
+            $target = $ event.currentTarget
+            if $target.prop 'disabled'
+                return
+            ide_event.trigger ide_event.ADD_STACK_TAB, ( current_region or $target.data 'region' )
+
+        gotoRegion: ( event ) ->
+            $target = $ event.currentTarget
+            region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            $( "#region-switch-list li[data-region=#{region}]" ).click()
+
+            scrollTo = $( '#global-region-tabbar-wrap' )[ 0 ].offsetTop + 200
+            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+
         ############################################################################################
+
 
         renderMapResult : ->
             console.log 'dashboard overview-result render'
@@ -168,19 +194,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             console.log 'dashboard recent stopped app render'
             $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
             null
-
-        mapRegionClick : ( event ) ->
-            region = event.currentTarget.id
-            current_region = region
-
-            $( "#region-switch-list li[data-region=#{region}]" ).click()
-            scrollbar.scrollTo($('#global-region-wrap'), {'top': $('#global-region-tabbar-wrap')[0].offsetTop + 200})
-
-            false
-
-        createStackClick : ( event ) ->
-            console.log 'dashboard region create stack'
-            ide_event.trigger ide_event.ADD_STACK_TAB, ($(event.currentTarget).data 'region')
 
         render : ( template ) ->
             console.log 'dashboard overview render'

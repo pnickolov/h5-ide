@@ -172,6 +172,7 @@
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">Stack</span>
+                    <button id="btn-create-stack" href="javascript:void(0)" class="btn btn-region-dashboard btn-primary" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack">+</button>
                 </a>
             </li>
         </ul>
@@ -208,7 +209,6 @@
                     {{else}}
                         <div class="blank-widget">
                             There is no App in this region.<br />You can run app from a stack.
-                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
                         </div>
                     {{/each}}
 

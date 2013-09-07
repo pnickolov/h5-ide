@@ -254,7 +254,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             'cached_resource_info'      : {}
             'cur_region_resource'       : null
             'cur_region_resource_info'  : null
-
+            'supported_platforms'       : false
 
         initialize : ->
             @on 'AWS_RESOURCE_RETURN', @awsReturnHandler

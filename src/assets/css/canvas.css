@@ -899,11 +899,13 @@
 }
 
 .sg-color {
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 2px;
 	float: left;
-    width: 10px;
-    height: 10px;
-    margin-top: 4px;
-    margin-right: 5px;
+	width: 10px;
+	height: 10px;
+	margin-top: 4px;
+	margin-right: 5px;
 }
 
 /* instance state */

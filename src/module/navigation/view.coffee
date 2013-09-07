@@ -2,9 +2,9 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event', 'constant'
+define [ 'event', 'constant', 'i18n!../../nls/lang.js'
          'backbone', 'jquery', 'handlebars', 'UI.notification'
-], ( ide_event, constant ) ->
+], ( ide_event, constant, lang ) ->
 
     NavigationView = Backbone.View.extend {
 

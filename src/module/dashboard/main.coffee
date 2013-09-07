@@ -19,8 +19,7 @@ define [ 'jquery',
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.recent-stopped-app' : 'recent-stopped-app-tmpl', '.loading': 'loading-tmpl' }
-        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.loading': 'loading-tmpl' }
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -69,12 +68,7 @@ define [ 'jquery',
             model.on 'change:recent_launched_apps', () ->
                 console.log 'dashboard_change:recent_launched_apps'
                 #model.get 'recent_launched_apps'
-                view.renderRecentLaunchedApp()
-
-            model.on 'change:recent_stoped_apps', () ->
-                console.log 'dashboard_change:recent_stoped_apps'
-                #model.get 'recent_stoped_apps'
-                view.renderRecentStoppedApp()
+                view.renderRecent()
 
             # global view
             model.on 'change:global_list', () ->
@@ -112,14 +106,14 @@ define [ 'jquery',
 
                 overview_app = result
 
-                if overview_stack
-                    model.updateMap model, overview_app, overview_stack
+                #if overview_stack
+                model.updateMap model, overview_app, overview_stack
 
                 model.updateRecentList( model, result, 'recent_launched_apps' )
-                model.updateRecentList( model, result, 'recent_stoped_apps' )
+                #model.updateRecentList( model, result, 'recent_stoped_apps' )
 
-                if should_update_overview
-                    view.renderMapResult()
+                #if should_update_overview
+                view.renderMapResult()
 
                 model.getItemList 'app', current_region, overview_app
 
@@ -130,17 +124,17 @@ define [ 'jquery',
 
                 overview_stack = result
 
-                if overview_app
-                    model.updateMap model, overview_app, overview_stack
-                else
-                    ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                        overview_app = result
-                        model.updateMap model, overview_app, overview_stack
+                #if overview_app
+                model.updateMap model, overview_app, overview_stack
+                # else
+                #     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
+                #         overview_app = result
+                #         model.updateMap model, overview_app, overview_stack
 
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
 
-                if should_update_overview
-                    view.renderMapResult()
+                #if should_update_overview
+                view.renderMapResult()
 
                 model.getItemList 'stack', current_region, overview_stack
 
@@ -164,6 +158,9 @@ define [ 'jquery',
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )
                 model.describeAWSResourcesService()
+
+            model.on 'UPDATE_REGION_APP_LIST', () ->
+                view.renderRegionAppStack( 'app' )
 
             model.on 'change:cur_stack_list', () ->
                 view.renderRegionAppStack( 'stack' )

@@ -47,7 +47,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
         recent: Handlebars.compile $( '#recent-tmpl' ).html()
         recent_launched_app : Handlebars.compile $( '#recent-launched-app-tmpl' ).html()
-        recent_stopped_app : Handlebars.compile $( '#recent-stopped-app-tmpl' ).html()
         loading: $( '#loading-tmpl' ).html()
 
         events   :
@@ -190,10 +189,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find( '#recent-launched-app' ).html this.recent_launched_app this.model.attributes
             null
 
-        renderRecentStoppedApp : ->
-            console.log 'dashboard recent stopped app render'
-            $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
-            null
+        # renderRecentStoppedApp : ->
+        #     console.log 'dashboard recent stopped app render'
+        #     $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
+        #     null
 
         render : ( template ) ->
             console.log 'dashboard overview render'

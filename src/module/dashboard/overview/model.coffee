@@ -1081,12 +1081,57 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     #difference
                     if _.difference me.get('cur_app_list'), cur_item_list
                         me.set 'cur_app_list', cur_item_list
-                        me.trigger 'UPDATE_REGION_APP_LIST'
+                        #me.trigger 'UPDATE_REGION_APP_LIST'
 
                 else if flag == 'stack'
                     if _.difference me.get('cur_stack_list'), cur_item_list
                         me.set 'cur_stack_list', cur_item_list
-                        me.trigger 'UPDATE_REGION_STACK_LIST'
+                        #me.trigger 'UPDATE_REGION_STACK_LIST'
+
+        parseItemList : (item, flag) ->
+            me = this
+
+            id          = item.id
+            name        = item.name
+            create_time = item.time_create
+            id_code     = item.key
+
+            update_time =  Math.round(+new Date())
+
+            status      = "play"
+            isrunning   = true
+            ispending   = false
+
+            # check state
+            if item.state == constant.APP_STATE.APP_STATE_INITIALIZING    #constant.APP_STATE.APP_STATE_STOPPING or
+                return
+            else if item.state == constant.APP_STATE.APP_STATE_RUNNING
+                status = "play"
+            else if item.state == constant.APP_STATE.APP_STATE_STOPPED
+                isrunning = false
+                status = "stop"
+            else
+                status = "pending"
+                ispending = true
+
+            has_instance_store_ami = false
+
+            if flag == 'app'
+                date = new Date()
+                start_time = null
+                stop_time = null
+
+                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
+                    has_instance_store_ami = true
+
+                if item.last_start
+                    date.setTime(item.last_start*1000)
+                    start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+                if not isrunning and item.last_stop
+                    date.setTime(item.last_stop*1000)
+                    stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
+
+            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
 
         #region list
         describeAccountAttributesService : ()->
@@ -1139,53 +1184,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             else if flag == 'recent_launched_apps'
                 me.set 'recent_launched_apps', recent_list
                 #me.set 'app_list', item_list
-            else if flag == 'recent_stoped_apps'
-                me.set 'recent_stoped_apps', recent_list
+            # else if flag == 'recent_stoped_apps'
+            #     me.set 'recent_stoped_apps', recent_list
 
-        parseItemList : (item, flag) ->
-            me = this
-
-            id          = item.id
-            name        = item.name
-            create_time = item.time_create
-            id_code     = item.key
-
-            update_time =  Math.round(+new Date())
-
-            status      = "play"
-            isrunning   = true
-            ispending   = false
-
-            # check state
-            if item.state == constant.APP_STATE.APP_STATE_INITIALIZING    #constant.APP_STATE.APP_STATE_STOPPING or
-                return
-            else if item.state == constant.APP_STATE.APP_STATE_RUNNING
-                status = "play"
-            else if item.state == constant.APP_STATE.APP_STATE_STOPPED
-                isrunning = false
-                status = "stop"
-            else
-                status = "pending"
-                ispending = true
-
-            has_instance_store_ami = false
-
-            if flag == 'app'
-                date = new Date()
-                start_time = null
-                stop_time = null
-
-                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
-                    has_instance_store_ami = true
-
-                if item.last_start
-                    date.setTime(item.last_start*1000)
-                    start_time  = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
-                if not isrunning and item.last_stop
-                    date.setTime(item.last_stop*1000)
-                    stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
-
-            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
 
         # parse items
         parseItem : (value, flag) ->
@@ -1194,9 +1195,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if flag == 'recent_edited_stacks'
                 interval = value.time_update
             else if flag == 'recent_launched_apps'
-                interval = value.time_create
-            else if flag == 'recent_stoped_apps' and value.state in ['Stopping', 'Stopped']
                 interval = value.time_update
+            # else if flag == 'recent_stoped_apps' and value.state in ['Stopping', 'Stopped']
+            #     interval = value.time_update
 
             if interval
                 return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_SHORT_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
@@ -1237,6 +1238,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             cur_app_list[idx].ispending = true
 
                             me.set 'cur_app_list', cur_app_list
+                            me.trigger 'UPDATE_REGION_APP_LIST'
 
             null
 

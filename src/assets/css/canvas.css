@@ -660,20 +660,23 @@
 }
 
 .volume_name {
+	position: absolute;
 	font-size: 9px;
 	display: block;
-	margin-top: 14px;
+	top: 14px;
 	color: #333;
 	text-align: center;
 	width: 100%;
 }
 
 .volume_size {
+	width: 100%;
 	font-size: 9px;
 	display: block;
-	margin-top: 12px;
+	top: 38px;
 	color: #333;
 	text-align: center;
+	position: absolute;
 }
 
 #volume-bubble-box {

@@ -59,8 +59,6 @@ button:focus {
 .left  { float   : left; }
 .right { float   : right; }
 
-.tac   { text-align : center; }
-
 .tac {text-align : center}
 
 .capitalize { text-transform: capitalize;}

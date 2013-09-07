@@ -118,7 +118,7 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                     if instance
                         instance_state = instance.instanceState.name
 
-                    if instance_state == 'running'
+                    if instance_state == 'running' && instance.ipAddress
                         rdp = sprintf constant.RDP_TMPL, instance.ipAddress
 
                     if result.resolved_data

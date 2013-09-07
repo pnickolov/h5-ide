@@ -2,7 +2,10 @@
 #  View Mode for dashboard(overview)
 #############################
 
-define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service', ], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service ) ->
+define [ 'MC', 'event', 'constant', 'vpc_model',
+         'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
+         'i18n!../../../nls/lang.js'
+], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang ) ->
 
     #private
     #region map
@@ -251,7 +254,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
             'cached_resource_info'      : {}
             'cur_region_resource'       : null
             'cur_region_resource_info'  : null
-
+            'supported_platforms'       : false
 
         initialize : ->
             @on 'AWS_RESOURCE_RETURN', @awsReturnHandler
@@ -501,23 +504,13 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                     is_managed = false
 
                     if ins.tagSet != undefined
-                        _.map ins.tagSet, ( tag )->
-                            if tag
-                                if tag.key == 'app'
-
-                                    is_managed = true
-
-                                    resources.DescribeInstances[i].app = tag.value
-
-                                if tag.key == 'name'
-
-                                    resources.DescribeInstances[i].host = tag.value
-
-                                if tag.key == 'Created by' and tag.value == owner
-
-                                    resources.DescribeInstances[i].owner = tag.value
-
-                            null
+                        tag = ins.tagSet
+                        if ins.tagSet.app
+                            is_managed = true
+                            resources.DescribeInstances[i].app = tag.app
+                            resources.DescribeInstances[i].host = tag.name
+                            if tag[ 'Created by' ] is owner
+                                resources.DescribeInstances[i].owner = tag[ 'Created by' ]
 
                     if not resources.DescribeInstances[i].host
                         resources.DescribeInstances[i].host = ''
@@ -975,8 +968,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model', 'aws_model', 'app_model', 'stac
                 null
 
             else
-                # set cookie
-                if $.cookie('has_cred') isnt 'false'
+                # check whether invalid session
+                if result.return_code isnt lang.service.ERROR_CODE_19_MESSAGE and $.cookie('has_cred') isnt 'false'
                     $.cookie 'has_cred', false,    { expires: 1 }
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 

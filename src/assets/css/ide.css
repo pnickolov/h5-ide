@@ -19,6 +19,11 @@ a {
 	color: #ccc;
 }
 
+/* reset */
+button:focus {
+	outline : none;
+}
+
 #overlayer {
 	width: 100%;
 	height: 100%;
@@ -53,8 +58,6 @@ a {
 
 .left  { float   : left; }
 .right { float   : right; }
-
-.tac   { text-align : center; }
 
 .tac {text-align : center}
 
@@ -144,7 +147,6 @@ a {
 }
 
 .header-menu .dropdown {
-
 	position           : relative;
 	float              : left;
 	line-height        : 50px;
@@ -207,7 +209,6 @@ a {
 
 	position : absolute;
 
-	border        : 1px solid #fff;
 	border-radius : 50%;
 
 	background-image : -o-linear-gradient(-90deg, #FED666 0%, #FD6E22 100%);
@@ -218,13 +219,13 @@ a {
 }
 
 #header--user > .no-credential {
-	top  : 10px;
-	left : 45px;
+	top: 20px;
+	right: 5px;
 }
 
 #user-dropdown-wrapper .no-credential {
-	right : 18px;
-	top   : 12px;
+	top: 15px;
+	right: 5px;
 }
 
 .avatar {
@@ -262,7 +263,7 @@ a {
 }
 
 #notification-panel-wrapper {
-	width: 300px;
+	width: 400px;
 }
 
 #notification-panel-wrapper tbody tr td:first-child {
@@ -323,7 +324,7 @@ a {
 	right: 0;
 	top: 4px;
 	margin-right: 0;
-	color: #3781C9;
+	color: #5791CA;
 }
 
 #AWSCredential-setting label {
@@ -333,7 +334,8 @@ a {
 }
 
 #AWSCredential-setting .input {
-	width: 390px;
+	width: 382px;
+	border-radius: 2px;
 	margin-bottom: 10px;
 }
 
@@ -1355,12 +1357,28 @@ a {
 	background-position: -110px 0;
 }
 
-#global-resource-icon-elb {
+#global-resource-icon-vpc {
 	background-position: -165px 0;
 }
 
 #global-resource-icon-vpn {
 	background-position: -220px 0;
+}
+
+#global-resource-icon-asg {
+	background-position: -275px 0;
+}
+
+#global-resource-icon-elb {
+	background-position: -330px 0;
+}
+
+#global-resource-icon-cwa {
+	background-position: -385px 0;
+}
+
+#global-resource-icon-sns {
+	background-position: -440px 0;
 }
 
 .global-region-resource-content li {
@@ -1509,7 +1527,7 @@ a {
 	width: 220px;
 /*	height: 172px;*/
 	border: 1px solid #8a8a8a;
-	border-radius: 5px;
+	border-radius: 6px;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 	opacity: .95;
 }
@@ -1530,10 +1548,12 @@ a {
 	border-radius: 5px 5px 0 0;
 	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
+	background-color: #55626e;
 }
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
+	background-size: 225px auto;
 }
 
 .region-resource-thumbnail img {
@@ -1592,7 +1612,7 @@ a {
 .region-resource-item-name {
 	color: #eee;
 	font-size: 12px;
-	width: 134px;
+	width: 120px;
 }
 
 #region-aws-resource-wrap {
@@ -1660,15 +1680,17 @@ a {
 }
 
 .region-resource-count {
-	border-radius: 50%;
-	padding: 0 6px;
-	background: rgba(255, 255, 255, 0.8);
-	color: #BE344A;
-	top: 15px;
+	border-radius: 4px;
+	padding: 2px 6px;
+	background: #F0F0F3;
+	color: #5382E5;
+	top: 8px;
 	position: absolute;
 	font-size: 14px;
-	right: 45px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+	right: 40px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
+	border: 1px solid #C9CFD6;
+	text-shadow: 0 1px 0 #fff;
 }
 
 .region-resource-name {
@@ -1681,6 +1703,10 @@ a {
 
 #region-aws-resource-data {
 	/*height: 340px;*/
+}
+
+#region-aws-resource-data .table td {
+	vertical-align: middle;
 }
 
 #region-aws-resource-data .table-head-fix {
@@ -1869,7 +1895,7 @@ a {
 		left: 45px;
 	}
 
-	.region-resource-list li {.region-resource-list-item
+	.region-resource-list li {
 		margin: 0 10px 15px 10px;
 	}
 
@@ -2753,14 +2779,15 @@ td.table-action a.btn {
 	color: #333;
 	cursor: pointer;
 	padding: 8px;
+	line-height: 23px;
 }
 
 #selectbox-ami-platform .item span {
-	margin-left: 22px;
+	margin-left: 28px;
 }
 
 .ami-meta span {
-	margin-left: 22px;
+	margin-left: 28px;
 }
 
 #selectbox-ami-platform .selected {
@@ -2770,6 +2797,8 @@ td.table-action a.btn {
 #selectbox-ami-platform .selection {
 	border-radius: 3px;
 	padding: 8px 10px;
+
+	line-height: 24px;
 
 	background-color: #F5F5F5;
 	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
@@ -2783,7 +2812,7 @@ td.table-action a.btn {
 }
 
 #selectbox-ami-platform .selection span {
-	margin-left: 22px;
+	margin-left: 28px;
 }
 
 #selectbox-ami-platform a.dropdown-toggle {
@@ -2884,14 +2913,52 @@ td.table-action a.btn {
 .ami-meta {
 	font-size: 12px;
 	color: #999;
+	line-height: 24px;
 }
 
 .icon-ami-os {
 	position: absolute;
 	display: inline-block;
-	width: 18px;
-	height: 18px;
-	background-color: #ccc;
+	width: 24px;
+	height: 23px;
+	background-repeat: no-repeat;
+	background-image: url('../images/ide/icon/icon-ami-os.png');
+}
+
+.icon-cent {
+	background-position: -24px;
+}
+
+.icon-debian {
+	background-position: -48px;
+}
+
+.icon-fedora {
+	background-position: -72px;
+}
+
+.icon-gentoo {
+	background-position: -96px;
+}
+
+.icon-open-suse {
+	background-position: -120px;
+}
+
+.icon-ubuntu {
+	background-position: -144px;
+}
+
+.icon-redhat {
+	background-position: -168px;
+}
+
+.icon-win {
+	background-position: -192px;
+}
+
+.icon-other-linux {
+	background-position: -216px;
 }
 
 #community-ami-page {
@@ -5350,7 +5417,7 @@ a.action-link:hover {
 }
 
 .property-app ::selection {
-	background: #888;
+	background: #3781C9;
 	color: #fcfcfc;
 }
 
@@ -5359,8 +5426,13 @@ a.action-link:hover {
 	color: #fcfcfc;
 }
 
-.accordion-default.property-app .accordion-body {
-	padding: 0;
+.icon-copy {
+	position   : absolute;
+	right      : -2px;
+	top        : 2px;
+	width      : 16px;
+	height     : 16px;
+	cursor     : pointer;
 }
 
 /*.property-app .property-control-group {

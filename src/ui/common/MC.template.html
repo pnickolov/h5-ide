@@ -933,14 +933,50 @@ Additional Notes and Questions
 <!-- modalDownloadKP -->
 <div style="width:420px">
   <div class="modal-header">
-    <h3>Download keypair: <span id='property-keypair-name'>{{keypairname}}</span></h3>
+    <h3 id='keypair-name'>{{name}}</h3>
     <i class="modal-close">&times;</i>
   </div>
-  <div class="modal-body">loading...</div>
-  <div id="model-login-info">{{login_info}}</div>
+  <div class="modal-body">
+    <section id='keypair-loading'>
+      <i class="loading-spinner"></i>
+    </section>
+
+    <section id="keypair-body-linux" class="hide">
+      <p>Key pair data is ready <a href="#" class="btn btn-blue" id="keypair-kp">Download</a></p>
+      <div id="keypair-remote">
+        <p>Remote access</p>
+        <p>
+          <input id="keypair-cmd" type="text" disabled="disabled">
+          <a href="#" class="icon-copy btn btn-silver" title="Remote access comand line">Copy</a>
+        </p>
+      </div>
+
+    </section>
+    <section id="keypair-body-win" class="hide">
+      <p>Remote access</p>
+      <p>Private key</p>
+      <textarea id="keypair-private-key"></textarea>
+      <p>
+        <a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
+        <a href="#" id="keypair-kp" class="btn btn-blue">Download Key Pair</a>
+      </p>
+      <div id="keypair-login">
+        <p>Windows Login Password</p>
+        <p>
+          <input type="password" disabled="disabled" id="keypair-pwd">
+          <a href="#" class="icon-copy btn btn-silver" title="Login password">Copy</a>
+        </p>
+      </div>
+      <p>Public DNS</p>
+      <p>
+        <input type="text" disabled="disabled" id="keypair-dns">
+        <a href="#" class="icon-copy btn btn-silver" title="Public DNS">Copy</a>
+      </p>
+    </section>
+  </div>
+
   <div class="modal-footer">
-    <a class="btn disabled" href="#" id="property-app-save-kp">Save</a>
-    <button class="btn modal-close btn-silver">Cancel</button>
+    <button class="btn modal-close btn-silver">Close</button>
   </div>
 </div>
 

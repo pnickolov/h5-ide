@@ -136,7 +136,7 @@ define [ 'jquery',
 
             view.model    = model
 
-            model.on "KP_DOWNLOADED", (data, win_passwd)-> view.updateKPModal(data, win_passwd)
+            model.on "KP_DOWNLOADED", (data, option)-> view.updateKPModal(data, option)
             view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
             view.on "OPEN_AMI", (id) ->
                 data = model.getAMI id

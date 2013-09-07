@@ -1483,10 +1483,10 @@ MC.canvas = {
 
 			if (
 				node_coordinate &&
-				node_coordinate[0] < coordinate.x &&
-				node_coordinate[0] + component_size[0] > coordinate.x &&
-				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + component_size[1] > coordinate.y
+				node_coordinate[0] <= coordinate.x &&
+				node_coordinate[0] + component_size[0] >= coordinate.x &&
+				node_coordinate[1] <= coordinate.y &&
+				node_coordinate[1] + component_size[1] >= coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -2660,6 +2660,8 @@ MC.canvas.volume = {
 MC.canvas.asgList = {
 	show: function (event)
 	{
+		event.stopImmediatePropagation();
+
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
@@ -2682,11 +2684,11 @@ MC.canvas.asgList = {
 			}
 
 			var statusMap = {
-					 "Pending"     : "orange"
-				 , "Quarantined" : "orange"
-				 , "InService"   : "green"
-				 , "Terminating" : "red"
-				 , "Terminated"  : "red"
+				"Pending"     : "orange",
+				"Quarantined" : "orange",
+				"InService"   : "green",
+				"Terminating" : "red",
+				"Terminated"  : "red"
 			};
 
 			var temp_data = {
@@ -2748,6 +2750,8 @@ MC.canvas.asgList = {
 MC.canvas.instanceList = {
 	show: function (event)
 	{
+		event.stopImmediatePropagation();
+
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
@@ -2806,9 +2810,9 @@ MC.canvas.instanceList = {
 				});
 
 			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
-
-			return false;
 		}
+		
+		return false;
 	},
 
 	close: function ()
@@ -2835,6 +2839,8 @@ MC.canvas.instanceList = {
 MC.canvas.eniList = {
 	show: function (event)
 	{
+		event.stopImmediatePropagation();
+
 		if (event.which === 1)
 		{
 			MC.canvas.instanceList.close();
@@ -3846,8 +3852,8 @@ MC.canvas.event.drawConnection = {
 		event.data.draw_line.remove();
 
 		var match_node = MC.canvas.matchPoint(
-				event.pageX - event.data.canvas_offset.left,
-				event.pageY - event.data.canvas_offset.top
+				Math.round(event.pageX - event.data.canvas_offset.left),
+				Math.round(event.pageY - event.data.canvas_offset.top)
 			),
 			svg_canvas = $('#svg_canvas'),
 			from_node = event.data.originalTarget,
@@ -4849,6 +4855,7 @@ MC.canvas.event.selectLine = function (event)
 
 MC.canvas.event.selectNode = function (event)
 {
+	console.info("selectNode ----------------");
 	if (event.which === 1)
 	{
 		MC.canvas.event.clearSelected();

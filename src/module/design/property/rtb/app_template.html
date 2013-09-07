@@ -13,7 +13,7 @@
 
   <div class="option-group-head expand">Routes</div>
   <div class="option-group">
-    <table class="table">
+    <table class="table table-small">
       <thead>
         <tr>
           <th></th>
@@ -32,7 +32,7 @@
         <td>{{destinationCidrBlock}}</td>
         <td>{{gatewayId}}</td>
         {{#if propagate}}
-        <td><i class="icon-propagated tooltip" data-tooltip="Propagated"></i></td>
+        <td><i class="icon-info tooltip" data-tooltip="Propagated"></i></td>
         {{else}}
         <td></td>
         {{/if}}

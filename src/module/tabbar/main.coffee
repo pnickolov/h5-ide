@@ -98,6 +98,12 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 analytics.track "Created Stack",
                     stack_type: platform,
                     stack_region: view.temp_region_name
+
+                # check repeat stack name
+                loop
+                    MC.data.untitled = MC.data.untitled + 1
+                    break if MC.aws.aws.checkStackName null, 'untitled-'+MC.data.untitled
+
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
                 #MC.data.untitled ++

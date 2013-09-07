@@ -8,6 +8,10 @@
 	color: #C7CAC8;
 }
 
+.table-small {
+	font-size: 12px;
+}
+
 .table th {
 	font-weight: 700;
 }
@@ -986,7 +990,8 @@ textarea {
 }
 
 .status-blue,
-.status-available {
+.status-available,
+.status-not-attached {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
 	background-image: -moz-linear-gradient(bottom, #008dde, #58cdfe);
@@ -1400,6 +1405,10 @@ textarea {
 	background: rgba(255,255,255,.05);
 }
 
+.property-app .dl-vertical .truncate {
+	width: 230px;
+}
+
 .dl-vertical .truncate {
 	width : 100%;
 	margin-bottom : 0;
@@ -1710,6 +1719,7 @@ textarea {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 8px;
 	font-size: 12px;
+	position: relative;
 }
 
 .property-content .selectbox .dropdown .item:hover,
@@ -2014,15 +2024,7 @@ textarea {
 }
 
 /* TEMPARORY PROPERTY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-.icon-copy {
-	position   : absolute;
-	right      : -16px;
-	top        : 2px;
-	background : red;
-	width      : 16px;
-	height     : 16px;
-	cursor     : pointer;
-}
+
 
 /* jqPagination */
 .pagination {

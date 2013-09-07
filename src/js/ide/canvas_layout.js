@@ -15,7 +15,6 @@ var listen = function ()
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
-			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
@@ -23,7 +22,8 @@ var listen = function ()
 			.on('selectstart', returnFalse)
 			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
 			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show);
+			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode);
 	}
 
 	if (canvas_state === 'stack')

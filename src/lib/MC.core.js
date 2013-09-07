@@ -12,11 +12,10 @@ var MC = {
 	version: '0.2.8',
 
 	// Global Variable
-	API_URL: 'https://api.madeiracloud.com/html/',
+	API_URL: 'https://api.madeiracloud.com/v2/',
 	IMG_URL: './assets/images/',
-	WS_URL: 'https://api.madeiracloud.com/ws',//-> 8300
-	//SAVEPNG_URL: 'https://api.madeiracloud.com/savepng/',//->8400
-	SAVEPNG_URL: 'http://api.madeiracloud.com:8400/',
+	WS_URL: 'https://api.madeiracloud.com/v2/ws/',//-> 8300
+	SAVEPNG_URL: 'https://api.madeiracloud.com/v2/export/',//->8400
 
 	current_module : {},
 
@@ -112,7 +111,7 @@ var MC = {
 
 		if (!api_frame[0])
 		{
-			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
+			$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
 			api_frame = $('#api-frame');
 			api_frame.load(function ()
 			{

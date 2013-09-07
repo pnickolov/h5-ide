@@ -32,7 +32,7 @@ define [ 'event', 'MC',
                 me.kpModalClosed = true
                 null
 
-            kpModalClosed = false
+            this.kpModalClosed = false
 
             false
 

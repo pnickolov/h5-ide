@@ -2692,9 +2692,12 @@ MC.canvas.asgList = {
 			};
 
 			var temp_data = {
-				name: lc_comp.name,
-				instances: []
+				name      : lc_comp.name,
+				instances : []
 			};
+
+			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
+			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
 
 			if ( layout ) {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
@@ -2811,7 +2814,7 @@ MC.canvas.instanceList = {
 
 			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
 		}
-		
+
 		return false;
 	},
 

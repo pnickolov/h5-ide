@@ -799,6 +799,22 @@ button:focus {
 	background-color: #E688C6;
 }
 
+#global-create-stack.disabled,
+#global-create-stack.disabled:hover {
+	cursor: default;
+	background-image: none;
+	text-shadow: none;
+	color: #D4D4D4;
+	background: #9C9FA2;
+	border: 1px solid #A1A9B0;
+	box-shadow: none;
+}
+
+#global-create-stack.disabled .icon-new-stack,
+#global-create-stack.disabled:hover .icon-new-stack {
+	background-color: #7E7D7D;
+}
+
 #global-region-create-stack-list {
 	left: 20px;
 	width: 216px;

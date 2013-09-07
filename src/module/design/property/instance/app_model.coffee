@@ -157,13 +157,13 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!../../../../nls/lan
                 instance.isRunning = instance.instanceState.name == "running"
                 instance.isPending = instance.instanceState.name == "pending"
                 instance.instanceState.name = MC.capitalize instance.instanceState.name
-                instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
+                instance.blockDevice = ""
+                if instance.blockDeviceMapping && instance.blockDeviceMapping.item
+                    deviceName = []
+                    for i in instance.blockDeviceMapping.item
+                        deviceName.push i.deviceName
 
-                # Keypair Component
-                # keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
-                # myKeypairComponent = MC.canvas_data.component[ keypairUid ]
-
-                # instance.keyName = myKeypairComponent.resource.KeyName
+                    instance.blockDevice = deviceName.join ", "
 
                 # Eni Data
                 instance.eni = this.getEniData instance

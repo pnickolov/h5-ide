@@ -86,7 +86,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.resource_list[r] = {} for r in constant.REGION_KEYS
 
 		#set untitled
-		MC.data.untitled = 1
+		MC.data.untitled = 0
 		#set tab
 		MC.tab  = {}
 		#set process tab

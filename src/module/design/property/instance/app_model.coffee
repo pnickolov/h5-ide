@@ -121,12 +121,13 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
                     if instance_state == 'running'
                         rdp = sprintf constant.RDP_TMPL, instance.ipAddress
 
-                    win_passwd = result.resolved_data.passwordData
+                    if result.resolved_data
+                        win_passwd = result.resolved_data.passwordData
 
 
                 option =
                     type       : 'win'
-                    passwd     : win_passwd,
+                    passwd     : win_passwd
                     rdp        : rdp
                     public_dns : instance.ipAddress
 

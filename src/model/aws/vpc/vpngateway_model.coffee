@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : vpngateway_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:18
+#* Create date  : 2013-08-26 12:19:56
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'vpngateway_service', 'vpngateway_vo'], ( Backbone, vpngateway_service, vpngateway_vo ) ->
+define [ 'backbone', 'underscore', 'vpngateway_service', 'base_model' ], ( Backbone, _, vpngateway_service, base_model ) ->
 
     VPNGatewayModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : vpngateway_vo.vpngateway
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeVpnGateways api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'vpngateway_service', 'vpngateway_vo'], ( Backbone, vpngate
                 if !aws_result.is_error
                 #DescribeVpnGateways succeed
 
-                    vpngateway_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_VGW_DESC_VPN_GWS_RETURN', aws_result
 
                 else
                 #DescribeVpnGateways failed
 
                     console.log 'vpngateway.DescribeVpnGateways failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_VGW_DESC_VPN_GWS_RETURN', aws_result
 
 
 

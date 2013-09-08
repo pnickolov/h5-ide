@@ -1,0 +1,65 @@
+<article>
+  <dl class="dl-vertical">
+    <dt>Security Group ID</dt>
+    <dd>{{sg_app_detail.groupId}}</dd>
+
+    <dt>Description</dt>
+    <dd>{{sg_app_detail.groupDescription}}</dd>
+
+    <dt>VPC ID</dt>
+    <dd>{{sg_app_detail.vpcId}}</dd>
+  </dl>
+
+  <div class="option-group-head expand">Rule
+    <span class="property-head-num-wrap">(<span id="rule-count">{{sg_app_detail.rules.length}}</span>)</span>
+  </div>
+  <div class="option-group">
+<!--     <div id="sg-rule-empty">
+      <p>To create rule referencing IP Range, click plus button here.</p>
+      <p>To create rul referencing specific IP or Security Group, connect the blue port of instance/ELB/ENI.</p>
+    </div> -->
+
+    <div class="rule-list-sort property-control-group">
+      <h5>Sort by</h5>
+      <div class="selectbox" id="sg-rule-filter-select">
+        <div class="selection">Direction</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="item selected" data-id="2">Direction</li>
+          <li class="item" data-id="2">Source/Destination</li>
+          <li class="item" data-id="3">Protocol</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="sg-rule-list property-list" id="sg-rule-list">
+      {{#each sg_app_detail.rules}}
+      <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
+      <div class="rule-list-row">
+          <div class="icon-{{direction}}" data-tooltip="{{direction}}"></div>
+          <div class='rule-source'>
+           {{ipRanges}}
+          </div>
+      </div>
+      <div class="rule-list-row">
+          <span class='rule-protocol'>{{ipProtocol}}</span>
+          <div class='rule-port' title="port message">{{fromPort}}-{{toPort}}</div>
+      </div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="option-group-head expand">Member
+    <span class="property-head-num-wrap">(<span>{{sg_app_detail.members.length}}</span>)</span>
+  </div>
+  <div class="option-group">
+    <ul class="sg-member-list property-list">
+      {{#each sg_app_detail.members}}
+      <li>
+        <div class="sg-member-icon"></div>
+        <div class="sg-member-name">{{name}}</div>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+</article>

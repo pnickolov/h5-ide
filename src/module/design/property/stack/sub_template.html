@@ -1,0 +1,36 @@
+<div style="width:420px">
+   <div class="modal-header">
+      <h3>{{title}} SNS Subscription</h3>
+      <i class="modal-close">&times;</i>
+   </div>
+   <div class="modal-body" id="property-asg-sns-modal" data-uid={{uid}}>
+      <div class="modal-control-group modal-sns-protocol">
+        <label class="label-short">Protocol</label>
+        <div class="selectbox">
+          <div class="selection">{{protocol}}</div>
+          <ul class="dropdown" tabindex="-1">
+            <li class="item" data-id="https">HTTPS</li>
+            <li class="item" data-id="http">HTTP</li>
+            <li class="item" data-id="email">Email</li>
+            <li class="item" data-id="email-json">Email-JSON</li>
+            <li class="item" data-id="sms">SMS</li>
+            <li class="item" data-id="arn">Application</li>
+            <li class="item" data-id="sqs">Amazon SQS</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-control-group">
+        <label class="label-short" for="property-asg-endpoint">Endpoint</label>
+        <div class="property-asg-ep" data-bind="true">
+          <input type="text" class="input" id="property-asg-endpoint" value="{{endpoint}}" max-length="255" data-required="true" data-trigger="change">
+        </div>
+      </div>
+
+    </section>
+
+   </div>
+   <div class="modal-footer">
+      <button id="property-asg-sns-done" class="btn btn-blue">Done</button>
+      <button class="btn modal-close btn-silver">Cancel</button>
+   </div>
+</div>

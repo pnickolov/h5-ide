@@ -2,46 +2,86 @@
 #  Controller for navigation module
 ####################################
 
-define [ 'jquery', 'text!/module/navigation/template.html', '/module/navigation/model.js' ], ( $, template, model ) ->
+define [ 'jquery',
+         'text!./module/navigation/template.html',
+         'text!./module/navigation/template_data.html',
+         './module/navigation/model.js',
+         'event',
+         'base_main',
+         'MC.ide.template'
+], ( $, template, template_data, model, ide_event, base_main ) ->
+
+    #private
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
+
+        #compile partial template
+        MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
+
+    initialize()
 
     #private
     loadModule = () ->
 
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="navigation-tmpl">' + template + '</script>'
-
-        #load remote html template
-        $( template ).appendTo 'head'
-
         #load remote /module/navigation/view.js
-        require [ './module/navigation/view', 'UI.tooltip', 'UI.scrollbar', 'UI.accordion', 'hoverIntent' ], ( View ) ->
+        require [ './module/navigation/view', 'UI.tooltip', 'hoverIntent' ], ( View ) ->
 
             #view
-            view       = new View()
+            #view       = new View()
+
+            view = loadSuperModule loadModule, 'navigation', View, null
+            return if !view
+
             view.model = model
-            
+            #refresh view
+            view.render template
+
             #listen vo set change event
             model.on 'change:app_list', () ->
                 console.log 'change:app_list'
-                view.render()
+                #push event
+                ide_event.trigger ide_event.RESULT_APP_LIST, model.get 'app_list'
+                #refresh view
+                view.appListRender()
+                #call
+                model.stackListService()
 
             model.on 'change:stack_list', () ->
                 console.log 'change:stack_list'
-                view.render()
-
-            model.on 'change:region_list', () ->
-                console.log 'change:region_list'
-                view.render()
+                #push event
+                ide_event.trigger ide_event.RESULT_STACK_LIST, model.get 'stack_list'
+                #refresh view
+                view.stackListRender()
+                #call
+                model.regionEmptyList()
 
             model.on 'change:region_empty_list', () ->
                 console.log 'change:region_empty_list'
-                view.render()
+                #push event
+                ide_event.trigger ide_event.RESULT_EMPTY_REGION_LIST, null
+                #refresh view
+                view.regionEmtpyListRender()
+                #call
+                model.describeRegionsService()
+
+            model.on 'change:region_list', () ->
+                console.log 'change:region_list'
+                #refresh view
+                view.regionListRender()
 
             #model
             model.appListService()
-            model.stackListService()
-            model.describeRegionsService()
-            model.regionEmptyList()
+
+            ide_event.onLongListen ide_event.UPDATE_APP_LIST, () ->
+                console.log 'UPDATE_APP_LIST'
+                #call
+                model.appListService()
+
+            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, () ->
+                console.log 'UPDATE_STACK_LIST'
+                #call
+                model.stackListService()
 
     unLoadModule = () ->
         #view.remove()

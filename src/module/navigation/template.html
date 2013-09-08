@@ -1,218 +1,80 @@
-<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
+<ul id="first-level-nav">
+	<li class="nav-head">
 
-<ul id="first-level-nav" class="scroll-content accordion">
-
-	<li class="nav-head accordion-group">
-
-		<a href="javascript:void(0)" class="accordion-head" id="nav-dashboard"><i class="icon-gauge icon-nav-label"></i><span class="first-level-nav-label">Dashboard<i class="icon-angle-down icon-nav-accordion"></i></span></a>
-
-		<div class="sub-menu-wrapper accordion-body">
-			<ul class="sub-menu" id="nav-dashboard-region">
-
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-globe icon-nav-label"></i>
-						Global Overview
-						<!-- <span class="nav-head-note">{{ attributes.region_list.length }} Regions in Use</span> -->
-					</a>
-				</li>
-
-				{{#each region_list }}
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate">
-						<i class="status status-grey icon-nav-status"></i>{{ region_city }}
-						<span class="nav-head-note">{{ region_area }}</span>
-					</a>
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>N. Virginia
-					<span class="nav-head-note">US East</span></a>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>Oregon
-					<span class="nav-head-note">US West</span></a>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>Singapore
-					<span class="nav-head-note">Asia Pacific</span></a>
-				</li>
-				-->
-
-			</ul>
-		</div>
-
-	</li>
-
-	<li class="nav-head accordion-group">
-
-		<a href="javascript:void(0)" class="nav-head accordion-head" id="nav-app"><i class="icon-browser icon-nav-label"></i><span class="first-level-nav-label">App<i class="icon-angle-down icon-nav-accordion"></i></span></a>
-
-		<div class="sub-menu-wrapper accordion-body">
-			<ul class="sub-menu nav-region-list" id="nav-app-region">
-
-				{{#each app_list }}
-				<li>
-					<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
-					<ul class="nav-region-list-items">
-						{{#each region_name_group }}
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
-								<i class="status status-{{ state }} icon-nav-status"></i>
-								{{ name }}
-							</a>
-						</li>
-						{{/each}}
-					</ul>
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)">N. Virginia (3)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-green icon-nav-status"></i>App-long-name-2</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>App-longlong-name-3</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)">Oregon (2)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-red icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-red icon-nav-status"></i>App-long-name-2</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)">Singapore (3)</a>
-					<ul class="nav-region-list-items">
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-green icon-nav-status"></i>App-name-1</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-blue icon-nav-status"></i>App-long-name-2</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="status status-grey icon-nav-status"></i>App-long-name-2</a>
-						</li>
-					</ul>
-				</li>
-				-->
-			</ul>
-
-		</div>
-
-	</li>
-
-	<li class="nav-head accordion-group">
-
-		<a href="javascript:void(0)" class="nav-head accordion-head" id="nav-stack">
-			<i class="icon-layers icon-nav-label"></i>
-			<span class="first-level-nav-label">Stack
-				<i class="icon-angle-down icon-nav-accordion"></i>
-			</span>
+		<a href="javascript:void(0)" id="nav-dashboard">
+			<i class="icon-dashboard icon-nav-label"></i>
 		</a>
 
-		<div class="sub-menu-wrapper accordion-body">
+		<div class="sub-menu-wrapper">
+			<div class="first-level-nav-label">{{ i18n "NAV_TIT_DASHBOARD" }}</div>
 
-			<ul class="sub-menu nav-region-list accordion-bod" id="nav-stack-region">
+			<div class="scroll-wrap sub-menu-scroll-wrap">
 
-				{{#each stack_list }}
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">{{ region_group }} ({{ region_count }})<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 
-					<ul class="nav-region-list-items">
+				<ul class="sub-menu scroll-content" id="nav-dashboard-region">
 
-						{{#each region_name_group }}
+					<li>
+						<a href="javascript:void(0)" class="truncate nav-truncate">
+							{{ i18n "NAV_LBL_GLOBAL" }}
+						</a>
+					</li>
 
-						<li>
-							<a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>{{ name }}</a>
-						</li>
+					<div class="nav-region-group">
+						loading...
+					</div>
 
-						{{/each}}
-
-					</ul>
-
-				</li>
-				{{/each}}
-
-				<!--
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">N. Virginia (3) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-longlong-name-3</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">Oregon (2) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:void(0)" class="nav-stack-region-title">Singapore (3) <span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span></a>
-					<ul class="nav-region-list-items">
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-name-1</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-						<li><a href="javascript:void(0)" class="truncate nav-truncate"><i class="icon-layers icon-nav-label"></i>Stack-long-name-2</a></li>
-					</ul>
-				</li>
-				-->
-			</ul>
-
-			{{#if region_empty_list }}
-
-			<ul class="sub-menu nav-region-list accordion-bod">
-				{{#each region_empty_list }}
-
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						{{ this }} (0) 
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-
-				{{/each}}
-
-				<!--
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						Tokyo (0) 
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-				<li class="hide">
-					<a href="javascript:void(0)" class="nav-stack-region-title">
-						Ireland (0) 
-						<span class="nav-new-stack tooltip" data-tooltip="Create new stack"><i class="icon-file-add"></i></span>
-					</a>
-				</li>
-				-->
-			</ul>
-
-			<div class="show-unused-region">
-				<a href="javascript:void(0)" class="tooltip" data-tooltip="Show unused regions">
-					<i class="icon-double-angle-down"></i>
-				</a>
+				</ul>
 			</div>
 
-			{{/if}}
+		</div>
+
+	</li>
+
+	<li class="nav-head">
+
+		<a href="javascript:void(0)" id="nav-app">
+			<i class="icon-app-nav icon-nav-label"></i>
+		</a>
+
+		<div class="sub-menu-wrapper">
+			<div class="first-level-nav-label">{{ i18n "NAV_TIT_APPS" }}</div>
+			<div class="scroll-wrap sub-menu-scroll-wrap">
+
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+
+				<ul class="sub-menu nav-region-list scroll-content" id="nav-app-region">
+					loading...
+				</ul>
+
+			</div>
+		</div>
+
+	</li>
+
+	<li class="nav-head">
+
+		<a href="javascript:void(0)" id="nav-stack">
+			<i class="icon-stack-nav icon-nav-label"></i>
+		</a>
+
+		<div class="sub-menu-wrapper">
+			<div class="first-level-nav-label">{{ i18n "NAV_TIT_STACKS" }}</div>
+			<div class="scroll-wrap sub-menu-scroll-wrap">
+
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+
+					<div class="scroll-content">
+						<ul class="sub-menu nav-region-list" id="nav-stack-region">
+							loading...
+						</ul>
+
+						<div class="nav-region-empty-list">
+							loading...
+						</div>
+					</div>
+
+			</div>
 
 		</div>
 

@@ -1,20 +1,8 @@
 var install = require( 'bower' ).commands.install;
 
-/*
-var paths   = [
-	'jquery',
-	'underscore',
-	'backbone',
-	'handlebars',
-	'requirejs',
-	'requirejs-text',
-	'requirejs-domready'
-];
-*/
-
 module.exports.run = function( grunt, callback ) {
 
-	var comp = grunt.file.readJSON( 'component.json' );
+	var comp = grunt.file.readJSON( 'bower.json' );
 
 	var paths = [];
 

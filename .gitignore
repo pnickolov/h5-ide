@@ -1,20 +1,20 @@
+*.bat
+.DS_Store
 
 #ignore demo
 src/js/demo/*.js
 src/js/demo/**/*.js
 
 #ignore node_modules
-node_modules
+node_modules/**
 
 #ignore components
-components
+bower_components/**
+components/**
 
-#ignore release
-release
-
-#ignore vender
-src/vender/**/*.*
-!src/vender/canvon/canvon.js
+#ignore release publish
+release/**
+publish/**
 
 #ignore page
 src/js/*.js
@@ -31,11 +31,16 @@ src/service/*.js
 
 #ignore module
 src/module/**/*.js
-!src/module/canvas/canvas.js
+
+#ignore lib
+src/lib/websocket.js
+src/lib/constant.js
 
 #ignore test
 src/test/console/js/*.js
 src/test/**/*.js
+src/test/websocket/request/*.js
+!src/test/json_view/*.js
 
 #ignore util
 util/gen_service/out.tmp
@@ -45,4 +50,8 @@ util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
 
-.DS_Store
+#ignore event
+src/event/*.js
+
+#ignore *.map
+*.map

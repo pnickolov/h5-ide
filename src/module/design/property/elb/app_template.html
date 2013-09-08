@@ -1,0 +1,94 @@
+<article class="property-app">
+
+  <div class="option-group-head expand">Load Balancer Details</div>
+  <div class="option-group">
+      <dl class="dl-vertical">
+        <dt>Scheme</dt>
+        <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
+        <dt>DNS Name</dt>
+        <dd id="property-app-elb-dnss">
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{DNSName}}">(A){{DNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{DNSName}}"></i></div>
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{AAAADNSName}}">(AAAA){{AAAADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{AAAADNSName}}"></i></div>
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{ADNSName}}">(A/AAAA){{ADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{ADNSName}}"></i></div>
+        </dd>
+        <dt>Hosted Zone ID</dt>
+        <dd>{{CanonicalHostedZoneNameID}}<dd>
+      </dl>
+  </div>
+
+  <div class="option-group-head">Listener Configuration</div>
+  <div class="option-group">
+    <ul class="property-list">
+    {{#each listenerDisplay}}
+      <li class="clearfix">
+        <div class="app-panel-li-col2-1">
+          <label>Load Balancer Protocol</label>
+          <div>{{Listener.Protocol}}</div>
+        </div>
+
+        <div class="app-panel-li-col2-2">
+          <label>Port</label>
+          <div>{{Listener.LoadBalancerPort}}</div>
+        </div>
+
+        <div class="app-panel-li-col2-1">
+          <label>Instance Protocol</label>
+          <div>{{Listener.InstanceProtocol}}</div>
+        </div>
+
+        <div class="app-panel-li-col2-2">
+          <label>Port</label>
+          <div>{{Listener.InstancePort}}</div>
+        </div>
+      </li>
+    {{/each}}
+    {{#if server_certificate}}
+      <li class="clearfix">
+        <p class="app-panel-li-main">Server Certificate</p>
+        <p class="app-panel-li-sub">{{server_certificate}}</p>
+      </li>
+    {{/if}}
+    </ul>
+  </div>
+
+  <div class="option-group-head">Health Check Configuration</div>
+  <div class="option-group">
+      <dl class="dl-vertical">
+        <dt>Ping Protocol</dt>
+        <dd>{{HealthCheck.protocol}}</dd>
+        <dt>Ping Port</dt>
+        <dd>{{HealthCheck.port}}</dd>
+        <dt>Ping Path</dt>
+        <dd>{{HealthCheck.path}}</dd>
+
+        <dt>Health Check Interval</dt>
+        <dd>{{HealthCheck.Interval}} Seconds</dd>
+        <dt>Response Timeout</dt>
+        <dd>{{HealthCheck.Timeout}} Seconds</dd>
+        <dt>Unhealthy Threshold</dt>
+        <dd>{{HealthCheck.UnhealthyThreshold}}</dd>
+        <dt>Healthy Threshold</dt>
+        <dd>{{HealthCheck.HealthyThreshold}}</dd>
+      </dl>
+  </div>
+
+  <div class="option-group-head">Distribution</div>
+  <ul class="option-group property-list">
+    {{#each distribution}}
+    <li>
+      <div class="list-row">
+          <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
+          <span class="app-panel-li-main">{{zone}} {{#if subnet}}<span class="sub">- {{subnet}}</span>{{/if}} </span>
+      </div>
+      <div class="list-row">
+        <p class="app-panel-li-sub"> {{health_instance}}/{{total_instance}} instances are healthy </p>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+  {{#if have_vpc}}
+  <div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
+  <div class="option-group sg-group">Loading...</div>
+  {{/if}}
+
+</article>

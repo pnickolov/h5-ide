@@ -1,0 +1,27 @@
+<article class="property-app">
+  <div class="option-group-head expand">Launch Configuration</div>
+  <div class="option-group">
+
+    <dl class="dl-vertical">
+      <dt>Create Time</dt>
+      <dd>{{lc.CreatedTime}}</dd>
+    </dl>
+
+    <dl class="dl-vertical">
+      <dt>AMI</dt>
+      <dd>{{lc.ImageId}}<dd>
+      <dt>Instance Type</dt>
+      <dd>{{lc.InstanceType}}</dd>
+      <dt>Key Pair</dt>
+      <dd><a href="#" class="icon-download" id="property-app-keypair">{{lc.KeyName}}</a></dd>
+    </dl>
+
+    <dl class="dl-vertical">
+      <dt>EBS Optimized</dt>
+      <dd>{{lc.EbsOptimized}}<dd>
+    </dl>
+  </div>
+
+  <div class="option-group-head expand">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group"></div>
+</article>

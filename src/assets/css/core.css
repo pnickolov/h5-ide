@@ -1,5 +1,5 @@
 /* Fonts */
-@font-face
+/*@font-face
 {
 	font-family: Nunito-Light;
 	src: url('../fonts/Nunito-Light.ttf') format('truetype');
@@ -9,9 +9,9 @@
 {
 	font-family: Nunito-Regular;
 	src: url('../fonts/Nunito-Regular.ttf') format('truetype');
-}
+}*/
 
-@font-face
+/*@font-face
 {
 	font-family: VeraMono;
 	src: url('../fonts/VeraMono.ttf') format('truetype');
@@ -23,22 +23,30 @@
 	font-style: normal;
 	font-weight: 400;
 	src: local('Ubuntu'), url('../fonts/ubuntu.woff') format('woff');
-}
+}*/
 
-@font-face
+/*@font-face
 {
 	font-family: 'Titillium Web';
 	font-style: normal;
 	font-weight: 400;
 	src: local('Titillium'), url('../fonts/TitilliumWeb-Regular.ttf') format('truetype');
 }
-
+*/
 @font-face
 {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
 	src: local('Lato'), url('../fonts/Lato-regular.ttf') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: bold;
+	src: local('Lato'), url('../fonts/Lato-Bold.ttf') format('truetype');
 }
 
 /* CSS reset */
@@ -80,6 +88,7 @@ textarea {
 	margin: 0;
 	font-size: 100%;
 	vertical-align: middle;
+	font-family: 'Lato', 'Titillium Web', 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 }
 
 button,
@@ -140,8 +149,8 @@ h6 {
 	font-size: 11.9px;
 }
 
-ul, 
-ol, 
+ul,
+ol,
 li {
 	margin: 0;
 	padding: 0;
@@ -171,6 +180,25 @@ p {
 
 .hide {
 	display: none;
+}
+
+.disable-event {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	/*pointer-events: none;*/
+}
+
+.disable-pointer-event {
+	pointer-events: none;
+}
+
+.grabbing {
+	cursor: -webkit-grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: grabbing !important;
 }
 
 .text-left {
@@ -221,7 +249,11 @@ body {
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
 	body {
-		/*font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;*/
 		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
 	}
+}
+
+/* Hide Selection */
+::selection {
+	background: transparent;
 }

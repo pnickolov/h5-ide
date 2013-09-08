@@ -1,0 +1,60 @@
+<article>
+
+  <section class="property-control-group">
+    <dl class="dl-vertical">
+      <dt>Network ACL ID</dt>
+      <dd>{{component.networkAclId}}</dd>
+
+      <dt>Default</dt>
+      <dd>{{component.default}}</dd>
+
+      <dt>VPC ID</dt>
+      <dd>{{component.vpcId}}</dd>
+    </dl>
+  </section>
+
+
+  <header class="option-group-head">Rule<span class="property-head-num-wrap">({{component.rule_number}})</span></header>
+  <article class="option-group">
+    <div class="rule-list-sort property-control-group">
+      <h5>Sort by</h5>
+      <div class="selectbox" id="acl-sort-rule-select">
+        <div class="selection">Rule Number</div>
+        <ul class="dropdown" tabindex="-1">
+          <li data-id="1" class="item selected">Rule Number</li>
+          <li data-id="2" class="item">Action</li>
+          <li data-id="3" class="item">Direction</li>
+          <li data-id="4" class="item">Source/Destination</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="property-list acl-rule-list">
+      {{#each component.entrySet.item}}
+        <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
+          <div class="tooltip acl-rule-number" data-tooltip="Rule Number">{{ruleNumber}}</div>
+          <div class="acl-rule-details">
+            <div class="rule-list-row">
+              <div href="#" class="acl-rule-allow-cb tooltip icon-{{ruleAction}}" data-tooltip="{{ruleAction}}"></div>
+              <div class="{{#if egress}}acl-rule-outbound icon-outbound {{else}}acl-rule-inbound icon-inbound{{/if}} tooltip" data-tooltip="{{#if egress}}Outbound{{else}}Inbound{{/if}}"></div>
+              <div class="acl-rule-reference tooltip" data-tooltip="CidrBlock">{{cidrBlock}}</div>
+            </div>
+            <div class="rule-list-row">
+              <span class="rule-protocol acl-rule-protocol tooltip" data-tooltip="Protocol">{{protocolName}}({{protocol}})</span>
+              <div class="acl-rule-port tooltip" data-tooltip="Port">{{portRange.to}}-{{portRange.from}}</div>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </article>
+
+
+  <header class="option-group-head">Association<span class="property-head-num-wrap">({{component.asso_number}})</span></header>
+  <ul class="option-group property-list">
+    {{#each component.associationSet.item}}
+      <li>{{subnetDisplay}}</li>
+    {{/each}}
+  </ul>
+
+</article>

@@ -1,0 +1,50 @@
+<div id="process-panel">
+	<section id="process-container">
+		<header id="process-title">
+			<h1 class="title">{{ i18n "PROC_TITLE" }}</h1>
+		</header>
+		<div id="process-body">
+
+		{{#if flag_list.is_done}}
+		<div class="result-success">
+			<p class="result-title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
+			<p class="result-sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
+		</div>
+		{{/if}}
+
+		{{#if flag_list.is_pending}}
+		<div class="step-prepare clearfix">
+			<h2>{{ i18n "PROC_STEP_PREPARE" }}</h2><i class="loading-spinner"></i>
+		</div>
+		{{/if}}
+
+		{{#if flag_list.is_failed}}
+		<div class="result-fail">
+			<p class="result-title">{{ i18n "PROC_RLT_FAILED_TITLE" }}</p>
+			<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+			<div class="result-error-info">
+				<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+				<p class="detail">{{flag_list.err_detail}}</p>
+			</div>
+			<div class="action">
+				<button class="btn btn-silver btn-close-process">{{ i18n "PROC_CLOSE_TAB" }}</button>
+			</div>
+		</div>
+		{{/if}}
+
+		{{#if flag_list.is_inprocess}}
+		<div class="step-request">
+			<h2>{{ i18n "PROC_STEP_REQUEST" }}</h2>
+			<div class="progress">
+				<div class="bar" id="progress_bar" style="width: {{flag_list.rate}}%;"></div>
+			</div>
+			<p class="process-info">
+				<span><b class="num" id="progress_num">{{flag_list.dones}}</b> of</span>
+				<span><b class="total" id="progress_total">{{flag_list.steps}}</b> tasks</span>
+			</p>
+		</div>
+		{{/if}}
+
+		</div>
+	</section>
+</div>

@@ -1,5 +1,22 @@
-<a href="javascript:void(0)" id="hide-property-panel" class="tooltip sidebar-hider" data-tooltip="Hide Property Panel"><i class="icon-double-angle-right"></i></a>
-<div class="sidebar-title">
-	<span class="sidebar-title-text">Property Panel</span>
-	<a href="javascript:void(0)" id="property-help"><i class="icon-help"></i></a>
+<a href="#" id="hide-property-panel" class="tooltip sidebar-hider icon-caret-right" data-tooltip="Show/Hide Property Panel">
+</a>
+
+<div class="property-wrap">
+  <section class="property-panel-wrapper" id="property-first-panel">
+    <header class="property-sidebar-title sidebar-title truncate" id='property-title'></header>
+    <div class="scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content property-content property-details"></div>
+    </div>
+  </section>
+
+  <section class="property-panel-wrapper" id="property-second-panel">
+    <div class="property-sidebar-title sidebar-title">
+      <a class="back tooltip icon-btn-back" data-tooltip="" href="#" id="hide-second-panel"></a><span id='property-second-title' class="truncate"></span>
+    </div>
+    <div class="scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content property-content"></div>
+    </div>
+  </section>
 </div>

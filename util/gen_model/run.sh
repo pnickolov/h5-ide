@@ -13,7 +13,7 @@ SH_BASE_DIR=$(cd "$(dirname "$0")"; pwd)
 cd ${SH_BASE_DIR}
 
 #python base dir
-SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../api/Source/INiT/Instant/Forge/AppService"
+SRC_BASE_DIR_=${SH_BASE_DIR}/"../../../../api/Source/INiT/Instant/Forge/AppService"
 #python source subidr
 SRC_DIR=( "Handler" "Forge" "AWS")
 
@@ -49,7 +49,7 @@ format_event () {
     then
         G_EVENT=`echo ${___API_NAME} | awk -v service=${___SERVICE} -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_%s", toupper(service), toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `
     else
-        G_EVENT=`echo ${___API_NAME} | awk -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_", toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `        
+        G_EVENT=`echo ${___API_NAME} | awk -v resource=${___RESOURCE} -F ""  'BEGIN{printf "%s_", toupper(resource)}{for ( x=1; x<=NF; x++){if ($x==toupper($x)){printf "_%s", toupper($x)}else{printf toupper($x)}}}END{printf "\n"}' `
     fi
 
     G_EVENT=${G_EVENT/DESCRIBE/DESC}
@@ -70,7 +70,7 @@ format_event () {
     G_EVENT=${G_EVENT/KEYPAIR/KP}
     G_EVENT=${G_EVENT/OPTIONGROUP/OG}
     G_EVENT=${G_EVENT/PARAMETERGROUP/PG}
-    G_EVENT=${G_EVENT/PLACEMENT/PLA}    
+    G_EVENT=${G_EVENT/PLACEMENT/PLA}
     G_EVENT=${G_EVENT/CUSTOMERGATEWAY/CGW}
     G_EVENT=${G_EVENT/INTERNETGATEWAY/IGW}
     G_EVENT=${G_EVENT/ROUTETABLE/RT}
@@ -94,10 +94,10 @@ format_event () {
     G_EVENT=${G_EVENT/TABLE/TBL}
     G_EVENT=${G_EVENT/CONNECTION/CONN}
     G_EVENT=${G_EVENT/METADATA/MDATA}
-    G_EVENT=${G_EVENT/ORDERABLE/ORD} 
-    G_EVENT=${G_EVENT/HEALTH/HLT} 
-    G_EVENT=${G_EVENT/TYPE/TYP} 
-    G_EVENT=${G_EVENT/ALARM/ALM} 
+    G_EVENT=${G_EVENT/ORDERABLE/ORD}
+    G_EVENT=${G_EVENT/HEALTH/HLT}
+    G_EVENT=${G_EVENT/TYPE/TYP}
+    G_EVENT=${G_EVENT/ALARM/ALM}
     G_EVENT=${G_EVENT/STATISTIC/STAT}
     G_EVENT=${G_EVENT/HISTORY/HIST}
     G_EVENT=${G_EVENT/NOTIFICATION/NTF}
@@ -109,11 +109,11 @@ format_event () {
     G_EVENT=${G_EVENT/ACTIVITIE/ACTI}
     G_EVENT=${G_EVENT/ACTION/ACT}
     G_EVENT=${G_EVENT/AUTHORIZE/AUTH}
-    G_EVENT=${G_EVENT/POLICY/PCY}    
-    G_EVENT=${G_EVENT/NETWORK/NET}    
-    G_EVENT=${G_EVENT/ADDRESS/ADDR}    
-    G_EVENT=${G_EVENT/PASSWORD/PWD}    
-    G_EVENT=${G_EVENT/POLICIES/PCYS}  
+    G_EVENT=${G_EVENT/POLICY/PCY}
+    G_EVENT=${G_EVENT/NETWORK/NET}
+    G_EVENT=${G_EVENT/ADDRESS/ADDR}
+    G_EVENT=${G_EVENT/PASSWORD/PWD}
+    G_EVENT=${G_EVENT/POLICIES/PCYS}
 }
 
 

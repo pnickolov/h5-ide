@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : customergateway_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:17
+#* Create date  : 2013-08-26 12:19:55
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'customergateway_service', 'customergateway_vo'], ( Backbone, customergateway_service, customergateway_vo ) ->
+define [ 'backbone', 'underscore', 'customergateway_service', 'base_model' ], ( Backbone, _, customergateway_service, base_model ) ->
 
     CustomerGatewayModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : customergateway_vo.customergateway
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeCustomerGateways api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'customergateway_service', 'customergateway_vo'], ( Backbon
                 if !aws_result.is_error
                 #DescribeCustomerGateways succeed
 
-                    customergateway_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_CGW_DESC_CUST_GWS_RETURN', aws_result
 
                 else
                 #DescribeCustomerGateways failed
 
                     console.log 'customergateway.DescribeCustomerGateways failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_CGW_DESC_CUST_GWS_RETURN', aws_result
 
 
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : optiongroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:15
+#* Create date  : 2013-08-26 12:19:53
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'optiongroup_service', 'optiongroup_vo'], ( Backbone, optiongroup_service, optiongroup_vo ) ->
+define [ 'backbone', 'underscore', 'optiongroup_service', 'base_model' ], ( Backbone, _, optiongroup_service, base_model ) ->
 
     OptionGroupModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : optiongroup_vo.optiongroup
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeOptionGroupOptions api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'optiongroup_service', 'optiongroup_vo'], ( Backbone, optio
                 if !aws_result.is_error
                 #DescribeOptionGroupOptions succeed
 
-                    optiongroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_OG_DESC_OPT_GRP_OPTIONS_RETURN', aws_result
 
                 else
                 #DescribeOptionGroupOptions failed
 
                     console.log 'optiongroup.DescribeOptionGroupOptions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_OG_DESC_OPT_GRP_OPTIONS_RETURN', aws_result
 
 
         #DescribeOptionGroups api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'optiongroup_service', 'optiongroup_vo'], ( Backbone, optio
                 if !aws_result.is_error
                 #DescribeOptionGroups succeed
 
-                    optiongroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_OG_DESC_OPT_GRPS_RETURN', aws_result
 
                 else
                 #DescribeOptionGroups failed
 
                     console.log 'optiongroup.DescribeOptionGroups failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_OG_DESC_OPT_GRPS_RETURN', aws_result
 
 
 

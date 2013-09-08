@@ -4,48 +4,21 @@
 	<title>MadeiraCloud - Login</title>
 
 	<meta charset="UTF-8" />
+	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico">
 
 	<link rel="stylesheet" href="./assets/css/core.css" media="all"/>
 	<link rel="stylesheet" href="./assets/css/login.css" media="all"/>
 
 	<link id="css_style" rel="stylesheet" href="./assets/css/UI.component.css" media="all"/>
 	<link id="css_style" rel="stylesheet" href="./assets/css/icon-font.css" media="all"/>
-
 </head>
 <body id="body">
 	<div id="container">
-		<header>
-			<a id="logo-link" href="http://www.madeiracloud.com/"></a>
-		</header>
-		<div id="login-box" class="clearfix">
-			<div id="login-title">
-				<h2>Log In</h2><div id="login-register">New to MadeiraCloud? <a href="#" id="link-register">Register</a></div>
-			</div>
-			<form id="login-form">
-				<div class="error-msg" id="error-msg-1">Email address or username does not match password.</div>
-				<div class="error-msg" id="error-msg-2">Hey, you fogot to provide email address.</div>
-				<div class="control-group">
-					<input autocomplete="off" id="login-user" placeholder="Email Address or Username" type="text" class="login-input" name="user_name"/>
-					<label for="login-user" class="icon-envelope login-label"></label>
-				</div>
-				<div class="control-group">
-					<input autocomplete="off" id="login-password" placeholder="Password" type="password" class="login-input" name="password"/>
-					<label for="login-password" class="icon-key login-label"></label>
-				</div>
-				<a href="#" id="link-foget">Forget Password?</a>
-				<div id="login-footer">
-					<input id="login-btn" type="submit" value="Log In" class="btn btn-primary btn-large" data-loading-text="Logging in..."/>
-				</div>
-			</form>
-		</div>
-		<div id="footer-push"></div>
+		<p>Loading, please wait...</p>
 	</div>
 
-	<footer>
-		<div id="footer-info">MaderiaCloud HTML5 Version</div>
-	</footer>
-	
+	<script type="text/javascript" src="./lib/version.js"></script>
+	<script type="text/javascript" src="./lib/analytics.js"></script>
 	<script type="text/javascript" data-main="./js/login/config" src="./vender/requirejs/require.js"></script>
-
 </body>
 </html>

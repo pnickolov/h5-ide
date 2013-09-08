@@ -1,14 +1,19 @@
+
+var path = require( 'path' ),
+    os   = require( 'os' );
+
 module.exports = function( grunt ) {
 
 	var config = {
 
 		pkg        : grunt.file.readJSON( 'package.json' ),
-		comp       : grunt.file.readJSON( 'component.json' ),
 
 		src        : 'src',
-		libs       : 'vender',
-		components : 'components',
 		release    : 'release',
+		publish    : 'publish',
+		temp       : '~temp',
+		vender     : 'vender',
+		components : 'bower_components',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -26,7 +31,12 @@ module.exports = function( grunt ) {
 			'<%= sourcedir[1] %>/**/*.js',
 			'!<%= src %>/vender/*',
 			'!<%= sourcedir[1] %>/canvas/canvas.js',
-			'!<%= sourcedir[0] %>/ide/layout.js'
+			'!<%= sourcedir[0] %>/ide/layout.js',
+			'!<%= sourcedir[0] %>/ide/canvas_layout.js',
+			'!<%= sourcedir[1] %>/design/resource/temp_view.js',
+			'!<%= sourcedir[1] %>/design/property/temp_view.js',
+			'!<%= src %>/service/*',
+			'!<%= src %>/test/*'
 		],
 
 		cssfiles   : [
@@ -36,7 +46,8 @@ module.exports = function( grunt ) {
 			'!<%= src %>/vender/qunit/*.css',
 			'!<%= src %>/test/console/css/*.css',
 			'!<%= src %>/test/console/prettify/*.css',
-			'!<%= src %>/bootstrap/**/*.css'
+			'!<%= src %>/bootstrap/**/*.css',
+			'!<%= src %>/test/jsondiff/css/master.css'
 		],
 
 		coffeefiles : [
@@ -68,6 +79,12 @@ module.exports = function( grunt ) {
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
 		uglify     : require( './config/uglify.js'  ),
+
+		requirejs  : require( './config/requirejs.js' ),
+		strip      : require( './config/strip.js'   ),
+		"dev_prod_switch": require( './config/dev_prod_switch.js'),
+
+		concat     : require( './config/concat.js'  ),
 
 		sweep      : require( './config/sweep.js'   )
 
@@ -107,15 +124,57 @@ module.exports = function( grunt ) {
 	});
 
 	/* task of use as make(compiler) */
+	grunt.registerTask( 'make_fast', function() {
+		grunt.task.run([
+			'coffee:compile_fast'
+		]);
+	});
 	grunt.registerTask( 'make', function() {
-		grunt.task.run([ 'coffee', 'coffeelint', 'jshint', 'csslint' ]);
+		grunt.task.run([
+			'coffeelint:files',
+			'coffee:compile_normal',
+			'jshint',
+			'csslint'
+		]);
+	});
+	grunt.registerTask( 'make_all', function() {
+		grunt.task.run([
+			'coffeelint:files',
+			'coffee:compile_all',
+			'jshint',
+			'csslint'
+		]);
+	});
+	grunt.registerTask( 'make_release', function() {
+		grunt.task.run([
+			'copy:dev_prod_switch_task',
+			'replace:prod_env_switch',
+			'dev_prod_switch',
+			'replace:analytics',
+			'strip'
+		]);
 	});
 
 	/* task of use as develop */
-	grunt.registerTask( 'develop', ['make',
+	grunt.registerTask( 'dev_fast', [
+									'make_fast',
 									'livereload-start',
 									'connect:develop',
-									'open:develop',/*modify by xjimmy*/
+									'open:develop',
+									'watch'
+	]);
+	grunt.registerTask( 'develop', [
+									'make',
+									'livereload-start',
+									'connect:develop',
+									'open:develop',
+									'watch'
+	]);
+	grunt.registerTask( 'dev_all', [
+									'make_all',
+									'livereload-start',
+									'connect:develop',
+									'open:develop',
 									'watch'
 	]);
 
@@ -127,18 +186,57 @@ module.exports = function( grunt ) {
 									'watch'
 	]);
 
-	/* task of use as publish */
-	grunt.registerTask( 'publish', ['make',
-									'clean',
+	/* task of use as release */
+	grunt.registerTask( 'release', ['clean:release',
+									'make_all',
 									'copy:publish',
-									'htmlmin',
-									'replace',/*add by xjimmy, replace version info*/
+									'copy:lib_aws',
+									'copy:lib_forge',
+									'copy:special_lib',
+									'copy:special_ui',
+									'make_release',
 									'cssmin',
 									'uglify',
-									'string-replace',/*add by xjimmy, remove console.log, console.info */
-									'open:publish',/*modify by xjimmy*/
+									'copy:special_lib_rename',
+									'copy:special_ui_rename',
+									'copy:special_lib_del',
+									'copy:special_ui_del',
+									'open:publish',
+									'connect:release'
+	]);
+
+	/* run at r.js as publish */
+	grunt.registerTask( 'publish', ['requirejs',
+									'copy:publish_login',
+									'clean:temp',
+									'open:publish',
 									'connect:publish'
 	]);
+
+	/*
+	grunt.event.on( 'regarde:file', function (status, target, filepath) {
+		console.log("status = " + status );
+		console.log("filepath = " + filepath );
+		console.log("target = " + target );
+		if ( target == 'coffee' ) {
+			var config = grunt.config( 'coffee' ) || {};
+			var value = config.refresh || {};
+			value.files = value.files || [];
+			var cwd = path.dirname(filepath),
+				src = path.basename(filepath);
+			console.log("cwd = " + cwd )
+			console.log("src = " + src )
+			value.files.push({
+				expand:true,
+				src:src,
+				dest:'src/',
+				cwd:cwd,
+				ext:'.js'
+			});
+			grunt.config('coffee', config);
+		}
+	});
+	*/
 
 	/* task of use as sweep */
 	/*

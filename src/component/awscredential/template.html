@@ -1,0 +1,72 @@
+<!-- AWSCredential -->
+<div id="AWSCredential-setting" style="width: 450px">
+	<div class="modal-header">
+		<h3>AWS Credentials</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div id="AWSCredential-form">
+		<div id="AWSCredential-info" class="AWSCredential-wall">
+			<p>To launch and manage AWS resources, please provide your AWS account credentials.</p>
+		</div>
+		<div id="AWSCredential-failed" class="AWSCredential-wall">
+			<p>Authentication failed. Please check your AWS Credentials and try again.</p>
+		</div>
+		<div class="modal-body">
+			<ul>
+				<li>
+					<i class="icon-info icon-label tooltip" data-tooltip="Your AWS account number is shown in the upper-left
+	area of your browser window when you're logged into
+	your AWS Account. e.g., 123456789000"></i>
+					<label>Account Number</label>
+					<input class="input" id="aws-credential-account-id" type="text" />
+				</li>
+				<li>
+					<i class="icon-info icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
+	Credentials menu under Access Keys tab in the box at
+	the middle of the page. e.g.,
+	ABCDEFGHIJ1LMNOPQR2S"></i>
+					<label>Access Key ID</label>
+					<input class="input" id="aws-credential-access-key" type="text" />
+				</li>
+				<li>
+					<i class="icon-info icon-label tooltip" data-tooltip="You will ﬁnd those keys in Account > Security
+	Credentials menu under Access Keys tab in the box at
+	the middle of the page. e.g., aBCDefgH/
+	Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"></i>
+					<label>Secret Key</label>
+					<input class="input" id="aws-credential-secret-key" type="text" />
+				</li>
+			</ul>
+		</div>
+		<div class="modal-footer">
+			<!-- <a href="/help" id="AWSCredentials-link" target="_blank">Need help?</a> -->
+			<button id="awsredentials-submit" class="btn btn-blue">Submit</button>
+		</div>
+	</div>
+
+	<div id="AWSCredentials-submiting">
+		<div id="AWSCredentials-submiting-body">
+			<img id="AWSCredentials-loading" src="./assets/images/ide/loading-logo-white.gif" alt="loading"/>
+			<span id="AWSCredentials-loading-text">Connecting to AWS account</span>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-silver" disabled>Loading...</button>
+		</div>
+	</div>
+
+	<div id="AWSCredentials-update">
+		<div class="AWSCredentials-body-info">
+			<h5>You have connected with following AWS account:</h5>
+			<div class="AWSCredentials-account-info">
+				<span id="aws-credential-update-account-id">{{account_id}}</span>
+				<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-silver" id="awsredentials-update-done">Done</button>
+		</div>
+	</div>
+</div>
+

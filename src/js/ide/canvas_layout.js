@@ -1,0 +1,72 @@
+
+// [ Warning!!!! ] DEAD CODE
+// This source code is dead. listen() / ready() / connect() seems like doing nothing.
+// But it pollutes the window object. Which makes it un-removable !!!!
+// Dom Ready
+var listen = function ()
+{
+	var canvas_state = MC.canvas.getState(),
+		canvas_container = $('#canvas_container');
+
+	MC.paper = Canvon('#svg_canvas');
+
+	if (canvas_state === 'app')
+	{
+		canvas_container
+			.addClass('canvas_state_' + canvas_state)
+			.on('mousedown', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('click', '.line', MC.canvas.event.selectLine)
+			.on('mousedown', MC.canvas.event.clearSelected)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
+			.on('selectstart', returnFalse)
+			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
+			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
+			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode);
+	}
+
+	if (canvas_state === 'stack')
+	{
+		canvas_container
+			.addClass('canvas_state_' + canvas_state)
+			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
+			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
+			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
+			.on('click', '.line', MC.canvas.event.selectLine)
+			.on('mousedown', MC.canvas.event.clearSelected)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('selectstart', returnFalse);
+	}
+
+	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);
+};
+
+// Dom Ready
+var canvas_initialize = function ()
+{
+	$(document).on('keydown', MC.canvas.event.keyEvent);
+
+	$('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close);
+
+	$('#tab-content-design').on('mousedown', '.resource-item', MC.canvas.event.siderbarDrag.mousedown);
+
+	$(document.body)
+		.on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown);
+
+};
+
+// Dom Ready
+var connect = function ()
+{
+
+};
+
+define( ['jquery'], function() {
+	return {
+		'listen'     : listen,
+		'canvas_initialize' : canvas_initialize,
+		'connect'    : connect
+	};
+});

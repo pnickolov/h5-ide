@@ -6,12 +6,41 @@
   "state": "Enabled",
   "username": "eGppbW15",
   "owner": "xjimmy",
+  "version": "4.0",
   "component": {
 
   },
   "layout": {
-    "type": "canvas",
-    "size": [width, height]
+    "size": [ "width", "height" ],
+    "component" : {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": [
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      ]
+    },
+    "connection": {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+        "target": [
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        ],
+        "auto": true,
+        "point": [
+          ["$x", "$y" ],
+          ["$x", "$y" ]
+        ],
+        //SVG not save into mongodb
+        "SVG": {
+
+        }
+      }
+    }
   },
   "history": {
 

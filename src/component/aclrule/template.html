@@ -1,0 +1,229 @@
+<div id="modal-acl-rule" data-bind="true">
+  <div class="modal-header"><h3>Add Network ACL Rule</h3><i class="modal-close">&times;</i></div>
+  <div class="modal-body" style="width:450px;">
+	<div class="modal-control-group clearfix">
+	  <label class="label-short" for="modal-acl-number">Rule Number</label>
+	  <div class="prefix-input left">
+	  		<label for="modal-acl-number">#</label>
+	  		<input class="input" type="text" id="modal-acl-number" required data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+	  </div>
+	</div>
+	<div class="modal-control-group clearfix">
+		<label class="label-short">Action</label>
+		<div class="radio-group-horizontal">
+			<div class="radio">
+				<input type="radio" id="acl-add-model-action-allow" checked="checked" name="acl-add-model-action-select"/>
+				<label for="acl-add-model-action-allow"></label>
+			</div>
+			<label class="radio-label" for="acl-add-model-action-allow">Allow</label>
+		</div>
+		<div class="radio-group-horizontal">
+			<div class="radio">
+				<input type="radio" id="acl-add-model-action-deny" name="acl-add-model-action-select"/>
+				<label for="acl-add-model-action-deny"></label>
+			</div>
+			<label class="radio-label" for="acl-add-model-action-deny">Deny</label>
+		</div>
+	</div>
+	<div class="modal-control-group clearfix">
+		<label class="label-short">Direction</label>
+		<div class="radio-group-horizontal">
+			<div class="radio">
+				<input type="radio" id="acl-add-model-direction-inbound" checked="checked" name="acl-add-model-direction-select"/>
+				<label for="acl-add-model-direction-inbound"></label>
+			</div>
+			<label class="radio-label" for="acl-add-model-direction-inbound">Inbound</label>
+		</div>
+		<div class="radio-group-horizontal">
+			<div class="radio">
+				<input type="radio" id="acl-add-model-direction-outbound" name="acl-add-model-direction-select"/>
+				<label for="acl-add-model-direction-outbound"></label>
+			</div>
+			<label class="radio-label" for="acl-add-model-direction-outbound">Outbound</label>
+		</div>
+	</div>
+	<div class="modal-control-group acl-sourece-dest clearfix">
+	  <label class="label-short" id="acl-add-model-bound-label">Source</label>
+		<div class="selectbox" id="acl-add-model-source-select">
+			<div class="selection">Custom</div>
+			<ul class="dropdown">
+
+			</ul>
+	  </div>
+	  <input class="input" type="text" id="modal-acl-source-input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true">
+	</div>
+<!--     <div class="modal-row">
+	  <label for="Source">Protocol</label>
+		<div class="modal-acl-source-wrapper property-control-group">
+			<div class="selectbox selectbox-mega" id="acl-add-model-protocol-select">
+				<div class="selection">TCP</div>
+				<ul class="dropdown">
+					<li class="item tooltip selected" data-value="6"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip" data-value="17"><div class="main truncate">UDP</div></li>
+					<li class="item tooltip" data-value="1"><div class="main truncate">ICMP</div></li>
+					<li class="item tooltip" data-value="5"><div class="main truncate">Custom</div></li>
+					<li class="item tooltip" data-value="-1"><div class="main truncate">All</div></li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<input class="input" id="acl-rule-modal-port-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
+		</div>
+	</div>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="modal-control-group clearfix">
+	  <label class="label-short" >Protocol</label>
+	  <!-- <div class="context" > -->
+		<!-- <div class="modal-protocol-select"> -->
+		  <div class="selectbox modal-protocol-select" id="modal-protocol-select"  data-protocal-type="tcp">
+			<div class="selection">TCP</div>
+			<ul class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" tabindex="-1">
+			  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+			  <li class="selected item" data-id="tcp">TCP</li>
+			  <li class="item" data-id="udp">UDP</li>
+			  <li class="item" data-id="icmp">ICMP</li>
+			  {{#if isclassic}}
+			  {{else}}
+			  <li class="item" data-id="custom">Custom</li>
+			  <li class="item" data-id="all">All</li>
+			  {{/if}}
+			</ul>
+		  </div>
+		<!-- </div> -->
+	  <div id="sg-protocol-select-result">
+		  <div class="sg-protocol-option-input show" id="sg-protocol-tcp">
+			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
+		  </div>
+		  <div class="sg-protocol-option-input" id="sg-protocol-udp">
+			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
+		  </div>
+		  <div class="sg-protocol-option-input" id="sg-protocol-icmp">
+			<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
+			  <div class="selection">Echo Reply(0)</div>
+			  <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+				<ul tabindex="-1" class=“scroll-content”>
+				  <li class="item selected" data-id="0">Echo Reply(0)</li>
+				  <li class="item" data-id="3">Destination Unreachable(3) ...</li>
+				  <li class="item" data-id="4">Source Quench(4)</li>
+				  <li class="item" data-id="5">Redirect Message(5) ...</li>
+				  <li class="item" data-id="6">Alternate Host Address(6)</li>
+				  <li class="item" data-id="8">Echo Request(8)</li>
+				  <li class="item" data-id="9">Router Advertisement(9)</li>
+				  <li class="item" data-id="10">Router Solicitation(10)</li>
+				  <li class="item" data-id="11">Time Exceeded(11) ...</li>
+				  <li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+				  <li class="item" data-id="13">Timestamp(13)</li>
+				  <li class="item" data-id="14">Timestamp Reply(14)</li>
+				  <li class="item" data-id="15">Information Request(15)</li>
+				  <li class="item" data-id="16">Information Reply(16)</li>
+				  <li class="item" data-id="17">Address Mask Request(17)</li>
+				  <li class="item" data-id="18">Address Mask Reply(18)</li>
+				  <li class="item" data-id="30">Traceroute(30)</li>
+				  <li class="item" data-id="31">Datagram Conversion Error(31)</li>
+				  <li class="item" data-id="32">Mobile Host Redirect(32)</li>
+				  <li class="item" data-id="33">Where Are You(33)</li>
+				  <li class="item" data-id="34">Here I Am(34)</li>
+				  <li class="item" data-id="35">Mobile Registration Request(35)</li>
+				  <li class="item" data-id="36">Mobile Registration Reply(36)</li>
+				  <li class="item" data-id="37">Domain Name Request(37)</li>
+				  <li class="item" data-id="38">Domain Name Reply(38)</li>
+				  <li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+				  <li class="item" data-id="40">Photuris Security Failures(40)</li>
+				  <li class="item" data-id="-1">All(-1)</li>
+				</ul>
+			  </div>
+		  </div>
+		  <div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
+			<div class="selection">All(-1)</div>
+			<ul class="dropdown" tabindex="-1">
+			  <li class="item selected" data-id="-1">All(-1)</li>
+			  <li class="item" data-id="0">destination network unreachable(0)</li>
+			  <li class="item" data-id="1">destination host unreachable(1)</li>
+			  <li class="item" data-id="2">destination protocol unreachable(2)</li>
+			  <li class="item" data-id="3">destination port unreachable(3)</li>
+			  <li class="item" data-id="4">fragmentation required and DF flag set(4)</li>
+			  <li class="item" data-id="5">source route failed(5)</li>
+			  <li class="item" data-id="6">destination network unknown(6)</li>
+			  <li class="item" data-id="7">destination host unknown(7)</li>
+			  <li class="item" data-id="8">source host isolated(8)</li>
+			  <li class="item" data-id="9">network administratively prohibited(9)</li>
+			  <li class="item" data-id="10">host administratively prohibited(10)</li>
+			  <li class="item" data-id="11">network unreachable for TOS(11)</li>
+			  <li class="item" data-id="12">host unreachable for TOS(12)</li>
+			  <li class="item" data-id="13">communication administratively prohibited(13)</li>
+			</ul>
+		  </div>
+		  <div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
+			<div class="selection">All(-1)</div>
+			<ul class="dropdown" tabindex="-1">
+			  <li class="selected item" data-id="-1">All(-1)</li>
+			  <li class="item" data-id="0">redirect datagram for the network(0)</li>
+			  <li class="item" data-id="1">redirect datagram for the host(1)</li>
+			  <li class="item" data-id="2">redirect datagram for the TOS & network(2)</li>
+			  <li class="item" data-id="3">redirect datagram for the TOS & host(3)</li>
+			</ul>
+		  </div>
+		  <div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
+			<div class="selection">All(-1)</div>
+			<ul class="dropdown" tabindex="-1">
+			  <li class="item selected" data-id="-1">All(-1)</li>
+			  <li class="item" data-id="0">TTL expired transit(0)</li>
+			  <li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
+			</ul>
+		  </div>
+		  <div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
+			<div class="selection">All(-1)</div>
+			<ul class="dropdown" role="menu">
+			  <li class="item selected" data-id="-1">All(-1)</li>
+			  <li class="item" data-id="0">pointer indicates the error(0)</li>
+			  <li class="item" data-id="1">missing a required option(1)</li>
+			  <li class="item" data-id="2">bad length(2)</li>
+			</ul>
+		  </div>
+		  </div>
+		  <div class="sg-protocol-option-input" id="sg-protocol-custom">
+			<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
+		  </div>
+		  <div class="sg-protocol-option-input" id="sg-protocol-all" required data-ignore="true" data-ignore-regexp="^[0-9-]*$">
+			Port Range:<span>0-65535</span>
+		  </div>
+	  <!-- </div> -->
+	  </div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <div class="modal-footer">
+	<button class="btn btn-blue" id="acl-modal-rule-save-btn">Save</button>
+	<button class="btn btn-silver modal-close">Cancel</button>
+  </div>
+</div>

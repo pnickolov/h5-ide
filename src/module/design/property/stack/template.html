@@ -1,0 +1,104 @@
+<article>
+
+	<section class="property-control-group" data-bind="true">
+		<label class="left" for="property-stack-name">Stack Name</label>
+		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
+	</section>
+	<dl class="dl-horizontal dl-region-type property-control-group">
+		<dt><label>Region</label></dt>
+		<dd>{{property_detail.region}}</dd>
+		<dt><label>Type</label></dt>
+		<dd>{{property_detail.type}}</dd>
+	</dl>
+
+	<!-- SG, ACL, COST -->
+	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group">Loading...</div>
+
+	{{#if property_detail.is_vpc}}
+	<div class="option-group-head pos-r">Network ACL<span class="property-head-num-wrap">({{network_acl.length}})</span>
+	</div>
+	<div class="option-group stack-property-acl-list">Loading...</div>
+	{{/if}}
+
+	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">(<span id="property-stack-sns-num">{{subscription.length}}</span>)</span></div>
+  <div class="option-group">
+
+  	<ul id="property-sub-list" class="property-list">
+      <li class="pos-r hide">
+      	<dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol"></dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint"></dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
+        
+      </li>
+      {{#each subscription}}
+      <li class="pos-r" data-uid="{{uid}}">
+        <dl class="dl-horizontal dl-region-type">
+	        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+	        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+        </dl>
+        <div class="sns-action">
+        	<i class="icon-edit"></i>
+	        <i class="icon-del icon-remove"></i>
+        </div>
+      </li>
+      {{/each}}
+  	</ul>
+
+    <section class="property-sns-info property-control-group">
+      <div id="property-sns-no-sub-no-asg" class="property-info" >
+        <p>SNS is available for auto scaling group notification and scaling policy.</p>
+        <p>You can enable auto scaling group to send notification via SNS Topic</p>
+      </div>
+
+      <div id="property-sns-no-asg" class="property-info"><p>There is no auto scaling group in this stack using notification. If there is no usage of SNS topic, the topic will not be created when the stack runs into an app.</p></div>
+
+      <div id="property-sns-no-sub"><p class="property-warning">There is auto scaling group relay on SNS Topic to receive notification. Yet no subscription is set up. </p></div>
+    </section>
+	<div class="tac property-control-group"><button id="property-create-asg" class="btn btn-blue" style="width:180px">Add Subscription</button></div>
+  	
+  </div>
+
+	<div class="option-group-head">
+		Cost Estimation
+		<span class="cost-counter right">{{#if total_fee}}${{total_fee}}/month{{/if}}</span>
+	</div>
+	<div class="option-group">
+		<table class="table cost-estimation-table">
+			<thead>
+				<tr>
+					<th style="">Resource</th>
+					<th style="">Size/Type</th>
+					<th style="">Fee($)</th>
+				</tr>
+			</thead>
+
+
+			<tbody>
+				{{#each cost_list}}
+				<tr>
+					<td>{{resource}}</td>
+                    {{#if size}}
+					<td>{{size}}</td>
+                    {{else}}
+                    <td>{{type}}</td>
+                    {{/if}}
+					<td>{{fee}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+
+		</table>
+		<div class="property-control-group tac">
+			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+		</div>
+	</div>
+
+</article>
+
+

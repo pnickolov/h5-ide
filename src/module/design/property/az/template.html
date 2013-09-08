@@ -1,0 +1,11 @@
+<section class="property-control-group">
+  <label class="left">Quick Switch Availability Zone</label>
+  <div class="selectbox selectbox-mega" id="az-quick-select" component="{{id}}">
+    <div class="selection">{{component.name}}</div>
+    <ul class="dropdown" tabindex="-1">
+      {{#each az_list}}
+        <li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}">{{name}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</section>

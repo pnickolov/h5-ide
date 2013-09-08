@@ -3,7 +3,7 @@
 #* Filename: UI.accordion
 #* Creator: Angel
 #* Description: UI.accordion
-#* Date: 201306032
+#* Date: 20130704
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -47,5 +47,5 @@ var accordion = {
 
 $(document).ready(function ()
 {
-	$(document).on('click', '.accordion-head', accordion.show);
+	$(document.body).on('click', '.accordion-head', accordion.show);
 });

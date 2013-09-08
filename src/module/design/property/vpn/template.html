@@ -1,0 +1,27 @@
+<article class="property-control-group" id="property-vpn-dynamic-info" {{#if vpn_detail.is_dynamic}}{{else}}style="display:none;"{{/if}}>
+  Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary.
+</article>
+
+<article class="property-control-group" id="property-vpn-ips-wrapper" {{#if vpn_detail.is_dynamic}}style="display:none;"{{/if}}>
+
+  <div class="clearfix">
+    <label class="left" for="property-vpc-ips">Network IP Prefixes</label>
+    <span class="required-input right">Required</span>
+  </div>
+
+  <div id="property-vpn-ips" class="multi-input" data-max-row="100" data-bind="true">
+    {{#each vpn_detail.ips}}
+    <div class="multi-ipt-row">
+      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" value="{{this}}" type="text"></span>
+    </div>
+    {{else}}
+    <div class="multi-ipt-row">
+      <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+      <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="e.g., 192.168.0.0/16" placeholder="e.g., 192.168.0.0/16" type="text"></span>
+    </div>
+    {{/each}}
+  </div>
+</article>
+
+

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : instance_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:10
+#* Create date  : 2013-08-26 12:19:48
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_service, instance_vo ) ->
+define [ 'backbone', 'underscore', 'instance_service', 'base_model' ], ( Backbone, _, instance_service, base_model ) ->
 
     InstanceModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : instance_vo.instance
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #RunInstances api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #RunInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_RUN_INSTANCES_RETURN', aws_result
 
                 else
                 #RunInstances failed
 
                     console.log 'instance.RunInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_RUN_INSTANCES_RETURN', aws_result
 
 
         #StartInstances api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #StartInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_START_INSTANCES_RETURN', aws_result
 
                 else
                 #StartInstances failed
 
                     console.log 'instance.StartInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_START_INSTANCES_RETURN', aws_result
 
 
         #StopInstances api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #StopInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_STOP_INSTANCES_RETURN', aws_result
 
                 else
                 #StopInstances failed
 
                     console.log 'instance.StopInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_STOP_INSTANCES_RETURN', aws_result
 
 
         #RebootInstances api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #RebootInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_REBOOT_INSTANCES_RETURN', aws_result
 
                 else
                 #RebootInstances failed
 
                     console.log 'instance.RebootInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_REBOOT_INSTANCES_RETURN', aws_result
 
 
         #TerminateInstances api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #TerminateInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_TERMINATE_INSTANCES_RETURN', aws_result
 
                 else
                 #TerminateInstances failed
 
                     console.log 'instance.TerminateInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_TERMINATE_INSTANCES_RETURN', aws_result
 
 
         #MonitorInstances api (define function)
@@ -162,18 +145,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #MonitorInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_MONITOR_INSTANCES_RETURN', aws_result
 
                 else
                 #MonitorInstances failed
 
                     console.log 'instance.MonitorInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_MONITOR_INSTANCES_RETURN', aws_result
 
 
         #UnmonitorInstances api (define function)
@@ -188,18 +168,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #UnmonitorInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_UNMONITOR_INSTANCES_RETURN', aws_result
 
                 else
                 #UnmonitorInstances failed
 
                     console.log 'instance.UnmonitorInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_UNMONITOR_INSTANCES_RETURN', aws_result
 
 
         #BundleInstance api (define function)
@@ -214,18 +191,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #BundleInstance succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_BUNDLE_INSTANCE_RETURN', aws_result
 
                 else
                 #BundleInstance failed
 
                     console.log 'instance.BundleInstance failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_BUNDLE_INSTANCE_RETURN', aws_result
 
 
         #CancelBundleTask api (define function)
@@ -240,18 +214,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #CancelBundleTask succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_CANCEL_BUNDLE_TASK_RETURN', aws_result
 
                 else
                 #CancelBundleTask failed
 
                     console.log 'instance.CancelBundleTask failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_CANCEL_BUNDLE_TASK_RETURN', aws_result
 
 
         #ModifyInstanceAttribute api (define function)
@@ -266,18 +237,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #ModifyInstanceAttribute succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_MODIFY_INSTANCE_ATTR_RETURN', aws_result
 
                 else
                 #ModifyInstanceAttribute failed
 
                     console.log 'instance.ModifyInstanceAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_MODIFY_INSTANCE_ATTR_RETURN', aws_result
 
 
         #ResetInstanceAttribute api (define function)
@@ -292,18 +260,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #ResetInstanceAttribute succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_RESET_INSTANCE_ATTR_RETURN', aws_result
 
                 else
                 #ResetInstanceAttribute failed
 
                     console.log 'instance.ResetInstanceAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_RESET_INSTANCE_ATTR_RETURN', aws_result
 
 
         #ConfirmProductInstance api (define function)
@@ -318,18 +283,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #ConfirmProductInstance succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_CONFIRM_PRODUCT_INSTANCE_RETURN', aws_result
 
                 else
                 #ConfirmProductInstance failed
 
                     console.log 'instance.ConfirmProductInstance failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_CONFIRM_PRODUCT_INSTANCE_RETURN', aws_result
 
 
         #DescribeInstances api (define function)
@@ -344,18 +306,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #DescribeInstances succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_DESC_INSTANCES_RETURN', aws_result
 
                 else
                 #DescribeInstances failed
 
                     console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_DESC_INSTANCES_RETURN', aws_result
 
 
         #DescribeInstanceStatus api (define function)
@@ -370,18 +329,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #DescribeInstanceStatus succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_DESC_INSTANCE_STATUS_RETURN', aws_result
 
                 else
                 #DescribeInstanceStatus failed
 
                     console.log 'instance.DescribeInstanceStatus failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_DESC_INSTANCE_STATUS_RETURN', aws_result
 
 
         #DescribeBundleTasks api (define function)
@@ -396,18 +352,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #DescribeBundleTasks succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_DESC_BUNDLE_TASKS_RETURN', aws_result
 
                 else
                 #DescribeBundleTasks failed
 
                     console.log 'instance.DescribeBundleTasks failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_DESC_BUNDLE_TASKS_RETURN', aws_result
 
 
         #DescribeInstanceAttribute api (define function)
@@ -422,18 +375,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #DescribeInstanceAttribute succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_DESC_INSTANCE_ATTR_RETURN', aws_result
 
                 else
                 #DescribeInstanceAttribute failed
 
                     console.log 'instance.DescribeInstanceAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_DESC_INSTANCE_ATTR_RETURN', aws_result
 
 
         #GetConsoleOutput api (define function)
@@ -448,18 +398,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #GetConsoleOutput succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', aws_result
 
                 else
                 #GetConsoleOutput failed
 
                     console.log 'instance.GetConsoleOutput failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', aws_result
 
 
         #GetPasswordData api (define function)
@@ -474,18 +421,15 @@ define [ 'backbone', 'instance_service', 'instance_vo'], ( Backbone, instance_se
                 if !aws_result.is_error
                 #GetPasswordData succeed
 
-                    instance_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_INS_GET_PWD_DATA_RETURN', aws_result
 
                 else
                 #GetPasswordData failed
 
                     console.log 'instance.GetPasswordData failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_INS_GET_PWD_DATA_RETURN', aws_result
 
 
 

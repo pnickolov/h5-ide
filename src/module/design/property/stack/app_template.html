@@ -1,0 +1,89 @@
+<article class="property-app">
+
+
+	<dl class="dl-horizontal dl-region-type property-control-group">
+		<dt><label>Region</label></dt>
+		<dd>{{property_detail.region}}</dd>
+		<dt><label>Type</label></dt>
+		<dd>{{property_detail.type}}</dd>
+	</dl>
+
+	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group sg-group">loading...</div>
+
+	{{#if property_detail.is_vpc}}
+	<div class="option-group-head">Network ACL<span class="property-head-num-wrap">({{network_acl.length}})</span></div>
+	<div class="option-group stack-property-acl-list"></div>
+	{{/if}}
+
+	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
+	<div class="option-group">
+		{{#if subscription}}
+		<div class="property-group-head">SNS Topic</div>
+		<div class="property-control-group">
+      <dl class="dl-vertical">
+        <dt>SNS Topic Name</dt>
+        <dd>{{snstopic.name}}</dd>
+        <dt>SNS Topic ARN</dt>
+        <dd id="property-app-elb-dnss">
+          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{snstopic.arn}}">{{snstopic.arn}}</span><i title="SNS Topic ARN" class="icon-copy" data-clipboard-text="{{snstopic.arn}}"></i></div>
+        </dd>
+      </dl>
+    </div>
+    <div class="property-group-head">Subscription</div>
+    <ul class="property-list">
+    {{#each subscription}}
+	    <li>
+	    	<!-- <div>Protocol&nbsp;&nbsp;&nbsp;&nbsp;{{protocol}}</div>
+	    	<div>Endpoint&nbsp;&nbsp;&nbsp;&nbsp;{{endpoint}}</div> -->
+	    	<dl class="dl-horizontal dl-region-type">
+		        <dt><label>Protocol</label></dt><dd class="protocol">{{protocol}}</dd>
+		        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
+	        </dl>
+	    </li>
+    {{/each}}
+    </ul>
+		{{else}}
+		<div class="property-control-group">
+			<p class="property-info tac">This app has no SNS Topic</p>
+		</div>
+		{{/if}}
+	</div>
+
+	<div class="option-group-head">
+		Cost Estimation
+		<span class="cost-counter right">{{#if total_fee}} ${{total_fee}}/month {{/if}}</span>
+	</div>
+	<div class="option-group">
+		<table class="table cost-estimation-table">
+			<thead>
+				<tr>
+					<th style="">Resource</th>
+					<th style="">Size/Type</th>
+					<th style="">Fee($)</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{{#each cost_list}}
+				<tr>
+					<td>{{resource}}</td>
+                    {{#if size}}
+                    <td>{{size}}</td>
+                    {{else}}
+                    <td>{{type}}</td>
+                    {{/if}}
+					<td>{{fee}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		<div class="property-control-group tac">
+			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+		</div>
+	</div>
+</article>
+
+
+
+

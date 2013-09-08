@@ -1,0 +1,13 @@
+<ul class="acl-sg-info-list property-list">
+{{#each network_acl}}
+	<li>
+		<div class="col3 edit icon-btn-details" acl-uid="{{uid}}"></div>
+		<div class="col2">
+			<div class="col2-1 truncate">{{name}}</div>
+			<div class="col2-3 truncate">{{rule}} rules, {{association}} associations</div>
+			<div class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</div>
+		</div>
+	</li>
+{{/each}}
+</ul>
+<a href="javascript:void(0)" class="add-to-list action-link" id="stack-property-add-new-acl" title="Create new Network ACL">Create new Network ACL...</button>

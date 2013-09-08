@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Madeira Console</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="/assets/css/icon-font.css"/>
+	<link rel="stylesheet" href="/assets/css/core.css"/>
+	<link rel="stylesheet" href="/assets/css/ide.css"/>
+	<link rel="stylesheet" href="/assets/css/grid.css"/>
+	<link rel="stylesheet" href="/assets/css/UI.component.css"/>
+	<link rel="stylesheet" href="/assets/css/login.css"/>
+
+</head>
+<body id="body">
+
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main" style="left:10px;top:10px;" >
+
+			<div id="login_wrap">
+
+				<span ><b>Madeira Console</b></span>
+
+				<div class="error-msg" id="error-msg-1">Username or email does not match the password.</div>
+				<div class="error-msg" id="error-msg-2">Hey, you fogot to provide a username or email.</div>
+
+				<form id="login-form">
+
+					<input class="input" id="login-user" type="input" placeholder="Username" />
+					<input class="input" id="login-password" type="password" placeholder="Password" />
+					<input class="btn" id="login-btn" style="position:relative;display:inline" type="submit" value="login" disabled />
+				</form>
+				<div id="label_login_result"></div>
+			</div>
+
+			<div id="progress_wrap" >
+				<div class="step-request">
+					<h5 id="progress_title">Loading Progress</h5>
+					<div class="progress">
+						<div class="bar" id="progress_bar" style="width: 0%;"></div>
+					</div>
+					<p class="process-info">
+						<span><b class="num" id="progress_num">0</b> of</span>
+						<span><b class="total" id="progress_total">0</b> regions</span>
+					</p>
+				</div>
+			</div>
+
+			<!-- Dasboard region Tab -->
+			<div id="tab-content-region" class="main-content scroll-wrap active">
+				Please login first.
+			</div>
+
+		</div>
+	</div>
+
+	<script type="text/javascript" data-main="/test/madeira_console/config" src="/vender/requirejs/require.js"></script>
+
+</body>
+</html>

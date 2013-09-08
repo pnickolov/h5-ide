@@ -42,7 +42,33 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 });
 ###
 
-define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
+define [ 'jquery', 'handlebars',
+         'MC', 'session_model',
+         'i18n!nls/lang.js',
+         'text!./js/login/template.html',
+         'forge_handle'
+], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
+
+
+	#setMadeiracloudIDESessionID = ( result ) ->
+	#
+	#	madeiracloud_ide_session_id = [
+	#		result.userid,
+	#		result.usercode,
+	#		result.session_id,
+	#		result.region_name,
+	#		result.email,
+	#		result.has_cred,
+	#		result.account_id
+	#	]
+	#
+	#	$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
+	#		path: '/',
+	#		#domain: '.madeiracloud.com', #temp comment
+	#		expires: 1
+	#	}
+	#
+	#	null
 
 	#private method
 	MC.login = ( event ) ->
@@ -62,7 +88,7 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 			return false
 
 		#invoke session.login api
-		session_model.login {sender: this}, username, password
+		session_model.login { sender : this }, username, password
 
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
@@ -73,12 +99,11 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 				result = forge_result.resolved_data
 
 				#set cookies
-				$.cookie 'userid',      result.userid,      { expires: 3600 }
-				$.cookie 'usercode',    result.usercode,    { expires: 3600 }
-				$.cookie 'session_id',  result.session_id,  { expires: 3600 }
-				$.cookie 'region_name', result.region_name, { expires: 3600 }
-				$.cookie 'email',       result.email,       { expires: 3600 }
-				$.cookie 'has_cred',    result.has_cred,    { expires: 3600 }
+				forge_handle.cookie.setCookie result
+
+				#set madeiracloud_ide_session_id
+				#setMadeiracloudIDESessionID result
+				forge_handle.cookie.setIDECookie result
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'
@@ -97,4 +122,15 @@ define [ 'MC', 'session_model' ,'jquery'], ( MC, session_model, $ ) ->
 
 	#public object
 	ready : () ->
-		$( '#login-form' ).submit( MC.login )
+		#i18n
+		Handlebars.registerHelper 'i18n', ( text ) ->
+			new Handlebars.SafeString lang.login[ text ]
+		#
+		$( '#container' ).html Handlebars.compile template
+		#
+		$( '#login-btn'   ).removeAttr 'disabled'
+		$( '#login-btn'   ).addClass 'enabled'
+		$( '#login-form'  ).submit( MC.login )
+		$( '#footer' ).text 'version ' + version
+
+		return true

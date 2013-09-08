@@ -1,288 +1,127 @@
 @font-face {
-	font-family: 'MC-ide';
-	src:url('icon-fonts/MC-ide.eot');
-	src:url('icon-fonts/MC-ide.eot?#iefix') format('embedded-opentype'),
-		url('icon-fonts/MC-ide.woff') format('woff'),
-		url('icon-fonts/MC-ide.ttf') format('truetype'),
-		url('icon-fonts/MC-ide.svg#MC-ide') format('svg');
-	font-weight: normal;
-	font-style: normal;
+
+	font-family : 'MCIcon';
+	font-weight : normal;
+	font-style  : normal;
+
+	src:url('../fonts/icon.eot');
+	src:url('../fonts/icon.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/icon.woff') format('woff'),
+		url('../fonts/icon.ttf') format('truetype');
 }
 
-/* Use the following CSS code if you want to use data attributes for inserting your icons */
-[data-icon]:before {
-	font-family: 'MC-ide';
-	content: attr(data-icon);
-	speak: none;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+.icon-play,
+.icon-stop,
+.icon-save,
+.icon-stack,
+.icon-undo,
+.icon-redo,
+.icon-zoom-out,
+.icon-zoom-in,
+.icon-send,
+.icon-add,
+.icon-duplicate,
+.icon-delete,
+.icon-new-stack,
+.icon-btn-details,
+.icon-btn-back,
+.icon-export-png,
+.icon-export-json,
+.icon-caret-down,
+.icon-terminate,
+.icon-close,
+.icon-caret-right,
+.icon-caret-left,
+.icon-close-circle,
+.icon-info,
+.icon-user,
+.icon-password,
+.icon-notification,
+.icon-message,
+.icon-remove,
+.icon-allow,
+.icon-deny,
+.icon-outbound,
+.icon-inbound,
+.icon-refresh,
+.icon-edit,
+.icon-resize-right,
+.icon-resize-left,
+.icon-resize-down,
+.icon-resize-up,
+.icon-pending,
+.icon-warning,
+.icon-error,
+.icon-success,
+.icon-time,
+.icon-sort,
+.icon-detail, 
+.ipt-controls > .icon-del:before,
+.ipt-controls > .icon-add:before,
+.icon-line-shape,
+.icon-copy,
+.icon-straight,
+.icon-elbow,
+.icon-bezier-q,
+.icon-bezier-qt
+{
+	font : 16px/1em "MCIcon";
+	font-weight : normal;
 	-webkit-font-smoothing: antialiased;
 }
 
-/* Use the following CSS code if you want to have a class per icon */
-/*
-Instead of a list of all class selectors,
-you can use the generic selector below, but it's slower:
-[class*="icon-"] {
-*/
-.icon-bell, .icon-gauge, .icon-settings, .icon-browser, .icon-grid, .icon-globe, .icon-window, .icon-server, .icon-hdd, .icon-envelope, .icon-eye, .icon-zoom-out, .icon-zoom-in, .icon-trashcan, .icon-flag, .icon-key, .icon-settings-2, .icon-enlarge, .icon-refresh, .icon-undo, .icon-redo, .icon-desktop, .icon-tree, .icon-cancel, .icon-grid-2, .icon-tag, .icon-popup, .icon-desktop-2, .icon-user, .icon-users, .icon-cloud, .icon-clock, .icon-zoom-in-2, .icon-zoom-out-2, .icon-search, .icon-lock, .icon-unlocked, .icon-cloud-dl, .icon-cloud-ul, .icon-cloud-2, .icon-pointer, .icon-download, .icon-upload, .icon-file-add, .icon-list, .icon-layout, .icon-checkmark, .icon-close, .icon-bolt, .icon-list-2, .icon-grid-3, .icon-list-3, .icon-heart, .icon-user-2, .icon-double-angle-left, .icon-double-angle-right, .icon-double-angle-up, .icon-double-angle-down, .icon-angle-left, .icon-angle-right, .icon-angle-up, .icon-angle-down, .icon-sitemap, .icon-caret-down, .icon-caret-up, .icon-caret-left, .icon-caret-right, .icon-columns, .icon-sort, .icon-sort-down, .icon-sort-up, .icon-play, .icon-pause, .icon-stop, .icon-chevron-right, .icon-chevron-left, .icon-question-sign, .icon-info-sign, .icon-console, .icon-layers, .icon-image, .icon-user-3, .icon-clock-2 {
-	font-family: 'MC-ide';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-}
-.icon-bell:before {
-	content: "\f0a2";
-}
-.icon-gauge:before {
-	content: "\e001";
-}
-.icon-settings:before {
-	content: "\e002";
-}
-.icon-browser:before {
-	content: "\e003";
-}
-.icon-grid:before {
-	content: "\e004";
-}
-.icon-globe:before {
-	content: "\e005";
-}
-.icon-window:before {
-	content: "\e006";
-}
-.icon-server:before {
-	content: "\e007";
-}
-.icon-hdd:before {
-	content: "\e008";
-}
-.icon-envelope:before {
-	content: "\e009";
-}
-.icon-eye:before {
-	content: "\e00a";
-}
-.icon-zoom-out:before {
-	content: "\e00b";
-}
-.icon-zoom-in:before {
-	content: "\e00c";
-}
-.icon-trashcan:before {
-	content: "\e00d";
-}
-.icon-flag:before {
-	content: "\e00e";
-}
-.icon-key:before {
-	content: "\e010";
-}
-.icon-settings-2:before {
-	content: "\e011";
-}
-.icon-enlarge:before {
-	content: "\e012";
-}
-.icon-refresh:before {
-	content: "\e013";
-}
-.icon-undo:before {
-	content: "\e014";
-}
-.icon-redo:before {
-	content: "\e015";
-}
-.icon-desktop:before {
-	content: "\e016";
-}
-.icon-tree:before {
-	content: "\e017";
-}
-.icon-cancel:before {
-	content: "\e018";
-}
-.icon-grid-2:before {
-	content: "\e019";
-}
-.icon-tag:before {
-	content: "\e01a";
-}
-.icon-popup:before {
-	content: "\e01b";
-}
-.icon-desktop-2:before {
-	content: "\e01c";
-}
-.icon-user:before {
-	content: "\e01d";
-}
-.icon-users:before {
-	content: "\e01e";
-}
-.icon-cloud:before {
-	content: "\e01f";
-}
-.icon-clock:before {
-	content: "\e020";
-}
-.icon-zoom-in-2:before {
-	content: "\e021";
-}
-.icon-zoom-out-2:before {
-	content: "\e022";
-}
-.icon-search:before {
-	content: "\e023";
-}
-.icon-lock:before {
-	content: "\e024";
-}
-.icon-unlocked:before {
-	content: "\e025";
-}
-.icon-cloud-dl:before {
-	content: "\e000";
-}
-.icon-cloud-ul:before {
-	content: "\e026";
-}
-.icon-cloud-2:before {
-	content: "\e027";
-}
-.icon-pointer:before {
-	content: "\e028";
-}
-.icon-download:before {
-	content: "\e029";
-}
-.icon-upload:before {
-	content: "\e02a";
-}
-.icon-file-add:before {
-	content: "\e02b";
-}
-.icon-list:before {
-	content: "\e02c";
-}
-.icon-layout:before {
-	content: "\e02d";
-}
-.icon-checkmark:before {
-	content: "\e02e";
-}
-.icon-close:before {
-	content: "\e02f";
-}
-.icon-bolt:before {
-	content: "\e030";
-}
-.icon-list-2:before {
-	content: "\e031";
-}
-.icon-grid-3:before {
-	content: "\e032";
-}
-.icon-list-3:before {
-	content: "\e033";
-}
-.icon-heart:before {
-	content: "\e034";
-}
-.icon-user-2:before {
-	content: "\e035";
-}
-.icon-double-angle-left:before {
-	content: "\f100";
-}
-.icon-double-angle-right:before {
-	content: "\f101";
-}
-.icon-double-angle-up:before {
-	content: "\f102";
-}
-.icon-double-angle-down:before {
-	content: "\f103";
-}
-.icon-angle-left:before {
-	content: "\f104";
-}
-.icon-angle-right:before {
-	content: "\f105";
-}
-.icon-angle-up:before {
-	content: "\f106";
-}
-.icon-angle-down:before {
-	content: "\f107";
-}
-.icon-sitemap:before {
-	content: "\f0e8";
-}
-.icon-caret-down:before {
-	content: "\f0d7";
-}
-.icon-caret-up:before {
-	content: "\f0d8";
-}
-.icon-caret-left:before {
-	content: "\f0d9";
-}
-.icon-caret-right:before {
-	content: "\f0da";
-}
-.icon-columns:before {
-	content: "\f0db";
-}
-.icon-sort:before {
-	content: "\f0dc";
-}
-.icon-sort-down:before {
-	content: "\f0dd";
-}
-.icon-sort-up:before {
-	content: "\f0de";
-}
-.icon-play:before {
-	content: "\f04b";
-}
-.icon-pause:before {
-	content: "\f04c";
-}
-.icon-stop:before {
-	content: "\f04d";
-}
-.icon-chevron-right:before {
-	content: "\f054";
-}
-.icon-chevron-left:before {
-	content: "\f053";
-}
-.icon-question-sign:before {
-	content: "\f059";
-}
-.icon-info-sign:before {
-	content: "\f05a";
-}
-.icon-console:before {
-	content: "\e036";
-}
-.icon-layers:before {
-	content: "\e037";
-}
-.icon-image:before {
-	content: "\e038";
-}
-.icon-user-3:before {
-	content: "\e039";
-}
-.icon-clock-2:before {
-	content: "\e03a";
-}
+.icon-play:before  { content : "\F110"; }
+.icon-stop:before  { content : "\F111"; }
+.icon-save:before  { content : "\F112"; }
+.icon-stack:before { content : "\F113"; }
+.icon-undo:before  { content : "\F114"; }
+.icon-redo:before  { content : "\F115"; }
+.icon-zoom-in:before   { content : "\F116"; }
+.icon-zoom-out:before  { content : "\F117"; }
+.icon-send:before      { content : "\F118"; }
+.icon-add:before       { content : "\F119"; }
+.icon-duplicate:before { content : "\F11B"; }
+.icon-duplicate:before { content : "\F11B"; }
+.icon-delete:before { content : "\F11C"; }
+.icon-new-stack:before   { content : "\F11A"; }
+.icon-btn-details:before { content : "\F11F"; }
+.icon-btn-back:before    { content : "\F120"; }
+.icon-export-png:before  { content : "\F11D"; }
+.icon-export-json:before { content : "\F11E"; }
+.icon-caret-down:before { content : "\F121"; }
+.icon-close:before { content : "\F122"; }
+.icon-terminate:before { content : "\F123"; }
+.icon-caret-right:before { content : "\F124"; }
+.icon-caret-left:before { content : "\F125"; }
+.icon-close-circle:before { content : "\F126"; }
+.icon-info:before { content : "\F127"; }
+.icon-password:before { content : "\F128"; }
+.icon-user:before { content : "\F129"; }
+.icon-notification:before { content : "\F12A"; }
+.icon-message:before { content : "\F12B"; }
+.icon-remove:before { content : "\F12C"; }
+.icon-allow:before { content : "\F12D"; }
+.icon-deny:before { content : "\F12E"; }
+.icon-outbound:before { content : "\F12F"; }
+.icon-inbound:before { content : "\F130"; }
+.icon-refresh:before { content : "\F131"; }
+.icon-edit:before {content: "\F132";}
+.icon-resize-right:before { content : "\F133"; }
+.icon-resize-left:before {content: "\F134";}
+.icon-resize-down:before { content : "\F135"; }
+.icon-resize-up:before {content: "\F136";}
+.icon-pending:before { content : "\F137"; }
+.icon-warning:before {content: "\F138";}
+.icon-error:before { content : "\F139"; }
+.icon-success:before {content: "\F13A";}
+.icon-time:before { content : "\F13B"; }
+.icon-sort:before {content: "\F13C";}
+.ipt-controls > .icon-add:before {content: "\F13D";}
+.ipt-controls > .icon-del:before {content: "\F13E";}
+.icon-detail:before {content: "\F140";}
+.icon-line-shape:before {content: "\F141";}
+.icon-copy:before {content: "\F142";}
+.icon-straight:before {content:"\F143";}
+.icon-elbow:before {content:"\F144";}
+.icon-bezier-qt:before {content:"\F145";}
+.icon-bezier-q:before {content:"\F146";}

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : log_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:03
+#* Create date  : 2013-08-26 12:19:40
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'log_service', 'log_vo'], ( Backbone, log_service, log_vo ) ->
+define [ 'backbone', 'underscore', 'log_service', 'base_model' ], ( Backbone, _, log_service, base_model ) ->
 
     LogModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : log_vo.log
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #put_user_log api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'log_service', 'log_vo'], ( Backbone, log_service, log_vo )
                 if !forge_result.is_error
                 #put_user_log succeed
 
-                    log_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'LOG_PUT__USER__LOG_RETURN', forge_result
 
                 else
                 #put_user_log failed
 
                     console.log 'log.put_user_log failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'LOG_PUT__USER__LOG_RETURN', forge_result
 
 
 

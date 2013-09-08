@@ -1,0 +1,180 @@
+<article id="instance-property-detail" data-uid="{{component.uid}}">
+
+	<div class="option-group-head expand">Instance Details</div>
+	<div class="option-group">
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-name" >Hostname</label>
+			<span class="required-input right">Required</span>
+
+			<div class="property-instance-name-wrap {{#ifCond number 1}}single{{/ifCond}}">
+				<div class="name-count-wrap">
+					-[1-<span id="property-instance-name-count">{{number}}</span>]
+				</div>
+				<div class="fitfloat">
+					<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
+				</div>
+			</div>
+
+		</section>
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-count" >Number of Instance</label>
+			<span class="required-input right">Required</span>
+			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
+		</section>
+		<section class="property-control-group">
+			<label>AMI</label>
+			<div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<div class="property-ami-label">{{instance_ami.name}}</div>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<label class="left">Instance Type</label>
+			<div class="selectbox selectbox-mega" id="instance-type-select">
+				<div class="selection"></div>
+				<ul class="dropdown">
+					{{#each instance_type}}
+					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+						<div class="main truncate">{{main}}</div>
+						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if checkbox_display.ebsOptimized}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
+				{{else}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+				{{/if}}
+				<label for="property-instance-ebs-optimized"></label>
+			</div>
+			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
+		</section>
+		{{# if component.resource.VpcId}}
+		<section class="property-control-group">
+			<label class="left">Tenancy</label>
+			<div class="selectbox" id="tenancy-select">
+				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
+				<ul class="dropdown" tabindex="-1">
+					{{#if checkbox_display.tenancy}}
+					<li class="item selected" data-id="default">Default</li>
+					<li class="item" data-id="dedicated">Delicated</li>
+					{{else}}
+					<li class="item" data-id="default">Default</li>
+					<li class="item selected" data-id="dedicated">Dedicated</li>
+					{{/if}}
+				</ul>
+			</div>
+		</section>
+		{{/if}}
+		<section class="property-control-group">
+			<label class="left">Key Pair</label>
+			<div class="selectbox" id="keypair-select">
+				<div class="selection"></div>
+				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<ul tabindex="-1">
+							{{#each keypair}}
+							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}" data-using="{{using}}">{{name}}
+							{{#if @index}}<span class="icon-remove"></span>{{/if}}
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+
+				<div class="editor">
+					<a href="#" class="editbtn">Create New Key Pair</a>
+					<div class="edit">
+						<button class="btn btn-blue">OK</button>
+						<span class="fitfloat">
+							<input class="input" type="text" placeholder="Key Pair Name" />
+						</span>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="option-group-head">Advanced Details</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if checkbox_display.monitoring}}
+				<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
+				{{else}}
+				<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />
+				{{/if}}
+				<label for="property-instance-enable-cloudwatch"></label>
+			</div>
+			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch Detailed Monitoring</label>
+
+			<p class="hide property-info" id="property-cloudwatch-warn">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-instance-user-data">User Data</label>
+			<div class="base64-check">
+				<div class="checkbox">
+					{{#if checkbox_display.base64Encoded}}
+					<input id="property-instance-base64" type="checkbox" checked="true" value="None" name="property-instance-base64" />
+					{{else}}
+					<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
+					{{/if}}
+					<label for="property-instance-base64"></label>
+				</div>
+				<label for="property-instance-base64">Base64 encoded</label>
+			</div>
+			<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
+		</section>
+	</div>
+
+	{{# if component.resource.VpcId}}
+	<div class="option-group-head">Network Interface Details</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<label class="left" for="property-instance-ni-description">Description</label>
+			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if eni_display.sourceCheck}}
+				<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
+				{{else}}
+				<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
+				{{/if}}
+				<label for="property-instance-source-check"></label>
+			</div>
+			<label for="property-instance-source-check">Enable Source/Destination Checking</label>
+		</section>
+		<section class="property-control-group">
+			<div class="checkbox">
+				{{#if eni_display.asso_public_ip}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} checked="true" value="None" name="property-instance-public-ip" />
+				{{else}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} value="None" name="property-instance-public-ip" />
+				{{/if}}
+				<label for="property-instance-public-ip"></label>
+			</div>
+			<label for="property-instance-public-ip">Automatically assign Public IP</label>
+		</section>
+		<section class="property-control-group">
+			<div class="network-list-wrap">
+				<div class="network-list-header clearfix">
+					IP Address
+					<button id="instance-ip-add" class="right btn btn-blue btn-small" title="Add IP Address">Add IP</button>
+				</div>
+				<ul class="network-list" id="property-network-list">
+
+				</ul>
+			</div>
+		</section>
+	</div>
+	{{/if}}
+
+	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group">Loading...</div>
+</article>

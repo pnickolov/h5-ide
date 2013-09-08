@@ -1,0 +1,84 @@
+<article>
+	<div class="option-group-head expand">Security Group Details</div>
+	<div class="option-group">
+		<div class="property-control-group" data-bind="true">
+			<label class="left" for="securitygroup-name" >Name</label>
+			<span class="required-input right">Required</span>
+			<input class="input"  type="text" id="securitygroup-name" {{#if isDefault}} disabled {{else}}{{#if is_elb_sg}}disabled{{/if}}{{/if}} name="securitygroup-name" value="{{sg_detail.component.resource.GroupName}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+		</div>
+		<div class="property-control-group">
+			<label class="left" for="securitygroup-description" >Description</label>
+			<input class="input" type="text" id="securitygroup-description" {{#if is_elb_sg}}disabled="disabled"{{/if}} name="securitygroup-description" value="{{sg_detail.component.resource.GroupDescription}}" maxlength="255" />
+		</div>
+	</div>
+
+	<div class="option-group-head expand">Rule
+			<span class="property-head-num-wrap">(<span id="rule-count">{{sg_detail.rules}}</span>)</span>
+			<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip="Create rule referencing IP Range"></a>
+	</div>
+	<div class="option-group">
+<!-- 		<div id="sg-rule-empty" class="property-control-group {{#if sg_detail.component.resource.IpPermissions.length}}hide{{/if}}">
+			<p>To create rule referencing IP Range, click plus button here.</p>
+			<p>To create rule referencing other Security Group, connect the blue ports of instance/load balancer or network interface.</p>
+		</div> -->
+
+		<div class="rule-list-sort property-control-group">
+			<h5>Sort by</h5>
+			<div class="selectbox" id="sg-rule-filter-select">
+				<div class="selection">Direction</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="item selected" data-id="direction">Direction</li>
+					<li class="item" data-id="source/destination">Source/Destination</li>
+					<li class="item" data-id="protocol">Protocol</li>
+				</ul>
+			</div>
+		</div>
+
+		<ul class="sg-rule-list property-list" id="sg-rule-list">
+			{{#each sg_detail.component.resource.IpPermissions}}
+			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="inbound">
+				<div class="rule-list-row">
+					<div class='rule-direction-icon tooltip icon-inbound' data-tooltip="Inbound"></div>
+					<div class='rule-reference'>{{ip_display}}</div>
+				</div>
+				<div class="rule-list-row">
+					<div><span class="rule-protocol">{{protocol_display}}</span></div>
+					<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
+				</div>
+				<div class='rule-remove-icon icon-remove tooltip' data-tooltip="Remove rule"></div>
+			</li>
+			{{/each}}
+			{{#each sg_detail.component.resource.IpPermissionsEgress}}
+			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="outbound">
+				<div class="rule-list-row">
+					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip="Outbound"></div>
+					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
+				</div>
+				<div class="rule-list-row">
+					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{protocol_display}}</span></div>
+					<div class='rule-port tooltip' data-tooltip="Port or Code">{{FromPort}}-{{ToPort}}</div>
+				</div>
+				<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
+
+	<div class="option-group-head">Member<span class="property-head-num-wrap">({{sg_detail.members.length}})</span>	</div>
+	<div class="option-group">
+<!-- 		<div id="sg-member-empty" class="property-control-group">
+			<p>Select an instantce/ENI/ELB and edit Security Group section in Property panel to assign member to security group.</p>
+			<img src="" title="screenshot for instruction"/>
+		</div> -->
+
+		<ul class="sg-member-list property-list">
+			{{#each sg_detail.members}}
+			<li>
+				<div class="sg-member-icon"></div>
+				<div class="sg-member-name">{{name}}</div>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
+
+</article>

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : placementgroup_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:13
+#* Create date  : 2013-08-26 12:19:50
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone, placementgroup_service, placementgroup_vo ) ->
+define [ 'backbone', 'underscore', 'placementgroup_service', 'base_model' ], ( Backbone, _, placementgroup_service, base_model ) ->
 
     PlacementGroupModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : placementgroup_vo.data
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #CreatePlacementGroup api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone,
                 if !aws_result.is_error
                 #CreatePlacementGroup succeed
 
-                    placementgroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_CREATE_PLA_GRP_RETURN', aws_result
 
                 else
                 #CreatePlacementGroup failed
 
                     console.log 'placementgroup.CreatePlacementGroup failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_CREATE_PLA_GRP_RETURN', aws_result
 
 
         #DeletePlacementGroup api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone,
                 if !aws_result.is_error
                 #DeletePlacementGroup succeed
 
-                    placementgroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_DELETE_PLA_GRP_RETURN', aws_result
 
                 else
                 #DeletePlacementGroup failed
 
                     console.log 'placementgroup.DeletePlacementGroup failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_DELETE_PLA_GRP_RETURN', aws_result
 
 
         #DescribePlacementGroups api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'placementgroup_service', 'placementgroup_vo'], ( Backbone,
                 if !aws_result.is_error
                 #DescribePlacementGroups succeed
 
-                    placementgroup_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_PG_DESC_PLA_GRPS_RETURN', aws_result
 
                 else
                 #DescribePlacementGroups failed
 
                     console.log 'placementgroup.DescribePlacementGroups failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_PG_DESC_PLA_GRPS_RETURN', aws_result
 
 
 

@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : autoscaling_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:06
+#* Create date  : 2013-08-26 12:19:42
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autoscaling_service, autoscaling_vo ) ->
+define [ 'backbone', 'underscore', 'autoscaling_service', 'base_model' ], ( Backbone, _, autoscaling_service, base_model ) ->
 
     AutoScalingModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : autoscaling_vo.autoscaling
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeAdjustmentTypes api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeAdjustmentTypes succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ADJT_TYPS_RETURN', aws_result
 
                 else
                 #DescribeAdjustmentTypes failed
 
                     console.log 'autoscaling.DescribeAdjustmentTypes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ADJT_TYPS_RETURN', aws_result
 
 
         #DescribeAutoScalingGroups api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeAutoScalingGroups succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_GRPS_RETURN', aws_result
 
                 else
                 #DescribeAutoScalingGroups failed
 
                     console.log 'autoscaling.DescribeAutoScalingGroups failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_GRPS_RETURN', aws_result
 
 
         #DescribeAutoScalingInstances api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeAutoScalingInstances succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_INSS_RETURN', aws_result
 
                 else
                 #DescribeAutoScalingInstances failed
 
                     console.log 'autoscaling.DescribeAutoScalingInstances failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_INSS_RETURN', aws_result
 
 
         #DescribeAutoScalingNotificationTypes api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeAutoScalingNotificationTypes succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_ASL_NTF_TYPS_RETURN', aws_result
 
                 else
                 #DescribeAutoScalingNotificationTypes failed
 
                     console.log 'autoscaling.DescribeAutoScalingNotificationTypes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_ASL_NTF_TYPS_RETURN', aws_result
 
 
         #DescribeLaunchConfigurations api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeLaunchConfigurations succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_LAUNCH_CONFS_RETURN', aws_result
 
                 else
                 #DescribeLaunchConfigurations failed
 
                     console.log 'autoscaling.DescribeLaunchConfigurations failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_LAUNCH_CONFS_RETURN', aws_result
 
 
         #DescribeMetricCollectionTypes api (define function)
@@ -162,18 +145,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeMetricCollectionTypes succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_METRIC_COLL_TYPS_RETURN', aws_result
 
                 else
                 #DescribeMetricCollectionTypes failed
 
                     console.log 'autoscaling.DescribeMetricCollectionTypes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_METRIC_COLL_TYPS_RETURN', aws_result
 
 
         #DescribeNotificationConfigurations api (define function)
@@ -188,18 +168,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeNotificationConfigurations succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_NTF_CONFS_RETURN', aws_result
 
                 else
                 #DescribeNotificationConfigurations failed
 
                     console.log 'autoscaling.DescribeNotificationConfigurations failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_NTF_CONFS_RETURN', aws_result
 
 
         #DescribePolicies api (define function)
@@ -214,44 +191,38 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribePolicies succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_PCYS_RETURN', aws_result
 
                 else
                 #DescribePolicies failed
 
                     console.log 'autoscaling.DescribePolicies failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_PCYS_RETURN', aws_result
 
 
         #DescribeScalingActivities api (define function)
-        DescribeScalingActivities : ( src, username, session_id ) ->
+        DescribeScalingActivities : ( src, username, session_id, region_name, group_name=null, activity_ids=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            autoscaling_service.DescribeScalingActivities src, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScalingActivities src, username, session_id, region_name, group_name, activity_ids, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeScalingActivities succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCALING_ACTIS_RETURN', aws_result
 
                 else
                 #DescribeScalingActivities failed
 
                     console.log 'autoscaling.DescribeScalingActivities failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCALING_ACTIS_RETURN', aws_result
 
 
         #DescribeScalingProcessTypes api (define function)
@@ -266,44 +237,38 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeScalingProcessTypes succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCALING_PRC_TYPS_RETURN', aws_result
 
                 else
                 #DescribeScalingProcessTypes failed
 
                     console.log 'autoscaling.DescribeScalingProcessTypes failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCALING_PRC_TYPS_RETURN', aws_result
 
 
         #DescribeScheduledActions api (define function)
-        DescribeScheduledActions : ( src, username, session_id ) ->
+        DescribeScheduledActions : ( src, username, session_id, region_name, group_name=null, action_names=null, start_time=null, end_time=null, max_records=null, next_token=null ) ->
 
             me = this
 
             src.model = me
 
-            autoscaling_service.DescribeScheduledActions src, username, session_id, ( aws_result ) ->
+            autoscaling_service.DescribeScheduledActions src, username, session_id, region_name, group_name, action_names, start_time, end_time, max_records, next_token, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #DescribeScheduledActions succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_SCHD_ACTS_RETURN', aws_result
 
                 else
                 #DescribeScheduledActions failed
 
                     console.log 'autoscaling.DescribeScheduledActions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_SCHD_ACTS_RETURN', aws_result
 
 
         #DescribeTags api (define function)
@@ -318,18 +283,15 @@ define [ 'backbone', 'autoscaling_service', 'autoscaling_vo'], ( Backbone, autos
                 if !aws_result.is_error
                 #DescribeTags succeed
 
-                    autoscaling_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ASL__DESC_TAGS_RETURN', aws_result
 
                 else
                 #DescribeTags failed
 
                     console.log 'autoscaling.DescribeTags failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'ASL__DESC_TAGS_RETURN', aws_result
 
 
 

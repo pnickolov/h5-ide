@@ -1,0 +1,20 @@
+{
+  "name"         : "madeira_cloud_ide",
+  "version"      : "1.0.5",
+  "dependencies" : {},
+  "devDependencies": {
+    "jquery"     : "2.0.0",
+    "underscore" : "1.5.1",
+    "backbone"   : "1.0.0",
+    "handlebars" : "1.0.0",
+    "requirejs"  : "2.1.8",
+    "requirejs-text"      : "2.0.7",
+    "requirejs-domready"  : "2.0.1",
+    "qunit"      : "1.11.0",
+    "zeroclipboard"       : "1.2.0-beta.3",
+    "requirejs-i18n"      : "2.0.3",
+    "sprintf"    : "*",
+    "string-format"       : "1.0.2",
+    "jqpagination"        : "git://github.com/beneverard/jqPagination.git#gh-pages"
+  }
+}

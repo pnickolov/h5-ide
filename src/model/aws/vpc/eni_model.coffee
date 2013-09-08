@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : eni_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:17
+#* Create date  : 2013-08-26 12:19:55
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'eni_service', 'eni_vo'], ( Backbone, eni_service, eni_vo ) ->
+define [ 'backbone', 'underscore', 'eni_service', 'base_model' ], ( Backbone, _, eni_service, base_model ) ->
 
     ENIModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : eni_vo.eni
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeNetworkInterfaces api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'eni_service', 'eni_vo'], ( Backbone, eni_service, eni_vo )
                 if !aws_result.is_error
                 #DescribeNetworkInterfaces succeed
 
-                    eni_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_ENI_DESC_NET_IFS_RETURN', aws_result
 
                 else
                 #DescribeNetworkInterfaces failed
 
                     console.log 'eni.DescribeNetworkInterfaces failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_ENI_DESC_NET_IFS_RETURN', aws_result
 
 
         #DescribeNetworkInterfaceAttribute api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'eni_service', 'eni_vo'], ( Backbone, eni_service, eni_vo )
                 if !aws_result.is_error
                 #DescribeNetworkInterfaceAttribute succeed
 
-                    eni_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_ENI_DESC_NET_IF_ATTR_RETURN', aws_result
 
                 else
                 #DescribeNetworkInterfaceAttribute failed
 
                     console.log 'eni.DescribeNetworkInterfaceAttribute failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_ENI_DESC_NET_IF_ATTR_RETURN', aws_result
 
 
 

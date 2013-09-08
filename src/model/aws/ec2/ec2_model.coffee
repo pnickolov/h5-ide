@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : ec2_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:09
+#* Create date  : 2013-08-26 12:19:47
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo ) ->
+define [ 'backbone', 'underscore', 'ec2_service', 'base_model' ], ( Backbone, _, ec2_service, base_model ) ->
 
     EC2Model = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : ec2_vo.ec2
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #CreateTags api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
                 if !aws_result.is_error
                 #CreateTags succeed
 
-                    ec2_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_CREATE_TAGS_RETURN', aws_result
 
                 else
                 #CreateTags failed
 
                     console.log 'ec2.CreateTags failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_CREATE_TAGS_RETURN', aws_result
 
 
         #DeleteTags api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
                 if !aws_result.is_error
                 #DeleteTags succeed
 
-                    ec2_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DELETE_TAGS_RETURN', aws_result
 
                 else
                 #DeleteTags failed
 
                     console.log 'ec2.DeleteTags failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DELETE_TAGS_RETURN', aws_result
 
 
         #DescribeTags api (define function)
@@ -84,18 +76,15 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
                 if !aws_result.is_error
                 #DescribeTags succeed
 
-                    ec2_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_TAGS_RETURN', aws_result
 
                 else
                 #DescribeTags failed
 
                     console.log 'ec2.DescribeTags failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_TAGS_RETURN', aws_result
 
 
         #DescribeRegions api (define function)
@@ -110,18 +99,15 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
                 if !aws_result.is_error
                 #DescribeRegions succeed
 
-                    ec2_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
 
                 else
                 #DescribeRegions failed
 
                     console.log 'ec2.DescribeRegions failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
 
 
         #DescribeAvailabilityZones api (define function)
@@ -136,18 +122,15 @@ define [ 'backbone', 'ec2_service', 'ec2_vo'], ( Backbone, ec2_service, ec2_vo )
                 if !aws_result.is_error
                 #DescribeAvailabilityZones succeed
 
-                    ec2_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', aws_result
 
                 else
                 #DescribeAvailabilityZones failed
 
                     console.log 'ec2.DescribeAvailabilityZones failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'EC2_EC2_DESC_AVAILABILITY_ZONES_RETURN', aws_result
 
 
 

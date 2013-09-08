@@ -1,0 +1,29 @@
+<div class="sidebar-wrap">
+  <header class="sg-create-sb-h">Related Rule(<span>{{ruleCount}}</span>)</header>
+  <div class="scroll-wrap scrollbar-auto-hide" style="height:358px">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <div class="scroll-content">
+  {{#each sg_group}}
+    {{#if rules.length}}
+    
+        <h3 class="sg-create-group">{{name}}</h3>
+        <ul>
+          {{#each rules}}
+            <li class="clearfix sg-create-rule-item" data-uid="{{uid}}">
+              <div class="rule-list-row">
+                <div class="{{#if egress}}icon-inbound{{else}}icon-outbound{{/if}} tooltip" data-tooltip="{{#if egress}}Inbound{{else}}Outbound{{/if}} "></div>
+                <div class="sg-rule-connnection tooltip truncated" data-tooltip="{{#if egress}}Source{{else}}Destination{{/if}}:{{connection}} ">{{connection}}</div>
+              </div>
+               <div class="rule-list-row">
+                <span class="sg-rule-protocol rule-protocol tooltip" data-tooltip="Protocol">{{protocol}}</span>
+                <div class="sg-rule-port">{{port}}</div>
+              </div>
+              <a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip="Remove rule"></a>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{/each}}
+    </div>
+  </div>
+</div>

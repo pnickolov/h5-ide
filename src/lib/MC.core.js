@@ -2,18 +2,30 @@
 #**********************************************************
 #* Filename: MC.core.js
 #* Creator: Angel
-#* Description: The core of the whole system 
-#* Date: 20130527
+#* Description: The core of the whole system
+#* Date: 20130819
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-var MC = {
-	version: '0.1.3',
 
-	// Global Variable 
-	API_URL: 'https://api.madeiracloud.com/',
-	IMG_URL: 'https://img.madeiracloud.com/',
+var VER = 'v2';
+
+var MC = {
+	version: '0.2.8',
+
+	// Global Variable
+	API_URL: 'https://api.madeiracloud.com/' + VER + '/',
+	IMG_URL: './assets/images/',
+	WS_URL: 'https://api.madeiracloud.com/' + VER + '/ws/',//-> 8300
+	SAVEPNG_URL: 'https://api.madeiracloud.com/' + VER + '/export/',//->8400
+
+	current_module : {},
+
+	_extractIDRegex : /^\s*?@?([-A-Z0-9a-z]+)/,
+
+	// Global data
+	data: {},
 
 	/**
 	 * Generate GUID
@@ -91,7 +103,7 @@ var MC = {
 				{
 					api_frame[0].contentWindow.postMessage({
 						id: guid,
-						url: option.url,
+						url: '/' + VER + option.url,
 						method: option.method || '',
 						params: option.data || {}
 					}, '*');
@@ -99,10 +111,10 @@ var MC = {
 			};
 
 		MC.api_queue[guid] = option;
-		
+
 		if (!api_frame[0])
 		{
-			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
+			$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
 			api_frame = $('#api-frame');
 			api_frame.load(function ()
 			{
@@ -127,7 +139,21 @@ var MC = {
 
 		rbrowser.exec(navigator.userAgent.toLowerCase());
 
-		$(document.body).addClass(RegExp.$1);
+		var name = RegExp.$1;
+
+		$(document.body).addClass(name);
+
+		MC.browser = name;
+	},
+
+	capitalize: function (string)
+	{
+	    return string.charAt(0).toUpperCase() + string.slice(1);
+	},
+
+	truncate: function (string, length)
+	{
+		return string.substring(0, length) + '...';
 	},
 
 	/*
@@ -157,6 +183,29 @@ var MC = {
 				};
 			});
 		}, 2000);
+	},
+
+	refreshCSS: function ()
+	{
+		var date = new Date(),
+			date_query = date.getTime(),
+			item;
+
+		$('link', document.head[0]).map(function (index, item)
+		{
+			item = $(item);
+
+			if (item.attr('rel') === 'stylesheet')
+			{
+				item.attr('href', item.attr('href').replace(/\.css(\?d=[0-9]*)?/ig, '.css?d=' + date_query));
+			};
+		});
+	},
+
+	extractID : function ( uid )
+	{
+		var result = MC._extractIDRegex.exec( uid );
+		return result ? result[1] : uid;
 	},
 
 	/**
@@ -257,6 +306,30 @@ var MC = {
 	},
 
 	/**
+	 * Calculate the interval time between now and target date time.
+	 * @param  {timespan number} date_time The target date time with second
+	 * @return {[string]} The interval time.
+	 */
+	intervalDate: function (date_time)
+	{
+		var now = new Date(),
+			date_time = date_time * 1000,
+			second = (now.getTime() - date_time) / 1000,
+			days = Math.floor(second / 86400),
+			hours = Math.floor(second / 3600),
+			minute = Math.floor(second / 60);
+
+		if (days > 30)
+		{
+			return MC.dateFormat(new Date(date_time), "dd/MM yyyy");
+		}
+	 	else
+	 	{
+			return days > 0 ? days + ' days ago' : hours > 0 ? hours + ' hours ago' : minute > 0 ? minute + ' minutes ago' : 'just now';
+	 	}
+	},
+
+	/**
 	 * Generate random number
 	 * @param  {number} min min number
 	 * @param  {number} max max number
@@ -265,21 +338,51 @@ var MC = {
 	rand: function (min, max)
 	{
 		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
+
+	base64Encode: function (string)
+	{
+		return window.btoa(unescape(encodeURIComponent( string )));
+	},
+
+	base64Decode: function (string)
+	{
+		return decodeURIComponent(escape(window.atob( string )));
+	},
+
+	log: function (module_name, log_level, content)
+	{
+		//log_level  info|log|debug|warn|error
+
+		if (MC.current_module !== module_name)
+		{
+			return;
+		}
+
+		console[ log_level ]('[', module_name, ']', content);
+	},
+
+	camelCase: function (string)
+	{
+		return string.replace(/-([a-z])/ig, function (match, letter)
+		{
+			return (letter + '').toUpperCase();
+		});
 	}
 };
 
 /*
 * Storage
 * Author: Angel
-* 
+*
 * Save data into local computer via HTML5 localStorage, up to 10MB storage capacity.
-* 
+*
 * Saving data
 * MC.storage.set(name, value)
-* 
+*
 * Getting data
 * MC.storage.get(name)
-* 
+*
 * Remove data
 * MC.storage.remove(name)
 */
@@ -309,79 +412,6 @@ MC.storage = {
 	}
 };
 
-MC.WebSocket = function (host, options)
-{
-	return this.WebSocket.prototype.init(host, options);
-};
-
-MC.WebSocket.prototype = {
-	init: function (host, options)
-	{
-		var socket = new WebSocket(host),
-			data;
-
-		if (socket)
-		{
-			if (options)
-			{
-				$.each('open message error close'.split(' '), function (i, name)
-				{
-					if (options['on' + name] && typeof options['on' + name] === 'function')
-					{
-						if (name === 'message')
-						{
-							$(socket).on(name, function (event)
-							{
-								data = event.originalEvent.data;
-								data = MC.isJSON(data) ? JSON.parse(data) : data;
-
-								options.onmessage(data);
-							});
-						}
-						else
-						{
-							$(socket).on(name, options['on' + name]);
-						}
-					}
-				});
-			}
-
-			$.each(MC.WebSocket.prototype, function (name, value)
-			{
-				if (typeof value === 'function')
-				{
-					socket[name] = value;
-				}
-			});
-			socket.options = options;
-
-			return socket;
-		}
-		else
-		{
-			return false;
-		}
-	},
-
-	post: function (message)
-	{
-		if (this.send(message) === false && this.options.onerror)
-		{
-			this.options.onerror.call(this);
-			
-			return false;
-		}
-		return true;
-	},
-
-	reconnect: function ()
-	{
-		this.close();
-
-		return MC.WebSocket.prototype.init(this.URL, this.options);
-	}
-};
-
 // For event handler
 var returnTrue = function () {return true},
 	returnFalse = function () {return false};
@@ -390,8 +420,146 @@ var returnTrue = function () {return true},
  * jQuery plugin to convert a given $.ajax response xml object to json.
  *
  * @example var json = $.xml2json(response);
+ * modified by Angel
  */
-(function(){jQuery.extend({xml2json:function f(d){var b={},e;for(e in d.childNodes){var a=d.childNodes[e];if(1==a.nodeType){var c=a.hasChildNodes()?f(a):a.nodevalue,c=null==c?{}:c;if(b.hasOwnProperty(a.nodeName)){if(!(b[a.nodeName]instanceof Array)){var g=b[a.nodeName];b[a.nodeName]=[];b[a.nodeName].push(g)}b[a.nodeName].push(c)}else b[a.nodeName]=c;if(0<a.attributes.length){b[a.nodeName]["@attributes"]={};for(var h in a.attributes)c=a.attributes.item(h),b[a.nodeName]["@attributes"][c.nodeName]=c.nodeValue}0==a.childElementCount&&(null!=a.textContent&&""!=a.textContent)&&(b[a.nodeName]=a.textContent.trim())}}return b}})})();
+(function ()
+{
+	jQuery.extend(
+	{
+
+		xml2json: function xml2json(xml)
+		{
+			var result = {},
+				attribute,
+				content,
+				node,
+				child,
+				i,
+				j;
+
+			for (i in xml.childNodes)
+			{
+				node = xml.childNodes[ i ];
+
+				if (node.nodeType === 1)
+				{
+					child = node.hasChildNodes() ? xml2json(node) : node.nodevalue;
+
+					child = child == null ? null : child;
+
+					// Special for "item" & "member"
+					if (
+						(node.nodeName === 'item' || node.nodeName === 'member') &&
+						child.value
+					)
+					{
+						if (child.key)
+						{
+							if ($.type(result) !== 'object')
+							{
+								result = {};
+							}
+							if (!$.isEmptyObject(child))
+							{
+								result[ child.key ] = child.value;
+							}
+						}
+						else
+						{
+							if ($.type(result) !== 'array')
+							{
+								result = [];
+							}
+							if (!$.isEmptyObject(child))
+							{
+								result.push(child.value);
+							}
+						}
+					}
+					else
+					{
+						if (
+							(
+								node.nextElementSibling &&
+								node.nextElementSibling.nodeName === node.nodeName
+							)
+							||
+							node.nodeName === 'item' ||
+							node.nodeName === 'member'
+						)
+						{
+							if ($.type(result[ node.nodeName ]) === 'undefined')
+							{
+								result[ node.nodeName ] = [];
+							}
+							if (!$.isEmptyObject(child))
+							{
+								result[ node.nodeName ].push(child);
+							}
+						}
+						else
+						{
+							if (node.previousElementSibling && node.previousElementSibling.nodeName === node.nodeName)
+							{
+								if (!$.isEmptyObject(child))
+								{
+									result[ node.nodeName ].push(child);
+								}
+							}
+							else
+							{
+								result[ node.nodeName ] = child;
+							}
+						}
+					}
+
+					// Add attributes if any
+					if (node.attributes.length > 0)
+					{
+						result[ node.nodeName ][ '@attributes' ] = {};
+						for (j in node.attributes)
+						{
+							attribute = node.attributes.item(j);
+							result[ node.nodeName ]['@attributes'][attribute.nodeName] = attribute.nodeValue;
+						}
+					}
+
+					// Add element value
+					if (
+						node.childElementCount === 0 &&
+						node.textContent != null &&
+						node.textContent !== ''
+					)
+					{
+						content = node.textContent.trim();
+
+						// switch (content)
+						// {
+						// 	case 'true':
+						// 		content = true;
+						// 		break;
+
+						// 	case 'false':
+						// 		content = false;
+						// 		break;
+						// }
+
+						if (result[ node.nodeName ] instanceof Array)
+						{
+							result[ node.nodeName ].push(content);
+						}
+						else
+						{
+							result[ node.nodeName ] = content;
+						}
+					}
+				}
+			}
+
+			return result;
+		}
+	});
+})();
 
 /*!
  * jQuery Cookie Plugin v1.3.1
@@ -401,6 +569,9 @@ var returnTrue = function () {return true},
  * Released under the MIT license
  */
 (function(e){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return d.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,d=e.cookie=function(a,c,b){if(void 0!==c){b=e.extend({},d.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=d.json?JSON.stringify(c):String(c);return document.cookie=[d.raw?a:encodeURIComponent(a),"=",d.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=d.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};d.defaults={};e.removeCookie=function(a,c){return void 0!==e.cookie(a)?(e.cookie(a,"",e.extend({},c,{expires:-1})),!0):!1}})(jQuery);
+
+/*! sprintf.js | Copyright (c) 2007-2013 Alexandru Marasteanu <hello at alexei dot ro> | 3 clause BSD license */
+(function(e){function r(e){return Object.prototype.toString.call(e).slice(8,-1).toLowerCase()}function i(e,t){for(var n=[];t>0;n[--t]=e);return n.join("")}var t=function(){return t.cache.hasOwnProperty(arguments[0])||(t.cache[arguments[0]]=t.parse(arguments[0])),t.format.call(null,t.cache[arguments[0]],arguments)};t.format=function(e,n){var s=1,o=e.length,u="",a,f=[],l,c,h,p,d,v;for(l=0;l<o;l++){u=r(e[l]);if(u==="string")f.push(e[l]);else if(u==="array"){h=e[l];if(h[2]){a=n[s];for(c=0;c<h[2].length;c++){if(!a.hasOwnProperty(h[2][c]))throw t('[sprintf] property "%s" does not exist',h[2][c]);a=a[h[2][c]]}}else h[1]?a=n[h[1]]:a=n[s++];if(/[^s]/.test(h[8])&&r(a)!="number")throw t("[sprintf] expecting number but found %s",r(a));switch(h[8]){case"b":a=a.toString(2);break;case"c":a=String.fromCharCode(a);break;case"d":a=parseInt(a,10);break;case"e":a=h[7]?a.toExponential(h[7]):a.toExponential();break;case"f":a=h[7]?parseFloat(a).toFixed(h[7]):parseFloat(a);break;case"o":a=a.toString(8);break;case"s":a=(a=String(a))&&h[7]?a.substring(0,h[7]):a;break;case"u":a>>>=0;break;case"x":a=a.toString(16);break;case"X":a=a.toString(16).toUpperCase()}a=/[def]/.test(h[8])&&h[3]&&a>=0?"+"+a:a,d=h[4]?h[4]=="0"?"0":h[4].charAt(1):" ",v=h[6]-String(a).length,p=h[6]?i(d,v):"",f.push(h[5]?a+p:p+a)}}return f.join("")},t.cache={},t.parse=function(e){var t=e,n=[],r=[],i=0;while(t){if((n=/^[^\x25]+/.exec(t))!==null)r.push(n[0]);else if((n=/^\x25{2}/.exec(t))!==null)r.push("%");else{if((n=/^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(t))===null)throw"[sprintf] huh?";if(n[2]){i|=1;var s=[],o=n[2],u=[];if((u=/^([a-z_][a-z_\d]*)/i.exec(o))===null)throw"[sprintf] huh?";s.push(u[1]);while((o=o.substring(u[0].length))!=="")if((u=/^\.([a-z_][a-z_\d]*)/i.exec(o))!==null)s.push(u[1]);else{if((u=/^\[(\d+)\]/.exec(o))===null)throw"[sprintf] huh?";s.push(u[1])}n[2]=s}else i|=2;if(i===3)throw"[sprintf] mixing positional and named placeholders is not (yet) supported";r.push(n)}t=t.substring(n[0].length)}return r};var n=function(e,n,r){return r=n.slice(0),r.splice(0,0,e),t.apply(null,r)};e.sprintf=t,e.vsprintf=n})(typeof exports!="undefined"?exports:window);
 
 /* Global initialization */
 $(document).ready(function ()

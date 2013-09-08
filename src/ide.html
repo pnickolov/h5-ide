@@ -1,49 +1,86 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>MadeiraCloud</title>
+	<title>MadeiraCloud - Visual Cloud Computing IDE</title>
 	<meta charset="UTF-8" />
+	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico">
 	<link rel="stylesheet" href="./assets/css/icon-font.css"/>
 	<link rel="stylesheet" href="./assets/css/core.css"/>
 	<link rel="stylesheet" href="./assets/css/ide.css"/>
+	<link rel="stylesheet" href="./assets/css/grid.css"/>
 	<link rel="stylesheet" href="./assets/css/UI.component.css"/>
-
+	<link rel="stylesheet" href="./assets/css/canvas.css"/>
 </head>
 <body id="body">
-
-	<!-- Header -->
-	<nav id="header">
-		loading...
-	</nav>
-
-	<div id="wrapper">
-
-		<!-- Navigation -->
-		<nav id="navigation" class="scroll-wrap">
-			loading...
-		</nav>
-		
-		<!-- Main -->
-		<div id="main">
-
-			<!-- Tab Bar -->
-			<div id="tab-bar">
-				loading...
-			</div>
-
-			<!-- Dasboard Tab -->
-			<div id="tab-content-dashboard" class="main-content active">
-				loading...
-			</div>
-
-			<!-- Stack/App Tab -->
-			<div id="tab-content-stack01" class="main-content">
-				loading...				
+	<!-- Loading bar -->
+	<div id="loading-bar-wrapper">
+		<div class="loading-wrapper">
+			<div class="loading clearfix">
+				<img src="./assets/images/ide/loading-logo-dark.gif" alt="">
 			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript" data-main="./js/ide/config" src="./vender/requirejs/require.js"></script>
+	<!-- Waiting bar -->
+	<div id="waiting-bar-wrapper"></div>
 
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav id="navigation">
+			loading...
+		</nav>
+
+		<!-- Header Wrapper -->
+		<div id="header-wrapper" class="clearfix">
+			<img src="./assets/images/ide/logo-t.png" alt="logo" width="160" height="34" class="logo">
+
+			<!-- Header -->
+			<nav id="header">
+				loading...
+			</nav>
+
+			<!-- Tab Bar -->
+			<div id="tabbar-wrapper">
+
+				<div id="tab-bar">
+					loading...
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Dasboard overview Tab -->
+			<div id="tab-content-dashboard" class="main-content active">
+				loading...
+			</div>
+
+			<!-- Dasboard region Tab -->
+			<div id="tab-content-region" class="main-content scroll-wrap">
+				loading...
+			</div>
+
+			<!-- Stack/App Tab -->
+			<div id="tab-content-design" class="main-content">
+				loading...
+			</div>
+
+			<!-- Process Tab -->
+			<div id="tab-content-process" class="main-content">
+				loading...
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Disconnected notification Message -->
+	<div id="disconnected-notification-wrapper"></div>
+
+	<script type="text/javascript" src="./lib/version.js"></script>
+	<script type="text/javascript" src="./lib/analytics.js"></script>
+	<script type="text/javascript" data-main="./js/ide/config" src="./vender/requirejs/require.js"></script>
 </body>
 </html>

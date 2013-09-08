@@ -1,17 +1,20 @@
+html,
+body {
+	height: 100%;
+	min-width: 960px;
+}
+
 #body {
-	background: #2b2b2b;
-	/*background-image: url('http://farm6.staticflickr.com/5027/5597694660_b212c49604_o.jpg');*/
-	/*background-size: cover;*/
-	color: #eee;
-	text-shadow: 0px 1px 1px rgba(20,20,20,0.50);
+	background: #f1f1f1;
+	color: #212021;
 }
 
 a {
-	font-size: 14px;
-	/*color: #55C7FF;*/
-	color: #EB88E2;
-/*	color: #fff;
-	text-decoration: underline;*/
+	color: #5685D3;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 header {
@@ -22,7 +25,7 @@ header {
 	top: 0;
 	border-top: 4px solid #b25b91;
 	border-bottom: 1px solid #181818;
-	padding: 8px 0;
+	padding: 5px 0 9px 0;
 }
 
 #logo-link {
@@ -32,6 +35,7 @@ header {
 	opacity: 0.8;
 	margin: 0 auto;
 	display: block;
+	text-indent: -9999px;
 }
 
 #logo-link:hover {
@@ -40,38 +44,42 @@ header {
 
 #container {
 	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0;
-	margin-bottom: -80px;
+}
+
+#main-body {
+	overflow: auto;
+	padding-bottom: 30px;
 }
 
 #login-box {
-	margin: 300px auto 0;
+	position: relative;
+	margin: 20% auto 0;
 	width: 370px;
 	padding: 20px;
-	border-radius: 4px;
-	background: #666;
-	border: 1px solid #2F2F2F;
-	-moz-box-shadow:    0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
-	-webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
-	box-shadow:         0px 2px 4px 0px rgba(0,0,0,0.30), inset 0px 1px 0px 0px rgba(255,255,255,0.20);
 }
 
 #login-title {
 	position: relative;
 }
 
+#login-title h2 {
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+	color: #333;
+	font-family: arial;
+	font-weight: 700;
+}
+
 #login-register {
 	position: absolute;
 	right: 0;
 	top: 20px;
+	color: #666;
 }
 
 .error-msg {
-	color: #fff;
+	color: #f8f8f8;
 	border-radius: 4px;
-	background: #FF7777;
+	background: #bc5b51;
 	-moz-box-shadow:    0px 2px 2px 0px rgba(0,0,0,0.10);
 	-webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.10);
 	box-shadow:         0px 2px 2px 0px rgba(0,0,0,0.10);
@@ -94,51 +102,55 @@ header {
 
 .login-input {
 	display: block;
-	margin: 10px 0;
-	padding: 14px 5px 14px 38px;
-	/*border: none;*/
-	border-color: transparent;
-	width: 323px;
+	margin: 20px 0;
+	padding: 14px 5px 14px 55px;
+	border: 1px solid #ccc;
+	width: 306px;
 	font-size: 16px;
 	border-radius: 4px;
-	background: #F6F6F6;
-	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.20);
+	background: #f8f8f8;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 	outline: none;
-	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-	-moz-transition: border linear 0.2s, box-shadow linear 0.2s;
-	-o-transition: border linear 0.2s, box-shadow linear 0.2s;
-	transition: border linear 0.2s, box-shadow linear 0.2s;
 }
 
 .login-input:focus {
-	border: 2px solid #DA88EB;
+	border: 1px solid #aaa;
 	background: #fff;
-	box-shadow: none;
+	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .control-group.error label {
-	color: #F74A48;
+	color: #bc5b51;
 }
 
 .control-group.error .login-input {
-	border: 2px solid #F74A48;
+	border: 2px solid #bc5b51;
 }
 
 #login-user {
-	/*background-image: url('../images/login/login_user.png');*/
+	/*background-image: url('../images/login_user.png');*/
 }
 
 #login-password {
-	/*background-image: url('../images/login/login_password.png');*/
+	/*background-image: url('../images/login_password.png');*/
 }
 
-.login-label {
+.icon-user.login-label,
+.icon-password.login-label {
 	color: #9B9B9B;
-	font-size: 24px;
+	font-size: 32px;
 	position: absolute;
-	top: 12px;
-	left: 10px;
+	top: 10px;
+	left: 12px;
 	text-shadow: none;
+}
+
+.login-input:focus + .login-label {
+	color: #666;
+}
+
+#login-btn-wrap {
+	position: relative;
 }
 
 #login-footer {
@@ -148,6 +160,7 @@ header {
 }
 
 #login-btn {
+	font-size: 16px;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -157,13 +170,13 @@ header {
 #footer-push {
 	height: 80px;
 	clear: both;
+	color: #999;
 }
 
-footer {
+#footer {
 	position: relative;
-	margin: 40px 0 0 0;
 	text-align: center;
-	color:#ccc;
+	color: #aaa;
 	font-size: 12px;
 }
 
@@ -175,4 +188,12 @@ footer {
 	background-color: #666;
 	width: 300px;
 	padding: 10px;
+}
+
+/* Selection */
+
+::selection {
+	background: #a45686;
+	color: #f8f8f8;
+	text-shadow: none;
 }

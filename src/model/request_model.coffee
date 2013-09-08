@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : request_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:03
+#* Create date  : 2013-08-26 12:19:40
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'request_service', 'request_vo'], ( Backbone, request_service, request_vo ) ->
+define [ 'backbone', 'underscore', 'request_service', 'base_model' ], ( Backbone, _, request_service, base_model ) ->
 
     RequestModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : request_vo.request
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #init api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'request_service', 'request_vo'], ( Backbone, request_servi
                 if !forge_result.is_error
                 #init succeed
 
-                    request_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'REQUEST_INIT_RETURN', forge_result
 
                 else
                 #init failed
 
                     console.log 'request.init failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'REQUEST_INIT_RETURN', forge_result
 
 
         #update api (define function)
@@ -58,18 +53,15 @@ define [ 'backbone', 'request_service', 'request_vo'], ( Backbone, request_servi
                 if !forge_result.is_error
                 #update succeed
 
-                    request_info = forge_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'REQUEST_UPDATE_RETURN', forge_result
 
                 else
                 #update failed
 
                     console.log 'request.update failed, error is ' + forge_result.error_message
+                    me.pub forge_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'REQUEST_UPDATE_RETURN', forge_result
 
 
 

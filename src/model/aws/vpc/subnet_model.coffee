@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : subnet_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:18
+#* Create date  : 2013-08-26 12:19:56
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'subnet_service', 'subnet_vo'], ( Backbone, subnet_service, subnet_vo ) ->
+define [ 'backbone', 'underscore', 'subnet_service', 'base_model' ], ( Backbone, _, subnet_service, base_model ) ->
 
     SubnetModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : subnet_vo.subnet
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeSubnets api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'subnet_service', 'subnet_vo'], ( Backbone, subnet_service,
                 if !aws_result.is_error
                 #DescribeSubnets succeed
 
-                    subnet_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'VPC_SNET_DESC_SUBNETS_RETURN', aws_result
 
                 else
                 #DescribeSubnets failed
 
                     console.log 'subnet.DescribeSubnets failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'VPC_SNET_DESC_SUBNETS_RETURN', aws_result
 
 
 

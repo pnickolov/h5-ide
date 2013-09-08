@@ -1,0 +1,122 @@
+<article class="property-app">
+
+  {{#with cgw}}
+  <div class="option-group-head expand">Customer Gateway</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>ID</dt>
+      <dd>{{customerGatewayId}}</dd>
+      <dt>State</dt>
+      <dd class="capitalize"><i class="status status-{{stateColor}}"></i>{{state}}</dd>
+      <dt>IP</dt>
+      <dd>{{ipAddress}}</dd>
+      <dt>Type</dt>
+      <dd>{{type}}</dd>
+      <dt>BGP ASN</dt>
+      <dd>{{bgpAsn}}</dd>
+    </dl>
+  </div>
+  {{/with}}
+
+  {{#with vpn}}
+  <div class="option-group-head expand">VPN Connection</div>
+  <div class="option-group">
+    <dl class="dl-vertical">
+      <dt>ID</dt>
+      <dd>{{vpnConnectionId}}</dd>
+
+      <dt>State</dt>
+      <dd class="capitalize"><i class="status status-green"></i>{{state}}</dd>
+
+      <dt>Type</dt>
+      <dd>{{type}}</dd>
+
+      <dt>Routing</dt>
+      <dd>{{routing}}</dd>
+    </dl>
+
+    {{#if vgwTelemetry.item}}
+      <div class="accordion-sub-head">
+        <h5>VPN Tunnels</h5>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+          <th style="width:20px">Tunnel</th>
+          <th style="width:100px">IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each vgwTelemetry.item}}
+            <tr>
+              <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{acceptedRouteCount}}</td>
+              <td>{{outsideIpAddress}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
+
+    {{#if routes.item}}
+      <div class="accordion-sub-head">
+        <h5>Status Routes</h5>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+          <th style="width:100px">Status</th>
+          <th style="width:100px">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each routes.item}}
+          <tr>
+            <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+            <td>{{source}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
+  </div>
+  {{/with}}
+
+  {{#if vpn.detail}}
+  <div class="option-group-head">Download Configuration</div>
+  <div class="option-group" id="app-vpn-connection-body">
+    <div class="property-control-group clearfix">
+      <label>Vendor</label>
+      <div class="selectbox" id="tenancy-select">
+        <div class="selection">Generic</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="item selected focused" data-id="default">Generic</li>
+        </ul>
+      </div>
+    </div >
+
+    <div class="property-control-group clearfix">
+      <label>Platform</label>
+      <div class="selectbox" id="tenancy-select">
+        <div class="selection">Generic</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="item selected focused" data-id="default">Generic</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="property-control-group clearfix">
+      <label>Softerware</label>
+      <div class="selectbox" id="tenancy-select">
+        <div class="selection">Vendor Agnostic</div>
+        <ul class="dropdown" tabindex="-1">
+          <li class="item selected focused" data-id="default">Vendor Agnostic</li>
+        </ul>
+      </div>
+    </div>
+    {{#each vpn.detail}}
+    <a id="download-vpn-cgw-conf" class="btn btn-primary" {{#if download}}href="data://text/plain;base64,{{filecontent}}" download="{{filename}}.txt"{{/if}}>Download</a>
+    {{/each}}
+  </div>
+  {{/if}}
+</article>

@@ -1,19 +1,47 @@
 {
-  "id": "app-d456e48b",
-  "name": "ami2",
-  "description": "",
-  "username": "a2Vu",
-  "owner": "a2Vu",
-  "region": "us-east-1",
-  "stack_id": "stack-8935caa4",
-  "state": "Terminated",
-  "version": "4.0",
-  "component": {
+  "id"          : "app-d456e48b",
+  "name"        : "ami2",
+  "description" : "",
+  "username"    : "a2Vu",
+  "owner"       : "a2Vu",
+  "region"      : "us-east-1",
+  "stack_id"    : "stack-8935caa4",
+  "state"       : "Terminated",
+  "version"     : "4.0",
+  "component"   : {
 
   },
   "layout": {
-    "type": "canvas",
-    "size": [width, height]
+    "size": [ "width", "height" ],
+    "component" : {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": [
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        },
+        {
+          "target" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "line" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        }
+      ]
+    },
+    "connection": {
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+        "target": [
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        ],
+        "auto": true,
+        "point": [
+          ["$x", "$y" ],
+          ["$x", "$y" ]
+        ],
+        //SVG not save into mongodb
+        "SVG": {
+
+        }
+      }
+    }
   },
   "property": {
     "policy": {

@@ -1,0 +1,94 @@
+<!--{{ .app-list-data }}-->
+
+{{#if app_list}}
+
+	{{#each app_list }}
+	<li>
+		<a href="javascript:void(0)">{{ region_group }} ({{ region_count }})</a>
+		<ul class="nav-region-list-items app-list">
+
+			{{#each region_name_group }}
+			<li>
+				<a href="javascript:void(0)" data-region-name="{{ region }}" data-app-id="{{ id }}" class="truncate nav-truncate" title="{{ name }}-[{{ state }}]">
+					<i class="icon-app-{{ tolower state }} icon-sub-nav-label"></i>
+					{{ name }}
+				</a>
+			</li>
+			{{/each}}
+
+		</ul>
+	</li>
+	{{/each}}
+
+{{else}}
+
+	<li>
+		<div class="nav-empty">Currently you have no app. You can launch a stack into app.</div>
+	</li>
+
+{{/if}}
+
+<!--{{ .stack-list-data }}-->
+{{#each stack_list }}
+<li>
+	<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span></a>
+
+	<ul class="nav-region-list-items stack-list">
+
+		{{#each region_name_group }}
+		<li>
+			<a href="javascript:void(0)" data-region-name="{{ region }}" data-stack-id="{{ id }}" class="truncate nav-truncate"><i class="icon-stack-nav icon-sub-nav-label"></i>{{ name }}</a>
+		</li>
+		{{/each}}
+
+	</ul>
+</li>
+{{/each}}
+
+<!--{{ .region-empty-list }}-->
+{{#if stack_list }}
+	{{#if region_empty_list }}
+		<ul class="sub-menu nav-region-list">
+			{{#each region_empty_list }}
+
+				<li class="hide">
+					<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
+						{{ this }} (0)
+						<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+					</a>
+				</li>
+
+			{{/each}}
+		</ul>
+
+		<div class="show-unused-region">
+			<a href="javascript:void(0)">
+				Show unused regions
+			</a>
+		</div>
+
+	{{/if}}
+{{else}}
+	<ul class="sub-menu nav-region-list">
+		{{#each region_empty_list }}
+
+			<li class="show">
+				<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
+					{{ this }} (0)
+					<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+				</a>
+			</li>
+
+		{{/each}}
+	</ul>
+{{/if}}
+
+<!--{{ .region-list }}-->
+{{#each region_list }}
+<li>
+	<a href="javascript:void(0)" class="truncate nav-truncate region-name" data-region-name="{{ region_name }}">
+		{{region_city}}
+		<span class="nav-head-note">{{region_area}}</span>
+	</a>
+</li>
+{{/each}}

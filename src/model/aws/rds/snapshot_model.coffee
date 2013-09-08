@@ -1,7 +1,7 @@
 #*************************************************************************************
 #* Filename     : snapshot_model.coffee
 #* Creator      : gen_model.sh
-#* Create date  : 2013-06-05 10:35:16
+#* Create date  : 2013-08-26 12:19:54
 #* Description  : model know service
 #* Action       : 1.define vo
 #*                2.invoke api by service
@@ -10,14 +10,12 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'snapshot_service', 'snapshot_vo'], ( Backbone, snapshot_service, snapshot_vo ) ->
+define [ 'backbone', 'underscore', 'snapshot_service', 'base_model' ], ( Backbone, _, snapshot_service, base_model ) ->
 
     SnapshotModel = Backbone.Model.extend {
 
-        ###### vo (declare variable) ######
-        defaults : {
-            vo : snapshot_vo.snapshot
-        }
+        initialize : ->
+            _.extend this, base_model
 
         ###### api ######
         #DescribeDBSnapshots api (define function)
@@ -32,18 +30,15 @@ define [ 'backbone', 'snapshot_service', 'snapshot_vo'], ( Backbone, snapshot_se
                 if !aws_result.is_error
                 #DescribeDBSnapshots succeed
 
-                    snapshot_info = aws_result.resolved_data
-
-                    #set vo
-
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'RDS_SS_DESC_DB_SNAPSHOTS_RETURN', aws_result
 
                 else
                 #DescribeDBSnapshots failed
 
                     console.log 'snapshot.DescribeDBSnapshots failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
-                #dispatch event (dispatch event whenever login succeed or failed)
-                me.trigger 'RDS_SS_DESC_DB_SNAPSHOTS_RETURN', aws_result
 
 
 

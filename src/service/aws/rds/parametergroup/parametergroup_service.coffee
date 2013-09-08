@@ -10,61 +10,123 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'parametergroup_parser', 'result_vo' ], ( MC, parametergroup_parser, result_vo ) ->
+define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
-    URL = '/aws/rds/parametergroup/'
+	URL = '/aws/rds/parametergroup/'
 
-    #private
-    send_request =  ( api_name, src, param_ary, parser, callback ) ->
+	#private
+	send_request =  ( api_name, src, param_ary, parser, callback ) ->
 
-        #check callback
-        if callback is null
-            console.log "parametergroup." + api_name + " callback is null"
-            return false
+		#check callback
+		if callback is null
+			console.log "parametergroup." + api_name + " callback is null"
+			return false
 
-        try
+		try
 
-            MC.api {
-                url     : URL
-                method  : api_name
-                data    : param_ary
-                success : ( result, return_code ) ->
+			MC.api {
+				url     : URL
+				method  : api_name
+				data    : param_ary
+				success : ( result, return_code ) ->
 
-                    #resolve result
-                    param_ary.splice 0, 0, src
-                    result_vo.aws_result = parser result, return_code, param_ary
+					#resolve result
+					param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+					aws_result = {}
+					aws_result = parser result, return_code, param_ary
 
-                    callback result_vo.aws_result
+					callback aws_result
 
-                error : ( result, return_code ) ->
+				error : ( result, return_code ) ->
 
-                    result_vo.aws_result.return_code      = return_code
-                    result_vo.aws_result.is_error         = true
-                    result_vo.aws_result.error_message    = result.toString()
+					aws_result = {}
+					aws_result.return_code      = return_code
+					aws_result.is_error         = true
+					aws_result.error_message    = result.toString()
 
-                    callback result_vo.aws_result
-            }
+					callback aws_result
+			}
 
-        catch error
-            console.log "parametergroup." + api_name + " error:" + error.toString()
-
-
-        true
-    # end of send_request
-
-    #def DescribeDBParameterGroups(self, username, session_id, region_name, pg_name=None, marker=None, max_records=None):
-    DescribeDBParameterGroups = ( src, username, session_id, region_name, pg_name=null, marker=null, max_records=null, callback ) ->
-        send_request "DescribeDBParameterGroups", src, [ username, session_id, region_name, pg_name, marker, max_records ], parametergroup_parser.parserDescribeDBParameterGroupsReturn, callback
-        true
-
-    #def DescribeDBParameters(self, username, session_id, region_name, pg_name, source=None, marker=None, max_records=None):
-    DescribeDBParameters = ( src, username, session_id, region_name, pg_name, source=null, marker=null, max_records=null, callback ) ->
-        send_request "DescribeDBParameters", src, [ username, session_id, region_name, pg_name, source, marker, max_records ], parametergroup_parser.parserDescribeDBParametersReturn, callback
-        true
+		catch error
+			console.log "parametergroup." + api_name + " error:" + error.toString()
 
 
-    #############################################################
-    #public
-    DescribeDBParameterGroups    : DescribeDBParameterGroups
-    DescribeDBParameters         : DescribeDBParameters
+		true
+	# end of send_request
+
+	#///////////////// Parser for DescribeDBParameterGroups return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolveDescribeDBParameterGroupsResult = ( result ) ->
+		#resolve result
+		#TO-DO
+
+		#return vo
+		#TO-DO
+
+	#private (parser DescribeDBParameterGroups return)
+	parserDescribeDBParameterGroupsReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolveDescribeDBParameterGroupsResult result
+
+			aws_result.resolved_data = resolved_data
+
+
+		#3.return vo
+		aws_result
+
+	# end of parserDescribeDBParameterGroupsReturn
+
+
+	#///////////////// Parser for DescribeDBParameters return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolveDescribeDBParametersResult = ( result ) ->
+		#resolve result
+		#TO-DO
+
+		#return vo
+		#TO-DO
+
+	#private (parser DescribeDBParameters return)
+	parserDescribeDBParametersReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolveDescribeDBParametersResult result
+
+			aws_result.resolved_data = resolved_data
+
+
+		#3.return vo
+		aws_result
+
+	# end of parserDescribeDBParametersReturn
+
+
+	#############################################################
+
+	#def DescribeDBParameterGroups(self, username, session_id, region_name, pg_name=None, marker=None, max_records=None):
+	DescribeDBParameterGroups = ( src, username, session_id, region_name, pg_name=null, marker=null, max_records=null, callback ) ->
+		send_request "DescribeDBParameterGroups", src, [ username, session_id, region_name, pg_name, marker, max_records ], parserDescribeDBParameterGroupsReturn, callback
+		true
+
+	#def DescribeDBParameters(self, username, session_id, region_name, pg_name, source=None, marker=None, max_records=None):
+	DescribeDBParameters = ( src, username, session_id, region_name, pg_name, source=null, marker=null, max_records=null, callback ) ->
+		send_request "DescribeDBParameters", src, [ username, session_id, region_name, pg_name, source, marker, max_records ], parserDescribeDBParametersReturn, callback
+		true
+
+
+	#############################################################
+	#public
+	DescribeDBParameterGroups    : DescribeDBParameterGroups
+	DescribeDBParameters         : DescribeDBParameters
 

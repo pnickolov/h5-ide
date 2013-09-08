@@ -62,6 +62,12 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
                 this.set 'have_vpc', false
 
             elb.distribution = []
+
+            subnetMap = {}
+            for uid, comp of MC.canvas_data.component
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                    subnetMap[ comp.resource.SubnetId ] = comp.name
+
             $.each elb.AvailabilityZones.member, (i, zone_name) ->
               tmp = {}
               tmp.zone = zone_name
@@ -76,7 +82,7 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
                         if MC.data.resource_list[MC.canvas_data.region][subnet_id].availabilityZone == zone_name
 
-                            tmp.subnet = subnet_id
+                            tmp.subnet = subnetMap[ subnet_id ]
 
                             return false
 

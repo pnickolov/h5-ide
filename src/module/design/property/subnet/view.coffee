@@ -61,9 +61,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
                 if focusCIDR
                     MC.canvas.update subnetUID, 'text', 'name', subnetName + ' ()'
-                    $('#property-cidr-block').val('')
-                    $('#property-cidr-block').focus()
                     ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    $('#property-cidr-block').val('').focus()
             else
                 $( '.property-details' ).html this.template data
 
@@ -177,13 +176,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 }
                 modal template, false, () ->
 
-                    $('.modal-close, #cidr-return').click () ->
+                    $('.modal-close').click () ->
                         $('#property-cidr-block').focus()
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
                         ide_event.trigger ide_event.DELETE_COMPONENT, subnetUID, 'group'
                         MC.aws.aws.disabledAllOperabilityArea(false)
+                        modal.close()
             else
                 change = {}
                 change.handled = false

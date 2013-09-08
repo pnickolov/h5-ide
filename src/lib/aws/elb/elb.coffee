@@ -212,8 +212,11 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
 			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
 
-		subnets = asg.resource.VPCZoneIdentifier.split ","
-		subnets = _.map subnets, MC.extractID
+		if asg.resource.VPCZoneIdentifier.length
+			subnets = asg.resource.VPCZoneIdentifier.split ","
+			subnets = _.map subnets, MC.extractID
+		else
+			subnets = []
 
 		azs = {}
 		for sb in subnets
@@ -388,6 +391,22 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		return haveAssociate
 
+	getAZAryForDefaultVPC = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		elbInstances = elbComp.resource.Instances
+		azNameAry = []
+
+		_.each elbInstances, (instanceRefObj) ->
+			instanceRef = instanceRefObj.InstanceId
+			instanceUID = instanceRef.slice(1).split('.')[0]
+			instanceAZName = MC.canvas_data.component[instanceUID].resource.Placement.AvailabilityZone
+			if !(instanceAZName in azNameAry)
+				azNameAry.push(instanceAZName)
+			null
+
+		return azNameAry
+
 	#public
 	init                      : init
 	addInstanceAndAZToELB     : addInstanceAndAZToELB
@@ -405,3 +424,4 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 	isELBDefaultSG            : isELBDefaultSG
 	removeAllELBForInstance   : removeAllELBForInstance
 	haveAssociateInAZ         : haveAssociateInAZ
+	getAZAryForDefaultVPC     : getAZAryForDefaultVPC

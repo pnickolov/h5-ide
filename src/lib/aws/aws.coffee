@@ -213,9 +213,13 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         #ami
         if resources.DescribeImages
             _.map resources.DescribeImages, ( res, i ) ->
-                if !MC.data.dict_ami[res.imageId]
-                    MC.data.dict_ami[res.imageId] = res
-                #MC.data.resource_list[region][res.imageId] = res
+                if !res.osType
+                  res = $.extend true, {}, res
+                  res.osType = MC.aws.ami.getOSType res
+
+                MC.data.dict_ami[res.imageId] = res
+                MC.data.resource_list[region][res.imageId] = res
+
                 null
 
 
@@ -293,6 +297,15 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 MC.data.resource_list[region][res.ActivityId] = res
                 null
 
+        #instance health(elb)
+        if resources.DescribeInstanceHealth
+
+            if !MC.data.resource_list[region].instance_health
+                MC.data.resource_list[region].instance_health = {}
+
+            _.map resources.DescribeInstanceHealth, ( res, i ) ->
+                MC.data.resource_list[region].instance_health[res.InstanceId] = res
+                null
 
 
 

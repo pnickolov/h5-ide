@@ -346,6 +346,49 @@ define [], () ->
 	RECENT_NUM		= 5
 	RECENT_DAYS		= 30
 
+	RDP_TMPL = "\n
+screen mode id:i:2\n
+use multimon:i:0\n
+desktopwidth:i:1024\n
+desktopheight:i:768\n
+session bpp:i:32\n
+winposstr:s:0,3,0,0,1024,768\n
+compression:i:1\n
+keyboardhook:i:2\n
+audiocapturemode:i:0\n
+videoplaybackmode:i:1\n
+connection type:i:2\n
+displayconnectionbar:i:1\n
+disable wallpaper:i:1\n
+allow font smoothing:i:0\n
+allow desktop composition:i:0\n
+disable full window drag:i:1\n
+disable menu anims:i:1\n
+disable themes:i:0\n
+disable cursor setting:i:0\n
+bitmapcachepersistenable:i:1\n
+full address:s:%s\n
+audiomode:i:0\n
+redirectprinters:i:1\n
+redirectcomports:i:0\n
+redirectsmartcards:i:1\n
+redirectclipboard:i:1\n
+redirectposdevices:i:0\n
+redirectdirectx:i:1\n
+autoreconnection enabled:i:1\n
+authentication level:i:2\n
+prompt for credentials:i:0\n
+negotiate security layer:i:1\n
+remoteapplicationmode:i:0\n
+alternate shell:s:\n
+shell working directory:s:\n
+gatewayhostname:s:\n
+gatewayusagemethod:i:4\n
+gatewaycredentialssource:i:4\n
+gatewayprofileusagemethod:i:0\n
+promptcredentialonce:i:1\n
+use redirection server name:i:0\n"
+
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
 	INSTANCE_STATES         : INSTANCE_STATES
@@ -365,5 +408,5 @@ define [], () ->
 	RECENT_DAYS			    : RECENT_DAYS
 	AWS_RESOURCE	    	: AWS_RESOURCE
 	SERVICE_REGION			: SERVICE_REGION
-
+	RDP_TMPL                : RDP_TMPL
 

@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/cgw/template.html',
-         'text!/module/design/property/cgw/app_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, app_template, ide_event ) ->
 
@@ -22,7 +22,6 @@ define [ 'jquery',
     loadModule = ( uid, current_main, tab_type ) ->
 
         console.log 'tab_type = ' + tab_type
-
         #
         MC.data.current_sub_main = current_main
 
@@ -35,6 +34,9 @@ define [ 'jquery',
         require [ './module/design/property/cgw/view',
                   './module/design/property/cgw/model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -53,21 +55,21 @@ define [ 'jquery',
             ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
 
 
-            view.on "CHANGE_NAME", ( change ) ->
-                model.setName change.value
+            view.on "CHANGE_NAME", ( value ) ->
+                model.setName value
                 # Sync the name to canvas
-                MC.canvas.update uid, "text", "name", change.value
+                MC.canvas.update uid, "text", "name", value
 
                 # Set title
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, change.value
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
                 null
 
-            view.on "CHANGE_IP", ( change ) ->
-                model.setIP change.value
+            view.on "CHANGE_IP", ( value ) ->
+                model.setIP value
                 null
 
-            view.on "CHANGE_BGP", ( change ) ->
-                change.done( model.setBGP change.value )
+            view.on "CHANGE_BGP", ( value ) ->
+                model.setBGP value
                 null
 
             null
@@ -76,6 +78,9 @@ define [ 'jquery',
         require [ './module/design/property/cgw/app_view',
                   './module/design/property/cgw/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/resource/template.html',
-         'text!/module/design/resource/template_data.html',
+         'text!./module/design/resource/template.html',
+         'text!./module/design/resource/template_data.html',
          'event',
          'MC.ide.template'
 ], ( $, template, template_data, ide_event ) ->
@@ -31,7 +31,8 @@ define [ 'jquery',
                 #check re-render
                 view.reRender template
                 #init resoruce service count
-                model.service_count = 0
+                #when OPEN_APP set service_count = 10; OPEN_STACK or NEW_STACK set service_count = 0
+                model.service_count = if type is 'OPEN_APP' then 10 else 0
                 model.set 'check_required_service_count', -1
                 MC.data.resouceapi = []
                 #
@@ -85,12 +86,12 @@ define [ 'jquery',
 
                 if $.cookie('has_cred') is 'false' and model.get( 'check_required_service_count' ) is 1    # not set credential then use quickstart data
                     console.log 'not set credential and described quickstart service'
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.SWITCH_MAIN if MC.data.current_tab_type isnt 'OPEN_APP'
                     model.service_count = 0
 
-                else if model.get( 'check_required_service_count' ) is 3      # has setted credential
+                else if model.get( 'check_required_service_count' ) is 2      # has setted credential
                     console.log 'set credential and described require service'
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.SWITCH_MAIN if MC.data.current_tab_type isnt 'OPEN_APP'
                     model.service_count = 0
 
                 null

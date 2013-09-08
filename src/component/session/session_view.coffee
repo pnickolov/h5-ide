@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!/component/session/session_template.html'
+         'text!./session_template.html'
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
 ], ( ide_event, session_template ) ->
@@ -12,7 +12,7 @@ define [ 'event',
 
         events             :
             'closed'                 : 'closedSessionPopup'
-            'click #cidr-remove'     : 'closeSession'
+            #'click #cidr-remove'     : 'closeSession'
             'click #cidr-return'     : 'reConnectSession'
 
         render     : ->
@@ -22,9 +22,9 @@ define [ 'event',
             #
             this.setElement $( '.invalid-session' ).closest '#modal-wrap'
 
-        closeSession       : ->
-            console.log 'closeSession'
-            this.trigger 'OPEN_RECONNECT'
+        #closeSession       : ->
+        #    console.log 'closeSession'
+        #    this.trigger 'OPEN_RECONNECT'
 
         reConnectSession   : ->
             console.log 'reConnectSession'
@@ -32,6 +32,7 @@ define [ 'event',
 
         closedSessionPopup : ->
             console.log 'closedSessionPopup'
+            this.trigger 'OPEN_RECONNECT'
             this.trigger 'CLOSE_POPUP'
 
     }

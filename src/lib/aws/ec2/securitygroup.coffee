@@ -1,4 +1,4 @@
-define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
+define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 	#private
 	getAllRefComp = (sgUID) ->
@@ -37,6 +37,48 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 				if sgUID in sgAry
 					refCompAry.push comp
+			null
+
+		return refCompAry
+
+	deleteRefInAllComp = (sgUID) ->
+
+		refNum = 0
+		sgAry = []
+		refCompAry = []
+		_.each MC.canvas_data.component, (comp) ->
+			compType = comp.type
+			compUID = comp.uid
+			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
+				sgAry = comp.resource.SecurityGroups
+				sgAry = _.filter sgAry, (value) ->
+					refSGUID = value.slice(1).split('.')[0]
+					if sgUID is refSGUID
+						return false
+					else
+						return true
+				MC.canvas_data.component[compUID].resource.SecurityGroups = sgAry
+
+			if compType is 'AWS.EC2.Instance'
+				sgAry = comp.resource.SecurityGroupId
+				sgAry = _.filter sgAry, (value) ->
+					refSGUID = value.slice(1).split('.')[0]
+					if sgUID is refSGUID
+						return false
+					else
+						return true
+				MC.canvas_data.component[compUID].resource.SecurityGroupId = sgAry
+
+			if compType is 'AWS.VPC.NetworkInterface'
+				sgAry = comp.resource.GroupSet
+				sgAry = _.filter sgAry, (sgObj) ->
+					refSGUID = sgObj.GroupId.slice(1).split('.')[0]
+					if sgUID is refSGUID
+						return false
+					else
+						return true
+				MC.canvas_data.component[compUID].resource.GroupSet = sgAry
+
 			null
 
 		return refCompAry
@@ -315,3 +357,4 @@ define [ 'i18n!/nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	addSGToProperty    : addSGToProperty
 	getSGColor         : getSGColor
 	updateSGColorLabel : updateSGColorLabel
+	deleteRefInAllComp : deleteRefInAllComp

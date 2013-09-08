@@ -59,7 +59,11 @@
 .ipt-controls > .icon-del:before,
 .ipt-controls > .icon-add:before,
 .icon-line-shape,
-.icon-clip
+.icon-copy,
+.icon-straight,
+.icon-elbow,
+.icon-bezier-q,
+.icon-bezier-qt
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -116,4 +120,8 @@
 .ipt-controls > .icon-del:before {content: "\F13E";}
 .icon-detail:before {content: "\F140";}
 .icon-line-shape:before {content: "\F141";}
-.icon-clip:before {content: "\F142";}
+.icon-copy:before {content: "\F142";}
+.icon-straight:before {content:"\F143";}
+.icon-elbow:before {content:"\F144";}
+.icon-bezier-qt:before {content:"\F145";}
+.icon-bezier-q:before {content:"\F146";}

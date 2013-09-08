@@ -1,14 +1,14 @@
-<article id="property-cgw">
+<article id="property-cgw" data-bind="true">
 	<div class="property-control-group clearfix">
 		<label class="left" for="property-cgw-name">Name</label>
 		<span class="required-input right">Required</span>
-		<input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-cgw-name"/>
+		<input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-cgw-name" data-ignore="true"/>
 	</div>
 
 	<div class="property-control-group clearfix">
 		<label class="left" for="property-cgw-ip">IP Address</label>
 		<span class="required-input right">Required</span>
-		<input class="input tooltip" type="text" value="{{ip}}" lastValue="{{ip}}" id="property-cgw-ip" data-tooltip="This address must be static and not behind a NAT. e.g. 12.1.2.3"/>
+		<input class="input tooltip" type="text" value="{{ip}}" lastValue="{{ip}}" data-ignore="true" data-ignore-regexp="^[0-9.]*$" id="property-cgw-ip" data-tooltip="This address must be static and not behind a NAT. e.g. 12.1.2.3"/>
 	</div>
 
 	<div class="property-control-group clearfix cgw-routing">
@@ -32,7 +32,7 @@
 	<div class="property-control-group clearfix" {{#if BGP}}{{else}}style="display:none;"{{/if}} id="property-cgw-bgp-wrapper">
 		<label class="left" for="property-cgw-bgp">BGP ASN</label>
 		<span class="required-input right">Required</span>
-		<input class="input tooltip" type="text" value="{{BGP}}" lastValue="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="1 - 65534"/>
+		<input class="input tooltip" type="text" value="{{BGP}}" lastValue="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="1 - 65534" data-type="digits" data-required="true"/>
 	</div>
 
 </article>

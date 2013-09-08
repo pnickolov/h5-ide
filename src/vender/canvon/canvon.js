@@ -16,19 +16,6 @@ Canvon.fn = Canvon.prototype = {
 	init: function (selector)
 	{
 		var elem = $(selector);
-
-		// if (typeof selector === 'string')
-		// {
-		// 	elem = document.getElementById( selector );
-		// }
-		// else if (selector instanceof SVGElement)
-		// {
-		// 	elem = selector;
-		// }
-		// else
-		// {
-		// 	return false;
-		// }
 		
 		$.each(Canvon.prototype, function (name, fn)
 		{
@@ -288,7 +275,7 @@ Canvon.fn = Canvon.prototype = {
 		return this;
 	},
 
-	hasClass: function ()
+	hasClass: function (name)
 	{
 		return new RegExp('\\b(' + name.split(/\s+/).join('|') + ')\\b').test( this.attr('class') );
 	},

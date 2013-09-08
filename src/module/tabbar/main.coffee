@@ -2,10 +2,14 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'UI.modal' ], ( $, template, ide_event ) ->
+define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
+         'UI.tabbar', 'UI.modal'
+], ( $, template, ide_event, base_main ) ->
 
     #private
-    loadModule = () ->
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
 
         #add handlebars script
         template = '<script type="text/x-handlebars-template" id="tabbar-tmpl">' + template + '</script>'
@@ -13,11 +17,19 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
         #load remote html template
         $( template ).appendTo '#tab-bar'
 
-        #load remote module1.js
+    initialize()
+
+    #private
+    loadModule = () ->
+
+        #load
         require [ './module/tabbar/view', './module/tabbar/model', 'MC' ], ( View, model, MC ) ->
 
             #view
-            view       = new View()
+            #view       = new View()
+
+            view = loadSuperModule loadModule, 'tabbar', View, null
+            return if !view
 
             #temp
             #MC.data.event = ide_event
@@ -86,10 +98,16 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 analytics.track "Created Stack",
                     stack_type: platform,
                     stack_region: view.temp_region_name
+
+                # check repeat stack name
+                loop
+                    MC.data.untitled = MC.data.untitled + 1
+                    break if MC.aws.aws.checkStackName null, 'untitled-'+MC.data.untitled
+
                 #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
                 #MC.data.untitled ++
-                MC.data.untitled = MC.data.untitled + 1
+                #MC.data.untitled = MC.data.untitled + 1
                 #
                 modal.close()
 
@@ -106,12 +124,12 @@ define [ 'jquery', 'text!/module/tabbar/template.html', 'event', 'UI.tabbar', 'U
                 console.log model.get 'current_platform'
                 console.log model.get 'tab_name'
                 console.log tab_id
+                #
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
                 #push event
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
-                #
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
 
             #listen open_stack
             model.on 'OPEN_STACK', ( tab_id ) ->

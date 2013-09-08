@@ -2,555 +2,586 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
+define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( keypair_model, constant, ide_event) ->
+
+  LaunchConfigModel = Backbone.Model.extend {
+
+    defaults :
+      'uid'         : null
+      'name'        : null
+      'update_instance_title' : null
+      'instance_type' : null
+      'instance_ami' : null
+      'instance_ami_property' : null
+      'keypair' : null
+      'component' : null
+      'sg_display' : null
+      'checkbox_display' : null
+      'eni_display'   : null
+      'ebs_optimized' : null
+      'tenacy' : null
+      'cloudwatch' : null
+      'user_data' : null
+      'base64'    :  null
+      'eni_description' : null
+      'source_check' : null
+      'add_sg'   : null
+      'remove_sg' : null
 
-	LaunchConfigModel = Backbone.Model.extend {
+    initialize : ->
+      this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
 
-		defaults :
-			'uid'         : null
-			'name'        : null
-			'update_instance_title' : null
-			'instance_type' : null
-			'instance_ami' : null
-			'instance_ami_property' : null
-			'keypair' : null
-			'component' : null
-			'sg_display' : null
-			'checkbox_display' : null
-			'eni_display'   : null
-			'ebs_optimized' : null
-			'tenacy' : null
-			'cloudwatch' : null
-			'user_data' : null
-			'base64'    :  null
-			'eni_description' : null
-			'source_check' : null
-			'add_sg'   : null
-			'remove_sg' : null
+    updateUID : ( type ) ->
+      console.log 'updateUID'
+      if type is 'OLD_APP' or  type is 'OLD_STACK'
+        this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
 
-		initialize : ->
-			this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
+    listen : ->
+      #listen
+      this.listenTo this, 'change:name', this.setName
+      this.listenTo this, 'change:instance_type', this.setInstanceType
+      this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
+      this.listenTo this, 'change:cloudwatch', this.setCloudWatch
+      this.listenTo this, 'change:user_data', this.setUserData
+      this.listenTo this, 'change:base64' , this.setBase64Encoded
+      this.listenTo this, 'change:eni_description' , this.setEniDescription
+      this.listenTo this, 'change:source_check', this.setSourceCheck
+      this.listenTo this, 'change:add_sg', this.addSGtoInstance
+      this.listenTo this, 'change:remove_sg', this.removeSG
 
-		updateUID : ( type ) ->
-			console.log 'updateUID'
-			if type is 'OLD_APP' or  type is 'OLD_STACK'
-				this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
+      me = this
+      this.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
-		listen : ->
-			#listen
-			this.listenTo this, 'change:name', this.setName
-			this.listenTo this, 'change:instance_type', this.setInstanceType
-			this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
-			this.listenTo this, 'change:cloudwatch', this.setCloudWatch
-			this.listenTo this, 'change:user_data', this.setUserData
-			this.listenTo this, 'change:base64' , this.setBase64Encoded
-			this.listenTo this, 'change:eni_description' , this.setEniDescription
-			this.listenTo this, 'change:source_check', this.setSourceCheck
-			this.listenTo this, 'change:add_sg', this.addSGtoInstance
-			this.listenTo this, 'change:remove_sg', this.removeSG
+        region_name = result.param[3]
+        keypairname = result.param[4]
 
-		getUID  : ( uid ) ->
-			console.log 'getUID'
-			lsgUID = MC.canvas_data.component[ uid ].uid
-			this.set 'get_uid', lsgUID
-			this.set 'uid', lsgUID
-			null
+        curr_keypairname = me.get("lc")
 
-		setName  : () ->
-			console.log 'setName'
+        # The user has closed the dialog
+        # Do nothing
+        if curr_keypairname.KeyName isnt keypairname
+            return
 
-			uid = this.get 'get_uid'
+        ###
+        # The EC2_KPDOWNLOAD_RETURN event won't fire when the result.is_error
+        # is true. According to bugs in service models.
+        ###
 
-			MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
-			#this.set 'update_instance_title', this.get 'name'
+        me.trigger "KP_DOWNLOADED", result.resolved_data
 
-			MC.canvas.update(uid,'text','lc_name', this.get('name'))
-			null
+        null
 
 
-		getName  : () ->
-			console.log 'getName'
-			this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
-			null
+    downloadKP : ( keypairname ) ->
+        username = $.cookie "usercode"
+        session  = $.cookie "session_id"
 
-		setInstanceType  : () ->
-			uid = this.get 'get_uid'
-			value = this.get 'instance_type'
-			MC.canvas_data.component[ uid ].resource.InstanceType = value
-			null
+        keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
+        null
 
-		setEbsOptimized : ( value )->
 
-			uid = this.get 'get_uid'
+    getUID  : ( uid ) ->
+      console.log 'getUID'
+      lsgUID = MC.canvas_data.component[ uid ].uid
+      this.set 'get_uid', lsgUID
+      this.set 'uid', lsgUID
+      null
 
-			#console.log 'setEbsOptimized = ' + value
+    setName  : () ->
+      console.log 'setName'
 
-			MC.canvas_data.component[ uid ].resource.EbsOptimized = this.get 'ebs_optimized'
+      uid = this.get 'get_uid'
 
-			null
+      MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
+      #this.set 'update_instance_title', this.get 'name'
 
-		setTenancy : ( value ) ->
+      MC.canvas.update(uid,'text','lc_name', this.get('name'))
+      null
 
-			uid  = this.get 'get_uid'
 
-			MC.canvas_data.component[ uid ].resource.Placement.Tenancy = this.get 'tenacy'
+    getName  : () ->
+      console.log 'getName'
+      this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
+      null
 
-			null
+    setInstanceType  : () ->
+      uid = this.get 'get_uid'
+      value = this.get 'instance_type'
+      MC.canvas_data.component[ uid ].resource.InstanceType = value
+      null
 
-		setCloudWatch : () ->
+    setEbsOptimized : ( value )->
 
-			#console.log 'setCloudWatch = ' + value
+      uid = this.get 'get_uid'
 
-			uid = this.get 'get_uid'
+      #console.log 'setEbsOptimized = ' + value
 
-			if this.get 'cloudwatch'
+      MC.canvas_data.component[ uid ].resource.EbsOptimized = this.get 'ebs_optimized'
 
-				MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'enabled'
+      null
 
-			else
-				MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'disabled'
+    setTenancy : ( value ) ->
 
+      uid  = this.get 'get_uid'
 
-			null
+      MC.canvas_data.component[ uid ].resource.Placement.Tenancy = this.get 'tenacy'
 
-		setUserData : () ->
+      null
 
-			#console.log 'setUserData = ' + value
+    setCloudWatch : () ->
 
-			uid = this.get 'get_uid'
+      #console.log 'setCloudWatch = ' + value
 
-			MC.canvas_data.component[ uid ].resource.UserData = this.get 'user_data'
+      uid = this.get 'get_uid'
 
-			null
+      if this.get 'cloudwatch'
 
-		setBase64Encoded : ()->
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'enabled'
 
-			#console.log 'setBase64Encoded = ' + value
+      else
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'disabled'
 
-			MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
-			null
+      null
 
-		setEniDescription: () ->
+    setUserData : () ->
 
-			#console.log 'setEniDescription = ' + value
+      #console.log 'setUserData = ' + value
 
-			uid = this.get 'get_uid'
+      uid = this.get 'get_uid'
 
-			that = this
+      MC.canvas_data.component[ uid ].resource.UserData = this.get 'user_data'
 
-			_.map MC.canvas_data.component, ( val, key ) ->
+      null
 
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+    setBase64Encoded : ()->
 
-					val.resource.Description = that.get 'eni_description'
+      #console.log 'setBase64Encoded = ' + value
 
-				null
+      MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
-			null
+      null
 
-		setSourceCheck : () ->
+    setEniDescription: () ->
 
-			#console.log 'setSourceCheck = ' + value
-			me = this
+      #console.log 'setEniDescription = ' + value
 
-			uid = this.get 'get_uid'
+      uid = this.get 'get_uid'
 
-			_.map MC.canvas_data.component, ( val, key ) ->
+      that = this
 
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
+      _.map MC.canvas_data.component, ( val, key ) ->
 
-					val.resource.SourceDestCheck = me.get 'source_check'
+        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
-				null
+          val.resource.Description = that.get 'eni_description'
 
-			null
+        null
 
-		unAssignSGToComp : (sg_uid) ->
+      null
 
-			lcUID = this.get 'get_uid'
+    setSourceCheck : () ->
 
-			originSGIdAry = MC.canvas_data.component[lcUID].resource.SecurityGroups
+      #console.log 'setSourceCheck = ' + value
+      me = this
 
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
+      uid = this.get 'get_uid'
 
-			originSGIdAry = _.filter originSGIdAry, (value) ->
-				value isnt currentSGId
+      _.map MC.canvas_data.component, ( val, key ) ->
 
-			MC.canvas_data.component[lcUID].resource.SecurityGroups = originSGIdAry
+        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
 
+          val.resource.SourceDestCheck = me.get 'source_check'
 
-			null
+        null
 
-		assignSGToComp : (sg_uid) ->
+      null
 
-			instanceUID = this.get 'get_uid'
+    unAssignSGToComp : (sg_uid) ->
 
-			originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroups
+      lcUID = this.get 'get_uid'
 
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
+      originSGIdAry = MC.canvas_data.component[lcUID].resource.SecurityGroups
 
+      currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-			if !Boolean(currentSGId in originSGIdAry)
-				originSGIdAry.push currentSGId
+      originSGIdAry = _.filter originSGIdAry, (value) ->
+        value isnt currentSGId
 
-			MC.canvas_data.component[instanceUID].resource.SecurityGroups = originSGIdAry
+      MC.canvas_data.component[lcUID].resource.SecurityGroups = originSGIdAry
 
-			null
 
-		getCheckBox : () ->
+      null
 
-			uid = this.get 'get_uid'
+    assignSGToComp : (sg_uid) ->
 
-			checkbox = {}
+      instanceUID = this.get 'get_uid'
 
-			resource = MC.canvas_data.component[ uid ].resource
+      originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroups
 
-			checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
-			checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+      currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-			watches = []
-			asg = null
-			monitorEnabled = true
-			for id, comp of MC.canvas_data.component
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-					watches.push comp
-				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-					if comp.resource.LaunchConfigurationName.indexOf( uid ) != -1
-						asg = comp
 
-			for watch in watches
-				if watch.resource.MetricName.indexOf("StatusCheckFailed") != -1
-					for d in watch.resource.Dimensions
-						if d.value and d.value.indexOf( asg.uid ) != -1
-							monitorEnabled = false
-							break
+      if !Boolean(currentSGId in originSGIdAry)
+        originSGIdAry.push currentSGId
 
-					if not monitorEnabled
-						break
+      MC.canvas_data.component[instanceUID].resource.SecurityGroups = originSGIdAry
 
-			checkbox.monitorEnabled = monitorEnabled
+      null
 
+    getCheckBox : () ->
 
-			#checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
+      uid = this.get 'get_uid'
 
-			#checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
+      checkbox = {}
 
-			this.set 'checkbox_display', checkbox
+      resource = MC.canvas_data.component[ uid ].resource
 
-		getComponent : () ->
+      checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
+      checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
 
-			this.set 'component', MC.canvas_data.component[ this.get( 'get_uid') ]
+      watches = []
+      asg = null
+      monitorEnabled = true
+      for id, comp of MC.canvas_data.component
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+          watches.push comp
+        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+          if comp.resource.LaunchConfigurationName.indexOf( uid ) != -1
+            asg = comp
 
-		getAmi : () ->
+      for watch in watches
+        if watch.resource.MetricName.indexOf("StatusCheckFailed") != -1
+          for d in watch.resource.Dimensions
+            if d.value and d.value.indexOf( asg.uid ) != -1
+              monitorEnabled = false
+              break
 
-			uid = this.get 'get_uid'
+          if not monitorEnabled
+            break
 
-			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+      checkbox.monitorEnabled = monitorEnabled
 
-			this.set 'instance_ami_property', JSON.stringify(MC.data.dict_ami[ami_id])
 
-		getAmiDisp : () ->
+      #checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
 
-			uid = this.get 'get_uid'
+      #checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
 
-			disp = {}
+      this.set 'checkbox_display', checkbox
 
-			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+    getComponent : () ->
 
-			disp.name = MC.data.dict_ami[ami_id].name
+      this.set 'component', MC.canvas_data.component[ this.get( 'get_uid') ]
 
-			disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
+    getAmi : () ->
 
-			this.set 'instance_ami', disp
+      uid = this.get 'get_uid'
 
-		getKeyPair : ()->
+      ami_id = MC.canvas_data.component[ uid ].resource.ImageId
 
-			uid = this.get 'get_uid'
-			keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
+      this.set 'instance_ami_property', JSON.stringify(MC.data.dict_ami[ami_id])
 
-			kp_list = MC.aws.kp.getList( keypair_id )
+    getAmiDisp : () ->
 
-			this.set 'keypair', kp_list
+      uid = this.get 'get_uid'
 
-			null
+      disp = {}
 
-		addKP : ( kp_name ) ->
+      ami_id = MC.canvas_data.component[ uid ].resource.ImageId
 
-			result = MC.aws.kp.add kp_name
+      disp.name = MC.data.dict_ami[ami_id].name
 
-			if not result
-				return result
+      disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
 
-			uid = @get 'get_uid'
-			MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
-			true
+      this.set 'instance_ami', disp
 
-		deleteKP : ( key_name ) ->
+    getKeyPair : ()->
 
-			MC.aws.kp.del key_name
+      uid = this.get 'get_uid'
+      keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
 
-			# Update data of this model
-			for kp, idx in @attributes.keypair
-				if kp.name is key_name
-					@attributes.keypair.splice idx, 1
-					break
+      kp_list = MC.aws.kp.getList( keypair_id )
 
-			null
+      this.set 'keypair', kp_list
 
-		setKP : ( key_name ) ->
+      null
 
-			uid = this.get 'get_uid'
-			MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
+    addKP : ( kp_name ) ->
 
-			null
+      result = MC.aws.kp.add kp_name
 
-		getInstanceType : () ->
+      if not result
+        return result
 
-			uid = this.get 'get_uid'
+      uid = @get 'get_uid'
+      MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
+      true
 
-			ami_info = MC.canvas_data.layout.component.node[ uid ]
+    deleteKP : ( key_name ) ->
 
-			current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
+      MC.aws.kp.del key_name
 
-			view_instance_type = []
-			instance_types = this._getInstanceType ami_info
-			_.map instance_types, ( value )->
-				tmp = {}
+      # Update data of this model
+      for kp, idx in @attributes.keypair
+        if kp.name is key_name
+          @attributes.keypair.splice idx, 1
+          break
 
-				if current_instance_type == value
-					tmp.selected = true
-				tmp.main = constant.INSTANCE_TYPE[value][0]
-				tmp.ecu  = constant.INSTANCE_TYPE[value][1]
-				tmp.core = constant.INSTANCE_TYPE[value][2]
-				tmp.mem  = constant.INSTANCE_TYPE[value][3]
-				tmp.name = value
-				view_instance_type.push tmp
+      null
 
-			this.set 'instance_type', view_instance_type
+    setKP : ( key_name ) ->
 
-		_getInstanceType : ( ami ) ->
-			instance_type = MC.data.instance_type[MC.canvas_data.region]
-			if ami.virtualizationType == 'hvm'
-				instance_type = instance_type.windows
-			else
-				instance_type = instance_type.linux
-			if ami.rootDeviceType == 'ebs'
-				instance_type = instance_type.ebs
-			else
-				instance_type = instance_type['instance store']
-			if ami.architecture == 'x86_64'
-				instance_type = instance_type["64"]
-			else
-				instance_type = instance_type["32"]
-			instance_type = instance_type[ami.virtualizationType]
+      uid = this.get 'get_uid'
+      MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
 
-			instance_type
+      null
 
-		attachEIP : ( eip_index, attach ) ->
+    getInstanceType : () ->
 
-			instance_uid = this.get 'get_uid'
+      uid = this.get 'get_uid'
 
-			$.each MC.canvas_data.component, ( key, val ) ->
+      ami_info = MC.canvas_data.layout.component.node[ uid ]
 
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
+      current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
 
-					if attach
+      view_instance_type = []
+      instance_types = this._getInstanceType ami_info
+      _.map instance_types, ( value )->
+        tmp = {}
 
-						eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
+        if current_instance_type == value
+          tmp.selected = true
+        tmp.main = constant.INSTANCE_TYPE[value][0]
+        tmp.ecu  = constant.INSTANCE_TYPE[value][1]
+        tmp.core = constant.INSTANCE_TYPE[value][2]
+        tmp.mem  = constant.INSTANCE_TYPE[value][3]
+        tmp.name = value
+        view_instance_type.push tmp
 
-						eip_uid = MC.guid()
+      this.set 'instance_type', view_instance_type
 
-						eip_component.uid = eip_uid
+    _getInstanceType : ( ami ) ->
+      instance_type = MC.data.instance_type[MC.canvas_data.region]
+      if ami.virtualizationType == 'hvm'
+        instance_type = instance_type.windows
+      else
+        instance_type = instance_type.linux
+      if ami.rootDeviceType == 'ebs'
+        instance_type = instance_type.ebs
+      else
+        instance_type = instance_type['instance store']
+      if ami.architecture == 'x86_64'
+        instance_type = instance_type["64"]
+      else
+        instance_type = instance_type["32"]
+      instance_type = instance_type[ami.virtualizationType]
 
-						eip_component.resource.PrivateIpAddress = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+      instance_type
 
-						eip_component.resource.NetworkInterfaceId = '@' +  val.uid + '.resource.NetworkInterfaceId'
+    attachEIP : ( eip_index, attach ) ->
 
-						eip_component.resource.Domain = 'vpc'
+      instance_uid = this.get 'get_uid'
 
-						data = MC.canvas.data.get('component')
+      $.each MC.canvas_data.component, ( key, val ) ->
 
-						data[eip_uid] = eip_component
+        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
 
-						MC.canvas.data.set('component', data)
+          if attach
 
-						MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+            eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
 
-					else
+            eip_uid = MC.guid()
 
-						ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+            eip_component.uid = eip_uid
 
-						$.each MC.canvas_data.component, ( comp_uid, comp ) ->
+            eip_component.resource.PrivateIpAddress = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
 
-							if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+            eip_component.resource.NetworkInterfaceId = '@' +  val.uid + '.resource.NetworkInterfaceId'
 
-								delete MC.canvas_data.component[comp_uid]
+            eip_component.resource.Domain = 'vpc'
 
-								#determine whether all eip are detach
+            data = MC.canvas.data.get('component')
 
-								existing = false
+            data[eip_uid] = eip_component
 
-								$.each MC.canvas_data.component, ( k, v ) ->
+            MC.canvas.data.set('component', data)
 
-									if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  val.uid + '.resource.NetworkInterfaceId'
+            MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 
-										existing = true
+          else
 
-										return false
+            ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
 
-								if not existing
+            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-									MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+              if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
 
+                delete MC.canvas_data.component[comp_uid]
 
+                #determine whether all eip are detach
 
-					return false
+                existing = false
 
-		removeSG : () ->
+                $.each MC.canvas_data.component, ( k, v ) ->
 
-			uid = this.get 'get_uid'
+                  if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  val.uid + '.resource.NetworkInterfaceId'
 
-			sg_uid = this.get 'remove_sg'
+                    existing = true
 
-			sg_id_ref = "@"+sg_uid+'.resource.GroupId'
+                    return false
 
-			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+                if not existing
 
-				sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
+                  MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
-				if sg_ids.length != 1
 
-					sg_ids.splice sg_ids.indexOf sg_id_ref, 1
 
-					$.each MC.canvas_property.sg_list, ( key, value ) ->
+          return false
 
-						if value.uid == sg_uid
+    removeSG : () ->
 
-							index = value.member.indexOf uid
+      uid = this.get 'get_uid'
 
-							value.member.splice index, 1
+      sg_uid = this.get 'remove_sg'
 
-							# delete member 0 sg
+      sg_id_ref = "@"+sg_uid+'.resource.GroupId'
 
-							if value.member.length == 0 and value.name != 'DefaultSG'
+      if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
-								MC.canvas_property.sg_list.splice key, 1
+        sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
 
-								delete MC.canvas_data.component[sg_uid]
+        if sg_ids.length != 1
 
-								$.each MC.canvas_data.component, ( key, comp ) ->
+          sg_ids.splice sg_ids.indexOf sg_id_ref, 1
 
-									if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+          $.each MC.canvas_property.sg_list, ( key, value ) ->
 
-										$.each comp.resource.IpPermissions, ( i, rule ) ->
+            if value.uid == sg_uid
 
-											if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+              index = value.member.indexOf uid
 
-												MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
+              value.member.splice index, 1
 
-										$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+              # delete member 0 sg
 
-											if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+              if value.member.length == 0 and value.name != 'DefaultSG'
 
-												MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
+                MC.canvas_property.sg_list.splice key, 1
 
-							return false
+                delete MC.canvas_data.component[sg_uid]
 
-			else
+                $.each MC.canvas_data.component, ( key, comp ) ->
 
-				$.each MC.canvas_data.component, ( key, comp ) ->
+                  if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
-					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
+                    $.each comp.resource.IpPermissions, ( i, rule ) ->
 
-						if comp.GroupId.length != 1
+                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
-							$.each comp.GroupId, ( index, group) ->
+                        MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
 
-								if group.GroupId == sg_id_ref
+                    $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
-									comp.GroupId.splice index, 1
+                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
-									return false
+                        MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
 
-							$.each MC.canvas_property.sg_list, ( idx, value ) ->
+              return false
 
-								if value.uid == sg_uid
+      else
 
-									index = value.member.indexOf uid
+        $.each MC.canvas_data.component, ( key, comp ) ->
 
-									value.member.splice index, 1
+          if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
 
-									# delete member 0 sg
+            if comp.GroupId.length != 1
 
-									if value.member.length == 0 and value.name != 'DefaultSG'
+              $.each comp.GroupId, ( index, group) ->
 
-										MC.canvas_property.sg_list.splice idx, 1
+                if group.GroupId == sg_id_ref
 
-										delete MC.canvas_data.component[sg_uid]
+                  comp.GroupId.splice index, 1
 
-										$.each MC.canvas_data.component, ( key, comp ) ->
+                  return false
 
-											if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+              $.each MC.canvas_property.sg_list, ( idx, value ) ->
 
-												$.each comp.resource.IpPermissions, ( i, rule ) ->
+                if value.uid == sg_uid
 
-													if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+                  index = value.member.indexOf uid
 
-														MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
+                  value.member.splice index, 1
 
-												$.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
+                  # delete member 0 sg
 
-													if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
+                  if value.member.length == 0 and value.name != 'DefaultSG'
 
-														MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
-						return false
+                    MC.canvas_property.sg_list.splice idx, 1
 
-			null
+                    delete MC.canvas_data.component[sg_uid]
 
-		getSGList : () ->
+                    $.each MC.canvas_data.component, ( key, comp ) ->
 
-			uid = this.get 'get_uid'
-			sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+                      if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
-			sgUIDAry = []
-			_.each sgAry, (value) ->
-				sgUID = value.slice(1).split('.')[0]
-				sgUIDAry.push sgUID
-				null
+                        $.each comp.resource.IpPermissions, ( i, rule ) ->
 
-			return sgUIDAry
+                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
-		setIPList : (inputIPAry) ->
+                            MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
 
-			# find eni0
-			eniUID = ''
-			currentInstanceUID = this.get 'get_uid'
-			currentInstanceUIDRef = '@' + currentInstanceUID + '.resource.InstanceId'
-			allComp = MC.canvas_data.component
-			_.each allComp, (compObj) ->
-				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					instanceUIDRef = compObj.resource.Attachment.InstanceId
-					deviceIndex = compObj.resource.Attachment.DeviceIndex
-					if (currentInstanceUIDRef is instanceUIDRef) and (deviceIndex is '0')
-						eniUID = compObj.uid
-				null
+                        $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
 
-			if eniUID
-				realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
-				MC.aws.eni.saveIPList eniUID, realIPAry
+                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
 
-		getAppLaunch : ( uid ) ->
+                            MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
+            return false
 
-			component = MC.canvas_data.component[uid]
-			lc_data   = MC.data.resource_list[MC.canvas_data.region][ component.resource.LaunchConfigurationARN ]
+      null
 
-			this.set 'name', component.name
-			this.set 'lc',   lc_data
-			this.set 'get_uid',  uid
+    getSGList : () ->
 
-	}
+      uid = this.get 'get_uid'
+      sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
 
-	model = new LaunchConfigModel()
+      sgUIDAry = []
+      _.each sgAry, (value) ->
+        sgUID = value.slice(1).split('.')[0]
+        sgUIDAry.push sgUID
+        null
 
-	return model
+      return sgUIDAry
+
+    setIPList : (inputIPAry) ->
+
+      # find eni0
+      eniUID = ''
+      currentInstanceUID = this.get 'get_uid'
+      currentInstanceUIDRef = '@' + currentInstanceUID + '.resource.InstanceId'
+      allComp = MC.canvas_data.component
+      _.each allComp, (compObj) ->
+        if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          instanceUIDRef = compObj.resource.Attachment.InstanceId
+          deviceIndex = compObj.resource.Attachment.DeviceIndex
+          if (currentInstanceUIDRef is instanceUIDRef) and (deviceIndex is '0')
+            eniUID = compObj.uid
+        null
+
+      if eniUID
+        realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
+        MC.aws.eni.saveIPList eniUID, realIPAry
+
+    getAppLaunch : ( uid ) ->
+
+      component = MC.canvas_data.component[uid]
+      lc_data   = MC.data.resource_list[MC.canvas_data.region][ component.resource.LaunchConfigurationARN ]
+
+      this.set 'name', component.name
+      this.set 'lc',   lc_data
+      this.set 'get_uid',  uid
+
+  }
+
+  model = new LaunchConfigModel()
+
+  return model

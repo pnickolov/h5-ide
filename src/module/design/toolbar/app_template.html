@@ -4,10 +4,10 @@
   <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar icon-play disabled"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP" }}} {{item_flags.name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app" data-tooltip='{{ i18n "TOOL_TIP_START_APP" }}'></a>
   {{else}}
   <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_STOP_APP" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip='{{ i18n "TOOL_TIP_STOP_APP" }}'></a>
-  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_STOP_APP" }}} {{item_flags.name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
+  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP" }}} {{item_flags.name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
   {{/if}}
 
-  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}} {{item_flags.name}}", "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip='{{{ i18n "TOOL_TIP_TERMINATE_APP" }}}'></a> <!--'"-->
+  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP" }}} {{item_flags.name}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip='{{{ i18n "TOOL_TIP_TERMINATE_APP" }}}'></a> <!--'"-->
 </section>
 
 <section class="toolbar-btn-group">
@@ -30,5 +30,3 @@
     </ul>
   </div>
 </section>
-
-<section class="toolbar-btn-group"><a class="btn-toolbar icon-refresh tooltip" data-tooltip="Refresh"></a></section>

@@ -2,9 +2,10 @@
 #  View Mode for design/resource
 #############################
 
-define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
+define [ 'i18n!nls/lang.js',
+         'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
          'backbone', 'jquery', 'underscore'
-], ( ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
+], ( lang, ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
 
     #private
     ami_instance_type = null
@@ -39,7 +40,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                     MC.data.config[region_name].snapshot_list = result.resolved_data
 
                     #
-                    me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
+                    #me._checkRequireServiceCount( 'EC2_EBS_DESC_SSS_RETURN' )
 
                 null
 
@@ -155,7 +156,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         _.map result.resolved_data.item, (value)->
                             #cache my ami item to MC.data.dict_ami
                             value.instanceType = me._getInstanceType value
-                            value.osType = me._getOSType value
+                            value.osType = MC.aws.ami.getOSType value
                             MC.data.dict_ami[value.imageId] = value
                             null
 
@@ -208,7 +209,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                 else
 
-                    notification 'warning', 'Get Community AMIs failed'
+                    notification 'warning', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
 
 
                 null
@@ -262,9 +263,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'AMI is added to Favorite AMI'
+                    notification 'info', lang.ide.RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS
                 else
-                    notification 'error', 'Failed to add AMI to Favorite'
+                    notification 'error', lang.ide.RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED
                 null
 
             #listen FAVORITE_REMOVE_RETURN
@@ -275,9 +276,9 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                 if !result.is_error
                     delete MC.data.config[region_name].favorite_ami
                     me.favoriteAmiService region_name
-                    notification 'info', 'AMI is removed from Favorite AMI'
+                    notification 'info', lang.ide.RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS
                 else
-                    notification 'error', 'Failed to remove AMI from Favorite'
+                    notification 'error', lang.ide.RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED
 
 
                 null
@@ -300,6 +301,8 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         $.each result.resolved_data, (idx, value) ->
 
                             MC.data.account_attribute[region_name].default_subnet[value.availabilityZone] = value
+
+                            MC.data.resource_list[region_name][value.subnetId] = value
 
                             null
 
@@ -334,7 +337,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
                             null
                 #
-                me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                me._checkRequireServiceCount( 'describeAvailableZonesService:OLD' )
                 #
                 me.set 'availability_zone', res
 
@@ -374,7 +377,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
                         #cache az to MC.data.config[region_name].zone
                         MC.data.config[region_name].zone = result.resolved_data
                         #
-                        me._checkRequireServiceCount( 'describeAvailableZonesService' )
+                        me._checkRequireServiceCount( 'describeAvailableZonesService:NEW' )
                         #
                         null
                     else
@@ -614,37 +617,7 @@ define [ 'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model',
 
             instance_type.join ', '
 
-        _getOSType : ( ami ) ->
 
-            #return osType by ami.name | ami.description | ami.imageLocation
-
-            osTypeList = ['centos', 'redhat', 'redhat', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensus', 'suse','amazon', 'amazon']
-
-            osType = 'linux-other'
-
-            if  ami.platform and ami.platform == 'windows'
-
-                osType = 'win'
-
-            else
-
-                #check ami.name
-                found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
-
-                #check ami.description
-                if found.length == 0
-                    found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
-
-                #check ami.imageLocation
-                if found.length == 0
-                    found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
-
-            if found.length == 0
-                osType = 'unknown'
-            else
-                osType = found[0]
-
-            osType
 
         _checkRequireServiceCount : ( name ) ->
             console.log '_checkRequireServiceCount, name = ' + name

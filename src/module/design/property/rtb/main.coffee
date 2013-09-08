@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/rtb/template.html',
-         'text!/module/design/property/rtb/app_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, app_template, ide_event ) ->
 
@@ -32,6 +32,9 @@ define [ 'jquery',
         require [ './module/design/property/rtb/view',
                   './module/design/property/rtb/model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -89,6 +92,9 @@ define [ 'jquery',
         require [ './module/design/property/rtb/app_view',
                   './module/design/property/rtb/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

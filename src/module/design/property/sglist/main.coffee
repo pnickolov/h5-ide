@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/sglist/template.html',
+         'text!./template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -25,6 +25,9 @@ define [ 'jquery',
         current_main = this
 
         require [ './module/design/property/sglist/view', './module/design/property/sglist/model' ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             if current_view then view.delegateEvents view.events
 

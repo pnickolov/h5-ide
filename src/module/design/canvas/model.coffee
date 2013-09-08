@@ -1,7 +1,7 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'event', 'i18n!/nls/lang.js',
+define [ 'constant', 'event', 'i18n!nls/lang.js',
 		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event, lang ) ->
 
 	CanvasModel = Backbone.Model.extend {
@@ -501,14 +501,36 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 
 			if layout_data.originalId.length
 				# This is a extended ASG
-				asg_comp = MC.canvas_data.component[ layout_data.originalId ]
-				vpcs = asg_comp.resource.VPCZoneIdentifier.split " , "
-				for subnet, i in vpcs
-					if subnet.indexOf( layout_data.groupUId ) != -1
-						vpcs.splice i, 1
-						break
-				asg_comp.resource.VPCZoneIdentifier = vpcs.join " , "
+				asg_comp      = MC.canvas_data.component[ layout_data.originalId ]
+				parent_layout = MC.canvas_data.layout.component.group[ layout_data.groupUId ]
+
+				if parent_layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+					for az, remove_idx in asg_comp.resource.AvailabilityZones
+						if az is parent_layout.name
+							asg_comp.resource.AvailabilityZones.splice remove_idx, 1
+							break
+				else
+					vpcs       = asg_comp.resource.VPCZoneIdentifier.split " , "
+					azs        = []
+					azs_map    = {}
+					remove_idx = 0
+					for subnet, i in vpcs
+						if subnet.indexOf( layout_data.groupUId ) != -1
+							remove_idx = i
+						else
+							az = MC.canvas_data.component[ MC.extractID( subnet ) ].resource.AvailabilityZone
+							if not azs_map[ az ]
+								azs_map[ az ] = true
+								azs.push az
+
+					vpcs.splice remove_idx, 1
+					asg_comp.resource.VPCZoneIdentifier = vpcs.join( " , " )
+					asg_comp.resource.AvailabilityZones = azs
+
 				return
+
+			else
+				asg_comp = component
 
 
 			# Ask user to comfirm the delete operation
@@ -719,9 +741,12 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 			elbSGObj = MC.aws.elb.getElbDefaultSG component.uid
 			delete MC.canvas_data.component[ component.uid ]
 			delete MC.canvas_data.component[ elbSGObj.uid ]
+			null
 
 		deleteGroup : ( component, force ) ->
-			nodes  = MC.canvas.groupChild( $("#" + (component.uid) )[0] )
+
+			group_elem = $("##{component.uid}")[0]
+			nodes  = MC.canvas.groupChild( group_elem )
 
 			handler = this.beforeDeleteMap[ component.type ]
 			if handler
@@ -745,7 +770,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				handler.call this, component
 
 			# Delete all the children
-			for node, index in nodes
+			while nodes.length
+				node = nodes[0]
 				op =
 					type  : $(node).data().type
 					id    : node.id
@@ -754,6 +780,8 @@ define [ 'constant', 'event', 'i18n!/nls/lang.js',
 				# Recursively delete children in this group
 				# [ @@@ Warning @@@ ] If there's one child that cannot be deleted for any reason. Data is corrupted.
 				this.deleteObject null, op
+
+				nodes  = MC.canvas.groupChild( group_elem )
 
 			null
 

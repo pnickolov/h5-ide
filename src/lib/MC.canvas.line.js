@@ -86,7 +86,7 @@ MC.canvas.initLine = function() {
         });
       });
     }
-    if (comp.type === "AWS.VPC.NetworkInterface" && comp.resource.Attachment.InstanceId && comp.resource.Attachment.DeviceIndex !== '0' && comp.resource.Attachment.DeviceIndex !== 0) {
+    if (comp.type === "AWS.VPC.NetworkInterface" && comp.resource.Attachment.InstanceId && comp.resource.Attachment.DeviceIndex !== '0' && comp.resource.Attachment.DeviceIndex !== 0 && comp.index == 0) {
       return lines.push([comp_uid, comp.resource.Attachment.InstanceId.split('.')[0].slice(1), 'eni-attach', 'instance-attach']);
     }
   });

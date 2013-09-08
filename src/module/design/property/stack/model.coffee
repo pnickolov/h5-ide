@@ -199,26 +199,32 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     topic_arn = comp.resource.TopicArn
 
-                    snstopic.name = MC.data.resource_list[MC.canvas_data.region][topic_arn].Name
+                    topic_data = MC.data.resource_list[MC.canvas_data.region][topic_arn]
 
-                    snstopic.arn = topic_arn
+                    # The data is not prepared
+                    if not topic_data
+                        return false
 
+                    snstopic.name = topic_data.Name
+                    snstopic.arn  = topic_arn
                     me.set 'snstopic', snstopic
 
                     return false
 
             if topic_arn
 
-                $.each MC.data.resource_list[MC.canvas_data.region].Subscriptions, ( idx, sub )->
+                subs = MC.data.resource_list[MC.canvas_data.region].Subscriptions
+                if subs
+                    $.each subs, ( idx, sub )->
 
-                    if sub.TopicArn is topic_arn
+                        if sub.TopicArn is topic_arn
 
-                        tmp = {}
-                        tmp.protocol = sub.Protocol
-                        tmp.endpoint = sub.Endpoint
-                        tmp.arn = sub.SubscriptionArn
+                            tmp = {}
+                            tmp.protocol = sub.Protocol
+                            tmp.endpoint = sub.Endpoint
+                            tmp.arn = sub.SubscriptionArn
 
-                        subscription.push tmp
+                            subscription.push tmp
 
             this.set 'subscription', subscription
 

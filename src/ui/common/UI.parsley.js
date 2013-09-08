@@ -1162,7 +1162,9 @@
     */
     , ulErrorManagement: function () {
       this.ulError = '#' + this.hash;
-      this.ulTemplate = $( this.options.errors.errorsWrapper ).attr( 'id', this.hash ).addClass( 'parsley-error-list' );
+      this.ulTemplate = $( this.options.errors.errorsWrapper )
+                          .attr( 'id', this.hash )
+                          .addClass( 'parsley-error-list' );
     }
 
     /**
@@ -1240,7 +1242,7 @@
       if ( !$( this.ulError ).length ) {
         this.manageErrorContainer();
       }
-
+      this.ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
       // TODO: refacto properly
       // if required constraint but field is not null, do not display
       if ( 'required' === constraint.name && null !== this.getVal() && this.getVal().length > 0 ) {
@@ -1275,6 +1277,7 @@
         , ulTemplate = this.options.animate ? this.ulTemplate.show() : this.ulTemplate;
 
       if ( 'undefined' !== typeof errorContainer ) {
+        ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
         $( errorContainer ).append( ulTemplate );
         return;
       }
@@ -1824,7 +1827,8 @@ var errortip = function (event)
 
   if (content.length)
   {
-    tipId = 'errortip-' + content.attr('id');
+    id = content.attr('id');
+    tipId = 'errortip-' + id;
 
     if ( $('#' + tipId).length ) return;
 
@@ -1851,29 +1855,43 @@ var errortip = function (event)
 
     }).show();
 
-
-    errortip.timer = setInterval(function ()
+    errortip.timer[ id ] = setInterval(function ()
       {
         if (content.closest('html').length === 0)
         {
-          errortip.clear();
+          errortip.clear( content.attr('id') );
         }
       }, 200);
 
   }
 };
 
-errortip.timer = null;
+errortip.timer = {};
 errortip.firstTimer = {};
 errortip.isEnter = false;
 
-errortip.findError = function( target ) {
-  return target.next('.parsley-error-list');
+errortip.findError = function( $target ) {
+  return $target.next('.parsley-error-list');
+}
+
+errortip.getEid = function ( target ) {
+  $target = target instanceof $ ? target : $( target );
+  return errortip.findError( $target ).attr( 'id' )
+}
+
+errortip.getUid = function ( event ) {
+  var id;
+  if ( event === Object( event ) ) {
+    id = errortip.getEid( event.currentTarget );
+  } else {
+    id = event
+  }
+  return $( '#' + id ).data( 'uid' );
 }
 
 errortip.first = function( target ) {
   errortip.call(target)
-  id = errortip.findError( target ).attr( 'id' );
+  id = errortip.getEid( target )
   errortip.firstTimer[ id ] = setTimeout(function() {
     errortip.clear({currentTarget: target});
   }, 2000);
@@ -1881,10 +1899,9 @@ errortip.first = function( target ) {
 
 errortip.clear = function ( event )
 {
+  var id, uid, force = false;
   if ( event ){
     var errorPrefix = 'errortip-';
-    var id, force = false;
-
     if ( event === Object( event ) ) {
       id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
     }
@@ -1893,27 +1910,39 @@ errortip.clear = function ( event )
       id = event;
     }
 
+    uid = errortip.getUid( id );
     setTimeout( function() {
-      if ( !errortip.isEnter || force ) {
+      if ( errortip.enterUid !== uid  || force ) {
         $( '#' + errorPrefix + id ).remove();
       }
     }, 100);
-    errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
+
   } else {
     $('.errortip_box').remove();
   }
 
-  clearInterval(errortip.timer);
+  errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
+  errortip.removeInterval( id )
 
 };
 
+errortip.removeInterval = function ( id ) {
+  if ( id ) {
+    clearInterval( errortip.timer[ id ] );
+  } else {
+    for ( var id in errortip.timer ) {
+      clearInterval( errortip.timer[ id ] );
+    }
+  }
+}
+
 errortip.enter = function ( event ) {
-  errortip.isEnter = true;
+  errortip.enterUid = errortip.getUid( event );
   errortip.call( this, event );
 }
 
 errortip.leave = function ( event ) {
-  errortip.isEnter = false;
+  errortip.enterUid = false;
   errortip.clear.call( this, event );
 }
 

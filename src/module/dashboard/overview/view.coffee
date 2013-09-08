@@ -6,11 +6,40 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     current_region = null
 
+    ### helper ###
+    Helper =
+        switchTab: ( event, tabSelector, listSelector ) ->
+            tabSelector =  if tabSelector instanceof $ then tabSelector else $( tabSelector )
+            listSelector =  if listSelector instanceof $ then listSelector else $( listSelector )
+
+            $target = $ event.currentTarget
+            currentIndex = $(tabSelector).index $target
+
+            if not $target.hasClass 'on'
+                tabSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).addClass( 'on' )
+                    else
+                        $( @ ).removeClass( 'on' )
+
+                listSelector.each ( index ) ->
+                    if index is currentIndex
+                        $( @ ).show()
+                    else
+                        $( @ ).hide()
+            null
+
+        thumbError: ( event ) ->
+            $target = $ event.currentTarget
+            $target.hide()
+
+        regexIndexOf: (str, regex, startpos) ->
+            indexOf = str.substring(startpos || 0).search(regex)
+            if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
+
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
-
-        #template : Handlebars.compile $( '#overview-tmpl' ).html()
 
         overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
         global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
@@ -18,12 +47,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
         recent: Handlebars.compile $( '#recent-tmpl' ).html()
         recent_launched_app : Handlebars.compile $( '#recent-launched-app-tmpl' ).html()
-        recent_stopped_app : Handlebars.compile $( '#recent-stopped-app-tmpl' ).html()
         loading: $( '#loading-tmpl' ).html()
 
         events   :
-            'click #global-region-spot > li'            : 'mapRegionClick'
-            'click #global-region-create-stack-list li' : 'createStackClick'
+            'click #global-region-spot > li'            : 'gotoRegion'
+            'click #global-region-create-stack-list li' : 'createStack'
+            'click #btn-create-stack'                   : 'createStack'
             'click .global-region-status-content li a'  : 'openItem'
             'click .global-region-status-tab-item'      : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
@@ -38,6 +67,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+        initialize: ->
+            $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+
         refreshAll: ->
             location.reload()
 
@@ -47,6 +79,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         switchRegion: ( event ) ->
             target = $ event.currentTarget
             region = target.data 'region'
+            current_region = region
             regionName = target.find('a').text()
 
             if regionName is @$el.find( '#region-switch span' ).text()
@@ -67,81 +100,80 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 @trigger 'SWITCH_REGION', region
                 @renderRegionAppStack()
 
-
         switchRecent: ( event ) ->
-            target = $ event.currentTarget
-            id = target.attr 'id'
-
-            tabContentMap =
-                'global-region-status-tab-app': 'global-region-status-app-content'
-                'global-region-status-tab-stack': 'global-region-status-stack-content'
-
-            if not target.hasClass 'on'
-                _.each tabContentMap, ( cid, tid ) =>
-                    if tid is id
-                        @$el.find( "##{cid}" ).show()
-                        target.addClass 'on'
-                    else
-                        @$el.find( "##{cid}" )
-                            .hide()
-                            .end()
-                            .find( "##{tid}" )
-                            .removeClass 'on'
+            Helper.switchTab event, '#global-region-status-tab-wrap a', '#global-region-status-content-wrap > div'
 
         switchAppStack: ( event ) ->
-            target = $ event.currentTarget
-            currentIndex = @$el.find('#region-resource-tab a').index target
-
-            @switchTab event, '#region-resource-tab a', '.region-resource-list'
+            Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
 
         switchRegionResource: ( event ) ->
-            @switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
-
-
-        # switch tab helper
-        switchTab: ( event, tabSelector, listSelector ) ->
-            tabSelector =  if tabSelector instanceof $ then tabSelector else $( tabSelector )
-            listSelector =  if listSelector instanceof $ then listSelector else $( listSelector )
-
-            target = $ event.currentTarget
-            currentIndex = @$el.find(tabSelector).index target
-
-            if not target.hasClass 'on'
-                tabSelector.each ( index ) ->
-                    if index is currentIndex
-                        $( @ ).addClass( 'on' )
-                    else
-                        $( @ ).removeClass( 'on' )
-
-                listSelector.each ( index ) ->
-                    if index is currentIndex
-                        $( @ ).show()
-                    else
-                        $( @ ).hide()
-            null
+            Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
 
         renderGlobalList: ( event ) ->
             tmpl = @global_list @model.toJSON()
             $( this.el ).find('#global-view').html tmpl
 
-        renderRegionAppStack: ( event ) ->
+        renderRegionAppStack: ( tab ) ->
             @regionAppStackRendered = true
-            tmpl = @region_app_stack @model.toJSON()
-            $( this.el ).find('#region-app-stack-wrap').html tmpl
+            tab = 'stack' if not tab
+            context = _.extend {}, @model.toJSON()
+            context[ tab ] = true
+            tmpl = @region_app_stack context
+            $( this.el )
+                .find('#region-app-stack-wrap')
+                .html( tmpl )
+                .find('.region-resource-thumbnail img')
+                .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
             tmpl = @region_resource @model.toJSON()
             $( this.el ).find('#region-resource-wrap').html tmpl
 
+        reRenderRegionPartial: ( type, data ) ->
+            tmplAll = $( '#region-resource-tmpl' ).html()
+            beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
+            endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
 
-        renderRegionStatApp : ->
+            startPos = Helper.regexIndexOf tmplAll, beginRegex
+            endPos = tmplAll.indexOf '</tbody>', startPos
+
+            tmpl = tmplAll.slice startPos, endPos
+            template = Handlebars.compile tmpl
+
+            $( this.el ).find("##{type} tbody").html template data
+
             null
 
-        renderRegionStatStack : () ->
+        renderRecent: ->
+            $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
         updateLoadTime: ( time ) ->
             @$el.find('#global-refresh span').text time
+
+        enableCreateStack : ( platforms ) ->
+            $middleButton = $( "#btn-create-stack" )
+            $topButton = $( "#global-create-stack" )
+
+            $middleButton.removeAttr 'disabled'
+            $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+
+        createStack: ( event ) ->
+            $target = $ event.currentTarget
+            if $target.prop 'disabled'
+                return
+            ide_event.trigger ide_event.ADD_STACK_TAB, ( current_region or $target.data 'region' )
+
+        gotoRegion: ( event ) ->
+            $target = $ event.currentTarget
+            region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            $( "#region-switch-list li[data-region=#{region}]" ).click()
+
+            scrollTo = $('#global-region-map-wrap').height()
+            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+
+        ############################################################################################
+
 
         renderMapResult : ->
             console.log 'dashboard overview-result render'
@@ -152,34 +184,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
-
-        renderRecent: ->
-            $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
-            null
-
         renderRecentLaunchedApp : ->
             console.log 'dashboard recent launched app render'
             $( this.el ).find( '#recent-launched-app' ).html this.recent_launched_app this.model.attributes
             null
 
-        renderRecentStoppedApp : ->
-            console.log 'dashboard recent stopped app render'
-            $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
-            null
-
-        mapRegionClick : ( event ) ->
-            region = event.currentTarget.id
-            current_region = region
-
-            $( "#region-switch-list li[data-region=#{region}]" ).click()
-            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': $('#global-region-tabbar-wrap')[0].offsetTop - 80 } )
-            false
-            #this.trigger 'RETURN_REGION_TAB', region
-
-
-        createStackClick : ( event ) ->
-            console.log 'dashboard region create stack'
-            ide_event.trigger ide_event.ADD_STACK_TAB, ($(event.currentTarget).data 'region')
+        # renderRecentStoppedApp : ->
+        #     console.log 'dashboard recent stopped app render'
+        #     $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
+        #     null
 
         render : ( template ) ->
             console.log 'dashboard overview render'
@@ -223,7 +236,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             $('#btn-confirm').on 'click', { target : this }, (event) ->
                 console.log 'dashboard delete stack'
-                
+
                 modal.close()
                 ide_event.trigger ide_event.DELETE_STACK, current_region, id, name
 
@@ -247,7 +260,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 if not new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
                 else if new_name.indexOf(' ') >= 0
-                    notification 'warning', 'stack name contains white space.'
+                    notification 'warning', lang.ide.PROP_MSG_WARN_WHITE_SPACE
                 else if not MC.aws.aws.checkStackName null, new_name
                     notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_STACK_NAME
                 else
@@ -331,4 +344,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
     }
 
-    return OverviewView
+    OverviewView

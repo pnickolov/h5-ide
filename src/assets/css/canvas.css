@@ -50,30 +50,16 @@
 	position: absolute;
 	width: 32px;
 	height: 32px;
-
 	background-color: #f5f5f5;
-
-	/*border: 1px solid #333;
-
-	background-color: #363636;
-	background-image: -moz-linear-gradient(top, #888, #555);
-	background-image: -webkit-linear-gradient(top, #888, #555);
-	background-image: -o-linear-gradient(top, #888, #555);
-	background-image: linear-gradient(to bottom, #888, #555);
-
-	border-radius: 3px;*/
-
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-
 	cursor: pointer;
-
 	line-height: 32px;
 	text-align: center;
 	padding: 0;
 }
 
 .svg_resizer:hover {
-	 color: #3781C9;
+	color: #3781C9;
 }
 
 .svg_resizer_height {
@@ -288,10 +274,10 @@
 }
 
 .node-dragging .attachable .node-background {
-	fill-opacity: 0.5;
-	fill: #F2F8FF;
+	fill-opacity: 1;
+	fill: #fff;
 	stroke-width: 1;
-	stroke: #59b;
+	stroke: #659FFF;
 }
 
 .selected .node-background {
@@ -674,20 +660,23 @@
 }
 
 .volume_name {
+	position: absolute;
 	font-size: 9px;
 	display: block;
-	margin-top: 14px;
+	top: 14px;
 	color: #333;
 	text-align: center;
 	width: 100%;
 }
 
 .volume_size {
+	width: 100%;
 	font-size: 9px;
 	display: block;
-	margin-top: 12px;
+	top: 38px;
 	color: #333;
 	text-align: center;
+	position: absolute;
 }
 
 #volume-bubble-box {
@@ -716,23 +705,29 @@
 	display: none;
 }
 
+.canvas_state_app .asg-resource-dragger {
+	display: none;
+}
+
 .canvas_zoomed .resizer-wrap {
 	/*display: none;*/
 }
 
-/* asgList & instanceList */
+/* asgList & instanceList & eniList */
 #asgList-wrap,
+#eniList-wrap,
 #instanceList-wrap {
 	position: absolute;
 	border: 2px solid #83CBF9;
 	width: 376px;
 	z-index: 30;
-	background: rgba(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.9);
 	border-radius: 4px;
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #asgList-header,
+#eniList-header,
 #instanceList-header {
 	background-color: #83CBF9;
 	color: #fff;
@@ -740,6 +735,7 @@
 }
 
 #asgList-close,
+#eniList-close,
 #instanceList-close {
 	position: absolute;
 	right: 5px;
@@ -751,11 +747,13 @@
 }
 
 #asgList,
+#eniList,
 #instanceList {
 	padding: 8px 20px 3px;
 }
 
 #asgList li,
+#eniList li,
 #instanceList li {
 	float: left;
 	margin: 0 10px 10px 0;
@@ -763,12 +761,13 @@
 }
 
 #asgList .status,
+#eniList .status,
 #instanceList .status {
 	position: absolute;
-	right: 22px;
-	top: 17px;
-	width: 8px;
-	height: 8px;
+	right: 27px;
+	top: 16px;
+	width: 6px;
+	height: 6px;
 }
 
 .asgList-item,
@@ -778,16 +777,41 @@
 	border: 2px solid rgba(255, 255, 255, 0);
 	width: 98px;
 	height: 98px;
-	background: url('../images/ide/icon/instance-canvas.png') 15px 10px no-repeat;
+	background: url('../images/ide/icon/instance-canvas.png') 18px 10px no-repeat;
+}
+
+.eniList-item {
+	border-radius: 5px;
+	display: block;
+	border: 2px solid rgba(255, 255, 255, 0);
+	width: 98px;
+	height: 98px;
+	background: url('../images/ide/icon/eni-canvas-attached.png') 20px 20px no-repeat;
+}
+
+.eniList-item-eip-status {
+	left: 48px;
+	top: 43px;
+	position: absolute;
+	width: 12px;
+	height: 14px;
+	display: block;
+	background: url('../images/ide/icon/eip-off.png') 0px 0px no-repeat;
+}
+
+.eniList-item-eip-status.on {
+	background: url('../images/ide/icon/eip-on.png') 0px 0px no-repeat;
 }
 
 .asgList-item.selected,
+.eniList-item.selected,
 .instanceList-item.selected {
 	border: 2px solid rgba(101, 159, 255, 0.6);
 	background-color: rgba(242, 248, 255, 0.6);
 }
 
 .asgList-item-icon,
+.eniList-item-icon,
 .instanceList-item-icon {
 	position: absolute;
 	top: 15px;
@@ -797,6 +821,7 @@
 }
 
 .asgList-item-volume,
+.eniList-item-volume,
 .instanceList-item-volume {
 	position: absolute;
 	top: 48px;
@@ -808,12 +833,14 @@
 }
 
 .asgList-item-number,
+.eniList-item-number,
 .instanceList-item-number {
 	font-size: 12px;
 	color: #74B1FD;
 }
 
 .asgList-item-label,
+.eniList-item-label,
 .instanceList-item-label {
 	color: #333;
 	width: 100px;
@@ -876,18 +903,19 @@
 }
 
 .sg-color {
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 2px;
 	float: left;
-    width: 10px;
-    height: 10px;
-    margin-top: 4px;
-    margin-right: 5px;
+	width: 10px;
+	height: 10px;
+	margin-top: 4px;
+	margin-right: 5px;
 }
-
 
 /* instance state */
 .instance-state {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 	display: block;
 }
@@ -922,7 +950,7 @@
 
 .volume-status {
 	stroke-width:1;
-	stroke:black;
+	stroke:white;
 	opacity: 0.8;
 }
 

@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, constant, lang ) ->
+define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, instance_model, constant, lang ) ->
 
     AppInstanceModel = Backbone.Model.extend {
 
@@ -20,24 +20,123 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
         init : ( instance_id )->
 
-
             me = this
-            me.set 'id', instance_id
+
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
+                region_name = result.param[3]
                 keypairname = result.param[4]
+                os_type     = null
+                key_data    = null
+                instance    = null
+                public_dns  = null
+                cmd_line    = null
+                login_user  = null
+
+                instance_id      = me.get "instanceId"
+                curr_keypairname = me.get "keyName"
+
+                # The user has closed the dialog
+                # Do nothing
+                if curr_keypairname isnt keypairname
+                    return
+
+                ###
+                # The EC2_KPDOWNLOAD_RETURN event won't fire when the result.is_error
+                # is true. According to bugs in service models.
+                ###
 
                 if result.is_error
                     notification 'error', lang.ide.PROP_MSG_ERR_DOWNLOAD_KP_FAILED + keypairname
-                    data = null
+                    key_data = null
                 else
 
-                    data = result.resolved_data
-                me.trigger "KP_DOWNLOADED", data
+                    key_data = result.resolved_data
+
+
+                instance_data = MC.data.resource_list[ region_name ][ instance_id ]
+
+                if instance_data && instance_data.imageId
+                    os_type = MC.data.dict_ami[ instance_data.imageId ].osType
+
+                #get password for windows AMI
+                if os_type == 'win' and key_data
+                    #me.getPasswordData instance_id, key_data.replace(/\n/g,'')
+                    me.getPasswordData instance_id, key_data
+
+                else
+                    #linux
+
+                    instance = MC.data.resource_list[ region_name ][ instance_id ]
+                    if instance
+                        instance_state = instance.instanceState.name
+
+                    if instance_state == 'running'
+                        switch os_type
+                            when 'amazon' then login_user = 'ec2-user'
+                            when 'ubuntu' then login_user = 'ubuntu'
+                            else
+                                login_user = 'root'
+
+                    if instance.ipAddress
+                        cmd_line = sprintf 'ssh -i %s.pem %s@%s', instance.keyName, login_user, instance.ipAddress
+
+
+                    option =
+                        type      : 'linux'
+                        cmd_line  : cmd_line
+
+                    me.trigger "KP_DOWNLOADED", key_data, option
+
+                null
+
+            me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
+
+                region_name    = result.param[3]
+                instance_id    = result.param[4]
+                key_data       = result.param[5]
+                instance       = null
+                instance_state = null
+                win_passwd     = null
+                rdp            = null
+
+
+                curr_instance_id = me.get "instanceId"
+
+                # The user has closed the dialog
+                # Do nothing
+                if curr_instance_id isnt instance_id
+                    return
+
+
+                if result.is_error
+                    notification 'error', lang.ide.PROP_MSG_ERR_GET_PASSWD_FAILED + instance_id
+                    key_data = null
+                else
+                    #right
+                    instance = MC.data.resource_list[ region_name ][ instance_id ]
+                    if instance
+                        instance_state = instance.instanceState.name
+
+                    if instance_state == 'running' && instance.ipAddress
+                        rdp = sprintf constant.RDP_TMPL, instance.ipAddress
+
+                    if result.resolved_data
+                        win_passwd = result.resolved_data.passwordData
+
+
+                option =
+                    type       : 'win'
+                    passwd     : win_passwd
+                    rdp        : rdp
+                    public_dns : instance.ipAddress
+
+                me.trigger "KP_DOWNLOADED", key_data, option
 
                 null
 
 
+            @set 'id', instance_id
 
             myInstanceComponent = MC.canvas_data.component[ instance_id ]
 
@@ -47,36 +146,43 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
 
             app_data = MC.data.resource_list[ MC.canvas_data.region ]
 
-            instance = $.extend true, {}, app_data[ instance_id ]
-            instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
+            if app_data[ instance_id ]
 
-            # Possible value : running, stopped, pending...
-            instance.isRunning = instance.instanceState.name == "running"
-            instance.isPending = instance.instanceState.name == "pending"
-            instance.instanceState.name = MC.capitalize instance.instanceState.name
-            instance.blockDevice = ( i.deviceName for i in instance.blockDeviceMapping.item ).join ", "
+                instance = $.extend true, {}, app_data[ instance_id ]
+                instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
 
-            # Keypair Component
-            # keypairUid = MC.extractID( myInstanceComponent.resource.KeyName )
-            # myKeypairComponent = MC.canvas_data.component[ keypairUid ]
+                # Possible value : running, stopped, pending...
+                instance.isRunning = instance.instanceState.name == "running"
+                instance.isPending = instance.instanceState.name == "pending"
+                instance.instanceState.name = MC.capitalize instance.instanceState.name
+                instance.blockDevice = ""
+                if instance.blockDeviceMapping && instance.blockDeviceMapping.item
+                    deviceName = []
+                    for i in instance.blockDeviceMapping.item
+                        deviceName.push i.deviceName
 
-            # instance.keyName = myKeypairComponent.resource.KeyName
+                    instance.blockDevice = deviceName.join ", "
 
-            # Eni Data
-            instance.eni = this.getEniData instance
+                # Eni Data
+                instance.eni = this.getEniData instance
 
-            this.set instance
+                this.set instance
+
+            else
+
+                console.log 'Can not found data for this instance: ' + instance_id
 
             null
 
         getEniData : ( instance_data ) ->
 
-            if  !instance_data.networkInterfaceSet
+            if not instance_data.networkInterfaceSet
                 return null
 
             for i in instance_data.networkInterfaceSet.item
                 if i.attachment.deviceIndex == "0"
                     id = i.networkInterfaceId
+                    data = i
                     break
 
             TYPE_ENI = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
@@ -89,10 +195,14 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
                     component = value
                     break
 
-            data = $.extend true, {}, MC.data.resource_list[ MC.canvas_data.region ][ id ]
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-            if not data
-                return null
+            if not appData[id]
+                # Use data inside networkInterfaceSet
+                data = $.extend true, {}, data
+            else
+                # Use data inside appData
+                data = $.extend true, {}, appData[ id ]
 
             data.name = if component then component.name else id
             if data.status == "in-use"
@@ -109,9 +219,20 @@ define ['keypair_model', 'constant', 'i18n!/nls/lang.js' ,'backbone', 'MC' ], ( 
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            me = this
-            keypair_model.download {sender:me}, username, session, MC.canvas_data.region, keypairname
+            keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
             null
+
+
+        #get windows login password
+        getPasswordData : ( instance_id, key_data ) ->
+
+            username = $.cookie "usercode"
+            session  = $.cookie "session_id"
+
+            me = this
+            instance_model.GetPasswordData {sender:me}, username, session, MC.canvas_data.region, instance_id, key_data
+            null
+
 
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]

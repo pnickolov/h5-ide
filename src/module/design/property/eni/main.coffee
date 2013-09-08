@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/eni/template.html',
-         'text!/module/design/property/eni/app_template.html',
-         'text!/module/design/property/eni/ip_list_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
+         'text!./ip_list_template.html',
          'event'
 ], ( $, template, app_template, ip_list_template, ide_event ) ->
 
@@ -38,6 +38,9 @@ define [ 'jquery',
                   './module/design/property/eni/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -95,6 +98,9 @@ define [ 'jquery',
                   './module/design/property/eni/app_model'
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

@@ -15,6 +15,8 @@ define [ 'event', 'MC',
 
         template  : Handlebars.compile $( '#property-launchconfig-app-tmpl' ).html()
 
+        kpModalClosed : false
+
         render     : () ->
             console.log 'property:instance app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
@@ -23,7 +25,15 @@ define [ 'event', 'MC',
             keypair = $( event.currentTarget ).html()
             this.trigger "REQUEST_KEYPAIR", keypair
 
-            modal MC.template.modalDownloadKP { keypairname : keypair }
+            modal MC.template.modalDownloadKP { name  : keypair }
+
+            me = this
+            $('#modal-wrap').on "closed", ()->
+                me.kpModalClosed = true
+                null
+
+            this.kpModalClosed = false
+
             false
 
         updateKPModal : ( data ) ->
@@ -31,12 +41,22 @@ define [ 'event', 'MC',
                 modal.close()
                 return
 
-            $saveBtn = $("#property-app-save-kp")
-            $model   = $saveBtn.closest "#modal-box"
-            $model.find(".modal-body").html("Key pair data is ready. Click save button to download.")
-            $saveBtn.removeClass("disabled").addClass("btn-blue")
-                    .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
-                    .attr("download", $("#property-keypair-name").html() + ".pem" )
+            if this.kpModalClosed
+                return
+
+            $("#keypair-login").hide()
+            $("#keypair-remote").hide()
+            $("#keypair-public").hide()
+            $("#keypair-rdp").hide()
+
+            $("#keypair-kp-linux" )
+                .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
+                .attr("download", $("#keypair-name").text() + ".pem" )
+
+            $("#keypair-private-key").val( data )
+
+            $("#keypair-loading").hide()
+            $("#keypair-body-linux" ).show()
 
     }
 

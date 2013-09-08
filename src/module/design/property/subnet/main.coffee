@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/subnet/template.html',
-         'text!/module/design/property/subnet/acl_template.html',
-         'text!/module/design/property/subnet/app_template.html',
+         'text!./template.html',
+         'text!./acl_template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, acl_template, app_template, ide_event ) ->
     #
@@ -33,6 +33,9 @@ define [ 'jquery',
         require [ './module/design/property/subnet/view',
                   './module/design/property/subnet/model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -75,6 +78,9 @@ define [ 'jquery',
         require [ './module/design/property/subnet/app_view',
                   './module/design/property/subnet/app_model'
         ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

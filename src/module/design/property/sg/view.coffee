@@ -52,7 +52,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 				$dom = this.template this.model.attributes
 
-			$('#securitygroup-name').focus()
+			# Right now, hack to focus the input. Find a better way later
+			setTimeout ()->
+				input = $('#securitygroup-name').focus()[0]
+				input.focus() if input
+			, 200
 
 			$dom
 
@@ -94,13 +98,14 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 		sgModalSelectboxChange : (event, id) ->
 			$('#sg-protocol-select-result').find('.show').removeClass('show')
+			$('.sg-protocol-option-input').removeClass("show")
 			$('#sg-protocol-' + id).addClass('show')
 			$('#modal-protocol-select').data('protocal-type', id)
 			null
 
 		icmpMainSelect : ( event, id ) ->
 			$("#protocol-icmp-main-select").data('protocal-main', id)
-			if id is 3 || id is 5 || id is 11 || id is 12
+			if id is "3" || id is "5" || id is "11" || id is "12"
 				$( '#protocol-icmp-sub-select-' + id).addClass('shown')
 			else
 				$('.protocol-icmp-sub-select').removeClass('shown')
@@ -125,13 +130,50 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 		saveSgModal : ( event ) ->
 			sg_direction = $('#sg-modal-direction input:checked').val()
 			descrition_dom = $('#securitygroup-modal-description')
+			tcp_port_dom = $('#sg-protocol-tcp input')
+			udp_port_dom = $('#sg-protocol-udp input')
+			custom_protocal_dom = $( '#sg-protocol-custom input' )
+			protocol_type =  $('#modal-protocol-select').data('protocal-type')
 			rule = {}
-			if(descrition_dom.hasClass('input'))
+			if descrition_dom.hasClass('input')
 				sg_descrition = descrition_dom.val()
 			else
 				sg_descrition = descrition_dom.html()
 
-			protocol_type =  $('#modal-protocol-select').data('protocal-type')
+			# validation #####################################################
+			validateMap =
+				'custom':
+					dom: custom_protocal_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of number.'
+						null
+				'tcp':
+					dom: tcp_port_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of port range.'
+						null
+				'udp':
+					dom: udp_port_dom
+					method: ( val ) ->
+						if not MC.validate.portRange(val)
+							return 'Must be a valid format of port range.'
+						null
+
+			if protocol_type of validateMap
+				needValidate = validateMap[ protocol_type ]
+				needValidate.dom.parsley 'custom', needValidate.method
+
+			descrition_dom.parsley 'custom', ( val ) ->
+				if !MC.validate 'cidr', val
+					return 'Must be a valid form of CIDR block.'
+				null
+
+			if (not descrition_dom.parsley 'validate') or (needValidate and not needValidate.dom.parsley 'validate')
+				return
+			# validation #####################################################
+
 			rule.protocol = protocol_type
 			protocol_val = $("#protocol-icmp-main-select").data('protocal-main')
 			protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')
@@ -172,6 +214,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			this.trigger "SET_SG_RULE", rule
 
+			modal.close()
 
 		editablelabelClick : ( event ) ->
 			editablelabel.create.call $(event.target)

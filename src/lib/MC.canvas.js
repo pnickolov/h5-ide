@@ -154,11 +154,18 @@ MC.canvas = {
 				{
 					if ( instance_data )
 					{//instance data exist
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+							'data-tooltip' : instance_data.instanceState.name
+						});
+
 					}
 					else
 					{//instance data not exist, unknown state
-						$('#' + uid + '_instance-state').attr('class', 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState());
+						$('#' + uid + '_instance-state').attr({
+							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+							'data-tooltip': ''
+						});
 					}
 				}
 				else
@@ -1422,15 +1429,15 @@ MC.canvas = {
 				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
 
 			if (
+				(
+					node_type === 'AWS.VPC.Subnet' ||
 					(
-						node_type === 'AWS.VPC.Subnet'
-						|| (
-							node_type === 'AWS.AutoScaling.Group'
-							&& group_data.originalId !== ""
-						)
+						node_type === 'AWS.AutoScaling.Group' &&
+						group_data.originalId !== ""
 					)
-					&& group_data.connection.length > 0
 				)
+				&& group_data.connection.length > 0
+			)
 			{
 				$.each(group_data.connection, function (index, data)
 				{
@@ -1476,10 +1483,10 @@ MC.canvas = {
 
 			if (
 				node_coordinate &&
-				node_coordinate[0] < coordinate.x &&
-				node_coordinate[0] + component_size[0] > coordinate.x &&
-				node_coordinate[1] < coordinate.y &&
-				node_coordinate[1] + component_size[1] > coordinate.y
+				node_coordinate[0] <= coordinate.x &&
+				node_coordinate[0] + component_size[0] >= coordinate.x &&
+				node_coordinate[1] <= coordinate.y &&
+				node_coordinate[1] + component_size[1] >= coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -1839,7 +1846,7 @@ MC.canvas.layout = {
 							{
 								tmp.member.push(v.uid);
 							}
-						})
+						});
 					}
 					if (v.type === "AWS.AutoScaling.LaunchConfiguration")
 					{
@@ -1850,7 +1857,7 @@ MC.canvas.layout = {
 							{
 								tmp.member.push(v.uid);
 							}
-						})
+						});
 					}
 				});
 				MC.canvas_property.sg_list.push(tmp);
@@ -2154,7 +2161,8 @@ MC.canvas.volume = {
 				canvas_container = $('#canvas_container'),
 				canvas_offset = canvas_container.offset(),
 				component_data = MC.canvas.data.get('component'),
-				target_data = component_data[ node.id ],
+				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
+				target_data = component_data[ node_uid ],
 				node_volume_data = target_data.resource.BlockDeviceMapping,
 				data = {'list': []},
 				coordinate = {},
@@ -2172,7 +2180,7 @@ MC.canvas.volume = {
 			{
 				$.each(node_volume_data, function (index, item)
 				{
-					volume_id = node.id + '_volume_' + item.DeviceName.replace('/dev/', '');
+					volume_id = node_uid + '_volume_' + item.DeviceName.replace('/dev/', '');
 
 					data.list.push({
 						'volume_id': volume_id,
@@ -2180,7 +2188,7 @@ MC.canvas.volume = {
 						'size': item.Ebs.VolumeSize,
 						'snapshotId': item.Ebs.SnapshotId,
 						'json': JSON.stringify({
-							'instance_id': node.id,
+							'instance_id': node_uid,
 							'id': volume_id,
 							'name': item.DeviceName,
 							'snapshotId': item.Ebs.SnapshotId,
@@ -2202,7 +2210,7 @@ MC.canvas.volume = {
 						'size': volume_data.resource.Size,
 						'snapshotId': volume_data.resource.SnapshotId,
 						'json': JSON.stringify({
-							'instance_id': node.id,
+							'instance_id': node_uid,
 							'id': volume_id,
 							'name': volume_data.name,
 							'snapshotId': volume_data.resource.SnapshotId,
@@ -2231,11 +2239,14 @@ MC.canvas.volume = {
 			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
 
 			bubble_box
-				.data('target-id', node.id)
+				.data('target-id', node_uid)
 				.css(coordinate)
 				.show();
 
-			MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
+			if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+			{
+				MC.canvas.update(node.id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_ATTACHED_ACTIVE);
+			}
 		}
 	},
 
@@ -2243,11 +2254,29 @@ MC.canvas.volume = {
 	{
 		var bubble_box = $('#volume-bubble-box'),
 			target_id = $(this).data('target-id'),
+			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
 			bubble_target_id;
 
 		if (!bubble_box[0])
 		{
-			if (MC.canvas.data.get('component.' + target_id  + '.resource.BlockDeviceMapping').length > 0)
+			if (MC.canvas.getState() === 'app')
+			{
+				if ($('#' + target_id + '_instance-number').text() * 1 > 1)
+				{
+					MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+
+					return false;
+				}
+
+				if ($('#' + target_id).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+				{
+					MC.canvas.asgList.show.call( this, event );
+
+					return false;
+				}
+			}
+
+			if (MC.canvas.data.get('component.' + target_uid  + '.resource.BlockDeviceMapping').length > 0)
 			{
 				MC.canvas.volume.bubble(
 					document.getElementById( target_id )
@@ -2255,7 +2284,10 @@ MC.canvas.volume = {
 			}
 			else
 			{
-				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+				if ($('#' + target_id ).prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+				{
+					MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+				}
 			}
 		}
 		else
@@ -2267,12 +2299,12 @@ MC.canvas.volume = {
 			if (target_id !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_id )
+					document.getElementById( target_uid )
 				);
 			}
 			else
 			{
-				MC.canvas.select(target_id);
+				MC.canvas.select( target_uid );
 			}
 		}
 
@@ -2327,7 +2359,10 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			bubble_box.remove();
 
-			MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			if ($('#' + target_id).prop('namespaceURI') === 'http://www.w3.org/2000/svg')
+			{
+				MC.canvas.update(target_id, 'image', 'volume_status', MC.canvas.IMAGE.INSTANCE_VOLUME_NOT_ATTACHED);
+			}
 
 			$(document)
 				.off('keyup', MC.canvas.volume.remove)
@@ -2626,37 +2661,48 @@ MC.canvas.volume = {
 MC.canvas.asgList = {
 	show: function (event)
 	{
+		event.stopImmediatePropagation();
+
 		if (event.which === 1)
 		{
-			MC.canvas.asgList.close();
+			MC.canvas.event.clearList();
 
 			var target = this.parentNode,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( event.currentTarget.id );
+			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
+			var appData = MC.data.resource_list[ MC.canvas_data.region ];
+			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
+
+			if ( !asgData ) {
+				return true;
+			}
 
 			var statusMap = {
-					 "Pending"     : "orange"
-				 , "Quarantined" : "orange"
-				 , "InService"   : "green"
-				 , "Terminating" : "red"
-				 , "Terminated"  : "red"
+				"Pending"     : "orange",
+				"Quarantined" : "orange",
+				"InService"   : "green",
+				"Terminating" : "red",
+				"Terminated"  : "red"
 			};
 
 			var temp_data = {
-				name: lc_comp.name,
-				instances: []
+				name      : lc_comp.name,
+				instances : []
 			};
+
+			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
+			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
 
 			if ( layout ) {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = MC.data.resource_list[ MC.canvas_data.region ][ lc_comp.resource.AutoScalingGroupARN ].Instances.member;
+			var instances = asgData.Instances.member;
 			if ( instances )
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {
@@ -2706,9 +2752,11 @@ MC.canvas.asgList = {
 MC.canvas.instanceList = {
 	show: function (event)
 	{
+		event.stopImmediatePropagation();
+
 		if (event.which === 1)
 		{
-			MC.canvas.instanceList.close();
+			MC.canvas.event.clearList();
 
 			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
 			{
@@ -2717,11 +2765,42 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			var target = this,
-				target_offset = Canvon(target).offset(),
-				canvas_offset = $('#svg_canvas').offset();
+			var target_offset = Canvon('#' + this.id).offset(),
+			   	canvas_offset = $('#svg_canvas').offset();
 
-			$('#canvas_container').append( MC.template.instanceList() );
+			var uid     = MC.extractID( this.id ),
+			    layout  = MC.canvas_data.layout.component.node[ uid ];
+
+			var temp_data = {
+				  instances : []
+				, name      : "Server Group List"
+			};
+			var statusMap = {
+					 "pending"       : "orange"
+				 , "stopping"      : "orange"
+				 , "shutting-down" : "orange"
+				 , "running"       : "green"
+				 , "stopped"       : "red"
+				 , "terminated"    : "red"
+			};
+
+			if ( layout ) {
+				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
+			}
+
+			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				temp_data.name = inst_comp.serverGroupName;
+				temp_data.instances.push( {
+					  status : statusMap[ inst_comp.state ]
+					, id     : inst_comp.uid
+					, volume : inst_comp.resource.BlockDeviceMapping.length
+					, name   : inst_comp.name
+				} );
+			}
+
+			$('#canvas_container').append( MC.template.instanceList( temp_data ) );
 
 			$('#instanceList-wrap')
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
@@ -2731,9 +2810,9 @@ MC.canvas.instanceList = {
 				});
 
 			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
-
-			return false;
 		}
+
+		return false;
 	},
 
 	close: function ()
@@ -2751,7 +2830,89 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+
+		return false;
+	}
+};
+
+MC.canvas.eniList = {
+	show: function (event)
+	{
+		event.stopImmediatePropagation();
+
+		if (event.which === 1)
+		{
+			MC.canvas.event.clearList();
+
+			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			{
+				MC.canvas.select( this.id );
+
+				return false;
+			}
+
+			var target_offset = Canvon('#' + this.id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+
+			var uid      = MC.extractID( this.id ),
+			    layout   = MC.canvas_data.layout.component.node[ uid ],
+			    eni_comp = MC.canvas_data.component[ uid ];
+
+			var temp_data = {
+				  enis : []
+				, name : eni_comp.serverGroupName
+				, eip  : layout.eniList.length === layout.eipList.length
+			};
+
+			// if ( eni_comp.resource.Attachment && eni_comp.resource.Attachment.InstanceId ) {
+			// 	var ins_comp = MC.canvas_data.component[ MC.extractID( eni_comp.resource.Attachment.InstanceId ) ];
+			// 	if ( ins_comp.serverGroupName ) {
+			// 		temp_data.name += " - " + ins_comp.serverGroupName;
+			// 	}
+			// }
+
+			for ( var i = 0; i < layout.eniList.length; ++i ) {
+
+				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ]
+				temp_data.enis.push( {
+					  id   : eni_comp.uid
+					, name : eni_comp.resource.NetworkInterfaceId
+				} );
+			}
+
+			$('#canvas_container').append( MC.template.eniList( temp_data ) );
+
+			$('#eniList-wrap')
+				.on('click', '.eniList-item', MC.canvas.eniList.select)
+				.css({
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
+				});
+
+			MC.canvas.eniList.select.call($('#eniList-wrap .eniList-item').first());
+
+			return false;
+		}
+	},
+
+	close: function ()
+	{
+		$('#eniList-wrap').remove();
+
+		return false;
+	},
+
+	select: function (event)
+	{
+		var target = $(this);
+
+		$('#eniList-wrap .selected').removeClass('selected');
+
+		target.addClass('selected');
+
+		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -2852,7 +3013,7 @@ MC.canvas.event.dragable = {
 			{
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
-					'mouseup': event.target.getAttribute('class') === 'asg-resource-dragger' ?
+					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default
@@ -2887,7 +3048,7 @@ MC.canvas.event.dragable = {
 		if (
 			event.pageX !== event_data.originalPageX &&
 			event.pageY !== event_data.originalPageY &&
-			event_data.shadow[0].getAttribute('class').indexOf('shadow') === -1
+			!Canvon(event_data.shadow).hasClass('shadow')
 		)
 		{
 			Canvon(event_data.shadow).addClass('shadow');
@@ -3408,6 +3569,14 @@ MC.canvas.event.dragable = {
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
 			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
+			areaChild = MC.canvas.areaChild(
+				target_id,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + component_size[0],
+				coordinate.y + component_size[1]
+			),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3427,6 +3596,7 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
+			areaChild.length === 0 &&
 			match_place.is_matched &&
 			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
@@ -3707,8 +3877,8 @@ MC.canvas.event.drawConnection = {
 		event.data.draw_line.remove();
 
 		var match_node = MC.canvas.matchPoint(
-				event.pageX - event.data.canvas_offset.left,
-				event.pageY - event.data.canvas_offset.top
+				Math.round(event.pageX - event.data.canvas_offset.left),
+				Math.round(event.pageY - event.data.canvas_offset.top)
 			),
 			svg_canvas = $('#svg_canvas'),
 			from_node = event.data.originalTarget,
@@ -4717,6 +4887,14 @@ MC.canvas.event.selectNode = function (event)
 	}
 
 	return false;
+};
+
+MC.canvas.event.clearList = function ()
+{
+	MC.canvas.instanceList.close();
+	MC.canvas.eniList.close();
+	MC.canvas.asgList.close();
+	MC.canvas.event.clearSelected();
 };
 
 MC.canvas.event.nodeHover = function (event)

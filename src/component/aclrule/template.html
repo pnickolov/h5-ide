@@ -1,11 +1,11 @@
-<div id="modal-acl-rule">
+<div id="modal-acl-rule" data-bind="true">
   <div class="modal-header"><h3>Add Network ACL Rule</h3><i class="modal-close">&times;</i></div>
   <div class="modal-body" style="width:450px;">
 	<div class="modal-control-group clearfix">
 	  <label class="label-short" for="modal-acl-number">Rule Number</label>
 	  <div class="prefix-input left">
 	  		<label for="modal-acl-number">#</label>
-	  		<input class="input" type="text" maxLength="5" id="modal-acl-number" required>
+	  		<input class="input" type="text" id="modal-acl-number" required data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
 	  </div>
 	</div>
 	<div class="modal-control-group clearfix">
@@ -43,14 +43,14 @@
 		</div>
 	</div>
 	<div class="modal-control-group acl-sourece-dest clearfix">
-	  <label class="label-short">Source</label>
+	  <label class="label-short" id="acl-add-model-bound-label">Source</label>
 		<div class="selectbox" id="acl-add-model-source-select">
 			<div class="selection">Custom</div>
 			<ul class="dropdown">
 
 			</ul>
 	  </div>
-	  <input class="input" type="text" maxLength="5" id="modal-acl-source-input">
+	  <input class="input" type="text" id="modal-acl-source-input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true">
 	</div>
 <!--     <div class="modal-row">
 	  <label for="Source">Protocol</label>
@@ -107,10 +107,10 @@
 		<!-- </div> -->
 	  <div id="sg-protocol-select-result">
 		  <div class="sg-protocol-option-input show" id="sg-protocol-tcp">
-			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-udp">
-			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+			<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-icmp">
 			<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
@@ -198,9 +198,9 @@
 		  </div>
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-custom">
-			<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
+			<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
 		  </div>
-		  <div class="sg-protocol-option-input" id="sg-protocol-all">
+		  <div class="sg-protocol-option-input" id="sg-protocol-all" required data-ignore="true" data-ignore-regexp="^[0-9-]*$">
 			Port Range:<span>0-65535</span>
 		  </div>
 	  <!-- </div> -->

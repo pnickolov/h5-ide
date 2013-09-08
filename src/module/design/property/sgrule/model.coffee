@@ -102,25 +102,30 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
                 if sg_info.rules.length > 0
 
-                    sg_app_ary.push sg_info
+                    sg_existing = false
 
-            # sgUIDAry = []
-            # _.each bothSGAry, (sgObj) ->
-            #     innerSGAry = sgObj.sg
-            #     _.each innerSGAry, (innerSGObj) ->
-            #         sgUID = innerSGObj.uid
-            #         sgUIDAry.push sgUID
-            #         null
-            #     null
+                    for sg in sg_app_ary
 
-            # sgUIDAry = _.uniq(sgUIDAry)
+                        if sg.name is sg_info.name
 
-            # sg_app_ary = []
-            # _.each sgUIDAry, (sgUID) ->
-            #     sg_info = that._getSGInfo(sgUID)
-            #     if sg_info.rules.length > 0
-            #         sg_app_ary.push sg_info
-            #     null
+                            sg_existing = true
+
+                            for rule_to_sg in sg_info.rules
+
+                                rule_existing = false
+
+                                for rule_from_sg in sg.rules
+
+                                    if rule_from_sg.uid is rule_to_sg.uid
+
+                                        rule_existing = true
+
+                                if not rule_existing
+
+                                    sg.rules.push rule_to_sg
+
+                    if not sg_existing
+                        sg_app_ary.push sg_info
 
             that.set 'sg_group', sg_app_ary
 
@@ -162,6 +167,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 
                         tmp_rule.connection = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
+
+                        rules.push tmp_rule
+
+                    if rule.IpRanges is 'amazon-elb/amazon-elb-sg'
+
+                        tmp_rule.connection = rule.IpRanges
 
                         rules.push tmp_rule
 

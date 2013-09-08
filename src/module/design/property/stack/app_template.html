@@ -19,7 +19,7 @@
 	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
 	<div class="option-group">
 		{{#if subscription}}
-		<h5>SNS Topic</h5>
+		<div class="property-group-head">SNS Topic</div>
 		<div class="property-control-group">
       <dl class="dl-vertical">
         <dt>SNS Topic Name</dt>
@@ -30,7 +30,7 @@
         </dd>
       </dl>
     </div>
-    <h5>Subscription</h5>
+    <div class="property-group-head">Subscription</div>
     <ul class="property-list">
     {{#each subscription}}
 	    <li>

@@ -1,6 +1,6 @@
 <header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="modal-close">&times;</i></header>
 
-<article class="modal-body" id="sg-rule-create-modal">
+<article class="modal-body" id="sg-rule-create-modal" data-bind="true">
   <section class="sg-rule-create-add-wrap">
 
     <section class="sg-node-wrap clearfix">
@@ -75,11 +75,11 @@
 
       <div class="sg-create-proto-inputs">
           <section class="sg-proto-input" id="sg-proto-ipt-tcp" style="display:block;">
-            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$"/>
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-udp">
-            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" />
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$"/>
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-icmp">
@@ -171,7 +171,7 @@
 
     {{#if isnt_classic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
-            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="">
+            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="" data-ignore="true" data-ignore-regexp="^[0-9]*$">
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-all">
@@ -184,7 +184,10 @@
   </section>
 
   <section class="sg-rule-create-done-wrap">
-    <p id="sg-rule-create-msg"></p>
+    <div>
+      <p id="sg-rule-create-msg"></p>
+      <p id="sg-rule-self-ref" class="hide">Your view option hides rules within the same security group. The connection will be invisible.</p>
+    </div>
     <button class="btn btn-silver sg-rule-create-readd">Create another rule</button>
     <button class="btn btn-silver modal-close">Close</button>
   </section>

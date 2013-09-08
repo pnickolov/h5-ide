@@ -3,7 +3,7 @@
 #############################
 
 define [ 'MC', 'event', 'handlebars'
-		 'i18n!/nls/lang.js',
+		 'i18n!nls/lang.js',
 		 'view', 'layout', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
@@ -47,7 +47,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log '---------- check network ----------'
 			if !MC.data.is_loading_complete and $( '#loading-bar-wrapper' ).html().trim() isnt ''
 				ide_event.trigger ide_event.SWITCH_MAIN
-				notification 'error', 'Connection Failed. Please try again', true
+				notification 'error', lang.ide.IDE_MSG_ERR_CONNECTION, true
 		, 50 * 1000
 
 		#############################
@@ -209,7 +209,7 @@ define [ 'MC', 'event', 'handlebars'
 				#load layout
 				console.log 'layout'
 				layout.ready()
-				canvas_layout.ready()
+				canvas_layout.canvas_initialize()
 			, 2000
 
 		#listen DESIGN_COMPLETE

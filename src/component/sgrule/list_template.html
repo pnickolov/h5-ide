@@ -12,7 +12,7 @@
             <li class="clearfix sg-create-rule-item" data-uid="{{uid}}">
               <div class="rule-list-row">
                 <div class="{{#if egress}}icon-inbound{{else}}icon-outbound{{/if}} tooltip" data-tooltip="{{#if egress}}Inbound{{else}}Outbound{{/if}} "></div>
-                <div class="sg-rule-connnection tooltip" data-tooltip="{{#if egress}}Source{{else}}Destination{{/if}} ">{{connection}}</div>
+                <div class="sg-rule-connnection tooltip truncated" data-tooltip="{{#if egress}}Source{{else}}Destination{{/if}}:{{connection}} ">{{connection}}</div>
               </div>
                <div class="rule-list-row">
                 <span class="sg-rule-protocol rule-protocol tooltip" data-tooltip="Protocol">{{protocol}}</span>

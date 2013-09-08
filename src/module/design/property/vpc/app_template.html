@@ -20,45 +20,53 @@
 
   <div class="option-group-head expand">DHCP Options</div>
   <div class="option-group">
-  {{#if dhcp}}
+  
+  {{#if default_dhcp}}
   <div class="property-control-group">
-    <dl class="dl-vertical">
-      <dt>DHCP Options Set ID</dt>
-      <dd>{{dhcpOptionsId}}</dd>
-
-      {{#if dhcp.domainName}}
-      <dt>Domain Name</dt>
-      <dd>{{dhcp.domainName.[0]}}</dd>
-      {{/if}}
-
-      {{#if dhcp.domainNameServers.length}}
-      <dt>Domain Name Server</dt>
-      <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
-      </dd>
-      {{/if}}
-
-      {{#if dhcp.ntpServers.length}}
-      <dt>NTP Server</dt>
-      <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
-      </dd>
-      {{/if}}
-
-
-      {{#if dhcp.netbiosNameServers.length}}
-      <dt>NetBIOS Name Server</dt>
-      <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
-      </dd>
-      {{/if}}
-
-      {{#if dhcp.netbiosNodeType}}
-      <dt>NetBIOS Node Type</dt>
-      <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
-      {{/if}}
-
-    </dl>
-  </div>
+    <p>Default DHCP</p>
   {{else}}
-  <p>None</p>
+  {{#unless dhcp}}
+    <p>None</p>
+ </div>
+    {{else}}
+
+  <dl class="dl-vertical">
+    <dt>DHCP Options Set ID</dt>
+    <dd>{{dhcpOptionsId}}</dd>
+
+    {{#if dhcp.domainName}}
+    <dt>Domain Name</dt>
+    <dd>{{dhcp.domainName.[0]}}</dd>
+    {{/if}}
+
+    {{#if dhcp.domainNameServers.length}}
+    <dt>Domain Name Server</dt>
+    <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
+    </dd>
+    {{/if}}
+
+    {{#if dhcp.ntpServers.length}}
+    <dt>NTP Server</dt>
+    <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
+    </dd>
+    {{/if}}
+
+
+    {{#if dhcp.netbiosNameServers.length}}
+    <dt>NetBIOS Name Server</dt>
+    <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
+    </dd>
+    {{/if}}
+
+    {{#if dhcp.netbiosNodeType}}
+    <dt>NetBIOS Node Type</dt>
+    <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
+    {{/if}}
+
+  </dl>
+   
+  {{/unless}}
   {{/if}}
+
   </div>
 </article>

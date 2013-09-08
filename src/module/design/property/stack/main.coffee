@@ -3,10 +3,10 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/stack/template.html',
-         'text!/module/design/property/stack/app_template.html',
-         'text!/module/design/property/stack/acl_template.html',
-         'text!/module/design/property/stack/sub_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
+         'text!./acl_template.html',
+         'text!./sub_template.html',
          'event'
 ], ( $, stack_template, app_template, acl_template, sub_template, ide_event ) ->
 
@@ -44,6 +44,9 @@ define [ 'jquery',
                   './module/design/property/stack/model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

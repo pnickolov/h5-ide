@@ -42,7 +42,7 @@
 					<div class='rule-reference'>{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
-					<div><span class="rule-protocol">{{IpProtocol}}</span></div>
+					<div><span class="rule-protocol">{{protocol_display}}</span></div>
 					<div class='rule-port' title="port message">{{FromPort}}-{{ToPort}}</div>
 				</div>
 				<div class='rule-remove-icon icon-remove tooltip' data-tooltip="Remove rule"></div>
@@ -55,7 +55,7 @@
 					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
-					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{IpProtocol}}</span></div>
+					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{protocol_display}}</span></div>
 					<div class='rule-port tooltip' data-tooltip="Port or Code">{{FromPort}}-{{ToPort}}</div>
 				</div>
 				<div class='rule-remove-icon tooltip' data-tooltip="Remove rule"></div>
@@ -66,10 +66,10 @@
 
 	<div class="option-group-head">Member<span class="property-head-num-wrap">({{sg_detail.members.length}})</span>	</div>
 	<div class="option-group">
-		<div id="sg-member-empty" class="property-control-group">
+<!-- 		<div id="sg-member-empty" class="property-control-group">
 			<p>Select an instantce/ENI/ELB and edit Security Group section in Property panel to assign member to security group.</p>
 			<img src="" title="screenshot for instruction"/>
-		</div>
+		</div> -->
 
 		<ul class="sg-member-list property-list">
 			{{#each sg_detail.members}}

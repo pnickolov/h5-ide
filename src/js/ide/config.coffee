@@ -26,7 +26,7 @@ require.config {
 		#############################################
 		# main
 		#############################################
-		'main'               :   'js/ide/main'
+		'main'               : 'js/ide/main'
 
 		#############################################
 		# vender
@@ -118,6 +118,7 @@ require.config {
 		#############################################
 		# module
 		#############################################
+		'base_main'          : 'module/base/base_main'
 		'header'             : 'module/header/main'
 		'navigation'         : 'module/navigation/main'
 		'tabbar'             : 'module/tabbar/main'
@@ -130,6 +131,11 @@ require.config {
 		'property'           : 'module/design/property/main'
 		'canvas'             : 'module/design/canvas/main'
 		'toolbar'            : 'module/design/toolbar/main'
+
+		#############################################
+		# component
+		#############################################
+		'acl_template'       : 'component/aclrule/template.html'
 
 		#############################################
 		# events
@@ -167,6 +173,7 @@ require.config {
 		'cloudwatch_model'       : 'model/aws/cloudwatch/cloudwatch_model'
 		'sns_model'              : 'model/aws/sns/sns_model'
 		'subnet_model'           : 'model/aws/vpc/subnet_model'
+		'instance_model'         : 'model/aws/ec2/instance_model'
 
 		#result_vo
 		'result_vo'              : 'service/result_vo'

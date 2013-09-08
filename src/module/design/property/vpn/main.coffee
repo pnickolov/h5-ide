@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/vpn/template.html',
+         'text!./template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -24,6 +24,9 @@ define [ 'jquery',
 
         #
         require [ './module/design/property/vpn/view', './module/design/property/vpn/model' ], ( view, model ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

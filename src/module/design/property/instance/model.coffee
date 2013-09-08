@@ -68,6 +68,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			uid = this.get 'get_uid'
 
 			MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
+			MC.canvas_data.component[ this.get( 'get_uid' )].serverGroupName = this.get 'name'
 			this.set 'update_instance_title', this.get 'name'
 
 			MC.canvas.update(uid,'text','hostname', this.get('name'))
@@ -411,13 +412,31 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			checkbox = {}
 
-			checkbox.ebsOptimized = true if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+			if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
+				checkbox.ebsOptimized = true
+				this.set 'ebs_optimized', true
+			else
+				checkbox.ebsOptimized = false
+				this.set 'ebs_optimized', false
 
-			checkbox.monitoring = true if MC.canvas_data.component[ uid ].resource.Monitoring == 'enabled'
+			if MC.canvas_data.component[ uid ].resource.Monitoring == 'enabled'
+				checkbox.monitoring = true
+			else
+				checkbox.monitoring = false
 
-			checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
+			if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
+				this.set 'base64', true
+				checkbox.base64Encoded = true
+			else
+				this.set 'base64', false
+				checkbox.base64Encoded = false
 
-			checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
+			if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
+				checkbox.tenancy = true
+				this.set 'tenacy', true
+			else
+				checkbox.tenancy = false
+				this.set 'tenacy', false
 
 			this.set 'checkbox_display', checkbox
 

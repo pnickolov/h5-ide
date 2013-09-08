@@ -1,4 +1,7 @@
 <article id="property_app_asg" class="property-app">
+  {{#unless asg}}
+  <div class="property-control-group">Auto Scaling Group {{asg_name}} is deleted in stopped app.</div>
+  {{else}}
   <div class="option-group-head expand">Auto Scaling Group Details</div>
   <div class="option-group">
     <dl class="dl-vertical">
@@ -6,7 +9,7 @@
       <dd>{{asg.AutoScalingGroupName}}</dd>
       <dt>Auto Scaling Group ARN</dt>
       <dd>
-        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
+        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
       </dd>
       <dt>Created Time</dt>
       <dd>{{asg.CreatedTime}}</dd>
@@ -31,13 +34,13 @@
     </dl>
   </div>
 
-  <div class="option-group-head">Instance ({{instance_count}})</div>
+  <div class="option-group-head">Instance <span class="property-head-num-wrap">({{instance_count}})</span></div>
   <div class="option-group">
     {{#each subnets}}
-    <h5>{{name}}</h5>
-    <ul>
+    <div class="property-group-head">{{name}}</div>
+    <ul class="property-list">
       {{#each instances}}
-        <li><i class="status status-{{status}}"></i>{{name}}</li>
+        <li><i class="status status-{{status}} icon-label"></i>{{name}}</li>
       {{/each}}
     </ul>
     {{/each}}
@@ -70,7 +73,7 @@
   <div class="option-group">
     {{#if sendNotify}}
     <div class="property-asg-notification-wrap property-control-group">
-      <p>Send notification via SNS topic for:</p>
+      <label class="left">Send notification via SNS topic for:</label>
       <section>
         {{#if notifies.[0]}}<p>Successful instance launch</p>{{/if}}
         {{#if notifies.[1]}}<p>Failed instance launch</p>{{/if}}
@@ -79,9 +82,10 @@
         {{#if notifies.[4]}}<p>Validating a configuraed SNS Topic</p>{{/if}}
       </section>
       {{else}}
-      <p>No notification configured for this auto scaling group</p>
+      <p class="property-info tac">No notification configured for this auto scaling group</p>
       {{/if}}
     </div>
   </div>
+  {{/unless}}
 
 </article>

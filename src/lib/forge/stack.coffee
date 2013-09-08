@@ -55,7 +55,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			i = 0
 
-			while i < ins_num-1
+			while i < ins_num-ins_comp_number
 
 				new_eni_uid = MC.guid()
 
@@ -136,7 +136,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				comp_data[ new_comp.uid ] = new_comp
 
-				if elbs.length > 0
+				if elbs.length > 0 and new_comp.uid isnt uid
 
 					for elb in elbs
 
@@ -248,8 +248,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		# generate eni ip
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
-			az = layout_data.groupUId
-			MC.aws.subnet.updateAllENIIPList(az)
+			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
+			azName = MC.canvas_data.layout.component.group[azUID].name
+			MC.aws.subnet.updateAllENIIPList(azName)
 		else
 			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1))
 
@@ -394,7 +395,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			eip_number = json_data.component[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].number
 
-			eip_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eipList[ uid ] else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList
+			eip_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eipList[ uid ] else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ]
 
 			if (eip_list and eip_list.length is 0) or not eip_list
 
@@ -435,7 +436,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				json_data.layout.component.node[instance_uid].eipList = eip_list
 			else
-				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList = eip_list
+				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ] = eip_list
 
 		$.each eip_list, ( idx, eip_uid ) ->
 
@@ -498,6 +499,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		#expand an instance to a server group
 	compactInstance = ( json_data, uid ) ->
 
+		json_data.layout.component.node[ uid ].instanceList = if json_data.layout.component.node[ uid ].instanceList then json_data.layout.component.node[ uid ].instanceList else []
+		json_data.layout.component.node[ uid ].eniList = if json_data.layout.component.node[ uid ].eniList then json_data.layout.component.node[ uid ].eniList else []
+		json_data.layout.component.node[ uid ].volumeList = if json_data.layout.component.node[ uid ].volumeList then json_data.layout.component.node[ uid ].volumeList else []
+
 		comp_data     = json_data.component
 		ins_comp      = comp_data[uid]
 		ins_comp.name = ins_comp.serverGroupName
@@ -505,6 +510,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		eni_list 	  = json_data.layout.component.node[ uid ].eniList
 		vol_list 	  = json_data.layout.component.node[ uid ].volumeList
 		ins_num       = ins_comp.number
+
 
 		instance_ref_list = []
 
@@ -543,7 +549,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				delete comp_data[comp_uid]
 
 			else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId not in instance_ref_list
-				if comp.name.indexOf("eni0") >=0
+				if !comp.name || comp.name.indexOf("eni0") >=0
 					comp.name = "eni0"
 				else
 					comp.name = comp.serverGroupName

@@ -57,7 +57,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         data.key = key
 
                     #call save png
-                    me.savePNG true, data
+                    _.delay () ->
+                        me.savePNG true, data
+                    , 500
 
                     #set toolbar flag
                     me.setFlag id, 'SAVE_STACK', name
@@ -108,7 +110,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
                     #call save png
-                    me.savePNG true, MC.canvas_data
+                    _.delay () ->
+                        me.savePNG true, MC.canvas_data
+                    , 500
 
                     #set toolbar flag
                     me.setFlag id, 'CREATE_STACK', MC.canvas_data
@@ -419,16 +423,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             name = data.name
 
             #instance store ami check
-            data.has_instance_store_ami = me.isInstanceStore data
+            #data.has_instance_store_ami = me.isInstanceStore data
 
-            #expand components
-            json_data = MC.forge.stack.expandServerGroup data
+            #check whether data change
+            ori_data = MC.canvas_property.original_json
+            new_data = JSON.stringify(data)
+            if ori_data == new_data
+                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
+                return
 
             if id.indexOf('stack-', 0) == 0   #save
-                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
+                stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
             else    #new
-                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, json_data
+                stack_model.create { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
         #duplicate
         duplicateStack : (region, id, new_name, name) ->
@@ -450,7 +458,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             region  = data.region
 
             #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
-            stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+            if MC.aws.aws.checkDefaultVPC()
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC()
+
+            else
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
 
             # save stack data
             if not (region of run_stack_map) then run_stack_map[region] = {}
@@ -646,7 +658,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     if flag is 'RUN_STACK'
                         flag_list.is_failed = true
-                        flag_list.err_detail = req.data
+                        flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
                         # remove the app name from app_list
                         if name in MC.data.app_list[region]
@@ -711,11 +723,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             is_instance_store = false
 
-            if 'component' of data.layout and 'node' of data.layout.component
-                for k, node of data.layout.component.node
-                    if node.rootDeviceType == 'instance-store'
-                        is_instance_store = true
-                        break
+            if 'property' of data and 'stoppable' of data.property and data.property.stoppable is 'false'
+                is_instance_store = true
 
             is_instance_store
 

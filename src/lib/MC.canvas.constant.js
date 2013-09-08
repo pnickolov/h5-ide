@@ -1,6 +1,6 @@
 MC.canvas = MC.canvas || {};
 
-define([ 'i18n!/nls/lang.js' ], function( lang ){
+define([ 'i18n!nls/lang.js' ], function( lang ){
 
 var constant_data = {
 
@@ -735,10 +735,10 @@ var constant_data = {
 		"state": "Enabled",
 		"username": "",
 		"owner": "",
-		"version": "5.0",
+		"version": "2013-09-04",
 		"tag": "",
 		"usage": "",
-		"has_instance_store_ami": "", //true|false
+		//"has_instance_store_ami": "", //true|false
 		"component":
 		{},
 		"layout":
@@ -825,7 +825,7 @@ var constant_data = {
 			"connection": [],
 			"instanceList": [], //store uid of each instance in server group
 			"volumeList" : {},
-			"eipList" : [],
+			"eipList" : null,
 			'eniList' : []
 		},
 		data:

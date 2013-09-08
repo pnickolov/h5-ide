@@ -8,14 +8,17 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
+
+var VER = 'v2';
+
 var MC = {
 	version: '0.2.8',
 
 	// Global Variable
-	API_URL: 'https://api.madeiracloud.com/',
-	IMG_URL: '../assets/images/',
-	WS_URL: 'https://api.madeiracloud.com/ws',//-> 8300
-	SAVEPNG_URL: 'http://api.madeiracloud.com:8320/',
+	API_URL: 'https://api.madeiracloud.com/' + VER + '/',
+	IMG_URL: './assets/images/',
+	WS_URL: 'https://api.madeiracloud.com/' + VER + '/ws/',//-> 8300
+	SAVEPNG_URL: 'https://api.madeiracloud.com/' + VER + '/export/',//->8400
 
 	current_module : {},
 
@@ -100,7 +103,7 @@ var MC = {
 				{
 					api_frame[0].contentWindow.postMessage({
 						id: guid,
-						url: option.url,
+						url: '/' + VER + option.url,
 						method: option.method || '',
 						params: option.data || {}
 					}, '*');
@@ -111,7 +114,7 @@ var MC = {
 
 		if (!api_frame[0])
 		{
-			$(document.body).append('<iframe id="api-frame" src="https://api.madeiracloud.com/api.html" style="display:none;"></iframe>');
+			$(document.body).append('<iframe id="api-frame" src="' + MC.API_URL + 'api.html" style="display:none;"></iframe>');
 			api_frame = $('#api-frame');
 			api_frame.load(function ()
 			{

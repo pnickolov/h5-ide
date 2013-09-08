@@ -3,8 +3,8 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/elb/template.html',
-         'text!/module/design/property/elb/app_template.html',
+         'text!./template.html',
+         'text!./app_template.html',
          'event'
 ], ( $, template, app_template, ide_event ) ->
 
@@ -34,6 +34,9 @@ define [ 'jquery',
                   './module/design/property/elb/model',
                   './module/design/property/sglist/main'
                   ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events
@@ -121,6 +124,9 @@ define [ 'jquery',
                   './module/design/property/elb/app_model',
                   './module/design/property/sglist/main'
         ], ( view, model, sglist_main ) ->
+
+            # added by song
+            model.clear({silent: true})
 
             #
             if current_view then view.delegateEvents view.events

@@ -3,7 +3,7 @@
 ####################################
 
 define [ 'jquery',
-         'text!/module/design/property/igw/template.html',
+         'text!./template.html',
          'event'
 ], ( $, template, ide_event ) ->
 
@@ -25,6 +25,9 @@ define [ 'jquery',
         #
         require [ './module/design/property/igw/view', './module/design/property/igw/model' ], ( view, model ) ->
 
+            # added by song
+            model.clear({silent: true})
+            
             #
             if current_view then view.delegateEvents view.events
 

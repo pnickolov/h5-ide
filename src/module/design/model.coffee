@@ -32,6 +32,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     #update instance icon of app
                     MC.aws.instance.updateStateIcon app_id
 
+                    MC.aws.asg.updateASGCount app_id
+
                     #update canvas when get instance info
                     ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
@@ -45,6 +47,20 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 #
                 ide_event.trigger ide_event.SWITCH_MAIN
 
+                null
+
+            #listen APP_INFO_RETURN
+            me.on 'APP_INFO_RETURN', ( result ) ->
+                console.log 'APP_INFO_RETURN'
+                #
+                app_id = result.param[4][0]
+                # update canvas_data when on current tab
+                if app_id == MC.canvas_data.id
+                    MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+                # update MC.Tab[app_id]
+                else
+                    #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
+                    @updateAppTabDate result.resolved_data[ 0 ], app_id
                 null
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
@@ -83,6 +99,15 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property }
             #
             this.deleteTab old_tab_id
+
+        updateAppTab : ( region_name, app_id ) ->
+            console.log 'updateAppTab'
+            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, [ app_id ]
+
+        updateAppTabDate : ( data, tab_id ) ->
+            console.log 'updateAppTabDate'
+            MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+            null
 
         deleteTab    : ( tab_id ) ->
             console.log 'deleteTab'
@@ -153,7 +178,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
                     asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
                     asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
-                    instance_memeber = if asg_res then asg_res.Instances.member else null
+                    instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
 
                     #find instance in ASG
                     if instance_memeber
@@ -180,6 +205,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                     else
                         #DescribeInstances failed
                         console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+
+            else
+
             null
 
         getAppResourcesService : ( region, app_id )->

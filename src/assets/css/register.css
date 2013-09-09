@@ -49,6 +49,15 @@ header {
 	padding: 30px;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	position: relative;
+}
+
+#login-wrap {
+	top: 45px;
+	position: absolute;
+	right: 20px;
+	color: #999;
+	font-size: 14px;
 }
 
 #register-form-wrap h1 {

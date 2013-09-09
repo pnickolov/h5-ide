@@ -35,11 +35,15 @@ var signup = {
 				status = $('#password-verification-status');
 
 			status.removeClass('error-status');
-			signup.verification.confirm_password();
+			//signup.verification.confirm_password();
 
 			if (value !== '')
 			{
-				if (value.length > 8 && /[A-Z]{1}/.test(value) && /[0-9]{1}/.test(value))
+				if (
+					value.length > 6// &&
+					///[A-Z]{1}/.test(value) &&
+					///[0-9]{1}/.test(value)
+				)
 				{
 					status.show().text('This password is OK.');
 					
@@ -59,26 +63,26 @@ var signup = {
 				return false;
 			}
 		},
-		confirm_password: function ()
-		{
-			var value = $('#register-confirm-password').val().trim(),
-				status = $('#confirm-password-verification-status');
+		// confirm_password: function ()
+		// {
+		// 	var value = $('#register-confirm-password').val().trim(),
+		// 		status = $('#confirm-password-verification-status');
 
-			status.removeClass('error-status');
+		// 	status.removeClass('error-status');
 
-			if (value !== '' && value === $('#register-password').val())
-			{
-				status.show().text('Password matched.');
+		// 	if (value !== '' && value === $('#register-password').val())
+		// 	{
+		// 		status.show().text('Password matched.');
 
-				return true;
-			}
-			else
-			{
-				status.addClass('error-status').show().text('Password not matched.');
+		// 		return true;
+		// 	}
+		// 	else
+		// 	{
+		// 		status.addClass('error-status').show().text('Password not matched.');
 
-				return false;
-			}
-		},
+		// 		return false;
+		// 	}
+		// },
 		email: function ()
 		{
 			var value = $('#register-email').val().trim(),
@@ -105,7 +109,7 @@ var signup = {
 		if (
 			signup.verification.username() &&
 			signup.verification.password() &&
-			signup.verification.confirm_password() &&
+			//signup.verification.confirm_password() &&
 			signup.verification.email()
 		)
 		{
@@ -123,7 +127,7 @@ $(document).ready(function ()
 	$('#register-username').on('keyup', signup.verification.username);
 	$('#register-email').on('keyup', signup.verification.email);
 	$('#register-password').on('keyup', signup.verification.password);
-	$('#register-confirm-password').on('keyup', signup.verification.confirm_password);
+	//$('#register-confirm-password').on('keyup', signup.verification.confirm_password);
 
 	$('#register-form').on('submit', signup.submit);
 });

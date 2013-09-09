@@ -16,6 +16,11 @@
 	<div id="container">
 		<div id="register-form-wrap">
 			<h1>Register</h1>
+
+			<div id="login-wrap">
+				Already a user? <a href="login.html">Login in</a>.
+			</div>
+
 			<form id="register-form" method="post" action="">
 				<label>User Name</label>
 				<input autocomplete="off" id="register-username" class="register-input" type="text"/>
@@ -28,10 +33,7 @@
 				<label>Password</label>
 				<input autocomplete="off" id="register-password" class="register-input" type="password"/>
 				<div id="password-verification-status" class="verification-status"></div>
-				<p>At  least  8 character with one numbers and one upper-case letters.</p>
-				<label>Confirm Password</label>
-				<input autocomplete="off" id="register-confirm-password" class="register-input" type="password"/>
-				<div id="confirm-password-verification-status" class="verification-status"></div>
+				<p>At  least  6 character.</p>
 
 				<div id="tos-wrap">
 					By clicking the create account button, you agree to the <a target="_blank" href="http://www.madeiracloud.com/terms-conditions-privacy-policy">Terms of Service</a>.

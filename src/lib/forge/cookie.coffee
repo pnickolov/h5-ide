@@ -38,7 +38,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
 			path: '/',
-			domain: '.madeiracloud.com', #temp comment
+			# domain: '.madeiracloud.com', #temp comment
 			expires: 1
 		}
 		null

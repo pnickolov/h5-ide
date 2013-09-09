@@ -779,9 +779,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				resource.InstanceType = 'm1.small';
 				resource.Placement.AvailabilityZone = option.group.availableZoneName;
 				resource.KeyName = "@"+MC.canvas_property.kp_list["DefaultKP"] + ".resource.KeyName";
-				resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
-				resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
-				MC.canvas_property.sg_list[0].member.push(group.id);
+
+				if(MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_VPC && MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.CUSTOM_VPC && MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.DEFAULT_VPC){
+					resource.SecurityGroupId.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");
+					resource.SecurityGroup.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupName");
+					MC.canvas_property.sg_list[0].member.push(group.id);
+				}
 
 				// if subnet
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC)
@@ -832,8 +835,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.instanceList = [ group.id ];
 
 			}
-			else
-			{//read
+			else {//read
 				component_data = data[group.id];
 				option.name = component_data.serverGroupName || component_data.name;
 

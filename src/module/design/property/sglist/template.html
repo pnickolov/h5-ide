@@ -9,6 +9,7 @@
 	<div id="item-group" class="active tab-item">
 		<ul class="acl-sg-info-list property-list" id="sg-info-list">
 			{{#each sg_list}}
+			{{#if needShow}}
 			<li class="clearfix" sg-uid="{{sgUID}}">
 				{{#unless sgHideCheck}}
 					{{#if sgFull.full}}
@@ -45,9 +46,10 @@
 					<div class="col2-2 truncate">{{sgDesc}}</div>
 					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
 				</div>
-				{{#unless sgIsDefault}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}
+				{{#unless sgIsDefault}}{{#unless appView}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
 				<!-- {{#if isStackSG}} --><!-- {{/if}} -->
 			</li>
+			{{/if}}
 			{{/each}}
 		</ul>
 		{{#unless app_view}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">Create new Security Group...</a>{{/unless}}

@@ -90,7 +90,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					++enabledSGCount
 
 				sgHideCheck = false
+				appView = false
 				if parent_model.get('type') is 'app'
+					appView = true
 					sgHideCheck = true
 
 				if parent_model.get('is_stack') is true
@@ -99,6 +101,10 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				sgIsDefault = false
 				if sgComp.name is 'DefaultSG'
 					sgIsDefault = true
+
+				needShow = true
+				if !sgChecked and parent_model.get('type') is 'app'
+					needShow = false
 
 				# need to display
 				sgDisplayObj =
@@ -113,6 +119,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
 					isStackSG   : stackType
+					needShow    : needShow
+					appView     : appView
 
 				displaySGAry.push sgDisplayObj
 

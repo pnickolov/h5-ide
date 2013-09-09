@@ -1851,7 +1851,7 @@ var errortip = function (event)
       'top': target_offset.top + target_height + height - document.body.scrollTop + 45 > window.innerHeight ?
         target_offset.top - height - 15 :
         target_offset.top + target_height,
-      width: target_width + 2 - 4,
+      width: target_width - 6,
 
     }).show();
 

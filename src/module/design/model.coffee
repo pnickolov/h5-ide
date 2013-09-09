@@ -56,7 +56,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 app_id = result.param[4][0]
                 # update canvas_data when on current tab
                 if app_id == MC.canvas_data.id
-                    MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+                    #MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+                    @setCanvasData result.resolved_data[ 0 ]
                 # update MC.Tab[app_id]
                 else
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
@@ -119,12 +120,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
-            MC.canvas_data = data
+            MC.canvas_data             = $.extend true, {}, data
+            MC.data.origin_canvas_data = $.extend true, {}, data
             null
 
         getCanvasData : () ->
             console.log 'getCanvasData'
-            MC.canvas_data
+            #MC.canvas_data
+            $.extend true, {}, MC.canvas_data
 
         setCanvasProperty : ( property ) ->
             console.log 'setCanvasProperty'

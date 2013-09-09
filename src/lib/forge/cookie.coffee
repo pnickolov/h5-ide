@@ -67,8 +67,17 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			null
 
+
+	checkAllCookie = ->
+
+		if $.cookie('username') and $.cookie('userid') and $.cookie('usercode') and $.cookie('session_id') and $.cookie('region_name') and $.cookie('has_cred') and $.cookie('email') and $.cookie('account_id')
+			true
+		else
+			false
+
 	#public
 	setCookie    : setCookie
 	deleteCookie : deleteCookie
 	setIDECookie : setIDECookie
 	getIDECookie : getIDECookie
+	checkAllCookie : checkAllCookie

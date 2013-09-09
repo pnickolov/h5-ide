@@ -2175,7 +2175,7 @@ input.parsley-error {
 	background-repeat: no-repeat !important;
 	background-position: 97% !important;*/
 	border: 1px solid #F74A48 !important;
-	background-color: 
+	background-color: rgba(247,74,72,.2)
 }
 
 .parsley-error-list {

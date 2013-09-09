@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud - Register</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="./assets/css/core.css" media="all"/>
+	<link id="css_style" rel="stylesheet" href="./assets/css/register.css" media="all"/>
+	<script type="text/javascript" src="./vender/jquery/jquery.js"></script>
+	<script type="text/javascript" src="./lib/MC.core.js"></script>
+	<script type="text/javascript" src="./lib/MC.page.signup.js"></script>
+</head>
+<body id="body">
+	<header>
+		<a id="logo-link" href="http://www.madeiracloud.com/"></a>
+	</header>
+	<div id="container">
+		<div id="register-form-wrap">
+			<h1>Register</h1>
+			<form id="register-form" method="post" action="">
+				<label>User Name</label>
+				<input autocomplete="off" id="register_username" class="register-input" type="text"/>
+				<div id="username-verification-status" class="verification-status"></div>
+				<p>Alphanumerics and underscores only.</p>
+				<label>Email</label>
+				<input autocomplete="off" id="register-email" class="register-input" type="text"/>
+				<div id="email-verification-status" class="verification-status"></div>
+				<p>A valid email address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.</p>
+				<label>Password</label>
+				<input autocomplete="off" id="register-password" class="register-input" type="password"/>
+				<div id="password-verification-status" class="verification-status"></div>
+				<p>At  least  8 character with one numbers and one upper-case letters.</p>
+				<label>Confirm Password</label>
+				<input autocomplete="off" id="register-confirm-password" class="register-input" type="password"/>
+				<div id="confirm-password-verification-status" class="verification-status"></div>
+
+				<div id="tos-wrap">
+					By clicking the create account button, you agree to the <a target="_blank" href="http://www.madeiracloud.com/terms-conditions-privacy-policy">Terms of Service</a>.
+				</div>
+
+				<input id="register-btn" type="submit" value="Create account">
+			</form>
+		</div>
+	</div>
+
+	<footer>
+		<div id="footer_info">
+			<p class="pad20">1st Floor, 795 Folsom Street, San Francisco, CA., USA 94107</p>
+			<p class="pad20">© <a href="http://www.madeiracloud.com" alt="MadeiraCloud" title="MadeiraCloud">MadeiraCloud</a> 2013. <a href="http://www.madeiracloud.com/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
+		</div>
+	</footer>
+</body>
+</html>

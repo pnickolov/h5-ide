@@ -686,7 +686,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						////2os_type
 						Canvon.image(MC.IMG_URL + 'ide/ami/' + os_type + '.png', 30 + offset_x, 15 + offset_y, 39, 27),
 						////3lc name
-						Canvon.text(50 + offset_x, 90 + offset_y, lc_name).attr({
+						Canvon.text(50 + offset_x, 90 + offset_y, MC.canvasName( lc_name ) ).attr({
 							'class': 'node-label name'
 						}),
 
@@ -1007,7 +1007,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 3
 				}),
 				////10. hostname
-				Canvon.text(45, 86, MC.truncate(option.name,10)).attr({
+				Canvon.text(45, 86, MC.canvasName( option.name ) ).attr({
 					'class': 'node-label node-label-name',
 					'id': group.id + '_hostname'
 				}),
@@ -1395,7 +1395,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 3
 				}),
 				////6. elb_name
-				Canvon.text(45, 86, option.name).attr({
+				Canvon.text(45, 86, MC.canvasName( option.name ) ).attr({
 					'class': 'node-label node-label-name',
 					'id' : group.id + '_elb_name'
 				}),
@@ -1655,7 +1655,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. igw name
-				Canvon.text(40, 70, option.name).attr({
+				Canvon.text(40, 70, MC.canvasName( option.name ) ).attr({
 					'class': 'node-label name'
 				})
 			).attr({
@@ -1741,7 +1741,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////4. vgw name
-				Canvon.text(40, 70, option.name).attr({
+				Canvon.text(40, 70, MC.canvasName( option.name ) ).attr({
 					'class': 'node-label name'
 				})
 			).attr({
@@ -1816,7 +1816,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////3. cgw name
-				Canvon.text(100, 95, option.name).attr({
+				Canvon.text(100, 95, MC.canvasName( option.name ) ).attr({
 					'class': 'node-label name',
 					'id': group.id + '_name'
 				})
@@ -2030,7 +2030,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 3
 				}),
 				////6. eni_name
-				Canvon.text(45, 86, option.name, {
+				Canvon.text(45, 86, MC.canvasName( option.name ) , {
 					'text-anchor': 'middle' // start, middle(default), end, inherit
 				}).attr({
 					'class': 'node-label node-label-name'
@@ -2288,7 +2288,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'ry': 3
 				}),
 				////10. lc name
-				Canvon.text(45, 86, option.name).attr({
+				Canvon.text(45, 86, MC.canvasName( option.name ) ).attr({
 					'class': 'name node-label-name' + (MC.canvas.getState()==='stack' ? ' node-label' : ' node-launchconfiguration-label'),
 					'id': group.id + '_lc_name'
 				}),

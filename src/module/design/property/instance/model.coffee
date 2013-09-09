@@ -96,6 +96,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					if connected
 						this.set 'number_disable', true
 						break
+
+			# Classic Mode
+			this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 			null
 
 		setCount : ( val ) ->

@@ -28,7 +28,7 @@
 				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
 		</section>
-		{{#if classic_stack}}
+		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<label class="left">Instance Type</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
@@ -69,7 +69,7 @@
 				</ul>
 			</div>
 		</section>
-		{{/if}}
+		{{/unless}}
 		<section class="property-control-group">
 			<label class="left">Key Pair</label>
 			<div class="selectbox" id="keypair-select">

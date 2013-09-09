@@ -582,6 +582,11 @@ button:focus {
 	font-size: 12px;
 }
 
+.loading-wrapper {
+	width: 100%;
+	text-align: center;
+}
+
 /* Main */
 #main {
 	position : absolute;

@@ -24,8 +24,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
             is_stack = true
 
-            if MC.canvas_data.id.indexOf('app-') == 0
-                is_stack = false
+            # if MC.canvas_data.id.indexOf('app-') == 0
+            #     is_stack = false
 
             property_detail = $.extend true, {}, MC.canvas_data
             property_detail.name = MC.canvas_data.name

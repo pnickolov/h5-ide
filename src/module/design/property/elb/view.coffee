@@ -11,6 +11,23 @@ define ['event', 'MC',
         'UI.toggleicon',
         'UI.slider'], ( ide_event, MC ) ->
 
+    Helper =
+        makeInRange: ( value, range , $target, deflt ) ->
+            begin = range[ 0 ]
+            end = range[ 1 ]
+
+            if isFinite value
+                value = + value
+                if value < begin
+                    value = begin
+                else if value > end
+                    value = end
+            else
+                value = deflt
+
+            $target.val( value )
+            value
+
     ElbView = Backbone.View.extend {
 
         el       : $ document
@@ -83,34 +100,19 @@ define ['event', 'MC',
             ide_event.trigger 'PROPERTY_RENDER_COMPLETE'
 
         elbNameChange : ( event ) ->
-
             console.log 'elbNameChange'
-            value = event.target.value
-
-            # # required validate
-            # if not MC.validate 'required', value
-            #     return
-
-            # # repeat name check
-            # cid = $( '#elb-property-detail' ).attr 'component'
-            # if MC.aws.aws.checkIsRepeatName(cid, value)
-            #     $('#property-elb-name').parsley('showError', 'Load Balancer name already in use, please choose another.')
-            #     return
-
-            # $('#property-elb-name').parsley('hideError')
-
+            $target = $ event.currentTarget
+            value = $target.val()
             cid = $( '#elb-property-detail' ).attr 'component'
 
-            target = $ event.currentTarget
-            MC.validate.preventDupname target, cid, value, 'Load Balancer'
+            MC.validate.preventDupname $target, cid, value, 'Load Balancer'
 
-            if !target.parsley('validate') then return
+            if not $target.parsley('validate')
+                return
 
-            this.trigger 'ELB_NAME_CHANGED', value
-
+            @trigger 'ELB_NAME_CHANGED', value
             MC.canvas.update cid, 'text', 'elb_name', value
-
-            this.trigger 'REFRESH_SG_LIST'
+            @trigger 'REFRESH_SG_LIST'
 
         schemeSelectChange : ( event ) ->
             console.log 'schemeSelectChange'
@@ -123,28 +125,40 @@ define ['event', 'MC',
 
             return false
 
-        healthProtocolSelect : ( evnet, value ) ->
-            console.log 'healthProtocolSelect'
-            this.trigger 'HEALTH_PROTOCOL_SELECTED', value
+        healthProtocolSelect : ( event, value ) ->
+            if _.contains [ 'TCP', 'SSL'], value
+                @$el.find('#property-elb-health-path').attr 'disabled', 'disabled'
+            else
+                @$el.find('#property-elb-health-path').removeAttr 'disabled'
 
-        healthPortChanged : ( evnet ) ->
-            console.log 'healthPortChanged'
-            value = event.target.value
-            this.trigger 'HEALTH_PORT_CHANGED', value
+            @trigger 'HEALTH_PROTOCOL_SELECTED', value
 
-        healthPathChanged : ( evnet ) ->
+        healthPortChanged : ( event ) ->
+            $target = $ event.currentTarget
+            value = $target.val()
+            value = Helper.makeInRange value, [1, 65535], $target, 1
+
+            @trigger 'HEALTH_PORT_CHANGED', value
+
+        healthPathChanged : ( event ) ->
             console.log 'healthPathChanged'
-            value = event.target.value
-            this.trigger 'HEALTH_PATH_CHANGED', value
+            $target = $ event.currentTarget
 
-        healthIntervalChanged : ( evnet ) ->
-            console.log 'healthIntervalChanged'
-            value = event.target.value
+            if $target.parsley 'validate'
+                @trigger 'HEALTH_PATH_CHANGED', $target.val()
+
+        healthIntervalChanged : ( event ) ->
+            $target = $ event.currentTarget
+            value = $target.val()
+            value = Helper.makeInRange value, [6, 300], $target, 30
+
             this.trigger 'HEALTH_INTERVAL_CHANGED', value
 
-        healthTimeoutChanged : ( evnet ) ->
-            console.log 'healthTimeoutChanged'
-            value = event.target.value
+        healthTimeoutChanged : ( event ) ->
+            $target = $ event.currentTarget
+            value = $target.val()
+            value = Helper.makeInRange value, [2, 60 ], $target, 5
+
             this.trigger 'HEALTH_TIMEOUT_CHANGED', value
 
         sliderChanged : ( event ) ->
@@ -199,11 +213,6 @@ define ['event', 'MC',
                     else
                         portElem.val('80')
 
-                    if value in ['TCP', 'SSL']
-                        $('#property-elb-health-path').prop('disabled', true)
-                    else
-                        $('#property-elb-health-path').prop('disabled', false)
-
                     # auto change protocol accord layers
                     layerMap = {
                         'HTTP': 'application',
@@ -245,11 +254,37 @@ define ['event', 'MC',
                 instanceProtocolValue = $.trim(that.find('.elb-property-listener-instance-protocol-select .selection').text())
                 instancePortValue = that.find('.elb-property-listener-instance-port-input').val()
 
-                if !elbProtocolValue or !elbPortValue or !instanceProtocolValue or !instancePortValue
-                    hasValidateError = true
-                    return false
 
-                if !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))
+                elbPort = that.find('.elb-property-listener-elb-port-input')
+                instancePort = that.find('.elb-property-listener-instance-port-input')
+
+                elbPort.parsley 'custom', ( val ) ->
+                    val = + val
+                    allowPorts = [ 25, 80, 443]
+                    if not ( (_.contains allowPorts, val) or 1024 <= val <= 65535 )
+                        return 'Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive'
+
+                instancePort.parsley 'custom', ( val ) ->
+                    val = + val
+                    if val < 1 or val > 65535
+                        return 'Instance Port must be between 1 and 65535'
+                    isThisSafe = _.contains [ 'https', 'ssl' ], instanceProtocolValue.toLowerCase()
+                    i = 0
+                    for listener in listenerAry
+                        listener = listener.Listener
+                        samePort = listener.InstancePort is instancePortValue
+                        isLisenerSafe = _.contains [ 'https', 'ssl' ], listener.InstanceProtocol.toLowerCase()
+                        if samePort and isLisenerSafe isnt isThisSafe and index > i
+                            if not isLisenerSafe
+                                prefix = 'in'
+                            return "The Instance Port specified was previous associated with #{prefix}secure protocol so this listener must also use a #{prefix}secure protocol for this Instance Port"
+
+                        i = i + 1
+
+                elbPortValidate = elbPort.parsley 'validate'
+                instancePortValidate = instancePort.parsley 'validate'
+
+                if elbPortValidate and instancePortValidate and !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))
 
                     newItemObj = {
                         Listener: {
@@ -268,8 +303,6 @@ define ['event', 'MC',
                     isShowCertPanel = true
 
                 null
-
-            if hasValidateError then return
 
             #show/hide cert panel
             certPanelElem = $('#elb-property-listener-cert-main')

@@ -1930,7 +1930,7 @@ button:focus {
 	}
 }
 
-.close-tab {
+.close-tab, .close-restriction {
 	display     : none;
 
 	position    : absolute;
@@ -1946,16 +1946,18 @@ button:focus {
 	color       : #aaa;
 }
 
-#tab-bar li:hover a.close-tab {
+#tab-bar li:hover a.close-tab, #tab-bar li:hover a.close-restriction {
 	display: block;
 }
 
+#tab-bar li.unsaved a.close-restriction,
+#tab-bar li.active.unsaved a.close-restriction
 #tab-bar li.unsaved a.close-tab,
 #tab-bar li.active.unsaved a.close-tab {
 	color: #D64442;
 }
 
-#tab-bar li.active a.close-tab {
+#tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
 	color   : #aaa;
 	display : block;
 }

@@ -88,7 +88,10 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		inboundRule = []
 		if sgRes.ipPermissionsEgress
 			inboundRule = sgRes.ipPermissionsEgress.item
-		outboundRule = sgRes.ipPermissions.item
+
+		outboundRule = []
+		if sgRes.ipPermissions
+			outboundRule = sgRes.ipPermissions.item
 
 		inboundRule = _.map inboundRule, (ruleObj) ->
 			ruleObj.direction = 'inbound'

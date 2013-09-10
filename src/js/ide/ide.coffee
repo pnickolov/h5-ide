@@ -57,8 +57,9 @@ define [ 'MC', 'event', 'handlebars'
 		if forge_handle.cookie.getIDECookie()
 			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else
-			#user session not exist, go to login page
-			window.location.href = 'login.html'
+			if !forge_handle.cookie.checkAllCookie()
+				#user session not exist, go to login page
+				window.location.href = 'login.html'
 
 		#############################
 		#  initialize MC.data

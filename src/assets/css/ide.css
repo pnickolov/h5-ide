@@ -2990,8 +2990,9 @@ td.table-action a.btn {
 	min-width : 370px;
 	background      : #f0f0f0;
 
-	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-	border-radius   : 2px 2px 0 0;
+	box-shadow    : 0 1px 5px rgba(0, 0, 0, 0.1);
+	border-radius : 2px 2px 0 0;
+	border-bottom : 1px solid #ccc;
 }
 
 .toolbar-btn-group {
@@ -3979,6 +3980,7 @@ a.sidebar-hider {
 	height  : 52px;
 	padding : 10px 0 10px 10px;
 	width   : auto;
+	position: relative;
 }
 
 .acl-sg-info-list .col1 {
@@ -4044,10 +4046,12 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .sg-list-delete-btn {
-	cursor      : pointer;
-	margin-top  : 35px;
-	margin-left : 180px;
-	position: absolute;
+	cursor       : pointer;
+/*	margin-top   : -6px;
+	margin-right : 20px;
+	position     : absolute;
+	top          : 50%;
+	font-size    : 12px;*/
 }
 
 .icon-btn-details {
@@ -4559,7 +4563,17 @@ a.action-link:hover {
 }
 
 #snapshot-info-group {
-	padding: 15px;
+	padding: 10px;
+	font-size: 14px;
+}
+
+#snapshot-info-group span {
+	font-size: 12px;
+	color: #aaa;
+}
+
+#snapshot-info-group span:last-child {
+	margin-left: 5px;
 }
 
 /* az property panel, can also be used for panels like az's */

@@ -42,7 +42,7 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 				newCIDR = newSubnetCIDRAry[subnetNum]
 				MC.canvas_data.component[compObj.uid].resource.CidrBlock = newCIDR
 				MC.aws.subnet.updateAllENIIPList(compObj.uid)
-				MC.canvas.update compObj.uid, 'text', 'name', compObj.name + ' (' + newCIDR + ')'
+				MC.canvas.update compObj.uid, 'text', 'label', compObj.name + ' (' + newCIDR + ')'
 				subnetNum++
 
 		null

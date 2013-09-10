@@ -246,9 +246,10 @@ define({
 
 		/****** base_main.cofffee for module(x) ******/
 		'MODULE_RELOAD_MESSAGE'           : 'Sorry, there is some connectivity issue, IDE is trying to reload',
-		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser'
+		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.'
 
 	},
 	'service' : {

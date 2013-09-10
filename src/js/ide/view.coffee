@@ -101,12 +101,14 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
+            return if MC.data.current_tab_id is 'dashboard'
+
             if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK', null ]
 
                 if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
                     return null
                 else
-                    return 'Are you sure you want to leave this page?'
+                    return lang.ide.BEFOREUNLOAD_MESSAGE
     }
 
     view = new MainView()

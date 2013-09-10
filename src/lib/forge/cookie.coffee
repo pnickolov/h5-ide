@@ -2,29 +2,35 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCookie = ( result ) ->
 
+		option = { expires:1, path: '/'	}
+
 		#set cookies
-		$.cookie 'userid',      result.userid,      { expires: 1 }
-		$.cookie 'usercode',    result.usercode,    { expires: 1 }
-		$.cookie 'session_id',  result.session_id,  { expires: 1 }
-		$.cookie 'region_name', result.region_name, { expires: 1 }
-		$.cookie 'email',       result.email,       { expires: 1 }
-		$.cookie 'has_cred',    result.has_cred,    { expires: 1 }
-		$.cookie 'username',    MC.base64Decode( result.usercode ), { expires: 1 }
-		$.cookie 'account_id',	result.account_id,  { expires: 1 }
+		$.cookie 'userid',      result.userid,      option
+		$.cookie 'usercode',    result.usercode,    option
+		$.cookie 'session_id',  result.session_id,  option
+		$.cookie 'region_name', result.region_name, option
+		$.cookie 'email',       result.email,       option
+		$.cookie 'has_cred',    result.has_cred,    option
+		$.cookie 'username',    MC.base64Decode( result.usercode ), option
+		$.cookie 'account_id',	result.account_id,  option
 
 	deleteCookie = ->
 
+		option = { expires:1, path: '/'	}
+
 		#delete cookies
-		$.cookie 'userid',      null, { expires: 1 }
-		$.cookie 'usercode',    null, { expires: 1 }
-		$.cookie 'session_id',  null, { expires: 1 }
-		$.cookie 'region_name', null, { expires: 1 }
-		$.cookie 'email',       null, { expires: 1 }
-		$.cookie 'has_cred',    null, { expires: 1 }
-		$.cookie 'username',    null, { expires: 1 }
-		$.cookie 'account_id',	null, { expires: 1 }
+		$.cookie 'userid',      null, option
+		$.cookie 'usercode',    null, option
+		$.cookie 'session_id',  null, option
+		$.cookie 'region_name', null, option
+		$.cookie 'email',       null, option
+		$.cookie 'has_cred',    null, option
+		$.cookie 'username',    null, option
+		$.cookie 'account_id',	null, option
 
 	setIDECookie = ( result ) ->
+
+		option = { expires:1, path: '/', domain: '.madeiracloud.com' }
 
 		madeiracloud_ide_session_id = [
 			result.userid,
@@ -36,11 +42,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			result.account_id
 		]
 
-		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
-			path: '/',
-			domain: '.madeiracloud.com', #temp comment
-			expires: 1
-		}
+		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
 		null
 
 	getIDECookie = ->

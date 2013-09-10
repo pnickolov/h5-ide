@@ -102,6 +102,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 		result_set = ($.xml2json ($.parseXML result[1])).DescribeAutoScalingGroupsResponse.DescribeAutoScalingGroupsResult.AutoScalingGroups
 
 		if result_set?.member?
+			for i in result_set.member
+				if not i.Instances
+					i.Instances = { member : [] }
+				else if not i.Instances.member
+					i.Instances.member = []
 
 			return result_set.member
 

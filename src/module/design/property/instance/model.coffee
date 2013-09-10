@@ -96,6 +96,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					if connected
 						this.set 'number_disable', true
 						break
+
+			# Classic Mode
+			this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 			null
 
 		setCount : ( val ) ->
@@ -332,24 +335,23 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			instanceUID = this.get 'get_uid'
 
-			originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
-			originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
-
 			currentSG = '@' + sg_uid + '.resource.GroupName'
 			currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-			originSGAry = _.filter originSGAry, (value) ->
-				value isnt currentSG
+			if !MC.canvas_data.component[instanceUID].resource.VpcId and !MC.aws.aws.checkDefaultVPC()
+				originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
+				originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
 
-			originSGIdAry = _.filter originSGIdAry, (value) ->
-				value isnt currentSGId
+				originSGAry = _.filter originSGAry, (value) ->
+					value isnt currentSG
 
-			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
-			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
+				originSGIdAry = _.filter originSGIdAry, (value) ->
+					value isnt currentSGId
+
+				MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
+				MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
 			# remove from eni sg
-			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
-
 			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
 			if !eniComp then return
 
@@ -369,24 +371,23 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			instanceUID = this.get 'get_uid'
 
-			originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
-			originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
-
 			currentSG = '@' + sg_uid + '.resource.GroupName'
 			currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-			if !Boolean(currentSG in originSGAry)
-				originSGAry.push currentSG
+			if !MC.canvas_data.component[instanceUID].resource.VpcId and !MC.aws.aws.checkDefaultVPC()
+				originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
+				originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
 
-			if !Boolean(currentSGId in originSGIdAry)
-				originSGIdAry.push currentSGId
+				if !Boolean(currentSG in originSGAry)
+					originSGAry.push currentSG
 
-			MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
-			MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
+				if !Boolean(currentSGId in originSGIdAry)
+					originSGIdAry.push currentSGId
+
+				MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
+				MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
 
 			# add to eni sg
-			if !MC.canvas_data.component[instanceUID].resource.VpcId then return
-
 			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
 			if !eniComp then return
 
@@ -902,15 +903,30 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 		getSGList : () ->
 
-			uid = this.get 'get_uid'
-			sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
-
 			sgUIDAry = []
-			_.each sgAry, (value) ->
-				sgUID = value.slice(1).split('.')[0]
-				sgUIDAry.push sgUID
-				null
+			uid = this.get 'get_uid'
 
+			if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
+				defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
+				eniUID = defaultENIComp.uid
+
+				sgAry = MC.canvas_data.component[eniUID].resource.GroupSet
+
+				sgUIDAry = []
+				_.each sgAry, (value) ->
+					sgUID = value.GroupId.slice(1).split('.')[0]
+					sgUIDAry.push sgUID
+					null
+
+			else
+				sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+				sgUIDAry = []
+				_.each sgAry, (value) ->
+					sgUID = value.slice(1).split('.')[0]
+					sgUIDAry.push sgUID
+					null
+			
 			return sgUIDAry
 
 		setIPList : (inputIPAry) ->

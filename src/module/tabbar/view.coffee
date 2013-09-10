@@ -128,28 +128,32 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
 
-        closeTabRestriction : ( event, target, tab_id ) ->
-            console.log 'closeTabRestriction', target, tab_id
-
-            @current_tab = target
-
-            if MC.data.current_tab_id isnt tab_id
-                @_trueCloseTab @current_tab, tab_id
-                return
+        closeTabRestriction : ( event, target, tab_name, tab_id ) ->
+            console.log 'closeTabRestriction', target, tab_name, tab_id
 
             #if MC.canvas_property.original_json is JSON.stringify( MC.canvas_data )
             #    @_trueCloseTab target, tab_id
             #else
             #    console.log 'eeeeeeeeeeeeeeeeeeeeeeee'
 
-            original_data = $.extend true, {}, MC.data.origin_canvas_data
+            @current_tab = target
 
-            if original_data
-                if _.isEqual( MC.canvas_data, original_data )
-                    @_trueCloseTab @current_tab, tab_id
-                else
-                    modal MC.template.closeTabRestriction { 'tab_name' : tab_id, 'tab_id' : tab_id }, true
-                    $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
+            if MC.data.current_tab_type is 'OPEN_APP'
+                @_trueCloseTab @current_tab, tab_id
+                return
+
+            if MC.data.current_tab_id is tab_id
+                data        = $.extend true, {}, MC.canvas_data
+                origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            else
+                data        = $.extend true, {}, MC.tab[ tab_id ].data
+                origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
+
+            if _.isEqual( data, origin_data )
+                @_trueCloseTab @current_tab, tab_id
+            else
+                modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+                $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
             null
 
         _closeTabConfirm : ( event ) ->

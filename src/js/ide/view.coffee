@@ -100,7 +100,13 @@ define [ 'event',
                 $( '#disconnected-notification-wrapper' ).empty()
 
         _beforeunloadEvent : ->
-            return 'Are you sure you want to leave this page?'
+
+            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK' ]
+
+                if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+                    return null
+                else
+                    return 'Are you sure you want to leave this page?'
     }
 
     view = new MainView()

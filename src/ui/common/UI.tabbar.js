@@ -148,9 +148,10 @@ var Tabbar = {
 
 	closeTabRestriction : function(event) {
 		var target = $(this).parent(),
+			tab_name = target.find('a').attr('title').replace(' - stack', ''),
 			tab_id = target.attr('id').replace('tab-bar-', '');
 
-		$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_id ]);
+		$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
 	},
 
 	close: function (event)

@@ -27,7 +27,13 @@ define [ 'jquery',
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.loading': 'loading-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data,
+            '.overview-result' : 'overview-result-tmpl'
+            '.global-list' : 'global-list-tmpl'
+            '.region-app-stack' : 'region-app-stack-tmpl'
+            '.region-resource' : 'region-resource-tmpl'
+            '.recent' : 'recent-tmpl'
+            '.loading': 'loading-tmpl'
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -106,27 +112,20 @@ define [ 'jquery',
                     console.log 'show credential setting dialog'
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-                model.describeAWSResourcesService
+                model.describeAWSResourcesService()
 
             #model
-            model.describeAccountAttributesService()
+            #model.describeAccountAttributesService()
 
             model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                console.log 'overview RESULT_APP_LIST'
-
                 overview_app = result
+                model.describeAWSResourcesService()
 
-                #if overview_stack
                 model.updateMap model, overview_app, overview_stack
-
                 model.updateRecentList( model, result, 'recent_launched_apps' )
-                #model.updateRecentList( model, result, 'recent_stoped_apps' )
-
-                #if should_update_overview
                 view.renderMapResult()
-
                 model.getItemList 'app', current_region, overview_app
 
                 null
@@ -136,16 +135,8 @@ define [ 'jquery',
 
                 overview_stack = result
 
-                #if overview_app
                 model.updateMap model, overview_app, overview_stack
-                # else
-                #     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                #         overview_app = result
-                #         model.updateMap model, overview_app, overview_stack
-
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
-
-                #if should_update_overview
                 view.renderMapResult()
 
                 model.getItemList 'stack', current_region, overview_stack

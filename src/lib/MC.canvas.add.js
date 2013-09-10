@@ -173,7 +173,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.az label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
-					'id': group.id + '_name'
+					'id': group.id + '_label'
 				})
 
 			).attr({
@@ -291,7 +291,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////3.vpc label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
-					'id': group.id + '_name'
+					'id': group.id + '_label'
 				})
 
 			).attr({
@@ -424,7 +424,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				////5.subnet label
 				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
 					'class': 'group-label name',
-					'id': group.id + '_name'
+					'id': group.id + '_label'
 				})
 
 			).attr({

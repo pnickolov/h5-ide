@@ -968,7 +968,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             else
                 # check whether invalid session
-                if result.return_code isnt lang.service.ERROR_CODE_19_MESSAGE and $.cookie('has_cred') isnt 'false'
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION and $.cookie('has_cred') isnt 'false'
                     $.cookie 'has_cred', false,    { expires: 1 }
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 

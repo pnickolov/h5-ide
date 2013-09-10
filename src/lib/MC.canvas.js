@@ -48,6 +48,10 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
+				if ( key.indexOf("name") != -1 ) {
+						value = MC.canvasName( value )
+				}
+
 				if (target.length === 0)
 				{
 					target = $('#' + id).find("." + key);

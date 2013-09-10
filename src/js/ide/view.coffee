@@ -14,6 +14,7 @@ define [ 'event',
         delay    : null
 
         initialize : ->
+            $( window ).on 'beforeunload', @_beforeunloadEvent
 
         showMain : ->
             console.log 'showMain'
@@ -97,6 +98,15 @@ define [ 'event',
                 $( '#disconnected-notification-wrapper' ).html MC.template.disconnectedNotification()
             else
                 $( '#disconnected-notification-wrapper' ).empty()
+
+        _beforeunloadEvent : ->
+
+            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK' ]
+
+                if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+                    return null
+                else
+                    return 'Are you sure you want to leave this page?'
     }
 
     view = new MainView()

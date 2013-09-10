@@ -48,7 +48,7 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                 if tab_id.split( '-' )[0] is 'process'
                     model.saveProcessTab tab_id
                 else
-                    model.saveTab tab_id, view.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty()
+                    model.saveTab tab_id, view.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty(), model.getOriginData()
                 null
 
             #listen SWITCH_TAB

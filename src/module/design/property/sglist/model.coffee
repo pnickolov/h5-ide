@@ -194,7 +194,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 					if value.IpRanges.slice(0,1) is '@'
 
-						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+						if MC.canvas_data.component[MC.extractID( value.IpRanges )]
+							value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 

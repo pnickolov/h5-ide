@@ -504,7 +504,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             callback = ( result ) ->
                 console.log 'phantom callback'
                 console.log result.data.host
-                return if result.data.host isnt MC.SAVEPNG_URL.replace( 'http://', '' ).replace( '/', '' )
+                return if result.data.host isnt MC_HOST.replace( 'http://', '' ).replace( 'https://', '' ).replace( '/', '' )
                 if result.data.res.status is 'success'
                     if result.data.res.thumbnail is 'true'
                         console.log 's3 url = ' + result.data.res.result

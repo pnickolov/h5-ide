@@ -28,7 +28,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             $( this.el ).html this.template()
 
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
-            console.log 'openTab'
+            console.log 'openTabEvent'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
             #console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
             #
@@ -73,7 +73,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             null
 
         closeTabEvent : ( event, tab_id ) ->
-            console.log 'closeTab'
+            console.log 'closeTabEvent'
             #push event
             this.trigger 'CLOSE_STACK_TAB',  tab_id
             null
@@ -85,7 +85,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
 
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
-            $( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
+            #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
+            $('#tab-bar-' + tab_id).find( '.close-tab' ).trigger( 'mousedown' )
             null
 
         changeDashboardTabname   : ( tab_name ) ->
@@ -168,7 +169,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             close_target.addClass    'close-tab'
             _.delay () ->
                 ide_event.trigger ide_event.STACK_DELETE, null, tab_id
-            , 100
+            , 150
             null
     }
 

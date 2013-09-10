@@ -101,7 +101,7 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
-            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK' ]
+            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK', null ]
 
                 if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
                     return null

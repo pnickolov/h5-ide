@@ -21,6 +21,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             this.set 'uid', uid
 
+            this.set 'is_elb', true
+
             allComp = MC.canvas_data.component
 
             elb_data = MC.canvas_data.component[ uid ]

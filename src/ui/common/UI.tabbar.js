@@ -14,7 +14,7 @@ var Tabbar = {
 		if (this.id === 'tab-bar-dashboard')
 		{
 			Tabbar.open('dashboard');
-			
+
 			return false;
 		}
 
@@ -146,6 +146,14 @@ var Tabbar = {
 		return tab_id;
 	},
 
+	closeTabRestriction : function(event) {
+		var target = $(this).parent(),
+			tab_name = target.find('a').attr('title').replace(' - stack', ''),
+			tab_id = target.attr('id').replace('tab-bar-', '');
+
+		$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
+	},
+
 	close: function (event)
 	{
 		var target = $(this).parent(),
@@ -177,6 +185,7 @@ $(document).ready(function ()
 {
 	$('#tab-bar')
 		.on('mousedown', '.close-tab', Tabbar.close)
+		.on('mousedown', '.close-restriction', Tabbar.closeTabRestriction)
 		.on('mousedown', 'li', Tabbar.mousedown);
 
 	$(window).resize(function ()

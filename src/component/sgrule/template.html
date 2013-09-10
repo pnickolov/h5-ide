@@ -75,11 +75,11 @@
 
       <div class="sg-create-proto-inputs">
           <section class="sg-proto-input" id="sg-proto-ipt-tcp" style="display:block;">
-            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$"/>
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-udp">
-            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$"/>
+            <input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-icmp">
@@ -171,7 +171,7 @@
 
     {{#if isnt_classic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
-            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="" data-ignore="true" data-ignore-regexp="^[0-9]*$">
+            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-all">

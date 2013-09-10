@@ -953,29 +953,6 @@
 
 </div>
 
-
-<!--{{ .recent-launched-app }}-->
-{{#if recent_launched_apps}}
-<ul class="dashboard-recent-list">
-    {{#each recent_launched_apps}}
-    <li><a href="javascript:void(0);" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}' >{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-    {{/each}}
-</ul>
-{{else}}
-<div class="blank-widget">No recent launched app in last 30 days.</div>
-{{/if}}
-
-<!--{{ .recent-stopped-app }}-->
-{{#if recent_stoped_apps}}
-<ul class="dashboard-recent-list">
-    {{#each recent_stoped_apps}}
-    <li><a href="javascript:void(0);" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>{{name}}<p class="dashboard-recent-list-meta">{{region_label}}</p></a><span class="timestamp">{{interval_date}}</span></li>
-    {{/each}}
-</ul>
-{{else}}
-<div class="blank-widget">No recent stopped app in last 30 days.</div>
-{{/if}}
-
 <!--{{ .loading }}-->
 <div class="dashboard-loading clearfix">
    <img width="32" height="25" class="loading-bar" src="../assets/images/ide/loading-bar-w.gif"/>

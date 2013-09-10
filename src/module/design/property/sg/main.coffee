@@ -90,11 +90,12 @@ define [ 'jquery',
 
 				#render
 				$dom = view.render(is_app_view)
-				ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-					title : model.attributes.sg_app_detail.groupName
-					dom   : $dom
-					id    : "SG"
-				}
+				if model.attributes.sg_app_detail
+					ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
+						title : model.attributes.sg_app_detail.groupName
+						dom   : $dom
+						id    : "SG"
+					}
 
 	unLoadModule = () ->
 

@@ -61,7 +61,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 
 			# show dialog to confirm that delete sg
 			if memberNum
-				mainContent = 'Are you sure you want to delete ' + sgName
+				mainContent = 'Are you sure you want to delete ' + sgName '?'
 				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
 				template = MC.template.modalDeleteSGOrACL {
 					title : 'Delete Security Group',

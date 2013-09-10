@@ -68,36 +68,6 @@ button:focus {
 	overflow : hidden;
 }
 
-.loading-spinner {
-  -webkit-animation: loading-spinner .8s infinite linear;
-  -moz-animation: loading-spinner .8s infinite linear;
-  -o-animation: loading-spinner .8s infinite linear;
-  width: 45px;
-  height: 45px;
-  display: inline-block;
-  background: url("../images/ide/loading.png") no-repeat center;
-}
-
-@-webkit-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@-moz-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@-o-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -408,6 +378,7 @@ button:focus {
 
 #navigation .sub-menu-wrapper {
 	background: #505050;
+	box-shadow: 0 0 5px rgba(0,0,0,.5);
 
 	opacity: 0;
 
@@ -609,6 +580,11 @@ button:focus {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 	font-size: 12px;
+}
+
+.loading-wrapper {
+	width: 100%;
+	text-align: center;
 }
 
 /* Main */
@@ -2712,12 +2688,12 @@ td.table-action a.btn {
 	height: 100%;
 }
 
-#modal-browse-community-ami .show-loading .loading-spinner {
+#modal-browse-community-ami .show-loading .loading {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -22.25px;
-	margin-top: -47.25px;
+	margin-left: -12px;
+	margin-top: -16px;
 }
 
 #ami-search-option {
@@ -4772,7 +4748,7 @@ a.action-link:hover {
 
 #accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
 	background-color: rgba(0,0,0,.1);
-	color: #959595;
+	color: #F74A48;
 }
 
 #elb-property-listener-cert-main {
@@ -5473,9 +5449,12 @@ a.action-link:hover {
 	font-size: 12px;
 }
 
+#keypair-rdp {
+	margin-right: 10px;
+}
+
 #keypair-kp-win {
 	width: 140px;
-	margin-left: 10px;
 }
 
 .hidden-details > .dl-vertical {
@@ -6003,10 +5982,11 @@ a.action-link:hover {
 	color: #666;
 }
 
-#process-panel .loading-spinner {
+#process-panel .loading-bar {
 	vertical-align: middle;
 	float: right;
 	margin-right: 50px;
+	margin-top: 20px;
 }
 
 #process-panel .step-prepare {

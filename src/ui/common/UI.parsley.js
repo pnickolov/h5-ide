@@ -1849,9 +1849,9 @@ var errortip = function (event)
     errortip_box.css({
       'left': target_offset.left,
       'top': target_offset.top + target_height + height - document.body.scrollTop + 45 > window.innerHeight ?
-        target_offset.top - height - 15 :
-        target_offset.top + target_height,
-      width: target_width + 2 - 4,
+        target_offset.top - height - 15 + 5 :
+        target_offset.top + target_height + 5,
+      width: target_width - 8 - 2,
 
     }).show();
 

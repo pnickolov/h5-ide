@@ -149,15 +149,23 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
-			'dev_prod_switch',
+			'dev_prod_switch:release',
 			'replace:analytics',
 			'strip'
+		]);
+	});
+	grunt.registerTask( 'dev_env', function() {
+		grunt.task.run([
+			'copy:dev_prod_switch_task',
+			'replace:dev_env_switch',
+			'dev_prod_switch:develop'
 		]);
 	});
 
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -165,6 +173,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -172,6 +181,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',

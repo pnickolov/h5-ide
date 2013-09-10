@@ -2,7 +2,7 @@
 #  View(UI logic) for tabbar
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event ) ->
 
     TabBarView = Backbone.View.extend {
 
@@ -10,9 +10,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         template : Handlebars.compile $( '#tabbar-tmpl' ).html()
 
+        current_tab : null
+
         events   :
-            'OPEN_TAB'  : 'openTabEvent'
-            'CLOSE_TAB' : 'closeTabEvent'
+            'OPEN_TAB'              : 'openTabEvent'
+            'CLOSE_TAB'             : 'closeTabEvent'
+            'CLOSE_TAB_RESTRICTION' : 'closeTabRestriction'
 
         initialize : ->
             #listen
@@ -25,7 +28,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).html this.template()
 
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
-            console.log 'openTab'
+            console.log 'openTabEvent'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
             #console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
             #
@@ -70,7 +73,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             null
 
         closeTabEvent : ( event, tab_id ) ->
-            console.log 'closeTab'
+            console.log 'closeTabEvent'
             #push event
             this.trigger 'CLOSE_STACK_TAB',  tab_id
             null
@@ -82,7 +85,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
-            $( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
+            #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
+            $('#tab-bar-' + tab_id).find( '.close-tab' ).trigger( 'mousedown' )
             null
 
         changeDashboardTabname   : ( tab_name ) ->
@@ -124,6 +128,49 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
+
+        closeTabRestriction : ( event, target, tab_name, tab_id ) ->
+            console.log 'closeTabRestriction', target, tab_name, tab_id
+
+            #if MC.canvas_property.original_json is JSON.stringify( MC.canvas_data )
+            #    @_trueCloseTab target, tab_id
+            #else
+            #    console.log 'eeeeeeeeeeeeeeeeeeeeeeee'
+
+            @current_tab = target
+
+            if MC.data.current_tab_type is 'OPEN_APP'
+                @_trueCloseTab @current_tab, tab_id
+                return
+
+            if MC.data.current_tab_id is tab_id
+                data        = $.extend true, {}, MC.canvas_data
+                origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            else
+                data        = $.extend true, {}, MC.tab[ tab_id ].data
+                origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
+
+            if _.isEqual( data, origin_data )
+                @_trueCloseTab @current_tab, tab_id
+            else
+                modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+                $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
+            null
+
+        _closeTabConfirm : ( event ) ->
+            console.log 'closeTabConfirm, tab_id = ' + $( event.currentTarget ).attr 'data-tab-id'
+            event.data._trueCloseTab event.data.current_tab, $( event.currentTarget ).attr 'data-tab-id'
+            modal.close()
+
+        _trueCloseTab : ( target, tab_id ) ->
+            console.log '_trueCloseTab'
+            close_target = $ target.find( 'a' )[1]
+            close_target.removeClass 'close-restriction'
+            close_target.addClass    'close-tab'
+            _.delay () ->
+                ide_event.trigger ide_event.STACK_DELETE, null, tab_id
+            , 150
+            null
     }
 
     return TabBarView

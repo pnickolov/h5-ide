@@ -373,7 +373,8 @@ button:focus {
 	height           : 100%;
 
 	background-color : #302E30;
-	border-right: 1px solid #202020;
+	border-right     : 1px solid #202020;
+	box-shadow       : inset 0 1px 0 rgba(255,255,255,.1), 2px 0 6px rgba(0,0,0,.2)
 }
 
 #navigation .sub-menu-wrapper {
@@ -1906,7 +1907,7 @@ button:focus {
 	}
 }
 
-.close-tab {
+.close-tab, .close-restriction {
 	display     : none;
 
 	position    : absolute;
@@ -1922,16 +1923,18 @@ button:focus {
 	color       : #aaa;
 }
 
-#tab-bar li:hover a.close-tab {
+#tab-bar li:hover a.close-tab, #tab-bar li:hover a.close-restriction {
 	display: block;
 }
 
+#tab-bar li.unsaved a.close-restriction,
+#tab-bar li.active.unsaved a.close-restriction
 #tab-bar li.unsaved a.close-tab,
 #tab-bar li.active.unsaved a.close-tab {
 	color: #D64442;
 }
 
-#tab-bar li.active a.close-tab {
+#tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
 	color   : #aaa;
 	display : block;
 }
@@ -2986,9 +2989,10 @@ td.table-action a.btn {
 	width     : 100%;
 	min-width : 370px;
 	background      : #f0f0f0;
-	/*border-bottom : 2px solid #d3d3d3;*/
-	box-shadow      : 0 2px 0 #d3d3d3;
-	border-radius   : 2px 2px 0 0;
+
+	box-shadow    : 0 1px 5px rgba(0, 0, 0, 0.1);
+	border-radius : 2px 2px 0 0;
+	border-bottom : 1px solid #ccc;
 }
 
 .toolbar-btn-group {
@@ -3153,15 +3157,17 @@ td.table-action a.btn {
 }
 
 .sidebar-title {
-	padding : 10px;
+	padding : 0 10px;
+	height  : 43px;
 
 	font-size   : 16px;
+	line-height : 43px;
 	color       : #b0b0b0;
 	text-shadow : 0 1px #333;
-	/*text-align: center;*/
 
 	background-color : #313131;
-	border-bottom  : 2px solid #202122;
+	border-bottom    : 2px solid #202122;
+	box-shadow       : inset 0 1px 0 rgba(255,255,255,.1);
 }
 
 a.sidebar-hider {
@@ -3539,10 +3545,9 @@ a.sidebar-hider {
 
 .property-sidebar-title {
 	font-size   : 16px;
-	line-height : 43px;
 	text-shadow : none;
 
-	padding  : 0 10px;
+/*	padding  : 0 10px;*/
 	height   : 43px;
 	width    : 260px;
 	position : relative;
@@ -3975,6 +3980,7 @@ a.sidebar-hider {
 	height  : 52px;
 	padding : 10px 0 10px 10px;
 	width   : auto;
+	position: relative;
 }
 
 .acl-sg-info-list .col1 {
@@ -4040,10 +4046,12 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .sg-list-delete-btn {
-	cursor      : pointer;
-	margin-top  : 35px;
-	margin-left : 180px;
-	position: absolute;
+	cursor       : pointer;
+/*	margin-top   : -6px;
+	margin-right : 20px;
+	position     : absolute;
+	top          : 50%;
+	font-size    : 12px;*/
 }
 
 .icon-btn-details {
@@ -4555,7 +4563,17 @@ a.action-link:hover {
 }
 
 #snapshot-info-group {
-	padding: 15px;
+	padding: 10px;
+	font-size: 14px;
+}
+
+#snapshot-info-group span {
+	font-size: 12px;
+	color: #aaa;
+}
+
+#snapshot-info-group span:last-child {
+	margin-left: 5px;
 }
 
 /* az property panel, can also be used for panels like az's */

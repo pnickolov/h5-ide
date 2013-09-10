@@ -8,13 +8,21 @@ define [ 'jquery',
     'text!./module/dashboard/overview/template_data.html',
     'text!./module/dashboard/region/template_data.html',
     'event',
-    'MC'
-], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
+    'MC',
+    'base_main'
+], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC, base_main ) ->
 
     current_region = null
     overview_app    = null
     overview_stack  = null
     should_update_overview = false
+
+    #private
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
+
+    initialize()
 
     # private
     loadModule = () ->
@@ -27,7 +35,11 @@ define [ 'jquery',
         require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
             region_view = null
             #view
-            view       = new View()
+            #view       = new View()
+
+            view = loadSuperModule loadModule, 'dashboard', View, null
+            return if !view
+
             view.model = model
             view.render overview_tmpl
 

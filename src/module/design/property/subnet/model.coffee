@@ -98,7 +98,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setName : ( name ) ->
             MC.canvas_data.component[ this.attributes.uid ].name = name
             subnetCIDR = MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock
-            MC.canvas.update this.attributes.uid, "text", "name", name + ' (' + subnetCIDR + ')'
+            MC.canvas.update this.attributes.uid, "text", "label", name + ' (' + subnetCIDR + ')'
             null
 
         setCIDR : ( cidr ) ->
@@ -106,7 +106,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             # TODO : Validate CIDR
             MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
             subnetName = MC.canvas_data.component[ this.attributes.uid ].name
-            MC.canvas.update this.attributes.uid, "text", "name", subnetName + ' (' + cidr + ')'
+            MC.canvas.update this.attributes.uid, "text", "label", subnetName + ' (' + cidr + ')'
 
             MC.aws.subnet.updateAllENIIPList(this.attributes.uid)
 

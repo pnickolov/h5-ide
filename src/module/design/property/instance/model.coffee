@@ -439,6 +439,14 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 				checkbox.tenancy = false
 				this.set 'tenacy', false
 
+			this.set 'force_tenacy', false
+			for uid, comp of MC.canvas_data.layout.component.group
+				if comp.type is 'AWS.VPC.VPC'
+					vpc = MC.canvas_data.component[ uid ]
+					if vpc.resource.InstanceTenancy is "dedicated"
+						this.set 'force_tenacy', true
+					break
+
 			this.set 'checkbox_display', checkbox
 
 		getEni : () ->

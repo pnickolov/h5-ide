@@ -55,6 +55,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setTenancy : ( tenancy ) ->
             component = MC.canvas_data.component[ this.attributes.uid ]
             component.resource.InstanceTenancy = tenancy
+
+            # Set all AMI to be tenacy
+            for uid, comp of MC.canvas_data.component
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    comp.resource.Placement.Tenancy = "dedicated"
             null
 
         setDnsSupport : ( enable ) ->

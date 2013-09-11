@@ -107,7 +107,7 @@
     </div>
     <div class="modal-body">
         <div class="export-loading-bar clearfix">
-            <i class="loading-spinner"></i>
+            <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
         </div>
     </div>
     <div class="modal-footer">
@@ -938,7 +938,7 @@ Additional Notes and Questions
   </div>
   <div class="modal-body">
     <section id='keypair-loading' class="tac">
-      <img width="31" height="34" src="./assets/images/ide/loading-logo-white.gif"/>
+      <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
     </section>
 
     <section id="keypair-body-linux" class="hide">
@@ -1224,5 +1224,20 @@ Additional Notes and Questions
   <div class="modal-footer">
     <button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
     <button class="btn modal-close btn-silver">Cancel</button>
+  </div>
+</div>
+
+<!-- modalDeleteSGOrACL -->
+<div style="width:420px">
+  <div class="modal-header"> <h3>Delete Security Group</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-body">
+    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{main_content}}</div>
+      <div class="modal-text-minor">{{desc_content}}</div>
+    </div> </div>
+  </div>
+  <div class="modal-footer">
+  	<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
+    <button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
   </div>
 </div>

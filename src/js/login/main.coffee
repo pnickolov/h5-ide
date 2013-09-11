@@ -9,10 +9,10 @@ require( [ 'login' ], function( login ) {
 require [ 'domReady', 'login' ], ( domReady, login ) ->
 
 	### env:prod ###
-	# if window.location.protocol is 'http:'
-	# 	currentLocation = window.location.toString()
-	# 	currentLocation = currentLocation.replace('http:', 'https:')
-	# 	window.location = currentLocation
+	if window.location.protocol is 'http:'
+		currentLocation = window.location.toString()
+		currentLocation = currentLocation.replace('http:', 'https:')
+		window.location = currentLocation
 	### env:prod:end ###
 
 	domReady () ->

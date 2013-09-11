@@ -115,9 +115,9 @@ define [ 'jquery',
                 model.describeAWSResourcesService()
 
             #model
-            #model.describeAccountAttributesService()
+            model.describeAccountAttributesService()
 
-            model.describeAWSResourcesService()
+            #model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 overview_app = result
@@ -144,10 +144,11 @@ define [ 'jquery',
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
-
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'
-                view.trigger 'RETURN_REGION_TAB', result
-
+                if result is 'global'
+                    ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
+                else
+                    view.trigger 'RETURN_REGION_TAB', result
                 null
 
             # switch region tab

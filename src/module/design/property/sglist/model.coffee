@@ -194,7 +194,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 					if value.IpRanges.slice(0,1) is '@'
 
-						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+						if MC.canvas_data.component[MC.extractID( value.IpRanges )]
+							value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
@@ -256,9 +257,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 		deleteSGFromComp : (sgUID) ->
 
+			parent_model = this.get 'parent_model'
+
 			MC.aws.sg.deleteRefInAllComp(sgUID)
 			delete MC.canvas_data.component[sgUID]
-			parent_model = this.get 'parent_model'
+			
 			#update sg color label
 			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}

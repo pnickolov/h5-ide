@@ -44,9 +44,9 @@
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{sgColor}}" ></div>{{sgName}}</div>
 					<div class="col2-2 truncate">{{sgDesc}}</div>
-					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members</div>
+					<div class="col2-3 truncate">{{sgRuleNum}} rules, {{sgMemberNum}} members{{#unless sgIsDefault}}{{#unless appView}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">Delete</a>{{/unless}}{{/unless}}</div>
 				</div>
-				{{#unless sgIsDefault}}{{#unless appView}}<div class="sg-list-delete-btn">Delete</div>{{/unless}}{{/unless}}
+				
 				<!-- {{#if isStackSG}} --><!-- {{/if}} -->
 			</li>
 			{{/if}}

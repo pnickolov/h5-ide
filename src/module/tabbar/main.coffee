@@ -94,10 +94,11 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 model.set 'stack_region_name', view.temp_region_name
                 #set current platform
                 model.set 'current_platform', platform
+
                 # track
-                analytics.track "Created Stack",
-                    stack_type: platform,
-                    stack_region: view.temp_region_name
+                # analytics.track "Created Stack",
+                #     stack_type: platform,
+                #     stack_region: view.temp_region_name
 
                 # check repeat stack name
                 loop

@@ -50,9 +50,33 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			$('#property-head-sg-num').text(this.model.attributes.sg_length)
 
 		deleteSGFromComp : (event) ->
-			sgUID = $(event.target).parents('li').attr('sg-uid')
-			this.trigger 'DELETE_SG_FROM_COMP', sgUID
-			this.render()
+
+			that = this
+
+			$target = $(event.currentTarget)
+			sgUID = $target.parents('li').attr('sg-uid')
+			
+			memberNum = Number($target.attr('members'))
+			sgName = $target.attr('sg-name')
+
+			# show dialog to confirm that delete sg
+			if memberNum
+				mainContent = 'Are you sure you want to delete ' + sgName + '?'
+				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
+				template = MC.template.modalDeleteSGOrACL {
+					title : 'Delete Security Group',
+					main_content : mainContent,
+					desc_content : descContent
+				}
+				modal template, false, () ->
+					$('#modal-confirm-delete').click () ->
+						that.trigger 'DELETE_SG_FROM_COMP', sgUID
+						that.render()
+						modal.close()
+
+			else
+				that.trigger 'DELETE_SG_FROM_COMP', sgUID
+				that.render()
 
 		sortSgRule : ( event ) ->
 			sg_rule_list = $('#sglist-rule-list')

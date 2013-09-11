@@ -7,6 +7,13 @@ module.exports = {
 		env_block_prod : 'env:prod'
 	},
 
+	develop : {
+		files: {
+			'<%= src %>/js/login/main.js'                              : '<%= src %>/js/login/main.js',
+			'<%= src %>/js/ide/main.js'                                : '<%= src %>/js/ide/main.js'
+		}
+	},
+
 	release: {
 		files: {
 			'<%= release %>/js/ide/main.js'                            : '<%= src %>/js/ide/main.js',

@@ -2877,13 +2877,13 @@ MC.canvas.eniList = {
 			// 	}
 			// }
 
-			for ( var i = 0; i < layout.eniList.length; ++i ) {
-
-				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ]
-				temp_data.enis.push( {
-					  id   : eni_comp.uid
-					, name : eni_comp.resource.NetworkInterfaceId
-				} );
+			for ( var i = 0, l = layout.eniList.length; i < l; ++i )
+			{
+				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
+				temp_data.enis.push({
+					'id'   : eni_comp.uid,
+					'name' : eni_comp.resource.NetworkInterfaceId
+				});
 			}
 
 			$('#canvas_container').append( MC.template.eniList( temp_data ) );
@@ -3853,12 +3853,12 @@ MC.canvas.event.drawConnection = {
 	{
 		var canvas_offset = event.data.canvas_offset,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			startX = event.data.originalX,
-			startY = event.data.originalY,
 			endX = (event.pageX - canvas_offset.left) * scale_ratio,
 			endY = (event.pageY - canvas_offset.top) * scale_ratio,
-			arrow_length = 8,
+			startX = event.data.originalX,
+			startY = event.data.originalY,
 			angle = Math.atan2(endY - startY, endX - startX),
+			arrow_length = 8,
 			arrowPI = Math.PI / 6,
 			arrowAngleA = angle - arrowPI,
 			arrowAngleB = angle + arrowPI;
@@ -3968,7 +3968,7 @@ MC.canvas.event.drawConnection = {
 				{
 					line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
 
-					//trigger event when connect two port
+					// trigger event when connect two port
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
 			}
@@ -4189,9 +4189,9 @@ MC.canvas.event.siderbarDrag = {
 						}
 						else
 						{
-							//dispatch event when is not matched
+							// dispatch event when is not matched
 							$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
-								type: node_type
+								'type': node_type
 							});
 						}
 					}
@@ -4836,7 +4836,6 @@ MC.canvas.event.groupResize = {
 
 			$.each(node_connections, function (index, value)
 			{
-				//$('#' + value.line).show();
 				line_connection = layout_connection_data[ value.line ];
 
 				MC.canvas.connect(

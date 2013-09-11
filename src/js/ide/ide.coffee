@@ -265,6 +265,6 @@ define [ 'MC', 'event', 'handlebars'
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]
 				#
-				notification 'error', lang.service[ label ], true if lang.service[ label ]
+				notification 'error', lang.service[ label ], true if lang.service[ label ] and $.cookie( 'has_cred' ) is 'true'
 
 		null

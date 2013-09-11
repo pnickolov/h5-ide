@@ -597,19 +597,17 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
 
-			view_instance_type = []
-			instance_types = this._getInstanceType ami_info
-			_.map instance_types, ( value )->
-				tmp = {}
+			tenacy = this.get "tenacy"
 
-				if current_instance_type == value
-					tmp.selected = true
-				tmp.main = constant.INSTANCE_TYPE[value][0]
-				tmp.ecu  = constant.INSTANCE_TYPE[value][1]
-				tmp.core = constant.INSTANCE_TYPE[value][2]
-				tmp.mem  = constant.INSTANCE_TYPE[value][3]
-				tmp.name = value
-				view_instance_type.push tmp
+			view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
+
+				main     : constant.INSTANCE_TYPE[value][0]
+				ecu      : constant.INSTANCE_TYPE[value][1]
+				core     : constant.INSTANCE_TYPE[value][2]
+				mem      : constant.INSTANCE_TYPE[value][3]
+				name     : value
+				selected : current_instance_type is value
+				hide     : not tenacy and value is "t1.micro"
 
 			this.set 'instance_type', view_instance_type
 
@@ -926,7 +924,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					sgUID = value.slice(1).split('.')[0]
 					sgUIDAry.push sgUID
 					null
-			
+
 			return sgUIDAry
 
 		setIPList : (inputIPAry) ->

@@ -5,7 +5,7 @@
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input data-ignore="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
 		{{# if have_vpc}}

@@ -26,6 +26,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js'
             'click .create-new-stack'       : 'createNewStackClick'
             'click .create-new-empty-stack' : 'createNewEmptyStackClick'
             'click .region-name'            : 'regionNameClick'
+            'click #dashboard-global'       : 'dashboardGlobal'
 
         initialize : ->
             #listen
@@ -123,6 +124,10 @@ define [ 'event', 'constant', 'i18n!nls/lang.js'
             console.log $( event.target ).attr( 'data-region-name' )
             data_region_name = if $( event.target ).attr( 'data-region-name' ) is undefined then $( event.currentTarget ).attr( 'data-region-name' ) else $( event.target ).attr( 'data-region-name' )
             ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, data_region_name
+
+        dashboardGlobal : ->
+            console.log 'dashboardGlobal'
+            ide_event.trigger ide_event.NAVIGATION_TO_DASHBOARD_REGION, 'global'
 
         hoverIntent          : ->
             $('.nav-head').hoverIntent {

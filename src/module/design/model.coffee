@@ -56,16 +56,17 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                 app_id = result.param[4][0]
                 # update canvas_data when on current tab
                 if app_id == MC.canvas_data.id
-                    MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+                    #MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
+                    @setCanvasData result.resolved_data[ 0 ]
                 # update MC.Tab[app_id]
                 else
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
                     @updateAppTabDate result.resolved_data[ 0 ], app_id
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property, origin_data ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property, 'origin_data' : origin_data }
             null
 
         saveProcessTab : ( tab_id ) ->
@@ -85,6 +86,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             #
             this.setCanvasData        MC.tab[ tab_id ].data
             #
+            this.setOriginData        MC.tab[ tab_id ].origin_data
+            #
             this.setCanvasProperty    MC.tab[ tab_id ].property
             #
             this.setPropertyPanel     MC.tab[ tab_id ].property_panel
@@ -96,7 +99,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             console.log 'updateTab'
             if MC.tab[ old_tab_id ] is undefined then return
             #
-            MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property }
+            MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property, 'origin_data' : MC.tab[ old_tab_id ].origin_data }
             #
             this.deleteTab old_tab_id
 
@@ -119,12 +122,13 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
-            MC.canvas_data = data
+            MC.canvas_data = $.extend true, {}, data
             null
 
         getCanvasData : () ->
             console.log 'getCanvasData'
-            MC.canvas_data
+            #MC.canvas_data
+            $.extend true, {}, MC.canvas_data
 
         setCanvasProperty : ( property ) ->
             console.log 'setCanvasProperty'
@@ -164,6 +168,15 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
         getLastOpenProperty : () ->
             console.log 'getLastOpenProperty'
             MC.data.last_open_property
+
+        setOriginData : ( data ) ->
+            console.log 'setOriginData'
+            MC.data.origin_canvas_data = $.extend true, {}, data
+            null
+
+        getOriginData :  ->
+            console.log 'getOriginData'
+            $.extend true, {}, MC.data.origin_canvas_data
 
         describeInstancesOfASG : (region) ->
 

@@ -60,7 +60,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.refreshACLList()
 
                 if focusCIDR
-                    MC.canvas.update subnetUID, 'text', 'name', subnetName + ' ()'
+                    MC.canvas.update subnetUID, 'text', 'label', subnetName + ' ()'
                     ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
                     $('#property-cidr-block').val('').focus()
             else

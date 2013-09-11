@@ -77,6 +77,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			sg_full = { full : false }
 			enabledSGCount = 0
 
+			appView = false
+			if parent_model.get('type') is 'app'
+				appView = true
+
+			stackComp = false
+			if parent_model.get('is_stack') is true
+				stackComp = true
+
 			_.each allSGUIDAry, (uid) ->
 
 				sgComp = MC.canvas_data.component[uid]
@@ -90,6 +98,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					++enabledSGCount
 
 				sgHideCheck = false
+				
 				if parent_model.get('type') is 'app'
 					sgHideCheck = true
 
@@ -99,6 +108,10 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				sgIsDefault = false
 				if sgComp.name is 'DefaultSG'
 					sgIsDefault = true
+
+				needShow = true
+				if !sgChecked and parent_model.get('type') is 'app' and !parent_model.get('is_stack')
+					needShow = false
 
 				# need to display
 				sgDisplayObj =
@@ -113,6 +126,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
 					isStackSG   : stackType
+					needShow    : needShow
+					appView     : appView
 
 				displaySGAry.push sgDisplayObj
 
@@ -139,6 +154,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				refSGLength = displaySGAry.length
 			else
 				refSGLength = enabledSGCount
+
+			if stackComp and appView
+				refSGLength = displaySGAry.length
 
 			if enabledSGCount is 1
 				that.set 'only_one_sg', true
@@ -238,9 +256,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 		deleteSGFromComp : (sgUID) ->
 
+			parent_model = this.get 'parent_model'
+
 			MC.aws.sg.deleteRefInAllComp(sgUID)
 			delete MC.canvas_data.component[sgUID]
-			parent_model = this.get 'parent_model'
+			
 			#update sg color label
 			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}

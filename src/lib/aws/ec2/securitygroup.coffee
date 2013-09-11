@@ -41,11 +41,14 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 		return refCompAry
 
+	# delete and assign default sg when sglist is empty
 	deleteRefInAllComp = (sgUID) ->
 
 		refNum = 0
 		sgAry = []
 		refCompAry = []
+		defaultSGComp = MC.aws.sg.getDefaultSG()
+		defaultSGUID = defaultSGComp.uid
 		_.each MC.canvas_data.component, (comp) ->
 			compType = comp.type
 			compUID = comp.uid
@@ -57,9 +60,12 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						return false
 					else
 						return true
+				if sgAry.length is 0
+					sgAry.push('@' + defaultSGUID + '.resource.GroupId')
 				MC.canvas_data.component[compUID].resource.SecurityGroups = sgAry
 
 			if compType is 'AWS.EC2.Instance'
+
 				sgAry = comp.resource.SecurityGroupId
 				sgAry = _.filter sgAry, (value) ->
 					refSGUID = value.slice(1).split('.')[0]
@@ -67,7 +73,21 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						return false
 					else
 						return true
+				if sgAry.length is 0
+					sgAry.push('@' + defaultSGUID + '.resource.GroupId')
+
+				sgNameAry = comp.resource.SecurityGroup
+				sgNameAry = _.filter sgNameAry, (value) ->
+					refSGUID = value.slice(1).split('.')[0]
+					if sgUID is refSGUID
+						return false
+					else
+						return true
+				if sgNameAry.length is 0
+					sgNameAry.push('@' + defaultSGUID + '.resource.GroupName')
+
 				MC.canvas_data.component[compUID].resource.SecurityGroupId = sgAry
+				MC.canvas_data.component[compUID].resource.SecurityGroup = sgNameAry
 
 			if compType is 'AWS.VPC.NetworkInterface'
 				sgAry = comp.resource.GroupSet
@@ -77,6 +97,11 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						return false
 					else
 						return true
+				if sgAry.length is 0
+					sgAry.push({
+						'GroupId': '@' + defaultSGUID + '.resource.GroupId',
+						'GroupName': '@' + defaultSGUID + '.resource.GroupName'
+					})
 				MC.canvas_data.component[compUID].resource.GroupSet = sgAry
 
 			null
@@ -88,7 +113,10 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		inboundRule = []
 		if sgRes.ipPermissionsEgress
 			inboundRule = sgRes.ipPermissionsEgress.item
-		outboundRule = sgRes.ipPermissions.item
+
+		outboundRule = []
+		if sgRes.ipPermissions
+			outboundRule = sgRes.ipPermissions.item
 
 		inboundRule = _.map inboundRule, (ruleObj) ->
 			ruleObj.direction = 'inbound'
@@ -348,6 +376,15 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 		null
 
+	getDefaultSG = () ->
+
+		deafaultSGComp = null
+		_.each MC.canvas_data.component, (sgComp) ->
+
+			if sgComp.name is 'DefaultSG'
+				deafaultSGComp = sgComp
+			null
+		return deafaultSGComp
 
 	#public
 	getAllRefComp      : getAllRefComp
@@ -358,3 +395,4 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	getSGColor         : getSGColor
 	updateSGColorLabel : updateSGColorLabel
 	deleteRefInAllComp : deleteRefInAllComp
+	getDefaultSG       : getDefaultSG

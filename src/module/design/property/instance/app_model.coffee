@@ -252,15 +252,45 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
             # if resourceCompObj
             #     sgAry = resourceCompObj.resource.SecurityGroupId
 
-            uid = this.get 'id'
-            sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+
+            # uid = this.get 'id'
+            # sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+            # sgUIDAry = []
+            # _.each sgAry, (value) ->
+            #     sgUID = value.slice(1).split('.')[0]
+            #     sgUIDAry.push sgUID
+            #     null
+
+            # return sgUIDAry
+
+
 
             sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
+            uid = this.get 'id'
 
+            if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
+                defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
+                eniUID = defaultENIComp.uid
+
+                sgAry = MC.canvas_data.component[eniUID].resource.GroupSet
+
+                sgUIDAry = []
+                _.each sgAry, (value) ->
+                    sgUID = value.GroupId.slice(1).split('.')[0]
+                    sgUIDAry.push sgUID
+                    null
+
+            else
+                sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+                sgUIDAry = []
+                _.each sgAry, (value) ->
+                    sgUID = value.slice(1).split('.')[0]
+                    sgUIDAry.push sgUID
+                    null
+            
             return sgUIDAry
 
     }

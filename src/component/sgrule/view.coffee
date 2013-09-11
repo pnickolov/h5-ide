@@ -50,6 +50,35 @@ define [ 'text!./template.html',
           # Extract the data from the view
           data = this.extractRuleData()
 
+          # validation #####################################################
+          validateMap =
+            'custom':
+              dom: $('#sg-proto-ipt-custom input')
+              method: ( val ) ->
+                if not MC.validate.portRange(val)
+                  return 'Must be a valid format of number.'
+                null
+            'tcp':
+              dom: $('#sg-proto-ipt-tcp input')
+              method: ( val ) ->
+                if not MC.validate.portRange(val)
+                  return 'Must be a valid format of port range.'
+                null
+            'udp':
+              dom: $('#sg-proto-ipt-udp input')
+              method: ( val ) ->
+                if not MC.validate.portRange(val)
+                  return 'Must be a valid format of port range.'
+                null
+
+          if data.protocol of validateMap
+            needValidate = validateMap[ data.protocol ]
+            needValidate.dom.parsley 'custom', needValidate.method
+
+          if needValidate and not needValidate.dom.parsley 'validate'
+            return
+          # validation #####################################################
+
           # Generate Ouput Info
           if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
             rule_count = 1

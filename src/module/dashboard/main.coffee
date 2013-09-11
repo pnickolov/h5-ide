@@ -115,9 +115,9 @@ define [ 'jquery',
                 model.describeAWSResourcesService()
 
             #model
-            #model.describeAccountAttributesService()
+            model.describeAccountAttributesService()
 
-            model.describeAWSResourcesService()
+            #model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 overview_app = result

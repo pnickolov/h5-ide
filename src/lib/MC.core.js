@@ -152,9 +152,14 @@ var MC = {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	canvasName : function ( string )
+	{
+			return string.length > 17 ? string.substring(0, 17) + '...' : string;
+	},
+
 	truncate: function (string, length)
 	{
-		return string.substring(0, length) + '...';
+		return string.length > length ? string.substring(0, length) + '...' : string;
 	},
 
 	/*

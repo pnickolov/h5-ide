@@ -3,22 +3,23 @@
 DIR=$(cd "$(dirname "$0")"; pwd)
 cd $DIR
 
-FILENAME="ide-alpha.tar.gz"
+FILENAME="ide.tar.gz"
 
-cd ../../src
-
-echo "start make..."
-grunt make_all
-echo "make done"
+echo "start deploy..."
+##grunt deploy
+echo "deploy done"
 echo
 
-rm ${FILENAME} -rf
+
+cd ../../publish
+
+##rm ${FILENAME} -rf
 echo "start tar..."
-tar czf ${FILENAME} *
+##tar czf ${FILENAME} *
 echo "tar done."
 
 echo "start transfer..."
-scp -i ${DIR}/demo.pem ${FILENAME} ec2-user@54.238.48.118:/home/ec2-user/ide
+scp -i ${DIR}/demo.pem ${FILENAME} ec2-user@54.238.48.118:/madeira/site/temp
 echo "transfer done."
 echo
 echo "ide on demo will be updated after severial minutes."

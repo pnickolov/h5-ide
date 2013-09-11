@@ -236,19 +236,21 @@ define [ 'MC', 'event', 'handlebars'
 		#  analytics
 		#############################
 
-		analytics.identify($.cookie("userid"), {
-			name : $.cookie("username"),
-			username : $.cookie("username"),
-			email : MC.base64Decode($.cookie("email")),
-			region : $.cookie("region_name"),
-			created : 1328260166
-			}, {
-			Intercom : {
-				userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
-			}
-		})
+		#temp disable analytics
 
-		analytics.track('Loaded IDE', { })
+		# analytics.identify($.cookie("userid"), {
+		# 	name : $.cookie("username"),
+		# 	username : $.cookie("username"),
+		# 	email : MC.base64Decode($.cookie("email")),
+		# 	region : $.cookie("region_name"),
+		# 	created : 1328260166
+		# 	}, {
+		# 	Intercom : {
+		# 		userHash : '5add343430ecaf54f7c1a6285758fcccb87fb365d089d6e1a520b2d7fa49fb05'
+		# 	}
+		# })
+
+		# analytics.track('Loaded IDE', { })
 
 		#############################
 		#  base model

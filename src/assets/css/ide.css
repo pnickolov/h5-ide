@@ -415,7 +415,7 @@ button:focus {
 
 #account-change-password {
 	display: block;
-	margin: 5px 0;
+	margin: 10px 0 10px 1px;
 	color: #C36AB9;
 }
 
@@ -446,7 +446,7 @@ button:focus {
 
 #AWSCredential-form ul {
 	margin: 0 auto;
-	width: 415px;
+	width: 440px;
 }
 
 .AWSCredential-wall {
@@ -495,7 +495,7 @@ button:focus {
 }
 
 #AWSCredential-setting .input {
-	width: 393px;
+	width: 418px;
 	border-radius: 2px;
 	margin-bottom: 10px;
 	padding: 10px;
@@ -548,7 +548,7 @@ button:focus {
 
 #awsredentials-submit {
 	position: absolute;
-	right: 12px;
+	right: 0;
 	font-size: 12px;
 }
 

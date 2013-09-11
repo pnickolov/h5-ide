@@ -84,7 +84,7 @@ define [ 'jquery',
                 model.stackListService()
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
-                console.log 'UPDATE_AWS_CREDENTIAL'
+                console.log 'navigation:UPDATE_AWS_CREDENTIAL'
                 #call
                 model.describeRegionsService() if $.cookie( 'has_cred' ) is 'true'
 

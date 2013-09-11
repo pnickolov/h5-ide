@@ -106,7 +106,7 @@ define [ 'jquery',
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                 if $.cookie('has_cred') is 'true'   # update aws resource
-                    model.describeAWSResourcesService
+                    model.describeAWSResourcesService()
                 else    # set aws credential
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 

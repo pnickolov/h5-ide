@@ -4,8 +4,8 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!nls/lang.js'
-], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang ) ->
+         'i18n!nls/lang.js', 'forge_handle'
+], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, forge_handle ) ->
 
     #private
     #region map
@@ -968,9 +968,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             else
                 # check whether invalid session
-                if result.return_code isnt constant.RETURN_CODE.E_SESSION and $.cookie('has_cred') isnt 'false'
-                    $.cookie 'has_cred', false,    { expires: 1 }
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION
+                    #$.cookie 'has_cred', false, { expires: 1 }
+                    forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+                    ide_event.trigger ide_event.SWITCH_MAIN
 
                 me.set 'region_classic_list', region_classic_vpc_result
 

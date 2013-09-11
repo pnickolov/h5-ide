@@ -28,6 +28,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'username',    null, option
 		$.cookie 'account_id',	null, option
 
+	setCred = ( result ) ->
+		option = { expires:1, path: '/'	}
+		$.cookie 'has_cred', result, option
+
 	setIDECookie = ( result ) ->
 
 		option = { expires:1, path: '/', domain: '.madeiracloud.com' }
@@ -82,4 +86,5 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	deleteCookie : deleteCookie
 	setIDECookie : setIDECookie
 	getIDECookie : getIDECookie
+	setCred      : setCred
 	checkAllCookie : checkAllCookie

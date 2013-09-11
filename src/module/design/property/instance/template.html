@@ -28,7 +28,6 @@
 				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
 		</section>
-		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<label class="left">Instance Type</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
@@ -43,6 +42,7 @@
 				</ul>
 			</div>
 		</section>
+		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<div class="checkbox">
 				{{#if checkbox_display.ebsOptimized}}

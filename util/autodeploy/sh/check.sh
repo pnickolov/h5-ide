@@ -65,13 +65,6 @@ function create_dir (){
 
 START_TIME=`date "+%y/%m/%d %H:%M"`
 
-echo ""
-echo "==========================================================="
-echo ""
-echo " Start Time: ${START_TIME}"
-echo ""
-echo "==========================================================="
-
 #create dir
 create_dir ${CUR_DIR}/log 0
 create_dir ${BASE_DIR} 0
@@ -83,6 +76,20 @@ create_dir ${BAK_DIR} 0
 echo "- Step 1 : check ${SRC_DIR}/${FILENAME} ---------------------------------------------------"
 if [ -f ${SRC_DIR}/${FILENAME} ]
 then
+
+    exec > ${CUR_DIR}/log/check.log 2>&1
+
+
+    echo ""
+    echo "==========================================================="
+    echo ""
+    echo " Start Time: ${START_TIME}"
+    echo ""
+    echo "==========================================================="
+
+
+    echo "- Step 1 : check ${SRC_DIR}/${FILENAME} ---------------------------------------------------"
+
     echo ">found ${SRC_DIR}/${FILENAME},now will update ide"
     echo
 
@@ -212,6 +219,13 @@ then
         echo "-----------------------------------"
         echo " all done."
 
+        echo
+        echo "============================================================"
+        echo "== Start Time: ${START_TIME}"
+        echo "== End Time:   `date "+%y/%m/%d %H:%M"`"
+        echo "============================================================"
+        echo
+
     else
         echo ">tar file not correct,quit"
     fi
@@ -219,9 +233,3 @@ then
    # echo "[`date`] no need updated"
 fi
 
-echo
-echo "============================================================"
-echo "== Start Time: ${START_TIME}"
-echo "== End Time:   `date "+%y/%m/%d %H:%M"`"
-echo "============================================================"
-echo

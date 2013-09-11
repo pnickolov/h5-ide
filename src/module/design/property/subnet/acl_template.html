@@ -9,9 +9,7 @@
     <div class="col3 secondary-panel networkacl-edit tooltip icon-btn-details" acl-uid="{{uid}}" data-tooltip="Go to Network ACL Details"></div>
     <div class="col2" for="property-acl-{{@index}}">
       <div class="col2-1 truncate">{{name}}</div>
-      <div class="col2-2 truncate">{{rule}} rules, {{association}} association</div>
-      <div class="delete {{#unless isUsed}}used{{/unless}}" acl-uid="{{uid}}">Delete</div>
+      <div class="col2-2 truncate">{{rule}} rules, {{association}} associations{{#unless isDefault}} | <a class="sg-list-delete-btn" acl-uid="{{uid}}" acl-name="{{name}}" acl-association="{{association}}">Delete</a>{{/unless}}</div>
     </div>
-
   </li>
 {{/each}}

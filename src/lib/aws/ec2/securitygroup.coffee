@@ -64,30 +64,55 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 					sgAry.push('@' + defaultSGUID + '.resource.GroupId')
 				MC.canvas_data.component[compUID].resource.SecurityGroups = sgAry
 
+				#update sg color label
+				MC.aws.sg.updateSGColorLabel compUID
+
 			if compType is 'AWS.EC2.Instance'
 
-				sgAry = comp.resource.SecurityGroupId
-				sgAry = _.filter sgAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
-					if sgUID is refSGUID
-						return false
-					else
-						return true
-				if sgAry.length is 0
-					sgAry.push('@' + defaultSGUID + '.resource.GroupId')
+				# delete eni sg
+				eniComp = MC.aws.eni.getInstanceDefaultENI(compUID)
+				if eniComp
+					eniSgAry = eniComp.resource.GroupSet
+					eniSgAry = _.filter eniSgAry, (sgObj) ->
+						refSGUID = sgObj.GroupId.slice(1).split('.')[0]
+						if sgUID is refSGUID
+							return false
+						else
+							return true
+					if eniSgAry.length is 0
+						eniSgAry.push({
+							'GroupId': '@' + defaultSGUID + '.resource.GroupId',
+							'GroupName': '@' + defaultSGUID + '.resource.GroupName'
+						})
+					MC.canvas_data.component[eniComp.uid].resource.GroupSet = eniSgAry
 
-				sgNameAry = comp.resource.SecurityGroup
-				sgNameAry = _.filter sgNameAry, (value) ->
-					refSGUID = value.slice(1).split('.')[0]
-					if sgUID is refSGUID
-						return false
-					else
-						return true
-				if sgNameAry.length is 0
-					sgNameAry.push('@' + defaultSGUID + '.resource.GroupName')
+				# delete classic instance sg
+				if !eniComp
+					sgAry = comp.resource.SecurityGroupId
+					sgAry = _.filter sgAry, (value) ->
+						refSGUID = value.slice(1).split('.')[0]
+						if sgUID is refSGUID
+							return false
+						else
+							return true
+					if sgAry.length is 0
+						sgAry.push('@' + defaultSGUID + '.resource.GroupId')
 
-				MC.canvas_data.component[compUID].resource.SecurityGroupId = sgAry
-				MC.canvas_data.component[compUID].resource.SecurityGroup = sgNameAry
+					sgNameAry = comp.resource.SecurityGroup
+					sgNameAry = _.filter sgNameAry, (value) ->
+						refSGUID = value.slice(1).split('.')[0]
+						if sgUID is refSGUID
+							return false
+						else
+							return true
+					if sgNameAry.length is 0
+						sgNameAry.push('@' + defaultSGUID + '.resource.GroupName')
+
+					MC.canvas_data.component[compUID].resource.SecurityGroupId = sgAry
+					MC.canvas_data.component[compUID].resource.SecurityGroup = sgNameAry
+
+				#update sg color label
+				MC.aws.sg.updateSGColorLabel compUID
 
 			if compType is 'AWS.VPC.NetworkInterface'
 				sgAry = comp.resource.GroupSet
@@ -103,6 +128,9 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 						'GroupName': '@' + defaultSGUID + '.resource.GroupName'
 					})
 				MC.canvas_data.component[compUID].resource.GroupSet = sgAry
+
+				#update sg color label
+				MC.aws.sg.updateSGColorLabel compUID
 
 			null
 

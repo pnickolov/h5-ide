@@ -251,7 +251,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
                     if component.name == "DefaultACL"
                         acl.isUsed = true
+                        acl.isDefault = true
                         defaultACLIdx = networkACLs.length
+                    else
+                        acl.isDefault = false
 
                     networkACLs.push acl
 

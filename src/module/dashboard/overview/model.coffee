@@ -278,7 +278,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @cacheResource 'raw', data
 
                 globalData = @globalRegionhandle data
-                @set 'global_list', globalData
+                if globalData is @get 'global_list'
+                    @trigger 'change:global_list'
+                else
+                    @set 'global_list', globalData
             else
                 @setResource data[ region ], region
 
@@ -690,7 +693,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         null
 
             me.set 'cur_region_resource_info', lists
-            me.set 'cur_region_resource', resources
+            if resources is me.get 'cur_region_resource'
+                me.trigger 'change:cur_region_resource'
+            else
+                me.set 'cur_region_resource', resources
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 

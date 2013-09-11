@@ -161,7 +161,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $target = $ event.currentTarget
             if $target.prop 'disabled'
                 return
-            ide_event.trigger ide_event.ADD_STACK_TAB, ( current_region or $target.data 'region' )
+            ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
 
         gotoRegion: ( event ) ->
             $target = $ event.currentTarget

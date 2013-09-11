@@ -16,6 +16,8 @@ define [ 'event',
             'click #awsredentials-update-done'      : 'onDone'
             'click .AWSCredentials-account-update'  : 'onUpdate'
             'click #account-setting-tab li a'       : 'onTab'
+            'click #account-update-email-link'      : 'onChangeEmail'
+            'click #account-change-password'        : 'onChangePassword'
 
         render     : (template) ->
             console.log 'account_setting_tab render'
@@ -76,6 +78,24 @@ define [ 'event',
 
             else
                 me.showSetting('account')
+
+            null
+
+        onChangeEmail : (event) ->
+            console.log 'account_setting_tab onChangeEmail'
+
+            me = this
+
+            me.showSetting('account', 'on_email')
+
+            null
+
+        onChangePassword : (event) ->
+            console.log 'account_setting_tab onChangePassword'
+
+            me = this
+
+            me.showSetting('account', 'on_password')
 
             null
 
@@ -143,6 +163,34 @@ define [ 'event',
                 $('#account-profile-setting').show()
                 $('#AWSCredential-setting').hide()
 
+                $('#account-profile-setting-body').show()
+                $('#account-profile-setting-username').show()
+                $('#account-profile-setting-email').show()
+
+                if not flag
+
+                    $('#account-email-change-wrap').show()
+                    $('#account-email-input-wrap').hide()
+                    $('#account-password-wrap').hide()
+
+                    $('#account-profile-username').text $.cookie('username')
+                    $('#account-profile-email').text MC.base64Decode($.cookie('email'))
+
+                else if flag is 'on_email'
+
+                    $('#account-email-change-wrap').hide()
+                    $('#account-email-input-wrap').show()
+                    $('#account-password-wrap').hide()
+
+                    $('#account-email-input').val MC.base64Decode($.cookie('email'))
+
+                else if flag is 'on_password'
+
+                    $('#account-email-change-wrap').show()
+                    $('#account-email-input-wrap').hide()
+                    $('#account-password-wrap').show()
+                    $('#account-passowrd-info').hide()
+
             else if tab is 'credential'
 
                 $('#account-profile-setting').hide()
@@ -179,7 +227,7 @@ define [ 'event',
 
                     $('#AWSCredential-failed').hide()
                     $('#AWSCredential-info').show()
-                    $('#aws-credential-update-account-id').val(me.model.attributes.account_id)
+                    $('#aws-credential-update-account-id').text me.model.attributes.account_id
 
                 else if flag is 'in_update'
 
@@ -188,7 +236,7 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     # set content
-                    $('#aws-credential-account-id').text me.model.attributes.account_id
+                    $('#aws-credential-account-id').val me.model.attributes.account_id
 
                 else if flag is 'on_submit'
 

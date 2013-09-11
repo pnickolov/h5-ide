@@ -40,10 +40,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'save stack successfully'
 
                     # track
-                    analytics.track "Saved Stack",
-                        stack_name: data.name,
-                        stack_region: data.region,
-                        stack_id: data.id
+                    # analytics.track "Saved Stack",
+                    #     stack_name: data.name,
+                    #     stack_region: data.region,
+                    #     stack_id: data.id
 
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
@@ -89,10 +89,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     key = result.resolved_data.key
 
                     # track
-                    analytics.track "Saved Stack",
-                        stack_name: data.name,
-                        stack_region: data.region,
-                        stack_id: new_id
+                    # analytics.track "Saved Stack",
+                    #     stack_name: data.name,
+                    #     stack_region: data.region,
+                    #     stack_id: new_id
 
                     #temp
                     MC.canvas_data.id = new_id
@@ -198,10 +198,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.handleRequest result, 'RUN_STACK', region, id, app_name
 
                 # track
-                analytics.track "Launched Stack",
-                    stack_id: id,
-                    stack_region: region,
-                    stack_app_name: app_name
+                # analytics.track "Launched Stack",
+                #     stack_id: id,
+                #     stack_region: region,
+                #     stack_app_name: app_name
 
             #####listen APP_START_RETURN
             me.on 'APP_START_RETURN', (result) ->
@@ -214,10 +214,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.handleRequest result, 'START_APP', region, id, name
 
                 # track
-                analytics.track "Started App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
+                # analytics.track "Started App",
+                #     app_id: id,
+                #     app_region: region,
+                #     app_name: name
 
             #####listen APP_STOP_RETURN
             me.on 'APP_STOP_RETURN', (result) ->
@@ -230,10 +230,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.handleRequest result, 'STOP_APP', region, id, name
 
                 # track
-                analytics.track "Stopped App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
+                # analytics.track "Stopped App",
+                #     app_id: id,
+                #     app_region: region,
+                #     app_name: name
 
             #####listen APP_TERMINATE_RETURN
             me.on 'APP_TERMINATE_RETURN', (result) ->
@@ -246,10 +246,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 me.handleRequest result, 'TERMINATE_APP', region, id, name
 
                 # track
-                analytics.track "Terminated App",
-                    app_id: id,
-                    app_region: region,
-                    app_name: name
+                # analytics.track "Terminated App",
+                #     app_id: id,
+                #     app_region: region,
+                #     app_name: name
 
             #####listen APP_GETKEY_RETURN
             me.on 'APP_GET_KEY_RETURN', (result) ->

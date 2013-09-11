@@ -102,8 +102,9 @@ define [ 'event',
         _beforeunloadEvent : ->
 
             return if MC.data.current_tab_id is 'dashboard'
+            return if $.cookie 'userid' is 'null'
 
-            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK', null ]
+            if MC.data.current_tab_id.split( '-' )[0] isnt 'app'
 
                 if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
                     return null

@@ -2549,7 +2549,7 @@ button:focus {
 }
 
 .dashboard-link-list li:after {
-	content: "î€";
+	content: "î�;
 	font-family: "MC-ide";
 	font-size: 12px;
 	color: #ccc;

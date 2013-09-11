@@ -289,7 +289,145 @@ button:focus {
 	display: block;
 }
 
-/*AWSCredential-setting*/
+/*Account Settings*/
+#account-setting-wrap .modal-body {
+	padding: 0;
+}
+
+#account-setting-wrap .input {
+	font-size: 12px;
+	border-radius: 2px;
+	padding: 5px;
+	width: 180px;
+}
+
+#account-profile-setting-body {
+	padding: 20px 30px;
+}
+
+#account-setting-tab {
+	padding: 0 0 0 10px;
+	background-color: #555;
+	box-shadow: inset 1px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#account-setting-tab li {
+	float: left;
+	margin-right: 10px;
+}
+
+#account-setting-tab a {
+	width: 125px;
+	padding: 15px 0;
+	display: block;
+	text-align: center;
+	color: #FFF;
+	font-size: 12px;
+	border-radius: 5px 5px 0 0;
+	font-weight: 700;
+}
+
+#account-profile-setting {
+	/*display: none;*/
+}
+
+#AWSCredential-setting {
+	display: none;
+}
+
+#account-profile-setting .dl-horizontal {
+	font-size: 12px;
+	margin: 0;
+}
+
+.account-tab-content {
+	position: relative;
+}
+
+.account-tab-content:before {
+	position: absolute;
+	top: -6px;
+	display: inline-block;
+	border-right: 6px solid rgba(0, 0, 0, 0);
+	border-bottom: 6px solid #fff;
+	border-left: 6px solid rgba(0, 0, 0, 0);
+	content: '';
+}
+
+#account-profile-setting:before {
+	left: 65px;
+}
+
+#AWSCredential-setting:before {
+	left: 200px;
+}
+
+#account-email-update-btns {
+	float: right;
+}
+
+#account-email-input-wrap {
+	/*display: none;*/
+}
+
+#account-password-wrap {
+	/*display: none;*/
+}
+
+#account-email-update,
+#account-password-update {
+	font-size: 12px;
+	width: 70px;
+	padding: 2px 0;
+}
+
+#account-email-cancel,
+#account-password-cancel {
+	font-size: 12px;
+	color: #999;
+	margin-left: 5px;
+}
+
+#account-update-email-link {
+	float: right;
+	font-size: 12px;
+	color: #C36AB9;
+}
+
+#account-update-email-link:hover,
+#account-change-password:hover {
+	text-decoration: underline;
+}
+
+#account-password-wrap .input {
+	width: 250px;
+}
+
+#account-passowrd-info {
+	width: 360px;
+	padding: 10px 15px;
+	font-size: 12px;
+	border-radius: 3px;
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
+}
+
+#account-change-password {
+	display: block;
+	margin: 5px 0;
+	color: #C36AB9;
+}
+
+#account-password-update-btns {
+	margin: 15px 0;
+	padding-left: 130px;
+}
+
+#account-password-update {
+	padding: 4px 0;
+}
+
 #AWSCredentials-submiting,
 #AWSCredentials-success,
 #AWSCredentials-update {
@@ -300,15 +438,38 @@ button:focus {
 	display: none;
 }
 
+#AWSCredential-form {
+	padding: 20px 0;
+	width: 440px;
+	margin: 0 auto;
+}
+
+#AWSCredential-form ul {
+	margin: 0 auto;
+	width: 415px;
+}
+
 .AWSCredential-wall {
+	border-radius: 5px;
 	padding: 15px;
-	background-color: #E0EBF3;
-	color: #555;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+.AWSCredential-wall p {
+	margin: 0;
+}
+
+#AWSCredential-info {
+	background-color: #D4E9F8;
+	color: #0F86DB;
+	border: 1px solid #0F86DB;
 }
 
 #AWSCredential-failed {
-	background-color: #FF7E79;
-	color: #f3f3f3;
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
 }
 
 #AWSCredential-setting .modal-body {
@@ -334,9 +495,15 @@ button:focus {
 }
 
 #AWSCredential-setting .input {
-	width: 382px;
+	width: 393px;
 	border-radius: 2px;
 	margin-bottom: 10px;
+	padding: 10px;
+	background-color: #F8F8F8;
+}
+
+#AWSCredential-setting .input:focus {
+	background-color: #fff;
 }
 
 #AWSCredentials-submiting-body {
@@ -350,13 +517,17 @@ button:focus {
 }
 
 .AWSCredentials-body-info {
-	padding: 35px 20px;
-	background-color: #fff;
+	margin: 0 auto;
+	width: 450px;
+	padding: 25px 20px;
+	background-color: #FFF;
 }
 
 .AWSCredentials-account-info {
-	padding: 20px;
-	background-color: #E0EBF3;
+	border: 1px solid #0F86DB;
+	color: #666;
+	background-color: #D4E9F8;
+	padding: 15px 20px;
 	border-radius: 4px;
 	margin: 40px 0;
 }
@@ -368,6 +539,17 @@ button:focus {
 
 .AWSCredentials-account-update:hover {
 	text-decoration: underline;
+}
+
+#AWSCredential-setting-btn-wrap {
+	position: relative;
+	height: 30px;
+}
+
+#awsredentials-submit {
+	position: absolute;
+	right: 12px;
+	font-size: 12px;
 }
 
 #AWSCredentials-link {
@@ -2367,7 +2549,7 @@ button:focus {
 }
 
 .dashboard-link-list li:after {
-	content: "î€";
+	content: "î�;
 	font-family: "MC-ide";
 	font-size: 12px;
 	color: #ccc;

@@ -264,7 +264,8 @@ define [ 'MC', 'event', 'handlebars'
 			else
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]
+				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
 				#
-				notification 'error', lang.service[ label ], true if lang.service[ label ]
+				notification 'error', lang.service[ label ], true if lang.service[ label ] and $.cookie( 'has_cred' ) is 'true'
 
 		null

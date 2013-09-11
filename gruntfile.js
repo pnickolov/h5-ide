@@ -223,6 +223,28 @@ module.exports = function( grunt ) {
 									'connect:publish'
 	]);
 
+	/* task of use as release */
+	grunt.registerTask( 'deploy', [//release
+									'clean:release',
+									'make_all',
+									'copy:publish',
+									'copy:lib_aws',
+									'copy:lib_forge',
+									'copy:special_lib',
+									'copy:special_ui',
+									'make_release',
+									'cssmin',
+									'uglify',
+									'copy:special_lib_rename',
+									'copy:special_ui_rename',
+									'copy:special_lib_del',
+									'copy:special_ui_del',
+									//publish
+									'requirejs',
+									'copy:publish_login',
+									'clean:temp'
+	]);
+
 	/*
 	grunt.event.on( 'regarde:file', function (status, target, filepath) {
 		console.log("status = " + status );

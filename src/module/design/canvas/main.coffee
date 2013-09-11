@@ -79,6 +79,11 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
                 model.beforeASGExpand event, option.src_node, option.tgt_parent
                 null
 
+            #listen CANVAS_BEFORE_ASG_EXPAND
+            view.on "CHECK_CONNECTABLE_EVENT", ( event, option ) ->
+                model.filterConnection event, option
+                null
+
 
 
 

@@ -3830,7 +3830,11 @@ MC.canvas.event.drawConnection = {
 								}
 							}
 
-							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [node_id, value.from, item.id, value.to]);
+							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, {
+								  from      : node_id
+								, to        : item.id
+								, from_port : value.from
+								, to_port   : value.to});
 
 							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							{

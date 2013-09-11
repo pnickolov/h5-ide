@@ -41,12 +41,12 @@ define [ 'jquery', 'underscore', 'i18n!nls/lang.js', 'UI.notification' ], ( $, _
             console.log error
             error_repeat[ type ] = error_repeat[ type ] + 1
             if error_repeat[ type ] < 4
-                notification 'warning', lang.ide.MODULE_RELOAD_MESSAGE + type, false
+                notification 'warning', lang.ide.MODULE_RELOAD_MESSAGE, false
                 _.delay () ->
                     target()
                 , 5 * 1000
             else
-                notification 'error', lang.ide.MODULE_RELOAD_FAILED + type, true
+                notification 'error', lang.ide.MODULE_RELOAD_FAILED, true
             return null
 
         null

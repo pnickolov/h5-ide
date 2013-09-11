@@ -30,7 +30,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             # 'click #add-sg-btn'             : 'createSecurityGroup'
             # 'click .deleteSG'               : 'deleteSecurityGroup'
             # 'click .resetSG'                : 'resetSecurityGroup'
-            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
+            'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
             'click #stack-property-add-new-acl' : 'openCreateAclPanel'
             'click .stack-property-acl-list .edit' : 'openEditAclPanel'
 
@@ -112,9 +112,34 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         #     null
 
         deleteNetworkAcl : (event) ->
-            aclUID = $(event.target).attr('acl-uid')
-            delete MC.canvas_data.component[aclUID]
-            this.refreshACLList()
+
+            that = this
+
+            $target = $(event.currentTarget)
+            aclUID = $target.attr('acl-uid')
+            
+            associationNum = Number($target.attr('acl-association'))
+            aclName = $target.attr('acl-name')
+
+            # show dialog to confirm that delete acl
+            if associationNum
+                mainContent = 'Are you sure you want to delete ' + aclName + '?'
+                descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
+                template = MC.template.modalDeleteSGOrACL {
+                    title : 'Delete Network ACL',
+                    main_content : mainContent,
+                    desc_content : descContent
+                }
+                modal template, false, () ->
+                    $('#modal-confirm-delete').click () ->
+                        MC.aws.acl.addRelatedSubnetToDefaultACL(aclUID)
+                        delete MC.canvas_data.component[aclUID]
+                        that.refreshACLList()
+                        modal.close()
+
+            else
+                delete MC.canvas_data.component[aclUID]
+                that.refreshACLList()
 
         refreshACLList : () ->
             if MC.aws.vpc.getVPCUID()

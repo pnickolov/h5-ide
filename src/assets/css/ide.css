@@ -3983,6 +3983,10 @@ a.sidebar-hider {
 	position: relative;
 }
 
+.acl-info-list > li {
+	height  : 38px;
+}
+
 .acl-sg-info-list .col1 {
 	margin-right : 15px;
 	width        : 15px;
@@ -4029,6 +4033,11 @@ a.sidebar-hider {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
+}
+
+.acl-info-list .col3 {
+	height      : 60px;
+	line-height : 64px;
 }
 
 .acl-sg-info-list .col3:hover {

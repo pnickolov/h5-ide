@@ -179,7 +179,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			sgRuleAry = []
 			_.each parentSGList, (uid) ->
-
+				if !MC.canvas_data.component[uid] then return
 				sgComp = $.extend true, {}, MC.canvas_data.component[uid]
 				sgCompRes = sgComp.resource
 
@@ -252,7 +252,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					parent_model.unAssignSGToComp sgUID
 
 			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
+			MC.aws.sg.updateSGColorLabel parent_model.get('uid')
 
 
 		deleteSGFromComp : (sgUID) ->
@@ -261,9 +261,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			MC.aws.sg.deleteRefInAllComp(sgUID)
 			delete MC.canvas_data.component[sgUID]
-			
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}
 
 	model = new SGListModel()

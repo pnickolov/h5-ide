@@ -82,7 +82,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# If we have port "aaa" and port "aba"
 			# Then port "aaa" is always "from port"
 			# because "aaa" < "aba"
-			if option["from_port"] > option["to_port"]
+			if option.from_port > option.to_port
 				option =
 					from      : option.to
 					to        : option.from

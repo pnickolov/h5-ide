@@ -21,12 +21,13 @@ define [ 'MC', 'event',
             #json
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
+            ### env:dev:end ###
+
             #line style
             'click #toolbar-straight'       : 'clickLineStyleStraight'
             'click #toolbar-elbow'          : 'clickLineStyleElbow'
             'click #toolbar-bezier-q'       : 'clickLineStyleBezierQ'
             'click #toolbar-bezier-qt'      : 'clickLineStyleBezierQT'
-            ### env:dev:end ###
 
             'click #toolbar-run'            : 'clickRunIcon'
             'click .icon-save'              : 'clickSaveIcon'

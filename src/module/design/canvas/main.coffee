@@ -7,6 +7,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
     #private
     loadModule = () ->
 
+        template = Handlebars.compile template
+
         #
         require [ './module/design/canvas/view',
                   './module/design/canvas/model',

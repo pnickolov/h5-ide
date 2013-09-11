@@ -67,16 +67,8 @@ define [ 'jquery',
                 else
                     MC.data.is_loading_complete = true
                     ide_event.trigger ide_event.SWITCH_MAIN
-                #
 
-                # display refresh time
-                (->
-                    loadTime = $.now() / 1000
-                    setInterval ( ->
-                        view.updateLoadTime MC.intervalDate( loadTime )
-                        console.log 'timeupdate', loadTime
-                    ), 60001
-                )()
+                view.displayLoadTime()
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
@@ -153,6 +145,11 @@ define [ 'jquery',
                 #model.describeAWSStatusService region
                 @model.getItemList 'app', region, overview_app
                 @model.getItemList 'stack', region, overview_stack
+
+            # reload resource
+            view.on 'RELOAD_RESOURCE', ( region ) ->
+                view.displayLoadTime()
+                model.describeAWSResourcesService region
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )

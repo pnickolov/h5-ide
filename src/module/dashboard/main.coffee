@@ -105,14 +105,10 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if $.cookie('has_cred') isnt 'true'   # update aws resource
-                #     model.describeAWSResourcesService
-
-                # else    # set aws credential
-                    console.log 'show credential setting dialog'
+                if $.cookie('has_cred') is 'true'   # update aws resource
+                    model.describeAWSResourcesService()
+                else    # set aws credential
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
-
-                model.describeAWSResourcesService()
 
             #model
             model.describeAccountAttributesService()

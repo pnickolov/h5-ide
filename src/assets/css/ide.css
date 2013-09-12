@@ -1566,6 +1566,9 @@ button:focus {
 
 .app-thumbnail-pending {
 	padding: 60px 0;
+	position: relative;
+	top: 0;
+	left: 0;
 }
 
 .region-resource-thumbnail img.app-pending-animation {
@@ -6023,20 +6026,20 @@ a.action-link:hover {
 }
 
 #modal-run-stack .estimate .title {
-	top: 20px;
+	top: 25px;
 	position: absolute;
 }
 
 #modal-run-stack .estimate .price {
 	right: 10px;
-	top: 20px;
+	top: 18px;
 	position: absolute;
 	font-size: 12px;
 }
 
 #modal-run-stack .estimate .price b {
-	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-	color: #666;
+	/*text-shado#modal-run-stack .estimate .price bw: 1px 1px 5px rgba(0, 0, 0, 0.1);*/
+	color: #696f75;
 	font-size: 28px;
 }
 

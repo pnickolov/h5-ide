@@ -21,6 +21,16 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
         "ExactCapacity"           : "Exact Capacity"
         "PercentChangeInCapacity" : "Percent Change in Capacity"
 
+    adjustdefault =
+        "ChangeInCapacity"        : "eg. -1"
+        "ExactCapacity"           : "eg. 5"
+        "PercentChangeInCapacity" : "eg. -30"
+
+    adjustTooltip =
+        "ChangeInCapacity"        : "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
+        "ExactCapacity"           : "Change the current capacity of your Auto Scaling group to the exact value speciﬁed."
+        "PercentChangeInCapacity" : "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
+
     unitMap =
         CPUUtilization : "%"
         DiskReadBytes  : "B"
@@ -54,7 +64,6 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             "click #property-asg-policy-add"               : "addScalingPolicy"
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
-
 
 
         render     : ( isApp ) ->
@@ -276,6 +285,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     second  : 300
                     periods : 2
                     step    : 1
+                    name    : this.model.defaultScalingPolicyName()
 
             data.noSNS = not this.model.attributes.has_sns_topic
 
@@ -283,11 +293,39 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
 
             self = this
             $("#property-asg-policy-done").on "click", ()->
-                self.onPolicyDone()
+                result = self.onPolicyDone()
+                if result is false
+                    return false
                 modal.close()
 
+            $("#asg-policy-periods, #asg-policy-second").on "change", ()->
+                val = parseInt $(this).val(), 10
+                if not val or val < 1
+                    $(this).val( "1" ).parsley("validate")
+
             $("#asg-policy-adjust-type").on "OPTION_CHANGE", ()->
-                $("#asg-policy-step-wrapper").toggle( $(this).find(".selected").data("id") == "PercentChangeInCapacity" )
+                type = $(this).find(".selected").data("id")
+                $(".pecentcapcity").toggle( type == "PercentChangeInCapacity" )
+                $("#asg-policy-adjust").attr("placeholder", adjustdefault[type] ).data("tooltip", adjustTooltip[ type ] ).trigger("change")
+
+            $("#asg-policy-adjust").on "change", ()->
+                type = $("#asg-policy-adjust-type").find(".selected").data("id")
+                val  = parseInt $(this).val(), 10
+
+                if type is "ExactCapacity"
+                    if not val or val < 1
+                        $(this).val( "1" )
+                else if type is "PercentChangeInCapacity"
+                    if not val
+                        $(this).val( "0" )
+                    else if val < -100
+                        $(this).val( "-100" )
+                    else if val > 100
+                        $(this).val( "100" )
+                    null
+
+                $("#").data("tooltip", adjustTooltip[ type ] ).trigger("change")
+
 
             $("#asg-policy-notify").on "click", ( evt )->
                 $("#asg-policy-no-sns").toggle( $("#asg-policy-notify").is(":checked") )
@@ -298,6 +336,11 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 $("#asg-policy-unit").html( unitMap[$(this).find(".selected").data("id")] || "" )
 
         onPolicyDone : () ->
+
+            result = $("#asg-termination-policy").parsley("validate")
+            if not result
+                return false
+
             data =
                 name   : $("#asg-policy-name").val()
                 metric : $("#asg-policy-metric .selected").data("id")
@@ -319,6 +362,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             this.trigger 'SET_POLICY', data
 
             this.updateScalingPolicy data
+            null
 
         updateSNSOption : () ->
             checkArray = []

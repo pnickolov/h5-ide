@@ -799,14 +799,14 @@ textarea {
 .scrollbar-veritical-wrap {
 	right: 0;
 	top: 0;
-	width: 8px;
+	width: 10px;
 	height: 100%;
 }
 
 .scrollbar-horizontal-wrap {
 	left: 0;
 	bottom: 0;
-	height: 8px;
+	height: 10px;
 	width: 100%;
 }
 
@@ -824,14 +824,17 @@ textarea {
 .scrolling.scrollbar-auto-hide > .scrollbar-horizontal-wrap,
 .scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-veritical-wrap,
 .scrollbar-auto-hide.scroll-wrap:hover > .scrollbar-horizontal-wrap {
-	opacity: .5;
+	opacity: 1;
 }
 
 .scrollbar-veritical-thumb,
 .scrollbar-horizontal-thumb {
 	position: relative;
-	background-color: #999;
-	border-radius: 4px;
+	border-radius: 8px;
+
+	background-color: #666;
+	border: 1px solid #333;
+	box-shadow: inset 1px 1px 1px #999;
 }
 
 .scrollbar-veritical-thumb {

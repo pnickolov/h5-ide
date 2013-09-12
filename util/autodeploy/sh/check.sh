@@ -1,5 +1,12 @@
 #!/bin/sh
-
+#############################
+#
+# /home/ec2-user/ide/check.sh
+#
+# add to crontab
+# */1 * * * * su - root -c "/home/ec2-user/ide/check.sh > /dev/null 2>&1"
+#
+#############################
 
 BASE_DIR="/madeira/site"
 
@@ -61,7 +68,7 @@ function create_dir (){
 
 
 
-#exec > ${CUR_DIR}/log/check.log 2>&1
+exec > ${CUR_DIR}/log/check.log 2>&1
 
 START_TIME=`date "+%y/%m/%d %H:%M"`
 
@@ -77,7 +84,7 @@ echo "- Step 1 : check ${SRC_DIR}/${FILENAME} ----------------------------------
 if [ -f ${SRC_DIR}/${FILENAME} ]
 then
 
-    exec > ${CUR_DIR}/log/check.log 2>&1
+    exec >> ${CUR_DIR}/log/check.log 2>&1
 
 
     echo ""
@@ -155,7 +162,13 @@ then
         echo "- Step 7 : change version in version.js ---------------------------------------------------"
         #change version
         cd ${TGT_DIR}.tmp/lib
+
+        #for live
         sed -i "/version=\"/cvar version=version||{};\!function(){version=\"${VER}\"}();" version.js
+
+        #for debug
+        #sed -i "/  version = '/c   version = '${VER}'" version.js
+
         echo ">version after change:"
         echo "--------------------------------------------------------------"
         cat version.js

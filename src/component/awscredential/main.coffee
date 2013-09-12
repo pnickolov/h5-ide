@@ -60,9 +60,15 @@ define [ 'jquery', 'event',
                 else
                     view.showSetting('credential', 'is_failed')
 
-            view.on 'UPDATE_ACCOUNT_EMAIL', () ->
+            view.on 'UPDATE_ACCOUNT_EMAIL', (email) ->
                 console.log 'UPDATE_ACCOUNT_EMAIL'
+
                 model.updateAccountEmail()
+
+            view.on 'UPDATE_ACCOUNT_PASSWORD', (password, new_password) ->
+                console.log 'UPDATE_ACCOUNT_PASSWORD'
+
+                model.updateAccountPassword()
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'

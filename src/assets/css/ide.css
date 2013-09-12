@@ -1486,6 +1486,11 @@ button:focus {
 	top: 10px;
 }
 
+.region-resource-status.icon-pending {
+	font-size: 10px;
+	color: #999;
+}
+
 .region-resource-status-running {
 	background: url('../images/ide/icon-app-running-16x16.png') no-repeat;
 }
@@ -1542,11 +1547,36 @@ button:focus {
 	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
 	background-color: #55626e;
+	position: relative;
 }
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
+}
+
+.region-resource-list-item.disabled {
+	cursor: default;
+}
+
+.disabled .app-thumbnail {
+	background: none;
+	background-color: #55626e;
+	text-align: center;
+}
+
+.app-thumbnail-pending {
+	padding: 60px 0;
+}
+
+.region-resource-thumbnail img.app-pending-animation {
+	width: 30px;
+	height: 23px;
+}
+
+
+.region-resource-list-item.disabled {
+	opacity: .6;
 }
 
 .region-resource-thumbnail img {
@@ -3136,6 +3166,14 @@ td.table-action a.btn {
 #toolbar-run span {
 	margin-left : 10px;
 	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+#toolbar-line-style > span {
+	display: none;
+}
+
+.toolbar-line-style .dropdown li.item > span {
+
 }
 
 /* Sidebars, including Resource Panle and Property Panel */
@@ -5295,6 +5333,16 @@ a.action-link:hover {
 
 .btn.sg-rule-create-readd {
 	width: 200px;
+}
+
+#sg-rule-self-ref {
+	border-radius: 4px;
+	background-color: #f3f3f3;
+	padding: 10px;
+}
+
+#sg-rule-self-ref .icon-info {
+	color: #3781C9;
 }
 
 /* Notification Dropdown */

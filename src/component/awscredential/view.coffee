@@ -94,14 +94,16 @@ define [ 'event',
 
             null
 
-        clickUpdateEmail : (event) ->
+        clickUpdateEmail : (flag) ->
             console.log 'account_setting_tab clickUpdateEmail'
 
             me = this
 
             email = $('#account-email-input').val()
 
-            me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+            if email
+
+                me.trigger 'UPDATE_ACCOUNT_EMAIL', email
 
         clickCancelEmail : (event) ->
             console.log 'account_setting_tab clickCancelEmail'
@@ -119,7 +121,7 @@ define [ 'event',
 
             null
 
-        clickUpdatePassword : (event) ->
+        clickUpdatePassword : (flag) ->
             console.log 'account_setting_tab onUpdatePassword'
 
             me = this
@@ -137,10 +139,16 @@ define [ 'event',
                 $('#account-passowrd-info').show()
                 $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_INVALID_PASSWORD
 
+            else if flag is 'error_password'
+
+                $('#account-passowrd-info').show()
+                $('#account-passowrd-info').html '{{ i18n HEAD_MSG_ERR_ERROR_PASSWORD}} <a href="javascript:void(0)">{{ i18n HEAD_MSG_ERR_RESET_PASSWORD }}</a>'
+                #$('#account-passowrd-info').html "Current password is wrong. <a href="javascript:void(0)">Forget password?</a>"
+
             else
 
                 $('#account-passowrd-info').hide()
-                me.trigger 'UPDATE_ACCOUT_PASSWORD', password, new_password
+                me.trigger 'UPDATE_ACCOUNT_PASSWORD', password, new_password
 
         clickCancelPassword : (event) ->
             console.log 'account_setting_tab clickCancelPassword'

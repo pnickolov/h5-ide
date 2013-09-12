@@ -18,6 +18,10 @@ define [ 'event',
             'click #account-setting-tab li a'       : 'onTab'
             'click #account-update-email-link'      : 'onChangeEmail'
             'click #account-change-password'        : 'onChangePassword'
+            'click #account-email-update'           : 'clickUpdateEmail'
+            'click #account-email-cancel'           : 'clickCancelEmail'
+            'click #account-password-update'        : 'clickUpdatePassword'
+            'click #account-password-cancel'        : 'clickCancelPassword'
 
         render     : (template) ->
             console.log 'account_setting_tab render'
@@ -90,6 +94,22 @@ define [ 'event',
 
             null
 
+        clickUpdateEmail : (event) ->
+            console.log 'account_setting_tab clickUpdateEmail'
+
+            me = this
+
+            email = $('#account-email-input').val()
+
+            me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+
+        clickCancelEmail : (event) ->
+            console.log 'account_setting_tab clickCancelEmail'
+
+            me = this
+
+            me.showSetting('account')
+
         onChangePassword : (event) ->
             console.log 'account_setting_tab onChangePassword'
 
@@ -99,59 +119,22 @@ define [ 'event',
 
             null
 
-        # show setting dialog
-        # showSet : (flag) ->
-        #     console.log 'show credential setting dialog'
+        clickUpdatePassword : (event) ->
+            console.log 'account_setting_tab onUpdatePassword'
 
-        #     me = this
+            me = this
 
-        #     $('#AWSCredential-form').show()
-        #     $('#AWSCredentials-submiting').hide()
-        #     $('#AWSCredentials-update').hide()
+            password        = $('#account-current-password').val()
+            new_password    = $('#account-new-password').val()
 
-        #     # set content
-        #     $('#aws-credential-account-id').val(' ')
-        #     $('#aws-credential-access-key').val(' ')
-        #     $('#aws-credential-secret-key').val(' ')
+            me.trigger 'UPDATE_ACCOUT_PASSWORD', password, new_password
 
-        #     if not flag     # initial
-        #         $('#AWSCredential-failed').hide()
-        #         $('#AWSCredential-info').show()
+        clickCancelPassword : (event) ->
+            console.log 'account_setting_tab clickCancelPassword'
 
-        #     else if flag is 'is_failed'
-        #         $('#AWSCredential-failed').show()
-        #         $('#AWSCredential-info').hide()
+            me = this
 
-        #     else if flag is 'is_update'
-        #         $('#AWSCredential-failed').hide()
-        #         $('#AWSCredential-info').show()
-        #         $('#aws-credential-account-id').val(me.model.attributes.account_id)
-
-        # # show update dialog
-        # showUpdate : () ->
-        #     console.log 'show updating dialog'
-
-        #     me = this
-
-        #     $('#AWSCredential-form').hide()
-        #     $('#AWSCredentials-submiting').hide()
-        #     $('#AWSCredentials-update').show()
-
-        #     # set content
-        #     $('#aws-credential-update-account-id').text me.model.attributes.account_id
-
-        # # show submit dialog
-        # showSubmit : (flag) ->
-        #     console.log 'show submiting dialog'
-
-        #     me = this
-
-        #     $('#AWSCredential-form').hide()
-        #     $('#AWSCredentials-submiting').show()
-        #     $('#AWSCredentials-update').hide()
-
-        #     if flag is 'LOAD_RESOURCE'
-        #         $('#AWSCredentials-loading-text').text('Loading resources...')
+            me.showSetting('account')
 
         # show account setting tab or credential setting tab
         showSetting : (tab, flag) ->

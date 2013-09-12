@@ -1096,10 +1096,8 @@ button:focus {
 .global-region-status-empty {
 	text-align: center;
 	padding: 117px 0;
-	background-color: #FCFCFC;
-	border-radius: 5px;
 	margin: 15px;
-	border: 1px solid #DDD;
+	color: #999;
 }
 
 .global-region-status-header {
@@ -3201,6 +3199,10 @@ a.sidebar-hider {
 	border-radius: 0 3px 3px 0;
 }
 
+#resource-panel .scrollbar-veritical-thumb {
+	/*background-color: #888;*/
+}
+
 .resource-list {
 	width: 100%;
 	padding: 0 0 10px 0;
@@ -4238,16 +4240,12 @@ li:hover .rule-remove-icon {
 
 .network-list li {
 	position: relative;
-	padding: 5px;
+	padding: 8px;
 	height: 20px;
 }
 
 .network-list li:nth-child(2n+1) {
 	background: #fcfcfc;
-}
-
-.network-list li:hover {
-	background: #e0e0e0;
 }
 
 .network-list li .name{
@@ -4256,14 +4254,15 @@ li:hover .rule-remove-icon {
 }
 
 .network-list li .input-ip {
-	width            : 30px;
-	height           : 10px;
-	padding          : 3px;
-	background-color : #f0f0f0;
-	font-size        : 12px;
-	border           : 1px solid #ccc;
-	margin-top       : -4px;
-	color            : #999;
+	border-radius: 2px;
+	width: 25px;
+	height: 9px;
+	padding: 3px 2px 5px 5px;
+	background-color: #F0F0F0;
+	font-size: 12px;
+	border: 1px solid #CCC;
+	margin-top: -4px;
+	color: #999;
 }
 
 .network-list li .input-ip:hover {
@@ -4511,6 +4510,7 @@ a.action-link:hover {
 	width: 260px;
 	padding: 20px;
 	background: #FCFCFC;
+
 	border: 1px solid #DDD;
 	cursor: pointer;
 }
@@ -4520,7 +4520,12 @@ a.action-link:hover {
 }
 
 #createNewStack_wrap li:hover {
-	background: #fafafa;
+	background-image: -webkit-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:    -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:     -ms-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:      -o-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:         linear-gradient(top, #fcfcfc, #f6f6f6);
+
 	border: 1px solid #ccc;
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -5961,20 +5966,30 @@ a.action-link:hover {
 }
 
 #modal-run-stack .modal-body div.estimate {
-	background-color: rgb(215, 227, 235);
-	padding: 15px;
+	border-top: 1px solid #CCC;
+	background-color: #F8F8F8;
+	position: relative;
+	padding: 5px 15px;
+	height: 58px;
+	margin-top: 20px;
 }
 
 #modal-run-stack .estimate .title {
-	float: left;
+	top: 20px;
+	position: absolute;
 }
 
 #modal-run-stack .estimate .price {
-	float: right;
+	right: 10px;
+	top: 20px;
+	position: absolute;
+	font-size: 12px;
 }
 
 #modal-run-stack .estimate .price b {
-	color: #3781C9;
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	color: #666;
+	font-size: 28px;
 }
 
 

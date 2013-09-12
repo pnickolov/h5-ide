@@ -189,21 +189,25 @@
                     {{#each cur_app_list}}
                         {{#if ispending}}
                         <li>
-                            <a href="javascript:void(0)" class="region-resource-list-item">
-                                <div class="region-resource-thumbnail app-thumbnail disabled">
+                            <a href="javascript:void(0)" class="region-resource-list-item disabled">
+                                <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                    <div class="app-thumbnail-pending"><!-- <i class="icon-pending"></i> -->
+                                        <img width="30" height="23" class="app-pending-animation" src="./assets/images/ide/loading-bar-dark.gif"/>
+                                        <p>Processing...</p>
+                                    </div>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
-                                    <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
-                                    <div class="region-resource-action clearfix">
+                                    <i class="region-resource-status icon-pending"></i>
+                                    <!-- <div class="region-resource-action clearfix">
                                         {{#if isrunning}}
                                             <i class="icon-stop stop-app" id="{{id}}" name="{{name}}"></i>
                                         {{else}}
                                             <i class="icon-play start-app" id="{{id}}" name="{{name}}"></i>
                                         {{/if}}
                                         <i class="icon-terminate terminate-app" id="{{id}}" name="{{name}}"></i>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </a>
                         </li>

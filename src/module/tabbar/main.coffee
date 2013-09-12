@@ -256,17 +256,19 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 null
 
             #listen
-            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, app_id ) ->
-                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
+                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
                 #
-                view.closeTab app_id
+                view.trueCloseTab null, tab_id
+                #
+                #view.closeTab tab_id
                 #push event
                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen ide_event.STACK_DELETE, ( tab_name, stack_id ) ->
-                console.log 'STACK_DELETE ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
+            ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
+                console.log 'CLOSE_TAB ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
                 #
                 view.closeTab stack_id
                 #push event

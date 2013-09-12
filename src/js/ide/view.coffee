@@ -39,7 +39,7 @@ define [ 'event',
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    ide_event.trigger ide_event.STACK_DELETE, null, tab_id
+                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
             null

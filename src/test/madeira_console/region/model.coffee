@@ -429,7 +429,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'aws_handle', 'app_m
                 console.log result
 
                 if !result.is_error
-                    ide_event.trigger ide_event.STACK_DELETE, stack_name, stack_id
+                    ide_event.trigger ide_event.CLOSE_TAB, stack_name, stack_id
 
         _genDhcp: (dhcp) ->
 

@@ -47,6 +47,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_APP_TAB           : 'OPEN_APP_TAB'
         OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
+        CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
         #switch ide.html
@@ -113,7 +114,7 @@ define [ 'underscore', 'backbone' ], () ->
         STARTED_APP            : 'STARTED_APP'
         STOPPED_APP            : 'STOPPED_APP'
         TERMINATED_APP         : 'TERMINATED_APP'
-        STACK_DELETE           : 'STACK_DELETE'
+        #STACK_DELETE          : 'STACK_DELETE'
 
         #canvas event save stack/app by ctrl+s
         CANVAS_SAVE            : 'CANVAS_SAVE'

@@ -3172,8 +3172,8 @@ td.table-action a.btn {
 	display: none;
 }
 
-.toolbar-line-style .dropdown li.item > span {
-
+.toolbar-line-style .dropdown li {
+	line-height: 31px;
 }
 
 /* Sidebars, including Resource Panle and Property Panel */

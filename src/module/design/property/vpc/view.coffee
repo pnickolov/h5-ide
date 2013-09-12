@@ -93,8 +93,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
                 this.model.setCIDR event.target.value
 
         onChangeTenancy : ( event, newValue ) ->
-            $("#desc-dedicated").toggle( newValue == "dedicated" )
-
             this.model.setTenancy newValue
             null
 

@@ -105,6 +105,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             this.model.set 'ebs_optimized', event.target.checked
 
         tenancySelect : ( event, value ) ->
+            $type = $("#instance-type-select")
+            $t1   = $type.find("[data-id='t1.micro']")
+
+            if $t1.length
+                show = value isnt "dedicated"
+                $t1.toggle( show )
+
+                if $t1.hasClass("selected") and not show
+                    $type.find(".item:not([data-id='t1.micro'])").eq(0).click()
             this.model.set 'tenacy', value
 
         cloudwatchSelect : ( event ) ->

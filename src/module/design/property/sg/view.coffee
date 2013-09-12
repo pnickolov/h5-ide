@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC, constant ) ->
 
 	InstanceView = Backbone.View.extend {
 
@@ -72,7 +72,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			isclassic = false
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 				isclassic = true
-			modal MC.template.modalSGRule {isAdd:true, isclassic:isclassic}, true
+
+			# get sg list
+			sgList = []
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+					if !MC.aws.elb.isELBDefaultSG(compObj.uid)
+						sgList.push({
+							sgName: compObj.name
+							sgUID: compObj.uid
+						})
+				null
+
+
+			modal MC.template.modalSGRule {isAdd:true, isclassic: isclassic, sgList: sgList}, true
 			return false
 
 		removeRulefromList: (event, id) ->
@@ -143,10 +156,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			sourceValue = $.trim($('#sg-add-model-source-select').find('.selected').attr('data-id'))
 
-			sgUID = @model.get( 'sg_detail' ).component.uid
-			sgName = @model.get( 'sg_detail' ).component.name
+			# sgUID = @model.get( 'sg_detail' ).component.uid
+			# sgName = @model.get( 'sg_detail' ).component.name
+			sgUID = ''
+			sgName = ''
 			if descrition_dom.hasClass('input')
-				if sourceValue is 'self'
+				if sourceValue isnt 'custom'
+					selectDom = $('#sg-add-model-source-select').find('.selected')
+					sgUID = selectDom.attr('data-sg-uid')
+					sgName = selectDom.text()
 					sg_descrition = '@' + sgUID + '.resource.GroupId'
 				else
 					sg_descrition = descrition_dom.val()
@@ -216,7 +234,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			rule.direction = sg_direction
 
-			if sourceValue is 'self'
+			if sourceValue is 'custom'
+				rule.ipranges = sg_descrition
+			else
 				rule.ipranges = sgName
 
 			# sg_uid = $("#sg-secondary-panel").attr "uid"

@@ -73,13 +73,17 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+        status:
+            reloading: false
+
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
         reloadResource: ->
+            @status.reloading = true
             @showLoading '#global-view, #region-resource-wrap'
             Helper.scrollToResource()
-            @trigger 'RELOAD_RESOURCE', current_region
+            @trigger 'RELOAD_RESOURCE'
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
@@ -118,7 +122,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
 
         renderGlobalList: ( event ) ->
+            @status.reloading = false
             tmpl = @global_list @model.toJSON()
+            if current_region
+                @trigger 'SWITCH_REGION', current_region
             $( this.el ).find('#global-view').html tmpl
 
         renderRegionAppStack: ( tab ) ->
@@ -134,21 +141,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
-            tmpl = @region_resource @model.toJSON()
-            $( this.el ).find('#region-resource-wrap').html tmpl
+            if not @status.reloading
+                tmpl = @region_resource @model.toJSON()
+                $( this.el ).find('#region-resource-wrap').html tmpl
 
         reRenderRegionPartial: ( type, data ) ->
-            tmplAll = $( '#region-resource-tmpl' ).html()
-            beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
-            endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
+            if not @status.reloading
+                tmplAll = $( '#region-resource-tmpl' ).html()
+                beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
+                endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
 
-            startPos = Helper.regexIndexOf tmplAll, beginRegex
-            endPos = tmplAll.indexOf '</tbody>', startPos
+                startPos = Helper.regexIndexOf tmplAll, beginRegex
+                endPos = tmplAll.indexOf '</tbody>', startPos
 
-            tmpl = tmplAll.slice startPos, endPos
-            template = Handlebars.compile tmpl
+                tmpl = tmplAll.slice startPos, endPos
+                template = Handlebars.compile tmpl
 
-            $( this.el ).find("##{type} tbody").html template data
+                $( this.el ).find("##{type} tbody").html template data
 
             null
 

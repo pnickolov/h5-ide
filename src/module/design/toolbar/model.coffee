@@ -97,6 +97,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #temp
                     MC.canvas_data.id = new_id
                     MC.canvas_data.key = key
+                    #
+                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )

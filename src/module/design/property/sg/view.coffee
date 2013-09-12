@@ -125,6 +125,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			if target.parsley 'validate'
 				this.trigger 'SET_SG_NAME', name
 
+			parentCompUID = $('#property-panel').attr('component-uid')
+			MC.aws.sg.updateSGColorLabel(parentCompUID)
+
 		setSGDescription : ( event ) ->
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
 			this.trigger 'SET_SG_DESC', event.target.value

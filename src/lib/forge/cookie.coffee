@@ -16,17 +16,17 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	deleteCookie = ->
 
-		option = { expires:1, path: '/'	}
+		option = { expires:-1, path: '/' }
 
 		#delete cookies
-		$.cookie 'userid',      null, option
-		$.cookie 'usercode',    null, option
-		$.cookie 'session_id',  null, option
-		$.cookie 'region_name', null, option
-		$.cookie 'email',       null, option
-		$.cookie 'has_cred',    null, option
-		$.cookie 'username',    null, option
-		$.cookie 'account_id',	null, option
+		$.cookie 'userid',      '', option
+		$.cookie 'usercode',    '', option
+		$.cookie 'session_id',  '', option
+		$.cookie 'region_name', '', option
+		$.cookie 'email',       '', option
+		$.cookie 'has_cred',    '', option
+		$.cookie 'username',    '', option
+		$.cookie 'account_id',	'', option
 
 	setCred = ( result ) ->
 		option = { expires:1, path: '/'	}

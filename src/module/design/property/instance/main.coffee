@@ -58,13 +58,13 @@ define [ 'jquery',
 
             model.getUID  uid
             model.getName()
+            model.getCheckBox()
             model.getInstanceType()
             model.getAmiDisp()
             model.getAmi()
             model.getComponent()
             model.getKeyPair()
             # model.getSgDisp()
-            model.getCheckBox()
             model.getEni()
             #
             view.render()

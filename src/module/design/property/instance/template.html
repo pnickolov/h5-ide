@@ -34,7 +34,7 @@
 				<div class="selection"></div>
 				<ul class="dropdown">
 					{{#each instance_type}}
-					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
 						<div class="main truncate">{{main}}</div>
 						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 					</li>
@@ -59,13 +59,10 @@
 			<div class="selectbox" id="tenancy-select">
 				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
 				<ul class="dropdown" tabindex="-1">
-					{{#if checkbox_display.tenancy}}
-					<li class="item selected" data-id="default">Default</li>
-					<li class="item" data-id="dedicated">Delicated</li>
-					{{else}}
-					<li class="item" data-id="default">Default</li>
-					<li class="item selected" data-id="dedicated">Dedicated</li>
-					{{/if}}
+					{{#unless force_tenacy}}
+					<li class="item {{#if checkbox_display.tenancy}}selected{{/if}}" data-id="default">Default</li>
+					{{/unless}}
+					<li class="item {{#unless checkbox_display.tenancy}}selected{{/unless}}" data-id="dedicated">Delicated</li>
 				</ul>
 			</div>
 		</section>

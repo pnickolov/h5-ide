@@ -199,6 +199,7 @@ define [ 'event',
 
                 $('#account-profile-setting').hide()
                 $('#AWSCredential-setting').show()
+                #$('.modal-footer').hide()
 
                 if not flag     # initial
 
@@ -236,7 +237,7 @@ define [ 'event',
                 else if flag is 'in_update'
 
                     $('#AWSCredential-form').show()
-                    $('#AWSCredentials-submiting').show()
+                    $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
                     # set content

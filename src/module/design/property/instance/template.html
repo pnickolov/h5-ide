@@ -117,17 +117,6 @@
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">User Data</label>
-			<div class="base64-check">
-				<div class="checkbox">
-					{{#if checkbox_display.base64Encoded}}
-					<input id="property-instance-base64" type="checkbox" checked="true" value="None" name="property-instance-base64" />
-					{{else}}
-					<input id="property-instance-base64" type="checkbox" value="None" name="property-instance-base64" />
-					{{/if}}
-					<label for="property-instance-base64"></label>
-				</div>
-				<label for="property-instance-base64">Base64 encoded</label>
-			</div>
 			<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
 		</section>
 	</div>

@@ -37,6 +37,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             indexOf = str.substring(startpos || 0).search(regex)
             if indexOf >= 0 then (indexOf + (startpos || 0)) else indexOf
 
+        updateLoadTime: ( time ) ->
+            $('#global-refresh span').text time
+
+        scrollToResource: ->
+            scrollTo = $('#global-region-map-wrap').height()
+            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
@@ -46,7 +53,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
         region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
         recent: Handlebars.compile $( '#recent-tmpl' ).html()
-        recent_launched_app : Handlebars.compile $( '#recent-launched-app-tmpl' ).html()
         loading: $( '#loading-tmpl' ).html()
 
         events   :
@@ -58,7 +64,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
             'click #region-aws-resource-tab a'          : 'switchRegionResource'
-            'click #global-refresh'                     : 'refreshAll'
+            'click #global-refresh'                     : 'reloadResource'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
             'modal-shown .start-app'                    : 'startAppClick'
@@ -70,8 +76,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
-        refreshAll: ->
-            location.reload()
+        reloadResource: ->
+            @showLoading '#global-view, #region-resource-wrap'
+            Helper.scrollToResource()
+            @trigger 'RELOAD_RESOURCE', current_region
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
@@ -93,7 +101,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 @$el.find( '#global-view' ).show()
                 @$el.find( '#region-view' ).hide()
             else
-                @showLoading('#region-app-stack-wrap, #region-resource-wrap')
+                @showLoading '#region-app-stack-wrap, #region-resource-wrap'
                 @$el.find( '#global-view' ).hide()
                 @$el.find( '#region-view' ).show()
 
@@ -148,9 +156,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
-        updateLoadTime: ( time ) ->
-            @$el.find('#global-refresh span').text time
-
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
             $topButton = $( "#global-create-stack" )
@@ -162,15 +167,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $target = $ event.currentTarget
             if $target.prop 'disabled'
                 return
-            ide_event.trigger ide_event.ADD_STACK_TAB, ( current_region or $target.data 'region' )
+            ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
 
         gotoRegion: ( event ) ->
             $target = $ event.currentTarget
             region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
             $( "#region-switch-list li[data-region=#{region}]" ).click()
+            Helper.scrollToResource()
 
-            scrollTo = $('#global-region-map-wrap').height()
-            scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+        displayLoadTime: () ->
+            # display refresh time
+            loadTime = $.now() / 1000
+            clearInterval @timer
+            Helper.updateLoadTime MC.intervalDate( loadTime )
+            @timer = setInterval ( ->
+                Helper.updateLoadTime MC.intervalDate( loadTime )
+                console.log 'timeupdate', loadTime
+            ), 60001
+            null
+
 
         ############################################################################################
 
@@ -183,16 +198,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $( this.el ).find('#global-region-spot').html cur_tmpl
 
             null
-
-        renderRecentLaunchedApp : ->
-            console.log 'dashboard recent launched app render'
-            $( this.el ).find( '#recent-launched-app' ).html this.recent_launched_app this.model.attributes
-            null
-
-        # renderRecentStoppedApp : ->
-        #     console.log 'dashboard recent stopped app render'
-        #     $( this.el ).find( '#recent-stopped-app' ).html this.recent_stopped_app this.model.attributes
-        #     null
 
         render : ( template ) ->
             console.log 'dashboard overview render'

@@ -99,7 +99,15 @@ MC.canvas = {
 
 		switch (comp_data.type) {
 			case 'AWS.EC2.Instance':
-				comp_sg_list = comp_data.resource.SecurityGroupId;
+				eni_comp_data = MC.aws.eni.getInstanceDefaultENI(comp_data.uid)
+				if (eni_comp_data) {
+					$.each(eni_comp_data.resource.GroupSet, function(i, value)
+					{
+						comp_sg_list.push(value.GroupId);
+					});
+				} else {
+					comp_sg_list = comp_data.resource.SecurityGroupId;
+				}
 				break;
 			case 'AWS.ELB':
 			case 'AWS.AutoScaling.LaunchConfiguration':
@@ -2877,13 +2885,13 @@ MC.canvas.eniList = {
 			// 	}
 			// }
 
-			for ( var i = 0; i < layout.eniList.length; ++i ) {
-
-				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ]
-				temp_data.enis.push( {
-					  id   : eni_comp.uid
-					, name : eni_comp.resource.NetworkInterfaceId
-				} );
+			for ( var i = 0, l = layout.eniList.length; i < l; ++i )
+			{
+				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
+				temp_data.enis.push({
+					'id'   : eni_comp.uid,
+					'name' : eni_comp.resource.NetworkInterfaceId
+				});
 			}
 
 			$('#canvas_container').append( MC.template.eniList( temp_data ) );
@@ -3822,7 +3830,11 @@ MC.canvas.event.drawConnection = {
 								}
 							}
 
-							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [node_id, value.from, item.id, value.to]);
+							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, {
+								  from      : node_id
+								, to        : item.id
+								, from_port : value.from
+								, to_port   : value.to});
 
 							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							{
@@ -3853,12 +3865,12 @@ MC.canvas.event.drawConnection = {
 	{
 		var canvas_offset = event.data.canvas_offset,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			startX = event.data.originalX,
-			startY = event.data.originalY,
 			endX = (event.pageX - canvas_offset.left) * scale_ratio,
 			endY = (event.pageY - canvas_offset.top) * scale_ratio,
-			arrow_length = 8,
+			startX = event.data.originalX,
+			startY = event.data.originalY,
 			angle = Math.atan2(endY - startY, endX - startX),
+			arrow_length = 8,
 			arrowPI = Math.PI / 6,
 			arrowAngleA = angle - arrowPI,
 			arrowAngleB = angle + arrowPI;
@@ -3968,7 +3980,7 @@ MC.canvas.event.drawConnection = {
 				{
 					line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
 
-					//trigger event when connect two port
+					// trigger event when connect two port
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
 			}
@@ -4189,9 +4201,9 @@ MC.canvas.event.siderbarDrag = {
 						}
 						else
 						{
-							//dispatch event when is not matched
+							// dispatch event when is not matched
 							$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
-								type: node_type
+								'type': node_type
 							});
 						}
 					}
@@ -4836,7 +4848,6 @@ MC.canvas.event.groupResize = {
 
 			$.each(node_connections, function (index, value)
 			{
-				//$('#' + value.line).show();
 				line_connection = layout_connection_data[ value.line ];
 
 				MC.canvas.connect(

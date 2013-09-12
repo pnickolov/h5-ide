@@ -220,7 +220,8 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		azs = {}
 		for sb in subnets
-			azs[ components[ sb ].resource.AvailabilityZone ] = sb
+			if sb && components[ sb ]
+				azs[ components[ sb ].resource.AvailabilityZone ] = sb
 
 		elb_res = components[ elb_uid ].resource
 

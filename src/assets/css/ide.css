@@ -68,36 +68,6 @@ button:focus {
 	overflow : hidden;
 }
 
-.loading-spinner {
-  -webkit-animation: loading-spinner .8s infinite linear;
-  -moz-animation: loading-spinner .8s infinite linear;
-  -o-animation: loading-spinner .8s infinite linear;
-  width: 45px;
-  height: 45px;
-  display: inline-block;
-  background: url("../images/ide/loading.png") no-repeat center;
-}
-
-@-webkit-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@-moz-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@-o-keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes loading-spinner {
-   0% { -webkit-transform: rotate(0deg); }
-   100% { -webkit-transform: rotate(360deg); }
-}
-
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -251,7 +221,7 @@ button:focus {
 	top: 50px;
 	right: 0;
 	z-index: 3;
-	box-shadow: 0 8px 10px rgba(0,0,0,.2);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #header .dropdown-menu ul {
@@ -585,11 +555,13 @@ button:focus {
 	height           : 100%;
 
 	background-color : #302E30;
-	border-right: 1px solid #202020;
+	border-right     : 1px solid #202020;
+	box-shadow       : 2px 0 6px rgba(0,0,0,.2);
 }
 
 #navigation .sub-menu-wrapper {
 	background: #505050;
+	box-shadow: 0 0 5px rgba(0,0,0,.5);
 
 	opacity: 0;
 
@@ -786,11 +758,16 @@ button:focus {
 
 .nav-empty {
 	margin: 15px;
-	padding: 20px;
+	padding: 15px;
 	color: #AAA;
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 	font-size: 12px;
+}
+
+.loading-wrapper {
+	width: 100%;
+	text-align: center;
 }
 
 /* Main */
@@ -889,11 +866,12 @@ button:focus {
 }
 
 #tab-bar-dashboard {
-	width: 116px !important;
+	width: 114px !important;
+	margin-right: 4px !important;
 }
 
 #tab-bar-dashboard .tab-bar-truncate {
-	width: 105px !important;
+	width: 103px !important;
 }
 
 /* New global design start */
@@ -1300,9 +1278,8 @@ button:focus {
 .global-region-status-empty {
 	text-align: center;
 	padding: 117px 0;
-	background-color: #f6f6f6;
-	border-radius: 5px;
 	margin: 15px;
+	color: #999;
 }
 
 .global-region-status-header {
@@ -2112,7 +2089,7 @@ button:focus {
 	}
 }
 
-.close-tab {
+.close-tab, .close-restriction {
 	display     : none;
 
 	position    : absolute;
@@ -2128,27 +2105,24 @@ button:focus {
 	color       : #aaa;
 }
 
-#tab-bar li:hover a.close-tab {
+#tab-bar li:hover a.close-tab, #tab-bar li:hover a.close-restriction {
 	display: block;
 }
 
+#tab-bar li.unsaved a.close-restriction,
+#tab-bar li.active.unsaved a.close-restriction
 #tab-bar li.unsaved a.close-tab,
 #tab-bar li.active.unsaved a.close-tab {
 	color: #D64442;
 }
 
-#tab-bar li.active a.close-tab {
+#tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
 	color   : #aaa;
 	display : block;
 }
 
 #tab-bar li a.close-tab:hover {
 	color: #6C99D4;
-}
-
-
-#tab-bar-dashboard {
-	width: 116px !important;
 }
 
 /* Main Content */
@@ -2892,12 +2866,12 @@ td.table-action a.btn {
 	height: 100%;
 }
 
-#modal-browse-community-ami .show-loading .loading-spinner {
+#modal-browse-community-ami .show-loading .loading {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -22.25px;
-	margin-top: -47.25px;
+	margin-left: -12px;
+	margin-top: -16px;
 }
 
 #ami-search-option {
@@ -3192,9 +3166,10 @@ td.table-action a.btn {
 	width     : 100%;
 	min-width : 370px;
 	background      : #f0f0f0;
-	/*border-bottom : 2px solid #d3d3d3;*/
-	box-shadow      : 0 2px 0 #d3d3d3;
-	border-radius   : 2px 2px 0 0;
+
+	box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius : 2px 2px 0 0;
+	border-bottom : 1px solid #ccc;
 }
 
 .toolbar-btn-group {
@@ -3253,7 +3228,7 @@ td.table-action a.btn {
 	position    : relative;
 	float       : left;
 
-	line-height : 26px;
+	line-height : 24px;
 	text-align  : center;
 	color       : #616061;
 
@@ -3359,15 +3334,17 @@ td.table-action a.btn {
 }
 
 .sidebar-title {
-	padding : 10px;
+	padding : 0 10px;
+	height  : 43px;
 
 	font-size   : 16px;
+	line-height : 43px;
 	color       : #b0b0b0;
 	text-shadow : 0 1px #333;
-	/*text-align: center;*/
 
 	background-color : #313131;
-	border-bottom  : 2px solid #202122;
+	border-bottom    : 1px solid #202122;
+	/*box-shadow       : inset 0 1px 0 rgba(255,255,255,.1);*/
 }
 
 a.sidebar-hider {
@@ -3402,6 +3379,10 @@ a.sidebar-hider {
 #hide-resource-panel {
 	left: 246px;
 	border-radius: 0 3px 3px 0;
+}
+
+#resource-panel .scrollbar-veritical-thumb {
+	/*background-color: #888;*/
 }
 
 .resource-list {
@@ -3745,10 +3726,9 @@ a.sidebar-hider {
 
 .property-sidebar-title {
 	font-size   : 16px;
-	line-height : 43px;
 	text-shadow : none;
 
-	padding  : 0 10px;
+/*	padding  : 0 10px;*/
 	height   : 43px;
 	width    : 260px;
 	position : relative;
@@ -4181,6 +4161,11 @@ a.sidebar-hider {
 	height  : 52px;
 	padding : 10px 0 10px 10px;
 	width   : auto;
+	position: relative;
+}
+
+.acl-info-list > li {
+	height  : 38px;
 }
 
 .acl-sg-info-list .col1 {
@@ -4231,6 +4216,11 @@ a.sidebar-hider {
 	transition         : background .2s;
 }
 
+.acl-info-list .col3 {
+	height      : 60px;
+	line-height : 64px;
+}
+
 .acl-sg-info-list .col3:hover {
 	background-color: #404040;
 }
@@ -4246,10 +4236,12 @@ a.sidebar-hider {
 }
 
 .acl-sg-info-list .sg-list-delete-btn {
-	cursor      : pointer;
-	margin-top  : 35px;
-	margin-left : 180px;
-	position: absolute;
+	cursor       : pointer;
+/*	margin-top   : -6px;
+	margin-right : 20px;
+	position     : absolute;
+	top          : 50%;
+	font-size    : 12px;*/
 }
 
 .icon-btn-details {
@@ -4439,16 +4431,12 @@ li:hover .rule-remove-icon {
 
 .network-list li {
 	position: relative;
-	padding: 5px;
+	padding: 8px;
 	height: 20px;
 }
 
 .network-list li:nth-child(2n+1) {
 	background: #fcfcfc;
-}
-
-.network-list li:hover {
-	background: #e0e0e0;
 }
 
 .network-list li .name{
@@ -4457,14 +4445,15 @@ li:hover .rule-remove-icon {
 }
 
 .network-list li .input-ip {
-	width            : 30px;
-	height           : 10px;
-	padding          : 3px;
-	background-color : #f0f0f0;
-	font-size        : 12px;
-	border           : 1px solid #ccc;
-	margin-top       : -4px;
-	color            : #999;
+	border-radius: 2px;
+	width: 25px;
+	height: 9px;
+	padding: 3px 2px 5px 5px;
+	background-color: #F0F0F0;
+	font-size: 12px;
+	border: 1px solid #CCC;
+	margin-top: -4px;
+	color: #999;
 }
 
 .network-list li .input-ip:hover {
@@ -4648,7 +4637,7 @@ a.action-link:hover {
 }
 #securitygroup-modal-description {
 	display: inline-block;
-	width: 240px;
+	width: 182px;
 }
 
 /* Status Bar */
@@ -4712,6 +4701,7 @@ a.action-link:hover {
 	width: 260px;
 	padding: 20px;
 	background: #FCFCFC;
+
 	border: 1px solid #DDD;
 	cursor: pointer;
 }
@@ -4721,7 +4711,12 @@ a.action-link:hover {
 }
 
 #createNewStack_wrap li:hover {
-	background: #fafafa;
+	background-image: -webkit-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:    -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:     -ms-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:      -o-linear-gradient(top, #fcfcfc, #f6f6f6);
+	background-image:         linear-gradient(top, #fcfcfc, #f6f6f6);
+
 	border: 1px solid #ccc;
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -4761,7 +4756,17 @@ a.action-link:hover {
 }
 
 #snapshot-info-group {
-	padding: 15px;
+	padding: 10px;
+	font-size: 14px;
+}
+
+#snapshot-info-group span {
+	font-size: 12px;
+	color: #aaa;
+}
+
+#snapshot-info-group span:last-child {
+	margin-left: 5px;
 }
 
 /* az property panel, can also be used for panels like az's */
@@ -4778,17 +4783,17 @@ a.action-link:hover {
 	height  : 100%;
 	padding : 10px;
 	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .property-info {
-	font-size     : 13px;
-	color         : #BBB;
-	padding       : 5px;
-	background    : #494949;
-	border-radius : 2px;
-	margin-top    : 5px;
+	font-size: 12px;
+	color: #CCC;
+	padding: 5px 10px;
+	background: #494949;
+	border-radius: 2px;
+	margin-top: 5px;
 }
 
 .property-warning {
@@ -4952,7 +4957,7 @@ a.action-link:hover {
 
 #accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
 	background-color: rgba(0,0,0,.1);
-	color: #959595;
+	color: #F74A48;
 }
 
 #elb-property-listener-cert-main {
@@ -5487,7 +5492,7 @@ a.action-link:hover {
 /* Notification Dropdown */
 .notification-list {
 	line-height: normal;
-	background-color: #f7f7f7;
+	background-color: #fcfcfc;
 	border: 1px solid #ccc;
 }
 
@@ -5497,7 +5502,7 @@ a.action-link:hover {
 }
 
 .notification-list .notification-item:hover {
-	background: #fcfcfc;
+	background: #fff;
 }
 
 .notification-list > div:last-child {
@@ -5526,11 +5531,14 @@ a.action-link:hover {
 .notification-list .notification-details {
 	/*border         : 1px solid rgb(190, 188, 189);*/
 	margin-top       : 15px;
-	padding          : 5px;
-	background-color : #F5E4E4;
+	padding          : 10px;
 	border-radius    : 2px;
 
 	font-size        : 14px;
+
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
 }
 
 .notification-list .notification-details p {
@@ -5539,7 +5547,7 @@ a.action-link:hover {
 
 .notification-list .notification-stamp {
 	text-align: right;
-	color: rgb(153, 153, 153);
+	color: #AAA;
 	padding-top: 5px;
 }
 
@@ -5653,9 +5661,12 @@ a.action-link:hover {
 	font-size: 12px;
 }
 
+#keypair-rdp {
+	margin-right: 10px;
+}
+
 #keypair-kp-win {
 	width: 140px;
-	margin-left: 10px;
 }
 
 .hidden-details > .dl-vertical {
@@ -6146,20 +6157,30 @@ a.action-link:hover {
 }
 
 #modal-run-stack .modal-body div.estimate {
-	background-color: rgb(215, 227, 235);
-	padding: 15px;
+	border-top: 1px solid #CCC;
+	background-color: #F8F8F8;
+	position: relative;
+	padding: 5px 15px;
+	height: 58px;
+	margin-top: 20px;
 }
 
 #modal-run-stack .estimate .title {
-	float: left;
+	top: 20px;
+	position: absolute;
 }
 
 #modal-run-stack .estimate .price {
-	float: right;
+	right: 10px;
+	top: 20px;
+	position: absolute;
+	font-size: 12px;
 }
 
 #modal-run-stack .estimate .price b {
-	color: #3781C9;
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	color: #666;
+	font-size: 28px;
 }
 
 
@@ -6183,10 +6204,11 @@ a.action-link:hover {
 	color: #666;
 }
 
-#process-panel .loading-spinner {
+#process-panel .loading-bar {
 	vertical-align: middle;
 	float: right;
 	margin-right: 50px;
+	margin-top: 20px;
 }
 
 #process-panel .step-prepare {

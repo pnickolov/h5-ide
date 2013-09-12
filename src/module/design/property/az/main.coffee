@@ -32,7 +32,7 @@ define [ 'constant',
 
             # added by song
             model.clear({silent: true})
-            
+
             #
             if current_view then view.delegateEvents view.events
 
@@ -93,7 +93,7 @@ define [ 'constant',
                     return
 
                 # Update Canvas
-                MC.canvas.update oldZoneID, "text", "name", newZone
+                MC.canvas.update oldZoneID, "text", "label", newZone
                 # Update Resource Panel
 
                 res_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

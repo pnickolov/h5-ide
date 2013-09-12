@@ -4,8 +4,8 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!nls/lang.js'
-], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang ) ->
+         'i18n!nls/lang.js', 'forge_handle'
+], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, forge_handle ) ->
 
     #private
     #region map
@@ -278,7 +278,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @cacheResource 'raw', data
 
                 globalData = @globalRegionhandle data
-                @set 'global_list', globalData
+                if globalData is @get 'global_list'
+                    @trigger 'change:global_list'
+                else
+                    @set 'global_list', globalData
             else
                 @setResource data[ region ], region
 
@@ -690,7 +693,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         null
 
             me.set 'cur_region_resource_info', lists
-            me.set 'cur_region_resource', resources
+            if resources is me.get 'cur_region_resource'
+                me.trigger 'change:cur_region_resource'
+            else
+                me.set 'cur_region_resource', resources
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 
@@ -968,9 +974,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             else
                 # check whether invalid session
-                if result.return_code isnt constant.RETURN_CODE.E_SESSION and $.cookie('has_cred') isnt 'false'
-                    $.cookie 'has_cred', false,    { expires: 1 }
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION
+                    #$.cookie 'has_cred', false, { expires: 1 }
+                    forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+                    ide_event.trigger ide_event.SWITCH_MAIN
 
                 me.set 'region_classic_list', region_classic_vpc_result
 

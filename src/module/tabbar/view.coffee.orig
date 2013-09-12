@@ -149,8 +149,13 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
 
             @current_tab = target
 
+<<<<<<< HEAD
             if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
                 @trueCloseTab @current_tab, tab_id
+=======
+            if tab_id.split( '-' )[0] is 'app'
+                @_trueCloseTab @current_tab, tab_id
+>>>>>>> develop
                 return
 
             if MC.data.current_tab_id is tab_id

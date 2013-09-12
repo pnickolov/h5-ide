@@ -149,15 +149,23 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
-			'dev_prod_switch',
+			'dev_prod_switch:release',
 			'replace:analytics',
 			'strip'
+		]);
+	});
+	grunt.registerTask( 'dev_env', function() {
+		grunt.task.run([
+			'copy:dev_prod_switch_task',
+			'replace:dev_env_switch',
+			'dev_prod_switch:develop'
 		]);
 	});
 
 	/* task of use as develop */
 	grunt.registerTask( 'dev_fast', [
 									'make_fast',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -165,6 +173,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'develop', [
 									'make',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -172,6 +181,7 @@ module.exports = function( grunt ) {
 	]);
 	grunt.registerTask( 'dev_all', [
 									'make_all',
+									'dev_env',
 									'livereload-start',
 									'connect:develop',
 									'open:develop',
@@ -211,6 +221,28 @@ module.exports = function( grunt ) {
 									'clean:temp',
 									'open:publish',
 									'connect:publish'
+	]);
+
+	/* task of use as release */
+	grunt.registerTask( 'deploy', [//release
+									'clean:release',
+									'make_all',
+									'copy:publish',
+									'copy:lib_aws',
+									'copy:lib_forge',
+									'copy:special_lib',
+									'copy:special_ui',
+									'make_release',
+									'cssmin',
+									'uglify',
+									'copy:special_lib_rename',
+									'copy:special_ui_rename',
+									'copy:special_lib_del',
+									'copy:special_ui_del',
+									//publish
+									'requirejs',
+									'copy:publish_login',
+									'clean:temp'
 	]);
 
 	/*

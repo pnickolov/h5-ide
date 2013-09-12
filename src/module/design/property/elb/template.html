@@ -5,7 +5,7 @@
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >Name</label>
 			<span class="required-input right">Required</span>
-			<input data-ignore="true" data-required-rollback="true" max-length="32" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
 		</section>
 
 		{{# if have_vpc}}
@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="option-group-head"> Listener Configuration </div>
-	<div class="option-group">
+	<div class="option-group" data-bind="true">
 		<div id="accordion-group-elb-property-listener"></div>
 		<a href="javascript:void(0)" id="elb-property-listener-content-add" class="add-to-list action-link">
 			+ Add listener
@@ -74,23 +74,23 @@
 				</ul>
 			</div>
 		</section>
-		<section class="property-control-group">
+		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-elb-health-port" >Ping Port</label>
-			<input class="input" tooltip="1-65535" data-range="[1, 65535]" type="text" required="required" value="{{ health_detail.port }}" name="property-elb-health-port" id="property-elb-health-port"/>
+			<input class="input" tooltip="1-65535" type="text" value="{{ health_detail.port }}" name="property-elb-health-port" id="property-elb-health-port" data-required="true" data-type="digits" data-ignore="true" maxlength="5"/>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-health-path" >Ping Path</label>
 			<span class="required-input right">(Required)</span>
-			<input class="input" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" required="required" value="{{ health_detail.path }}" name="property-elb-health-path" id="property-elb-health-path"/>
+			<input class="input" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" value="{{ health_detail.path }}" name="property-elb-health-path" id="property-elb-health-path" data-required="true" />
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-health-interval" >Health Check Interval</label>
-			<input class="input input-short"  type="text" required="required" value="{{ health_detail.interval }}" name="property-elb-health-interval" id="property-elb-health-interval"/>
+			<input class="input input-short"  type="text" value="{{ health_detail.interval }}" name="property-elb-health-interval" id="property-elb-health-interval" data-required="true" data-type="digits" data-ignore="true"/>
 			<label class="elb-property-right-text" for="property-elb-health-interval" >Seconds</label>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-elb-health-timout" >Response Timeout</label>
-			<input class="input input-short"  type="text" required="required" value="{{ health_detail.timeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout"/>
+			<input class="input input-short"  type="text" value="{{ health_detail.timeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout" data-required="true" data-type="digits" data-ignore="true"/>
 			<label class="elb-property-right-text" for="property-elb-health-timeout" >Seconds</label>
 		</section>
 

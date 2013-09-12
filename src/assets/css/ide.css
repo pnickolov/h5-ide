@@ -1485,6 +1485,11 @@ button:focus {
 	top: 10px;
 }
 
+.region-resource-status.icon-pending {
+	font-size: 10px;
+	color: #999;
+}
+
 .region-resource-status-running {
 	background: url('../images/ide/icon-app-running-16x16.png') no-repeat;
 }
@@ -1541,11 +1546,39 @@ button:focus {
 	background: url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
 	background-color: #55626e;
+	position: relative;
 }
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
 	background-size: 225px auto;
+}
+
+.region-resource-list-item.disabled {
+	cursor: default;
+}
+
+.disabled .app-thumbnail {
+	background: none;
+	background-color: #55626e;
+	text-align: center;
+}
+
+.app-thumbnail-pending {
+	padding: 60px 0;
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+.region-resource-thumbnail img.app-pending-animation {
+	width: 30px;
+	height: 23px;
+}
+
+
+.region-resource-list-item.disabled {
+	opacity: .6;
 }
 
 .region-resource-thumbnail img {
@@ -3130,6 +3163,14 @@ td.table-action a.btn {
 #toolbar-run span {
 	margin-left : 10px;
 	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+#toolbar-line-style > span {
+	display: none;
+}
+
+.toolbar-line-style .dropdown li {
+	line-height: 31px;
 }
 
 /* Sidebars, including Resource Panle and Property Panel */
@@ -5298,6 +5339,16 @@ a.action-link:hover {
 	width: 200px;
 }
 
+#sg-rule-self-ref {
+	border-radius: 4px;
+	background-color: #f3f3f3;
+	padding: 10px;
+}
+
+#sg-rule-self-ref .icon-info {
+	color: #3781C9;
+}
+
 /* Notification Dropdown */
 .notification-list {
 	line-height: normal;
@@ -5975,20 +6026,20 @@ a.action-link:hover {
 }
 
 #modal-run-stack .estimate .title {
-	top: 20px;
+	top: 25px;
 	position: absolute;
 }
 
 #modal-run-stack .estimate .price {
 	right: 10px;
-	top: 20px;
+	top: 18px;
 	position: absolute;
 	font-size: 12px;
 }
 
 #modal-run-stack .estimate .price b {
-	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-	color: #666;
+	/*text-shado#modal-run-stack .estimate .price bw: 1px 1px 5px rgba(0, 0, 0, 0.1);*/
+	color: #696f75;
 	font-size: 28px;
 }
 

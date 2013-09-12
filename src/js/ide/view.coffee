@@ -39,7 +39,7 @@ define [ 'event',
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    ide_event.trigger ide_event.STACK_DELETE, null, tab_id
+                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
             null
@@ -101,14 +101,15 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
-            return if MC.data.current_tab_id is 'dashboard'
 
-            if MC.data.current_tab_type in [ 'NEW_STACK', 'OPEN_STACK', null ]
+            return if MC.data.current_tab_id in [ 'dashboard', undefined ]
+            return if $.cookie 'userid' is 'null'
+            return if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
 
-                if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
-                    return null
-                else
-                    return lang.ide.BEFOREUNLOAD_MESSAGE
+            if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+                return null
+            else
+                return lang.ide.BEFOREUNLOAD_MESSAGE
     }
 
     view = new MainView()

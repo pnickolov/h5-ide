@@ -179,6 +179,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             # display refresh time
             loadTime = $.now() / 1000
             clearInterval @timer
+            Helper.updateLoadTime MC.intervalDate( loadTime )
             @timer = setInterval ( ->
                 Helper.updateLoadTime MC.intervalDate( loadTime )
                 console.log 'timeupdate', loadTime

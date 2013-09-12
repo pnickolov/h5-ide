@@ -1,4 +1,4 @@
-<div id="asg-termination-policy" style="width:480px;">
+<div id="asg-termination-policy" style="width:480px;"  data-bind="true">
 	 <div class="modal-header">
 			<h3>{{title}} Scaling Policy</h3>
 			<i class="modal-close">&times;</i>
@@ -6,10 +6,10 @@
 	<div class="scroll-wrap" style="max-height:500px;">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 		 <div class="modal-body scroll-content" id="property-asg-policy" data-uid="{{uid}}">
-				
+
 			<label for="asg-policy-name" class="modal-text-major">Policy Name</label>
-			<input type="text" class="input" value="{{name}}" id="asg-policy-name">
-		
+			<input type="text" class="input" value="{{name}}" id="asg-policy-name" data-required-rollback="true" data-ignore="true" maxlength="255" data-required="true">
+
 
 				<section class="modal-control-group">
 					<h5>Alarm</h5>
@@ -33,9 +33,9 @@
 								{{/unless}}
 							</ul>
 						</div>
-						
+
 						<span>is</span>
-						
+
 						<div class="selectbox" id="asg-policy-eval">
 							<div class="selection">&gt;=</div>
 							<ul class="dropdown" tabindex="-1">
@@ -45,27 +45,27 @@
 								<li data-id="<=" class="item">&lt;=</li>
 							</ul>
 						</div>
-						
-						<input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="Threshold">
-						
+
+						<input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="Threshold" data-ignore="true" data-ignore-regexp="^[0-9]*\.?[0-9]*$" data-required="true">
+
 						<span id="asg-policy-unit">%</span>
-						
+
 						<br />
-						
+
 						<span>for</span>
-						
-						<input type="text" class="input" id="asg-policy-periods" value="{{periods}}">
-						
+
+						<input type="text" class="input" id="asg-policy-periods" value="{{periods}}" data-required="true" data-ignore="true" data-type="digits">
+
 						<span>periods of</span>
-						
-						<input type="text" class="input" id="asg-policy-second" value="{{second}}">
-						
+
+						<input type="text" class="input" id="asg-policy-second" value="{{second}}" data-required="true" data-ignore="true" data-type="digits">
+
 						<span>seconds, enter ALARM state.</span>
-						
+
 						<br />
-						
+
 						<span>Start scaling activity when in</span>
-						
+
 						<div class="selectbox" id="asg-policy-trigger">
 							<div class="selection">ALARM</div>
 							<ul class="dropdown" tabindex="-1">
@@ -74,7 +74,7 @@
 								<li data-id="OK" class="item">OK</li>
 							</ul>
 						</div>
-						
+
 						<span>state.</span>
 					</div>
 				</section>
@@ -92,7 +92,8 @@
 							</ul>
 						</div>
 						<span>of</span>
-						<input type="text" class="input" id="asg-policy-adjust" value="{{adjustment}}" placeholder="e.g. -30">
+						<input type="text" class="input tooltip" id="asg-policy-adjust" data-required="true" value="{{adjustment}}" placeholder="e.g. -1" data-ignore="true" data-ignore-regexp="^-?[0-9]*$">
+						<span class="hide pecentcapcity">%</span>
 						<span>.</span>
 					</div>
 				</section>
@@ -120,13 +121,13 @@
 						<h5>Scaling Options</h5>
 						<div class="clearfix">
 							<label>Cooldown Period</label>
-							<input type="text" class="input" id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
+							<input type="text" class="input tooltip" data-tooltip="The amount of time, in seconds, after a scaling activity completes before any further trigger-related scaling activities can start. If not specified, will use auto scaling group's default cooldown period." id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown">
 							<span>seconds</span>
 						</div>
 
-						<div id="asg-policy-step-wrapper" class="hide clearfix">
+						<div id="asg-policy-step-wrapper" class="hide clearfix pecentcapcity">
 							<label>Minimum Adjust Step</label>
-							<input type="text" class="input" id="asg-policy-step" value="{{step}}">
+							<input type="text" class="input tooltip" data-tooltip="Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances." id="asg-policy-step" value="{{step}}">
 						</div>
 					</section>
 

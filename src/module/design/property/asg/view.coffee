@@ -322,7 +322,6 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                         $(this).val( "-100" )
                     else if val > 100
                         $(this).val( "100" )
-                    null
 
                 $("#").data("tooltip", adjustTooltip[ type ] ).trigger("change")
 

@@ -99,7 +99,15 @@ MC.canvas = {
 
 		switch (comp_data.type) {
 			case 'AWS.EC2.Instance':
-				comp_sg_list = comp_data.resource.SecurityGroupId;
+				eni_comp_data = MC.aws.eni.getInstanceDefaultENI(comp_data.uid)
+				if (eni_comp_data) {
+					$.each(eni_comp_data.resource.GroupSet, function(i, value)
+					{
+						comp_sg_list.push(value.GroupId);
+					});
+				} else {
+					comp_sg_list = comp_data.resource.SecurityGroupId;
+				}
 				break;
 			case 'AWS.ELB':
 			case 'AWS.AutoScaling.LaunchConfiguration':
@@ -3822,7 +3830,11 @@ MC.canvas.event.drawConnection = {
 								}
 							}
 
-							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [node_id, value.from, item.id, value.to]);
+							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, {
+								  from      : node_id
+								, to        : item.id
+								, from_port : value.from
+								, to_port   : value.to});
 
 							if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							{

@@ -66,8 +66,28 @@ define [ 'MC' ], ( MC ) ->
 
 		null
 
+	addAssociationToDefaultACL = (subnetUID) ->
+
+		defaultACLComp = MC.aws.acl.getDefaultACL()
+		defaultACLUID = defaultACLComp.uid
+		MC.aws.acl.addAssociationToACL(subnetUID, defaultACLUID)
+
+	addRelatedSubnetToDefaultACL = (aclUID) ->
+
+		aclComp = MC.canvas_data.component[aclUID]
+		defaultACLComp = MC.aws.acl.getDefaultACL()
+		defaultACLUID = defaultACLComp.uid
+
+		_.each aclComp.resource.AssociationSet, (associationObj) ->
+			subnetUIDRef = associationObj.SubnetId
+			subnetUID = subnetUIDRef.split('.')[0].slice(1)
+			MC.aws.acl.addAssociationToACL(subnetUID, defaultACLUID)
+			null
+
 	#public
 	getNewName	: getNewName
 	getDefaultACL : getDefaultACL
 	addAssociationToACL : addAssociationToACL
 	removeAssociationFromACL : removeAssociationFromACL
+	addAssociationToDefaultACL : addAssociationToDefaultACL
+	addRelatedSubnetToDefaultACL : addRelatedSubnetToDefaultACL

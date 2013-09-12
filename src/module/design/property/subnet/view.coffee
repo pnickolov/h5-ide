@@ -24,7 +24,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "click .item-networkacl input" : 'onChangeACL'
             "click .item-networkacl" : 'onClickACL'
             "change #networkacl-create"    : 'onCreateACL'
-            'click .stack-property-acl-list .delete' : 'deleteNetworkAcl'
+            'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
 
         initialize : () ->
             that = this
@@ -132,9 +132,36 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             null
 
         deleteNetworkAcl : (event) ->
-            aclUID = $(event.target).attr('acl-uid')
-            delete MC.canvas_data.component[aclUID]
-            this.refreshACLList()
+
+            subnetUID = @model.get 'uid'
+
+            that = this
+
+            $target = $(event.currentTarget)
+            aclUID = $target.attr('acl-uid')
+            
+            associationNum = Number($target.attr('acl-association'))
+            aclName = $target.attr('acl-name')
+
+            # show dialog to confirm that delete acl
+            if associationNum
+                mainContent = 'Are you sure you want to delete ' + aclName + '?'
+                descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
+                template = MC.template.modalDeleteSGOrACL {
+                    title : 'Delete Network ACL',
+                    main_content : mainContent,
+                    desc_content : descContent
+                }
+                modal template, false, () ->
+                    $('#modal-confirm-delete').click () ->
+                        MC.aws.acl.addAssociationToDefaultACL(subnetUID)
+                        delete MC.canvas_data.component[aclUID]
+                        that.refreshACLList()
+                        modal.close()
+
+            else
+                delete MC.canvas_data.component[aclUID]
+                that.refreshACLList()
 
         onBlurCIDR : ( event ) ->
 

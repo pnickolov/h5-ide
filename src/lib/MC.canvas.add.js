@@ -505,7 +505,7 @@ MC.canvas.add = function (flag, option, coordinate)
 								break;
 						}
 
-						if (!defaultVPC) {
+						if (!defaultVPC && MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC ) {
 							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
 						}
 						else

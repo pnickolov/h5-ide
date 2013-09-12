@@ -92,10 +92,18 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       uid = this.get 'get_uid'
 
-      MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
-      #this.set 'update_instance_title', this.get 'name'
+      name = this.get 'name'
 
-      MC.canvas.update(uid,'text','lc_name', this.get('name'))
+      MC.canvas_data.component[ uid ].name = name
+
+      MC.canvas.update(uid,'text','lc_name', name)
+
+      # update lc in extended asg
+      asg_uid = MC.canvas_data.layout.component.node[ uid ].groupUId
+
+      _.each MC.canvas_data.layout.component.group, ( group, id ) ->
+        if group.originalId is asg_uid
+          MC.canvas.update id, 'text', 'node-label', name
       null
 
 

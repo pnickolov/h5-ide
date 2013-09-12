@@ -101,10 +101,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return
 
-                    if not MC.aws.aws.checkAppName app_name
+                    process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+                    # repeat with app list or tab name(some run failed app tabs)
+                    if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
-
 
                     modal.close()
 

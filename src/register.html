@@ -5,43 +5,20 @@
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="./assets/css/core.css" media="all"/>
 	<link id="css_style" rel="stylesheet" href="./assets/css/register.css" media="all"/>
+
+	<!--
 	<script type="text/javascript" src="./vender/jquery/jquery.js"></script>
 	<script type="text/javascript" src="./lib/MC.core.js"></script>
 	<script type="text/javascript" src="./lib/MC.page.signup.js"></script>
+	-->
+
 </head>
 <body id="body">
 	<header>
 		<a id="logo-link" href="http://www.madeiracloud.com/"></a>
 	</header>
 	<div id="container">
-		<div id="register-form-wrap">
-			<h1>Register</h1>
-
-			<div id="login-wrap">
-				Already a user? <a href="login.html">Log in</a>.
-			</div>
-
-			<form id="register-form" method="post" action="">
-				<label for="register-username">Username</label>
-				<input autocomplete="off" id="register-username" class="register-input" type="text"/>
-				<div id="username-verification-status" class="verification-status"></div>
-				<p>Alphanumerics and underscores only.</p>
-				<label for="register-email">Email</label>
-				<input autocomplete="off" id="register-email" class="register-input" type="text"/>
-				<div id="email-verification-status" class="verification-status"></div>
-				<p>A valid email address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.</p>
-				<label for="register-password">Password</label>
-				<input autocomplete="off" id="register-password" class="register-input" type="password"/>
-				<div id="password-verification-status" class="verification-status"></div>
-				<p>At  least  6 character.</p>
-
-				<div id="tos-wrap">
-					By clicking the create account button, you agree to the <a target="_blank" href="http://www.madeiracloud.com/terms-conditions-privacy-policy">Terms of Service</a>.
-				</div>
-
-				<input id="register-btn" type="submit" value="Create Account">
-			</form>
-		</div>
+		loading...
 	</div>
 
 	<footer>
@@ -50,5 +27,12 @@
 			<p class="pad20">© <a href="http://www.madeiracloud.com" alt="MadeiraCloud" title="MadeiraCloud">MadeiraCloud</a> 2013. <a href="http://www.madeiracloud.com/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
 		</div>
 	</footer>
+
+	<script type="text/javascript">
+		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
+	</script>
+	<script type="text/javascript" src="./lib/analytics.js"></script>
+	<script type="text/javascript" data-main="./js/register/config" src="./vender/requirejs/require.js"></script>
+
 </body>
 </html>

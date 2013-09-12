@@ -1,14 +1,9 @@
-#############################
-#  router for ide
-#############################
-
-define [ 'backbone', 'ide' ], ( Backbone, ide ) ->
+define [ 'backbone', 'reg_main' ], ( Backbone, reg_main ) ->
 
 	AppRouter = Backbone.Router.extend {
-
 		routes :
 			#
-			'*actions': 'defaultRouter'
+			'*actions'     : 'defaultRouter'
 
 	}
 
@@ -16,7 +11,7 @@ define [ 'backbone', 'ide' ], ( Backbone, ide ) ->
 		router = new AppRouter()
 
 		router.on 'route:defaultRouter', () ->
-			ide.initialize()
+			reg_main.loadModule()
 
 		Backbone.history.start()
 

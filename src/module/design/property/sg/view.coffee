@@ -210,7 +210,7 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 			protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')
 			switch protocol_type
 				when "tcp", "udp"
-					protocol_val = $( '#sg-protocol-tcp input' ).val()
+					protocol_val = $( '#sg-protocol-' + protocol_type + ' input' ).val()
 					if '-' in protocol_val
 						rule.fromport = protocol_val.split('-')[0].trim()
 						rule.toport = protocol_val.split('-')[1].trim()

@@ -152,7 +152,13 @@ define [ 'event',
                     portTo = portFrom = portRangeAry[0]
                 protocol = '6'
             else if protocol is 'udp'
-                portTo = portFrom = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeAry = MC.validate.portRange(portRangeStr)
+                if portRangeAry.length is 2
+                    portFrom = portRangeAry[0]
+                    portTo = portRangeAry[1]
+                else
+                    portTo = portFrom = portRangeAry[0]
                 protocol = '17'
             else if protocol is 'icmp'
                 portTo = portFrom = ''

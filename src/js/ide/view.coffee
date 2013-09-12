@@ -101,6 +101,7 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
+
             return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             return if $.cookie 'userid' is 'null'
             return if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]

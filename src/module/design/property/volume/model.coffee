@@ -173,7 +173,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             uid = @get "uid"
             comp_res = MC.canvas_data.component[uid].resource
 
-            comp_res.VolumeType = 'iops'
+            comp_res.VolumeType = 'io1'
             comp_res.Iops = value
 
             null

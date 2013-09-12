@@ -238,10 +238,15 @@ define({
 		'CFM_BTN_DONT_ADD' : "Don't add",
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		/****** credential module ******/
+		/****** account credential module ******/
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+
+		// account profile
+		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
+		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong. Forget password?',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/

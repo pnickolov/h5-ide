@@ -127,7 +127,20 @@ define [ 'event',
             password        = $('#account-current-password').val()
             new_password    = $('#account-new-password').val()
 
-            me.trigger 'UPDATE_ACCOUT_PASSWORD', password, new_password
+            if not password or not new_password
+
+                $('#account-passowrd-info').show()
+                $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_NULL_PASSWORD
+
+            else if new_password is $.cookie('username') or new_password.length <= 6
+
+                $('#account-passowrd-info').show()
+                $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_INVALID_PASSWORD
+
+            else
+
+                $('#account-passowrd-info').hide()
+                me.trigger 'UPDATE_ACCOUT_PASSWORD', password, new_password
 
         clickCancelPassword : (event) ->
             console.log 'account_setting_tab clickCancelPassword'

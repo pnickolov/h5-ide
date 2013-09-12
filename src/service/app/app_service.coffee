@@ -455,12 +455,13 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
         #resolve result
         app_list = {}
         for vo in result
-            if app_list[vo.region] == undefined
-                app_list[vo.region]=[]
 
             # filter other version
             if vo.version isnt '2013-09-04'
                 continue
+
+            if app_list[vo.region] == undefined
+                app_list[vo.region]=[]
 
             app_list[vo.region].push vo
 

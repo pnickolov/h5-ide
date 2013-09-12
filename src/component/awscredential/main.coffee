@@ -26,10 +26,12 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
-            if model.attributes.is_authenticated
-                view.showUpdate()
+            if $.cookie('has_cred') is 'true'
+                # show account setting tab
+                view.showSetting('account')
             else
-                view.showSet()
+                # show credential setting tab
+                view.showSetting('credential', 'is_failed')
 
             #
             view.on 'CLOSE_POPUP', () ->
@@ -48,23 +50,19 @@ define [ 'jquery', 'event',
                 if model.attributes.is_authenticated
 
                     # update loading
-                    view.showSubmit('LOAD_RESOURCE')
+                    view.showSetting('credential', 'load_resource')
 
-                    # if MC.data.dashboard_type is 'OVERVIEW_TAB'     # overview tab
-
-                    #     #ide_event.onLongListen ide_event.
-                    # else if MC.data.dashboard_type is 'REGION_TAB'  # region tab
-
-                    # else    # stack/app tab
                     # hold on 2 second
                     setTimeout () ->
-                        view.showUpdate()
+                        view.showSetting('credential', 'on_update')
                     , 2000
 
                 else
-                    view.showSet('is_failed')
+                    view.showSetting('credential', 'is_failed')
 
-
+            view.on 'UPDATE_ACCOUNT_EMAIL', () ->
+                console.log 'UPDATE_ACCOUNT_EMAIL'
+                model.updateAccountEmail()
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'

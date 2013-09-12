@@ -16,6 +16,18 @@
 
 		<div id="account-profile-setting" class="account-tab-content">
 			<div id="account-profile-setting-body">
+<<<<<<< HEAD
+				<dl class="dl-horizontal">
+					<dt>Username</dt>
+					<dd>Steven Jobs</dd>
+
+					<dt>Email Address</dt>
+					<dd>
+						<span>steven.jobs@mc2.io</span>
+						<a href="javascript:void(0)" id="account-update-email-link">Change</a>
+					</dd>
+
+=======
 				<dl class="dl-horizontal" id="account-profile-setting-username">
 					<dt>Username</dt>
 					<dd id="account-profile-username">{{username}}</dd>
@@ -27,6 +39,7 @@
 						<a href="javascript:void(0)" id="account-update-email-link">Change</a>
 					</dd>
 
+>>>>>>> origin/feature/new-account-design
 					<dd id="account-email-input-wrap">
 						<input id="account-email-input" type="text" class="input"/>
 
@@ -41,14 +54,25 @@
 
 				<div id="account-password-wrap">
 					<div id="account-passowrd-info">
+<<<<<<< HEAD
+						Provide both current and new password to change password.
+=======
+>>>>>>> origin/feature/new-account-design
 					</div>
 
 					<dl class="dl-horizontal">
 						<dt>Current Password</dt>
+<<<<<<< HEAD
+						<dd><input type="input" class="input" /></dd>
+
+						<dt>New Password</dt>
+						<dd><input type="input" class="input" /></dd>
+=======
 						<dd><input type="input" class="input" id="account-current-password" /></dd>
 
 						<dt>New Password</dt>
 						<dd><input type="input" class="input" id="account-new-password" /></dd>
+>>>>>>> origin/feature/new-account-design
 					</dl>
 
 					<div id="account-password-update-btns">

@@ -62,20 +62,14 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
             null
 
-        # credentialCheck : () ->
-        #     me = this
+        updateAccountEmail : (new_email) ->
+            #me = this
 
-        #     vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms", "default-vpc"]
+            null
 
-        #     vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
+        updateAccountPassword : (password, new_password) ->
 
-        #         console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
-
-        #         flag = false
-        #         if !result.is_error
-        #             flag = true
-
-        #         me.set 'is_authenticated', flag
+            null
 
     }
 

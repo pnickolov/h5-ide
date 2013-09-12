@@ -415,7 +415,11 @@ button:focus {
 
 #account-change-password {
 	display: block;
+<<<<<<< HEAD
+	margin: 5px 0;
+=======
 	margin: 10px 0 10px 1px;
+>>>>>>> origin/feature/new-account-design
 	color: #C36AB9;
 }
 
@@ -446,7 +450,11 @@ button:focus {
 
 #AWSCredential-form ul {
 	margin: 0 auto;
+<<<<<<< HEAD
+	width: 415px;
+=======
 	width: 440px;
+>>>>>>> origin/feature/new-account-design
 }
 
 .AWSCredential-wall {
@@ -495,7 +503,11 @@ button:focus {
 }
 
 #AWSCredential-setting .input {
+<<<<<<< HEAD
+	width: 393px;
+=======
 	width: 418px;
+>>>>>>> origin/feature/new-account-design
 	border-radius: 2px;
 	margin-bottom: 10px;
 	padding: 10px;
@@ -548,7 +560,11 @@ button:focus {
 
 #awsredentials-submit {
 	position: absolute;
+<<<<<<< HEAD
+	right: 12px;
+=======
 	right: 0;
+>>>>>>> origin/feature/new-account-design
 	font-size: 12px;
 }
 
@@ -2549,7 +2565,7 @@ button:focus {
 }
 
 .dashboard-link-list li:after {
-	content: "Ã®â‚;
+	content: "î�;
 	font-family: "MC-ide";
 	font-size: 12px;
 	color: #ccc;

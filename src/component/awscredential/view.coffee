@@ -15,51 +15,39 @@ define [ 'event',
             'click #awsredentials-submit'           : 'onSubmit'
             'click #awsredentials-update-done'      : 'onDone'
             'click .AWSCredentials-account-update'  : 'onUpdate'
+            'click #account-setting-tab li a'       : 'onTab'
+            'click #account-update-email-link'      : 'onChangeEmail'
+            'click #account-change-password'        : 'onChangePassword'
+            'click #account-email-update'           : 'clickUpdateEmail'
+            'click #account-email-cancel'           : 'clickCancelEmail'
+            'click #account-password-update'        : 'clickUpdatePassword'
+            'click #account-password-cancel'        : 'clickCancelPassword'
 
         render     : (template) ->
-            console.log 'pop-up:awscredential render'
+            console.log 'account_setting_tab render'
             #
             modal template, false
             #
             this.setElement $( '#AWSCredential-setting' ).closest '#modal-wrap'
 
         onClose : ->
-            console.log 'onClose'
+            console.log 'account_setting_tab onClose'
             this.trigger 'CLOSE_POPUP'
 
-            # # update overview
-            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
-            #     console.log 'update overview account attributes'
-            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
-
-            # # update region
-            # else if MC.data.dashboard_type is 'REGION_TAB'
-            #     console.log 'update region resource'
-            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
-
         onDone : ->
-            console.log 'onDone'
+            console.log 'account_setting_tab onDone'
             modal.close()
             this.trigger 'CLOSE_POPUP'
 
-            # # update if not in overview
-            # if MC.data.dashboard_type is 'OVERVIEW_TAB'
-            #     console.log 'update overview account attributes'
-            #     ide_event.trigger ide_event.UPDATE_OVERVIEW_ATTRIBUTES
-
-            # else if MC.data.dashboard_type is 'REGION_TAB'
-            #     console.log 'update region resource'
-            #     ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, null
-
         onUpdate : ->
-            console.log 'onUpdate'
+            console.log 'account_setting_tab onUpdate'
 
             me = this
 
-            me.showSet('is_update')
+            me.showSetting('credential', 'in_update')
 
         onSubmit : () ->
-            console.log 'onSubmit'
+            console.log 'account_setting_tab onSubmit'
 
             me = this
 
@@ -76,63 +64,191 @@ define [ 'event',
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SECRET_KEY
 
             # show AWSCredentials-submiting
-            me.showSubmit()
+            me.showSetting('credential', 'on_submit')
 
             me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
 
-        # show setting dialog
-        showSet : (flag) ->
-            console.log 'show credential setting dialog'
+        onTab : (event) ->
+            console.log 'account_setting_tab onTab'
 
             me = this
 
-            $('#AWSCredential-form').show()
-            $('#AWSCredentials-submiting').hide()
-            $('#AWSCredentials-update').hide()
+            obj = $(event.currentTarget)
+            if obj.text() is 'AWS Credentials'
+                if $.cookie('has_cred') is 'true'
+                    me.showSetting('credential', 'on_update')
+                else
+                    me.showSetting('credential', 'is_failed')
 
-            # set content
-            $('#aws-credential-account-id').val(' ')
-            $('#aws-credential-access-key').val(' ')
-            $('#aws-credential-secret-key').val(' ')
+            else
+                me.showSetting('account')
 
-            if not flag     # initial
-                $('#AWSCredential-failed').hide()
-                $('#AWSCredential-info').show()
+            null
 
-            else if flag is 'is_failed'
-                $('#AWSCredential-failed').show()
-                $('#AWSCredential-info').hide()
-
-            else if flag is 'is_update'
-                $('#AWSCredential-failed').hide()
-                $('#AWSCredential-info').show()
-                $('#aws-credential-account-id').val(me.model.attributes.account_id)
-
-        # show update dialog
-        showUpdate : () ->
-            console.log 'show updating dialog'
+        onChangeEmail : (event) ->
+            console.log 'account_setting_tab onChangeEmail'
 
             me = this
 
-            $('#AWSCredential-form').hide()
-            $('#AWSCredentials-submiting').hide()
-            $('#AWSCredentials-update').show()
+            me.showSetting('account', 'on_email')
 
-            # set content
-            $('#aws-credential-update-account-id').text me.model.attributes.account_id
+            null
 
-        # show submit dialog
-        showSubmit : (flag) ->
-            console.log 'show submiting dialog'
+        clickUpdateEmail : (event) ->
+            console.log 'account_setting_tab clickUpdateEmail'
 
             me = this
 
-            $('#AWSCredential-form').hide()
-            $('#AWSCredentials-submiting').show()
-            $('#AWSCredentials-update').hide()
+            email = $('#account-email-input').val()
 
-            if flag is 'LOAD_RESOURCE'
-                $('#AWSCredentials-loading-text').text('Loading resources...')
+            me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+
+        clickCancelEmail : (event) ->
+            console.log 'account_setting_tab clickCancelEmail'
+
+            me = this
+
+            me.showSetting('account')
+
+        onChangePassword : (event) ->
+            console.log 'account_setting_tab onChangePassword'
+
+            me = this
+
+            me.showSetting('account', 'on_password')
+
+            null
+
+        clickUpdatePassword : (event) ->
+            console.log 'account_setting_tab onUpdatePassword'
+
+            me = this
+
+            password        = $('#account-current-password').val()
+            new_password    = $('#account-new-password').val()
+
+            if not password or not new_password
+
+                $('#account-passowrd-info').show()
+                $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_NULL_PASSWORD
+
+            else if new_password is $.cookie('username') or new_password.length <= 6
+
+                $('#account-passowrd-info').show()
+                $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_INVALID_PASSWORD
+
+            else
+
+                $('#account-passowrd-info').hide()
+                me.trigger 'UPDATE_ACCOUT_PASSWORD', password, new_password
+
+        clickCancelPassword : (event) ->
+            console.log 'account_setting_tab clickCancelPassword'
+
+            me = this
+
+            me.showSetting('account')
+
+        # show account setting tab or credential setting tab
+        showSetting : (tab, flag) ->
+            console.log 'account_setting_tab tab and flag:' + tab + ', ' + flag
+
+            me = this
+
+            if tab is 'account'
+                $('#account-profile-setting').show()
+                $('#AWSCredential-setting').hide()
+
+                $('#account-profile-setting-body').show()
+                $('#account-profile-setting-username').show()
+                $('#account-profile-setting-email').show()
+
+                if not flag
+
+                    $('#account-email-change-wrap').show()
+                    $('#account-email-input-wrap').hide()
+                    $('#account-password-wrap').hide()
+
+                    $('#account-profile-username').text $.cookie('username')
+                    $('#account-profile-email').text MC.base64Decode($.cookie('email'))
+
+                else if flag is 'on_email'
+
+                    $('#account-email-change-wrap').hide()
+                    $('#account-email-input-wrap').show()
+                    $('#account-password-wrap').hide()
+
+                    $('#account-email-input').val MC.base64Decode($.cookie('email'))
+
+                else if flag is 'on_password'
+
+                    $('#account-email-change-wrap').show()
+                    $('#account-email-input-wrap').hide()
+                    $('#account-password-wrap').show()
+                    $('#account-passowrd-info').hide()
+
+            else if tab is 'credential'
+
+                $('#account-profile-setting').hide()
+                $('#AWSCredential-setting').show()
+
+                if not flag     # initial
+
+                    $('#AWSCredential-form').show()
+                    $('#AWSCredentials-submiting').hide()
+                    $('#AWSCredentials-update').hide()
+
+                    # set content
+                    $('#aws-credential-account-id').val(' ')
+                    $('#aws-credential-access-key').val(' ')
+                    $('#aws-credential-secret-key').val(' ')
+
+                    $('#AWSCredential-failed').hide()
+                    $('#AWSCredential-info').show()
+
+                else if flag is 'is_failed'
+
+                    $('#AWSCredential-form').show()
+                    $('#AWSCredentials-submiting').hide()
+                    $('#AWSCredentials-update').hide()
+
+                    $('#AWSCredential-failed').show()
+                    $('#AWSCredential-info').hide()
+
+                else if flag is 'on_update'
+
+                    $('#AWSCredential-form').hide()
+                    $('#AWSCredentials-submiting').hide()
+                    $('#AWSCredentials-update').show()
+
+                    $('#AWSCredential-failed').hide()
+                    $('#AWSCredential-info').show()
+                    $('#aws-credential-update-account-id').text me.model.attributes.account_id
+
+                else if flag is 'in_update'
+
+                    $('#AWSCredential-form').show()
+                    $('#AWSCredentials-submiting').show()
+                    $('#AWSCredentials-update').hide()
+
+                    # set content
+                    $('#aws-credential-account-id').val me.model.attributes.account_id
+
+                else if flag is 'on_submit'
+
+                    $('#AWSCredential-form').hide()
+                    $('#AWSCredentials-submiting').show()
+                    $('#AWSCredentials-update').hide()
+
+                else if flag is 'load_resource'
+
+                    $('#AWSCredential-form').hide()
+                    $('#AWSCredentials-submiting').show()
+                    $('#AWSCredentials-update').hide()
+
+                    $('#AWSCredentials-loading-text').text('Loading resources...')
+
+            null
 
     }
 

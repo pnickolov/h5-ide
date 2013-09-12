@@ -137,6 +137,8 @@ define [ 'event',
                 $('#account-passowrd-info').show()
                 $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_INVALID_PASSWORD
 
+                #$('#account-passowrd-info').html "Current password is wrong. <a href="javascript:void(0)">Forget password?</a>"
+
             else
 
                 $('#account-passowrd-info').hide()

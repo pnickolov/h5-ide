@@ -8,18 +8,32 @@ define [ 'jquery',
     'text!./module/dashboard/overview/template_data.html',
     'text!./module/dashboard/region/template_data.html',
     'event',
-    'MC'
-], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC ) ->
+    'MC',
+    'base_main'
+], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC, base_main ) ->
 
     current_region = null
     overview_app    = null
     overview_stack  = null
     should_update_overview = false
 
+    #private
+    initialize = ->
+        #extend parent
+        _.extend this, base_main
+
+    initialize()
+
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data, {'.overview-result' : 'overview-result-tmpl', '.global-list' : 'global-list-tmpl', '.region-app-stack' : 'region-app-stack-tmpl','.region-resource' : 'region-resource-tmpl', '.recent' : 'recent-tmpl', '.recent-launched-app' : 'recent-launched-app-tmpl', '.loading': 'loading-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data,
+            '.overview-result' : 'overview-result-tmpl'
+            '.global-list' : 'global-list-tmpl'
+            '.region-app-stack' : 'region-app-stack-tmpl'
+            '.region-resource' : 'region-resource-tmpl'
+            '.recent' : 'recent-tmpl'
+            '.loading': 'loading-tmpl'
 
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
@@ -27,7 +41,11 @@ define [ 'jquery',
         require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
             region_view = null
             #view
-            view       = new View()
+            #view       = new View()
+
+            view = loadSuperModule loadModule, 'dashboard', View, null
+            return if !view
+
             view.model = model
             view.render overview_tmpl
 
@@ -49,16 +67,8 @@ define [ 'jquery',
                 else
                     MC.data.is_loading_complete = true
                     ide_event.trigger ide_event.SWITCH_MAIN
-                #
 
-                # display refresh time
-                (->
-                    loadTime = $.now() / 1000
-                    setInterval ( ->
-                        view.updateLoadTime MC.intervalDate( loadTime )
-                        console.log 'timeupdate', loadTime
-                    ), 60001
-                )()
+                view.displayLoadTime()
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
@@ -87,34 +97,23 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if $.cookie('has_cred') isnt 'true'   # update aws resource
-                #     model.describeAWSResourcesService
-
-                # else    # set aws credential
-                    console.log 'show credential setting dialog'
+                if $.cookie('has_cred') is 'true'   # update aws resource
+                    model.describeAWSResourcesService()
+                else    # set aws credential
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
-
-                model.describeAWSResourcesService
 
             #model
             model.describeAccountAttributesService()
 
-            model.describeAWSResourcesService()
+            #model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                console.log 'overview RESULT_APP_LIST'
-
                 overview_app = result
+                model.describeAWSResourcesService()
 
-                #if overview_stack
                 model.updateMap model, overview_app, overview_stack
-
                 model.updateRecentList( model, result, 'recent_launched_apps' )
-                #model.updateRecentList( model, result, 'recent_stoped_apps' )
-
-                #if should_update_overview
                 view.renderMapResult()
-
                 model.getItemList 'app', current_region, overview_app
 
                 null
@@ -124,16 +123,8 @@ define [ 'jquery',
 
                 overview_stack = result
 
-                #if overview_app
                 model.updateMap model, overview_app, overview_stack
-                # else
-                #     ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                #         overview_app = result
-                #         model.updateMap model, overview_app, overview_stack
-
                 model.updateRecentList( model, result, 'recent_edited_stacks' )
-
-                #if should_update_overview
                 view.renderMapResult()
 
                 model.getItemList 'stack', current_region, overview_stack
@@ -141,10 +132,11 @@ define [ 'jquery',
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
-
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'
-                view.trigger 'RETURN_REGION_TAB', result
-
+                if result is 'global'
+                    ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
+                else
+                    view.trigger 'RETURN_REGION_TAB', result
                 null
 
             # switch region tab
@@ -154,6 +146,11 @@ define [ 'jquery',
                 #model.describeAWSStatusService region
                 @model.getItemList 'app', region, overview_app
                 @model.getItemList 'stack', region, overview_stack
+
+            # reload resource
+            view.on 'RELOAD_RESOURCE', ( region ) ->
+                view.displayLoadTime()
+                model.describeAWSResourcesService region
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )

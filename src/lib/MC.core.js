@@ -9,16 +9,17 @@
 # **********************************************************
 */
 
-var VER = 'v2';
+var VER = 'v2',
+	MC_HOST = 'https://api.madeiracloud.com/';
 
 var MC = {
 	version: '0.2.8',
 
 	// Global Variable
-	API_URL: 'https://api.madeiracloud.com/' + VER + '/',
+	API_URL: MC_HOST + VER + '/',
 	IMG_URL: './assets/images/',
-	WS_URL: 'https://api.madeiracloud.com/' + VER + '/ws/',//-> 8300
-	SAVEPNG_URL: 'https://api.madeiracloud.com/' + VER + '/export/',//->8400
+	WS_URL: MC_HOST + VER + '/ws/',//-> 8300
+	SAVEPNG_URL: MC_HOST + VER + '/export/',//->8400
 
 	current_module : {},
 

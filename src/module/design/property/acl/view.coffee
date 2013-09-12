@@ -231,8 +231,10 @@ define [ 'event',
 
             if value is 'custom'
                 $('#modal-acl-source-input').show()
+                $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
+                $('#acl-add-model-source-select .selection').width(296)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')

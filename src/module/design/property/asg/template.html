@@ -39,7 +39,7 @@
 				</div>
 				<label for="property-asg-ec2">EC2</label>
 			</div>
-			<div {{#unless has_elb}}data-tooltip="You need to connect this ASG to an ELB to enable this option." class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
+			<div {{#unless has_elb}}data-tooltip="You need to connect this auto scaling group to a load balancer to enable this option." class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
 				<div class="radio">
 					<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#ifCond asg.HealthCheckType 'ELB'}}checked="true"{{/ifCond}} name="property-asg-hc-option" />
 					<label for="property-asg-elb"></label>

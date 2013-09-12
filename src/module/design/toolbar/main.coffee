@@ -31,6 +31,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
                 console.log MC.canvas_data
+                #
                 model.setFlag tab_id, type
 
             ###
@@ -66,6 +67,8 @@ define [ 'jquery',
                 model.saveStack MC.canvas.layout.save()
                 #compact and update canvas
                 MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+                #
+                MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                 #model.saveStack(data)
                 null

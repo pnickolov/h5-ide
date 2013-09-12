@@ -37,6 +37,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			'change #securitygroup-description'    : 'setSGDescription'
 			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
+			'OPTION_CHANGE #sg-add-model-source-select' : 'modalRuleSourceSelected'
+
 		render     : (is_app_view) ->
 
 			if is_app_view
@@ -135,8 +137,16 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			custom_protocal_dom = $( '#sg-protocol-custom input' )
 			protocol_type =  $('#modal-protocol-select').data('protocal-type')
 			rule = {}
+
+			sourceValue = $.trim($('#sg-add-model-source-select').find('.selected').attr('data-id'))
+
+			sgUID = @model.get( 'sg_detail' ).component.uid
+			sgName = @model.get( 'sg_detail' ).component.name
 			if descrition_dom.hasClass('input')
-				sg_descrition = descrition_dom.val()
+				if sourceValue is 'self'
+					sg_descrition = '@' + sgUID + '.resource.GroupId'
+				else
+					sg_descrition = descrition_dom.val()
 			else
 				sg_descrition = descrition_dom.html()
 
@@ -170,7 +180,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 					return 'Must be a valid form of CIDR block.'
 				null
 
-			if (not descrition_dom.parsley 'validate') or (needValidate and not needValidate.dom.parsley 'validate')
+			if (sourceValue is 'custom' and (not descrition_dom.parsley 'validate')) or (needValidate and not needValidate.dom.parsley 'validate')
 				return
 			# validation #####################################################
 
@@ -202,7 +212,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 					rule.toport = ""
 
 			rule.direction = sg_direction
-			rule.ipranges = sg_descrition
+
+			if sourceValue is 'self'
+				rule.ipranges = sgName
 
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
 			cur_count = Number $("#rule-count").text()
@@ -211,6 +223,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
 			$("#sg-rule-empty").toggle cur_count == 0
+
+			rule.ipranges = sg_descrition
 
 			this.trigger "SET_SG_RULE", rule
 
@@ -229,6 +243,18 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 		customValueChange : ( event ) ->
 			#protocol_val = $( '#sg-protocol-custom input' ).val()
+			null
+
+		modalRuleSourceSelected : (event) ->
+			value = $.trim($(event.target).find('.selected').attr('data-id'))
+
+			if value is 'custom'
+				$('#securitygroup-modal-description').show()
+				$('#sg-add-model-source-select .selection').width(60)
+			else
+				$('#securitygroup-modal-description').hide()
+				$('#sg-add-model-source-select .selection').width(255)
+
 			null
 
 		sortSgRule : ( event ) ->

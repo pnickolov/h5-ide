@@ -9,10 +9,10 @@ require [ 'domReady', 'router' ], ( domReady, router ) ->
 	### env:dev:end ###
 
 	### env:prod ###
-	# if window.location.protocol is 'http:'
-	# 	currentLocation = window.location.toString()
-	# 	currentLocation = currentLocation.replace('http:', 'https:')
-	# 	window.location = currentLocation
+	if window.location.protocol is 'http:' and window.location.hostname isnt 'localhost'
+		currentLocation = window.location.toString()
+		currentLocation = currentLocation.replace('http:', 'https:')
+		window.location = currentLocation
 	### env:prod:end ###
 
 	domReady () ->

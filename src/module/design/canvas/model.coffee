@@ -76,6 +76,28 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			null
 
+		filterConnection : ( event, option ) ->
+
+			# Normalize the from port and to port
+			# If we have port "aaa" and port "aba"
+			# Then port "aaa" is always "from port"
+			# because "aaa" < "aba"
+			if option.from_port > option.to_port
+				option =
+					from      : option.to
+					to        : option.from
+					from_port : option.to_port
+					to_port   : option.from_port
+
+			components = MC.canvas_data.component
+
+			if option.from_port is "eni-attach" and option.to_port is "instance-attach"
+				if components[ option.from ].resource.AvailabilityZone isnt components[ option.to ].resource.Placement.AvailabilityZone
+					event.preventDefault()
+					return null
+
+			null
+
 		# An object is about to be dropped. Test if the object can be dropped
 		beforeDrop : ( event, src_node, tgt_parent ) ->
 			node = MC.canvas_data.layout.component.group[src_node]

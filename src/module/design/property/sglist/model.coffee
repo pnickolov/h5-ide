@@ -77,6 +77,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			sg_full = { full : false }
 			enabledSGCount = 0
 
+			appView = false
+			if parent_model.get('type') is 'app'
+				appView = true
+
+			stackComp = false
+			if parent_model.get('is_stack') is true
+				stackComp = true
+
 			_.each allSGUIDAry, (uid) ->
 
 				sgComp = MC.canvas_data.component[uid]
@@ -90,9 +98,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					++enabledSGCount
 
 				sgHideCheck = false
-				appView = false
+				
 				if parent_model.get('type') is 'app'
-					appView = true
 					sgHideCheck = true
 
 				if parent_model.get('is_stack') is true
@@ -103,7 +110,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgIsDefault = true
 
 				needShow = true
-				if !sgChecked and parent_model.get('type') is 'app'
+				if !sgChecked and parent_model.get('type') is 'app' and !parent_model.get('is_stack')
 					needShow = false
 
 				# need to display
@@ -148,6 +155,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			else
 				refSGLength = enabledSGCount
 
+			if stackComp and appView
+				refSGLength = displaySGAry.length
+
 			if enabledSGCount is 1
 				that.set 'only_one_sg', true
 			else
@@ -169,7 +179,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			sgRuleAry = []
 			_.each parentSGList, (uid) ->
-
+				if !MC.canvas_data.component[uid] then return
 				sgComp = $.extend true, {}, MC.canvas_data.component[uid]
 				sgCompRes = sgComp.resource
 
@@ -184,7 +194,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 					if value.IpRanges.slice(0,1) is '@'
 
-						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+						if MC.canvas_data.component[MC.extractID( value.IpRanges )]
+							value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
@@ -241,16 +252,15 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					parent_model.unAssignSGToComp sgUID
 
 			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
+			MC.aws.sg.updateSGColorLabel parent_model.get('uid')
 
 
 		deleteSGFromComp : (sgUID) ->
 
+			parent_model = this.get 'parent_model'
+
 			MC.aws.sg.deleteRefInAllComp(sgUID)
 			delete MC.canvas_data.component[sgUID]
-			parent_model = this.get 'parent_model'
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}
 
 	model = new SGListModel()

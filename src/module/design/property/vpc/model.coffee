@@ -38,7 +38,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setName : ( newName ) ->
             MC.canvas_data.component[ this.attributes.uid ].name = newName
             vpcCIDR = MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock
-            MC.canvas.update this.attributes.uid, "text", "name", newName + ' (' + vpcCIDR + ')'
+            MC.canvas.update this.attributes.uid, "text", "label", newName + ' (' + vpcCIDR + ')'
             null
 
         setCIDR : ( newCIDR ) ->
@@ -47,7 +47,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = newCIDR
 
             vpcName = MC.canvas_data.component[this.attributes.uid].name
-            MC.canvas.update this.attributes.uid, "text", "name", vpcName + ' (' + newCIDR + ')'
+            MC.canvas.update this.attributes.uid, "text", "label", vpcName + ' (' + newCIDR + ')'
 
             MC.aws.vpc.updateAllSubnetCIDR(newCIDR, oldCIDR)
             null
@@ -55,6 +55,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setTenancy : ( tenancy ) ->
             component = MC.canvas_data.component[ this.attributes.uid ]
             component.resource.InstanceTenancy = tenancy
+
+            # Set all AMI to be tenacy
+            for uid, comp of MC.canvas_data.component
+                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    comp.resource.Placement.Tenancy = "dedicated"
             null
 
         setDnsSupport : ( enable ) ->

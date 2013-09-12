@@ -7,6 +7,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
     #private
     loadModule = () ->
 
+        template = Handlebars.compile template
+
         #
         require [ './module/design/canvas/view',
                   './module/design/canvas/model',
@@ -42,6 +44,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
                         MC.canvas.layout.init()
                         model.initLine()
                         model.reDrawSgLine()
+                    #
+                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                 catch error
 
@@ -75,6 +79,11 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
             #listen CANVAS_BEFORE_ASG_EXPAND
             view.on "CANVAS_BEFORE_ASG_EXPAND", ( event, option ) ->
                 model.beforeASGExpand event, option.src_node, option.tgt_parent
+                null
+
+            #listen CANVAS_BEFORE_ASG_EXPAND
+            view.on "CHECK_CONNECTABLE_EVENT", ( event, option ) ->
+                model.filterConnection event, option
                 null
 
 

@@ -4,7 +4,7 @@
 		<i class="icon-tabbar-label"></i>
 		{{tab_name}}
 	</a>
-	<a href="javascript:void(0)" class="close-tab icon-close" title="Close Tab"></a>
+	<a href="javascript:void(0)" class="close-restriction icon-close" title="Close Tab"></a>
 </li>
 
 <!-- tab.dashboard -->
@@ -107,7 +107,7 @@
     </div>
     <div class="modal-body">
         <div class="export-loading-bar clearfix">
-            <i class="loading-spinner"></i>
+            <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
         </div>
     </div>
     <div class="modal-footer">
@@ -790,14 +790,29 @@ Additional Notes and Questions
 				{{/if}}
         	</div>
     	</div>
-    	<div class="modal-control-group clearfix">
+<!--     	<div class="modal-control-group clearfix">
 			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			{{#if isAdd}}
 			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.1.0/24" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true"/>
 			{{else}}
 			<div id="securitygroup-modal-description">IP Range.eg,10.0.1.0/24</div>
 			{{/if}}
+		</div> -->
+
+
+		<div class="modal-control-group clearfix">
+		  <label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
+			<div class="selectbox" id="sg-add-model-source-select">
+				<div class="selection">Custom</div>
+				<ul class="dropdown">
+					<li class="item selected" data-id="custom">Custom</li>
+					<li class="item" data-id="self">Self Reference</li>
+				</ul>
+		  </div>
+		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true">
 		</div>
+
+
 		<div class="modal-control-group clearfix">
 			<label class="label-short" >Protocol</label>
 				<div class="modal-protocol-select">
@@ -938,7 +953,7 @@ Additional Notes and Questions
   </div>
   <div class="modal-body">
     <section id='keypair-loading' class="tac">
-      <img width="31" height="34" src="./assets/images/ide/loading-logo-white.gif"/>
+      <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
     </section>
 
     <section id="keypair-body-linux" class="hide">
@@ -1041,7 +1056,7 @@ Additional Notes and Questions
 </article>
 
 <!-- elbPropertyListenerItem -->
-<div class="elb-property-listener-main" data-bind="true">
+<div class="elb-property-listener-main">
 	{{#if Canremove}}<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listner"></div>{{/if}}
 	<div class="property-control-group clearfix elb-property-listener-item">
 		<div class="left elb-property-listener-item-1">
@@ -1058,7 +1073,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input" type="text" required="required" value="{{LoadBalancerPort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
+			<input class="input elb-property-listener-elb-port-input" type="text" value="{{LoadBalancerPort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 		</div>
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
@@ -1076,7 +1091,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-instance-port-input" type="text" required="required" value="{{InstancePort}}" data-type="digits" data-ignore="true" data-required-rollback="true"/>
+			<input class="input elb-property-listener-instance-port-input" type="text" value="{{InstancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 		</div>
 	</div>
 </div>
@@ -1084,7 +1099,7 @@ Additional Notes and Questions
 <!-- sgRuleItem -->
 <li data-inbound="true" data-protocol="{{rule.protocol}}" data-fromport="{{rule.fromport}}" data-toport="{{rule.toport}}" data-iprange="{{rule.ipranges}}" data-direction="{{rule.direction}}">
 	<div class="rule-list-row">
-		<div class='rule-direction-icon tooltip' data-tooltip="{{rule.direction}}"></div>
+		<div class='rule-direction-icon tooltip icon-{{rule.direction}}' data-tooltip="{{rule.direction}}"></div>
 		<div class='rule-reference'>{{rule.ipranges}}</div>
 		<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
 	</div>
@@ -1210,4 +1225,34 @@ Additional Notes and Questions
     <div class="modal-footer">
         <button id="rename-confirm" class="btn btn-blue">Save</button>
     </div>
+</div>
+
+<!-- closeTabRestriction -->
+<div style="width:420px">
+  <div class="modal-header"><h3>Conﬁrm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-body">
+    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{ tab_name }} has unsaved change</div>
+      <div class="modal-text-major">Do you conﬁrm to close it?</div>
+    </div> </div>
+  </div>
+  <div class="modal-footer">
+    <button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
+    <button class="btn modal-close btn-silver">Cancel</button>
+  </div>
+</div>
+
+<!-- modalDeleteSGOrACL -->
+<div style="width:420px">
+  <div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+  <div class="modal-body">
+    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
+      <div class="modal-text-major">{{main_content}}</div>
+      <div class="modal-text-minor">{{desc_content}}</div>
+    </div> </div>
+  </div>
+  <div class="modal-footer">
+  	<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
+    <button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+  </div>
 </div>

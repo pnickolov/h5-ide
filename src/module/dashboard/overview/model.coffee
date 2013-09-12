@@ -692,9 +692,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             console.log 'vpngateway.DescribeVpnGateways failed, error is ' + result.error_message
 
                         null
-
-            me.forceSet 'cur_region_resource_info', lists
-            me.forceSet 'cur_region_resource', resources
+            if region is current_region
+                me.forceSet 'cur_region_resource_info', lists
+                me.forceSet 'cur_region_resource', resources
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 

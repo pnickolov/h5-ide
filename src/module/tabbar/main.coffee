@@ -315,6 +315,11 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 #
                 openApp tab_id
 
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->
+                console.log 'UPDATE_TAB_CLOSE_STATE, state = ' + state
+                view.updateTabCloseState state
+
             #render
             view.render()
 

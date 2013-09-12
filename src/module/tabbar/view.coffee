@@ -83,6 +83,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
             null
 
+        updateTabCloseState : ( tab_id ) ->
+            console.log 'updateTabCloseState, tab_id = ' + tab_id
+            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
+            close_target.removeClass 'close-restriction'
+            close_target.addClass    'close-tab'
+
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
             #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
@@ -139,7 +145,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
 
             @current_tab = target
 
-            if MC.data.current_tab_type is 'OPEN_APP'
+            if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
                 @_trueCloseTab @current_tab, tab_id
                 return
 

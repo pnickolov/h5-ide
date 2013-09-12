@@ -63,6 +63,7 @@ define [ 'underscore', 'backbone' ], () ->
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
+        UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'

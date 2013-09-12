@@ -601,6 +601,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                             if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
                                 handle.stop()
+                                ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
 
                     }
 

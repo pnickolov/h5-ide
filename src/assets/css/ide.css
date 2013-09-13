@@ -1033,6 +1033,8 @@ button:focus {
 	margin: 45px auto 0;
 	background-repeat: no-repeat;
 	position: relative;
+	display: inline-block;
+	text-align: center;
 }
 
 .global-region-status-count {
@@ -1048,6 +1050,7 @@ button:focus {
 	height: 47px;
 	background-repeat: no-repeat;
 	background-image: url('../images/ide/global-region-app-stack.png');
+	display: inline;
 }
 
 .global-region-status-icon-stack {
@@ -1290,9 +1293,10 @@ button:focus {
 }
 
 .global-region-resource-count-wrap {
-	display: inline;
+	display: inline-block;
 	position: relative;
 	top: 35px;
+	text-align: center;
 }
 
 .global-resource-icon {
@@ -1301,10 +1305,7 @@ button:focus {
 	height: 55px;
 	background-repeat: no-repeat;
 	background-image: url('../images/ide/global-region-icon.png');
-}
-
-.firefox #global-region-resource-list .global-resource-icon {
-	top: -26px;
+	display: inline;
 }
 
 .global-region-resource-count {

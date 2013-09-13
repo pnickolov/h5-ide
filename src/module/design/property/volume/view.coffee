@@ -108,17 +108,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
 
 
-        iopsChanged : ( event ) ->
-            target = $ event.currentTarget
-
-            iops_size = parseInt( target.val(), 10 )
-            volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-
-
-
-            if target.parsley 'validateForm'
-                this.trigger 'IOPS_CHANGED', "" + iops_size
-
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'
 

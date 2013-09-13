@@ -97,7 +97,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .find( 'input' )
                 .attr( 'disabled', '' )
 
-
         sizeChanged : ( event ) ->
             volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
             iopsValidate = true

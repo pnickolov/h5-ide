@@ -47,11 +47,43 @@ define [ 'MC', 'event',
 
         render   : ( type ) ->
             console.log 'toolbar render'
+
             #
             if type is 'app'
                 $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
             else
+
+                lines =
+                    icon : 'icon-elbow'
+                    is_style0: null
+                    is_style1: null
+                    is_style2: null
+                    is_style3: null
+
+                #restore line style
+                switch MC.canvas_property.LINE_STYLE
+
+                    when 0
+                        lines.is_style0 = true
+                        lines.icon = 'icon-straight'
+
+                    when 1
+                        lines.is_style1 = true
+                        lines.icon = 'icon-elbow'
+
+                    when 2
+                        lines.is_style2 = true
+                        lines.icon = 'icon-bezier-q'
+
+                    when 3
+                        lines.is_style3 = true
+                        lines.icon = 'icon-bezier-qt'
+
+                this.model.attributes.lines = lines
+
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+
+
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #

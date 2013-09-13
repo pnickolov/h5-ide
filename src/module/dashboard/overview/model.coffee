@@ -297,9 +297,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @describeAWSResourcesService region
 
         forceSet: ( key, value ) ->
-            @set key, value
             if _.isEqual value, @get key
                 @trigger "change:#{key}"
+            else
+                @set key, value
 
         # cache methods
         cacheResource: ( type, data, region ) ->

@@ -38,7 +38,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="0">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -64,7 +64,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="1">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -90,7 +90,7 @@
                 <ul>
                     {{#each data}}
                         <li>
-                            <a href="javascript:void(0)">
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="2">
                                 <h4>{{city}}</h4>
                                 <h5>{{area}}</h5>
                                 <span class="global-region-resource-location-count">{{total}}</span>
@@ -116,7 +116,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="5">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -140,7 +140,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="4">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -212,7 +212,7 @@
                             </a>
                         </li>
                         {{else}}
-                        <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
+                        <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
@@ -401,7 +401,7 @@
                                             <div>
                                                 {{#if app}}
                                                     {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
                                                     {{else}}
                                                         <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                     {{/if}}

@@ -3917,7 +3917,7 @@ MC.canvas.event.drawConnection = {
 			from_node = event.data.originalTarget,
 			port_name = event.data.port_name,
 			from_type = from_node.data('class'),
-			CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
+			// CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 			layout_group_data,
 			to_node,
 			port_name,
@@ -3991,6 +3991,11 @@ MC.canvas.event.drawConnection = {
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
+				// No need to trigger CHECK_CONNECTABLE_EVENT
+				// Because the error handling has been implemented
+				// in line creation.
+
+				/*
 				svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [from_node.attr('id'), port_name, to_node.attr('id'), to_port_name]);
 
 				if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
@@ -4000,6 +4005,12 @@ MC.canvas.event.drawConnection = {
 					// trigger event when connect two port
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
+				*/
+
+				line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
+
+				// trigger event when connect two port
+				svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 

@@ -200,6 +200,7 @@ define({
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
+		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s Instance\'s Network Interface can\'t exceed %s Private IP Addresses.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',

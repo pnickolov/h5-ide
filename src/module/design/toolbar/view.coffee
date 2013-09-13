@@ -108,7 +108,7 @@ define [ 'MC', 'event',
             me = this
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -346,7 +346,7 @@ define [ 'MC', 'event',
             console.log 'click stop app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -363,7 +363,7 @@ define [ 'MC', 'event',
             console.log 'click run app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -381,7 +381,7 @@ define [ 'MC', 'event',
             console.log 'click terminate app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()

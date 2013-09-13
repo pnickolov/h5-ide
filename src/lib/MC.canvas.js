@@ -2646,6 +2646,13 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 		}
+		else
+		{
+			// dispatch event when is not matched
+			$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+				'type': 'AWS.EC2.EBS.Volume'
+			});
+		}
 
 		event.data.shadow.remove();
 

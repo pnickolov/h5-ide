@@ -386,7 +386,6 @@
 /* node label */
 .node-label {
 	font-size: 12px;
-	font-weight: bold;
 	text-anchor: middle;
 	fill: #333;
 	cursor: default;

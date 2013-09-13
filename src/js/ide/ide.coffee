@@ -54,6 +54,10 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
+		#clear path=/v2 cookie(patch)
+		forge_handle.cookie.clearV2Cookie '/v2'
+		forge_handle.cookie.clearV2Cookie '/v2/'
+
 		if forge_handle.cookie.getIDECookie()
 			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else
@@ -261,6 +265,9 @@ define [ 'MC', 'event', 'handlebars'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				relogin()
+				if error.param[0].method is 'info'
+					if error.param[0].url in [ '/stack/', '/app/' ]
+						ide_event.trigger ide_event.CLOSE_TAB, null, error.param[4][0]
 			else
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]

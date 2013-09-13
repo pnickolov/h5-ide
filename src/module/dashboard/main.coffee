@@ -102,6 +102,10 @@ define [ 'jquery',
                 else    # set aws credential
                     require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
+            ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
+                console.log 'UPDATE_DASHBOARD'
+                view.reloadResource() if view
+
             #model
             model.describeAccountAttributesService()
 

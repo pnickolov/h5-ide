@@ -374,7 +374,7 @@ button:focus {
 
 	background-color : #302E30;
 	border-right     : 1px solid #202020;
-	box-shadow       : 2px 0 6px rgba(0,0,0,.2);
+	box-shadow       : 2px 0 6px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 #navigation .sub-menu-wrapper {
@@ -1033,6 +1033,8 @@ button:focus {
 	margin: 45px auto 0;
 	background-repeat: no-repeat;
 	position: relative;
+	display: inline-block;
+	text-align: center;
 }
 
 .global-region-status-count {
@@ -1048,6 +1050,7 @@ button:focus {
 	height: 47px;
 	background-repeat: no-repeat;
 	background-image: url('../images/ide/global-region-app-stack.png');
+	display: inline;
 }
 
 .global-region-status-icon-stack {
@@ -1290,9 +1293,10 @@ button:focus {
 }
 
 .global-region-resource-count-wrap {
-	display: inline;
+	display: inline-block;
 	position: relative;
 	top: 35px;
+	text-align: center;
 }
 
 .global-resource-icon {
@@ -1301,10 +1305,7 @@ button:focus {
 	height: 55px;
 	background-repeat: no-repeat;
 	background-image: url('../images/ide/global-region-icon.png');
-}
-
-.firefox #global-region-resource-list .global-resource-icon {
-	top: -26px;
+	display: inline;
 }
 
 .global-region-resource-count {
@@ -3194,16 +3195,16 @@ td.table-action a.btn {
 
 .sidebar-title {
 	padding : 0 10px;
-	height  : 43px;
+	height  : 44px;
 
 	font-size   : 16px;
-	line-height : 43px;
+	line-height : 44px;
 	color       : #b0b0b0;
 	text-shadow : 0 1px #333;
 
 	background-color : #313131;
 	border-bottom    : 1px solid #202122;
-	/*box-shadow       : inset 0 1px 0 rgba(255,255,255,.1);*/
+	box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 a.sidebar-hider {
@@ -3588,7 +3589,7 @@ a.sidebar-hider {
 	text-shadow : none;
 
 /*	padding  : 0 10px;*/
-	height   : 43px;
+	/*height   : 43px;*/
 	width    : 260px;
 	position : relative;
 	z-index  : 2;
@@ -3607,7 +3608,7 @@ a.sidebar-hider {
 	color        : #959595;
 	background   : #313131;
 	border-right : 1px solid #272627;
-	box-shadow   : inset 0 2px 0 rgba(255,255,255,.05);
+	box-shadow   : inset 0 1px 0 rgba(255,255,255,.05);
 	position     : absolute;
 	text-align   : center;
 

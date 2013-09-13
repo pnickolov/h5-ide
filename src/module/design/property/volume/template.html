@@ -44,9 +44,9 @@
             </div>
             <label for="radio-standard">Standard</label>
             </div>
-            <div>
+            <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="Volume size must be at least 10 GB to use Provisioned IOPS volume type."{{/if}}>
             <div class="radio">
-                <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isStandard}}{{else}}checked="checked"{{/if}} value="radio-iops"/>
+                <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isStandard}}{{else}}checked="checked"{{/if}} value="radio-iops" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
                 <label for="radio-iops"></label>
             </div>
             <label for="radio-iops">Provisioned IOPS</label>

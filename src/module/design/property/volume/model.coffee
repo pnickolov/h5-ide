@@ -72,6 +72,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         volume_detail.snapshot = JSON.stringify item
                         break
 
+            if volume_detail.volume_size < 10
+                volume_detail.iopsDisabled = true
+
             @set 'volume_detail', volume_detail
             @set 'uid', uid
             null

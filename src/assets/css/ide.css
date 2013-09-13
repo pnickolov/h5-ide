@@ -6367,3 +6367,30 @@ a.action-link:hover {
 .icon-edit {
 	font-size: 12px !important;
 }
+
+#Intercom {
+	position: absolute;
+	background: #9C4F7F;
+	border: 1px solid #333;
+	border-bottom: none;
+	top: 254px;
+	left: -38px;
+	text-align: center;
+	padding: 10px;
+	border-radius: 4px 4px 0 0;
+	box-shadow: inset 1px 1px 0 rgba(255,255,255,.2), 1px 1px 10px rgba(0,0,0,0.4);
+	color: #eee;
+	text-shadow: 0 1px rgba(0,0,0,.4);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+	z-index: 99;
+}
+
+#Intercom:hover {
+	left: -34px;
+	color: #fff;
+	background: #b25291;
+}

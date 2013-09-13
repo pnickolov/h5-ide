@@ -97,18 +97,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .find( 'input' )
                 .attr( 'disabled', '' )
 
-
-        sizeChanged : ( event ) ->
-            volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
-            $target = $ event.currentTarget
-
-            if $target.parsley 'validateForm'
-                this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
-                if $( '#radio-iops' ).is ':checked'
-                    this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
-
-            null
-
         enableIops: ->
             $( '#volume-type-radios > div' )
                 .last()

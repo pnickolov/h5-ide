@@ -11,6 +11,7 @@ define [ 'jquery', 'underscore', 'i18n!nls/lang.js', 'UI.notification' ], ( $, _
     error_repeat.navigation = 0
     error_repeat.dashboard  = 0
     error_repeat.register   = 0
+    error_repeat.reset      = 0
 
     ###
     current_View = {}

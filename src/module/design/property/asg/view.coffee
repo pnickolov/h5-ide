@@ -232,7 +232,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             $li.find(".asg-p-metric").html  metric
             $li.find(".asg-p-eval").html    data.evaluation + " " + data.threshold + unit
             $li.find(".asg-p-periods").html data.periods + "x" + data.second + "s"
-            $li.find(".asg-p-trigger").html data.trigger
+            $li.find(".asg-p-trigger").html( data.trigger ).attr("class", "asg-p-trigger asg-p-tag asg-p-trigger-" + data.trigger )
             $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjusttype
 
         editScalingPolicy : ( event ) ->

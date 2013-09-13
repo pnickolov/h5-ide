@@ -70,6 +70,7 @@ define [ 'underscore', 'backbone' ], () ->
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
+        UPDATE_DASHBOARD       : 'UPDATE_DASHBOARD'
 
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'

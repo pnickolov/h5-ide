@@ -68,6 +68,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
+            'click #DescribeInstances .table-app-link'  : 'openApp'
             'modal-shown .start-app'                    : 'startAppClick'
             'modal-shown .stop-app'                     : 'stopAppClick'
             'modal-shown .terminate-app'                : 'terminateAppClick'
@@ -213,6 +214,11 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ), 60001
             null
 
+        openApp: ( event ) ->
+            $target = $ event.currentTarget
+            name = $target.data 'name'
+            id = $target.data 'id'
+            ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
 
         ############################################################################################
 

@@ -212,7 +212,7 @@
                             </a>
                         </li>
                         {{else}}
-                        <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
+                        <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
@@ -401,7 +401,7 @@
                                             <div>
                                                 {{#if app}}
                                                     {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
                                                     {{else}}
                                                         <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                     {{/if}}

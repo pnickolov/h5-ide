@@ -14,6 +14,32 @@ module.exports = {
 		}
 	},
 
+	compile_register: {
+		options: {
+			appDir         : './<%= release %>',
+			baseUrl        : './',
+			dir            : './<%= reg_temp %>',
+			optimize       : 'none',
+			mainConfigFile : './<%= src %>/js/register/config.js',
+			modules        : [{
+				name       : 'main'
+			}]
+		}
+	},
+
+	compile_reset: {
+		options: {
+			appDir         : './<%= release %>',
+			baseUrl        : './',
+			dir            : './<%= reset_temp %>',
+			optimize       : 'none',
+			mainConfigFile : './<%= src %>/js/reset/config.js',
+			modules        : [{
+				name       : 'main'
+			}]
+		}
+	},
+
 	compile_ide: {
 		options: {
 			appDir         : './<%= release %>',

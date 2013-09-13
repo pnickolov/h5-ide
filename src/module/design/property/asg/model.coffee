@@ -648,7 +648,7 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       null
 
     defaultScalingPolicyName : () ->
-      count = 0
+      count = 1
       for uid, comp of MC.canvas_data.component
         if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
           ++count

@@ -273,6 +273,6 @@ define [ 'MC', 'event', 'handlebars'
 				console.log lang.service[ label ]
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
 				#
-				notification 'error', lang.service[ label ], true if lang.service[ label ] and $.cookie( 'has_cred' ) is 'true'
+				notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
 		null

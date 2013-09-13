@@ -939,8 +939,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             region_classic_vpc_result = []
 
-            option = { expires:1, path: '/' }
-
             if !result.is_error
                 regionAttrSet = result.resolved_data
 
@@ -967,8 +965,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 me.set 'region_classic_list', region_classic_vpc_result
 
                 # set cookie
-                if $.cookie('has_cred') isnt 'true'
-                    $.cookie 'has_cred', true, option
+                if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                    MC.forge.cookie.setCookieByName 'has_cred', true
+
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
                 null
@@ -976,7 +975,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             else
                 # check whether invalid session
                 if result.return_code isnt constant.RETURN_CODE.E_SESSION
-                    #$.cookie 'has_cred', false, option
+                    #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
                     ide_event.trigger ide_event.SWITCH_MAIN

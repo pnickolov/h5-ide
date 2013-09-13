@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
+define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event, lang ) ->
 
 	EbsMap =
 				"m1.large"   : true
@@ -115,30 +115,29 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.aws.instance.updateCount( uid, val )
 			null
 
-		setInstanceType  : ( value ) ->
-
-			uid = this.get 'get_uid'
-			component = MC.canvas_data.component[ uid ]
-
-			type_ary = value.split '.'
-
+		canSetInstanceType : ( value ) ->
+			uid        = this.get 'get_uid'
+			type_ary   = value.split '.'
 			eni_number = 0
 
-			$.each MC.canvas_data.component, (index, comp) ->
+			for index, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID( comp.resource.Attachment.InstanceId ) is uid
 
-				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
+					++eni_number
 
-					eni_number += 1
+			config = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]]
+			max_eni_num = config.instance_type[type_ary[0]][type_ary[1]].eni
 
-			max_eni_num = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]].instance_type[type_ary[0]][type_ary[1]].eni
+			if eni_number <= 2 or eni_number <= max_eni_num
+				return true
 
-			if eni_number > 2 and eni_number > max_eni_num
+			return sprintf lang.ide.PROP_WARN_EXCEED_ENI_LIMIT, value, max_eni_num
 
-				this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
 
-			else
+		setInstanceType  : ( value ) ->
 
-				component.resource.InstanceType = value
+			component = MC.canvas_data.component[ this.get 'get_uid' ]
+			component.resource.InstanceType = value
 
 			has_ebs = EbsMap.hasOwnProperty value
 			if not has_ebs

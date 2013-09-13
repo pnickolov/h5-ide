@@ -75,7 +75,7 @@ var selectbox = {
 
         $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
 
-        return false;
+        return true;
     }
 
     function keydown ( event ) {

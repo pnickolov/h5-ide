@@ -2460,7 +2460,7 @@ MC.canvas.volume = {
 					'left': event.pageX - 50
 				});
 
-			Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+			Canvon('.AWS-EC2-Instance').addClass('attachable');
 
 			$(document).on({
 				'mousemove': MC.canvas.volume.mousemove,
@@ -2487,6 +2487,7 @@ MC.canvas.volume = {
 				event.pageX - event.data.canvas_offset.left,
 				event.pageY - event.data.canvas_offset.top
 			),
+			node_type = match_node ? match_node.getAttribute('data-class') : null,
 			event_data = event.data;
 
 		if (
@@ -2506,10 +2507,20 @@ MC.canvas.volume = {
 
 		if (
 			match_node &&
-			$.inArray(match_node.getAttribute('data-class'), ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+			$.inArray(node_type, ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
 		)
 		{
-			MC.canvas.volume.bubble(match_node);
+			if (
+				event_data.action === 'move' &&
+				node_type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				MC.canvas.volume.close();
+			}
+			else
+			{
+				MC.canvas.volume.bubble(match_node);
+			}
 		}
 		else
 		{

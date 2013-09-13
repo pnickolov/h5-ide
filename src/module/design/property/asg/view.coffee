@@ -298,6 +298,14 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     return false
                 modal.close()
 
+            $("#asg-policy-name").parsley 'custom', () ->
+                name = $("#asg-policy-name").val()
+                uid  = $("#property-asg-policy").data("uid")
+
+                if self.model.isDupPolicyName uid, name
+                    return "Duplicated policy name in this autoscaling group"
+
+
             $("#asg-policy-periods, #asg-policy-second").on "change", ()->
                 val = parseInt $(this).val(), 10
                 if not val or val < 1
@@ -341,8 +349,8 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                 return false
 
             data =
-                name   : $("#asg-policy-name").val()
-                metric : $("#asg-policy-metric .selected").data("id")
+                name       : $("#asg-policy-name").val()
+                metric     : $("#asg-policy-metric .selected").data("id")
                 evaluation : $("#asg-policy-eval .selected").data("id")
                 threshold  : $("#asg-policy-threshold").val()
                 periods    : $("#asg-policy-periods").val()

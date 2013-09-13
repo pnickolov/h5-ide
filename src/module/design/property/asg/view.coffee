@@ -268,7 +268,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     $selectbox.find(".selected").removeClass "selected"
                     $selectbox.find(".selection").html $selected.addClass("selected").html()
 
-            $("#asg-policy-step-wrapper").toggle( $("#asg-policy-adjust-type").find(".selected").data("id") == "PercentChangeInCapacity" )
+            $(".pecentcapcity").toggle( $("#asg-policy-adjust-type").find(".selected").data("id") == "PercentChangeInCapacity" )
 
         addScalingPolicy : ( event ) ->
             if $( event.currentTarget ).hasClass "disabled"
@@ -298,8 +298,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     return false
                 modal.close()
 
-            $("#asg-policy-name").parsley 'custom', () ->
-                name = $("#asg-policy-name").val()
+            $("#asg-policy-name").parsley 'custom', ( name ) ->
                 uid  = $("#property-asg-policy").data("uid")
 
                 if self.model.isDupPolicyName uid, name
@@ -328,10 +327,49 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                         $(this).val( "0" )
                     else if val < -100
                         $(this).val( "-100" )
-                    else if val > 100
-                        $(this).val( "100" )
+                    # else if val > 100
+                    #     $(this).val( "100" )
 
                 $("#").data("tooltip", adjustTooltip[ type ] ).trigger("change")
+
+
+            $("#asg-policy-cooldown").on "change", ()->
+                $this = $("#asg-policy-cooldown")
+
+                val   = parseInt $this.val(), 10
+                if isNaN( val )
+                    return
+
+                if val < 0
+                    val = 0
+                else if val > 86400
+                    val = 86400
+
+                $this.val( val )
+
+
+            $("#asg-policy-step").on "change", ()->
+                $this = $("#asg-policy-step")
+
+                val   = parseInt $this.val(), 10
+                if isNaN( val )
+                    return
+
+                if val < 0
+                    val = 0
+                else if val > 65534
+                    val = 65534
+
+                $this.val( val )
+
+            $("#asg-policy-threshold").on "change", ()->
+                metric = $("#asg-policy-metric .selected").data("id")
+                val    = parseInt $(this).val(), 10
+                if metric is "CPUUtilization"
+                    if isNaN( val ) or val < 1
+                        $(this).val( "1" )
+                    else if val > 100
+                        $(this).val( "100" )
 
 
             $("#asg-policy-notify").on "click", ( evt )->

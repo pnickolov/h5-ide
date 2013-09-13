@@ -18,6 +18,7 @@ define [ 'event',
             'keyup #register-email'    : 'verificationEmail'
             'keyup #register-password' : 'verificationPassword'
             'submit #register-form'    : 'submit'
+            'click #auto-login'        : 'loginEvent'
 
         initialize   : ->
             #
@@ -99,8 +100,14 @@ define [ 'event',
 
         showEmailError : ->
             console.log 'showEmailError'
-            status = $('#username-verification-status')
+            status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'This email has already been used.'
+
+        loginEvent : ->
+            console.log 'loginEvent'
+            window.location.href = 'ide.html'
+            #this.trigger 'AUTO_LOGIN'
+            null
 
     }
 

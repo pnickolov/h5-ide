@@ -99,7 +99,11 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 $parent.find(".name").data "tooltip", "Automatically assigned IP."
 
         instanceTypeSelect : ( event, value )->
-            this.model.set 'instance_type', value
+            has_ebs = this.model.setInstanceType value
+            $ebs = $("#property-instance-ebs-optimized")
+            $ebs.closest(".property-control-group").toggle has_ebs
+            if not has_ebs
+                $ebs.prop "checked", false
 
         ebsOptimizedSelect : ( event ) ->
             this.model.set 'ebs_optimized', event.target.checked

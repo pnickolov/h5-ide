@@ -997,10 +997,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image(eip_icon, 53, 47, 12, 14).attr({
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,
-
 					'id': group.id + '_eip_status'
 				}),
-
 
 				////hostname bg
 				Canvon.rectangle(2, 76, 86, 13).attr({
@@ -1092,6 +1090,18 @@ MC.canvas.add = function (flag, option, coordinate)
 				MC.canvas.data.set('component', data);
 			}
 			$('#node_layer').append(group);
+
+			// update eip tooltip
+			var currentState = MC.canvas.getState();
+			if (currentState === 'app') {
+				MC.aws.eip.updateAppTooltip(group.id);
+			} else {
+				if (data_eip_state === 'on') {
+					MC.aws.eip.updateStackTooltip(group.id, false);
+				} else {
+					MC.aws.eip.updateStackTooltip(group.id, true);
+				}
+			}
 
 			//hide port by platform
 			switch (MC.canvas.data.get('platform'))
@@ -1947,6 +1957,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_eni_status'
 				}),
 
+				// update eip status
 				Canvon.image(eip_icon, 43, 40, 12, 14).attr({
 					'id': group.id + '_eip_status',
 					'class': 'eip-status',
@@ -2085,6 +2096,18 @@ MC.canvas.add = function (flag, option, coordinate)
 			MC.canvas.data.set('component', data);
 
 			$('#node_layer').append(group);
+
+			// update eip tooltip
+			var currentState = MC.canvas.getState();
+			if (currentState === 'app') {
+				MC.aws.eip.updateAppTooltip(group.id);
+			} else {
+				if (data_eip_state === 'on') {
+					MC.aws.eip.updateStackTooltip(group.id, false);
+				} else {
+					MC.aws.eip.updateStackTooltip(group.id, true);
+				}
+			}
 
 			//hide port by platform
 			switch (MC.canvas.data.get('platform'))

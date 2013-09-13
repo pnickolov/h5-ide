@@ -647,6 +647,14 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       null
 
+    defaultScalingPolicyName : () ->
+      count = 0
+      for uid, comp of MC.canvas_data.component
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+          ++count
+
+      "#{@attributes.asg.AutoScalingGroupName}-policy-#{count}" + ""
+
     delPolicy : ( uid ) ->
 
       $.each MC.canvas_data.component, ( comp_uid, comp ) ->

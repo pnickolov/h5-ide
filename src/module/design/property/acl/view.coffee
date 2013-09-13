@@ -71,7 +71,7 @@ define [ 'event',
                     '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
-            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
+            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom...</div></li>')
 
             # scrollbar.init()
             return false
@@ -93,26 +93,6 @@ define [ 'event',
             protocolStr = $.trim(protocol_dom.attr('data-id'))
 
             port = $('#acl-rule-modal-port-input').val()
-
-            icmpType = icmpCode = ''
-            if protocol is 'tcp'
-                protocol = '6'
-                portTo = portFrom = port
-            else if protocol is 'udp'
-                protocol = '17'
-                portTo = portFrom = port
-            else if protocol is 'icmp'
-                protocol = '1'
-                portTo = portFrom = ''
-                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
-                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
-            else if protocol is 'custom'
-                protocol = port
-                portTo = portFrom = ''
-            else if protocol is 'all'
-                protocol = '-1'
-                portTo = '0'
-                portFrom = '65535'
 
             ruleAction = ''
             if action
@@ -160,6 +140,38 @@ define [ 'event',
                 (needValidate and not needValidate.dom.parsley 'validate')
                     return
             # validation #####################################################
+
+            icmpType = icmpCode = ''
+            if protocol is 'tcp'
+                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeAry = MC.validate.portRange(portRangeStr)
+                if portRangeAry.length is 2
+                    portFrom = portRangeAry[0]
+                    portTo = portRangeAry[1]
+                else
+                    portTo = portFrom = portRangeAry[0]
+                protocol = '6'
+            else if protocol is 'udp'
+                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeAry = MC.validate.portRange(portRangeStr)
+                if portRangeAry.length is 2
+                    portFrom = portRangeAry[0]
+                    portTo = portRangeAry[1]
+                else
+                    portTo = portFrom = portRangeAry[0]
+                protocol = '17'
+            else if protocol is 'icmp'
+                portTo = portFrom = ''
+                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
+                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
+                protocol = '1'
+            else if protocol is 'custom'
+                protocol = $('#sg-protocol-' + protocol + ' input').val()
+                portTo = portFrom = ''
+            else if protocol is 'all'
+                portTo = '0'
+                portFrom = '65535'
+                protocol = '-1'
 
             this.trigger 'ADD_RULE_TO_ACL', {
                 rule: ruleNumber,

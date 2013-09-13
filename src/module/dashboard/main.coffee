@@ -154,7 +154,9 @@ define [ 'jquery',
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )
-                model.describeAWSResourcesService()
+
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region, id ) ->
+                model.describeAWSResourcesService region
 
             model.on 'UPDATE_REGION_APP_LIST', () ->
                 view.renderRegionAppStack( 'app' )

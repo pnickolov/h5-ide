@@ -16,8 +16,7 @@ require.config {
 		#main
 		'main'            : 'js/register/main'
 		'router'          : 'js/register/router'
-		'reg_main'        : 'module/register/reg_main'
-		'reset_main'      : 'module/register/reset_main'
+		'reg_main'        : 'module/register/main'
 
 		#vender
 		'jquery'          : 'vender/jquery/jquery'

@@ -15,7 +15,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
     loadModule = ( type ) ->
 
         #load
-        require [ './module/register/reg_view', './module/register/reg_model' ], ( View, model ) ->
+        require [ './module/register/view', './module/register/model' ], ( View, model ) ->
 
             view = loadSuperModule loadModule, 'register', View, null
             return if !view

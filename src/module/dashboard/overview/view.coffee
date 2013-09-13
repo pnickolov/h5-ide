@@ -41,7 +41,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $('#global-refresh span').text time
 
         scrollToResource: ->
-            scrollTo = $('#global-region-map-wrap').height()
+            scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
     OverviewView = Backbone.View.extend {

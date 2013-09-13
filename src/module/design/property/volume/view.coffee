@@ -14,10 +14,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             'click #volume-type-radios input' : 'volumeTypeChecked'
             'change #volume-device' : 'deviceNameChanged'
-            'change #volume-size-ranged' : 'sizeChanged'
-            'keyup  #volume-size-ranged' : 'checkForIops'
+            'keyup #volume-size-ranged' : 'sizeChanged'
+            'keyup  #volume-size-ranged' : 'processIops'
             #'keyup #volume-size-ranged' : 'sizeChanged'
-            'change #iops-ranged' : 'iopsChanged'
+            'keyup #iops-ranged' : 'sizeChanged'
             #'keyup #iops-ranged' : 'iopsChanged'
             'click #snapshot-info-group' : 'showSnapshotDetail'
 
@@ -50,6 +50,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             else
                 $( '#iops-group' ).show()
                 this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
+            @sizeChanged()
 
         deviceNameChanged : ( event ) ->
             target       = $ event.currentTarget
@@ -72,22 +73,40 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             if target.parsley 'validate'
                 this.trigger 'DEVICE_NAME_CHANGED', name
 
-        checkForIops: ( event ) ->
+        processIops: ( event ) ->
             size = parseInt event.currentTarget.value, 10
+            opsCheck = $( '#radio-iops' ).is ':checked'
             if size >= 10
-                $( '#volume-type-radios div:last-child' )
-                    .data( 'tooltip', '' )
-                    .find( 'input' )
-                    .removeAttr( 'disabled' )
+                @enableIops()
+            else if not opsCheck
+                @disableIops()
+
             null
+
+        enableIops: ->
+            $( '#volume-type-radios div' )
+                .last()
+                .data( 'tooltip', '' )
+                .find( 'input' )
+                .removeAttr( 'disabled' )
+
+        disableIops: ->
+            $( '#volume-type-radios div' )
+                .last()
+                .data( 'tooltip', 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.' )
+                .find( 'input' )
+                .attr( 'disabled', '' )
 
 
         sizeChanged : ( event ) ->
-            size = parseInt $( '#volume-size-ranged' ).val(), 10
+            volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
             $target = $ event.currentTarget
 
             if $target.parsley 'validateForm'
-                this.trigger 'VOLUME_SIZE_CHANGED', size
+                this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
+                if $( '#radio-iops' ).is ':checked'
+                    this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
+
 
             null
 
@@ -99,7 +118,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
 
 
-            if target.parsley 'validate'
+            if target.parsley 'validateForm'
                 this.trigger 'IOPS_CHANGED', "" + iops_size
 
         showSnapshotDetail : ( event ) ->

@@ -2,7 +2,7 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' ], (Backbone, $, _, MC, session_model, vpc_model) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model' ], (Backbone, $, _, MC, session_model, vpc_model, account_model) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -12,6 +12,25 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
         initialize : ->
             me = this
+
+            #####listen ACCOUNT_UPDATE__ACCOUNT_RETURN
+            me.on 'ACCOUNT_UPDATE__ACCOUNT_RETURN', (result) ->
+                console.log 'ACCOUNT_UPDATE__ACCOUNT_RETURN'
+
+                attributes = result.param[3]
+
+                if !result.is_error
+
+                    me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_SUCCESS', attributes
+
+                else
+
+                    me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', attributes
+
+                null
+
+            ###################################################
+
             #
             flag = false
             if $.cookie('has_cred') is 'true'
@@ -63,11 +82,20 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
             null
 
         updateAccountEmail : (new_email) ->
-            #me = this
+            me = this
+
+            attributes = {'email':new_email}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
 
             null
 
         updateAccountPassword : (password, new_password) ->
+            me = this
+
+            attributes = {'password':password, 'new_password':new_password}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
 
             null
 

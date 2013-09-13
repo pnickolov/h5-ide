@@ -94,7 +94,7 @@ define [ 'event',
 
             null
 
-        clickUpdateEmail : (flag) ->
+        clickUpdateEmail : (event) ->
             console.log 'account_setting_tab clickUpdateEmail'
 
             me = this
@@ -142,8 +142,10 @@ define [ 'event',
             else if flag is 'error_password'
 
                 $('#account-passowrd-info').show()
-                $('#account-passowrd-info').html '{{ i18n HEAD_MSG_ERR_ERROR_PASSWORD}} <a href="javascript:void(0)">{{ i18n HEAD_MSG_ERR_RESET_PASSWORD }}</a>'
-                #$('#account-passowrd-info').html "Current password is wrong. <a href="javascript:void(0)">Forget password?</a>"
+
+                #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
+                #$('#account-passowrd-info').html html_str
+                $('#account-passowrd-info').html 'Current password is wrong. <a href="javascript:void(0)">Forget password?</a>'
 
             else
 
@@ -156,6 +158,9 @@ define [ 'event',
             me = this
 
             me.showSetting('account')
+
+        notify : (type, msg) ->
+            notification type, msg
 
         # show account setting tab or credential setting tab
         showSetting : (tab, flag) ->

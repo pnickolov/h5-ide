@@ -803,14 +803,14 @@ textarea {
 .scrollbar-veritical-wrap {
 	right: 0;
 	top: 0;
-	width: 10px;
+	width: 8px;
 	height: 100%;
 }
 
 .scrollbar-horizontal-wrap {
 	left: 0;
 	bottom: 0;
-	height: 10px;
+	height: 8px;
 	width: 100%;
 }
 

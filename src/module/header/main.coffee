@@ -72,7 +72,7 @@ define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!nls/lang
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'UPDATE_AWS_CREDENTIAL'
 
-                if $.cookie('has_cred') is 'true'
+                if MC.forge.cookie.getCookieByName('has_cred') is 'true'
                     model.set 'has_cred', true
                 else
                     model.set 'has_cred', false

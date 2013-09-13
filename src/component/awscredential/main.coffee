@@ -29,7 +29,7 @@ define [ 'jquery', 'event',
             if model.attributes.is_authenticated
                 view.showUpdate()
             else
-                if $.cookie('has_cred') is 'false' then view.showSet 'is_failed' else view.showSet()
+                if MC.forge.cookie.getCookieByName('has_cred') is 'false' then view.showSet 'is_failed' else view.showSet()
 
             #
             view.on 'CLOSE_POPUP', () ->

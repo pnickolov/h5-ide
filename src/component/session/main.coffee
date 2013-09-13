@@ -44,6 +44,9 @@ define [ 'jquery', 'event',
             reconnect_view.on 'CLOSE_POPUP',        () -> unLoadModule reconnect_view, model
             model.on 'RE_LOGIN_SCUCCCESS',          () ->
                 #
+                ide_event.trigger ide_event.UPDATE_APP_LIST
+                ide_event.trigger ide_event.UPDATE_DASHBOARD
+                #
                 reconnect_view.close()
                 #
                 window.location.href = 'ide.html' if !MC.data.is_loading_complete

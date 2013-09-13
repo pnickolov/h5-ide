@@ -93,6 +93,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             console.log 'closeTab'
             #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
             target = $( '#tab-bar-' + tab_id ).find( '.close-tab' )
+            return if $( '#tab-bar-' + tab_id ).length is 0
             if target.length > 0
                 target.trigger 'mousedown'
             else

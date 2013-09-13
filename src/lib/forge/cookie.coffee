@@ -81,6 +81,15 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			false
 
+	clearV2Cookie = ( path ) ->
+		#for patch
+		option = { path: path }
+
+		$.each $.cookie(), ( key, cookie_name ) ->
+			$.removeCookie cookie_name	, option
+			null
+
+
 	#public
 	setCookie    : setCookie
 	deleteCookie : deleteCookie
@@ -88,3 +97,4 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	getIDECookie : getIDECookie
 	setCred      : setCred
 	checkAllCookie : checkAllCookie
+	clearV2Cookie  : clearV2Cookie

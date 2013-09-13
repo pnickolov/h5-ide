@@ -254,6 +254,10 @@ header {
 	width: 160px;
 }
 
+#register-get-start {
+	width: 200px;
+}
+
 /* Selection */
 
 ::selection {

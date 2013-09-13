@@ -836,25 +836,36 @@ textarea {
 	position: relative;
 	border-radius: 8px;
 
-	background-color: #666;
-	border: 1px solid #333;
-	box-shadow: inset 1px 1px 1px #999;
+	background: #999;
+/*	border: 1px solid #333;
+	box-shadow: inset 1px 1px 1px #999;*/
+	cursor: pointer;
+
+	opacity: .6;
+}
+
+.scrollbar-veritical-thumb:hover,
+.scrollbar-horizontal-thumb:hover,
+.scrollbar-veritical-thumb:active,
+.scrollbar-horizontal-thumb:active {
+	/*background: #999;*/
+	opacity: 1;
 }
 
 .scrollbar-veritical-thumb {
 	width: 8px;
-	-webkit-transition: height 0.2s;
-	-moz-transition: height 0.2s;
-	-o-transition: height 0.2s;
-	transition: height 0.2s;
+	-webkit-transition: height 0.2s, opacity .2s;
+	-moz-transition: height 0.2s, opacity .2s;
+	-o-transition: height 0.2s, opacity .2s;
+	transition: height 0.2s, opacity .2s;
 }
 
 .scrollbar-horizontal-thumb {
 	height: 8px;
-	-webkit-transition: width 0.2s;
-	-moz-transition: width 0.2s;
-	-o-transition: width 0.2s;
-	transition: width 0.2s;
+	-webkit-transition: width 0.2s, opacity .2s;
+	-moz-transition: width 0.2s, opacity .2s;
+	-o-transition: width 0.2s, opacity .2s;
+	transition: width 0.2s, opacity .2s;
 }
 
 .scroll-wrap {

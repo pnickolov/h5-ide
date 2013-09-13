@@ -12,7 +12,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
     initialize()
 
     #private
-    loadModule = () ->
+    loadModule = ( type ) ->
 
         #load
         require [ './module/register/reg_view', './module/register/reg_model' ], ( View, model ) ->
@@ -22,7 +22,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             view.model = model
 
             #render
-            view.render()
+            view.render type
 
     unLoadModule = () ->
         #view.remove()

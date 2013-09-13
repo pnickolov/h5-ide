@@ -54,6 +54,10 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
+		#clear path=/v2 cookie(patch)
+		forge_handle.cookie.clearV2Cookie '/v2'
+		forge_handle.cookie.clearV2Cookie '/v2/'
+
 		if forge_handle.cookie.getIDECookie()
 			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else

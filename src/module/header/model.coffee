@@ -30,15 +30,6 @@ define [ 'backbone', 'jquery', 'underscore',
 
                     result = forge_result.resolved_data
 
-                #delete cookies
-                #$.cookie 'userid',      null, { expires: 0 }
-                #$.cookie 'usercode',    null, { expires: 0 }
-                #$.cookie 'session_id',  null, { expires: 0 }
-                #$.cookie 'region_name', null, { expires: 0 }
-                #$.cookie 'email',       null, { expires: 0 }
-                #$.cookie 'has_cred',    null, { expires: 0 }
-
-                #
                 forge_handle.cookie.deleteCookie()
 
                 #SSO

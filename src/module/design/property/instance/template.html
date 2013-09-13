@@ -42,27 +42,23 @@
 				</ul>
 			</div>
 		</section>
-		{{#unless classic_stack}}
-		<section class="property-control-group">
+		<section class="property-control-group" {{#unless can_set_ebs}}style="display:none;"{{/unless}}>
 			<div class="checkbox">
-				{{#if checkbox_display.ebsOptimized}}
-				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
-				{{else}}
-				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
-				{{/if}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
 				<label for="property-instance-ebs-optimized"></label>
 			</div>
 			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
 		</section>
+		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<label class="left">Tenancy</label>
 			<div class="selectbox" id="tenancy-select">
-				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
+				<div class="selection">{{#if tenacy}}Default{{else}}Dedicated{{/if}}</div>
 				<ul class="dropdown" tabindex="-1">
 					{{#unless force_tenacy}}
-					<li class="item {{#if checkbox_display.tenancy}}selected{{/if}}" data-id="default">Default</li>
+					<li class="item {{#if tenacy}}selected{{/if}}" data-id="default">Default</li>
 					{{/unless}}
-					<li class="item {{#unless checkbox_display.tenancy}}selected{{/unless}}" data-id="dedicated">Delicated</li>
+					<li class="item {{#unless tenacy}}selected{{/unless}}" data-id="dedicated">Delicated</li>
 				</ul>
 			</div>
 		</section>

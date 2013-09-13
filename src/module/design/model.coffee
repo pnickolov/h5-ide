@@ -22,25 +22,31 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
                 if !result.is_error
 
-                    region = result.param[3]
-                    resource_source = result.resolved_data
+                    try
 
-                    if resource_source
-                        MC.aws.aws.cacheResource resource_source, region
-                        me.describeInstancesOfASG region
+                        region = result.param[3]
+                        resource_source = result.resolved_data
 
-                    #update instance icon of app
-                    MC.aws.instance.updateStateIcon app_id
+                        if resource_source
+                            MC.aws.aws.cacheResource resource_source, region
+                            me.describeInstancesOfASG region
 
-                    MC.aws.asg.updateASGCount app_id
+                        #update instance icon of app
+                        MC.aws.instance.updateStateIcon app_id
 
-                    #update canvas when get instance info
-                    ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+                        MC.aws.asg.updateASGCount app_id
 
-                    #update property panel
-                    uid = MC.canvas_property.selected_node[0]
-                    if uid
-                        MC.canvas.select uid
+                        #update canvas when get instance info
+                        ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+
+                        #update property panel
+                        uid = MC.canvas_property.selected_node[0]
+                        if uid
+                            MC.canvas.select uid
+
+                    catch error
+
+                        console.error '[error]APP_RESOURCE_RETURN'
 
                 else
                     #TO-DO
@@ -184,42 +190,48 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
             comp_data     = MC.canvas.data.get('component')
             instance_ids = []
 
-            #find ASG in comp_layout
-            _.map comp_layout, ( value, id ) ->
 
-                if value.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+            try
+                #find ASG in comp_layout
+                _.map comp_layout, ( value, id ) ->
 
-                    asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
-                    asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
-                    instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
+                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-                    #find instance in ASG
-                    if instance_memeber
-                        _.map instance_memeber, (ins, i) ->
-                            instance_ids.push ins.InstanceId
-                            null
-                null
+                        asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
+                        asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
+                        instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
 
-            ######
-            src = {}
-            src.sender = this
-            src.model  = null
-
-            if instance_ids.length > 0
-                instance_service.DescribeInstances src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, instance_ids, null, ( aws_result ) ->
-
-                    if !aws_result.is_error
-                        #DescribeInstances succeed
-                        if aws_result.resolved_data
-                             _.map aws_result.resolved_data, (ins, i) ->
-                                MC.data.resource_list[region][ins.instanceId] = ins
+                        #find instance in ASG
+                        if instance_memeber
+                            _.map instance_memeber, (ins, i) ->
+                                instance_ids.push ins.InstanceId
                                 null
-                        null
-                    else
-                        #DescribeInstances failed
-                        console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+                    null
 
-            else
+                ######
+                src = {}
+                src.sender = this
+                src.model  = null
+
+                if instance_ids.length > 0
+                    instance_service.DescribeInstances src, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, instance_ids, null, ( aws_result ) ->
+
+                        if !aws_result.is_error
+                            #DescribeInstances succeed
+                            if aws_result.resolved_data
+                                 _.map aws_result.resolved_data, (ins, i) ->
+                                    MC.data.resource_list[region][ins.instanceId] = ins
+                                    null
+                            null
+                        else
+                            #DescribeInstances failed
+                            console.log 'instance.DescribeInstances failed, error is ' + aws_result.error_message
+
+                else
+
+            catch error
+
+                console.error '[error]describeInstancesOfASG'
 
             null
 

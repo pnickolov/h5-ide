@@ -77,9 +77,8 @@ MC.canvas = {
 				target.attr('style', 'fill:' + value);
 				break;
 
-			case 'tooltip'://add tooltip
-				target.addClass('tooltip').attr( id + '_' + key, value );
-				break;
+			case 'tooltip': //add tooltip
+				Canvon( '#' + id + '_' + key ).addClass('tooltip').data( 'tooltip', value ).attr( 'data-tooltip', value );
 		}
 
 		return true;
@@ -138,10 +137,10 @@ MC.canvas = {
 		while (i < MC.canvas.SG_MAX_NUM) {
 			if (i < colors_label.length && colors_label[i]) {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors_label[i].color);
-				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", colors_label[i].name );
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).addClass('tooltip').data( 'tooltip', colors_label[i].name ).attr( 'data-tooltip', colors_label[i].name );
 			} else {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
-				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", "");
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).addClass('tooltip').data( 'tooltip', "" ).attr( 'data-tooltip', "" );
 				//show
 				//hide
 			}

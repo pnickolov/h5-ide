@@ -278,10 +278,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 @cacheResource 'raw', data
 
                 globalData = @globalRegionhandle data
-                if globalData is @get 'global_list'
-                    @trigger 'change:global_list'
-                else
-                    @set 'global_list', globalData
+                @forceSet 'global_list', globalData
             else
                 @setResource data[ region ], region
 
@@ -292,13 +289,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             info = @getResourceFromCache 'info', region
 
             if complex and info
-                @set 'cur_region_resource_info', info
-                @set 'cur_region_resource', complex
+                @forceSet 'cur_region_resource_info', info
+                @forceSet 'cur_region_resource', complex
             else if raw
                 @setResource raw, region
             else
                 @describeAWSResourcesService region
 
+        forceSet: ( key, value ) ->
+            @set key, value
+            if _.isEqual value, @get key
+                @trigger "change:#{key}"
 
         # cache methods
         cacheResource: ( type, data, region ) ->
@@ -691,12 +692,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             console.log 'vpngateway.DescribeVpnGateways failed, error is ' + result.error_message
 
                         null
-
-            me.set 'cur_region_resource_info', lists
-            if resources is me.get 'cur_region_resource'
-                me.trigger 'change:cur_region_resource'
-            else
-                me.set 'cur_region_resource', resources
+            if region is current_region
+                me.forceSet 'cur_region_resource_info', lists
+                me.forceSet 'cur_region_resource', resources
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 

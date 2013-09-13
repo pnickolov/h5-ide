@@ -59,11 +59,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 this.trigger 'DEVICE_NAME_CHANGED', name
 
         sizeChanged : ( event ) ->
-            size = $( '#volume-size-ranged' ).val()
-            if(size > 1024 || size < 1 )
-                console.log 'Volume size must in the range of 1-1024 GB.'
+            size = parseInt $( '#volume-size-ranged' ).val(), 10
+            if(not size || size > 1024 || size < 1 )
+                $( event.currentTarget ).parsley('custom', ( val ) ->
+                    return "Volume size must in the range of 1-1024 GB."
+                ).parsley('validate')
             else
                 this.trigger 'VOLUME_SIZE_CHANGED', size
+
+            null
 
         iopsChanged : ( event ) ->
             target = $ event.currentTarget

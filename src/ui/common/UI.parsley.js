@@ -1538,6 +1538,8 @@
       this.focusedField = false;
 
       for ( var item = 0; item < this.items.length; item++ ) {
+        if ( this.items[ item ].$element.is( ':hidden' ) )
+          continue;
         if ( 'undefined' !== typeof this.items[ item ] && false === this.items[ item ].validate() ) {
           valid = false;
 

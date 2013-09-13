@@ -24,15 +24,6 @@ define [ 'session_model', 'forge_handle'
 
 					result = forge_result.resolved_data
 
-					#set cookies
-					#$.cookie 'userid',      result.userid,          { expires: 1 }
-					#$.cookie 'usercode',    result.usercode,        { expires: 1 }
-					#$.cookie 'session_id',  result.session_id,      { expires: 1 }
-					#$.cookie 'region_name', result.region_name,     { expires: 1 }
-					#$.cookie 'email',       result.email,           { expires: 1 }
-					#$.cookie 'has_cred',    result.has_cred,        { expires: 1 }
-					#$.cookie 'username',    $.cookie( 'username' ), { expires: 1 }
-
 					#set cookie
 					forge_handle.cookie.setCookie result
 
@@ -47,25 +38,6 @@ define [ 'session_model', 'forge_handle'
 					me.trigger 'RE_LOGIN_FAILED'
 
 				null
-
-		#_setMadeiracloudIDESessionID : ( result ) ->
-		#
-		#	madeiracloud_ide_session_id = [
-		#		result.userid,
-		#		result.usercode,
-		#		result.session_id,
-		#		result.region_name,
-		#		result.email,
-		#		result.has_cred
-		#	]
-		#
-		#	$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), {
-		#		path: '/',
-		#		#domain: '.madeiracloud.com', #temp comment
-		#		expires: 1
-		#	}
-		#
-		#	null
 
 	}
 

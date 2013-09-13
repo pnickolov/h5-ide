@@ -63,8 +63,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .global-region-status-tab-item'      : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
-            'click #region-aws-resource-tab a'          : 'switchRegionResource'
+            'click #region-aws-resource-tab a'          : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
+            'click .global-region-resource-content a'   : 'switchRegionAndResource'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
             'modal-shown .start-app'                    : 'startAppClick'
@@ -74,7 +75,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
         status:
-            reloading: false
+            reloading       : false
+            resourceId      : null
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
@@ -118,8 +120,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         switchAppStack: ( event ) ->
             Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
 
-        switchRegionResource: ( event ) ->
+        switchResource: ( event ) ->
             Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
+
+        switchRegionAndResource: ( event ) ->
+            $target = $ event.currentTarget
+            region = $target.data 'region'
+            @status.resourceId = $target.data 'resourceId'
+            @gotoRegion region
+
 
         renderGlobalList: ( event ) ->
             @status.reloading = false
@@ -143,7 +152,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         renderRegionResource: ( event ) ->
             if not @status.reloading
                 tmpl = @region_resource @model.toJSON()
-                $( this.el ).find('#region-resource-wrap').html tmpl
+                @$el.find('#region-resource-wrap').html tmpl
+                if @status.resourceId
+                    @$el.find( "#region-aws-resource-tab li:nth-child(#{@status.resourceId + 1}) a" ).click()
+                    @status.resourceId = null
+            null
+
 
         reRenderRegionPartial: ( type, data ) ->
             if not @status.reloading
@@ -179,8 +193,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
 
         gotoRegion: ( event ) ->
-            $target = $ event.currentTarget
-            region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            if event is Object event
+                $target = $ event.currentTarget
+                region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            else
+                region = event
+
             $( "#region-switch-list li[data-region=#{region}]" ).click()
             Helper.scrollToResource()
 

@@ -1,9 +1,17 @@
-<div id="reset-form-wrap">
-	<h1>Request new password</h1>
-	<form id="reset-form" method="post" action="">
-		<label>User Name or e-mail address</label>
-		<input autocomplete="off" name="name" class="reset-input" type="text"/>
+<div id="reset-form-wrap" class="box-wrapper">
+	<div class="box-header">
+		<h2>Forgot Password</h2>
+		<div class="title-link">
+			<a href="register.html">Register</a> / <a href="login.html">Log in</a>.
+		</div>
+	</div>
+	<p class="account-instruction">Provide the email address or username you registered with MadeiraCloud. An email with link to reset password will be sent to you soon.</p>
+	<form id="reset-form" method="post" action="" class="box-body">
+		<label for="reset-pw-email" class="account-label">Username or Email Address</label>
+		<input class="account-input" autocomplete="off" name="name" class="reset-input" type="text" id="reset-pw-email" />
 
-		<input id="reset-btn" type="submit" value="Submit">
+		<div class="account-btn-wrap">
+			<input class="btn btn-primary btn-large account-btn" id="reset-btn" type="submit" value="Send Reset Password Email">
+		</div>
 	</form>
 </div>

@@ -60,7 +60,7 @@ header {
 	margin           : 20% auto 0;
 	width            : 430px;
 	/*padding          : 20px 20px 50px 20px;*/
-	padding: 0 0 50px 0;
+	padding: 0 0 60px 0;
 
 	background-color : #f2f4f7;
 	box-shadow       : 0 0 50px rgba(0,0,0,.5);
@@ -95,19 +95,22 @@ header {
 }
 
 .error-msg {
-	color: #f8f8f8;
+	padding: 10px 15px;
+	font-size: 14px;
 	border-radius: 4px;
-	background: #bc5b51;
-	-moz-box-shadow:    0px 2px 2px 0px rgba(0,0,0,0.10);
-	-webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.10);
-	box-shadow:         0px 2px 2px 0px rgba(0,0,0,0.10);
-	padding: 10px;
-	margin: 10px 0 -5px 0;
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
 	display: none;
-	-webkit-transition: opacity 1s ease-in-out;
-	-moz-transition: opacity 1s ease-in-out;
-	-o-transition: opacity 1s ease-in-out;
-	transition: opacity 1s ease-in-out;
+}
+
+.error-status {
+	padding: 10px 15px;
+	font-size: 14px;
+	border-radius: 4px;
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
 }
 
 .error-msg.show{
@@ -118,12 +121,22 @@ header {
 	position: relative;
 }
 
-.account-input {
-	display: block;
-	margin: 20px 0;
+.account-label {
+	color: #999;
+}
+
+#login-box .account-input {
 	padding: 14px 5px 14px 55px;
 	border: 1px solid #ccc;
 	width: 306px;
+}
+
+.account-input {
+	display: block;
+	/*margin: 20px 0;*/
+	margin: 8px 0 14px 0;
+	padding: 10px;
+	width: 346px;
 	font-size: 16px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
@@ -137,11 +150,15 @@ header {
 	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
-.control-group.error label {
-	color: #bc5b51;
+.control-group {
+	margin: 20px 0;
 }
 
-.control-group.error .login-input {
+.control-group.error label {
+	color: #bc5b51 !important;
+}
+
+.control-group.error .account-input {
 	border: 1px solid #bc5b51;
 }
 
@@ -167,14 +184,20 @@ header {
 	color: #666;
 }
 
-#login-btn-wrap {
-	position: relative;
+.account-instruction {
+	padding: 15px 30px 5px 30px;
+	color: #666;
 }
 
-#login-footer {
+.account-instruction-major {
+	padding   : 15px 30px 5px 30px;
+	color     : #666;
+	font-size : 16px;
+}
+
+
+.account-btn-wrap {
 	position: relative;
-	height: 50px;
-	margin-top: 0px;
 }
 
 .footer-link {
@@ -186,7 +209,7 @@ header {
 .account-btn {
 	font-size: 16px;
 	position: absolute;
-	right: 0;
+	right: 2px;
 	top: 0;
 	display: block;
 }
@@ -217,6 +240,18 @@ header {
 /* Register Special */
 #register-form-wrap {
 	margin: 8% auto 0;
+}
+
+#tos-wrap {
+	width     : 200px;
+	font-size : 12px;
+	color     : #999;
+	position  : absolute;
+	top       : 6px;
+}
+
+#register-btn {
+	width: 160px;
 }
 
 /* Selection */

@@ -43,8 +43,10 @@ require.config {
 		#common lib
 		'constant'        : 'lib/constant'
 
-		#base_model
+		#
 		'base_model'      : 'model/base_model'
+		'account_model'   : 'model/account_model'
+		'account_service' : 'service/account/account_service'
 
 		#result_vo
 		'result_vo'       : 'service/result_vo'

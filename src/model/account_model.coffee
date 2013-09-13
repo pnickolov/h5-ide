@@ -30,16 +30,14 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #register succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_REGISTER_RETURN', forge_result
-
                 else
                 #register failed
 
                     console.log 'account.register failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_REGISTER_RETURN', forge_result
 
         #update_account api (define function)
         update_account : ( src, username, session_id, attributes ) ->
@@ -122,16 +120,14 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #check_repeat succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__REPEAT_RETURN', forge_result
-
                 else
                 #check_repeat failed
 
                     console.log 'account.check_repeat failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__REPEAT_RETURN', forge_result
 
         #check_validation api (define function)
         check_validation : ( src, key, flag ) ->

@@ -21,6 +21,11 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             return if !view
             view.model = model
 
+            view.on 'CHECK_REPEAT', ( username, email, password ) ->
+                model.checkRepeatService username, email, password
+
+            model.on 'USERNAME_REPEAT', () -> view.showUsernameError()
+
             #render
             view.render type
 

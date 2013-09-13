@@ -84,7 +84,7 @@ var selectbox = {
             $selection.html( $prev.html() );
         }
 
-        return false;
+        return true;
     }
 
     function keydown ( event ) {

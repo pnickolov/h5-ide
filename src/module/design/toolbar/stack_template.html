@@ -50,12 +50,12 @@
 <!-- line style -->
 <section class="toolbar-btn-group">
 	<div class="selectbox btn-toolbar toolbar-line-style">
-		<a class="selection tooltip" data-tooltip="Security Group Rule Line Style..." id="toolbar-line-style"><i class="icon-elbow"></i></a>
+		<a class="selection tooltip" data-tooltip="Security Group Rule Line Style..." id="toolbar-line-style"><i class="{{ lines.icon }}"></i></a>
 		<ul class="dropdown" tabindex="-1">
-			<li id="toolbar-straight" class="item"> <i class="icon-straight"></i><span>Straight</span></li>
-			<li id="toolbar-elbow" class="item selected"> <i class="icon-elbow"></i><span>Elbow</span></li>
-			<li id="toolbar-bezier-q" class="item"> <i class="icon-bezier-q"></i><span>Quadratic Belzier curve</span></li>
-			<li id="toolbar-bezier-qt" class="item"><i class="icon-bezier-qt"></i><span>Smooth quadratic Belzier curveto</span></li>
+			<li id="toolbar-straight" class='item {{#if lines.is_style0}}selected{{/if}}'> <i class="icon-straight"></i><span>Straight</span></li>
+			<li id="toolbar-elbow" class='item {{#if lines.is_style1}}selected{{/if}}'> <i class="icon-elbow"></i><span>Elbow</span></li>
+			<li id="toolbar-bezier-q" class='item {{#if lines.is_style2}}selected{{/if}}'> <i class="icon-bezier-q"></i><span>Quadratic Belzier curve</span></li>
+			<li id="toolbar-bezier-qt" class='item {{#if lines.is_style3}}selected{{/if}}'><i class="icon-bezier-qt"></i><span>Smooth quadratic Belzier curveto</span></li>
 		</ul>
 	</div>
 </section>

@@ -240,16 +240,21 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 				rule.ipranges = sgName
 
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
-			cur_count = Number $("#rule-count").text()
-			cur_count = cur_count + 1
-			$("#rule-count").text cur_count
-			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
+			# cur_count = Number $("#rule-count").text()
+			# cur_count = cur_count + 1
+			# $("#rule-count").text cur_count
+			# $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
-			$("#sg-rule-empty").toggle cur_count == 0
+			# $("#sg-rule-empty").toggle cur_count == 0
 
 			rule.ipranges = sg_descrition
 
 			this.trigger "SET_SG_RULE", rule
+
+			uid = @model.get( 'sg_detail' ).component.uid
+			@model.getSG(uid)
+			$dom = this.render()
+			$("#property-second-panel").find(".property-content").html($dom)
 
 			modal.close()
 

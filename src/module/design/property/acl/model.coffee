@@ -160,6 +160,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setACLName : (uid, aclName) ->
             MC.canvas_data.component[uid].name = aclName
             null
+
+        haveRepeatRuleNumber : (uid, newRuleNumber) ->
+            result = false
+            entrySet = MC.canvas_data.component[uid].resource.EntrySet
+            _.each entrySet, (entryObj) ->
+                if entryObj.RuleNumber is newRuleNumber
+                    result = true
+                null
+            return result
     }
 
     model = new ACLModel()

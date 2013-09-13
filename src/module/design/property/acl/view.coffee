@@ -78,6 +78,9 @@ define [ 'event',
 
         saveRule : () ->
 
+            that = this
+            aclUID = that.model.get('component').uid
+
             rule_number_dom =  $('#modal-acl-number')
             ruleNumber = $('#modal-acl-number').val()
             action = $('#acl-add-model-action-allow').prop('checked')
@@ -134,6 +137,13 @@ define [ 'event',
             custom_source_dom.parsley 'custom', ( val ) ->
                 if !MC.validate 'cidr', val
                     return 'Must be a valid form of CIDR block.'
+                null
+
+            rule_number_dom.parsley 'custom', ( val ) ->
+                if Number(val) > 32767
+                    return 'The maximum value is 32767.'
+                if that.model.haveRepeatRuleNumber(aclUID, val)
+                    return 'The Rule Number have exist one.'
                 null
 
             if (not rule_number_dom.parsley 'validate') or (custom_source_dom.is(':visible') and not custom_source_dom.parsley 'validate') or
@@ -207,10 +217,21 @@ define [ 'event',
                     newRuleObj.ruleNumber = value.RuleNumber
                     newRuleObj.isStarRule = false
 
-                if value.Protocol is '-1'
+                # if value.Protocol is '-1'
+                #     newRuleObj.protocol = 'All'
+                # else
+                #     newRuleObj.protocol = value.Protocol
+
+                if value.Protocol is -1 or value.Protocol is '-1'
                     newRuleObj.protocol = 'All'
+                else if value.Protocol is 6 or value.Protocol is '6'
+                    newRuleObj.protocol = 'TCP'
+                else if value.Protocol is 17 or value.Protocol is '17'
+                    newRuleObj.protocol = 'UDP'
+                else if value.Protocol is 1 or value.Protocol is '1'
+                    newRuleObj.protocol = 'ICMP'
                 else
-                    newRuleObj.protocol = value.Protocol
+                    newRuleObj.protocol = 'Custom(' + value.Protocol + ')'
 
                 newRuleObj.port = ''
 

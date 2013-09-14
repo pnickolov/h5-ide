@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
 
     current_region = null
 
@@ -131,7 +131,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
 
         renderGlobalList: ( event ) ->
-            @status.reloading = false
+            if @status.reloading
+                notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
+                @status.reloading = false
+
             tmpl = @global_list @model.toJSON()
             if current_region
                 @trigger 'SWITCH_REGION', current_region

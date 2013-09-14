@@ -279,7 +279,10 @@ MC.canvas.reDrawSgLine = function() {
     }
   });
   $.each(lines, function(idx, line_data) {
-    return MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+    if((MC.canvas_data.layout.component.node[line_data[0]] || MC.canvas_data.layout.component.group[line_data[0]]) && (MC.canvas_data.layout.component.node[line_data[1]] || MC.canvas_data.layout.component.group[line_data[1]])){
+      return MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+    }
+
   });
   return lines;
 };

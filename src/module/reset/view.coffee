@@ -15,7 +15,8 @@ define [ 'event',
         email_tmpl    : Handlebars.compile email_tmpl
         success_tmpl  : Handlebars.compile success_tmpl
 
-        #events   :
+        events   :
+            'click #reset-btn' : 'resetButtonEvent'
 
         initialize : ->
             #
@@ -35,6 +36,11 @@ define [ 'event',
                     @$el.html @success_tmpl()
                 else
                     @$el.html @template @model
+
+        resetButtonEvent : ->
+            console.log 'resetButtonEvent'
+            this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
+            false
 
     }
 

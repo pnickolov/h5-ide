@@ -24,6 +24,8 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             #render
             view.render type
 
+            view.on 'RESET_EMAIL', ( result ) -> model.resetPasswordServer result
+
     unLoadModule = () ->
         #view.remove()
 

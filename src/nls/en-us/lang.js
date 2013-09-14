@@ -193,7 +193,7 @@ define({
 		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
-
+		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
 
 		/******property module******/
 		// instance property module

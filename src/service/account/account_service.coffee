@@ -59,12 +59,20 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #///////////////// Parser for register return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveRegisterResult = ( result ) ->
-        #resolve result
-        #TO-DO
 
-        #return vo
-        #TO-DO
-        result
+        session_info = {}
+
+        #resolve result
+        session_info.userid      = result[0]
+        session_info.usercode    = result[1]
+        session_info.session_id  = result[2]
+        session_info.region_name = result[3]
+        session_info.email       = result[4]
+        session_info.has_cred    = result[5]
+        session_info.account_id  = result[6]
+
+        #return session_info
+        session_info
 
     #private (parser register return)
     parserRegisterReturn = ( result, return_code, param ) ->
@@ -79,6 +87,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
             forge_result.resolved_data = resolved_data
 
+        else if return_code == constant.RETURN_CODE.E_EXIST
+
+            resolved_data = result
+
+            forge_result.resolved_data = resolved_data
 
         #3.return vo
         forge_result
@@ -104,12 +117,6 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
-
-            resolved_data = resolveUpdateAccountResult result
-
-            forge_result.resolved_data = resolved_data
-
-        else if return_code == constant.RETURN_CODE.E_EXIST
 
             resolved_data = resolveUpdateAccountResult result
 

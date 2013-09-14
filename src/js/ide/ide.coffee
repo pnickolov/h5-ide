@@ -260,15 +260,18 @@ define [ 'MC', 'event', 'handlebars'
 		# analytics.track('Loaded IDE', { })
 
 		#intercom
-		window.intercomSettings.email      = MC.base64Decode( $.cookie( 'email' ))
-		window.intercomSettings.username   = $.cookie( 'username' )
-		window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
-		intercom_sercure_mode_hash         = () ->
-			intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-			hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-			console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
-			return hash.toString CryptoJS.enc.Hex
-		window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
+		#window.intercomSettings.email      = MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+		#window.intercomSettings.username   = forge_handle.cookie.getCookieByName( 'username' )
+		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
+		#intercom_sercure_mode_hash         = () ->
+		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+		#	return hash.toString CryptoJS.enc.Hex
+		#if !window.intercomSettings.user_hash
+		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
+		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
+
 		#window.intercomSettings.stack_total= 0
 
 		#############################

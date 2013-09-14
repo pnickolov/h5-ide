@@ -46,7 +46,7 @@ define [ 'jquery', 'handlebars',
          'MC', 'session_model',
          'i18n!nls/lang.js',
          'text!./js/login/template.html',
-         'forge_handle'
+         'forge_handle', 'vender/crypto-js/hmac-sha256'
 ], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
 
 
@@ -104,6 +104,16 @@ define [ 'jquery', 'handlebars',
 				#set madeiracloud_ide_session_id
 				#setMadeiracloudIDESessionID result
 				forge_handle.cookie.setIDECookie result
+
+				#set email
+				localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+				localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
+				intercom_sercure_mode_hash = () ->
+					intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+					hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+					console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+					return hash.toString CryptoJS.enc.Hex
+				localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
 				#redirect to page ide.html
 				window.location.href = 'ide.html'

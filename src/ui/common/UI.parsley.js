@@ -1694,7 +1694,7 @@
     , messages: {}                              // Add your own error messages here
 
     //some quite advanced configuration here..
-    , validateIfUnchanged: false                                          // false: validate once by field value change
+    , validateIfUnchanged: true                                          // false: validate once by field value change
     , errors: {
         classHandler: function ( elem, isRadioOrCheckbox ) {}             // specify where parsley error-success classes are set
       , container: function ( elem, isRadioOrCheckbox ) {}                // specify an elem where errors will be **apened**

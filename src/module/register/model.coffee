@@ -2,7 +2,7 @@
 #  View Mode for register
 #############################
 
-define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle' ], ( MC, ide_event, account_model, session_model, forge_handle ) ->
+define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, account_model, forge_handle ) ->
 
     #private
     RegisterModel = Backbone.Model.extend {
@@ -42,9 +42,6 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle' ], ( MC
                 console.log 'ACCOUNT_REGISTER_RETURN'
                 console.log forge_result
                 if !forge_result.is_error
-                	#temp
-                    #$.cookie 'tmp_username', username, { expires: 1, path: '/' }
-                    #$.cookie 'tmp_password', password, { expires: 1, path: '/' }
                     #
                     result = forge_result.resolved_data
 
@@ -55,30 +52,6 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle' ], ( MC
                     forge_handle.cookie.setIDECookie result
                     #
                     window.location.href = 'register.html#success'
-                else
-                    #
-                null
-
-        loginService : ->
-            console.log 'loginService'
-
-            session_model.login { sender : this }, $.cookie( 'tmp_username' ), $.cookie( 'tmp_password' )
-            this.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
-
-                if !forge_result.is_error
-                    #login succeed
-
-                    result = forge_result.resolved_data
-
-                    #set cookies
-                    forge_handle.cookie.setCookie result
-
-                    #set madeiracloud_ide_session_id
-                    forge_handle.cookie.setIDECookie result
-
-                    #redirect to page ide.html
-                    window.location.href = 'ide.html'
-
                 else
                     #
                 null

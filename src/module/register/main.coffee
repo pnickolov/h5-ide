@@ -24,9 +24,6 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             view.on 'CHECK_REPEAT', ( username, email, password ) ->
                 model.checkRepeatService username, email, password
 
-            view.on 'AUTO_LOGIN', () ->
-                model.loginService()
-
             model.on 'USERNAME_REPEAT', () -> view.showUsernameError()
             model.on 'EMAIL_REPEAT',    () -> view.showEmailError()
 

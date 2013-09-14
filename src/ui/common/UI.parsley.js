@@ -1058,8 +1058,6 @@
           valid = false;
           this.constraints[ constraint ].valid = valid;
           this.options.listeners.onFieldError( this.element, this.constraints, this );
-          // hack
-          break;
         } else if ( true === result ) {
           this.constraints[ constraint ].valid = true;
           valid = false !== valid;
@@ -1277,7 +1275,6 @@
         , ulTemplate = this.options.animate ? this.ulTemplate.show() : this.ulTemplate;
 
       if ( 'undefined' !== typeof errorContainer ) {
-        ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
         $( errorContainer ).append( ulTemplate );
         return;
       }

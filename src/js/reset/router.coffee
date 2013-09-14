@@ -2,11 +2,10 @@ define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
 
 	AppRouter = Backbone.Router.extend {
 		routes :
-			'password'     : 'password'
-			'email'        : 'email'
-			'success'      : 'success'
-			'*actions'     : 'defaultRouter'
-
+			'password/:key' : 'password'
+			'email'         : 'email'
+			'success'       : 'success'
+			'*actions'      : 'defaultRouter'
 	}
 
 	init = () ->
@@ -15,8 +14,8 @@ define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
 		router.on 'route:defaultRouter', () ->
 			reset_main.loadModule 'normal'
 
-		router.on 'route:password', () ->
-			reset_main.loadModule 'password'
+		router.on 'route:password', ( key ) ->
+			reset_main.loadModule 'password', key
 
 		router.on 'route:email', () ->
 			reset_main.loadModule 'email'

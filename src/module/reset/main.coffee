@@ -12,7 +12,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
     initialize()
 
     #private
-    loadModule = ( type ) ->
+    loadModule = ( type, key ) ->
 
         #load
         require [ './module/reset/view', './module/reset/model' ], ( View, model ) ->
@@ -20,11 +20,14 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             view = loadSuperModule loadModule, 'reset', View, null
             return if !view
             view.model = model
+            model.set 'key', key if key
 
             #render
-            view.render type
+            view.render type, key
 
-            view.on 'RESET_EMAIL', ( result ) -> model.resetPasswordServer result
+            view.on 'RESET_EMAIL',    ( result ) -> model.resetPasswordServer result
+            view.on 'RESET_PASSWORD', ( result ) -> model.updatePasswordServer result
+            model.on 'NO_EMAIL',           () -> view.showErrorMessage()
 
     unLoadModule = () ->
         #view.remove()

@@ -16,30 +16,42 @@ define [ 'event',
         success_tmpl  : Handlebars.compile success_tmpl
 
         events   :
-            'click #reset-btn' : 'resetButtonEvent'
+            'click #reset-btn'      : 'resetButtonEvent'
+            'click #reset-password' : 'resetPasswordEvent'
 
         initialize : ->
             #
 
-        render   : ( type ) ->
+        render   : ( type, key ) ->
             console.log 'reset render'
-            console.log type
+            console.log type, key
 
             switch type
                 when 'normal'
-                    @$el.html @template @model
+                    @$el.html @template()
                 when 'password'
-                    @$el.html @password_tmpl @model
+                    @$el.html @password_tmpl()
                 when 'email'
-                    @$el.html @email_tmpl @model
+                    @$el.html @email_tmpl()
                 when 'success'
                     @$el.html @success_tmpl()
                 else
-                    @$el.html @template @model
+                    @$el.html @template()
 
         resetButtonEvent : ->
             console.log 'resetButtonEvent'
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
+            false
+
+        resetPasswordEvent : ->
+            console.log 'resetPasswordEvent'
+            this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
+            false
+
+        showErrorMessage : ->
+            console.log 'showErrorMessage'
+            status = $('#email-verification-status')
+            status.addClass( 'error-status' ).show().text 'The username or email address is not registered with MadeiraCloud.'
             false
 
     }

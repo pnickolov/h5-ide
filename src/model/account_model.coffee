@@ -97,14 +97,14 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 if !forge_result.is_error
                 #update_password succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_UPDATE__PWD_RETURN', forge_result
-
                 else
                 #update_password failed
 
                     console.log 'account.update_password failed, error is ' + forge_result.error_message
                     me.pub forge_result
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_UPDATE__PWD_RETURN', forge_result
 
 
 

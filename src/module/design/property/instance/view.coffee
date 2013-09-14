@@ -25,7 +25,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
-            'change #property-instance-base64'            : 'base64Change'
             'change #property-instance-ni-description'    : 'eniDescriptionChange'
             'change #property-instance-source-check'      : 'sourceCheckChange'
             'change #property-instance-public-ip'         : 'publicIpChange'
@@ -133,9 +132,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         userdataChange : ( event ) ->
             this.model.set 'user_data', event.target.value
-
-        base64Change : ( event ) ->
-            this.model.set 'base64', event.target.checked
 
         eniDescriptionChange : ( event ) ->
             this.model.set 'eni_description', event.target.value

@@ -117,7 +117,10 @@ define [ 'event',
 
             me = this
 
-            me.showSetting('account', 'on_password')
+            if $('#account-password-wrap').css('display') == 'none'
+                me.showSetting('account', 'on_password')
+            else
+                me.showSetting('account')
 
             null
 
@@ -199,6 +202,10 @@ define [ 'event',
                     $('#account-email-input-wrap').hide()
                     $('#account-password-wrap').show()
                     $('#account-passowrd-info').hide()
+
+                    # clear input password
+                    $('#account-current-password').val('')
+                    $('#account-new-password').val('')
 
             else if tab is 'credential'
 

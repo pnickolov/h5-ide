@@ -275,7 +275,12 @@ header {
 }
 
 #register-get-start {
+	margin-top: 20px;
 	width: 200px;
+}
+
+#register-success-wrap {
+	padding-bottom: 25px;
 }
 
 /* Selection */

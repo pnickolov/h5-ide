@@ -250,7 +250,11 @@ define({
 		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.'
+		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
+
+		/****** Dashboard ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'RELOAD_AWS_RESOURCE_SUCCESS'	  : 'Status of resources is up to date.'
 
 	},
 	'service' : {

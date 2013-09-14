@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
 
     current_region = null
 
@@ -132,7 +132,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         renderGlobalList: ( event ) ->
             if @status.reloading
-                notification 'info', 'Status of resources is up to date.'
+                notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
                 @status.reloading = false
 
             tmpl = @global_list @model.toJSON()

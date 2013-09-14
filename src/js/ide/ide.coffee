@@ -65,6 +65,9 @@ define [ 'MC', 'event', 'handlebars'
 				#user session not exist, go to login page
 				window.location.href = 'login.html'
 
+		#clear cookie in 'ide.madeiracloud.com'
+		forge_handle.cookie.clearInvalidCookie()
+
 		#############################
 		#  initialize MC.data
 		#############################

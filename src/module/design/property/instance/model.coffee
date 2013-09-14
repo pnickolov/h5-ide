@@ -31,23 +31,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			'tenacy' : null
 			'cloudwatch' : null
 			'user_data' : null
-			'base64'    :  null
 			'eni_description' : null
 			'source_check' : null
 			'add_sg'   : null
 			'remove_sg' : null
 			'public_ip' : null
-
-		initialize : ->
-			this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
-
-		updateUID : ( type ) ->
-			console.log 'updateUID'
-			if type is 'OLD_APP' or  type is 'OLD_STACK'
-				instanceUID = $( '#instance-property-detail' ).data 'uid'
-				this.set 'get_uid', instanceUID
-				this.set 'uid', instanceUID
-
 
 		listen : ->
 			#listen
@@ -55,7 +43,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
 			this.listenTo this, 'change:cloudwatch', this.setCloudWatch
 			this.listenTo this, 'change:user_data', this.setUserData
-			this.listenTo this, 'change:base64' , this.setBase64Encoded
 			this.listenTo this, 'change:eni_description' , this.setEniDescription
 			this.listenTo this, 'change:tenacy' , this.setTenancy
 			this.listenTo this, 'change:source_check', this.setSourceCheck
@@ -187,14 +174,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			uid = this.get 'get_uid'
 
 			MC.canvas_data.component[ uid ].resource.UserData.Data = this.get 'user_data'
-
-			null
-
-		setBase64Encoded : ()->
-
-			#console.log 'setBase64Encoded = ' + value
-
-			MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
 			null
 
@@ -572,7 +551,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 
 			this.set 'ebs_optimized', "" + component.resource.EbsOptimized is "true"
 			this.set 'monitoring',    component.resource.Monitoring is 'enabled'
-			this.set 'base64',        "" + component.resource.UserData.Base64Encoded is "true"
 			this.set 'tenacy',        tenacy
 
 			this.set 'force_tenacy', false

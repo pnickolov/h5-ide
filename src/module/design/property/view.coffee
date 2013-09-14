@@ -30,7 +30,7 @@ define [ './temp_view',
             Handlebars.registerHelper 'timeStr', ( v1 ) ->
                 d = new Date( v1 )
 
-                if isNaN( Date.parse( v1 ) ) and d.toLocaleDateString and d.toTimeString
+                if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
                     if v1
                         return new Handlebars.SafeString v1
                     else

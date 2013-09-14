@@ -61,14 +61,18 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.SAVE_STACK, (data) ->
                 console.log ide_event.SAVE_STACK
 
-                #expand components
-                MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                #save stack
-                model.saveStack MC.canvas.layout.save()
-                #compact and update canvas
-                MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                #
-                MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                try
+                    #expand components
+                    MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
+                    #save stack
+                    model.saveStack MC.canvas.layout.save()
+                    #compact and update canvas
+                    MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+                    #
+                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                catch err
+                    msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
+                    view.notify 'error', msg
 
                 #model.saveStack(data)
                 null

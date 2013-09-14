@@ -266,6 +266,7 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
 			return hash.toString CryptoJS.enc.Hex
 		window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
+		#window.intercomSettings.stack_total= 0
 
 		#############################
 		#  base model

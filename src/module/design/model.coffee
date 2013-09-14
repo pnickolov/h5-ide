@@ -121,6 +121,10 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
         deleteTab    : ( tab_id ) ->
             console.log 'deleteTab'
             delete MC.tab[ tab_id ]
+            #intercom
+            #if tab_id.split( '-' )[0] is 'stack'
+            #    window.intercomSettings.stack_total = window.intercomSettings.stack_total - 1
+            #
             console.log MC.tab
             #
             if MC.process[ tab_id ] then delete MC.process[ tab_id ]

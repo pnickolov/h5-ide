@@ -2,24 +2,24 @@
 	<a id="logo-link" href="http://www.madeiracloud.com/">MadeiraCloud</a>
 </header>
 <div id="main-body">
-	<div id="login-box" class="clearfix">
-		<div id="login-title">
-			<h2>{{ i18n "login" }}</h2><div id="login-register">{{ i18n "login-register" }}<a href="https://my.madeiracloud.com/user/register" id="link-register">{{ i18n "link-register" }}</a></div>
+	<div id="login-box" class="box-wrapper clearfix">
+		<div id="login-title" class="box-header">
+			<h2>{{ i18n "login" }}</h2><div id="login-register"  class="title-link">{{ i18n "login-register" }}<a href="https://my.madeiracloud.com/user/register" id="link-register">{{ i18n "link-register" }}</a></div>
 		</div>
-		<form id="login-form" method="post">
+		<form id="login-form" method="post" class="box-body">
 			<div class="error-msg" id="error-msg-1">{{ i18n "error-msg-1" }}</div>
 			<div class="error-msg" id="error-msg-2">{{ i18n "error-msg-2" }}</div>
 			<div class="control-group">
-				<input autocomplete="off" id="login-user" placeholder="{{ i18n "login-user" }}" type="text" class="login-input" name="user_name"/>
+				<input autocomplete="off" id="login-user" placeholder="{{ i18n "login-user" }}" type="text" class="account-input" name="user_name"/>
 				<label for="login-user" class="icon-user login-label"></label>
 			</div>
 			<div class="control-group">
-				<input autocomplete="off" id="login-password" placeholder="{{ i18n "login-password" }}" type="password" class="login-input" name="password"/>
+				<input autocomplete="off" id="login-password" placeholder="{{ i18n "login-password" }}" type="password" class="account-input" name="password"/>
 				<label for="login-password" class="icon-password login-label"></label>
 			</div>
-			<div id="login-btn-wrap">
-				<a href="https://my.madeiracloud.com/user/password" id="link-foget">{{ i18n "link-foget" }}</a>
-				<input id="login-btn" type="submit" value="{{ i18n "login-btn" }}" class="btn btn-primary btn-large" data-loading-text="{{ i18n "login-loading" }}" disabled/>
+			<div class="account-btn-wrap">
+				<a href="https://my.madeiracloud.com/user/password" id="link-foget" class="footer-link">{{ i18n "link-foget" }}</a>
+				<input id="login-btn" type="submit" value="{{ i18n "login-btn" }}" class="btn btn-primary btn-large account-btn" data-loading-text="{{ i18n "login-loading" }}" disabled/>
 			</div>
 		</form>
 	</div>

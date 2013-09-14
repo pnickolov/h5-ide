@@ -3,8 +3,9 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./template.html'
-], ( $, ide_event, template ) ->
+         'text!./template.html',
+         'i18n!nls/lang.js'
+], ( $, ide_event, template, lang ) ->
 
 
     #template = '<script type="text/x-handlebars-template" id="aws-credential-tmpl">' + template + '</script>'
@@ -63,12 +64,46 @@ define [ 'jquery', 'event',
             view.on 'UPDATE_ACCOUNT_EMAIL', (email) ->
                 console.log 'UPDATE_ACCOUNT_EMAIL'
 
-                model.updateAccountEmail()
+                model.updateAccountEmail(email)
 
             view.on 'UPDATE_ACCOUNT_PASSWORD', (password, new_password) ->
                 console.log 'UPDATE_ACCOUNT_PASSWORD'
 
-                model.updateAccountPassword()
+                model.updateAccountPassword(password, new_password)
+
+            model.on 'UPDATE_ACCOUNT_ATTRIBUTES_SUCCESS', (attributes) ->
+                console.log 'UPDATE_ACCOUNT_ATTRIBUTES_SUCCESS:' + attr_list
+
+                attr_list = _.keys(attributes)
+
+                if _.contains(attr_list, 'email')
+                    $.cookie 'email', MC.base64Encode(attributes['email']),    { expires: 1 }
+
+                    view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
+
+                if _.contains(attr_list, 'password')
+
+                    view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_PASSWORD
+
+                view.showSetting('account')
+
+            model.on 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', (attributes) ->
+                console.log 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED:' + attr_list
+
+                attr_list = _.keys(attributes)
+
+                if _.contains(attr_list, 'email')
+
+                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL
+
+                    view.showSetting('account')
+
+                if _.contains(attr_list, 'password')
+
+                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
+
+                    view.clickUpdatePassword('error_password')
+
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'

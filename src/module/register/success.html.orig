@@ -6,10 +6,22 @@
 	<div class="box-body">
 		<p class="account-instruction-major">
 		Thanks for signing up with MadeiraCloud.<br/>
+<<<<<<< HEAD
+		<br />
+		We've sent you an email containing a link to activate
+		your MadeiraCloud account.<br/>
+		</br>
+		Check your email for account activation instructions
+		(also look in your spam folder, you never know).<br/>
+		<br/>
+		<a href="#" id="auto-login">Login in MadeiraCloud</a>
+		<br/>
+	</p>
+=======
 		</p>
 		<p style="text-align:center;margin-top:20px;">
 			<button class="btn btn-primary btn-large" id="register-get-start">Get Started</button>
-			<a href="#" id="auto-login">Login in MadeiraCloud</a>
 		</p>
 	</div>
+>>>>>>> origin/feature/new-account-design
 </div>

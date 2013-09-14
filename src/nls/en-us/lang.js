@@ -250,6 +250,8 @@ define({
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
 		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
 		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : 'Password has been updated.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL'       : 'Update email address failed.',
+		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : 'Update password failed.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/

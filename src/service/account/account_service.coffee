@@ -93,6 +93,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #return vo
         #TO-DO
+        result
 
     #private (parser update_account return)
     parserUpdateAccountReturn = ( result, return_code, param ) ->

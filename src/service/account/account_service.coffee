@@ -64,6 +64,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #return vo
         #TO-DO
+        result
 
     #private (parser register return)
     parserRegisterReturn = ( result, return_code, param ) ->
@@ -108,6 +109,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
             forge_result.resolved_data = resolved_data
 
+        else if return_code == constant.RETURN_CODE.E_EXIST
+
+            resolved_data = resolveUpdateAccountResult result
+
+            forge_result.resolved_data = resolved_data
 
         #3.return vo
         forge_result

@@ -2703,6 +2703,9 @@ MC.canvas.asgList = {
 			// Prepare data
 			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
+			if (!layout) {
+				return;
+			}
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 			var appData = MC.data.resource_list[ MC.canvas_data.region ];
 			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];

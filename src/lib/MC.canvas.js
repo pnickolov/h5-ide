@@ -282,7 +282,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -321,7 +321,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,

@@ -260,6 +260,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
             if !currentENIComp
                 disabledBtn = true
+                return
 
             currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
             if maxIPNum is currentIPNum

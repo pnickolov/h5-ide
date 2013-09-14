@@ -18,7 +18,7 @@ define [ 'event',
             'keyup #register-email'    : 'verificationEmail'
             'keyup #register-password' : 'verificationPassword'
             'submit #register-form'    : 'submit'
-            'click #auto-login'        : 'loginEvent'
+            'click #register-get-start': 'loginEvent'
 
         initialize   : ->
             #
@@ -68,7 +68,12 @@ define [ 'event',
 
             #signup.verification.confirm_password();
             if value isnt ''
-                if value.length > 6 # &&
+                if value is $('#register-username').val()
+                  #/[A-Z]{1}/.test(value) &&
+                  #/[0-9]{1}/.test(value)
+                  status.addClass('error-status').show().text 'Password should not be the same with your username'
+                  false
+                else if value.length > 6 # &&
                   #/[A-Z]{1}/.test(value) &&
                   #/[0-9]{1}/.test(value)
                   status.show().text 'This password is OK.'

@@ -3,8 +3,8 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./password.html', 'text!./success.html',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, password_tmpl, success_tmpl ) ->
+         'text!./template.html', 'text!./password.html', 'text!./email.html', 'text!./success.html',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, password_tmpl, email_tmpl, success_tmpl ) ->
 
     ResetView = Backbone.View.extend {
 
@@ -12,6 +12,7 @@ define [ 'event',
 
         template      : Handlebars.compile tmpl
         password_tmpl : Handlebars.compile password_tmpl
+        email_tmpl    : Handlebars.compile email_tmpl
         success_tmpl  : Handlebars.compile success_tmpl
 
         #events   :
@@ -26,10 +27,12 @@ define [ 'event',
             switch type
                 when 'normal'
                     @$el.html @template @model
-                when 'success'
-                    @$el.html @success_tmpl()
                 when 'password'
                     @$el.html @password_tmpl @model
+                when 'email'
+                    @$el.html @email_tmpl @model
+                when 'success'
+                    @$el.html @success_tmpl()
                 else
                     @$el.html @template @model
 

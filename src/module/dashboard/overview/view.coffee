@@ -131,7 +131,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
 
         renderGlobalList: ( event ) ->
-            @status.reloading = false
+            if @status.reloading
+                notification 'info', 'Status of resources is up to date.'
+                @status.reloading = false
+
             tmpl = @global_list @model.toJSON()
             if current_region
                 @trigger 'SWITCH_REGION', current_region

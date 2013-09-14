@@ -54,7 +54,7 @@ define [ 'MC', 'event',
             else
 
                 lines =
-                    icon : 'icon-elbow'
+                    icon : ''
                     is_style0: null
                     is_style1: null
                     is_style2: null
@@ -395,12 +395,12 @@ define [ 'MC', 'event',
 
 
         clickLineStyleStraight  : (event) ->
-            MC.canvas_property.LINE_STYLE = 1
+            MC.canvas_property.LINE_STYLE = 0
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 
         clickLineStyleElbow     : (event) ->
-            MC.canvas_property.LINE_STYLE = 0
+            MC.canvas_property.LINE_STYLE = 1
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 

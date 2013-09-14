@@ -1058,8 +1058,6 @@
           valid = false;
           this.constraints[ constraint ].valid = valid;
           this.options.listeners.onFieldError( this.element, this.constraints, this );
-          // hack
-          break;
         } else if ( true === result ) {
           this.constraints[ constraint ].valid = true;
           valid = false !== valid;
@@ -1277,7 +1275,6 @@
         , ulTemplate = this.options.animate ? this.ulTemplate.show() : this.ulTemplate;
 
       if ( 'undefined' !== typeof errorContainer ) {
-        ulTemplate.data( 'uid', ( Math.random() + '' ).substring( 2 ) + $.now() );
         $( errorContainer ).append( ulTemplate );
         return;
       }
@@ -1694,7 +1691,7 @@
     , messages: {}                              // Add your own error messages here
 
     //some quite advanced configuration here..
-    , validateIfUnchanged: false                                          // false: validate once by field value change
+    , validateIfUnchanged: true                                          // false: validate once by field value change
     , errors: {
         classHandler: function ( elem, isRadioOrCheckbox ) {}             // specify where parsley error-success classes are set
       , container: function ( elem, isRadioOrCheckbox ) {}                // specify an elem where errors will be **apened**

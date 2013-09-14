@@ -97,20 +97,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .find( 'input' )
                 .attr( 'disabled', '' )
 
-        enableIops: ->
-            $( '#volume-type-radios > div' )
-                .last()
-                .data( 'tooltip', '' )
-                .find( 'input' )
-                .removeAttr( 'disabled' )
-
-        disableIops: ->
-            $( '#volume-type-radios > div' )
-                .last()
-                .data( 'tooltip', 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.' )
-                .find( 'input' )
-                .attr( 'disabled', '' )
-
         sizeChanged : ( event ) ->
             volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
             iopsValidate = true

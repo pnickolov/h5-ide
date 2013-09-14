@@ -5,7 +5,9 @@
 define [ 'event',
          'constant'
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.toggleicon', 'UI.searchbar', 'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+         'UI.selectbox', 'UI.toggleicon',
+         # 'UI.searchbar',
+         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, Backbone, $ ) ->
 
     ResourceView = Backbone.View.extend {
@@ -27,9 +29,9 @@ define [ 'event',
             $( document )
                 .on( 'click',            '#hide-resource-panel',                      this.toggleResourcePanel )
                 .on( 'OPTION_CHANGE',    '#resource-select',                    this, this.resourceSelectEvent )
-                .on( 'SEARCHBAR_SHOW',   '#resource-select',                          this.searchBarShowEvent )
-                .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
-                .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
+                # .on( 'SEARCHBAR_SHOW',   '#resource-select',                          this.searchBarShowEvent )
+                # .on( 'SEARCHBAR_HIDE',   '#resource-select',                          this.searchBarHideEvent )
+                # .on( 'SEARCHBAR_CHANGE', '#resource-select',                          this.searchBarChangeEvent )
                 .on( 'click',            '#btn-browse-community-ami',           this, this.openBrowseCommunityAMIsModal )
                 .on( 'click',            '#btn-search-ami',                     this, this.searchCommunityAmiCurrent )
                 .on( 'click',            '#community_ami_page_preview',         this, this.searchCommunityAmiPreview )
@@ -142,17 +144,17 @@ define [ 'event',
             $( this ).siblings(".fixedaccordion-head").click()
             null
 
-        searchBarShowEvent : ( event ) ->
-            console.log 'searchBarShowEvent'
-            $($(this).find('.search-panel')[0]).show()
+        # searchBarShowEvent : ( event ) ->
+        #     console.log 'searchBarShowEvent'
+        #     $($(this).find('.search-panel')[0]).show()
 
-        searchBarHideEvent : ( event ) ->
-            console.log 'searchBarHideEvent'
-            $($(this).find('.search-panel')[0]).hide()
+        # searchBarHideEvent : ( event ) ->
+        #     console.log 'searchBarHideEvent'
+        #     $($(this).find('.search-panel')[0]).hide()
 
-        searchBarChangeEvent : ( event, value ) ->
-            console.log 'searchBarChangeEvent'
-            filter.update($($(this).find('.search-panel')[0]), value)
+        # searchBarChangeEvent : ( event, value ) ->
+        #     console.log 'searchBarChangeEvent'
+        #     filter.update($($(this).find('.search-panel')[0]), value)
 
         toggleFav : ( event ) ->
             resourceView = event.data

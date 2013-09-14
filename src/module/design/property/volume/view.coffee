@@ -100,11 +100,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         sizeChanged : ( event ) ->
             volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
-            $target = $ event.currentTarget
+            iopsValidate = true
+            volumeValidate = $( '#volume-size-ranged' ).parsley 'validate'
+            iopsEnabled = $( '#radio-iops' ).is ':checked'
 
-            if $target.parsley 'validateForm'
+            if iopsEnabled
+                iopsValidate = $( '#iops-ranged' ).parsley 'validate'
+
+            if volumeValidate and iopsValidate
                 this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
-                if $( '#radio-iops' ).is ':checked'
+                if iopsEnabled
                     this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
 
         showSnapshotDetail : ( event ) ->

@@ -32,12 +32,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         isLC        : true
                         volume_size : block.Ebs.VolumeSize
                         snapshot_id : block.Ebs.SnapshotId
+                        name        : block.DeviceName
 
                     if volume_detail.isWin
-                        volume_detail.editName = block.DeviceName.slice(-1)
+                        volume_detail.editName = volume_detail.name.slice(-1)
 
                     else
-                        volume_detail.editName = block.DeviceName.slice(5)
+                        volume_detail.editName = volume_detail.name.slice(5)
 
                     break
 
@@ -52,13 +53,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     iops        : res.Iops
                     volume_size : res.Size
                     snapshot_id : res.SnapshotId
+                    name        : res.AttachmentSet.Device
 
 
                 if volume_detail.isWin
-                    volume_detail.editName = res.AttachmentSet.Device.slice(-1)
+                    volume_detail.editName = volume_detail.name.slice(-1)
 
                 else
-                    volume_detail.editName = res.AttachmentSet.Device.slice(5)
+                    volume_detail.editName = volume_detail.name.slice(5)
 
 
             # Snapshot
@@ -105,6 +107,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     MC.canvas.update uid, 'text', "volume_name", block.DeviceName
                     MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
+                    @attributes.volume_detail.name = block.DeviceName
 
                     @set 'uid', newId
 
@@ -131,6 +134,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 MC.canvas.update uid, 'text', "volume_name", device_name
 
                 volume_comp.resource.AttachmentSet.Device = device_name
+                @attributes.volume_detail.name = device_name
 
             null
 

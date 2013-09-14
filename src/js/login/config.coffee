@@ -26,6 +26,9 @@ require.config {
 		'i18n'            : 'vender/requirejs/i18n'
 		'text'            : 'vender/requirejs/text'
 
+		#
+		'crypto'          : 'vender/crypto-js/hmac-sha256'
+
 		#core lib
 		'MC'              : 'lib/MC.core'
 

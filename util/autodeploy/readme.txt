@@ -41,6 +41,7 @@ mkdir -p /home/ec2-user/ide
 #copy check.sh to /home/ec2-user/ide
 chown ec2-user:ec2-user /home/ec2-user/ide -R
 mkdir -p /madeira/site/ide_h5/temp
+chown ec2-user:ec2-user /madeira/site/ide_h5/temp -R
 
 ./util/autodeploy/deploy.sh
 
@@ -64,5 +65,6 @@ mkdir -p /home/ec2-user/ide
 #copy check.sh to /home/ec2-user/ide
 chown ec2-user:ec2-user /home/ec2-user/ide -R
 mkdir -p /madeira/site/ide_h5/temp
+chown ec2-user:ec2-user /madeira/site/ide_h5/temp -R
 
 ./util/autodeploy/deploy-live.sh

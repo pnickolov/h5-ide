@@ -166,6 +166,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #return vo
         #TO-DO
+        result
 
     #private (parser update_password return)
     parserUpdatePasswordReturn = ( result, return_code, param ) ->
@@ -195,6 +196,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #return vo
         #TO-DO
+        result
 
     #private (parser check_repeat return)
     parserCheckRepeatReturn = ( result, return_code, param ) ->
@@ -209,6 +211,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
             forge_result.resolved_data = resolved_data
 
+        else if return_code == constant.RETURN_CODE.E_EXIST
+
+            resolved_data = result
+
+            forge_result.resolved_data = resolved_data
 
         #3.return vo
         forge_result
@@ -224,6 +231,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #return vo
         #TO-DO
+        result
 
     #private (parser check_validation return)
     parserCheckValidationReturn = ( result, return_code, param ) ->

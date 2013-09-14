@@ -80,6 +80,7 @@ define [ 'event',
 
             that = this
             aclUID = that.model.get('component').uid
+            aclName = that.model.get('component').name
 
             rule_number_dom =  $('#modal-acl-number')
             ruleNumber = $('#modal-acl-number').val()
@@ -144,6 +145,8 @@ define [ 'event',
                     return 'The maximum value is 32767.'
                 if that.model.haveRepeatRuleNumber(aclUID, val)
                     return 'The Rule Number have exist one.'
+                if aclName is 'DefaultACL' and Number(val) is 100
+                    return 'The DefaultACL\'s Rule Number 100 has existed.'
                 null
 
             if (not rule_number_dom.parsley 'validate') or (custom_source_dom.is(':visible') and not custom_source_dom.parsley 'validate') or
@@ -336,8 +339,11 @@ define [ 'event',
             sg_rule_list.html sorted_items
 
         _sortNumber : ( a, b) ->
-            return $(a).find('.acl-rule-number').attr('data-id') >
-                $(b).find('.acl-rule-number').attr('data-id')
+            valueA = $(a).find('.acl-rule-number').attr('data-id')
+            valueB = $(b).find('.acl-rule-number').attr('data-id')
+            if valueA is '*' then valueA = 0
+            if valueB is '*' then valueB = 0
+            return Number(valueA) > Number(valueB)
 
         _sortAction : ( a, b) ->
             return $(a).find('.acl-rule-action').attr('data-id') >

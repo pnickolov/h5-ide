@@ -85,7 +85,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         reloadResource: ->
             @status.reloading = true
             @showLoading '#global-view, #region-resource-wrap'
-            Helper.scrollToResource()
             @trigger 'RELOAD_RESOURCE'
 
         showLoading: ( selector ) ->

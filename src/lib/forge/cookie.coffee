@@ -10,6 +10,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
+
 		#set cookies
 		$.cookie 'userid',      result.userid,      option
 		$.cookie 'usercode',    result.usercode,    option
@@ -28,6 +29,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
+
 
 		#delete cookies
 		$.cookie 'userid',      '', option
@@ -48,6 +50,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
+
 		$.cookie 'has_cred', result, option
 
 
@@ -59,6 +62,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
+
 
 		madeiracloud_ide_session_id = [
 			result.userid,
@@ -109,13 +113,25 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		#for patch
 		option = { path: path }
 
+
 		$.each $.cookie(), ( key, cookie_name ) ->
 			$.removeCookie cookie_name	, option
 			null
 
+
+	clearInvalidCookie = ( ) ->
+		#for patch
+		option = { domain: 'ide.madeiracloud.com', path: '/' }
+
+		$.each $.cookie(), ( key, cookie_name ) ->
+			$.removeCookie cookie_name	, option
+			null
+
+
 	getCookieByName = ( cookie_name ) ->
 
 		$.cookie cookie_name
+
 
 	setCookieByName = ( cookie_name, value ) ->
 
@@ -125,6 +141,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
+
 
 		$.cookie cookie_name, value, option
 
@@ -137,6 +154,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	setCred      : setCred
 	checkAllCookie : checkAllCookie
 	clearV2Cookie  : clearV2Cookie
+	clearInvalidCookie : clearInvalidCookie
 	getCookieByName : getCookieByName
 	setCookieByName : setCookieByName
 

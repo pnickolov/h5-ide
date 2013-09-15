@@ -390,7 +390,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         # setResource method class
         setResource : ( resources, region ) ->
             #cache aws resource data
-            MC.aws.aws.cacheResource resources, region
 
             me = this
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}

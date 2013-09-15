@@ -116,7 +116,8 @@ require [ 'jquery', 'domReady', 'MC',
             return if !view
 
             view.model = model
-            view.render overview_tmpl
+
+            $( '#tab-content-region' ).html view.render( overview_tmpl ).el
 
             #push DASHBOARD_COMPLETE
             ide_event.trigger ide_event.DASHBOARD_COMPLETE
@@ -182,29 +183,6 @@ require [ 'jquery', 'domReady', 'MC',
 
             #model.describeAWSResourcesService()
 
-            ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-                overview_app = result
-                model.describeAWSResourcesService()
-
-                model.updateMap model, overview_app, overview_stack
-                model.updateRecentList( model, result, 'recent_launched_apps' )
-                view.renderMapResult()
-                model.getItemList 'app', current_region, overview_app
-
-                null
-
-            ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
-                console.log 'overview RESULT_STACK_LIST'
-
-                overview_stack = result
-
-                model.updateMap model, overview_app, overview_stack
-                model.updateRecentList( model, result, 'recent_edited_stacks' )
-                view.renderMapResult()
-
-                model.getItemList 'stack', current_region, overview_stack
-
-                null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'
@@ -219,8 +197,6 @@ require [ 'jquery', 'domReady', 'MC',
                 current_region = region
                 model.loadResource region
                 #model.describeAWSStatusService region
-                @model.getItemList 'app', region, overview_app
-                @model.getItemList 'stack', region, overview_stack
 
             # reload resource
             view.on 'RELOAD_RESOURCE', ( region ) ->

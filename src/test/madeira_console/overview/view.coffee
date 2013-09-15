@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.selectbox' ], ( ide_event, lang ) ->
+define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.selectbox', 'UI.bubble', 'UI.modal' ], ( ide_event, lang ) ->
 
     current_region = null
 
@@ -45,9 +45,6 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.s
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
     OverviewView = Backbone.View.extend {
-
-        el              : $( '#tab-content-dashboard' )
-
         overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
         global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
@@ -236,7 +233,8 @@ define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.s
 
         render : ( template ) ->
             console.log 'dashboard overview render'
-            $( '#tab-content-region' ).html template
+            @$el.html template
+            @
 
         openItem : (event) ->
             console.log 'click item'

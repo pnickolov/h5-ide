@@ -2,15 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery',
-    'text!./module/dashboard/overview/template.html',
-    'text!./module/dashboard/region/template.html',
-    'text!./module/dashboard/overview/template_data.html',
-    'text!./module/dashboard/region/template_data.html',
-    'event',
-    'MC',
-    'base_main'
-], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC, base_main ) ->
+define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC, base_main, vpc_model ) ->
 
     current_region = null
     overview_app    = null
@@ -22,23 +14,19 @@ define [ 'jquery',
         #extend parent
         _.extend this, base_main
 
+    Helper =
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
+
     initialize()
 
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data,
-            '.overview-result' : 'overview-result-tmpl'
-            '.global-list' : 'global-list-tmpl'
-            '.region-app-stack' : 'region-app-stack-tmpl'
-            '.region-resource' : 'region-resource-tmpl'
-            '.recent' : 'recent-tmpl'
-            '.loading': 'loading-tmpl'
-
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
         #load remote ./module/dashboard/overview/view.js
-        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
+        require [ 'dashboard_view', 'dashboard_model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
             region_view = null
             #view
             #view       = new View()
@@ -47,7 +35,7 @@ define [ 'jquery',
             return if !view
 
             view.model = model
-            view.render overview_tmpl
+            view.render()
 
             #push DASHBOARD_COMPLETE
             ide_event.trigger ide_event.DASHBOARD_COMPLETE
@@ -97,10 +85,21 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if MC.forge.cookie.getCookieByName('has_cred') is 'true'   # update aws resource
-                    model.describeAWSResourcesService()
+                if Helper.hasCredential()
+                    view.enableSwitchRegion()
+                    view.reloadResource()
                 else    # set aws credential
-                    require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+                    view.disableSwitchRegion()
+                    view.showCredential()
+                    view.renderLoadingFaild()
+
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
+                if Helper.hasCredential()
+                    view.enableSwitchRegion()
+
+            ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
+                console.log 'UPDATE_DASHBOARD'
+                view.reloadResource() if view
 
             #model
             model.describeAccountAttributesService()
@@ -132,10 +131,11 @@ define [ 'jquery',
                 null
 
             ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
-
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'
-                view.trigger 'RETURN_REGION_TAB', result
-
+                if result is 'global'
+                    ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
+                else
+                    view.trigger 'RETURN_REGION_TAB', result
                 null
 
             # switch region tab
@@ -150,6 +150,9 @@ define [ 'jquery',
             view.on 'RELOAD_RESOURCE', ( region ) ->
                 view.displayLoadTime()
                 model.describeAWSResourcesService region
+
+                ide_event.trigger ide_event.UPDATE_STACK_LIST
+                ide_event.trigger ide_event.UPDATE_APP_LIST
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )

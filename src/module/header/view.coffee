@@ -2,13 +2,16 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event',
+         'text!./module/header/template.html',
+         'backbone', 'jquery', 'handlebars'
+], ( ide_event, tmpl ) ->
 
     HeaderView = Backbone.View.extend {
 
         el       : '#header'
 
-        template : Handlebars.compile $( '#header-tmpl' ).html()
+        template : Handlebars.compile tmpl
 
         events   :
             'click #btn-logout'                     : 'clickLogout'

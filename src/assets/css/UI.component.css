@@ -588,6 +588,10 @@ textarea {
 	resize: none;
 }
 
+.property-wrap textarea {
+	resize : vertical;
+}
+
 /* Checkbox & Radio */
 .checkbox > input[type=checkbox],
 .radio > input[type=radio] {

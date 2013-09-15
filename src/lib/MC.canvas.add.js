@@ -505,7 +505,7 @@ MC.canvas.add = function (flag, option, coordinate)
 								break;
 						}
 
-						if (!defaultVPC) {
+						if (!defaultVPC && MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC ) {
 							MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier = MC.canvas_data.component[component_layout.originalId].resource.VPCZoneIdentifier + ' , @' + option.groupUId + '.resource.SubnetId';
 						}
 						else
@@ -997,10 +997,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.image(eip_icon, 53, 47, 12, 14).attr({
 					'class': 'eip-status',
 					'data-eip-state': data_eip_state,
-
 					'id': group.id + '_eip_status'
 				}),
-
 
 				////hostname bg
 				Canvon.rectangle(2, 76, 86, 13).attr({
@@ -1093,13 +1091,27 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 			$('#node_layer').append(group);
 
+			// update eip tooltip
+			var currentState = MC.canvas.getState();
+			if (currentState === 'app') {
+				MC.aws.eip.updateAppTooltip(group.id);
+			} else {
+				if (data_eip_state === 'on') {
+					MC.aws.eip.updateStackTooltip(group.id, false);
+				} else {
+					MC.aws.eip.updateStackTooltip(group.id, true);
+				}
+			}
+
 			//hide port by platform
 			switch (MC.canvas.data.get('platform'))
 			{
 				case 'ec2-classic':
+					MC.canvas.display(group.id,'port-instance-rtb',false);//hide port port-instance-rtb
+					MC.canvas.display(group.id,'port-instance-attach',false);//hide port port-instance-attach
+					break;
 				case 'default-vpc':
-					MC.canvas.display(group.id,'instance_rtb',false);//hide port instance_rtb
-					MC.canvas.display(group.id,'instance_attach',false);//hide port instance_attach
+					MC.canvas.display(group.id,'port-instance-rtb',false);//hide port port-instance-rtb
 					break;
 				case 'custom-vpc':
 				case 'ec2-vpc':
@@ -1454,6 +1466,10 @@ MC.canvas.add = function (flag, option, coordinate)
 			switch (MC.canvas.data.get('platform'))
 			{
 				case 'ec2-classic':
+					MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
+					MC.canvas.display(group.id,'port-elb-assoc',false);//hide port elb_assoc
+					$('#' + group.id + '_port-elb-sg-out').attr('transform','translate(79, 28)');//move port to middle
+					break;
 				case 'default-vpc':
 					// MC.canvas.display(group.id,'port-elb-sg-in',false);//hide port elb_sg_in
 					MC.canvas.display(group.id,'port-elb-assoc',false);//hide port elb_assoc
@@ -1947,6 +1963,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					'id': group.id + '_eni_status'
 				}),
 
+				// update eip status
 				Canvon.image(eip_icon, 43, 40, 12, 14).attr({
 					'id': group.id + '_eip_status',
 					'class': 'eip-status',
@@ -2086,12 +2103,27 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			$('#node_layer').append(group);
 
+			// update eip tooltip
+			var currentState = MC.canvas.getState();
+			if (currentState === 'app') {
+				MC.aws.eip.updateAppTooltip(group.id);
+			} else {
+				if (data_eip_state === 'on') {
+					MC.aws.eip.updateStackTooltip(group.id, false);
+				} else {
+					MC.aws.eip.updateStackTooltip(group.id, true);
+				}
+			}
+
 			//hide port by platform
 			switch (MC.canvas.data.get('platform'))
 			{
 				case 'ec2-classic':
+					MC.canvas.display(group.id,'port-eni-rtb',false);//hide port port-eni-rtb
+					MC.canvas.display(group.id,'port-eni-attach',false);//hide port port-eni-attach
+					break;
 				case 'default-vpc':
-					MC.canvas.display(group.id,'_eni_rtb',false);//hide port eni_rtb
+					MC.canvas.display(group.id,'port-eni-rtb',false);//hide port port-eni-rtb
 					break;
 				case 'custom-vpc':
 				case 'ec2-vpc':

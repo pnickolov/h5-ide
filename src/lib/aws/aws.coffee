@@ -482,7 +482,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             else if item.type is 'AWS.AutoScaling.Group'
                 cap = if item.resource.DesiredCapacity then item.resource.DesiredCapacity else item.resource.MinSize
 
-                config_uid = item.resource.LaunchConfigurationName.split('@')[1].split('.')[0]
+                config_uid = MC.extractID item.resource.LaunchConfigurationName
                 config = MC.canvas_data.component[config_uid]
 
                 if config

@@ -529,6 +529,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 'json_data'  : JSON.stringify(data),
                 'stack_id'   : data.id
                 'url'        : data.key
+                'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL

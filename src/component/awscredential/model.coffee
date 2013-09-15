@@ -23,7 +23,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
-
+            option = { expires:1, path: '/' }
             session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
             me.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->

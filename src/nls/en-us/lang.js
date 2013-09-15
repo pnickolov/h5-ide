@@ -200,6 +200,7 @@ define({
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
+		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s Instance\'s Network Interface can\'t exceed %s Private IP Addresses.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
@@ -253,7 +254,11 @@ define({
 		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.'
+		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
+
+		/****** Dashboard ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'RELOAD_AWS_RESOURCE_SUCCESS'	  : 'Status of resources is up to date.'
 
 	},
 	'service' : {

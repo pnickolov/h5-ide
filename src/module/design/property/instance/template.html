@@ -28,14 +28,13 @@
 				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
 		</section>
-		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<label class="left">Instance Type</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
 				<ul class="dropdown">
 					{{#each instance_type}}
-					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
 						<div class="main truncate">{{main}}</div>
 						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 					</li>
@@ -43,29 +42,23 @@
 				</ul>
 			</div>
 		</section>
-		<section class="property-control-group">
+		<section class="property-control-group" {{#unless can_set_ebs}}style="display:none;"{{/unless}}>
 			<div class="checkbox">
-				{{#if checkbox_display.ebsOptimized}}
-				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
-				{{else}}
-				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
-				{{/if}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
 				<label for="property-instance-ebs-optimized"></label>
 			</div>
 			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
 		</section>
+		{{#unless classic_stack}}
 		<section class="property-control-group">
 			<label class="left">Tenancy</label>
 			<div class="selectbox" id="tenancy-select">
-				<div class="selection">{{#if checkbox_display.tenancy}}Default{{else}}Dedicated{{/if}}</div>
+				<div class="selection">{{#if tenacy}}Default{{else}}Dedicated{{/if}}</div>
 				<ul class="dropdown" tabindex="-1">
-					{{#if checkbox_display.tenancy}}
-					<li class="item selected" data-id="default">Default</li>
-					<li class="item" data-id="dedicated">Delicated</li>
-					{{else}}
-					<li class="item" data-id="default">Default</li>
-					<li class="item selected" data-id="dedicated">Dedicated</li>
-					{{/if}}
+					{{#unless force_tenacy}}
+					<li class="item {{#if tenacy}}selected{{/if}}" data-id="default">Default</li>
+					{{/unless}}
+					<li class="item {{#unless tenacy}}selected{{/unless}}" data-id="dedicated">Delicated</li>
 				</ul>
 			</div>
 		</section>
@@ -154,7 +147,7 @@
 			<div class="network-list-wrap">
 				<div class="network-list-header clearfix">
 					IP Address
-					<button id="instance-ip-add" class="right btn btn-blue btn-small" title="Add IP Address">Add IP</button>
+					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">Add IP</button>
 				</div>
 				<ul class="network-list" id="property-network-list">
 

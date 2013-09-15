@@ -4,6 +4,15 @@
 
 define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( keypair_model, constant, ide_event) ->
 
+  EbsMap =
+    "m1.large"   : true
+    "m1.xlarge"  : true
+    "m2.2xlarge" : true
+    "m2.4xlarge" : true
+    "m3.xlarge"  : true
+    "m3.2xlarge" : true
+    "c1.xlarge"  : true
+
   LaunchConfigModel = Backbone.Model.extend {
 
     defaults :
@@ -19,7 +28,6 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       'checkbox_display' : null
       'eni_display'   : null
       'ebs_optimized' : null
-      'tenacy' : null
       'cloudwatch' : null
       'user_data' : null
       'base64'    :  null
@@ -28,22 +36,12 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       'add_sg'   : null
       'remove_sg' : null
 
-    initialize : ->
-      this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
-
-    updateUID : ( type ) ->
-      console.log 'updateUID'
-      if type is 'OLD_APP' or  type is 'OLD_STACK'
-        this.set 'get_uid', $( '#instance-property-detail' ).data 'uid'
-
     listen : ->
       #listen
       this.listenTo this, 'change:name', this.setName
-      this.listenTo this, 'change:instance_type', this.setInstanceType
       this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
       this.listenTo this, 'change:cloudwatch', this.setCloudWatch
       this.listenTo this, 'change:user_data', this.setUserData
-      this.listenTo this, 'change:base64' , this.setBase64Encoded
       this.listenTo this, 'change:eni_description' , this.setEniDescription
       this.listenTo this, 'change:source_check', this.setSourceCheck
       this.listenTo this, 'change:add_sg', this.addSGtoInstance
@@ -92,10 +90,18 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       uid = this.get 'get_uid'
 
-      MC.canvas_data.component[ this.get( 'get_uid' )].name = this.get 'name'
-      #this.set 'update_instance_title', this.get 'name'
+      name = this.get 'name'
 
-      MC.canvas.update(uid,'text','lc_name', this.get('name'))
+      MC.canvas_data.component[ uid ].name = name
+
+      MC.canvas.update(uid,'text','lc_name', name)
+
+      # update lc in extended asg
+      asg_uid = MC.canvas_data.layout.component.node[ uid ].groupUId
+
+      _.each MC.canvas_data.layout.component.group, ( group, id ) ->
+        if group.originalId is asg_uid
+          MC.canvas.update id, 'text', 'node-label', name
       null
 
 
@@ -104,11 +110,17 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
       null
 
-    setInstanceType  : () ->
+    setInstanceType  : ( value ) ->
       uid = this.get 'get_uid'
-      value = this.get 'instance_type'
-      MC.canvas_data.component[ uid ].resource.InstanceType = value
-      null
+      component = MC.canvas_data.component[ uid ]
+
+      component.resource.InstanceType = value
+
+      has_ebs = EbsMap.hasOwnProperty value
+      if not has_ebs
+        component.resource.EbsOptimized = "false"
+
+      has_ebs
 
     setEbsOptimized : ( value )->
 
@@ -117,14 +129,6 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       #console.log 'setEbsOptimized = ' + value
 
       MC.canvas_data.component[ uid ].resource.EbsOptimized = this.get 'ebs_optimized'
-
-      null
-
-    setTenancy : ( value ) ->
-
-      uid  = this.get 'get_uid'
-
-      MC.canvas_data.component[ uid ].resource.Placement.Tenancy = this.get 'tenacy'
 
       null
 
@@ -151,14 +155,6 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       uid = this.get 'get_uid'
 
       MC.canvas_data.component[ uid ].resource.UserData = this.get 'user_data'
-
-      null
-
-    setBase64Encoded : ()->
-
-      #console.log 'setBase64Encoded = ' + value
-
-      MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
       null
 
@@ -262,11 +258,6 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       checkbox.monitorEnabled = monitorEnabled
 
-
-      #checkbox.base64Encoded = true if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
-
-      #checkbox.tenancy = true if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
-
       this.set 'checkbox_display', checkbox
 
     getComponent : () ->
@@ -344,21 +335,17 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
 
-      view_instance_type = []
-      instance_types = this._getInstanceType ami_info
-      _.map instance_types, ( value )->
-        tmp = {}
+      view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
 
-        if current_instance_type == value
-          tmp.selected = true
-        tmp.main = constant.INSTANCE_TYPE[value][0]
-        tmp.ecu  = constant.INSTANCE_TYPE[value][1]
-        tmp.core = constant.INSTANCE_TYPE[value][2]
-        tmp.mem  = constant.INSTANCE_TYPE[value][3]
-        tmp.name = value
-        view_instance_type.push tmp
+        main     : constant.INSTANCE_TYPE[value][0]
+        ecu      : constant.INSTANCE_TYPE[value][1]
+        core     : constant.INSTANCE_TYPE[value][2]
+        mem      : constant.INSTANCE_TYPE[value][3]
+        name     : value
+        selected : current_instance_type is value
 
       this.set 'instance_type', view_instance_type
+      this.set 'can_set_ebs',   EbsMap.hasOwnProperty current_instance_type
 
     _getInstanceType : ( ami ) ->
       instance_type = MC.data.instance_type[MC.canvas_data.region]
@@ -377,66 +364,6 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       instance_type = instance_type[ami.virtualizationType]
 
       instance_type
-
-    attachEIP : ( eip_index, attach ) ->
-
-      instance_uid = this.get 'get_uid'
-
-      $.each MC.canvas_data.component, ( key, val ) ->
-
-        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
-
-          if attach
-
-            eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
-
-            eip_uid = MC.guid()
-
-            eip_component.uid = eip_uid
-
-            eip_component.resource.PrivateIpAddress = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
-
-            eip_component.resource.NetworkInterfaceId = '@' +  val.uid + '.resource.NetworkInterfaceId'
-
-            eip_component.resource.Domain = 'vpc'
-
-            data = MC.canvas.data.get('component')
-
-            data[eip_uid] = eip_component
-
-            MC.canvas.data.set('component', data)
-
-            MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
-
-          else
-
-            ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
-
-            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-              if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
-
-                delete MC.canvas_data.component[comp_uid]
-
-                #determine whether all eip are detach
-
-                existing = false
-
-                $.each MC.canvas_data.component, ( k, v ) ->
-
-                  if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  val.uid + '.resource.NetworkInterfaceId'
-
-                    existing = true
-
-                    return false
-
-                if not existing
-
-                  MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
-
-
-
-          return false
 
     removeSG : () ->
 

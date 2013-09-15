@@ -55,11 +55,20 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			parentSGList = parent_model.getSGList()
 
 			stackType = parent_model.get 'type'
+
 			if stackType is 'stack'
 				stackType = true
 			else
 				stackType = false
 			this.set 'is_stack_sg', stackType
+
+			appView = false
+			if parent_model.get('type') is 'app'
+				appView = true
+
+			stackComp = false
+			if parent_model.get('is_stack') is true
+				stackComp = true
 
 			isELBParent = parent_model.get 'is_elb'
 
@@ -69,21 +78,13 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			allSGUIDAry = []
 			_.each MC.canvas_data.component, (comp, uid) ->
 				if comp.type is 'AWS.EC2.SecurityGroup'
-					if !(!isELBParent and uid in allElbSGAry)
+					if !(!isELBParent and !stackComp and uid in allElbSGAry)
 						allSGUIDAry.push comp.uid
 
 			displaySGAry = []
 
 			sg_full = { full : false }
 			enabledSGCount = 0
-
-			appView = false
-			if parent_model.get('type') is 'app'
-				appView = true
-
-			stackComp = false
-			if parent_model.get('is_stack') is true
-				stackComp = true
 
 			_.each allSGUIDAry, (uid) ->
 
@@ -150,7 +151,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			isAppView = that.get 'app_view'
 
 			refSGLength = 0
-			if stackType and !isAppView
+			if stackType and stackComp and !isAppView
 				refSGLength = displaySGAry.length
 			else
 				refSGLength = enabledSGCount
@@ -179,7 +180,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			sgRuleAry = []
 			_.each parentSGList, (uid) ->
-
+				if !MC.canvas_data.component[uid] then return
 				sgComp = $.extend true, {}, MC.canvas_data.component[uid]
 				sgCompRes = sgComp.resource
 
@@ -194,7 +195,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 					if value.IpRanges.slice(0,1) is '@'
 
-						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+						if MC.canvas_data.component[MC.extractID( value.IpRanges )]
+							value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
@@ -251,7 +253,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					parent_model.unAssignSGToComp sgUID
 
 			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
+			MC.aws.sg.updateSGColorLabel parent_model.get('uid')
 
 
 		deleteSGFromComp : (sgUID) ->
@@ -260,9 +262,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			MC.aws.sg.deleteRefInAllComp(sgUID)
 			delete MC.canvas_data.component[sgUID]
-			
-			#update sg color label
-			MC.aws.sg.updateSGColorLabel parent_model.get 'uid'
 	}
 
 	model = new SGListModel()

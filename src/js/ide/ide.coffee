@@ -65,6 +65,9 @@ define [ 'MC', 'event', 'handlebars'
 				#user session not exist, go to login page
 				window.location.href = 'login.html'
 
+		#clear cookie in 'ide.madeiracloud.com'
+		forge_handle.cookie.clearInvalidCookie()
+
 		#############################
 		#  initialize MC.data
 		#############################
@@ -256,6 +259,21 @@ define [ 'MC', 'event', 'handlebars'
 
 		# analytics.track('Loaded IDE', { })
 
+		#intercom
+		#window.intercomSettings.email      = MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+		#window.intercomSettings.username   = forge_handle.cookie.getCookieByName( 'username' )
+		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
+		#intercom_sercure_mode_hash         = () ->
+		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+		#	return hash.toString CryptoJS.enc.Hex
+		#if !window.intercomSettings.user_hash
+		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
+		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
+
+		#window.intercomSettings.stack_total= 0
+
 		#############################
 		#  base model
 		#############################
@@ -265,6 +283,9 @@ define [ 'MC', 'event', 'handlebars'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				relogin()
+				if error.param[0].method is 'info'
+					if error.param[0].url in [ '/stack/', '/app/' ]
+						ide_event.trigger ide_event.CLOSE_TAB, null, error.param[4][0]
 			else
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]

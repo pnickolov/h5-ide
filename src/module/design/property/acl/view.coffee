@@ -71,12 +71,16 @@ define [ 'event',
                     '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
-            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom</div></li>')
+            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom...</div></li>')
 
             # scrollbar.init()
             return false
 
         saveRule : () ->
+
+            that = this
+            aclUID = that.model.get('component').uid
+            aclName = that.model.get('component').name
 
             rule_number_dom =  $('#modal-acl-number')
             ruleNumber = $('#modal-acl-number').val()
@@ -93,26 +97,6 @@ define [ 'event',
             protocolStr = $.trim(protocol_dom.attr('data-id'))
 
             port = $('#acl-rule-modal-port-input').val()
-
-            icmpType = icmpCode = ''
-            if protocol is 'tcp'
-                protocol = '6'
-                portTo = portFrom = port
-            else if protocol is 'udp'
-                protocol = '17'
-                portTo = portFrom = port
-            else if protocol is 'icmp'
-                protocol = '1'
-                portTo = portFrom = ''
-                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
-                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
-            else if protocol is 'custom'
-                protocol = port
-                portTo = portFrom = ''
-            else if protocol is 'all'
-                protocol = '-1'
-                portTo = '0'
-                portFrom = '65535'
 
             ruleAction = ''
             if action
@@ -156,10 +140,51 @@ define [ 'event',
                     return 'Must be a valid form of CIDR block.'
                 null
 
+            rule_number_dom.parsley 'custom', ( val ) ->
+                if Number(val) > 32767
+                    return 'The maximum value is 32767.'
+                if that.model.haveRepeatRuleNumber(aclUID, val)
+                    return 'The Rule Number have exist one.'
+                if aclName is 'DefaultACL' and Number(val) is 100
+                    return 'The DefaultACL\'s Rule Number 100 has existed.'
+                null
+
             if (not rule_number_dom.parsley 'validate') or (custom_source_dom.is(':visible') and not custom_source_dom.parsley 'validate') or
                 (needValidate and not needValidate.dom.parsley 'validate')
                     return
             # validation #####################################################
+
+            icmpType = icmpCode = ''
+            if protocol is 'tcp'
+                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeAry = MC.validate.portRange(portRangeStr)
+                if portRangeAry.length is 2
+                    portFrom = portRangeAry[0]
+                    portTo = portRangeAry[1]
+                else
+                    portTo = portFrom = portRangeAry[0]
+                protocol = '6'
+            else if protocol is 'udp'
+                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
+                portRangeAry = MC.validate.portRange(portRangeStr)
+                if portRangeAry.length is 2
+                    portFrom = portRangeAry[0]
+                    portTo = portRangeAry[1]
+                else
+                    portTo = portFrom = portRangeAry[0]
+                protocol = '17'
+            else if protocol is 'icmp'
+                portTo = portFrom = ''
+                icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
+                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
+                protocol = '1'
+            else if protocol is 'custom'
+                protocol = $('#sg-protocol-' + protocol + ' input').val()
+                portTo = portFrom = ''
+            else if protocol is 'all'
+                portTo = '0'
+                portFrom = '65535'
+                protocol = '-1'
 
             this.trigger 'ADD_RULE_TO_ACL', {
                 rule: ruleNumber,
@@ -195,10 +220,21 @@ define [ 'event',
                     newRuleObj.ruleNumber = value.RuleNumber
                     newRuleObj.isStarRule = false
 
-                if value.Protocol is '-1'
+                # if value.Protocol is '-1'
+                #     newRuleObj.protocol = 'All'
+                # else
+                #     newRuleObj.protocol = value.Protocol
+
+                if value.Protocol is -1 or value.Protocol is '-1'
                     newRuleObj.protocol = 'All'
+                else if value.Protocol is 6 or value.Protocol is '6'
+                    newRuleObj.protocol = 'TCP'
+                else if value.Protocol is 17 or value.Protocol is '17'
+                    newRuleObj.protocol = 'UDP'
+                else if value.Protocol is 1 or value.Protocol is '1'
+                    newRuleObj.protocol = 'ICMP'
                 else
-                    newRuleObj.protocol = value.Protocol
+                    newRuleObj.protocol = 'Custom(' + value.Protocol + ')'
 
                 newRuleObj.port = ''
 
@@ -231,8 +267,10 @@ define [ 'event',
 
             if value is 'custom'
                 $('#modal-acl-source-input').show()
+                $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
+                $('#acl-add-model-source-select .selection').width(296)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')
@@ -301,8 +339,11 @@ define [ 'event',
             sg_rule_list.html sorted_items
 
         _sortNumber : ( a, b) ->
-            return $(a).find('.acl-rule-number').attr('data-id') >
-                $(b).find('.acl-rule-number').attr('data-id')
+            valueA = $(a).find('.acl-rule-number').attr('data-id')
+            valueB = $(b).find('.acl-rule-number').attr('data-id')
+            if valueA is '*' then valueA = 0
+            if valueB is '*' then valueB = 0
+            return Number(valueA) > Number(valueB)
 
         _sortAction : ( a, b) ->
             return $(a).find('.acl-rule-action').attr('data-id') >

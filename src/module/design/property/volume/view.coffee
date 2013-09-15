@@ -112,7 +112,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 if iopsEnabled
                     this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
 
-
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'
 

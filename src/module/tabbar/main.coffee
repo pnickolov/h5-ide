@@ -2,9 +2,9 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
+define [ 'jquery', 'event', 'base_main',
          'UI.tabbar', 'UI.modal'
-], ( $, template, ide_event, base_main ) ->
+], ( $, ide_event, base_main ) ->
 
     #private
     initialize = ->
@@ -12,10 +12,11 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
         _.extend this, base_main
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="tabbar-tmpl">' + template + '</script>'
-
+        #template = '<script type="text/x-handlebars-template" id="tabbar-tmpl">' + template + '</script>'
         #load remote html template
-        $( template ).appendTo '#tab-bar'
+        #$( template ).appendTo '#tab-bar'
+
+        null
 
     initialize()
 
@@ -23,7 +24,7 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
     loadModule = () ->
 
         #load
-        require [ './module/tabbar/view', './module/tabbar/model', 'MC' ], ( View, model, MC ) ->
+        require [ 'tabbar_view', 'tabbar_model' ], ( View, model ) ->
 
             #view
             #view       = new View()

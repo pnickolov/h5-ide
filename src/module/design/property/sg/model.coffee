@@ -59,6 +59,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     else
                         rule.protocol_display = rule.IpProtocol
 
+                    if rule.IpProtocol is 'icmp'
+                        rule.PartType = '/'
+                    else
+                        rule.PartType = '-'
+
                     null
 
 

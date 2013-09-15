@@ -2,11 +2,22 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event',
-         'i18n!nls/lang.js',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
+define [ 'event', 'i18n!nls/lang.js',
+         'text!./module/dashboard/overview/template.html',
+         'text!./module/dashboard/overview/template_data.html',
+         'backbone', 'jquery', 'handlebars', 'MC.ide.template'
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data ) ->
 
     current_region = null
+
+    MC.IDEcompile 'overview', overview_tmpl_data,
+        '.overview-result'  : 'overview-result-tmpl'
+        '.global-list'      : 'global-list-tmpl'
+        '.region-app-stack' : 'region-app-stack-tmpl'
+        '.region-resource'  : 'region-resource-tmpl'
+        '.recent'           : 'recent-tmpl'
+        '.loading'          : 'loading-tmpl'
+        '.loading-failed'   : 'loading-failed-tmpl'
 
     ### helper ###
     Helper =
@@ -43,21 +54,26 @@ define [ 'event',
             $('#global-refresh span').text time
 
         scrollToResource: ->
-            scrollTo = $('#global-region-map-wrap').height()
+            scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
 
-        overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
-        global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
+        overview_result : Handlebars.compile $( '#overview-result-tmpl' ).html()
+        global_list     : Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
-        region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
-        recent: Handlebars.compile $( '#recent-tmpl' ).html()
-        loading: $( '#loading-tmpl' ).html()
+        region_resource : Handlebars.compile $( '#region-resource-tmpl' ).html()
+        recent          : Handlebars.compile $( '#recent-tmpl' ).html()
+        loading         : $( '#loading-tmpl' ).html()
+        loading_failed  : $( '#loading-failed-tmpl' ).html()
 
-        events   :
+
+        events          :
             'click #global-region-spot > li'            : 'gotoRegion'
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'
@@ -68,6 +84,7 @@ define [ 'event',
             'click #region-aws-resource-tab a'          : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
+            'click .aws-loading-faild a'                : 'showCredential'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
             'click #DescribeInstances .table-app-link'  : 'openApp'
@@ -85,13 +102,18 @@ define [ 'event',
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
         reloadResource: ->
-            @status.reloading = true
-            @showLoading '#global-view, #region-resource-wrap'
-            Helper.scrollToResource()
-            @trigger 'RELOAD_RESOURCE'
+            if Helper.hasCredential()
+                @status.reloading = true
+                @showLoading '#global-view, #region-resource-wrap'
+                @trigger 'RELOAD_RESOURCE'
+            else
+                @showCredential()
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
+
+        showLoadingFaild: ( selector ) ->
+            @$el.find( selector ).html @loading_failed
 
         switchRegion: ( event ) ->
             target = $ event.currentTarget
@@ -134,7 +156,11 @@ define [ 'event',
 
 
         renderGlobalList: ( event ) ->
-            @status.reloading = false
+            @enableSwitchRegion()
+            if @status.reloading
+                notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
+                @status.reloading = false
+
             tmpl = @global_list @model.toJSON()
             if current_region
                 @trigger 'SWITCH_REGION', current_region
@@ -182,12 +208,25 @@ define [ 'event',
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
+        renderLoadingFaild: ->
+            @showLoadingFaild '#global-view, #region-resource-wrap'
+
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
             $topButton = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
             $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+
+        enableSwitchRegion: ->
+            $( '#region-switch' )
+                .removeClass('disabled')
+                .addClass('js-toggle-dropdown')
+
+        disableSwitchRegion: ->
+            $( '#region-switch' )
+                .addClass('disabled')
+                .removeClass('js-toggle-dropdown')
 
         createStack: ( event ) ->
             $target = $ event.currentTarget
@@ -222,6 +261,11 @@ define [ 'event',
             id = $target.data 'id'
             ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
 
+        showCredential: ( event ) ->
+            if event
+                event.preventDefault()
+            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
         ############################################################################################
 
 
@@ -234,9 +278,9 @@ define [ 'event',
 
             null
 
-        render : ( template ) ->
+        render : () ->
             console.log 'dashboard overview render'
-            $( this.el ).html template
+            $( this.el ).html overview_tmpl
 
         openItem : (event) ->
             console.log 'click item'

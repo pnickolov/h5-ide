@@ -64,7 +64,6 @@ define [ 'jquery',
             model.getComponent()
             model.getKeyPair()
             # model.getSgDisp()
-            model.getCheckBox()
             model.getEni()
             #
             view.render()
@@ -108,11 +107,6 @@ define [ 'jquery',
 
             view.on 'COUNT_CHANGE', ( val ) ->
                 model.setCount val
-
-            model.on 'EXCEED_ENI_LIMIT', ( uid, instance_type, eni_number ) ->
-
-                notification 'error', lang.ide.PROP_WARN_EXCEED_ENI_LIMIT
-
 
     loadAppModule = ( uid, instance_expended_id, current_main ) ->
 

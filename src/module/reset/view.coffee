@@ -18,6 +18,7 @@ define [ 'event',
         events   :
             'click #reset-btn'      : 'resetButtonEvent'
             'click #reset-password' : 'resetPasswordEvent'
+            'keyup #reset-pw'       : 'verificationPassword'
 
         initialize : ->
             #
@@ -47,6 +48,25 @@ define [ 'event',
             console.log 'resetPasswordEvent'
             this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false
+
+        verificationPassword : ->
+            value = $('#reset-pw').val().trim()
+            status = $('#password-verification-status')
+            status.removeClass 'error-status'
+
+            #signup.verification.confirm_password();
+            if value isnt ''
+                if value.length > 6 # &&
+                  #/[A-Z]{1}/.test(value) &&
+                  #/[0-9]{1}/.test(value)
+                  status.show().text 'This password is OK.'
+                  true
+                else
+                  status.addClass('error-status').show().text 'This password is too weak.'
+                  false
+            else
+                status.addClass('error-status').show().text 'Password is required.'
+                false
 
         showErrorMessage : ->
             console.log 'showErrorMessage'

@@ -107,7 +107,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     MC.canvas.update uid, 'text', "volume_name", block.DeviceName
                     MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
-                    @attributes.volume_detail.name = block.DeviceName
+                    @attributes.volume_detail.name     = block.DeviceName
+                    @attributes.volume_detail.editName = name
 
                     @set 'uid', newId
 
@@ -219,6 +220,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
+
+                # First, test if the newly created name is not changed
+                # Because parsely might fires event even if the name is not changed.
+                if @attributes.volume_detail.editName is name
+                    return false
 
                 for block in MC.canvas_data.component[realuid].resource.BlockDeviceMapping
 

@@ -75,6 +75,9 @@ define [ 'jquery', 'handlebars',
 
 		event.preventDefault()
 
+		#remove
+		$( '#error-msg-1' ).removeClass 'show'
+
 		username = $( '#login-user' ).val()
 		password = $( '#login-password' ).val()
 

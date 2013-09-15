@@ -7,7 +7,11 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
   EbsMap =
     "m1.large"   : true
     "m1.xlarge"  : true
+    "m2.2xlarge" : true
     "m2.4xlarge" : true
+    "m3.xlarge"  : true
+    "m3.2xlarge" : true
+    "c1.xlarge"  : true
 
   LaunchConfigModel = Backbone.Model.extend {
 

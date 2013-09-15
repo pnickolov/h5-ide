@@ -83,7 +83,8 @@ define [ 'backbone', 'underscore', 'favorite_service', 'base_model' ], ( Backbon
                 #info failed
 
                     console.log 'favorite.info failed, error is ' + forge_result.error_message
-                    me.pub forge_result
+                    #need process old favorite
+                    #me.pub forge_result
 
 
 

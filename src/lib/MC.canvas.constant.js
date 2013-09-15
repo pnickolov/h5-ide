@@ -548,7 +548,8 @@ var constant_data = {
 				"direction": {
 					"to": "horizontal"
 				},
-				"dash_line": true
+				"dash_line": true,
+				"relation": "unique"
 			}
 		},
 		"AWS.VPC.VPNGateway": {
@@ -559,12 +560,14 @@ var constant_data = {
 				"direction": {
 					"to": "horizontal"
 				},
-				"dash_line": true
+				"dash_line": true,
+				"relation": "unique"
 			},
 			"AWS.VPC.CustomerGateway": {
 				"type": "vpn",
 				"from": "vgw-vpn",
-				"to": "cgw-vpn"
+				"to": "cgw-vpn",
+				"relation": "unique"
 			}
 		},
 		"AWS.VPC.CustomerGateway": {

@@ -75,9 +75,12 @@ START_TIME=`date "+%y/%m/%d %H:%M"`
 #create dir
 create_dir ${CUR_DIR}/log 0
 create_dir ${BASE_DIR} 0
-create_dir ${SRC_DIR} 0
 create_dir ${TGT_DIR} 0
 create_dir ${BAK_DIR} 0
+
+create_dir ${SRC_DIR} 0
+chown ec2-user:ec2-user ${SRC_DIR} -R
+
 
 
 echo "- Step 1 : check ${SRC_DIR}/${FILENAME} ---------------------------------------------------"

@@ -153,7 +153,7 @@ define [ 'i18n!nls/lang.js',
 
                     if result.resolved_data
 
-                        _.map result.resolved_data.item, (value)->
+                        _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             value.instanceType = me._getInstanceType value
                             value.osType = MC.aws.ami.getOSType value

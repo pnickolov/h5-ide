@@ -8,7 +8,7 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'forge_handle', 'aws_handle', 'vender/crypto-js/hmac-sha256'
+		 'forge_handle', 'aws_handle'
 ], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
 
 	console.info canvas_layout
@@ -64,6 +64,9 @@ define [ 'MC', 'event', 'handlebars'
 			if !forge_handle.cookie.checkAllCookie()
 				#user session not exist, go to login page
 				window.location.href = 'login.html'
+
+		#clear cookie in 'ide.madeiracloud.com'
+		forge_handle.cookie.clearInvalidCookie()
 
 		#############################
 		#  initialize MC.data

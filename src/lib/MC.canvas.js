@@ -282,7 +282,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -321,7 +321,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -1167,27 +1167,27 @@ MC.canvas = {
 						{
 							switch (MC.canvas_property.LINE_STYLE)
 							{
-								case 0:
-									path = MC.canvas._round_corner(controlPoints); //method1
-									break;
-								case 1:
+								case 0: //straight
 										path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y
 										+ ' L ' + controlPoints[1].x + ' ' + controlPoints[1].y
 										+ ' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y
 										+ ' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
 									break;
-								case 2:
-									path = MC.canvas._bezier_q_corner( controlPoints ); //method2
+								case 1: //elbow
+									path = MC.canvas._round_corner(controlPoints);
 									break;
-								case 3:
-									path = MC.canvas._bezier_qt_corner( controlPoints ); //method2
+								case 2: //bezier-q
+									path = MC.canvas._bezier_q_corner( controlPoints );
+									break;
+								case 3: //bezier-qt
+									path = MC.canvas._bezier_qt_corner( controlPoints );
 									break;
 							}
 
 						}
 						else
 						{
-							path = MC.canvas._round_corner(controlPoints); //method1
+							path = MC.canvas._round_corner(controlPoints); //elbow
 						}
 					}
 				}
@@ -2703,6 +2703,9 @@ MC.canvas.asgList = {
 			// Prepare data
 			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
+			if (!layout) {
+				return;
+			}
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 			var appData = MC.data.resource_list[ MC.canvas_data.region ];
 			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];

@@ -46,7 +46,7 @@ define [ 'jquery', 'handlebars',
          'MC', 'session_model',
          'i18n!nls/lang.js',
          'text!./js/login/template.html',
-         'forge_handle', 'vender/crypto-js/hmac-sha256'
+         'forge_handle', 'crypto'
 ], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
 
 
@@ -74,6 +74,9 @@ define [ 'jquery', 'handlebars',
 	MC.login = ( event ) ->
 
 		event.preventDefault()
+
+		#remove
+		$( '#error-msg-1' ).removeClass 'show'
 
 		username = $( '#login-user' ).val()
 		password = $( '#login-password' ).val()

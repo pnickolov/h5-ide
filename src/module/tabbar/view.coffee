@@ -2,13 +2,16 @@
 #  View(UI logic) for tabbar
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event ) ->
+define [ 'event',
+         'text!./module/tabbar/template.html',
+         'backbone', 'jquery', 'handlebars', 'UI.tabbar'
+], ( ide_event, tmpl ) ->
 
     TabBarView = Backbone.View.extend {
 
         el       : $( '#tab-bar' )
 
-        template : Handlebars.compile $( '#tabbar-tmpl' ).html()
+        template : Handlebars.compile tmpl
 
         current_tab : null
 

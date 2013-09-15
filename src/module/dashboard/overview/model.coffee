@@ -269,10 +269,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             null
 
         awsReturnHandler: ( result ) ->
+            region = result.param[ 3 ]
+            @trigger 'AWS:LOADING:STOP', region
             data = result.resolved_data
             if not _.size data
                 return
-            region = result.param[ 3 ]
             if region is null
                 # update regionlist for optimize network
                 @cacheResource 'raw', data
@@ -1213,6 +1214,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
 
         describeAWSResourcesService : ( region )->
+            @trigger 'AWS:LOADING:START', region
             me = this
             region = region or null
             current_region = region

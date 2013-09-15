@@ -99,7 +99,10 @@ define({
 		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance Type: [ %s ] only support at most [ %s ] Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type',
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Design Module no download complete.'
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Design Module no download complete.',
+
+		/****** Dashboard ******/
+		'RELOAD_AWS_RESOURCE_SUCCESS'		    : 'Status of resources is up to date.'
 
 	}
 });

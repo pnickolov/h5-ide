@@ -2,13 +2,13 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ], ( $, template ) ->
+define [ 'jquery', 'MC.canvas.constant' ], () ->
 
     #private
     loadModule = () ->
 
         #load remote design.js
-        require [ './module/design/view', './module/design/model', 'event' ], ( View, model, ide_event ) ->
+        require [ 'design_view', 'design_model', 'event' ], ( View, model, ide_event ) ->
 
             #
             design_view_init       = null
@@ -25,7 +25,7 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                 wrap()
 
             #render
-            view.render template
+            view.render()
 
             #listen DESIGN_SUB_COMPLETE
             ide_event.onLongListen ide_event.DESIGN_SUB_COMPLETE, () ->

@@ -14,7 +14,7 @@ define [ 'event' ], ( ide_event ) ->
         #$( template ).appendTo '#header'
 
         #
-        require [ './module/process/view', './module/process/model' ], ( view, model ) ->
+        require [ 'process_view', 'process_model' ], ( view, model ) ->
             #
             view.model = model
             view.render()

@@ -5,13 +5,13 @@
 define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event, lang ) ->
 
 	EbsMap =
-				"m1.large"   : true
-				"m1.xlarge"  : true
-				"m2.2xlarge" : true
-				"m2.4xlarge" : true
-				"m3.xlarge"  : true
-				"m3.2xlarge" : true
-				"c1.xlarge"  : true
+		"m1.large"   : true
+		"m1.xlarge"  : true
+		"m2.2xlarge" : true
+		"m2.4xlarge" : true
+		"m3.xlarge"  : true
+		"m3.2xlarge" : true
+		"c1.xlarge"  : true
 
 	InstanceModel = Backbone.Model.extend {
 
@@ -876,6 +876,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			uid = this.get 'get_uid'
 
 			if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
+
 				defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
 				eniUID = defaultENIComp.uid
 
@@ -886,7 +887,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 					sgUID = value.GroupId.slice(1).split('.')[0]
 					sgUIDAry.push sgUID
 					null
-
 			else
 				sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
 

@@ -152,9 +152,9 @@ var MC = {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
-	canvasName : function ( string )
+	canvasName : function (string)
 	{
-			return string.length > 17 ? string.substring(0, 17) + '...' : string;
+		return string.length > 17 ? string.substring(0, 17) + '...' : string;
 	},
 
 	truncate: function (string, length)
@@ -208,9 +208,10 @@ var MC = {
 		});
 	},
 
-	extractID : function ( uid )
+	extractID: function (uid)
 	{
-		var result = MC._extractIDRegex.exec( uid );
+		var result = MC._extractIDRegex.exec(uid);
+		
 		return result ? result[1] : uid;
 	},
 

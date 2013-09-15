@@ -2,14 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery',
-    'text!./module/dashboard/overview/template.html',
-    'text!./module/dashboard/overview/template_data.html',
-    'text!./module/dashboard/region/template_data.html',
-    'event',
-    'MC',
-    'base_main'
-], ( $, overview_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC, base_main ) ->
+define [ 'jquery', 'event', 'MC', 'base_main' ], ( $, ide_event, MC, base_main ) ->
 
     current_region = null
     overview_app    = null
@@ -26,18 +19,10 @@ define [ 'jquery',
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data,
-            '.overview-result' : 'overview-result-tmpl'
-            '.global-list' : 'global-list-tmpl'
-            '.region-app-stack' : 'region-app-stack-tmpl'
-            '.region-resource' : 'region-resource-tmpl'
-            '.recent' : 'recent-tmpl'
-            '.loading': 'loading-tmpl'
-
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
         #load remote ./module/dashboard/overview/view.js
-        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
+        require [ 'dashboard_view', 'dashboard_model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
             region_view = null
             #view
             #view       = new View()
@@ -46,7 +31,7 @@ define [ 'jquery',
             return if !view
 
             view.model = model
-            view.render overview_tmpl
+            view.render()
 
             #push DASHBOARD_COMPLETE
             ide_event.trigger ide_event.DASHBOARD_COMPLETE

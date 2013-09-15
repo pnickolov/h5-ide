@@ -2,9 +2,21 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
+define [ 'event', 'i18n!nls/lang.js',
+         'text!./module/dashboard/overview/template.html',
+         'text!./module/dashboard/overview/template_data.html',
+         'backbone', 'jquery', 'handlebars', 'MC.ide.template'
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data ) ->
 
     current_region = null
+
+    MC.IDEcompile 'overview', overview_tmpl_data,
+        '.overview-result'  : 'overview-result-tmpl'
+        '.global-list'      : 'global-list-tmpl'
+        '.region-app-stack' : 'region-app-stack-tmpl'
+        '.region-resource'  : 'region-resource-tmpl'
+        '.recent'           : 'recent-tmpl'
+        '.loading'          : 'loading-tmpl'
 
     ### helper ###
     Helper =
@@ -48,14 +60,14 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( id
 
         el              : $( '#tab-content-dashboard' )
 
-        overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
-        global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
+        overview_result : Handlebars.compile $( '#overview-result-tmpl' ).html()
+        global_list     : Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
-        region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
-        recent: Handlebars.compile $( '#recent-tmpl' ).html()
-        loading: $( '#loading-tmpl' ).html()
+        region_resource : Handlebars.compile $( '#region-resource-tmpl' ).html()
+        recent          : Handlebars.compile $( '#recent-tmpl' ).html()
+        loading         : $( '#loading-tmpl' ).html()
 
-        events   :
+        events          :
             'click #global-region-spot > li'            : 'gotoRegion'
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'
@@ -234,9 +246,9 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( id
 
             null
 
-        render : ( template ) ->
+        render : () ->
             console.log 'dashboard overview render'
-            $( this.el ).html template
+            $( this.el ).html overview_tmpl
 
         openItem : (event) ->
             console.log 'click item'

@@ -2,9 +2,14 @@
 #  View(UI logic) for navigation
 #############################
 
-define [ 'event', 'constant', 'i18n!nls/lang.js'
-         'backbone', 'jquery', 'handlebars', 'UI.notification'
-], ( ide_event, constant, lang ) ->
+define [ 'event', 'constant', 'i18n!nls/lang.js',
+         'text!./module/navigation/template.html',
+         'text!./module/navigation/template_data.html',
+         'backbone', 'jquery', 'handlebars', 'UI.notification', 'MC.ide.template'
+], ( ide_event, constant, lang, template, template_data ) ->
+
+    #compile partial template
+    MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
     NavigationView = Backbone.View.extend {
 
@@ -35,7 +40,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js'
             Handlebars.registerHelper 'tolower', ( result ) ->
                 return new Handlebars.SafeString result.toLowerCase()
 
-        render     : ( template ) ->
+        render     : () ->
             #render html
             console.log 'navigation render'
             #$( this.el ).html this.template this.model.attributes

@@ -1167,27 +1167,27 @@ MC.canvas = {
 						{
 							switch (MC.canvas_property.LINE_STYLE)
 							{
-								case 0:
-									path = MC.canvas._round_corner(controlPoints); //method1
-									break;
-								case 1:
+								case 0: //straight
 										path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y
 										+ ' L ' + controlPoints[1].x + ' ' + controlPoints[1].y
 										+ ' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y
 										+ ' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
 									break;
-								case 2:
-									path = MC.canvas._bezier_q_corner( controlPoints ); //method2
+								case 1: //elbow
+									path = MC.canvas._round_corner(controlPoints);
 									break;
-								case 3:
-									path = MC.canvas._bezier_qt_corner( controlPoints ); //method2
+								case 2: //bezier-q
+									path = MC.canvas._bezier_q_corner( controlPoints );
+									break;
+								case 3: //bezier-qt
+									path = MC.canvas._bezier_qt_corner( controlPoints );
 									break;
 							}
 
 						}
 						else
 						{
-							path = MC.canvas._round_corner(controlPoints); //method1
+							path = MC.canvas._round_corner(controlPoints); //elbow
 						}
 					}
 				}

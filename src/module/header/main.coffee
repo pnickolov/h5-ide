@@ -2,18 +2,24 @@
 #  Controller for header module
 ####################################
 
-define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!nls/lang.js', 'base_main' ], ( $, template, ide_event, lang, base_main ) ->
+define [ 'jquery',
+         'event',
+         'i18n!nls/lang.js',
+         'base_main'
+], ( $, ide_event, lang, base_main ) ->
 
     initialize = ->
         #extend parent
         _.extend this, base_main
         #
         view  = null
-        #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="header-tmpl">' + template + '</script>'
 
+        #add handlebars script
+        #template = '<script type="text/x-handlebars-template" id="header-tmpl">' + template + '</script>'
         #load remote html template
-        $( template ).appendTo '#header'
+        #$( template ).appendTo '#header'
+
+        null
 
     initialize()
 
@@ -23,7 +29,7 @@ define [ 'jquery', 'text!./module/header/template.html', 'event', 'i18n!nls/lang
         console.log 'load header module'
 
         #load header module
-        require [ './module/header/view', './module/header/model' ], ( View, model ) ->
+        require [ 'header_view', 'header_model' ], ( View, model ) ->
 
             view = loadSuperModule loadModule, 'header', View, null
             return if !view

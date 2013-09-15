@@ -1107,9 +1107,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			switch (MC.canvas.data.get('platform'))
 			{
 				case 'ec2-classic':
+					MC.canvas.display(group.id,'port-instance-rtb',false);//hide port port-instance-rtb
+					MC.canvas.display(group.id,'port-instance-attach',false);//hide port port-instance-attach
+					break;
 				case 'default-vpc':
-					MC.canvas.display(group.id,'instance_rtb',false);//hide port instance_rtb
-					MC.canvas.display(group.id,'instance_attach',false);//hide port instance_attach
+					MC.canvas.display(group.id,'port-instance-rtb',false);//hide port port-instance-rtb
 					break;
 				case 'custom-vpc':
 				case 'ec2-vpc':
@@ -2117,8 +2119,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			switch (MC.canvas.data.get('platform'))
 			{
 				case 'ec2-classic':
+					MC.canvas.display(group.id,'port-eni-rtb',false);//hide port port-eni-rtb
+					MC.canvas.display(group.id,'port-eni-attach',false);//hide port port-eni-attach
+					break;
 				case 'default-vpc':
-					MC.canvas.display(group.id,'_eni_rtb',false);//hide port eni_rtb
+					MC.canvas.display(group.id,'port-eni-rtb',false);//hide port port-eni-rtb
 					break;
 				case 'custom-vpc':
 				case 'ec2-vpc':

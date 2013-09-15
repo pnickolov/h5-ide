@@ -31,7 +31,7 @@ require.config {
 		#############################################
 		# vender
 		#############################################
-		'jquery'             : 'vender/jquery/jquery'
+		'jquery'             : [ '//code.jquery.com/jquery-2.0.3.min', 'vender/jquery/jquery' ]
 		'canvon'             : 'vender/canvon/canvon'
 
 		'underscore'         : 'vender/underscore/underscore'

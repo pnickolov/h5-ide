@@ -17,7 +17,7 @@ require.config {
 		'main'            : 'js/login/main'
 
 		#vender
-		'jquery'          : [ 'http://code.jquery.com/jquery-2.0.3.min', 'vender/jquery/jquery' ]
+		'jquery'          : [ '//code.jquery.com/jquery-2.0.3.min', 'vender/jquery/jquery' ]
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'

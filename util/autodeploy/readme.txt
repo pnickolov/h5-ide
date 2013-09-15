@@ -57,8 +57,11 @@ mkdir -p /home/ec2-user/ide
 chown ec2-user:ec2-user /home/ec2-user/ide -R
 mkdir -p /opt/release/live/ide_h5
 
+2.3 add to crontab
+*/1 * * * * su - root -c "/home/ec2-user/ide/transfer.sh 1 > /dev/null 2>&1"
+*/1 * * * * su - root -c "/home/ec2-user/ide/transfer.sh 2 > /dev/null 2>&1"
 
-2.2 deploy check.sh to live
+2.4 deploy check.sh to live
 
 useradd ec2-user
 mkdir -p /home/ec2-user/ide
@@ -67,4 +70,9 @@ chown ec2-user:ec2-user /home/ec2-user/ide -R
 mkdir -p /madeira/site/ide_h5/temp
 chown ec2-user:ec2-user /madeira/site/ide_h5/temp -R
 
+2.5 add to crontab
+*/1 * * * * su - root -c "/home/ec2-user/ide/check.sh > /dev/null 2>&1"
+
+2.6 deploy from local
 ./util/autodeploy/deploy-live.sh
+

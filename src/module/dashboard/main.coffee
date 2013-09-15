@@ -86,8 +86,8 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                 if Helper.hasCredential()
-                    model.describeAWSResourcesService()
                     view.enableSwitchRegion()
+                    view.reloadResource()
                 else    # set aws credential
                     view.disableSwitchRegion()
                     view.showCredential()

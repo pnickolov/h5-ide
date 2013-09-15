@@ -2718,7 +2718,7 @@ td.table-action a.btn {
 	height: 100%;
 }
 
-#modal-browse-community-ami .show-loading .loading {
+#modal-browse-community-ami .show-loading .loading-bar {
 	position: absolute;
 	top: 50%;
 	left: 50%;

@@ -2,7 +2,9 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event',
+         'i18n!nls/lang.js',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
 
     current_region = null
 
@@ -252,17 +254,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         clickRegionResourceThumbnail : (event) ->
             console.log 'click app/stack thumbnail'
 
-            item_info   = $(event.currentTarget).next('.region-resource-info')[0]
-            id          = $(item_info).find('.modal')[0].id
-            name        = $($(item_info).find('.region-resource-item-name')[0]).text()
-
-            ##check params:region, id, name
-
-            if id.indexOf('app-') is 0
-                ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            # check whether pending
+            if $(event.currentTarget).children('.app-thumbnail-pending').length > 0
+                notification 'warning', lang.ide.REG_MSG_WARN_APP_PENDING
 
             else
-                ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                item_info   = $(event.currentTarget).next('.region-resource-info')[0]
+                id          = $(item_info).find('.modal')[0].id
+                name        = $($(item_info).find('.region-resource-item-name')[0]).text()
+
+                ##check params:region, id, name
+                if id.indexOf('app-') is 0
+                    ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+
+                else if id.indexOf('stack-') is 0
+                    ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
 
             null
 

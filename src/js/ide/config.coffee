@@ -125,10 +125,24 @@ require.config {
 		'header_model'       : 'module/header/model'
 
 		'navigation'         : 'module/navigation/main'
+		'navigation_view'    : 'module/navigation/view'
+		'navigation_model'   : 'module/navigation/model'
+
 		'tabbar'             : 'module/tabbar/main'
+		'tabbar_view'        : 'module/tabbar/view'
+		'tabbar_model'       : 'module/tabbar/model'
+
 		'dashboard'          : 'module/dashboard/main'
-		'design'             : 'module/design/main'
+		'dashboard_view'     : 'module/dashboard/overview/view'
+		'dashboard_model'    : 'module/dashboard/overview/model'
+
 		'process'            : 'module/process/main'
+		'process_view'       : 'module/process/view'
+		'process_model'      : 'module/process/model'
+
+		'design'             : 'module/design/main'
+		'design_view'        : 'module/design/view'
+		'design_model'       : 'module/design/model'
 
 		#sub module with design
 		'resource'           : 'module/design/resource/main'
@@ -248,7 +262,7 @@ require.config {
 		#############################################
 
 		'MC'           :
-			deps       : [ 'jquery','sprintf' ]
+			deps       : [ 'jquery', 'underscore', 'backbone', 'handlebars', 'sprintf' ]
 			exports    : 'MC'
 
 		'MC.validate'  :
@@ -368,6 +382,21 @@ require.config {
 
 		'header'       :
 			deps       : [ 'header_view', 'header_model', 'MC' ]
+
+		'navigation'   :
+			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
+
+		'tabbar'       :
+			deps       : [ 'tabbar_view', 'tabbar_model', 'MC' ]
+
+		'dashboard'    :
+			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
+
+		'process'      :
+			deps       : [ 'process_view', 'process_model', 'MC' ]
+
+		'design'       :
+			deps       : [ 'design_view', 'design_model', 'MC' ]
 
 }
 

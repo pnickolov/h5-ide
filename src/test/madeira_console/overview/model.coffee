@@ -699,6 +699,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 
+            console.log '==============================='
+
+            console.log resources
+
+            console.log '==============================='
+
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
 

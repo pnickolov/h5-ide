@@ -413,6 +413,9 @@
                                                 {{ host }}
                                                 <span class="resource-id">( {{ instanceId }} )</span>
                                             </div>
+                                            {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                            {{/if}}
                                         </td>
                                         <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
                                         <td>{{ launchTime }}</td>
@@ -458,6 +461,9 @@
                                 <tr>
                                     <td>
                                         {{ publicIp }}
+                                        {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                        {{/if}}
                                     </td>
                                     <td>{{ instanceId }}</td>
                                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
@@ -519,6 +525,9 @@
                                         <div>
                                         {{ volumeId }}
                                         </div>
+                                        {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                        {{/if}}
                                     </td>
                                     <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
                                     <td>{{ createTime }}</td>
@@ -581,6 +590,9 @@
                                         <div>
                                         {{ vpcId }}
                                         </div>
+                                        {{#if tagSet}}
+                                            <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                        {{/if}}
                                     </td>
                                     <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
                                     <td>{{ cidrBlock }}</td>
@@ -647,6 +659,9 @@
                                             <div>
                                                 {{ vpnConnectionId }}
                                             </div>
+                                            {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                            {{/if}}
                                         </td>
                                         <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
                                         <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
@@ -694,7 +709,11 @@
 
                                 {{#each DescribeLoadBalancers }}
                                     <tr>
-                                        <td>{{ DNSName }}</td>
+                                        <td>
+                                            {{ DNSName }}
+                                            {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                            {{/if}}</td>
                                         <td>{{ CreatedTime }}</td>
                                         <td>{{ AvailabilityZones.member }}</td>
                                         <td>{{ state }}</td>
@@ -753,6 +772,9 @@
                                             <div>
                                                 {{AutoScalingGroupName}}
                                             </div>
+                                            {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                            {{/if}}
                                         </td>
                                         <td>{{last_activity}}</td>
                                         <td>{{activity_state}}</td>
@@ -801,6 +823,9 @@
                                     <tr>
                                         <td>
                                         {{AlarmName}}
+                                        {{#if tagSet}}
+                                            <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                        {{/if}}
                                         </td>
                                         <td>{{dimension_display}}</td>
                                         <td>{{threshold_display}}</td>
@@ -847,6 +872,9 @@
                                 {{#each ListSubscriptions}}
                                     <tr>
                                         <td>{{topic}}
+                                            {{#if tagSet}}
+                                                <div>Owner: {{tagSet.[Created by]}}, Name: {{tagSet.Name}}</div>
+                                            {{/if}}
                                         </td>
                                         <td>{{Protocol}}: {{Endpoint}}</td>
                                         <td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>

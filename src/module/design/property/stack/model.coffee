@@ -42,16 +42,22 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             me.getNetworkACL()
 
         getStackType : ->
-            type = MC.canvas_data.platform
 
-            if type == 'ec2-classic'
-                return 'EC2 Classic'
-            else if type == 'ec2-vpc'
-                return 'EC2 VPC'
-            else if type == 'default-vpc|custom-vpc'
-                return 'Default VPC'
-            else if type == 'custom-vpc'
-                return 'Custom VPC'
+            type = ''
+
+            switch MC.canvas_data.platform
+
+                when 'ec2-classic'  then type = 'EC2 Classic'
+
+                when 'ec2-vpc'      then type = 'EC2 VPC'
+
+                when 'default-vpc'  then type = 'Default VPC'
+
+                when 'custom-vpc'   then type = 'Custom VPC'
+
+            #return
+            type
+
 
         getSGList : ->
 

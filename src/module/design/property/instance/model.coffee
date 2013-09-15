@@ -5,13 +5,13 @@
 define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event, lang ) ->
 
 	EbsMap =
-				"m1.large"   : true
-				"m1.xlarge"  : true
-				"m2.2xlarge" : true
-				"m2.4xlarge" : true
-				"m3.xlarge"  : true
-				"m3.2xlarge" : true
-				"c1.xlarge"  : true
+		"m1.large"   : true
+		"m1.xlarge"  : true
+		"m2.2xlarge" : true
+		"m2.4xlarge" : true
+		"m3.xlarge"  : true
+		"m3.2xlarge" : true
+		"c1.xlarge"  : true
 
 	InstanceModel = Backbone.Model.extend {
 

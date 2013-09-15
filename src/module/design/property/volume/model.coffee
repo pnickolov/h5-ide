@@ -66,13 +66,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             # Snapshot
             if volume_detail.snapshot_id
                 snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
-
-                for item in snapshot_list.item
-                    if item.snapshotId is volume_detail.snapshot_id
-                        volume_detail.snapshot_size = item.volumeSize
-                        volume_detail.snapshot_desc = item.description
-                        volume_detail.snapshot = JSON.stringify item
-                        break
+                if snapshot_list and snapshot_list.item
+                    for item in snapshot_list.item
+                        if item.snapshotId is volume_detail.snapshot_id
+                            volume_detail.snapshot_size = item.volumeSize
+                            volume_detail.snapshot_desc = item.description
+                            volume_detail.snapshot = JSON.stringify item
+                            break
 
             if volume_detail.volume_size < 10
                 volume_detail.iopsDisabled = true
@@ -107,7 +107,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     MC.canvas.update uid, 'text', "volume_name", block.DeviceName
                     MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
-                    @attributes.volume_detail.name = block.DeviceName
+                    @attributes.volume_detail.name     = block.DeviceName
+                    @attributes.volume_detail.editName = name
 
                     @set 'uid', newId
 
@@ -219,6 +220,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
+
+                # First, test if the newly created name is not changed
+                # Because parsely might fires event even if the name is not changed.
+                if @attributes.volume_detail.editName is name
+                    return false
 
                 for block in MC.canvas_data.component[realuid].resource.BlockDeviceMapping
 

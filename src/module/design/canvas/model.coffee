@@ -857,6 +857,14 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 						return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
 		deleteR_Subnet : ( component ) ->
+
+			# Delete All Associated ACL
+			_.each MC.canvas_data.component, (compObj) ->
+				compType = compObj.type
+				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
+				null
+
 			# Delete route table connection
 			for key, value of MC.canvas_data.component
 				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -872,13 +880,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 					if i.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AssociationSet.splice index, 1
 						return
-
-			# Delete All Associated ACL
-			_.each MC.canvas_data.component, (compObj) ->
-				compType = compObj.type
-				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
-				null
 
 			null
 

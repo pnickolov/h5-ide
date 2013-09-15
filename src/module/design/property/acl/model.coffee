@@ -32,7 +32,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             associationsAry = []
             _.each aclObj.resource.AssociationSet, (value, key) ->
                 subnetInfo = that.getSubnetInfo(value)
-                associationsAry.push(subnetInfo)
+                if subnetInfo
+                    associationsAry.push(subnetInfo)
                 null
 
             this.set 'associations', associationsAry
@@ -104,6 +105,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             subnetUID = associationObj.SubnetId
             subnetUID = subnetUID.slice(1).split('.')[0]
             subnetComp = MC.canvas_data.component[subnetUID]
+            if !subnetComp then return null
             return {
                 subnet_name: subnetComp.name,
                 subnet_cidr: subnetComp.resource.CidrBlock

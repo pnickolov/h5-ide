@@ -151,6 +151,9 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 view.displayLoadTime()
                 model.describeAWSResourcesService region
 
+                ide_event.trigger ide_event.UPDATE_STACK_LIST
+                ide_event.trigger ide_event.UPDATE_APP_LIST
+
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )
 

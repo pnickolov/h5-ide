@@ -232,6 +232,10 @@ define({
 		'PROC_STEP_REQUEST'          : 'Processing',
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		/****** region module *****/
+		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',
+		// Add new strings below this comment. Move above once English has been confirmed
+
 		/****** miscellaneous ******/
 		'CFM_BTN_DELETE'   : 'Delete',
 		'CFM_BTN_CANCEL'   : 'Cancel',

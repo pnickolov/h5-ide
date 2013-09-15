@@ -1,8 +1,8 @@
 require [ 'jquery', 'domReady', 'MC',
-    'text!./test/madeira_console/region/template.html',
-    'text!./test/madeira_console/region/template_data.html',
-    'event', 'constant', 'session_model', 'MC.ide.template', 'UI.scrollbar'
-], ( $, domReady, MC, region_tmpl, region_tmpl_data, ide_event, constant, session_model ) ->
+    'text!./test/madeira_console/overview/template.html',
+    'text!./test/madeira_console/overview/template_data.html',
+    'event', 'constant', 'session_model', 'base_main', 'MC.ide.template', 'UI.scrollbar'
+], ( $, domReady, MC, overview_tmpl, overview_tmpl_data, ide_event, constant, session_model, base_main ) ->
 
 
     #private
@@ -33,6 +33,7 @@ require [ 'jquery', 'domReady', 'MC',
 
         MC.data.region_keys = {}
 
+        _.extend this, base_main
 
 
     #private
@@ -76,6 +77,8 @@ require [ 'jquery', 'domReady', 'MC',
                 #load
                 loadModule()
 
+                showLogined()
+
                 return true
 
             else
@@ -87,163 +90,176 @@ require [ 'jquery', 'domReady', 'MC',
 
                 return false
 
+    showLogined = ->
+        $( '#login-state').html 'Login Succeed.'
 
     #private
     loadModule = () ->
 
-        MC.IDEcompile 'region', region_tmpl_data, {'.resource-tables': 'region-resource-tables-tmpl', '.unmanaged-resource-tables': 'region-unmanaged-resource-tables-tmpl', '.aws-status': 'aws-status-tmpl', '.vpc-attrs': 'vpc-attrs-tmpl', '.stat-app-count' : 'stat-app-count-tmpl', '.stat-stack-count' : 'stat-stack-count-tmpl', '.stat-app' : 'stat-app-tmpl', '.stat-stack' : 'stat-stack-tmpl' }
+        MC.IDEcompile 'overview', overview_tmpl_data,
+            '.overview-result' : 'overview-result-tmpl'
+            '.global-list' : 'global-list-tmpl'
+            '.region-app-stack' : 'region-app-stack-tmpl'
+            '.region-resource' : 'region-resource-tmpl'
+            '.recent' : 'recent-tmpl'
+            '.loading': 'loading-tmpl'
 
-
-        console.log 'load madeira_console'
-        #set MC.data.dashboard_type
-
-        current_region = 'ap-northeast-1'
-
-        #load remote ./module/dashboard/region/view.js
-        require [ '/test/madeira_console/region/view.js', '/test/madeira_console/region/model.js', 'UI.tooltip', 'UI.bubble', 'UI.modal', 'UI.table', 'UI.tablist' ], ( View, model ) ->
-
-            console.log '------------ region view load ------------ '
-
+        #set MC.data.dashboard_type default
+        MC.data.dashboard_type = 'OVERVIEW_TAB'
+        #load remote ./module/dashboard/overview/view.js
+        require [ '/test/madeira_console/overview/view.js', '/test/madeira_console/overview/model.js', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
+            region_view = null
             #view
-            region_view        = new View()
-            region_view.model  = model
-            region_view.region = current_region
-            region_view.render region_tmpl
+            #view       = new View()
 
-            model.on 'change:vpc_attrs', () ->
-                console.log 'dashboard_change:vpc_attrs'
-                #model.get 'vpc_attrs'
-                region_view.renderVPCAttrs()
+            view = loadSuperModule loadModule, 'dashboard', View, null
+            return if !view
 
-            model.on 'change:unmanaged_list', () ->
-                console.log 'dashboard_change:unmanaged_list'
-                unmanaged_list = model.get 'unmanaged_list'
-                region_view.renderUnmanagedRegionResource( unmanaged_list.time_stamp )
+            view.model = model
+            view.render overview_tmpl
 
-                null
+            #push DASHBOARD_COMPLETE
+            ide_event.trigger ide_event.DASHBOARD_COMPLETE
 
-            model.on 'change:status_list', () ->
-                console.log 'dashboard_change:status_list'
-                unmanaged_list = model.get 'status_list'
-                region_view.renderAWSStatus()
-
-                null
-
-            #listen
-            model.on 'change:cur_app_list', () ->
-                console.log 'dashboard_region_change:cur_app_list'
-                #model.get 'cur_app_list'
-                region_view.renderRegionStatApp()
-
-            model.on 'change:cur_stack_list', () ->
-                console.log 'dashboard_region_change:cur_stack_list'
-                #model.get 'cur_stack_list'
-                region_view.renderRegionStatStack()
-                region_view.checkCreateStack MC.data.supported_platforms
-
-            model.on 'change:region_resource_list', () ->
-                console.log 'dashboard_region_resource_list'
+            model.on 'change:result_list', () ->
+                console.log 'dashboard_change:result_list'
+                should_update_overview = true
                 #refresh view
-                #region_view.renderRegionResource()
+                view.renderMapResult()
 
-            describeAWSResourcesService = () ->
-
-                $('#progress_bar').css('width',Math.round( (8 - MC.data.region_keys.length)/constant.REGION_KEYS.length*100,0 ) + "%" )
-
-                $('#progress_num').text (8 - MC.data.region_keys.length)
-
-                region_key = MC.data.region_keys.splice 0,1
-                if region_key.length == 1
-
-                    $('#progress_title').text 'Loading AWS Resources in region: ' + region_key[0]
-                    model.describeAWSResourcesService region_key[0]
+            model.on 'change:region_classic_list', () ->
+                console.log 'dashboard_region_classic_list'
+                #set MC.data.supported_platforms
+                MC.data.supported_platforms = model.get 'region_classic_list'
+                #refresh view
+                if MC.data.supported_platforms.length <= 0
                 else
+                    MC.data.is_loading_complete = true
+                    ide_event.trigger ide_event.SWITCH_MAIN
 
-                    region_view.renderRegionResource()
-                    $('#progress_wrap').attr 'display', 'none'
-                    $('#progress_title').text 'Finish Loading AWS Resource.'
+                view.displayLoadTime()
 
-            ide_event.onLongListen 'AWS_RESOURCE_CHANGE', ( result ) ->
+            model.on 'change:recent_edited_stacks', () ->
+                console.log 'dashboard_change:recent_eidted_stacks'
+                #model.get 'recent_edited_stacks'
+                view.renderRecent()
 
-                describeAWSResourcesService()
+            model.on 'change:recent_launched_apps', () ->
+                console.log 'dashboard_change:recent_launched_apps'
+                #model.get 'recent_launched_apps'
+                view.renderRecent()
 
-            model.on 'change:region_resource', () ->
-                console.log 'dashboard_region_resources'
+            # global view
+            model.on 'change:global_list', () ->
+                view.renderGlobalList()
 
-                #refresh view
+            # region view
+            model.on 'change:cur_region_resource', () ->
+                view.renderRegionResource()
 
-                #setTimeout describeAWSResourcesService, 1000
+            ide_event.onLongListen ide_event.SWITCH_MAIN, () ->
+                if MC.data.supported_platforms and MC.data.supported_platforms.length
+                    model.set 'supported_platforms', true
+                    view.enableCreateStack()
 
+            # update aws credential
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+                console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
+                if MC.forge.cookie.getCookieByName('has_cred') is 'true'   # update aws resource
+                    model.describeAWSResourcesService()
+                else    # set aws credential
+                    require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
-            model.on 'REGION_RESOURCE_CHANGED', ()->
-                console.log 'region resource table render'
-                region_view.renderRegionResource()
+            ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
+                console.log 'UPDATE_DASHBOARD'
+                view.reloadResource() if view
 
-            region_view.on 'RETURN_OVERVIEW_TAB', () ->
-                #set MC.data.dashboard_type
-                MC.data.dashboard_type = 'OVERVIEW_TAB'
-                #push event
-                ide_event.trigger ide_event.RETURN_OVERVIEW_TAB, null
-                return
+            model.describeAWSResourcesService()
 
-            region_view.on 'RUN_APP_CLICK', (app_id) ->
-                console.log 'dashboard_region_click:run_app'
-                # call service
-                model.runApp(current_region, app_id)
-            region_view.on 'STOP_APP_CLICK', (app_id) ->
-                console.log 'dashboard_region_click:stop_app'
-                model.stopApp(current_region, app_id)
-            region_view.on 'TERMINATE_APP_CLICK', (app_id) ->
-                console.log 'dashboard_region_click:terminate_app'
-                model.terminateApp(current_region, app_id)
-            region_view.on 'DUPLICATE_STACK_CLICK', (stack_id, new_name) ->
-                console.log 'dashboard_region_click:duplicate_stack'
-                model.duplicateStack(current_region, stack_id, new_name)
-            region_view.on 'DELETE_STACK_CLICK', (stack_id) ->
-                console.log 'dashboard_region_click:delete_stack'
-                model.deleteStack(current_region, stack_id)
-            region_view.on 'UPDATE_REGION_RESOURCE', () ->
-                model.describeAWSResourcesService current_region
+            #model
+            #model.describeAccountAttributesService()
 
-
-            MC.data.resources = {}
-            MC.data.resources.Not_Used = { 'EIP' : 0, 'Volume' : 0 }
-
-            $('#progress_wrap').attr 'display', 'inline'
-            $('#progress_total').text constant.REGION_KEYS.length
-
-            MC.data.region_keys = $.extend true, [], constant.REGION_KEYS
-
-            describeAWSResourcesService()
-
-
-            #model.describeRegionAccountAttributesService current_region
-            #model.describeAWSStatusService current_region
-            #model.getItemList 'app', current_region, overview_app
-            #model.getItemList 'stack', current_region, overview_stack
+            #model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
-
                 overview_app = result
+                model.describeAWSResourcesService()
 
-                console.log 'RESULT_APP_LIST'
-
-                should_update_overview = true
-
+                model.updateMap model, overview_app, overview_stack
+                model.updateRecentList( model, result, 'recent_launched_apps' )
+                view.renderMapResult()
                 model.getItemList 'app', current_region, overview_app
 
                 null
 
             ide_event.onLongListen 'RESULT_STACK_LIST', ( result ) ->
+                console.log 'overview RESULT_STACK_LIST'
 
                 overview_stack = result
 
-                console.log 'RESULT_STACK_LIST'
+                model.updateMap model, overview_app, overview_stack
+                model.updateRecentList( model, result, 'recent_edited_stacks' )
+                view.renderMapResult()
 
                 model.getItemList 'stack', current_region, overview_stack
 
                 null
+
+            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, ( result ) ->
+                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+                if result is 'global'
+                    ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
+                else
+                    view.trigger 'RETURN_REGION_TAB', result
+                null
+
+            # switch region tab
+            view.on 'SWITCH_REGION', ( region ) ->
+                current_region = region
+                model.loadResource region
+                #model.describeAWSStatusService region
+                @model.getItemList 'app', region, overview_app
+                @model.getItemList 'stack', region, overview_stack
+
+            # reload resource
+            view.on 'RELOAD_RESOURCE', ( region ) ->
+                view.displayLoadTime()
+                model.describeAWSResourcesService region
+
+            model.on 'change:cur_app_list', () ->
+                view.renderRegionAppStack( 'app' )
+
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region, id ) ->
+                model.describeAWSResourcesService region
+
+            model.on 'UPDATE_REGION_APP_LIST', () ->
+                view.renderRegionAppStack( 'app' )
+
+            model.on 'change:cur_stack_list', () ->
+                view.renderRegionAppStack( 'stack' )
+
+            model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
+                console.log 'region resource table render'
+                view.reRenderRegionPartial( type, data )
+
+            # update region thumbnail
+            ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
+                console.log 'UPDATE_REGION_THUMBNAIL'
+
+                view.updateThumbnail url
+
+                null
+
+            #update region app state when pending
+            ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
+                console.log 'UPDATE_TAB_ICON'
+
+                model.updateAppList flag, app_id
+
+                null
+
+
 
 
 
@@ -253,7 +269,7 @@ require [ 'jquery', 'domReady', 'MC',
         init()
 
 
-        $('#progress_wrap').attr 'display', 'none'
+        $('#progress_wrap').hide()
 
         $( '#login-btn' ).removeAttr 'disabled'
         $( '#login-btn' ).addClass 'enabled'

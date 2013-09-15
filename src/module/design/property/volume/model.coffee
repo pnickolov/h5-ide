@@ -66,13 +66,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             # Snapshot
             if volume_detail.snapshot_id
                 snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
-
-                for item in snapshot_list.item
-                    if item.snapshotId is volume_detail.snapshot_id
-                        volume_detail.snapshot_size = item.volumeSize
-                        volume_detail.snapshot_desc = item.description
-                        volume_detail.snapshot = JSON.stringify item
-                        break
+                if snapshot_list and snapshot_list.item
+                    for item in snapshot_list.item
+                        if item.snapshotId is volume_detail.snapshot_id
+                            volume_detail.snapshot_size = item.volumeSize
+                            volume_detail.snapshot_desc = item.description
+                            volume_detail.snapshot = JSON.stringify item
+                            break
 
             if volume_detail.volume_size < 10
                 volume_detail.iopsDisabled = true

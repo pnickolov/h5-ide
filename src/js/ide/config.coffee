@@ -119,7 +119,11 @@ require.config {
 		# module
 		#############################################
 		'base_main'          : 'module/base/base_main'
+
 		'header'             : 'module/header/main'
+		'header_view'        : 'module/header/view'
+		'header_model'       : 'module/header/model'
+
 		'navigation'         : 'module/navigation/main'
 		'tabbar'             : 'module/tabbar/main'
 		'dashboard'          : 'module/dashboard/main'
@@ -357,6 +361,13 @@ require.config {
 
 		'canvas_layout':
 			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
+
+		#############################################
+		# modules
+		#############################################
+
+		'header'       :
+			deps       : [ 'header_view', 'header_model', 'MC' ]
 
 }
 

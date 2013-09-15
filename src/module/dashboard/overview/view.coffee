@@ -17,6 +17,7 @@ define [ 'event', 'i18n!nls/lang.js',
         '.region-resource'  : 'region-resource-tmpl'
         '.recent'           : 'recent-tmpl'
         '.loading'          : 'loading-tmpl'
+        '.loading-failed'   : 'loading-failed-tmpl'
 
     ### helper ###
     Helper =
@@ -56,6 +57,9 @@ define [ 'event', 'i18n!nls/lang.js',
             scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
+
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
@@ -66,6 +70,8 @@ define [ 'event', 'i18n!nls/lang.js',
         region_resource : Handlebars.compile $( '#region-resource-tmpl' ).html()
         recent          : Handlebars.compile $( '#recent-tmpl' ).html()
         loading         : $( '#loading-tmpl' ).html()
+        loading_failed  : $( '#loading-failed-tmpl' ).html()
+
 
         events          :
             'click #global-region-spot > li'            : 'gotoRegion'
@@ -78,6 +84,7 @@ define [ 'event', 'i18n!nls/lang.js',
             'click #region-aws-resource-tab a'          : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
+            'click .aws-loading-faild a'                : 'showCredential'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
             'click #DescribeInstances .table-app-link'  : 'openApp'
@@ -95,12 +102,18 @@ define [ 'event', 'i18n!nls/lang.js',
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
         reloadResource: ->
-            @status.reloading = true
-            @showLoading '#global-view, #region-resource-wrap'
-            @trigger 'RELOAD_RESOURCE'
+            if Helper.hasCredential()
+                @status.reloading = true
+                @showLoading '#global-view, #region-resource-wrap'
+                @trigger 'RELOAD_RESOURCE'
+            else
+                @showCredential()
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
+
+        showLoadingFaild: ( selector ) ->
+            @$el.find( selector ).html @loading_failed
 
         switchRegion: ( event ) ->
             target = $ event.currentTarget
@@ -143,6 +156,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
 
         renderGlobalList: ( event ) ->
+            @enableSwitchRegion()
             if @status.reloading
                 notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
                 @status.reloading = false
@@ -194,12 +208,25 @@ define [ 'event', 'i18n!nls/lang.js',
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
 
+        renderLoadingFaild: ->
+            @showLoadingFaild '#global-view, #region-resource-wrap'
+
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
             $topButton = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
             $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+
+        enableSwitchRegion: ->
+            $( '#region-switch' )
+                .removeClass('disabled')
+                .addClass('js-toggle-dropdown')
+
+        disableSwitchRegion: ->
+            $( '#region-switch' )
+                .addClass('disabled')
+                .removeClass('js-toggle-dropdown')
 
         createStack: ( event ) ->
             $target = $ event.currentTarget
@@ -233,6 +260,11 @@ define [ 'event', 'i18n!nls/lang.js',
             name = $target.data 'name'
             id = $target.data 'id'
             ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+
+        showCredential: ( event ) ->
+            if event
+                event.preventDefault()
+            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
         ############################################################################################
 

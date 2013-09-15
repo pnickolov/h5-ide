@@ -2,7 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery', 'event', 'MC', 'base_main' ], ( $, ide_event, MC, base_main ) ->
+define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC, base_main, vpc_model ) ->
 
     current_region = null
     overview_app    = null
@@ -13,6 +13,10 @@ define [ 'jquery', 'event', 'MC', 'base_main' ], ( $, ide_event, MC, base_main )
     initialize = ->
         #extend parent
         _.extend this, base_main
+
+    Helper =
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
     initialize()
 
@@ -81,10 +85,17 @@ define [ 'jquery', 'event', 'MC', 'base_main' ], ( $, ide_event, MC, base_main )
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if MC.forge.cookie.getCookieByName('has_cred') is 'true'   # update aws resource
+                if Helper.hasCredential()
                     model.describeAWSResourcesService()
+                    view.enableSwitchRegion()
                 else    # set aws credential
-                    require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+                    view.disableSwitchRegion()
+                    view.showCredential()
+                    view.renderLoadingFaild()
+
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
+                if Helper.hasCredential()
+                    view.enableSwitchRegion()
 
             ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
                 console.log 'UPDATE_DASHBOARD'

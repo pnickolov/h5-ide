@@ -6386,7 +6386,7 @@ a.action-link:hover {
 	-ms-transform: rotate(90deg);
 	-o-transform: rotate(90deg);
 	transform: rotate(90deg);
-	z-index: 99;
+	z-index: 70;
 }
 
 #Intercom:hover {

@@ -29,7 +29,7 @@ require.config {
 
 		#core lib
 		'MC'                 : 'lib/MC.core'
-		'MC.template'        : 'lib/MC.template'
+		'MC.template'        : 'test/madeira_console/lib/MC.template'
 		'MC.ide.template'    : 'lib/MC.ide.template'
 		'MC.validate'  	     : 'lib/MC.validate'
 
@@ -37,6 +37,12 @@ require.config {
 		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
 		'MC.canvas.add'      : 'lib/MC.canvas.add'
+
+		#############################################
+		# lib/aws logic handler
+		#############################################
+		'aws_handle'         : 'lib/aws/main'
+		'forge_handle'       : 'lib/forge/main'
 
 		#ui
 		'UI.tooltip'        : 'ui/common/UI.tooltip'
@@ -100,6 +106,7 @@ require.config {
 
 		#base_model
 		'base_model'             : 'model/base_model'
+		'base_main'              : 'test/madeira_console/lib/base_main'
 
 		#model
 		'session_model'   : 'model/session_model'

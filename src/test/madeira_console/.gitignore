@@ -1,1 +1,2 @@
 *.js
+!lib/MC.template.js

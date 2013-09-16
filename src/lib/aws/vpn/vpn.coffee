@@ -24,7 +24,8 @@ define [ 'jquery', 'MC' ], ( $, MC ) ->
 				break
 
 	generateDownload = ( configs, vpn_data ) ->
-
+		if not vpn_data.customerGatewayConfiguration
+			return ""
 		vpn_data = $.xml2json $.parseXML vpn_data.customerGatewayConfiguration
 
 		if not vpn_data

@@ -38,8 +38,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
                     else if type is 'OPEN_STACK' or type is 'OPEN_APP'
 
                         #compact components
-                        if type is 'OPEN_STACK'
-                            MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+                        MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
 
                         MC.canvas.layout.init()
                         model.initLine()

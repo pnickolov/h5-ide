@@ -20,7 +20,8 @@ define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, acco
                 console.log 'ACCOUNT_CHECK__REPEAT_RETURN'
                 console.log forge_result
                 if !forge_result.is_error
-                    @registerService username, email, password
+                    if forge_result.param[1] and forge_result.param[2]
+                        @registerService username, email, password
                 else
                     switch forge_result.error_message
                         when 'username'
@@ -51,7 +52,7 @@ define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, acco
                     #set madeiracloud_ide_session_id
                     forge_handle.cookie.setIDECookie result
                     #
-                    $.cookie 'new_account', 0, { expires:1, path: '/'  }
+                    #$.cookie 'new_account', 0, { expires:1, path: '/'  }
                     #
                     window.location.href = 'register.html#success'
                 else

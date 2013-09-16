@@ -39,7 +39,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                     #
                     window.location.href = 'reset.html#success'
                 else
-                    #
+                    this.trigger 'PASSWORD_INVAILD'
                 null
 
     }

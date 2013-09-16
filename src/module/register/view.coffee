@@ -15,7 +15,9 @@ define [ 'event',
 
         events       :
             'keyup #register-username' : 'verificationUser'
+            'blur  #register-username' : 'verificationUser'
             'keyup #register-email'    : 'verificationEmail'
+            'blur  #register-email'    : 'verificationEmail'
             'keyup #register-password' : 'verificationPassword'
             'submit #register-form'    : 'submit'
             'click #register-get-start': 'loginEvent'
@@ -39,6 +41,13 @@ define [ 'event',
             value  = $('#register-username').val()
             status = $('#username-verification-status')
             status.removeClass 'error-status'
+
+            #check vaild
+            if event.type is 'blur'
+                this.trigger 'CHECK_REPEAT', value
+                return
+
+            #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
                   status.show().text 'This username is available.'
@@ -54,6 +63,13 @@ define [ 'event',
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
             status.removeClass 'error-status'
+
+            #check vaild
+            if event.type is 'blur'
+                this.trigger 'CHECK_REPEAT', null, value
+                return
+
+            #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text 'This email is available.'
                 true
@@ -92,6 +108,8 @@ define [ 'event',
             email    = $( '#register-email' ).val()
             password = $( '#register-password' ).val()
             #
+            $( '#register-btn' ).attr( 'disabled', true )
+            #
             if @verificationUser() and @verificationEmail() and @verificationPassword()
                 this.trigger 'CHECK_REPEAT', username, email, password
             else
@@ -100,11 +118,13 @@ define [ 'event',
 
         showUsernameError : ->
             console.log 'showUsernameError'
+            $( '#register-btn' ).attr( 'disabled', false )
             status = $('#username-verification-status')
             status.addClass( 'error-status' ).show().text 'Username is already taken. Please choose another.'
 
         showEmailError : ->
             console.log 'showEmailError'
+            $( '#register-btn' ).attr( 'disabled', false )
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'This email has already been used.'
 

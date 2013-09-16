@@ -41,11 +41,14 @@ define [ 'event',
 
         resetButtonEvent : ->
             console.log 'resetButtonEvent'
+            $('#email-verification-status').hide()
+            $( '#reset-btn' ).attr( 'disabled', true )
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
             false
 
         resetPasswordEvent : ->
             console.log 'resetPasswordEvent'
+            $( '#reset-password' ).attr( 'disabled', true )
             this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false
 
@@ -70,8 +73,16 @@ define [ 'event',
 
         showErrorMessage : ->
             console.log 'showErrorMessage'
+            $( '#reset-btn' ).attr( 'disabled', false )
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'The username or email address is not registered with MadeiraCloud.'
+            false
+
+        showPassowordErrorMessage : ->
+            console.log 'showPassowordErrorMessage'
+            $( '#reset-password' ).attr( 'disabled', false )
+            status = $('#password-verification-status')
+            status.addClass( 'error-status' ).show().text 'Password set error.'
             false
 
     }

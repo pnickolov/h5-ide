@@ -5,7 +5,7 @@ body {
 }
 
 #body {
-	background: #6799ca;
+	background: #C8CFD5;
 	color: #212021;
 /*	background-image: -webkit-linear-gradient(102deg, #6799ca, #dda8d2);
 	background-image: -moz-linear-gradient(102deg, #6799ca, #dda8d2);
@@ -127,7 +127,7 @@ header {
 }
 
 #login-box .account-input {
-	padding: 14px 5px 14px 55px;
+	padding: 14px 25px 14px 55px;
 	border: 1px solid #ccc;
 	width: 306px;
 }
@@ -224,7 +224,6 @@ header {
 #footer {
 	position: relative;
 	text-align: center;
-	color: #ccc;
 	font-size: 12px;
 }
 
@@ -279,4 +278,15 @@ header {
 	background: none;
 	color: #f8f8f8;
 	text-shadow: none;
+}
+
+
+footer {
+	width: 100%;
+	bottom: 0;
+	position: absolute;
+	color: #666;
+	text-align: center;
+	height: 80px;
+	font-size: 12px;
 }

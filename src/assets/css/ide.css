@@ -361,7 +361,7 @@ button:focus {
 #account-update-email-link {
 	float: right;
 	font-size: 12px;
-	color: #C36AB9;
+	color: #3781C9;
 }
 
 #account-update-email-link:hover,
@@ -386,7 +386,7 @@ button:focus {
 #account-change-password {
 	display: block;
 	margin: 10px 0 10px 1px;
-	color: #C36AB9;
+	color: #3781C9;
 }
 
 #account-password-update-btns {

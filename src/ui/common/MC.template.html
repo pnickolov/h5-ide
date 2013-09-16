@@ -803,15 +803,15 @@ Additional Notes and Questions
 		<div class="modal-control-group clearfix">
 		  <label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			<div class="selectbox" id="sg-add-model-source-select">
-				<div class="selection">Custom...</div>
+				<div class="selection">IP...</div>
 				<ul class="dropdown">
-					<li class="item selected" data-id="custom">Custom...</li>
+					<li class="item selected" data-id="custom">IP...</li>
 					{{#each sgList}}
 					<li class="item" data-id="sg" data-sg-uid="{{sgUID}}">{{sgName}}</li>
 					{{/each}}
 				</ul>
 		  </div>
-		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true">
+		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder="e.g., 192.168.2.0/24">
 		</div>
 
 

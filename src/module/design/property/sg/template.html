@@ -39,11 +39,11 @@
 			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="inbound">
 				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip icon-inbound' data-tooltip="Inbound"></div>
-					<div class='rule-reference'>{{ip_display}}</div>
+					<div class='rule-reference tooltip' data-tooltip="Source">{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
-					<div><span class="rule-protocol">{{protocol_display}}</span></div>
-					<div class='rule-port' title="port message">{{FromPort}}{{PartType}}{{ToPort}}</div>
+					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{protocol_display}}</span></div>
+					<div class='rule-port tooltip' data-tooltip="Port or Code" title="port message">{{FromPort}}{{PartType}}{{ToPort}}</div>
 				</div>
 				<div class='rule-remove-icon icon-remove tooltip' data-tooltip="Remove rule"></div>
 			</li>
@@ -52,7 +52,7 @@
 			<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="outbound">
 				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip="Outbound"></div>
-					<div class='rule-reference tooltip' data-tooltip="Source/Destination">{{ip_display}}</div>
+					<div class='rule-reference tooltip' data-tooltip="Destination">{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
 					<div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{protocol_display}}</span></div>

@@ -98,20 +98,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .attr( 'disabled', '' )
 
 
-        sizeChanged : ( event ) ->
-            volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
-            iopsValidate = true
-            volumeValidate = $( '#volume-size-ranged' ).parsley 'validate'
-            iopsEnabled = $( '#radio-iops' ).is ':checked'
-
-            if iopsEnabled
-                iopsValidate = $( '#iops-ranged' ).parsley 'validate'
-
-            if volumeValidate and iopsValidate
-                this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
-                if iopsEnabled
-                    this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
-
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'
 

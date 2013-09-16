@@ -4,8 +4,7 @@
 
 define [ 'MC', 'event', 'constant', 'vpc_model',
          'aws_model', 'app_model', 'stack_model', 'ami_service', 'elb_service', 'dhcp_service', 'vpngateway_service', 'customergateway_service',
-         'i18n!/nls/lang.js', 'forge_handle'
-], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, forge_handle ) ->
+         'i18n!/nls/lang.js', 'forge_handle', 'aws_handle'], ( MC, ide_event, constant, vpc_model, aws_model, app_model, stack_model, ami_service, elb_service, dhcp_service, vpngateway_service, customergateway_service, lang, forge_handle ) ->
 
     #private
     #region map
@@ -937,7 +936,54 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             parse_sub_info
 
-        # setResource method class
+        _parseTableValue : ( keyes_set, value_set )->
+            me                  = this
+            parse_table_result  = ''
+            table_date          = ''
+
+            detail_table =  [
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
+                    { "key": [ "status" ], "show_key": "Status"},
+                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                ]
+            table_set = value_set.vgwTelemetry
+            if table_set
+                table_set = table_set.item
+                if table_set
+                    parse_table_result = '{ "th_set":['
+                    _.map keyes_set, ( value, key ) ->
+                        if key isnt 0
+                            parse_table_result += ','
+                        parse_table_result += '"'
+                        parse_table_result += me._parseEmptyValue value.show_key
+                        parse_table_result += '"'
+                        null
+
+                    _.map table_set, ( value, key ) ->
+                        cur_key     = key
+                        cur_value   = key + 1
+                        parse_table_result += '], "tr'
+                        parse_table_result += cur_value
+                        parse_table_result += '_set":['
+                        _.map keyes_set, ( value, key ) ->
+                            if key isnt 0
+                                parse_table_result += ',"'
+                                parse_table_result += me._parseEmptyValue table_set[cur_key][value.key]
+                                parse_table_result += '"'
+                            else
+                                parse_table_result += '"'
+                                parse_table_result += me._parseEmptyValue value.count_name
+                                parse_table_result += cur_value
+                                parse_table_result += '"'
+                            null
+                        null
+                    parse_table_result += ']}'
+            parse_table_result
+
+        _parseEmptyValue : ( val )->
+            if val then val else ''
 
         vpcAccountAttrsReturnHandler: ( result ) ->
             me = @

@@ -70,15 +70,18 @@ define [ 'event',
 
             if not account_id
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCOUNT_ID
+
             else if not access_key
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCESS_KEY
+
             else if not secret_key
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SECRET_KEY
 
-            # show AWSCredentials-submiting
-            me.showSubmit()
+            else
+                # show AWSCredentials-submiting
+                me.showSubmit()
 
-            me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+                me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
 
         # show setting dialog
         showSet : (flag) ->

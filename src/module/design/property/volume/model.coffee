@@ -77,9 +77,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             if volume_detail.volume_size < 10
                 volume_detail.iopsDisabled = true
 
-            if volume_detail.volume_size < 10
-                volume_detail.iopsDisabled = true
-
             @set 'volume_detail', volume_detail
             @set 'uid', uid
             null

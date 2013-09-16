@@ -31,11 +31,7 @@ define [ 'jquery', 'event',
                 # show account setting tab
                 view.showSetting('account')
             else
-                # show credential setting tab
-                if $.cookie('new_account')
-                    view.showSetting('credential')
-                else
-                    view.showSetting('credential', 'is_failed')
+                view.showSetting('credential', 'is_failed')
 
             #
             view.on 'CLOSE_POPUP', () ->

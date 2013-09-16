@@ -6234,7 +6234,7 @@ a.action-link:hover {
 	background: #9C4F7F;
 	border: 1px solid #333;
 	border-bottom: none;
-	top: 254px;
+	top: 45%;
 	left: -38px;
 	text-align: center;
 	padding: 10px;
@@ -6248,10 +6248,20 @@ a.action-link:hover {
 	-o-transform: rotate(90deg);
 	transform: rotate(90deg);
 	z-index: 99;
+	line-height: 20px;
 }
 
 #Intercom:hover {
 	left: -34px;
 	color: #fff;
 	background: #b25291;
+}
+
+.icon-feedback {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	margin-bottom: -5px;
+	background: url('../images/ide/icon/icon-feedback.png') no-repeat;
 }

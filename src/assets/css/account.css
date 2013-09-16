@@ -11,6 +11,11 @@ body {
 	background-image: -moz-linear-gradient(102deg, #6799ca, #dda8d2);
 	background-image: -o-linear-gradient(102deg, #6799ca, #dda8d2);
 	background-image: linear-gradient(-12deg, #6799ca, #dda8d2);*/
+	background-image: -webkit-linear-gradient(102deg, #afcdeb, #e7cbdd);
+	background-image: -moz-linear-gradient(102deg, #afcdeb, #e7cbdd);
+	background-image: -o-linear-gradient(102deg, #afcdeb, #e7cbdd);
+	background-image: linear-gradient(-12deg, #afcdeb, #e7cbdd);
+
 }
 
 a {
@@ -92,18 +97,10 @@ header {
 
 .box-body {
 	padding: 10px 30px;
+	position: relative;
 }
 
-.error-msg {
-	padding: 10px 15px;
-	font-size: 14px;
-	border-radius: 4px;
-	color: #DF2A20;
-	background-color: rgba(255, 218, 216, 0.75);
-	border-bottom: 4px solid #E28884;
-	display: none;
-}
-
+.error-msg,
 .error-status {
  	padding: 10px 15px;
  	font-size: 14px;
@@ -111,7 +108,11 @@ header {
 
 	color: #DB4E47;
 	background-color: #FCE8E7;
-	border: 1px solid #DB4E47;
+	border: 1px solid #ea9696;
+}
+
+.error-msg {
+	display: none;
 }
 
 .error-msg.show{
@@ -156,11 +157,11 @@ header {
 }
 
 .control-group.error label {
-	color: #bc5b51 !important;
+	color: #DB4E47 !important;
 }
 
 .control-group.error .account-input {
-	border: 1px solid #bc5b51;
+	border: 1px solid #ea9696 !important;
 }
 
 #login-user {
@@ -269,6 +270,12 @@ header {
 
 #register-success-wrap {
 	padding-bottom: 25px;
+}
+
+/* Reset Password */
+
+#email-verification-status {
+	margin-bottom: 10px;
 }
 
 /* Selection */

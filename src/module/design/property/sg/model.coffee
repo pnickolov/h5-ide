@@ -195,16 +195,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
         setSGRule : ( uid, rule ) ->
 
             rules = null
+            existing = false
 
-            if rule.direction == 'radio_inbound'
-
+            if rule.direction == 'inbound'
                 rules = MC.canvas_data.component[uid].resource.IpPermissions
             else
                 rules = MC.canvas_data.component[uid].resource.IpPermissionsEgress
 
-            existing = false
-
-            _.map MC.canvas_data.component[uid].resource.IpPermissions, ( existing_rule ) ->
+            _.map rules, ( existing_rule ) ->
 
                 if existing_rule.ToPort == rule.toport and existing_rule.FromPort == rule.fromport and existing_rule.IpRanges == rule.ipranges and existing_rule.IpProtocol == rule.protocol
 
@@ -219,7 +217,11 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 tmp.FromPort = rule.fromport
                 tmp.IpRanges = rule.ipranges
                 tmp.IpProtocol = rule.protocol
-                MC.canvas_data.component[uid].resource.IpPermissions.push tmp
+
+                if rule.direction is 'inbound'
+                    MC.canvas_data.component[uid].resource.IpPermissions.push tmp
+                else
+                    MC.canvas_data.component[uid].resource.IpPermissionsEgress.push tmp
 
             null
 

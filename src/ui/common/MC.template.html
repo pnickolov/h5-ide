@@ -803,13 +803,15 @@ Additional Notes and Questions
 		<div class="modal-control-group clearfix">
 		  <label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			<div class="selectbox" id="sg-add-model-source-select">
-				<div class="selection">Custom</div>
+				<div class="selection">IP...</div>
 				<ul class="dropdown">
-					<li class="item selected" data-id="custom">Custom</li>
-					<li class="item" data-id="self">Self Reference</li>
+					<li class="item selected" data-id="custom">IP...</li>
+					{{#each sgList}}
+					<li class="item" data-id="sg" data-sg-uid="{{sgUID}}">{{sgName}}</li>
+					{{/each}}
 				</ul>
 		  </div>
-		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true">
+		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder="e.g., 192.168.2.0/24">
 		</div>
 
 
@@ -1073,7 +1075,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input" type="text" value="{{LoadBalancerPort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+			<input class="input elb-property-listener-elb-port-input tooltip" data-tooltip="25, 80, 443 or 1024 - 65535" type="text" value="{{LoadBalancerPort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 		</div>
 	</div>
 	<div class="property-control-group clearfix elb-property-listener-item">
@@ -1091,7 +1093,7 @@ Additional Notes and Questions
 		</div>
 		<div class="left elb-property-listener-item-2">
 			<label class="left">Port</label>
-			<input class="input elb-property-listener-instance-port-input" type="text" value="{{InstancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+			<input class="input elb-property-listener-instance-port-input tooltip" data-tooltip="1 - 65535" type="text" value="{{InstancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 		</div>
 	</div>
 </div>
@@ -1101,12 +1103,13 @@ Additional Notes and Questions
 	<div class="rule-list-row">
 		<div class='rule-direction-icon tooltip icon-{{rule.direction}}' data-tooltip="{{rule.direction}}"></div>
 		<div class='rule-reference'>{{rule.ipranges}}</div>
-		<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
+
 	</div>
 	<div class="rule-list-row">
 		<div><span class="rule-protocol">{{rule.protocol}}</span></div>
 		<div class='rule-port' title="port message">{{rule.fromport}}-{{rule.toport}}</div>
 	</div>
+	<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
 </li>
 
 <!-- asgList -->

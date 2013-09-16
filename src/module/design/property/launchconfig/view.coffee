@@ -25,7 +25,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-user-data'         : 'userdataChange'
             'change #property-instance-source-check'      : 'sourceCheckChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
-            'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
             'OPTION_CHANGE #keypair-select'               : "setKP"
             'EDIT_UPDATE #keypair-select'                 : "addKP"
             "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
@@ -51,14 +50,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 @trigger "NAME_CHANGE", name
 
         instanceTypeSelect : ( event, value )->
-            this.model.set 'instance_type', value
+
+            has_ebs = @model.setInstanceType value
+            $ebs = $("#property-instance-ebs-optimized")
+            $ebs.closest(".property-control-group").toggle has_ebs
+            if not has_ebs
+                $ebs.prop "checked", false
 
         ebsOptimizedSelect : ( event ) ->
             this.model.set 'ebs_optimized', event.target.checked
-
-        tenancySelect : ( event, value ) ->
-            this.model.set 'tenacy', value
-
 
         cloudwatchSelect : ( event ) ->
             this.model.set 'cloudwatch', event.target.checked

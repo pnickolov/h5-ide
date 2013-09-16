@@ -2,9 +2,22 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'i18n!nls/lang.js',
+         'text!./module/dashboard/overview/template.html',
+         'text!./module/dashboard/overview/template_data.html',
+         'backbone', 'jquery', 'handlebars', 'MC.ide.template'
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data ) ->
 
     current_region = null
+
+    MC.IDEcompile 'overview', overview_tmpl_data,
+        '.overview-result'  : 'overview-result-tmpl'
+        '.global-list'      : 'global-list-tmpl'
+        '.region-app-stack' : 'region-app-stack-tmpl'
+        '.region-resource'  : 'region-resource-tmpl'
+        '.recent'           : 'recent-tmpl'
+        '.loading'          : 'loading-tmpl'
+        '.loading-failed'   : 'loading-failed-tmpl'
 
     ### helper ###
     Helper =
@@ -41,21 +54,26 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $('#global-refresh span').text time
 
         scrollToResource: ->
-            scrollTo = $('#global-region-map-wrap').height()
+            scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
+
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
     OverviewView = Backbone.View.extend {
 
         el              : $( '#tab-content-dashboard' )
 
-        overview_result: Handlebars.compile $( '#overview-result-tmpl' ).html()
-        global_list: Handlebars.compile $( '#global-list-tmpl' ).html()
+        overview_result : Handlebars.compile $( '#overview-result-tmpl' ).html()
+        global_list     : Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
-        region_resource: Handlebars.compile $( '#region-resource-tmpl' ).html()
-        recent: Handlebars.compile $( '#recent-tmpl' ).html()
-        loading: $( '#loading-tmpl' ).html()
+        region_resource : Handlebars.compile $( '#region-resource-tmpl' ).html()
+        recent          : Handlebars.compile $( '#recent-tmpl' ).html()
+        loading         : $( '#loading-tmpl' ).html()
+        loading_failed  : $( '#loading-failed-tmpl' ).html()
 
-        events   :
+
+        events          :
             'click #global-region-spot > li'            : 'gotoRegion'
             'click #global-region-create-stack-list li' : 'createStack'
             'click #btn-create-stack'                   : 'createStack'
@@ -63,26 +81,39 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             'click .global-region-status-tab-item'      : 'switchRecent'
             'click #region-switch-list li'              : 'switchRegion'
             'click #region-resource-tab a'              : 'switchAppStack'
-            'click #region-aws-resource-tab a'          : 'switchRegionResource'
+            'click #region-aws-resource-tab a'          : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
+            'click .global-region-resource-content a'   : 'switchRegionAndResource'
+            'click .aws-loading-faild a'                : 'showCredential'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
+            'click #DescribeInstances .table-app-link'  : 'openApp'
             'modal-shown .start-app'                    : 'startAppClick'
             'modal-shown .stop-app'                     : 'stopAppClick'
             'modal-shown .terminate-app'                : 'terminateAppClick'
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+        status:
+            reloading       : false
+            resourceId      : null
+
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
         reloadResource: ->
-            @showLoading '#global-view, #region-resource-wrap'
-            Helper.scrollToResource()
-            @trigger 'RELOAD_RESOURCE', current_region
+            if Helper.hasCredential()
+                @status.reloading = true
+                @showLoading '#global-view, #region-resource-wrap'
+                @trigger 'RELOAD_RESOURCE'
+            else
+                @showCredential()
 
         showLoading: ( selector ) ->
             @$el.find( selector ).html @loading
+
+        showLoadingFaild: ( selector ) ->
+            @$el.find( selector ).html @loading_failed
 
         switchRegion: ( event ) ->
             target = $ event.currentTarget
@@ -114,11 +145,25 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         switchAppStack: ( event ) ->
             Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
 
-        switchRegionResource: ( event ) ->
+        switchResource: ( event ) ->
             Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
 
+        switchRegionAndResource: ( event ) ->
+            $target = $ event.currentTarget
+            region = $target.data 'region'
+            @status.resourceId = $target.data 'resourceId'
+            @gotoRegion region
+
+
         renderGlobalList: ( event ) ->
+            @enableSwitchRegion()
+            if @status.reloading
+                notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
+                @status.reloading = false
+
             tmpl = @global_list @model.toJSON()
+            if current_region
+                @trigger 'SWITCH_REGION', current_region
             $( this.el ).find('#global-view').html tmpl
 
         renderRegionAppStack: ( tab ) ->
@@ -134,27 +179,37 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
-            tmpl = @region_resource @model.toJSON()
-            $( this.el ).find('#region-resource-wrap').html tmpl
+            if not @status.reloading
+                tmpl = @region_resource @model.toJSON()
+                @$el.find('#region-resource-wrap').html tmpl
+                if @status.resourceId
+                    @$el.find( "#region-aws-resource-tab li:nth-child(#{@status.resourceId + 1}) a" ).click()
+                    @status.resourceId = null
+            null
+
 
         reRenderRegionPartial: ( type, data ) ->
-            tmplAll = $( '#region-resource-tmpl' ).html()
-            beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
-            endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
+            if not @status.reloading
+                tmplAll = $( '#region-resource-tmpl' ).html()
+                beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
+                endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
 
-            startPos = Helper.regexIndexOf tmplAll, beginRegex
-            endPos = tmplAll.indexOf '</tbody>', startPos
+                startPos = Helper.regexIndexOf tmplAll, beginRegex
+                endPos = tmplAll.indexOf '</tbody>', startPos
 
-            tmpl = tmplAll.slice startPos, endPos
-            template = Handlebars.compile tmpl
+                tmpl = tmplAll.slice startPos, endPos
+                template = Handlebars.compile tmpl
 
-            $( this.el ).find("##{type} tbody").html template data
+                $( this.el ).find("##{type} tbody").html template data
 
             null
 
         renderRecent: ->
             $( this.el ).find( '#global-region-status-widget' ).html this.recent this.model.attributes
             null
+
+        renderLoadingFaild: ->
+            @showLoadingFaild '#global-view, #region-resource-wrap'
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
@@ -163,6 +218,16 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             $middleButton.removeAttr 'disabled'
             $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
 
+        enableSwitchRegion: ->
+            $( '#region-switch' )
+                .removeClass('disabled')
+                .addClass('js-toggle-dropdown')
+
+        disableSwitchRegion: ->
+            $( '#region-switch' )
+                .addClass('disabled')
+                .removeClass('js-toggle-dropdown')
+
         createStack: ( event ) ->
             $target = $ event.currentTarget
             if $target.prop 'disabled'
@@ -170,8 +235,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
 
         gotoRegion: ( event ) ->
-            $target = $ event.currentTarget
-            region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            if event is Object event
+                $target = $ event.currentTarget
+                region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+            else
+                region = event
+
             $( "#region-switch-list li[data-region=#{region}]" ).click()
             Helper.scrollToResource()
 
@@ -179,12 +248,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             # display refresh time
             loadTime = $.now() / 1000
             clearInterval @timer
+            Helper.updateLoadTime MC.intervalDate( loadTime )
             @timer = setInterval ( ->
                 Helper.updateLoadTime MC.intervalDate( loadTime )
                 console.log 'timeupdate', loadTime
             ), 60001
             null
 
+        openApp: ( event ) ->
+            $target = $ event.currentTarget
+            name = $target.data 'name'
+            id = $target.data 'id'
+            ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+
+        showCredential: ( event ) ->
+            if event
+                event.preventDefault()
+            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
         ############################################################################################
 
@@ -198,9 +278,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             null
 
-        render : ( template ) ->
+        render : () ->
             console.log 'dashboard overview render'
-            $( this.el ).html template
+            $( this.el ).html overview_tmpl
 
         openItem : (event) ->
             console.log 'click item'
@@ -218,17 +298,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         clickRegionResourceThumbnail : (event) ->
             console.log 'click app/stack thumbnail'
 
-            item_info   = $(event.currentTarget).next('.region-resource-info')[0]
-            id          = $(item_info).find('.modal')[0].id
-            name        = $($(item_info).find('.region-resource-item-name')[0]).text()
-
-            ##check params:region, id, name
-
-            if id.indexOf('app-') is 0
-                ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            # check whether pending
+            if $(event.currentTarget).children('.app-thumbnail-pending').length > 0
+                notification 'warning', lang.ide.REG_MSG_WARN_APP_PENDING
 
             else
-                ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                item_info   = $(event.currentTarget).next('.region-resource-info')[0]
+                id          = $(item_info).find('.modal')[0].id
+                name        = $($(item_info).find('.region-resource-item-name')[0]).text()
+
+                ##check params:region, id, name
+                if id.indexOf('app-') is 0
+                    ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+
+                else if id.indexOf('stack-') is 0
+                    ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
 
             null
 
@@ -281,7 +365,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -301,7 +385,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -321,7 +405,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             name    = $(event.currentTarget).attr('name')
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()

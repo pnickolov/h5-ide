@@ -857,6 +857,14 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 						return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
 		deleteR_Subnet : ( component ) ->
+
+			# Delete All Associated ACL
+			_.each MC.canvas_data.component, (compObj) ->
+				compType = compObj.type
+				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
+				null
+
 			# Delete route table connection
 			for key, value of MC.canvas_data.component
 				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -872,13 +880,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 					if i.SubnetId.indexOf( component.uid ) != -1
 						value.resource.AssociationSet.splice index, 1
 						return
-
-			# Delete All Associated ACL
-			_.each MC.canvas_data.component, (compObj) ->
-				compType = compObj.type
-				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
-				null
 
 			null
 
@@ -1269,83 +1270,79 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				if eni_component.resource.AvailabilityZone isnt instance_component.resource.Placement.AvailabilityZone
 					return lang.ide.CVS_MSG_ERR_CONNECT_ENI_AMI
 
-				instance_type 		= 	instance_component.resource.InstanceType.split('.')
+				instance_type  = instance_component.resource.InstanceType.split('.')
+				max_eni_number = 16
+				config         = MC.data.config[instance_component.resource.Placement.AvailabilityZone[0...-1]]
+				if config and config.instance_type
+					max_eni_number = config.instance_type[instance_type[0]][instance_type[1]].eni
 
-				max_eni_number 		= 	MC.data.config[instance_component.resource.Placement.AvailabilityZone[0...-1]].instance_type[instance_type[0]][instance_type[1]].eni
-
-				current_eni_number 	= 	0
-
-				reach_max 			= 	false
-
-				total_device_index  = 	[0...16]
-
-				assoc_public_ip 	= 	false
-
-				main_eni_uid 		= 	null
+				current_eni_number = 0
+				total_device_index = [0...16]
+				assoc_public_ip    = false
+				main_public_eni    = null
 
 				for key, value of MC.canvas_data.component
 					if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and portMap['instance-attach'] == MC.extractID( value.resource.Attachment.InstanceId )
 
 						device_index_int = parseInt(value.resource.Attachment.DeviceIndex, 10)
 
-						if device_index_int in total_device_index
-
-							total_device_index.splice total_device_index.indexOf(device_index_int), 1
+						total_device_index[ device_index_int ] = false
 
 						current_eni_number += 1
 
 						if current_eni_number >= max_eni_number
-							reach_max = true
 							break
 
-						for comp_uid, comp of MC.canvas_data.component
-
-							if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID( comp.resource.Attachment.InstanceId ) is portMap['instance-attach'] and comp.resource.Attachment.DeviceIndex in ['0',0] and comp.resource.AssociatePublicIpAddress
-
-								main_eni_uid = comp_uid
-
-								assoc_public_ip = true
+						if device_index_int is 0 and value.resource.AssociatePublicIpAddress
+							main_public_eni = key
 
 
-
-
-				if reach_max
+				if current_eni_number >= max_eni_number
 					return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance_component.name, instance_component.resource.InstanceType, max_eni_number
 
-				if assoc_public_ip
+				# Get next index
+				next_device_index = 1
+				for idx in total_device_index
+					if idx isnt false
+						next_device_index = idx
+						break
+
+				doAssociate = () ->
+					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
+
+					attachment = eni_component.resource.Attachment
+					attachment.DeviceIndex = "" + next_device_index
+					attachment.InstanceId  = "@#{portMap['instance-attach']}.resource.InstanceId"
+
+					ide_event.trigger ide_event.REDRAW_SG_LINE
+
+					# Update Eni number
+					MC.aws.instance.updateCount portMap['instance-attach'], instance_component.number
+
+				if not main_public_eni
+					doAssociate()
+
+				else
 					template = MC.template.modalAttachingEni {
-						host : MC.canvas_data.component[portMap['instance-attach']].name
-						eni  : MC.canvas_data.component[portMap['eni-attach']].name
+						host : instance_component.name
+						eni  : eni_component.name
 					}
+
 					modal template, true
+
 					$("#canvas-op-confirm").one "click", ()->
-						if main_eni_uid
 
-							MC.canvas_data.component[main_eni_uid].resource.AssociatePublicIpAddress = false
+						MC.canvas_data.component[main_public_eni].resource.AssociatePublicIpAddress = false
 
-							MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
+						doAssociate()
 
-							MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
+						lineid = MC.canvas.connect $("#"+portMap['instance-attach']), 'instance-attach', $("#"+portMap['eni-attach']), 'eni-attach'
 
-							MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
-
-							MC.canvas.connect $("#"+portMap['instance-attach']), 'instance-attach', $("#"+portMap['eni-attach']), 'eni-attach'
+						MC.canvas.select lineid
 
 						modal.close()
 
-					MC.canvas.remove $("#" + line_id)[0]
-				else
-
-					MC.canvas.update portMap['eni-attach'], 'image', 'eni_status', MC.canvas.IMAGE.ENI_CANVAS_ATTACHED
-
-					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.DeviceIndex = total_device_index[0].toString()
-
-					MC.canvas_data.component[portMap['eni-attach']].resource.Attachment.InstanceId = '@' + portMap['instance-attach'] + '.resource.InstanceId'
-
-				ide_event.trigger ide_event.REDRAW_SG_LINE
-
-				# Update Eni number
-				MC.aws.instance.updateCount portMap['instance-attach'], instance_component.number
+					return false
 
 				#show sg port of eni when create line
 				#MC.canvas.display portMap['eni-attach'], 'eni_sg_left', true

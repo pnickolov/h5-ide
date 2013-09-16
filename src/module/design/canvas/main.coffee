@@ -7,6 +7,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
     #private
     loadModule = () ->
 
+        template = Handlebars.compile template
+
         #
         require [ './module/design/canvas/view',
                   './module/design/canvas/model',
@@ -113,6 +115,13 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
             #listen CANVAS_EIP_STATE_CHANGE
             view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
                 model.setEip option.id, option.eip_state
+
+                # update eip tooltip
+                if (option.eip_state is 'on')
+                    MC.aws.eip.updateStackTooltip(option.id, true)
+                else
+                    MC.aws.eip.updateStackTooltip(option.id, false)
+
                 ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
                 console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
                 null

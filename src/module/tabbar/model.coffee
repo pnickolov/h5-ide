@@ -65,6 +65,9 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             MC.data.current_tab_type = event_type
             #
             this.trigger event_type, newer
+            #intercom
+            #if event_type is 'OPEN_STACK'
+            #    window.intercomSettings.stack_total = window.intercomSettings.stack_total + 1
 
             ###
             if MC.tab[ newer ] is undefined

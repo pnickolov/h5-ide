@@ -2,9 +2,9 @@
 #  Controller for tabbar module
 ####################################
 
-define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
+define [ 'jquery', 'event', 'base_main',
          'UI.tabbar', 'UI.modal'
-], ( $, template, ide_event, base_main ) ->
+], ( $, ide_event, base_main ) ->
 
     #private
     initialize = ->
@@ -12,10 +12,11 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
         _.extend this, base_main
 
         #add handlebars script
-        template = '<script type="text/x-handlebars-template" id="tabbar-tmpl">' + template + '</script>'
-
+        #template = '<script type="text/x-handlebars-template" id="tabbar-tmpl">' + template + '</script>'
         #load remote html template
-        $( template ).appendTo '#tab-bar'
+        #$( template ).appendTo '#tab-bar'
+
+        null
 
     initialize()
 
@@ -23,7 +24,7 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
     loadModule = () ->
 
         #load
-        require [ './module/tabbar/view', './module/tabbar/model', 'MC' ], ( View, model, MC ) ->
+        require [ 'tabbar_view', 'tabbar_model' ], ( View, model ) ->
 
             #view
             #view       = new View()
@@ -256,17 +257,19 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 null
 
             #listen
-            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, app_id ) ->
-                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
+                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
                 #
-                view.closeTab app_id
+                view.trueCloseTab null, tab_id
+                #
+                #view.closeTab tab_id
                 #push event
                 ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen ide_event.STACK_DELETE, ( tab_name, stack_id ) ->
-                console.log 'STACK_DELETE ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
+            ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
+                console.log 'CLOSE_TAB ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
                 #
                 view.closeTab stack_id
                 #push event
@@ -290,6 +293,9 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 console.log 'UPDATE_TABBAR, tab_id = ' + tab_id + ', tab_name = ' + tab_name
                 original_tab_id = view.updateCurrentTab tab_id, tab_name
                 console.log original_tab_id
+                #re-set MC.current_tab_id
+                MC.data.current_tab_id = tab_id
+                #
                 if tab_id.split( '-' )[0] isnt 'app'
                     if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
@@ -311,6 +317,11 @@ define [ 'jquery', 'text!./module/tabbar/template.html', 'event', 'base_main',
                 model.set 'app_region_name', region_name
                 #
                 openApp tab_id
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->
+                console.log 'UPDATE_TAB_CLOSE_STATE, state = ' + state
+                view.updateTabCloseState state
 
             #render
             view.render()

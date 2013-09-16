@@ -17,8 +17,14 @@
 		<p>Loading, please wait...</p>
 	</div>
 
-	<script type="text/javascript" src="./lib/version.js"></script>
+	<script type="text/javascript">
+		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
+	</script>
+	<!-- <script type="text/javascript" src="./lib/version.js"></script> -->
 	<script type="text/javascript" src="./lib/analytics.js"></script>
-	<script type="text/javascript" data-main="./js/login/config" src="./vender/requirejs/require.js"></script>
+	<!-- <script type="text/javascript" data-main="./js/login/config.js" src="./vender/requirejs/require.js"></script> -->
+	<script type="text/javascript">
+		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/login/config.js?" + 'v=' + version + "'></scr"+"ipt>" );
+	</script>
 </body>
 </html>

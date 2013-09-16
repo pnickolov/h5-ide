@@ -47,11 +47,43 @@ define [ 'MC', 'event',
 
         render   : ( type ) ->
             console.log 'toolbar render'
+
             #
             if type is 'app'
                 $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
             else
+
+                lines =
+                    icon : ''
+                    is_style0: null
+                    is_style1: null
+                    is_style2: null
+                    is_style3: null
+
+                #restore line style
+                switch MC.canvas_property.LINE_STYLE
+
+                    when 0
+                        lines.is_style0 = true
+                        lines.icon = 'icon-straight'
+
+                    when 1
+                        lines.is_style1 = true
+                        lines.icon = 'icon-elbow'
+
+                    when 2
+                        lines.is_style2 = true
+                        lines.icon = 'icon-bezier-q'
+
+                    when 3
+                        lines.is_style3 = true
+                        lines.icon = 'icon-bezier-qt'
+
+                this.model.attributes.lines = lines
+
                 $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+
+
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #
@@ -76,14 +108,15 @@ define [ 'MC', 'event',
             me = this
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
                 # set total fee
-                cost = MC.aws.aws.getCost MC.canvas_data
+                copy_data = $.extend( true, {}, MC.canvas_data )
+                cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 target = $( '#main-toolbar' )
@@ -101,10 +134,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return
 
-                    if not MC.aws.aws.checkAppName app_name
+                    process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+                    # repeat with app list or tab name(some run failed app tabs)
+                    if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
-
 
                     modal.close()
 
@@ -313,7 +347,7 @@ define [ 'MC', 'event',
             console.log 'click stop app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -330,7 +364,7 @@ define [ 'MC', 'event',
             console.log 'click run app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -348,7 +382,7 @@ define [ 'MC', 'event',
             console.log 'click terminate app'
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -362,12 +396,12 @@ define [ 'MC', 'event',
 
 
         clickLineStyleStraight  : (event) ->
-            MC.canvas_property.LINE_STYLE = 1
+            MC.canvas_property.LINE_STYLE = 0
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 
         clickLineStyleElbow     : (event) ->
-            MC.canvas_property.LINE_STYLE = 0
+            MC.canvas_property.LINE_STYLE = 1
             ide_event.trigger ide_event.REDRAW_SG_LINE
             null
 

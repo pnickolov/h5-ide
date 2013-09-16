@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ], ( ide_event, MC, constant ) ->
 
 	InstanceView = Backbone.View.extend {
 
@@ -72,7 +72,20 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			isclassic = false
 			if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 				isclassic = true
-			modal MC.template.modalSGRule {isAdd:true, isclassic:isclassic}, true
+
+			# get sg list
+			sgList = []
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+					if !MC.aws.elb.isELBDefaultSG(compObj.uid)
+						sgList.push({
+							sgName: compObj.name
+							sgUID: compObj.uid
+						})
+				null
+
+
+			modal MC.template.modalSGRule {isAdd:true, isclassic: isclassic, sgList: sgList}, true
 			return false
 
 		removeRulefromList: (event, id) ->
@@ -125,6 +138,9 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			if target.parsley 'validate'
 				this.trigger 'SET_SG_NAME', name
 
+			parentCompUID = $('#property-panel').attr('component-uid')
+			MC.aws.sg.updateSGColorLabel(parentCompUID)
+
 		setSGDescription : ( event ) ->
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
 			this.trigger 'SET_SG_DESC', event.target.value
@@ -140,10 +156,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			sourceValue = $.trim($('#sg-add-model-source-select').find('.selected').attr('data-id'))
 
-			sgUID = @model.get( 'sg_detail' ).component.uid
-			sgName = @model.get( 'sg_detail' ).component.name
+			# sgUID = @model.get( 'sg_detail' ).component.uid
+			# sgName = @model.get( 'sg_detail' ).component.name
+			sgUID = ''
+			sgName = ''
 			if descrition_dom.hasClass('input')
-				if sourceValue is 'self'
+				if sourceValue isnt 'custom'
+					selectDom = $('#sg-add-model-source-select').find('.selected')
+					sgUID = selectDom.attr('data-sg-uid')
+					sgName = selectDom.text()
 					sg_descrition = '@' + sgUID + '.resource.GroupId'
 				else
 					sg_descrition = descrition_dom.val()
@@ -189,7 +210,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 			protocol_val_sub = $("#protocol-icmp-main-select").data('protocal-sub')
 			switch protocol_type
 				when "tcp", "udp"
-					protocol_val = $( '#sg-protocol-tcp input' ).val()
+					protocol_val = $( '#sg-protocol-' + protocol_type + ' input' ).val()
 					if '-' in protocol_val
 						rule.fromport = protocol_val.split('-')[0].trim()
 						rule.toport = protocol_val.split('-')[1].trim()
@@ -213,20 +234,27 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			rule.direction = sg_direction
 
-			if sourceValue is 'self'
+			if sourceValue is 'custom'
+				rule.ipranges = sg_descrition
+			else
 				rule.ipranges = sgName
 
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
-			cur_count = Number $("#rule-count").text()
-			cur_count = cur_count + 1
-			$("#rule-count").text cur_count
-			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
+			# cur_count = Number $("#rule-count").text()
+			# cur_count = cur_count + 1
+			# $("#rule-count").text cur_count
+			# $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
-			$("#sg-rule-empty").toggle cur_count == 0
+			# $("#sg-rule-empty").toggle cur_count == 0
 
 			rule.ipranges = sg_descrition
 
 			this.trigger "SET_SG_RULE", rule
+
+			uid = @model.get( 'sg_detail' ).component.uid
+			@model.getSG(uid)
+			$dom = this.render()
+			$("#property-second-panel").find(".property-content").html($dom)
 
 			modal.close()
 
@@ -250,7 +278,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.editablelabel' ]
 
 			if value is 'custom'
 				$('#securitygroup-modal-description').show()
-				$('#sg-add-model-source-select .selection').width(60)
+				$('#sg-add-model-source-select .selection').width(69)
 			else
 				$('#securitygroup-modal-description').hide()
 				$('#sg-add-model-source-select .selection').width(255)

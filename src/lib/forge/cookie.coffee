@@ -2,7 +2,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	setCookie = ( result ) ->
 
-		option = { expires:1, path: '/'	}
+
+		if document.domain.indexOf('madeiracloud.com') != -1
+			#domain is *.madeiracloud.com
+			option = constant.COOKIE_OPTION
+		else
+			#domain is not *.madeiracloud.com, maybe localhost
+			option = constant.LOCAL_COOKIE_OPTION
+
 
 		#set cookies
 		$.cookie 'userid',      result.userid,      option
@@ -16,25 +23,46 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 	deleteCookie = ->
 
-		option = { expires:1, path: '/'	}
+		if document.domain.indexOf('madeiracloud.com') != -1
+			#domain is *.madeiracloud.com
+			option = constant.COOKIE_OPTION
+		else
+			#domain is not *.madeiracloud.com, maybe localhost
+			option = constant.LOCAL_COOKIE_OPTION
+
 
 		#delete cookies
-		$.cookie 'userid',      null, option
-		$.cookie 'usercode',    null, option
-		$.cookie 'session_id',  null, option
-		$.cookie 'region_name', null, option
-		$.cookie 'email',       null, option
-		$.cookie 'has_cred',    null, option
-		$.cookie 'username',    null, option
-		$.cookie 'account_id',	null, option
+		$.cookie 'userid',      '', option
+		$.cookie 'usercode',    '', option
+		$.cookie 'session_id',  '', option
+		$.cookie 'region_name', '', option
+		$.cookie 'email',       '', option
+		$.cookie 'has_cred',    '', option
+		$.cookie 'username',    '', option
+		$.cookie 'account_id',	'', option
 
 	setCred = ( result ) ->
-		option = { expires:1, path: '/'	}
+
+		if document.domain.indexOf('madeiracloud.com') != -1
+			#domain is *.madeiracloud.com
+			option = constant.COOKIE_OPTION
+		else
+			#domain is not *.madeiracloud.com, maybe localhost
+			option = constant.LOCAL_COOKIE_OPTION
+
+
 		$.cookie 'has_cred', result, option
+
 
 	setIDECookie = ( result ) ->
 
-		option = { expires:1, path: '/', domain: '.madeiracloud.com' }
+		if document.domain.indexOf('madeiracloud.com') != -1
+			#domain is *.madeiracloud.com
+			option = constant.COOKIE_OPTION
+		else
+			#domain is not *.madeiracloud.com, maybe localhost
+			option = constant.LOCAL_COOKIE_OPTION
+
 
 		madeiracloud_ide_session_id = [
 			result.userid,
@@ -81,6 +109,43 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			false
 
+	clearV2Cookie = ( path ) ->
+		#for patch
+		option = { path: path }
+
+
+		$.each $.cookie(), ( key, cookie_name ) ->
+			$.removeCookie cookie_name	, option
+			null
+
+
+	clearInvalidCookie = ( ) ->
+		#for patch
+		option = { domain: 'ide.madeiracloud.com', path: '/' }
+
+		$.each $.cookie(), ( key, cookie_name ) ->
+			$.removeCookie cookie_name	, option
+			null
+
+
+	getCookieByName = ( cookie_name ) ->
+
+		$.cookie cookie_name
+
+
+	setCookieByName = ( cookie_name, value ) ->
+
+		if document.domain.indexOf('madeiracloud.com') != -1
+			#domain is *.madeiracloud.com
+			option = constant.COOKIE_OPTION
+		else
+			#domain is not *.madeiracloud.com, maybe localhost
+			option = constant.LOCAL_COOKIE_OPTION
+
+
+		$.cookie cookie_name, value, option
+
+
 	#public
 	setCookie    : setCookie
 	deleteCookie : deleteCookie
@@ -88,3 +153,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	getIDECookie : getIDECookie
 	setCred      : setCred
 	checkAllCookie : checkAllCookie
+	clearV2Cookie  : clearV2Cookie
+	clearInvalidCookie : clearInvalidCookie
+	getCookieByName : getCookieByName
+	setCookieByName : setCookieByName
+

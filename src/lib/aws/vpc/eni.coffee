@@ -269,6 +269,31 @@ define [ 'MC' ], ( MC ) ->
 
 		MC.canvas.display( uid , 'eni-number-group', visible )
 
+	getENIMaxIPNum = (eniOrInstanceUID) ->
+
+		eniComp = MC.canvas_data.component[eniOrInstanceUID]
+
+		if !eniComp then return 0
+		instanceUID = ''
+		if eniComp.type is 'AWS.VPC.NetworkInterface'
+			instanceUIDRef = eniComp.resource.Attachment.InstanceId
+			if !instanceUIDRef then return 0
+			instanceUID = instanceUIDRef.split('.')[0].slice(1)
+		else
+			instanceUID = eniOrInstanceUID
+		instanceComp = MC.canvas_data.component[instanceUID]
+		instanceType = instanceComp.resource.InstanceType
+		instanceTypeAry = instanceType.split('.')
+		if !(instanceTypeAry[0] and instanceTypeAry[1]) then return 0
+
+		typeENINumMap =	MC.data.config[MC.canvas_data.region].instance_type
+		if !typeENINumMap then return 0
+
+		eniMaxIPNum = typeENINumMap[instanceTypeAry[0]][instanceTypeAry[1]].ip_per_eni
+		if !eniMaxIPNum then return 0
+
+		return eniMaxIPNum
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
@@ -279,3 +304,4 @@ define [ 'MC' ], ( MC ) ->
 	getSubnetComp : getSubnetComp
 	getSubnetNeedIPCount : getSubnetNeedIPCount
 	displayENINumber : displayENINumber
+	getENIMaxIPNum : getENIMaxIPNum

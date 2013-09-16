@@ -458,6 +458,23 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       null
 
+    isDupPolicyName : ( policy_uid, name ) ->
+
+      uid = @get 'uid'
+
+      for comp_uid, comp of MC.canvas_data.component
+        if comp_uid is policy_uid
+          continue
+
+        if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+          continue
+
+        if comp.name is name and MC.extractID( comp.resource.AutoScalingGroupName ) is uid
+          return true
+
+      false
+
+
     setPolicy : ( uid, policy_detail ) ->
 
       policy_uid = null
@@ -646,6 +663,14 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
 
       null
+
+    defaultScalingPolicyName : () ->
+      count = 1
+      for uid, comp of MC.canvas_data.component
+        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+          ++count
+
+      "#{@attributes.asg.AutoScalingGroupName}-policy-#{count}" + ""
 
     delPolicy : ( uid ) ->
 

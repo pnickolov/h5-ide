@@ -38,15 +38,15 @@
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Lato'), url('../fonts/Lato-regular.ttf') format('truetype');
+	src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/Lato-regular.woff') format('woff');
 }
 
 @font-face
 {
 	font-family: 'Lato';
 	font-style: normal;
-	font-weight: bold;
-	src: local('Lato'), url('../fonts/Lato-Bold.ttf') format('truetype');
+	font-weight: 700;
+	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
 }
 
 /* CSS reset */
@@ -88,13 +88,17 @@ textarea {
 	margin: 0;
 	font-size: 100%;
 	vertical-align: middle;
-	font-family: 'Lato', 'Titillium Web', 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 button,
 input {
 	*overflow: visible;
 	line-height: normal;
+}
+
+button:focus {
+	outline : none;
 }
 
 button::-moz-focus-inner,
@@ -249,7 +253,7 @@ body {
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
 	body {
-		font-family: 'Lato','Titillium Web','Ubuntu', 'Helvetica Neue', Arial, sans-serif;
+		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 	}
 }
 

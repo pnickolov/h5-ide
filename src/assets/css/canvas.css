@@ -386,7 +386,6 @@
 /* node label */
 .node-label {
 	font-size: 12px;
-	font-weight: bold;
 	text-anchor: middle;
 	fill: #333;
 	cursor: default;
@@ -529,6 +528,10 @@
 
 .asg-expand {
 	opacity: 0.5;
+}
+
+.asg-expand.selected {
+	opacity: 0.8;
 }
 
 .asg-resource-dragger {

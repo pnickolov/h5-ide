@@ -38,7 +38,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="0">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -64,7 +64,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="1">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -90,7 +90,7 @@
                 <ul>
                     {{#each data}}
                         <li>
-                            <a href="javascript:void(0)">
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="2">
                                 <h4>{{city}}</h4>
                                 <h5>{{area}}</h5>
                                 <span class="global-region-resource-location-count">{{total}}</span>
@@ -116,7 +116,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="5">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -140,7 +140,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="4">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -189,26 +189,30 @@
                     {{#each cur_app_list}}
                         {{#if ispending}}
                         <li>
-                            <a href="javascript:void(0)" class="region-resource-list-item">
-                                <div class="region-resource-thumbnail app-thumbnail disabled">
-                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                            <a href="javascript:void(0)" class="region-resource-list-item disabled">
+                                <div class="region-resource-thumbnail app-thumbnail">
+                                    <!-- <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/> -->
+                                    <div class="app-thumbnail-pending"><!-- <i class="icon-pending"></i> -->
+                                        <img width="30" height="23" class="app-pending-animation" src="./assets/images/ide/loading-bar-dark.gif"/>
+                                        <p>Processing...</p>
+                                    </div>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
-                                    <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
-                                    <div class="region-resource-action clearfix">
+                                    <i class="region-resource-status icon-pending"></i>
+                                    <!-- <div class="region-resource-action clearfix">
                                         {{#if isrunning}}
                                             <i class="icon-stop stop-app" id="{{id}}" name="{{name}}"></i>
                                         {{else}}
                                             <i class="icon-play start-app" id="{{id}}" name="{{name}}"></i>
                                         {{/if}}
                                         <i class="icon-terminate terminate-app" id="{{id}}" name="{{name}}"></i>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </a>
                         </li>
                         {{else}}
-                        <li data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
+                        <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
@@ -397,7 +401,7 @@
                                             <div>
                                                 {{#if app}}
                                                     {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
                                                     {{else}}
                                                         <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                     {{/if}}
@@ -958,3 +962,8 @@
    <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
 </div>
 
+<!--{{ .loading-failed }}-->
+<div class="dashboard-loading aws-loading-faild clearfix">
+    <p>Loading resource failed, the AWS Credential key is incorrect.</p>
+    <a href="###">Enter AWS credentials</a>
+</div>

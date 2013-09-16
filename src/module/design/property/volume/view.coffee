@@ -14,9 +14,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         events   :
             'click #volume-type-radios input' : 'volumeTypeChecked'
             'change #volume-device' : 'deviceNameChanged'
-            'change #volume-size-ranged' : 'sizeChanged'
+            'keyup #volume-size-ranged' : 'sizeChanged'
+            'keyup  #volume-size-ranged' : 'processIops'
             #'keyup #volume-size-ranged' : 'sizeChanged'
-            'change #iops-ranged' : 'iopsChanged'
+            'keyup #iops-ranged' : 'sizeChanged'
             #'keyup #iops-ranged' : 'iopsChanged'
             'click #snapshot-info-group' : 'showSnapshotDetail'
 
@@ -26,6 +27,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             this.undelegateEvents()
             #
             $( '.property-details' ).html this.template this.model.attributes
+            # parsley bind
+            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                if not val || val > 1024 || val < 1
+                    return "Volume size must in the range of 1-1024 GB."
+
+            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if val > 4000 || val < 100
+                    return 'IOPS must be between 100 and 4000'
+                else if( val > 10 * volume_size)
+                    return 'IOPS must be less than 10 times of volume size.'
             #
             this.delegateEvents this.events
 
@@ -36,6 +50,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             else
                 $( '#iops-group' ).show()
                 this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
+            @sizeChanged()
 
         deviceNameChanged : ( event ) ->
             target       = $ event.currentTarget
@@ -58,28 +73,30 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             if target.parsley 'validate'
                 this.trigger 'DEVICE_NAME_CHANGED', name
 
-        sizeChanged : ( event ) ->
-            size = $( '#volume-size-ranged' ).val()
-            if(size > 1024 || size < 1 )
-                console.log 'Volume size must in the range of 1-1024 GB.'
-            else
-                this.trigger 'VOLUME_SIZE_CHANGED', size
+        processIops: ( event ) ->
+            size = parseInt event.currentTarget.value, 10
+            opsCheck = $( '#radio-iops' ).is ':checked'
+            if size >= 10
+                @enableIops()
+            else if not opsCheck
+                @disableIops()
 
-        iopsChanged : ( event ) ->
-            target = $ event.currentTarget
+            null
 
-            iops_size = parseInt( target.val(), 10 )
-            volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+        enableIops: ->
+            $( '#volume-type-radios > div' )
+                .last()
+                .data( 'tooltip', '' )
+                .find( 'input' )
+                .removeAttr( 'disabled' )
 
-            target.parsley 'custom', ( val ) ->
-                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-                if( val > 4000 || val < 100 )
-                    return 'IOPS must be between 100 and 4000'
-                else if( val > 10 * volume_size)
-                    return 'IOPS must be less than 10 times of volume size.'
+        disableIops: ->
+            $( '#volume-type-radios > div' )
+                .last()
+                .data( 'tooltip', 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.' )
+                .find( 'input' )
+                .attr( 'disabled', '' )
 
-            if target.parsley 'validate'
-                this.trigger 'IOPS_CHANGED', "" + iops_size
 
         showSnapshotDetail : ( event ) ->
             console.log 'showSnapshotDetail'

@@ -269,19 +269,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             null
 
         awsReturnHandler: ( result ) ->
+            region = result.param[ 3 ]
+            @trigger 'AWS:LOADING:STOP', region
             data = result.resolved_data
             if not _.size data
                 return
-            region = result.param[ 3 ]
             if region is null
                 # update regionlist for optimize network
                 @cacheResource 'raw', data
 
                 globalData = @globalRegionhandle data
-                if globalData is @get 'global_list'
-                    @trigger 'change:global_list'
-                else
-                    @set 'global_list', globalData
+                @forceSet 'global_list', globalData
             else
                 @setResource data[ region ], region
 
@@ -292,13 +290,18 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             info = @getResourceFromCache 'info', region
 
             if complex and info
-                @set 'cur_region_resource_info', info
-                @set 'cur_region_resource', complex
+                @forceSet 'cur_region_resource_info', info
+                @forceSet 'cur_region_resource', complex
             else if raw
                 @setResource raw, region
             else
                 @describeAWSResourcesService region
 
+        forceSet: ( key, value ) ->
+            if _.isEqual value, @get key
+                @trigger "change:#{key}"
+            else
+                @set key, value
 
         # cache methods
         cacheResource: ( type, data, region ) ->
@@ -382,6 +385,16 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         reRenderRegionResource: ( type )->
             @trigger "REGION_RESOURCE_CHANGED", type, @get( 'cur_region_resource' )
 
+        _fillAppFiled: ( describe ) ->
+            owner = atob $.cookie( 'usercode' )
+            if describe.tagSet
+                tag = describe.tagSet
+                if tag.app
+                    describe.app = tag.app
+                    describe.host = tag.name
+                    if tag[ 'Created by' ] is owner
+                        describe.owner = tag[ 'Created by' ]
+            describe
 
         ############################################################################################
         # setResource method class
@@ -505,14 +518,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     ins.launchTime = MC.dateFormat(new Date(ins.launchTime),'yyyy-MM-dd hh:mm:ss')
                     is_managed = false
 
-                    if ins.tagSet != undefined
-                        tag = ins.tagSet
-                        if ins.tagSet.app
-                            is_managed = true
-                            resources.DescribeInstances[i].app = tag.app
-                            resources.DescribeInstances[i].host = tag.name
-                            if tag[ 'Created by' ] is owner
-                                resources.DescribeInstances[i].owner = tag[ 'Created by' ]
+                    me._fillAppFiled ins
 
                     if not resources.DescribeInstances[i].host
                         resources.DescribeInstances[i].host = ''
@@ -574,6 +580,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if resources.DescribeVpcs
                 lists.VPC = resources.DescribeVpcs.length
                 _.map resources.DescribeVpcs, ( vpc, i )->
+                    me._fillAppFiled vpc
                     me._set_app_property vpc, resources, i, 'DescribeVpcs'
                     vpc.detail = me.parseSourceValue 'DescribeVpcs', vpc, "detail", null
 
@@ -630,6 +637,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 vgw_set = []
 
                 _.map resources.DescribeVpnConnections, ( vpn ) ->
+                    me._fillAppFiled vpn
                     cgw_set.push vpn.customerGatewayId
                     vgw_set.push vpn.vpnGatewayId
 
@@ -691,12 +699,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             console.log 'vpngateway.DescribeVpnGateways failed, error is ' + result.error_message
 
                         null
-
-            me.set 'cur_region_resource_info', lists
-            if resources is me.get 'cur_region_resource'
-                me.trigger 'change:cur_region_resource'
-            else
-                me.set 'cur_region_resource', resources
+            if region is current_region
+                me.forceSet 'cur_region_resource_info', lists
+                me.forceSet 'cur_region_resource', resources
             @cacheResource 'complex', resources, region
             @cacheResource 'info', lists, region
 
@@ -932,7 +937,54 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             parse_sub_info
 
-        # setResource method class
+        _parseTableValue : ( keyes_set, value_set )->
+            me                  = this
+            parse_table_result  = ''
+            table_date          = ''
+
+            detail_table =  [
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
+                    { "key": [ "status" ], "show_key": "Status"},
+                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
+                    { "key": [ "statusMessage" ], "show_key": "Detail"},
+                ]
+            table_set = value_set.vgwTelemetry
+            if table_set
+                table_set = table_set.item
+                if table_set
+                    parse_table_result = '{ "th_set":['
+                    _.map keyes_set, ( value, key ) ->
+                        if key isnt 0
+                            parse_table_result += ','
+                        parse_table_result += '"'
+                        parse_table_result += me._parseEmptyValue value.show_key
+                        parse_table_result += '"'
+                        null
+
+                    _.map table_set, ( value, key ) ->
+                        cur_key     = key
+                        cur_value   = key + 1
+                        parse_table_result += '], "tr'
+                        parse_table_result += cur_value
+                        parse_table_result += '_set":['
+                        _.map keyes_set, ( value, key ) ->
+                            if key isnt 0
+                                parse_table_result += ',"'
+                                parse_table_result += me._parseEmptyValue table_set[cur_key][value.key]
+                                parse_table_result += '"'
+                            else
+                                parse_table_result += '"'
+                                parse_table_result += me._parseEmptyValue value.count_name
+                                parse_table_result += cur_value
+                                parse_table_result += '"'
+                            null
+                        null
+                    parse_table_result += ']}'
+            parse_table_result
+
+        _parseEmptyValue : ( val )->
+            if val then val else ''
 
         vpcAccountAttrsReturnHandler: ( result ) ->
             me = @
@@ -966,8 +1018,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 me.set 'region_classic_list', region_classic_vpc_result
 
                 # set cookie
-                if $.cookie('has_cred') isnt 'true'
-                    $.cookie 'has_cred', true,    { expires: 1 }
+                if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                    MC.forge.cookie.setCookieByName 'has_cred', true
+
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
                 null
@@ -975,7 +1028,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             else
                 # check whether invalid session
                 if result.return_code isnt constant.RETURN_CODE.E_SESSION
-                    #$.cookie 'has_cred', false, { expires: 1 }
+                    #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
                     ide_event.trigger ide_event.SWITCH_MAIN
@@ -1213,6 +1266,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
 
         describeAWSResourcesService : ( region )->
+            @trigger 'AWS:LOADING:START', region
             me = this
             region = region or null
             current_region = region

@@ -32,12 +32,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                         isLC        : true
                         volume_size : block.Ebs.VolumeSize
                         snapshot_id : block.Ebs.SnapshotId
+                        name        : block.DeviceName
 
                     if volume_detail.isWin
-                        volume_detail.editName = block.DeviceName.slice(-1)
+                        volume_detail.editName = volume_detail.name.slice(-1)
 
                     else
-                        volume_detail.editName = block.DeviceName.slice(5)
+                        volume_detail.editName = volume_detail.name.slice(5)
 
                     break
 
@@ -52,25 +53,29 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     iops        : res.Iops
                     volume_size : res.Size
                     snapshot_id : res.SnapshotId
+                    name        : res.AttachmentSet.Device
 
 
                 if volume_detail.isWin
-                    volume_detail.editName = res.AttachmentSet.Device.slice(-1)
+                    volume_detail.editName = volume_detail.name.slice(-1)
 
                 else
-                    volume_detail.editName = res.AttachmentSet.Device.slice(5)
+                    volume_detail.editName = volume_detail.name.slice(5)
 
 
             # Snapshot
             if volume_detail.snapshot_id
                 snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
+                if snapshot_list and snapshot_list.item
+                    for item in snapshot_list.item
+                        if item.snapshotId is volume_detail.snapshot_id
+                            volume_detail.snapshot_size = item.volumeSize
+                            volume_detail.snapshot_desc = item.description
+                            volume_detail.snapshot = JSON.stringify item
+                            break
 
-                for item in snapshot_list.item
-                    if item.snapshotId is volume_detail.snapshot_id
-                        volume_detail.snapshot_size = item.volumeSize
-                        volume_detail.snapshot_desc = item.description
-                        volume_detail.snapshot = JSON.stringify item
-                        break
+            if volume_detail.volume_size < 10
+                volume_detail.iopsDisabled = true
 
             @set 'volume_detail', volume_detail
             @set 'uid', uid
@@ -102,6 +107,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                     MC.canvas.update uid, 'text', "volume_name", block.DeviceName
                     MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
+                    @attributes.volume_detail.name     = block.DeviceName
+                    @attributes.volume_detail.editName = name
 
                     @set 'uid', newId
 
@@ -128,6 +135,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 MC.canvas.update uid, 'text', "volume_name", device_name
 
                 volume_comp.resource.AttachmentSet.Device = device_name
+                @attributes.volume_detail.name = device_name
 
             null
 
@@ -173,7 +181,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             uid = @get "uid"
             comp_res = MC.canvas_data.component[uid].resource
 
-            comp_res.VolumeType = 'iops'
+            comp_res.VolumeType = 'io1'
             comp_res.Iops = value
 
             null
@@ -212,6 +220,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
+
+                # First, test if the newly created name is not changed
+                # Because parsely might fires event even if the name is not changed.
+                if @attributes.volume_detail.editName is name
+                    return false
 
                 for block in MC.canvas_data.component[realuid].resource.BlockDeviceMapping
 

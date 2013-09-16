@@ -2,13 +2,13 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
+define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
         'UI.selectbox',
         'UI.tooltip',
         'UI.notification',
         'UI.modal',
         'UI.tablist',
-        'UI.toggleicon' ], ( ide_event, MC ) ->
+        'UI.toggleicon'], ( ide_event, MC, lang ) ->
 
     InstanceView = Backbone.View.extend {
 
@@ -25,7 +25,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
-            'change #property-instance-base64'            : 'base64Change'
             'change #property-instance-ni-description'    : 'eniDescriptionChange'
             'change #property-instance-source-check'      : 'sourceCheckChange'
             'change #property-instance-public-ip'         : 'publicIpChange'
@@ -53,6 +52,8 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             $( '.property-details' ).html this.template this.model.attributes
 
             $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
+
+            this.changeIPAddBtnState()
 
             this.delegateEvents this.events
 
@@ -99,12 +100,32 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 $parent.find(".name").data "tooltip", "Automatically assigned IP."
 
         instanceTypeSelect : ( event, value )->
-            this.model.set 'instance_type', value
+
+            canset = @model.canSetInstanceType value
+            if canset isnt true
+                notification "error", canset
+                event.preventDefault()
+                return
+
+            has_ebs = @model.setInstanceType value
+            $ebs = $("#property-instance-ebs-optimized")
+            $ebs.closest(".property-control-group").toggle has_ebs
+            if not has_ebs
+                $ebs.prop "checked", false
 
         ebsOptimizedSelect : ( event ) ->
             this.model.set 'ebs_optimized', event.target.checked
 
         tenancySelect : ( event, value ) ->
+            $type = $("#instance-type-select")
+            $t1   = $type.find("[data-id='t1.micro']")
+
+            if $t1.length
+                show = value isnt "dedicated"
+                $t1.toggle( show )
+
+                if $t1.hasClass("selected") and not show
+                    $type.find(".item:not([data-id='t1.micro'])").eq(0).click()
             this.model.set 'tenacy', value
 
         cloudwatchSelect : ( event ) ->
@@ -113,9 +134,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
         userdataChange : ( event ) ->
             this.model.set 'user_data', event.target.value
-
-        base64Change : ( event ) ->
-            this.model.set 'base64', event.target.checked
 
         eniDescriptionChange : ( event ) ->
             this.model.set 'eni_description', event.target.value
@@ -146,6 +164,17 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             subnetCIDR = ''
             instanceUID = this.model.get 'get_uid'
+
+            # validate max ip num
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
+            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+            if !currentENIComp then return false
+
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                return false
+            # validate max ip num
+
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
                 subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
@@ -216,6 +245,31 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
 
+            this.changeIPAddBtnState()
+
+        changeIPAddBtnState : () ->
+
+            disabledBtn = false
+            instanceUID = this.model.get 'get_uid'
+
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
+            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+            if !currentENIComp
+                disabledBtn = true
+                return
+
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                disabledBtn = true
+
+            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
+            if disabledBtn
+                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
+                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
+            else
+                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
+
+            null
 
         deleteKP : ( event ) ->
             me = this
@@ -231,9 +285,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 if selected
                     $("#keypair-select").find(".item").eq(0).click()
 
-
                 me.model.deleteKP $li.attr("data-id")
-
 
             if using
                 data =

@@ -41,7 +41,6 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		null
 
-
 	#public
 	updateCount : updateCount
 	updateStateIcon : updateStateIcon

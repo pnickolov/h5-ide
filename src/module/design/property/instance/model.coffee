@@ -2,7 +2,16 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event) ->
+define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'underscore', 'MC' ], (constant, ide_event, lang ) ->
+
+	EbsMap =
+		"m1.large"   : true
+		"m1.xlarge"  : true
+		"m2.2xlarge" : true
+		"m2.4xlarge" : true
+		"m3.xlarge"  : true
+		"m3.2xlarge" : true
+		"c1.xlarge"  : true
 
 	InstanceModel = Backbone.Model.extend {
 
@@ -22,32 +31,18 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			'tenacy' : null
 			'cloudwatch' : null
 			'user_data' : null
-			'base64'    :  null
 			'eni_description' : null
 			'source_check' : null
 			'add_sg'   : null
 			'remove_sg' : null
 			'public_ip' : null
 
-		initialize : ->
-			this.listenTo ide_event, 'SWITCH_TAB', this.updateUID
-
-		updateUID : ( type ) ->
-			console.log 'updateUID'
-			if type is 'OLD_APP' or  type is 'OLD_STACK'
-				instanceUID = $( '#instance-property-detail' ).data 'uid'
-				this.set 'get_uid', instanceUID
-				this.set 'uid', instanceUID
-
-
 		listen : ->
 			#listen
 			this.listenTo this, 'change:name', this.setName
-			this.listenTo this, 'change:instance_type', this.setInstanceType
 			this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
 			this.listenTo this, 'change:cloudwatch', this.setCloudWatch
 			this.listenTo this, 'change:user_data', this.setUserData
-			this.listenTo this, 'change:base64' , this.setBase64Encoded
 			this.listenTo this, 'change:eni_description' , this.setEniDescription
 			this.listenTo this, 'change:tenacy' , this.setTenancy
 			this.listenTo this, 'change:source_check', this.setSourceCheck
@@ -98,7 +93,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 						break
 
 			# Classic Mode
-			this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			null
 
 		setCount : ( val ) ->
@@ -107,36 +102,36 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			MC.aws.instance.updateCount( uid, val )
 			null
 
-		setInstanceType  : () ->
-
-			uid = this.get 'get_uid'
-
-			value = this.get 'instance_type'
-
-			console.log 'setInstanceType = ' + value
-
-			type_ary = value.split '.'
-
+		canSetInstanceType : ( value ) ->
+			uid        = this.get 'get_uid'
+			type_ary   = value.split '.'
 			eni_number = 0
 
-			$.each MC.canvas_data.component, (index, comp) ->
+			for index, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID( comp.resource.Attachment.InstanceId ) is uid
 
-				if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid
+					++eni_number
 
-					eni_number += 1
+			config = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]]
+			max_eni_num = config.instance_type[type_ary[0]][type_ary[1]].eni
 
-			max_eni_num = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]].instance_type[type_ary[0]][type_ary[1]].eni
+			if eni_number <= 2 or eni_number <= max_eni_num
+				return true
 
-			if eni_number > 2 and eni_number > max_eni_num
+			return sprintf lang.ide.PROP_WARN_EXCEED_ENI_LIMIT, value, max_eni_num
 
-				this.trigger 'EXCEED_ENI_LIMIT', uid, value, max_eni_num
 
-			else
+		setInstanceType  : ( value ) ->
 
-				MC.canvas_data.component[ uid ].resource.InstanceType = value
+			component = MC.canvas_data.component[ this.get 'get_uid' ]
+			component.resource.InstanceType = value
 
-			null
-			#this.set 'set_host', 'host'
+			has_ebs = EbsMap.hasOwnProperty value
+			if not has_ebs
+				component.resource.EbsOptimized = "false"
+
+			has_ebs
+
 
 		setEbsOptimized : ( value )->
 
@@ -179,14 +174,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			uid = this.get 'get_uid'
 
 			MC.canvas_data.component[ uid ].resource.UserData.Data = this.get 'user_data'
-
-			null
-
-		setBase64Encoded : ()->
-
-			#console.log 'setBase64Encoded = ' + value
-
-			MC.canvas_data.component[ this.get('get_uid') ].resource.UserData.Base64Encoded = this.get 'base64'
 
 			null
 
@@ -407,40 +394,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 
 			null
 
-		getCheckBox : () ->
-
-			uid = this.get 'get_uid'
-
-			checkbox = {}
-
-			if MC.canvas_data.component[ uid ].resource.EbsOptimized == true or MC.canvas_data.component[ uid ].resource.EbsOptimized == 'true'
-				checkbox.ebsOptimized = true
-				this.set 'ebs_optimized', true
-			else
-				checkbox.ebsOptimized = false
-				this.set 'ebs_optimized', false
-
-			if MC.canvas_data.component[ uid ].resource.Monitoring == 'enabled'
-				checkbox.monitoring = true
-			else
-				checkbox.monitoring = false
-
-			if MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == true or MC.canvas_data.component[ uid ].resource.UserData.Base64Encoded == "true"
-				this.set 'base64', true
-				checkbox.base64Encoded = true
-			else
-				this.set 'base64', false
-				checkbox.base64Encoded = false
-
-			if MC.canvas_data.component[ uid ].resource.Placement.Tenancy == 'default' or MC.canvas_data.component[ uid ].resource.Placement.Tenancy == ''
-				checkbox.tenancy = true
-				this.set 'tenacy', true
-			else
-				checkbox.tenancy = false
-				this.set 'tenacy', false
-
-			this.set 'checkbox_display', checkbox
-
 		getEni : () ->
 
 			uid = this.get 'get_uid'
@@ -592,26 +545,42 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 		getInstanceType : () ->
 
 			uid = this.get 'get_uid'
+			component = MC.canvas_data.component[ uid ]
+
+			tenacy = component.resource.Placement.Tenancy isnt 'dedicated'
+
+			this.set 'ebs_optimized', "" + component.resource.EbsOptimized is "true"
+			this.set 'monitoring',    component.resource.Monitoring is 'enabled'
+			this.set 'tenacy',        tenacy
+
+			this.set 'force_tenacy', false
+			for comp_uid, comp of MC.canvas_data.layout.component.group
+				if comp.type is 'AWS.VPC.VPC'
+					vpc = MC.canvas_data.component[ comp_uid ]
+					if vpc.resource.InstanceTenancy is "dedicated"
+						this.set 'force_tenacy', true
+					break
 
 			ami_info = MC.canvas_data.layout.component.node[ uid ]
 
-			current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
+			current_instance_type = component.resource.InstanceType
 
-			view_instance_type = []
-			instance_types = this._getInstanceType ami_info
-			_.map instance_types, ( value )->
-				tmp = {}
 
-				if current_instance_type == value
-					tmp.selected = true
-				tmp.main = constant.INSTANCE_TYPE[value][0]
-				tmp.ecu  = constant.INSTANCE_TYPE[value][1]
-				tmp.core = constant.INSTANCE_TYPE[value][2]
-				tmp.mem  = constant.INSTANCE_TYPE[value][3]
-				tmp.name = value
-				view_instance_type.push tmp
+
+			view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
+
+				main     : constant.INSTANCE_TYPE[value][0]
+				ecu      : constant.INSTANCE_TYPE[value][1]
+				core     : constant.INSTANCE_TYPE[value][2]
+				mem      : constant.INSTANCE_TYPE[value][3]
+				name     : value
+				selected : current_instance_type is value
+				hide     : not tenacy and value is "t1.micro"
 
 			this.set 'instance_type', view_instance_type
+			this.set 'can_set_ebs',   EbsMap.hasOwnProperty current_instance_type
+
+			null
 
 		_getInstanceType : ( ami ) ->
 			instance_type = MC.data.instance_type[MC.canvas_data.region]
@@ -907,6 +876,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 			uid = this.get 'get_uid'
 
 			if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
+
 				defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
 				eniUID = defaultENIComp.uid
 
@@ -917,7 +887,6 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					sgUID = value.GroupId.slice(1).split('.')[0]
 					sgUIDAry.push sgUID
 					null
-
 			else
 				sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
 
@@ -926,7 +895,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], (const
 					sgUID = value.slice(1).split('.')[0]
 					sgUIDAry.push sgUID
 					null
-			
+
 			return sgUIDAry
 
 		setIPList : (inputIPAry) ->

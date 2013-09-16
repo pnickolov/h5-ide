@@ -77,9 +77,8 @@ MC.canvas = {
 				target.attr('style', 'fill:' + value);
 				break;
 
-			case 'tooltip'://add tooltip
-				target.addClass('tooltip').attr( id + '_' + key, value );
-				break;
+			case 'tooltip': //add tooltip
+				Canvon( '#' + id + '_' + key ).addClass('tooltip').data( 'tooltip', value ).attr( 'data-tooltip', value );
 		}
 
 		return true;
@@ -138,10 +137,10 @@ MC.canvas = {
 		while (i < MC.canvas.SG_MAX_NUM) {
 			if (i < colors_label.length && colors_label[i]) {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), colors_label[i].color);
-				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", colors_label[i].name );
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).addClass('tooltip').data( 'tooltip', colors_label[i].name ).attr( 'data-tooltip', colors_label[i].name );
 			} else {
 				MC.canvas.update(uid, "color", "sg-color-label" + (i + 1), "none");
-				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).attr("data-tooltip", "");
+				Canvon( "#" + uid + "_" + "sg-color-label" + (i + 1) ).addClass('tooltip').data( 'tooltip', "" ).attr( 'data-tooltip', "" );
 				//show
 				//hide
 			}
@@ -283,7 +282,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -322,7 +321,7 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("../assets/images/ide/grid_x' + scale_ratio + '.png")');
+			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -1168,27 +1167,27 @@ MC.canvas = {
 						{
 							switch (MC.canvas_property.LINE_STYLE)
 							{
-								case 0:
-									path = MC.canvas._round_corner(controlPoints); //method1
-									break;
-								case 1:
+								case 0: //straight
 										path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y
 										+ ' L ' + controlPoints[1].x + ' ' + controlPoints[1].y
 										+ ' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y
 										+ ' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
 									break;
-								case 2:
-									path = MC.canvas._bezier_q_corner( controlPoints ); //method2
+								case 1: //elbow
+									path = MC.canvas._round_corner(controlPoints);
 									break;
-								case 3:
-									path = MC.canvas._bezier_qt_corner( controlPoints ); //method2
+								case 2: //bezier-q
+									path = MC.canvas._bezier_q_corner( controlPoints );
+									break;
+								case 3: //bezier-qt
+									path = MC.canvas._bezier_qt_corner( controlPoints );
 									break;
 							}
 
 						}
 						else
 						{
-							path = MC.canvas._round_corner(controlPoints); //method1
+							path = MC.canvas._round_corner(controlPoints); //elbow
 						}
 					}
 				}
@@ -2461,7 +2460,7 @@ MC.canvas.volume = {
 					'left': event.pageX - 50
 				});
 
-			Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+			Canvon('.AWS-EC2-Instance').addClass('attachable');
 
 			$(document).on({
 				'mousemove': MC.canvas.volume.mousemove,
@@ -2488,6 +2487,7 @@ MC.canvas.volume = {
 				event.pageX - event.data.canvas_offset.left,
 				event.pageY - event.data.canvas_offset.top
 			),
+			node_type = match_node ? match_node.getAttribute('data-class') : null,
 			event_data = event.data;
 
 		if (
@@ -2507,10 +2507,20 @@ MC.canvas.volume = {
 
 		if (
 			match_node &&
-			$.inArray(match_node.getAttribute('data-class'), ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+			$.inArray(node_type, ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
 		)
 		{
-			MC.canvas.volume.bubble(match_node);
+			if (
+				event_data.action === 'move' &&
+				node_type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				MC.canvas.volume.close();
+			}
+			else
+			{
+				MC.canvas.volume.bubble(match_node);
+			}
 		}
 		else
 		{
@@ -2654,6 +2664,13 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 		}
+		else
+		{
+			// dispatch event when is not matched
+			$("#svg_canvas").trigger("CANVAS_PLACE_NOT_MATCH", {
+				'type': 'AWS.EC2.EBS.Volume'
+			});
+		}
 
 		event.data.shadow.remove();
 
@@ -2686,6 +2703,9 @@ MC.canvas.asgList = {
 			// Prepare data
 			var uid     = MC.extractID( this.id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
+			if (!layout) {
+				return;
+			}
 			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
 			var appData = MC.data.resource_list[ MC.canvas_data.region ];
 			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
@@ -3900,7 +3920,7 @@ MC.canvas.event.drawConnection = {
 			from_node = event.data.originalTarget,
 			port_name = event.data.port_name,
 			from_type = from_node.data('class'),
-			CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
+			// CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 			layout_group_data,
 			to_node,
 			port_name,
@@ -3974,6 +3994,11 @@ MC.canvas.event.drawConnection = {
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
+				// No need to trigger CHECK_CONNECTABLE_EVENT
+				// Because the error handling has been implemented
+				// in line creation.
+
+				/*
 				svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [from_node.attr('id'), port_name, to_node.attr('id'), to_port_name]);
 
 				if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
@@ -3983,6 +4008,12 @@ MC.canvas.event.drawConnection = {
 					// trigger event when connect two port
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
+				*/
+
+				line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
+
+				// trigger event when connect two port
+				svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 

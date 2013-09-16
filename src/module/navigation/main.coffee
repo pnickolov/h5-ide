@@ -3,21 +3,14 @@
 ####################################
 
 define [ 'jquery',
-         'text!./module/navigation/template.html',
-         'text!./module/navigation/template_data.html',
-         './module/navigation/model.js',
          'event',
-         'base_main',
-         'MC.ide.template'
-], ( $, template, template_data, model, ide_event, base_main ) ->
+         'base_main'
+], ( $, ide_event, base_main ) ->
 
     #private
     initialize = ->
         #extend parent
         _.extend this, base_main
-
-        #compile partial template
-        MC.IDEcompile 'nav', template_data, { '.app-list-data' : 'nav-app-list-tmpl', '.stack-list-data' : 'nav-stack-list-tmpl', '.region-empty-list' : 'nav-region-empty-list-tmpl', '.region-list' : 'nav-region-list-tmpl' }
 
     initialize()
 
@@ -25,7 +18,7 @@ define [ 'jquery',
     loadModule = () ->
 
         #load remote /module/navigation/view.js
-        require [ './module/navigation/view', 'UI.tooltip', 'hoverIntent' ], ( View ) ->
+        require [ 'navigation_view', 'navigation_model', 'UI.tooltip', 'hoverIntent' ], ( View, model ) ->
 
             #view
             #view       = new View()
@@ -35,7 +28,7 @@ define [ 'jquery',
 
             view.model = model
             #refresh view
-            view.render template
+            view.render()
 
             #listen vo set change event
             model.on 'change:app_list', () ->
@@ -86,7 +79,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'navigation:UPDATE_AWS_CREDENTIAL'
                 #call
-                model.describeRegionsService() if $.cookie( 'has_cred' ) is 'true'
+                model.describeRegionsService() if MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
     unLoadModule = () ->
         #view.remove()

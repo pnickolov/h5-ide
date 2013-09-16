@@ -97,6 +97,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #temp
                     MC.canvas_data.id = new_id
                     MC.canvas_data.key = key
+                    #
+                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
@@ -175,7 +177,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
-                    ide_event.trigger ide_event.STACK_DELETE, name, id
+                    ide_event.trigger ide_event.CLOSE_TAB, name, id
 
                     me.setFlag id, 'DELETE_STACK'
 
@@ -527,6 +529,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 'json_data'  : JSON.stringify(data),
                 'stack_id'   : data.id
                 'url'        : data.key
+                'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
@@ -599,6 +602,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                             if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
                                 handle.stop()
+                                ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
 
                     }
 

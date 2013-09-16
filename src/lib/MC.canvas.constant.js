@@ -548,7 +548,8 @@ var constant_data = {
 				"direction": {
 					"to": "horizontal"
 				},
-				"dash_line": true
+				"dash_line": true,
+				"relation": "unique"
 			}
 		},
 		"AWS.VPC.VPNGateway": {
@@ -559,12 +560,14 @@ var constant_data = {
 				"direction": {
 					"to": "horizontal"
 				},
-				"dash_line": true
+				"dash_line": true,
+				"relation": "unique"
 			},
 			"AWS.VPC.CustomerGateway": {
 				"type": "vpn",
 				"from": "vgw-vpn",
-				"to": "cgw-vpn"
+				"to": "cgw-vpn",
+				"relation": "unique"
 			}
 		},
 		"AWS.VPC.CustomerGateway": {
@@ -719,7 +722,7 @@ var constant_data = {
 		kp_list: {},
 		original_json: '',
 		SCALE_RATIO: 1,
-		LINE_STYLE: 0, //0fold line, 1 straight, 2 bezier q, 3 bezier qt
+		LINE_STYLE: 2, //0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
 		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},

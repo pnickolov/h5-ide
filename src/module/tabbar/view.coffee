@@ -2,13 +2,16 @@
 #  View(UI logic) for tabbar
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event ) ->
+define [ 'event',
+         'text!./module/tabbar/template.html',
+         'backbone', 'jquery', 'handlebars', 'UI.tabbar'
+], ( ide_event, tmpl ) ->
 
     TabBarView = Backbone.View.extend {
 
         el       : $( '#tab-bar' )
 
-        template : Handlebars.compile $( '#tabbar-tmpl' ).html()
+        template : Handlebars.compile tmpl
 
         current_tab : null
 
@@ -83,10 +86,21 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
             null
 
+        updateTabCloseState : ( tab_id ) ->
+            console.log 'updateTabCloseState, tab_id = ' + tab_id
+            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
+            close_target.removeClass 'close-restriction'
+            close_target.addClass    'close-tab'
+
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
             #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
-            $('#tab-bar-' + tab_id).find( '.close-tab' ).trigger( 'mousedown' )
+            target = $( '#tab-bar-' + tab_id ).find( '.close-tab' )
+            return if $( '#tab-bar-' + tab_id ).length is 0
+            if target.length > 0
+                target.trigger 'mousedown'
+            else
+                @trueCloseTab null, tab_id
             null
 
         changeDashboardTabname   : ( tab_name ) ->
@@ -133,14 +147,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
             console.log 'closeTabRestriction', target, tab_name, tab_id
 
             #if MC.canvas_property.original_json is JSON.stringify( MC.canvas_data )
-            #    @_trueCloseTab target, tab_id
+            #    @trueCloseTab target, tab_id
             #else
             #    console.log 'eeeeeeeeeeeeeeeeeeeeeeee'
 
             @current_tab = target
 
-            if tab_id.split( '-' )[0] is 'app'
-                @_trueCloseTab @current_tab, tab_id
+            if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
+                @trueCloseTab @current_tab, tab_id
                 return
 
             if MC.data.current_tab_id is tab_id
@@ -151,7 +165,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
                 origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
 
             if _.isEqual( data, origin_data )
-                @_trueCloseTab @current_tab, tab_id
+                @trueCloseTab @current_tab, tab_id
             else
                 modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
                 $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
@@ -159,16 +173,20 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.tabbar' ], ( ide_event
 
         _closeTabConfirm : ( event ) ->
             console.log 'closeTabConfirm, tab_id = ' + $( event.currentTarget ).attr 'data-tab-id'
-            event.data._trueCloseTab event.data.current_tab, $( event.currentTarget ).attr 'data-tab-id'
+            event.data.trueCloseTab event.data.current_tab, $( event.currentTarget ).attr 'data-tab-id'
             modal.close()
 
-        _trueCloseTab : ( target, tab_id ) ->
-            console.log '_trueCloseTab'
+        trueCloseTab : ( target, tab_id ) ->
+            console.log 'trueCloseTab'
+            ###
             close_target = $ target.find( 'a' )[1]
             close_target.removeClass 'close-restriction'
             close_target.addClass    'close-tab'
+            ###
+            @updateTabCloseState tab_id
+            #
             _.delay () ->
-                ide_event.trigger ide_event.STACK_DELETE, null, tab_id
+                ide_event.trigger ide_event.CLOSE_TAB, null, tab_id
             , 150
             null
     }

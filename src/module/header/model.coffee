@@ -30,15 +30,6 @@ define [ 'backbone', 'jquery', 'underscore',
 
                     result = forge_result.resolved_data
 
-                #delete cookies
-                #$.cookie 'userid',      null, { expires: 0 }
-                #$.cookie 'usercode',    null, { expires: 0 }
-                #$.cookie 'session_id',  null, { expires: 0 }
-                #$.cookie 'region_name', null, { expires: 0 }
-                #$.cookie 'email',       null, { expires: 0 }
-                #$.cookie 'has_cred',    null, { expires: 0 }
-
-                #
                 forge_handle.cookie.deleteCookie()
 
                 #SSO
@@ -126,8 +117,6 @@ define [ 'backbone', 'jquery', 'underscore',
             item = {}
             item.id = req.id
             item.rid = req.rid
-            item.time = req.time_end
-            item.time_str = MC.dateFormat(new Date(item.time * 1000), "hh:mm yyyy-MM-dd")
             item.region = req.region
             item.region_label = constant.REGION_SHORT_LABEL[req.region]
             item.is_readed = true
@@ -142,18 +131,31 @@ define [ 'backbone', 'jquery', 'underscore',
                 item.operation = lst[0].toLowerCase()
                 item.name = lst[lst.length-1]
 
+                item.time  = req.time_begin
                 item.state = req.state
                 if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                     item.is_error = true
                     item.error = req.data
+
+                    item.time = req.time_end
+
                 else if req.state is constant.OPS_STATE.OPS_STATE_PENDING
                     item.is_request = true
+
                 else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                     item.is_process = true
+
                 else if req.state is constant.OPS_STATE.OPS_STATE_DONE
                     item.is_complete = true
+
+                    item.time = req.time_end
+
                 else
                     return
+
+                # set time
+                utc             = new Date(item.time * 1000)
+                item.time_str   = MC.dateFormat(utc, "hh:mm yyyy-MM-dd")
 
                 if item.rid.search('stack') == 0    # run stack
                     item.name = lst[2]

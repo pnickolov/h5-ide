@@ -14,6 +14,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             'cost_list'         : null
             'type'              : 'stack'
             'total_fee'         : null
+            'stack_state'       : null
 
         initialize : ->
             #listen
@@ -23,6 +24,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             me = this
 
             is_stack = true
+
+            if MC.canvas.getState() is 'stack'
+                me.set 'stack_state', true
+            else
+                me.set 'stack_state', false
 
             # if MC.canvas_data.id.indexOf('app-') == 0
             #     is_stack = false
@@ -42,16 +48,22 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             me.getNetworkACL()
 
         getStackType : ->
-            type = MC.canvas_data.platform
 
-            if type == 'ec2-classic'
-                return 'EC2 Classic'
-            else if type == 'ec2-vpc'
-                return 'EC2 VPC'
-            else if type == 'default-vpc|custom-vpc'
-                return 'Default VPC'
-            else if type == 'custom-vpc'
-                return 'Custom VPC'
+            type = ''
+
+            switch MC.canvas_data.platform
+
+                when 'ec2-classic'  then type = 'EC2 Classic'
+
+                when 'ec2-vpc'      then type = 'EC2 VPC'
+
+                when 'default-vpc'  then type = 'Default VPC'
+
+                when 'custom-vpc'   then type = 'Custom VPC'
+
+            #return
+            type
+
 
         getSGList : ->
 
@@ -274,7 +286,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
         getCost : ->
             me = this
 
-            result = MC.aws.aws.getCost MC.canvas_data
+            copy_data = $.extend( true, {}, MC.canvas_data )
+            result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
 
             me.set 'cost_list', result.cost_list
             me.set 'total_fee', result.total_fee

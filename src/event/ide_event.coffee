@@ -47,6 +47,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_APP_TAB           : 'OPEN_APP_TAB'
         OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
+        CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
         #switch ide.html
@@ -63,11 +64,13 @@ define [ 'underscore', 'backbone' ], () ->
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
+        UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
+        UPDATE_DASHBOARD       : 'UPDATE_DASHBOARD'
 
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
@@ -112,7 +115,7 @@ define [ 'underscore', 'backbone' ], () ->
         STARTED_APP            : 'STARTED_APP'
         STOPPED_APP            : 'STOPPED_APP'
         TERMINATED_APP         : 'TERMINATED_APP'
-        STACK_DELETE           : 'STACK_DELETE'
+        #STACK_DELETE          : 'STACK_DELETE'
 
         #canvas event save stack/app by ctrl+s
         CANVAS_SAVE            : 'CANVAS_SAVE'

@@ -14,6 +14,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             'cost_list'         : null
             'type'              : 'stack'
             'total_fee'         : null
+            'stack_state'       : null
 
         initialize : ->
             #listen
@@ -23,6 +24,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             me = this
 
             is_stack = true
+
+            if MC.canvas.getState() is 'stack'
+                me.set 'stack_state', true
+            else
+                me.set 'stack_state', false
 
             # if MC.canvas_data.id.indexOf('app-') == 0
             #     is_stack = false

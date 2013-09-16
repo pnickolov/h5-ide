@@ -185,8 +185,8 @@ a {
 }
 
 #header--user > .no-credential {
-	top: 20px;
-	right: 5px;
+	top: 21px;
+	left: 15px;
 }
 
 #user-dropdown-wrapper .no-credential {
@@ -238,6 +238,16 @@ a {
 
 #alert-panel-wrapper {
 	width: 680px;
+}
+
+#header--user {
+	padding: 0 30px !important;
+}
+
+#header--user .icon-caret-down {
+	position: absolute;
+	top: 17px;
+	right: 10px;
 }
 
 #user-dropdown-wrapper {
@@ -1251,7 +1261,6 @@ a {
 	height: 492px;
 	margin-top: 80px;
 }
-
 
 #global-region-resource-list {
 	margin: 20px auto;

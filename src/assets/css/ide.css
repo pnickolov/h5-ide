@@ -270,11 +270,13 @@ a {
 	padding: 15px;
 	background-color: #E0EBF3;
 	color: #555;
+	border-bottom: 1px solid #C9CCDA;
 }
 
 #AWSCredential-failed {
-	background-color: #FF7E79;
-	color: #f3f3f3;
+	background-color: #FCE8E7;
+	color: #DB4E47;
+	border-bottom: 1px solid #ea9696;
 }
 
 #AWSCredential-setting .modal-body {

@@ -103,18 +103,19 @@ define [ 'event',
             me = this
 
             email = $('#account-email-input').val()
+            status = $('#email-verification-status')
+            status.removeClass 'error-status'
 
             if email
 
                 # check email format
-                if /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
-                    #
-
-                else if email is MC.base64Decode($.cookie('email')) # repeat
-                    #
-
+                if email isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
+                    if email is MC.base64Decode($.cookie('email')) # repeat
+                        status.show().text 'This email is repeat.'
+                    else
+                        me.trigger 'UPDATE_ACCOUNT_EMAIL', email
                 else
-                    me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+                    status.show().text 'It`s not an email address.'
 
         clickCancelEmail : (event) ->
             console.log 'account_setting_tab clickCancelEmail'

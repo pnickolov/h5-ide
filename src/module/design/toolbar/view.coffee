@@ -115,7 +115,8 @@ define [ 'MC', 'event',
 
             else
                 # set total fee
-                cost = MC.aws.aws.getCost MC.canvas_data
+                copy_data = $.extend( true, {}, MC.canvas_data )
+                cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 target = $( '#main-toolbar' )

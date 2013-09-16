@@ -383,8 +383,11 @@ require.config {
 		'header'       :
 			deps       : [ 'header_view', 'header_model', 'MC' ]
 
+		'design'       :
+			deps       : [ 'design_view', 'design_model', 'MC' ]
+
 		'navigation'   :
-			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
+			deps       : [ 'design', 'navigation_view', 'navigation_model', 'MC' ]
 
 		'tabbar'       :
 			deps       : [ 'tabbar_view', 'tabbar_model', 'MC' ]
@@ -395,8 +398,7 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
-		'design'       :
-			deps       : [ 'design_view', 'design_model', 'MC' ]
+
 
 }
 

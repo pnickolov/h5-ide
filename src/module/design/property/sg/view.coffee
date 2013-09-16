@@ -278,7 +278,7 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 
 			if value is 'custom'
 				$('#securitygroup-modal-description').show()
-				$('#sg-add-model-source-select .selection').width(60)
+				$('#sg-add-model-source-select .selection').width(69)
 			else
 				$('#securitygroup-modal-description').hide()
 				$('#sg-add-model-source-select .selection').width(255)

@@ -4268,6 +4268,11 @@ a.action-link:hover {
 	margin-top: 10px;
 }*/
 
+#sg-add-model-source-select .selection {
+	width: 69px;
+
+}
+
 #modal-sg-rule .modal-body{
 	padding: 10px;
 	width: 450px;
@@ -4341,7 +4346,8 @@ a.action-link:hover {
 }
 #securitygroup-modal-description {
 	display: inline-block;
-	width: 182px;
+	width: 149px;
+	margin-left: 7px;
 }
 
 /* Status Bar */

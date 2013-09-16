@@ -58,15 +58,18 @@ define [ 'event',
 
             if not account_id
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCOUNT_ID
+
             else if not access_key
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCESS_KEY
+
             else if not secret_key
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SECRET_KEY
 
-            # show AWSCredentials-submiting
-            me.showSetting('credential', 'on_submit')
+            else
+                # show AWSCredentials-submiting
+                me.showSetting('credential', 'on_submit')
 
-            me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+                me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
 
         onTab : (event) ->
             console.log 'account_setting_tab onTab'
@@ -103,7 +106,15 @@ define [ 'event',
 
             if email
 
-                me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+                # check email format
+                if /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
+                    #
+
+                else if email is MC.base64Decode($.cookie('email')) # repeat
+                    #
+
+                else
+                    me.trigger 'UPDATE_ACCOUNT_EMAIL', email
 
         clickCancelEmail : (event) ->
             console.log 'account_setting_tab clickCancelEmail'

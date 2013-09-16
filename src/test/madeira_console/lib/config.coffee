@@ -106,7 +106,7 @@ require.config {
 
 		#base_model
 		'base_model'             : 'model/base_model'
-		'base_main'              : 'test/madeira_console/lib/base_main'
+		'base_main'              : 'module/base/base_main'
 
 		#model
 		'session_model'   : 'model/session_model'

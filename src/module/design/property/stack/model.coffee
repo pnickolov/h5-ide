@@ -14,7 +14,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
             'cost_list'         : null
             'type'              : 'stack'
             'total_fee'         : null
-            'app_state'         : false
+            'stack_state'       : null
 
         initialize : ->
             #listen

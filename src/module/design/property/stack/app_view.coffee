@@ -48,8 +48,8 @@ define [ 'event', 'MC',
             this.refreshACLList()
 
         refreshACLList : () ->
-            #this.model.getNetworkACL()
-           # $('.stack-property-acl-list').html this.acl_template this.model.attributes
+            this.model.getNetworkACL()
+            $('.stack-property-acl-list').html this.acl_template this.model.attributes
 
         openCreateAclPanel : ( event ) ->
             source = $(event.target)

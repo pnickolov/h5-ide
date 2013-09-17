@@ -142,12 +142,13 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 null
 
             # switch region tab
-            view.on 'SWITCH_REGION', ( region ) ->
+            view.on 'SWITCH_REGION', ( region, fakeSwitch ) ->
                 current_region = region
                 model.loadResource region
                 #model.describeAWSStatusService region
-                @model.getItemList 'app', region, overview_app
-                @model.getItemList 'stack', region, overview_stack
+                if not fakeSwitch
+                    @model.getItemList 'app', region, overview_app
+                    @model.getItemList 'stack', region, overview_stack
 
             # reload resource
             view.on 'RELOAD_RESOURCE', ( region ) ->

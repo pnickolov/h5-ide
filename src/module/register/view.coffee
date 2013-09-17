@@ -50,10 +50,10 @@ define [ 'event',
                     this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
                     true
                 else
-                    status.addClass('error-status').show().text 'User name not matched.'
+                    status.addClass('error-status').show().text 'Username not matched.'
                     false
             else
-                status.addClass('error-status').show().text 'User name is required.'
+                status.addClass('error-status').show().text 'Username is required.'
                 false
 
         verificationEmail : ->
@@ -67,7 +67,7 @@ define [ 'event',
                 this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
                 true
             else
-                status.addClass('error-status').show().text 'Enter a valid email address.'
+                status.addClass('error-status').show().text 'This is not a valid email address.'
                 false
 
         verificationPassword : ->
@@ -97,7 +97,7 @@ define [ 'event',
             #
             right_count = 0
             $( '#register-btn' ).attr( 'disabled', true )
-            $( '#register-btn' ).attr( 'value', 'One Minute...' )
+            # $( '#register-btn' ).attr( 'value', 'One Minute...' )
             #
             right_count = right_count + 1 if @verificationUser()
             right_count = right_count + 1 if @verificationEmail()

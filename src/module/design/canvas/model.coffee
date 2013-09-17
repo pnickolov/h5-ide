@@ -1319,9 +1319,10 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 					# Update Eni number
 					MC.aws.instance.updateCount portMap['instance-attach'], instance_component.number
 
+					MC.aws.eni.reduceAllENIIPList(instance_component.uid)
+
 				if not main_public_eni
 					doAssociate()
-
 				else
 					template = MC.template.modalAttachingEni {
 						host : instance_component.name

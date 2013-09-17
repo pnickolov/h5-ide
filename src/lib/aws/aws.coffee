@@ -547,7 +547,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         currentRegion = MC.canvas_data.region
         accountData = MC.data.account_attribute[currentRegion]
-        if accountData.support_platform is 'VPC'
+        if accountData.support_platform is 'VPC' and MC.canvas_data.platform is 'default-vpc'
             return accountData.default_vpc
         else
             return false

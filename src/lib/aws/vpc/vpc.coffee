@@ -49,6 +49,9 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 
 	checkFullDefaultVPC = () ->
 
+		if MC.canvas_data.platform isnt 'default-vpc'
+			return false
+
 		currentRegion = MC.canvas_data.region
 		accountData = MC.data.account_attribute[currentRegion]
 

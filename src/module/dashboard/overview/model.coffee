@@ -412,6 +412,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 reg = /app-\w{8}/
                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
                     elb.detail = me.parseSourceValue 'DescribeLoadBalancers', elb, "detail", null
+                    elb.CreatedTime = MC.dateFormat(new Date(elb.CreatedTime),'yyyy-MM-dd hh:mm:ss')
                     if not elb.Instances
                         elb.state = '0 of 0 instances in service'
                         elb.instance_state = []

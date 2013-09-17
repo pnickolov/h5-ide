@@ -52,6 +52,7 @@ define [ 'event',
             console.log 'resetButtonEvent'
             $('#email-verification-status').hide()
             $( '#reset-btn' ).attr( 'disabled', true )
+            $( '#reset-btn' ).attr( 'value', 'One Minute...' )
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
             false
 
@@ -83,6 +84,7 @@ define [ 'event',
         showErrorMessage : ->
             console.log 'showErrorMessage'
             $( '#reset-btn' ).attr( 'disabled', false )
+            $( '#reset-btn' ).attr( 'value', 'Send Reset Password Email' )
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'The username or email address is not registered with MadeiraCloud.'
             false

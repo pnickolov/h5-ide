@@ -67,7 +67,7 @@ define [ 'event',
                 this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
                 true
             else
-                status.addClass('error-status').show().text 'It`s not an email address.'
+                status.addClass('error-status').show().text 'Enter a valid email address.'
                 false
 
         verificationPassword : ->
@@ -96,6 +96,8 @@ define [ 'event',
             password    = $( '#register-password' ).val()
             #
             right_count = 0
+            $( '#register-btn' ).attr( 'disabled', true )
+            $( '#register-btn' ).attr( 'value', 'One Minute...' )
             #
             right_count = right_count + 1 if @verificationUser()
             right_count = right_count + 1 if @verificationEmail()
@@ -109,14 +111,16 @@ define [ 'event',
         showUsernameError : ->
             console.log 'showUsernameError'
             $( '#register-btn' ).attr( 'disabled', false )
+            $( '#register-btn' ).attr( 'value', 'Create Account' )
             status = $('#username-verification-status')
-            status.addClass( 'error-status' ).show().text 'Username is already taken. Please choose another.'
+            status.addClass( 'error-status' ).show().text 'Username has been taken. Please choose another.'
 
         showEmailError : ->
             console.log 'showEmailError'
             $( '#register-btn' ).attr( 'disabled', false )
+            $( '#register-btn' ).attr( 'value', 'Create Account' )
             status = $('#email-verification-status')
-            status.addClass( 'error-status' ).show().text 'This email has already been used.'
+            status.addClass( 'error-status' ).show().text 'This email address has been used.'
 
         loginEvent : ->
             console.log 'loginEvent'

@@ -93,9 +93,9 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'email')
 
-                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL
+                    #view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL
 
-                    view.showSetting('account')
+                    view.clickUpdateEmail('is_failed')
 
                 if _.contains(attr_list, 'password')
 

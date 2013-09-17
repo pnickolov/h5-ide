@@ -97,7 +97,7 @@ define [ 'event',
 
             null
 
-        clickUpdateEmail : (event) ->
+        clickUpdateEmail : (flag) ->
             console.log 'account_setting_tab clickUpdateEmail'
 
             me = this
@@ -106,7 +106,10 @@ define [ 'event',
             status = $('#email-verification-status')
             status.removeClass 'error-status'
 
-            if email
+            if flag and flag is 'is_failed'
+                status.show().text 'The email address is already taken.'
+
+            else if email
 
                 # check email format
                 if email isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email

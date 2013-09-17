@@ -90,12 +90,15 @@ define [ 'jquery', 'MC.canvas.constant' ], () ->
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
                 console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
-                model.getAppResourcesService region_name, app_id
+                is_manual = true
+                model.getAppResourcesService region_name, app_id, is_manual
 
                 # update app data from mongo
                 model.updateAppTab region_name, app_id
 
                 null
+
+
     #private
     unLoadModule = () ->
         #view.remove()

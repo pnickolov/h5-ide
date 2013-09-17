@@ -186,14 +186,18 @@ define({
 		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
-
-
 		//toolbar handler
 		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
 		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
 		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
+		// Add new strings below this comment. Move above once English has been confirmed
+		//refresh button
+		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
+		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
+		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
+
 
 		/******property module******/
 		// instance property module

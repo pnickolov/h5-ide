@@ -217,7 +217,7 @@ define({
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** process module ******/

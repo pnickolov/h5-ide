@@ -258,7 +258,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     }
                 "PrivateIpAddress": "10.0.0.1"
                 "AutoAssign": "false"
-                "Primary": "false"
+                "Primary": false
             }
             MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.push ip_detail
 

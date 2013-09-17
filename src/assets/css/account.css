@@ -276,6 +276,19 @@ header {
 	padding-bottom: 25px;
 }
 
+/* Unsupported Browser Notice */
+
+#unsupported-browser {
+	position: fixed;
+	top: 60px;
+	padding: 10px 0;
+	text-align: center;
+	background: rgb(166, 209, 255);
+	width: 100%;
+	color: #333;
+	font-size: 16px;
+	border-bottom: 2px solid #A2BEDB;
+}
 
 
 /* Selection */

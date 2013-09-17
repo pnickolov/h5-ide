@@ -3,17 +3,17 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./password.html', 'text!./loading.html', 'text!./email.html', 'text!./expire.html', 'text!./success.html',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, password_tmpl, loading_tmpl, email_tmpl, expire_tmpl, success_tmpl ) ->
+         'text!./template.html', 'text!./email.html', 'text!./password.html', 'text!./loading.html', 'text!./expire.html', 'text!./success.html',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl ) ->
 
     ResetView = Backbone.View.extend {
 
         el       :  '#container'
 
         template      : Handlebars.compile tmpl
+        email_tmpl    : Handlebars.compile email_tmpl
         password_tmpl : Handlebars.compile password_tmpl
         loading_tmpl  : Handlebars.compile loading_tmpl
-        email_tmpl    : Handlebars.compile email_tmpl
         expire_tmpl   : Handlebars.compile expire_tmpl
         success_tmpl  : Handlebars.compile success_tmpl
 
@@ -32,11 +32,11 @@ define [ 'event',
             switch type
                 when 'normal'
                     @$el.html @template()
+                when 'email'
+                    @$el.html @email_tmpl()
                 when 'password'
                     @$el.html @loading_tmpl()
                     #this.trigger 'CHECK_VALIDATION'
-                when 'email'
-                    @$el.html @email_tmpl()
                 when 'expire'
                     @$el.html @expire_tmpl()
                 when 'success'

@@ -1276,16 +1276,24 @@ MC.canvas = {
 
 		$.each(node_connections, function (index, value)
 		{
-			line_target = layout_connection_data[ value.line ][ 'target' ];
+			try
+			{
+				line_target = layout_connection_data[ value.line ][ 'target' ];
 
-			MC.canvas.connect(
-				// From
-				node_id, line_target[ node_id ],
-				// To
-				value.target, line_target[ value.target ],
-				// Line
-				{'line_uid': value['line']}
-			);
+				MC.canvas.connect(
+					// From
+					node_id, line_target[ node_id ],
+					// To
+					value.target, line_target[ value.target ],
+					// Line
+					{'line_uid': value['line']}
+				);
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.reConnect] create connection error');
+				console.info(value);
+			}
 		});
 
 		return true;
@@ -1836,86 +1844,113 @@ MC.canvas.layout = {
 
 		$.each(components, function (key, value)
 		{
-			if (value.type === 'AWS.EC2.KeyPair')
+			try
 			{
-				MC.canvas_property.kp_list[ value.name ] = value.uid;
-			}
-			if (value.type === "AWS.EC2.SecurityGroup")
-			{
-				tmp = {};
-				tmp.name = value.name;
-				tmp.uid = value.uid;
-				tmp.member = [];
-				$.each(components, function (k, v)
+				if (value.type === 'AWS.EC2.KeyPair')
 				{
-					if (v.type === "AWS.EC2.Instance")
+					MC.canvas_property.kp_list[ value.name ] = value.uid;
+				}
+				if (value.type === "AWS.EC2.SecurityGroup")
+				{
+					tmp = {};
+					tmp.name = value.name;
+					tmp.uid = value.uid;
+					tmp.member = [];
+					$.each(components, function (k, v)
 					{
-						sg_uids = v.resource.SecurityGroupId;
-						$.each(sg_uids, function (id, sg_ref)
+						if (v.type === "AWS.EC2.Instance")
 						{
-							if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+							sg_uids = v.resource.SecurityGroupId;
+							$.each(sg_uids, function (id, sg_ref)
 							{
-								tmp.member.push(v.uid);
-							}
-						});
-					}
-					if (v.type === "AWS.AutoScaling.LaunchConfiguration")
-					{
-						sg_uids = v.resource.SecurityGroups;
-						$.each(sg_uids, function (id, sg_ref)
+								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+								{
+									tmp.member.push(v.uid);
+								}
+							});
+						}
+						if (v.type === "AWS.AutoScaling.LaunchConfiguration")
 						{
-							if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+							sg_uids = v.resource.SecurityGroups;
+							$.each(sg_uids, function (id, sg_ref)
 							{
-								tmp.member.push(v.uid);
-							}
-						});
-					}
-				});
-				MC.canvas_property.sg_list.push(tmp);
+								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+								{
+									tmp.member.push(v.uid);
+								}
+							});
+						}
+					});
+					MC.canvas_property.sg_list.push(tmp);
+				}
+				if (
+					value.type === "AWS.VPC.RouteTable" &&
+					value.resource.AssociationSet.length > 0 &&
+					value.resource.AssociationSet[0].Main === true
+				)
+				{
+					MC.canvas_property.main_route = value.uid;
+				}
+				if (
+					value.type === "AWS.VPC.NetworkAcl" &&
+					value.resource.Default === true
+				)
+				{
+					MC.canvas_property.default_acl = value.uid;
+				}
 			}
-			if (
-				value.type === "AWS.VPC.RouteTable" &&
-				value.resource.AssociationSet.length > 0 &&
-				value.resource.AssociationSet[0].Main === true
-			)
+			catch(error)
 			{
-				MC.canvas_property.main_route = value.uid;
-			}
-			if (
-				value.type === "AWS.VPC.NetworkAcl" &&
-				value.resource.Default === true
-			)
-			{
-				MC.canvas_property.default_acl = value.uid;
+				console.error('[MC.canvas.layout.init]init component error:');
+				console.info(value);
+				return true;//continue
 			}
 		});
 
 		$.each(MC.canvas_property.sg_list, function (key, value)
 		{
-			if (value.name === "DefaultSG" && key !== 0)
+			try
 			{
-				//move DefaultSG to the first one
-				default_sg = MC.canvas_property.sg_list.splice(key, 1);
-				MC.canvas_property.sg_list.unshift(default_sg[0]);
-				return false;
+				if (value.name === "DefaultSG" && key !== 0)
+				{
+					//move DefaultSG to the first one
+					default_sg = MC.canvas_property.sg_list.splice(key, 1);
+					MC.canvas_property.sg_list.unshift(default_sg[0]);
+					return false;
+				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.layout.init]init sg_list error:');
+				console.info(value);
+				return true;//continue
 			}
 		});
 
 		//init sg color
 		$.each(MC.canvas_property.sg_list, function (key, value)
 		{
-			if (key < MC.canvas.SG_COLORS.length)
-			{//use color table
-				MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
-			}
-			else
-			{//random color
-				var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-				for (; rand.length < 6;)
-				{
-					rand = '0' + rand;
+			try
+			{
+				if (key < MC.canvas.SG_COLORS.length)
+				{//use color table
+					MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
 				}
-				MC.canvas_property.sg_list[key].color = rand;
+				else
+				{//random color
+					var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+					for (; rand.length < 6;)
+					{
+						rand = '0' + rand;
+					}
+					MC.canvas_property.sg_list[key].color = rand;
+				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.layout.init]init sg color error:');
+				console.info(value);
+				return true;//continue
 			}
 		});
 
@@ -1933,8 +1968,17 @@ MC.canvas.layout = {
 		{
 			$.each(layout_data.component.node, function (id, data)
 			{
-				data.connection = [];
-				MC.canvas.add(id);
+				try
+				{
+					data.connection = [];
+					MC.canvas.add(id);
+				}
+				catch(error)
+				{
+					console.error('[MC.canvas.layout.init]add node error');
+					console.info(data);
+					return true;//continue
+				}
 			});
 		}
 		else
@@ -1946,10 +1990,19 @@ MC.canvas.layout = {
 		{
 			$.each(layout_data.component.group, function (id, data)
 			{
-				if(data.connection){
-					data.connection = [];
+				try
+				{
+					if(data.connection){
+						data.connection = [];
+					}
+					MC.canvas.add(id);
 				}
-				MC.canvas.add(id);
+				catch(error)
+				{
+					console.error('[MC.canvas.layout.init]add group error');
+					console.info(data);
+					return true;//continue
+				}
 			});
 		}
 		else

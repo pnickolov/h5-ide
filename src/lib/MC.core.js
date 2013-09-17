@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system
-#* Date: 20130819
+#* Date: 20130917
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -136,11 +136,12 @@ var MC = {
 
 	browserDetect: function ()
 	{
-		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig;
+		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig,
+			name;
 
 		rbrowser.exec(navigator.userAgent.toLowerCase());
 
-		var name = RegExp.$1;
+		name = RegExp.$1;
 
 		$(document.body).addClass(name);
 

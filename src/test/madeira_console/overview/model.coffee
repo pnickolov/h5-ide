@@ -384,11 +384,22 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         reRenderRegionResource: ( type )->
             @trigger "REGION_RESOURCE_CHANGED", type, @get( 'cur_region_resource' )
 
+        _fillAppFiled: ( describe ) ->
+            owner = atob $.cookie( 'usercode' )
+            if describe.tagSet
+                tag = describe.tagSet
+                if tag.app
+                    describe.app = tag.app
+                    describe.host = tag.name
+                    if tag[ 'Created by' ] is owner
+                        describe.owner = tag[ 'Created by' ]
+            describe
 
         ############################################################################################
         # setResource method class
         setResource : ( resources, region ) ->
             #cache aws resource data
+            MC.aws.aws.cacheResource resources, region
 
             me = this
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}
@@ -506,14 +517,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     ins.launchTime = MC.dateFormat(new Date(ins.launchTime),'yyyy-MM-dd hh:mm:ss')
                     is_managed = false
 
-                    if ins.tagSet != undefined
-                        tag = ins.tagSet
-                        if ins.tagSet.app
-                            is_managed = true
-                            resources.DescribeInstances[i].app = tag.app
-                            resources.DescribeInstances[i].host = tag.name
-                            if tag[ 'Created by' ] is owner
-                                resources.DescribeInstances[i].owner = tag[ 'Created by' ]
+                    me._fillAppFiled ins
 
                     if not resources.DescribeInstances[i].host
                         resources.DescribeInstances[i].host = ''
@@ -575,6 +579,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if resources.DescribeVpcs
                 lists.VPC = resources.DescribeVpcs.length
                 _.map resources.DescribeVpcs, ( vpc, i )->
+                    me._fillAppFiled vpc
                     me._set_app_property vpc, resources, i, 'DescribeVpcs'
                     vpc.detail = me.parseSourceValue 'DescribeVpcs', vpc, "detail", null
 
@@ -631,6 +636,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 vgw_set = []
 
                 _.map resources.DescribeVpnConnections, ( vpn ) ->
+                    me._fillAppFiled vpn
                     cgw_set.push vpn.customerGatewayId
                     vgw_set.push vpn.vpnGatewayId
 

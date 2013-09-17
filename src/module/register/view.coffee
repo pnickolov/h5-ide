@@ -41,20 +41,16 @@ define [ 'event',
             value  = $('#register-username').val()
             status = $('#username-verification-status')
             status.removeClass 'error-status'
-
-            #check vaild
-            if event.type is 'blur'
-                this.trigger 'CHECK_REPEAT', value
-                return
-
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
-                  status.show().text 'This username is available.'
-                  true
+                    status.show().text 'This username is available.'
+                    #check vaild
+                    this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
+                    true
                 else
-                  status.addClass('error-status').show().text 'User name not matched.'
-                  false
+                    status.addClass('error-status').show().text 'User name not matched.'
+                    false
             else
                 status.addClass('error-status').show().text 'User name is required.'
                 false
@@ -63,15 +59,11 @@ define [ 'event',
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
             status.removeClass 'error-status'
-
-            #check vaild
-            if event.type is 'blur'
-                this.trigger 'CHECK_REPEAT', null, value
-                return
-
             #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text 'This email is available.'
+                #check vaild
+                this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
                 true
             else
                 status.addClass('error-status').show().text 'It`s not an email address.'
@@ -81,22 +73,16 @@ define [ 'event',
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')
             status.removeClass 'error-status'
-
-            #signup.verification.confirm_password();
+            #
             if value isnt ''
-                if value is $('#register-username').val()
-                  #/[A-Z]{1}/.test(value) &&
-                  #/[0-9]{1}/.test(value)
-                  status.addClass('error-status').show().text 'Password should not be the same with your username'
-                  false
-                else if value.length > 6 # &&
-                  #/[A-Z]{1}/.test(value) &&
-                  #/[0-9]{1}/.test(value)
-                  status.show().text 'This password is OK.'
-                  true
+                if value.length > 6 # &&
+                    #/[A-Z]{1}/.test(value) &&
+                    #/[0-9]{1}/.test(value)
+                    status.show().text 'This password is OK.'
+                    true
                 else
-                  status.addClass('error-status').show().text 'This password is too weak.'
-                  false
+                    status.addClass('error-status').show().text 'This password is too weak.'
+                    false
             else
                 status.addClass('error-status').show().text 'Password is required.'
                 false
@@ -104,16 +90,19 @@ define [ 'event',
         submit : ->
             console.log 'submit'
             #
-            username = $( '#register-username' ).val()
-            email    = $( '#register-email' ).val()
-            password = $( '#register-password' ).val()
+            username    = $( '#register-username' ).val()
+            email       = $( '#register-email' ).val()
+            password    = $( '#register-password' ).val()
             #
-            $( '#register-btn' ).attr( 'disabled', true )
+            right_count = 0
             #
-            if @verificationUser() and @verificationEmail() and @verificationPassword()
+            right_count = right_count + 1 if @verificationUser()
+            right_count = right_count + 1 if @verificationEmail()
+            right_count = right_count + 1 if @verificationPassword()
+
+            if right_count is 3
+                $( '#register-btn' ).attr( 'disabled', true )
                 this.trigger 'CHECK_REPEAT', username, email, password
-            else
-                #TO DO
             false
 
         showUsernameError : ->

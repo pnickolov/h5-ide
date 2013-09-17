@@ -46,7 +46,7 @@ define [ 'event',
 
         passwordRender : ->
             console.log 'passwordRender'
-            $el.html @password_tmpl()
+            @$el.html @password_tmpl()
 
         resetButtonEvent : ->
             console.log 'resetButtonEvent'

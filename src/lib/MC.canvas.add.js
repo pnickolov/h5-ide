@@ -2216,14 +2216,22 @@ MC.canvas.add = function (flag, option, coordinate)
 				if ( MC.canvas.getState() !=='stack' )
 				{
 					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
-					var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
-					if (asg_comp_data)
+
+					if ( MC.data && MC.data.resource_list && MC.data.resource_list[MC.canvas_data.region] )
 					{
-						option.name = asg_comp_data.Instances.member.length + " in service";
+						var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
+						if (asg_comp_data)
+						{
+							option.name = asg_comp_data.Instances.member.length + " in service";
+						}
+						else
+						{
+							option.name = "0 in service";
+						}
 					}
 					else
 					{
-						option.name = "0 in service";
+						option.name = asg_comp.resource.MinSize + " - " + asg_comp.resource.MaxSize + " in service";
 					}
 				}
 

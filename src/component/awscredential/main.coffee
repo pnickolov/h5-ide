@@ -11,7 +11,7 @@ define [ 'jquery', 'event',
     #$( 'head' ).append template
 
     #private
-    loadModule = () ->
+    loadModule = (flag) ->
 
         #
         require [ './component/awscredential/view', './component/awscredential/model' ], ( View, Model ) ->
@@ -26,7 +26,10 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
-            if model.attributes.is_authenticated
+            if flag is 'new_account'
+                view.showSet 'new_account'
+
+            else if model.attributes.is_authenticated
                 view.showUpdate()
             else
                 if MC.forge.cookie.getCookieByName('has_cred') is 'false' then view.showSet 'is_failed' else view.showSet()

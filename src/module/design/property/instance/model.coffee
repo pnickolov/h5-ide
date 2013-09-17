@@ -247,7 +247,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 							}
 						"PrivateIpAddress": "10.0.0.1"
 						"AutoAssign": "false"
-						"Primary": "false"
+						"Primary": false
 					}
 					val.resource.PrivateIpAddressSet.push ip_detail
 

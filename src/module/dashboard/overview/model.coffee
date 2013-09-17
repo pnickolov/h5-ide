@@ -275,6 +275,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if not _.size data
                 return
             if region is null
+
+                #cache aws resource data
+                $.each data, (key, resources) ->
+                    try
+                        MC.aws.aws.cacheResource resources, key
+                    catch error
+                        console.error '[awsReturnHandler]catchResource error:' + key
+                        console.info resources
+                        return true #continue
+
+
                 # update regionlist for optimize network
                 @cacheResource 'raw', data
 
@@ -399,8 +410,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         ############################################################################################
         # setResource method class
         setResource : ( resources, region ) ->
-            #cache aws resource data
-            MC.aws.aws.cacheResource resources, region
 
             me = this
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}
@@ -412,6 +421,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 reg = /app-\w{8}/
                 _.map resources.DescribeLoadBalancers, ( elb, i ) ->
                     elb.detail = me.parseSourceValue 'DescribeLoadBalancers', elb, "detail", null
+                    elb.CreatedTime = MC.dateFormat(new Date(elb.CreatedTime),'yyyy-MM-dd hh:mm:ss')
                     if not elb.Instances
                         elb.state = '0 of 0 instances in service'
                         elb.instance_state = []
@@ -598,7 +608,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     dhcp_service.DescribeDhcpOptions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set, null, ( result ) ->
                         if !result.is_error
                         #DescribeDhcpOptions succeed
-                            dhcp_set = result.resolved_data.item
+                            dhcp_set = result.resolved_data
 
                             _.map resources.DescribeVpcs, ( vpc ) ->
                                 if vpc.dhcpOptionsId == 'default'
@@ -648,7 +658,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                         if !result.is_error
                         #DescribeCustomerGateways succeed
-                            cgw_set = result.resolved_data.item
+                            cgw_set = result.resolved_data
 
                             _.map resources.DescribeVpnConnections, ( vpn ) ->
                                 if $.type(cgw_set) == 'object'
@@ -678,7 +688,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     vpngateway_service.DescribeVpnGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set, null, ( result ) ->
                         if !result.is_error
                         #DescribeVpnGateways succeed
-                            vgw_set = result.resolved_data.item
+                            vgw_set = result.resolved_data
 
                             _.map resources.DescribeVpnConnections, ( vpn ) ->
                                 if $.type(vgw_set) == 'object'
@@ -834,6 +844,28 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         resources[action][i].owner = tag.value
                     null
             null
+
+        _genDhcp: (dhcp) ->
+
+            me = this
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions = {}
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.title = "dhcpOptionsId"
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info = []
+
+            sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
+
+            if dhcp.dhcpConfigurationSet
+
+                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
+
+                    _.map item.valueSet, ( it, j )->
+
+                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', j], "show_key": item.key }
+
+            me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
 
         _genBubble : ( source, title, entry ) ->
 
@@ -1199,8 +1231,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             me = this
 
-            #get service(model)
-            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'  # new account
+                ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL, 'new_account'
+
+            else
+                #get service(model)
+                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
 
             null
 

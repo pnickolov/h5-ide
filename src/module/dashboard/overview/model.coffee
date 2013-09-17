@@ -275,6 +275,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             if not _.size data
                 return
             if region is null
+
+                #cache aws resource data
+                $.each data, (key, resources) ->
+                    try
+                        MC.aws.aws.cacheResource resources, key
+                    catch error
+                        console.error '[awsReturnHandler]catchResource error:' + key
+                        console.info resources
+                        return true #continue
+
+
                 # update regionlist for optimize network
                 @cacheResource 'raw', data
 
@@ -399,8 +410,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
         ############################################################################################
         # setResource method class
         setResource : ( resources, region ) ->
-            #cache aws resource data
-            MC.aws.aws.cacheResource resources, region
 
             me = this
             lists = {ELB:0, EIP:0, Instance:0, VPC:0, VPN:0, Volume:0, AutoScalingGroup:0, SNS:0, CW:0}

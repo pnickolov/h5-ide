@@ -91,7 +91,10 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 else    # set aws credential
                     view.disableSwitchRegion()
                     view.showCredential(flag)
-                    view.renderLoadingFaild()
+                    if flag is 'new_account'
+                        ide_event.trigger ide_event.SWITCH_MAIN
+                    else
+                        view.renderLoadingFaild()
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
                 if Helper.hasCredential()

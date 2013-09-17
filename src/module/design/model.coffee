@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' ], ( MC, ide_event, constant, app_model, instance_service) ->
+define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'i18n!nls/lang.js', 'backbone' ], ( MC, ide_event, constant, app_model, instance_service, lang) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -44,7 +44,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
                         if uid
                             MC.canvas.select uid
 
+
+                        #app_name = MC.forge.app.getNameById app_id
+                        #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FINISH, if app_name then app_name else app_id + '(closed)'
+
                     catch error
+
+                        app_name = MC.forge.app.getNameById app_id
+                        notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FAILED, if app_name then app_name else app_id + '(closed)'
 
                         console.error '[error]APP_RESOURCE_RETURN'
 
@@ -239,8 +246,16 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'backbone' 
 
             null
 
-        getAppResourcesService : ( region, app_id )->
+        getAppResourcesService : ( region, app_id, is_manual )->
             me = this
+            current_tab = ''
+
+            #if is_manual
+            #    ide_event.trigger ide_event.SWITCH_LOADING_BAR
+            ##   app_name = MC.forge.app.getNameById app_id
+            ##   notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
+
+
             app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
     }
 

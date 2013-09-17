@@ -211,7 +211,7 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
             data.sourceDestCheck = if data.sourceDestCheck is "true" then "enabled" else "disabled"
 
             for i in data.privateIpAddressesSet.item
-                i.primary = i.primary == "true"
+                i.primary = i.primary == true
 
             data
 

@@ -54,7 +54,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 if MC.data.supported_platforms.length <= 0
                 else
                     MC.data.is_loading_complete = true
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.IDE_AVAILABLE
 
                 view.displayLoadTime()
 
@@ -82,7 +82,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     view.enableCreateStack()
 
             # update aws credential
-            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, (flag) ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                 if Helper.hasCredential()
@@ -90,8 +90,11 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     view.reloadResource()
                 else    # set aws credential
                     view.disableSwitchRegion()
-                    view.showCredential()
-                    view.renderLoadingFaild()
+                    view.showCredential(flag)
+                    if flag is 'new_account'
+                        ide_event.trigger ide_event.SWITCH_MAIN
+                    else
+                        view.renderLoadingFaild()
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
                 if Helper.hasCredential()
@@ -168,7 +171,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
             model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
                 console.log 'region resource table render'
-                view.reRenderRegionPartial( type, data )
+                view.renderRegionResourceBody type, true
 
             # update region thumbnail
             ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->

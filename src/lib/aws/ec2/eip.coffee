@@ -20,7 +20,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 			if MC.canvas_data.component[parentCompUID]
 				eniId = MC.canvas_data.component[parentCompUID].resource.NetworkInterfaceId
 				appComp = MC.data.resource_list[MC.canvas_data.region][eniId]
-				if appComp
+				if appComp and appComp.association
 					ipAddress = appComp.association.publicIp
 		MC.canvas.update(parentCompUID, 'tooltip', 'eip_status', ipAddress)
 

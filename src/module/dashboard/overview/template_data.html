@@ -38,7 +38,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="0">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeInstances">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -64,7 +64,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="1">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeAddresses">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -90,7 +90,7 @@
                 <ul>
                     {{#each data}}
                         <li>
-                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="2">
+                            <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVolumes">
                                 <h4>{{city}}</h4>
                                 <h5>{{area}}</h5>
                                 <span class="global-region-resource-location-count">{{total}}</span>
@@ -116,7 +116,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="5">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeLoadBalancers">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -140,7 +140,7 @@
                     <ul>
                         {{#each data}}
                             <li>
-                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-id="4">
+                                <a href="javascript:void(0)" data-region="{{region}}" data-resource-type="DescribeVpnConnections">
                                     <h4>{{city}}</h4>
                                     <h5>{{area}}</h5>
                                     <span class="global-region-resource-location-count">{{total}}</span>
@@ -283,7 +283,7 @@
 <!-- Region App & Stack -->
 
 
-<!--{{ .region-resource }}-->
+<!--{{ .region-resource-head }}-->
 
 <!-- Region AWS resource -->
 <div id="region-aws-resource-wrap">
@@ -291,7 +291,7 @@
         <div id="region-aws-resource-tab">
             <ul class="clearfix">
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item on">
+                    <a href="javascript:void(0)" class="region-resource-tab-item on" data-resource-type="DescribeInstances">
                         <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Instance}}</span>
                         <span class="region-resource-name">Instance</span>
@@ -299,7 +299,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAddresses">
                         <i id="global-resource-icon-eip" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{EIP}}</span>
                         <span class="region-resource-name">Elastic IP</span>
@@ -307,7 +307,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVolumes">
                         <i id="global-resource-icon-vol" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Volume}}</span>
                         <span class="region-resource-name">Volume</span>
@@ -315,7 +315,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpcs">
                         <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPC}}</span>
                         <span class="region-resource-name">VPC</span>
@@ -323,7 +323,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPN}}</span>
                         <span class="region-resource-name">VPN</span>
@@ -331,7 +331,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
                         <i id="global-resource-icon-elb" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{ELB}}</span>
                         <span class="region-resource-name">Load Balancer</span>
@@ -339,7 +339,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
                         <i id="global-resource-icon-asg" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{AutoScalingGroup}}</span>
                         <span class="region-resource-name">Auto Scaling Group</span>
@@ -347,7 +347,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAlarms">
                         <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{CW}}</span>
                         <span class="region-resource-name">CloudWatch Alarm</span>
@@ -355,7 +355,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="region-resource-tab-item">
+                    <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="ListSubscriptions">
                         <i id="global-resource-icon-sns" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{SNS}}</span>
                         <span class="region-resource-name">SNS Subscription</span>
@@ -365,159 +365,165 @@
         </div>
     {{/with}}
 
-    {{#with cur_region_resource}}
-        <div id="region-aws-resource-data">
-            <!-- Instance -->
-            <div class="table-head-fix" style="display:block;">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width: 25%">Instance Name/ID</th>
-                                <th class="sortable" style="width: 17%">Status</th>
-                                <th class="sortable" style="width: 20%">Launch Time</th>
-                                <th class="sortable" style="width: 15%">AMI</th>
-                                <th class="sortable" style="width: 15%">Availability Zone</th>
-                                <th class="sortable" style="width: 8%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeInstances">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%"><span class="th-inner"></span></th>
-                                        <th style="width: 17%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                        <th style="width: 8%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each DescribeInstances }}
-                                    <tr>
-                                        <td>
-                                            <div>
-                                                {{#if app}}
-                                                    {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
-                                                    {{else}}
-                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
-                                                    {{/if}}
-                                                {{else}}
-                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                                {{/if}}
-                                            </div>
-                                            <div>
-                                                {{ host }}
-                                                <span class="resource-id">( {{ instanceId }} )</span>
-                                            </div>
-                                        </td>
-                                        <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
-                                        <td>{{ launchTime }}</td>
-                                        <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
-                                        <td>{{ placement.availabilityZone}}</td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no instance in this region.</p>
-                                    </div>
-                                {{/each}}
+    <div id="region-aws-resource-data">
 
-                                </tbody>
-                            </table>
+    </div>
+
+</div>
+<!--{{ .region-resource-body }}-->
+  <!-- DescribeInstances -->
+  <div class="table-head-fix" id="DescribeInstances">
+    <table class="table-head">
+        <thead>
+            <tr>
+                <th class="sortable" style="width: 25%">Instance Name/ID</th>
+                <th class="sortable" style="width: 17%">Status</th>
+                <th class="sortable" style="width: 20%" data-row-type="datetime">Launch Time</th>
+                <th class="sortable" style="width: 15%">AMI</th>
+                <th class="sortable" style="width: 15%">Availability Zone</th>
+                <th class="sortable" style="width: 8%">Detail</th>
+            </tr>
+        </thead>
+    </table>
+    <div class="scroll-wrap">
+        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+        <div class="scroll-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%"><span class="th-inner"></span></th>
+                        <th style="width: 17%"><span class="th-inner"></span></th>
+                        <th style="width: 20%"><span class="th-inner"></span></th>
+                        <th style="width: 15%"><span class="th-inner"></span></th>
+                        <th style="width: 15%"><span class="th-inner"></span></th>
+                        <th style="width: 8%"><span class="th-inner"></span></th>
+                    </tr>
+                    <tbody>
+                        {{#each DescribeInstances }}
+                        <tr>
+                            <td>
+                                <div>
+                                    {{#if app}}
+                                    {{#if owner}}
+                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
+                                    {{else}}
+                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                    {{/if}}
+                                    {{else}}
+                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+                                    {{/if}}
+                                </div>
+                                <div>
+                                    {{ host }}
+                                    <span class="resource-id">( {{ instanceId }} )</span>
+                                </div>
+                            </td>
+                            <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
+                            <td>{{ launchTime }}</td>
+                            <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{ image.name }}","description":"{{image.description}}","architecture":"{{image.architecture}}","imageLocation":"{{image.imageLocation}}","isPublic":"{{image.isPublic}}","kernelId":"{{image.kernelId}}","rootDeviceName":"{{image.rootDeviceName}}","rootDeviceType":"{{image.rootDeviceType}}"}'>{{ imageId }}</a></td>
+                            <td>{{ placement.availabilityZone}}</td>
+                            <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                        </tr>
+                        {{else}}
+                        <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                            <p>There is no instance in this region.</p>
                         </div>
-                    </div>
-                </div>
+                        {{/each}}
 
-                <!-- EIP -->
-                <div class="table-head-fix">
-                    <table class="table-head">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- DescribeInstances -->
+
+    <!-- DescribeAddresses -->
+    <div class="table-head-fix" id="DescribeAddresses">
+        <table class="table-head">
+            <thead>
+                <tr>
+                    <th style="width:40%">IP</th>
+                    <th class="sortable" style="width:40%">Associated Instance</th>
+                    <th style="width:20%">Detail</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="scroll-wrap">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%"><span class="th-inner"></span></th>
+                            <th style="width: 40%"><span class="th-inner"></span></th>
+                            <th style="width: 20%"><span class="th-inner"></span></th>
+                        </tr>
+                        <tbody>
+                            {{#each DescribeAddresses }}
+                            <tr>
+                                <td>
+                                    {{ publicIp }}
+                                </td>
+                                <td>{{ instanceId }}</td>
+                                <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                            </tr>
+                            {{else}}
+                            <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                <p>There is no Elastic IP in this region.</p>
+                            </div>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- DescribeAddresses -->
+
+        <!-- DescribeVolumes -->
+        <div class="table-head-fix" id="DescribeVolumes">
+            <table class="table-head">
+                <thead>
+                    <tr>
+                        <th class="sortable" style="width:16%">Name/ID</th>
+                        <th class="sortable" style="width:18%">Status</th>
+                        <th class="sortable" style="width:21%" data-row-type="datetime">Create Time</th>
+                        <th class="sortable" style="width:15%">Device Name</th>
+                        <th class="sortable" style="width:15%">Attachment Status</th>
+                        <th style="width:15%">Detail</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="scroll-wrap">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th class="sortable" style="width:40%">IP</th>
-                                <th class="sortable" style="width:40%">Associated Instance</th>
-                                <th style="width:20%">Detail</th>
+                                <th style="width: 16%"><span class="th-inner"></span></th>
+                                <th style="width: 18%"><span class="th-inner"></span></th>
+                                <th style="width: 21%"><span class="th-inner"></span></th>
+                                <th style="width: 15%"><span class="th-inner"></span></th>
+                                <th style="width: 15%"><span class="th-inner"></span></th>
+                                <th style="width: 15%"><span class="th-inner"></span></th>
                             </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeAddresses">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 40%"><span class="th-inner"></span></th>
-                                        <th style="width: 40%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each DescribeAddresses }}
-                                <tr>
-                                    <td>
-                                        {{ publicIp }}
-                                    </td>
-                                    <td>{{ instanceId }}</td>
-                                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                </tr>
-                                {{else}}
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no Elastic IP in this region.</p>
-                                    </div>
-                                {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Volume -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:16%">Name/ID</th>
-                                <th class="sortable" style="width:18%">Status</th>
-                                <th class="sortable" style="width:21%">Create Time</th>
-                                <th class="sortable" style="width:15%">Device Name</th>
-                                <th class="sortable" style="width:15%">Attachment Status</th>
-                                <th style="width:15%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeVolumes">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 16%"><span class="th-inner"></span></th>
-                                        <th style="width: 18%"><span class="th-inner"></span></th>
-                                        <th style="width: 21%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                        <th style="width: 15%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
+                            <tbody>
                                 {{#each DescribeVolumes }}
                                 <tr>
                                     <td>
                                         <div>
-                                        {{#if app}}
+                                            {{#if app}}
                                             {{#if owner}}
-                                                <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                            <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
                                             {{else}}
-                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                            <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                             {{/if}}
-                                        {{else}}
+                                            {{else}}
                                             <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                        {{/if}}
+                                            {{/if}}
                                         </div>
                                         <div>
-                                        {{ volumeId }}
+                                            {{ volumeId }}
                                         </div>
                                     </td>
                                     <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
@@ -527,84 +533,86 @@
                                     <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class=" icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                                 </tr>
                                 {{else}}
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no volume in this region.</p>
-                                    </div>
+                                <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                    <p>There is no volume in this region.</p>
+                                </div>
                                 {{/each}}
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+            <!-- DescribeVolumes -->
 
-                <!-- VPC -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:25%">Name/ID</th>
-                                <th class="sortable" style="width:20%">Status</th>
-                                <th class="sortable" style="width:25%">CIDR</th>
-                                <th class="sortable" style="width:20%">DHCP Settings</th>
-                                <th style="width:10%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeVpcs">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 25%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each DescribeVpcs }}
+            <!-- DescribeVpcs -->
+            <div class="table-head-fix" id="DescribeVpcs">
+                <table class="table-head">
+                    <thead>
+                        <tr>
+                            <th class="sortable" style="width:25%">Name/ID</th>
+                            <th class="sortable" style="width:20%">Status</th>
+                            <th class="sortable" style="width:25%">CIDR</th>
+                            <th class="sortable" style="width:20%">DHCP Settings</th>
+                            <th style="width:10%">Detail</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scroll-wrap">
+                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                    <div class="scroll-content">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <div>
-                                        {{#if app}}
-                                            {{#if owner}}
-                                                <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
-                                            {{else}}
-                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
-                                            {{/if}}
-                                        {{else}}
-                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                        {{/if}}
-                                        </div>
-                                        <div>
-                                        {{ vpcId }}
-                                        </div>
-                                    </td>
-                                    <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-                                    <td>{{ cidrBlock }}</td>
-                                    {{#if dhcp}}
-                                    <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
-                                    {{else}}
-                                    <td>None</td>
-                                    {{/if}}
-                                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                    <th style="width: 25%"><span class="th-inner"></span></th>
+                                    <th style="width: 20%"><span class="th-inner"></span></th>
+                                    <th style="width: 25%"><span class="th-inner"></span></th>
+                                    <th style="width: 20%"><span class="th-inner"></span></th>
+                                    <th style="width: 10%"><span class="th-inner"></span></th>
                                 </tr>
-                                {{else}}
+                                <tbody>
+                                    {{#each DescribeVpcs }}
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                {{#if app}}
+                                                {{#if owner}}
+                                                <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                {{else}}
+                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                {{/if}}
+                                                {{else}}
+                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
+                                                {{/if}}
+                                            </div>
+                                            <div>
+                                                {{ vpcId }}
+                                            </div>
+                                        </td>
+                                        <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+                                        <td>{{ cidrBlock }}</td>
+                                        {{#if dhcp}}
+                                        <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{dhcp}}}'>{{ dhcpOptionsId }}</a></td>
+                                        {{else}}
+                                        <td>None</td>
+                                        {{/if}}
+                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                    </tr>
+                                    {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
                                         <p>There is no VPC in this region.</p>
                                     </div>
-                                {{/each}}
+                                    {{/each}}
 
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                <!-- DescribeVpcs -->
 
-                <!-- VPN -->
-                <div class="table-head-fix">
+                <!-- DescribeVpnConnections -->
+                <div class="table-head-fix" id="DescribeVpnConnections">
                     <table class="table-head">
                         <thead>
                             <tr>
@@ -619,7 +627,7 @@
                     <div class="scroll-wrap">
                         <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                         <div class="scroll-content">
-                            <table class="table" id="DescribeVpnConnections">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th style="width: 25%"><span class="th-inner"></span></th>
@@ -628,249 +636,248 @@
                                         <th style="width: 20%"><span class="th-inner"></span></th>
                                         <th style="width: 10%"><span class="th-inner"></span></th>
                                     </tr>
-                                <tbody>
+                                    <tbody>
 
-                                {{#each DescribeVpnConnections }}
-                                    <tr>
-                                        <td>
-                                            <div>
-                                                {{#if app}}
+                                        {{#each DescribeVpnConnections }}
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    {{#if app}}
                                                     {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
                                                     {{else}}
-                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                     {{/if}}
-                                                {{else}}
+                                                    {{else}}
                                                     <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
-                                                {{/if}}
-                                            </div>
-                                            <div>
-                                                {{ vpnConnectionId }}
-                                            </div>
-                                        </td>
-                                        <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-                                        <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
-                                        <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no VPN in this region.</p>
-                                    </div>
-                                {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Load Balancer -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:25%">DNS Name</th>
-                                <th class="sortable" style="width:20%">Create time</th>
-                                <th class="sortable" style="width:25%">Availability Zone</th>
-                                <th class="sortable" style="width:20%">Status</th>
-                                <th style="width:10%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeLoadBalancers">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 25%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-
-                                {{#each DescribeLoadBalancers }}
-                                    <tr>
-                                        <td>{{ DNSName }}</td>
-                                        <td>{{ CreatedTime }}</td>
-                                        <td>{{ AvailabilityZones.member }}</td>
-                                        <td>{{ state }}</td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no Load Balancer in this region.</p>
-                                    </div>
-                                {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Auto Scaling Group -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:20%">Name</th>
-                                <th class="sortable" style="width:50%">Current/Last Activity</th>
-                                <th class="sortable" style="width:20%">Activity Status</th>
-                                <th style="width:10%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeAutoScalingGroups">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 50%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each DescribeAutoScalingGroups}}
-                                    <tr>
-                                        <td>
-                                            <div>
-                                                {{#if app}}
-                                                    {{#if owner}}
-                                                        <a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
-                                                    {{else}}
-                                                        <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                     {{/if}}
+                                                </div>
+                                                <div>
+                                                    {{ vpnConnectionId }}
+                                                </div>
+                                            </td>
+                                            <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+                                            <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{vgw}}}'>{{ vpnGatewayId }}</a></td>
+                                            <td><a href="javascript:void(0)" class="bubble table-link"  data-bubble-template="bubbleRegionResourceInfo" data-bubble-data='{{{cgw}}}'>{{ customerGatewayId }}</a></td>
+                                            <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                        </tr>
+                                        {{else}}
+                                        <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                            <p>There is no VPN in this region.</p>
+                                        </div>
+                                        {{/each}}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DescribeVpnConnections -->
+
+                    <!-- DescribeLoadBalancers -->
+                    <div class="table-head-fix" id="DescribeLoadBalancers">
+                        <table class="table-head">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" style="width:25%">DNS Name</th>
+                                    <th class="sortable" style="width:20%" data-row-type="datetime">Create time</th>
+                                    <th class="sortable" style="width:25%">Availability Zone</th>
+                                    <th class="sortable" style="width:20%">Status</th>
+                                    <th style="width:10%">Detail</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="scroll-wrap">
+                            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                            <div class="scroll-content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 25%"><span class="th-inner"></span></th>
+                                            <th style="width: 20%"><span class="th-inner"></span></th>
+                                            <th style="width: 25%"><span class="th-inner"></span></th>
+                                            <th style="width: 20%"><span class="th-inner"></span></th>
+                                            <th style="width: 10%"><span class="th-inner"></span></th>
+                                        </tr>
+                                        <tbody>
+
+                                            {{#each DescribeLoadBalancers }}
+                                            <tr>
+                                                <td>{{ DNSName }}</td>
+                                                <td>{{ CreatedTime }}</td>
+                                                <td>{{ AvailabilityZones.member }}</td>
+                                                <td>{{ state }}</td>
+                                                <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                            </tr>
+                                            {{else}}
+                                            <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                                <p>There is no Load Balancer in this region.</p>
+                                            </div>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- DescribeLoadBalancers -->
+
+                        <!-- DescribeAutoScalingGroups -->
+                        <div class="table-head-fix" id="DescribeAutoScalingGroups">
+                            <table class="table-head">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" style="width:20%">Name</th>
+                                        <th class="sortable" style="width:50%">Current/Last Activity</th>
+                                        <th class="sortable" style="width:20%">Activity Status</th>
+                                        <th style="width:10%">Detail</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="scroll-wrap">
+                                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                                <div class="scroll-content">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 20%"><span class="th-inner"></span></th>
+                                                <th style="width: 50%"><span class="th-inner"></span></th>
+                                                <th style="width: 20%"><span class="th-inner"></span></th>
+                                                <th style="width: 10%"><span class="th-inner"></span></th>
+                                            </tr>
+                                            <tbody>
+                                                {{#each DescribeAutoScalingGroups}}
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            {{#if app}}
+                                                            {{#if owner}}
+                                                            <a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
+                                                            {{else}}
+                                                            <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                            {{/if}}
+                                                            {{else}}
+                                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
+                                                            {{/if}}
+                                                        </div>
+                                                        <div>
+                                                            {{AutoScalingGroupName}}
+                                                        </div>
+                                                    </td>
+                                                    <td>{{last_activity}}</td>
+                                                    <td>{{activity_state}}</td>
+                                                    <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                                </tr>
                                                 {{else}}
-                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >[Unmanaged] </span>
-                                                {{/if}}
+                                                <!-- Blank Slate -->
+                                                <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                                    <p>There is no Auto Scaling Group in this region.</p>
+                                                </div>
+                                                {{/each}}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- DescribeAutoScalingGroups -->
+
+                            <!-- DescribeAlarms -->
+                            <div class="table-head-fix" id="DescribeAlarms">
+                                <table class="table-head">
+                                    <thead>
+                                        <tr>
+                                            <th class="sortable" style="width:20%">Name</th>
+                                            <th class="sortable" style="width:30%">Dimension</th>
+                                            <th class="sortable" style="width:30%">Threshold</th>
+                                            <th class="sortable" style="width:10%">State</th>
+                                            <th style="width:10%">Detail</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="scroll-wrap">
+                                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                                    <div class="scroll-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 20%"><span class="th-inner"></span></th>
+                                                    <th style="width: 30%"><span class="th-inner"></span></th>
+                                                    <th style="width: 30%"><span class="th-inner"></span></th>
+                                                    <th style="width: 10%"><span class="th-inner"></span></th>
+                                                    <th style="width: 10%"><span class="th-inner"></span></th>
+                                                </tr>
+                                                <tbody>
+                                                    {{#each DescribeAlarms}}
+                                                    <tr>
+                                                        <td>
+                                                            {{AlarmName}}
+                                                        </td>
+                                                        <td>{{dimension_display}}</td>
+                                                        <td>{{threshold_display}}</td>
+                                                        <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
+                                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                                    </tr>
+                                                    {{else}}
+                                                    <!-- Blank Slate -->
+                                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                                        <p>There is no CloudWatch Alarm in this region.</p>
+                                                    </div>
+                                                    {{/each}}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- DescribeAlarms -->
+
+                                <!-- ListSubscriptions -->
+                                <div class="table-head-fix" id="ListSubscriptions">
+                                    <table class="table-head">
+                                        <thead>
+                                            <tr>
+                                                <th class="sortable" style="width:30%">Topic Name</th>
+                                                <th class="sortable" style="width:40%">Endpoint and Protocol</th>
+                                                <th class="sortable" style="width:20%">Confirmation</th>
+                                                <th style="width:10%">Detail</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="scroll-wrap">
+                                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                                        <div class="scroll-content">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 30%"><span class="th-inner"></span></th>
+                                                        <th style="width: 40%"><span class="th-inner"></span></th>
+                                                        <th style="width: 20%"><span class="th-inner"></span></th>
+                                                        <th style="width: 10%"><span class="th-inner"></span></th>
+                                                    </tr>
+                                                    <tbody>
+                                                        {{#each ListSubscriptions}}
+                                                        <tr>
+                                                            <td>{{topic}}
+                                                            </td>
+                                                            <td>{{Protocol}}: {{Endpoint}}</td>
+                                                            <td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
+                                                            <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
+                                                        </tr>
+                                                        {{else}}
+                                                        <!-- Blank Slate -->
+                                                        <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
+                                                            <p>There is no SNS Subscription in this region.</p>
+                                                        </div>
+
+                                                        {{/each}}
+
+
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <div>
-                                                {{AutoScalingGroupName}}
-                                            </div>
-                                        </td>
-                                        <td>{{last_activity}}</td>
-                                        <td>{{activity_state}}</td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <!-- Blank Slate -->
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no Auto Scaling Group in this region.</p>
-                                    </div>
-                                {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CloudWatch Alarm -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:20%">Name</th>
-                                <th class="sortable" style="width:30%">Dimension</th>
-                                <th class="sortable" style="width:30%">Threshold</th>
-                                <th class="sortable" style="width:10%">State</th>
-                                <th style="width:10%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="DescribeAlarms">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 30%"><span class="th-inner"></span></th>
-                                        <th style="width: 30%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each DescribeAlarms}}
-                                    <tr>
-                                        <td>
-                                        {{AlarmName}}
-                                        </td>
-                                        <td>{{dimension_display}}</td>
-                                        <td>{{threshold_display}}</td>
-                                        <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <!-- Blank Slate -->
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no CloudWatch Alarm in this region.</p>
-                                    </div>
-                                {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SNS Subscription -->
-                <div class="table-head-fix">
-                    <table class="table-head">
-                        <thead>
-                            <tr>
-                                <th class="sortable" style="width:30%">Topic Name</th>
-                                <th class="sortable" style="width:40%">Endpoint and Protocol</th>
-                                <th class="sortable" style="width:20%">Confirmation</th>
-                                <th style="width:10%">Detail</th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="scroll-wrap">
-                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                        <div class="scroll-content">
-                            <table class="table" id="ListSubscriptions">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 30%"><span class="th-inner"></span></th>
-                                        <th style="width: 40%"><span class="th-inner"></span></th>
-                                        <th style="width: 20%"><span class="th-inner"></span></th>
-                                        <th style="width: 10%"><span class="th-inner"></span></th>
-                                    </tr>
-                                <tbody>
-                                {{#each ListSubscriptions}}
-                                    <tr>
-                                        <td>{{topic}}
-                                        </td>
-                                        <td>{{Protocol}}: {{Endpoint}}</td>
-                                        <td><i class="status {{#if pending_state}}status-red{{else}}status-green{{/if}} icon-label"></i>{{#if pending_state}}{{pending_state}}{{else}}{{success_state}}{{/if}}</td>
-                                        <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
-                                    </tr>
-                                {{else}}
-                                    <!-- Blank Slate -->
-                                    <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no SNS Subscription in this region.</p>
-                                    </div>
-
-                                {{/each}}
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-    {{/with}}
-
-    </div>
-
-
+                                        </div>
+                                        <!-- ListSubscriptions -->
 <!--{{ .recent }}-->
 <div id="global-region-status-tab-wrap" class="clearfix">
     <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">

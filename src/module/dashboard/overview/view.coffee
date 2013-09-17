@@ -11,13 +11,14 @@ define [ 'event', 'i18n!nls/lang.js',
     current_region = null
 
     MC.IDEcompile 'overview', overview_tmpl_data,
-        '.overview-result'  : 'overview-result-tmpl'
-        '.global-list'      : 'global-list-tmpl'
-        '.region-app-stack' : 'region-app-stack-tmpl'
-        '.region-resource'  : 'region-resource-tmpl'
-        '.recent'           : 'recent-tmpl'
-        '.loading'          : 'loading-tmpl'
-        '.loading-failed'   : 'loading-failed-tmpl'
+        '.overview-result'      : 'overview-result-tmpl'
+        '.global-list'          : 'global-list-tmpl'
+        '.region-app-stack'     : 'region-app-stack-tmpl'
+        '.region-resource-head' : 'region-resource-head-tmpl'
+        '.region-resource-body' : 'region-resource-body-tmpl'
+        '.recent'               : 'recent-tmpl'
+        '.loading'              : 'loading-tmpl'
+        '.loading-failed'       : 'loading-failed-tmpl'
 
     ### helper ###
     Helper =
@@ -62,15 +63,16 @@ define [ 'event', 'i18n!nls/lang.js',
 
     OverviewView = Backbone.View.extend {
 
-        el              : $( '#tab-content-dashboard' )
+        el                      : $( '#tab-content-dashboard' )
 
-        overview_result : Handlebars.compile $( '#overview-result-tmpl' ).html()
-        global_list     : Handlebars.compile $( '#global-list-tmpl' ).html()
-        region_app_stack: Handlebars.compile $( '#region-app-stack-tmpl' ).html()
-        region_resource : Handlebars.compile $( '#region-resource-tmpl' ).html()
-        recent          : Handlebars.compile $( '#recent-tmpl' ).html()
-        loading         : $( '#loading-tmpl' ).html()
-        loading_failed  : $( '#loading-failed-tmpl' ).html()
+        overview_result         : Handlebars.compile $( '#overview-result-tmpl' ).html()
+        global_list             : Handlebars.compile $( '#global-list-tmpl' ).html()
+        region_app_stack        : Handlebars.compile $( '#region-app-stack-tmpl' ).html()
+        region_resource_head    : Handlebars.compile $( '#region-resource-head-tmpl' ).html()
+        region_resource_body    : Handlebars.compile $( '#region-resource-body-tmpl' ).html()
+        recent                  : Handlebars.compile $( '#recent-tmpl' ).html()
+        loading                 : $( '#loading-tmpl' ).html()
+        loading_failed          : $( '#loading-failed-tmpl' ).html()
 
 
         events          :
@@ -96,7 +98,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         status:
             reloading       : false
-            resourceId      : null
+            resourceType    : null
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
@@ -146,12 +148,13 @@ define [ 'event', 'i18n!nls/lang.js',
             Helper.switchTab event, '#region-resource-tab a', '.region-resource-list'
 
         switchResource: ( event ) ->
-            Helper.switchTab event, '#region-aws-resource-tab a', '#region-aws-resource-data div.table-head-fix'
+            type = $( event.currentTarget ).data 'resourceType'
+            @renderRegionResourceBody type
 
         switchRegionAndResource: ( event ) ->
             $target = $ event.currentTarget
             region = $target.data 'region'
-            @status.resourceId = $target.data 'resourceId'
+            @status.resourceType = $target.data 'resourceType'
             @gotoRegion region
 
 
@@ -180,27 +183,41 @@ define [ 'event', 'i18n!nls/lang.js',
 
         renderRegionResource: ( event ) ->
             if not @status.reloading
-                tmpl = @region_resource @model.toJSON()
+                tmpl = @region_resource_head @model.toJSON()
                 @$el.find('#region-resource-wrap').html tmpl
-                if @status.resourceId
-                    @$el.find( "#region-aws-resource-tab li:nth-child(#{@status.resourceId + 1}) a" ).click()
-                    @status.resourceId = null
+                @renderRegionResourceBody()
             null
 
+        renderRegionResourceBody: ( type, isReRender ) ->
+            $typeTabs = $( '#region-aws-resource-tab .region-resource-tab-item')
+            $currentTab = $typeTabs.filter( '.on' )
+            currentType = $currentTab.data 'resourceType'
 
-        reRenderRegionPartial: ( type, data ) ->
-            if not @status.reloading
-                tmplAll = $( '#region-resource-tmpl' ).html()
-                beginRegex = new RegExp "\\{\\{\\s*#each\\s+#{type}\\s*\\}\\}", 'i'
-                endRegex = new RegExp "\\{\\{\\s*/each\\s*\\}\\}", 'i'
+            if isReRender and type isnt currentType
+                return
 
-                startPos = Helper.regexIndexOf tmplAll, beginRegex
-                endPos = tmplAll.indexOf '</tbody>', startPos
+            if not type and not isReRender
+                if @status.resourceType
+                    type = @status.resourceType
+                    @status.resourceType = null
+                else
+                    type = 'DescribeInstances'
 
-                tmpl = tmplAll.slice startPos, endPos
-                template = Handlebars.compile tmpl
+            tmplAll = $( '#region-resource-body-tmpl' ).html()
 
-                $( this.el ).find("##{type} tbody").html template data
+            startPos = tmplAll.indexOf "<!-- #{type} -->"
+            endPos = tmplAll.indexOf "<!-- #{type} -->", startPos + 1
+
+            tmpl = tmplAll.slice startPos, endPos
+            template = Handlebars.compile tmpl
+
+            $typeTabs.each () ->
+                if $( this ).data( 'resourceType' ) is type
+                    $( this ).addClass 'on'
+                else
+                    $( this ).removeClass 'on'
+
+            @$el.find("#region-aws-resource-data").html template @model.get 'cur_region_resource'
 
             null
 
@@ -262,9 +279,15 @@ define [ 'event', 'i18n!nls/lang.js',
             ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
 
         showCredential: ( event ) ->
+            flag = ''
             if event
-                event.preventDefault()
-            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+                if typeof(event) is 'string'
+                    flag = event
+
+                else
+                    event.preventDefault()
+
+            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule(flag)
 
         ############################################################################################
 

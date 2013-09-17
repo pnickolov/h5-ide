@@ -3,7 +3,7 @@
 #* Filename: UI.table
 #* Creator: Angel
 #* Description: UI.table
-#* Date: 20130831
+#* Date: 20130917
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -51,6 +51,7 @@
 				order = target.hasClass('desc-sort') ? 'DESC' : 'ASC',
 				fragment = document.createDocumentFragment(),
 				stack = [],
+				is_datetime = false,
 				tbody,
 				rows;
 
@@ -76,10 +77,20 @@
 				});
 			});
 
+			if (target.data('row-type') === 'datetime')
+			{
+				is_datetime = true;
+			}
+
 			if (order === 'DESC')
 			{
 				stack.sort(function (a, b)
 				{
+					if (is_datetime)
+					{
+						return new Date(a.value) - new Date(b.value);
+					}
+
 					if (!isNaN(parseInt(a.value)))
 					{
 						return a.value - b.value;
@@ -96,6 +107,11 @@
 			{
 				stack.sort(function (a, b)
 				{
+					if (is_datetime)
+					{
+						return new Date(b.value) - new Date(a.value);
+					}
+
 					if (!isNaN(parseInt(a.value)))
 					{
 						return b.value - a.value;

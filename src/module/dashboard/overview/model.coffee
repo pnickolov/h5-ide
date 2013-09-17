@@ -598,7 +598,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     dhcp_service.DescribeDhcpOptions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  dhcp_set, null, ( result ) ->
                         if !result.is_error
                         #DescribeDhcpOptions succeed
-                            dhcp_set = result.resolved_data.item
+                            dhcp_set = result.resolved_data
 
                             _.map resources.DescribeVpcs, ( vpc ) ->
                                 if vpc.dhcpOptionsId == 'default'
@@ -648,7 +648,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                         if !result.is_error
                         #DescribeCustomerGateways succeed
-                            cgw_set = result.resolved_data.item
+                            cgw_set = result.resolved_data
 
                             _.map resources.DescribeVpnConnections, ( vpn ) ->
                                 if $.type(cgw_set) == 'object'
@@ -678,7 +678,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     vpngateway_service.DescribeVpnGateways { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), current_region,  vgw_set, null, ( result ) ->
                         if !result.is_error
                         #DescribeVpnGateways succeed
-                            vgw_set = result.resolved_data.item
+                            vgw_set = result.resolved_data
 
                             _.map resources.DescribeVpnConnections, ( vpn ) ->
                                 if $.type(vgw_set) == 'object'
@@ -834,6 +834,28 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                         resources[action][i].owner = tag.value
                     null
             null
+
+        _genDhcp: (dhcp) ->
+
+            me = this
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions = {}
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.title = "dhcpOptionsId"
+
+            popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info = []
+
+            sub_info = popup_key_set.unmanaged_bubble.DescribeDhcpOptions.sub_info
+
+            if dhcp.dhcpConfigurationSet
+
+                _.map dhcp.dhcpConfigurationSet.item, ( item, i ) ->
+
+                    _.map item.valueSet, ( it, j )->
+
+                        sub_info.push { "key": ['dhcpConfigurationSet', 'item', i, 'valueSet', j], "show_key": item.key }
+
+            me.parseSourceValue 'DescribeDhcpOptions', dhcp, "bubble", null
 
         _genBubble : ( source, title, entry ) ->
 

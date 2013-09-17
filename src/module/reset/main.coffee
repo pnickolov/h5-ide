@@ -20,15 +20,22 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
             view = loadSuperModule loadModule, 'reset', View, null
             return if !view
             view.model = model
-            model.set 'key', key if key
 
-            #render
-            view.render type, key
+            #set model
+            if key and type is 'password'
+                model.set 'key', key
+                model.checkKeyServer()
 
+            #listen
+            #view.on 'CHECK_VALIDATION',      () -> model.checkKeyServer()
             view.on 'RESET_EMAIL',    ( result ) -> model.resetPasswordServer result
             view.on 'RESET_PASSWORD', ( result ) -> model.updatePasswordServer result
             model.on 'NO_EMAIL',              () -> view.showErrorMessage()
-            model.on 'PASSWORD_INVAILD',      () -> view.showPassowordErrorMessage()
+            model.on 'KEY_VALID',             () -> view.passwordRender()
+            #model.on 'PASSWORD_INVAILD',     () -> view.showPassowordErrorMessage()
+
+            #render
+            view.render type, key
 
     unLoadModule = () ->
         #view.remove()

@@ -13,6 +13,21 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
         initialize : ->
             #
 
+        checkKeyServer : () ->
+            console.log 'checkKeyServer, key = ' + this.get( 'key' )
+            #
+            account_model.check_validation { sender : this }, this.get( 'key' ), 'reset'
+            this.once 'ACCOUNT_CHECK__VALIDATION_RETURN', ( forge_result ) ->
+                console.log 'ACCOUNT_CHECK__VALIDATION_RETURN'
+                console.log forge_result
+                if !forge_result.is_error
+                    #
+                    this.trigger 'KEY_VALID'
+                else
+                    #
+                    window.location.href = 'reset.html#expire'
+                null
+
         resetPasswordServer : ( result ) ->
             console.log 'resetPasswordServer, result = ' + result
             #
@@ -39,7 +54,8 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                     #
                     window.location.href = 'reset.html#success'
                 else
-                    this.trigger 'PASSWORD_INVAILD'
+                    #this.trigger 'PASSWORD_INVAILD'
+                    #window.location.href = 'reset.html#expire' if forge_result.return_code is 2
                 null
 
     }

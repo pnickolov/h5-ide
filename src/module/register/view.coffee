@@ -14,13 +14,14 @@ define [ 'event',
         success_tmpl : Handlebars.compile success_tmpl
 
         events       :
-            'keyup #register-username' : 'verificationUser'
-            'blur  #register-username' : 'verificationUser'
-            'keyup #register-email'    : 'verificationEmail'
-            'blur  #register-email'    : 'verificationEmail'
-            'keyup #register-password' : 'verificationPassword'
-            'submit #register-form'    : 'submit'
-            'click #register-get-start': 'loginEvent'
+            #'keyup #register-username' : 'verificationUser'
+            'blur  #register-username'  : 'verificationUser'
+            #'keyup #register-email'    : 'verificationEmail'
+            'blur  #register-email'     : 'verificationEmail'
+            #'keyup #register-password' : 'verificationPassword'
+            'blur #register-password'   : 'verificationPassword'
+            'submit #register-form'     : 'submit'
+            'click #register-get-start' : 'loginEvent'
 
         initialize   : ->
             #

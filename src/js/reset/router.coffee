@@ -4,6 +4,7 @@ define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
 		routes :
 			'password/:key' : 'password'
 			'email'         : 'email'
+			'expire'        : 'expire'
 			'success'       : 'success'
 			'*actions'      : 'defaultRouter'
 	}
@@ -19,6 +20,9 @@ define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
 
 		router.on 'route:email', () ->
 			reset_main.loadModule 'email'
+
+		router.on 'route:expire', () ->
+			reset_main.loadModule 'expire'
 
 		router.on 'route:success', () ->
 			reset_main.loadModule 'success'

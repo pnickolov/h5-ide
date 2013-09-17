@@ -82,7 +82,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     view.enableCreateStack()
 
             # update aws credential
-            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, (flag) ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                 if Helper.hasCredential()
@@ -90,7 +90,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     view.reloadResource()
                 else    # set aws credential
                     view.disableSwitchRegion()
-                    view.showCredential()
+                    view.showCredential(flag)
                     view.renderLoadingFaild()
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->

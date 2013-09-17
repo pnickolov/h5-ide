@@ -262,9 +262,15 @@ define [ 'event', 'i18n!nls/lang.js',
             ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
 
         showCredential: ( event ) ->
+            flag = ''
             if event
-                event.preventDefault()
-            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+                if typeof(event) is 'string'
+                    flag = event
+
+                else
+                    event.preventDefault()
+
+            require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule(flag)
 
         ############################################################################################
 

@@ -111,6 +111,11 @@ define [ 'event',
                 $('#AWSCredential-info').show()
                 $('#aws-credential-account-id').val(me.model.attributes.account_id)
 
+            else if flag is 'new_account'
+                $('#AWSCredential-failed').hide()
+                info_str = sprintf 'Welcome to Madeira Cloud, %s. To start designing\n cloud architecture, please provide your AWS credentials', MC.forge.cookie.getCookieByName('username')
+                $('#AWSCredential-info').show().text(info_str)
+
         # show update dialog
         showUpdate : () ->
             console.log 'show updating dialog'

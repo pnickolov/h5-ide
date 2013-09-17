@@ -73,6 +73,15 @@ header {
 	border-radius    : 4px;
 }
 
+.box-loading.box-wrapper {
+/*	background : none;
+	border     : none;
+	box-shadow : none;*/
+	background-color : #fff;
+	text-align : center; 
+	padding    : 40px 0;≠
+}
+
 .box-header {
 	position         : relative;
 	background-color : #d1d4d8;

@@ -69,13 +69,14 @@ define [ 'event',
 
             #signup.verification.confirm_password();
             if value isnt ''
-                if value.length > 6 # &&
+                if value.length > 5 # &&
                   #/[A-Z]{1}/.test(value) &&
                   #/[0-9]{1}/.test(value)
-                  status.show().text 'This password is OK.'
+                  # status.show().text 'This password is OK.'
+                  status.hide()
                   true
                 else
-                  status.addClass('error-status').show().text 'This password is too weak.'
+                  status.addClass('error-status').show().text 'Password must contain at least 6 characters.'
                   false
             else
                 status.addClass('error-status').show().text 'Password is required.'

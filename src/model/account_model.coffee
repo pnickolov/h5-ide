@@ -58,7 +58,7 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 #update_account failed
 
                     console.log 'account.update_account failed, error is ' + forge_result.error_message
-                    me.pub forge_result
+                    if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_UPDATE__ACCOUNT_RETURN', forge_result
 
 
 

@@ -383,17 +383,17 @@ require.config {
 		'header'       :
 			deps       : [ 'header_view', 'header_model', 'MC' ]
 
-		'design'       :
-			deps       : [ 'design_view', 'design_model', 'MC' ]
-
 		'navigation'   :
-			deps       : [ 'design', 'navigation_view', 'navigation_model', 'MC' ]
+			deps       : [ 'navigation_view', 'navigation_model', 'MC' ]
 
 		'tabbar'       :
 			deps       : [ 'tabbar_view', 'tabbar_model', 'MC' ]
 
 		'dashboard'    :
 			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
+
+		'design'       :
+			deps       : [ 'design_view', 'design_model', 'MC' ]
 
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]

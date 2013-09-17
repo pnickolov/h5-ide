@@ -5037,13 +5037,17 @@ MC.canvas.event.clickBlank = function (event)
 	return true;
 };
 
+MC.canvas.keypressed = [];
+
 MC.canvas.event.keyEvent = function (event)
 {
 	var keyCode = event.which,
 		nodeName = event.target.nodeName.toLowerCase(),
 		canvas_status = MC.canvas.getState(),
-		is_zoomed = $('#canvas_body').hasClass('canvas_zoomed'),
+		//is_zoomed = $('#canvas_body').hasClass('canvas_zoomed'),
 		selected_node;
+
+	MC.canvas.keypressed.push(keyCode);
 
 	// Disable key event for input & textarea
 	if (
@@ -5062,7 +5066,6 @@ MC.canvas.event.keyEvent = function (event)
 			keyCode === 8
 		) &&
 		canvas_status === 'stack' &&
-		!is_zoomed &&
 		MC.canvas_property.selected_node.length > 0 &&
 		event.target === document.body
 	)
@@ -5082,6 +5085,40 @@ MC.canvas.event.keyEvent = function (event)
 			}
 		});
 		MC.canvas_property.selected_node = [];
+
+		return false;
+	}
+
+	if (MC.canvas.keypressed.join('').match(/383840403739373966656665$/i))
+	{
+		var offset = Canvon('#' + MC.canvas_property.selected_node[ 0 ]).offset();
+
+		$(document.body).append('<div id="s"></div>');
+
+		$('#s')
+			.text('HP +' + MC.rand(100, 9999))
+			.css({
+				'border-radius': '4px',
+				'padding': '5px 0',
+				'background-color': 'rgba(102, 45, 63, 0.8)',
+				'font-weight': '700',
+				'position': 'absolute',
+				'z-index': 999,
+				'text-align': 'center',
+				'color': 'rgb(252, 232, 244)',
+				'font-weigh': 'bold',
+				'font-size': 12,
+				'width': offset.width,
+				'top': offset.top + offset.height / 2 - 15,
+				'left': offset.left
+			});
+
+		setTimeout(function ()
+		{
+			$('#s').fadeOut(function () {$(this).remove();});
+		}, 1500);
+
+		MC.canvas.keypressed = [];
 
 		return false;
 	}
@@ -5150,7 +5187,6 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 		canvas_status === 'stack' &&
-		!is_zoomed &&
 		MC.canvas_property.selected_node.length === 1
 	)
 	{
@@ -5238,8 +5274,7 @@ MC.canvas.event.keyEvent = function (event)
 	// Save stack - [Ctrl + S]
 	if (
 		event.ctrlKey && keyCode === 83 &&
-		canvas_status === 'stack' &&
-		!is_zoomed
+		canvas_status === 'stack'
 	)
 	{
 		$("#svg_canvas").trigger("CANVAS_SAVE");

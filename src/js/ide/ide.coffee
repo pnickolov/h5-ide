@@ -107,6 +107,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.is_loading_complete = false
 		#save resouce service name
 		MC.data.resouceapi = []
+		#dependency MC.data.is_loading_complete and MC.data.design_submodule_count = -1
+		MC.data.ide_available_count = 0
 
 		#temp
 		MC.data.IDEView = view
@@ -190,6 +192,12 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
+
+		#listen IDE_AVAILABLE
+		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->
+			console.log 'IDE_AVAILABLE'
+			MC.data.ide_available_count = MC.data.ide_available_count + 1
+			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 2
 
 		#############################
 		#  load module

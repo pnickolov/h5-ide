@@ -54,7 +54,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 if MC.data.supported_platforms.length <= 0
                 else
                     MC.data.is_loading_complete = true
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.IDE_AVAILABLE
 
                 view.displayLoadTime()
 

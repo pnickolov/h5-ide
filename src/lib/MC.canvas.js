@@ -5263,7 +5263,7 @@ MC.canvas.event.keyEvent = function (event)
 			coordinate.y + component_size[1] < canvas_size[1] - 3
 		)
 		{
-			MC.canvas.position(target[0], coordinate.x  * scale_ratio, coordinate.y * scale_ratio);
+			MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
 			MC.canvas.reConnect(target_id);
 		}

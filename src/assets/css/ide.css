@@ -1741,10 +1741,6 @@ a {
 	vertical-align: middle;
 }
 
-#region-aws-resource-data .table-head-fix {
-	display: none;
-}
-
 #region-aws-resource-data .scroll-wrap {
 	height: 340px;
 }

@@ -171,7 +171,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
             model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
                 console.log 'region resource table render'
-                view.reRenderRegionPartial( type, data )
+                view.renderRegionResourceBody type, true
 
             # update region thumbnail
             ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->

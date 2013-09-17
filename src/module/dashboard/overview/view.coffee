@@ -157,7 +157,6 @@ define [ 'event', 'i18n!nls/lang.js',
             @status.resourceType = $target.data 'resourceType'
             @gotoRegion region
 
-
         renderGlobalList: ( event ) ->
             @enableSwitchRegion()
             if @status.reloading
@@ -166,7 +165,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             tmpl = @global_list @model.toJSON()
             if current_region
-                @trigger 'SWITCH_REGION', current_region
+                @trigger 'SWITCH_REGION', current_region, true
             $( this.el ).find('#global-view').html tmpl
 
         renderRegionAppStack: ( tab ) ->

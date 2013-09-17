@@ -265,7 +265,7 @@ define({
 		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
 
 		/****** popup ******/
-		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet.Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
 
 	},
 	'service' : {

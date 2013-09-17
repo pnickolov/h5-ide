@@ -171,11 +171,13 @@
 			{{{this}}}
 		{{/each}}
 		</dl>
+
 		{{#each btns}}
-		{{#if this.download}}
-			<a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
-		{{/if}}
+			{{#if this.download}}
+				<a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
+			{{/if}}
 		{{/each}}
+
 		{{#if detail_table}}
 		<br />
 		<br />
@@ -287,23 +289,23 @@
 <!-- bubbleAMIInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
-		<dl class="dl-horizontal">
-				<dt>Name</dt>
-				<dd>{{name}}</dd>
-				<dt>Description</dt>
-				<dd>{{description}}</dd>
-				<dt>Architecture</dt>
-				<dd>{{architecture}}</dd>
-				<dt>Image Location</dt>
-				<dd>{{imageLocation}}</dd>
-				<dt>Public</dt>
-				<dd>{{isPublic}}</dd>
-				<dt>KernelId</dt>
-				<dd>{{kernelId}}</dd>
-				<dt>Root Device Name</dt>
-				<dd>{{rootDeviceName}}</dd>
-				<dt>Root Device Type</dt>
-				<dd>{{rootDeviceType}}</dd>
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Image Location</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>Public</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>KernelId</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>Root Device Name</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{rootDeviceType}}</dd>
 	</dl>
 </div>
 
@@ -449,8 +451,6 @@ Your Customer Gateway must be configured with a tunnel interface that is
 associated with the IPSec tunnel. All traffic transmitted to the tunnel
 interface is encrypted and transmitted to the Virtual Private Gateway.
 
-
-
 The Customer Gateway and Virtual Private Gateway each have two addresses that relate
 to this IPSec tunnel. Each contains an outside address, upon which encrypted
 traffic is exchanged. Each also contain an inside address associated with
@@ -488,9 +488,6 @@ You should add static routes towards your internal network on the VGW.
 The VGW will then send traffic towards your internal network over
 he tunnels.
 {{/each}}
-
-
-
 
 Additional Notes and Questions
 ================================================================================
@@ -1124,10 +1121,12 @@ Additional Notes and Questions
 <div style="width:420px">
 	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{main_content}}</div>
-			<div class="modal-text-minor">{{desc_content}}</div>
-		</div> </div>
+		<div class="modal-text-wraper">
+			 <div class="modal-center-align-helper">
+				<div class="modal-text-major">{{main_content}}</div>
+				<div class="modal-text-minor">{{desc_content}}</div>
+			</div>
+		 </div>
 	</div>
 	<div class="modal-footer">
 		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>

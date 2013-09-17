@@ -4,12 +4,12 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 'view', 'layout', 'canvas_layout',
+		 'view', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
 		 'forge_handle', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
 
 	console.info canvas_layout
 
@@ -224,7 +224,7 @@ define [ 'MC', 'event', 'handlebars'
 			setTimeout () ->
 				#load layout
 				console.log 'layout'
-				layout.ready()
+				#layout.ready()
 				canvas_layout.canvas_initialize()
 			, 2000
 

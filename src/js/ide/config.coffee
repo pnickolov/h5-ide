@@ -112,7 +112,7 @@ require.config {
 		'ide'                : 'js/ide/ide'
 		'view'               : 'js/ide/view'
 		#temp
-		'layout'             : 'js/ide/layout'
+		#'layout'            : 'js/ide/layout'
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
 		#############################################

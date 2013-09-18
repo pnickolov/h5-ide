@@ -623,7 +623,7 @@ Additional Notes and Questions
 <li class="input-ip-item">
 	<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
 	<label for="instance-ip-1" class="input-ip-prefix">{{ipPrefix}}</label>
-	<input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1">
+	<input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1" data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
 	</div>
 	<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
 	<div class="icon-remove"></div>

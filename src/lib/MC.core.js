@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system
-#* Date: 20130917
+#* Date: 20130918
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -137,15 +137,87 @@ var MC = {
 	browserDetect: function ()
 	{
 		var rbrowser = /(webkit|firefox|opera|msie|ipad|iphone|android)/ig,
-			name;
+			ua = navigator.userAgent.toLowerCase(),
+			doc = $(document.body),
+			name,
+			version;
 
-		rbrowser.exec(navigator.userAgent.toLowerCase());
+		rbrowser.exec(ua);
 
 		name = RegExp.$1;
 
-		$(document.body).addClass(name);
+		doc.addClass(name);
+
+		if (name === 'webkit' && /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua) !== null)
+		{
+			doc.addClass('safari');
+
+			version = RegExp.$1;
+		}
+
+		if (name === 'webkit' && /chrome\/([0-9]{1,2})/ig.exec(ua) !== null)
+		{
+			doc.addClass('chrome');
+
+			version = RegExp.$1;
+		}
+
+		if (name === 'opera' && /version\/([0-9]{1,2})/ig.exec(ua) !== null)
+		{
+			version = RegExp.$1;
+		}
+
+		if (name === 'firefox' && /firefox\/([0-9]{1,2})/ig.exec(ua))
+		{
+			version = RegExp.$1;
+		}
+
+		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
+		{
+			version = RegExp.$1;
+		}
+
+		version = version * 1;
 
 		MC.browser = name;
+		MC.browserVersion = version;
+
+		return {
+			'browser': name,
+			'version': version
+		};
+	},
+
+	isSupport: function ()
+	{
+		var data = MC.browserDetect(),
+			browser = data.browser,
+			version = data.version;
+
+		if (
+			(
+				browser === 'chrome' && version >= 10
+			) ||
+			(
+				browser === 'safari' && version >= 6
+			) ||
+			(
+				browser === 'msie' && version >= 10
+			) ||
+			(
+				browser === 'firefox' && version >= 4
+			) ||
+			(
+				browser === 'opera' && version >= 10
+			)
+		)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	},
 
 	capitalize: function (string)

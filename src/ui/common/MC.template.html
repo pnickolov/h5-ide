@@ -18,7 +18,7 @@
 
 <!-- notification.item -->
 <div class="notification_item {{type}}_item">
-	{{template}}
+	<span>{{template}}</span>
 	{{#if should_stay}}
 		<i class="notification_close">&times;</i>
 	{{/if}}
@@ -1140,8 +1140,9 @@ Additional Notes and Questions
 </div>
 
 <!-- loadingTransparent -->
-<div class="loading-wrapper-2">
-	<div class="loading clearfix">
-		<img src="./assets/images/ide/loading-logo-dark.gif" alt="">
+<div id="loading-modal-wrap">
+	<div class="loading-modal" id="modal-box">
+		<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif">
+		<div>Refreshing resources...</div></div>
 	</div>
 </div>

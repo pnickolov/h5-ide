@@ -858,6 +858,11 @@ MC.canvas.add = function (flag, option, coordinate)
 							});
 						}
 					});
+				} else {
+					if (MC.aws.eip.isInstanceHaveEIPInClassic(component_data.uid)) {
+						eip_icon = MC.canvas.IMAGE.EIP_ON;
+						data_eip_state = 'on';
+					}
 				}
 
 

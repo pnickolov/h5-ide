@@ -1,4 +1,11 @@
 
+pathToJQuery = '//code.jquery.com/jquery-2.0.3.min'
+if 'querySelector' in document and 'localStorage' in window and 'addEventListener' in window
+    pathToJQuery = '//code.jquery.com/jquery-2.0.3.min'
+else
+    pathToJQuery = '//code.jquery.com/jquery-1.10.2.min'
+
+
 require.config {
 
 	baseUrl               : './'
@@ -17,7 +24,7 @@ require.config {
 		'main'            : 'js/login/main'
 
 		#vender
-		'jquery'          : [ '//code.jquery.com/jquery-2.0.3.min', 'vender/jquery/jquery' ]
+		'jquery'          : [ pathToJQuery , 'vender/jquery/jquery' ]
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'

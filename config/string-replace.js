@@ -10,7 +10,7 @@ module.exports = {
         options: {
             replacements: [
                 {
-                    pattern: /console\.(log|info)\(.*\),/g,
+                    pattern: /console\.(log|info|error)\(.*\),/g,
                     replacement: ""
                 }
             ]

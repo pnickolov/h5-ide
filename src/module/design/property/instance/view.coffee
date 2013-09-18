@@ -51,9 +51,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
             $( '.property-details' ).html this.template this.model.attributes
 
-            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
-
-            this.changeIPAddBtnState()
+            this.refreshIPList()
 
             this.delegateEvents this.events
 
@@ -112,6 +110,10 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             $ebs.closest(".property-control-group").toggle has_ebs
             if not has_ebs
                 $ebs.prop "checked", false
+
+            instanceUID = this.model.get 'get_uid'
+            MC.aws.eni.reduceAllENIIPList(instanceUID)
+            this.refreshIPList()
 
         ebsOptimizedSelect : ( event ) ->
             this.model.set 'ebs_optimized', event.target.checked
@@ -306,6 +308,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
         refreshIPList : ( event ) ->
             this.model.getEni()
             $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
+            this.changeIPAddBtnState()
     }
 
     view = new InstanceView()

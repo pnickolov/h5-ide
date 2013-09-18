@@ -32,7 +32,9 @@
 									{{#if is_terminated}}
 										<div class="content"><span class="resource-name-label">{{name}}</span> {{operation}} successfully in {{region_label}}.</div>
 									{{else}}
-										<div class="content"><a href="javascript:void(0);" class="dropdown-app-name" id="{{id}}">{{name}}</a> {{operation}} successfully in {{region_label}}.</div>
+										<div class="content"><span class="resource-name-label">{{name}}</span> {{operation}} successfully in {{region_label}}.</div>
+										<!-- temp disable -->
+										<!--<div class="content"><a href="javascript:void(0);" class="dropdown-app-name" id="{{id}}">{{name}}</a> {{operation}} successfully in {{region_label}}.</div>-->
 									{{/if}}
 								{{/if}}
 							{{/if}}
@@ -44,10 +46,9 @@
 						<p> {{error}}
 					</div>
 					{{/if}}
-
-					<div class="notification-stamp">
-						{{time_str}}
-					</div>
+ 
+					<div class="notification-duration left">{{duration}}</div>
+					<div class="notification-stamp">{{time_str}}</div>
 				</div>
 				<!-- success notification item end -->
 

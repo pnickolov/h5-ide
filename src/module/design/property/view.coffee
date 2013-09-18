@@ -197,7 +197,7 @@ define [ './temp_view',
                 # clear invalid state in map
                 if MC.data.propertyHeadStateMap[stackId]
                     _.each MC.data.propertyHeadStateMap[stackId], (stateAry, compUID) ->
-                        if !MC.canvas_data.component[compUID] and compUID isnt stackId
+                        if !MC.canvas_data.component[compUID] and compUID isnt stackId and compUID.indexOf('i-') isnt 0
                             delete MC.data.propertyHeadStateMap[stackId][compUID]
                         null
                 # added by song ######################################

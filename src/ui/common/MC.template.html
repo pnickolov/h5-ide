@@ -18,153 +18,141 @@
 
 <!-- notification.item -->
 <div class="notification_item {{type}}_item">
-	{{template}}
+	<span>{{template}}</span>
 	{{#if should_stay}}
-    	<i class="notification_close">&times;</i>
-  	{{/if}}
+		<i class="notification_close">&times;</i>
+	{{/if}}
 </div>
 
-<!-- modalSample -->
+<!-- modalApp -->
 <div style="width:420px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, id, neque, ipsam, minima aperiam accusamus quae quia voluptate eius velit voluptatibus nam et ipsa repellendus dolor ullam libero voluptas consequatur.
+	<div class="modal-text-wraper">
+		<div class="modal-center-align-helper">
+			{{#if input}}
+			<div class="modal-control-group">
+				<label class="modal-text-major">{{body}}</label>
+				<input id="modal-input-value" class="input" type="text" value="{{input}}" />
+			</div>
+			{{else}}
+			<div class="modal-text-major">
+				{{{body}}}
+			</div>
+			{{/if}}
+
+			</div>
+
+		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue">OK</button>
-		<button class="btn modal-close">Close</button>
+		<button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
-</div>
-
-
-<!-- modalApp -->
-<div style="width:420px">
-       <div class="modal-header">
-            <h3>{{title}}</h3>
-            <i class="modal-close">&times;</i>
-       </div>
-       <div class="modal-body">
-       		<div class="modal-text-wraper">
-       			<div class="modal-center-align-helper">
-       				{{#if input}}
-       				<div class="modal-control-group">
-       					<label class="modal-text-major">{{body}}</label>
-		                <input id="modal-input-value" class="input" type="text" value="{{input}}" />
-       				</div>
-       				{{else}}
-       				<div class="modal-text-major">
-       					{{{body}}}
-       				</div>
-		          {{/if}}
-
-	            </div>
-
-            </div>
-       </div>
-       <div class="modal-footer">
-            <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-            <button class="btn modal-close btn-silver">Cancel</button>
-       </div>
 </div>
 
 <!-- canvasOpConfirm -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
-  <div class="modal-body">
-    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{content}}</div>
-    </div> </div>
-  </div>
-  <div class="modal-footer">
-    <button id="canvas-op-confirm" class="btn btn-{{color}}">{{proceed}}</button>
-    <button class="btn modal-close btn-silver">{{cancel}}</button>
-  </div>
+	<div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{content}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="canvas-op-confirm" class="btn btn-{{color}}">{{proceed}}</button>
+		<button class="btn modal-close btn-silver">{{cancel}}</button>
+	</div>
 </div>
 
 <!-- modalToolbar -->
 <div style="width:700px">
-       <div class="modal-header">
-            <h3>{{title}}</h3>
-            <i class="modal-close">&times;</i>
-       </div>
-       <div class="modal-body">
-            <textarea id="json-content"></textarea>
-       </div>
-       <div class="modal-footer">
-            <a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain; {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
-            <button class="btn modal-close btn-silver">Cancel</button>
-       </div>
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<textarea id="json-content"></textarea>
+	</div>
+	<div class="modal-footer">
+		<a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain; {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
 </div>
 
 <!-- exportpng -->
 <div style="width:420px">
-    <div class="modal-header">
-        <h3>{{title}}</h3>
-        <i class="modal-close">&times;</i>
-    </div>
-    <div class="modal-body">
-        <div class="export-loading-bar clearfix">
-            <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
-        <button class="btn modal-close btn-silver">Cancel</button>
-    </div>
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+		<div class="export-loading-bar clearfix">
+			<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<a id="btn-confirm" class="btn btn-{{color}}" >{{confirm}}</a>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
 </div>
 
 <!-- modalResourceInstanceDetail -->
 <div class="modal-resource-instance-detail" style="width:420px">
-       <div class="modal-header">
-               <h3>{{title}}</h3>
-               <i class="modal-close">&times;</i>
-       </div>
-       <div class="modal-body">
-               <dl class="dl-horizontal">
-                       <dt>DnsName</dt>
-                       <dd>{{dnsName}}</dd>
-                       <dt>Architecture</dt>
-                       <dd>{{architecture}}</dd>
-                       <dt>EbsOptimized</dt>
-                       <dd>{{ebsOptimized}}</dd>
-                   <dt>GroupSet</dt>
-                       <dd>{{groupSet}}</dd>
-                       <dt>Hypervisor</dt>
-                       <dd>{{hypervisor}}</dd>
-                   <dt>ImageId</dt>
-                       <dd>{{imageId}}</dd>
-                       <dt>InstanceState</dt>
-                       <dd>{{instanceState}}</dd>
-                       <dt>InstanceType</dt>
-                       <dd>{{instanceType}}</dd>
-                       <dt>IpAddress</dt>
-                       <dd>{{ipAddress}}</dd>
-                       <dt>KernelId</dt>
-                       <dd>{{kernelId}}</dd>
-                       <dt>KeyName</dt>
-                       <dd>{{keyName}}</dd>
-                       <dt>LaunchTime</dt>
-                       <dd>{{launchTime}}</dd>
-                       <dt>Monitoring</dt>
-                       <dd>{{monitoring}}</dd>
-                       <dt>NetworkInterfaceSet</dt>
-                       <dd>{{networkInterfaceSet}}</dd>
-                       <dt>AvailabilityZone</dt>
-                       <dd>{{availabilityZone}}</dd>
-                       <dt>PrivateDnsName</dt>
-                       <dd>{{privateDnsName}}</dd>
-                       <dt>RootDeviceName</dt>
-                       <dd>{{rootDeviceName}}</dd>
-                       <dt>RootDeviceType</dt>
-                       <dd>{{rootDeviceType}}</dd>
-               </dl>
-       </div>
-       <div class="modal-footer">
-               <button class="btn modal-close btn-silver">Close</button>
-       </div>
+	<div class="modal-header">
+		<h3>{{title}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+		<dl class="dl-horizontal">
+			<dt>DnsName</dt>
+			<dd>{{dnsName}}</dd>
+			<dt>Architecture</dt>
+			<dd>{{architecture}}</dd>
+			<dt>EbsOptimized</dt>
+			<dd>{{ebsOptimized}}</dd>
+			<dt>GroupSet</dt>
+			<dd>{{groupSet}}</dd>
+			<dt>Hypervisor</dt>
+			<dd>{{hypervisor}}</dd>
+			<dt>ImageId</dt>
+			<dd>{{imageId}}</dd>
+			<dt>InstanceState</dt>
+			<dd>{{instanceState}}</dd>
+			<dt>InstanceType</dt>
+			<dd>{{instanceType}}</dd>
+			<dt>IpAddress</dt>
+			<dd>{{ipAddress}}</dd>
+			<dt>KernelId</dt>
+			<dd>{{kernelId}}</dd>
+			<dt>KeyName</dt>
+			<dd>{{keyName}}</dd>
+			<dt>LaunchTime</dt>
+			<dd>{{launchTime}}</dd>
+			<dt>Monitoring</dt>
+			<dd>{{monitoring}}</dd>
+			<dt>NetworkInterfaceSet</dt>
+			<dd>{{networkInterfaceSet}}</dd>
+			<dt>AvailabilityZone</dt>
+			<dd>{{availabilityZone}}</dd>
+			<dt>PrivateDnsName</dt>
+			<dd>{{privateDnsName}}</dd>
+			<dt>RootDeviceName</dt>
+			<dd>{{rootDeviceName}}</dd>
+			<dt>RootDeviceType</dt>
+			<dd>{{rootDeviceType}}</dd>
+		</dl>
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
+	</div>
 </div>
 
 <!-- modalRegionResourceDetail -->
@@ -179,41 +167,43 @@
 	</div>
 	<div class="modal-body">
 		<dl class="dl-horizontal">
-	                   {{#each sub_info}}
-                       {{{this}}}
-                       {{/each}}
+		{{#each sub_info}}
+			{{{this}}}
+		{{/each}}
 		</dl>
-        {{#each btns}}
-        {{#if this.download}}
-            <a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
-        {{/if}}
-        {{/each}}
-        {{#if detail_table}}
-        <br />
-        <br />
-            <table class="table table-light">
-                <thead>
-                <tr>
-                    {{#each detail_table.th_set}}
-                    <th style="width:160px">{{this}}</th>
-                    {{/each}}
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    {{#each detail_table.tr1_set}}
-                    <td>{{this}}</td>
-                    {{/each}}
-                </tr>
-                <tr>
-                    {{#each detail_table.tr2_set}}
-                    <td>{{this}}</td>
-                    {{/each}}
-                </tr>
-            </tbody>
-        </table>
-        {{/if}}
 
+		{{#each btns}}
+			{{#if this.download}}
+				<a class='btn btn-primary' href="data://text/plain;base64,{{{this.filecontent}}}" download="{{{this.filename}}}.txt">{{this.btnname}}</a>
+			{{/if}}
+		{{/each}}
+
+		{{#if detail_table}}
+		<br />
+		<br />
+		<table class="table table-light">
+			<thead>
+				<tr>
+					{{#each detail_table.th_set}}
+					<th style="width:160px">{{this}}</th>
+					{{/each}}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				{{#each detail_table.tr1_set}}
+					<td>{{this}}</td>
+				{{/each}}
+				</tr>
+
+				<tr>
+				{{#each detail_table.tr2_set}}
+					<td>{{this}}</td>
+				{{/each}}
+				</tr>
+			</tbody>
+		</table>
+		{{/if}}
 	</div>
 	<div class="modal-footer">
 		<button class="btn modal-close btn-silver">Close</button>
@@ -274,49 +264,48 @@
 <!-- bubbleRegionResourceInfo -->
 <div class="bubble-head"><i class="status-{{status}} icon-label"></i>{{title}}</div>
 <div class="bubble-content">
-       <dl class="dl-horizontal">
-               {{#each sub_info}}
-               {{{this}}}
-               {{/each}}
-       </dl>
+<dl class="dl-horizontal">
+	{{#each sub_info}}
+		{{{this}}}
+	{{/each}}
+</dl>
 </div>
 
 <!-- bubbleSnapshotInfo -->
 <div class="bubble-head"></i>{{snapshotId}}</div>
 <div class="bubble-content">
-       <dl class="dl-horizontal">
-               <dt>SnapshotId</dt>
-               <dd>{{snapshotId}}</dd>
-               <dt>StartTime</dt>
-               <dd>{{startTime}}</dd>
-               <dt>Status</dt>
-               <dd>{{status}}</dd>
-               <dt>Size</dt>
-               <dd>{{size}}</dd>
-       </dl>
+	<dl class="dl-horizontal">
+		<dt>SnapshotId</dt>
+		<dd>{{snapshotId}}</dd>
+		<dt>StartTime</dt>
+		<dd>{{startTime}}</dd>
+		<dt>Status</dt>
+		<dd>{{status}}</dd>
+		<dt>Size</dt>
+		<dd>{{size}}</dd>
+	</dl>
 </div>
-
 
 <!-- bubbleAMIInfo -->
 <div class="bubble-head">{{id}}</div>
 <div class="bubble-content">
-    <dl class="dl-horizontal">
-        <dt>Name</dt>
-        <dd>{{name}}</dd>
-        <dt>Description</dt>
-        <dd>{{description}}</dd>
-        <dt>Architecture</dt>
-        <dd>{{architecture}}</dd>
-        <dt>Image Location</dt>
-        <dd>{{imageLocation}}</dd>
-        <dt>Public</dt>
-        <dd>{{isPublic}}</dd>
-        <dt>KernelId</dt>
-        <dd>{{kernelId}}</dd>
-        <dt>Root Device Name</dt>
-        <dd>{{rootDeviceName}}</dd>
-        <dt>Root Device Type</dt>
-        <dd>{{rootDeviceType}}</dd>
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Image Location</dt>
+		<dd>{{imageLocation}}</dd>
+		<dt>Public</dt>
+		<dd>{{isPublic}}</dd>
+		<dt>KernelId</dt>
+		<dd>{{kernelId}}</dd>
+		<dt>Root Device Name</dt>
+		<dd>{{rootDeviceName}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{rootDeviceType}}</dd>
 	</dl>
 </div>
 
@@ -346,116 +335,6 @@
 		<dd>{{instance_type}}</dd>
 	</dl>
 </div>
-
-
-
-<!-- browseCommunityAmi -->
-<!--
-<div style="width:820px; height:500px;" id="modal-browse-community-ami">
-	<div class="modal-header">
-		<h3>Community AMIs</h3>
-		<i class="modal-close">×</i>
-	</div>
-	<div class="modal-body">
-		<div class="content-wrap">
-			<div class="ami-left-col">
-				<div>
-					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
-				</div>
-				<div id="selectbox-ami-platform" class="selectbox">
-          <div class="selection">All Platforms</div>
-			  	<ul class="dropdown" tabindex="-1">
-			    	<li class="item selected" data-id="">All Platforms</li>
-			    	<li class="item" data-id="amazonlinux"><i class="icon-amz-linux icon-ami-os"></i>Amazon Linux</li>
-			    	<li class="item" data-id="centos"><i class="icon-cent icon-ami-os"></i>Cent OS</li>
-			    	<li class="item" data-id="debian"><i class="icon-debian icon-ami-os"></i>Debian</li>
-			    	<li class="item" data-id="fedora"><i class="icon-fedora icon-ami-os"></i>Fedora</li>
-			    	<li class="item" data-id="gentoo"><i class="icon-gentoo icon-ami-os"></i>Gentoo</li>
-			    	<li class="item" data-id="opensuse"><i class="icon-open-suse icon-ami-os"></i>OpenSUSE</li>
-
-			    	<li class="item" data-id="redhat"><i class="icon-redhat icon-ami-os"></i>Red Hat</li>
-			    	<li class="item" data-id="windows"><i class="icon-win icon-ami-os"></i>Windows</li>
-			    	<li class="item" data-id="otherlinux"><i class="icon-other-linux icon-ami-os"></i>Other Linux</li>
-			  	</ul>
-				</div>
-				<div class="filter-radio-group">
-					<div class="filter-radio-label">Architecture</div>
-					<div class="radiobuttons" id="filter-ami-32bit-64bit">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">32-bit</button>
-						<button type="button" class="btn btn-silver">64-bit</button>
-					</div>
-				</div>
-				<div class="filter-radio-group">
-					<div class="filter-radio-label">Root Device Type</div>
-					<div class="radiobuttons" id="filter-ami-EBS-Instance">
-						<button type="button" class="btn btn-silver active" data-radio="">Both</button>
-						<button type="button" class="btn btn-silver">EBS</button>
-						<button type="button" class="btn btn-silver">Instance Store</button>
-					</div>
-				</div>
-				<div id="ami-count">
-				  Total: 0
-				</div>
-				<div id="btn-search-ami" class="btn btn-silver">Search</div>
-			</div>
-			<div class="ami-right-col scroll-wrap scrollbar-auto-hide" style="height:450px; width:580px; float:left;">
-				<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-				<div class="scroll-content">
-					<table id="community-ami-filter" class="table filter table-light">
-						<thead>
-							<tr>
-							<th style="width:20px"></th>
-							<th style="width:90px">AMI ID</th>
-							<th style="width:200px">AMI Name</th>
-							<th style="width:50px" class="sortable">Size(GB)</th>
-							</tr>
-						</thead>
-						<tbody id="community_ami_table">
-							{{#each community_ami}}
-							<tr class="item" data-id="{{id}} {{name}}" data-publicprivate="public" data-platform="{{platform}}" data-ebs="{{rootDeviceType}}" data-bit="{{architecture}}">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="{{id}}"></div></td>
-								<td>{{id}}</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>{{name}}</div>
-									<div class="ami-meta">{{isPublic}} | {{architecture}} | {{rootDeviceType}}</div>
-								</td>
-								<td>32</td>
-							</tr>
-							{{/each}}
-
-							<!--<tr class="item" data-id="ami-34567890 Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b" data-publicprivate="private" data-platform="fedora" data-ebs="instancestore" data-bit="32-bit">
-								<td><div class="toggle-fav tooltip" data-tooltip="add to Favorite" data-id="123"></div></td>
-								<td>ami-34567890</td>
-								<td>
-									<div><i class="icon-ubuntu icon-ami-os"></i>Factory JEOS AMI Fedora-14-i386   UUID fd05300d-98a7-43c8-9e48-58145323ac2b</div>
-									<div class="ami-meta">private | 32-bit | Instance</div>
-								</td>
-								<td>32</td>
-							</tr>-->
-
-						<!--
-						</tbody>
-						<div id="community_ami_page">
-							<div id="community_ami_page_preview">
-								Preview Page
-							</div>
-
-							<div id="community_ami_page_current" page="0", totalPage="1">
-								Current Page
-							</div>
-
-							<div id="community_ami_page_next">
-								Next Page
-							</div>
-						</div>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
--->
 
 <!-- createNewStackClassic -->
 <div style="width:660px">
@@ -534,45 +413,43 @@ IPSec Tunnel #{{this.number}}
 #1: Internet Key Exchange Configuration
 
 Configure the IKE SA as follows
-  - Authentication Method         : {{this.ike_protocol_method}}
-  - Pre-Shared Key                : {{this.ike_pre_shared_key}}
-  - Authentication Algorithm      : {{this.ike_authentication_protocol_algorithm}}
-  - Encryption Algorithm          : {{this.ike_encryption_protocol}}
-  - Lifetime                      : {{this.ike_lifetime}} seconds
-  - Phase 1 Negotiation Mode      : {{this.ike_mode}}
-  - Perfect Forward Secrecy       : {{this.ike_perfect_forward_secrecy}}
+	- Authentication Method         : {{this.ike_protocol_method}}
+	- Pre-Shared Key                : {{this.ike_pre_shared_key}}
+	- Authentication Algorithm      : {{this.ike_authentication_protocol_algorithm}}
+	- Encryption Algorithm          : {{this.ike_encryption_protocol}}
+	- Lifetime                      : {{this.ike_lifetime}} seconds
+	- Phase 1 Negotiation Mode      : {{this.ike_mode}}
+	- Perfect Forward Secrecy       : {{this.ike_perfect_forward_secrecy}}
 
 #2: IPSec Configuration
 
 Configure the IPSec SA as follows:
-  - Protocol                      : {{this.ipsec_protocol}}
-  - Authentication Algorithm      : {{this.ipsec_authentication_protocol}}
-  - Encryption Algorithm          : {{this.ipsec_encryption_protocol}}
-  - Lifetime                      : {{this.ipsec_lifetime}} seconds
-  - Mode                          : {{this.ipsec_mode}}
-  - Perfect Forward Secrecy       : {{this.ipsec_perfect_forward_secrecy}}
+	- Protocol                      : {{this.ipsec_protocol}}
+	- Authentication Algorithm      : {{this.ipsec_authentication_protocol}}
+	- Encryption Algorithm          : {{this.ipsec_encryption_protocol}}
+	- Lifetime                      : {{this.ipsec_lifetime}} seconds
+	- Mode                          : {{this.ipsec_mode}}
+	- Perfect Forward Secrecy       : {{this.ipsec_perfect_forward_secrecy}}
 
 IPSec Dead Peer Detection (DPD) will be enabled on the AWS Endpoint. We
 recommend configuring DPD on your endpoint as follows:
-  - DPD Interval                  : {{this.ipsec_interval}}
-  - DPD Retries                   : {{this.ipsec_retries}}
+	- DPD Interval                  : {{this.ipsec_interval}}
+	- DPD Retries                   : {{this.ipsec_retries}}
 
 IPSec ESP (Encapsulating Security Payload) inserts additional
 headers to transmit packets. These headers require additional space,
 which reduces the amount of space available to transmit application data.
 To limit the impact of this behavior, we recommend the following
 configuration on your Customer Gateway:
-  - TCP MSS Adjustment            : {{this.tcp_mss_adjustment}} bytes
-  - Clear Don't Fragment Bit      : {{this.clear_df_bit}}
-  - Fragmentation                 : {{this.fragmentation_before_encryption}}
+	- TCP MSS Adjustment            : {{this.tcp_mss_adjustment}} bytes
+	- Clear Don't Fragment Bit      : {{this.clear_df_bit}}
+	- Fragmentation                 : {{this.fragmentation_before_encryption}}
 
 #3: Tunnel Interface Configuration
 
 Your Customer Gateway must be configured with a tunnel interface that is
 associated with the IPSec tunnel. All traffic transmitted to the tunnel
 interface is encrypted and transmitted to the Virtual Private Gateway.
-
-
 
 The Customer Gateway and Virtual Private Gateway each have two addresses that relate
 to this IPSec tunnel. Each contains an outside address, upon which encrypted
@@ -587,15 +464,15 @@ The Customer Gateway inside IP address should be configured on your tunnel
 interface.
 
 Outside IP Addresses:
-  - Customer Gateway              : {{this.customer_gateway_outside_address}}
-  - Virtual Private Gateway       : {{this.vpn_gateway_outside_address}}
+	- Customer Gateway              : {{this.customer_gateway_outside_address}}
+	- Virtual Private Gateway       : {{this.vpn_gateway_outside_address}}
 
 Inside IP Addresses
-  - Customer Gateway              : {{this.customer_gateway_inside_address}}
-  - Virtual Private Gateway       : {{this.vpn_gateway_inside_address}}
+	- Customer Gateway              : {{this.customer_gateway_inside_address}}
+	- Virtual Private Gateway       : {{this.vpn_gateway_inside_address}}
 
 Configure your tunnel to fragment at the optimal size:
-  - Tunnel interface MTU          : 1436 bytes
+	- Tunnel interface MTU          : 1436 bytes
 
 
 #4: Static Routing Configuration:
@@ -605,24 +482,21 @@ you will need a static route added to your router.
 
 Static Route Configuration Options:
 
-  - Next hop                      : {{this.next_hop}}
+	- Next hop                      : {{this.next_hop}}
 
 You should add static routes towards your internal network on the VGW.
 The VGW will then send traffic towards your internal network over
 he tunnels.
 {{/each}}
 
-
-
-
 Additional Notes and Questions
 ================================================================================
 
-  - Amazon Virtual Private Cloud Getting Started Guide:
-      http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
-  - Amazon Virtual Private Cloud Network Administrator Guide:
-      http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
-  - XSL Version: 2009-07-15-1119716
+	- Amazon Virtual Private Cloud Getting Started Guide:
+			http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
+	- Amazon Virtual Private Cloud Network Administrator Guide:
+			http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
+	- XSL Version: 2009-07-15-1119716
 
 <!-- modalStackValidationRun -->
 <div id="modal-stack-validation-run">
@@ -747,12 +621,12 @@ Additional Notes and Questions
 
 <!-- networkListItem -->
 <li class="input-ip-item">
-    <div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
-    <label for="instance-ip-1" class="input-ip-prefix">{{ipPrefix}}</label>
-    <input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1">
-    </div>
-    <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
-    <div class="icon-remove"></div>
+	<div class="name tooltip" data-tooltip="Specify an IP address or leave it as .x to automatically assign an IP.">
+	<label for="instance-ip-1" class="input-ip-prefix">{{ipPrefix}}</label>
+	<input type="text" class="input input-ip" value="{{ipSuffix}}" id="instance-ip-1" data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+	</div>
+	<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>
+	<div class="icon-remove"></div>
 </li>
 
 <!-- modalSGRule -->
@@ -767,29 +641,29 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-body">
 		<div class="modal-control-group clearfix">
-        	<label class="label-short">Direction</label>
-        	<div id="sg-modal-direction">
-        		{{#if isclassic}}
-        		<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>Inbound</div>
-				{{else}}
-				<div class="radio-group-horizontal">
-					<div class="radio">
-	            		<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
-	                	<label for="radio_inbound"></label>
-	            	</div>
-	            	<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
-	            </div>
+			<label class="label-short">Direction</label>
+			<div id="sg-modal-direction">
+			{{#if isclassic}}
+				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>Inbound</div>
+			{{else}}
+			<div class="radio-group-horizontal">
+				<div class="radio">
+					<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
+					<label for="radio_inbound"></label>
+				</div>
+				<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
+			</div>
 
-            	<div class="radio-group-horizontal">
-					<div class="radio">
-	            		<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
-	                	<label for="radio_outbound"></label>
-	            	</div>
-	            	<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
-	            </div>
-				{{/if}}
-        	</div>
-    	</div>
+			<div class="radio-group-horizontal">
+				<div class="radio">
+					<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
+					<label for="radio_outbound"></label>
+				</div>
+				<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
+			</div>
+			{{/if}}
+			</div>
+		</div>
 <!--     	<div class="modal-control-group clearfix">
 			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			{{#if isAdd}}
@@ -799,9 +673,8 @@ Additional Notes and Questions
 			{{/if}}
 		</div> -->
 
-
 		<div class="modal-control-group clearfix">
-		  <label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
+			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
 			<div class="selectbox" id="sg-add-model-source-select">
 				<div class="selection">IP...</div>
 				<ul class="dropdown">
@@ -810,18 +683,17 @@ Additional Notes and Questions
 					<li class="item" data-id="sg" data-sg-uid="{{sgUID}}">{{sgName}}</li>
 					{{/each}}
 				</ul>
-		  </div>
-		  <input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder="e.g., 192.168.2.0/24">
+			</div>
+			<input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder="e.g., 192.168.2.0/24">
 		</div>
-
 
 		<div class="modal-control-group clearfix">
 			<label class="label-short" >Protocol</label>
 				<div class="modal-protocol-select">
 					<div class="selectbox" id="modal-protocol-select"  data-protocal-type="tcp">
-			      <div class="selection">TCP</div>
+						<div class="selection">TCP</div>
 						<ul class="dropdown" tabindex="-1">
-						  <li class="selected item" data-id="tcp">TCP</li>
+							<li class="selected item" data-id="tcp">TCP</li>
 							<li class="item" data-id="udp">UDP</li>
 							<li class="item" data-id="icmp">ICMP</li>
 							{{#if isclassic}}
@@ -842,47 +714,47 @@ Additional Notes and Questions
 
 				<div class="sg-protocol-option-input" id="sg-protocol-icmp">
 					<div class="selectbox" id="protocol-icmp-main-select" data-protocal-main="0"  data-protocal-sub="-1">
-		      <div class="selection">Echo Reply(0)</div>
+					<div class="selection">Echo Reply(0)</div>
 					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
-    				<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-  					<ul tabindex="-1" class="scroll-content">
-  						<li class="item selected" data-id="0">Echo Reply(0)</li>
-  						<li class="item" data-id="3">Destination Unreachable(3) ...</li>
-  						<li class="item" data-id="4">Source Quench(4)</li>
-  						<li class="item" data-id="5">Redirect Message(5) ...</li>
-  						<li class="item" data-id="6">Alternate Host Address(6)</li>
-  						<li class="item" data-id="8">Echo Request(8)</li>
-  						<li class="item" data-id="9">Router Advertisement(9)</li>
-  						<li class="item" data-id="10">Router Solicitation(10)</li>
-  						<li class="item" data-id="11">Time Exceeded(11) ...</li>
-  						<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
-  						<li class="item" data-id="13">Timestamp(13)</li>
-  						<li class="item" data-id="14">Timestamp Reply(14)</li>
-  						<li class="item" data-id="15">Information Request(15)</li>
-  						<li class="item" data-id="16">Information Reply(16)</li>
-  						<li class="item" data-id="17">Address Mask Request(17)</li>
-  						<li class="item" data-id="18">Address Mask Reply(18)</li>
-  						<li class="item" data-id="30">Traceroute(30)</li>
-  						<li class="item" data-id="31">Datagram Conversion Error(31)</li>
-  						<li class="item" data-id="32">Mobile Host Redirect(32)</li>
-  						<li class="item" data-id="33">Where Are You(33)</li>
-  						<li class="item" data-id="34">Here I Am(34)</li>
-  						<li class="item" data-id="35">Mobile Registration Request(35)</li>
-  						<li class="item" data-id="36">Mobile Registration Reply(36)</li>
-  						<li class="item" data-id="37">Domain Name Request(37)</li>
-  						<li class="item" data-id="38">Domain Name Reply(38)</li>
-  						<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
-  						<li class="item" data-id="40">Photuris Security Failures(40)</li>
-  						<li class="item" data-id="-1">All(-1)</li>
-  					</ul>
-				  </div>
-				  </div>
-        </div>
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul tabindex="-1" class="scroll-content">
+							<li class="item selected" data-id="0">Echo Reply(0)</li>
+							<li class="item" data-id="3">Destination Unreachable(3) ...</li>
+							<li class="item" data-id="4">Source Quench(4)</li>
+							<li class="item" data-id="5">Redirect Message(5) ...</li>
+							<li class="item" data-id="6">Alternate Host Address(6)</li>
+							<li class="item" data-id="8">Echo Request(8)</li>
+							<li class="item" data-id="9">Router Advertisement(9)</li>
+							<li class="item" data-id="10">Router Solicitation(10)</li>
+							<li class="item" data-id="11">Time Exceeded(11) ...</li>
+							<li class="item" data-id="12">Parameter Problem: Bad IP header(12) ...</li>
+							<li class="item" data-id="13">Timestamp(13)</li>
+							<li class="item" data-id="14">Timestamp Reply(14)</li>
+							<li class="item" data-id="15">Information Request(15)</li>
+							<li class="item" data-id="16">Information Reply(16)</li>
+							<li class="item" data-id="17">Address Mask Request(17)</li>
+							<li class="item" data-id="18">Address Mask Reply(18)</li>
+							<li class="item" data-id="30">Traceroute(30)</li>
+							<li class="item" data-id="31">Datagram Conversion Error(31)</li>
+							<li class="item" data-id="32">Mobile Host Redirect(32)</li>
+							<li class="item" data-id="33">Where Are You(33)</li>
+							<li class="item" data-id="34">Here I Am(34)</li>
+							<li class="item" data-id="35">Mobile Registration Request(35)</li>
+							<li class="item" data-id="36">Mobile Registration Reply(36)</li>
+							<li class="item" data-id="37">Domain Name Request(37)</li>
+							<li class="item" data-id="38">Domain Name Reply(38)</li>
+							<li class="item" data-id="39">SKIP Algorithm Discovery Protocol(39)</li>
+							<li class="item" data-id="40">Photuris Security Failures(40)</li>
+							<li class="item" data-id="-1">All(-1)</li>
+						</ul>
+					</div>
+					</div>
+				</div>
 
 				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-3">
-		      <div class="selection">All(-1)</div>
-          <div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
-            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="selection">All(-1)</div>
+					<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;">
+						<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 					<ul class="dropdown scroll-content" tabindex="-1">
 						<li class="item selected" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">destination network unreachable(0)</li>
@@ -900,11 +772,11 @@ Additional Notes and Questions
 						<li class="item" data-id="12">host unreachable for TOS(12)</li>
 						<li class="item" data-id="13">communication administratively prohibited(13)</li>
 					</ul>
-          </div>
+					</div>
 				</div>
 
 				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-5">
-		      <div class="selection">All(-1)</div>
+					<div class="selection">All(-1)</div>
 					<ul class="dropdown" tabindex="-1">
 						<li class="selected item" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">redirect datagram for the network(0)</li>
@@ -915,7 +787,7 @@ Additional Notes and Questions
 				</div>
 
 				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-11">
-			    <div class="selection">All(-1)</div>
+					<div class="selection">All(-1)</div>
 					<ul class="dropdown" tabindex="-1">
 						<li class="item selected" data-id="-1">All(-1)</li>
 						<li class="item" data-id="0">TTL expired transit(0)</li>
@@ -949,52 +821,57 @@ Additional Notes and Questions
 
 <!-- modalDownloadKP -->
 <div style="width:420px">
-  <div class="modal-header">
-    <h3 id='keypair-name'>{{name}}</h3>
-    <i class="modal-close">&times;</i>
-  </div>
-  <div class="modal-body">
-    <section id='keypair-loading' class="tac">
-      <img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
-    </section>
+	<div class="modal-header">
+		<h3 id='keypair-name'>{{name}}</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+	<div class="modal-body">
+		<section id='keypair-loading' class="tac">
+			<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
+		</section>
 
-    <section id="keypair-body-linux" class="hide">
-      <div class="keypair-download clearfix modal-control-group">
-      	<p class="modal-text-major left">Key Pair data is ready</p>
-      	 <a href="#" class="btn btn-blue right" id="keypair-kp-linux">Download</a>
-  	  </div>
-      <div id="keypair-remote" class="modal-control-group clearfix">
-        <label for="keypair-cmd">Remote Access</label>
-	    <input class="input" id="keypair-cmd" type="text" disabled="disabled">
-	    <a href="#" class="icon-copy kp-copy-btn btn btn-silver right" title="Copy remote access command line"></i> Copy</a>
-      </div>
+		<section id="keypair-body-linux" class="hide">
+			<div class="keypair-download clearfix modal-control-group">
+				<p class="modal-text-major left">Key Pair data is ready</p>
+				<a href="#" class="btn btn-blue right" id="keypair-kp-linux">Download</a>
+			</div>
+			<div id="keypair-remote" class="modal-control-group clearfix">
+				<label for="keypair-cmd">Remote Access</label>
+			<input class="input" id="keypair-cmd" type="text" disabled="disabled">
+			<a href="#" class="icon-copy kp-copy-btn btn btn-silver right" title="Copy remote access command line"></i> Copy</a>
+			</div>
 
-    </section>
-    <section id="keypair-body-win" class="hide">
-    	<div class="modal-control-group">
-    		<h4>Remote Access</h4>
-    		<label for="keypair-private-key">Private Key</label>
-    		<textarea id="keypair-private-key" readonly="readonly"></textarea>
-    		<a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
-	        <a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
-    	</div>
+		</section>
+		<section id="keypair-body-win" class="hide">
+			<div class="modal-control-group">
+				<h4>Remote Access</h4>
+				<label for="keypair-private-key">Private Key</label>
+				<textarea id="keypair-private-key" readonly="readonly"></textarea>
+				<a href="#" id="keypair-rdp" class="btn btn-blue">Download RDP</a>
+				<a href="#" id="keypair-kp-win" class="btn btn-blue">Download Key Pair</a>
+			</div>
 
-      <div id="keypair-login" class="modal-control-group clearfix">
-        <label for="keypair-pw" style="width:200px;">Windows Login Password</label>
-          <input type="password" disabled="disabled" id="keypair-pwd" class="input">
-          <a href="#" class="icon-copy btn btn-silver right kp-copy-btn" title="Login password">Copy</a>
-      </div>
-      <div id="keypair-public" class="modal-control-group clearfix">
-        <label for="keypair-dns">Public DNS</label>
-        <input type="text" disabled="disabled" id="keypair-dns" class="input">
-        <a href="#" class="icon-copy btn btn-silver kp-copy-btn right" title="Public DNS">Copy</a>
-      </div>
-    </section>
-  </div>
+			<div id="keypair-public" class="modal-control-group clearfix">
+				<label for="keypair-dns">Public DNS</label>
+				<input type="text" disabled="disabled" id="keypair-dns" class="input">
+				<a href="#" class="icon-copy btn btn-silver kp-copy-btn right" title="Public DNS">Copy</a>
+			</div>
 
-  <div class="modal-footer">
-    <button class="btn modal-close btn-silver">Close</button>
-  </div>
+			<div class="modal-control-group clearfix">
+				<label style="width:200px;">Windows Login Password</label>
+				<div id="keypair-login">
+					<input type="password" disabled="disabled" id="keypair-pwd" class="input">
+					<a href="#" class="icon-copy btn btn-silver right kp-copy-btn" title="Login password">Copy</a>
+				</div>
+				<div id="keypair-no-pwd"></div>
+			</div>
+
+		</section>
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn modal-close btn-silver">Close</button>
+	</div>
 </div>
 
 <!-- instanceVolume -->
@@ -1017,44 +894,44 @@ Additional Notes and Questions
 
 <!-- aimSecondaryPanel -->
 <article>
-  <dl class="dl-vertical">
-      <dt>AMI ID</dt>
-      <dd>{{imageId}}</dd>
-      <dt>Name</dt>
-      <dd>{{name}}</dd>
-      <dt>Description</dt>
-      <dd>{{emptyStr description}}</dd>
-      <dt>Root Device Type</dt>
-      <dd>{{emptyStr rootDeviceType}}</dd>
-      <dt>Architecture</dt>
-      <dd>{{architecture}}</dd>
-      <dt>Virtualization</dt>
-      <dd>{{emptyStr virtualizationType}}</dd>
-      <dt>Kernel ID</dt>
-      <dd>{{emptyStr kernelId}}</dd>
-      <dt>Type</dt>
-      <dd>{{emptyStr osType}}</dd>
-      <dt>Support Instance</dt>
-      <dd>{{emptyStr instance_type}}</dd>
-  </dl>
+	<dl class="dl-vertical">
+		<dt>AMI ID</dt>
+		<dd>{{imageId}}</dd>
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{emptyStr description}}</dd>
+		<dt>Root Device Type</dt>
+		<dd>{{emptyStr rootDeviceType}}</dd>
+		<dt>Architecture</dt>
+		<dd>{{architecture}}</dd>
+		<dt>Virtualization</dt>
+		<dd>{{emptyStr virtualizationType}}</dd>
+		<dt>Kernel ID</dt>
+		<dd>{{emptyStr kernelId}}</dd>
+		<dt>Type</dt>
+		<dd>{{emptyStr osType}}</dd>
+		<dt>Support Instance</dt>
+		<dd>{{emptyStr instance_type}}</dd>
+	</dl>
 </article>
 
 <!-- snapshotSecondaryPanel -->
 <article>
-    <dl class="dl-vertical">
-        <dt>Snapshot ID</dt>
-        <dd>{{snapshotId}}</dd>
-        <dt>Volume ID</dt>
-        <dd>{{volumeId}}</dd>
-        <dt>Description</dt>
-        <dd>{{emptyStr description}}</dd>
-        <dt>Capacity</dt>
-        <dd>{{emptyStr volumeSize}}GB</dd>
-        <dt>Owner</dt>
-        <dd>{{emptyStr ownerId}}</dd>
-        <dt>Started</dt>
-        <dd>{{emptyStr startTime}}</dd>
-    </dl>
+	<dl class="dl-vertical">
+		<dt>Snapshot ID</dt>
+		<dd>{{snapshotId}}</dd>
+		<dt>Volume ID</dt>
+		<dd>{{volumeId}}</dd>
+		<dt>Description</dt>
+		<dd>{{emptyStr description}}</dd>
+		<dt>Capacity</dt>
+		<dd>{{emptyStr volumeSize}}GB</dd>
+		<dt>Owner</dt>
+		<dd>{{emptyStr ownerId}}</dd>
+		<dt>Started</dt>
+		<dd>{{emptyStr startTime}}</dd>
+	</dl>
 </article>
 
 <!-- elbPropertyListenerItem -->
@@ -1082,7 +959,7 @@ Additional Notes and Questions
 		<div class="left elb-property-listener-item-1">
 			<label class="left">Instance Protocol</label>
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
-        <div class="selection">{{InstanceProtocol}}</div>
+				<div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
 					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
 					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
@@ -1119,18 +996,18 @@ Additional Notes and Questions
 		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
-    {{#each instances}}
-      <li>
-        <a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
-          <i class="asgList-item-status status status-{{status}}"></i>
-          <span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-          <div class="asgList-item-volume" data-target-id={{id}}>
-            <span class="asgList-item-number">{{../volume}}</span>
-          </div>
-          <span class="asgList-item-label">{{id}}</span>
-        </a>
-      </li>
-    {{/each}}
+		{{#each instances}}
+		<li>
+			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
+				<i class="asgList-item-status status status-{{status}}"></i>
+				<span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+				<div class="asgList-item-volume" data-target-id={{id}}>
+					<span class="asgList-item-number">{{../volume}}</span>
+				</div>
+				<span class="asgList-item-label">{{id}}</span>
+			</a>
+		</li>
+		{{/each}}
 	</ul>
 </div>
 
@@ -1141,18 +1018,18 @@ Additional Notes and Questions
 		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
 	</div>
 	<ul id="instanceList" class="clearfix">
-    {{#each instances}}
-    <li>
-      <a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
-        <i class="instanceList-item-status status status-{{status}}"></i>
-        <span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-        <div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
-          <span class="instanceList-item-number">{{volume}}</span>
-        </div>
-        <span class="instanceList-item-label">{{name}}</span>
-      </a>
-    </li>
-    {{/each}}
+		{{#each instances}}
+		<li>
+			<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+				<i class="instanceList-item-status status status-{{status}}"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+					<span class="instanceList-item-number">{{volume}}</span>
+				</div>
+				<span class="instanceList-item-label">{{name}}</span>
+			</a>
+		</li>
+		{{/each}}
 	</ul>
 </div>
 
@@ -1163,30 +1040,30 @@ Additional Notes and Questions
 		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
 	</div>
 	<ul id="eniList" class="clearfix">
-    {{#each enis}}
+		{{#each enis}}
 		<li>
 			<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
 				<span class="eniList-item-label">{{name}}</span>
 			</a>
 		</li>
-    {{/each}}
+		{{/each}}
 	</ul>
 </div>
 
 <!-- setupCIDRConfirm -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
-  <div class="modal-body">
-    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{main_content}}</div>
-      <div class="modal-text-minor">{{desc_content}}</div>
-    </div> </div>
-  </div>
-  <div class="modal-footer">
-  	<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
-    <button id="cidr-return" class="btn modal-close btn-blue">OK</button>
-  </div>
+	<div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{main_content}}</div>
+			<div class="modal-text-minor">{{desc_content}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
+		<button id="cidr-return" class="btn modal-close btn-blue">OK</button>
+	</div>
 </div>
 
 <!-- disconnectedNotification -->
@@ -1213,49 +1090,59 @@ Additional Notes and Questions
 
 <!-- modalReinputStackName -->
 <div style="width:420px">
-    <div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
-    <div class="modal-body">
-        <div class="modal-text-wraper">
-            <div class="modal-center-align-helper">
-                <div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
-                <div class="modal-control-group modal-control-group-bg-blue" data-bind="true">
-                    <label for="new-stack-name">Stack Name</label>
-                    <input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button id="rename-confirm" class="btn btn-blue">Save</button>
-    </div>
+	<div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			<div class="modal-center-align-helper">
+				<div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
+				<div class="modal-control-group modal-control-group-bg-blue" data-bind="true">
+					<label for="new-stack-name">Stack Name</label>
+					<input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="rename-confirm" class="btn btn-blue">Save</button>
+	</div>
 </div>
 
 <!-- closeTabRestriction -->
 <div style="width:420px">
-  <div class="modal-header"><h3>Conﬁrm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
-  <div class="modal-body">
-    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{ tab_name }} has unsaved change</div>
-      <div class="modal-text-major">Do you conﬁrm to close it?</div>
-    </div> </div>
-  </div>
-  <div class="modal-footer">
-    <button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
-    <button class="btn modal-close btn-silver">Cancel</button>
-  </div>
+	<div class="modal-header"><h3>Conﬁrm to close {{ tab_name }}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{ tab_name }} has unsaved change</div>
+			<div class="modal-text-major">Do you conﬁrm to close it?</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="close-tab-confirm" class="btn btn-red" data-tab-id="{{ tab_id }}">Close Tab</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
 </div>
 
 <!-- modalDeleteSGOrACL -->
 <div style="width:420px">
-  <div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
-  <div class="modal-body">
-    <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{main_content}}</div>
-      <div class="modal-text-minor">{{desc_content}}</div>
-    </div> </div>
-  </div>
-  <div class="modal-footer">
-  	<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
-    <button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
-  </div>
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper">
+			 <div class="modal-center-align-helper">
+				<div class="modal-text-major">{{main_content}}</div>
+				<div class="modal-text-minor">{{desc_content}}</div>
+			</div>
+		 </div>
+	</div>
+	<div class="modal-footer">
+		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- loadingTransparent -->
+<div id="loading-modal-wrap">
+	<div class="loading-modal" id="modal-box">
+		<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif">
+		<div>Refreshing resources...</div></div>
+	</div>
 </div>

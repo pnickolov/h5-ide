@@ -186,14 +186,18 @@ define({
 		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
-
-
 		//toolbar handler
 		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
 		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
 		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
+		// Add new strings below this comment. Move above once English has been confirmed
+		//refresh button
+		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
+		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
+		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
+
 
 		/******property module******/
 		// instance property module
@@ -231,6 +235,7 @@ define({
 		'PROC_CLOSE_TAB'             : 'Close Tab',
 		'PROC_STEP_REQUEST'          : 'Processing',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'PROC_FAILED_TITLE'          :  'Starting App Failed',
 
 		/****** region module *****/
 		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',
@@ -258,7 +263,10 @@ define({
 
 		/****** Dashboard ******/
 		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'	  : 'Status of resources is up to date.'
+		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
+
+		/****** popup ******/
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
 
 	},
 	'service' : {

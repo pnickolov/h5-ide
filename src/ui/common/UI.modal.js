@@ -94,10 +94,6 @@ modal.dismiss = function (event)
 	{
 		modal.close();
 	}
-
-	if ( event.target.tagName === "A" && event.preventDefault ) {
-		event.preventDefault();
-	}
 };
 
 modal.close = function ( evt )

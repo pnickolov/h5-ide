@@ -1741,10 +1741,6 @@ a {
 	vertical-align: middle;
 }
 
-#region-aws-resource-data .table-head-fix {
-	display: none;
-}
-
 #region-aws-resource-data .scroll-wrap {
 	height: 340px;
 }
@@ -5096,7 +5092,7 @@ a.action-link:hover {
 
 .sg-rule-create-done-wrap {
 	display  : none;
-	height   : 400px;
+	height   : 360px;
 	position : relative;
 }
 
@@ -5261,12 +5257,11 @@ a.action-link:hover {
 
 .notification-list .notification-details {
 	/*border         : 1px solid rgb(190, 188, 189);*/
-	margin-top       : 15px;
-	padding          : 10px;
-	border-radius    : 2px;
-
-	font-size        : 14px;
-
+	margin-top: 15px;
+	margin-left: 20px;
+	padding: 10px;
+	border-radius: 2px;
+	font-size: 12px;
 	color: #DB4E47;
 	background-color: #FCE8E7;
 	border: 1px solid #DB4E47;
@@ -5274,6 +5269,12 @@ a.action-link:hover {
 
 .notification-list .notification-details p {
 	margin: 2px 0;
+}
+
+.notification-list .notification-duration {
+	margin-top: 6px;
+	color: #aaa;
+	margin-left: 23px;
 }
 
 .notification-list .notification-stamp {
@@ -6041,6 +6042,26 @@ a.action-link:hover {
 	z-index: 100000;
 	background: #262626;
 	opacity: 0.975;
+}
+
+#loading-modal-wrap {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 70;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.loading-modal {
+	width: 200px;
+	text-align: center;
+	padding: 30px 0;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	margin-left: -100px;
 }
 
 .loading {

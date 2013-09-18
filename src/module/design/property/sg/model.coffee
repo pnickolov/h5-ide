@@ -197,6 +197,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             rules = null
             existing = false
 
+            if !rule.direction then rule.direction = 'inbound'
             if rule.direction == 'inbound'
                 rules = MC.canvas_data.component[uid].resource.IpPermissions
             else

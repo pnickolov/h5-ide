@@ -55,6 +55,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                 $.each aclObj.entrySet.item, ( idx, entry ) ->
 
+                    if entry.egress in ['true', true]
+                        entry.egress = true
+                    else
+                        entry.egress = false
+
                     if entry.protocol == -1 or entry.protocol == '-1'
 
                         entry.protocolName = 'All'
@@ -92,7 +97,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         null
 
-            if aclObj.associationSet.item
+            if aclObj.associationSet and aclObj.associationSet.item
 
                 aclObj.asso_number = aclObj.associationSet.item.length
 

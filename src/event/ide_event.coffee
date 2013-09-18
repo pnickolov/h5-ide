@@ -27,6 +27,8 @@ define [ 'underscore', 'backbone' ], () ->
         RESOURCE_COMPLETE      : 'RESOURCE_COMPLETE'
         DESIGN_SUB_COMPLETE    : 'DESIGN_SUB_COMPLETE'
 
+        IDE_AVAILABLE          : 'IDE_AVAILABLE'
+
         #
         LOGOUT_IDE             : 'LOGOUT_IDE'
 

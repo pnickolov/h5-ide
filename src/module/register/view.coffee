@@ -63,7 +63,7 @@ define [ 'event',
             status.show()
             #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
-                status.show().text 'This email is available.'
+                status.show().text 'This email address is available.'
                 #check vaild
                 this.trigger 'CHECK_REPEAT', null, value if event.type is 'blur'
                 true

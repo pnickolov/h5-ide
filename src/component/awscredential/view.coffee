@@ -94,9 +94,9 @@ define [ 'event',
             $('#AWSCredentials-update').hide()
 
             # set content
-            $('#aws-credential-account-id').val(' ')
-            $('#aws-credential-access-key').val(' ')
-            $('#aws-credential-secret-key').val(' ')
+            $('#aws-credential-account-id').val('')
+            $('#aws-credential-access-key').val('')
+            $('#aws-credential-secret-key').val('')
 
             if not flag     # initial
                 $('#AWSCredential-failed').hide()

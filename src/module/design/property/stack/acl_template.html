@@ -4,7 +4,7 @@
 		<div class="col3 edit icon-btn-details" acl-uid="{{uid}}"></div>
 		<div class="col2">
 			<div class="col2-1 truncate">{{name}}</div>
-			<div class="col2-2 truncate">{{rule}} rules, {{association}} associations{{#unless isDefault}} | <a class="sg-list-delete-btn" acl-uid="{{uid}}" acl-name="{{name}}" acl-association="{{association}}">Delete</a>{{/unless}}</div>
+			<div class="col2-2 truncate">{{rule}} rules, {{association}} associations{{#if ../stack_state}}{{#unless isDefault}} | <a class="sg-list-delete-btn" acl-uid="{{uid}}" acl-name="{{name}}" acl-association="{{association}}">Delete</a>{{/unless}}{{/if}}</div>
 		</div>
 	</li>
 {{/each}}

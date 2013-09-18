@@ -143,6 +143,11 @@ var Tabbar = {
 
 		tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
 
+		if (tab_id === 'dashboard')
+		{
+			scrollbar.scrollTo($('#global-region-wrap'), {'top': 1});
+		}
+
 		return tab_id;
 	},
 

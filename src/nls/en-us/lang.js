@@ -235,6 +235,7 @@ define({
 		'PROC_CLOSE_TAB'             : 'Close Tab',
 		'PROC_STEP_REQUEST'          : 'Processing',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'PROC_FAILED_TITLE'          :  'Starting App Failed',
 
 		/****** region module *****/
 		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',

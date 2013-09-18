@@ -256,6 +256,8 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 			$dom = this.render()
 			$("#property-second-panel").find(".property-content").html($dom)
 
+			MC.canvas.reDrawSgLine()
+
 			modal.close()
 
 		editablelabelClick : ( event ) ->

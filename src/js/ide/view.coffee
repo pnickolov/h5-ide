@@ -27,19 +27,20 @@ define [ 'event',
             #
             return if $( '#loading-bar-wrapper' ).html().trim() is ''
             #
-            $( '.loading-wrapper' ).fadeOut 'normal', () ->
-                $( '.loading-wrapper' ).remove()
+            target = $('#loading-bar-wrapper').find( 'div' )
+            target.fadeOut 'normal', () ->
+                target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
 
-        showLoading : ( tab_id ) ->
-            console.log 'showLoading, tab_id = ' + tab_id
-            $( '#loading-bar-wrapper' ).html MC.data.loading_wrapper_html
+        showLoading : ( tab_id, is_transparent ) ->
+            console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
+            $( '#loading-bar-wrapper' ).html if !is_transparent then MC.data.loading_wrapper_html else MC.template.loadingTransparent()
             #
             @delay = setTimeout () ->
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id
+                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
             null

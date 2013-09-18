@@ -322,7 +322,8 @@ define [ 'event', 'i18n!nls/lang.js',
 
             # check whether pending
             if $(event.currentTarget).children('.app-thumbnail-pending').length > 0
-                notification 'warning', lang.ide.REG_MSG_WARN_APP_PENDING
+                # No need to show notification
+                # notification 'warning', lang.ide.REG_MSG_WARN_APP_PENDING
 
             else
                 item_info   = $(event.currentTarget).next('.region-resource-info')[0]

@@ -858,6 +858,11 @@ MC.canvas.add = function (flag, option, coordinate)
 							});
 						}
 					});
+				} else {
+					if (MC.aws.eip.isInstanceHaveEIPInClassic(component_data.uid)) {
+						eip_icon = MC.canvas.IMAGE.EIP_ON;
+						data_eip_state = 'on';
+					}
 				}
 
 
@@ -1093,14 +1098,23 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			// update eip tooltip
 			var currentState = MC.canvas.getState();
-			if (currentState === 'app') {
-				MC.aws.eip.updateAppTooltip(group.id);
-			} else {
-				if (data_eip_state === 'on') {
-					MC.aws.eip.updateStackTooltip(group.id, false);
+
+			try
+			{
+				if (currentState === 'app') {
+					MC.aws.eip.updateAppTooltip(group.id);
 				} else {
-					MC.aws.eip.updateStackTooltip(group.id, true);
+					if (data_eip_state === 'on') {
+						MC.aws.eip.updateStackTooltip(group.id, false);
+					} else {
+						MC.aws.eip.updateStackTooltip(group.id, true);
+					}
 				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.add]MC.aws.eip.updateAppTooltip error');
+				console.info(eni);
 			}
 
 			//hide port by platform

@@ -5257,12 +5257,11 @@ a.action-link:hover {
 
 .notification-list .notification-details {
 	/*border         : 1px solid rgb(190, 188, 189);*/
-	margin-top       : 15px;
-	padding          : 10px;
-	border-radius    : 2px;
-
-	font-size        : 14px;
-
+	margin-top: 15px;
+	margin-left: 20px;
+	padding: 10px;
+	border-radius: 2px;
+	font-size: 12px;
 	color: #DB4E47;
 	background-color: #FCE8E7;
 	border: 1px solid #DB4E47;
@@ -5270,6 +5269,12 @@ a.action-link:hover {
 
 .notification-list .notification-details p {
 	margin: 2px 0;
+}
+
+.notification-list .notification-duration {
+	margin-top: 6px;
+	color: #aaa;
+	margin-left: 23px;
 }
 
 .notification-list .notification-stamp {

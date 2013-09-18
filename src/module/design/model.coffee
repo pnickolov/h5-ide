@@ -252,7 +252,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'i18n!nls/l
 
             if is_manual
                 app_name = MC.forge.app.getNameById app_id
-                notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
+                #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
 
 

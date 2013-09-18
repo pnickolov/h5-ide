@@ -177,6 +177,8 @@ var MC = {
 			version = RegExp.$1;
 		}
 
+		version = version * 1;
+
 		MC.browser = name;
 		MC.browserVersion = version;
 

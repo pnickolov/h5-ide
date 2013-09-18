@@ -190,7 +190,7 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
-		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
+		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
 
 		#listen IDE_AVAILABLE

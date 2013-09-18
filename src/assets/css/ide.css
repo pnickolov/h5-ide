@@ -6039,6 +6039,15 @@ a.action-link:hover {
 	opacity: 0.975;
 }
 
+.loading-wrapper-2 {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+	background: #262626;
+	opacity: 0.5;
+}
+
 .loading {
 	position: absolute;
 	top: 45%;

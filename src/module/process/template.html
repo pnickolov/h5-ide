@@ -1,7 +1,13 @@
 <div id="process-panel">
 	<section id="process-container">
 		<header id="process-title">
-			<h1 class="title">{{ i18n "PROC_TITLE" }}</h1>
+			<h1 class="title">
+				{{#if flag_list.is_failed}}
+					{{ i18n "PROC_FAILED_TITLE" }}
+				{{else}}
+					{{ i18n "PROC_TITLE" }}
+				{{/if}}
+			</h1>
 		</header>
 		<div id="process-body">
 

@@ -152,29 +152,38 @@ var MC = {
 		{
 			doc.addClass('safari');
 
-			version = RegExp.$1;
+			name = 'safari';
+
+			version = /version\/([0-9])\.([0-9\.]*) safari/ig.exec(ua)[1];
 		}
 
 		if (name === 'webkit' && /chrome\/([0-9]{1,2})/ig.exec(ua) !== null)
 		{
 			doc.addClass('chrome');
 
-			version = RegExp.$1;
+			name = 'chrome';
+
+			version = /chrome\/([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
 		if (name === 'opera' && /version\/([0-9]{1,2})/ig.exec(ua) !== null)
 		{
-			version = RegExp.$1;
+
+			doc.addClass('opera');
+
+			name = 'opera';
+
+			version = /version\/([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
 		if (name === 'firefox' && /firefox\/([0-9]{1,2})/ig.exec(ua))
 		{
-			version = RegExp.$1;
+			version = /firefox\/([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
 		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
 		{
-			version = RegExp.$1;
+			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
 		version = version * 1;
@@ -284,7 +293,7 @@ var MC = {
 	extractID: function (uid)
 	{
 		var result = MC._extractIDRegex.exec(uid);
-		
+
 		return result ? result[1] : uid;
 	},
 

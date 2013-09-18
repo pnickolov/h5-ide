@@ -14,11 +14,8 @@ define [ 'event',
         success_tmpl : Handlebars.compile success_tmpl
 
         events       :
-            #'keyup #register-username' : 'verificationUser'
             'blur  #register-username'  : 'verificationUser'
-            #'keyup #register-email'    : 'verificationEmail'
             'blur  #register-email'     : 'verificationEmail'
-            #'keyup #register-password' : 'verificationPassword'
             'blur #register-password'   : 'verificationPassword'
             'submit #register-form'     : 'submit'
             'click #register-get-start' : 'loginEvent'
@@ -39,15 +36,17 @@ define [ 'event',
                     @$el.html @template @model
 
         verificationUser : ->
+            console.log 'verificationUser'
             value  = $('#register-username').val()
             status = $('#username-verification-status')
             status.removeClass 'error-status'
+            status.show()
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
                     status.show().text 'This username is available.'
                     #check vaild
-                    this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
+                    this.trigger 'CHECK_REPEAT', value, null if event.type is 'blur'
                     true
                 else
                     status.addClass('error-status').show().text 'Username not matched.'
@@ -57,26 +56,30 @@ define [ 'event',
                 false
 
         verificationEmail : ->
+            console.log 'verificationEmail'
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
             status.removeClass 'error-status'
+            status.show()
             #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text 'This email is available.'
                 #check vaild
-                this.trigger 'CHECK_REPEAT', value if event.type is 'blur'
+                this.trigger 'CHECK_REPEAT', null, value if event.type is 'blur'
                 true
             else
                 status.addClass('error-status').show().text 'This is not a valid email address.'
                 false
 
         verificationPassword : ->
+            console.log 'verificationPassword'
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')
             status.removeClass 'error-status'
+            status.show()
             #
             if value isnt ''
-                if value.length > 6 # &&
+                if value.length > 5 # &&
                     #/[A-Z]{1}/.test(value) &&
                     #/[0-9]{1}/.test(value)
                     status.show().text 'This password is OK.'
@@ -106,6 +109,10 @@ define [ 'event',
             if right_count is 3
                 $( '#register-btn' ).attr( 'disabled', true )
                 this.trigger 'CHECK_REPEAT', username, email, password
+                #
+                $('#username-verification-status').hide()
+                $('#email-verification-status').hide()
+                $('#password-verification-status').hide()
             false
 
         showUsernameError : ->

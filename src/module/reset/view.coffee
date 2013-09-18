@@ -20,7 +20,7 @@ define [ 'event',
         events   :
             'click #reset-btn'      : 'resetButtonEvent'
             'click #reset-password' : 'resetPasswordEvent'
-            'keyup #reset-pw'       : 'verificationPassword'
+            'blur #reset-pw'        : 'verificationPassword'
 
         initialize : ->
             #
@@ -58,8 +58,9 @@ define [ 'event',
 
         resetPasswordEvent : ->
             console.log 'resetPasswordEvent'
-            $( '#reset-password' ).attr( 'disabled', true )
-            this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
+            if @verificationPassword()
+                $( '#reset-password' ).attr( 'disabled', true )
+                this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false
 
         verificationPassword : ->

@@ -188,6 +188,38 @@ var MC = {
 		};
 	},
 
+	isSupport: function ()
+	{
+		var data = MC.browserDetect(),
+			browser = data.browser,
+			version = data.version;
+
+		if (
+			(
+				browser === 'chrome' && version >= 10
+			) ||
+			(
+				browser === 'safari' && version >= 6
+			) ||
+			(
+				browser === 'msie' && version >= 10
+			) ||
+			(
+				browser === 'firefox' && version >= 4
+			) ||
+			(
+				browser === 'opera' && version >= 10
+			)
+		)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
 	capitalize: function (string)
 	{
 	    return string.charAt(0).toUpperCase() + string.slice(1);

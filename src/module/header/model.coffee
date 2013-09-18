@@ -112,60 +112,52 @@ define [ 'backbone', 'jquery', 'underscore',
 
 
         parseInfo : (req) ->
-            me = this
-
-            item = {}
-            item.id = req.id
-            item.rid = req.rid
-            item.region = req.region
-            item.region_label = constant.REGION_SHORT_LABEL[req.region]
-            item.is_readed = true
-            item.is_error = false
-            item.is_request = false
-            item.is_process = false
-            item.is_complete = false
-            item.is_terminated = false
-
-            if req.brief
-                lst = req.brief.split ' '
-                item.operation = lst[0].toLowerCase()
-                item.name = lst[lst.length-1]
-
-                item.time  = req.time_begin
-                item.state = req.state
-                if req.state is constant.OPS_STATE.OPS_STATE_FAILED
-                    item.is_error = true
-                    item.error = req.data
-
-                    item.time = req.time_end
-
-                else if req.state is constant.OPS_STATE.OPS_STATE_PENDING
-                    item.is_request = true
-
-                else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
-                    item.is_process = true
-
-                else if req.state is constant.OPS_STATE.OPS_STATE_DONE
-                    item.is_complete = true
-
-                    item.time = req.time_end
-
-                else
-                    return
-
-                # set time
-                utc             = new Date(item.time * 1000)
-                item.time_str   = MC.dateFormat(utc, "hh:mm yyyy-MM-dd")
-
-                if item.rid.search('stack') == 0    # run stack
-                    item.name = lst[2]
-
-                    if item.is_complete     # run stack success
-                        lst = req.data.split(' ')
-                        item.rid = lst[lst.length-1]
-
-            else
+            if not req.brief
                 return
+
+            lst = req.brief.split ' '
+            item_def =
+                is_readed     : true
+                is_error      : req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                is_request    : req.state is constant.OPS_STATE.OPS_STATE_PENDING
+                is_process    : req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
+                is_complete   : req.state is constant.OPS_STATE.OPS_STATE_DONE
+                is_terminated : false
+                operation     : lst[0].toLowerCase()
+                name          : lst[lst.length-1]
+                region_label  : constant.REGION_SHORT_LABEL[req.region]
+                time          : req.time_end
+
+            # req.time_begin | req.time_end
+
+            item = $.extend {}, req, item_def
+
+            if req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                item.error = req.data
+            else if req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
+                item.time = req.time_begin
+
+            # Only format time when the request is not pending
+            if req.state isnt constant.OPS_STATE.OPS_STATE_PENDING
+                item.time_str = MC.dateFormat( new Date( item.time * 1000 ) , "hh:mm yyyy-MM-dd")
+
+                if req.state isnt constant.OPS_STATE.OPS_STATE_INPROCESS
+
+                    time_begin = parseInt req.time_begin, 10
+                    time_end   = parseInt req.time_end, 10
+                    if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
+                        duration = time_end - time_begin
+                        if duration < 60
+                            item.duration = "Took #{duration} sec."
+                        else
+                            item.duration = "Took #{Math.round(duration/60)} min."
+
+            # rid
+            if item.rid.search('stack') == 0    # run stack
+                item.name = lst[2]
+
+                if item.is_complete     # run stack success
+                    item.rid = req.data.split(' ')[lst.length-1]
 
             item
 

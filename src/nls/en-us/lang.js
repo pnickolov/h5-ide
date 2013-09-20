@@ -264,6 +264,8 @@ define({
 		/****** Dashboard ******/
 		// Add new strings below this comment. Move above once English has been confirmed
 		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
+		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
+		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

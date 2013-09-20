@@ -89,6 +89,9 @@ define [ 'jquery', 'MC.canvas.constant' ], () ->
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                if not app_id
+                    return
+
                 console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
                 is_manual = true
                 model.getAppResourcesService region_name, app_id, is_manual

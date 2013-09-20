@@ -376,6 +376,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
 
+                # update app resource
+                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, value
+
                 return
 
             else if flag is 'PENDING_APP'

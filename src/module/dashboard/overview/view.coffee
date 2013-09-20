@@ -61,6 +61,8 @@ define [ 'event', 'i18n!nls/lang.js',
         hasCredential: ->
             MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
+    Template_Cache = {}
+
     OverviewView = Backbone.View.extend {
 
         el                      : $( '#tab-content-dashboard' )
@@ -202,13 +204,16 @@ define [ 'event', 'i18n!nls/lang.js',
                 else
                     type = 'DescribeInstances'
 
-            tmplAll = $( '#region-resource-body-tmpl' ).html()
+            if not Template_Cache[ type ]
+                tmplAll = $( '#region-resource-body-tmpl' ).html()
 
-            startPos = tmplAll.indexOf "<!-- #{type} -->"
-            endPos = tmplAll.indexOf "<!-- #{type} -->", startPos + 1
+                startPos = tmplAll.indexOf "<!-- #{type} -->"
+                endPos = tmplAll.indexOf "<!-- #{type} -->", startPos + 1
 
-            tmpl = tmplAll.slice startPos, endPos
-            template = Handlebars.compile tmpl
+                tmpl = tmplAll.slice startPos, endPos
+                Template_Cache[ type ] = Handlebars.compile tmpl
+
+            template = Template_Cache[ type ]
 
             $typeTabs.each () ->
                 if $( this ).data( 'resourceType' ) is type

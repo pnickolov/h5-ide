@@ -405,9 +405,9 @@
                                 <div>
                                     {{#if app}}
                                     {{#if owner}}
-                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App" data-id="{{tagSet.app-id}}" data-name="{{app}}">[{{ app }}]</a>
+                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
                                     {{else}}
-                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                    <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                     {{/if}}
                                     {{else}}
                                     <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
@@ -514,9 +514,9 @@
                                         <div>
                                             {{#if app}}
                                             {{#if owner}}
-                                            <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                            <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
                                             {{else}}
-                                            <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                            <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                             {{/if}}
                                             {{else}}
                                             <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
@@ -577,9 +577,9 @@
                                             <div>
                                                 {{#if app}}
                                                 {{#if owner}}
-                                                <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
                                                 {{else}}
-                                                <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                                 {{/if}}
                                                 {{else}}
                                                 <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
@@ -644,9 +644,9 @@
                                                 <div>
                                                     {{#if app}}
                                                     {{#if owner}}
-                                                    <a href="javascript:void(0)" class="table-link table-app-link truncate" title="Open App">[{{ app }}]</a>
+                                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
                                                     {{else}}
-                                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
+                                                    <span class="table-app-link truncate tooltip" data-tooltip='App created by current user' >[{{ app }}]</span>
                                                     {{/if}}
                                                     {{else}}
                                                     <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip="Unmanged Resource" >Unmanaged</span>
@@ -752,7 +752,7 @@
                                                         <div>
                                                             {{#if app}}
                                                             {{#if owner}}
-                                                            <a href="javascript:void(0)" class="table-link table-app-link truncate" id="asg-app-name" data-option='{"id": "{{app_id}}", "name": "{{app}}"}' title="Open App">[{{ app }}]</a>
+                                                            <span class="table-app-link truncate tooltip" id="asg-app-name" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
                                                             {{else}}
                                                             <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                             {{/if}}

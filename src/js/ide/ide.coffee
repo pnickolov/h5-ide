@@ -139,15 +139,10 @@ define [ 'MC', 'event', 'handlebars'
 				console.log '---------- connection failed ----------'
 				view.disconnectedMessage 'show'
 			websocket.status true, ()->
-				if initialize == false
-					# do something here, trigger when connection recover
-					console.log 'connection succeed'
-					view.disconnectedMessage 'hide'
-				else
-					initialize = false
-				null
-		#
-		setTimeout status, 10000
+				console.log 'connection succeed'
+				view.disconnectedMessage 'hide'
+
+		setTimeout status, 15000
 
 		subScriptionError = ( error ) ->
 			console.log '---------- session invalid ----------'

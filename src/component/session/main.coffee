@@ -46,6 +46,7 @@ define [ 'jquery', 'event',
                 #
                 ide_event.trigger ide_event.UPDATE_APP_LIST
                 ide_event.trigger ide_event.UPDATE_DASHBOARD
+                ide_event.trigger ide_event.RECONNECT_WEBSOCKET
                 #
                 reconnect_view.close()
                 #

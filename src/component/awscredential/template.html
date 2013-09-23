@@ -68,6 +68,15 @@
 				<div id="AWSCredential-failed" class="AWSCredential-wall">
 					<p>Authentication failed. Please check your AWS Credentials and try again.</p>
 				</div>
+				<div id="AWSCredentials-remove">
+					<div id="AWSCredential-remove-header">
+					</div>
+					<div id="AWSCredential-remove-body">
+						<h5>By removing Credentials, you will be in the demo mode.</h5>
+						<h5>If you want to launch stack into app, you need to provide valid AWS Credentials.</h5>
+						<h5>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</h5>
+					</div>
+				</div>
 
 				<ul>
 					<li>
@@ -89,7 +98,9 @@
 
 				<div id="AWSCredential-setting-btn-wrap">
 					<!-- <a href="/help" id="AWSCredentials-link" target="_blank">Need help?</a> -->
-					<button id="awsredentials-submit" class="btn btn-blue">Submit</button>
+					<a href="javascript:void(0)" id="awscredentials-remove">Remove Credential</a>
+					<button id="awscredentials-submit" class="btn btn-blue">Submit</button>
+					<a href="javascript:void(0)" id="awscredentials-cancel">Cancel</a>
 				</div>
 			</div>
 
@@ -98,10 +109,6 @@
 					<img id="AWSCredentials-loading" src="./assets/images/ide/loading-bar-w.gif" alt="loading"/>
 					<span id="AWSCredentials-loading-text">Connecting to AWS account</span>
 				</div>
-
-<!-- 			<div class="modal-footer">
-					<button class="btn btn-silver" disabled>Loading...</button>
-				</div> -->
 			</div>
 
 			<div id="AWSCredentials-update">
@@ -111,12 +118,12 @@
 						<span id="aws-credential-update-account-id">{{account_id}}</span>
 						<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>
 					</div>
-				</div>
 
-<!-- 				<div class="modal-footer">
-					<button class="btn btn-silver" id="awsredentials-update-done">Done</button>
-				</div> -->
+					<div class="AWSCredentials-nochange-warn">Cannot change AWS Credentials now since you have unterminated app.
+						If you want to change AWS Credentials, terminate all your apps ﬁrst.</div>
+				</div>
 			</div>
+
 		</div>
 
 	</div>

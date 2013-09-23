@@ -4,17 +4,20 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
+         'constant',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
-], ( ide_event, lang ) ->
+], ( ide_event, lang, constant ) ->
 
     AWSCredentialView = Backbone.View.extend {
 
         events   :
             'closed'                                : 'onClose'
-            'click #awsredentials-submit'           : 'onSubmit'
-            'click #awsredentials-update-done'      : 'onDone'
+            'click #awscredentials-submit'          : 'onSubmit'
+            'click #awscredentials-update-done'     : 'onDone'
             'click .AWSCredentials-account-update'  : 'onUpdate'
+            'click #awscredentials-cancel'          : 'onAWSCredentialCancel'
+            'click #awscredentials-remove'          : 'onAWSCredentialRemove'
             'click #account-setting-tab li a'       : 'onTab'
             'click #account-update-email-link'      : 'onChangeEmail'
             'click #account-change-password'        : 'onChangePassword'
@@ -70,6 +73,18 @@ define [ 'event',
                 me.showSetting('credential', 'on_submit')
 
                 me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+
+        onAWSCredentialCancel : () ->
+            console.log 'account_setting_tab onAWSCredentialCancel'
+            me = this
+
+            me.showSetting('credential', 'on_update')
+
+        onAWSCredentialRemove : () ->
+            console.log 'account_setting_tab onAWSCredentialRemove'
+            me = this
+
+            me.showSetting('credential', 'on_remove')
 
         onTab : (event) ->
             console.log 'account_setting_tab onTab'
@@ -226,11 +241,14 @@ define [ 'event',
 
                 $('#account-profile-setting').hide()
                 $('#AWSCredential-setting').show()
-                #$('.modal-footer').hide()
+                $('#AWSCredentials-remove').hide()
+
+                $('#AWSCredential-form').show()
+                $('#AWSCredential-form').find('ul').show()
+                $('#awscredentials-submit').show()
 
                 if not flag     # initial
 
-                    $('#AWSCredential-form').show()
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
@@ -244,7 +262,6 @@ define [ 'event',
 
                 else if flag is 'is_failed'
 
-                    $('#AWSCredential-form').show()
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
@@ -261,9 +278,22 @@ define [ 'event',
                     $('#AWSCredential-info').show()
                     $('#aws-credential-update-account-id').text me.model.attributes.account_id
 
+                    $('.AWSCredentials-nochange-warn').hide()
+                    # check whether there are stopped/running/processing app
+                    num = 0
+                    for r in constant.REGION_KEYS
+                        num++ for app in MC.data.app_list[r]
+                    if num>0
+                        $('.AWSCredentials-account-update').hide()
+                        $('.AWSCredentials-account-update').attr('disabled', true)
+                        $('.AWSCredentials-nochange-warn').show()
+
+                    else
+                        $('.AWSCredentials-account-update').show()
+                        $('.AWSCredentials-account-update').attr('disabled', false)
+
                 else if flag is 'in_update'
 
-                    $('#AWSCredential-form').show()
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
@@ -283,6 +313,22 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     $('#AWSCredentials-loading-text').text('Loading resources...')
+
+                else if flag is 'on_remove'
+
+                    $('#AWSCredential-info').hide()
+                    $('#AWSCredential-failed').hide()
+                    $('#awscredentials-submit').hide()
+                    $('#AWSCredential-form').find('ul').hide()
+
+                    $('#AWSCredentials-remove').show()
+                    $('#AWSCredential-remove-header').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
+
+                    ## change remove button's style
+
+                    # hide submit botton
+
+
 
             null
 

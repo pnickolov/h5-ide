@@ -268,6 +268,79 @@ MC.canvas.reDrawSgLine = function() {
             } else if (MC.canvas_data.component[to_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== to_comp_uid) {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
             }
+          } else if (from_port === 'elb-sg-in' || to_port === 'elb-sg-in') {
+
+            from_uid = null;
+
+            to_uid = null;
+
+            to_uid_sg = [];
+
+            if(from_port === 'elb-sg-in'){
+              from_uid = from_comp_uid;
+              to_uid = to_comp_uid;
+            }
+            else{
+              from_uid = to_comp_uid;
+              to_uid = from_comp_uid;
+            }
+            existing = false;
+
+            to_uid_sg_ids = [];
+            if(MC.canvas_data.component[to_uid]){
+              if(MC.canvas_data.component[to_uid].type === 'AWS.EC2.Instance' && MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
+                $.each(MC.canvas_data.component, function(comp_uid, comp) {
+                  if(comp.type ==="AWS.VPC.NetworkInterface" && comp.resource.Attachment.DeviceIndex === '0' && comp.resource.Attachment.InstanceId.split('.')[0].slice(1) === to_uid){
+                    $.each(comp.resource.GroupSet, function(i, sg){
+                      to_uid_sg_ids.push(sg.GroupId.split('.')[0].slice(1));
+                    });
+                  }
+                });
+              }
+              else if (MC.canvas_data.component[to_uid].type === 'AWS.VPC.NetworkInterface'){
+                $.each(MC.canvas_data.component[to_uid].resource.GroupSet, function(i, sg){
+                  to_uid_sg_ids.push(sg.GroupId.split('.')[0].slice(1));
+                });
+              }
+              else if (MC.canvas_data.component[to_uid].type === 'AWS.ELB'){
+                $.each(MC.canvas_data.component[to_uid].resource.SecurityGroups, function(i, sg){
+                  to_uid_sg_ids.push(sg.split('.')[0].slice(1));
+                });
+              }
+              else if (MC.canvas_data.component[to_uid].type === 'AWS.AutoScaling.LaunchConfiguration'){
+                $.each(MC.canvas_data.component[to_uid].resource.SecurityGroups, function(i, sg){
+                  to_uid_sg_ids.push(sg.split('.')[0].slice(1));
+                });
+              }
+            }
+            else{
+              if(MC.canvas_data.layout.component.group[to_uid]){
+                $.each(MC.canvas_data.component[MC.canvas_data.component[MC.canvas_data.layout.component.group[to_uid].originalId].resource.LaunchConfigurationName.split('.')[0].slice(1)].resource.SecurityGroups, function(i, sg){
+                  to_uid_sg_ids.push(sg.split('.')[0].slice(1));
+                });
+              }
+            }
+
+            $.each( MC.canvas_data.component[from_uid].resource.SecurityGroups, function(uid, sg){
+              if(sg.indexOf('@') >= 0){
+                $.each ( MC.canvas_data.component[sg.split('.')[0].slice(1)].resource.IpPermissionsEgress, function(i , permission_sg){
+                  if( permission_sg.IpRanges.indexOf('@') >=0 && to_uid_sg_ids.indexOf(permission_sg.IpRanges.split('.')[0].slice(1)) >= 0){
+                    existing = true;
+                  }
+                });
+                $.each ( MC.canvas_data.component[sg.split('.')[0].slice(1)].resource.IpPermissions, function(i , permission_sg){
+                  if( permission_sg.IpRanges.indexOf('@') >=0 && to_uid_sg_ids.indexOf(permission_sg.IpRanges.split('.')[0].slice(1)) >= 0){
+                    existing = false;
+                  }
+                });
+
+              }
+            });
+
+            if(existing === false){
+              lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
+            }
+
           } else {
             return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
           }

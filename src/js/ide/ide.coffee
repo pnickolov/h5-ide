@@ -139,15 +139,10 @@ define [ 'MC', 'event', 'handlebars'
 				console.log '---------- connection failed ----------'
 				view.disconnectedMessage 'show'
 			websocket.status true, ()->
-				if initialize == false
-					# do something here, trigger when connection recover
-					console.log 'connection succeed'
-					view.disconnectedMessage 'hide'
-				else
-					initialize = false
-				null
-		#
-		setTimeout status, 10000
+				console.log 'connection succeed'
+				view.disconnectedMessage 'hide'
+
+		setTimeout status, 15000
 
 		subScriptionError = ( error ) ->
 			console.log '---------- session invalid ----------'
@@ -167,11 +162,12 @@ define [ 'MC', 'event', 'handlebars'
 			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
 
 		#
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
-		#
-		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-
-		websocket.sub "app", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+		subScoket = () ->
+			console.log 'subScoket'
+			websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
+			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+		subScoket()
 
 		#set MC.data.websocket
 		MC.data.websocket = websocket
@@ -198,6 +194,9 @@ define [ 'MC', 'event', 'handlebars'
 			console.log 'IDE_AVAILABLE'
 			MC.data.ide_available_count = MC.data.ide_available_count + 1
 			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 2
+
+		#listen RECONNECT_WEBSOCKET
+		ide_event.onLongListen ide_event.RECONNECT_WEBSOCKET, () -> subScoket()
 
 		#############################
 		#  load module
@@ -298,6 +297,7 @@ define [ 'MC', 'event', 'handlebars'
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
+				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
 				#
 				notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 

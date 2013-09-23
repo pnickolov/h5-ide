@@ -4,8 +4,9 @@
 
 define [ 'event',
          'i18n!nls/lang.js',
+         'forge_handle',
          'UI.notification',
-         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang ) ->
+         'backbone', 'jquery', 'handlebars', 'underscore' ], ( ide_event, lang, forge_handle ) ->
 
     MainView = Backbone.View.extend {
 
@@ -104,7 +105,7 @@ define [ 'event',
 
 
             return if MC.data.current_tab_id in [ 'dashboard', undefined ]
-            return if $.cookie 'userid' is 'null'
+            return if !forge_handle.cookie.getCookieByName( 'userid' )
             return if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
 
             if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )

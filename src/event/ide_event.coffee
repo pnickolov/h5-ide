@@ -126,6 +126,7 @@ define [ 'underscore', 'backbone' ], () ->
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 
         #websocket meteor collection
+        RECONNECT_WEBSOCKET            : 'RECONNECT_WEBSOCKET'
         WS_COLLECTION_READY_REQUEST    : 'WS_COLLECTION_READY_REQUEST'
 
         #quickstart data ready

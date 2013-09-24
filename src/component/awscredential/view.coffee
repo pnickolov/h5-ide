@@ -252,6 +252,7 @@ define [ 'event',
                 $('#AWSCredential-form').show()
                 $('#AWSCredential-form').find('ul').show()
                 $('#awscredentials-submit').show()
+                $('#AWSCredential-info-wrap').show()
 
                 if not flag     # initial
 
@@ -281,7 +282,8 @@ define [ 'event',
                     $('#AWSCredentials-update').show()
 
                     #$('#AWSCredential-failed').hide()
-                    $('#AWSCredential-info').find('p').text 'You have connected with following AWS account:'
+                    #$('#AWSCredential-info').find('p').text 'You have connected with following AWS account:'
+                    $('#AWSCredential-info-wrap').hide()
                     $('#aws-credential-update-account-id').text me.model.attributes.account_id
                     $('.AWSCredentials-nochange-warn').hide()
                     # check whether there are stopped/running/processing app
@@ -316,6 +318,8 @@ define [ 'event',
                     $('#AWSCredentials-submiting').show()
                     $('#AWSCredentials-update').hide()
 
+                    $('#AWSCredential-info-wrap').hide()
+
                 else if flag is 'load_resource'
 
                     $('#AWSCredential-form').hide()
@@ -324,13 +328,14 @@ define [ 'event',
 
                     $('#AWSCredentials-loading-text').text('Loading resources...')
 
+                    $('#AWSCredential-info-wrap').hide()
+
                 else if flag is 'on_remove'
 
-                    $('#AWSCredential-info').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
+                    $('#AWSCredentials-remove').show()
+                    $('#AWSCredential-remove-head').find('p').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
                     $('#awscredentials-submit').hide()
                     $('#AWSCredential-form').find('ul').hide()
-
-                    $('#AWSCredentials-remove').show()
 
                     # change remove button's style
                     $('#awscredentials-remove').addClass("btn btn-silver")

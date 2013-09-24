@@ -6,7 +6,7 @@ require( [ 'login' ], function( login ) {
 });
 ###
 
-require [ 'domReady', 'login' ], ( domReady, login ) ->
+require [ 'domReady', 'login', 'MC' ], ( domReady, login ) ->
 
 	### env:prod ###
 	if window.location.protocol is 'http:' and window.location.hostname isnt 'localhost'
@@ -16,4 +16,7 @@ require [ 'domReady', 'login' ], ( domReady, login ) ->
 	### env:prod:end ###
 
 	domReady () ->
+		if MC.isSupport() == false
+			$('#unsupported-browser').show()
+
 		login.ready()

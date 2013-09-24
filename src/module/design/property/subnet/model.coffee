@@ -40,6 +40,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
 
             subnet_component = MC.canvas_data.component[ uid ]
+
+            if !subnet_component then return
+            
             networkACLs = []
 
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl

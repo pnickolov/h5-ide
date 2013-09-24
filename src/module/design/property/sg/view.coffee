@@ -240,16 +240,23 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 				rule.ipranges = sgName
 
 			# sg_uid = $("#sg-secondary-panel").attr "uid"
-			cur_count = Number $("#rule-count").text()
-			cur_count = cur_count + 1
-			$("#rule-count").text cur_count
-			$("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
+			# cur_count = Number $("#rule-count").text()
+			# cur_count = cur_count + 1
+			# $("#rule-count").text cur_count
+			# $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
 
-			$("#sg-rule-empty").toggle cur_count == 0
+			# $("#sg-rule-empty").toggle cur_count == 0
 
 			rule.ipranges = sg_descrition
 
 			this.trigger "SET_SG_RULE", rule
+
+			uid = @model.get( 'sg_detail' ).component.uid
+			@model.getSG(uid)
+			$dom = this.render()
+			$("#property-second-panel").find(".property-content").html($dom)
+
+			MC.canvas.reDrawSgLine()
 
 			modal.close()
 
@@ -273,7 +280,7 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 
 			if value is 'custom'
 				$('#securitygroup-modal-description').show()
-				$('#sg-add-model-source-select .selection').width(60)
+				$('#sg-add-model-source-select .selection').width(69)
 			else
 				$('#securitygroup-modal-description').hide()
 				$('#sg-add-model-source-select .selection').width(255)

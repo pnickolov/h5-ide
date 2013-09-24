@@ -9,7 +9,17 @@
 	<link rel="stylesheet" href="/assets/css/grid.css"/>
 	<link rel="stylesheet" href="/assets/css/UI.component.css"/>
 	<link rel="stylesheet" href="/assets/css/login.css"/>
-
+	<style type="text/css">
+		#region-switch:hover {
+			text-decoration: none;
+		}
+		#region-switch-list a:hover {
+			text-decoration: none;
+		}
+		.global-region-resource-content a:hover {
+			text-decoration: none;
+		}
+	</style>
 </head>
 <body id="body">
 
@@ -48,14 +58,15 @@
 			</div>
 
 			<!-- Dasboard region Tab -->
+			<div id="login-state">Please login first.</div>
 			<div id="tab-content-region" class="main-content scroll-wrap active">
-				Please login first.
+				<!-- will be filled -->
 			</div>
 
 		</div>
 	</div>
 
-	<script type="text/javascript" data-main="/test/madeira_console/config" src="/vender/requirejs/require.js"></script>
+	<script type="text/javascript" data-main="/test/madeira_console/lib/config" src="/vender/requirejs/require.js"></script>
 
 </body>
 </html>

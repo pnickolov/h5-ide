@@ -33,6 +33,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                     $('#progress_num').text last_flag.steps
                     $('#progress_total').text last_flag.steps
 
+                    ide_event.trigger ide_event.SWITCH_WAITING_BAR
+
                     # hold on 1 second
                     setTimeout () ->
                         me.set 'flag_list', flag_list
@@ -43,6 +45,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         # save png
                         app_name = MC.process[tab_name].app_name
                         ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
+
+                        return if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
 
                         # hold on two seconds
                         setTimeout () ->

@@ -2,15 +2,7 @@
 #  Controller for dashboard module
 ####################################
 
-define [ 'jquery',
-    'text!./module/dashboard/overview/template.html',
-    'text!./module/dashboard/region/template.html',
-    'text!./module/dashboard/overview/template_data.html',
-    'text!./module/dashboard/region/template_data.html',
-    'event',
-    'MC',
-    'base_main'
-], ( $, overview_tmpl, region_tmpl, overview_tmpl_data, region_tmpl_data, ide_event, MC, base_main ) ->
+define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC, base_main, vpc_model ) ->
 
     current_region = null
     overview_app    = null
@@ -22,23 +14,19 @@ define [ 'jquery',
         #extend parent
         _.extend this, base_main
 
+    Helper =
+        hasCredential: ->
+            MC.forge.cookie.getCookieByName('has_cred') is 'true'
+
     initialize()
 
     # private
     loadModule = () ->
 
-        MC.IDEcompile 'overview', overview_tmpl_data,
-            '.overview-result' : 'overview-result-tmpl'
-            '.global-list' : 'global-list-tmpl'
-            '.region-app-stack' : 'region-app-stack-tmpl'
-            '.region-resource' : 'region-resource-tmpl'
-            '.recent' : 'recent-tmpl'
-            '.loading': 'loading-tmpl'
-
         #set MC.data.dashboard_type default
         MC.data.dashboard_type = 'OVERVIEW_TAB'
         #load remote ./module/dashboard/overview/view.js
-        require [ './module/dashboard/overview/view', './module/dashboard/overview/model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
+        require [ 'dashboard_view', 'dashboard_model', 'constant', 'UI.tooltip' ], ( View, model, constant ) ->
             region_view = null
             #view
             #view       = new View()
@@ -47,7 +35,7 @@ define [ 'jquery',
             return if !view
 
             view.model = model
-            view.render overview_tmpl
+            view.render()
 
             #push DASHBOARD_COMPLETE
             ide_event.trigger ide_event.DASHBOARD_COMPLETE
@@ -66,7 +54,7 @@ define [ 'jquery',
                 if MC.data.supported_platforms.length <= 0
                 else
                     MC.data.is_loading_complete = true
-                    ide_event.trigger ide_event.SWITCH_MAIN
+                    ide_event.trigger ide_event.IDE_AVAILABLE
 
                 view.displayLoadTime()
 
@@ -94,13 +82,27 @@ define [ 'jquery',
                     view.enableCreateStack()
 
             # update aws credential
-            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, (flag) ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if $.cookie('has_cred') is 'true'   # update aws resource
-                    model.describeAWSResourcesService()
+                if Helper.hasCredential()
+                    view.enableSwitchRegion()
+                    view.reloadResource()
                 else    # set aws credential
-                    require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+                    view.disableSwitchRegion()
+                    view.showCredential(flag)
+                    if flag is 'new_account'
+                        ide_event.trigger ide_event.SWITCH_MAIN
+                    else
+                        view.renderLoadingFaild()
+
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
+                if Helper.hasCredential()
+                    view.enableSwitchRegion()
+
+            ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
+                console.log 'UPDATE_DASHBOARD'
+                view.reloadResource() if view
 
             #model
             model.describeAccountAttributesService()
@@ -140,17 +142,21 @@ define [ 'jquery',
                 null
 
             # switch region tab
-            view.on 'SWITCH_REGION', ( region ) ->
+            view.on 'SWITCH_REGION', ( region, fakeSwitch ) ->
                 current_region = region
                 model.loadResource region
                 #model.describeAWSStatusService region
-                @model.getItemList 'app', region, overview_app
-                @model.getItemList 'stack', region, overview_stack
+                if not fakeSwitch
+                    @model.getItemList 'app', region, overview_app
+                    @model.getItemList 'stack', region, overview_stack
 
             # reload resource
             view.on 'RELOAD_RESOURCE', ( region ) ->
                 view.displayLoadTime()
                 model.describeAWSResourcesService region
+
+                ide_event.trigger ide_event.UPDATE_STACK_LIST
+                ide_event.trigger ide_event.UPDATE_APP_LIST
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )
@@ -166,7 +172,7 @@ define [ 'jquery',
 
             model.on 'REGION_RESOURCE_CHANGED', ( type, data )->
                 console.log 'region resource table render'
-                view.reRenderRegionPartial( type, data )
+                view.renderRegionResourceBody type, true
 
             # update region thumbnail
             ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->

@@ -26,7 +26,7 @@ define [ 'backbone', 'MC' ], () ->
           eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
 
           for i in eni.privateIpAddressesSet.item
-            i.primary = i.primary == "true"
+            i.primary = i.primary == true
 
           this.set eni
 

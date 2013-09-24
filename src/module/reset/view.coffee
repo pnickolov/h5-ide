@@ -3,7 +3,9 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./email.html', 'text!./password.html', 'text!./loading.html', 'text!./expire.html', 'text!./success.html',
+         'text!./module/reset/template.html', 'text!./module/reset/email.html',
+         'text!./module/reset/password.html', 'text!./module/reset/loading.html',
+         'text!./module/reset/expire.html',   'text!./module/reset/success.html',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl ) ->
 
     ResetView = Backbone.View.extend {
@@ -18,7 +20,8 @@ define [ 'event',
         success_tmpl  : Handlebars.compile success_tmpl
 
         events   :
-            'click #reset-btn'      : 'resetButtonEvent'
+            'keyup #reset-pw-email' : 'changeSendButtonState'
+            'click #reset-btn'      : 'resetPasswordButtonEvent'
             'click #reset-password' : 'resetPasswordEvent'
             'blur #reset-pw'        : 'verificationPassword'
 
@@ -36,7 +39,6 @@ define [ 'event',
                     @$el.html @email_tmpl()
                 when 'password'
                     @$el.html @loading_tmpl()
-                    #this.trigger 'CHECK_VALIDATION'
                 when 'expire'
                     @$el.html @expire_tmpl()
                 when 'success'
@@ -48,8 +50,13 @@ define [ 'event',
             console.log 'passwordRender'
             @$el.html @password_tmpl()
 
-        resetButtonEvent : ->
-            console.log 'resetButtonEvent'
+        changeSendButtonState : ( event ) ->
+            console.log 'changeSendButtonState'
+            $('#email-verification-status').hide()
+            if event.target.value then $( '#reset-btn' ).removeAttr 'disabled' else  $( '#reset-btn' ).attr 'disabled', true
+
+        resetPasswordButtonEvent : ->
+            console.log 'resetPasswordButtonEvent'
             $('#email-verification-status').hide()
             $( '#reset-btn' ).attr( 'disabled', true )
             $( '#reset-btn' ).attr( 'value', 'One Minute...' )

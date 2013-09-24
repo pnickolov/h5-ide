@@ -158,6 +158,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 
+            vpcUID = MC.aws.vpc.getVPCUID()
+            aclObj.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
+
             MC.canvas_data.component[aclUID] = aclObj
 
             ide_event.trigger ide_event.OPEN_ACL, aclUID

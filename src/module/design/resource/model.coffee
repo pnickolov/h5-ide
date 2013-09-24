@@ -107,7 +107,7 @@ define [ 'i18n!nls/lang.js',
                     MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
                     # reset az
                     MC.data.config[region_name].zone                = null
-                    if $.cookie('has_cred') isnt 'true'
+                    if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                         MC.data.config[region_name].zone = {'item':[]}
                         MC.data.config[region_name].zone.item.push {'regionName':region_name, 'zoneName':i, 'zoneState':'available'} for i in result.resolved_data.zone
 
@@ -153,7 +153,7 @@ define [ 'i18n!nls/lang.js',
 
                     if result.resolved_data
 
-                        _.map result.resolved_data.item, (value)->
+                        _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             value.instanceType = me._getInstanceType value
                             value.osType = MC.aws.ami.getOSType value

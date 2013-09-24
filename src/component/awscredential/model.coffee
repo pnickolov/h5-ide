@@ -33,16 +33,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             #
             flag = false
-            if $.cookie('has_cred') is 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') is 'true'
                 flag = true
             me.set 'is_authenticated', flag
 
-            if $.cookie('account_id')
-                me.set 'account_id', $.cookie('account_id')
+            if MC.forge.cookie.getCookieByName('account_id')
+                me.set 'account_id', MC.forge.cookie.getCookieByName('account_id')
 
         awsAuthenticate : (access_key, secret_key, account_id) ->
             me = this
-
+            option = { expires:1, path: '/' }
             session_model.set_credential {sender: this}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), access_key, secret_key, account_id
 
             me.once 'SESSION_SET__CREDENTIAL_RETURN', (result1) ->
@@ -61,10 +61,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                         if !result.is_error
                             me.set 'is_authenticated', true
-                            $.cookie 'has_cred', true,    { expires: 1 }
+                            MC.forge.cookie.setCookieByName 'has_cred', true
                         else
                             me.set 'is_authenticated', false
-                            $.cookie 'has_cred', false,    { expires: 1 }
+                            MC.forge.cookie.setCookieByName 'has_cred', false
 
                         me.set 'account_id', account_id
 
@@ -73,7 +73,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                 else
 
                     me.set 'is_authenticated', false
-                    $.cookie 'has_cred', false,    { expires: 1 }
+                    MC.forge.cookie.setCookieByName 'has_cred', false
 
                     me.set 'account_id', account_id
 
@@ -94,6 +94,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
             me = this
 
             attributes = {'password':password, 'new_password':new_password}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
+
+            null
+
+        removeCredential : () ->
+            me = this
+
+            attributes = {'account_id':null, 'access_key':null, 'secret_key':null}
 
             account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
 

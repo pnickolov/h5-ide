@@ -8,12 +8,31 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
     ReSetModel = Backbone.Model.extend {
 
         defaults   :
-        	key : null
+        	key    : null
 
         initialize : ->
-            #
+            this.on 'ACCOUNT_CHECK__REPEAT_RETURN', ( forge_result ) ->
+                console.log 'ACCOUNT_CHECK__REPEAT_RETURN'
+                console.log forge_result
+                if !forge_result.is_error
+                    this.trigger 'NO_EMAIL'
+                else
+                    #result = if forge_result.param[1] then forge_result.param[1] else forge_result.param[2]
+                    @_resetPasswordServer if forge_result.param[1] then forge_result.param[1] else forge_result.param[2]
+                null
 
-        resetPasswordServer : ( result ) ->
+        checkRepeatService : ( value ) ->
+            console.log 'checkRepeatService, value = ' + value
+            if /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test( value )
+                username = null
+                email    = value
+            else
+                username = value
+                email    = null
+            #
+            account_model.check_repeat { sender : this }, username, email
+
+        _resetPasswordServer : ( result ) ->
             console.log 'resetPasswordServer, result = ' + result
             #
             account_model.reset_password { sender : this }, result

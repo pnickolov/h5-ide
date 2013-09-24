@@ -4,12 +4,12 @@
 
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
-		 'view', 'layout', 'canvas_layout',
+		 'view', 'canvas_layout',
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
 		 'forge_handle', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, layout, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
 
 	console.info canvas_layout
 
@@ -54,12 +54,19 @@ define [ 'MC', 'event', 'handlebars'
 		#  validation cookie
 		#############################
 
+		#clear path=/v2 cookie(patch)
+		forge_handle.cookie.clearV2Cookie '/v2'
+		forge_handle.cookie.clearV2Cookie '/v2/'
+
 		if forge_handle.cookie.getIDECookie()
 			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else
 			if !forge_handle.cookie.checkAllCookie()
 				#user session not exist, go to login page
 				window.location.href = 'login.html'
+
+		#clear cookie in 'ide.madeiracloud.com'
+		forge_handle.cookie.clearInvalidCookie()
 
 		#############################
 		#  initialize MC.data
@@ -100,6 +107,8 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.is_loading_complete = false
 		#save resouce service name
 		MC.data.resouceapi = []
+		#dependency MC.data.is_loading_complete and MC.data.design_submodule_count = -1
+		MC.data.ide_available_count = 0
 
 		#temp
 		MC.data.IDEView = view
@@ -130,15 +139,10 @@ define [ 'MC', 'event', 'handlebars'
 				console.log '---------- connection failed ----------'
 				view.disconnectedMessage 'show'
 			websocket.status true, ()->
-				if initialize == false
-					# do something here, trigger when connection recover
-					console.log 'connection succeed'
-					view.disconnectedMessage 'hide'
-				else
-					initialize = false
-				null
-		#
-		setTimeout status, 10000
+				console.log 'connection succeed'
+				view.disconnectedMessage 'hide'
+
+		setTimeout status, 15000
 
 		subScriptionError = ( error ) ->
 			console.log '---------- session invalid ----------'
@@ -158,11 +162,12 @@ define [ 'MC', 'event', 'handlebars'
 			ide_event.trigger ide_event.WS_COLLECTION_READY_REQUEST
 
 		#
-		websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
-		#
-		websocket.sub "stack", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
-
-		websocket.sub "app", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+		subScoket = () ->
+			console.log 'subScoket'
+			websocket.sub "request", $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, subRequestReady, subScriptionError
+			websocket.sub "stack",   $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+			websocket.sub "app",     $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null, null
+		subScoket()
 
 		#set MC.data.websocket
 		MC.data.websocket = websocket
@@ -181,8 +186,17 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
-		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id ) -> view.showLoading tab_id
+		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
+
+		#listen IDE_AVAILABLE
+		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->
+			console.log 'IDE_AVAILABLE'
+			MC.data.ide_available_count = MC.data.ide_available_count + 1
+			ide_event.trigger ide_event.SWITCH_MAIN if MC.data.ide_available_count is 2
+
+		#listen RECONNECT_WEBSOCKET
+		ide_event.onLongListen ide_event.RECONNECT_WEBSOCKET, () -> subScoket()
 
 		#############################
 		#  load module
@@ -209,7 +223,7 @@ define [ 'MC', 'event', 'handlebars'
 			setTimeout () ->
 				#load layout
 				console.log 'layout'
-				layout.ready()
+				#layout.ready()
 				canvas_layout.canvas_initialize()
 			, 2000
 
@@ -252,6 +266,21 @@ define [ 'MC', 'event', 'handlebars'
 
 		# analytics.track('Loaded IDE', { })
 
+		#intercom
+		#window.intercomSettings.email      = MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+		#window.intercomSettings.username   = forge_handle.cookie.getCookieByName( 'username' )
+		#window.intercomSettings.created_at = MC.dateFormat( new Date(), 'hh:mm MM-dd-yyyy' )
+		#intercom_sercure_mode_hash         = () ->
+		#	intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+		#	hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+		#	console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+		#	return hash.toString CryptoJS.enc.Hex
+		#if !window.intercomSettings.user_hash
+		#	localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
+		#	window.intercomSettings.user_hash  = intercom_sercure_mode_hash()
+
+		#window.intercomSettings.stack_total= 0
+
 		#############################
 		#  base model
 		#############################
@@ -261,11 +290,15 @@ define [ 'MC', 'event', 'handlebars'
 			console.log error
 			if error.return_code is constant.RETURN_CODE.E_SESSION
 				relogin()
+				if error.param[0].method is 'info'
+					if error.param[0].url in [ '/stack/', '/app/' ]
+						ide_event.trigger ide_event.CLOSE_TAB, null, error.param[4][0]
 			else
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
+				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
 				#
-				notification 'error', lang.service[ label ], true if lang.service[ label ] and $.cookie( 'has_cred' ) is 'true'
+				notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
 		null

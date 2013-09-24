@@ -15,7 +15,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
     loadModule = ( type, key ) ->
 
         #load
-        require [ './module/reset/view', './module/reset/model' ], ( View, model ) ->
+        require [ 'reset_view', 'reset_model' ], ( View, model ) ->
 
             view = loadSuperModule loadModule, 'reset', View, null
             return if !view
@@ -27,12 +27,10 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
                 model.checkKeyServer()
 
             #listen
-            #view.on 'CHECK_VALIDATION',      () -> model.checkKeyServer()
-            view.on 'RESET_EMAIL',    ( result ) -> model.resetPasswordServer result
-            view.on 'RESET_PASSWORD', ( result ) -> model.updatePasswordServer result
-            model.on 'NO_EMAIL',              () -> view.showErrorMessage()
-            model.on 'KEY_VALID',             () -> view.passwordRender()
-            #model.on 'PASSWORD_INVAILD',     () -> view.showPassowordErrorMessage()
+            view.on 'RESET_EMAIL',      ( result ) -> model.checkRepeatService result
+            view.on 'RESET_PASSWORD',   ( result ) -> model.updatePasswordServer result
+            model.on 'NO_EMAIL',                () -> view.showErrorMessage()
+            model.on 'KEY_VALID',               () -> view.passwordRender()
 
             #render
             view.render type, key

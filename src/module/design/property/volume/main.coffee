@@ -59,6 +59,8 @@ define [ 'jquery',
 
             view.on "DEVICE_NAME_CHANGED", ( name )->
                 model.setDeviceName name
+                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.volume_detail.name
+                null
 
             view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
                 model.setVolumeSize value

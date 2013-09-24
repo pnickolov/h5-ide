@@ -73,4 +73,4 @@ grunt publish //publish and run this's project on brower( Chrome or Firfox )
 <pre>
 When change package.json, please run "npm install" in project dir
 When change compnent.json, please run "grunt init" in project dir
-</pre>pre>
+</pre>

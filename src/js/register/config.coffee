@@ -19,7 +19,7 @@ require.config {
 		'reg_main'        : 'module/register/main'
 
 		#vender
-		'jquery'          : 'vender/jquery/jquery'
+		'jquery'          : [ '//code.jquery.com/jquery-2.0.3.min' , 'vender/jquery/jquery' ]
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'

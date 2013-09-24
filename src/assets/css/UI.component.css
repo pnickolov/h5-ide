@@ -1056,6 +1056,7 @@ textarea {
 	-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
 	z-index: 70;
+	border: 4px solid #626374;
 }
 
 #modal-box #bubble-box {

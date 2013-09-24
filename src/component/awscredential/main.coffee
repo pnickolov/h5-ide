@@ -80,11 +80,19 @@ define [ 'jquery', 'event',
 
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
 
+                    view.showSetting('account')
+
                 if _.contains(attr_list, 'password')
 
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_PASSWORD
 
-                view.showSetting('account')
+                    view.showSetting('account')
+
+                if _.contains(attr_list, 'access_key') and _.contains(attr_list, 'secret_key')
+
+                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
+                null
 
             model.on 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', (attributes) ->
                 console.log 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED:' + attr_list
@@ -103,6 +111,14 @@ define [ 'jquery', 'event',
 
                     view.clickUpdatePassword('error_password')
 
+                null
+
+            view.on 'REMOVE_CREDENTIAL', () ->
+                console.log 'REMOVE_CREDENTIAL'
+
+                model.removeCredential()
+
+                null
 
     unLoadModule = ( view, model ) ->
         console.log 'awscredential unLoadModule'

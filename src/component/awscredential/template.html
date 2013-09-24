@@ -61,23 +61,23 @@
 		</div>
 
 		<div id="AWSCredential-setting" class="account-tab-content">
-			<div id="AWSCredential-form">
+			<div id="AWSCredential-info-wrap">
 				<div id="AWSCredential-info" class="AWSCredential-wall">
-					<p>To launch and manage AWS resources, please provide your AWS account credentials.</p>
+					<p></p>
 				</div>
-				<div id="AWSCredential-failed" class="AWSCredential-wall">
+				<!--div id="AWSCredential-failed" class="AWSCredential-wall">
 					<p>Authentication failed. Please check your AWS Credentials and try again.</p>
-				</div>
+				</div-->
 				<div id="AWSCredentials-remove">
-					<div id="AWSCredential-remove-header">
-					</div>
 					<div id="AWSCredential-remove-body">
 						<h5>By removing Credentials, you will be in the demo mode.</h5>
 						<h5>If you want to launch stack into app, you need to provide valid AWS Credentials.</h5>
 						<h5>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</h5>
 					</div>
 				</div>
+			</div>
 
+			<div id="AWSCredential-form">
 				<ul>
 					<li>
 						<i class="icon-info icon-label tooltip" data-tooltip="Your AWS account number is shown in the upper-left area of your browser window when you're logged into your AWS Account. e.g., 123456789000"></i>
@@ -113,7 +113,7 @@
 
 			<div id="AWSCredentials-update">
 				<div class="AWSCredentials-body-info">
-					<h5>You have connected with following AWS account:</h5>
+					<!--h5>You have connected with following AWS account:</h5-->
 					<div class="AWSCredentials-account-info">
 						<span id="aws-credential-update-account-id">{{account_id}}</span>
 						<a class="AWSCredentials-account-update" href="javascript:void(0)">update</a>

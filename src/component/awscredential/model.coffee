@@ -99,6 +99,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             null
 
+        removeCredential : () ->
+            me = this
+
+            attributes = {'account_id':null, 'access_key':null, 'secret_key':null}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
+
+            null
+
     }
 
     return AWSCredentialModel

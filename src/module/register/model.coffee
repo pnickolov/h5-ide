@@ -47,6 +47,9 @@ define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, acco
                     #
                     result = forge_result.resolved_data
 
+                    #
+                    forge_handle.cookie.deleteCookie()
+
                     #set cookies
                     forge_handle.cookie.setCookie result
 

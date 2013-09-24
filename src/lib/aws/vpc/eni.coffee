@@ -269,6 +269,68 @@ define [ 'MC' ], ( MC ) ->
 
 		MC.canvas.display( uid , 'eni-number-group', visible )
 
+	getENIMaxIPNum = (eniOrInstanceUID) ->
+
+		eniComp = MC.canvas_data.component[eniOrInstanceUID]
+
+		if !eniComp then return 0
+		instanceUID = ''
+		if eniComp.type is 'AWS.VPC.NetworkInterface'
+			instanceUIDRef = eniComp.resource.Attachment.InstanceId
+			if !instanceUIDRef then return 0
+			instanceUID = instanceUIDRef.split('.')[0].slice(1)
+		else
+			instanceUID = eniOrInstanceUID
+		instanceComp = MC.canvas_data.component[instanceUID]
+		instanceType = instanceComp.resource.InstanceType
+		instanceTypeAry = instanceType.split('.')
+		if !(instanceTypeAry[0] and instanceTypeAry[1]) then return 0
+
+		typeENINumMap =	MC.data.config[MC.canvas_data.region].instance_type
+		if !typeENINumMap then return 0
+
+		eniMaxIPNum = typeENINumMap[instanceTypeAry[0]][instanceTypeAry[1]].ip_per_eni
+		if !eniMaxIPNum then return 0
+
+		return eniMaxIPNum
+
+	reduceIPNumByInstanceType = (eniOrInstanceUID) ->
+
+		currentENIMaxIPNum = MC.aws.eni.getENIMaxIPNum(eniOrInstanceUID)
+
+		eniComp = MC.canvas_data.component[eniOrInstanceUID]
+		if !eniComp then return
+
+		eniUID = ''
+		if eniComp.type is 'AWS.VPC.NetworkInterface'
+			eniUID = eniComp.uid
+			ipsAry = eniComp.resource.PrivateIpAddressSet
+		else
+			defaultENIComp = MC.aws.eni.getInstanceDefaultENI(eniOrInstanceUID)
+			eniUID = defaultENIComp.uid
+			ipsAry = defaultENIComp.resource.PrivateIpAddressSet
+
+		i = 0
+		newIpsAry = _.filter ipsAry, (ipObj) ->
+			i++
+			if i > currentENIMaxIPNum and currentENIMaxIPNum isnt 0
+				return false
+			else
+				return true
+
+		MC.canvas_data.component[eniUID].resource.PrivateIpAddressSet = newIpsAry
+
+	reduceAllENIIPList = (instanceUID) ->
+
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				instanceUIDRef = compObj.resource.Attachment.InstanceId
+				if !instanceUIDRef then return
+				eniInstanceUID = instanceUIDRef.split('.')[0].slice(1)
+				if eniInstanceUID is instanceUID
+					MC.aws.eni.reduceIPNumByInstanceType(compObj.uid)
+			null
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
@@ -279,3 +341,6 @@ define [ 'MC' ], ( MC ) ->
 	getSubnetComp : getSubnetComp
 	getSubnetNeedIPCount : getSubnetNeedIPCount
 	displayENINumber : displayENINumber
+	getENIMaxIPNum : getENIMaxIPNum
+	reduceIPNumByInstanceType : reduceIPNumByInstanceType
+	reduceAllENIIPList : reduceAllENIIPList

@@ -27,6 +27,18 @@ define [ './temp_view',
             Handlebars.registerHelper 'emptyStr', ( v1 ) ->
                 if v1 then new Handlebars.SafeString v1 else '-'
 
+            Handlebars.registerHelper 'timeStr', ( v1 ) ->
+                d = new Date( v1 )
+
+                if isNaN( Date.parse( v1 ) ) or not d.toLocaleDateString or not d.toTimeString
+                    if v1
+                        return new Handlebars.SafeString v1
+                    else
+                        return '-'
+
+                d = new Date( v1 )
+                d.toLocaleDateString() + " " + d.toTimeString()
+
             #listen
             $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )
                               .on( 'click',           '.option-group-head',   this.toggleOption                       )
@@ -185,7 +197,7 @@ define [ './temp_view',
                 # clear invalid state in map
                 if MC.data.propertyHeadStateMap[stackId]
                     _.each MC.data.propertyHeadStateMap[stackId], (stateAry, compUID) ->
-                        if !MC.canvas_data.component[compUID] and compUID isnt stackId
+                        if !MC.canvas_data.component[compUID] and compUID isnt stackId and compUID.indexOf('i-') isnt 0
                             delete MC.data.propertyHeadStateMap[stackId][compUID]
                         null
                 # added by song ######################################

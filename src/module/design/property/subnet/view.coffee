@@ -79,6 +79,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
+            
+            vpcUID = MC.aws.vpc.getVPCUID()
+            aclObj.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
 
             MC.canvas_data.component[aclUID] = aclObj
 

@@ -16,10 +16,12 @@ require.config {
 		#main
 		'main'            : 'js/register/main'
 		'router'          : 'js/register/router'
-		'reg_main'        : 'module/register/main'
+		'register'        : 'module/register/main'
+		'reg_model'       : 'module/register/model'
+		'reg_view'        : 'module/register/view'
 
 		#vender
-		'jquery'          : 'vender/jquery/jquery'
+		'jquery'          : [ '//code.jquery.com/jquery-2.0.3.min' , 'vender/jquery/jquery' ]
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'
@@ -73,6 +75,8 @@ require.config {
 			deps          : [ 'jquery','constant' ]
 			exports       : 'MC'
 
+		'register'          :
+			deps          : [ 'reg_view', 'reg_model', 'MC' ]
 }
 
 #requirejs.onError = ( err ) ->

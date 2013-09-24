@@ -27,6 +27,8 @@ define [ 'underscore', 'backbone' ], () ->
         RESOURCE_COMPLETE      : 'RESOURCE_COMPLETE'
         DESIGN_SUB_COMPLETE    : 'DESIGN_SUB_COMPLETE'
 
+        IDE_AVAILABLE          : 'IDE_AVAILABLE'
+
         #
         LOGOUT_IDE             : 'LOGOUT_IDE'
 
@@ -70,6 +72,7 @@ define [ 'underscore', 'backbone' ], () ->
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
+        UPDATE_DASHBOARD       : 'UPDATE_DASHBOARD'
 
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
@@ -123,6 +126,7 @@ define [ 'underscore', 'backbone' ], () ->
         NAVIGATION_TO_DASHBOARD_REGION : 'NAVIGATION_TO_DASHBOARD_REGION'
 
         #websocket meteor collection
+        RECONNECT_WEBSOCKET            : 'RECONNECT_WEBSOCKET'
         WS_COLLECTION_READY_REQUEST    : 'WS_COLLECTION_READY_REQUEST'
 
         #quickstart data ready

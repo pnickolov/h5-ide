@@ -1,4 +1,4 @@
-define [ 'backbone', 'reg_main' ], ( Backbone, reg_main ) ->
+define [ 'backbone', 'register' ], ( Backbone, register ) ->
 
 	AppRouter = Backbone.Router.extend {
 		routes :
@@ -10,10 +10,10 @@ define [ 'backbone', 'reg_main' ], ( Backbone, reg_main ) ->
 		router = new AppRouter()
 
 		router.on 'route:defaultRouter', () ->
-			reg_main.loadModule 'normal'
+			register.loadModule 'normal'
 
 		router.on 'route:success', () ->
-			reg_main.loadModule 'success'
+			register.loadModule 'success'
 
 		Backbone.history.start()
 

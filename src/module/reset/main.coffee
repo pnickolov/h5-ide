@@ -15,7 +15,7 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
     loadModule = ( type, key ) ->
 
         #load
-        require [ './module/reset/view', './module/reset/model' ], ( View, model ) ->
+        require [ 'reset_view', 'reset_model' ], ( View, model ) ->
 
             view = loadSuperModule loadModule, 'reset', View, null
             return if !view

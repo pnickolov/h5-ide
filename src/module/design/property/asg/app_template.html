@@ -12,7 +12,7 @@
         <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
       </dd>
       <dt>Created Time</dt>
-      <dd>{{asg.CreatedTime}}</dd>
+      <dd>{{timeStr asg.CreatedTime}}</dd>
       <dt>Launch Configuration</dt>
       <dd>{{asg.LaunchConfigurationName}}</dd>
     </dl>

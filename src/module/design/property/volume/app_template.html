@@ -15,7 +15,7 @@
     <dt>State</dt>
     <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
     <dt>Create Time</dt>
-    <dd>{{emptyStr createTime}}</dd>
+    <dd>{{timeStr createTime}}</dd>
   </dl>
   <dl class="dl-vertical">
     <dt>Volume Type</dt>
@@ -37,7 +37,7 @@
     <dt>Instance ID</dt>
     <dd>{{emptyStr attachmentSet.item.0.instanceId}}</dd>
     <dt>Attach Time</dt>
-    <dd>{{emptyStr attachmentSet.item.0.attachTime}}</dd>
+    <dd>{{timeStr attachmentSet.item.0.attachTime}}</dd>
   </dl>
 
 {{/if}}

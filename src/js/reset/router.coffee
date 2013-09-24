@@ -1,4 +1,4 @@
-define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
+define [ 'backbone', 'reset' ], ( Backbone, reset ) ->
 
 	AppRouter = Backbone.Router.extend {
 		routes :
@@ -13,19 +13,19 @@ define [ 'backbone', 'reset_main' ], ( Backbone, reset_main ) ->
 		router = new AppRouter()
 
 		router.on 'route:defaultRouter', () ->
-			reset_main.loadModule 'normal'
+			reset.loadModule 'normal'
 
 		router.on 'route:email', () ->
-			reset_main.loadModule 'email'
+			reset.loadModule 'email'
 
 		router.on 'route:password', ( key ) ->
-			reset_main.loadModule 'password', key
+			reset.loadModule 'password', key
 
 		router.on 'route:expire', () ->
-			reset_main.loadModule 'expire'
+			reset.loadModule 'expire'
 
 		router.on 'route:success', () ->
-			reset_main.loadModule 'success'
+			reset.loadModule 'success'
 
 		Backbone.history.start()
 

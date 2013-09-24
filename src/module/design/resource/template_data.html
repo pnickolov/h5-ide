@@ -39,7 +39,7 @@
 <li>
 	<div class="resource-item bubble"  data-bubble-template="bubbleAMIInfo" data-bubble-data='{"id":"{{imageId}}","name":"{{name}}","description":"{{description}}","architecture":"{{architecture}}","imageLocation":"{{imageLocation}}","isPublic":"{{isPublic}}","kernelId":"{{kernelId}}","rootDeviceName":"{{rootDeviceName}}","rootDeviceType":"{{rootDeviceType}}"}' data-component-type="node" data-type="AWS.EC2.Instance" data-option='{"name": "host", "imageId": "{{imageId}}", "osType": "{{osType}}", "architecture":"{{architecture}}", "rootDeviceType":"{{rootDeviceType}}", "virtualizationType":"{{virtualizationType}}" }'>
 		<div class="resource-icon resource-icon-instance">
-			<img src="assets/images/ide/ami/ami-unknown.png" width='39' height='27' />
+			<img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' />
 		</div>
 		<div class="resource-label instance-label">{{name}}</div>
 	</div>

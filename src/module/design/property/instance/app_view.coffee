@@ -3,8 +3,9 @@
 #############################
 
 define [ 'event', 'MC',
+         'i18n!nls/lang.js',
          'UI.zeroclipboard',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, zeroclipboard ) ->
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, lang, zeroclipboard ) ->
 
     InstanceAppView = Backbone.View.extend {
 
@@ -52,6 +53,7 @@ define [ 'event', 'MC',
                 zeroclipboard.copy copybtn
             else
                 $("#keypair-login").hide()
+                $("#keypair-no-pwd").text lang.ide.POP_DOWNLOAD_KP_NOT_AVAILABLE
 
             if option.cmd_line
                 copybtn = $("#keypair-cmd").val( option.cmd_line ).siblings("a").attr("data-clipboard-text", option.cmd_line )

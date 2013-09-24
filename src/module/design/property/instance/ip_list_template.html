@@ -2,7 +2,7 @@
 <li class="input-ip-item">
 	<div class="name tooltip" data-tooltip={{#ifCond ../number 1}}"Specify an IP address or leave it as .x to automatically assign an IP."{{else}}"Automatically assigned IP."{{/ifCond}}>
 		<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
-		<input type="text" class="input input-ip" {{#ifCond ../number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1">
+		<input type="text" class="input input-ip" {{#ifCond ../number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1" data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
 	</div>
 
 	<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip{{#if has_eip}} associated{{/if}}" data-tooltip="Associate with Elastic IP" data-toggletext="Associate with Elastic IP" data-toggleactive="Detach Elastic IP" data-toggleclass="associated"></div>

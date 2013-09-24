@@ -3,11 +3,12 @@
 #############################
 
 define [ 'event',
+         'i18n!nls/lang.js',
          'backbone',
          'jquery',
          'handlebars',
          'UI.tooltip',
-         'UI.tablist' ], ( ide_event ) ->
+         'UI.tablist' ], ( ide_event, lang ) ->
 
    ENIView = Backbone.View.extend {
 
@@ -32,6 +33,8 @@ define [ 'event',
 
             $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
 
+            this.changeIPAddBtnState()
+
         setEniDesc : ( event ) ->
 
             uid = $("#property-eni-attach-info").attr "component"
@@ -48,6 +51,16 @@ define [ 'event',
 
             subnetCIDR = ''
             eniUID = this.model.get 'uid'
+
+            # validate max ip num
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(eniUID)
+            currentENIComp = MC.canvas_data.component[eniUID]
+            if !currentENIComp then return
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                return false
+            # validate max ip num
+
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
                 subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(eniUID)
@@ -112,10 +125,37 @@ define [ 'event',
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
 
+            this.changeIPAddBtnState()
+
         refreshIPList : ( event ) ->
             eniUID = this.model.get 'uid'
             this.model.getENIDisplay(eniUID)
             $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
+
+        changeIPAddBtnState : () ->
+
+            disabledBtn = false
+            eniUID = this.model.get 'uid'
+
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(eniUID)
+
+            currentENIComp = MC.canvas_data.component[eniUID]
+            if !currentENIComp then return
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                disabledBtn = true
+
+            instanceUIDRef = currentENIComp.resource.Attachment.InstanceId
+            if instanceUIDRef
+                instanceUID = instanceUIDRef.split('.')[0].slice(1)
+                instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
+                if disabledBtn
+                    tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
+                    $('#property-eni-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
+                else
+                    $('#property-eni-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
+
+            null
 
     }
 

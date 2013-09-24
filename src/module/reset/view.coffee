@@ -3,7 +3,9 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./email.html', 'text!./password.html', 'text!./loading.html', 'text!./expire.html', 'text!./success.html',
+         'text!./module/reset/template.html', 'text!./module/reset/email.html',
+         'text!./module/reset/password.html', 'text!./module/reset/loading.html',
+         'text!./module/reset/expire.html',   'text!./module/reset/success.html',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl ) ->
 
     ResetView = Backbone.View.extend {

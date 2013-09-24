@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./template.html', 'text!./success.html',
+         'text!./module/register/template.html', 'text!./module/register/success.html',
          'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, success_tmpl ) ->
 
     RegisterView = Backbone.View.extend {

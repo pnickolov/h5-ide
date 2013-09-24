@@ -16,7 +16,9 @@ require.config {
 		#main
 		'main'            : 'js/reset/main'
 		'router'          : 'js/reset/router'
-		'reset_main'      : 'module/reset/main'
+		'reset'           : 'module/reset/main'
+		'reset_model'     : 'module/reset/model'
+		'reset_view'      : 'module/reset/view'
 
 		#vender
 		'jquery'          : [ '//code.jquery.com/jquery-2.0.3.min' , 'vender/jquery/jquery' ]
@@ -72,6 +74,9 @@ require.config {
 		'MC'              :
 			deps          : [ 'jquery','constant' ]
 			exports       : 'MC'
+
+		'reset'           :
+			deps          : [ 'reset_view', 'reset_model', 'MC' ]
 
 }
 

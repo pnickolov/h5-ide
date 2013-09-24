@@ -330,6 +330,12 @@ a {
 	content: '';
 }
 
+#AWSCredential-info-wrap {
+	padding: 5px 0px 0px;
+	width: 450px;
+	margin: 0px auto;
+}
+
 #account-profile-setting:before {
 	left: 65px;
 }

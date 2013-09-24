@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		</section>
-		<section class="property-control-group">
+		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
 			<div class="checkbox">
 				{{#if checkbox_display.ebsOptimized}}
 				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />

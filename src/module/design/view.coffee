@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -10,7 +10,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
         initialize  : ->
 
-        render   : ( template ) ->
+        render   : () ->
             console.log 'design render'
             #render
             this.$el.html template

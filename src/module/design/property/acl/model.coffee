@@ -32,7 +32,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             associationsAry = []
             _.each aclObj.resource.AssociationSet, (value, key) ->
                 subnetInfo = that.getSubnetInfo(value)
-                associationsAry.push(subnetInfo)
+                if subnetInfo
+                    associationsAry.push(subnetInfo)
                 null
 
             this.set 'associations', associationsAry
@@ -53,6 +54,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 aclObj.rule_number = aclObj.entrySet.item.length
 
                 $.each aclObj.entrySet.item, ( idx, entry ) ->
+
+                    if entry.egress in ['true', true]
+                        entry.egress = true
+                    else
+                        entry.egress = false
 
                     if entry.protocol == -1 or entry.protocol == '-1'
 
@@ -91,7 +97,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         null
 
-            if aclObj.associationSet.item
+            if aclObj.associationSet and aclObj.associationSet.item
 
                 aclObj.asso_number = aclObj.associationSet.item.length
 
@@ -104,6 +110,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             subnetUID = associationObj.SubnetId
             subnetUID = subnetUID.slice(1).split('.')[0]
             subnetComp = MC.canvas_data.component[subnetUID]
+            if !subnetComp then return null
             return {
                 subnet_name: subnetComp.name,
                 subnet_cidr: subnetComp.resource.CidrBlock
@@ -160,6 +167,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
         setACLName : (uid, aclName) ->
             MC.canvas_data.component[uid].name = aclName
             null
+
+        haveRepeatRuleNumber : (uid, newRuleNumber) ->
+            result = false
+            entrySet = MC.canvas_data.component[uid].resource.EntrySet
+            _.each entrySet, (entryObj) ->
+                if entryObj.RuleNumber is newRuleNumber
+                    result = true
+                null
+            return result
     }
 
     model = new ACLModel()

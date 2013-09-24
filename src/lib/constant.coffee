@@ -389,6 +389,17 @@ gatewayprofileusagemethod:i:0\n
 promptcredentialonce:i:1\n
 use redirection server name:i:0\n"
 
+
+	COOKIE_OPTION =
+		expires:1
+		path: '/'
+		domain: '.madeiracloud.com'
+
+	LOCAL_COOKIE_OPTION =
+		expires:1
+		path: '/'
+
+
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
 	INSTANCE_STATES         : INSTANCE_STATES
@@ -409,4 +420,6 @@ use redirection server name:i:0\n"
 	AWS_RESOURCE	    	: AWS_RESOURCE
 	SERVICE_REGION			: SERVICE_REGION
 	RDP_TMPL                : RDP_TMPL
+	COOKIE_OPTION           : COOKIE_OPTION
+	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 

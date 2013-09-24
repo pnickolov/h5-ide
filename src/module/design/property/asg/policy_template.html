@@ -121,13 +121,13 @@
 						<h5>Scaling Options</h5>
 						<div class="clearfix">
 							<label>Cooldown Period</label>
-							<input type="text" class="input tooltip" data-tooltip="The amount of time, in seconds, after a scaling activity completes before any further trigger-related scaling activities can start. If not specified, will use auto scaling group's default cooldown period." id="asg-policy-cooldown" value="{{cooldown}}" placeholder="default cooldown" data-ignore="true" data-type="digits">
+							<input type="text" class="input tooltip" data-tooltip="The amount of time, in seconds, after a scaling activity completes before any further trigger-related scaling activities can start. If not specified, will use auto scaling group's default cooldown period." id="asg-policy-cooldown" value="{{cooldown}}" maxlength="5" placeholder="default cooldown" data-ignore="true" data-type="digits">
 							<span>seconds</span>
 						</div>
 
 						<div id="asg-policy-step-wrapper" class="hide clearfix pecentcapcity">
 							<label>Minimum Adjust Step</label>
-							<input type="text" class="input tooltip" data-tooltip="Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances." id="asg-policy-step" value="{{step}}" data-ignore="true" data-type="digits">
+							<input type="text" class="input tooltip" data-tooltip="Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances." id="asg-policy-step" value="{{step}}" data-ignore="true" maxlength="5" data-type="digits">
 						</div>
 					</section>
 

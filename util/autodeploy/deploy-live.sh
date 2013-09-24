@@ -7,7 +7,7 @@ PUBLISH_DIR=${DIR}/../../publish
 REMOTE_DIR="/opt/release/live/ide_h5"
 
 
-FILENAME="ide.tar.gz"
+FILENAME="ide-1.tar.gz"
 
 
 echo "- Step 1 ---------------------------------------------------"

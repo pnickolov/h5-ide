@@ -116,7 +116,7 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.no
             id = event.currentTarget.id
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -134,7 +134,7 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.no
             id = event.currentTarget.id
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
@@ -152,7 +152,7 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.no
             id = event.currentTarget.id
 
             # check credential
-            if $.cookie('has_cred') isnt 'true'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
                 console.log 'show credential setting dialog'
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()

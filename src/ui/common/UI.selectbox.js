@@ -66,16 +66,25 @@ var selectbox = {
 
         // Update Selected Item
         var $this = $( event.currentTarget ).addClass('selected');
-        $this.siblings(".selected").removeClass('selected');
+        var $prev = $this.siblings(".selected").removeClass('selected');
 
         // Set the value to select and close dropdown
         var $selectbox = $this.closest(".selectbox").removeClass('open');
 
-        $selectbox.find(".selection").html( $this.html() );
+        var $selection = $selectbox.find(".selection").html( $this.html() );
 
-        $selectbox.trigger( "OPTION_CHANGE", $this.attr('data-id') );
+        var evt = $.Event("OPTION_CHANGE")
 
-        return false;
+        $selectbox.trigger( evt, $this.attr('data-id') );
+
+        if ( evt.isDefaultPrevented() ) {
+            // Revert
+            $this.removeClass("selected");
+            $prev.addClass("selected");
+            $selection.html( $prev.html() );
+        }
+
+        return true;
     }
 
     function keydown ( event ) {

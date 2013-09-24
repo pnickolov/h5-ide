@@ -186,13 +186,17 @@ define({
 		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
-
-
 		//toolbar handler
 		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
 		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
+		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
+		// Add new strings below this comment. Move above once English has been confirmed
+		//refresh button
+		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
+		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
+		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 
 
 		/******property module******/
@@ -200,6 +204,7 @@ define({
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
+		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s Instance\'s Network Interface can\'t exceed %s Private IP Addresses.',
 		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
 		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
@@ -216,7 +221,7 @@ define({
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, there was an error loading the designer. Please check your connection and try again or contact support@madeiracloud.com',
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** process module ******/
@@ -229,6 +234,11 @@ define({
 		'PROC_ERR_INFO'              : 'Error Details',
 		'PROC_CLOSE_TAB'             : 'Close Tab',
 		'PROC_STEP_REQUEST'          : 'Processing',
+		// Add new strings below this comment. Move above once English has been confirmed
+		'PROC_FAILED_TITLE'          :  'Starting App Failed',
+
+		/****** region module *****/
+		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** miscellaneous ******/
@@ -259,7 +269,16 @@ define({
 		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.'
+		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
+
+		/****** Dashboard ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
+		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
+		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+
+		/****** popup ******/
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
 
 	},
 	'service' : {

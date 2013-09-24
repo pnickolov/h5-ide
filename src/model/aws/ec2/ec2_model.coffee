@@ -106,7 +106,8 @@ define [ 'backbone', 'underscore', 'ec2_service', 'base_model' ], ( Backbone, _,
                 #DescribeRegions failed
 
                     console.log 'ec2.DescribeRegions failed, error is ' + aws_result.error_message
-                    me.pub aws_result
+                    #me.pub aws_result
+                    if src.sender and src.sender.trigger then src.sender.trigger 'EC2_EC2_DESC_REGIONS_RETURN', aws_result
 
 
 

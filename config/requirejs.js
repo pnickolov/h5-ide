@@ -10,7 +10,10 @@ module.exports = {
 			mainConfigFile : './<%= src %>/js/login/config.js',
 			modules        : [{
 				name       : 'main'
-			}]
+			}],
+			paths          : {
+				jquery     : 'vender/jquery/jquery'
+			}
 		}
 	},
 
@@ -49,7 +52,10 @@ module.exports = {
 			mainConfigFile : './<%= src %>/js/ide/config.js',
 			modules        : [{
 				name       : 'main'
-			}]
+			}],
+			paths          : {
+				jquery     : 'vender/jquery/jquery'
+			}
 		}
 	}
 

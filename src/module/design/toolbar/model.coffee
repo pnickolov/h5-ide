@@ -376,6 +376,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
 
+                # update app resource
+                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, value
+
                 return
 
             else if flag is 'PENDING_APP'
@@ -520,15 +523,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
+            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup(  MC.canvas_data )) else JSON.stringify(data)
             #
             phantom_data =
                 'origin_host': window.location.origin,
                 'usercode'   : $.cookie( 'usercode'   ),
                 'session_id' : $.cookie( 'session_id' ),
                 'thumbnail'  : is_thumbnail,
-                'json_data'  : JSON.stringify(data),
+                'json_data'  : json_data,
                 'stack_id'   : data.id
                 'url'        : data.key
+                'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
             #
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL

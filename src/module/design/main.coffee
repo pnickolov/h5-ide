@@ -2,13 +2,13 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ], ( $, template ) ->
+define [ 'jquery', 'MC.canvas.constant' ], () ->
 
     #private
     loadModule = () ->
 
         #load remote design.js
-        require [ './module/design/view', './module/design/model', 'event' ], ( View, model, ide_event ) ->
+        require [ 'design_view', 'design_model', 'event' ], ( View, model, ide_event ) ->
 
             #
             design_view_init       = null
@@ -25,7 +25,7 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                 wrap()
 
             #render
-            view.render template
+            view.render()
 
             #listen DESIGN_SUB_COMPLETE
             ide_event.onLongListen ide_event.DESIGN_SUB_COMPLETE, () ->
@@ -35,6 +35,7 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
                     MC.data.design_submodule_count = -1
                     #push event
                     ide_event.trigger ide_event.DESIGN_COMPLETE
+                    ide_event.trigger ide_event.IDE_AVAILABLE
                     #off DESIGN_SUB_COMPLETE
                     ide_event.offListen ide_event.DESIGN_SUB_COMPLETE
                 else
@@ -88,13 +89,19 @@ define [ 'jquery', 'text!./module/design/template.html', 'MC.canvas.constant' ],
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                if not app_id
+                    return
+
                 console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
-                model.getAppResourcesService region_name, app_id
+                is_manual = true
+                model.getAppResourcesService region_name, app_id, is_manual
 
                 # update app data from mongo
                 model.updateAppTab region_name, app_id
 
                 null
+
+
     #private
     unLoadModule = () ->
         #view.remove()

@@ -31,7 +31,7 @@ define [ 'jquery', 'event',
                 # show account setting tab
                 view.showSetting('account')
             else
-                view.showSetting('credential', 'is_failed')
+                view.showSetting('credential')
 
             #
             view.on 'CLOSE_POPUP', () ->

@@ -659,7 +659,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
                                     console.log 'done steps:' + dones
 
-                                    #if dag.dag.state isnt 'Rollback'
+                                # rollback
+                                tab_name = 'process-' + region + '-' + name
+                                if tab_name of MC.process and dones>0
+                                    dones = if MC.process[tab_name].flag_list.dones < dones then dones else MC.process[tab_name].flag_list.dones
+
                                 flag_list.dones = dones
                                 flag_list.steps = steps
 
@@ -731,9 +735,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         tab_name = 'process-' + region + '-' + name
 
-                        MC.process[tab_name].flag_list = flag_list
+                        # filter closed process tab
+                        if tab_name of MC.process
 
-                        ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+                            MC.process[tab_name].flag_list = flag_list
+
+                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
                     # remove request from req_map
                     if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE

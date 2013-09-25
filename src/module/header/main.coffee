@@ -41,21 +41,40 @@ define [ 'jquery',
 
             logout = -> model.logout()
 
-            ide_event.onListen ide_event.WS_COLLECTION_READY_REQUEST, (result) ->
-                model.getInfoList()
-                view.render()
+            # ide_event.onListen ide_event.WS_COLLECTION_READY_REQUEST, (result) ->
+            #     model.getInfoList()
+            #     view.render()
 
-            ide_event.onLongListen ide_event.UPDATE_HEADER, (req) ->
-            #model.on 'HEADER_UPDATE', () ->
-                console.log 'HEADER_UPDATE'
+            # ide_event.onLongListen ide_event.UPDATE_HEADER, (req) ->
+            # #model.on 'HEADER_UPDATE', () ->
+            #     console.log 'HEADER_UPDATE'
 
-                if req
-                    console.log 'request:' + req
+            #     if req
+            #         console.log 'request:' + req
 
-                    model.updateHeader(req)
-                    view.render()
+            #         model.updateHeader(req)
+            #         view.render()
 
                 #view.resetAlert()
+
+            ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
+                console.log 'header listen UPDATE_REQUEST_ITEM index:' + idx
+
+                # fetch request
+                req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+
+                if req_list.length > 0
+                    req = req_list[0]
+
+                    model.updateHeader req
+
+                    view.render()
+
+            ide_event.onListen ide_event.WS_COLLECTION_READY_REQUEST, () ->
+                console.log 'header listen WS_COLLECTION_READY_REQUEST'
+
+                model.resetInfoList()
+                view.render()
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
                 console.log 'SWITCH_DASHBOARD'

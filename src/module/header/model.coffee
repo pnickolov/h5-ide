@@ -10,7 +10,7 @@ define [ 'backbone', 'jquery', 'underscore',
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : null      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
+            'info_list'     : []      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
             'is_unread'     : null
             'in_dashboard'  : true
@@ -70,9 +70,6 @@ define [ 'backbone', 'jquery', 'underscore',
             me.set 'is_unread', is_unread
             me.set 'unread_num', unread_num
 
-            # listen
-            #me.updateRequest()
-
             null
 
         updateHeader : (req) ->
@@ -109,7 +106,6 @@ define [ 'backbone', 'jquery', 'underscore',
                 info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
                 me.set 'info_list', info_list
-
 
         parseInfo : (req) ->
             if not req.brief
@@ -182,54 +178,6 @@ define [ 'backbone', 'jquery', 'underscore',
                 return if a.time <= b.time then 1 else -1
 
             info_list
-
-        # updateRequest : () ->
-        #     me = this
-
-        #     if ws
-        #         query = ws.collection.request.find()
-        #         handle = query.observeChanges {
-        #             changed : (id, dag) ->
-
-        #                 req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
-
-        #                 if req_list
-
-        #                     req = req_list[0]
-
-        #                     console.log 'request ' + req.data + "," + req.state
-
-        #                     item = me.parseInfo req
-
-        #                     if item
-        #                         info_list = me.get 'info_list'
-        #                         unread_num = me.get 'unread_num'
-        #                         in_dashboard = me.get 'in_dashboard'
-
-        #                         # check whether same operation
-        #                         the_req = []
-        #                         the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-        #                         if the_req.length <= 0
-        #                             if in_dashboard or item.rid != MC.canvas_data.id
-        #                                 item.is_readed = false
-
-        #                                 unread_num += 1
-        #                                 me.set 'unread_num', unread_num
-        #                                 me.set 'is_unread', true
-
-        #                             # remove the old request and new to the header
-        #                             info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
-
-        #                             info_list.splice 0, 0, item
-
-        #                             me.set 'info_list', info_list
-
-        #                             me.trigger 'HEADER_UPDATE'
-
-        #                         null
-        #         }
-
-        #         null
 
         setFlag : (flag) ->
             me = this

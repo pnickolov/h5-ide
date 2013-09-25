@@ -636,7 +636,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     name    = req_map[req_id].name
 
                     # update header
-                    ide_event.trigger ide_event.UPDATE_HEADER, req
+                    #ide_event.trigger ide_event.UPDATE_HEADER, req
 
                     flag_list = {}
 

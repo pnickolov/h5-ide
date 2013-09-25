@@ -90,7 +90,7 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'access_key') and _.contains(attr_list, 'secret_key')
 
-                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+                    model.sync_redis()
 
                 null
 

@@ -25,6 +25,9 @@ define [ 'event',
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
+            'blur #aws-credential-account-id'       : 'verificationKey'
+            'blur #aws-credential-access-key'       : 'verificationKey'
+            'blur #aws-credential-secret-key'       : 'verificationKey'
 
         render     : (template) ->
             console.log 'account_setting_tab render'
@@ -54,6 +57,7 @@ define [ 'event',
 
             me = this
 
+            right_count = 0
             # input check
             account_id = $('#aws-credential-account-id').val().trim()
             access_key = $('#aws-credential-access-key').val().trim()
@@ -135,9 +139,12 @@ define [ 'event',
                 # check email format
                 if email isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
                     if email is MC.base64Decode($.cookie('email')) # repeat
-                        status.show().text 'This email is repeat.'
+                        #status.show().text 'This email is repeat.'
+                        me.showSetting('account')
+
                     else
                         me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+
                 else
                     status.show().text 'It`s not an email address.'
 
@@ -201,6 +208,20 @@ define [ 'event',
         notify : (type, msg) ->
             notification type, msg
 
+        verificationKey : ->
+            console.log 'verificationKey'
+
+            right_count = 0
+            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim()
+            right_count = right_count + 1 if $('#aws-credential-access-key').val().trim()
+            right_count = right_count + 1 if $('#aws-credential-secret-key').val().trim()
+
+            if right_count is 3
+                $('#awscredentials-submit').attr('disabled', false)
+            else
+                $('#awscredentials-submit').attr('disabled', true)
+            null
+
         # show account setting tab or credential setting tab
         showSetting : (tab, flag) ->
             console.log 'account_setting_tab tab and flag:' + tab + ', ' + flag
@@ -253,6 +274,11 @@ define [ 'event',
                 $('#AWSCredential-form').find('ul').show()
                 $('#awscredentials-submit').show()
                 $('#AWSCredential-info-wrap').show()
+                $('#AWSCredential-info').show()
+                $('#AWSCredentials-remove-wrap').hide()
+
+                $('#awscredentials-remove').show()
+                $('#awscredentials-cancel').show()
 
                 if not flag     # initial
 
@@ -266,6 +292,11 @@ define [ 'event',
 
                     #$('#AWSCredential-failed').hide()
                     $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
+
+                    # set buttons style
+                    $('#awscredentials-remove').hide()
+                    $('#awscredentials-cancel').hide()
+                    $('#awscredentials-submit').attr('disabled',"true")
 
                 else if flag is 'is_failed'
 
@@ -332,7 +363,8 @@ define [ 'event',
 
                 else if flag is 'on_remove'
 
-                    $('#AWSCredentials-remove').show()
+                    $('#AWSCredential-info').hide()
+                    $('#AWSCredentials-remove-wrap').show()
                     $('#AWSCredential-remove-head').find('p').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
                     $('#awscredentials-submit').hide()
                     $('#AWSCredential-form').find('ul').hide()

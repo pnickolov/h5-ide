@@ -31,6 +31,18 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             ###################################################
 
+            #####listen SESSION_SYNC__REDIS_RETURN
+            me.on 'SESSION_SYNC__REDIS_RETURN', (result) ->
+                console.log 'SESSION_SYNC__REDIS_RETURN'
+
+                if !result.is_error
+                    # update aws credential
+                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
+                null
+
+            ###################################################
+
             #
             flag = false
             if MC.forge.cookie.getCookieByName('has_cred') is 'true'
@@ -105,6 +117,13 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
             attributes = {'account_id':null, 'access_key':null, 'secret_key':null}
 
             account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
+
+            null
+
+        sync_redis : () ->
+            me = this
+
+            session_model.sync_redis {sender:me}, $.cookie('usercode'), $.cookie('session_id')
 
             null
 

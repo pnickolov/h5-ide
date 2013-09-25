@@ -10,7 +10,7 @@ define [ 'backbone', 'jquery', 'underscore',
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : null      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
+            'info_list'     : []      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
             'is_unread'     : null
             'in_dashboard'  : true
@@ -49,31 +49,28 @@ define [ 'backbone', 'jquery', 'underscore',
 
             null
 
-        getInfoList : () ->
-            me = this
+        # getInfoList : () ->
+        #     me = this
 
-            info_list = me.get 'info_list'
-            unread_num = me.get 'unread_num'
+        #     info_list = me.get 'info_list'
+        #     unread_num = me.get 'unread_num'
 
-            if not info_list
-                #get from ws
-                info_list = me.queryRequest()
+        #     if not info_list
+        #         #get from ws
+        #         info_list = me.queryRequest()
 
-            if not unread_num
-                unread_num = 0
+        #     if not unread_num
+        #         unread_num = 0
 
-            me.set 'info_list', info_list
+        #     me.set 'info_list', info_list
 
-            is_unread = false
-            if unread_num>0
-                is_unread = true
-            me.set 'is_unread', is_unread
-            me.set 'unread_num', unread_num
+        #     is_unread = false
+        #     if unread_num>0
+        #         is_unread = true
+        #     me.set 'is_unread', is_unread
+        #     me.set 'unread_num', unread_num
 
-            # listen
-            #me.updateRequest()
-
-            null
+        #     null
 
         updateHeader : (req) ->
             me = this
@@ -109,7 +106,6 @@ define [ 'backbone', 'jquery', 'underscore',
                 info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
                 me.set 'info_list', info_list
-
 
         parseInfo : (req) ->
             if not req.brief
@@ -161,75 +157,27 @@ define [ 'backbone', 'jquery', 'underscore',
 
             item
 
-        queryRequest : () ->
-            me = this
-
-            info_list = []
-
-            # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
-            for req in MC.data.websocket.collection.request.find().fetch()
-                item = me.parseInfo req
-
-                if item
-                    info_list.push item
-
-            # filter done and terminated app
-            terminated_list = []
-            terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-            info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
-
-            info_list.sort (a, b) ->
-                return if a.time <= b.time then 1 else -1
-
-            info_list
-
-        # updateRequest : () ->
+        # queryRequest : () ->
         #     me = this
 
-        #     if ws
-        #         query = ws.collection.request.find()
-        #         handle = query.observeChanges {
-        #             changed : (id, dag) ->
+        #     info_list = []
 
-        #                 req_list = MC.data.websocket.collection.request.find({'_id' : id}).fetch()
+        #     # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
+        #     for req in MC.data.websocket.collection.request.find().fetch()
+        #         item = me.parseInfo req
 
-        #                 if req_list
+        #         if item
+        #             info_list.push item
 
-        #                     req = req_list[0]
+        #     # filter done and terminated app
+        #     terminated_list = []
+        #     terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+        #     info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
-        #                     console.log 'request ' + req.data + "," + req.state
+        #     info_list.sort (a, b) ->
+        #         return if a.time <= b.time then 1 else -1
 
-        #                     item = me.parseInfo req
-
-        #                     if item
-        #                         info_list = me.get 'info_list'
-        #                         unread_num = me.get 'unread_num'
-        #                         in_dashboard = me.get 'in_dashboard'
-
-        #                         # check whether same operation
-        #                         the_req = []
-        #                         the_req.push i for i in info_list when i.id == item.id and i.operation == item.operation
-        #                         if the_req.length <= 0
-        #                             if in_dashboard or item.rid != MC.canvas_data.id
-        #                                 item.is_readed = false
-
-        #                                 unread_num += 1
-        #                                 me.set 'unread_num', unread_num
-        #                                 me.set 'is_unread', true
-
-        #                             # remove the old request and new to the header
-        #                             info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
-
-        #                             info_list.splice 0, 0, item
-
-        #                             me.set 'info_list', info_list
-
-        #                             me.trigger 'HEADER_UPDATE'
-
-        #                         null
-        #         }
-
-        #         null
+        #     info_list
 
         setFlag : (flag) ->
             me = this

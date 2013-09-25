@@ -49,28 +49,28 @@ define [ 'backbone', 'jquery', 'underscore',
 
             null
 
-        getInfoList : () ->
-            me = this
+        # getInfoList : () ->
+        #     me = this
 
-            info_list = me.get 'info_list'
-            unread_num = me.get 'unread_num'
+        #     info_list = me.get 'info_list'
+        #     unread_num = me.get 'unread_num'
 
-            if not info_list
-                #get from ws
-                info_list = me.queryRequest()
+        #     if not info_list
+        #         #get from ws
+        #         info_list = me.queryRequest()
 
-            if not unread_num
-                unread_num = 0
+        #     if not unread_num
+        #         unread_num = 0
 
-            me.set 'info_list', info_list
+        #     me.set 'info_list', info_list
 
-            is_unread = false
-            if unread_num>0
-                is_unread = true
-            me.set 'is_unread', is_unread
-            me.set 'unread_num', unread_num
+        #     is_unread = false
+        #     if unread_num>0
+        #         is_unread = true
+        #     me.set 'is_unread', is_unread
+        #     me.set 'unread_num', unread_num
 
-            null
+        #     null
 
         updateHeader : (req) ->
             me = this
@@ -157,27 +157,27 @@ define [ 'backbone', 'jquery', 'underscore',
 
             item
 
-        queryRequest : () ->
-            me = this
+        # queryRequest : () ->
+        #     me = this
 
-            info_list = []
+        #     info_list = []
 
-            # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
-            for req in MC.data.websocket.collection.request.find().fetch()
-                item = me.parseInfo req
+        #     # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete}]
+        #     for req in MC.data.websocket.collection.request.find().fetch()
+        #         item = me.parseInfo req
 
-                if item
-                    info_list.push item
+        #         if item
+        #             info_list.push item
 
-            # filter done and terminated app
-            terminated_list = []
-            terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-            info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
+        #     # filter done and terminated app
+        #     terminated_list = []
+        #     terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
+        #     info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
 
-            info_list.sort (a, b) ->
-                return if a.time <= b.time then 1 else -1
+        #     info_list.sort (a, b) ->
+        #         return if a.time <= b.time then 1 else -1
 
-            info_list
+        #     info_list
 
         setFlag : (flag) ->
             me = this

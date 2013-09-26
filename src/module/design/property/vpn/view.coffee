@@ -25,13 +25,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
             $( '.property-details' ).html this.template this.model.attributes
 
             # find empty inputbox and focus
-            inputElemAry = $('#property-vpn-ips input')
-            _.each inputElemAry, (inputElem) ->
-                inputValue = $(inputElem).val()
-                if !inputValue
-                    MC.aws.aws.disabledAllOperabilityArea(true)
-                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
-                    $(inputElem).focus()
+            vpn_detail = this.model.get('vpn_detail')
+            if !vpn_detail.is_dynamic
+                inputElemAry = $('#property-vpn-ips input')
+                _.each inputElemAry, (inputElem) ->
+                    inputValue = $(inputElem).val()
+                    if !inputValue
+                        MC.aws.aws.disabledAllOperabilityArea(true)
+                        ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                        $(inputElem).focus()
 
         addIP : (event) ->
             # ips = []

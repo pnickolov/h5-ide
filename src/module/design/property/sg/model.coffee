@@ -231,6 +231,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg = MC.canvas_data.component[uid].resource
 
+            if rule.fromport in [0, '0']
+                rule.fromport = ''
+
+            if rule.toport in [65535, '65535']
+                rule.toport = ''
+
             if rule.inbound == true
 
                 $.each sg.IpPermissions, ( idx, value ) ->

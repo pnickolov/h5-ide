@@ -66,6 +66,7 @@ define [ 'event',
         resetPasswordEvent : ->
             console.log 'resetPasswordEvent'
             if @verificationPassword()
+                $( '#reset-password' ).attr( 'value', 'One Minute...' )
                 $( '#reset-password' ).attr( 'disabled', true )
                 this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false

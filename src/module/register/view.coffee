@@ -85,7 +85,7 @@ define [ 'event',
                     status.show().text 'This password is OK.'
                     true
                 else
-                    status.addClass('error-status').show().text 'This password is too weak.'
+                    status.addClass('error-status').show().text 'Password must contain at least 6 letters.'
                     false
             else
                 status.addClass('error-status').show().text 'Password is required.'

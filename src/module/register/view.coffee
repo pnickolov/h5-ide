@@ -111,6 +111,7 @@ define [ 'event',
 
             if right_count is 3
                 #
+                $( '#register-btn' ).attr( 'value', 'One Minute...' )
                 $( '#register-btn' ).attr( 'disabled', true )
                 #
                 this.trigger 'CHECK_REPEAT', username, email, password

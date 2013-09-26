@@ -42,6 +42,8 @@ define [ 'event',
             status.removeClass 'error-status'
             status.show()
             #
+            @_checkButtonDisabled()
+            #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
                     status.show().text 'This username is available.'
@@ -62,6 +64,8 @@ define [ 'event',
             status.removeClass 'error-status'
             status.show()
             #
+            @_checkButtonDisabled()
+            #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text 'This email address is available.'
                 #check vaild
@@ -77,6 +81,8 @@ define [ 'event',
             status = $('#password-verification-status')
             status.removeClass 'error-status'
             status.show()
+            #
+            @_checkButtonDisabled()
             #
             if value isnt ''
                 if value.length > 5 # &&
@@ -99,15 +105,15 @@ define [ 'event',
             password    = $( '#register-password' ).val()
             #
             right_count = 0
-            $( '#register-btn' ).attr( 'disabled', true )
-            # $( '#register-btn' ).attr( 'value', 'One Minute...' )
-            #
             right_count = right_count + 1 if @verificationUser()
             right_count = right_count + 1 if @verificationEmail()
             right_count = right_count + 1 if @verificationPassword()
 
             if right_count is 3
+                #
+                $( '#register-btn' ).attr( 'value', 'One Minute...' )
                 $( '#register-btn' ).attr( 'disabled', true )
+                #
                 this.trigger 'CHECK_REPEAT', username, email, password
                 #
                 $('#username-verification-status').hide()
@@ -117,21 +123,32 @@ define [ 'event',
 
         showUsernameError : ->
             console.log 'showUsernameError'
-            $( '#register-btn' ).attr( 'disabled', false )
-            $( '#register-btn' ).attr( 'value', 'Create Account' )
             status = $('#username-verification-status')
             status.addClass( 'error-status' ).show().text 'Username has been taken. Please choose another.'
 
         showEmailError : ->
             console.log 'showEmailError'
-            $( '#register-btn' ).attr( 'disabled', false )
-            $( '#register-btn' ).attr( 'value', 'Create Account' )
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'This email address has been used.'
 
         loginEvent : ->
             console.log 'loginEvent'
             window.location.href = 'ide.html'
+            null
+
+        _checkButtonDisabled : ->
+            console.log '_checkButtonDisabled'
+            #
+            right_count = 0
+            #
+            right_count = right_count + 1 if $('#register-username').val().trim()
+            right_count = right_count + 1 if $('#register-email').val().trim()
+            right_count = right_count + 1 if $('#register-password').val().trim()
+
+            if right_count is 3
+                $( '#register-btn' ).attr( 'disabled', false )
+            else
+                $( '#register-btn' ).attr( 'disabled', true )
             null
 
     }

@@ -11,11 +11,16 @@ define [ 'jquery', 'event',
     #template = '<script type="text/x-handlebars-template" id="aws-credential-tmpl">' + template + '</script>'
     #$( 'head' ).append template
 
+    view  = null
+    model = null
+
     #private
     loadModule = () ->
 
         #
         require [ './component/awscredential/view', './component/awscredential/model' ], ( View, Model ) ->
+
+            return if view or model
 
             #
             view  = new View()
@@ -35,7 +40,7 @@ define [ 'jquery', 'event',
 
             #
             view.on 'CLOSE_POPUP', () ->
-                unLoadModule view, model
+                unLoadModule()
 
             view.on 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
                 console.log 'AWS_AUTHENTICATION'
@@ -90,7 +95,7 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'access_key') and _.contains(attr_list, 'secret_key')
 
-                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+                    model.sync_redis()
 
                 null
 
@@ -120,7 +125,7 @@ define [ 'jquery', 'event',
 
                 null
 
-    unLoadModule = ( view, model ) ->
+    unLoadModule = () ->
         console.log 'awscredential unLoadModule'
         view.off()
         model.off()

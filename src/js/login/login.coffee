@@ -77,6 +77,8 @@ define [ 'jquery', 'handlebars',
 
 		#remove
 		$( '#error-msg-1' ).removeClass 'show'
+		$( '#error-msg-2' ).removeClass 'show'
+		$( '.control-group' ).removeClass 'error'
 
 		username = $( '#login-user' ).val()
 		password = $( '#login-password' ).val()
@@ -89,6 +91,9 @@ define [ 'jquery', 'handlebars',
 			$( '#error-msg-2'   ).addClass 'show'
 			$( '.control-group' ).first().addClass 'error'
 			return false
+
+		$( '#login-btn'   ).attr( 'value', 'One Minute...' )
+		$( '#login-btn'   ).attr( 'disabled', true )
 
 		#invoke session.login api
 		session_model.login { sender : this }, username, password
@@ -130,6 +135,9 @@ define [ 'jquery', 'handlebars',
 				$( '.error-msg'     ).removeClass 'show'
 				$( '.control-group' ).first().removeClass 'error'
 				$( '#error-msg-1'   ).addClass 'show'
+				#
+				$( '#login-btn'   ).attr( 'value', 'Log In' )
+				$( '#login-btn'   ).attr( 'disabled', false )
 
 				return false
 

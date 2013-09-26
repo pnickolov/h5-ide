@@ -9,6 +9,10 @@ define [ 'event',
          'UI.modal', 'UI.notification'
 ], ( ide_event, lang, constant ) ->
 
+    last_account_id = null
+    last_access_key = null
+    last_secret_key = null
+
     AWSCredentialView = Backbone.View.extend {
 
         events   :
@@ -25,6 +29,9 @@ define [ 'event',
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
+            'blur #aws-credential-account-id'       : 'verificationKey'
+            'blur #aws-credential-access-key'       : 'verificationKey'
+            'blur #aws-credential-secret-key'       : 'verificationKey'
 
         render     : (template) ->
             console.log 'account_setting_tab render'
@@ -54,6 +61,7 @@ define [ 'event',
 
             me = this
 
+            right_count = 0
             # input check
             account_id = $('#aws-credential-account-id').val().trim()
             access_key = $('#aws-credential-access-key').val().trim()
@@ -71,6 +79,10 @@ define [ 'event',
             else
                 # show AWSCredentials-submiting
                 me.showSetting('credential', 'on_submit')
+
+                last_account_id = account_id
+                last_access_key = access_key
+                last_secret_key = secret_key
 
                 me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
 
@@ -135,9 +147,12 @@ define [ 'event',
                 # check email format
                 if email isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
                     if email is MC.base64Decode($.cookie('email')) # repeat
-                        status.show().text 'This email is repeat.'
+                        #status.show().text 'This email is repeat.'
+                        me.showSetting('account')
+
                     else
                         me.trigger 'UPDATE_ACCOUNT_EMAIL', email
+
                 else
                     status.show().text 'It`s not an email address.'
 
@@ -201,6 +216,20 @@ define [ 'event',
         notify : (type, msg) ->
             notification type, msg
 
+        verificationKey : ->
+            console.log 'verificationKey'
+
+            right_count = 0
+            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim()
+            right_count = right_count + 1 if $('#aws-credential-access-key').val().trim()
+            right_count = right_count + 1 if $('#aws-credential-secret-key').val().trim()
+
+            if right_count is 3
+                $('#awscredentials-submit').attr('disabled', false)
+            else
+                $('#awscredentials-submit').attr('disabled', true)
+            null
+
         # show account setting tab or credential setting tab
         showSetting : (tab, flag) ->
             console.log 'account_setting_tab tab and flag:' + tab + ', ' + flag
@@ -253,6 +282,12 @@ define [ 'event',
                 $('#AWSCredential-form').find('ul').show()
                 $('#awscredentials-submit').show()
                 $('#AWSCredential-info-wrap').show()
+                $('#AWSCredential-info').show()
+                $('#AWSCredentials-remove-wrap').hide()
+
+                $('#awscredentials-remove').show()
+                $('#awscredentials-cancel').show()
+                $('#awscredentials-submit').attr('disabled',"true")
 
                 if not flag     # initial
 
@@ -267,6 +302,10 @@ define [ 'event',
                     #$('#AWSCredential-failed').hide()
                     $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
 
+                    # set buttons style
+                    $('#awscredentials-remove').hide()
+                    $('#awscredentials-cancel').hide()
+
                 else if flag is 'is_failed'
 
                     $('#AWSCredentials-submiting').hide()
@@ -274,6 +313,13 @@ define [ 'event',
 
                     #$('#AWSCredential-failed').show()
                     $('#AWSCredential-info').find('p').text 'Authentication failed. Please check your AWS Credentials and try again.'
+
+                    if last_account_id
+                        $('#aws-credential-account-id').text last_account_id
+                    if last_access_key
+                        $('#aws-credential-access-key').text last_access_key
+                    if last_secret_key
+                        $('#aws-credential-secret-key').text last_secret_key
 
                 else if flag is 'on_update'
 
@@ -332,7 +378,8 @@ define [ 'event',
 
                 else if flag is 'on_remove'
 
-                    $('#AWSCredentials-remove').show()
+                    $('#AWSCredential-info').hide()
+                    $('#AWSCredentials-remove-wrap').show()
                     $('#AWSCredential-remove-head').find('p').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
                     $('#awscredentials-submit').hide()
                     $('#AWSCredential-form').find('ul').hide()

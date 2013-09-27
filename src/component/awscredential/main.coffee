@@ -30,11 +30,14 @@ define [ 'jquery', 'event',
             view.model    = model
 
             if MC.forge.cookie.getCookieByName('new_account') is 'true'
-                template = welcome_tmpl
-                view.state = 'welcome'
+                ture_template = welcome_tmpl
+                view.state    = 'welcome'
+            else
+                ture_template = template
+                view.state    = 'credential'
 
             #render
-            view.render template
+            view.render ture_template
 
             if MC.forge.cookie.getCookieByName('new_account') is 'true'
                 view.showSetting('credential')

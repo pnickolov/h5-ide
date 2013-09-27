@@ -5,10 +5,10 @@
 define [ 'event',
          'i18n!nls/lang.js',
          'constant',
-         'text!./form.html', 'text!./loading.html', 'text!./skin.html',
+         'text!./form.html', 'text!./loading.html', 'text!./skip.html',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
-], ( ide_event, lang, constant, form_tmpl, loading_tmpl, skin_tmpl ) ->
+], ( ide_event, lang, constant, form_tmpl, loading_tmpl, skip_tmpl ) ->
 
     last_account_id = null
     last_access_key = null
@@ -257,7 +257,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Done' )
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html skin_tmpl
+                $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
                 $('#AWSCredential-info').find('p').text 'You can design stack without providing AWS Credentials. We will provide demo mode for your account. Yet, not providing your AWS Credentials now has following drawbacks:'
             else if $target.attr( 'data-type' ) is 'back'
                 #

@@ -3,9 +3,9 @@
 ####################################
 
 define [ 'jquery', 'event',
-         'text!./template.html',
+         'text!./template.html', 'text!./welcome.html',
          'i18n!nls/lang.js'
-], ( $, ide_event, template, lang ) ->
+], ( $, ide_event, template, welcome_tmpl, lang ) ->
 
 
     #template = '<script type="text/x-handlebars-template" id="aws-credential-tmpl">' + template + '</script>'
@@ -28,6 +28,10 @@ define [ 'jquery', 'event',
 
             #view
             view.model    = model
+
+            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+                template = welcome_tmpl
+                view.state = 'welcome'
 
             #render
             view.render template

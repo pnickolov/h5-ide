@@ -5,15 +5,18 @@
 define [ 'event',
          'i18n!nls/lang.js',
          'constant',
+         'text!./form.html', 'text!./loading.html', 'text!./skin.html',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'UI.notification'
-], ( ide_event, lang, constant ) ->
+], ( ide_event, lang, constant, form_tmpl, loading_tmpl, skin_tmpl ) ->
 
     last_account_id = null
     last_access_key = null
     last_secret_key = null
 
     AWSCredentialView = Backbone.View.extend {
+
+        state    : 'credential'
 
         events   :
             'closed'                                : 'onClose'
@@ -33,12 +36,18 @@ define [ 'event',
             'blur #aws-credential-access-key'       : 'verificationKey'
             'blur #aws-credential-secret-key'       : 'verificationKey'
 
+            #welcome
+            'click #awscredentials-skip'            : 'onSkinButton'
+
         render     : (template) ->
             console.log 'account_setting_tab render'
             #
             modal template, false
             #
-            this.setElement $( '#AWSCredential-setting' ).closest '#modal-wrap'
+            this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
+            #
+            $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
+            $( '#AWSCredentials-submiting' ).html loading_tmpl
 
         onClose : ->
             console.log 'account_setting_tab onClose'
@@ -58,6 +67,10 @@ define [ 'event',
 
         onSubmit : () ->
             console.log 'account_setting_tab onSubmit'
+
+            if $( '#awscredentials-skip' ).attr( 'data-type' ) in [ 'back', 'done' ]
+                @onDone()
+                return
 
             me = this
 
@@ -85,6 +98,10 @@ define [ 'event',
                 last_secret_key = secret_key
 
                 me.trigger 'AWS_AUTHENTICATION', account_id, access_key, secret_key
+
+                if @state is 'welcome'
+                    $( '#awscredentials-submit' ).text 'Loading...'
+                    $( '#awscredentials-skip' ).hide()
 
         onAWSCredentialCancel : () ->
             console.log 'account_setting_tab onAWSCredentialCancel'
@@ -230,6 +247,30 @@ define [ 'event',
                 $('#awscredentials-submit').attr('disabled', true)
             null
 
+        onSkinButton : () ->
+            console.log 'onSkinButton'
+            $target = $( '#awscredentials-skip' )
+            if $target.attr( 'data-type' ) is 'skip'
+                #
+                $target.attr( 'data-type', 'back' )
+                $target.text( 'Back' )
+                $( '#awscredentials-submit' ).text( 'Done' )
+                $( '#awscredentials-submit' ).removeAttr 'disabled'
+                #
+                $( '#AWSCredential-form' ).find( 'ul' ).html skin_tmpl
+                $('#AWSCredential-info').find('p').text 'You can design stack without providing AWS Credentials. We will provide demo mode for your account. Yet, not providing your AWS Credentials now has following drawbacks:'
+            else if $target.attr( 'data-type' ) is 'back'
+                #
+                $target.attr( 'data-type', 'skip' )
+                $target.text( 'Skip' )
+                $( '#awscredentials-submit' ).attr 'disabled', true
+                $( '#awscredentials-submit' ).text( 'Submit' )
+                #
+                $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
+                $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
+
+            null
+
         # show account setting tab or credential setting tab
         showSetting : (tab, flag) ->
             console.log 'account_setting_tab tab and flag:' + tab + ', ' + flag
@@ -300,7 +341,10 @@ define [ 'event',
                     $('#aws-credential-secret-key').val(' ')
 
                     #$('#AWSCredential-failed').hide()
-                    $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
+                    if @state is 'credential'
+                        $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
+                    else if @state is 'welcome'
+                        $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
 
                     # set buttons style
                     $('#awscredentials-remove').hide()
@@ -328,6 +372,10 @@ define [ 'event',
                     if right_count is 3
                         $('#awscredentials-submit').attr('disabled', false)
 
+                    if @state is 'welcome'
+                        $( '#awscredentials-submit' ).text 'Submit'
+                        $( '#awscredentials-skip' ).show()
+
                 else if flag is 'on_update'
 
                     $('#AWSCredential-form').hide()
@@ -351,6 +399,12 @@ define [ 'event',
                     else
                         $('.AWSCredentials-account-update').show()
                         $('.AWSCredentials-account-update').attr('disabled', false)
+
+                    if @state is 'welcome'
+                        $( '#awscredentials-skip' ).hide()
+                        $( '#awscredentials-skip' ).attr( 'data-type', 'done' )
+                        $( '#awscredentials-submit' ).text 'Done'
+                        $( '#awscredentials-submit' ).removeAttr 'disabled'
 
                 else if flag is 'in_update'
 
@@ -394,8 +448,6 @@ define [ 'event',
                     # change remove button's style
                     $('#awscredentials-remove').addClass("btn btn-silver")
                     # hide submit botton
-
-
 
             null
 

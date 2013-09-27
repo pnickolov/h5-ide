@@ -29,6 +29,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
 
             sg_detail.members = MC.aws.sg.getAllRefComp(uid)
+            
+            sg_detail.members = MC.aws.sg.convertMemberNameToReal(sg_detail.members)
 
             permissions = [sg_detail.component.resource.IpPermissions, sg_detail.component.resource.IpPermissionsEgress]
 
@@ -83,6 +85,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
 
             members = MC.aws.sg.getAllRefComp sg_uid
+
             rules = MC.aws.sg.getAllRule currentAppSG
 
             #get sg name

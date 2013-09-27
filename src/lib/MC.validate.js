@@ -143,6 +143,25 @@ var MC = MC || {};
 		return portAry;
 	};
 
+	MC.validate.portValidRange = function ( portAry ) {
+		if (portAry.length === 1) {
+			port1 = portAry[0];
+			if (port1 < 0 || port1 > 65535) {
+				return false;
+			}
+		} else {
+			port1 = portAry[0];
+			port2 = portAry[1];
+			if (port1 < 0 || port1 > 65535 || port2 < 0 || port2 > 65535) {
+				return false;
+			}
+			if (port2 <= port1) {
+				return false;
+			}
+		}
+		return true;
+	};
+
 	MC.validate.port = function ( value ) {
 		var portValue = null
 

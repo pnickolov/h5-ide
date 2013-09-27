@@ -15,8 +15,14 @@ define [ 'event',
 
         events       :
             'blur  #register-username'  : 'verificationUser'
+            'keyup #register-username'  : '_checkButtonDisabled'
+
             'blur  #register-email'     : 'verificationEmail'
+            'keyup #register-email'     : '_checkButtonDisabled'
+
             'blur #register-password'   : 'verificationPassword'
+            'keyup #register-password'  : '_checkButtonDisabled'
+
             'submit #register-form'     : 'submit'
             'click #register-get-start' : 'loginEvent'
 
@@ -42,7 +48,7 @@ define [ 'event',
             status.removeClass 'error-status'
             status.show()
             #
-            @_checkButtonDisabled()
+            #@_checkButtonDisabled()
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
@@ -64,7 +70,7 @@ define [ 'event',
             status.removeClass 'error-status'
             status.show()
             #
-            @_checkButtonDisabled()
+            #@_checkButtonDisabled()
             #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text 'This email address is available.'
@@ -82,7 +88,7 @@ define [ 'event',
             status.removeClass 'error-status'
             status.show()
             #
-            @_checkButtonDisabled()
+            #@_checkButtonDisabled()
             #
             if value isnt ''
                 if value.length > 5 # &&
@@ -91,7 +97,7 @@ define [ 'event',
                     status.show().text 'This password is OK.'
                     true
                 else
-                    status.addClass('error-status').show().text 'This password is too weak.'
+                    status.addClass('error-status').show().text 'Password must contain at least 6 letters.'
                     false
             else
                 status.addClass('error-status').show().text 'Password is required.'

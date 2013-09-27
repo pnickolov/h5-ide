@@ -591,6 +591,30 @@ a {
 	text-decoration: underline;
 }
 
+#welcome-btn-wrap {
+	position: relative;
+}
+
+#awscredentials-skip {
+	color: #22C0F7;
+	font-size: 12px;
+	position: absolute;
+	top: 7px;
+	left: 30px;
+}
+
+#awscredentials-skip:hover {
+	text-decoration: underline;
+}
+
+#welcome-skip-info {
+	color: #AAA;
+}
+
+.welcome-skip-item {
+	color: #555;
+}
+
 /* Wrapper */
 #wrapper {
 	position : absolute;

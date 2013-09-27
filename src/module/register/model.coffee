@@ -55,8 +55,7 @@ define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, acco
 
                     #set madeiracloud_ide_session_id
                     forge_handle.cookie.setIDECookie result
-                    #
-                    #$.cookie 'new_account', 0, { expires:1, path: '/'  }
+                    forge_handle.cookie.setCookieByName 'new_account', true
                     #
                     window.location.href = 'register.html#success'
                 else

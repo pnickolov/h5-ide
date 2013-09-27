@@ -106,6 +106,9 @@ define [ 'jquery', 'handlebars',
 
 				result = forge_result.resolved_data
 
+				#clear old cookie
+				forge_handle.cookie.deleteCookie()
+
 				#set cookies
 				forge_handle.cookie.setCookie result
 

@@ -32,7 +32,10 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
-            if $.cookie('has_cred') is 'true'
+            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+                view.showSetting('credential')
+
+            else if MC.forge.cookie.getCookieByName('has_cred') is 'true'
                 # show account setting tab
                 view.showSetting('account')
             else

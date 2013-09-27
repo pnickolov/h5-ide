@@ -314,12 +314,19 @@ define [ 'event',
                     #$('#AWSCredential-failed').show()
                     $('#AWSCredential-info').find('p').text 'Authentication failed. Please check your AWS Credentials and try again.'
 
+                    right_count = 0
                     if last_account_id
                         $('#aws-credential-account-id').text last_account_id
+                        right_count = right_count + 1
                     if last_access_key
                         $('#aws-credential-access-key').text last_access_key
+                        right_count = right_count + 1
                     if last_secret_key
                         $('#aws-credential-secret-key').text last_secret_key
+                        right_count = right_count + 1
+
+                    if right_count is 3
+                        $('#awscredentials-submit').attr('disabled', false)
 
                 else if flag is 'on_update'
 

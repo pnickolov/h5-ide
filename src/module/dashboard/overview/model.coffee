@@ -1231,12 +1231,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             me = this
 
-            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'  # new account
-                ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL, 'new_account'
-
-            else
-                #get service(model)
-                vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
+            #get service(model)
+            vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms","default-vpc"]
 
             null
 

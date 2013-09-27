@@ -522,6 +522,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 lists.Instance = resources.DescribeInstances.length
                 ami_list = []
                 _.map resources.DescribeInstances, ( ins, i ) ->
+                    if ins.instanceState.name is 'terminated'
+                        ins.isTerminated = true
+
                     ami_list.push ins.imageId
                     ins.detail = me.parseSourceValue 'DescribeInstances', ins, "detail", null
 

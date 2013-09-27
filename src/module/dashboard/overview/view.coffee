@@ -91,7 +91,7 @@ define [ 'event', 'i18n!nls/lang.js',
             'click .aws-loading-faild a'                : 'showCredential'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
-            'click #DescribeInstances .table-app-link'  : 'openApp'
+            'click .table-app-link-clickable'           : 'openApp'
             'modal-shown .start-app'                    : 'startAppClick'
             'modal-shown .stop-app'                     : 'stopAppClick'
             'modal-shown .terminate-app'                : 'terminateAppClick'
@@ -183,6 +183,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
+            console.log  @model.toJSON()
             if not @status.reloading
                 tmpl = @region_resource_head @model.toJSON()
                 @$el.find('#region-resource-wrap').html tmpl

@@ -57,18 +57,28 @@ define [ 'text!./template.html',
               method: ( val ) ->
                 if not MC.validate.portRange(val)
                   return 'Must be a valid format of number.'
+                if Number(val) < 0 or Number(val) > 255
+                  return 'The protocol number range must be 0-255.'
                 null
             'tcp':
               dom: $('#sg-proto-ipt-tcp input')
               method: ( val ) ->
-                if not MC.validate.portRange(val)
+                portAry = []
+                portAry = MC.validate.portRange(val)
+                if not portAry
                   return 'Must be a valid format of port range.'
+                if not MC.validate.portValidRange(portAry)
+                  return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
                 null
             'udp':
               dom: $('#sg-proto-ipt-udp input')
               method: ( val ) ->
-                if not MC.validate.portRange(val)
+                portAry = []
+                portAry = MC.validate.portRange(val)
+                if not portAry
                   return 'Must be a valid format of port range.'
+                if not MC.validate.portValidRange(portAry)
+                  return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
                 null
 
           if data.protocol of validateMap

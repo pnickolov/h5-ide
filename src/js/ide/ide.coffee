@@ -301,4 +301,24 @@ define [ 'MC', 'event', 'handlebars'
 				#
 				notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
+		###########################
+		#listen to the request list
+		###########################
+		listenRequestList = () ->
+			console.log 'listen to request list'
+
+			MC.data.websocket.collection.request.find().fetch()
+			query = MC.data.websocket.collection.request.find()
+			handle = query.observeChanges {
+                        added   : (idx, dag) ->
+                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+
+                        changed : (idx, dag) ->
+                        	ide_event.trigger ide_event.UPDATE_REQUEST_ITEM, idx, dag
+			}
+
+			null
+
+		listenRequestList()
+
 		null

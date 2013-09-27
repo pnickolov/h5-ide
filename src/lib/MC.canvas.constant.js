@@ -567,7 +567,7 @@ var constant_data = {
 				"type": "vpn",
 				"from": "vgw-vpn",
 				"to": "cgw-vpn",
-				"relation": "unique"
+				"relation": "multiple"
 			}
 		},
 		"AWS.VPC.CustomerGateway": {

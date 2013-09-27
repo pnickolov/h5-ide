@@ -7,10 +7,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
     #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
-    item_state_map = {}
-    is_tab = true
+    item_state_map  = {}
 
-    run_stack_map = {}  # {<region>:{<app_name>:{<data>}}}
+    # save launched stack data for thumbnail
+    run_stack_map   = {}  # {<region>:{<app_name>:{<data>}}}
+
+    # mapping request id with tab id
+    req_map         = {}  # {req_id : {'flag':flag, 'id':id, 'name':name}}
+
+    # flag of on tab or dashboard
+    is_tab = true
 
     #websocket
     ws = MC.data.websocket
@@ -270,28 +276,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     data.key = result.resolved_data
 
                     me.savePNG true, data
-
-            # #listen APP_RESOURCE_RETURN
-            # me.on 'APP_RESOURCE_RETURN', (result) ->
-            #     console.log 'APP_RESOURCE_RETURN'
-
-            #     app_id = result.param[4]
-            #     region = result.param[3]
-
-            #     if !result.is_error
-
-            #         resource_source = result.resolved_data
-
-            #         if resource_source
-            #             MC.aws.aws.cacheResource resource_source, region
-
-            #             #push event
-            #             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, app_id
-
-            #     else
-            #         #TO-DO
-
-            #     null
 
         setFlag : (id, flag, value) ->
             me = this
@@ -583,34 +567,43 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
-                if ws
-                    req_id = result.resolved_data.id
-                    console.log 'request id:' + req_id
-                    query = ws.collection.request.find({id:req_id})
-                    handle = query.observeChanges {
-                        added   : (idx, dag) ->
-                            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                            req = req_list[0]
+                req_id = result.resolved_data.id
+                console.log 'request id:' + req_id
 
-                            console.log 'added request ' + req.data + "," + req.state
+                req_map[req_id] =
+                    flag    : flag
+                    id      : id
+                    name    : name
 
-                            me.reqHanle flag, id, name, req, dag
+                # if ws
+                #     req_id = result.resolved_data.id
+                #     console.log 'request id:' + req_id
 
-                        changed : (idx, dag) ->
-                            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                            req = req_list[0]
+                #     query = ws.collection.request.find({id:req_id})
+                #     handle = query.observeChanges {
+                #         added   : (idx, dag) ->
+                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+                #             req = req_list[0]
 
-                            console.log 'changed request ' + req.data + "," + req.state
+                #             console.log 'added request ' + req.data + "," + req.state
 
-                            me.reqHanle flag, id, name, req, dag
+                #             me.reqHanle flag, id, name, req, dag
 
-                            if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
-                                handle.stop()
-                                ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
+                #         changed : (idx, dag) ->
+                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
+                #             req = req_list[0]
 
-                    }
+                #             console.log 'changed request ' + req.data + "," + req.state
 
-                    null
+                #             me.reqHanle flag, id, name, req, dag
+
+                #             if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
+                #                 handle.stop()
+                #                 ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
+
+                #     }
+
+                null
 
             else
 
@@ -624,108 +617,134 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if name in MC.data.app_list[region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-        reqHanle : (flag, id, name, req, dag) ->
+        #reqHanle : (flag, id, name, req, dag) ->
+        reqHanle : (idx, dag) ->
             me = this
 
-            # update header
-            ide_event.trigger ide_event.UPDATE_HEADER, req
+            # fetch request
+            req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
 
-            flag_list = {}
+            if req_list.length > 0
+                req = req_list[0]
+                req_id = req.id
 
-            region = req.region
+                # filter request
+                if req_id of req_map
 
-            switch req.state
-                when constant.OPS_STATE.OPS_STATE_INPROCESS
-                    if flag is 'RUN_STACK'
+                    flag    = req_map[req_id].flag
+                    id      = req_map[req_id].id
+                    name    = req_map[req_id].name
 
-                        flag_list.is_inprocess = true
+                    # update header
+                    #ide_event.trigger ide_event.UPDATE_HEADER, req
 
-                        dones = 0
-                        steps = 0
+                    flag_list = {}
 
-                        if 'dag' of dag # changed request
+                    region = req.region
 
-                            steps = dag.dag.step.length
+                    switch req.state
+                        when constant.OPS_STATE.OPS_STATE_INPROCESS
+                            if flag is 'RUN_STACK'
 
-                            # check rollback
-                            dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                            console.log 'done steps:' + dones
+                                flag_list.is_inprocess = true
 
-                            #if dag.dag.state isnt 'Rollback'
-                        flag_list.dones = dones
-                        flag_list.steps = steps
+                                dones = 0
+                                steps = 0
 
-                        if dones > 0 and steps > 0
-                            flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                                if 'dag' of dag # changed request
+
+                                    steps = dag.dag.step.length
+
+                                    # check rollback
+                                    dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                    console.log 'done steps:' + dones
+
+                                # rollback
+                                tab_name = 'process-' + region + '-' + name
+                                if tab_name of MC.process and dones>0
+                                    dones = if MC.process[tab_name].flag_list.dones < dones then dones else MC.process[tab_name].flag_list.dones
+
+                                flag_list.dones = dones
+                                flag_list.steps = steps
+
+                                if dones > 0 and steps > 0
+                                    flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                                else
+                                    flag_list.rate = 0
+
+                        when constant.OPS_STATE.OPS_STATE_FAILED
+
+                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
+
+                            if flag is 'RUN_STACK'
+                                flag_list.is_failed = true
+                                flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
+
+                                # remove the app name from app_list
+                                if name in MC.data.app_list[region]
+                                    MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                            else
+                                me.setFlag id, 'STOPPED_APP', region
+
+                            # update region aws resource
+                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
+
+                        when constant.OPS_STATE.OPS_STATE_DONE
+
+                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
+
+                            lst = req.data.split(' ')
+                            app_id = lst[lst.length-1]
+
+                            switch flag
+                                when 'RUN_STACK'
+                                    flag_list.app_id = app_id
+                                    flag_list.is_done = true
+
+                                    me.setFlag app_id, 'RUNNING_APP', region
+
+                                when 'START_APP'
+                                    me.setFlag id, 'RUNNING_APP', region
+                                    ide_event.trigger ide_event.STARTED_APP, name, id
+
+                                when 'STOP_APP'
+                                    me.setFlag id, 'STOPPED_APP', region
+                                    ide_event.trigger ide_event.STOPPED_APP, name, id
+
+                                when 'TERMINATE_APP'
+                                    me.setFlag id, 'TERMINATED_APP', region
+                                    ide_event.trigger ide_event.TERMINATED_APP, name, id
+
+                                    # remove the app name from app_list
+                                    if name in MC.data.app_list[region]
+                                        MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                                else
+                                    console.log 'not support toolbar operation:' + flag
+                                    return
+
+                            # update region aws resource
+                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
+
                         else
-                            flag_list.rate = 0
+                            console.log 'not support request state:' + req.state
 
-                when constant.OPS_STATE.OPS_STATE_FAILED
+                    # send process data
+                    if flag_list and flag is 'RUN_STACK'
 
-                    me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
+                        tab_name = 'process-' + region + '-' + name
 
-                    if flag is 'RUN_STACK'
-                        flag_list.is_failed = true
-                        flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
+                        # filter closed process tab
+                        if tab_name of MC.process
 
-                        # remove the app name from app_list
-                        if name in MC.data.app_list[region]
-                            MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+                            MC.process[tab_name].flag_list = flag_list
 
-                    else
-                        me.setFlag id, 'STOPPED_APP', region
+                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
-                    # update region aws resource
-                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
-                when constant.OPS_STATE.OPS_STATE_DONE
-
-                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
-
-                    lst = req.data.split(' ')
-                    app_id = lst[lst.length-1]
-
-                    switch flag
-                        when 'RUN_STACK'
-                            flag_list.app_id = app_id
-                            flag_list.is_done = true
-
-                            me.setFlag app_id, 'RUNNING_APP', region
-
-                        when 'START_APP'
-                            me.setFlag id, 'RUNNING_APP', region
-                            ide_event.trigger ide_event.STARTED_APP, name, id
-
-                        when 'STOP_APP'
-                            me.setFlag id, 'STOPPED_APP', region
-                            ide_event.trigger ide_event.STOPPED_APP, name, id
-
-                        when 'TERMINATE_APP'
-                            me.setFlag id, 'TERMINATED_APP', region
-                            ide_event.trigger ide_event.TERMINATED_APP, name, id
-
-                            # remove the app name from app_list
-                            if name in MC.data.app_list[region]
-                                MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
-
-                        else
-                            console.log 'not support toolbar operation:' + flag
-                            return
-
-                    # update region aws resource
-                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
-                else
-                    console.log 'not support request state:' + req.state
-
-            # send process data
-            if flag_list and flag is 'RUN_STACK'
-
-                tab_name = 'process-' + region + '-' + name
-
-                MC.process[tab_name].flag_list = flag_list
-
-                ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+                    # remove request from req_map
+                    if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
+                        delete req_map[req_id]
 
         isInstanceStore : (data) ->
 

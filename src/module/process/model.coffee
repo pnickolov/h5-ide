@@ -24,7 +24,12 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 # get the data
                 flag_list = MC.process[tab_name].flag_list
 
-                last_flag = me.get 'flag_list', flag_list
+                console.log 'tab name:' + tab_name
+                console.log 'flag_list:' + flag_list
+
+                last_flag = me.get 'flag_list'
+
+                me.set 'flag_list', flag_list
 
                 if 'is_done' of flag_list and flag_list.is_done     # completed
 
@@ -37,7 +42,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                     # hold on 1 second
                     setTimeout () ->
-                        me.set 'flag_list', flag_list
+                        #me.set 'flag_list', flag_list
 
                         app_id = flag_list.app_id
                         region = MC.process[tab_name].region
@@ -60,10 +65,10 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress
 
                     # check rollback
-                    if 'dones' of last_flag and last_flag.dones > flag_list.dones
-                        flag_list = last_flag
+                    # if 'dones' of last_flag and last_flag.dones > flag_list.dones
+                    #     flag_list = last_flag
 
-                    me.set 'flag_list', flag_list
+                    #me.set 'flag_list', flag_list
 
                     if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
                         $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
@@ -78,6 +83,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                 else
 
                     me.set 'flag_list', flag_list
+
+                #console.log flag_list
 
             null
 

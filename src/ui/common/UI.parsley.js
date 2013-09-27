@@ -1835,6 +1835,7 @@ var errortip = function (event)
     errortip_box
       .addClass('errortip_box')
       .attr('id', tipId)
+      .css('z-index', content.css('z-index'))
       .appendTo(document.body);
 
     target_offset = target.offset();

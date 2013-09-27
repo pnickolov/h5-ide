@@ -405,7 +405,7 @@
                                 <div>
                                     {{#if app}}
                                     {{#if owner}}
-                                    <span class="table-app-link truncate tooltip" data-tooltip="App created by {{ owner }}" >[{{ app }}]</span>
+                                    <span class="table-app-link truncate tooltip {{#unless isTerminated}}table-app-link-clickable{{/unless}}" data-tooltip="App created by {{ owner }}" data-id="{{tagSet.app-id}}" data-name="{{tabSet.name}}">[{{ app }}]</span>
                                     {{else}}
                                     <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                     {{/if}}

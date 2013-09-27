@@ -106,11 +106,11 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
             #model
             model.describeAccountAttributesService()
 
-            #model.describeAWSResourcesService()
+            model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 overview_app = result
-                model.describeAWSResourcesService()
+                #model.describeAWSResourcesService()
 
                 model.updateMap model, overview_app, overview_stack
                 model.updateRecentList( model, result, 'recent_launched_apps' )

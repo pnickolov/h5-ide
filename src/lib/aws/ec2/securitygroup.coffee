@@ -414,6 +414,20 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			null
 		return deafaultSGComp
 
+	convertMemberNameToReal = (memberAry) ->
+
+		newMemberAry = []
+		newMemberAry = _.map memberAry, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface' and compObj.name is 'eni0'
+				instanceRef = compObj.resource.Attachment.InstanceId
+				instanceUID = instanceRef.split('.')[0].slice(1)
+				instanceComp = MC.canvas_data.component[instanceUID]
+				return instanceComp
+			else
+				return compObj
+
+		return newMemberAry
+
 	#public
 	getAllRefComp      : getAllRefComp
 	getAllRule         : getAllRule
@@ -424,3 +438,4 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	updateSGColorLabel : updateSGColorLabel
 	deleteRefInAllComp : deleteRefInAllComp
 	getDefaultSG       : getDefaultSG
+	convertMemberNameToReal : convertMemberNameToReal

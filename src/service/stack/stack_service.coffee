@@ -301,6 +301,36 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserListReturn
 
 
+    #///////////////// Parser for export_cloudformation return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveExportCloudformationResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser export_cloudformation return)
+    parserExportCloudformationReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveExportCloudformationResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserExportCloudformationReturn
+
+
+
     #############################################################
 
     #def create(self, username, session_id, region_name, spec):
@@ -343,6 +373,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "list", src, [ username, session_id, region_name, stack_ids ], parserListReturn, callback
         true
 
+    #def export_cloudformation(self, username, session_id, region_name, stack_id):
+    export_cloudformation = ( src, username, session_id, region_name, stack_id, callback ) ->
+        send_request "export_cloudformation", src, [ username, session_id, region_name, stack_id ], stack_parser.parserExportCloudformationReturn, callback
+        true
+
 
     #############################################################
     #public
@@ -354,4 +389,4 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     save_as                      : save_as
     info                         : info
     list                         : list
-
+    export_cloudformation        : export_cloudformation

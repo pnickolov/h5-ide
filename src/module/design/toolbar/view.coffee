@@ -21,6 +21,7 @@ define [ 'MC', 'event',
             #json
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
+            'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
             ### env:dev:end ###
 
             #line style
@@ -339,6 +340,32 @@ define [ 'MC', 'event',
         clickOpenJSONView : ->
             window.open 'http://jsonviewer.stack.hu/'
             null
+
+        #request cloudformation
+        clickConvertCloudFormation : ->
+            me.trigger 'CONVERT_CLOUDFORMATION'
+            null
+
+        #save cloudformation
+        saveCloudFormation : ( cf_json ) ->
+
+            try
+
+                file_content = JSON.stringify cf_json
+                $( '#btn-confirm' ).attr {
+                    'href'      : "data://text/plain; " + file_content,
+                    'download'  : MC.canvas_data.name + '.json',
+                }
+                $( '#json-content' ).val file_content
+
+                $('#btn-confirm').on 'click', { target : this }, (event) ->
+                    console.log 'clickExportJSONIcon'
+                    modal.close()
+            catch error
+
+                notification 'error', lang.ide.TOOL_MSG_ERR_CONVERT_CLOUDFORMATION
+
+
 
         notify : (type, msg) ->
             notification type, msg

@@ -327,6 +327,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.resource.VpcId = "@" + option.group.vpcUId + '.resource.VpcId';
 				component_data.resource.AvailabilityZone = option.group.availableZoneName;
 				component_data.autoCreate = option.auto;
+				var newCIDR = MC.aws.subnet.generateCIDRPossibile();
+				if (newCIDR) {
+					component_data.resource.CidrBlock = newCIDR;
+				}
 				subnetCIDR = component_data.resource.CidrBlock
 
 				component_layout = $.extend(true, {}, MC.canvas.SUBNET_JSON.layout);

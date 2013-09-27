@@ -171,6 +171,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 
 		getRuleInfoList : ->
+
 			that = this
 			parent_model = that.get 'parent_model'
 			if !parent_model or !parent_model.getSGList
@@ -179,6 +180,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			parentSGList = parent_model.getSGList()
 
 			sgRuleAry = []
+
+			# get all sg for stack
+			if parent_model.get('is_stack') is true
+				_.each MC.canvas_data.component, (comp, uid) ->
+					if comp.type is 'AWS.EC2.SecurityGroup'
+						parentSGList.push comp.uid
+					null
+
 			_.each parentSGList, (uid) ->
 				if !MC.canvas_data.component[uid] then return
 				sgComp = $.extend true, {}, MC.canvas_data.component[uid]

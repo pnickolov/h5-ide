@@ -234,19 +234,17 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg = MC.canvas_data.component[uid].resource
 
-            if rule.fromport in [0, '0']
-                rule.fromport = ''
-
-            if rule.toport in [65535, '65535']
-                rule.toport = ''
-
             if rule.inbound == true
 
                 $.each sg.IpPermissions, ( idx, value ) ->
 
-                    if rule.protocol == value.IpProtocol and rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString() and value.IpRanges == rule.iprange
+                    if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
 
-                        sg.IpPermissions.splice idx, 1
+                        if rule.protocol.toString() isnt '-1'
+                            if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
+                                sg.IpPermissions.splice idx, 1
+                        else
+                            sg.IpPermissions.splice idx, 1
 
                         return false
 
@@ -254,9 +252,13 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                 $.each sg.IpPermissionsEgress, ( idx, value ) ->
 
-                    if rule.protocol == value.IpProtocol and rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString() and value.IpRanges == rule.iprange
+                    if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
 
-                        sg.IpPermissionsEgress.splice idx, 1
+                        if rule.protocol.toString() isnt '-1'
+                            if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
+                                sg.IpPermissionsEgress.splice idx, 1
+                        else
+                            sg.IpPermissionsEgress.splice idx, 1
 
                         return false
 

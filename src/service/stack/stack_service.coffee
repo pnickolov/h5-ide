@@ -305,7 +305,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #private (resolve result to vo )
     resolveExportCloudformationResult = ( result ) ->
         #resolve result
-        #TO-DO
+        result
 
         #return vo
         #TO-DO
@@ -375,7 +375,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
     #def export_cloudformation(self, username, session_id, region_name, stack_id):
     export_cloudformation = ( src, username, session_id, region_name, stack_id, callback ) ->
-        send_request "export_cloudformation", src, [ username, session_id, region_name, stack_id ], stack_parser.parserExportCloudformationReturn, callback
+        send_request "export_cloudformation", src, [ username, session_id, region_name, stack_id ], parserExportCloudformationReturn, callback
         true
 
 

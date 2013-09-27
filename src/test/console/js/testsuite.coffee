@@ -480,7 +480,7 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             stack_id = if $("#stack_id").val() != "null" then $("#stack_id").val() else null
             stack_id = if stack_id != null and MC.isJSON(stack_id)==true then JSON.parse stack_id else stack_id
             #stack.export_cloudformation
-            stack_model.export_cloudformation {sender: me}, username, session_id, region_name, stack_id
+            stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack_id
             stack_model.once "STACK_EXPORT__CLOUDFORMATION_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 

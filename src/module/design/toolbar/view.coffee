@@ -343,7 +343,7 @@ define [ 'MC', 'event',
 
         #request cloudformation
         clickConvertCloudFormation : ->
-            me.trigger 'CONVERT_CLOUDFORMATION'
+            this.trigger 'CONVERT_CLOUDFORMATION'
             null
 
         #save cloudformation

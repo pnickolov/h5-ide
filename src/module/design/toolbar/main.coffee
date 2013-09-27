@@ -109,7 +109,7 @@ define [ 'jquery',
                 model.savePNG false, data
 
             view.on 'CONVERT_CLOUDFORMATION', () ->
-                model.convertCloudformation
+                model.convertCloudformation()
 
             model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
                 console.log 'SAVE_PNG_COMPLETE'

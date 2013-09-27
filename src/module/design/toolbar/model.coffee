@@ -783,8 +783,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
         convertCloudformation : () ->
 
+            me = this
 
-            stack_service.export_cloudformation src, username, session_id, region_name, stack_id, ( forge_result ) ->
+            stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #export_cloudformation succeed

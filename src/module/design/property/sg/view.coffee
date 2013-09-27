@@ -178,18 +178,28 @@ define [ 'event', 'MC', 'constant', 'backbone', 'jquery', 'handlebars', 'UI.edit
 					method: ( val ) ->
 						if not MC.validate.portRange(val)
 							return 'Must be a valid format of number.'
+						if Number(val) < 0 or Number(val) > 255
+							return 'The protocol number range must be 0-255.'
 						null
 				'tcp':
 					dom: tcp_port_dom
 					method: ( val ) ->
-						if not MC.validate.portRange(val)
+						portAry = []
+						portAry = MC.validate.portRange(val)
+						if not portAry
 							return 'Must be a valid format of port range.'
+						if not MC.validate.portValidRange(portAry)
+							return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
 						null
 				'udp':
 					dom: udp_port_dom
 					method: ( val ) ->
-						if not MC.validate.portRange(val)
+						portAry = []
+						portAry = MC.validate.portRange(val)
+						if not portAry
 							return 'Must be a valid format of port range.'
+						if not MC.validate.portValidRange(portAry)
+							return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
 						null
 
 			if protocol_type of validateMap

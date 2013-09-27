@@ -286,6 +286,52 @@ define [ 'MC' ], ( MC ) ->
 
 		return isCanDelete
 
+	generateCIDRPossibile = () ->
+
+		currentVPCUID = MC.aws.vpc.getVPCUID()
+		currentVPCCIDR = MC.canvas_data.component[currentVPCUID].resource.CidrBlock
+
+		vpcCIDRAry = currentVPCCIDR.split('/')
+		vpcCIDRIPStr = vpcCIDRAry[0]
+		vpcCIDRIPStrAry = vpcCIDRIPStr.split('.')
+		vpcCIDRSuffix = Number(vpcCIDRAry[1])
+
+		if vpcCIDRSuffix isnt 16
+			return null
+
+		# get max subnet number
+		maxSubnetNum = -1
+		_.each MC.canvas_data.component, (comp) ->
+			if comp.type is 'AWS.VPC.Subnet'
+				subnetCIDR = comp.resource.CidrBlock
+				subnetCIDRAry = subnetCIDR.split('/')
+				subnetCIDRIPStr = subnetCIDRAry[0]
+				subnetCIDRSuffix = Number(subnetCIDRAry[1])
+
+				subnetCIDRIPAry = subnetCIDRIPStr.split('.')
+
+				if vpcCIDRSuffix is 16
+					currentSubnetNum = Number(subnetCIDRIPAry[2])
+				if vpcCIDRSuffix is 24
+					currentSubnetNum = Number(subnetCIDRIPAry[3])
+
+				if maxSubnetNum < currentSubnetNum
+					maxSubnetNum = currentSubnetNum
+
+		resultSubnetNum = maxSubnetNum + 1
+		if resultSubnetNum > 255
+			return null
+
+		generateSubnetAry = vpcCIDRIPStrAry
+		newSubnetCIDRSuffix = ''
+		if vpcCIDRSuffix is 16
+			generateSubnetAry[2] = String(resultSubnetNum)
+			newSubnetCIDRSuffix = '24'
+
+		result = generateSubnetAry.join('.') + '/' + newSubnetCIDRSuffix
+
+		return result
+
 	#public
 	genCIDRPrefixSuffix            : genCIDRPrefixSuffix
 	isSubnetConflict               : isSubnetConflict
@@ -297,3 +343,4 @@ define [ 'MC' ], ( MC ) ->
 	isSubnetConflictInVPC          : isSubnetConflictInVPC
 	autoAssignSimpleCIDR           : autoAssignSimpleCIDR
 	canDeleteSubnetToELBConnection : canDeleteSubnetToELBConnection
+	generateCIDRPossibile : generateCIDRPossibile

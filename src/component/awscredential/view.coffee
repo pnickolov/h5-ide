@@ -48,6 +48,10 @@ define [ 'event',
             #
             $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
             $( '#AWSCredentials-submiting' ).html loading_tmpl
+            #
+            setTimeout () ->
+                modal.position()
+            , 500
 
         onClose : ->
             console.log 'account_setting_tab onClose'

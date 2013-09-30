@@ -6547,3 +6547,12 @@ a.action-link:hover {
 	margin-bottom: -5px;
 	background: url('../images/ide/icon/icon-feedback.png') no-repeat;
 }
+
+/* modalDownloadCloudFormationTpl */
+#tpl-download {
+	width: 190px;
+}
+
+#tpl-download .modal-text-wraper {
+	width: 415px;
+}

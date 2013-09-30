@@ -66,6 +66,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                     else
                         rule.PartType = '-'
 
+                    dispPort = rule.FromPort + rule.PartType + rule.ToPort
+                    if Number(rule.FromPort) is Number(rule.ToPort) and rule.IpProtocol isnt 'icmp'
+                        dispPort = rule.ToPort
+
+                    rule.DispPort = dispPort
+
                     null
 
 

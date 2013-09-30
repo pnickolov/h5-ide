@@ -306,7 +306,7 @@ define [ 'MC', 'event',
             file_content = JSON.stringify MC.canvas.layout.save()
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
-                'href'      : "data://text/plain; " + file_content,
+                'href'      : "data://text/plain;, " + file_content,
                 'download'  : MC.canvas_data.name + '.json',
             }
             $( '#json-content' ).val file_content
@@ -349,26 +349,10 @@ define [ 'MC', 'event',
         #save cloudformation
         saveCloudFormation : ( cf_json ) ->
 
-            # try
-
-            #     file_content = JSON.stringify cf_json
-            #     $( '#btn-confirm' ).attr {
-            #         'href'      : "data://text/plain; " + file_content,
-            #         'download'  : MC.canvas_data.name + '.json',
-            #     }
-            #     $( '#json-content' ).val file_content
-
-            #     $('#btn-confirm').on 'click', { target : this }, (event) ->
-            #         console.log 'clickExportJSONIcon'
-            #         modal.close()
-            # catch error
-
-            #     notification 'error', lang.ide.TOOL_MSG_ERR_CONVERT_CLOUDFORMATION
-
             try
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {
-                    'href'      : "data://text/plain; " + file_content,
+                    'href'      : "data://application/json;," + file_content,
                     'download'  : MC.canvas_data.name + '.json',
                 }
                 $('#tpl-download').on 'click', { target : this }, (event) ->

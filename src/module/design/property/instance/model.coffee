@@ -566,16 +566,26 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			current_instance_type = component.resource.InstanceType
 
 
+			if this._getInstanceType( ami_info )
+				view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
 
-			view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
-
-				main     : constant.INSTANCE_TYPE[value][0]
-				ecu      : constant.INSTANCE_TYPE[value][1]
-				core     : constant.INSTANCE_TYPE[value][2]
-				mem      : constant.INSTANCE_TYPE[value][3]
-				name     : value
-				selected : current_instance_type is value
-				hide     : not tenacy and value is "t1.micro"
+					main     : constant.INSTANCE_TYPE[value][0]
+					ecu      : constant.INSTANCE_TYPE[value][1]
+					core     : constant.INSTANCE_TYPE[value][2]
+					mem      : constant.INSTANCE_TYPE[value][3]
+					name     : value
+					selected : current_instance_type is value
+					hide     : not tenacy and value is "t1.micro"
+			else
+				view_instance_type = []
+				view_instance_type[0] =
+					main     : ''
+					ecu      : ''
+					core     : ''
+					mem      : ''
+					name     : ''
+					selected : false
+					hide     : true
 
 			this.set 'instance_type', view_instance_type
 			this.set 'can_set_ebs',   EbsMap.hasOwnProperty current_instance_type

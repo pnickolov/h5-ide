@@ -15,7 +15,7 @@ define [ 'jquery', 'event',
     model = null
 
     #private
-    loadModule = () ->
+    loadModule = ( state ) ->
 
         #
         require [ './component/awscredential/view', './component/awscredential/model' ], ( View, Model ) ->
@@ -29,16 +29,34 @@ define [ 'jquery', 'event',
             #view
             view.model    = model
 
-            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+            if state is 'welcome'
                 ture_template = welcome_tmpl
                 view.state    = 'welcome'
             else
                 ture_template = template
                 view.state    = 'credential'
 
+            ###
+            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+                ture_template = welcome_tmpl
+                view.state    = 'welcome'
+            else
+                ture_template = template
+                view.state    = 'credential'
+            ###
+
             #render
             view.render ture_template
 
+            if state is 'welcome'
+                view.showSetting('credential')
+            else if MC.forge.cookie.getCookieByName('has_cred') is 'true'
+                # show account setting tab
+                view.showSetting('account')
+            else
+                view.showSetting('credential', 'is_failed')
+
+            ###
             if MC.forge.cookie.getCookieByName('new_account') is 'true'
                 view.showSetting('credential')
 
@@ -47,6 +65,7 @@ define [ 'jquery', 'event',
                 view.showSetting('account')
             else
                 view.showSetting('credential', 'is_failed')
+            ###
 
             #
             view.on 'CLOSE_POPUP', () ->

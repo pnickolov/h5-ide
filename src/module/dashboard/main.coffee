@@ -102,7 +102,11 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 view.reloadResource() if view
 
             if MC.forge.cookie.getCookieByName('new_account') is 'true' # new account show welcome dialog
-                view.showCredential()
+                view.showCredential 'welcome'
+                #
+                MC.forge.cookie.setCookieByName 'new_account', false
+                MC.forge.cookie.setIDECookie $.cookie()
+
             #model
             model.describeAccountAttributesService()
 

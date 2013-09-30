@@ -74,7 +74,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         if !result.is_error
                             me.set 'is_authenticated', true
                             MC.forge.cookie.setCookieByName 'has_cred', true
-                            MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
+                            #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
                         else
                             me.set 'is_authenticated', false

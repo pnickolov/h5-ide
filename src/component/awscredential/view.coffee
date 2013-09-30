@@ -73,6 +73,7 @@ define [ 'event',
             console.log 'account_setting_tab onSubmit'
 
             if $( '#awscredentials-skip' ).attr( 'data-type' ) in [ 'back', 'done' ]
+                ide_event.trigger ide_event.SKIP_WELCOME if $( '#awscredentials-skip' ).attr( 'data-type' ) is 'back'
                 @onDone()
                 return
 

@@ -21,7 +21,6 @@ define [ 'MC', 'event',
             #json
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
-            'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
             ### env:dev:end ###
 
             #line style
@@ -45,6 +44,7 @@ define [ 'MC', 'event',
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
             'click .icon-refresh'           : 'clickRefreshApp'
+            'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
         render   : ( type ) ->
             console.log 'toolbar render'

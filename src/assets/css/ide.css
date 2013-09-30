@@ -1502,6 +1502,40 @@ a {
 	height: 34px;
 }
 
+.dashboard-demo {
+	margin-top: 20px;
+}
+
+#region-view .dashboard-demo {
+	margin-top: 70px;
+}
+
+.dashboard-demo .enter-credential {
+	text-align: center;
+	background-color: #dee9f6;
+	border: 1px solid #b5ceea;
+	border-radius: 3px;
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+
+.dashboard-demo .enter-credential p {
+	margin-bottom: 0;
+}
+
+.dashboard-demo .enter-credential p.info {
+	font-size: 16px;
+}
+
+.dashboard-demo .enter-credential p.link a {
+	color: #2c6bbd;
+	cursor: pointer;
+}
+
+.dashboard-demo .enter-credential p.link a:hover {
+	text-decoration: underline;
+}
+
 #global-view .dashboard-loading {
 	height: 811px;
 	margin-top: 20px;

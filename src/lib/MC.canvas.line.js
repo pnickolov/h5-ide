@@ -116,19 +116,23 @@ MC.canvas.reDrawSgLine = function() {
           }
         }
       });
-      return $.each(comp.resource.IpPermissionsEgress, function(i, rule) {
-        var from_key, to_key, to_sg_uid;
-        if (rule.IpRanges.indexOf('@') >= 0) {
-          to_sg_uid = rule.IpRanges.split('.')[0].slice(1);
-          if (to_sg_uid !== comp.uid) {
-            from_key = comp.uid + '|' + to_sg_uid;
-            to_key = to_sg_uid + '|' + comp.uid;
-            if ((__indexOf.call(sg_refs, from_key) < 0) && (__indexOf.call(sg_refs, to_key) < 0)) {
-              return sg_refs.push(to_key);
+      if (comp.resource.IpPermissionsEgress)
+      {
+        $.each(comp.resource.IpPermissionsEgress, function(i, rule) {
+          var from_key, to_key, to_sg_uid;
+          if (rule.IpRanges.indexOf('@') >= 0) {
+            to_sg_uid = rule.IpRanges.split('.')[0].slice(1);
+            if (to_sg_uid !== comp.uid) {
+              from_key = comp.uid + '|' + to_sg_uid;
+              to_key = to_sg_uid + '|' + comp.uid;
+              if ((__indexOf.call(sg_refs, from_key) < 0) && (__indexOf.call(sg_refs, to_key) < 0)) {
+                return sg_refs.push(to_key);
+              }
             }
           }
-        }
-      });
+        });
+      }
+      return true;
     }
   });
   $.each(sg_refs, function(i, val) {

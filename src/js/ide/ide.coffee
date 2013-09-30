@@ -300,9 +300,9 @@ define [ 'MC', 'event', 'handlebars'
 				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
 				#
 				if error.error_message
-					notification 'warning', error.error_message, true
+					notification 'warning', error.error_message
 				else
-					notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
+					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
 		###########################
 		#listen to the request list

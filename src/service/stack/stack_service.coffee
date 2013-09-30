@@ -270,8 +270,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         for vo in result
 
             # filter other version
-            if vo.version isnt '2013-09-04'
-                continue
+            #if vo.version isnt '2013-09-04'
+            #    continue
 
             if stack_list[vo.region] == undefined
                 stack_list[vo.region]=[]

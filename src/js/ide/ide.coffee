@@ -299,7 +299,10 @@ define [ 'MC', 'event', 'handlebars'
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
 				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
 				#
-				notification 'error', lang.service[ label ], true if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
+				if error.error_message
+					notification 'warning', error.error_message
+				else
+					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
 		###########################
 		#listen to the request list

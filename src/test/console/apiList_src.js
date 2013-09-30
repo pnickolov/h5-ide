@@ -807,7 +807,28 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
-      }
+      },
+      "export_cloudformation" : {
+          "method"  : "/stack:export_cloudformation",
+          "param"   : {
+              "username" : {
+                  "type"   : "String",
+                  "value"  : "null"
+              },
+              "session_id" : {
+                  "type"   : "String",
+                  "value"  : "null"
+              },
+              "region_name" : {
+                  "type"   : "String",
+                  "value"  : "null"
+              },
+              "stack_id" : {
+                  "type"   : "String",
+                  "value"  : "null"
+              }
+          }
+       }
     }
   },
   "AutoScaling" : {

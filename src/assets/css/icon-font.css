@@ -63,7 +63,8 @@
 .icon-straight,
 .icon-elbow,
 .icon-bezier-q,
-.icon-bezier-qt
+.icon-bezier-qt,
+.icon-toolbar-cloudformation
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -125,3 +126,4 @@
 .icon-elbow:before {content:"\F144";}
 .icon-bezier-qt:before {content:"\F145";}
 .icon-bezier-q:before {content:"\F146";}
+.icon-toolbar-cloudformation:before {content:"\F147";}

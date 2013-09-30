@@ -202,6 +202,29 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model' ], ( Backbone, 
 
 
 
+        #export_cloudformation api (define function)
+        export_cloudformation : ( src, username, session_id, region_name, stack_id ) ->
+
+            me = this
+
+            src.model = me
+
+            stack_service.export_cloudformation src, username, session_id, region_name, stack_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #export_cloudformation succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_EXPORT__CLOUDFORMATION_RETURN', forge_result
+
+                else
+                #export_cloudformation failed
+
+                    console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+
+
 
     }
 

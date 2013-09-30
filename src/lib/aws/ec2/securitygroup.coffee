@@ -166,12 +166,31 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			else
 				ipRanges = ruleObj.groups.item[0].groupId
 
+			if ruleObj.ipProtocol in [-1, '-1']
+				ruleObj.ipProtocol = 'all'
+				ruleObj.fromPort = 0
+				ruleObj.toPort = 65535
+			else if ruleObj.ipProtocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+				ruleObj.ipProtocol = "custom(#{ruleObj.ipProtocol})"
+
+			partType = ''
+			if ruleObj.ipProtocol is 'icmp'
+				partType = '/'
+			else
+				partType = '-'
+
+			dispPort = ruleObj.fromPort + partType + ruleObj.toPort
+			if Number(ruleObj.fromPort) is Number(ruleObj.toPort) and ruleObj.ipProtocol isnt 'icmp'
+				dispPort = ruleObj.toPort
+
 			dispSGObj =
 				fromPort : ruleObj.fromPort
 				toPort : ruleObj.toPort
 				ipProtocol : ruleObj.ipProtocol
 				ipRanges : ipRanges
 				direction : ruleObj.direction
+				partType : partType
+				dispPort : dispPort
 
 			allDispRuleAry.push dispSGObj
 

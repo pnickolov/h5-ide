@@ -494,9 +494,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 
 			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
 
-			disp.name = MC.data.dict_ami[ami_id].name
+			if MC.data.dict_ami[ami_id]
 
-			disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
+				disp.name = MC.data.dict_ami[ami_id].name
+
+				disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
+
+			else
+
+				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
 
 			this.set 'instance_ami', disp
 
@@ -561,7 +567,10 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 						this.set 'force_tenacy', true
 					break
 
-			ami_info = MC.canvas_data.layout.component.node[ uid ]
+			if MC.data.dict_ami and MC.data.dict_ami[ component.resource.ImageId ]
+				ami_info = MC.data.dict_ami[ component.resource.ImageId ]
+			else
+				ami_info = MC.canvas_data.layout.component.node[ uid ]
 
 			current_instance_type = component.resource.InstanceType
 

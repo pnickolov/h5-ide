@@ -83,6 +83,21 @@
 	</div>
 </div>
 
+<!-- modalDownloadCloudFormationTpl -->
+<div style="width:468px">
+	<div class="modal-header"> <h3>Export to AWS CloudFormation Template</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major"></div>
+			<div class="modal-text-minor">This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack.</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<a id="tpl-download" class="btn btn-blue" href="data://text/plain; {{{this.filecontent}}}" download="{{this.download}}">Download Template File</a>
+		<button id="tpl-cancel" class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
 <!-- exportpng -->
 <div style="width:420px">
 	<div class="modal-header">

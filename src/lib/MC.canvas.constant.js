@@ -824,6 +824,7 @@ var constant_data = {
 			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
 			"architecture": "", //i386|x86_64
 			"rootDeviceType": "", //ebs|instance-store
+			"virtualizationType" : "", //hvm|paravirtual
 			"groupUId": "",
 			"connection": [],
 			"instanceList": [], //store uid of each instance in server group

@@ -89,13 +89,15 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
                 if Helper.hasCredential() and not Helper.accountIsDemo()
+                    view.clearDemo()
                     view.enableSwitchRegion()
                     view.reloadResource()
-                    view.clearDemo()
                 else if not Helper.accountIsDemo()
                     view.disableSwitchRegion()
                     view.showCredential()
                     view.renderLoadingFaild()
+                else
+                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
 
             ide_event.onLongListen ide_event.ACCOUNT_DEMONSTRATE, () ->
                 view.setDemo()

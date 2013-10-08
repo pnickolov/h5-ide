@@ -1519,12 +1519,12 @@ MC.canvas = {
 
 	isMatchPlace: function (target_id, target_type, node_type, x, y, width, height)
 	{
-		var layout_group_data = MC.canvas.data.get('layout.component.group'),
+		var layout_group_data = MC.canvas_data.layout.component.group,
 			group_stack = [
-				$('#asg_layer').children(),
-				$('#subnet_layer').children(),
-				$('#az_layer').children(),
-				$('#vpc_layer').children()
+				document.getElementById('asg_layer').childNodes,
+				document.getElementById('subnet_layer').childNodes,
+				document.getElementById('az_layer').childNodes,
+				document.getElementById('vpc_layer').childNodes
 			],
 			point = [
 				{
@@ -1544,8 +1544,8 @@ MC.canvas = {
 					'y': y + height
 				}
 			],
-			canvas_size = MC.canvas.data.get('layout.size'),
-			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
+			canvas_size = MC.canvas_data.layout.size,
+			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ node_type ],
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -3141,6 +3141,7 @@ MC.canvas.event.dragable = {
 					'target': target,
 					'canvas_body': canvas_body,
 					'target_type': target_type,
+					'node_type': node_type,
 					'shadow': shadow,
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
@@ -3162,7 +3163,7 @@ MC.canvas.event.dragable = {
 		var event_data = event.data,
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
-			node_type = event_data.target.data('class'),
+			node_type = event_data.node_type,
 			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target_id + '.size'),
 			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
@@ -3198,7 +3199,7 @@ MC.canvas.event.dragable = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
-		event_data.shadow.attr('transform',
+		event_data.shadow[0].setAttribute('transform',
 			'translate(' +
 				coordinate.x * grid_width + ',' +
 				coordinate.y * grid_height +

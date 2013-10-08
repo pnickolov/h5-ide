@@ -85,6 +85,10 @@ define [ 'event',
             access_key = $('#aws-credential-access-key').val().trim()
             secret_key = $('#aws-credential-secret-key').val().trim()
 
+            if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account' and $('#aws-credential-account-id').val().trim() is 'demo_account'
+                notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SAME_ID
+                return
+
             if not account_id
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCOUNT_ID
 
@@ -242,7 +246,7 @@ define [ 'event',
             console.log 'verificationKey'
 
             right_count = 0
-            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim() and $('#aws-credential-account-id').val().trim() isnt 'demo_account'
+            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim()
             right_count = right_count + 1 if $('#aws-credential-access-key').val().trim()
             right_count = right_count + 1 if $('#aws-credential-secret-key').val().trim()
 
@@ -335,6 +339,8 @@ define [ 'event',
                 $('#awscredentials-cancel').show()
                 $('#awscredentials-submit').attr('disabled',"true")
 
+                $('#awscredentials-remove').show()
+
                 if not flag     # initial
 
                     $('#AWSCredentials-submiting').hide()
@@ -413,16 +419,22 @@ define [ 'event',
 
                 else if flag is 'in_update'
 
+                    $('#awscredentials-remove').hide() if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
                     $('#AWSCredential-info').find('p').text 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. '
 
                     # set content
-                    #$('#aws-credential-account-id').val me.model.attributes.account_id
+                    $('#aws-credential-account-id').val me.model.attributes.account_id
 
                     # set remove button style
                     $('#awscredentials-remove').removeClass("btn btn-silver")
+
+                    #clear key
+                    $('#aws-credential-access-key').val(' ')
+                    $('#aws-credential-secret-key').val(' ')
 
                 else if flag is 'on_submit'
 

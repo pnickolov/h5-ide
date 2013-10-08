@@ -4216,7 +4216,6 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.volume.mouseup
 				}, {
 					'target': target,
-					'target_type': target_component_type,
 					'canvas_offset': svg_canvas.offset(),
 					'canvas_body': $('#canvas_body'),
 					'shadow': shadow
@@ -4242,6 +4241,7 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
 				}, {
 					'target': target,
+					'target_type': target_component_type,
 					'canvas_offset': svg_canvas.offset(),
 					'node_type': node_type,
 					'shadow': shadow

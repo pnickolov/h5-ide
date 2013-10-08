@@ -1526,7 +1526,7 @@ MC.canvas = {
 				document.getElementById('az_layer').childNodes,
 				document.getElementById('vpc_layer').childNodes
 			],
-			point = [
+			points = [
 				{
 					'x': x,
 					'y': y
@@ -1555,7 +1555,12 @@ MC.canvas = {
 			group_data,
 			group_child,
 			coordinate,
-			size;
+			size,
+
+			// For specially fast iteration algorithm
+			point = points.length,
+			layer,
+			i;
 
 		if (target_id !== null)
 		{
@@ -1575,44 +1580,84 @@ MC.canvas = {
 			}
 		}
 
-		$.each(point, function (index, data)
+		// $.each(point, function (index, data)
+		// {
+		// 	$.each(group_stack, function (i, layer_data)
+		// 	{
+		// 		if (layer_data)
+		// 		{
+		// 			match_status = {};
+		// 			$.each(layer_data, function (i, item)
+		// 			{
+		// 				group_data = layout_group_data[ item.id ];
+		// 				coordinate = group_data.coordinate;
+		// 				size = group_data.size;
+
+		// 				if (
+		// 					//target_id !== item.id &&
+		// 					$.inArray(item.id, ignore_stack) === -1 &&
+		// 					data.x > coordinate[0] &&
+		// 					data.x < coordinate[0] + size[0] &&
+		// 					data.y > coordinate[1] &&
+		// 					data.y < coordinate[1] + size[1]
+		// 				)
+		// 				{
+		// 					match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+		// 					match_status['target'] = item.id;
+		// 					match_target = item.id;
+
+		// 					return false;
+		// 				}
+		// 			});
+
+		// 			if (!$.isEmptyObject(match_status))
+		// 			{
+		// 				match[ index ] = match_status;
+		// 				return false;
+		// 			}
+		// 		}
+		// 	});
+		// });
+
+		while ( point-- )
 		{
-			$.each(group_stack, function (i, layer_data)
+			layer = group_stack.length;
+
+			while ( layer-- )
 			{
-				if (layer_data)
+				if ( group_stack[ layer ] )
 				{
 					match_status = {};
-					$.each(layer_data, function (i, item)
+					i = group_stack[ layer ].length;
+
+					while ( i-- )
 					{
-						group_data = layout_group_data[ item.id ];
+						id = group_stack[ layer ][ i ].id;
+						group_data = layout_group_data[ id ];
 						coordinate = group_data.coordinate;
 						size = group_data.size;
 
 						if (
-							//target_id !== item.id &&
-							$.inArray(item.id, ignore_stack) === -1 &&
-							data.x > coordinate[0] &&
-							data.x < coordinate[0] + size[0] &&
-							data.y > coordinate[1] &&
-							data.y < coordinate[1] + size[1]
+							$.inArray(id, ignore_stack) === -1 &&
+							points[ point ].x > coordinate[0] &&
+							points[ point ].x < coordinate[0] + size[0] &&
+							points[ point ].y > coordinate[1] &&
+							points[ point ].y < coordinate[1] + size[1]
 						)
 						{
 							match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
-							match_status['target'] = item.id;
-							match_target = item.id;
-
-							return false;
+							match_status['target'] = id;
+							match_target = id;
 						}
-					});
+					}
 
 					if (!$.isEmptyObject(match_status))
 					{
-						match[ index ] = match_status;
-						return false;
+						match[ point ] = match_status;
 					}
 				}
-			});
-		});
+			}
+		}
 
 		is_matched =
 			match[0] &&

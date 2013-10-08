@@ -29,8 +29,6 @@ define [ 'underscore', 'backbone' ], () ->
 
         IDE_AVAILABLE          : 'IDE_AVAILABLE'
 
-        SKIP_WELCOME           : 'SKIP_WELCOME'
-
         #
         LOGOUT_IDE             : 'LOGOUT_IDE'
 

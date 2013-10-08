@@ -4387,6 +4387,14 @@ MC.canvas.event.siderbarDrag = {
 				if (target_type === 'group')
 				{
 					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
+
+					// Move a little bit offset for Subnet because its port
+					if (node_type === 'AWS.VPC.Subnet')
+					{
+						coordinate.x -= 1;
+						coordinate.y -= 1;
+					}
+
 					match_place = MC.canvas.isMatchPlace(
 						null,
 						target_type,
@@ -5180,8 +5188,16 @@ MC.canvas.event.keyEvent = function (event)
 		return false;
 	}
 
-	if (MC.canvas.keypressed.join('').match(/383840403739373966656665$/i))
+	if (
+		MC.canvas_property.selected_node.length === 1 &&
+		MC.canvas.keypressed.join('').match(/383840403739373966656665$/i)
+	)
 	{
+		if ($('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'node')
+		{
+			return false;
+		}
+
 		var offset = Canvon('#' + MC.canvas_property.selected_node[ 0 ]).offset();
 
 		$(document.body).append('<div id="s"></div>');

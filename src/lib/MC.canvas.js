@@ -3160,9 +3160,26 @@ MC.canvas.event.dragable = {
 	mousemove: function (event)
 	{
 		var event_data = event.data,
+			target_id = event_data.target[0].id,
+			target_type = event_data.target_type,
+			node_type = event_data.target.data('class'),
+			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target_id + '.size'),
 			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
-			scale_ratio = MC.canvas_property.SCALE_RATIO;
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = {
+				'x': Math.round((event.pageX - event_data.offsetX) / (grid_width / scale_ratio)),
+				'y': Math.round((event.pageY - event_data.offsetY) / (grid_height / scale_ratio))
+			},
+			match_place = MC.canvas.isMatchPlace(
+				target_id,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				component_size[0],
+				component_size[1]
+			);
 
 		if (
 			event.pageX !== event_data.originalPageX &&
@@ -3174,10 +3191,17 @@ MC.canvas.event.dragable = {
 			event_data.canvas_body.addClass('node-dragging');
 		}
 
+		Canvon('.match-dropable-group').removeClass('match-dropable-group');
+
+		if (match_place.is_matched)
+		{
+			Canvon('#' + match_place.target).addClass('match-dropable-group');
+		}
+
 		event_data.shadow.attr('transform',
 			'translate(' +
-				Math.round((event.pageX - event_data.offsetX) / (grid_width / scale_ratio)) * grid_width + ',' +
-				Math.round((event.pageY - event_data.offsetY) / (grid_height / scale_ratio)) * grid_height +
+				coordinate.x * grid_width + ',' +
+				coordinate.y * grid_height +
 			')'
 		);
 
@@ -3280,9 +3304,9 @@ MC.canvas.event.dragable = {
 					MC.canvas.select(target_id);
 				}
 				else if (
-						parentGroup &&
-						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-						node_type === 'AWS.EC2.Instance'
+					parentGroup &&
+					parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+					node_type === 'AWS.EC2.Instance'
 				)
 				{
 					notification('warning', 'Launch Configuration can only be created by using AMI from Resource Panel.');
@@ -4192,6 +4216,7 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.volume.mouseup
 				}, {
 					'target': target,
+					'target_type': target_component_type,
 					'canvas_offset': svg_canvas.offset(),
 					'canvas_body': $('#canvas_body'),
 					'shadow': shadow
@@ -4217,6 +4242,8 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
 				}, {
 					'target': target,
+					'canvas_offset': svg_canvas.offset(),
+					'node_type': node_type,
 					'shadow': shadow
 				});
 			}
@@ -4232,6 +4259,36 @@ MC.canvas.event.siderbarDrag = {
 
 	mousemove: function (event)
 	{
+		var event_data = event.data,
+			canvas_offset = event_data.canvas_offset,
+			target_id = event_data.target[0].id,
+			target_type = event_data.target_type,
+			node_type = event_data.node_type,
+			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			grid_width = MC.canvas.GRID_WIDTH,
+			grid_height = MC.canvas.GRID_HEIGHT,
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			coordinate = {
+				'x': Math.round((event.pageX - canvas_offset.left - 50) / (grid_width / scale_ratio)),
+				'y': Math.round((event.pageY - canvas_offset.top - 50) / (grid_height / scale_ratio))
+			},
+			match_place = MC.canvas.isMatchPlace(
+				null,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				component_size[0],
+				component_size[1]
+			);
+
+		Canvon('.match-dropable-group').removeClass('match-dropable-group');
+
+		if (match_place.is_matched)
+		{
+			Canvon('#' + match_place.target).addClass('match-dropable-group');
+		}
+
 		event.data.shadow.css({
 			'top': event.pageY - 50,
 			'left': event.pageX - 50

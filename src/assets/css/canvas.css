@@ -440,6 +440,10 @@
 	stroke: #C6C4C4;
 }
 
+.node-dragging .match-dropable-group .group-vpc {
+	stroke: red;
+}
+
 .AWS-VPC-VPC.selected .group-vpc {
 	stroke: #dcdcdc;
 	fill: rgba(255, 255, 255, 0);
@@ -460,6 +464,10 @@
 .AWS-EC2-AvailabilityZone:hover .group-az,
 .node-dragging .dropable-group .group-az {
 	stroke: #F69722;
+}
+
+.node-dragging .match-dropable-group .group-az {
+	stroke: red;
 }
 
 .AWS-EC2-AvailabilityZone.selected .group-az {
@@ -484,6 +492,10 @@
 	stroke: #C6C4C4;
 }
 
+.node-dragging .match-dropable-group .group-subnet {
+	stroke: red;
+}
+
 .AWS-VPC-Subnet.selected .group-subnet {
 	stroke: #dbd7d7;
 	fill: rgba(255, 255, 255, 0);
@@ -492,7 +504,6 @@
 .AWS-VPC-Subnet .group-label {
 	fill: #999;
 }
-
 
 .group-asg {
 	fill: rgba(118, 214, 255, 0.05);
@@ -514,6 +525,10 @@
 .AWS-AutoScaling-Group:hover .group-asg,
 .node-dragging .dropable-group .group-asg {
 	stroke: #76d6ff;
+}
+
+.node-dragging .match-dropable-group .group-asg {
+	stroke: red;
 }
 
 .AWS-AutoScaling-Group.selected .group-asg {

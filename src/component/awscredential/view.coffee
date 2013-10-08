@@ -242,7 +242,7 @@ define [ 'event',
             console.log 'verificationKey'
 
             right_count = 0
-            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim()
+            right_count = right_count + 1 if $('#aws-credential-account-id').val().trim() and $('#aws-credential-account-id').val().trim() isnt 'demo_account'
             right_count = right_count + 1 if $('#aws-credential-access-key').val().trim()
             right_count = right_count + 1 if $('#aws-credential-secret-key').val().trim()
 
@@ -419,7 +419,7 @@ define [ 'event',
                     $('#AWSCredential-info').find('p').text 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. '
 
                     # set content
-                    $('#aws-credential-account-id').val me.model.attributes.account_id
+                    #$('#aws-credential-account-id').val me.model.attributes.account_id
 
                     # set remove button style
                     $('#awscredentials-remove').removeClass("btn btn-silver")

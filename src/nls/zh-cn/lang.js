@@ -204,7 +204,19 @@ define({
 		'PROP_LBL_REQUIRED'                     : '必填',
 
 		//##### stack property module
-
+		'PROP_STACK_LBL_NAME'                       : '模版名称',
+		'PROP_STACK_LBL_REGION'                     : '区域',
+		'PROP_STACK_LBL_TYPE'                       : '类型',
+		'PROP_STACK_TIT_SG'                         : '安全组',
+		'PROP_STACK_TIT_ACL'                        : '访问控制表',
+		'PROP_STACK_TIT_SNS'                        : 'SNS主题订阅',
+		'PROP_STACK_BTN_ADD_SUB'                    : '添加订阅',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : '成本估算',
+		'PROP_STACK_LBL_COST_CYCLE'                 : '月',
+		'PROP_STACK_COST_COL_RESOURCE'              : '资源',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : '大小/类型',
+		'PROP_STACK_COST_COL_FEE'                   : '价格($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 定价',
 		//##### stack property module
 
 

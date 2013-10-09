@@ -205,7 +205,19 @@ define({
 		'PROP_LBL_REQUIRED'                     : 'Required',
 
 		//##### stack property module
-
+		'PROP_STACK_LBL_NAME'                       : 'Stack Name',
+		'PROP_STACK_LBL_REGION'                     : 'Region',
+		'PROP_STACK_LBL_TYPE'                       : 'Type',
+		'PROP_STACK_TIT_SG'                         : 'Security Groups',
+		'PROP_STACK_TIT_ACL'                        : 'Network ACL',
+		'PROP_STACK_TIT_SNS'                        : 'SNS Topic Subscription',
+		'PROP_STACK_BTN_ADD_SUB'                    : 'Add Subscription',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : 'Cost Estimation',
+		'PROP_STACK_LBL_COST_CYCLE'                 : 'month',
+		'PROP_STACK_COST_COL_RESOURCE'              : 'Resource',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : 'Size/Type',
+		'PROP_STACK_COST_COL_FEE'                   : 'Fee($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 Pricing',
 		//##### stack property module
 
 
@@ -260,7 +272,7 @@ define({
 		'PROP_CGW_LBL_ROUTING'                  : 'Routing',
 		'PROP_CGW_LBL_STATIC'                   : 'Static',
 		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
-		'PROP_CGW_LBL_BGP ASN'                  : 'BGP ASN',
+		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
 		//##### cgw property module
 
 

@@ -43,6 +43,22 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             ###################################################
 
+            #####listen ACCOUNT_RESET__KEY_RETURN
+            me.on 'ACCOUNT_RESET__KEY_RETURN', (result) ->
+                console.log 'ACCOUNT_RESET__KEY_RETURN'
+
+                if !result.is_error
+
+                    console.log 'reset key successfully'
+
+                else
+
+                    console.log 'reset key failed'
+
+                null
+
+            ###################################################
+
             #
             flag = false
             if MC.forge.cookie.getCookieByName('has_cred') is 'true'
@@ -76,9 +92,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             MC.forge.cookie.setCookieByName 'has_cred', true
                             MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
+
+                            # reset key: key -> last key
+                            account_model.reset_key {sender:me}, $.cookie('usercode'), $.cookie('session_id'), "1"
+
                         else
                             me.set 'is_authenticated', false
                             MC.forge.cookie.setCookieByName 'has_cred', false
+
+                            # reset key: last key -> key
+                            account_model.reset_key {sender:me}, $.cookie('usercode'), $.cookie('session_id')
 
                         me.set 'account_id', account_id
 

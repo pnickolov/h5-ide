@@ -31,6 +31,9 @@ require.config {
 		'text'            : 'vender/requirejs/text'
 
 		#
+		'crypto'          : 'vender/crypto-js/hmac-sha256'
+
+		#
 		'base_main'       : 'module/base/base_main'
 
 		#

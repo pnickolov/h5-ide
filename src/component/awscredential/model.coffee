@@ -50,6 +50,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                 if !result.is_error
 
                     console.log 'reset key successfully'
+                    MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
+                    MC.forge.cookie.setIDECookie $.cookie()
 
                 else
 
@@ -90,19 +92,19 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         if !result.is_error
                             me.set 'is_authenticated', true
                             MC.forge.cookie.setCookieByName 'has_cred',   true
-                            MC.forge.cookie.setCookieByName 'account_id', account_id
+                            #MC.forge.cookie.setCookieByName 'account_id', account_id
                             #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
 
                             # reset key: key -> last key
-                            account_model.reset_key {sender:me}, $.cookie('usercode'), $.cookie('session_id'), "1"
+                            me.resetKey 1
 
                         else
                             me.set 'is_authenticated', false
                             MC.forge.cookie.setCookieByName 'has_cred', false
 
                             # reset key: last key -> key
-                            account_model.reset_key {sender:me}, $.cookie('usercode'), $.cookie('session_id')
+                            me.resetKey 0
 
                         me.set 'account_id', account_id
 
@@ -151,6 +153,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
             session_model.sync_redis {sender:me}, $.cookie('usercode'), $.cookie('session_id')
 
+            null
+
+        resetKey : ( flag ) ->
+            console.log 'resetDemoKey'
+            account_model.reset_key {sender:this}, $.cookie('usercode'), $.cookie('session_id'), flag
             null
 
     }

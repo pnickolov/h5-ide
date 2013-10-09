@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinputbox' ], ( ide_event, lang ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -53,7 +53,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinp
 
             selectedType = data.dhcp.netbiosType || 0
             data.dhcp.netbiosTypes = [
-                  { id : "default" , value : "Not specified", selected : selectedType == 0 }
+                  { id : "default" , value : lang.ide.PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
                 , { id : 1 , value : 1, selected : selectedType == 1 }
                 , { id : 2 , value : 2, selected : selectedType == 2 }
                 , { id : 4 , value : 4, selected : selectedType == 4 }

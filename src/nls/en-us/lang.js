@@ -235,12 +235,30 @@ define({
 
 
 		//##### az property module
-
+		'PROP_AZ_LBL_SWITCH'                            : 'Quick Switch Availability Zone',
 		//##### az property module
 
 
 		//##### vpc property module
-
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC Details',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : 'Name',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR Block',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : 'Tenancy',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : 'Default',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : 'Dedicated',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : 'Enable DNS resolution',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : 'AmazonProvidedDNS',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : 'NTP Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
 		//##### vpc property module
 
 

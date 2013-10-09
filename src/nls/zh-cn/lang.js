@@ -234,12 +234,30 @@ define({
 
 
 		//##### az property module
-
+		'PROP_AZ_LBL_SWITCH'                            : '切换可用区',
 		//##### az property module
 
 
 		//##### vpc property module
-
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC详细',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : '名称',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR 块',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : '租用',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : '缺省',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : '专用',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : '允许DNS解析',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : '允许DNS主机名解析',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP 选项',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : '无',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : '缺省',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : '指定的DHCP选项设置',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : '域名',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : '域名服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : '亚马逊提供的域名服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : '时间服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS名字服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS节点类型',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : '未指定',
 		//##### vpc property module
 
 

@@ -3632,6 +3632,8 @@ MC.canvas.event.dragable = {
 
 		Canvon('.dropable-group').removeClass('dropable-group');
 
+		Canvon('.match-dropable-group').removeClass('match-dropable-group');
+
 		$(document).off({
 			'mousemove': MC.canvas.event.dragable.mousemove,
 			'mouseup': MC.canvas.event.dragable.mouseup
@@ -4495,6 +4497,8 @@ MC.canvas.event.siderbarDrag = {
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');
+
+		Canvon('.match-dropable-group').removeClass('match-dropable-group');
 
 		$('#overlayer').remove();
 

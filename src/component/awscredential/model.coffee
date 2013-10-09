@@ -100,7 +100,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             me.set 'is_authenticated', true
                             MC.forge.cookie.setCookieByName 'has_cred',   true
                             MC.forge.cookie.setCookieByName 'account_id', account_id
-                            MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
+                            #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
 
                             me.trigger 'REFRESH_AWS_CREDENTIAL'
@@ -115,9 +115,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
                             null
 
-                        #me.set 'account_id', account_id
-
-                        #me.trigger 'REFRESH_AWS_CREDENTIAL'
+                        me.set 'account_id', account_id
 
                 else
 

@@ -94,6 +94,7 @@ require.config {
 
 		#jquery plugin
 		'hoverIntent'        : 'ui/common/jquery.hoverIntent.minified'
+		'bootstrap-carousel' : 'ui/common/bootstrap-carousel'
 
 		#delete
 		#'parsley'           : 'ui/common/parsley.min'
@@ -358,6 +359,9 @@ require.config {
 
 		'UI.parsley'   :
 			deps       : [ 'jquery' ]
+
+		'bootstrap-carousel':
+			deps	   : [ 'jquery' ]
 
 		#############################################
 		# WS

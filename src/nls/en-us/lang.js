@@ -201,7 +201,8 @@ define({
 
 
 		/******property module******/
-		// instance property module
+
+
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -214,6 +215,33 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
+		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
+		'PROP_INSTANCE_REQUIRE'					: 'Required',
+		'PROP_INSTANCE_AMI'						: 'AMI',
+		'PROP_INSTANCE_TYPE'					: 'Instance Type',
+		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
+		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
+		'PROP_INSTANCE_USER_DATA'				: 'User Data',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
+		'PROP_INSTANCE_ENI_DESC'				: 'Description',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
+		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
+		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		//###### instance property module
+
+		// ---
 		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
 		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
 
@@ -222,9 +250,30 @@ define({
 		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
+		//###### volume property
+		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
+		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_TYPE'						: 'Volume Type',
+		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
+		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
+		'PROP_VOLUME_MSG_WARN'					: 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.',
+		//###### volume property
+
+		//###### eni property
+		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_DETAIL'					: 'Network Interface Details',
+		'PROP_ENI_LBL_DESC'						: 'Description',
+		'PROP_ENI_SOURCE_DEST_CHECK'			: 'Enable Source/Destination Checking',
+		'PROP_ENI_AUTO_PUBLIC_IP'				: 'Automatically assign Public IP',
+		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
+		'PROP_ENI_ADD_IP'						: 'Add IP',
+		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
+
+		//###### eni property
+
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
-		// Add new strings below this comment. Move above once English has been confirmed
+
 
 		/****** process module ******/
 		'PROC_TITLE'                 : 'Starting your app...',

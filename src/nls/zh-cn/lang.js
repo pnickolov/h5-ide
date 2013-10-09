@@ -200,7 +200,32 @@ define({
 
 
 		/******property module******/
-		// instance property module
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: '实例设置',
+		'PROP_INSTANCE_HOSTNAME'				: '主机名',
+		'PROP_INSTANCE_NUMBER'					: '实例数量',
+		'PROP_INSTANCE_REQUIRE'					: '必须',
+		'PROP_INSTANCE_AMI'						: '镜像',
+		'PROP_INSTANCE_TYPE'					: '实例类型',
+		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
+		'PROP_INSTANCE_TENANCY'					: '专用',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: '默认',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: '专用',
+		'PROP_INSTANCE_NEW_KP'					: '新建秘钥',
+		'PROP_INSTANCE_CW_ENABLED'				: '打开CloudWatch监控',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: '高级设置',
+		'PROP_INSTANCE_USER_DATA'				: '用户数据',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: '网卡设置',
+		'PROP_INSTANCE_ENI_DESC'				: '描述',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: '打开 Source/Destination 检查',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: '自动分配公网IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP地址',
+		'PROP_INSTANCE_ENI_ADD_IP'				: '添加IP',
+		'PROP_INSTANCE_SG_DETAIL'				: '安全组',
+		//###### instance property module
+
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -220,6 +245,28 @@ define({
 		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
+
+		//###### volume property
+		'PROP_VOLUME_DEVICE_NAME'				: '挂载设备名',
+		'PROP_VOLUME_SIZE'						: '磁盘大小',
+		'PROP_VOLUME_TYPE'						: '磁盘类型',
+		'PROP_VOLUME_TYPE_STANDARD'				: '标准',
+		'PROP_VOLUME_TYPE_IOPS'					: '预配置IOPS',
+		'PROP_VOLUME_MSG_WARN'					: '要使用预配置IOPS,磁盘必须最少10GB',
+		//###### volume property
+
+		//###### eni property
+		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_DETAIL'					: '网卡设置',
+		'PROP_ENI_LBL_DESC'						: '描述',
+		'PROP_ENI_SOURCE_DEST_CHECK'			: '打开 Source/Destination 检查',
+		'PROP_ENI_AUTO_PUBLIC_IP'				: '自动分配公网IP',
+		'PROP_ENI_IP_ADDRESS'					: 'IP地址',
+		'PROP_ENI_ADD_IP'						: '添加IP',
+		'PROP_ENI_SG_DETAIL'					: '安全组',
+		//###### eni property
+
+
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',

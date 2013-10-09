@@ -201,6 +201,69 @@ define({
 
 
 		/******property module******/
+
+		'PROP_LBL_REQUIRED'                     : 'Required',
+
+		//##### stack property module
+
+		//##### stack property module
+
+
+		//##### app property module
+
+		//##### app property module
+
+
+		//##### az property module
+
+		//##### az property module
+
+
+		//##### vpc property module
+
+		//##### vpc property module
+
+
+		//##### subnet property module
+
+		//##### subnet property module
+
+
+		//##### sg property module
+
+		//##### sg property module
+
+
+		//##### acl property module
+
+		//##### acl property module
+
+
+		//##### vgw property module
+		'PROP_VGW_TXT_DESCRIPTION'           : 'The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel.',
+		//##### vgw property module
+
+
+		//##### vpn property module
+
+		//##### vpn property module
+
+
+		//##### igw property module
+
+		//##### igw property module
+
+
+		//##### cgw property module
+		'PROP_CGW_LBL_NAME'                     : 'Name',
+		'PROP_CGW_LBL_IPADDR'                   : 'IP Address',
+		'PROP_CGW_LBL_ROUTING'                  : 'Routing',
+		'PROP_CGW_LBL_STATIC'                   : 'Static',
+		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
+		'PROP_CGW_LBL_BGP ASN'                  : 'BGP ASN',
+		//##### cgw property module
+
+
 		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',

@@ -199,6 +199,14 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
+		//linestyle
+		'TOOL_TIP_LINESTYLE'                          : 'Security Group Rule Line Style...',
+		'TOOL_LBL_LINESTYLE_STRAIGHT'                 : 'Straight',
+		'TOOL_LBL_LINESTYLE_ELBOW'                    : 'Elbow',
+		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : 'Quadratic Belzier curve',
+		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : 'Smooth quadratic Belzier curve',
+
+
 
 		/******property module******/
 

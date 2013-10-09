@@ -18,7 +18,7 @@ define [ 'event',
             'click #awscredential-modal'            : 'clickOpenAWSCredential'
             'DROPDOWN_CLOSE #header--notification'  : 'dropdownClosed'
             'click .dropdown-app-name'              : 'clickAppName'
-            'click #guide-carousel'                 : 'openTutorial'
+            'click #guide-tutorial'                 : 'openTutorial'
 
         render   : () ->
             console.log 'header render'

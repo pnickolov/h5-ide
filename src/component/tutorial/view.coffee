@@ -12,15 +12,20 @@ define [ 'event',
         events   :
             #'click .stack-run-click' : 'stackRunClickEvent'
             'closed'                 : 'closedPopup'
+            'click .carousel-done'   : 'closedPopup'
 
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
             #
             modal template, true
             #
-            this.setElement $( '#guide-carousel' ).closest '#modal-wrap'
+            this.setElement $( '#guide-carousel-modal' ).closest '#modal-wrap'
             #
             $('#guide-carousel').carousel { 'interval': false, 'wrap': false }
+            #
+            setTimeout () ->
+                modal.position()
+            , 500
 
         #stackRunClickEvent : ->
         #    console.log 'stackRunClickEvent'

@@ -665,9 +665,19 @@ var returnTrue = function () {return true},
 /* Global initialization */
 $(document).ready(function ()
 {
+	if ($.cookie('lang') === undefined)
+	{
+		var language = navigator.language.replace(/-[\w]*/ig, '');
+
+		$(document.body).addClass('locale-' + language);
+		$.cookie('lang', language);
+	}
+
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
 	MC.browserDetect();
+
+
 });
 
 /* Define as MC module */

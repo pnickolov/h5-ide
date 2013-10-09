@@ -58,7 +58,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
                         MC.forge.cookie.setIDECookie $.cookie()
                         #
-                    me.trigger 'REFRESH_AWS_CREDENTIAL'
+                        me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                 else
 

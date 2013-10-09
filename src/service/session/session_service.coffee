@@ -183,6 +183,34 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserGuestReturn
 
 
+    #///////////////// Parser for sync_redis return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveSyncRedisResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    parserSyncRedisReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveSyncRedisResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserGuestReturn
+
+
     #############################################################
 
     #def login(self, username, password):
@@ -205,6 +233,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "guest", src, [ guest_id, guestname ], parserGuestReturn, callback
         true
 
+    #def sync_redis(self, username, session_id):
+    sync_redis = ( src, username, session_id, callback ) ->
+        send_request "sync_redis", src, [ username, session_id ], parserSyncRedisReturn, callback
+        true
+
 
     #############################################################
     #public
@@ -212,4 +245,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     logout                       : logout
     set_credential               : set_credential
     guest                        : guest
+    sync_redis                   : sync_redis
 

@@ -26,13 +26,19 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             sg_detail.component = $.extend true, {}, MC.canvas_data.component[uid]
 
-            sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+            if MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
+            else
+                sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
 
             sg_detail.members = MC.aws.sg.getAllRefComp(uid)
-            
+
             sg_detail.members = MC.aws.sg.convertMemberNameToReal(sg_detail.members)
 
-            permissions = [sg_detail.component.resource.IpPermissions, sg_detail.component.resource.IpPermissionsEgress]
+            if sg_detail.component.resource.IpPermissionsEgress
+                permissions = [sg_detail.component.resource.IpPermissions, sg_detail.component.resource.IpPermissionsEgress]
+            else
+                permissions = [sg_detail.component.resource.IpPermissions]
 
             $.each permissions, (j, permission)->
 
@@ -65,6 +71,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                         rule.PartType = '/'
                     else
                         rule.PartType = '-'
+
+                    dispPort = rule.FromPort + rule.PartType + rule.ToPort
+                    if Number(rule.FromPort) is Number(rule.ToPort) and rule.IpProtocol isnt 'icmp'
+                        dispPort = rule.ToPort
+
+                    rule.DispPort = dispPort
 
                     null
 
@@ -225,7 +237,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 if rule.direction is 'inbound'
                     MC.canvas_data.component[uid].resource.IpPermissions.push tmp
                 else
-                    MC.canvas_data.component[uid].resource.IpPermissionsEgress.push tmp
+                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                        MC.canvas_data.component[uid].resource.IpPermissionsEgress.push tmp
 
             null
 
@@ -250,17 +263,18 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             else
 
-                $.each sg.IpPermissionsEgress, ( idx, value ) ->
+                if sg.IpPermissionsEgress
+                    $.each sg.IpPermissionsEgress, ( idx, value ) ->
 
-                    if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
+                        if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
 
-                        if rule.protocol.toString() isnt '-1'
-                            if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
+                            if rule.protocol.toString() isnt '-1'
+                                if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
+                                    sg.IpPermissionsEgress.splice idx, 1
+                            else
                                 sg.IpPermissionsEgress.splice idx, 1
-                        else
-                            sg.IpPermissionsEgress.splice idx, 1
 
-                        return false
+                            return false
 
 
     }

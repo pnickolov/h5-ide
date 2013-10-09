@@ -44,6 +44,7 @@ define [ 'MC', 'event',
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
             'click .icon-refresh'           : 'clickRefreshApp'
+            'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
         render   : ( type ) ->
             console.log 'toolbar render'
@@ -305,7 +306,7 @@ define [ 'MC', 'event',
             file_content = JSON.stringify MC.canvas.layout.save()
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
-                'href'      : "data://text/plain; " + file_content,
+                'href'      : "data://text/plain;, " + file_content,
                 'download'  : MC.canvas_data.name + '.json',
             }
             $( '#json-content' ).val file_content
@@ -339,6 +340,26 @@ define [ 'MC', 'event',
         clickOpenJSONView : ->
             window.open 'http://jsonviewer.stack.hu/'
             null
+
+        #request cloudformation
+        clickConvertCloudFormation : ->
+            this.trigger 'CONVERT_CLOUDFORMATION'
+            null
+
+        #save cloudformation
+        saveCloudFormation : ( cf_json ) ->
+
+            try
+                file_content = JSON.stringify cf_json
+                $( '#tpl-download' ).attr {
+                    'href'      : "data://application/json;," + file_content,
+                    'download'  : MC.canvas_data.name + '.json',
+                }
+                $('#tpl-download').on 'click', { target : this }, (event) ->
+                    console.log 'clickExportJSONIcon'
+                    modal.close()
+            catch error
+                notification 'error', lang.ide.TOOL_MSG_ERR_CONVERT_CLOUDFORMATION
 
         notify : (type, msg) ->
             notification type, msg
@@ -418,7 +439,7 @@ define [ 'MC', 'event',
 
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
 
     }
 

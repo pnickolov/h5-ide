@@ -85,6 +85,7 @@ define [ 'constant'] , ( constant ) ->
                 when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
                 when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
                 when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
+                when constant.RETURN_CODE.E_PARAM   then error_message = parseAWSError result
                 else
                     error_message  =  result.toString()
 
@@ -110,6 +111,33 @@ define [ 'constant'] , ( constant ) ->
         #return vo
         aws_result
     # end of processForgeReturnHandler
+
+    #private
+    parseAWSError = ( result ) ->
+
+        error_message = ''
+
+        if result.length == 2
+
+            err_code = result[0]
+            err_xml  = result[1]
+
+            if err_code == 400 and $($.parseXML(err_xml)).find('Error').find('Code').length == 1 and $($.parseXML(err_xml)).find('Error').find('Message').length == 1
+
+                switch $($.parseXML(err_xml)).find('Error').find('Code').text()
+
+                    when 'InvalidAMIID.NotFound' then error_message = $($.parseXML(err_xml)).find('Error').find('Message').text()
+
+                    else
+
+                        error_message = $($.parseXML(err_xml)).find('Error').find('Message').text()
+
+        #return
+        error_message
+
+
+
+
 
     #public
     processForgeReturnHandler : processForgeReturnHandler

@@ -1832,6 +1832,7 @@ MC.canvas.layout = {
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),
+			has_default_kp=false,
 			connection_target_id,
 			tmp,
 			sg_uids;
@@ -1842,17 +1843,41 @@ MC.canvas.layout = {
 
 		components = MC.canvas.data.get("component");
 
+
+
 		$.each(components, function (key, value)
 		{
 			try
 			{
 				if (value.type === 'AWS.EC2.KeyPair')
 				{
+
+					if (value.name === "$key-default$" || value.name === "key-default" || value.name === "kp-default" || value.name === "default-kp" )
+					{
+						value.name = "DefaultKP";
+						value.resource.KeyName = value.name;
+					}
+					if (value.resource.KeyName === "")
+					{
+						value.resource.KeyName = value.name;
+					}
+					if (value.name === "DefaultKP")
+					{
+						has_default_kp=true;
+					}
 					MC.canvas_property.kp_list[ value.name ] = value.uid;
 				}
 				if (value.type === "AWS.EC2.SecurityGroup")
 				{
 					tmp = {};
+
+					if (value.name === "$sg-default$" || value.name === "sg-default" || value.name === "default-sg" )
+					{
+						value.name = "DefaultSG";
+						value.resource.GroupDescription = 'Stack Default Security Group';
+						value.resource.GroupName = value.name;
+					}
+
 					tmp.name = value.name;
 					tmp.uid = value.uid;
 					tmp.member = [];
@@ -1906,6 +1931,15 @@ MC.canvas.layout = {
 				return true;//continue
 			}
 		});
+
+		if (!has_default_kp)
+		{//add DefaultKP
+			var kp = $.extend(true, {}, MC.canvas.KP_JSON.data),
+				uid = MC.guid();
+			kp.uid = uid;
+			MC.canvas_property.kp_list[kp.name] = kp.uid;
+			MC.canvas.data.get("component")[kp.uid] = kp;
+		}
 
 		$.each(MC.canvas_property.sg_list, function (key, value)
 		{

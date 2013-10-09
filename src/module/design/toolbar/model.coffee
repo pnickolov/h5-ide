@@ -781,6 +781,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             null
 
+        convertCloudformation : () ->
+
+            me = this
+
+            stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #export_cloudformation succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    me.trigger 'CONVERT_CLOUDFORMATION_COMPLETE', forge_result.resolved_data
+
+                else
+                #export_cloudformation failed
+
+                    console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
+
+
+
     }
 
     model = new ToolbarModel()

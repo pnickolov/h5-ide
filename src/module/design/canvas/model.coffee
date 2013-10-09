@@ -1142,7 +1142,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 						return false
 
-			if MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length != 0
+			if MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress and MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length != 0
 
 				$.each MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress, ( idx, rule ) ->
 

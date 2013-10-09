@@ -76,7 +76,7 @@ define [ 'event',
             status = $('#password-verification-status')
             status.removeClass 'error-status'
 
-            #signup.verification.confirm_password();
+            #signup.verification.confirm_password()
             if value isnt ''
                 if value.length > 5 # &&
                   #/[A-Z]{1}/.test(value) &&

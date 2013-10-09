@@ -126,6 +126,7 @@ define [ 'jquery', 'event',
 
                     model.sync_redis()
                     model.resetKey 0
+                    view.notify 'warning', lang.ide.HEAD_MSG_ERR_RESTORE_DEMO_KEY
 
                 null
 

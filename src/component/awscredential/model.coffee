@@ -2,7 +2,7 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'UI.notification' ], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'UI.notification' ], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 

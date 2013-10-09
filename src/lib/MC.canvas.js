@@ -1,5 +1,11 @@
-// MC.Canvas
-// Author: Angel
+/*
+#**********************************************************
+#* MC.canvas
+#* Description: Canvas logic core
+# **********************************************************
+# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# **********************************************************
+*/
 
 //json data for current tab
 MC.canvas_data = {};
@@ -48,8 +54,8 @@ MC.canvas = {
 		switch (type)
 		{
 			case 'text':
-				if ( key.indexOf("name") != -1 ) {
-						value = MC.canvasName( value )
+				if ( key.indexOf("name") !== -1 ) {
+					value = MC.canvasName( value );
 				}
 
 				if (target.length === 0)
@@ -78,7 +84,10 @@ MC.canvas = {
 				break;
 
 			case 'tooltip': //add tooltip
-				Canvon( '#' + id + '_' + key ).addClass('tooltip').data( 'tooltip', value ).attr( 'data-tooltip', value );
+				Canvon( '#' + id + '_' + key )
+					.addClass('tooltip')
+					.data( 'tooltip', value )
+					.attr( 'data-tooltip', value );
 		}
 
 		return true;
@@ -990,8 +999,8 @@ MC.canvas = {
 		}
 
 		var canvas_offset = $('#svg_canvas').offset(),
-			from_uid = from_node.attr('id'),
-			to_uid = to_node.attr('id'),
+			from_uid = from_node[0].id,
+			to_uid = to_node[0].id,
 			layout_component_data = MC.canvas_data.layout.component,
 			layout_node_data = layout_component_data.node,
 			from_node_type = from_node.data('type'),
@@ -1000,7 +1009,7 @@ MC.canvas = {
 			to_data = layout_component_data[ to_node_type ][ to_uid ],
 			from_type = from_data.type,
 			to_type = to_data.type,
-			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			layout_connection_data = MC.canvas_data.layout.connection,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
@@ -1031,7 +1040,10 @@ MC.canvas = {
 			{
 				$.each(connection_option, function (index, item)
 				{
-					if (item.from === from_target_port && item.to === to_target_port)
+					if (
+						item.from === from_target_port &&
+						item.to === to_target_port
+					)
 					{
 						connection_option = item;
 					}
@@ -1044,7 +1056,10 @@ MC.canvas = {
 
 			$.each(from_node_connection_data, function (key, value)
 			{
-				if (value[ 'target' ] === to_uid && value[ 'port' ] === to_target_port)
+				if (
+					value[ 'target' ] === to_uid &&
+					value[ 'port' ] === to_target_port
+				)
 				{
 					is_connected = true;
 
@@ -1270,8 +1285,8 @@ MC.canvas = {
 	reConnect: function (node_id)
 	{
 		var node = $('#' + node_id),
-			node_connections = MC.canvas.data.get('layout.component.' + node.data('type') + '.' + node_id + '.connection') || {},
-			layout_connection_data = MC.canvas.data.get('layout.connection'),
+			node_connections = MC.canvas_data.layout.component[ node.data('type') ][ node_id ].connection || {},
+			layout_connection_data = MC.canvas_data.layout.connection,
 			line_target;
 
 		$.each(node_connections, function (index, value)
@@ -1329,12 +1344,12 @@ MC.canvas = {
 
 			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
 
-			node_connections = MC.canvas.data.get('layout.component.node.' + id + '.connection');
-			layout_connection_data = MC.canvas.data.get('layout.connection');
+			node_connections = MC.canvas_data.layout.component.node[ id ].connection;
+			layout_connection_data = MC.canvas_data.layout.connection;
 
 			$.each(node_connections, function (index, item)
 			{
-				Canvon('#' + item.line + ',#' + item.target + '_port-' + item.port).addClass('view-show');
+				Canvon('#' + item.line + ', #' + item.target + '_port-' + item.port).addClass('view-show');
 			});
 
 			Canvon(clone.find('.port')).addClass('view-show');
@@ -1355,7 +1370,7 @@ MC.canvas = {
 		x = x > 0 ? x : 0;
 		y = y > 0 ? y : 0;
 
-		MC.canvas.data.set('layout.component.' + node.getAttribute('data-type') + '.' + node.id + '.coordinate', [x, y]);
+		MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
 		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
 
 		return true;
@@ -1489,7 +1504,7 @@ MC.canvas = {
 
 	matchPoint: function (x, y)
 	{
-		var children = MC.canvas.data.get('layout.component.node'),
+		var children = MC.canvas_data.layout.component.node,
 			coordinate = MC.canvas.pixelToGrid(x, y),
 			component_size,
 			matched,
@@ -1580,45 +1595,6 @@ MC.canvas = {
 			}
 		}
 
-		// $.each(point, function (index, data)
-		// {
-		// 	$.each(group_stack, function (i, layer_data)
-		// 	{
-		// 		if (layer_data)
-		// 		{
-		// 			match_status = {};
-		// 			$.each(layer_data, function (i, item)
-		// 			{
-		// 				group_data = layout_group_data[ item.id ];
-		// 				coordinate = group_data.coordinate;
-		// 				size = group_data.size;
-
-		// 				if (
-		// 					//target_id !== item.id &&
-		// 					$.inArray(item.id, ignore_stack) === -1 &&
-		// 					data.x > coordinate[0] &&
-		// 					data.x < coordinate[0] + size[0] &&
-		// 					data.y > coordinate[1] &&
-		// 					data.y < coordinate[1] + size[1]
-		// 				)
-		// 				{
-		// 					match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
-		// 					match_status['target'] = item.id;
-		// 					match_target = item.id;
-
-		// 					return false;
-		// 				}
-		// 			});
-
-		// 			if (!$.isEmptyObject(match_status))
-		// 			{
-		// 				match[ index ] = match_status;
-		// 				return false;
-		// 			}
-		// 		}
-		// 	});
-		// });
-
 		while ( point-- )
 		{
 			layer = group_stack.length;
@@ -1703,12 +1679,9 @@ MC.canvas = {
 
 	isBlank: function (type, target_id, target_type, start_x, start_y, width, height)
 	{
-		var children = MC.canvas.data.get('layout.component.' + type),
-			//scale_ratio = MC.canvas_property.SCALE_RATIO,
+		var children = MC.canvas_data.layout.component[ type ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
-			start_x,
-			start_y,
 			end_x,
 			end_y,
 			coordinate,
@@ -1716,8 +1689,6 @@ MC.canvas = {
 
 		if (type === 'group')
 		{
-			// start_x = x;
-			// start_y = y;
 			end_x = start_x + width;
 			end_y = start_y + height;
 
@@ -1745,8 +1716,8 @@ MC.canvas = {
 
 	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var groups = MC.canvas.data.get('layout.component.group'),
-			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas.data.get('platform') ][ node_type ],
+		var groups = MC.canvas_data.layout.component.group,
+			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ node_type ],
 			matched;
 
 		$.each(groups, function (key, item)
@@ -1779,8 +1750,8 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children = MC.canvas.data.get('layout.component.node'),
-			groups = MC.canvas.data.get('layout.component.group'),
+		var children = MC.canvas_data.layout.component.node,
+			groups = MC.canvas_data.layout.component.group,
 			group_data = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
 			matched = [],
@@ -1843,7 +1814,7 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = MC.canvas.data.get('layout.component.group.' + group_node.id),
+		var group_data = MC.canvas_data.layout.component.group[ group_node.id ],
 			coordinate = group_data.coordinate;
 
 		return MC.canvas.areaChild(
@@ -1858,7 +1829,7 @@ MC.canvas = {
 
 	lineTarget: function (line_id)
 	{
-		var data = MC.canvas.data.get('layout.connection.' + line_id + '.target'),
+		var data = MC.canvas_data.layout.connection[ line_id ].target,
 			result = [];
 
 		$.each(data, function (key, value)
@@ -1877,7 +1848,7 @@ MC.canvas.layout = {
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),
-			has_default_kp=false,
+			has_default_kp = false,
 			connection_target_id,
 			tmp,
 			sg_uids;
@@ -1887,8 +1858,6 @@ MC.canvas.layout = {
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		components = MC.canvas.data.get("component");
-
-
 
 		$.each(components, function (key, value)
 		{
@@ -3095,7 +3064,7 @@ MC.canvas.event.dragable = {
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
 				canvas_body = $('#canvas_body'),
-				platform = MC.canvas.data.get('platform'),
+				platform = MC.canvas_data.platform,
 				currentTarget = $(event.target),
 				shadow,
 				target_group_type;
@@ -3826,8 +3795,8 @@ MC.canvas.event.drawConnection = {
 				parent = target.parent(),
 				node_id = parent.attr('id'),
 				node_type = parent.data('class'),
-				layout_component_data = MC.canvas.data.get('layout.component'),
-				layout_connection_data = MC.canvas.data.get('layout.connection'),
+				layout_component_data = MC.canvas_data.layout.component,
+				layout_connection_data = MC.canvas_data.layout.connection,
 				layout_node_data = layout_component_data[ parent.data('type') ],
 				node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
@@ -4040,19 +4009,21 @@ MC.canvas.event.drawConnection = {
 
 	mousemove: function (event)
 	{
-		var canvas_offset = event.data.canvas_offset,
+		var event_data = event.data,
+			canvas_offset = event_data.canvas_offset,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			endX = (event.pageX - canvas_offset.left) * scale_ratio,
 			endY = (event.pageY - canvas_offset.top) * scale_ratio,
-			startX = event.data.originalX,
-			startY = event.data.originalY,
+			startX = event_data.originalX,
+			startY = event_data.originalY,
 			angle = Math.atan2(endY - startY, endX - startX),
 			arrow_length = 8,
-			arrowPI = Math.PI / 6,
+
+			arrowPI = 3.141592653589793 / 6,
 			arrowAngleA = angle - arrowPI,
 			arrowAngleB = angle + arrowPI;
 
-		event.data.draw_line.empty().append(
+		event_data.draw_line.empty().append(
 			Canvon.line(startX, startY, endX, endY).attr('class', 'draw-line'),
 
 			Canvon.polygon([
@@ -4614,16 +4585,17 @@ MC.canvas.event.groupResize = {
 	},
 	mousemove: function (event)
 	{
-		var direction = event.data.direction,
-			type = event.data.group_type,
-			group_border = event.data.group_border,
+		var event_data = event.data,
+			direction = event_data.direction,
+			type = event_data.group_type,
+			group_border = event_data.group_border,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
-			left = Math.ceil((event.pageX - event.data.originalLeft) / 10) * 10 * scale_ratio,
-			max_left = event.data.originalWidth * scale_ratio - group_min_padding,
-			top = Math.ceil((event.pageY - event.data.originalTop) / 10) * 10 * scale_ratio,
-			max_top = event.data.originalHeight * scale_ratio - group_min_padding,
-			label_offset = event.data.label_offset,
+			left = Math.ceil((event.pageX - event_data.originalLeft) / 10) * 10 * scale_ratio,
+			max_left = event_data.originalWidth * scale_ratio - group_min_padding,
+			top = Math.ceil((event.pageY - event_data.originalTop) / 10) * 10 * scale_ratio,
+			max_top = event_data.originalHeight * scale_ratio - group_min_padding,
+			label_offset = event_data.label_offset,
 			prop;
 
 		switch (direction)
@@ -4632,57 +4604,57 @@ MC.canvas.event.groupResize = {
 				prop = {
 					'y': top > max_top ? max_top : top,
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth * scale_ratio - left,
-					'height': event.data.originalHeight * scale_ratio - top
+					'width': event_data.originalWidth * scale_ratio - left,
+					'height': event_data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'topright':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
-					'height': event.data.originalHeight * scale_ratio - top
+					'width': Math.round((event_data.originalWidth + event.pageX - event_data.originalX) / 10) * 10 * scale_ratio,
+					'height': event_data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'bottomleft':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth * scale_ratio - left,
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
+					'width': event_data.originalWidth * scale_ratio - left,
+					'height': Math.round((event_data.originalHeight + event.pageY - event_data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'bottomright':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio,
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
+					'width': Math.round((event_data.originalWidth + event.pageX - event_data.originalX) / 10) * 10 * scale_ratio,
+					'height': Math.round((event_data.originalHeight + event.pageY - event_data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'top':
 				prop = {
 					'y': top > max_top ? max_top : top,
-					'height': event.data.originalHeight * scale_ratio - top
+					'height': event_data.originalHeight * scale_ratio - top
 				};
 				break;
 
 			case 'right':
 				prop = {
-					'width': Math.round((event.data.originalWidth + event.pageX - event.data.originalX) / 10) * 10 * scale_ratio
+					'width': Math.round((event_data.originalWidth + event.pageX - event_data.originalX) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'bottom':
 				prop = {
-					'height': Math.round((event.data.originalHeight + event.pageY - event.data.originalY) / 10) * 10 * scale_ratio
+					'height': Math.round((event_data.originalHeight + event.pageY - event_data.originalY) / 10) * 10 * scale_ratio
 				};
 				break;
 
 			case 'left':
 				prop = {
 					'x': left > max_left ? max_left : left,
-					'width': event.data.originalWidth * scale_ratio - left
+					'width': event_data.originalWidth * scale_ratio - left
 				};
 				break;
 		}
@@ -4697,7 +4669,7 @@ MC.canvas.event.groupResize = {
 			prop.height = group_min_padding;
 		}
 
-		event.data.target.attr(prop);
+		event_data.target.attr(prop);
 
 		return false;
 	},
@@ -4722,9 +4694,9 @@ MC.canvas.event.groupResize = {
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
 
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_group_data = MC.canvas.data.get('layout.component.group'),
-			canvas_size = MC.canvas.data.get('layout.size'),
+			layout_node_data = MC.canvas_data.layout.component.node,
+			layout_group_data = MC.canvas_data.layout.component.group,
+			canvas_size = MC.canvas_data.layout.size,
 			node_minX = [],
 			node_minY = [],
 			node_maxX = [],
@@ -5147,13 +5119,14 @@ MC.canvas.event.nodeHover = function (event)
 	{
 		var target = $(this),
 			target_id = this.id,
-			node_connections = MC.canvas.data.get('layout.component.node.' + target_id + '.connection'),
-			layout_connection_data = MC.canvas.data.get('layout.connection');
+			node_connections = MC.canvas_data.layout.component.node[ target_id ].connection,
+			//layout_connection_data = MC.canvas_data.layout.connection,
+			i = node_connections.length;
 
-		$.each(node_connections, function (index, item)
+		while ( i-- )
 		{
-			Canvon('#' + item.line).addClass('view-hover');
-		});
+			Canvon('#' + node_connections[ i ].line).addClass('view-hover');
+		}
 	}
 
 	if (event.type === 'mouseleave')

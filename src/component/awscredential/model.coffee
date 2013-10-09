@@ -47,14 +47,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
             me.on 'ACCOUNT_RESET__KEY_RETURN', (result) ->
                 console.log 'ACCOUNT_RESET__KEY_RETURN'
 
+                flag = result.param[3]
+
                 if !result.is_error
                     console.log 'reset key successfully'
                     #
-                    me.set 'account_id', result.resolved_data
-                    #
-                    MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
-                    MC.forge.cookie.setIDECookie $.cookie()
-                    #
+                    if not flag or flag == 0    # last key -> key
+                        me.set 'account_id', result.resolved_data
+                        #
+                        MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
+                        MC.forge.cookie.setIDECookie $.cookie()
+                        #
                     me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                 else
@@ -96,12 +99,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                         if !result.is_error
                             me.set 'is_authenticated', true
                             MC.forge.cookie.setCookieByName 'has_cred',   true
-                            #MC.forge.cookie.setCookieByName 'account_id', account_id
-                            #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
+                            MC.forge.cookie.setCookieByName 'account_id', account_id
+                            MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
 
-                            # reset key: key -> last key
-                            me.resetKey 1
+                            me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                         else
                             #me.set 'is_authenticated', false

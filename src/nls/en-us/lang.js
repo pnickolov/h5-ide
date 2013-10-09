@@ -255,6 +255,7 @@ define({
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
 		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Chang other account id',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : 'Update Key error, restore the previous key',
 
 		// account profile
 		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',

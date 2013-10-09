@@ -2,7 +2,7 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model' ], (Backbone, $, _, MC, session_model, vpc_model, account_model) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'UI.notification' ], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -48,10 +48,14 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                 console.log 'ACCOUNT_RESET__KEY_RETURN'
 
                 if !result.is_error
-
                     console.log 'reset key successfully'
+                    #
+                    me.set 'account_id', result.resolved_data
+                    #
                     MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
                     MC.forge.cookie.setIDECookie $.cookie()
+                    #
+                    me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                 else
 
@@ -100,15 +104,18 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             me.resetKey 1
 
                         else
-                            me.set 'is_authenticated', false
-                            MC.forge.cookie.setCookieByName 'has_cred', false
+                            #me.set 'is_authenticated', false
+                            #MC.forge.cookie.setCookieByName 'has_cred', false
 
                             # reset key: last key -> key
                             me.resetKey 0
+                            #
+                            notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
+                            null
 
-                        me.set 'account_id', account_id
+                        #me.set 'account_id', account_id
 
-                        me.trigger 'REFRESH_AWS_CREDENTIAL'
+                        #me.trigger 'REFRESH_AWS_CREDENTIAL'
 
                 else
 

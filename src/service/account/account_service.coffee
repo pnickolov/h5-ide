@@ -315,7 +315,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
     #def reset_key(self, username, session_id, flag):
     reset_key = ( src, username, session_id, flag=null, callback ) ->
-        send_request "reset_key", src, [ username, session_id, flag ], parseResetKeyReturn, callback
+        send_request "reset_key", src, [ username, session_id, flag ], parserResetKeyReturn, callback
         true
 
 

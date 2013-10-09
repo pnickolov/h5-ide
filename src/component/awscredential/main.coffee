@@ -125,6 +125,7 @@ define [ 'jquery', 'event',
                 if _.contains(attr_list, 'access_key') and _.contains(attr_list, 'secret_key')
 
                     model.sync_redis()
+                    model.resetKey 0
 
                 null
 

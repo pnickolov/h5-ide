@@ -665,6 +665,17 @@ var returnTrue = function () {return true},
 /* Global initialization */
 $(document).ready(function ()
 {
+	var language = $.cookie('lang');
+
+	if (language === undefined)
+	{
+		language = navigator.language.replace(/-[\w]*/ig, '');
+
+		$.cookie('lang', language);
+	}
+
+	$(document.body).addClass('locale-' + language);
+
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
 	MC.browserDetect();

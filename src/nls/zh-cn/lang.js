@@ -12,97 +12,274 @@ define({
 		'login-loading'  : 'Logging In'
 	},
 	'ide' : {
-		'dashboard' : '仪表盘',
-		'account-settings' : '账户设置',
+		'NAV_TIT_DASHBOARD' : '仪表板',
+		'NAV_TIT_APPS'      : '应用',
+		'NAV_TIT_STACKS'    : '模版',
+		'NAV_LBL_GLOBAL'    : '我的资源',
+		'account-settings'  : 'Account Settings',
+		// Add new strings below this comment. Move above once English has been confirmed
 
-		/** Resource Naming Conventions
+		/** RESOURCE NAMING CONVENTIONS
 		 *
-		 * AZ =
-		 * EC2 AMI =
-		 * EC2 Instance =
-		 * EBS Volume =
-		 * EBS Snapshot =
-		 * EIP =
-		 * ELB =
-		 * ASG =
-		 * KP =
-		 * VPC =
-		 * Subnet =
-		 * RT =
-		 * ENI =
-		 * IGW =
-		 * VGW =
-		 * CGW =
-		 * VPN =
+		 * Do not use camel case (e.g., 'KeyPair' should be 'Key Pair')
+		 * If using in a sentence use lowercase (e.g., 'View your instances.')
+		 *
+		 * AZ = Availability Zones
+		 * EC2 AMI = Image
+		 * EC2 Instance = Instance
+		 * EBS Volume = Volume
+		 * EBS Snapshot = Snapshot
+		 * EIP = Elastic IP
+		 * ELB = Load Balancer
+		 * ASG = Auto Scaling Group
+		 * KP = Key Pair
+		 * VPC = 'Virtual Private Cloud' for titles but 'VPC' in other references is OK
+		 * Subnet = Subnet
+		 * RT = Route Table
+		 * ENI = Network Interface
+		 * IGW = Internet Gateway
+		 * VGW = Virtual Gateway
+		 * CGW = Customer Gateway
+		 * VPN = VPN
 		 *
 		 */
 
+		/******ide******/
+		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
+		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
+
 		/******resource panel module******/
-		'RES_TIT_RESOURCES'           : 'Resources',
-		'RES_TIT_AZ'                  : 'Availability Zones',
-		'RES_TIT_AMI'                 : 'AMIs',
-		'RES_LBL_QUICK_START_AMI'     : 'Quick Start AMIs',
-		'RES_LBL_MY_AMI'              : 'My AMIs',
-		'RES_LBL_FAVORITE_AMI'        : 'Favorite AMIs',
-		'RES_BTN_BROWSE_COMMUNITY_AMI': 'Browse Community AMIs',
-		'RES_TIT_VOL'                 : 'Volume & Snapshots',
-		'RES_TIT_ELB_ASG'             : 'ELB & AutoScaling',
-		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',
-		'RES_TIT_VPC'                 : 'VPC',
+		'RES_TIT_RESOURCES'           : '资源',
+		'RES_TIT_AZ'                  : '可用区',
+		'RES_TIT_AMI'                 : '虚拟机映像',
+		'RES_TIT_VOL'                 : '虚拟磁盘和快照',
+		'RES_TIT_ELB_ASG'             : '负载均衡器和自动伸缩组',
+		'RES_TIT_VPC'                 : '虚拟私有云',
+		'RES_LBL_QUICK_START_AMI'     : '推荐的映像',
+		'RES_LBL_MY_AMI'              : '我的映像',
+		'RES_LBL_FAVORITE_AMI'        : '收藏的映像',
 		'RES_LBL_NEW_VOL'             : 'New Volume',
-		'RES_LBL_NEW_ELB'             : 'New ELB',
-		'RES_LBL_NEW_SUBNET'          : 'New Subnet',
-		'RES_LBL_NEW_RTB'             : 'New Route Table',
-		'RES_LBL_NEW_IGW'             : 'New Internet Gateway',
-		'RES_LBL_NEW_VGW'             : 'New Virtual Gateway',
-		'RES_LBL_NEW_CGW'             : 'New Customer Gateway',
-		'RES_LBL_NEW_ENI'             : 'New Network Interface',
+		'RES_LBL_NEW_ELB'             : 'Load Balancer',
+		'RES_LBL_NEW_ASG'             : 'Auto Scaling Group',
+		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',
+		'RES_LBL_NEW_SUBNET'          : 'Subnet',
+		'RES_LBL_NEW_RTB'             : 'Route Table',
+		'RES_LBL_NEW_IGW'             : 'Internet Gateway',
+		'RES_LBL_NEW_VGW'             : 'Virtual Gateway',
+		'RES_LBL_NEW_CGW'             : 'Customer Gateway',
+		'RES_LBL_NEW_ENI'             : 'Network Interface',
+		'RES_BTN_BROWSE_COMMUNITY_AMI': '浏览映像',
+		// Add new strings below this comment. Move above once English has been confirmed
 
 		'RES_TIP_TOGGLE_RESOURCE_PANEL' : 'Show/Hide Resource Panel',
+		'RES_TIP_DRAG_AZ'               : 'Drag to the canvas to use this availability zone',
 		'RES_TIP_DRAG_NEW_VOLUME'       : 'Drag onto an instance to attach a new volume.',
 		'RES_TIP_DRAG_NEW_ELB'          : 'Drag to the canvas to create a new load balancer.',
-		'RES_TIP_DRAG_NEW_ASG'          : 'Drag to the canvas to create a new autoscaling group.',
-		'RES_TIP_DRAG_AZ'               : 'Drag to the canvas to use this availability zone',
-		'RES_TIP_DRAG_NEW_SUBNET'       : 'Drag to a VPC to create a new subnet.',
+		'RES_TIP_DRAG_NEW_ASG'          : 'Drag to the canvas to create a new auto scaling group.',
+		'RES_TIP_DRAG_NEW_SUBNET'       : 'Drag to an availability zone to create a new subnet.',
 		'RES_TIP_DRAG_NEW_RTB'          : 'Drag to a VPC to create a new route table.',
 		'RES_TIP_DRAG_NEW_IGW'          : 'Drag to the canvas to create a new internet gateway.',
 		'RES_TIP_DRAG_NEW_VGW'          : 'Drag to the canvas to create a new virtual gateway.',
 		'RES_TIP_DRAG_NEW_CGW'          : 'Drag to the canvas to create a new customer gateway.',
 		'RES_TIP_DRAG_NEW_ENI'          : 'Drag to a subnet to create a new network interface.',
-
 		'RES_TIP_DRAG_HAS_IGW'          : 'This VPC already has an internet gateway.',
-		'RES_TIP_DRAG_HAS_VGW'          : 'VPC can only have one VGW. There is already one VGW in current VPC.',
+		'RES_TIP_DRAG_HAS_VGW'          : 'This VPC already has a virtual gateway.',
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: 'Unable to load community AMIs',
+		'RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS'		: 'AMI is added to Favorite AMI',
+		'RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED'		: 'Failed to add AMI to Favorite',
+		'RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS'	: 'AMI is removed from Favorite AMI',
+		'RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED'	: 'Failed to remove AMI from Favorite',
+		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******canvas module******/
-		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Drop volume or snapshot on instance to attach.',
-		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : 'Subnet must be dropped within availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : 'Instance must be dropped in subnet or autoscaling group.',
-		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : 'Instance must be dropped in availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_ENI'             : 'Network Interface must be dropped in subnet.',
-		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route table must be dropped within VPC but outside availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancer must be dropped within VPC but outside availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer Gateway must be dropped outside VPC.',
+		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volumes and snapshots must be dragged to an instance or image.',
+		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : 'Subnets must be dragged to an availability zone.',
+		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : 'Instances must be dragged to a subnet or auto scaling group.',
+		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : 'Instances must be dragged to an availability zone.',
+		'CVS_MSG_WARN_NOTMATCH_ENI'             : 'Network interfaces must be dragged to a subnet.',
+		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route tables must be dragged inside a VPC but outside an availability zone.',
+		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancer must be dropped outside availability zone.',
+		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
+		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
+		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s's type %s supports a maximum of %s network interfaces (including the primary).",
+		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network interfaces can only be attached to an instance in the same availability zone.',
+		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network interfaces must be in the same availability zone as the instance they are attached to.',
+		'CVS_MSG_ERR_DROP_ASG'                  : '%s is already in %s.',
+		'CVS_MSG_ERR_DEL_LC'                    : 'Currently modifying the launch configuration is not supported.',
+		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'The main route table %s cannot be deleted. Please set another route table as the main and try again.',
+		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
+		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
+		'CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE'     : 'Load balancer must attach to one subnet per Availability Zone.',
+		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
+		'CVS_CFM_DEL'                           : 'Delete %s',
+		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?',
+		'CVS_CFM_DEL_GROUP'                     : "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?",
+		'CVS_CFM_DEL_ASG'                       : 'Deleting this will delete the entire %s. Are you sure you want to delete it?',
+		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
+		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
+		'CVS_MSG_ERR_ZOOMED_DROP_ERROR'         : 'Please reset the zoom to 100% before adding new resources.',
+		'CVS_TIP_EXPAND_W'						: 'Increase Canvas Width',
+		'CVS_TIP_SHRINK_W'						: 'Decrease Canvas Width',
+		'CVS_TIP_EXPAND_H'						: 'Increase Canvas Height',
+		'CVS_TIP_SHRINK_H'						: 'Decrease Canvas Height',
+		// Add new strings below this comment. Move above once English has been confirmed
 
-		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'There is a little overlapping. Make more space and try again.',
-		'CVS_WARN_EXCEED_ENI_LIMIT'             : "[ %s ]'s Instance Type: [ %s ] only support at most [ %s ] Network Interfaces (including the primary).",
-		'CVS_CFM_DEL_GROUP'                     : "Deleting [ %s ] will also remove all resources inside. Do you confirm to delete?",
+
+		/****** toolbar module ******/
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		//run stack
+		'TOOL_BTN_RUN_STACK'                    : '运行',
+		'TOOL_TIP_BTN_RUN_STACK'                : '运行当前模版为应用',
+		'TOOL_POP_TIT_RUN_STACK'                : '运行',
+
+		//save stack
+		'TOOL_TIP_SAVE_STACK'                   : '保存模版',
+
+		//delete stack
+		'TOOL_TIP_DELETE_STACK'                 : '删除模版',
+		'TOOL_TIP_DELETE_NEW_STACK'             : '当前模版未保存',
+		'TOOL_POP_TIT_DELETE_STACK'             : '删除模版',
+		'TOOL_POP_BODY_DELETE_STACK'            : '确认删除模版吗?',
+		'TOOL_POP_BTN_DELETE_STACK'             : '删除',
+
+		//duplicate stack
+		'TOOL_TIP_DUPLICATE_STACK'              : '复制模版',
+		'TOOL_POP_TIT_DUPLICATE_STACK'          : '复制模版',
+		'TOOL_POP_BODY_DUPLICATE_STACK'         : '模版名称:',
+		'TOOL_POP_BTN_DUPLICATE_STACK'          : '复制',
+
+		//create stack
+		'TOOL_TIP_CREATE_STACK'                 : '创建新模版',
+
+		//zoom
+		'TOOL_TIP_ZOOM_IN'                      : '放大',
+		'TOOL_TIP_ZOOM_OUT'                     : '缩小',
+
+		//export
+		'TOOL_EXPORT'                           : '导出...',
+		'TOOL_EXPORT_AS_JSON'                   : '导出JSON文件',
+		'TOOL_POP_TIT_EXPORT_AS_JSON'           : '导出',
+		'TOOL_POP_BODY_EXPORT_AS_JSON'          : '您确认保存JSON文件吗?',
+		'TOOL_POP_BTN_DOWNLOAD'                 : '保存',
+		'TOOL_EXPORT_AS_PNG'                    : '导出图片',
+
+		//stop app
+		'TOOL_TIP_STOP_APP'                     : "暂停应用",
+		'TOOL_POP_TIT_STOP_APP'                 : '确认暂停',
+		'TOOL_POP_BODY_STOP_APP'                : '本操作将暂停应用中的相关资源，您确认暂停当前应用吗?',
+		'TOOL_POP_BTN_STOP_APP'                 : '暂停',
+
+		//start app
+		'TOOL_TIP_START_APP'                    : "恢复应用",
+		'TOOL_POP_TIT_START_APP'                : '确认恢复',
+		'TOOL_POP_BODY_START_APP'               : '本操作将恢复应用中的相关资源，您确认恢复当前应用吗?',
+		'TOOL_POP_BTN_START_APP'                : '恢复',
+
+		//terminate app
+		'TOOL_TIP_TERMINATE_APP'                : "销毁应用",
+		'TOOL_POP_TIT_TERMINATE_APP'            : '确认销毁',
+		'TOOL_POP_BODY_TERMINATE_APP'           : '本操作将销毁应用中的相关资源，您确认销毁当前应用吗?',
+		'TOOL_POP_BTN_TERMINATE_APP'            : '销毁',
+
+		//toolbar handler
+		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
+		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
+		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
+		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
+		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
+		// Add new strings below this comment. Move above once English has been confirmed
+		//refresh button
+		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
+		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
+		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
+		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
 
 		/******property module******/
 		// instance property module
-		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Cannot download keypair:',
-		'PROP_MSG_WARN_NO_STACK_NAME'           : 'No stack name.',
-		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'Repeated stack name.',
-		'PROP_MSG_WARN_NO_APP_NAME'             : 'No app app.',
-		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'Repeated app name.',
-		'PROP_MSG_WARN_INVALID_APP_NAME'        : 'App name is invalid.',
-		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance Type: [ %s ] only support at most [ %s ] Network Interface(including the primary). Please detach extra Network Interface before changing Instance Type',
+		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
+		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
+		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
+		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s Instance\'s Network Interface can\'t exceed %s Private IP Addresses.',
+		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
+		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
+		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
+		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
+		'PROP_TEXT_DEFAULT_SG_DESC'             : 'Stack Default Security Group',
+		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
+		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
+		// Add new strings below this comment. Move above once English has been confirmed
+		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
+		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
+
+		// sg property
+		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
+		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Design Module no download complete.',
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** process module ******/
+		'PROC_TITLE'                 : 'Starting your app...',
+		'PROC_RLT_DONE_TITLE'        : 'Everything went smoothly!',
+		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will automatically open soon.',
+		'PROC_STEP_PREPARE'          : 'Preparing to start app...',
+		'PROC_RLT_FAILED_TITLE'      : 'Error Starting App.',
+		'PROC_RLT_FAILED_SUB_TITLE'  : 'Please fix the following issues and try again:',
+		'PROC_ERR_INFO'              : 'Error Details',
+		'PROC_CLOSE_TAB'             : 'Close Tab',
+		'PROC_STEP_REQUEST'          : 'Processing',
+		// Add new strings below this comment. Move above once English has been confirmed
+		'PROC_FAILED_TITLE'          :  'Starting App Failed',
+
+		/****** region module *****/
+		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** miscellaneous ******/
+		'CFM_BTN_DELETE'   : 'Delete',
+		'CFM_BTN_CANCEL'   : 'Cancel',
+		'CFM_BTN_ADD'      : 'Add',
+		'CFM_BTN_DONT_ADD' : "Don't add",
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** account credential module ******/
+		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
+		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
+		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+
+		// account profile
+		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
+		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
+		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
+		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
+		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : 'Password has been updated.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL'       : 'Update email address failed.',
+		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : 'Update password failed.',
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		/****** base_main.cofffee for module(x) ******/
+		'MODULE_RELOAD_MESSAGE'           : 'Sorry, there is some connectivity issue, IDE is trying to reload',
+		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
+		// Add new strings below this comment. Move above once English has been confirmed
+
+		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
 		/****** Dashboard ******/
-		'RELOAD_AWS_RESOURCE_SUCCESS'		    : 'Status of resources is up to date.'
+		// Add new strings below this comment. Move above once English has been confirmed
+		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
+		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
+		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+
+		/****** popup ******/
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
 
 	}
 });

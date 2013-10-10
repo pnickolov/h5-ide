@@ -312,7 +312,7 @@ a {
 }
 
 #account-profile-setting .dl-horizontal {
-	font-size: 12px;
+	font-size: 14px;
 	margin: 0;
 }
 
@@ -403,9 +403,13 @@ a {
 	border: 1px solid #DB4E47;
 }
 
+#account-passowrd-info a {
+	color: #3781C9;
+}
+
 #account-change-password {
 	display: block;
-	margin: 10px 0 10px 1px;
+	margin: 20px 0 10px 1px;
 	color: #3781C9;
 }
 

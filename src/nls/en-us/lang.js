@@ -260,7 +260,7 @@ define({
 
 		// account profile
 		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
-		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters.',
 		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
 		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',

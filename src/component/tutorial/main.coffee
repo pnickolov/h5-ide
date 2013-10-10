@@ -25,6 +25,9 @@ define [ 'jquery', 'event',
             #render
             view.render template
 
+            #
+            model.updateAccountService()  if MC.forge.cookie.getCookieByName( 'state' ) is '3'
+
     unLoadModule = ( view, model ) ->
         console.log 'stack run unLoadModule'
         view.off()

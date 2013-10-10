@@ -399,6 +399,7 @@ use redirection server name:i:0\n"
 		expires:1
 		path: '/'
 
+	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
 
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
@@ -422,4 +423,4 @@ use redirection server name:i:0\n"
 	RDP_TMPL                : RDP_TMPL
 	COOKIE_OPTION           : COOKIE_OPTION
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
-
+	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST

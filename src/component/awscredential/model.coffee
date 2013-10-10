@@ -23,6 +23,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
 
                     me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_SUCCESS', attributes
 
+                    if attributes.state is '3'
+                        #
+                        MC.forge.cookie.setCookieByName 'state', attributes.state
+                        MC.forge.cookie.setIDECookie $.cookie()
                 else
 
                     me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', attributes
@@ -166,6 +170,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
             console.log 'resetDemoKey'
             account_model.reset_key {sender:this}, $.cookie('usercode'), $.cookie('session_id'), flag
             null
+
+        updateAccountService : ->
+            console.log 'updateAccountService'
+            account_model.update_account {sender:this}, $.cookie('usercode'), $.cookie('session_id'), { 'state' : '3' }
 
     }
 

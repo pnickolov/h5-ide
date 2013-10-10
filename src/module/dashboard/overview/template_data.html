@@ -27,7 +27,7 @@
         {{#with global_list.DescribeInstances}}
             <li id="global-region-resource-instance">
                 <div class="global-region-resource-header">
-                    <h5>Running Instance</h5>
+                    <h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -53,7 +53,7 @@
         {{#with global_list.DescribeAddresses}}
             <li id="global-region-resource-eip">
                 <div class="global-region-resource-header">
-                    <h5>Elastic IP</h5>
+                    <h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-eip" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -79,7 +79,7 @@
         {{#with global_list.DescribeVolumes}}
         <li id="global-region-resource-volume">
             <div class="global-region-resource-header">
-                <h5>Volume</h5>
+                <h5>{{i18n "DASH_LBL_VOLUME"}}</h5>
                 <div class="global-region-resource-count-wrap">
                     <i id="global-resource-icon-vol" class="global-resource-icon"></i>
                     <span class="global-region-resource-count">{{total}}</span>
@@ -105,7 +105,7 @@
         {{#with global_list.DescribeLoadBalancers}}
             <li id="global-region-resource-elb">
                 <div class="global-region-resource-header">
-                    <h5>Load Balancer</h5>
+                    <h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-elb" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -129,7 +129,8 @@
         {{/with}}
 
         {{#with global_list.DescribeVpnConnections}}
-            <li id="global-region-resource-vpn"> <div class="global-region-resource-header"> <h5>VPN</h5>
+            <li id="global-region-resource-vpn"> <div class="global-region-resource-header">
+                    <h5>{{i18n "DASH_LBL_VPN"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -164,14 +165,14 @@
                 <a href="javascript:void(0)" {{#if app}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-app"></i>
                     <span class="region-resource-tab-number">{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span>
-                    <span class="region-resource-tab-type">App</span>
+                    <span class="region-resource-tab-type">{{i18n "DASH_LBL_APP"}}</span>
                 </a>
             </li>
             <li>
                 <a href="javascript:void(0)" {{#if stack}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
-                    <span class="region-resource-tab-type">Stack</span>
+                    <span class="region-resource-tab-type">{{i18n "DASH_LBL_STACK"}}</span>
                     <button id="btn-create-stack" href="javascript:void(0)" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"></button>
                 </a>
             </li>
@@ -294,7 +295,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item on" data-resource-type="DescribeInstances">
                         <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Instance}}</span>
-                        <span class="region-resource-name">Instance</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
                     </a>
                 </li>
 
@@ -302,7 +303,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAddresses">
                         <i id="global-resource-icon-eip" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{EIP}}</span>
-                        <span class="region-resource-name">Elastic IP</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
                     </a>
                 </li>
 
@@ -310,7 +311,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVolumes">
                         <i id="global-resource-icon-vol" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Volume}}</span>
-                        <span class="region-resource-name">Volume</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
                     </a>
                 </li>
 
@@ -318,7 +319,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpcs">
                         <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPC}}</span>
-                        <span class="region-resource-name">VPC</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
                     </a>
                 </li>
 
@@ -326,7 +327,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPN}}</span>
-                        <span class="region-resource-name">VPN</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
                     </a>
                 </li>
 
@@ -334,7 +335,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
                         <i id="global-resource-icon-elb" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{ELB}}</span>
-                        <span class="region-resource-name">Load Balancer</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
                     </a>
                 </li>
 
@@ -342,7 +343,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
                         <i id="global-resource-icon-asg" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{AutoScalingGroup}}</span>
-                        <span class="region-resource-name">Auto Scaling Group</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
                     </a>
                 </li>
 
@@ -350,7 +351,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAlarms">
                         <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{CW}}</span>
-                        <span class="region-resource-name">CloudWatch Alarm</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
                     </a>
                 </li>
 
@@ -358,7 +359,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="ListSubscriptions">
                         <i id="global-resource-icon-sns" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{SNS}}</span>
-                        <span class="region-resource-name">SNS Subscription</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
                     </a>
                 </li>
             </ul>
@@ -410,7 +411,7 @@
                                     <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                     {{/if}}
                                     {{else}}
-                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                     {{/if}}
                                 </div>
                                 <div>
@@ -519,7 +520,7 @@
                                             <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                             {{/if}}
                                             {{else}}
-                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                             {{/if}}
                                         </div>
                                         <div>
@@ -582,7 +583,7 @@
                                                 <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                                 {{/if}}
                                                 {{else}}
-                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                                 {{/if}}
                                             </div>
                                             <div>
@@ -649,7 +650,7 @@
                                                     <span class="table-app-link truncate tooltip" data-tooltip='App created by current user' >[{{ app }}]</span>
                                                     {{/if}}
                                                     {{else}}
-                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                                     {{/if}}
                                                 </div>
                                                 <div>
@@ -757,7 +758,7 @@
                                                             <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                             {{/if}}
                                                             {{else}}
-                                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASHBOARD_TXT_UNMANAGED" }}] </span>
+                                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASH_LBL_UNMANAGED" }}] </span>
                                                             {{/if}}
                                                         </div>
                                                         <div>
@@ -881,7 +882,7 @@
 <!--{{ .recent }}-->
 <div id="global-region-status-tab-wrap" class="clearfix">
     <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">
-        <h5>App</h5>
+        <h5>{{i18n "DASH_LBL_APP"}}</h5>
         <div id="global-region-status-app" class="global-region-status-count-wrap">
             <i class="global-region-status-icon global-region-status-icon-app"></i>
             <span id="global-region-status-app-count" class="global-region-status-count">{{result_list.total_app}}</span>
@@ -889,7 +890,7 @@
     </a>
 
     <a href="javascript:void(0)" id="global-region-status-tab-stack" class="global-region-status-tab-item on">
-        <h5>Stack</h5>
+        <h5>{{i18n "DASH_LBL_STACK"}}</h5>
         <div id="global-region-status-stack" class="global-region-status-count-wrap">
             <i class="global-region-status-icon global-region-status-icon-stack"></i>
             <span id="global-region-status-statck-count" class="global-region-status-count">{{result_list.total_stack}}</span>
@@ -904,7 +905,7 @@
             <div class="global-region-status-body">
                 <div class="global-region-status-list">
                     <div class="global-region-status-header">
-                        <h4>Recently Launched App</h4>
+                        <h4>{{i18n "DASH_LBL_RECENT_LAUNCHED_STACK"}}</h4>
                     </div>
                     <ul>
                         {{#each recent_launched_apps }}
@@ -935,7 +936,7 @@
             <div class="global-region-status-body">
                 <div class="global-region-status-list">
                     <div class="global-region-status-header">
-                        <h4>Recently Edited Stack</h4>
+                        <h4>{{i18n "DASH_LBL_RECENT_EDITED_STACK"}}</h4>
                     </div>
                     <ul>
                         {{#each recent_edited_stacks }}

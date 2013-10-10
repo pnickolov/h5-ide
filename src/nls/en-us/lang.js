@@ -436,29 +436,62 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RmellELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE'		: 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         		: 'Unmanaged',
+		//###### dashboard module
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
 
-		'REGION_NAME_us-east-1'					: 'US East',
-		'REGION_NAME_us-west-1'	  				: 'US West',
-		'REGION_NAME_us-west-2'	  				: 'US West',
-		'REGION_NAME_eu-west-1'	  				: 'EU West',
-		'REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
-		'REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
-		'REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
-		'REGION_NAME_sa-east-1'	    			: 'South America',
 
-		'REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
-		'REGION_NAME_SHORT_us-west-1'	  		: 'California',
-		'REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
-		'REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
-		'REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
-		'REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
-		'REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
-		'REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+		'DASH_TIP_UNMANAGED_RESOURCE'				: 'Unmanaged Resource',
+
+
+		'DASH_BTN_GLOBAL'							: 'Global',
+
+
+		'DASH_LBL_UNMANAGED'         				: 'Unmanaged',
+		'DASH_LBL_APP'								: 'App',
+		'DASH_LBL_STACK'						    : 'Stack',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : 'Recently Edited Stack',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
+		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
+		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_LOAD_BALANCER'				    : 'Load Balancer',
+		'DASH_LBL_VPN'	    	    				: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : 'Instance',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling Group',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch Alarm',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
+
+
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: 'Create new stack',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: 'US East',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: 'EU West',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: 'South America',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: 'California',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+
+		//###### ide
+
+
 
 
 

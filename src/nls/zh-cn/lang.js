@@ -430,29 +430,59 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     		: '资源更新完毕',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE'		: '非托管资源',
-		'DASHBOARD_TXT_UNMANAGED'        		: '非托管的',
+		//###### dashboard module
 
-		'REGION_NAME_us-east-1'					: '美国东部',
-		'REGION_NAME_us-west-1'	  				: '美国西部',
-		'REGION_NAME_us-west-2'	  				: '美国西部',
-		'REGION_NAME_eu-west-1'	  				: '欧洲西部',
-		'REGION_NAME_ap-southeast-1'    		: '亚太地区',
-		'REGION_NAME_ap-southeast-2'			: '亚太地区',
-		'REGION_NAME_ap-northeast-1'			: '亚太地区',
-		'REGION_NAME_sa-east-1'	    			: '南美洲',
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: '资源更新完毕',
 
-		'REGION_NAME_SHORT_us-east-1'	  		: '弗吉尼亚',
-		'REGION_NAME_SHORT_us-west-1'	  		: '加利福尼亚北部',
-		'REGION_NAME_SHORT_us-west-2'	  		: '俄勒冈',
-		'REGION_NAME_SHORT_eu-west-1'	  		: '爱尔兰',
-		'REGION_NAME_SHORT_ap-southeast-1'  	: '新加坡',
-		'REGION_NAME_SHORT_ap-southeast-2'		: '悉尼',
-		'REGION_NAME_SHORT_ap-northeast-1'		: '东京',
-		'REGION_NAME_SHORT_sa-east-1'	    	: '圣保罗',
+
+		'DASH_TIP_UNMANAGED_RESOURCE'				: '非托管资源',
+
+
+		'DASH_BTN_GLOBAL'							: '全局',
+
+		'DASH_LBL_UNMANAGED'        				: '非托管的',
+		'DASH_LBL_APP'								: '应用',
+		'DASH_LBL_STACK'						    : '模板',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : '最近修改的模板',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : '最近启动的实例',
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
+		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',
+		'DASH_LBL_VOLUME'		  				    : '卷',
+		'DASH_LBL_LOAD_BALANCER'				    : '负载均衡器',
+		'DASH_LBL_VPN'								: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : '实例',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling 组',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch 警报',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS 订阅',
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: '创建模板',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: '美国东部',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: '美国西部',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: '美国西部',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: '欧洲西部',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: '亚太地区',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: '亚太地区',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: '亚太地区',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: '南美洲',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: '弗吉尼亚',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: '加利福尼亚北部',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: '俄勒冈',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: '爱尔兰',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: '新加坡',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: '悉尼',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: '东京',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: '圣保罗',
+
+		//###### ide
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

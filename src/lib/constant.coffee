@@ -161,22 +161,22 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 	#private
 	REGION_SHORT_LABEL = {}
 	REGION_LABEL = {}
-	REGION_SHORT_LABEL[ 'us-east-1' ]      = lang.ide[ 'REGION_NAME_SHORT_us-east-1']
-	REGION_LABEL[ 'us-east-1' ]      = lang.ide[ 'REGION_SHORT_us-east-1']
-	REGION_SHORT_LABEL[ 'us-west-1' ]      = lang.ide[ 'REGION_NAME_SHORT_us-west-1']
-	REGION_LABEL[ 'us-west-1' ]      = lang.ide[ 'REGION_NAME_us-west-1']
-	REGION_SHORT_LABEL[ 'us-west-2' ]      = lang.ide[ 'REGION_NAME_SHORT_us-west-2']
-	REGION_LABEL[ 'us-west-2' ]      = lang.ide[ 'REGION_NAME_us-west-2']
-	REGION_SHORT_LABEL[ 'eu-west-1' ]      = lang.ide[ 'REGION_NAME_SHORT_eu-west-1']
-	REGION_LABEL[ 'eu-west-1' ]      = lang.ide[ 'REGION_NAME_eu-west-1']
-	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'REGION_NAME_SHORT_ap-southeast-1']
-	REGION_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'REGION_NAME_ap-southeast-1']
-	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'REGION_NAME_SHORT_ap-southeast-2']
-	REGION_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'REGION_NAME_ap-southeast-2']
-	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'REGION_NAME_SHORT_ap-northeast-1']
-	REGION_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'REGION_NAME_ap-northeast-1']
-	REGION_SHORT_LABEL[ 'sa-east-1' ]      = lang.ide[ 'REGION_NAME_SHORT_sa-east-1']
-	REGION_LABEL[ 'sa-east-1' ]      = lang.ide[ 'REGION_NAME_sa-east-1']
+	REGION_SHORT_LABEL[ 'us-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+	REGION_LABEL[ 'us-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-east-1']
+	REGION_SHORT_LABEL[ 'us-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+	REGION_LABEL[ 'us-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-west-1']
+	REGION_SHORT_LABEL[ 'us-west-2' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+	REGION_LABEL[ 'us-west-2' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-west-2']
+	REGION_SHORT_LABEL[ 'eu-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+	REGION_LABEL[ 'eu-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_eu-west-1']
+	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+	REGION_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+	REGION_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+	REGION_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+	REGION_SHORT_LABEL[ 'sa-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+	REGION_LABEL[ 'sa-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_sa-east-1']
 
 	#private
 	RETURN_CODE = {

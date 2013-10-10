@@ -261,14 +261,14 @@ body {
 	}
 
 	.locale-zh {
-		font-family: 'Microsoft Yahei', 'Lato', 'Helvetica Neue', Arial, sans-serif;
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
 	}
 
 	.locale-zh button,
 	.locale-zh input,
 	.locale-zh select,
 	.locale-zh textarea {
-		font-family: 'Microsoft Yahei', 'Lato', 'Helvetica Neue', Arial, sans-serif;
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
 	}
 }
 

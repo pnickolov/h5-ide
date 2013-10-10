@@ -225,6 +225,11 @@ define({
 		'PROP_STACK_COST_COL_SIZE_TYPE'             : '大小/类型',
 		'PROP_STACK_COST_COL_FEE'                   : '价格($)',
 		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 定价',
+		'PROP_STACK_ACL_LBL_RULE'                   : '条规则',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : '个关联',
+		'PROP_STACK_ACL_BTN_DELETE'                 : '删除',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : '查看访问控制表详细',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : '创建新的访问控制表...',
 		//##### stack property module
 
 
@@ -262,11 +267,15 @@ define({
 
 
 		//##### subnet property module
-		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet详细',
+		'PROP_SUBNET_TIT_DETAIL'                                         : '子网详细',
 		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : '名称',
 		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR 块',
 		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : '相关访问控制表',
 		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : '创建新的访问控制表...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : '条规则',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : '个关联',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : '删除',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : '查看访问控制表详细',
 		//##### subnet property module
 
 
@@ -309,7 +318,24 @@ define({
 
 
 		//##### acl property module
-
+		'PROP_ACL_LBL_NAME'                                              : '名称',
+		'PROP_ACL_TIT_RULE'                                              : '规则',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : '创建新的访问控制表',
+		'PROP_ACL_RULE_SORT_BY'                                          : '排序',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : '按规则编号',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : '动作',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : '方向',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : '源/目的',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : '允许',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : '拒绝',
+		'PROP_ACL_TIP_INBOUND'                                           : '入方向',
+		'PROP_ACL_TIP_OUTBOUND'                                          : '出方向',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : '规则编号',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR 块',
+		'PROP_ACL_TIP_PROTOCOL'                                          : '协议',
+		'PROP_ACL_TIP_PORT'                                              : '端口',
+		'PROP_ACL_TIT_ASSOC'                                             : '关联的子网',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : '删除规则',
 		//##### acl property module
 
 

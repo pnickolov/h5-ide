@@ -226,6 +226,11 @@ define({
 		'PROP_STACK_COST_COL_SIZE_TYPE'             : 'Size/Type',
 		'PROP_STACK_COST_COL_FEE'                   : 'Fee($)',
 		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 Pricing',
+		'PROP_STACK_ACL_LBL_RULE'                   : 'rules',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : 'associations',
+		'PROP_STACK_ACL_BTN_DELETE'                 : 'Delete',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : 'Go to Network ACL Details',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : 'Create new Network ACL...',
 		//##### stack property module
 
 
@@ -268,6 +273,10 @@ define({
 		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR Block',
 		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : 'Associated Network ACL',
 		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : 'Create new Network ACL...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : 'rules',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
 		//##### subnet property module
 
 
@@ -310,7 +319,24 @@ define({
 
 
 		//##### acl property module
-
+		'PROP_ACL_LBL_NAME'                                              : 'Name',
+		'PROP_ACL_TIT_RULE'                                              : 'Rule',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : 'Create new Network ACL Rule',
+		'PROP_ACL_RULE_SORT_BY'                                          : 'Sort by',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : 'Rule Number',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : 'Action',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : 'Direction',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : 'Source/Destination',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : 'allow',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : 'deny',
+		'PROP_ACL_TIP_INBOUND'                                           : 'Inbound',
+		'PROP_ACL_TIP_OUTBOUND'                                          : 'Outbound',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : 'Rule Number',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR Block',
+		'PROP_ACL_TIP_PROTOCOL'                                          : 'Protocol',
+		'PROP_ACL_TIP_PORT'                                              : 'Port',
+		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
 		//##### acl property module
 
 

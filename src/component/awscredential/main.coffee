@@ -147,7 +147,7 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'password')
 
-                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
+                    #view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
 
                     view.clickUpdatePassword('error_password')
 

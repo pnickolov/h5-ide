@@ -1,6 +1,6 @@
 <article id="property-sgrule" data-line="{{line_id}}">
 
-  <section class="property-control-group">The selected connection reflects following security group rule(s):</section>
+  <section class="property-control-group">{{ i18n "PROP_SGRULE_DESCRIPTION" }}</section>
 
 	{{#each sg_group}}
     <div class="property-group-head">{{name}}</div>
@@ -8,7 +8,7 @@
       {{#each rules}}
       <li>
         <div class="rule-list-row">
-          <div class="rule-direction-icon {{#if egress}}icon-outbound{{else}}icon-inbound{{/if}} tooltip" data-tooltip="{{#if egress}}Outbound{{else}}Inbound{{/if}}"></div>
+          <div class="rule-direction-icon {{#if egress}}icon-outbound{{else}}icon-inbound{{/if}} tooltip" data-tooltip='{{#if egress}}{{{ i18n "PROP_SGRULE_TIP_OUTBOUND" }}}{{else}}{{{ i18n "PROP_SGRULE_TIP_INBOUND" }}}{{/if}}'></div>
           <div class="rule-reference">{{connection}}</div>
         </div>
 <!--         <div class="col1 sg-toggle-show-icon toggle-icon tooltip" data-tooltip="Hide rules of DefaultSG on canvas" data-id="DefaultSG" data-toggletext="Hide rules of DefaultSG on canvas" data-toggleactive="Show rules of DefaultSG on canvas" data-toggleclass="sg-hide-icon" href="#"></div> -->
@@ -26,7 +26,7 @@
 
   {{#unless isAppView}}
   <div class="tac property-control-group">
-    <button class="btn" id="sg-edit-rule-button" style="width:180px;"><i class="icon-edit icon-label"></i>Edit Related Rule</button>
+    <button class="btn" id="sg-edit-rule-button" style="width:180px;"><i class="icon-edit icon-label"></i>{{ i18n "PROP_SGRULE_BTN_EDIT_RULE" }}</button>
   </div>
   {{/unless}}
 

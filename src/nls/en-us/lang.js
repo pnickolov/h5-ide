@@ -272,8 +272,41 @@ define({
 
 
 		//##### sg property module
-
+		'PROP_SG_TIT_DETAIL'                                             : 'Security Group Details',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : 'Name',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : 'Description',
+		'PROP_SG_TIT_RULE'                                               : 'Rule',
+		'PROP_SG_RULE_SORT_BY'                                           : 'Sort by',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : 'Direction',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : 'Source/Destination',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : 'Protocol',
+		'PROP_SG_TIT_MEMBER'                                             : 'Member',
+		'PROP_SG_TIP_CREATE_RULE'                                        : 'Create rule referencing IP Range',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : 'Remove rule',
+		'PROP_SG_TIP_PROTOCOL'                                           : 'Protocol',
+		'PROP_SG_TIP_SRC'                                                : 'Source',
+		'PROP_SG_TIP_DEST'                                               : 'Destination',
+		'PROP_SG_TIP_INBOUND'                                            : 'Inbound',
+		'PROP_SG_TIP_OUTBOUND'                                           : 'Outbound',
+		'PROP_SG_TIP_PORT_CODE'                                          : 'Port or Code',
 		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : 'rules',
+		'PROP_SGLIST_LBL_MEMBER'                                         : 'members',
+		'PROP_SGLIST_LNK_DELETE'                                         : 'Delete',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : 'View details',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : 'Create new Security Group...',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : 'The selected connection reflects following security group rule(s):',
+		'PROP_SGRULE_TIP_INBOUND'                                        : 'Inbound',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : 'Outbound',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
+		//##### sg rule property module
 
 
 		//##### acl property module

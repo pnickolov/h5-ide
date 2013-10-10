@@ -271,8 +271,41 @@ define({
 
 
 		//##### sg property module
-
+		'PROP_SG_TIT_DETAIL'                                             : '安全组详细',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : '名称',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : '描述',
+		'PROP_SG_TIT_RULE'                                               : '规则',
+		'PROP_SG_RULE_SORT_BY'                                           : '排序',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : '按方向',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : '按源/目的',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : '按协议',
+		'PROP_SG_TIT_MEMBER'                                             : '成员',
+		'PROP_SG_TIP_CREATE_RULE'                                        : '创建基于IP范围的规则',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : '删除规则',
+		'PROP_SG_TIP_PROTOCOL'                                           : '协议',
+		'PROP_SG_TIP_SRC'                                                : '源',
+		'PROP_SG_TIP_DEST'                                               : '目的',
+		'PROP_SG_TIP_INBOUND'                                            : '入方向',
+		'PROP_SG_TIP_OUTBOUND'                                           : '出方向',
+		'PROP_SG_TIP_PORT_CODE'                                          : '端口或代码',
 		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : '条规则',
+		'PROP_SGLIST_LBL_MEMBER'                                         : '个成员',
+		'PROP_SGLIST_LNK_DELETE'                                         : '删除',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : '查看详细',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : '创建新安全组...',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : '当前选中的连线反映了以下安全组的规则:',
+		'PROP_SGRULE_TIP_INBOUND'                                        : '入方向',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : '出方向',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : '编辑相关规则',
+		//##### sg rule property module
 
 
 		//##### acl property module

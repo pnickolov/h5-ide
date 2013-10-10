@@ -2,17 +2,33 @@
 #  View Mode for component/tutorial
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'account_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( account_model ) ->
 
     TutorialModel = Backbone.Model.extend {
 
-        defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
-
         initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+            me = this
+
+            #####listen ACCOUNT_UPDATE__ACCOUNT_RETURN
+            me.on 'ACCOUNT_UPDATE__ACCOUNT_RETURN', (result) ->
+                console.log 'ACCOUNT_UPDATE__ACCOUNT_RETURN'
+
+                attributes = result.param[3]
+
+                if !result.is_error
+
+                    if attributes.state is '2'
+                        #
+                        MC.forge.cookie.setCookieByName 'state', attributes.state
+                        MC.forge.cookie.setIDECookie $.cookie()
+                else
+
+
+                null
+
+        updateAccountService : ->
+            console.log 'updateAccountService'
+            account_model.update_account {sender:this}, $.cookie('usercode'), $.cookie('session_id'), { 'state' : '2' }
 
     }
 

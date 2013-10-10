@@ -117,10 +117,10 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 console.log 'UPDATE_DASHBOARD'
                 view.reloadResource() if view
 
-            if MC.forge.cookie.getCookieByName('new_account') is 'true' # new account show welcome dialog
+            if MC.forge.cookie.getCookieByName('state') is '1' # new account show welcome dialog
                 view.showCredential 'welcome'
                 #
-                #MC.forge.cookie.setCookieByName 'new_account', false
+                #MC.forge.cookie.setCookieByName 'state', false
                 #MC.forge.cookie.setIDECookie $.cookie()
 
             #model

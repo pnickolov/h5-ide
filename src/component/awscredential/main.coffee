@@ -32,6 +32,7 @@ define [ 'jquery', 'event',
             if state is 'welcome'
                 ture_template = welcome_tmpl
                 view.state    = 'welcome'
+                model.updateAccountService() if MC.forge.cookie.getCookieByName( 'state' ) is '1'
             else
                 ture_template = template
                 view.state    = 'credential'
@@ -74,7 +75,7 @@ define [ 'jquery', 'event',
             view.on 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
                 console.log 'AWS_AUTHENTICATION'
                 # reset key first
-                model.resetKey 1
+                #model.resetKey 1
 
                 model.awsAuthenticate access_key, secret_key, account_id
 
@@ -146,7 +147,7 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'password')
 
-                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
+                    #view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
 
                     view.clickUpdatePassword('error_password')
 

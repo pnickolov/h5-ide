@@ -116,6 +116,9 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
 
+		#
+		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
+
 		#############################
 		#  WebSocket
 		#############################

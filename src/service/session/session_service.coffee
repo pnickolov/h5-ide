@@ -67,7 +67,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         session_info.email       = result[4]
         session_info.has_cred    = result[5]
         session_info.account_id  = result[6]
-        session_info.new_account = if result[7] then result[7] else 'false'
+        session_info.state       = result[7]
 
         #return session_info
         session_info

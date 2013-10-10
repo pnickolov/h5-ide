@@ -23,7 +23,8 @@ var listen = function ()
 			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
 			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
 			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
-			.on('mousedown', '.dragable', MC.canvas.event.selectNode);
+			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	if (canvas_state === 'stack')

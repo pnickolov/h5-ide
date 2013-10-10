@@ -3055,6 +3055,17 @@ MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
+		// Ctrl Move event
+		if (
+			event.which === 1 &&
+			event.ctrlKey
+		)
+		{
+			MC.canvas.event.ctrlMove.mousedown.call(this, event);
+
+			return false;
+		}
+
 		if (event.which === 1)
 		{
 			var target = $(this),
@@ -5073,6 +5084,62 @@ MC.canvas.event.groupResize = {
 				'mousemove': MC.canvas.event.groupResize.mousemove,
 				'mouseup': MC.canvas.event.groupResize.mouseup
 			});
+	}
+};
+
+MC.canvas.event.ctrlMove = {
+	mousedown: function (event)
+	{
+		if (
+			event.which === 1 &&
+			event.ctrlKey
+		)
+		{
+			event.stopImmediatePropagation();
+
+			var canvas_offset = $('#svg_canvas').offset(),
+				canvas = $('#canvas');
+
+			$(document).on({
+				'mousemove': MC.canvas.event.ctrlMove.mousemove,
+				'mouseup': MC.canvas.event.ctrlMove.mouseup
+			}, {
+				'canvas': canvas,
+				'scroll_content': canvas.find('.scroll-content').first()[0],
+				'offsetX': event.pageX,
+				'offsetY': event.pageY
+			});
+
+			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
+
+			return false;
+		}
+	},
+
+	mousemove: function (event)
+	{
+		var event_data = event.data,
+			canvas = event_data.canvas,
+			scroll_content = event_data.scroll_content,
+			scrollLeft = scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0,
+			scrollTop = scroll_content.realScrollTop ? scroll_content.realScrollTop : 0;
+
+		scrollbar.scrollTo(canvas, {
+			'left': event_data.offsetX - event.pageX - scrollLeft,
+			'top':  event_data.offsetY - event.pageY - scrollTop
+		});
+
+		return false;
+	},
+
+	mouseup: function ()
+	{
+		$('#overlayer').remove();
+
+		$(document).off({
+			'mousemove': MC.canvas.event.ctrlMove.mousemove,
+			'mouseup': MC.canvas.event.ctrlMove.mouseup
+		});
 	}
 };
 

@@ -75,7 +75,7 @@ define [ 'jquery', 'event',
             view.on 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
                 console.log 'AWS_AUTHENTICATION'
                 # reset key first
-                model.resetKey 1
+                #model.resetKey 1
 
                 model.awsAuthenticate access_key, secret_key, account_id
 

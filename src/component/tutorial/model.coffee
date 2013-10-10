@@ -17,7 +17,7 @@ define [ 'account_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( account_
 
                 if !result.is_error
 
-                    if attributes.state is '1'
+                    if attributes.state is '2'
                         #
                         MC.forge.cookie.setCookieByName 'state', attributes.state
                         MC.forge.cookie.setIDECookie $.cookie()
@@ -28,7 +28,7 @@ define [ 'account_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( account_
 
         updateAccountService : ->
             console.log 'updateAccountService'
-            account_model.update_account {sender:this}, $.cookie('usercode'), $.cookie('session_id'), { 'state' : '1' }
+            account_model.update_account {sender:this}, $.cookie('usercode'), $.cookie('session_id'), { 'state' : '2' }
 
     }
 

@@ -32,7 +32,7 @@ define [ 'jquery', 'event',
             if state is 'welcome'
                 ture_template = welcome_tmpl
                 view.state    = 'welcome'
-                model.updateAccountService() if MC.forge.cookie.getCookieByName( 'state' ) is '2'
+                model.updateAccountService() if MC.forge.cookie.getCookieByName( 'state' ) is '1'
             else
                 ture_template = template
                 view.state    = 'credential'

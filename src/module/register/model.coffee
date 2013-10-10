@@ -61,16 +61,6 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                     sessionStorage.setItem 'username', forge_result.param[ 1 ]
                     sessionStorage.setItem 'password', forge_result.param[ 2 ]
 
-                    #set email
-                    localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
-                    localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
-                    intercom_sercure_mode_hash = () ->
-                        intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
-                        hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
-                        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
-                        return hash.toString CryptoJS.enc.Hex
-                    localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
-
                     window.location.href = 'register.html#success'
                 else
                     #
@@ -103,6 +93,16 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
 
                     #set madeiracloud_ide_session_id
                     forge_handle.cookie.setIDECookie result
+
+                    #set email
+                    localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+                    localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
+                    intercom_sercure_mode_hash = () ->
+                        intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+                        hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+                        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+                        return hash.toString CryptoJS.enc.Hex
+                    localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
                     #redirect to page ide.html
                     window.location.href = 'ide.html'

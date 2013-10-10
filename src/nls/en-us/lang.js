@@ -438,9 +438,29 @@ define({
 
 		/****** Dashboard ******/
 		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+		'RmellELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
+		'DASHBOARD_TIP_UNMANAGED_RESOURCE'		: 'Unmanaged Resource',
+		'DASHBOARD_TXT_UNMANAGED'         		: 'Unmanaged',
+
+		'REGION_NAME_us-east-1'					: 'US East',
+		'REGION_NAME_us-west-1'	  				: 'US West',
+		'REGION_NAME_us-west-2'	  				: 'US West',
+		'REGION_NAME_eu-west-1'	  				: 'EU West',
+		'REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
+		'REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
+		'REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
+		'REGION_NAME_sa-east-1'	    			: 'South America',
+
+		'REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
+		'REGION_NAME_SHORT_us-west-1'	  		: 'California',
+		'REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
+		'REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
+		'REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
+		'REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
+		'REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+
+
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

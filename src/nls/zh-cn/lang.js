@@ -432,9 +432,27 @@ define({
 
 		/****** Dashboard ******/
 		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+		'RELOAD_AWS_RESOURCE_SUCCESS'     		: '资源更新完毕',
+		'DASHBOARD_TIP_UNMANAGED_RESOURCE'		: '非托管资源',
+		'DASHBOARD_TXT_UNMANAGED'        		: '非托管的',
+
+		'REGION_NAME_us-east-1'					: '美国东部',
+		'REGION_NAME_us-west-1'	  				: '美国西部',
+		'REGION_NAME_us-west-2'	  				: '美国西部',
+		'REGION_NAME_eu-west-1'	  				: '欧洲西部',
+		'REGION_NAME_ap-southeast-1'    		: '亚太地区',
+		'REGION_NAME_ap-southeast-2'			: '亚太地区',
+		'REGION_NAME_ap-northeast-1'			: '亚太地区',
+		'REGION_NAME_sa-east-1'	    			: '南美洲',
+
+		'REGION_NAME_SHORT_us-east-1'	  		: '弗吉尼亚',
+		'REGION_NAME_SHORT_us-west-1'	  		: '加利福尼亚北部',
+		'REGION_NAME_SHORT_us-west-2'	  		: '俄勒冈',
+		'REGION_NAME_SHORT_eu-west-1'	  		: '爱尔兰',
+		'REGION_NAME_SHORT_ap-southeast-1'  	: '新加坡',
+		'REGION_NAME_SHORT_ap-southeast-2'		: '悉尼',
+		'REGION_NAME_SHORT_ap-northeast-1'		: '东京',
+		'REGION_NAME_SHORT_sa-east-1'	    	: '圣保罗',
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

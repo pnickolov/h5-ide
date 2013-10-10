@@ -377,12 +377,12 @@
     <table class="table-head">
         <thead>
             <tr>
-                <th class="sortable" style="width: 25%">Instance Name/ID</th>
-                <th class="sortable" style="width: 17%">Status</th>
-                <th class="sortable" style="width: 20%" data-row-type="datetime">Launch Time</th>
-                <th class="sortable" style="width: 15%">AMI</th>
-                <th class="sortable" style="width: 15%">Availability Zone</th>
-                <th class="sortable" style="width: 8%">Detail</th>
+                <th class="sortable" style="width: 25%">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                <th class="sortable" style="width: 17%">{{i18n "DASH_LBL_STATUS"}}</th>
+                <th class="sortable" style="width: 20%" data-row-type="datetime">{{i18n "DASH_LBL_Launch_Time"}}</th>
+                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AMI"}}</th>
+                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+                <th class="sortable" style="width: 8%">{{i18n "DASH_LBL_DETAIL"}}</th>
             </tr>
         </thead>
     </table>
@@ -427,7 +427,7 @@
                         </tr>
                         {{else}}
                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                            <p>There is no instance in this region.</p>
+                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                         </div>
                         {{/each}}
 
@@ -443,9 +443,9 @@
         <table class="table-head">
             <thead>
                 <tr>
-                    <th style="width:40%">IP</th>
-                    <th class="sortable" style="width:40%">Associated Instance</th>
-                    <th style="width:20%">Detail</th>
+                    <th style="width:40%">{{i18n "DASH_LBL_IP"}}</th>
+                    <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ASSOCIATED_INSTANCE"}}</th>
+                    <th style="width:20%">{{i18n "DASH_LBL_DETAIL"}}</th>
                 </tr>
             </thead>
         </table>
@@ -470,7 +470,7 @@
                             </tr>
                             {{else}}
                             <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                <p>There is no Elastic IP in this region.</p>
+                                <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_ELASTIC_IP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                             </div>
                             {{/each}}
 
@@ -486,12 +486,12 @@
             <table class="table-head">
                 <thead>
                     <tr>
-                        <th class="sortable" style="width:16%">Name/ID</th>
-                        <th class="sortable" style="width:18%">Status</th>
-                        <th class="sortable" style="width:21%" data-row-type="datetime">Create Time</th>
-                        <th class="sortable" style="width:15%">Device Name</th>
-                        <th class="sortable" style="width:15%">Attachment Status</th>
-                        <th style="width:15%">Detail</th>
+                        <th class="sortable" style="width:16%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                        <th class="sortable" style="width:18%">{{i18n "DASH_LBL_STATUS"}}</th>
+                        <th class="sortable" style="width:21%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
+                        <th class="sortable" style="width:15%">{{i18n "DASH_LBL_DEVICE_NAME"}}</th>
+                        <th class="sortable" style="width:15%">{{i18n "DASH_LBL_ATTACHMENT_STATUS"}}</th>
+                        <th style="width:15%">{{i18n "DASH_LBL_DETAIL"}}</th>
                     </tr>
                 </thead>
             </table>
@@ -535,7 +535,7 @@
                                 </tr>
                                 {{else}}
                                 <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                    <p>There is no volume in this region.</p>
+                                    <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VOLUME"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                 </div>
                                 {{/each}}
 
@@ -551,11 +551,11 @@
                 <table class="table-head">
                     <thead>
                         <tr>
-                            <th class="sortable" style="width:25%">Name/ID</th>
-                            <th class="sortable" style="width:20%">Status</th>
-                            <th class="sortable" style="width:25%">CIDR</th>
-                            <th class="sortable" style="width:20%">DHCP Settings</th>
-                            <th style="width:10%">Detail</th>
+                            <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                            <th class="sortable" style="width:25%">{{i18n "DASH_LBL_CIDR"}}</th>
+                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_DHCP_SETTINGS"}}</th>
+                            <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                         </tr>
                     </thead>
                 </table>
@@ -601,7 +601,7 @@
                                     </tr>
                                     {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no VPC in this region.</p>
+                                        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPC"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                     </div>
                                     {{/each}}
 
@@ -617,11 +617,11 @@
                     <table class="table-head">
                         <thead>
                             <tr>
-                                <th class="sortable" style="width:25%">Name/ID</th>
-                                <th class="sortable" style="width:20%">Status</th>
-                                <th class="sortable" style="width:25%">Virtual Private Gateway</th>
-                                <th class="sortable" style="width:20%">Customer Gateway</th>
-                                <th style="width:10%">Detail</th>
+                                <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                                <th class="sortable" style="width:25%">{{i18n "DASH_LBL_VIRTUAL_PRIVATE_GATEWAY"}}</th>
+                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_CUSTOMER_GATEWAY"}}</th>
+                                <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                             </tr>
                         </thead>
                     </table>
@@ -664,7 +664,7 @@
                                         </tr>
                                         {{else}}
                                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                            <p>There is no VPN in this region.</p>
+                                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPN"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                         </div>
                                         {{/each}}
 
@@ -680,11 +680,11 @@
                         <table class="table-head">
                             <thead>
                                 <tr>
-                                    <th class="sortable" style="width:25%">DNS Name</th>
-                                    <th class="sortable" style="width:20%" data-row-type="datetime">Create time</th>
-                                    <th class="sortable" style="width:25%">Availability Zone</th>
-                                    <th class="sortable" style="width:20%">Status</th>
-                                    <th style="width:10%">Detail</th>
+                                    <th class="sortable" style="width:25%">{{i18n "DASH_LBL_DNS_NAME"}}</th>
+                                    <th class="sortable" style="width:20%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
+                                    <th class="sortable" style="width:25%">{{i18n "DASH_LBL_Availability_Zone"}}</th>
+                                    <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                                    <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                 </tr>
                             </thead>
                         </table>
@@ -712,7 +712,7 @@
                                             </tr>
                                             {{else}}
                                             <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                <p>There is no Load Balancer in this region.</p>
+                                                <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_LOAD_BALANCER"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                             </div>
                                             {{/each}}
 
@@ -728,10 +728,10 @@
                             <table class="table-head">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" style="width:20%">Name</th>
-                                        <th class="sortable" style="width:50%">Current/Last Activity</th>
-                                        <th class="sortable" style="width:20%">Activity Status</th>
-                                        <th style="width:10%">Detail</th>
+                                        <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+                                        <th class="sortable" style="width:50%">{{i18n "DASH_LBL_CURRENT"}}/{{i18 "DASH_LBL_LAST_ACTIVITY"}}</th>
+                                        <th class="sortable" style="width:20%">{{i18n "DASH_LBL_ACTIVITY_STATUS"}}</th>
+                                        <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -772,7 +772,7 @@
                                                 {{else}}
                                                 <!-- Blank Slate -->
                                                 <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                    <p>There is no Auto Scaling Group in this region.</p>
+                                                    <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                 </div>
                                                 {{/each}}
 
@@ -788,11 +788,11 @@
                                 <table class="table-head">
                                     <thead>
                                         <tr>
-                                            <th class="sortable" style="width:20%">Name</th>
-                                            <th class="sortable" style="width:30%">Dimension</th>
-                                            <th class="sortable" style="width:30%">Threshold</th>
-                                            <th class="sortable" style="width:10%">State</th>
-                                            <th style="width:10%">Detail</th>
+                                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+                                            <th class="sortable" style="width:30%">{{i18n "DASH_LBL_DIMENSION"}}</th>
+                                            <th class="sortable" style="width:30%">{{i18n "DASH_LBL_THRESHOLD"}}</th>
+                                            <th class="sortable" style="width:10%">{{i18n "DASH_LBL_STATE"}}</th>
+                                            <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -822,7 +822,7 @@
                                                     {{else}}
                                                     <!-- Blank Slate -->
                                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                        <p>There is no CloudWatch Alarm in this region.</p>
+                                                        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                     </div>
                                                     {{/each}}
 
@@ -838,10 +838,10 @@
                                     <table class="table-head">
                                         <thead>
                                             <tr>
-                                                <th class="sortable" style="width:30%">Topic Name</th>
-                                                <th class="sortable" style="width:40%">Endpoint and Protocol</th>
-                                                <th class="sortable" style="width:20%">Confirmation</th>
-                                                <th style="width:10%">Detail</th>
+                                                <th class="sortable" style="width:30%">{{i18n "DASH_LBL_TOPIC_NAME"}}</th>
+                                                <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ENDPOINT_AND_PROTOCOL"}}</th>
+                                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_CONFIRMATION"}}</th>
+                                                <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -868,7 +868,7 @@
                                                         {{else}}
                                                         <!-- Blank Slate -->
                                                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                            <p>There is no SNS Subscription in this region.</p>
+                                                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                         </div>
 
                                                         {{/each}}

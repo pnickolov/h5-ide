@@ -436,6 +436,8 @@ define({
 
 
 		'DASH_TIP_UNMANAGED_RESOURCE'				: '非托管资源',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: '该地区没有',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: '',
 
 
 		'DASH_BTN_GLOBAL'							: '全局',
@@ -457,6 +459,34 @@ define({
 		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling 组',
 		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch 警报',
 		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS 订阅',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: '实例名',
+		'DASH_LBL_NAME'	    				 		: '名称',
+		'DASH_LBL_STATUS'	    	    			: '状态',
+		'DASH_LBL_STATE'	    	    			: '状态',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: '启动时间',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: '可用区域',
+		'DASH_LBL_DETAIL'	    	    			: '详细',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : '关联实例',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: '创建时间',
+		'DASH_LBL_DEVICE_NAME'	    	    		: '设备名',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : '附加状态',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP设置',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: '虚拟专用网关',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: '客户网关',
+		'DASH_LBL_DNS_NAME'	    	    			: '域名',
+		'DASH_LBL_CURRENT'	    	    			: '当前',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: '最近活动',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: '活动状态',
+		'DASH_LBL_DIMENSION'	    	    		: '维度',
+		'DASH_LBL_THRESHOLD'	    	    		: '阈值',
+		'DASH_LBL_TOPIC_NAME'	    	    		: '主题名',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
+		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 
 		//###### dashboard module
 

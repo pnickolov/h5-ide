@@ -441,6 +441,9 @@ define({
 
 
 		'DASH_TIP_UNMANAGED_RESOURCE'				: 'Unmanaged Resource',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: 'There is no ',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: ' in this region',
+
 
 
 		'DASH_BTN_GLOBAL'							: 'Global',
@@ -463,6 +466,35 @@ define({
 		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling Group',
 		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch Alarm',
 		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: 'Instance Name',
+		'DASH_LBL_NAME'	    				 		: 'Name',
+		'DASH_LBL_STATUS'	    	    			: 'Status',
+		'DASH_LBL_STATE'	    	    			: 'State',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: 'Launch Time',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: 'Availability Zone',
+		'DASH_LBL_DETAIL'	    	    			: 'Detail',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : 'Associated Instance',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: 'Create Time',
+		'DASH_LBL_DEVICE_NAME'	    	    		: 'Device Name',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : 'Attachment Status',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP Settings',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: 'Virtual Private Gateway',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: 'Customer Gateway',
+		'DASH_LBL_DNS_NAME'	    	    			: 'DNS Name',
+		'DASH_LBL_CURRENT'	    	    			: 'Current',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: 'Last Activity',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: 'Activity Status',
+		'DASH_LBL_DIMENSION'	    	    		: 'Dimension',
+		'DASH_LBL_THRESHOLD'	    	    		: 'Threshold',
+		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
+		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
+
 
 
 

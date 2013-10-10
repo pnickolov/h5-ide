@@ -262,7 +262,11 @@ define({
 
 
 		//##### subnet property module
-
+		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet详细',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : '名称',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR 块',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : '相关访问控制表',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : '创建新的访问控制表...',
 		//##### subnet property module
 
 

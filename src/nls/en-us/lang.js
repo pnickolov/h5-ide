@@ -263,7 +263,11 @@ define({
 
 
 		//##### subnet property module
-
+		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet Details',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : 'Name',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR Block',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : 'Associated Network ACL',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : 'Create new Network ACL...',
 		//##### subnet property module
 
 

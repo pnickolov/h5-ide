@@ -234,7 +234,7 @@ define({
 
 
 		//##### app property module
-
+		'PROP_APP_SNS_NONE'                         : '本应用不含SNS主题',
 		//##### app property module
 
 
@@ -297,6 +297,8 @@ define({
 		'PROP_SG_TIP_INBOUND'                                            : '入方向',
 		'PROP_SG_TIP_OUTBOUND'                                           : '出方向',
 		'PROP_SG_TIP_PORT_CODE'                                          : '端口或代码',
+		'PROP_SG_APP_SG_ID'                                              : '安全组标识',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC标识',
 		//##### sg property module
 
 
@@ -306,6 +308,8 @@ define({
 		'PROP_SGLIST_LNK_DELETE'                                         : '删除',
 		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : '查看详细',
 		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : '创建新安全组...',
+		'PROP_SGLIST_TAB_GROUP'                                          : '组',
+		'PROP_SGLIST_TAB_RULE'                                           : '规则',
 		//##### sg list property module
 
 

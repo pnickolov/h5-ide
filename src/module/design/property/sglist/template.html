@@ -1,7 +1,7 @@
 {{#unless is_stack_sg}}
 <ul class="tab sg-info-list-tab">
-	<li data-tab-target="#item-group" class="active">Group</li>
-	<li data-tab-target="#item-rule">Rule</li>
+	<li data-tab-target="#item-group" class="active">{{ i18n "PROP_SGLIST_TAB_GROUP" }}</li>
+	<li data-tab-target="#item-rule">{{ i18n "PROP_SGLIST_TAB_RULE" }}</li>
 </ul>
 {{/unless}}
 
@@ -56,13 +56,13 @@
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="rule-list-sort property-control-group">
-			<h5>Sort by</h5>
+			<h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
 			<div class="selectbox" id="sg-rule-filter-select">
-				<div class="selection">Direction</div>
+				<div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
 				<ul class="dropdown" tabindex="-1">
-					<li class="item selected" data-id="direction">Direction</li>
-					<li class="item" data-id="source/destination">Source/Destination</li>
-					<li class="item" data-id="protocol">Protocol</li>
+					<li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
+					<li class="item" data-id="source/destination">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
+					<li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
 				</ul>
 			</div>
 		</div>
@@ -70,14 +70,14 @@
 			{{#each sg_rule_list}}
 			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-iprange="{{IpRanges}}" data-direction="{{Direction}}">
 				<div class="rule-list-row">
-					<div data-id="{{Direction}}" class='rule-direction-icon tooltip icon-{{Direction}}' data-tooltip="{{Direction}}"></div>
+					<div data-id="{{Direction}}" class='rule-direction-icon tooltip icon-{{Direction}}' data-tooltip='{{#ifCond Direction "inbound"}}{{{ i18n "PROP_SG_TIP_INBOUND" }}}{{else}}{{{ i18n "PROP_SG_TIP_OUTBOUND" }}}{{/ifCond}}'></div>
 					<div data-id="{{IpRanges}}" class='rule-reference'>
 						{{IpRanges}}
 					</div>
 				</div>
 				<div class="rule-list-row">
-					<div data-id="{{IpProtocol}}"><span class="rule-protocol">{{IpProtocol}}</span></div>
-					<div data-id="{{FromPort}}" class='rule-port' title="port message">{{display_port}}</div>
+					<div data-id="{{IpProtocol}}"><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{IpProtocol}}</span></div>
+					<div data-id="{{FromPort}}" class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{display_port}}</div>
 				</div>
 			</li>
 			{{/each}}

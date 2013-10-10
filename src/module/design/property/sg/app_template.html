@@ -1,16 +1,16 @@
 <article>
   <dl class="dl-vertical">
-    <dt>Security Group ID</dt>
+    <dt>{{ i18n "PROP_SG_APP_SG_ID" }}</dt>
     <dd>{{sg_app_detail.groupId}}</dd>
 
-    <dt>Description</dt>
+    <dt>{{ i18n "PROP_SG_DETAIL_LBL_DESCRIPTION" }}</dt>
     <dd>{{sg_app_detail.groupDescription}}</dd>
 
-    <dt>VPC ID</dt>
+    <dt>{{ i18n "PROP_SG_APP_VPC_ID" }}</dt>
     <dd>{{sg_app_detail.vpcId}}</dd>
   </dl>
 
-  <div class="option-group-head expand">Rule
+  <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
     <span class="property-head-num-wrap">(<span id="rule-count">{{sg_app_detail.rules.length}}</span>)</span>
   </div>
   <div class="option-group">
@@ -20,13 +20,13 @@
     </div> -->
 
     <div class="rule-list-sort property-control-group">
-      <h5>Sort by</h5>
+      <h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
       <div class="selectbox" id="sg-rule-filter-select">
-        <div class="selection">Direction</div>
+        <div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
         <ul class="dropdown" tabindex="-1">
-          <li class="item selected" data-id="2">Direction</li>
-          <li class="item" data-id="2">Source/Destination</li>
-          <li class="item" data-id="3">Protocol</li>
+          <li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
+          <li class="item" data-id="source/destination">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
+          <li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
         </ul>
       </div>
     </div>
@@ -41,8 +41,8 @@
           </div>
       </div>
       <div class="rule-list-row">
-          <span class='rule-protocol'>{{ipProtocol}}</span>
-          <div class='rule-port' title="port message">{{dispPort}}</div>
+          <span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{ipProtocol}}</span>
+          <div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{dispPort}}</div>
       </div>
       </li>
       {{/each}}

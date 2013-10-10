@@ -235,7 +235,7 @@ define({
 
 
 		//##### app property module
-
+		'PROP_APP_SNS_NONE'                         : 'This app has no SNS Topic',
 		//##### app property module
 
 
@@ -298,6 +298,8 @@ define({
 		'PROP_SG_TIP_INBOUND'                                            : 'Inbound',
 		'PROP_SG_TIP_OUTBOUND'                                           : 'Outbound',
 		'PROP_SG_TIP_PORT_CODE'                                          : 'Port or Code',
+		'PROP_SG_APP_SG_ID'                                              : 'Security Group ID',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC ID',
 		//##### sg property module
 
 
@@ -307,6 +309,8 @@ define({
 		'PROP_SGLIST_LNK_DELETE'                                         : 'Delete',
 		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : 'View details',
 		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : 'Create new Security Group...',
+		'PROP_SGLIST_TAB_GROUP'                                          : 'Group',
+		'PROP_SGLIST_TAB_RULE'                                           : 'Rule',
 		//##### sg list property module
 
 

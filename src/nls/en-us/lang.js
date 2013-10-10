@@ -346,12 +346,12 @@ define({
 
 
 		//##### vpn property module
-
+		'PROP_VPN_LBL_IP_PREFIX'             : 'Network IP Prefixes',
 		//##### vpn property module
 
 
 		//##### igw property module
-
+		'PROP_IGW_TXT_DESCRIPTION'           : 'The Internet gateway is the router on the AWS network that connects your VPC to the Internet.',
 		//##### igw property module
 
 

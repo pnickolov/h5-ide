@@ -340,17 +340,17 @@ define({
 
 
 		//##### vgw property module
-		'PROP_VGW_TXT_DESCRIPTION'           : 'The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel.',
+		'PROP_VGW_TXT_DESCRIPTION'           : '虚拟私有网关是亚马逊一侧的VPN隧道的路由器.',
 		//##### vgw property module
 
 
 		//##### vpn property module
-
+		'PROP_VPN_LBL_IP_PREFIX'             : '网络号前缀',
 		//##### vpn property module
 
 
 		//##### igw property module
-
+		'PROP_IGW_TXT_DESCRIPTION'          : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
 		//##### igw property module
 
 

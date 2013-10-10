@@ -2573,11 +2573,10 @@ a {
 }
 
 .dashboard-widget-body-table.blank-widget {
-	background: #fff;
+	background: #f0f0f0;
 }
 
 .dashboard-widget-body-table.blank-widget p{
-	padding-top: 90px;
 }
 
 	content: "Ã®â‚";
@@ -2589,7 +2588,7 @@ a {
 }
 
 .dashboard-widget-body-table.table-tall {
-	height: 340px;
+	height: 140px;
 }
 
 #btn-create-stack {

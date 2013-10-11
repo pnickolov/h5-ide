@@ -333,6 +333,26 @@ define({
 		//##### sg rule property module
 
 
+		//##### add sg rule pop - modalSGRule
+		'POP_SGRULE_TITLE_ADD'                                           : '添加安全组规则',
+		'POP_SGRULE_TITLE_EDIT'                                          : '修改安全组规则',
+		'POP_SGRULE_LBL_DIRECTION'                                       : '方向',
+		'POP_SGRULE_LBL_INBOUND'                                         : '入方向',
+		'POP_SGRULE_LBL_OUTBOUND'                                        : '出方向',
+		'POP_SGRULE_LBL_SOURCE'                                          : '源',
+		'POP_SGRULE_LBL_PROTOCOL'                                        : '协议',
+		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_SGRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_SGRULE_PROTOCOL_CUSTOM'                                     : '自定义',
+		'POP_SGRULE_PROTOCOL_ALL'                                        : '全部',
+		'POP_SGRULE_BTN_SAVE'                                            : '保存',
+		'POP_SGRULE_BTN_CANCEL'                                          : '取消',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : '如 192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : '端口范围，如 80 或者 49152-65535',
+		//##### add sg rule pop - modalSGRule
+
+
 		//##### acl property module
 		'PROP_ACL_LBL_NAME'                                              : '名称',
 		'PROP_ACL_TIT_RULE'                                              : '规则',

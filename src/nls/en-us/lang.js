@@ -333,6 +333,24 @@ define({
 		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
 		//##### sg rule property module
 
+		//##### add sg rule pop - modalSGRule
+		'POP_SGRULE_TITLE_ADD'                                           : 'Add Security Group Rule',
+		'POP_SGRULE_TITLE_EDIT'                                          : 'Edit Security Group Rule',
+		'POP_SGRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_SGRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_SGRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_SGRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_SGRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_SGRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_SGRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_SGRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_SGRULE_BTN_SAVE'                                            : 'Save',
+		'POP_SGRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		//##### add sg rule pop - modalSGRule
 
 		//##### acl property module
 		'PROP_ACL_LBL_NAME'                                              : 'Name',

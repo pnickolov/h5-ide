@@ -340,6 +340,7 @@ define({
 		'POP_SGRULE_LBL_INBOUND'                                         : '入方向',
 		'POP_SGRULE_LBL_OUTBOUND'                                        : '出方向',
 		'POP_SGRULE_LBL_SOURCE'                                          : '源',
+		'POP_SGRULE_LBL_DEST'                                            : '目的',
 		'POP_SGRULE_LBL_PROTOCOL'                                        : '协议',
 		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
 		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
@@ -348,8 +349,8 @@ define({
 		'POP_SGRULE_PROTOCOL_ALL'                                        : '全部',
 		'POP_SGRULE_BTN_SAVE'                                            : '保存',
 		'POP_SGRULE_BTN_CANCEL'                                          : '取消',
-		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : '如 192.168.2.0/24',
-		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : '端口范围，如 80 或者 49152-65535',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : '如192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : '端口范围，如80或49152-65535',
 		//##### add sg rule pop - modalSGRule
 
 
@@ -376,6 +377,30 @@ define({
 		'PROP_ACL_APP_IS_DEFAULT'                                        : '是否缺省',
 		'PROP_ACL_APP_VPC_ID'                                            : 'VPC标识',
 		//##### acl property module
+
+		//##### add sg rule pop - component/aclrule
+		'POP_ACLRULE_TITLE_ADD'                                           : '添加访问控制表规则',
+		'POP_ACLRULE_LBL_RULE_NUMBER'                                     : '规则编号',
+		'POP_ACLRULE_LBL_ACTION'                                          : '动作',
+		'POP_ACLRULE_LBL_ACTION_ALLOW'                                    : '允许',
+		'POP_ACLRULE_LBL_ACTION_DENY'                                     : '拒绝',
+		'POP_ACLRULE_LBL_DIRECTION'                                       : '方向',
+		'POP_ACLRULE_LBL_INBOUND'                                         : '入方向',
+		'POP_ACLRULE_LBL_OUTBOUND'                                        : '出方向',
+		'POP_ACLRULE_LBL_SOURCE'                                          : '源',
+		'POP_ACLRULE_LBL_DEST'                                            : '目的',
+		'POP_ACLRULE_LBL_PROTOCOL'                                        : '协议',
+		'POP_ACLRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_ACLRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_ACLRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_ACLRULE_PROTOCOL_CUSTOM'                                     : '自定义',
+		'POP_ACLRULE_PROTOCOL_ALL'                                        : '全部',
+		'POP_ACLRULE_BTN_SAVE'                                            : '保存',
+		'POP_ACLRULE_BTN_CANCEL'                                          : '取消',
+		'POP_ACLRULE_PLACEHOLD_SOURCE'                                    : '如192.168.2.0/24',
+		'POP_ACLRULE_PLACEHOLD_PORT_RANGE'                                : '端口范围,如80或49152-65535',
+		'POP_ACLRULE_LBL_PORT_RANGE_ALL'                                  : '端口范围:0-65535',
+		//##### add sg rule pop - component/aclrule
 
 
 		//##### vgw property module

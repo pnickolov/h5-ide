@@ -340,6 +340,7 @@ define({
 		'POP_SGRULE_LBL_INBOUND'                                         : 'Inbound',
 		'POP_SGRULE_LBL_OUTBOUND'                                        : 'Outbound',
 		'POP_SGRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_SGRULE_LBL_DEST'                                            : 'Destination',
 		'POP_SGRULE_LBL_PROTOCOL'                                        : 'Protocol',
 		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
 		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
@@ -375,6 +376,30 @@ define({
 		'PROP_ACL_APP_IS_DEFAULT'                                        : 'Default',
 		'PROP_ACL_APP_VPC_ID'                                            : 'VPC ID',
 		//##### acl property module
+
+		//##### add sg rule pop - component/aclrule
+		'POP_ACLRULE_TITLE_ADD'                                           : 'Add Network ACL Rule',
+		'POP_ACLRULE_LBL_RULE_NUMBER'                                     : 'Rule Number',
+		'POP_ACLRULE_LBL_ACTION'                                          : 'Action',
+		'POP_ACLRULE_LBL_ACTION_ALLOW'                                    : 'Allow',
+		'POP_ACLRULE_LBL_ACTION_DENY'                                     : 'Deny',
+		'POP_ACLRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_ACLRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_ACLRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_ACLRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_ACLRULE_LBL_DEST'                                            : 'Destination',
+		'POP_ACLRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_ACLRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_ACLRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_ACLRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_ACLRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_ACLRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_ACLRULE_BTN_SAVE'                                            : 'Save',
+		'POP_ACLRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_ACLRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_ACLRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		'POP_ACLRULE_LBL_PORT_RANGE_ALL'                                  : 'Port Range:0-65535',
+		//##### add sg rule pop - component/aclrule
 
 
 		//##### vgw property module

@@ -352,6 +352,9 @@ define({
 		'PROP_ACL_TIP_PORT'                                              : '端口',
 		'PROP_ACL_TIT_ASSOC'                                             : '关联的子网',
 		'PROP_ACL_TIP_REMOVE_RULE'                                       : '删除规则',
+		'PROP_ACL_APP_ID'                                                : '访问控制表标识',
+		'PROP_ACL_APP_IS_DEFAULT'                                        : '是否缺省',
+		'PROP_ACL_APP_VPC_ID'                                            : 'VPC标识',
 		//##### acl property module
 
 
@@ -377,6 +380,27 @@ define({
 		'PROP_CGW_LBL_STATIC'                   : '静态',
 		'PROP_CGW_LBL_DYNAMIC'                  : '动态',
 		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP 自治域号',
+		'PROP_CGW_APP_TIT_CGW'                  : '客户网关',
+		'PROP_CGW_APP_CGW_LBL_ID'               : '标识',
+		'PROP_CGW_APP_CGW_LBL_STATE'            : '状态',
+		'PROP_CGW_APP_CGW_LBL_TYPE'             : '类型',
+		'PROP_CGW_APP_TIT_VPN'                  : 'VPN连接',
+		'PROP_CGW_APP_VPN_LBL_ID'               : '标识',
+		'PROP_CGW_APP_VPN_LBL_STATE'            : '状态',
+		'PROP_CGW_APP_VPN_LBL_TYPE'             : '类型',
+		'PROP_CGW_APP_VPN_LBL_TUNNEL'           : 'VPN隧道',
+		'PROP_CGW_APP_VPN_COL_TUNNEL'           : '隧道',
+		'PROP_CGW_APP_VPN_COL_IP'               : 'IP地址',
+		'PROP_CGW_APP_VPN_LBL_STATUS_RT'        : '路由状态',
+		'PROP_CGW_APP_VPN_COL_IP_PREFIX'        : '网络号',
+		'PROP_CGW_APP_VPN_COL_SOURCE'           : '源',
+		'PROP_CGW_APP_TIT_DOWNLOAD_CONF'        : '下载配置',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR'          : '厂商',
+		'PROP_CGW_APP_DOWN_LBL_PLATFORM'        : '平台',
+		'PROP_CGW_APP_DOWN_LBL_SOFTWARE'        : '软件',
+		'PROP_CGW_APP_DOWN_LBL_GENERIC'         : '通用',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC' : '厂商无关',
+		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : '下载',
 		//##### cgw property module
 
 

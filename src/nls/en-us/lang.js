@@ -353,6 +353,9 @@ define({
 		'PROP_ACL_TIP_PORT'                                              : 'Port',
 		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
 		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
+		'PROP_ACL_APP_ID'                                                : 'Network ACL ID',
+		'PROP_ACL_APP_IS_DEFAULT'                                        : 'Default',
+		'PROP_ACL_APP_VPC_ID'                                            : 'VPC ID',
 		//##### acl property module
 
 
@@ -378,6 +381,27 @@ define({
 		'PROP_CGW_LBL_STATIC'                   : 'Static',
 		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
 		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
+		'PROP_CGW_APP_TIT_CGW'                  : 'Customer Gateway',
+		'PROP_CGW_APP_CGW_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_CGW_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_CGW_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_TIT_VPN'                  : 'VPN Connection',
+		'PROP_CGW_APP_VPN_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_VPN_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_VPN_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_VPN_LBL_TUNNEL'           : 'VPN Tunnels',
+		'PROP_CGW_APP_VPN_COL_TUNNEL'           : 'Tunnel',
+		'PROP_CGW_APP_VPN_COL_IP'               : 'IP Address',
+		'PROP_CGW_APP_VPN_LBL_STATUS_RT'        : 'Status Routes',
+		'PROP_CGW_APP_VPN_COL_IP_PREFIX'        : 'IP Prefixes',
+		'PROP_CGW_APP_VPN_COL_SOURCE'           : 'Source',
+		'PROP_CGW_APP_TIT_DOWNLOAD_CONF'        : 'Download Configuration',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR'          : 'Vendor',
+		'PROP_CGW_APP_DOWN_LBL_PLATFORM'        : 'Platform',
+		'PROP_CGW_APP_DOWN_LBL_SOFTWARE'        : 'Software',
+		'PROP_CGW_APP_DOWN_LBL_GENERIC'         : 'Generic',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC' : 'Vendor Agnostic',
+		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : 'Download',
 		//##### cgw property module
 
 

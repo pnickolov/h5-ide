@@ -73,6 +73,10 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                         #get all resource data for app
                         model.getAppResourcesService region_name, tab_id
 
+                    if type is 'OPEN_STACK'
+                        #get all not exist ami data for stack
+                        model.getAllNotExistAmiInStack region_name, tab_id
+
                     #temp
                     #when NEW_STACK result is tab_id
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result

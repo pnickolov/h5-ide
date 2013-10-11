@@ -10,7 +10,7 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'backbone', 'underscore', 'stack_service', 'base_model' ], ( Backbone, _, stack_service, base_model ) ->
+define [ 'backbone', 'underscore', 'stack_service', 'ami_service', 'base_model' ], ( Backbone, _, stack_service, ami_service, base_model ) ->
 
     StackModel = Backbone.Model.extend {
 
@@ -224,7 +224,18 @@ define [ 'backbone', 'underscore', 'stack_service', 'base_model' ], ( Backbone, 
                     me.pub forge_result
 
 
+        get_not_exist_ami : ( src, username, session_id, region_name, ami_list ) ->
 
+            me = this
+
+            src.model = me
+
+            ami_service.DescribeImages src, username, session_id, region_name, ami_list, null, null, null, ( result ) ->
+                
+                if !result.is_error
+                    if src.sender and src.sender.trigger then src.sender.trigger 'GET_NOT_EXIST_AMI_RETURN', result
+                else
+                    console.log 'ami.DescribeImages failed, error is ' + result.error_message
 
     }
 

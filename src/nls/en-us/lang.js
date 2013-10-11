@@ -199,8 +199,174 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
+		//linestyle
+		'TOOL_TIP_LINESTYLE'                          : 'Security Group Rule Line Style...',
+		'TOOL_LBL_LINESTYLE_STRAIGHT'                 : 'Straight',
+		'TOOL_LBL_LINESTYLE_ELBOW'                    : 'Elbow',
+		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : 'Quadratic Belzier curve',
+		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : 'Smooth quadratic Belzier curve',
+
+
 
 		/******property module******/
+
+		'PROP_LBL_REQUIRED'                     : 'Required',
+
+		//##### stack property module
+		'PROP_STACK_LBL_NAME'                       : 'Stack Name',
+		'PROP_STACK_LBL_REGION'                     : 'Region',
+		'PROP_STACK_LBL_TYPE'                       : 'Type',
+		'PROP_STACK_TIT_SG'                         : 'Security Groups',
+		'PROP_STACK_TIT_ACL'                        : 'Network ACL',
+		'PROP_STACK_TIT_SNS'                        : 'SNS Topic Subscription',
+		'PROP_STACK_BTN_ADD_SUB'                    : 'Add Subscription',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : 'Cost Estimation',
+		'PROP_STACK_LBL_COST_CYCLE'                 : 'month',
+		'PROP_STACK_COST_COL_RESOURCE'              : 'Resource',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : 'Size/Type',
+		'PROP_STACK_COST_COL_FEE'                   : 'Fee($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 Pricing',
+		'PROP_STACK_ACL_LBL_RULE'                   : 'rules',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : 'associations',
+		'PROP_STACK_ACL_BTN_DELETE'                 : 'Delete',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : 'Go to Network ACL Details',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : 'Create new Network ACL...',
+		//##### stack property module
+
+
+		//##### app property module
+		'PROP_APP_SNS_NONE'                         : 'This app has no SNS Topic',
+		//##### app property module
+
+
+		//##### az property module
+		'PROP_AZ_LBL_SWITCH'                            : 'Quick Switch Availability Zone',
+		//##### az property module
+
+
+		//##### vpc property module
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC Details',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : 'Name',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR Block',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : 'Tenancy',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : 'Default',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : 'Dedicated',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : 'Enable DNS resolution',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : 'AmazonProvidedDNS',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : 'NTP Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
+		//##### vpc property module
+
+
+		//##### subnet property module
+		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet Details',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : 'Name',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR Block',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : 'Associated Network ACL',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : 'Create new Network ACL...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : 'rules',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
+		//##### subnet property module
+
+
+		//##### sg property module
+		'PROP_SG_TIT_DETAIL'                                             : 'Security Group Details',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : 'Name',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : 'Description',
+		'PROP_SG_TIT_RULE'                                               : 'Rule',
+		'PROP_SG_RULE_SORT_BY'                                           : 'Sort by',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : 'Direction',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : 'Source/Destination',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : 'Protocol',
+		'PROP_SG_TIT_MEMBER'                                             : 'Member',
+		'PROP_SG_TIP_CREATE_RULE'                                        : 'Create rule referencing IP Range',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : 'Remove rule',
+		'PROP_SG_TIP_PROTOCOL'                                           : 'Protocol',
+		'PROP_SG_TIP_SRC'                                                : 'Source',
+		'PROP_SG_TIP_DEST'                                               : 'Destination',
+		'PROP_SG_TIP_INBOUND'                                            : 'Inbound',
+		'PROP_SG_TIP_OUTBOUND'                                           : 'Outbound',
+		'PROP_SG_TIP_PORT_CODE'                                          : 'Port or Code',
+		'PROP_SG_APP_SG_ID'                                              : 'Security Group ID',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC ID',
+		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : 'rules',
+		'PROP_SGLIST_LBL_MEMBER'                                         : 'members',
+		'PROP_SGLIST_LNK_DELETE'                                         : 'Delete',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : 'View details',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : 'Create new Security Group...',
+		'PROP_SGLIST_TAB_GROUP'                                          : 'Group',
+		'PROP_SGLIST_TAB_RULE'                                           : 'Rule',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : 'The selected connection reflects following security group rule(s):',
+		'PROP_SGRULE_TIP_INBOUND'                                        : 'Inbound',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : 'Outbound',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
+		//##### sg rule property module
+
+
+		//##### acl property module
+		'PROP_ACL_LBL_NAME'                                              : 'Name',
+		'PROP_ACL_TIT_RULE'                                              : 'Rule',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : 'Create new Network ACL Rule',
+		'PROP_ACL_RULE_SORT_BY'                                          : 'Sort by',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : 'Rule Number',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : 'Action',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : 'Direction',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : 'Source/Destination',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : 'allow',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : 'deny',
+		'PROP_ACL_TIP_INBOUND'                                           : 'Inbound',
+		'PROP_ACL_TIP_OUTBOUND'                                          : 'Outbound',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : 'Rule Number',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR Block',
+		'PROP_ACL_TIP_PROTOCOL'                                          : 'Protocol',
+		'PROP_ACL_TIP_PORT'                                              : 'Port',
+		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
+		//##### acl property module
+
+
+		//##### vgw property module
+		'PROP_VGW_TXT_DESCRIPTION'           : 'The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel.',
+		//##### vgw property module
+
+
+		//##### vpn property module
+		'PROP_VPN_LBL_IP_PREFIX'             : 'Network IP Prefixes',
+		//##### vpn property module
+
+
+		//##### igw property module
+		'PROP_IGW_TXT_DESCRIPTION'           : 'The Internet gateway is the router on the AWS network that connects your VPC to the Internet.',
+		//##### igw property module
+
+
+		//##### cgw property module
+		'PROP_CGW_LBL_NAME'                     : 'Name',
+		'PROP_CGW_LBL_IPADDR'                   : 'IP Address',
+		'PROP_CGW_LBL_ROUTING'                  : 'Routing',
+		'PROP_CGW_LBL_STATIC'                   : 'Static',
+		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
+		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
+		//##### cgw property module
 
 
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
@@ -295,6 +461,15 @@ define({
 		'PROP_ENI_DEVICE_NAME'					: 'Device Name',
 		'PROP_ENI_STATE'						: 'State',
 		'PROP_ENI_ID'							: 'Network Interface ID',
+		'PROP_ENI_SHOW_DETAIL'					: 'Show details',
+		'PROP_ENI_HIDE_DETAIL'					: 'Hide details',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: 'Subnet ID',
+		'PROP_ENI_ATTACHMENT_ID'				: 'Attachment ID',
+		'PROP_ENI_Attachment_OWNER'				: 'Attachment Owner',
+		'PROP_ENI_Attachment_STATE'				: 'Attachment State',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC address',
+		'PROP_ENI_IP_OWNER'						: 'IP Owner',
 		//###### eni property
 
 		//###### elb property
@@ -305,6 +480,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
 		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_SERVER_CERTIFICATE'			: 'Server Certificate',
 		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
@@ -320,6 +496,12 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
 		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
 		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		'PROP_ELB_DNS_NAME'						: 'DNS Name',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: 'Load Balancer Protocol',
+		'PROP_ELB_PORT'							: 'Port',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: 'Instance Protocol',
+		'PROP_ELB_DISTRIBUTION'					: 'Distribution',
 		//###### elb property
 
 		//###### autoscaling group property
@@ -396,8 +578,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'							: 'Launch Configuation',
-		'PROP_LC_NAME'							: 'Name',
+		'PROP_LC_TITLE'									: 'Launch Configuation',
+		'PROP_LC_NAME'									: 'Name',
+		'PROP_LC_CREATE_TIME'							: 'Create Time',
 		//###### launch configuration property
 
 		//###### route table property
@@ -409,6 +592,8 @@ define({
 		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
 		'PROP_RT_TARGET'								: 'Target',
 		'PROP_RT_DESTINATION'							: 'Destination',
+		'PROP_RT_ID'									: 'Route Table ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
 		//###### route table property
 
 		/******navigation module******/
@@ -462,29 +647,99 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RmellELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE'		: 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         		: 'Unmanaged',
+		//###### dashboard module
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
 
-		'REGION_NAME_us-east-1'					: 'US East',
-		'REGION_NAME_us-west-1'	  				: 'US West',
-		'REGION_NAME_us-west-2'	  				: 'US West',
-		'REGION_NAME_eu-west-1'	  				: 'EU West',
-		'REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
-		'REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
-		'REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
-		'REGION_NAME_sa-east-1'	    			: 'South America',
 
-		'REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
-		'REGION_NAME_SHORT_us-west-1'	  		: 'California',
-		'REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
-		'REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
-		'REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
-		'REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
-		'REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
-		'REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+		'DASH_TIP_UNMANAGED_RESOURCE'				: 'Unmanaged Resource',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: 'There is no ',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: ' in this region',
+
+
+
+		'DASH_BTN_GLOBAL'							: 'Global',
+
+
+		'DASH_LBL_UNMANAGED'         				: 'Unmanaged',
+		'DASH_LBL_APP'								: 'App',
+		'DASH_LBL_STACK'						    : 'Stack',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : 'Recently Edited Stack',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
+		'DASH_LBL_NO_APP'							: 'There is no App in this region',
+		'DASH_LBL_NO_STACK'							: 'There is no stack in this region yet',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: 'You can run app from a stack',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: 'Create a new stack from here',
+
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
+		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
+		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_LOAD_BALANCER'				    : 'Load Balancer',
+		'DASH_LBL_VPN'	    	    				: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : 'Instance',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling Group',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch Alarm',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: 'Instance Name',
+		'DASH_LBL_NAME'	    				 		: 'Name',
+		'DASH_LBL_STATUS'	    	    			: 'Status',
+		'DASH_LBL_STATE'	    	    			: 'State',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: 'Launch Time',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: 'Availability Zone',
+		'DASH_LBL_DETAIL'	    	    			: 'Detail',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : 'Associated Instance',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: 'Create Time',
+		'DASH_LBL_DEVICE_NAME'	    	    		: 'Device Name',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : 'Attachment Status',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP Settings',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: 'Virtual Private Gateway',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: 'Customer Gateway',
+		'DASH_LBL_DNS_NAME'	    	    			: 'DNS Name',
+		'DASH_LBL_CURRENT'	    	    			: 'Current',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: 'Last Activity',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: 'Activity Status',
+		'DASH_LBL_DIMENSION'	    	    		: 'Dimension',
+		'DASH_LBL_THRESHOLD'	    	    		: 'Threshold',
+		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
+		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
+
+
+
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: 'Create new stack',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: 'US East',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: 'EU West',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: 'South America',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: 'California',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+
+		//###### ide
+
+
 
 
 

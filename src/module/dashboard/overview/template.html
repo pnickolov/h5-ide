@@ -6,43 +6,17 @@
 
 	<a id="global-create-stack" class="disabled" href="javascript:void(0)">
 		<div class="icon-new-stack"></div>
-		<span>Create new stack</span>
+		<span>{{i18n "IDE_COM_CREATE_NEW_STACK"}}</span>
 		<i class="icon-caret-down"></i>
 	</a>
 
 	<div id="global-region-create-stack-list" class="dropdown-menu">
 		<ul>
-			<li data-region="us-west-1">
-				<a href="javascript:void(0)">US West - California</a>
+			{{#each region_names}}
+			<li data-region="{{long.id}}">
+				<a href="javascript:void(0)"> {{long.name}}- {{short.name}}</a>
 			</li>
-
-			<li data-region="us-west-2">
-				<a href="javascript:void(0)">US West - Oregon</a>
-			</li>
-
-			<li data-region="us-east-1">
-				<a href="javascript:void(0)">US East - Virginia</a>
-			</li>
-
-			<li data-region="eu-west-1">
-				<a href="javascript:void(0)">EU West - Ireland</a>
-			</li>
-
-			<li data-region="ap-southeast-1">
-				<a href="javascript:void(0)">Asia Pacific - Singapore</a>
-			</li>
-
-			<li data-region="ap-southeast-2">
-				<a href="javascript:void(0)">Asia Pacific - Sydney</a>
-			</li>
-
-			<li data-region="ap-northeast-1">
-				<a href="javascript:void(0)">Asia Pacific - Tokyo</a>
-			</li>
-
-			<li data-region="sa-east-1">
-				<a href="javascript:void(0)">South America - Sao Paulo</a>
-			</li>
+			{{/each}}
 		</ul>
 	</div>
 </div>
@@ -67,47 +41,22 @@
 
 	<div id="global-region-tabbar-wrap">
 		<a id="region-switch" class="disabled" href="javascript:void(0)">
-			<span>Global</span>
+			<span>{{i18n "DASH_BTN_GLOBAL"}}</span>
 			<i class="icon-caret-down"></i>
 		</a>
 
 		<div id="region-switch-list" class="dropdown-menu">
 			<ul>
 				<li data-region="global">
-					<a href="javascript:void(0)">Global</a>
+					<a href="javascript:void(0)">{{i18n "DASH_BTN_GLOBAL"}}</a>
 				</li>
 
-				<li data-region="us-west-1">
-					<a href="javascript:void(0)">California</a>
-				</li>
+				{{#each region_names}}
+					<li data-region="{{long.id}}">
+						<a href="javascript:void(0)">{{short.name}}</a>
+					</li>
+				{{/each}}
 
-				<li data-region="us-west-2">
-					<a href="javascript:void(0)">Oregon</a>
-				</li>
-
-				<li data-region="us-east-1">
-					<a href="javascript:void(0)">Virginia</a>
-				</li>
-
-				<li data-region="eu-west-1">
-					<a href="javascript:void(0)">Ireland</a>
-				</li>
-
-				<li data-region="ap-southeast-1">
-					<a href="javascript:void(0)">Singapore</a>
-				</li>
-
-				<li data-region="ap-southeast-2">
-					<a href="javascript:void(0)">Sydney</a>
-				</li>
-
-				<li data-region="ap-northeast-1">
-					<a href="javascript:void(0)">Tokyo</a>
-				</li>
-
-				<li data-region="sa-east-1">
-					<a href="javascript:void(0)">Sao Paulo</a>
-				</li>
 			</ul>
 		</div>
 	</div>

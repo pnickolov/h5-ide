@@ -76,28 +76,28 @@
     </dl>
 
     <div class="hidden-details">
-      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ Show details</span><span class="details-on">- Hide details</span></a>
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP_ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP_ENI_HIDE_DETAIL" }}</span></a>
 
       <dl class="dl-vertical">
-        <dt>VPC ID</dt>
+        <dt>{{ i18n "PROP_ENI_VPC_ID" }}</dt>
         <dd>{{eni.vpcId}}</dd>
 
-        <dt>Subnet</dt>
+        <dt>{{ i18n "PROP_ENI_SUBNET_ID" }}</dt>
         <dd>{{eni.subnetId}}</dd>
 
         {{#if eni.attachment}}
-        <dt>Attachment ID</dt>
+        <dt>{{ i18n "PROP_ENI_ATTACHMENT_ID" }}</dt>
         <dd>{{emptyStr eni.attachment.attachmentId}}</dd>
 
-        <dt>Attachment Owner</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_OWNER" }}</dt>
         <dd>{{emptyStr eni.instanceOwnerId}}</dd>
 
-        <dt>Attachment Status</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_STATE" }}</dt>
         <dd>{{emptyStr eni.attachment.status}}</dd>
         {{/if}}
       </dl>
       <dl class="dl-vertical">
-        <dt>Mac Address</dt>
+        <dt>{{ i18n "PROP_ENI_MAC_ADDRESS" }}</dt>
         <dd>{{emptyStr eni.macAddress}}</dd>
 
         {{#if eni.association.publicDnsName}}
@@ -109,7 +109,7 @@
         <dd>{{eni.privateDnsName}}</dd>
         {{/if}}
         {{#if eni.ownerId}}
-        <dt>IP Owner</dt>
+        <dt>{{ i18n "PROP_ENI_IP_OWNER" }}</dt>
         <dd>{{eni.ownerId}}</dd>
         {{/if}}
       </dl>

@@ -5,8 +5,9 @@
 define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
+         'constant',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data ) ->
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant ) ->
 
     current_region = null
 
@@ -67,6 +68,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         el                      : $( '#tab-content-dashboard' )
 
+        overview                : Handlebars.compile overview_tmpl
         overview_result         : Handlebars.compile $( '#overview-result-tmpl' ).html()
         global_list             : Handlebars.compile $( '#global-list-tmpl' ).html()
         region_app_stack        : Handlebars.compile $( '#region-app-stack-tmpl' ).html()
@@ -162,7 +164,7 @@ define [ 'event', 'i18n!nls/lang.js',
         renderGlobalList: ( event ) ->
             @enableSwitchRegion()
             if @status.reloading
-                notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
+                notification 'info', lang.ide.DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS
                 @status.reloading = false
 
             tmpl = @global_list @model.toJSON()
@@ -308,7 +310,19 @@ define [ 'event', 'i18n!nls/lang.js',
 
         render : () ->
             console.log 'dashboard overview render'
-            $( this.el ).html overview_tmpl
+            console.debug constant.REGION_LABEL
+            region_names = _.map constant.REGION_LABEL, ( name, id ) ->
+                long:
+                    id: id, name: name
+                short:
+                    id: id, name: constant.REGION_SHORT_LABEL[ id ]
+
+            data =
+                region_names: region_names
+
+            console.debug data
+
+            $( this.el ).html @overview data
 
         openItem : (event) ->
             console.log 'click item'

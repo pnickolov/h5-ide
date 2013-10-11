@@ -447,6 +447,10 @@ define({
 		'DASH_LBL_STACK'						    : '模板',
 		'DASH_LBL_RECENT_EDITED_STACK'			    : '最近修改的模板',
 		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : '最近启动的实例',
+		'DASH_LBL_NO_APP'							: '该地区没有应用',
+		'DASH_LBL_NO_STACK'							: '该地区还没有模板',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: '你可以通过模板创建应用',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: '点击这里创建新模板',
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
 		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',

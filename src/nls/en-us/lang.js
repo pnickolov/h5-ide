@@ -454,6 +454,11 @@ define({
 		'DASH_LBL_STACK'						    : 'Stack',
 		'DASH_LBL_RECENT_EDITED_STACK'			    : 'Recently Edited Stack',
 		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
+		'DASH_LBL_NO_APP'							: 'There is no App in this region',
+		'DASH_LBL_NO_STACK'							: 'There is no stack in this region yet',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: 'You can run app from a stack',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: 'Create a new stack from here',
+
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
 		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',

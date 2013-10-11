@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ], ( $, template, ide_event, MC ) ->
+define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', 'i18n!nls/lang.js' ], ( $, template, ide_event, MC, lang ) ->
 
     #private
     loadModule = () ->
@@ -40,6 +40,14 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC' ],
                         #compact components
                         if type is 'OPEN_STACK'
                             MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                        #### added by song, if the stack/app too old, unable to open ###
+                        if MC.canvas_data.bad
+                            notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
+                            ide_event.trigger ide_event.SWITCH_MAIN
+                            ide_event.trigger ide_event.CLOSE_TAB, null, tab_name if tab_name
+                            return
+                        #### added by song, if the stack/app too old, unable to open ###
 
                         MC.canvas.layout.init()
                         model.initLine()

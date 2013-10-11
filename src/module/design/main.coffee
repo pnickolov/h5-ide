@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'jquery', 'MC.canvas.constant' ], () ->
+define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
 
     #private
     loadModule = () ->
@@ -54,15 +54,18 @@ define [ 'jquery', 'MC.canvas.constant' ], () ->
 
             #listen SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_platform ) ->
+
                 console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                 #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
+
                     #
                     #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                                            
                         #when OPEN_STACK or OPEN_APP result is resolved_data
                         model.setCanvasData result.resolved_data[0]
 

@@ -47,6 +47,7 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : 'Sorry, the stack/app is too old, unable to open',
 		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
 		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
 

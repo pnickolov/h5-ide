@@ -369,7 +369,6 @@ define({
 		//##### cgw property module
 
 
-		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -382,6 +381,33 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
+		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
+		'PROP_INSTANCE_REQUIRE'					: 'Required',
+		'PROP_INSTANCE_AMI'						: 'AMI',
+		'PROP_INSTANCE_TYPE'					: 'Instance Type',
+		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
+		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
+		'PROP_INSTANCE_USER_DATA'				: 'User Data',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
+		'PROP_INSTANCE_ENI_DESC'				: 'Description',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
+		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
+		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		//###### instance property module
+
+		// ---
 		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
 		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
 
@@ -390,9 +416,144 @@ define({
 		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
+		//###### volume property
+		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
+		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_TYPE'						: 'Volume Type',
+		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
+		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
+		'PROP_VOLUME_MSG_WARN'					: 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.',
+		//###### volume property
+
+		//###### eni property
+		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_DETAIL'					: 'Network Interface Details',
+		'PROP_ENI_LBL_DESC'						: 'Description',
+		'PROP_ENI_SOURCE_DEST_CHECK'			: 'Enable Source/Destination Checking',
+		'PROP_ENI_AUTO_PUBLIC_IP'				: 'Automatically assign Public IP',
+		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
+		'PROP_ENI_ADD_IP'						: 'Add IP',
+		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
+
+		//###### eni property
+
+		//###### elb property
+		'PROP_ELB_DETAILS'						: 'Load Balancer Details',
+		'PROP_ELB_NAME'							: 'Name',
+		'PROP_ELB_REQUIRED'						: 'Required',
+		'PROP_ELB_SCHEME'						: 'Scheme',
+		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
+		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
+		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
+		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
+		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
+		'PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN': 'Certificate Chain',
+		'PROP_ELB_HEALTH_CHECK_DETAILS'			: 'Health Check Configuration',
+		'PROP_ELB_PING_PROTOCOL'				: 'Ping Protocol',
+		'PROP_ELB_PING_PORT'					: 'Ping	Port',
+		'PROP_ELB_PING_PATH'					: 'Ping Path',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL'		: 'Health Check Interval',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS': 'Seconds',
+		'PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT'	: 'Response Timeout',
+		'PROP_ELB_HEALTH_THRESHOLD'				: 'Healthy Threshold',
+		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
+		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
+		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		//###### elb property
+
+		//###### autoscaling group property
+		'PROP_ASG_DETAILS'						: 'Auto Scaling Group Details',
+		'PROP_ASG_NAME'							: 'Name',
+		'PROP_ASG_REQUIRED'						: 'Required',
+		'PROP_ASG_CREATE_TIME'					: 'Create Time',
+		'PROP_ASG_MIN_SIZE'						: 'Minimum Size',
+		'PROP_ASG_MAX_SIZE'						: 'Maximum Size',
+		'PROP_ASG_DESIRE_CAPACITY'				: 'Desired Capacity',
+		'PROP_ASG_COOL_DOWN'					: 'Default Cooldown',
+		'PROP_ASG_DEFAULT_COOL_DOWN'			: 'Default Cooldown',
+		'PROP_ASG_INSTANCE'						: 'Instance',
+		'PROP_ASG_UNIT_SECONDS'					: 'Seconds',
+		'PROP_ASG_HEALTH_CHECK_TYPE'			: 'Health Check Type',
+		'PROP_ASG_HEALTH_CHECK_CRACE_PERIOD'	: 'Health Check Grace Period',
+		'PROP_ASG_POLICY'						: 'Policy',
+		'PROP_ASG_HAS_ELB_WARN'					: 'You need to connect this auto scaling group to a load balancer to enable this option.',
+		'PROP_ASG_TERMINATION_POLICY'			: 'Termination Policy',
+		'PROP_ASG_POLICY_TLT_NAME'				: 'Policy Name',
+		'PROP_ASG_POLICY_TLT_ALARM_METRIC'		: 'Alarm Metric',
+		'PROP_ASG_POLICY_TLT_THRESHOLD'			: 'Threshold',
+		'PROP_ASG_POLICY_TLT_PERIOD'			: 'Evaluation Period x Periords',
+		'PROP_ASG_POLICY_TLT_ACTION'			: 'Action Trigger',
+		'PROP_ASG_POLICY_TLT_ADJUSTMENT'		: 'Adjustment',
+		'PROP_ASG_POLICY_TLT_EDIT'				: 'Edit Scaling Policy',
+		'PROP_ASG_POLICY_TLT_REMOVE'			: 'Remove Scaling Policy',
+		'PROP_ASG_BTN_ADD_SCALING_POLICY'		: 'Add Scaling Policy',
+		'PROP_ASG_LBL_NOTIFICATION'				: 'Notification',
+		'PROP_ASG_LBL_SEND_NOTIFICATION'		: 'Send notification via SNS topic for:',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH'	: 'Successful instance launch',
+		'PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH'	: 'Failed instance launch',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE'	: 'Successful instance termination',
+		'PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE'	: 'Failed instance termination',
+		'PROP_ASG_LBL_VALIDATE_SNS'				: 'Validating a configuraed SNS Topic',
+		'PROP_ASG_MSG_NO_NOTIFICATION_WARN'		: 'No notification configured for this auto scaling group',
+		'PROP_ASG_MSG_SNS_WARN'					: 'There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.',
+		'PROP_ASG_MSG_DROP_LC'					: 'Drop AMI from Resrouce Panel to create Launch Configuration',
+		'PROP_ASG_TERMINATION_EDIT'				: 'Edit Termination Policy',
+		'PROP_ASG_TERMINATION_TEXT_WARN'		: 'You can either specify any one of the policies as a standalone policy, or you can list multiple policies in an ordered list. The policies are executed in the order they are listed.',
+		'PROP_ASG_TERMINATION_MSG_DRAG'			: 'Drag to sort policy',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST'	: 'OldestInstance',
+		'PROP_ASG_TERMINATION_POLICY_NEWEST'	: 'NewestInstance',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH'	: 'OldestLaunchConfiguration',
+		'PROP_ASG_TERMINATION_POLICY_CLOSEST'	: 'ClosestToNextInstanceHour',
+		'PROP_ASG_ADD_POLICY_TITLE_ADD'			: 'Add',
+		'PROP_ASG_ADD_POLICY_TITLE_EDIT'		: 'Edit',
+		'PROP_ASG_ADD_POLICY_TITLE_CONTENT'		: 'Scaling Policy',
+		'PROP_ASG_ADD_POLICY_ALARM'				: 'Alarm',
+		'PROP_ASG_ADD_POLICY_WHEN'				: 'When',
+		'PROP_ASG_ADD_POLICY_IS'				: 'is',
+		'PROP_ASG_ADD_POLICY_FOR'				: 'for',
+		'PROP_ASG_ADD_POLICY_PERIOD'			: 'periods of',
+		'PROP_ASG_ADD_POLICY_SECONDS'			: 'seconds, enter ALARM state.',
+		'PROP_ASG_ADD_POLICY_START_SCALING'		: 'Start scaling activity when in',
+		'PROP_ASG_ADD_POLICY_STATE'				: 'state.',
+		'PROP_ASG_ADD_POLICY_SCALING_ACTIVITY'	: 'Scaling Activity',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT'		: 'Adjust number of instances by',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT_OF'		: 'of',
+		'PROP_ASG_ADD_POLICY_ADVANCED'			: 'Advanced',
+		'PROP_ASG_ADD_POLICY_ADVANCED_ALARM_OPTION'	: 'Alarm Options',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC'	: 'Statistic',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG'	: 'Average',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MIN'	: 'Minimum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MAX'	: 'Maximum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SAMPLE'	: 'SampleCount',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SUM'	: 'Sum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_SCALING_OPTION'	: 'Scaling Options',
+		'PROP_ASG_ADD_POLICY_ADVANCED_COOLDOWN_PERIOD'	: 'Cooldown Period',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_COOLDOWN_PERIOD'	: "The amount of time, in seconds, after a scaling activity completes before any further trigger-related scaling activities can start. If not specified, will use auto scaling group's default cooldown period.",
+		'PROP_ASG_ADD_POLICY_ADVANCED_MIN_ADJUST_STEP'	: 'Minimum Adjust Step',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP'	: 'Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances.',
+
+		//###### autoscaling group property
+
+		//###### launch configuration property
+		'PROP_LC_TITLE'							: 'Launch Configuation',
+		'PROP_LC_NAME'							: 'Name',
+		//###### launch configuration property
+
+		//###### route table property
+		'PROP_RT_ASSOCIATION'							: 'This is an association of ',
+		'PROP_RT_ASSOCIATION_TO'						: 'to',
+		'PROP_RT_NAME'									: 'Name',
+		'PROP_RT_LBL_ROUTE'								: 'Routes',
+		'PROP_RT_LBL_MAIN_RT'							: 'Main Route Table',
+		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
+		'PROP_RT_TARGET'								: 'Target',
+		'PROP_RT_DESTINATION'							: 'Destination',
+		//###### route table property
+
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
-		// Add new strings below this comment. Move above once English has been confirmed
+
 
 		/****** process module ******/
 		'PROC_TITLE'                 : 'Starting your app...',
@@ -441,11 +602,101 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+		//###### dashboard module
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
+
+
+		'DASH_TIP_UNMANAGED_RESOURCE'				: 'Unmanaged Resource',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: 'There is no ',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: ' in this region',
+
+
+
+		'DASH_BTN_GLOBAL'							: 'Global',
+
+
+		'DASH_LBL_UNMANAGED'         				: 'Unmanaged',
+		'DASH_LBL_APP'								: 'App',
+		'DASH_LBL_STACK'						    : 'Stack',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : 'Recently Edited Stack',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
+		'DASH_LBL_NO_APP'							: 'There is no App in this region',
+		'DASH_LBL_NO_STACK'							: 'There is no stack in this region yet',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: 'You can run app from a stack',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: 'Create a new stack from here',
+
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
+		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
+		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_LOAD_BALANCER'				    : 'Load Balancer',
+		'DASH_LBL_VPN'	    	    				: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : 'Instance',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling Group',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch Alarm',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: 'Instance Name',
+		'DASH_LBL_NAME'	    				 		: 'Name',
+		'DASH_LBL_STATUS'	    	    			: 'Status',
+		'DASH_LBL_STATE'	    	    			: 'State',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: 'Launch Time',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: 'Availability Zone',
+		'DASH_LBL_DETAIL'	    	    			: 'Detail',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : 'Associated Instance',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: 'Create Time',
+		'DASH_LBL_DEVICE_NAME'	    	    		: 'Device Name',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : 'Attachment Status',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP Settings',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: 'Virtual Private Gateway',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: 'Customer Gateway',
+		'DASH_LBL_DNS_NAME'	    	    			: 'DNS Name',
+		'DASH_LBL_CURRENT'	    	    			: 'Current',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: 'Last Activity',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: 'Activity Status',
+		'DASH_LBL_DIMENSION'	    	    		: 'Dimension',
+		'DASH_LBL_THRESHOLD'	    	    		: 'Threshold',
+		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
+		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
+
+
+
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: 'Create new stack',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: 'US East',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: 'EU West',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: 'South America',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: 'California',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+
+		//###### ide
+
+
+
+
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

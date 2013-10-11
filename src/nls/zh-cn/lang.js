@@ -368,8 +368,7 @@ define({
 		//##### cgw property module
 
 
-
-		// instance property module
+		// instance property module		
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -389,6 +388,139 @@ define({
 		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
+
+		//###### volume property
+		'PROP_VOLUME_DEVICE_NAME'				: '挂载设备名',
+		'PROP_VOLUME_SIZE'						: '磁盘大小',
+		'PROP_VOLUME_TYPE'						: '磁盘类型',
+		'PROP_VOLUME_TYPE_STANDARD'				: '标准',
+		'PROP_VOLUME_TYPE_IOPS'					: '预配置IOPS',
+		'PROP_VOLUME_MSG_WARN'					: '要使用预配置IOPS,磁盘必须最少10GB',
+		//###### volume property
+
+		//###### eni property
+		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_DETAIL'					: '网卡设置',
+		'PROP_ENI_LBL_DESC'						: '描述',
+		'PROP_ENI_SOURCE_DEST_CHECK'			: '打开 Source/Destination 检查',
+		'PROP_ENI_AUTO_PUBLIC_IP'				: '自动分配公网IP',
+		'PROP_ENI_IP_ADDRESS'					: 'IP地址',
+		'PROP_ENI_ADD_IP'						: '添加IP',
+		'PROP_ENI_SG_DETAIL'					: '安全组',
+		//###### eni property
+
+		//###### elb property
+		'PROP_ELB_DETAILS'						: '负载均衡器设置',
+		'PROP_ELB_NAME'							: '名称',
+		'PROP_ELB_REQUIRED'						: '必须',
+		'PROP_ELB_SCHEME'						: '模式',
+		'PROP_ELB_LISTENER_DETAIL'				: '监听设置',
+		'PROP_ELB_BTN_ADD_LISTENER'				: '添加监听器',
+		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: '添加服务器认证',
+		'PROP_ELB_LBL_LISTENER_NAME'			: '名称',
+		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: '私钥',
+		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: '公钥',
+		'PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN': '认证链',
+		'PROP_ELB_HEALTH_CHECK_DETAILS'			: '健康度检查配置',
+		'PROP_ELB_PING_PROTOCOL'				: 'Ping协议',
+		'PROP_ELB_PING_PORT'					: 'Ping端口',
+		'PROP_ELB_PING_PATH'					: 'Ping路径',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL'		: '健康度检查间隔',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS': '秒',
+		'PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT'	: '响应超时',
+		'PROP_ELB_HEALTH_THRESHOLD'				: '健康界限',
+		'PROP_ELB_UNHEALTH_THRESHOLD'			: '不健康界限',
+		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区',
+		'PROP_ELB_SG_DETAIL'					: '安全组',
+		//###### elb property
+
+		//###### autoscaling group property
+		'PROP_ASG_DETAILS'						: '自动伸缩组配置',
+		'PROP_ASG_NAME'							: '名称',
+		'PROP_ASG_REQUIRED'						: '必须',
+		'PROP_ASG_CREATE_TIME'					: '创建时间',
+		'PROP_ASG_MIN_SIZE'						: '最小数量',
+		'PROP_ASG_MAX_SIZE'						: '最大数量',
+		'PROP_ASG_DESIRE_CAPACITY'				: '期望数量',
+		'PROP_ASG_COOL_DOWN'					: '冷却时间',
+		'PROP_ASG_INSTANCE'						: '实例',
+		'PROP_ASG_DEFAULT_COOL_DOWN'			: '默认冷却时间',
+		'PROP_ASG_UNIT_SECONDS'					: '秒',
+		'PROP_ASG_HEALTH_CHECK_TYPE'			: '健康度检查类型',
+		'PROP_ASG_HEALTH_CHECK_CRACE_PERIOD'	: '健康度检查时间',
+		'PROP_ASG_POLICY'						: '策略',
+		'PROP_ASG_HAS_ELB_WARN'					: '你需要连接AutoScaling组和一个负载均衡器来启动此选项',
+		'PROP_ASG_TERMINATION_POLICY'			: '结束策略',
+		'PROP_ASG_POLICY_TLT_NAME'				: '策略名称',
+		'PROP_ASG_POLICY_TLT_ALARM_METRIC'		: '警告准则',
+		'PROP_ASG_POLICY_TLT_THRESHOLD'			: '界限',
+		'PROP_ASG_POLICY_TLT_PERIOD'			: '评估时间',
+		'PROP_ASG_POLICY_TLT_ACTION'			: '触发动作',
+		'PROP_ASG_POLICY_TLT_ADJUSTMENT'		: '调整',
+		'PROP_ASG_POLICY_TLT_EDIT'				: '编辑策略',
+		'PROP_ASG_POLICY_TLT_REMOVE'			: '删除策略',
+		'PROP_ASG_BTN_ADD_SCALING_POLICY'		: '添加扩展策略',
+		'PROP_ASG_LBL_NOTIFICATION'				: '通知',
+		'PROP_ASG_LBL_SEND_NOTIFICATION'		: '通过SNS发送通知',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH'	: '运行实例成功',
+		'PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH'	: '运行实例失败',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE'	: '终止实例成功',
+		'PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE'	: '终止实例失败',
+		'PROP_ASG_LBL_VALIDATE_SNS'				: '验证SNS主题',
+		'PROP_ASG_MSG_NO_NOTIFICATION_WARN'		: '没有设置Notification Configuration',
+		'PROP_ASG_MSG_SNS_WARN'					: '现在SNS还没有设置订阅信息，请去模板属性框设置，以便收到通知',
+		'PROP_ASG_MSG_DROP_LC'					: '请拖拽镜像来建立Launch Configuration',
+		'PROP_ASG_TERMINATION_EDIT'				: '编辑终止策略',
+		'PROP_ASG_TERMINATION_TEXT_WARN'		: '你能选择最少一种策略，策略执行顺序是从上到下',
+		'PROP_ASG_TERMINATION_MSG_DRAG'			: '拖拽以便调整顺序',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST'	: '最旧的实例',
+		'PROP_ASG_TERMINATION_POLICY_NEWEST'	: '最新的实例',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH'	: '最旧的LaunchConfiguration',
+		'PROP_ASG_TERMINATION_POLICY_CLOSEST'	: '最近下一个实力时钟',
+		'PROP_ASG_ADD_POLICY_TITLE_ADD'			: '添加',
+		'PROP_ASG_ADD_POLICY_TITLE_EDIT'		: '编辑',
+		'PROP_ASG_ADD_POLICY_TITLE_CONTENT'		: '扩展策略',
+		'PROP_ASG_ADD_POLICY_ALARM'				: '警报',
+		'PROP_ASG_ADD_POLICY_WHEN'				: '当',
+		'PROP_ASG_ADD_POLICY_IS'				: '是',
+		'PROP_ASG_ADD_POLICY_FOR'				: '持续',
+		'PROP_ASG_ADD_POLICY_PERIOD'			: '周期',
+		'PROP_ASG_ADD_POLICY_SECONDS'			: '秒时，进入警报状态',
+		'PROP_ASG_ADD_POLICY_START_SCALING'		: '执行扩展活动，当处于',
+		'PROP_ASG_ADD_POLICY_STATE'				: '状态',
+		'PROP_ASG_ADD_POLICY_SCALING_ACTIVITY'	: '扩展活动',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT'		: '通过以下方式调整',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT_OF'		: '数量',
+		'PROP_ASG_ADD_POLICY_ADVANCED'			: '高级',
+		'PROP_ASG_ADD_POLICY_ADVANCED_ALARM_OPTION'	: '警报选项',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC'	: '统计方式',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG'	: '平均',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MIN'	: '最小',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MAX'	: '最大',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SAMPLE'	: '抽样计算',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SUM'	: '总计',
+		'PROP_ASG_ADD_POLICY_ADVANCED_SCALING_OPTION'	: '扩展选项',
+		'PROP_ASG_ADD_POLICY_ADVANCED_COOLDOWN_PERIOD'	: '冷却周期',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_COOLDOWN_PERIOD'	: '两个扩展活动之间的冷却时间(秒)，如果不提供，则使用AWS默认时间',
+		'PROP_ASG_ADD_POLICY_ADVANCED_MIN_ADJUST_STEP'	: '最小调整数量',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP'	: '调整期望数量时的最小实例数量',
+		//###### autoscaling group property
+
+		//###### launch configuration property
+		'PROP_LC_TITLE'							: 'Launch Configuation',
+		'PROP_LC_NAME'							: '名称',
+		//###### launch configuration property
+
+		//###### route table property
+		'PROP_RT_ASSOCIATION'							: '这是一条路由表关联线从',
+		'PROP_RT_ASSOCIATION_TO'						: '到',
+		'PROP_RT_NAME'									: '名称',
+		'PROP_RT_LBL_ROUTE'								: '路由规则',
+		'PROP_RT_LBL_MAIN_RT'							: '主路由表',
+		'PROP_RT_SET_MAIN'								: '设置为主路由表',
+		'PROP_RT_TARGET'								: '路由对象',
+		'PROP_RT_DESTINATION'							: '数据包目的地',
+		//###### route table property
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
@@ -441,11 +573,93 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+		//###### dashboard module
+
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: '资源更新完毕',
+
+
+		'DASH_TIP_UNMANAGED_RESOURCE'				: '非托管资源',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: '该地区没有',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: '',
+
+
+		'DASH_BTN_GLOBAL'							: '全局',
+
+		'DASH_LBL_UNMANAGED'        				: '非托管的',
+		'DASH_LBL_APP'								: '应用',
+		'DASH_LBL_STACK'						    : '模板',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : '最近修改的模板',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : '最近启动的实例',
+		'DASH_LBL_NO_APP'							: '该地区没有应用',
+		'DASH_LBL_NO_STACK'							: '该地区还没有模板',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: '你可以通过模板创建应用',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: '点击这里创建新模板',
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
+		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',
+		'DASH_LBL_VOLUME'		  				    : '卷',
+		'DASH_LBL_LOAD_BALANCER'				    : '负载均衡器',
+		'DASH_LBL_VPN'								: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : '实例',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling 组',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch 警报',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS 订阅',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: '实例名',
+		'DASH_LBL_NAME'	    				 		: '名称',
+		'DASH_LBL_STATUS'	    	    			: '状态',
+		'DASH_LBL_STATE'	    	    			: '状态',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: '启动时间',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: '可用区域',
+		'DASH_LBL_DETAIL'	    	    			: '详细',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : '关联实例',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: '创建时间',
+		'DASH_LBL_DEVICE_NAME'	    	    		: '设备名',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : '附加状态',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP设置',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: '虚拟专用网关',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: '客户网关',
+		'DASH_LBL_DNS_NAME'	    	    			: '域名',
+		'DASH_LBL_CURRENT'	    	    			: '当前',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: '最近活动',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: '活动状态',
+		'DASH_LBL_DIMENSION'	    	    		: '维度',
+		'DASH_LBL_THRESHOLD'	    	    		: '阈值',
+		'DASH_LBL_TOPIC_NAME'	    	    		: '主题名',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
+		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: '创建模板',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: '美国东部',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: '美国西部',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: '美国西部',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: '欧洲西部',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: '亚太地区',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: '亚太地区',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: '亚太地区',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: '南美洲',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: '弗吉尼亚',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: '加利福尼亚北部',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: '俄勒冈',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: '爱尔兰',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: '新加坡',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: '悉尼',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: '东京',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: '圣保罗',
+
+		//###### ide
 
 		/****** popup ******/
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'

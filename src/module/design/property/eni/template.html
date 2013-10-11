@@ -3,15 +3,15 @@
 {{else}}
 
 <article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
-  Attach the Network Interface to an instance within the same availability zone.
+  {{ i18n "PROP_ENI_LBL_ATTACH_WARN" }}
 </article>
 
 <article id="property-eni-wrapper" {{#unless eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/unless}}>
 
-  <div class="option-group-head expand">Network Interface Details</div>
+  <div class="option-group-head expand">{{ i18n "PROP_ENI_LBL_DETAIL" }}</div>
   <div class="option-group">
     <section class="property-control-group">
-      <label class="left" for="property-eni-desc">Description</label>
+      <label class="left" for="property-eni-desc">{{ i18n "PROP_ENI_LBL_DESC" }}</label>
       <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>
     </section>
 
@@ -20,14 +20,14 @@
         <input id="property-eni-source-check" type="checkbox" {{#if eni_display.resource.SourceDestCheck}}checked="true"{{/if}} />
         <label for="property-eni-source-check"></label>
       </div>
-      <label for="property-eni-source-check">Enable Source/Destination Checking</label>
+      <label for="property-eni-source-check">{{ i18n "PROP_ENI_SOURCE_DEST_CHECK"}}</label>
     </section>
 
     <section class="property-control-group">
       <div class="network-list-wrap">
         <div class="network-list-header">
-          IP Address
-          <button href="#" id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">Add IP</button>
+          {{ i18n "PROP_ENI_IP_ADDRESS"}}
+          <button href="#" id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_ENI_ADD_IP"}}</button>
         </div>
         <ul class="network-list" id="property-eni-list" data-bind="true">
         </ul>
@@ -35,7 +35,7 @@
     </section>
   </div>
 
-  <div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head">{{ i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>
 {{/if}}

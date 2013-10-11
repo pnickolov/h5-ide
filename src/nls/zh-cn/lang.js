@@ -263,6 +263,12 @@ define({
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS名字服务器',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS节点类型',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : '未指定',
+		'PROP_VPC_APP_VPC_ID'                                            : 'VPC标识',
+		'PROP_VPC_APP_STATE'                                             : '状态',
+		'PROP_VPC_APP_CIDR'                                              : 'CIDR',
+		'PROP_VPC_APP_MAIN_RT'                                           : '主路由表',
+		'PROP_VPC_APP_DEFAULT_ACL'                                       : '缺省访问控制表',
+		'PROP_VPC_DHCP_OPTION_SET_ID'                                    : 'DHCP选项标识',
 		//##### vpc property module
 
 
@@ -276,6 +282,12 @@ define({
 		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : '个关联',
 		'PROP_SUBNET_ACL_BTN_DELETE'                                     : '删除',
 		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : '查看访问控制表详细',
+		'PROP_SUBNET_APP_ID'                                             : '子网标识',
+		'PROP_SUBNET_APP_STATE'                                          : '状态',
+		'PROP_SUBNET_APP_CIDR'                                           : 'CIDR',
+		'PROP_SUBNET_APP_AVAILABLE_IP'                                   : '可用IP',
+		'PROP_SUBNET_APP_VPC_ID'                                         : 'VPC标识',
+		'PROP_SUBNET_APP_RT_ID'                                          : '路由表标识',
 		//##### subnet property module
 
 

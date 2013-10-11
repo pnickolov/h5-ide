@@ -255,7 +255,7 @@ define({
 		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
 		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
 		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
-		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default DHCP',
 		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
@@ -264,6 +264,12 @@ define({
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
+		'PROP_VPC_APP_VPC_ID'                                            : 'VPC ID',
+		'PROP_VPC_APP_STATE'                                             : 'State',
+		'PROP_VPC_APP_CIDR'                                              : 'CIDR',
+		'PROP_VPC_APP_MAIN_RT'                                           : 'Main Route Table',
+		'PROP_VPC_APP_DEFAULT_ACL'                                       : 'Default Network ACL',
+		'PROP_VPC_DHCP_OPTION_SET_ID'                                    : 'DHCP Options Set ID',
 		//##### vpc property module
 
 
@@ -277,6 +283,12 @@ define({
 		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
 		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
 		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
+		'PROP_SUBNET_APP_ID'                                             : 'Subnet ID',
+		'PROP_SUBNET_APP_STATE'                                          : 'State',
+		'PROP_SUBNET_APP_CIDR'                                           : 'CIDR',
+		'PROP_SUBNET_APP_AVAILABLE_IP'                                   : 'Available IPs',
+		'PROP_SUBNET_APP_VPC_ID'                                         : 'VPC ID',
+		'PROP_SUBNET_APP_RT_ID'                                          : 'Route Table ID',
 		//##### subnet property module
 
 

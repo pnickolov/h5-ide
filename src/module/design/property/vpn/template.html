@@ -5,8 +5,8 @@
 <article class="property-control-group" id="property-vpn-ips-wrapper" {{#if vpn_detail.is_dynamic}}style="display:none;"{{/if}}>
 
   <div class="clearfix">
-    <label class="left" for="property-vpc-ips">Network IP Prefixes</label>
-    <span class="required-input right">Required</span>
+    <label class="left" for="property-vpc-ips">{{ i18n "PROP_VPN_LBL_IP_PREFIX" }}</label>
+    <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
   </div>
 
   <div id="property-vpn-ips" class="multi-input" data-max-row="100" data-bind="true">

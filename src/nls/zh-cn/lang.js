@@ -194,6 +194,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : '删除模版',
 		'TOOL_POP_BODY_DELETE_STACK'            : '确认删除模版吗?',
 		'TOOL_POP_BTN_DELETE_STACK'             : '删除',
+		'TOOL_POP_BTN_CANCEL'     		        : '取消',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : '复制模版',
@@ -219,19 +220,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "暂停应用",
 		'TOOL_POP_TIT_STOP_APP'                 : '确认暂停',
-		'TOOL_POP_BODY_STOP_APP'                : '本操作将暂停应用中的相关资源，您确认暂停当前应用吗?',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : '本操作将暂停应用中的相关资源，您确认暂停当前应用',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : ' 吗',
 		'TOOL_POP_BTN_STOP_APP'                 : '暂停',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "恢复应用",
 		'TOOL_POP_TIT_START_APP'                : '确认恢复',
-		'TOOL_POP_BODY_START_APP'               : '本操作将恢复应用中的相关资源，您确认恢复当前应用吗?',
+		'TOOL_POP_BODY_START_APP_LEFT'          : '本操作将恢复应用中的相关资源，您确认恢复当前应用',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : ' 吗',
 		'TOOL_POP_BTN_START_APP'                : '恢复',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "销毁应用",
 		'TOOL_POP_TIT_TERMINATE_APP'            : '确认销毁',
-		'TOOL_POP_BODY_TERMINATE_APP'           : '本操作将销毁应用中的相关资源，您确认销毁当前应用吗?',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : '本操作将销毁应用中的相关资源，您确认销毁当前应用',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : ' 吗',
 		'TOOL_POP_BTN_TERMINATE_APP'            : '销毁',
 
 		//toolbar handler
@@ -247,20 +251,37 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
+		//linestyle
+		'TOOL_TIP_LINESTYLE'                          : '安全组规则连线类型...',
+		'TOOL_LBL_LINESTYLE_STRAIGHT'                 : '直线',
+		'TOOL_LBL_LINESTYLE_ELBOW'                    : '肘型线',
+		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : '二次贝赛尔曲线',
+		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
 		/******property module******/
 
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: '实例设置',
 		'PROP_INSTANCE_HOSTNAME'				: '主机名',
+		'PROP_INSTANCE_INSTANCE_ID'				: '实例ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: '创建时间',
+		'PROP_INSTANCE_STATE'					: '状态',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: '主公网IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: '公网IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: '公网域名',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: '主内网IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: '内网域名',
 		'PROP_INSTANCE_NUMBER'					: '实例数量',
 		'PROP_INSTANCE_REQUIRE'					: '必须',
 		'PROP_INSTANCE_AMI'						: '镜像',
 		'PROP_INSTANCE_TYPE'					: '实例类型',
 		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
 		'PROP_INSTANCE_TENANCY'					: '专用',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: '默认',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: '专用',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: '根设备类型',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: '块设备',
 		'PROP_INSTANCE_NEW_KP'					: '新建秘钥',
 		'PROP_INSTANCE_CW_ENABLED'				: '打开CloudWatch监控',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: '高级设置',
@@ -269,12 +290,179 @@ define({
 		'PROP_INSTANCE_ENI_DETAIL'				: '网卡设置',
 		'PROP_INSTANCE_ENI_DESC'				: '描述',
 		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: '打开 Source/Destination 检查',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination 检查',
 		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: '自动分配公网IP',
 		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP地址',
 		'PROP_INSTANCE_ENI_ADD_IP'				: '添加IP',
 		'PROP_INSTANCE_SG_DETAIL'				: '安全组',
+		'PROP_INSTANCE_IP_MSG_1'				: '请提供一个IP或者保留为.x来自动分配IP',
+		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
+		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
+		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
 		//###### instance property module
 
+
+
+		'PROP_LBL_REQUIRED'                     : '必填',
+
+		//##### stack property module
+		'PROP_STACK_LBL_NAME'                       : '模版名称',
+		'PROP_STACK_LBL_REGION'                     : '区域',
+		'PROP_STACK_LBL_TYPE'                       : '类型',
+		'PROP_STACK_TIT_SG'                         : '安全组',
+		'PROP_STACK_TIT_ACL'                        : '访问控制表',
+		'PROP_STACK_TIT_SNS'                        : 'SNS主题订阅',
+		'PROP_STACK_BTN_ADD_SUB'                    : '添加订阅',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : '成本估算',
+		'PROP_STACK_LBL_COST_CYCLE'                 : '月',
+		'PROP_STACK_COST_COL_RESOURCE'              : '资源',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : '大小/类型',
+		'PROP_STACK_COST_COL_FEE'                   : '价格($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 定价',
+		'PROP_STACK_ACL_LBL_RULE'                   : '条规则',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : '个关联',
+		'PROP_STACK_ACL_BTN_DELETE'                 : '删除',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : '查看访问控制表详细',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : '创建新的访问控制表...',
+		//##### stack property module
+
+
+		//##### app property module
+		'PROP_APP_SNS_NONE'                         : '本应用不含SNS主题',
+		//##### app property module
+
+
+		//##### az property module
+		'PROP_AZ_LBL_SWITCH'                            : '切换可用区',
+		//##### az property module
+
+
+		//##### vpc property module
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC详细',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : '名称',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR 块',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : '租用',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : '缺省',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : '专用',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : '允许DNS解析',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : '允许DNS主机名解析',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP 选项',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : '无',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : '缺省',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : '指定的DHCP选项设置',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : '域名',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : '域名服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : '亚马逊提供的域名服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : '时间服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS名字服务器',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS节点类型',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : '未指定',
+		//##### vpc property module
+
+
+		//##### subnet property module
+		'PROP_SUBNET_TIT_DETAIL'                                         : '子网详细',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : '名称',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR 块',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : '相关访问控制表',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : '创建新的访问控制表...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : '条规则',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : '个关联',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : '删除',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : '查看访问控制表详细',
+		//##### subnet property module
+
+
+		//##### sg property module
+		'PROP_SG_TIT_DETAIL'                                             : '安全组详细',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : '名称',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : '描述',
+		'PROP_SG_TIT_RULE'                                               : '规则',
+		'PROP_SG_RULE_SORT_BY'                                           : '排序',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : '按方向',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : '按源/目的',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : '按协议',
+		'PROP_SG_TIT_MEMBER'                                             : '成员',
+		'PROP_SG_TIP_CREATE_RULE'                                        : '创建基于IP范围的规则',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : '删除规则',
+		'PROP_SG_TIP_PROTOCOL'                                           : '协议',
+		'PROP_SG_TIP_SRC'                                                : '源',
+		'PROP_SG_TIP_DEST'                                               : '目的',
+		'PROP_SG_TIP_INBOUND'                                            : '入方向',
+		'PROP_SG_TIP_OUTBOUND'                                           : '出方向',
+		'PROP_SG_TIP_PORT_CODE'                                          : '端口或代码',
+		'PROP_SG_APP_SG_ID'                                              : '安全组标识',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC标识',
+		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : '条规则',
+		'PROP_SGLIST_LBL_MEMBER'                                         : '个成员',
+		'PROP_SGLIST_LNK_DELETE'                                         : '删除',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : '查看详细',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : '创建新安全组...',
+		'PROP_SGLIST_TAB_GROUP'                                          : '组',
+		'PROP_SGLIST_TAB_RULE'                                           : '规则',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : '当前选中的连线反映了以下安全组的规则:',
+		'PROP_SGRULE_TIP_INBOUND'                                        : '入方向',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : '出方向',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : '编辑相关规则',
+		//##### sg rule property module
+
+
+		//##### acl property module
+		'PROP_ACL_LBL_NAME'                                              : '名称',
+		'PROP_ACL_TIT_RULE'                                              : '规则',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : '创建新的访问控制表',
+		'PROP_ACL_RULE_SORT_BY'                                          : '排序',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : '按规则编号',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : '动作',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : '方向',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : '源/目的',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : '允许',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : '拒绝',
+		'PROP_ACL_TIP_INBOUND'                                           : '入方向',
+		'PROP_ACL_TIP_OUTBOUND'                                          : '出方向',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : '规则编号',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR 块',
+		'PROP_ACL_TIP_PROTOCOL'                                          : '协议',
+		'PROP_ACL_TIP_PORT'                                              : '端口',
+		'PROP_ACL_TIT_ASSOC'                                             : '关联的子网',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : '删除规则',
+		//##### acl property module
+
+
+		//##### vgw property module
+		'PROP_VGW_TXT_DESCRIPTION'           : '虚拟私有网关是亚马逊一侧的VPN隧道的路由器.',
+		//##### vgw property module
+
+
+		//##### vpn property module
+		'PROP_VPN_LBL_IP_PREFIX'             : '网络号前缀',
+		//##### vpn property module
+
+
+		//##### igw property module
+		'PROP_IGW_TXT_DESCRIPTION'          : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
+		//##### igw property module
+
+
+		//##### cgw property module
+		'PROP_CGW_LBL_NAME'                     : '名称',
+		'PROP_CGW_LBL_IPADDR'                   : 'IP地址',
+		'PROP_CGW_LBL_ROUTING'                  : '路由',
+		'PROP_CGW_LBL_STATIC'                   : '静态',
+		'PROP_CGW_LBL_DYNAMIC'                  : '动态',
+		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP 自治域号',
+		//##### cgw property module
+
+
+		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -298,6 +486,14 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: '挂载设备名',
 		'PROP_VOLUME_SIZE'						: '磁盘大小',
+		'PROP_VOLUME_ID'						: '磁盘ID',
+		'PROP_VOLUME_STATE'						: '状态',
+		'PROP_VOLUME_CREATE_TIME'				: '创建时间',
+		'PROP_VOLUME_SNAPSHOT_ID'				: '快照ID',
+		'PROP_VOLUME_SNAPSHOT'					: '快照',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: '挂载状态',
+		'PROP_VOLUME_INSTANCE_ID'				: '实例ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: '挂载时间',
 		'PROP_VOLUME_TYPE'						: '磁盘类型',
 		'PROP_VOLUME_TYPE_STANDARD'				: '标准',
 		'PROP_VOLUME_TYPE_IOPS'					: '预配置IOPS',
@@ -313,6 +509,18 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP地址',
 		'PROP_ENI_ADD_IP'						: '添加IP',
 		'PROP_ENI_SG_DETAIL'					: '安全组',
+		'PROP_ENI_DEVICE_NAME'					: '设备名称',
+		'PROP_ENI_STATE'						: '状态',
+		'PROP_ENI_ID'							: '网卡ID',
+		'PROP_ENI_SHOW_DETAIL'					: '更多',
+		'PROP_ENI_HIDE_DETAIL'					: '隐藏',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: '子网ID',
+		'PROP_ENI_ATTACHMENT_ID'				: '关联ID',
+		'PROP_ENI_Attachment_OWNER'				: '关联拥有者',
+		'PROP_ENI_Attachment_STATE'				: '关联状态',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC地址',
+		'PROP_ENI_IP_OWNER'						: 'IP拥有者',
 		//###### eni property
 
 		//###### elb property
@@ -323,6 +531,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: '监听设置',
 		'PROP_ELB_BTN_ADD_LISTENER'				: '添加监听器',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: '添加服务器认证',
+		'PROP_ELB_SERVER_CERTIFICATE'			: '服务器认证',
 		'PROP_ELB_LBL_LISTENER_NAME'			: '名称',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: '私钥',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: '公钥',
@@ -338,6 +547,12 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: '不健康界限',
 		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区',
 		'PROP_ELB_SG_DETAIL'					: '安全组',
+		'PROP_ELB_DNS_NAME'						: '域名',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: '负载均衡器协议',
+		'PROP_ELB_PORT'							: '端口',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: '实例协议',
+		'PROP_ELB_DISTRIBUTION'					: '分布',
 		//###### elb property
 
 		//###### autoscaling group property
@@ -413,8 +628,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'							: 'Launch Configuation',
-		'PROP_LC_NAME'							: '名称',
+		'PROP_LC_TITLE'									: 'Launch Configuation',
+		'PROP_LC_NAME'									: '名称',
+		'PROP_LC_CREATE_TIME'							: '创建时间',
 		//###### launch configuration property
 
 		//###### route table property
@@ -426,6 +642,8 @@ define({
 		'PROP_RT_SET_MAIN'								: '设置为主路由表',
 		'PROP_RT_TARGET'								: '路由对象',
 		'PROP_RT_DESTINATION'							: '数据包目的地',
+		'PROP_RT_ID'									: '路由表ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
 		//###### route table property
 
 		/******navigation module******/
@@ -540,6 +758,16 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: '主题名',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
+
+
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: '将模板创建为',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: '传统模式',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: '资源将被创建在传统的平台中',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC模式',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: '资源将被创建在新创建的VPC中',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: '默认VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: '定制VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: '资源将被创建在新默认的VPC中',
 
 		//###### dashboard module
 

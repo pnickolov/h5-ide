@@ -219,14 +219,25 @@ define({
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
 		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
 		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
 		'PROP_INSTANCE_REQUIRE'					: 'Required',
 		'PROP_INSTANCE_AMI'						: 'AMI',
 		'PROP_INSTANCE_TYPE'					: 'Instance Type',
 		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS Optimized',
 		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Root Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Device',
 		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
 		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
@@ -235,10 +246,15 @@ define({
 		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
 		'PROP_INSTANCE_ENI_DESC'				: 'Description',
 		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination Check',
 		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
 		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
 		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
 		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
 		//###### instance property module
 
 		// ---
@@ -253,6 +269,14 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
 		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_ID'						: 'Volume ID',
+		'PROP_VOLUME_STATE'						: 'State',
+		'PROP_VOLUME_CREATE_TIME'				: 'Create Time',
+		'PROP_VOLUME_SNAPSHOT_ID'				: 'Snapshot ID',
+		'PROP_VOLUME_SNAPSHOT'					: 'Snapshot',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: 'Attachment Status',
+		'PROP_VOLUME_INSTANCE_ID'				: 'Instance ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: 'Attach Time',
 		'PROP_VOLUME_TYPE'						: 'Volume Type',
 		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
 		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
@@ -268,7 +292,9 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
 		'PROP_ENI_ADD_IP'						: 'Add IP',
 		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
-
+		'PROP_ENI_DEVICE_NAME'					: 'Device Name',
+		'PROP_ENI_STATE'						: 'State',
+		'PROP_ENI_ID'							: 'Network Interface ID',
 		//###### eni property
 
 		//###### elb property

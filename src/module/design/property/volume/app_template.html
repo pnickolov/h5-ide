@@ -1,30 +1,30 @@
 <article class="property-app">
 {{#if isLC}}
     <dl class="dl-vertical">
-    <dt>Device Name</dt>
+    <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
     <dd>{{emptyStr DeviceName}}</dd>
-    <dt>Volume Size</dt>
+    <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
     <dd>{{emptyStr Ebs.VolumeSize}} GB</dd>
   </dl>
 {{else}}
   <dl class="dl-vertical">
-    <dt>Volume ID</dt>
+    <dt>{{i18n "PROP_VOLUME_ID"}}</dt>
     <dd>{{emptyStr volumeId}}</dd>
-    <dt>Device Name</dt>
+    <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
     <dd>{{emptyStr name}}</dd>
-    <dt>State</dt>
+    <dt>{{i18n "PROP_VOLUME_STATE"}}</dt>
     <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
-    <dt>Create Time</dt>
+    <dt>{{i18n "PROP_VOLUME_CREATE_TIME"}}</dt>
     <dd>{{timeStr createTime}}</dd>
   </dl>
   <dl class="dl-vertical">
-    <dt>Volume Type</dt>
+    <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
     <dd>{{emptyStr volumeType}}</dd>
     {{#if snapshotId}}
-    <dt>Snapshot ID</dt>
+    <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
     <dd>{{snapshotId}}</dd>
     {{/if}}
-    <dt>Volume Size</dt>
+    <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
     <dd>{{emptyStr size}} GB</dd>
     {{#if IOPS}}
     <dt>IOPS</dt>
@@ -32,11 +32,11 @@
     {{/if}}
   </dl>
   <dl class="dl-vertical">
-    <dt>Attachment Status</dt>
+    <dt>{{i18n "PROP_VOLUME_ATTACHMENT_STATE"}}</dt>
     <dd>{{emptyStr attachmentSet.item.0.status}}</dd>
-    <dt>Instance ID</dt>
+    <dt>{{i18n "PROP_VOLUME_INSTANCE_ID"}}</dt>
     <dd>{{emptyStr attachmentSet.item.0.instanceId}}</dd>
-    <dt>Attach Time</dt>
+    <dt>{{i18n "PROP_VOLUME_ATTACHMENT_TIME"}}</dt>
     <dd>{{timeStr attachmentSet.item.0.attachTime}}</dd>
   </dl>
 

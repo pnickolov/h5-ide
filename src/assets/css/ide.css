@@ -6589,6 +6589,7 @@ a.action-link:hover {
 /* Guide tour */
 #guide-carousel {
 	padding: 0;
+	position: relative;
 }
 
 .carousel-inner {
@@ -6674,4 +6675,70 @@ a.action-link:hover {
 
 .carousel-caption p {
   margin-bottom: 0;
+}
+
+.carousel-indicators-wrap {
+	position: absolute;
+	text-align: center;
+	top: 10px;
+	right: 30px;
+}
+
+.carousel-indicators {
+	margin: 0 auto;
+	display: inline-block;
+	padding: 15px 0;
+}
+
+.slider-indicator:before {
+	top: 5.5px;
+	position: relative;
+	content: '';
+	width: 100%;
+	border-top: 1px solid #494B57;
+}
+
+.indicator-item {
+	z-index: 5;
+	position: relative;
+	width: 8px;
+	height: 8px;
+	float: left;
+	border-radius: 8px;
+	margin-right: 10px;
+	background-color: #373942;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 0 rgba(255, 255, 255, 1);
+	cursor: pointer;
+
+	-webkit-transition: box-shadow .5s;
+	-moz-transition: box-shadow .5s;
+	-ms-transition: box-shadow .5s;
+	-o-transition: box-shadow .5s;
+	transition: box-shadow .5s;
+}
+
+.indicator-item:last-child {
+	margin-right: 0;
+}
+
+.indicator-item.passed,
+.indicator-item.active {
+	width: 10px !important;
+	height: 10px !important;
+	border-radius: 10px !important;
+	border: none !important;
+}
+
+.indicator-item.passed {
+	background-color: #8D8F98;
+}
+
+.indicator-item.active {
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+#guide-wrap .modal-footer {
+	text-align: center;
 }

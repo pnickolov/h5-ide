@@ -706,6 +706,16 @@ define({
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 
+
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: '将模板创建为',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: '传统模式',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: '资源将被创建在传统的平台中',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC模式',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: '资源将被创建在新创建的VPC中',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: '默认VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: '定制VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: '资源将被创建在新默认的VPC中',
+
 		//###### dashboard module
 
 		//###### ide

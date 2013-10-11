@@ -146,6 +146,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : 'Delete Stack',
 		'TOOL_POP_BODY_DELETE_STACK'            : 'Do you confirm to delete stack',
 		'TOOL_POP_BTN_DELETE_STACK'             : 'Delete',
+		'TOOL_POP_BTN_CANCEL'     		        : 'Cancel',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : 'Duplicate Stack',
@@ -171,19 +172,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
 		'TOOL_POP_TIT_STOP_APP'                 : 'Confirm to stop app',
-		'TOOL_POP_BODY_STOP_APP'                : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : '',
 		'TOOL_POP_BTN_STOP_APP'                 : 'Stop',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "Start this app's resources.",
 		'TOOL_POP_TIT_START_APP'                : 'Confirm to start app',
-		'TOOL_POP_BODY_START_APP'               : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_LEFT'          : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : '',
 		'TOOL_POP_BTN_START_APP'                : 'Start',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
 		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
-		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : '',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
 		//toolbar handler
@@ -464,14 +468,25 @@ define({
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
 		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
 		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
 		'PROP_INSTANCE_REQUIRE'					: 'Required',
 		'PROP_INSTANCE_AMI'						: 'AMI',
 		'PROP_INSTANCE_TYPE'					: 'Instance Type',
 		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS Optimized',
 		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Root Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Device',
 		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
 		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
@@ -480,10 +495,15 @@ define({
 		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
 		'PROP_INSTANCE_ENI_DESC'				: 'Description',
 		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination Check',
 		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
 		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
 		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
 		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
 		//###### instance property module
 
 		// ---
@@ -498,6 +518,14 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
 		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_ID'						: 'Volume ID',
+		'PROP_VOLUME_STATE'						: 'State',
+		'PROP_VOLUME_CREATE_TIME'				: 'Create Time',
+		'PROP_VOLUME_SNAPSHOT_ID'				: 'Snapshot ID',
+		'PROP_VOLUME_SNAPSHOT'					: 'Snapshot',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: 'Attachment Status',
+		'PROP_VOLUME_INSTANCE_ID'				: 'Instance ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: 'Attach Time',
 		'PROP_VOLUME_TYPE'						: 'Volume Type',
 		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
 		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
@@ -513,7 +541,18 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
 		'PROP_ENI_ADD_IP'						: 'Add IP',
 		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
-
+		'PROP_ENI_DEVICE_NAME'					: 'Device Name',
+		'PROP_ENI_STATE'						: 'State',
+		'PROP_ENI_ID'							: 'Network Interface ID',
+		'PROP_ENI_SHOW_DETAIL'					: 'Show details',
+		'PROP_ENI_HIDE_DETAIL'					: 'Hide details',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: 'Subnet ID',
+		'PROP_ENI_ATTACHMENT_ID'				: 'Attachment ID',
+		'PROP_ENI_Attachment_OWNER'				: 'Attachment Owner',
+		'PROP_ENI_Attachment_STATE'				: 'Attachment State',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC address',
+		'PROP_ENI_IP_OWNER'						: 'IP Owner',
 		//###### eni property
 
 		//###### elb property
@@ -524,6 +563,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
 		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_SERVER_CERTIFICATE'			: 'Server Certificate',
 		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
@@ -539,6 +579,12 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
 		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
 		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		'PROP_ELB_DNS_NAME'						: 'DNS Name',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: 'Load Balancer Protocol',
+		'PROP_ELB_PORT'							: 'Port',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: 'Instance Protocol',
+		'PROP_ELB_DISTRIBUTION'					: 'Distribution',
 		//###### elb property
 
 		//###### autoscaling group property
@@ -615,8 +661,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'							: 'Launch Configuation',
-		'PROP_LC_NAME'							: 'Name',
+		'PROP_LC_TITLE'									: 'Launch Configuation',
+		'PROP_LC_NAME'									: 'Name',
+		'PROP_LC_CREATE_TIME'							: 'Create Time',
 		//###### launch configuration property
 
 		//###### route table property
@@ -628,6 +675,8 @@ define({
 		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
 		'PROP_RT_TARGET'								: 'Target',
 		'PROP_RT_DESTINATION'							: 'Destination',
+		'PROP_RT_ID'									: 'Route Table ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
 		//###### route table property
 
 		/******navigation module******/
@@ -747,6 +796,18 @@ define({
 
 
 
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: 'Create this stack in',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: 'Classic',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: 'Resources will be created into the Classic platform',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: 'Resources will be created into a newly created VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: 'Default VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: 'Custom VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: 'Resources will be created into the default VPC',
+
+
+
+
 
 		//###### dashboard module
 
@@ -768,6 +829,7 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
 		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
 		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 

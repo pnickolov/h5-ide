@@ -145,6 +145,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : '删除模版',
 		'TOOL_POP_BODY_DELETE_STACK'            : '确认删除模版吗?',
 		'TOOL_POP_BTN_DELETE_STACK'             : '删除',
+		'TOOL_POP_BTN_CANCEL'     		        : '取消',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : '复制模版',
@@ -170,19 +171,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "暂停应用",
 		'TOOL_POP_TIT_STOP_APP'                 : '确认暂停',
-		'TOOL_POP_BODY_STOP_APP'                : '本操作将暂停应用中的相关资源，您确认暂停当前应用吗?',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : '本操作将暂停应用中的相关资源，您确认暂停当前应用',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : ' 吗',
 		'TOOL_POP_BTN_STOP_APP'                 : '暂停',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "恢复应用",
 		'TOOL_POP_TIT_START_APP'                : '确认恢复',
-		'TOOL_POP_BODY_START_APP'               : '本操作将恢复应用中的相关资源，您确认恢复当前应用吗?',
+		'TOOL_POP_BODY_START_APP_LEFT'          : '本操作将恢复应用中的相关资源，您确认恢复当前应用',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : ' 吗',
 		'TOOL_POP_BTN_START_APP'                : '恢复',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "销毁应用",
 		'TOOL_POP_TIT_TERMINATE_APP'            : '确认销毁',
-		'TOOL_POP_BODY_TERMINATE_APP'           : '本操作将销毁应用中的相关资源，您确认销毁当前应用吗?',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : '本操作将销毁应用中的相关资源，您确认销毁当前应用',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : ' 吗',
 		'TOOL_POP_BTN_TERMINATE_APP'            : '销毁',
 
 		//toolbar handler
@@ -205,9 +209,50 @@ define({
 		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : '二次贝赛尔曲线',
 		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
-
-
 		/******property module******/
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: '实例设置',
+		'PROP_INSTANCE_HOSTNAME'				: '主机名',
+		'PROP_INSTANCE_INSTANCE_ID'				: '实例ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: '创建时间',
+		'PROP_INSTANCE_STATE'					: '状态',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: '主公网IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: '公网IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: '公网域名',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: '主内网IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: '内网域名',
+		'PROP_INSTANCE_NUMBER'					: '实例数量',
+		'PROP_INSTANCE_REQUIRE'					: '必须',
+		'PROP_INSTANCE_AMI'						: '镜像',
+		'PROP_INSTANCE_TYPE'					: '实例类型',
+		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
+		'PROP_INSTANCE_TENANCY'					: '专用',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: '默认',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: '专用',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: '根设备类型',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: '块设备',
+		'PROP_INSTANCE_NEW_KP'					: '新建秘钥',
+		'PROP_INSTANCE_CW_ENABLED'				: '打开CloudWatch监控',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: '高级设置',
+		'PROP_INSTANCE_USER_DATA'				: '用户数据',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: '网卡设置',
+		'PROP_INSTANCE_ENI_DESC'				: '描述',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: '打开 Source/Destination 检查',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination 检查',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: '自动分配公网IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP地址',
+		'PROP_INSTANCE_ENI_ADD_IP'				: '添加IP',
+		'PROP_INSTANCE_SG_DETAIL'				: '安全组',
+		'PROP_INSTANCE_IP_MSG_1'				: '请提供一个IP或者保留为.x来自动分配IP',
+		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
+		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
+		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
+		//###### instance property module
+
+
 
 		'PROP_LBL_REQUIRED'                     : '必填',
 
@@ -449,7 +494,7 @@ define({
 		//##### cgw property module
 
 
-		// instance property module		
+		// instance property module
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -473,6 +518,14 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: '挂载设备名',
 		'PROP_VOLUME_SIZE'						: '磁盘大小',
+		'PROP_VOLUME_ID'						: '磁盘ID',
+		'PROP_VOLUME_STATE'						: '状态',
+		'PROP_VOLUME_CREATE_TIME'				: '创建时间',
+		'PROP_VOLUME_SNAPSHOT_ID'				: '快照ID',
+		'PROP_VOLUME_SNAPSHOT'					: '快照',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: '挂载状态',
+		'PROP_VOLUME_INSTANCE_ID'				: '实例ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: '挂载时间',
 		'PROP_VOLUME_TYPE'						: '磁盘类型',
 		'PROP_VOLUME_TYPE_STANDARD'				: '标准',
 		'PROP_VOLUME_TYPE_IOPS'					: '预配置IOPS',
@@ -488,6 +541,18 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP地址',
 		'PROP_ENI_ADD_IP'						: '添加IP',
 		'PROP_ENI_SG_DETAIL'					: '安全组',
+		'PROP_ENI_DEVICE_NAME'					: '设备名称',
+		'PROP_ENI_STATE'						: '状态',
+		'PROP_ENI_ID'							: '网卡ID',
+		'PROP_ENI_SHOW_DETAIL'					: '更多',
+		'PROP_ENI_HIDE_DETAIL'					: '隐藏',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: '子网ID',
+		'PROP_ENI_ATTACHMENT_ID'				: '关联ID',
+		'PROP_ENI_Attachment_OWNER'				: '关联拥有者',
+		'PROP_ENI_Attachment_STATE'				: '关联状态',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC地址',
+		'PROP_ENI_IP_OWNER'						: 'IP拥有者',
 		//###### eni property
 
 		//###### elb property
@@ -498,6 +563,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: '监听设置',
 		'PROP_ELB_BTN_ADD_LISTENER'				: '添加监听器',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: '添加服务器认证',
+		'PROP_ELB_SERVER_CERTIFICATE'			: '服务器认证',
 		'PROP_ELB_LBL_LISTENER_NAME'			: '名称',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: '私钥',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: '公钥',
@@ -513,6 +579,12 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: '不健康界限',
 		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区',
 		'PROP_ELB_SG_DETAIL'					: '安全组',
+		'PROP_ELB_DNS_NAME'						: '域名',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: '负载均衡器协议',
+		'PROP_ELB_PORT'							: '端口',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: '实例协议',
+		'PROP_ELB_DISTRIBUTION'					: '分布',
 		//###### elb property
 
 		//###### autoscaling group property
@@ -588,8 +660,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'							: 'Launch Configuation',
-		'PROP_LC_NAME'							: '名称',
+		'PROP_LC_TITLE'									: 'Launch Configuation',
+		'PROP_LC_NAME'									: '名称',
+		'PROP_LC_CREATE_TIME'							: '创建时间',
 		//###### launch configuration property
 
 		//###### route table property
@@ -601,6 +674,8 @@ define({
 		'PROP_RT_SET_MAIN'								: '设置为主路由表',
 		'PROP_RT_TARGET'								: '路由对象',
 		'PROP_RT_DESTINATION'							: '数据包目的地',
+		'PROP_RT_ID'									: '路由表ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
 		//###### route table property
 
 		/******navigation module******/
@@ -715,6 +790,16 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: '主题名',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
+
+
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: '将模板创建为',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: '传统模式',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: '资源将被创建在传统的平台中',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC模式',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: '资源将被创建在新创建的VPC中',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: '默认VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: '定制VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: '资源将被创建在新默认的VPC中',
 
 		//###### dashboard module
 

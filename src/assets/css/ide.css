@@ -2193,6 +2193,10 @@ a {
 		background-size: 200px auto;
 	}
 
+	#region-resource-app-wrap .blank-widget {
+		padding: 73.5px 0;
+	}
+
 	.region-resource-thumbnail img {
 		width: 195px;
 		height: 136px;
@@ -2567,7 +2571,7 @@ a {
 
 .blank-widget {
 	text-align: center;
-	padding: 73.5px 0;
+	padding:78px 0;
 	color: #999;
 	background: #f8f8f8;
 }

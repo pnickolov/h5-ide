@@ -146,6 +146,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : 'Delete Stack',
 		'TOOL_POP_BODY_DELETE_STACK'            : 'Do you confirm to delete stack',
 		'TOOL_POP_BTN_DELETE_STACK'             : 'Delete',
+		'TOOL_POP_BTN_CANCEL'     		        : 'Cancel',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : 'Duplicate Stack',
@@ -171,19 +172,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
 		'TOOL_POP_TIT_STOP_APP'                 : 'Confirm to stop app',
-		'TOOL_POP_BODY_STOP_APP'                : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : '',
 		'TOOL_POP_BTN_STOP_APP'                 : 'Stop',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "Start this app's resources.",
 		'TOOL_POP_TIT_START_APP'                : 'Confirm to start app',
-		'TOOL_POP_BODY_START_APP'               : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_LEFT'          : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : '',
 		'TOOL_POP_BTN_START_APP'                : 'Start',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
 		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
-		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : '',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
 		//toolbar handler
@@ -712,6 +716,7 @@ define({
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
 
 
+
 		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: 'Create this stack in',
 		'DASH_POP_CREATE_STACK_CLASSIC'					: 'Classic',
 		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: 'Resources will be created into the Classic platform',
@@ -745,6 +750,7 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
 		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
 		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 

@@ -145,6 +145,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : '删除模版',
 		'TOOL_POP_BODY_DELETE_STACK'            : '确认删除模版吗?',
 		'TOOL_POP_BTN_DELETE_STACK'             : '删除',
+		'TOOL_POP_BTN_CANCEL'     		        : '取消',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : '复制模版',
@@ -170,19 +171,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "暂停应用",
 		'TOOL_POP_TIT_STOP_APP'                 : '确认暂停',
-		'TOOL_POP_BODY_STOP_APP'                : '本操作将暂停应用中的相关资源，您确认暂停当前应用吗?',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : '本操作将暂停应用中的相关资源，您确认暂停当前应用',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : ' 吗',
 		'TOOL_POP_BTN_STOP_APP'                 : '暂停',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "恢复应用",
 		'TOOL_POP_TIT_START_APP'                : '确认恢复',
-		'TOOL_POP_BODY_START_APP'               : '本操作将恢复应用中的相关资源，您确认恢复当前应用吗?',
+		'TOOL_POP_BODY_START_APP_LEFT'          : '本操作将恢复应用中的相关资源，您确认恢复当前应用',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : ' 吗',
 		'TOOL_POP_BTN_START_APP'                : '恢复',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "销毁应用",
 		'TOOL_POP_TIT_TERMINATE_APP'            : '确认销毁',
-		'TOOL_POP_BODY_TERMINATE_APP'           : '本操作将销毁应用中的相关资源，您确认销毁当前应用吗?',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : '本操作将销毁应用中的相关资源，您确认销毁当前应用',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : ' 吗',
 		'TOOL_POP_BTN_TERMINATE_APP'            : '销毁',
 
 		//toolbar handler

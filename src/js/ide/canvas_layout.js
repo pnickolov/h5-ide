@@ -38,7 +38,8 @@ var listen = function ()
 			.on('click', '.line', MC.canvas.event.selectLine)
 			.on('mousedown', MC.canvas.event.clearSelected)
 			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('selectstart', returnFalse);
+			.on('selectstart', returnFalse)
+			.on('mousedown', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);

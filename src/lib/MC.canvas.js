@@ -5098,16 +5098,20 @@ MC.canvas.event.ctrlMove = {
 			event.stopImmediatePropagation();
 
 			var canvas_offset = $('#svg_canvas').offset(),
-				canvas = $('#canvas');
+				canvas = $('#canvas'),
+				scroll_content = canvas.find('.scroll-content').first()[0];
 
 			$(document).on({
 				'mousemove': MC.canvas.event.ctrlMove.mousemove,
 				'mouseup': MC.canvas.event.ctrlMove.mouseup
 			}, {
 				'canvas': canvas,
-				'scroll_content': canvas.find('.scroll-content').first()[0],
 				'offsetX': event.pageX,
-				'offsetY': event.pageY
+				'offsetY': event.pageY,
+				'originalCoordinate': {
+					'left': scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0,
+					'top': scroll_content.realScrollTop ? scroll_content.realScrollTop : 0
+				}
 			});
 
 			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
@@ -5118,15 +5122,11 @@ MC.canvas.event.ctrlMove = {
 
 	mousemove: function (event)
 	{
-		var event_data = event.data,
-			canvas = event_data.canvas,
-			scroll_content = event_data.scroll_content,
-			scrollLeft = scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0,
-			scrollTop = scroll_content.realScrollTop ? scroll_content.realScrollTop : 0;
+		var event_data = event.data;
 
-		scrollbar.scrollTo(canvas, {
-			'left': event_data.offsetX - event.pageX - scrollLeft,
-			'top':  event_data.offsetY - event.pageY - scrollTop
+		scrollbar.scrollTo(event_data.canvas, {
+			'left': event_data.offsetX - event.pageX - event_data.originalCoordinate.left,
+			'top': event_data.offsetY - event.pageY - event_data.originalCoordinate.top
 		});
 
 		return false;

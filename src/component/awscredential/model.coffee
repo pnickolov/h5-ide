@@ -116,7 +116,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             # reset key: last key -> key
                             me.resetKey 0
                             #
-                            notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
+                            #notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
                             null
 
                         me.set 'account_id', account_id

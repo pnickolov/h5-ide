@@ -97,10 +97,10 @@ define [ 'jquery', 'event',
 
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
 
-                    view.showSetting('account')
-
                     # update cookie
                     MC.forge.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
+
+                    view.showSetting('account')
 
                 if _.contains(attr_list, 'password')
 
@@ -112,7 +112,7 @@ define [ 'jquery', 'event',
 
                     model.sync_redis()
                     model.resetKey 0
-                    view.notify 'warning', lang.ide.HEAD_MSG_ERR_RESTORE_DEMO_KEY
+                    #view.notify 'warning', lang.ide.HEAD_MSG_ERR_RESTORE_DEMO_KEY
 
                 null
 

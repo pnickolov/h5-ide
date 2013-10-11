@@ -92,7 +92,7 @@ define [ 'jquery', 'handlebars',
 			$( '.control-group' ).first().addClass 'error'
 			return false
 
-		$( '#login-btn'   ).attr( 'value', 'One Minute...' )
+		$( '#login-btn'   ).attr( 'value', lang.login.login_waiting )
 		$( '#login-btn'   ).attr( 'disabled', true )
 
 		#invoke session.login api

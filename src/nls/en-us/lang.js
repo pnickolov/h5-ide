@@ -1,23 +1,52 @@
 define({
 	'login' : {
-		'login'          : 'Log In',
-		'login-register' : 'New to MadeiraCloud? ',
-		'link-register'  : 'Register',
-		'error-msg-1'    : 'Username or email does not match the password.',
-		'error-msg-2'    : 'Hey, you forgot to enter a username or email.',
-		'link-foget'     : 'Forgot your Password?',
-		'login-user'     : 'Username or email',
-		'login-password' : 'Password',
-		'login-btn'      : 'Log In',
-		'login-loading'  : 'Logging In'
+		'login'          			: 'Log In',
+		'login-register' 			: 'New to MadeiraCloud? ',
+		'link-register'  			: 'Register',
+		'error-msg-1'    			: 'Username or email does not match the password.',
+		'error-msg-2'    			: 'Hey, you forgot to enter a username or email.',
+		'link-foget'     			: 'Forgot your Password?',
+		'login-user'     			: 'Username or email',
+		'login-password' 			: 'Password',
+		'login-btn'      			: 'Log In',
+		'login-loading'  			: 'Logging In',
+		'login_waiting'	 			: 'One Minute...'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
+	'register' : {
+		'register'					: 'Register',
+		'register-login'			: 'Already a user?',
+		'link-login'				: 'Log in',
+		'register-username'			: 'Username',
+		'register-email'			: 'Email',
+		'register-password'			: 'Password',
+		'register-policy'			: 'By clicking the create account button, you agree to our',
+		'link-policy'				: 'Terms of Service',
+		'register-btn'				: 'Create Account',
+		'register-success'			: 'Registered Successfully',
+		'account-instruction'		: 'Thanks for signing up with MadeiraCloud.',
+		'register-get-start'		: 'Get Started',
+
+		'username_available'		: 'This username is available.',
+		'username_not_matched'		: 'Username not matched.',
+		'username_required'			: 'Username is required.',
+		'username_taken'			: 'Username has been taken. Please choose another.',
+		'email_available'			: 'This email address is available.',
+		'email_not_valid'			: 'This is not a valid email address.',
+		'email_used'				: 'This email address has been used.',
+		'password_ok'				: 'This password is OK.',
+		'password_shorter'			: 'Password must contain at least 6 letters.',
+		'password_required'			: 'Password is required.',
+		'reginster_waiting'			: 'One Minute...'
+
+
+	},
 	'ide' : {
-		'NAV_TIT_DASHBOARD' : 'Dashboard',
-		'NAV_TIT_APPS'      : 'Apps',
-		'NAV_TIT_STACKS'    : 'Stacks',
-		'NAV_LBL_GLOBAL'    : 'Global',
-		'account-settings'  : 'Account Settings',
+		'NAV_TIT_DASHBOARD' 		: 'Dashboard',
+		'NAV_TIT_APPS'      		: 'Apps',
+		'NAV_TIT_STACKS'    		: 'Stacks',
+		'NAV_LBL_GLOBAL'    		: 'Global',
+		'account-settings'  		: 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/** RESOURCE NAMING CONVENTIONS

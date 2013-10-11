@@ -6,7 +6,8 @@ define [ 'event',
          'text!./module/reset/template.html', 'text!./module/reset/email.html',
          'text!./module/reset/password.html', 'text!./module/reset/loading.html',
          'text!./module/reset/expire.html',   'text!./module/reset/success.html',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl ) ->
+         'i18n!nls/lang.js',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, email_tmpl, password_tmpl, loading_tmpl, expire_tmpl, success_tmpl, lang ) ->
 
     ResetView = Backbone.View.extend {
 
@@ -59,14 +60,14 @@ define [ 'event',
             console.log 'resetPasswordButtonEvent'
             $('#email-verification-status').hide()
             $( '#reset-btn' ).attr( 'disabled', true )
-            $( '#reset-btn' ).attr( 'value', 'One Minute...' )
+            $( '#reset-btn' ).attr( 'value', lang.reset.reset_waiting )
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
             false
 
         resetPasswordEvent : ->
             console.log 'resetPasswordEvent'
             if @verificationPassword()
-                $( '#reset-password' ).attr( 'value', 'One Minute...' )
+                $( '#reset-password' ).attr( 'value', lang.reset.reset_waiting )
                 $( '#reset-password' ).attr( 'disabled', true )
                 this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false
@@ -85,18 +86,18 @@ define [ 'event',
                   status.hide()
                   true
                 else
-                  status.addClass('error-status').show().text 'Password must contain at least 6 characters.'
+                  status.addClass('error-status').show().text lang.reset.reset_password_shorter
                   false
             else
-                status.addClass('error-status').show().text 'Password is required.'
+                status.addClass('error-status').show().text lang.reset.reset_password_required
                 false
 
         showErrorMessage : ->
             console.log 'showErrorMessage'
             $( '#reset-btn' ).attr( 'disabled', false )
-            $( '#reset-btn' ).attr( 'value', 'Send Reset Password Email' )
+            $( '#reset-btn' ).attr( 'value', lang.reset.reset_btn )
             status = $('#email-verification-status')
-            status.addClass( 'error-status' ).show().text 'The username or email address is not registered with MadeiraCloud.'
+            status.addClass( 'error-status' ).show().text lang.reset.reset_error_state
             false
 
         #showPassowordErrorMessage : ->

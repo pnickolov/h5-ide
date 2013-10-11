@@ -37,15 +37,6 @@ define [ 'jquery', 'event',
                 ture_template = template
                 view.state    = 'credential'
 
-            ###
-            if MC.forge.cookie.getCookieByName('new_account') is 'true'
-                ture_template = welcome_tmpl
-                view.state    = 'welcome'
-            else
-                ture_template = template
-                view.state    = 'credential'
-            ###
-
             #render
             view.render ture_template
 
@@ -56,17 +47,6 @@ define [ 'jquery', 'event',
                 view.showSetting('account')
             else
                 view.showSetting('credential', 'is_failed')
-
-            ###
-            if MC.forge.cookie.getCookieByName('new_account') is 'true'
-                view.showSetting('credential')
-
-            else if MC.forge.cookie.getCookieByName('has_cred') is 'true'
-                # show account setting tab
-                view.showSetting('account')
-            else
-                view.showSetting('credential', 'is_failed')
-            ###
 
             #
             view.on 'CLOSE_POPUP', () ->
@@ -114,11 +94,13 @@ define [ 'jquery', 'event',
                 attr_list = _.keys(attributes)
 
                 if _.contains(attr_list, 'email')
-                    $.cookie 'email', MC.base64Encode(attributes['email']),    { expires: 1 }
 
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
 
                     view.showSetting('account')
+
+                    # update cookie
+                    MC.forge.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
 
                 if _.contains(attr_list, 'password')
 

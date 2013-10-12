@@ -22,7 +22,8 @@ var constant_data = {
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8],
-		'AWS.AutoScaling.LaunchConfiguration': [9, 9]
+		'AWS.AutoScaling.LaunchConfiguration': [9, 9],
+		'AWS.AutoScaling.Group': [13, 13]
 	},
 
 	COMPONENT_TYPE:

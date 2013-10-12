@@ -1,4 +1,7 @@
-.. list-table:: Term List
+TERM LIST
+====
+
+.. list-table::
   :widths: 180 190 
   :header-rows: 1
 

@@ -1,4 +1,4 @@
-TERM LIST
+术语表
 ====
 
 .. list-table::

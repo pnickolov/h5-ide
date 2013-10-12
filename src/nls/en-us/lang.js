@@ -96,6 +96,7 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : 'Sorry, the stack/app is too old, unable to open',
 		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
 		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
 
@@ -488,6 +489,8 @@ define({
 		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : 'Download',
 		//##### cgw property module
 
+		// instance property module
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -524,6 +527,18 @@ define({
 		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
 		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
 		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: 'AMI ID',
+		'PROP_INSTANCE_AMI_NAME'				: 'Name',
+		'PROP_INSTANCE_AMI_DESC'				: 'Description',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: 'Architecture',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: 'Virtualization',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
 		//###### instance property module
 
 		// ---

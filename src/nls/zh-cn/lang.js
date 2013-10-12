@@ -299,6 +299,15 @@ define({
 		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
 		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
 		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: '镜像ID',
+		'PROP_INSTANCE_AMI_NAME'				: '镜像名称',
+		'PROP_INSTANCE_AMI_DESC'				: '描述',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: '架构',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: '虚拟化',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: '内核ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: '操作系统类型',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: '支持实例类型',
+
 		//###### instance property module
 
 
@@ -544,6 +553,7 @@ define({
 
 
 		// instance property module
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',

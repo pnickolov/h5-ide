@@ -671,6 +671,18 @@ $(document).ready(function ()
 	{
 		language = navigator.language.replace(/-[\w]*/ig, '');
 
+		if ( language === 'zh' ) {
+			language = 'zh-cn';
+		}
+		else if ( language === 'en' ) {
+			language = 'en-us';
+		}
+		else {
+			language = 'en-us';
+		}
+
+		MC.storage.set( 'language', language );
+
 		$.cookie('lang', language);
 	}
 

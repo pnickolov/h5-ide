@@ -54,6 +54,18 @@ define [ 'jquery',
                 model.appInit uid
             else
                 model.init uid
+                
+                view.on 'ADD_RULE_TO_ACL', (value) ->
+                    model.addRuleToACL uid, value
+
+                model.on 'REFRESH_RULE_LIST', (value) ->
+                    view.refreshRuleList value
+
+                view.on 'REMOVE_RULE_FROM_ACL', (ruleNum, ruleEngress) ->
+                    model.removeRuleFromACL uid, ruleNum, ruleEngress
+
+                view.on 'ACL_NAME_CHANGED', (aclName) ->
+                    model.setACLName uid, aclName
 
             #view
             view.model    = model
@@ -70,24 +82,12 @@ define [ 'jquery',
                 view.refreshRuleList(MC.canvas_data.component[uid])
 
             #temp hack
-            view._events = []
-
-            view.on 'ADD_RULE_TO_ACL', (value) ->
-                model.addRuleToACL uid, value
-
-            model.on 'REFRESH_RULE_LIST', (value) ->
-                view.refreshRuleList value
-
-            view.on 'REMOVE_RULE_FROM_ACL', (ruleNum, ruleEngress) ->
-                model.removeRuleFromACL uid, ruleNum, ruleEngress
-
-            view.on 'ACL_NAME_CHANGED', (aclName) ->
-                model.setACLName uid, aclName
+            # view._events = []
 
     unLoadModule = () ->
-        # current_view.off()
-        # current_model.off()
-        # current_view.undelegateEvents()
+        current_view.off()
+        current_model.off()
+        current_view.undelegateEvents()
         #ide_event.offListen ide_event.<EVENT_TYPE>
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 

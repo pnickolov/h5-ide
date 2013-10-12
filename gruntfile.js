@@ -77,6 +77,7 @@ module.exports = function( grunt ) {
 
 		replace          : require( './config/replace.js'        ),
 		"string-replace" : require( './config/string-replace.js' ),
+		"regex-replace"  : require( './config/regex-replace.js' ),
 
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
@@ -218,7 +219,9 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['requirejs',
+	grunt.registerTask( 'publish', ['regex-replace:string',
+									'requirejs',
+									'regex-replace:language',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
@@ -242,7 +245,9 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									//publish
+									'regex-replace:string',
 									'requirejs',
+									'regex-replace:language',
 									'copy:publish_files',
 									'clean:temp'
 	]);

@@ -55,7 +55,8 @@ define [ 'jquery', 'event',
             view.on 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
                 console.log 'AWS_AUTHENTICATION'
                 # reset key first
-                #model.resetKey 1
+                if model.attributes.is_authenticated
+                    model.resetKey(1)
 
                 model.awsAuthenticate access_key, secret_key, account_id
 
@@ -138,7 +139,15 @@ define [ 'jquery', 'event',
             view.on 'REMOVE_CREDENTIAL', () ->
                 console.log 'REMOVE_CREDENTIAL'
 
-                model.removeCredential()
+                #model.removeCredential()
+                model.resetKey()
+
+                null
+
+            view.on 'CANCAL_CREDENTIAL', () ->
+                console.log 'CANCAL_CREDENTIAL'
+
+                model.resetKey(0)
 
                 null
 

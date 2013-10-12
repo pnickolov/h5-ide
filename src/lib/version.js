@@ -9,9 +9,11 @@
 # **********************************************************
 */
 
-var version = version || {};
+var version  = version || {};
+var language = language || 'en-us';
 
 (function() {
   'use strict';
-  version = '130830.1912';
+  version  = '130830.1912';
+  language = 'zh-cn';
 })();

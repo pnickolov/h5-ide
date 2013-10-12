@@ -287,7 +287,7 @@ $(document).ready(function ()
 				{
 					youtube_player[ current_index ].pauseVideo();
 				}
-				
+
 				target_carousel.find('.carousel-next').show();
 				target_carousel.find('.carousel-done').hide();
 

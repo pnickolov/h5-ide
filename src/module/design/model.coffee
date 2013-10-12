@@ -83,6 +83,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                     _.map result.resolved_data, ( ami ) ->
                         ami.osType = MC.aws.ami.getOSType ami
                         MC.data.dict_ami[ami.imageId] = ami
+                        ide_event.trigger ide_event.SWITCH_MAIN
                         null
                 null
 
@@ -268,6 +269,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
+
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
             
             me = this
 

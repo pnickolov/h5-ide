@@ -94,6 +94,7 @@ require.config {
 
 		#jquery plugin
 		'hoverIntent'        : 'ui/common/jquery.hoverIntent.minified'
+		'bootstrap-carousel' : 'ui/common/bootstrap-carousel'
 
 		#delete
 		#'parsley'           : 'ui/common/parsley.min'
@@ -173,6 +174,7 @@ require.config {
 		#base_model
 		'base_model'             : 'model/base_model'
 
+		'account_model'          : 'model/account_model'
 		'session_model'          : 'model/session_model'
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'
@@ -203,6 +205,7 @@ require.config {
 		#forge
 		'favorite_service'       : 'service/favorite/favorite_service'
 		'session_service'        : 'service/session/session_service'
+		'account_service'        : 'service/account/account_service'
 		'app_service'            : 'service/app/app_service'
 		'stack_service'          : 'service/stack/stack_service'
 		'aws_service'            : 'service/aws/aws/aws_service'
@@ -356,6 +359,9 @@ require.config {
 
 		'UI.parsley'   :
 			deps       : [ 'jquery' ]
+
+		'bootstrap-carousel':
+			deps	   : [ 'jquery' ]
 
 		#############################################
 		# WS

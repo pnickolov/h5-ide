@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20130913
+#* Date: 20131010
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -31,107 +31,108 @@ var scrollbar = {
 
 		setInterval(function ()
 		{
-			if (!$(document.body).hasClass('disable-event'))
+			var length = doc_scroll_wrap.length;
+
+			while (length--)
 			{
-				var length = doc_scroll_wrap.length;
+				var target = doc_scroll_wrap[ length ],
+					wrap = $(target),
+					children = wrap.children(),
+					veritical_thumb = children[0] ? $(children[0].firstChild) : undefined,
+					horizontal_thumb = children[1] ? $(children[1].firstChild) : undefined,
+					scroll_content = wrap.find('.scroll-content').first(),
+					scroll_content_elem = scroll_content[0],
+					offsetHeight = target.offsetHeight,
+					offsetWidth = target.offsetWidth,
+					scrollbar_height,
+					scrollbar_width,
+					wrap_height,
+					wrap_width;
 
-				while (length--)
+				if (
+					scroll_content_elem &&
+					wrap.css('display') === 'block' &&
+					!wrap.hasClass('scrolling')
+				)
 				{
-					var target = doc_scroll_wrap[ length ],
-						wrap = $(target),
-						children = wrap.children(),
-						veritical_thumb = children[0] ? $(children[0].firstChild) : undefined,
-						horizontal_thumb = children[1] ? $(children[1].firstChild) : undefined,
-						scroll_content = wrap.find('.scroll-content').first(),
-						scroll_content_elem = scroll_content[0],
-						offsetHeight = target.offsetHeight,
-						offsetWidth = target.offsetWidth,
-						scrollbar_height,
-						scrollbar_width,
-						wrap_height,
-						wrap_width;
+					scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
+					scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
 
-					if (scroll_content_elem && wrap.css('display') === 'block')
+					if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 					{
-						scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
-						scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
+						wrap_height = wrap.height();
 
-						if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
+						if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap_height)
 						{
-							wrap_height = wrap.height();
+							veritical_thumb.parent().hide();
 
-							if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap_height)
+							if (scrollbar.isTransform)
 							{
-								veritical_thumb.parent().hide();
-
-								if (scrollbar.isTransform)
-								{
-									scroll_content.css('transform', 'translate(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0)');
-								}
-								else
-								{
-									scroll_content.css('top', 0);
-								}
-
-								scroll_content_elem.realScrollTop = 0;
-								veritical_thumb.css('top', 0);
+								scroll_content.css('transform', 'translate(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0)');
 							}
 							else
 							{
-								veritical_thumb.parent().show();
-								veritical_thumb.css('height', scrollbar_height);
+								scroll_content.css('top', 0);
+							}
 
-								if (
-									scroll_content_elem.realScrollTop !== 0 &&
-									wrap_height - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
-								)
-								{
-									scrollbar.scrollTop({
-										'scroll_content': scroll_content,
-										'scrollbar_wrap': children[0],
-										'thumb': veritical_thumb,
-										'scroll_target': wrap
-									}, scroll_content[0].scrollHeight);
-								}
+							scroll_content_elem.realScrollTop = 0;
+							veritical_thumb.css('top', 0);
+						}
+						else
+						{
+							veritical_thumb.parent().show();
+							veritical_thumb.css('height', scrollbar_height);
+
+							if (
+								scroll_content_elem.realScrollTop !== 0 &&
+								wrap_height - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
+							)
+							{
+								scrollbar.scrollTop({
+									'scroll_content': scroll_content,
+									'scrollbar_wrap': children[0],
+									'thumb': veritical_thumb,
+									'scroll_target': wrap
+								}, scroll_content[0].scrollHeight);
 							}
 						}
+					}
 
-						if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
+					if (horizontal_thumb && horizontal_thumb.hasClass('scrollbar-horizontal-thumb'))
+					{
+						wrap_width = wrap.width();
+
+						if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap_width)
 						{
-							wrap_width = wrap.width();
-
-							if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap_width)
+							horizontal_thumb.parent().hide();
+							if (scrollbar.isTransform)
 							{
-								horizontal_thumb.parent().hide();
-								if (scrollbar.isTransform)
-								{
-									scroll_content.css('transform', 'translate(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px)');
-								}
-								else
-								{
-									scroll_content.css('left', 0);
-								}
-
-								scroll_content_elem.realScrollLeft = 0;
-								horizontal_thumb.css('left', 0);
+								scroll_content.css('transform', 'translate(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px)');
 							}
 							else
 							{
-								horizontal_thumb.parent().show();
-								horizontal_thumb.css('width', scrollbar_width);
+								scroll_content.css('left', 0);
+							}
 
-								if (
-									scroll_content_elem.realScrollLeft !== 0 &&
-									wrap_width - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
-								)
-								{
-									scrollbar.scrollLeft({
-										'scroll_content': scroll_content,
-										'scrollbar_wrap': children[1],
-										'thumb': horizontal_thumb,
-										'scroll_target': wrap
-									}, scroll_content[0].scrollWidth);
-								}
+							scroll_content_elem.realScrollLeft = 0;
+							horizontal_thumb.css('left', 0);
+						}
+						else
+						{
+							horizontal_thumb.parent().show();
+							horizontal_thumb.css('width', scrollbar_width);
+
+							if (
+								scroll_content_elem.realScrollLeft !== 0 &&
+								wrap_width - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
+							)
+							{
+								scrollbar.scrollLeft({
+									'scroll_content': scroll_content,
+									'scrollbar_wrap': children[1],
+									'thumb': horizontal_thumb,
+									'scroll_target': wrap
+								}, scroll_content[0].scrollWidth);
 							}
 						}
 					}

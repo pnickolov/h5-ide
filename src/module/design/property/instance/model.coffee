@@ -615,6 +615,10 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 				instance_type = instance_type["64"]
 			else
 				instance_type = instance_type["32"]
+
+			if !ami.virtualizationType
+				ami.virtualizationType = 'paravirtual'
+				
 			instance_type = instance_type[ami.virtualizationType]
 
 			instance_type

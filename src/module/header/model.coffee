@@ -36,7 +36,13 @@ define [ 'backbone', 'jquery', 'underscore',
                 $.cookie 'madeiracloud_ide_session_id', null, { expires: 0 }
 
                 #redirect to page login.html
-                window.location.href = 'login.html'
+                if document.domain.indexOf('madeiracloud.com') != -1
+                    #domain is *.madeiracloud.com
+                    window.location.href = 'https://ide.madeiracloud.com/login.html'
+                else
+                    #domain is not *.madeiracloud.com, maybe localhost
+                    window.location.href = 'login.html'
+
 
                 return false
 

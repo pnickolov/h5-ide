@@ -128,6 +128,60 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
         # remember replace 'current_service.toLowerCase() == ""' to 'current_service.toLowerCase() == "forge"'
         ##############################
 
+        ########## Account ##########
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "register"
+            password = if $("#password").val() != "null" then $("#password").val() else null
+            password = if password != null and MC.isJSON(password)==true then JSON.parse password else password
+            email = if $("#email").val() != "null" then $("#email").val() else null
+            email = if email != null and MC.isJSON(email)==true then JSON.parse email else email
+            #account.register
+            account_model.register {sender: me}, username, password, email
+            account_model.once "ACCOUNT_REGISTER_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "update_account"
+            attributes = if $("#attributes").val() != "null" then $("#attributes").val() else null
+            attributes = if attributes != null and MC.isJSON(attributes)==true then JSON.parse attributes else attributes
+            #account.update_account
+            account_model.update_account {sender: me}, username, session_id, attributes
+            account_model.once "ACCOUNT_UPDATE__ACCOUNT_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "reset_password"
+
+            #account.reset_password
+            account_model.reset_password {sender: me}, username
+            account_model.once "ACCOUNT_RESET__PWD_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "update_password"
+            id = if $("#id").val() != "null" then $("#id").val() else null
+            id = if id != null and MC.isJSON(id)==true then JSON.parse id else id
+            new_pwd = if $("#new_pwd").val() != "null" then $("#new_pwd").val() else null
+            new_pwd = if new_pwd != null and MC.isJSON(new_pwd)==true then JSON.parse new_pwd else new_pwd
+            #account.update_password
+            account_model.update_password {sender: me}, id, new_pwd
+            account_model.once "ACCOUNT_UPDATE__PWD_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "check_repeat"
+            email = if $("#email").val() != "null" then $("#email").val() else null
+            email = if email != null and MC.isJSON(email)==true then JSON.parse email else email
+            #account.check_repeat
+            account_model.check_repeat {sender: me}, username, email
+            account_model.once "ACCOUNT_CHECK__REPEAT_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "check_validation"
+            key = if $("#key").val() != "null" then $("#key").val() else null
+            key = if key != null and MC.isJSON(key)==true then JSON.parse key else key
+            flag = if $("#flag").val() != "null" then $("#flag").val() else null
+            flag = if flag != null and MC.isJSON(flag)==true then JSON.parse flag else flag
+            #account.check_validation
+            account_model.check_validation {sender: me}, key, flag
+            account_model.once "ACCOUNT_CHECK__VALIDATION_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
         ########## Log ##########
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "log" && current_api == "put_user_log"
             user_logs = if $("#user_logs").val() != "null" then $("#user_logs").val() else null

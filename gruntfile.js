@@ -12,6 +12,8 @@ module.exports = function( grunt ) {
 		release    : 'release',
 		publish    : 'publish',
 		temp       : '~temp',
+		reg_temp   : '~reg_temp',
+		reset_temp : '~reset_temp',
 		vender     : 'vender',
 		components : 'bower_components',
 
@@ -217,7 +219,7 @@ module.exports = function( grunt ) {
 
 	/* run at r.js as publish */
 	grunt.registerTask( 'publish', ['requirejs',
-									'copy:publish_login',
+									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
 									'connect:publish'
@@ -241,7 +243,7 @@ module.exports = function( grunt ) {
 									'copy:special_ui_del',
 									//publish
 									'requirejs',
-									'copy:publish_login',
+									'copy:publish_files',
 									'clean:temp'
 	]);
 

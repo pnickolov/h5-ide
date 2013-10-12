@@ -1,0 +1,50 @@
+<!-- AWSCredential -->
+<div id="account-setting-wrap" class="modal-welcome" style="width: 550px">
+	<div class="modal-header">
+		<h3>Welcome</h3>
+		<i class="modal-close">&times;</i>
+	</div>
+
+	<div class="modal-body">
+
+		<div id="AWSCredential-setting">
+			<div id="AWSCredential-info-wrap">
+				<div id="AWSCredential-info" class="AWSCredential-wall">
+					<h4 id="AWSCredential-welcome"></h4>
+					<p></p>
+				</div>
+			</div>
+			<img src="./assets/images/ide/welcome-img.png" id="AWSCredential-welcome-img" alt=""/>
+
+			<div id="AWSCredential-form">
+				<h4 class="modal-text-major">Provide AWS Credentials</h4>
+				<ul>
+					loading...
+				</ul>
+			</div>
+
+			<div id="AWSCredentials-submiting">
+				loading...
+			</div>
+
+			<div id="AWSCredentials-update">
+				<div class="AWSCredentials-body-info">
+					<h5>You have connected with following AWS account:</h5>
+					<div class="AWSCredentials-account-info">
+						<span id="aws-credential-update-account-id">{{account_id}}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+		<div id="welcome-btn-wrap">
+			<a id="awscredentials-skip" data-type="skip" href="javascript:void(0)">Skip</a>
+			<button id="awscredentials-submit" class="btn btn-blue">Submit</button>
+		</div>
+	</div>
+</div>
+

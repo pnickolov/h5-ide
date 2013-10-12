@@ -120,6 +120,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
 			aws_result.resolved_data = resolved_data
 
+		else if return_code == constant.RETURN_CODE.E_EXTERNAL && result[0] == 599 		# filter aws return code 599
+
+			aws_result.return_code = constant.RETURN_CODE.E_BUSY
 
 		#3.return vo
 		aws_result

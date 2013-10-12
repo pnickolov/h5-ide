@@ -55,15 +55,22 @@ define [ 'MC', 'event', 'handlebars'
 		#############################
 
 		#clear path=/v2 cookie(patch)
-		forge_handle.cookie.clearV2Cookie '/v2'
-		forge_handle.cookie.clearV2Cookie '/v2/'
+		#forge_handle.cookie.clearV2Cookie '/v2'
+		#forge_handle.cookie.clearV2Cookie '/v2/'
 
 		if forge_handle.cookie.getIDECookie()
 			forge_handle.cookie.setCookie forge_handle.cookie.getIDECookie()
 		else
 			if !forge_handle.cookie.checkAllCookie()
 				#user session not exist, go to login page
-				window.location.href = 'login.html'
+
+                if document.domain.indexOf('madeiracloud.com') != -1
+                    #domain is *.madeiracloud.com
+                    window.location.href = 'https://ide.madeiracloud.com/login.html'
+                else
+                    #domain is not *.madeiracloud.com, maybe localhost
+                    window.location.href = 'login.html'
+
 
 		#clear cookie in 'ide.madeiracloud.com'
 		forge_handle.cookie.clearInvalidCookie()
@@ -115,6 +122,9 @@ define [ 'MC', 'event', 'handlebars'
 
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
+
+		#
+		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
 
 		#############################
 		#  WebSocket

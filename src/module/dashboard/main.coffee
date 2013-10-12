@@ -18,6 +18,9 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
         hasCredential: ->
             MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
+        accountIsDemo: ->
+            $.cookie('account_id') is 'demo_account'
+
     initialize()
 
     # private
@@ -82,27 +85,43 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     view.enableCreateStack()
 
             # update aws credential
-            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, (flag) ->
+            ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
 
-                if Helper.hasCredential()
+                if Helper.hasCredential() and not Helper.accountIsDemo()
+                    view.clearDemo()
                     view.enableSwitchRegion()
                     view.reloadResource()
-                else    # set aws credential
+                else if not Helper.accountIsDemo()
                     view.disableSwitchRegion()
-                    view.showCredential(flag)
-                    if flag is 'new_account'
-                        ide_event.trigger ide_event.SWITCH_MAIN
-                    else
-                        view.renderLoadingFaild()
+                    view.showCredential()
+                    view.renderLoadingFaild()
+                else
+                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
+
+            ide_event.onLongListen ide_event.ACCOUNT_DEMONSTRATE, () ->
+                view.setDemo()
+                view.renderGlobalDemo()
+                view.renderRegionDemo()
+
 
             vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
+                model.accountReturnHandler()
+                if Helper.accountIsDemo()
+                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
+
                 if Helper.hasCredential()
                     view.enableSwitchRegion()
 
             ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
                 console.log 'UPDATE_DASHBOARD'
                 view.reloadResource() if view
+
+            if MC.forge.cookie.getCookieByName('state') is '1' # new account show welcome dialog
+                view.showCredential 'welcome'
+                #
+                #MC.forge.cookie.setCookieByName 'state', false
+                #MC.forge.cookie.setIDECookie $.cookie()
 
             #model
             model.describeAccountAttributesService()

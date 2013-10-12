@@ -151,6 +151,9 @@ define [ 'underscore', 'backbone' ], () ->
         #updated aws credential
         UPDATE_AWS_CREDENTIAL  : 'UPDATE_AWS_CREDENTIAL'
 
+        #demo account
+        ACCOUNT_DEMONSTRATE    : 'ACCOUNT_DEMONSTRATE'
+
         #update app resource
         UPDATE_APP_RESOURCE    : 'UPDATE_APP_RESOURCE'
 

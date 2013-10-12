@@ -829,12 +829,24 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
-		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
 
+		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
 		'DASH_LBL_ASSOCIATION_ID'	    	    	: 'Association ID',
 		'DASH_LBL_ALLOCATION_ID'	    	    	: 'Allocation ID',
 		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : 'Network Interface ID',
 		'DASH_LBL_PRIVATE_IP_ADDRESS'	    	    : 'Private Ip Address',
+
+		'DASH_LBL_AUTOSCALING_GROUP_NAME'	    	: 'Auto Scaling Group Name',
+		'DASH_LBL_AUTOSCALING_GROUP_ARN'	    	: 'Auto Scaling Group ARN',
+		'DASH_LBL_ENABLED_METRICS'	    			: 'Enabled Metrics',
+		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : 'Launch Configuration Name',
+		'DASH_LBL_LOADBALANCER_NAMES'	    		: 'LoadBalancer Names',
+		'DASH_LBL_MAX_SIZE'	    					: 'MaxSize',
+		'DASH_LBL_MAX_SIZE'	    					: 'MinSize',
+		'DASH_LBL_TERMINATION_POLICIES'	    		: 'Termination Policies',
+		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC Zone Identifier',
+
+
 
 
 		'DASH_BUB_NAME'	    	    				: 'Name',
@@ -872,6 +884,7 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 
 		'IDE_LBL_LAST_STATUS_CHANGE'					: "Last Changed",
+		'IDE_LBL_ENABLED_METRICS'						: "Last Changed",
 
 		//###### ide
 

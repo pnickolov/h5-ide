@@ -171,23 +171,23 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeAutoScalingGroups":
                 "title" : "AutoScalingGroupName"
                 "sub_info":[
-                    {"key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"}
-                    {"key": [ "AutoScalingGroupARN" ], "show_key": "AutoScalingGroupARN"}
-                    {"key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"}
-                    {"key": [ "CreatedTime" ], "show_key": "CreatedTime"}
-                    {"key": [ "DefaultCooldown" ], "show_key": "DefaultCooldown"}
-                    {"key": [ "DesiredCapacity" ], "show_key": "DesiredCapacity"}
-                    {"key": [ "EnabledMetrics" ], "show_key": "EnabledMetrics"}
-                    {"key": [ "HealthCheckGracePeriod" ], "show_key": "HealthCheckGracePeriod"}
-                    {"key": [ "HealthCheckType" ], "show_key": "HealthCheckType"}
-                    {"key": [ "Instances" ], "show_key": "Instances"}
-                    {"key": [ "LaunchConfigurationName" ], "show_key": "LaunchConfigurationName"}
-                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": "LoadBalancerNames"}
-                    {"key": [ "MaxSize" ], "show_key": "MaxSize"}
-                    {"key": [ "MinSize" ], "show_key": "MinSize"}
-                    {"key": [ "Status" ], "show_key": "Status"}
-                    {"key": [ "TerminationPolicies", 'member' ], "show_key": "TerminationPolicies"}
-                    {"key": [ "VPCZoneIdentifier" ], "show_key": "VPCZoneIdentifier"}
+                    {"key": [ "AutoScalingGroupName" ], "show_key": lang.ide.DASH_LBL_AUTOSCALING_GROUP_NAME}
+                    {"key": [ "AutoScalingGroupARN" ], "show_key": lang.ide.DASH_LBL_AUTOSCALING_GROUP_ARN}
+                    {"key": [ "AvailabilityZones", "member" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE}
+                    {"key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
+                    {"key": [ "DefaultCooldown" ], "show_key": lang.ide.PROP_ASG_COOL_DOWN}
+                    {"key": [ "DesiredCapacity" ], "show_key": lang.ide.PROP_ASG_DESIRE_CAPACITY}
+                    {"key": [ "EnabledMetrics" ], "show_key": lang.ide.DASH_LBL_ENABLED_METRICS}
+                    {"key": [ "HealthCheckGracePeriod" ], "show_key": lang.ide.PROP_ASG_HEALTH_CHECK_CRACE_PERIOD}
+                    {"key": [ "HealthCheckType" ], "show_key": lang.ide.PROP_ASG_HEALTH_CHECK_TYPE}
+                    {"key": [ "Instances" ], "show_key": lang.ide.DASH_LBL_INSTANCE}
+                    {"key": [ "LaunchConfigurationName" ], "show_key": lang.ide.DASH_LBL_LAUNCH_CONFIGURATION_NAME}
+                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": lang.ide.DASH_LBL_LOADBALANCER_NAMES}
+                    {"key": [ "MaxSize" ], "show_key": lang.ide.DASH_LBL_MAX_SIZE}
+                    {"key": [ "MinSize" ], "show_key": lang.ide.DASH_LBL_MIN_SIZE}
+                    {"key": [ "Status" ], "show_key": lang.ide.DASH_LBL_STATUS}
+                    {"key": [ "TerminationPolicies", 'member' ], "show_key": lang.ide.DASH_LBL_TERMINATION_POLICIES}
+                    {"key": [ "VPCZoneIdentifier" ], "show_key": lang.ide.DASH_LBL_VPC_ZONE_IDENTIFIER}
 
                 ]
 

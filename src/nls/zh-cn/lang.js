@@ -867,6 +867,16 @@ define({
 		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : '网络接口 ID',
 		'DASH_LBL_PRIVATE_IP_ADDRESS'	    	    : '内网IP地址',
 
+		'DASH_LBL_AUTOSCALING_GROUP_NAME'	    	: 'Auto Scaling组名',
+		'DASH_LBL_AUTOSCALING_GROUP_ARN'	    	: 'Auto Scaling组ARN',
+		'DASH_LBL_ENABLED_METRICS'	    			: '开启的指标',
+		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : '启动配置名称',
+		'DASH_LBL_LOADBALANCER_NAMES'	    		: '负载均衡器名称',
+		'DASH_LBL_MAX_SIZE'	    					: '最大值',
+		'DASH_LBL_MIN_SIZE'	    					: '最小值',
+		'DASH_LBL_TERMINATION_POLICIES'	    		: '结束策略',
+		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC区域标识符',
+
 
 		'DASH_BUB_NAME'	    	    				: '名称',
 		'DASH_BUB_DESCRIPTION'						: '描述',

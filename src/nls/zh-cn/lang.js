@@ -851,6 +851,16 @@ define({
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 
 
+		'DASH_BUB_NAME'	    	    				: '名称',
+		'DASH_BUB_DESCRIPTION'						: '描述',
+		'DASH_BUB_ARCHITECTURE'	    	    		: '架构',
+		'DASH_BUB_IMAGELOCATION'	    	    	: '映像位置',
+		'DASH_BUB_ISPUBLIC'	    	    			: '是否公用',
+		'DASH_BUB_KERNELID'	    	    			: '内核ID',
+		'DASH_BUB_ROOTDEVICENAME'	    	    	: '根设备名',
+		'DASH_BUB_ROOTDEVICETYPE'	    	    	: '根设备类型',
+
+
 		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: '将模板创建为',
 		'DASH_POP_CREATE_STACK_CLASSIC'					: '传统模式',
 		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: '资源将被创建在传统的平台中',

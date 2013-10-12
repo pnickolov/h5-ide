@@ -801,6 +801,15 @@ define({
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
 
 
+		'DASH_BUB_NAME'	    	    				: 'Name',
+		'DASH_BUB_DESCRIPTION'						: 'Description',
+		'DASH_BUB_ARCHITECTURE'	    	    		: 'Architecture',
+		'DASH_BUB_IMAGELOCATION'	    	    	: 'Image Location',
+		'DASH_BUB_ISPUBLIC'	    	    			: 'Public',
+		'DASH_BUB_KERNELID'	    	    			: 'KernelId',
+		'DASH_BUB_ROOTDEVICENAME'	    	    	: 'Root Device Name',
+		'DASH_BUB_ROOTDEVICETYPE'	    	    	: 'Root Device Type',
+
 
 
 		//###### dashboard module

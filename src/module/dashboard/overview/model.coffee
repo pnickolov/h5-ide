@@ -720,7 +720,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
-
             me = this
 
             keys_to_parse  = null

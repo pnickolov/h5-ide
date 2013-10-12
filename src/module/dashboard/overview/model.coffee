@@ -84,17 +84,17 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeVolumes":
                 "title": "volumeId",
                 "sub_info":[
-                    { "key": [ "volumeId" ], "show_key": "Volume ID"},
-                    { "key": [ "attachmentSet", "item",0, "device"  ], "show_key": "Device Name"},
-                    { "key": [ "snapshotId" ], "show_key": "Snapshot ID"},
-                    { "key": [ "size" ], "show_key": "Volume Size(GiB)"}
-                    { "key": [ "createTime" ], "show_key": "Create Time"},
-                    { "key": [ "attachmentSet" ], "show_key": "AttachmentSet"},
-                    { "key": [ "status" ], "show_key": "status"},
-                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "AttachmentSet"},
-                    { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
-                    { "key": [ "volumeType" ], "show_key": "Volume Type"},
-                    { "key": [ "Iops" ], "show_key": "Iops"}
+                    { "key": [ "volumeId" ], "show_key": lang.ide.PROP_VOLUME_ID},
+                    { "key": [ "attachmentSet", "item",0, "device"  ], "show_key": lang.ide.DASH_LBL_DEVICE_NAME},
+                    { "key": [ "snapshotId" ], "show_key": lang.ide.PROP_VOLUME_SNAPSHOT_ID},
+                    { "key": [ "size" ], "show_key": "#{lang.ide.PROP_VOLUME_SIZE}(GiB)"}
+                    { "key": [ "createTime" ], "show_key": lang.ide.PROP_VOLUME_CREATE_TIME},
+                    { "key": [ "attachmentSet" ], "show_key": lang.ide.PROP_VOLUME_ATTACHMENT_SET},
+                    { "key": [ "status" ], "show_key": lang.ide.PROP_VOLUME_STATE},
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": lang.ide.PROP_VOLUME_ATTACHMENT_SET},
+                    { "key": [ "availabilityZone" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE},
+                    { "key": [ "volumeType" ], "show_key": lang.ide.PROP_VOLUME_TYPE},
+                    { "key": [ "Iops" ], "show_key": lang.ide.PROP_VOLUME_TYPE_IOPS}
                 ]
             "DescribeInstances":
                 "title": "instanceId",

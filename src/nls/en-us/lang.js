@@ -553,6 +553,15 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
 		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_ID'						: 'Volume ID',
+		'PROP_VOLUME_STATE'						: 'State',
+		'PROP_VOLUME_CREATE_TIME'				: 'Create Time',
+		'PROP_VOLUME_SNAPSHOT_ID'				: 'Snapshot ID',
+		'PROP_VOLUME_SNAPSHOT'					: 'Snapshot',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: 'Attachment Status',
+		'PROP_VOLUME_ATTACHMENT_SET'			: 'AttachmentSet',
+		'PROP_VOLUME_INSTANCE_ID'				: 'Instance ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: 'Attach Time',
 		'PROP_VOLUME_TYPE'						: 'Volume Type',
 		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
 		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
@@ -838,11 +847,12 @@ define({
 		//###### ide
 
 
+		//###### popup
 
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.',
+		'POP_BTN_CLOSE'     		      : 'Close'
 
-
-		/****** popup ******/
-		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
+		//###### popup
 
 	},
 	'service' : {

@@ -583,6 +583,7 @@ define({
 		'PROP_VOLUME_SNAPSHOT_ID'				: '快照ID',
 		'PROP_VOLUME_SNAPSHOT'					: '快照',
 		'PROP_VOLUME_ATTACHMENT_STATE'			: '挂载状态',
+		'PROP_VOLUME_ATTACHMENT_SET'			: '挂载数据集',
 		'PROP_VOLUME_INSTANCE_ID'				: '实例ID',
 		'PROP_VOLUME_ATTACHMENT_TIME'			: '挂载时间',
 		'PROP_VOLUME_TYPE'						: '磁盘类型',
@@ -812,7 +813,7 @@ define({
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
 		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',
-		'DASH_LBL_VOLUME'		  				    : '卷',
+		'DASH_LBL_VOLUME'		  				    : 'Volume',
 		'DASH_LBL_LOAD_BALANCER'				    : '负载均衡器',
 		'DASH_LBL_VPN'								: 'VPN',
 
@@ -896,8 +897,12 @@ define({
 
 		//###### ide
 
-		/****** popup ******/
-		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
+		//###### popup
+
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.',
+		'POP_BTN_CLOSE'     		      : '关闭'
+
+		//###### popup
 
 	}
 });

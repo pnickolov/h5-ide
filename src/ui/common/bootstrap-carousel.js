@@ -294,7 +294,7 @@ $(document).ready(function ()
 				target_carousel.carousel('prev');
 			}
 
-			if (current_index === 1)
+			if (current_index <= 1)
 			{
 				target_carousel.find('.carousel-previous').addClass('disabled');
 			}

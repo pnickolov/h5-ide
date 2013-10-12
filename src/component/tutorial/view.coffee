@@ -10,9 +10,7 @@ define [ 'event',
     TutorialView = Backbone.View.extend {
 
         events   :
-            #'click .stack-run-click' : 'stackRunClickEvent'
             'closed'                 : 'closedPopup'
-            'click .carousel-done'   : 'closedPopup'
 
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
@@ -28,9 +26,6 @@ define [ 'event',
             setTimeout () ->
                 modal.position()
             , 500
-
-        #stackRunClickEvent : ->
-        #    console.log 'stackRunClickEvent'
 
         closedPopup : ->
             console.log 'closedPopup'

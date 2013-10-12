@@ -121,7 +121,9 @@ define [ 'event',
 
                 me.trigger 'CANCAL_CREDENTIAL'
 
-            me.showSetting('credential')
+            else
+
+                me.showSetting('credential', 'on_update')
 
         onAWSCredentialRemove : (event) ->
             console.log 'account_setting_tab onAWSCredentialRemove'

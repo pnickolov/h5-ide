@@ -9,7 +9,7 @@
 # **********************************************************
 */
 
-var VER = 'v2',
+var VER = '',
 	MC_HOST = 'https://api.madeiracloud.com/';
 
 var MC = {
@@ -18,8 +18,8 @@ var MC = {
 	// Global Variable
 	API_URL: MC_HOST + VER + '/',
 	IMG_URL: './assets/images/',
-	WS_URL: MC_HOST + VER + '/ws/',//-> 8300
-	SAVEPNG_URL: MC_HOST + VER + '/export/',//->8400
+	WS_URL: MC_HOST + VER + 'ws/',//-> 8300
+	SAVEPNG_URL: MC_HOST + VER + 'export/',//->8400
 
 	current_module : {},
 
@@ -104,7 +104,7 @@ var MC = {
 				{
 					api_frame[0].contentWindow.postMessage({
 						id: guid,
-						url: '/' + VER + option.url,
+						url: VER + option.url,
 						method: option.method || '',
 						params: option.data || {}
 					}, '*');

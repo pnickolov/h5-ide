@@ -504,6 +504,14 @@ define({
 		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
 		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
 		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: 'AMI ID',
+		'PROP_INSTANCE_AMI_NAME'				: 'Name',
+		'PROP_INSTANCE_AMI_DESC'				: 'Description',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: 'Architecture',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: 'Virtualization',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
 		//###### instance property module
 
 		// ---

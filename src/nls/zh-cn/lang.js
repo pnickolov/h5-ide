@@ -250,6 +250,15 @@ define({
 		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
 		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
 		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: '镜像ID',
+		'PROP_INSTANCE_AMI_NAME'				: '镜像名称',
+		'PROP_INSTANCE_AMI_DESC'				: '描述',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: '架构',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: '虚拟化',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: '内核ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: '操作系统类型',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: '支持实例类型',
+
 		//###### instance property module
 
 

@@ -145,15 +145,15 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeLoadBalancers":
                 "title": "LoadBalancerName",
                 "sub_info":[
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"},
-                    { "key": [ "CreatedTime" ], "show_key": "CreatedTime"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "AvailabilityZones", "member" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE},
+                    { "key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
-                    { "key": [ "HealthCheck" ], "show_key": "HealthCheck"}
-                    { "key": [ "Instances", 'member' ], "show_key": "Instances"}
-                    { "key": [ "ListenerDescriptions", "member" ], "show_key": "ListenerDescriptions"}
-                    { "key": [ "SecurityGroups", "member"], "show_key": "SecurityGroups"}
-                    { "key": [ "Subnets", "member" ], "show_key": "Subnets"}
+                    { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
+                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_DNS_NAME}
+                    { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
+                    { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
+                    { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
             "DescribeAddresses":
                 "title": "publicIp",

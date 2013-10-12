@@ -606,9 +606,11 @@ define({
 		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
 		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
+		'PROP_ELB_LBL_LISTENER_DESCRIPTIONS'	: 'Listener Descriptions',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
 		'PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN': 'Certificate Chain',
+		'PROP_ELB_HEALTH_CHECK'					: 'Health Check',
 		'PROP_ELB_HEALTH_CHECK_DETAILS'			: 'Health Check Configuration',
 		'PROP_ELB_PING_PROTOCOL'				: 'Ping Protocol',
 		'PROP_ELB_PING_PORT'					: 'Ping	Port',
@@ -825,6 +827,7 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
+		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
 
 
 		'DASH_BUB_NAME'	    	    				: 'Name',

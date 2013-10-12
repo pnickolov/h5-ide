@@ -631,9 +631,11 @@ define({
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: '添加服务器认证',
 		'PROP_ELB_SERVER_CERTIFICATE'			: '服务器认证',
 		'PROP_ELB_LBL_LISTENER_NAME'			: '名称',
+		'PROP_ELB_LBL_LISTENER_DESCRIPTIONS'	: '监听器描述',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: '私钥',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: '公钥',
 		'PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN': '认证链',
+		'PROP_ELB_HEALTH_CHECK'					: '健康度检查',
 		'PROP_ELB_HEALTH_CHECK_DETAILS'			: '健康度检查配置',
 		'PROP_ELB_PING_PROTOCOL'				: 'Ping协议',
 		'PROP_ELB_PING_PORT'					: 'Ping端口',
@@ -856,6 +858,7 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: '主题名',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
+		'DASH_LBL_SUBNETS'	    	    			: '子网',
 
 
 		'DASH_BUB_NAME'	    	    				: '名称',

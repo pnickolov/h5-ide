@@ -150,6 +150,7 @@ module.exports = function( grunt ) {
 	});
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
+			'regex-replace:intercome',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
 			'dev_prod_switch:release',

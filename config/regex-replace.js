@@ -22,6 +22,18 @@ module.exports = {
                 flags: 'g'
             }
         ]
-    }
+    },
+
+    intercome: {
+        src: [ '<%= release %>/ide.html' ],
+        actions: [
+            {
+                name: 'prod',
+                search: '<!-- env:prod --#>',
+                replace: '<!-- env:prod -->',
+                flags: 'g'
+            }
+        ]
+    },
 
 };

@@ -5,8 +5,8 @@
   :widths: 180 190 
   :header-rows: 1
 
-  * - ENGLISH
-    - CHINESE
+  * - 英文
+    - 中文
 
   * - Tenancy
     - 租用方式

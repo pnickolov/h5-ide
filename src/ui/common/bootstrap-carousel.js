@@ -294,6 +294,15 @@ $(document).ready(function ()
 				target_carousel.carousel('prev');
 			}
 
+			if (current_index === 1)
+			{
+				target_carousel.find('.carousel-previous').addClass('disabled');
+			}
+			else
+			{
+				target_carousel.find('.carousel-previous').removeClass('disabled');
+			}
+
 			return false;
 		},
 
@@ -309,6 +318,8 @@ $(document).ready(function ()
 				target_carousel.find('.carousel-next').hide();
 				target_carousel.find('.carousel-done').show();
 			}
+
+			target_carousel.find('.carousel-previous').removeClass('disabled');
 
 			if (youtube_player[ current_index ])
 			{

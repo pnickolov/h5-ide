@@ -99,22 +99,22 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeInstances":
                 "title": "instanceId",
                 "sub_info": [
-                    { "key": [ "instanceState", "name" ], "show_key": "Status"},
-                    { "key": [ "keyName" ], "show_key": "Key Pair Name"},
-                    { "key": [ "monitoring", "state" ], "show_key": "Monitoring"},
-                    { "key": [ "ipAddress" ], "show_key": "Primary Public IP"},
-                    { "key": [ "dnsName" ], "show_key": "Public DNS"},
-                    { "key": [ "privateIpAddress" ], "show_key": "Primary Private IP"},
-                    { "key": [ "privateDnsName" ], "show_key": "Private DNS"},
-                    { "key": [ "launchTime" ], "show_key": "Launch Time"},
-                    { "key": [ "placement", "availabilityZone" ], "show_key": "Zone"},
-                    { "key": [ "amiLaunchIndex" ], "show_key": "AMI Launch Index"},
-                    { "key": [ "instanceType" ], "show_key": "Instance Type"},
-                    { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
-                    { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
-                    { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
-                    { "key": [ "blockDeviceMapping", "item"], "show_key": "Block Devices"}
-                    { "key": ['networkInterfaceSet', 'item'], "show_key": "NetworkInterface"}
+                    { "key": [ "instanceState", "name" ], "show_key": lang.ide.PROP_INSTANCE_STATUS},
+                    { "key": [ "keyName" ], "show_key": lang.ide.PROP_INSTANCE_KEY_PAIR},
+                    { "key": [ "monitoring", "state" ], "show_key": lang.ide.PROP_INSTANCE_KEY_MONITORING},
+                    { "key": [ "ipAddress" ], "show_key": lang.ide.PROP_INSTANCE_PRIMARY_PUBLIC_IP},
+                    { "key": [ "dnsName" ], "show_key": lang.ide.PROP_INSTANCE_PUBLIC_DNS},
+                    { "key": [ "privateIpAddress" ], "show_key": lang.ide.PROP_INSTANCE_PRIMARY_PRIVATE_IP},
+                    { "key": [ "privateDnsName" ], "show_key": lang.ide.PROP_INSTANCE_PRIVATE_DNS},
+                    { "key": [ "launchTime" ], "show_key": lang.ide.PROP_INSTANCE_LAUNCH_TIME},
+                    { "key": [ "placement", "availabilityZone" ], "show_key": lang.ide.PROP_INSTANCE_KEY_ZONE},
+                    { "key": [ "amiLaunchIndex" ], "show_key": lang.ide.PROP_INSTANCE_AMI_LAUNCH_INDEX},
+                    { "key": [ "instanceType" ], "show_key": lang.ide.PROP_INSTANCE_TYPE},
+                    { "key": [ "ebsOptimized" ], "show_key": lang.ide.PROP_INSTANCE_EBS_OPTIMIZED},
+                    { "key": [ "rootDeviceType" ], "show_key": lang.ide.PROP_INSTANCE_ROOT_DEVICE_TYPE},
+                    { "key": [ "placement", "tenancy" ], "show_key": lang.ide.PROP_INSTANCE_TENANCY},
+                    { "key": [ "blockDeviceMapping", "item"], "show_key": lang.ide.PROP_INSTANCE_BLOCK_DEVICE}
+                    { "key": ['networkInterfaceSet', 'item'], "show_key": lang.ide.PROP_INSTANCE_AMI_NETWORK_INTERFACE}
                 ]
             "DescribeVpnConnections":
                 "title": "vpnConnectionId",

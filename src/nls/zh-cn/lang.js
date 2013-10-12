@@ -266,6 +266,7 @@ define({
 		'PROP_INSTANCE_INSTANCE_ID'				: '实例ID',
 		'PROP_INSTANCE_LAUNCH_TIME'				: '创建时间',
 		'PROP_INSTANCE_STATE'					: '状态',
+		'PROP_INSTANCE_STATUS'					: '状态',
 		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: '主公网IP',
 		'PROP_INSTANCE_PUBLIC_IP'				: '公网IP',
 		'PROP_INSTANCE_PUBLIC_DNS'				: '公网域名',
@@ -277,7 +278,7 @@ define({
 		'PROP_INSTANCE_TYPE'					: '实例类型',
 		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
 		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
-		'PROP_INSTANCE_TENANCY'					: '专用',
+		'PROP_INSTANCE_TENANCY'					: '租用',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: '默认',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: '专用',
 		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: '根设备类型',
@@ -307,6 +308,11 @@ define({
 		'PROP_INSTANCE_AMI_KERNEL_ID'			: '内核ID',
 		'PROP_INSTANCE_AMI_OS_TYPE'				: '操作系统类型',
 		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: '支持实例类型',
+
+		'PROP_INSTANCE_KEY_MONITORING'			: '监控',
+		'PROP_INSTANCE_KEY_ZONE'				: '地区',
+		'PROP_INSTANCE_AMI_LAUNCH_INDEX'		: 'AMI启动序号',
+		'PROP_INSTANCE_AMI_NETWORK_INTERFACE'	: '网络接口',
 
 		//###### instance property module
 

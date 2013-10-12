@@ -507,6 +507,15 @@ define({
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
 		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_STATUS'					: 'Status',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
 		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
 		'PROP_INSTANCE_REQUIRE'					: 'Required',
 		'PROP_INSTANCE_AMI'						: 'AMI',
@@ -515,6 +524,8 @@ define({
 		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Block Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Devices',
 		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
 		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
@@ -539,6 +550,12 @@ define({
 		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
 		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
 		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
+
+		'PROP_INSTANCE_KEY_MONITORING'			: 'Monitoring',
+		'PROP_INSTANCE_KEY_ZONE'				: 'Zone',
+		'PROP_INSTANCE_AMI_Launch_Index'		: 'AMI Launch Index',
+		'PROP_INSTANCE_AMI_NETWORK_INTERFACE'	: 'Network Interface',
+
 		//###### instance property module
 
 		// ---

@@ -381,6 +381,7 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     #$('#AWSCredential-failed').show()
+                    # $('#AWSCredential-info').addClass('error')
                     $('#AWSCredential-info').find('p').text 'Authentication failed. Please check your AWS Credentials and try again.'
 
                     right_count = 0

@@ -57,7 +57,7 @@ define [ 'event',
                     this.trigger 'CHECK_REPEAT', value, null if event.type is 'blur'
                     true
                 else
-                    status.addClass('error-status').show().text 'Username not matched.'
+                    status.addClass('error-status').show().text 'Username should only contain alpha-number.'
                     false
             else
                 status.addClass('error-status').show().text 'Username is required.'

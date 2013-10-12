@@ -276,7 +276,7 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Submit' )
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-                $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
+                $('#AWSCredential-info').find('p').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
 
             null
 
@@ -355,7 +355,8 @@ define [ 'event',
                     if @state is 'credential'
                         $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
                     else if @state is 'welcome'
-                        $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
+                        $('#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                        $('#AWSCredential-info').find('p').text  'To start designing cloud architecture, please provide your AWS credentials.'
 
                     # set buttons style
                     $('#awscredentials-remove').hide()

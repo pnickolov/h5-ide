@@ -336,6 +336,36 @@ a {
 	margin: 0px auto;
 }
 
+#AWSCredential-welcome {
+	color: #666;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+#AWSCredential-welcome-img {
+	margin-top  : -33px;
+	margin-left : 172px;
+}
+
+.modal-welcome #AWSCredential-info-wrap {
+	width: 520px;
+	padding: 0;
+	margin: 0;
+}
+
+.modal-welcome .AWSCredential-wall {
+	width            : 100%;
+	padding          : 15px 15px 30px 15px;
+	background-color : #E0EBF3;
+	border           : none;
+	margin           : 0;
+}
+
+#AWSCredential-form h4 {
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
 #account-profile-setting:before {
 	left: 65px;
 }
@@ -552,6 +582,7 @@ a {
 
 #awscredentials-remove.btn:hover {
 	text-decoration: none;
+	background-color: #eee;
 }
 
 #AWSCredentials-remove-wrap {
@@ -571,7 +602,6 @@ a {
 
 #awscredentials-submit {
 	margin-right: 15px;
-	font-size: 12px;
 	width: 90px;
 }
 
@@ -600,8 +630,7 @@ a {
 }
 
 #awscredentials-skip {
-	color: #22C0F7;
-	font-size: 12px;
+	color: #3781C9;
 	position: absolute;
 	top: 7px;
 	left: 30px;

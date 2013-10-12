@@ -251,6 +251,242 @@ define({
 
 		/******property module******/
 
+		'PROP_LBL_REQUIRED'                     : 'Required',
+
+		//##### stack property module
+		'PROP_STACK_LBL_NAME'                       : 'Stack Name',
+		'PROP_STACK_LBL_REGION'                     : 'Region',
+		'PROP_STACK_LBL_TYPE'                       : 'Type',
+		'PROP_STACK_TIT_SG'                         : 'Security Groups',
+		'PROP_STACK_TIT_ACL'                        : 'Network ACL',
+		'PROP_STACK_TIT_SNS'                        : 'SNS Topic Subscription',
+		'PROP_STACK_BTN_ADD_SUB'                    : 'Add Subscription',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : 'Cost Estimation',
+		'PROP_STACK_LBL_COST_CYCLE'                 : 'month',
+		'PROP_STACK_COST_COL_RESOURCE'              : 'Resource',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : 'Size/Type',
+		'PROP_STACK_COST_COL_FEE'                   : 'Fee($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 Pricing',
+		'PROP_STACK_ACL_LBL_RULE'                   : 'rules',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : 'associations',
+		'PROP_STACK_ACL_BTN_DELETE'                 : 'Delete',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : 'Go to Network ACL Details',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : 'Create new Network ACL...',
+		//##### stack property module
+
+
+		//##### app property module
+		'PROP_APP_SNS_NONE'                         : 'This app has no SNS Topic',
+		//##### app property module
+
+
+		//##### az property module
+		'PROP_AZ_LBL_SWITCH'                            : 'Quick Switch Availability Zone',
+		//##### az property module
+
+
+		//##### vpc property module
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC Details',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : 'Name',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR Block',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : 'Tenancy',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : 'Default',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : 'Dedicated',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : 'Enable DNS resolution',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default DHCP',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : 'AmazonProvidedDNS',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : 'NTP Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
+		'PROP_VPC_APP_VPC_ID'                                            : 'VPC ID',
+		'PROP_VPC_APP_STATE'                                             : 'State',
+		'PROP_VPC_APP_CIDR'                                              : 'CIDR',
+		'PROP_VPC_APP_MAIN_RT'                                           : 'Main Route Table',
+		'PROP_VPC_APP_DEFAULT_ACL'                                       : 'Default Network ACL',
+		'PROP_VPC_DHCP_OPTION_SET_ID'                                    : 'DHCP Options Set ID',
+		//##### vpc property module
+
+
+		//##### subnet property module
+		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet Details',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : 'Name',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR Block',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : 'Associated Network ACL',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : 'Create new Network ACL...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : 'rules',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
+		'PROP_SUBNET_APP_ID'                                             : 'Subnet ID',
+		'PROP_SUBNET_APP_STATE'                                          : 'State',
+		'PROP_SUBNET_APP_CIDR'                                           : 'CIDR',
+		'PROP_SUBNET_APP_AVAILABLE_IP'                                   : 'Available IPs',
+		'PROP_SUBNET_APP_VPC_ID'                                         : 'VPC ID',
+		'PROP_SUBNET_APP_RT_ID'                                          : 'Route Table ID',
+		//##### subnet property module
+
+
+		//##### sg property module
+		'PROP_SG_TIT_DETAIL'                                             : 'Security Group Details',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : 'Name',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : 'Description',
+		'PROP_SG_TIT_RULE'                                               : 'Rule',
+		'PROP_SG_RULE_SORT_BY'                                           : 'Sort by',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : 'Direction',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : 'Source/Destination',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : 'Protocol',
+		'PROP_SG_TIT_MEMBER'                                             : 'Member',
+		'PROP_SG_TIP_CREATE_RULE'                                        : 'Create rule referencing IP Range',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : 'Remove rule',
+		'PROP_SG_TIP_PROTOCOL'                                           : 'Protocol',
+		'PROP_SG_TIP_SRC'                                                : 'Source',
+		'PROP_SG_TIP_DEST'                                               : 'Destination',
+		'PROP_SG_TIP_INBOUND'                                            : 'Inbound',
+		'PROP_SG_TIP_OUTBOUND'                                           : 'Outbound',
+		'PROP_SG_TIP_PORT_CODE'                                          : 'Port or Code',
+		'PROP_SG_APP_SG_ID'                                              : 'Security Group ID',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC ID',
+		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : 'rules',
+		'PROP_SGLIST_LBL_MEMBER'                                         : 'members',
+		'PROP_SGLIST_LNK_DELETE'                                         : 'Delete',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : 'View details',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : 'Create new Security Group...',
+		'PROP_SGLIST_TAB_GROUP'                                          : 'Group',
+		'PROP_SGLIST_TAB_RULE'                                           : 'Rule',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : 'The selected connection reflects following security group rule(s):',
+		'PROP_SGRULE_TIP_INBOUND'                                        : 'Inbound',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : 'Outbound',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
+		//##### sg rule property module
+
+		//##### add sg rule pop - modalSGRule
+		'POP_SGRULE_TITLE_ADD'                                           : 'Add Security Group Rule',
+		'POP_SGRULE_TITLE_EDIT'                                          : 'Edit Security Group Rule',
+		'POP_SGRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_SGRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_SGRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_SGRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_SGRULE_LBL_DEST'                                            : 'Destination',
+		'POP_SGRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_SGRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_SGRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_SGRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_SGRULE_BTN_SAVE'                                            : 'Save',
+		'POP_SGRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		//##### add sg rule pop - modalSGRule
+
+		//##### acl property module
+		'PROP_ACL_LBL_NAME'                                              : 'Name',
+		'PROP_ACL_TIT_RULE'                                              : 'Rule',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : 'Create new Network ACL Rule',
+		'PROP_ACL_RULE_SORT_BY'                                          : 'Sort by',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : 'Rule Number',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : 'Action',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : 'Direction',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : 'Source/Destination',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : 'allow',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : 'deny',
+		'PROP_ACL_TIP_INBOUND'                                           : 'Inbound',
+		'PROP_ACL_TIP_OUTBOUND'                                          : 'Outbound',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : 'Rule Number',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR Block',
+		'PROP_ACL_TIP_PROTOCOL'                                          : 'Protocol',
+		'PROP_ACL_TIP_PORT'                                              : 'Port',
+		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
+		'PROP_ACL_APP_ID'                                                : 'Network ACL ID',
+		'PROP_ACL_APP_IS_DEFAULT'                                        : 'Default',
+		'PROP_ACL_APP_VPC_ID'                                            : 'VPC ID',
+		//##### acl property module
+
+		//##### add sg rule pop - component/aclrule
+		'POP_ACLRULE_TITLE_ADD'                                           : 'Add Network ACL Rule',
+		'POP_ACLRULE_LBL_RULE_NUMBER'                                     : 'Rule Number',
+		'POP_ACLRULE_LBL_ACTION'                                          : 'Action',
+		'POP_ACLRULE_LBL_ACTION_ALLOW'                                    : 'Allow',
+		'POP_ACLRULE_LBL_ACTION_DENY'                                     : 'Deny',
+		'POP_ACLRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_ACLRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_ACLRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_ACLRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_ACLRULE_LBL_DEST'                                            : 'Destination',
+		'POP_ACLRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_ACLRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_ACLRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_ACLRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_ACLRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_ACLRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_ACLRULE_BTN_SAVE'                                            : 'Save',
+		'POP_ACLRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_ACLRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_ACLRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		'POP_ACLRULE_LBL_PORT_RANGE_ALL'                                  : 'Port Range:0-65535',
+		//##### add sg rule pop - component/aclrule
+
+
+		//##### vgw property module
+		'PROP_VGW_TXT_DESCRIPTION'           : 'The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel.',
+		//##### vgw property module
+
+
+		//##### vpn property module
+		'PROP_VPN_LBL_IP_PREFIX'             : 'Network IP Prefixes',
+		//##### vpn property module
+
+
+		//##### igw property module
+		'PROP_IGW_TXT_DESCRIPTION'           : 'The Internet gateway is the router on the AWS network that connects your VPC to the Internet.',
+		//##### igw property module
+
+
+		//##### cgw property module
+		'PROP_CGW_LBL_NAME'                     : 'Name',
+		'PROP_CGW_LBL_IPADDR'                   : 'IP Address',
+		'PROP_CGW_LBL_ROUTING'                  : 'Routing',
+		'PROP_CGW_LBL_STATIC'                   : 'Static',
+		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
+		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
+		'PROP_CGW_APP_TIT_CGW'                  : 'Customer Gateway',
+		'PROP_CGW_APP_CGW_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_CGW_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_CGW_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_TIT_VPN'                  : 'VPN Connection',
+		'PROP_CGW_APP_VPN_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_VPN_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_VPN_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_VPN_LBL_TUNNEL'           : 'VPN Tunnels',
+		'PROP_CGW_APP_VPN_COL_TUNNEL'           : 'Tunnel',
+		'PROP_CGW_APP_VPN_COL_IP'               : 'IP Address',
+		'PROP_CGW_APP_VPN_LBL_STATUS_RT'        : 'Status Routes',
+		'PROP_CGW_APP_VPN_COL_IP_PREFIX'        : 'IP Prefixes',
+		'PROP_CGW_APP_VPN_COL_SOURCE'           : 'Source',
+		'PROP_CGW_APP_TIT_DOWNLOAD_CONF'        : 'Download Configuration',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR'          : 'Vendor',
+		'PROP_CGW_APP_DOWN_LBL_PLATFORM'        : 'Platform',
+		'PROP_CGW_APP_DOWN_LBL_SOFTWARE'        : 'Software',
+		'PROP_CGW_APP_DOWN_LBL_GENERIC'         : 'Generic',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC' : 'Vendor Agnostic',
+		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : 'Download',
+		//##### cgw property module
 
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',

@@ -13,6 +13,8 @@ define [ 'event',
         template     : Handlebars.compile tmpl
         success_tmpl : Handlebars.compile success_tmpl
 
+        is_submit    : false
+
         events       :
             'blur  #register-username'  : 'verificationUser'
             'keyup #register-username'  : '_checkButtonDisabled'
@@ -120,6 +122,8 @@ define [ 'event',
                 $( '#register-btn' ).attr( 'value', 'One Minute...' )
                 $( '#register-btn' ).attr( 'disabled', true )
                 #
+                @is_submit = true
+                #
                 this.trigger 'CHECK_REPEAT', username, email, password
                 #
                 $('#username-verification-status').hide()
@@ -131,11 +135,15 @@ define [ 'event',
             console.log 'showUsernameError'
             status = $('#username-verification-status')
             status.addClass( 'error-status' ).show().text 'Username has been taken. Please choose another.'
+            is_submit = false
+            null
 
         showEmailError : ->
             console.log 'showEmailError'
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'This email address has been used.'
+            is_submit = false
+            null
 
         loginEvent : ->
             console.log 'loginEvent'
@@ -153,7 +161,7 @@ define [ 'event',
             right_count = right_count + 1 if $('#register-password').val().trim()
 
             if right_count is 3
-                $( '#register-btn' ).attr( 'disabled', false )
+                $( '#register-btn' ).attr( 'disabled', false ) if !@is_submit
             else
                 $( '#register-btn' ).attr( 'disabled', true )
             null

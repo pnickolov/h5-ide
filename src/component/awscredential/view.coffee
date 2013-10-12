@@ -116,7 +116,14 @@ define [ 'event',
             console.log 'account_setting_tab onAWSCredentialCancel'
             me = this
 
-            me.showSetting('credential', 'on_update')
+            # reset key
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+
+                me.trigger 'CANCAL_CREDENTIAL'
+
+            else
+
+                me.showSetting('credential', 'on_update')
 
         onAWSCredentialRemove : (event) ->
             console.log 'account_setting_tab onAWSCredentialRemove'

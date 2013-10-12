@@ -1,78 +1,78 @@
 <article class="property-app">
 
-  <div class="option-group-head expand">Load Balancer Details</div>
+  <div class="option-group-head expand">{{i18n "PROP_ELB_DETAILS"}}</div>
   <div class="option-group">
       <dl class="dl-vertical">
-        <dt>Scheme</dt>
+        <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
         <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
-        <dt>DNS Name</dt>
+        <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
         <dd id="property-app-elb-dnss">
           <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{DNSName}}">(A){{DNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{DNSName}}"></i></div>
           <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{AAAADNSName}}">(AAAA){{AAAADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{AAAADNSName}}"></i></div>
           <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{ADNSName}}">(A/AAAA){{ADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{ADNSName}}"></i></div>
         </dd>
-        <dt>Hosted Zone ID</dt>
+        <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
         <dd>{{CanonicalHostedZoneNameID}}<dd>
       </dl>
   </div>
 
-  <div class="option-group-head">Listener Configuration</div>
+  <div class="option-group-head">{{i18n "PROP_ELB_LISTENER_DETAIL"}}</div>
   <div class="option-group">
     <ul class="property-list">
     {{#each listenerDisplay}}
       <li class="clearfix">
         <div class="app-panel-li-col2-1">
-          <label>Load Balancer Protocol</label>
+          <label>{{i18n "PROP_ELB_ELB_PROTOCOL"}}</label>
           <div>{{Listener.Protocol}}</div>
         </div>
 
         <div class="app-panel-li-col2-2">
-          <label>Port</label>
+          <label>{{i18n "PROP_ELB_PORT"}}</label>
           <div>{{Listener.LoadBalancerPort}}</div>
         </div>
 
         <div class="app-panel-li-col2-1">
-          <label>Instance Protocol</label>
+          <label>{{i18n "PROP_ELB_INSTANCE_PROTOCOL"}}</label>
           <div>{{Listener.InstanceProtocol}}</div>
         </div>
 
         <div class="app-panel-li-col2-2">
-          <label>Port</label>
+          <label>{{i18n "PROP_ELB_PORT"}}</label>
           <div>{{Listener.InstancePort}}</div>
         </div>
       </li>
     {{/each}}
     {{#if server_certificate}}
       <li class="clearfix">
-        <p class="app-panel-li-main">Server Certificate</p>
+        <p class="app-panel-li-main">{{i18n "PROP_ELB_SERVER_CERTIFICATE"}}</p>
         <p class="app-panel-li-sub">{{server_certificate}}</p>
       </li>
     {{/if}}
     </ul>
   </div>
 
-  <div class="option-group-head">Health Check Configuration</div>
+  <div class="option-group-head">{{i18n "PROP_ELB_HEALTH_CHECK_DETAILS"}}</div>
   <div class="option-group">
       <dl class="dl-vertical">
-        <dt>Ping Protocol</dt>
+        <dt>{{i18n "PROP_ELB_PING_PROTOCOL"}}</dt>
         <dd>{{HealthCheck.protocol}}</dd>
-        <dt>Ping Port</dt>
+        <dt>{{i18n "PROP_ELB_PING_PORT"}}</dt>
         <dd>{{HealthCheck.port}}</dd>
-        <dt>Ping Path</dt>
+        <dt>{{i18n "PROP_ELB_PING_PATH"}}</dt>
         <dd>{{HealthCheck.path}}</dd>
 
-        <dt>Health Check Interval</dt>
-        <dd>{{HealthCheck.Interval}} Seconds</dd>
-        <dt>Response Timeout</dt>
-        <dd>{{HealthCheck.Timeout}} Seconds</dd>
-        <dt>Unhealthy Threshold</dt>
+        <dt>{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL"}}</dt>
+        <dd>{{HealthCheck.Interval}} {{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</dd>
+        <dt>{{i18n "PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT"}}</dt>
+        <dd>{{HealthCheck.Timeout}} {{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</dd>
+        <dt>{{i18n "PROP_ELB_UNHEALTH_THRESHOLD"}}</dt>
         <dd>{{HealthCheck.UnhealthyThreshold}}</dd>
-        <dt>Healthy Threshold</dt>
+        <dt>{{i18n "PROP_ELB_HEALTH_THRESHOLD"}}</dt>
         <dd>{{HealthCheck.HealthyThreshold}}</dd>
       </dl>
   </div>
 
-  <div class="option-group-head">Distribution</div>
+  <div class="option-group-head">{{i18n "PROP_ELB_DISTRIBUTION"}}</div>
   <ul class="option-group property-list">
     {{#each distribution}}
     <li>
@@ -87,7 +87,7 @@
     {{/each}}
   </ul>
   {{#if have_vpc}}
-  <div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
+  <div class="option-group-head">{{i18n "PROP_ELB_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
   <div class="option-group sg-group">Loading...</div>
   {{/if}}
 

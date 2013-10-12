@@ -50,7 +50,7 @@
 	</div>
 	<div class="modal-footer">
 		<button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -354,7 +354,7 @@
 <!-- createNewStackClassic -->
 <div style="width:660px">
 	<div class="modal-header">
-		<h3>Create this stack in:</h3>
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
@@ -362,14 +362,14 @@
 			<ul class="clearfix">
 				<li>
 					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-classic">
-						<h4>Classic</h4>
-						<p>Resources will be created into the Classic platform.</p>
+						<h4>{{i18n "DASH_POP_CREATE_STACK_CLASSIC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_CLASSIC_INTRO"}}.</p>
 					</a>
 				</li>
 				<li>
 					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-vpc">
-						<h4>VPC</h4>
-						<p>Resources will be created into a newly created VPC.</p>
+						<h4>{{i18n "DASH_POP_CREATE_STACK_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
 					</a>
 				</li>
 			</ul>
@@ -380,7 +380,7 @@
 <!-- createNewStackVPC -->
 <div style="width:660px">
 	<div class="modal-header">
-		<h3>Create this stack in:</h3>
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
 		<i class="modal-close">×</i>
 	</div>
 	<div class="modal-body">
@@ -388,14 +388,14 @@
 			<ul class="clearfix">
 				<li>
 					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="default-vpc">
-						<h4>Default VPC</h4>
-						<p>Resources will be created into the default VPC.</p>
+						<h4>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO"}}.</p>
 					</a>
 				</li>
 				<li>
 					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="custom-vpc">
-						<h4>Custom VPC</h4>
-						<p>Resources will be created into a newly created VPC.</p>
+						<h4>{{i18n "DASH_POP_CREATE_STACK_CUSTOM_VPC"}}</h4>
+						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
 					</a>
 				</li>
 			</ul>
@@ -648,25 +648,25 @@ Additional Notes and Questions
 <div id="modal-sg-rule" data-bind="true">
 	<div class="modal-header">
 		{{#if isAdd}}
-		<h3>Add Security Group Rule</h3>
+		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3>
 		{{else}}
-		<h3>Edit Security Group Rule</h3>
+		<h3>{{ i18n "POP_SGRULE_TITLE_EDIT" }}</h3>
 		{{/if}}
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
 		<div class="modal-control-group clearfix">
-			<label class="label-short">Direction</label>
+			<label class="label-short">{{ i18n "POP_SGRULE_LBL_DIRECTION" }}</label>
 			<div id="sg-modal-direction">
 			{{#if isclassic}}
-				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>Inbound</div>
+				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</div>
 			{{else}}
 			<div class="radio-group-horizontal">
 				<div class="radio">
 					<input id="radio_inbound" type="radio" name="sg-direction" checked="checked" value="inbound" />
 					<label for="radio_inbound"></label>
 				</div>
-				<label for="radio_inbound" ><i class="icon-inbound"></i>Inbound</label>
+				<label for="radio_inbound" ><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</label>
 			</div>
 
 			<div class="radio-group-horizontal">
@@ -674,7 +674,7 @@ Additional Notes and Questions
 					<input id="radio_outbound" type="radio" name="sg-direction" value="outbound"/>
 					<label for="radio_outbound"></label>
 				</div>
-				<label for="radio_outbound"><i class="icon-outbound"></i>Outbound</label>
+				<label for="radio_outbound"><i class="icon-outbound"></i>{{ i18n "POP_SGRULE_LBL_OUTBOUND" }}</label>
 			</div>
 			{{/if}}
 			</div>
@@ -689,7 +689,7 @@ Additional Notes and Questions
 		</div> -->
 
 		<div class="modal-control-group clearfix">
-			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
+			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">{{ i18n "POP_SGRULE_LBL_SOURCE" }}</label>
 			<div class="selectbox" id="sg-add-model-source-select">
 				<div class="selection">IP...</div>
 				<ul class="dropdown">
@@ -699,32 +699,32 @@ Additional Notes and Questions
 					{{/each}}
 				</ul>
 			</div>
-			<input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder="e.g., 192.168.2.0/24">
+			<input class="input" type="text" id="securitygroup-modal-description" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_SOURCE" }}'>
 		</div>
 
 		<div class="modal-control-group clearfix">
-			<label class="label-short" >Protocol</label>
+			<label class="label-short" >{{ i18n "POP_SGRULE_LBL_PROTOCOL" }}</label>
 				<div class="modal-protocol-select">
 					<div class="selectbox" id="modal-protocol-select"  data-protocal-type="tcp">
-						<div class="selection">TCP</div>
+						<div class="selection">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</div>
 						<ul class="dropdown" tabindex="-1">
-							<li class="selected item" data-id="tcp">TCP</li>
-							<li class="item" data-id="udp">UDP</li>
-							<li class="item" data-id="icmp">ICMP</li>
+							<li class="selected item" data-id="tcp">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</li>
+							<li class="item" data-id="udp">{{ i18n "POP_SGRULE_PROTOCOL_UDP" }}</li>
+							<li class="item" data-id="icmp">{{ i18n "POP_SGRULE_PROTOCOL_ICMP" }}</li>
 							{{#if isclassic}}
 							{{else}}
-							<li class="item" data-id="custom">Custom</li>
-							<li class="item" data-id="all">All</li>
+							<li class="item" data-id="custom">{{ i18n "POP_SGRULE_PROTOCOL_CUSTOM" }}</li>
+							<li class="item" data-id="all">{{ i18n "POP_SGRULE_PROTOCOL_ALL" }}</li>
 							{{/if}}
 						</ul>
 					</div>
 				</div>
 			<div id="sg-protocol-select-result">
 				<div class="sg-protocol-option-input show" id="sg-protocol-tcp">
-					<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$"  data-required="true"/>
+					<input class="input" type="text" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_PORT_RANGE" }}' data-ignore="true" data-ignore-regexp="^[0-9-]*$"  data-required="true"/>
 				</div>
 				<div class="sg-protocol-option-input" id="sg-protocol-udp">
-					<input class="input" type="text" placeholder="Port Range.eg.80 or 49152-65535" data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
+					<input class="input" type="text" placeholder='{{ i18n "POP_SGRULE_PLACEHOLD_PORT_RANGE" }}' data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
 				</div>
 
 				<div class="sg-protocol-option-input" id="sg-protocol-icmp">
@@ -829,8 +829,8 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue" id='sg-modal-save'>Save</button>
-		<button class="btn btn-silver modal-close">Cancel</button>
+		<button class="btn btn-blue" id='sg-modal-save'>{{ i18n "POP_SGRULE_BTN_SAVE" }}</button>
+		<button class="btn btn-silver modal-close">{{ i18n "POP_SGRULE_BTN_CANCEL" }}</button>
 	</div>
 </div>
 

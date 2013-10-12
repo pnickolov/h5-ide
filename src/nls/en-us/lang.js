@@ -146,6 +146,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : 'Delete Stack',
 		'TOOL_POP_BODY_DELETE_STACK'            : 'Do you confirm to delete stack',
 		'TOOL_POP_BTN_DELETE_STACK'             : 'Delete',
+		'TOOL_POP_BTN_CANCEL'     		        : 'Cancel',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : 'Duplicate Stack',
@@ -171,19 +172,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
 		'TOOL_POP_TIT_STOP_APP'                 : 'Confirm to stop app',
-		'TOOL_POP_BODY_STOP_APP'                : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : '',
 		'TOOL_POP_BTN_STOP_APP'                 : 'Stop',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "Start this app's resources.",
 		'TOOL_POP_TIT_START_APP'                : 'Confirm to start app',
-		'TOOL_POP_BODY_START_APP'               : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_LEFT'          : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : '',
 		'TOOL_POP_BTN_START_APP'                : 'Start',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
 		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
-		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : '',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
 		//toolbar handler
@@ -255,7 +259,7 @@ define({
 		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
 		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
 		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
-		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default DHCP',
 		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
@@ -264,6 +268,12 @@ define({
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
 		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
+		'PROP_VPC_APP_VPC_ID'                                            : 'VPC ID',
+		'PROP_VPC_APP_STATE'                                             : 'State',
+		'PROP_VPC_APP_CIDR'                                              : 'CIDR',
+		'PROP_VPC_APP_MAIN_RT'                                           : 'Main Route Table',
+		'PROP_VPC_APP_DEFAULT_ACL'                                       : 'Default Network ACL',
+		'PROP_VPC_DHCP_OPTION_SET_ID'                                    : 'DHCP Options Set ID',
 		//##### vpc property module
 
 
@@ -277,6 +287,12 @@ define({
 		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
 		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
 		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
+		'PROP_SUBNET_APP_ID'                                             : 'Subnet ID',
+		'PROP_SUBNET_APP_STATE'                                          : 'State',
+		'PROP_SUBNET_APP_CIDR'                                           : 'CIDR',
+		'PROP_SUBNET_APP_AVAILABLE_IP'                                   : 'Available IPs',
+		'PROP_SUBNET_APP_VPC_ID'                                         : 'VPC ID',
+		'PROP_SUBNET_APP_RT_ID'                                          : 'Route Table ID',
 		//##### subnet property module
 
 
@@ -321,6 +337,25 @@ define({
 		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
 		//##### sg rule property module
 
+		//##### add sg rule pop - modalSGRule
+		'POP_SGRULE_TITLE_ADD'                                           : 'Add Security Group Rule',
+		'POP_SGRULE_TITLE_EDIT'                                          : 'Edit Security Group Rule',
+		'POP_SGRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_SGRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_SGRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_SGRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_SGRULE_LBL_DEST'                                            : 'Destination',
+		'POP_SGRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_SGRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_SGRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_SGRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_SGRULE_BTN_SAVE'                                            : 'Save',
+		'POP_SGRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		//##### add sg rule pop - modalSGRule
 
 		//##### acl property module
 		'PROP_ACL_LBL_NAME'                                              : 'Name',
@@ -341,7 +376,34 @@ define({
 		'PROP_ACL_TIP_PORT'                                              : 'Port',
 		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
 		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
+		'PROP_ACL_APP_ID'                                                : 'Network ACL ID',
+		'PROP_ACL_APP_IS_DEFAULT'                                        : 'Default',
+		'PROP_ACL_APP_VPC_ID'                                            : 'VPC ID',
 		//##### acl property module
+
+		//##### add sg rule pop - component/aclrule
+		'POP_ACLRULE_TITLE_ADD'                                           : 'Add Network ACL Rule',
+		'POP_ACLRULE_LBL_RULE_NUMBER'                                     : 'Rule Number',
+		'POP_ACLRULE_LBL_ACTION'                                          : 'Action',
+		'POP_ACLRULE_LBL_ACTION_ALLOW'                                    : 'Allow',
+		'POP_ACLRULE_LBL_ACTION_DENY'                                     : 'Deny',
+		'POP_ACLRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_ACLRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_ACLRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_ACLRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_ACLRULE_LBL_DEST'                                            : 'Destination',
+		'POP_ACLRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_ACLRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_ACLRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_ACLRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_ACLRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_ACLRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_ACLRULE_BTN_SAVE'                                            : 'Save',
+		'POP_ACLRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_ACLRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_ACLRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		'POP_ACLRULE_LBL_PORT_RANGE_ALL'                                  : 'Port Range:0-65535',
+		//##### add sg rule pop - component/aclrule
 
 
 		//##### vgw property module
@@ -366,6 +428,27 @@ define({
 		'PROP_CGW_LBL_STATIC'                   : 'Static',
 		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
 		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
+		'PROP_CGW_APP_TIT_CGW'                  : 'Customer Gateway',
+		'PROP_CGW_APP_CGW_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_CGW_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_CGW_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_TIT_VPN'                  : 'VPN Connection',
+		'PROP_CGW_APP_VPN_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_VPN_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_VPN_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_VPN_LBL_TUNNEL'           : 'VPN Tunnels',
+		'PROP_CGW_APP_VPN_COL_TUNNEL'           : 'Tunnel',
+		'PROP_CGW_APP_VPN_COL_IP'               : 'IP Address',
+		'PROP_CGW_APP_VPN_LBL_STATUS_RT'        : 'Status Routes',
+		'PROP_CGW_APP_VPN_COL_IP_PREFIX'        : 'IP Prefixes',
+		'PROP_CGW_APP_VPN_COL_SOURCE'           : 'Source',
+		'PROP_CGW_APP_TIT_DOWNLOAD_CONF'        : 'Download Configuration',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR'          : 'Vendor',
+		'PROP_CGW_APP_DOWN_LBL_PLATFORM'        : 'Platform',
+		'PROP_CGW_APP_DOWN_LBL_SOFTWARE'        : 'Software',
+		'PROP_CGW_APP_DOWN_LBL_GENERIC'         : 'Generic',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC' : 'Vendor Agnostic',
+		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : 'Download',
 		//##### cgw property module
 
 
@@ -385,14 +468,25 @@ define({
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
 		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
 		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
 		'PROP_INSTANCE_REQUIRE'					: 'Required',
 		'PROP_INSTANCE_AMI'						: 'AMI',
 		'PROP_INSTANCE_TYPE'					: 'Instance Type',
 		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS Optimized',
 		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Root Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Device',
 		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
 		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
@@ -401,10 +495,15 @@ define({
 		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
 		'PROP_INSTANCE_ENI_DESC'				: 'Description',
 		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination Check',
 		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
 		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
 		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
 		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
 		//###### instance property module
 
 		// ---
@@ -419,6 +518,14 @@ define({
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
 		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_ID'						: 'Volume ID',
+		'PROP_VOLUME_STATE'						: 'State',
+		'PROP_VOLUME_CREATE_TIME'				: 'Create Time',
+		'PROP_VOLUME_SNAPSHOT_ID'				: 'Snapshot ID',
+		'PROP_VOLUME_SNAPSHOT'					: 'Snapshot',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: 'Attachment Status',
+		'PROP_VOLUME_INSTANCE_ID'				: 'Instance ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: 'Attach Time',
 		'PROP_VOLUME_TYPE'						: 'Volume Type',
 		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
 		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
@@ -434,7 +541,18 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
 		'PROP_ENI_ADD_IP'						: 'Add IP',
 		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
-
+		'PROP_ENI_DEVICE_NAME'					: 'Device Name',
+		'PROP_ENI_STATE'						: 'State',
+		'PROP_ENI_ID'							: 'Network Interface ID',
+		'PROP_ENI_SHOW_DETAIL'					: 'Show details',
+		'PROP_ENI_HIDE_DETAIL'					: 'Hide details',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: 'Subnet ID',
+		'PROP_ENI_ATTACHMENT_ID'				: 'Attachment ID',
+		'PROP_ENI_Attachment_OWNER'				: 'Attachment Owner',
+		'PROP_ENI_Attachment_STATE'				: 'Attachment State',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC address',
+		'PROP_ENI_IP_OWNER'						: 'IP Owner',
 		//###### eni property
 
 		//###### elb property
@@ -445,6 +563,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
 		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_SERVER_CERTIFICATE'			: 'Server Certificate',
 		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
 		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
@@ -460,6 +579,12 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
 		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
 		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		'PROP_ELB_DNS_NAME'						: 'DNS Name',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: 'Load Balancer Protocol',
+		'PROP_ELB_PORT'							: 'Port',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: 'Instance Protocol',
+		'PROP_ELB_DISTRIBUTION'					: 'Distribution',
 		//###### elb property
 
 		//###### autoscaling group property
@@ -536,8 +661,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'							: 'Launch Configuation',
-		'PROP_LC_NAME'							: 'Name',
+		'PROP_LC_TITLE'									: 'Launch Configuation',
+		'PROP_LC_NAME'									: 'Name',
+		'PROP_LC_CREATE_TIME'							: 'Create Time',
 		//###### launch configuration property
 
 		//###### route table property
@@ -549,6 +675,8 @@ define({
 		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
 		'PROP_RT_TARGET'								: 'Target',
 		'PROP_RT_DESTINATION'							: 'Destination',
+		'PROP_RT_ID'									: 'Route Table ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
 		//###### route table property
 
 		/******navigation module******/
@@ -668,6 +796,18 @@ define({
 
 
 
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: 'Create this stack in',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: 'Classic',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: 'Resources will be created into the Classic platform',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: 'Resources will be created into a newly created VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: 'Default VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: 'Custom VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: 'Resources will be created into the default VPC',
+
+
+
+
 
 		//###### dashboard module
 
@@ -689,6 +829,7 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
 		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
 		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 

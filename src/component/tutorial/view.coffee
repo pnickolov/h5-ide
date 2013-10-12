@@ -10,9 +10,7 @@ define [ 'event',
     TutorialView = Backbone.View.extend {
 
         events   :
-            #'click .stack-run-click' : 'stackRunClickEvent'
             'closed'                 : 'closedPopup'
-            'click .carousel-done'   : 'closedPopup'
 
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
@@ -22,13 +20,12 @@ define [ 'event',
             this.setElement $( '#guide-carousel-modal' ).closest '#modal-wrap'
             #
             $('#guide-carousel').carousel { 'interval': false, 'wrap': false }
+            youtube_player = []
+            onYouTubePlayerAPIReady()
             #
             setTimeout () ->
                 modal.position()
             , 500
-
-        #stackRunClickEvent : ->
-        #    console.log 'stackRunClickEvent'
 
         closedPopup : ->
             console.log 'closedPopup'

@@ -283,13 +283,18 @@ $(document).ready(function ()
 
 			if (current_index > 0)
 			{
-				youtube_player[ current_index ].pauseVideo();
+				if (youtube_player[ current_index ])
+				{
+					youtube_player[ current_index ].pauseVideo();
+				}
 
 				target_carousel.find('.carousel-next').show();
 				target_carousel.find('.carousel-done').hide();
 
 				target_carousel.carousel('prev');
 			}
+
+			return false;
 		},
 
 		carousel_next = function ()
@@ -305,8 +310,14 @@ $(document).ready(function ()
 				target_carousel.find('.carousel-done').show();
 			}
 
-			youtube_player[ current_index ].pauseVideo();
+			if (youtube_player[ current_index ])
+			{
+				youtube_player[ current_index ].pauseVideo();
+			}
+
 			target_carousel.carousel('next');
+
+			return false;
 		};
 
 	$(document)
@@ -324,6 +335,11 @@ var youtube_player = [];
 
 function onYouTubePlayerAPIReady()
 {
+	if (youtube_player.length !== 0)
+	{
+		youtube_player = [];
+	}
+
 	$('.guide-class').each(function ()
 	{
 		var target = $(this);
@@ -331,7 +347,12 @@ function onYouTubePlayerAPIReady()
 		youtube_player.push(new YT.Player(target.attr('id'), {
 			width: '870',
 			height: '500',
-			videoId: target.data('video-id')
+			videoId: target.data('video-id'),
+			playerVars: {
+				wmode: 'transparent',
+				modestbranding: 1,
+				rel: 0
+			}
 		}));
 	});
 }

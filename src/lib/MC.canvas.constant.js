@@ -22,7 +22,8 @@ var constant_data = {
 		'AWS.VPC.RouteTable': [8, 8],
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8],
-		'AWS.AutoScaling.LaunchConfiguration': [9, 9]
+		'AWS.AutoScaling.LaunchConfiguration': [9, 9],
+		'AWS.AutoScaling.Group': [13, 13]
 	},
 
 	COMPONENT_TYPE:
@@ -567,7 +568,7 @@ var constant_data = {
 				"type": "vpn",
 				"from": "vgw-vpn",
 				"to": "cgw-vpn",
-				"relation": "unique"
+				"relation": "multiple"
 			}
 		},
 		"AWS.VPC.CustomerGateway": {
@@ -824,6 +825,7 @@ var constant_data = {
 			"osType": "", //amazon|centos|debian|fedora|gentoo|linux-other|opensuse|redhat|suse|ubuntu|win
 			"architecture": "", //i386|x86_64
 			"rootDeviceType": "", //ebs|instance-store
+			"virtualizationType" : "", //hvm|paravirtual
 			"groupUId": "",
 			"connection": [],
 			"instanceList": [], //store uid of each instance in server group

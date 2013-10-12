@@ -219,7 +219,7 @@ function fn_generate_coffee() {
 
 
     echo "resource ${_RESOURCE_u} begin"
-    echo "        ${_RESOURCE_u} : {"  >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+    echo "        \"${_RESOURCE_u}\" : {"  >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
     echo "        ########## ${_RESOURCE_u} ##########" >> ${SH_BASE_DIR}/out.tmp/testsuite.coffee
 
@@ -255,9 +255,9 @@ function fn_generate_coffee() {
             _RESOURCE_URL="aws/ebs/snapshot"
         fi
         echo "api ${_CUR_API} begin"
-        echo "            ${_CUR_API} : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
-        echo "                method  : '/${_RESOURCE_URL/\\/}:${_CUR_API}',"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
-        echo "                param   : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "            \"${_CUR_API}\" : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "                \"method\"  : \"/${_RESOURCE_URL/\\/}:${_CUR_API}\","    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "                \"param\"   : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
 
         #special process api named "public"
@@ -337,9 +337,9 @@ function fn_generate_coffee() {
 
             _DEFAULT=`echo "${CUR_PARAM[$k]}" | awk '{printf $1}' | awk  'BEGIN{FS="[=]"}{if (NF==1){printf "null"}else{printf "%s",$2}}'`
 
-            echo "                    ${CUR_PARAM[$k]} : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
-            echo "                        type   : '${_TYPE}',"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
-            echo "                        value  : '${_DEFAULT}'"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "                    \"${CUR_PARAM[$k]}\" : {"    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "                        \"type\"   : \"${_TYPE}\","    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "                        \"value\"  : \"${_DEFAULT}\""    >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
 
             if [ $k -eq ${P_NUM} ]
             then
@@ -597,7 +597,7 @@ do
     if [ "${SRC_DIR[$i]}" == "Handler" -o "${SRC_DIR[$i]}" == "Forge" ]
     then
         echo "service Forge start"
-        echo "    Forge : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+        echo "    \"Forge\" : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
     fi
 
 
@@ -610,7 +610,7 @@ do
         then
             SRV=${LINE/.py/} #remove .py
             echo "service ${SRV} start"
-            echo "    ${SRV} : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
+            echo "    \"${SRV}\" : {"       >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
             fn_scan_aws "${CUR_SRC_DIR}" "${LINE}"
             echo "    },"      >> ${SH_BASE_DIR}/out.tmp/apiList_src.json
         fi

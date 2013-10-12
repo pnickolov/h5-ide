@@ -7,7 +7,7 @@ define [ 'backbone', 'ide' ], ( Backbone, ide ) ->
 	AppRouter = Backbone.Router.extend {
 
 		routes :
-			#必须要放在最后
+			#
 			'*actions': 'defaultRouter'
 
 	}

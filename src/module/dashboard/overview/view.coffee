@@ -19,6 +19,8 @@ define [ 'event', 'i18n!nls/lang.js',
         '.recent'               : 'recent-tmpl'
         '.loading'              : 'loading-tmpl'
         '.loading-failed'       : 'loading-failed-tmpl'
+        '.demo-global'          : 'global-demo-tmpl'
+        '.demo-region'          : 'region-demo-tmpl'
 
     ### helper ###
     Helper =
@@ -61,6 +63,9 @@ define [ 'event', 'i18n!nls/lang.js',
         hasCredential: ->
             MC.forge.cookie.getCookieByName('has_cred') is 'true'
 
+        accountIsDemo: ->
+            $.cookie('account_id') is 'demo_account'
+
     Template_Cache = {}
 
     OverviewView = Backbone.View.extend {
@@ -75,6 +80,8 @@ define [ 'event', 'i18n!nls/lang.js',
         recent                  : Handlebars.compile $( '#recent-tmpl' ).html()
         loading                 : $( '#loading-tmpl' ).html()
         loading_failed          : $( '#loading-failed-tmpl' ).html()
+        region_demo             : $( '#region-demo-tmpl' ).html()
+        global_demo             : $( '#global-demo-tmpl' ).html()
 
 
         events          :
@@ -88,10 +95,10 @@ define [ 'event', 'i18n!nls/lang.js',
             'click #region-aws-resource-tab a'          : 'switchResource'
             'click #global-refresh'                     : 'reloadResource'
             'click .global-region-resource-content a'   : 'switchRegionAndResource'
-            'click .aws-loading-faild a'                : 'showCredential'
+            'click .show-credential'                    : 'showCredential'
 
             'click .region-resource-thumbnail'          : 'clickRegionResourceThumbnail'
-            'click #DescribeInstances .table-app-link'  : 'openApp'
+            'click .table-app-link-clickable'           : 'openApp'
             'modal-shown .start-app'                    : 'startAppClick'
             'modal-shown .stop-app'                     : 'stopAppClick'
             'modal-shown .terminate-app'                : 'terminateAppClick'
@@ -101,12 +108,21 @@ define [ 'event', 'i18n!nls/lang.js',
         status:
             reloading       : false
             resourceType    : null
+            isDemo          : false
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
 
+        setDemo: ->
+            @status.isDemo = true
+            null
+
+        clearDemo: ->
+            @status.isDemo = false
+            null
+
         reloadResource: ->
-            if Helper.hasCredential()
+            if Helper.hasCredential() and not @status.isDemo
                 @status.reloading = true
                 @showLoading '#global-view, #region-resource-wrap'
                 @trigger 'RELOAD_RESOURCE'
@@ -136,7 +152,8 @@ define [ 'event', 'i18n!nls/lang.js',
                 @$el.find( '#global-view' ).show()
                 @$el.find( '#region-view' ).hide()
             else
-                @showLoading '#region-app-stack-wrap, #region-resource-wrap'
+                if not @status.isDemo
+                    @showLoading '#region-app-stack-wrap, #region-resource-wrap'
                 @$el.find( '#global-view' ).hide()
                 @$el.find( '#region-view' ).show()
 
@@ -160,7 +177,7 @@ define [ 'event', 'i18n!nls/lang.js',
             @gotoRegion region
 
         renderGlobalList: ( event ) ->
-            @enableSwitchRegion()
+            #@enableSwitchRegion()
             if @status.reloading
                 notification 'info', lang.ide.RELOAD_AWS_RESOURCE_SUCCESS
                 @status.reloading = false
@@ -183,6 +200,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 .error Helper.thumbError
 
         renderRegionResource: ( event ) ->
+            console.log  @model.toJSON()
             if not @status.reloading
                 tmpl = @region_resource_head @model.toJSON()
                 @$el.find('#region-resource-wrap').html tmpl
@@ -231,6 +249,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
         renderLoadingFaild: ->
             @showLoadingFaild '#global-view, #region-resource-wrap'
+
+        renderGlobalDemo: ->
+            @$el.find( '#global-view' ).html @global_demo
+
+        renderRegionDemo: ->
+            @$el.find( '#region-resource-wrap' ).html @region_demo
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
@@ -282,14 +306,14 @@ define [ 'event', 'i18n!nls/lang.js',
             id = $target.data 'id'
             ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
 
-        showCredential: ( event ) ->
-            flag = ''
-            if event
-                if typeof(event) is 'string'
-                    flag = event
-
-                else
-                    event.preventDefault()
+        showCredential: ( flag ) ->
+            #flag = ''
+            #if event
+            #    if typeof(event) is 'string'
+            #        flag = event
+            #
+            #    else
+            #        event.preventDefault()
 
             require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule(flag)
 

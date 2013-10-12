@@ -43,10 +43,10 @@ define([ 'MC','jquery' ], function( MC, $ ) {
 ###
 
 define [ 'jquery', 'handlebars',
-         'MC', 'session_model',
-         'i18n!nls/lang.js',
-         'text!./js/login/template.html',
-         'forge_handle', 'crypto'
+		 'MC', 'session_model',
+		 'i18n!nls/lang.js',
+		 'text!./js/login/template.html',
+		 'forge_handle', 'crypto'
 ], ( $, Handlebars, MC, session_model, lang, template, forge_handle ) ->
 
 
@@ -77,6 +77,8 @@ define [ 'jquery', 'handlebars',
 
 		#remove
 		$( '#error-msg-1' ).removeClass 'show'
+		$( '#error-msg-2' ).removeClass 'show'
+		$( '.control-group' ).removeClass 'error'
 
 		username = $( '#login-user' ).val()
 		password = $( '#login-password' ).val()
@@ -90,6 +92,9 @@ define [ 'jquery', 'handlebars',
 			$( '.control-group' ).first().addClass 'error'
 			return false
 
+		$( '#login-btn'   ).attr( 'value', 'Login...' )
+		$( '#login-btn'   ).attr( 'disabled', true )
+
 		#invoke session.login api
 		session_model.login { sender : this }, username, password
 
@@ -100,6 +105,9 @@ define [ 'jquery', 'handlebars',
 				#login succeed
 
 				result = forge_result.resolved_data
+
+				#clear old cookie
+				forge_handle.cookie.deleteCookie()
 
 				#set cookies
 				forge_handle.cookie.setCookie result
@@ -119,7 +127,13 @@ define [ 'jquery', 'handlebars',
 				localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
 				#redirect to page ide.html
-				window.location.href = 'ide.html'
+				if document.domain.indexOf('madeiracloud.com') != -1
+					#domain is *.madeiracloud.com
+					window.location.href = 'https://ide.madeiracloud.com/ide.html'
+				else
+					#domain is not *.madeiracloud.com, maybe localhost
+					window.location.href = 'ide.html'
+
 
 				return true
 
@@ -130,6 +144,9 @@ define [ 'jquery', 'handlebars',
 				$( '.error-msg'     ).removeClass 'show'
 				$( '.control-group' ).first().removeClass 'error'
 				$( '#error-msg-1'   ).addClass 'show'
+				#
+				$( '#login-btn'   ).attr( 'value', 'Log In' )
+				$( '#login-btn'   ).attr( 'disabled', false )
 
 				return false
 

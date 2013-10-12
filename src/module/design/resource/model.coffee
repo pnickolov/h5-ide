@@ -617,8 +617,6 @@ define [ 'i18n!nls/lang.js',
 
             instance_type.join ', '
 
-
-
         _checkRequireServiceCount : ( name ) ->
             console.log '_checkRequireServiceCount, name = ' + name
             #

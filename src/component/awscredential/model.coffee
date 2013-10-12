@@ -2,7 +2,7 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' ], (Backbone, $, _, MC, session_model, vpc_model) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'UI.notification' ], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -12,6 +12,68 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
         initialize : ->
             me = this
+
+            #####listen ACCOUNT_UPDATE__ACCOUNT_RETURN
+            me.on 'ACCOUNT_UPDATE__ACCOUNT_RETURN', (result) ->
+                console.log 'ACCOUNT_UPDATE__ACCOUNT_RETURN'
+
+                attributes = result.param[3]
+
+                if !result.is_error
+
+                    me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_SUCCESS', attributes
+
+                    if attributes.state is '3'
+                        #
+                        MC.forge.cookie.setCookieByName 'state', attributes.state
+                        MC.forge.cookie.setIDECookie $.cookie()
+                else
+
+                    me.trigger 'UPDATE_ACCOUNT_ATTRIBUTES_FAILED', attributes
+
+                null
+
+            ###################################################
+
+            #####listen SESSION_SYNC__REDIS_RETURN
+            me.on 'SESSION_SYNC__REDIS_RETURN', (result) ->
+                console.log 'SESSION_SYNC__REDIS_RETURN'
+
+                if !result.is_error
+                    # update aws credential
+                    ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
+
+                null
+
+            ###################################################
+
+            #####listen ACCOUNT_RESET__KEY_RETURN
+            me.on 'ACCOUNT_RESET__KEY_RETURN', (result) ->
+                console.log 'ACCOUNT_RESET__KEY_RETURN'
+
+                flag = result.param[3]
+
+                if !result.is_error
+                    console.log 'reset key successfully'
+                    #
+                    if not flag or flag == 0    # last key -> key
+                        me.set 'is_authenticated', true
+                        me.set 'account_id', result.resolved_data
+                        #
+                        MC.forge.cookie.setCookieByName 'account_id', result.resolved_data
+                        MC.forge.cookie.setCookieByName 'has_cred',   true
+                        MC.forge.cookie.setIDECookie $.cookie()
+                        #
+                        me.trigger 'REFRESH_AWS_CREDENTIAL'
+
+                else
+
+                    console.log 'reset key failed'
+
+                null
+
+            ###################################################
+
             #
             flag = false
             if MC.forge.cookie.getCookieByName('has_cred') is 'true'
@@ -42,10 +104,20 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
                         if !result.is_error
                             me.set 'is_authenticated', true
-                            MC.forge.cookie.setCookieByName 'has_cred', true
+                            MC.forge.cookie.setCookieByName 'has_cred',   true
+                            MC.forge.cookie.setCookieByName 'account_id', account_id
+                            #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
+                            MC.forge.cookie.setIDECookie $.cookie()
+
                         else
                             me.set 'is_authenticated', false
-                            MC.forge.cookie.setCookieByName 'has_cred', false
+                            #MC.forge.cookie.setCookieByName 'has_cred', false
+
+                            # reset key: last key -> key
+                            #me.resetKey 0
+                            #
+                            #notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
+                            null
 
                         me.set 'account_id', account_id
 
@@ -62,20 +134,48 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model' 
 
             null
 
-        # credentialCheck : () ->
-        #     me = this
+        updateAccountEmail : (new_email) ->
+            me = this
 
-        #     vpc_model.DescribeAccountAttributes { sender : vpc_model }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), '',  ["supported-platforms", "default-vpc"]
+            attributes = {'email':new_email}
 
-        #     vpc_model.once 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', (result) ->
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
 
-        #         console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
+            null
 
-        #         flag = false
-        #         if !result.is_error
-        #             flag = true
+        updateAccountPassword : (password, new_password) ->
+            me = this
 
-        #         me.set 'is_authenticated', flag
+            attributes = {'password':password, 'new_password':new_password}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
+
+            null
+
+        removeCredential : () ->
+            me = this
+
+            attributes = {'account_id':null, 'access_key':null, 'secret_key':null}
+
+            account_model.update_account {sender:me}, $.cookie('usercode'), $.cookie('session_id'), attributes
+
+            null
+
+        sync_redis : () ->
+            me = this
+
+            session_model.sync_redis {sender:me}, $.cookie('usercode'), $.cookie('session_id')
+
+            null
+
+        resetKey : ( flag ) ->
+            console.log 'reset key, flag:' + flag
+            account_model.reset_key {sender:this}, $.cookie('usercode'), $.cookie('session_id'), flag
+            null
+
+        updateAccountService : ->
+            console.log 'updateAccountService'
+            account_model.update_account {sender:this}, $.cookie('usercode'), $.cookie('session_id'), { 'state' : '3' }
 
     }
 

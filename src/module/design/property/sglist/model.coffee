@@ -92,14 +92,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				sgCompRes = sgComp.resource
 
 				sgIpPermissionsLength = sgCompRes.IpPermissions.length
-				sgIpPermissionsEgressLength = sgCompRes.IpPermissionsEgress.length
+				sgIpPermissionsEgressLength = if sgCompRes.IpPermissionsEgress then sgCompRes.IpPermissionsEgress.length else 0
 
 				sgChecked = Boolean(uid in parentSGList)
 				if sgChecked
 					++enabledSGCount
 
 				sgHideCheck = false
-				
+
 				if parent_model.get('type') is 'app'
 					sgHideCheck = true
 
@@ -171,6 +171,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 
 		getRuleInfoList : ->
+
 			that = this
 			parent_model = that.get 'parent_model'
 			if !parent_model or !parent_model.getSGList
@@ -179,6 +180,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			parentSGList = parent_model.getSGList()
 
 			sgRuleAry = []
+
+			# get all sg for stack
+			if parent_model.get('is_stack') is true
+				_.each MC.canvas_data.component, (comp, uid) ->
+					if comp.type is 'AWS.EC2.SecurityGroup'
+						parentSGList.push comp.uid
+					null
+
 			_.each parentSGList, (uid) ->
 				if !MC.canvas_data.component[uid] then return
 				sgComp = $.extend true, {}, MC.canvas_data.component[uid]
@@ -209,30 +218,35 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 					return value
 
-				sgIpPermissionsEgressAry = sgCompRes.IpPermissionsEgress
 
-				_.map sgIpPermissionsEgressAry, (value) ->
-					value.Direction = 'outbound'
-					if value.ToPort is value.FromPort
-						value.display_port = value.ToPort
-					else
-						value.display_port = value.FromPort + '-' + value.ToPort
+				if sgCompRes.IpPermissionsEgress
 
-					if value.IpRanges.slice(0,1) is '@'
+					sgIpPermissionsEgressAry = sgCompRes.IpPermissionsEgress
 
-						value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
-
-					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
-
-						if value.IpProtocol in [-1, '-1']
-
-							value.IpProtocol = "all"
-
+					_.map sgIpPermissionsEgressAry, (value) ->
+						value.Direction = 'outbound'
+						if value.ToPort is value.FromPort
+							value.display_port = value.ToPort
 						else
-							value.IpProtocol = "custom(#{value.Protocol})"
-					return value
+							value.display_port = value.FromPort + '-' + value.ToPort
 
-				sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
+						if value.IpRanges.slice(0,1) is '@'
+
+							value.IpRanges = MC.canvas_data.component[MC.extractID( value.IpRanges )].name
+
+						if value.IpProtocol not in ['tcp', 'udp', 'icmp']
+
+							if value.IpProtocol in [-1, '-1']
+
+								value.IpProtocol = "all"
+
+							else
+								value.IpProtocol = "custom(#{value.Protocol})"
+						return value
+
+					sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
+
+
 				sgRuleAry = sgRuleAry.concat sgIpPermissionsAry
 
 				null

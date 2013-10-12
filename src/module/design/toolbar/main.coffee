@@ -108,9 +108,15 @@ define [ 'jquery',
                 console.log 'design_toolbar_click:exportPngIcon'
                 model.savePNG false, data
 
+            view.on 'CONVERT_CLOUDFORMATION', () ->
+                model.convertCloudformation()
+
             model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
+
+            model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
+                view.saveCloudFormation cf_json
 
             ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
                 console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name

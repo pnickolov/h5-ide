@@ -47,6 +47,7 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : 'Sorry, the stack/app is too old, unable to open',
 		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
 		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
 
@@ -104,7 +105,7 @@ define({
 		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route tables must be dragged inside a VPC but outside an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancer must be dropped outside availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
-		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
+		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap each other.',
 		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s's type %s supports a maximum of %s network interfaces (including the primary).",
 		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network interfaces can only be attached to an instance in the same availability zone.',
 		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network interfaces must be in the same availability zone as the instance they are attached to.',
@@ -197,10 +198,12 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
 		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
+		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
 
 		/******property module******/
 		// instance property module
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
@@ -214,6 +217,7 @@ define({
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
 		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
+		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
 
 		// sg property
 		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
@@ -248,10 +252,23 @@ define({
 		'CFM_BTN_DONT_ADD' : "Don't add",
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		/****** credential module ******/
+		/****** account credential module ******/
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Chang other account id',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : 'Update Key error, restore the previous key',
+		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : 'restore the demo key',
+
+		// account profile
+		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters.',
+		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
+		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
+		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
+		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : 'Password has been updated.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL'       : 'Update email address failed.',
+		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : 'Update password failed.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/

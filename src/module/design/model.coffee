@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'i18n!nls/lang.js', 'backbone' ], ( MC, ide_event, constant, app_model, instance_service, lang) ->
+define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
 
     #private
     DesignModel = Backbone.Model.extend {
@@ -75,6 +75,17 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'i18n!nls/l
                 else
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
                     @updateAppTabDate result.resolved_data[ 0 ], app_id
+                null
+
+            me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
+
+                if $.type(result.resolved_data) == 'array'
+                    _.map result.resolved_data, ( ami ) ->
+                        ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
+                        ami.osType = MC.aws.ami.getOSType ami
+                        MC.data.dict_ami[ami.imageId] = ami
+                        ide_event.trigger ide_event.SWITCH_MAIN
+                        null
                 null
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property, origin_data ) ->
@@ -247,16 +258,35 @@ define [ 'MC', 'event', 'constant', 'app_model', 'instance_service', 'i18n!nls/l
             null
 
         getAppResourcesService : ( region, app_id, is_manual )->
+            console.log 'getAppResourcesService, is_manual = ' + is_manual
             me = this
             current_tab = ''
 
-            #if is_manual
-            #    app_name = MC.forge.app.getNameById app_id
-            #    #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
-            #    ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
-
+            if is_manual
+                app_name = MC.forge.app.getNameById app_id
+                #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
 
             app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
+
+        getAllNotExistAmiInStack : ( region, tab_id )->
+
+            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
+            
+            me = this
+
+            ami_list = []
+            
+            _.each MC.canvas_data.component, (compObj) ->
+
+                if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    imageId = compObj.resource.ImageId
+                    if imageId and !MC.data.dict_ami[imageId]
+                        ami_list.push imageId
+
+                null
+            if ami_list.length
+                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_list
     }
 
     model = new DesignModel()

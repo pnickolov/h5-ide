@@ -16,8 +16,9 @@ define [ 'event',
         events   :
             'click #btn-logout'                     : 'clickLogout'
             'click #awscredential-modal'            : 'clickOpenAWSCredential'
-            'DROPDOWN_CLOSE #header--notification' : 'dropdownClosed'
+            'DROPDOWN_CLOSE #header--notification'  : 'dropdownClosed'
             'click .dropdown-app-name'              : 'clickAppName'
+            'click #guide-tutorial'                 : 'openTutorial'
 
         render   : () ->
             console.log 'header render'
@@ -42,6 +43,11 @@ define [ 'event',
         resetAlert : ->
             console.log 'resetAlert'
             this.$el.find('#header--notification').find('span').text(0)
+
+        openTutorial : ->
+            console.log 'openTutorial'
+            require [ 'component/tutorial/main' ], ( tutorial_main ) ->
+                tutorial_main.loadModule()
 
     }
 

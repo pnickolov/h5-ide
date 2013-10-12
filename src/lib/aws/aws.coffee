@@ -609,7 +609,100 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         else
             null
 
+    isExistResourceInApp = ( compUID ) ->
 
+        compObj = MC.canvas_data.component[compUID]
+        if !compObj then return true
+
+        compType = compObj.type
+
+        compRes = compObj.resource
+
+        resourceId = null
+
+        switch compType
+
+            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                resourceId = compRes.InstanceId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+                resourceId = compRes.KeyFingerprint
+
+            when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+                resourceId = compRes.GroupId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                resourceId = compRes.PublicIp
+
+            when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                resourceId = compRes.VolumeId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                resourceId = compRes.LoadBalancerName
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+                resourceId = compRes.VpcId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                resourceId = compRes.SubnetId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                resourceId = compRes.RouteTableId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+                resourceId = compRes.CustomerGatewayId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                resourceId = compRes.NetworkInterfaceId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
+                resourceId = compRes.DhcpOptionsId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+                resourceId = compRes.VpnConnectionId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+                resourceId = compRes.NetworkAclId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+                resourceId = compRes.ServerCertificateMetadata.ServerCertificateId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+                resourceId = compRes.InternetGatewayId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+                resourceId = compRes.VpnGatewayId
+
+            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                resourceId = compRes.AutoScalingGroupARN
+
+            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+                resourceId = compRes.LaunchConfigurationARN
+
+            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+                resourceId = "asl-nc"
+
+            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+                resourceId = compRes.PolicyARN
+
+            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScheduledActions
+                resourceId = compRes.ScheduledActionARN
+
+            when constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+                resourceId = compRes.AlarmArn
+
+            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
+                resourceId = "sns-sub"
+
+            when constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+                resourceId = compRes.TopicArn
+
+        region = MC.canvas_data.region
+
+        if !resourceId or (resourceId and MC.data.resource_list[region][resourceId])
+            return true
+        else
+            return false
 
     #public
     getNewName                  : getNewName
@@ -623,3 +716,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     checkDefaultVPC             : checkDefaultVPC
     checkResource               : checkResource
     getRegionName               : getRegionName
+    isExistResourceInApp        : isExistResourceInApp

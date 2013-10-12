@@ -50,7 +50,17 @@ define [ 'jquery', 'event',
                 #
                 reconnect_view.close()
                 #
-                window.location.href = 'ide.html' if !MC.data.is_loading_complete
+
+                #redirect to page ide.html
+                if document.domain.indexOf('madeiracloud.com') != -1
+                    #domain is *.madeiracloud.com
+                    window.location.href = 'https://ide.madeiracloud.com/ide.html' if !MC.data.is_loading_complete
+                else
+                    #domain is not *.madeiracloud.com, maybe localhost
+                    window.location.href = 'ide.html' if !MC.data.is_loading_complete
+
+                
+
             model.on 'RE_LOGIN_FAILED',             () -> reconnect_view.invalid()
 
     unLoadModule = ( view, model ) ->

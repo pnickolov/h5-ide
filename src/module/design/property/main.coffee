@@ -5,8 +5,9 @@ define [ 'jquery',
 		 'text!./module/design/property/template.html',
 		 'event',
 		 'constant',
-		 'MC'
-], ( $, template, ide_event, constant, MC ) ->
+		 'MC',
+		 'i18n!nls/lang.js'
+], ( $, template, ide_event, constant, MC, lang ) ->
 
 	#private
 	loadModule = () ->
@@ -73,6 +74,12 @@ define [ 'jquery',
 
 			#listen OPEN_PROPERTY
 			ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, instance_expended_id, back_dom, bak_tab_type ) ->
+
+				# if resource not exist in app state
+				currentState = MC.canvas.getState()
+				if uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(uid)
+					notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
+					return
 
 				$('#property-panel').attr('component-uid', uid)
 
@@ -215,12 +222,26 @@ define [ 'jquery',
 
 			#listen OPEN_SG
 			ide_event.onLongListen ide_event.OPEN_SG, ( sg_uid ) ->
+
+				# if resource not exist in app state
+				currentState = MC.canvas.getState()
+				if sg_uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(sg_uid)
+					notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
+					return
+
 				console.log 'OPEN_SG'
 				sg_main.loadModule( sg_uid )
 				null
 
 			#listen OPEN_ACL
 			ide_event.onLongListen ide_event.OPEN_ACL, ( acl_uid ) ->
+
+				# if resource not exist in app state
+				currentState = MC.canvas.getState()
+				if acl_uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(acl_uid)
+					notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
+					return
+				
 				console.log 'OPEN_ACL'
 				acl_main.loadModule( acl_uid, tab_type )
 				null

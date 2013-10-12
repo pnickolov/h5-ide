@@ -504,6 +504,7 @@ define({
 
 
 		// instance property module
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',

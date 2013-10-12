@@ -66,7 +66,7 @@ define [ 'MC', 'event', 'handlebars'
 
                 if document.domain.indexOf('madeiracloud.com') != -1
                     #domain is *.madeiracloud.com
-                    window.location.href = 'https://ide.madeiracloud.com/login.html'
+                    window.location.href = 'https://ide.madeiracloud.com/login/'
                 else
                     #domain is not *.madeiracloud.com, maybe localhost
                     window.location.href = 'login.html'

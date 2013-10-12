@@ -801,6 +801,7 @@ define({
 		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
 
 		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_ID'	    	 		    : 'Instance ID',
 		'DASH_LBL_INSTANCE_NAME'	    	 		: 'Instance Name',
 		'DASH_LBL_NAME'	    				 		: 'Name',
 		'DASH_LBL_STATUS'	    	    			: 'Status',
@@ -819,6 +820,7 @@ define({
 		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: 'Virtual Private Gateway',
 		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: 'Customer Gateway',
 		'DASH_LBL_DNS_NAME'	    	    			: 'DNS Name',
+		'DASH_LBL_DOMAIN'	    	    			: 'Domain',
 		'DASH_LBL_CURRENT'	    	    			: 'Current',
 		'DASH_LBL_LAST_ACTIVITY'	    	    	: 'Last Activity',
 		'DASH_LBL_ACTIVITY_STATUS'	    	    	: 'Activity Status',
@@ -828,6 +830,11 @@ define({
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
 		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
+
+		'DASH_LBL_ASSOCIATION_ID'	    	    	: 'Association ID',
+		'DASH_LBL_ALLOCATION_ID'	    	    	: 'Allocation ID',
+		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : 'Network Interface ID',
+		'DASH_LBL_PRIVATE_IP_ADDRESS'	    	    : 'Private Ip Address',
 
 
 		'DASH_BUB_NAME'	    	    				: 'Name',

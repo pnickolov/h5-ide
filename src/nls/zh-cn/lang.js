@@ -832,6 +832,7 @@ define({
 		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS 订阅',
 
 		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_ID'	    	 		    : '实例ID',
 		'DASH_LBL_INSTANCE_NAME'	    	 		: '实例名',
 		'DASH_LBL_NAME'	    				 		: '名称',
 		'DASH_LBL_STATUS'	    	    			: '状态',
@@ -850,6 +851,7 @@ define({
 		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: '虚拟专用网关',
 		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: '客户网关',
 		'DASH_LBL_DNS_NAME'	    	    			: '域名',
+		'DASH_LBL_DOMAIN'	    	    			: '域',
 		'DASH_LBL_CURRENT'	    	    			: '当前',
 		'DASH_LBL_LAST_ACTIVITY'	    	    	: '最近活动',
 		'DASH_LBL_ACTIVITY_STATUS'	    	    	: '活动状态',
@@ -859,6 +861,11 @@ define({
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 		'DASH_LBL_SUBNETS'	    	    			: '子网',
+
+		'DASH_LBL_ASSOCIATION_ID'	    	    	: '关联 ID',
+		'DASH_LBL_ALLOCATION_ID'	    	    	: '分配 ID',
+		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : '网络接口 ID',
+		'DASH_LBL_PRIVATE_IP_ADDRESS'	    	    : '内网IP地址',
 
 
 		'DASH_BUB_NAME'	    	    				: '名称',

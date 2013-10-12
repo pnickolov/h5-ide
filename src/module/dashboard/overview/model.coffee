@@ -158,15 +158,15 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeAddresses":
                 "title": "publicIp",
                 "sub_info":[
-                    { "key": [ "domain" ], "show_key": "Domain"},
-                    { "key": [ "instanceId" ], "show_key": "InstanceId"},
-                    { "key": [ "publicIp" ], "show_key": "PublicIp"}
-                    { "key": [ "associationId" ], "show_key": "AssociationId"}
-                    { "key": [ "allocationId" ], "show_key": "AllocationId"}
-                    { "key": [ "networkInterfaceId"], "show_key": "NetworkInterfaceId"}
-                    { "key": [ "privateIpAddress"], "show_key": "PrivateIpAddress"}
-                    { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
-                    { "key": [ "Subnets" ], "show_key": "Subnets"}
+                    { "key": [ "domain" ], "show_key": lang.ide.DASH_LBL_DOMAIN},
+                    { "key": [ "instanceId" ], "show_key": lang.ide.DASH_LBL_INSTANCE_ID},
+                    { "key": [ "publicIp" ], "show_key": lang.ide.PROP_INSTANCE_PUBLIC_IP}
+                    { "key": [ "associationId" ], "show_key": lang.ide.DASH_LBL_ASSOCIATION_ID}
+                    { "key": [ "allocationId" ], "show_key": lang.ide.DASH_LBL_ALLOCATION_ID}
+                    { "key": [ "networkInterfaceId"], "show_key": lang.ide.DASH_LBL_NETWORK_INTERFACE_ID}
+                    { "key": [ "privateIpAddress"], "show_key": lang.ide.DASH_LBL_PRIVATE_IP_ADDRESS}
+                    { "key": [ "SecurityGroups"], "show_key": lang.ide.PROP_INSTANCE_SG_DETAIL}
+                    { "key": [ "Subnets" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
             "DescribeAutoScalingGroups":
                 "title" : "AutoScalingGroupName"

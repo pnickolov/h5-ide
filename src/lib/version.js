@@ -9,11 +9,10 @@
 # **********************************************************
 */
 
-var version  = version || {};
-var language = language || 'en-us';
+var version  = version || {},
+    language = localStorage.getItem( 'language' ) || 'en-us';
 
 (function() {
   'use strict';
   version  = '130830.1912';
-  language = 'zh-cn';
 })();

@@ -47,6 +47,7 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : 'Sorry, the stack/app is too old, unable to open',
 		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
 		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
 
@@ -202,6 +203,7 @@ define({
 
 		/******property module******/
 		// instance property module
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
 		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
 		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',

@@ -119,7 +119,7 @@ define [ 'event',
 
             if right_count is 3
                 #
-                $( '#register-btn' ).attr( 'value', 'One Minute...' )
+                $( '#register-btn' ).attr( 'value', 'Login...' )
                 $( '#register-btn' ).attr( 'disabled', true )
                 #
                 @is_submit = true

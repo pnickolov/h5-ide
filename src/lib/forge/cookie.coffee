@@ -42,6 +42,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'username',    '', option
 		$.cookie 'account_id',	'', option
 		$.cookie 'state',       '', option
+		$.cookie 'madeiracloud_ide_session_id', '', option
 
 	setCred = ( result ) ->
 

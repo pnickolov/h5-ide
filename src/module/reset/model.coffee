@@ -41,7 +41,17 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 console.log forge_result
                 if !forge_result.is_error
                     #
-                    window.location.href = 'reset.html#email'
+
+                    #redirect to page reset.html
+                    if document.domain.indexOf('madeiracloud.com') != -1
+                        #domain is *.madeiracloud.com
+                        window.location.href = 'https://ide.madeiracloud.com/reset#email'
+                    else
+                        #domain is not *.madeiracloud.com, maybe localhost
+                        window.location.href = '/reset#email'
+
+
+                    
                 else
                     #
                     this.trigger 'NO_EMAIL'
@@ -59,7 +69,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                     this.trigger 'KEY_VALID'
                 else
                     #
-                    window.location.href = 'reset.html#expire'
+                    window.location.href = '/reset#expire'
                 null
 
         updatePasswordServer : ( result ) ->
@@ -71,7 +81,15 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 console.log forge_result
                 if !forge_result.is_error
                     #
-                    window.location.href = 'reset.html#success'
+                    #redirect to page reset.html
+                    if document.domain.indexOf('madeiracloud.com') != -1
+                        #domain is *.madeiracloud.com
+                        window.location.href = 'https://ide.madeiracloud.com/reset#success'
+                    else
+                        #domain is not *.madeiracloud.com, maybe localhost
+                        window.location.href = '/reset#success'
+
+
                 else
                     #this.trigger 'PASSWORD_INVAILD'
                     #window.location.href = 'reset.html#expire' if forge_result.return_code is 2

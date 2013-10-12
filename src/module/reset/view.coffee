@@ -59,14 +59,14 @@ define [ 'event',
             console.log 'resetPasswordButtonEvent'
             $('#email-verification-status').hide()
             $( '#reset-btn' ).attr( 'disabled', true )
-            $( '#reset-btn' ).attr( 'value', 'One Minute...' )
+            $( '#reset-btn' ).attr( 'value', 'Reset...' )
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
             false
 
         resetPasswordEvent : ->
             console.log 'resetPasswordEvent'
             if @verificationPassword()
-                $( '#reset-password' ).attr( 'value', 'One Minute...' )
+                $( '#reset-password' ).attr( 'value', 'Reset...' )
                 $( '#reset-password' ).attr( 'disabled', true )
                 this.trigger 'RESET_PASSWORD', $( '#reset-pw' ).val()
             false

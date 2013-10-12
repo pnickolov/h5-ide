@@ -35,6 +35,29 @@ define [ 'MC' ], ( MC) ->
 
 		osType
 
+	getInstanceType = ( ami ) ->
+
+		region = MC.canvas_data.region
+		instance_type = MC.data.config[region].ami_instance_type
+
+		if !instance_type
+			return []
+
+		if ami.virtualizationType == 'hvm'
+			instance_type = instance_type.windows
+		else
+			instance_type = instance_type.linux
+		if ami.rootDeviceType == 'ebs'
+			instance_type = instance_type.ebs
+		else
+			instance_type = instance_type['instance store']
+		if ami.architecture == 'x86_64'
+			instance_type = instance_type["64"]
+		else
+			instance_type = instance_type["32"]
+		instance_type = instance_type[ami.virtualizationType]
+
+		return instance_type
 
 	getOSType : getOSType
-
+	getInstanceType : getInstanceType

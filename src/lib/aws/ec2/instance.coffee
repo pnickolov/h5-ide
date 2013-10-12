@@ -41,26 +41,6 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		null
 
-	getInstanceType = ( ami, ami_instance_type ) ->
-
-		instance_type = ami_instance_type
-		if ami.virtualizationType == 'hvm'
-			instance_type = instance_type.windows
-		else
-			instance_type = instance_type.linux
-		if ami.rootDeviceType == 'ebs'
-			instance_type = instance_type.ebs
-		else
-			instance_type = instance_type['instance store']
-		if ami.architecture == 'x86_64'
-			instance_type = instance_type["64"]
-		else
-			instance_type = instance_type["32"]
-		instance_type = instance_type[ami.virtualizationType]
-
-		instance_type.join ', '
-
 	#public
 	updateCount : updateCount
 	updateStateIcon : updateStateIcon
-	getInstanceType : getInstanceType

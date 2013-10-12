@@ -214,6 +214,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
 
             data = target.data( 'secondarypanel-data' )
+            data.instance_type = data.instanceType
             ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
                 title : data.imageId
                 dom   : MC.template.aimSecondaryPanel data

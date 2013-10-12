@@ -138,9 +138,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeVpcs":
                 "title": "vpcId",
                 "sub_info": [
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "cidrBlock" ], "show_key": "CIDR"},
-                    { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "cidrBlock" ], "show_key": lang.ide.DASH_LBL_CIDR},
+                    { "key": [ "instanceTenancy" ], "show_key": lang.ide.PROP_VPC_DETAIL_LBL_TENANCY}
                 ]
             "DescribeLoadBalancers":
                 "title": "LoadBalancerName",

@@ -22,6 +22,8 @@ define [ 'event',
             this.setElement $( '#guide-carousel-modal' ).closest '#modal-wrap'
             #
             $('#guide-carousel').carousel { 'interval': false, 'wrap': false }
+            youtube_player = []
+            onYouTubePlayerAPIReady()
             #
             setTimeout () ->
                 modal.position()

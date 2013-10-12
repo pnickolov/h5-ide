@@ -290,6 +290,7 @@ $(document).ready(function ()
 
 				target_carousel.carousel('prev');
 			}
+			return false;
 		},
 
 		carousel_next = function ()
@@ -307,6 +308,7 @@ $(document).ready(function ()
 
 			youtube_player[ current_index ].pauseVideo();
 			target_carousel.carousel('next');
+			return false;
 		};
 
 	$(document)

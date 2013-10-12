@@ -96,8 +96,8 @@ define [ 'jquery', 'event', 'base_main',
                 #set current platform
                 model.set 'current_platform', platform
                 #
-                if MC.data.untitled is 0 and MC.forge.cookie.getCookieByName( 'state' ) is '3'
-                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
+                #if MC.data.untitled is 0 and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
 
                 # track
                 # analytics.track "Created Stack",

@@ -359,6 +359,7 @@ a {
 	background-color : #E0EBF3;
 	border           : none;
 	margin           : 0;
+	border-radius    : 0;
 }
 
 #AWSCredential-form h4 {
@@ -479,6 +480,7 @@ a {
 	background-color: #E0EBF3;
 	margin: 20px auto 0;
 	border: 1px solid #0F86DB;
+	border-radius: 4px;
 }
 
 #AWSCredential-failed {
@@ -6695,15 +6697,20 @@ a.action-link:hover {
 }
 
 .carousel-caption {
-  background: #333333;
+  background: #1F1F1F;
   width: 840px;
   padding: 15px;
 }
 
-.carousel-caption h4,
+.carousel-caption h4 {
+	color : #c7c7c7;
+	line-height: 20px;
+}
+
+
 .carousel-caption p {
   line-height: 20px;
-  color: #ffffff;
+  color: #A8A8A8;
 }
 
 .carousel-caption h4 {
@@ -6712,6 +6719,18 @@ a.action-link:hover {
 
 .carousel-caption p {
   margin-bottom: 0;
+}
+
+.carousel-counter {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background-color: #0BC287;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 32px;
+	margin-right: 10px;
+	color: #fff;
 }
 
 .carousel-indicators-wrap {

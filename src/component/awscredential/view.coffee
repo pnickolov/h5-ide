@@ -267,7 +267,11 @@ define [ 'event',
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
-                $('#AWSCredential-info').find('p').text 'You can design stack without providing AWS Credentials. We will provide demo mode for your account. Yet, not providing your AWS Credentials now has following drawbacks:'
+                $( '#AWSCredential-welcome').text 'Do not want to provide AWS Credentials now?'
+                $( '#AWSCredential-info').find('p').text 'You can design stack in the demo mode. Yet, with following drawbacks:'
+                $( '#AWSCredential-welcome-img').hide()
+                $( '#AWSCredential-form').find('h4').hide()
+
             else if $target.attr( 'data-type' ) is 'back'
                 #
                 $target.attr( 'data-type', 'skip' )
@@ -276,8 +280,10 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Submit' )
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-                $('#AWSCredential-info').find('p').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
-
+                $( '#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                $( '#AWSCredential-info').find('p').text 'To start designing cloud architecture, please provide your AWS credentials:'
+                $( '#AWSCredential-welcome-img').show()
+                $( '#AWSCredential-form').find('h4').show()
             null
 
         # show account setting tab or credential setting tab

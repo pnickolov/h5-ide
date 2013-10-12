@@ -1062,7 +1062,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             else
                 # check whether invalid session
-                if result.return_code isnt constant.RETURN_CODE.E_SESSION
+                if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
                     #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL

@@ -861,6 +861,8 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 
+		'IDE_LBL_LAST_STATUS_CHANGE'					: "Last Changed",
+
 		//###### ide
 
 

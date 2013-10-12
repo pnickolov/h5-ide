@@ -278,7 +278,7 @@ define({
 		'PROP_INSTANCE_TYPE'					: '实例类型',
 		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
 		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
-		'PROP_INSTANCE_TENANCY'					: '租用方式',
+		'PROP_INSTANCE_TENANCY'					: '租用',
 		'PROP_INSTANCE_TENANCY_DEFAULT'			: '默认',
 		'PROP_INSTANCE_TENANCY_DELICATED'		: '专用',
 		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: '根设备类型',
@@ -900,6 +900,8 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: '悉尼',
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: '东京',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: '圣保罗',
+
+		'IDE_LBL_LAST_STATUS_CHANGE'					: "最近修改时间",
 
 		//###### ide
 

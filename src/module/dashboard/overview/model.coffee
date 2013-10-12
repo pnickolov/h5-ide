@@ -126,14 +126,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     { "key": [ "routes", "item", 0], "show_key": lang.ide.PROP_CGW_LBL_ROUTING}
                 ],
                 "btns": [
-                    { "type": "download_configuration", "name": "Download Configuration" }
+                    { "type": "download_configuration", "name": lang.ide.PROP_CGW_APP_TIT_DOWNLOAD_CONF }
                     ],
                 "detail_table": [
-                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
-                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
-                    { "key": [ "status" ], "show_key": "Status"},
-                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
-                    { "key": [ "statusMessage" ], "show_key": "Detail"}
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": lang.ide.PROP_CGW_APP_VPN_LBL_TUNNEL, "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": lang.ide.PROP_CGW_LBL_IPADDR},
+                    { "key": [ "status" ], "show_key": lang.ide.DASH_LBL_STATUS},
+                    { "key": [ "lastStatusChange" ], "show_key": lang.ide.IDE_LBL_LAST_STATUS_CHANGE},
+                    { "key": [ "statusMessage" ], "show_key": lang.ide.DASH_LBL_DETAIL}
                 ]
             "DescribeVpcs":
                 "title": "vpcId",

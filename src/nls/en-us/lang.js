@@ -105,7 +105,7 @@ define({
 		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route tables must be dragged inside a VPC but outside an availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancer must be dropped outside availability zone.',
 		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
-		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
+		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap each other.',
 		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s's type %s supports a maximum of %s network interfaces (including the primary).",
 		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network interfaces can only be attached to an instance in the same availability zone.',
 		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network interfaces must be in the same availability zone as the instance they are attached to.',
@@ -256,10 +256,13 @@ define({
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Chang other account id',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : 'Update Key error, restore the previous key',
+		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : 'restore the demo key',
 
 		// account profile
 		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
-		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters.',
 		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
 		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',

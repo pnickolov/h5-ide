@@ -31,6 +31,9 @@ require.config {
 		'text'            : 'vender/requirejs/text'
 
 		#
+		'crypto'          : 'vender/crypto-js/hmac-sha256'
+
+		#
 		'base_main'       : 'module/base/base_main'
 
 		#
@@ -49,6 +52,8 @@ require.config {
 		'base_model'      : 'model/base_model'
 		'account_model'   : 'model/account_model'
 		'account_service' : 'service/account/account_service'
+		'session_model'   : 'model/session_model'
+		'session_service' : 'service/session/session_service'
 
 		#result_vo
 		'result_vo'       : 'service/result_vo'

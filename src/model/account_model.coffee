@@ -129,6 +129,8 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 #dispatch event (dispatch event whenever login succeed or failed)
                 if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__REPEAT_RETURN', forge_result
 
+
+
         #check_validation api (define function)
         check_validation : ( src, key, flag ) ->
 
@@ -151,6 +153,27 @@ define [ 'backbone', 'underscore', 'account_service', 'base_model' ], ( Backbone
                 if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_CHECK__VALIDATION_RETURN', forge_result
 
 
+
+        #reset_key api (define function)
+        reset_key : ( src, username, session_id, flag ) ->
+
+            me = this
+
+            src.model = me
+
+            account_service.reset_key src, username, session_id, flag, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #reset_key succeed
+
+                else
+                #reset_key failed
+
+                    console.log 'account.reset_key failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'ACCOUNT_RESET__KEY_RETURN', forge_result
 
 
     }

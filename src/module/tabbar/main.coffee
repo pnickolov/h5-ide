@@ -95,6 +95,9 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', view.temp_region_name
                 #set current platform
                 model.set 'current_platform', platform
+                #
+                if MC.data.untitled is 0 and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
 
                 # track
                 # analytics.track "Created Stack",
@@ -214,6 +217,9 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', region_name
                 #tabbar api
                 Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
+                #
+                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
                 null
 
             #listen add empty tab

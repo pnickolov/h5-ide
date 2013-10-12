@@ -15,7 +15,7 @@ define [ 'jquery', 'event',
     model = null
 
     #private
-    loadModule = () ->
+    loadModule = ( state ) ->
 
         #
         require [ './component/awscredential/view', './component/awscredential/model' ], ( View, Model ) ->
@@ -29,9 +29,10 @@ define [ 'jquery', 'event',
             #view
             view.model    = model
 
-            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+            if state is 'welcome'
                 ture_template = welcome_tmpl
                 view.state    = 'welcome'
+                model.updateAccountService() if MC.forge.cookie.getCookieByName( 'state' ) is '1'
             else
                 ture_template = template
                 view.state    = 'credential'
@@ -39,9 +40,8 @@ define [ 'jquery', 'event',
             #render
             view.render ture_template
 
-            if MC.forge.cookie.getCookieByName('new_account') is 'true'
+            if state is 'welcome'
                 view.showSetting('credential')
-
             else if MC.forge.cookie.getCookieByName('has_cred') is 'true'
                 # show account setting tab
                 view.showSetting('account')
@@ -54,6 +54,10 @@ define [ 'jquery', 'event',
 
             view.on 'AWS_AUTHENTICATION', (account_id, access_key, secret_key) ->
                 console.log 'AWS_AUTHENTICATION'
+                # reset key first
+                if model.attributes.is_authenticated
+                    model.resetKey(1)
+
                 model.awsAuthenticate access_key, secret_key, account_id
 
             model.on 'REFRESH_AWS_CREDENTIAL', () ->
@@ -91,9 +95,11 @@ define [ 'jquery', 'event',
                 attr_list = _.keys(attributes)
 
                 if _.contains(attr_list, 'email')
-                    $.cookie 'email', MC.base64Encode(attributes['email']),    { expires: 1 }
 
                     view.notify 'info', lang.ide.HEAD_MSG_INFO_UPDATE_EMAIL
+
+                    # update cookie
+                    MC.forge.cookie.setCookieByName 'email', MC.base64Encode(attributes['email'])
 
                     view.showSetting('account')
 
@@ -106,6 +112,8 @@ define [ 'jquery', 'event',
                 if _.contains(attr_list, 'access_key') and _.contains(attr_list, 'secret_key')
 
                     model.sync_redis()
+                    model.resetKey 0
+                    #view.notify 'warning', lang.ide.HEAD_MSG_ERR_RESTORE_DEMO_KEY
 
                 null
 
@@ -122,7 +130,7 @@ define [ 'jquery', 'event',
 
                 if _.contains(attr_list, 'password')
 
-                    view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
+                    #view.notify 'error', lang.ide.HEAD_MSG_ERR_UPDATE_PASSWORD
 
                     view.clickUpdatePassword('error_password')
 
@@ -131,7 +139,15 @@ define [ 'jquery', 'event',
             view.on 'REMOVE_CREDENTIAL', () ->
                 console.log 'REMOVE_CREDENTIAL'
 
-                model.removeCredential()
+                #model.removeCredential()
+                model.resetKey()
+
+                null
+
+            view.on 'CANCAL_CREDENTIAL', () ->
+                console.log 'CANCAL_CREDENTIAL'
+
+                model.resetKey(0)
 
                 null
 

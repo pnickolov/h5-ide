@@ -254,10 +254,13 @@ define({
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Chang other account id',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : 'Update Key error, restore the previous key',
+		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : 'restore the demo key',
 
 		// account profile
 		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
-		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters.',
 		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
 		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',

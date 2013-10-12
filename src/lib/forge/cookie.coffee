@@ -20,7 +20,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'has_cred',    result.has_cred,    option
 		$.cookie 'username',    MC.base64Decode( result.usercode ), option
 		$.cookie 'account_id',	result.account_id,  option
-		$.cookie 'new_account', result.new_account, option
+		$.cookie 'state',       result.state,       option
 
 	deleteCookie = ->
 
@@ -41,7 +41,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'has_cred',    '', option
 		$.cookie 'username',    '', option
 		$.cookie 'account_id',	'', option
-		$.cookie 'new_account', '', option
+		$.cookie 'state',       '', option
 
 	setCred = ( result ) ->
 
@@ -74,7 +74,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			result.email,
 			result.has_cred,
 			result.account_id
-			result.new_account
+			result.state
 		]
 
 		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
@@ -100,7 +100,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				email       : result[4] ,
 				has_cred    : result[5] ,
 				account_id	: result[6] ,
-				new_account : result[7] ,
+				state       : result[7] ,
 			}
 		else
 			null

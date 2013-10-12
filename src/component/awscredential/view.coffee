@@ -73,6 +73,7 @@ define [ 'event',
             console.log 'account_setting_tab onSubmit'
 
             if $( '#awscredentials-skip' ).attr( 'data-type' ) in [ 'back', 'done' ]
+                #ide_event.trigger ide_event.SKIP_WELCOME if $( '#awscredentials-skip' ).attr( 'data-type' ) is 'back'
                 @onDone()
                 return
 
@@ -83,6 +84,10 @@ define [ 'event',
             account_id = $('#aws-credential-account-id').val().trim()
             access_key = $('#aws-credential-access-key').val().trim()
             secret_key = $('#aws-credential-secret-key').val().trim()
+
+            if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account' and $('#aws-credential-account-id').val().trim() is 'demo_account'
+                notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_SAME_ID
+                return
 
             if not account_id
                 notification 'error', lang.ide.HEAD_MSG_ERR_INVALID_ACCOUNT_ID
@@ -111,7 +116,14 @@ define [ 'event',
             console.log 'account_setting_tab onAWSCredentialCancel'
             me = this
 
-            me.showSetting('credential', 'on_update')
+            # reset key
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+
+                me.trigger 'CANCAL_CREDENTIAL'
+
+            else
+
+                me.showSetting('credential', 'on_update')
 
         onAWSCredentialRemove : (event) ->
             console.log 'account_setting_tab onAWSCredentialRemove'
@@ -220,7 +232,7 @@ define [ 'event',
 
                 #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
                 #$('#account-passowrd-info').html html_str
-                $('#account-passowrd-info').html 'Current password is wrong. <a href="javascript:void(0)">Forget password?</a>'
+                $('#account-passowrd-info').html 'Current password is wrong. <a href="/reset.html" target="_blank">Forget password?</a>'
 
             else
 
@@ -262,7 +274,11 @@ define [ 'event',
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
-                $('#AWSCredential-info').find('p').text 'You can design stack without providing AWS Credentials. We will provide demo mode for your account. Yet, not providing your AWS Credentials now has following drawbacks:'
+                $( '#AWSCredential-welcome').text 'Do not want to provide AWS Credentials now?'
+                $( '#AWSCredential-info').find('p').text 'You can design stack in the demo mode. Yet, with following drawbacks:'
+                $( '#AWSCredential-welcome-img').hide()
+                $( '#AWSCredential-form').find('h4').hide()
+
             else if $target.attr( 'data-type' ) is 'back'
                 #
                 $target.attr( 'data-type', 'skip' )
@@ -271,8 +287,10 @@ define [ 'event',
                 $( '#awscredentials-submit' ).text( 'Submit' )
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-                $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
-
+                $( '#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                $( '#AWSCredential-info').find('p').text 'To start designing cloud architecture, please provide your AWS credentials:'
+                $( '#AWSCredential-welcome-img').show()
+                $( '#AWSCredential-form').find('h4').show()
             null
 
         # show account setting tab or credential setting tab
@@ -334,6 +352,8 @@ define [ 'event',
                 $('#awscredentials-cancel').show()
                 $('#awscredentials-submit').attr('disabled',"true")
 
+                $('#awscredentials-remove').show()
+
                 if not flag     # initial
 
                     $('#AWSCredentials-submiting').hide()
@@ -348,7 +368,8 @@ define [ 'event',
                     if @state is 'credential'
                         $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
                     else if @state is 'welcome'
-                        $('#AWSCredential-info').find('p').text 'Welcome to Madeira Cloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '. To start designing cloud architecture, please provide your AWS credentials:'
+                        $('#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                        $('#AWSCredential-info').find('p').text  'To start designing cloud architecture, please provide your AWS credentials.'
 
                     # set buttons style
                     $('#awscredentials-remove').hide()
@@ -360,6 +381,7 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     #$('#AWSCredential-failed').show()
+                    # $('#AWSCredential-info').addClass('error')
                     $('#AWSCredential-info').find('p').text 'Authentication failed. Please check your AWS Credentials and try again.'
 
                     right_count = 0
@@ -412,6 +434,8 @@ define [ 'event',
 
                 else if flag is 'in_update'
 
+                    $('#awscredentials-remove').hide() if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
@@ -422,6 +446,10 @@ define [ 'event',
 
                     # set remove button style
                     $('#awscredentials-remove').removeClass("btn btn-silver")
+
+                    #clear key
+                    $('#aws-credential-access-key').val(' ')
+                    $('#aws-credential-secret-key').val(' ')
 
                 else if flag is 'on_submit'
 

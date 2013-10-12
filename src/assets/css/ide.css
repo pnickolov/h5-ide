@@ -312,7 +312,7 @@ a {
 }
 
 #account-profile-setting .dl-horizontal {
-	font-size: 12px;
+	font-size: 14px;
 	margin: 0;
 }
 
@@ -334,6 +334,44 @@ a {
 	padding: 5px 0px 0px;
 	width: 450px;
 	margin: 0px auto;
+}
+
+#AWSCredential-info.error {
+	color: #DB4E47;
+	background-color: #FCE8E7;
+	border: 1px solid #DB4E47;
+	padding: 10px 15px;
+}
+
+#AWSCredential-welcome {
+	color: #666;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+#AWSCredential-welcome-img {
+	margin-top  : -33px;
+	margin-left : 172px;
+}
+
+.modal-welcome #AWSCredential-info-wrap {
+	width: 520px;
+	padding: 0;
+	margin: 0;
+}
+
+.modal-welcome .AWSCredential-wall {
+	width            : 100%;
+	padding          : 15px 15px 30px 15px;
+	background-color : #E0EBF3;
+	border           : none;
+	margin           : 0;
+	border-radius    : 0;
+}
+
+#AWSCredential-form h4 {
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 #account-profile-setting:before {
@@ -403,9 +441,13 @@ a {
 	border: 1px solid #DB4E47;
 }
 
+#account-passowrd-info a {
+	color: #3781C9;
+}
+
 #account-change-password {
 	display: block;
-	margin: 10px 0 10px 1px;
+	margin: 20px 0 10px 1px;
 	color: #3781C9;
 }
 
@@ -445,6 +487,7 @@ a {
 	background-color: #E0EBF3;
 	margin: 20px auto 0;
 	border: 1px solid #0F86DB;
+	border-radius: 4px;
 }
 
 #AWSCredential-failed {
@@ -548,6 +591,7 @@ a {
 
 #awscredentials-remove.btn:hover {
 	text-decoration: none;
+	background-color: #eee;
 }
 
 #AWSCredentials-remove-wrap {
@@ -567,7 +611,6 @@ a {
 
 #awscredentials-submit {
 	margin-right: 15px;
-	font-size: 12px;
 	width: 90px;
 }
 
@@ -596,8 +639,7 @@ a {
 }
 
 #awscredentials-skip {
-	color: #22C0F7;
-	font-size: 12px;
+	color: #3781C9;
 	position: absolute;
 	top: 7px;
 	left: 30px;
@@ -1500,6 +1542,40 @@ a {
 .dashboard-loading img {
 	width: 31px;
 	height: 34px;
+}
+
+.dashboard-demo {
+	margin-top: 20px;
+}
+
+#region-view .dashboard-demo {
+	margin-top: 70px;
+}
+
+.dashboard-demo .enter-credential {
+	text-align: center;
+	background-color: #dee9f6;
+	border: 1px solid #b5ceea;
+	border-radius: 3px;
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+
+.dashboard-demo .enter-credential p {
+	margin-bottom: 0;
+}
+
+.dashboard-demo .enter-credential p.info {
+	font-size: 16px;
+}
+
+.dashboard-demo .enter-credential p.link a {
+	color: #2c6bbd;
+	cursor: pointer;
+}
+
+.dashboard-demo .enter-credential p.link a:hover {
+	text-decoration: underline;
 }
 
 #global-view .dashboard-loading {
@@ -6550,4 +6626,191 @@ a.action-link:hover {
 
 #tpl-download .modal-text-wraper {
 	width: 415px;
+}
+
+/* Guide tour */
+#guide-carousel {
+	padding: 0;
+	position: relative;
+	width: 870px;
+	height: 646px;
+	overflow: hidden;
+}
+
+.carousel-inner {
+	position: relative;
+	width: 100%;
+	height: 591px;
+	overflow: hidden;
+}
+
+.carousel-inner > .item {
+	position: relative;
+	display: none;
+	-webkit-transition: 0.6s ease-in-out left;
+	-moz-transition: 0.6s ease-in-out left;
+	-o-transition: 0.6s ease-in-out left;
+	transition: 0.6s ease-in-out left;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+	display: block;
+	line-height: 1;
+}
+
+.carousel-inner > .active,
+.carousel-inner > .next,
+.carousel-inner > .prev {
+	display: block;
+}
+
+.carousel-inner > .active {
+	left: 0;
+}
+
+.carousel-inner > .next,
+.carousel-inner > .prev {
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.carousel-inner > .next {
+	left: 100%;
+}
+
+.carousel-inner > .prev {
+	left: -100%;
+}
+
+.carousel-inner > .next.left,
+.carousel-inner > .prev.right {
+	left: 0;
+}
+
+.carousel-inner > .active.left {
+	left: -100%;
+}
+
+.carousel-inner > .active.right {
+	left: 100%;
+}
+
+.carousel-btn {
+	text-align: center;
+	padding: 10px;
+	border-top: 1px solid #CFCFCF;
+}
+
+.carousel-previous {
+	float: left;
+}
+
+.carousel-next,
+.carousel-done {
+	float: right;
+}
+
+.carousel-caption {
+  background: #1F1F1F;
+  width: 840px;
+  padding: 15px;
+}
+
+.carousel-caption h4 {
+	color : #c7c7c7;
+	line-height: 20px;
+}
+
+
+.carousel-caption p {
+  line-height: 20px;
+  color: #A8A8A8;
+}
+
+.carousel-caption h4 {
+  margin: 0 0 5px;
+}
+
+.carousel-caption p {
+  margin-bottom: 0;
+}
+
+.carousel-counter {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background-color: #0BC287;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 32px;
+	margin-right: 10px;
+	color: #fff;
+}
+
+.carousel-indicators-wrap {
+	position: absolute;
+	text-align: center;
+	top: 10px;
+	right: 30px;
+}
+
+.carousel-indicators {
+	margin: 0 auto;
+	display: inline-block;
+	padding: 15px 0;
+}
+
+.slider-indicator:before {
+	top: 5.5px;
+	position: relative;
+	content: '';
+	width: 100%;
+	border-top: 1px solid #494B57;
+}
+
+.indicator-item {
+	z-index: 5;
+	position: relative;
+	width: 8px;
+	height: 8px;
+	float: left;
+	border-radius: 8px;
+	margin-right: 10px;
+	background-color: #373942;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 0 rgba(255, 255, 255, 1);
+	cursor: pointer;
+
+	-webkit-transition: box-shadow .5s;
+	-moz-transition: box-shadow .5s;
+	-ms-transition: box-shadow .5s;
+	-o-transition: box-shadow .5s;
+	transition: box-shadow .5s;
+}
+
+.indicator-item:last-child {
+	margin-right: 0;
+}
+
+.indicator-item.passed,
+.indicator-item.active {
+	width: 10px !important;
+	height: 10px !important;
+	border-radius: 10px !important;
+	border: none !important;
+}
+
+.indicator-item.passed {
+	background-color: #8D8F98;
+}
+
+.indicator-item.active {
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+#guide-wrap .modal-footer {
+	text-align: center;
 }

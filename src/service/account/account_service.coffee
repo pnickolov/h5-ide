@@ -253,6 +253,36 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserCheckValidationReturn
 
 
+    #///////////////// Parser for reset_key return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveResetKeyResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+        result
+
+    #private (parser reset_key return)
+    parserResetKeyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveResetKeyResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserResetKeyReturn
+
+
     #def register(self, username, password, email):
     register = ( src, username, password, email, callback ) ->
         send_request "register", src, [ username, password, email ], parserRegisterReturn, callback
@@ -283,6 +313,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "check_validation", src, [ key, flag ], parserCheckValidationReturn, callback
         true
 
+    #def reset_key(self, username, session_id, flag):
+    reset_key = ( src, username, session_id, flag=null, callback ) ->
+        send_request "reset_key", src, [ username, session_id, flag ], parserResetKeyReturn, callback
+        true
+
 
     #############################################################
     #public
@@ -292,4 +327,5 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     update_password              : update_password
     check_repeat                 : check_repeat
     check_validation             : check_validation
+    reset_key                    : reset_key
 

@@ -256,6 +256,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             'cur_region_resource_info'  : null
             'supported_platforms'       : false
 
+        store:
+            awsResource: null
+
+        status:
+            isAccountInfoGot: false
+            isAwsHandleWait : false
+
+
         initialize : ->
             @on 'AWS_RESOURCE_RETURN', @awsReturnHandler
             @on 'APP_INFO_RETURN', @appInfoHandler
@@ -268,12 +276,41 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             null
 
+        initAwsState: ->
+            @status.isAwsHandleWait = false
+            null
+
+        initAccountState: ->
+            @status.isAccountInfoGot = false
+            null
+
+        accountReturnHandler: ->
+            @status.isAccountInfoGot = true
+            if @status.isAwsHandleWait
+                @awsReturnHandler()
+
+
         awsReturnHandler: ( result ) ->
-            region = result.param[ 3 ]
-            @trigger 'AWS:LOADING:STOP', region
+            if result
+                @store.awsResource = result
+            else
+                result = @store.awsResource
+
+            if not @status.isAccountInfoGot
+                @status.isAwsHandleWait = true
+                return
+
+            if $.cookie('account_id') is 'demo_account' #demo account not save data
+                return
+
             data = result.resolved_data
             if not _.size data
                 return
+
+            region = result.param[ 3 ]
+            @trigger 'AWS:LOADING:STOP', region
+
+
             if region is null
 
                 #cache aws resource data
@@ -487,7 +524,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     null
             # cloudwatch alarm
             if resources.DescribeAlarms
-                _.map resources.DescribeAlarms, ( alarm, i ) ->
+                   _.map resources.DescribeAlarms, ( alarm, i ) ->
                     lists.CW+=1
                     alarm.dimension_display = alarm.Dimensions.member[0].Name + ':' + alarm.Dimensions.member[0].Value
                     alarm.threshold_display = "#{alarm.MetricName} #{alarm.ComparisonOperator} #{alarm.Threshold} for #{alarm.Period} seconds"
@@ -1231,7 +1268,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
         #region list
         describeAccountAttributesService : ()->
-
+            @initAccountState()
             me = this
 
             #get service(model)
@@ -1301,6 +1338,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
 
         describeAWSResourcesService : ( region )->
+            @initAwsState()
             @trigger 'AWS:LOADING:START', region
             me = this
             region = region or null

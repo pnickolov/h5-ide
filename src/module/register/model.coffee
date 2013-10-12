@@ -2,7 +2,7 @@
 #  View Mode for register
 #############################
 
-define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, account_model, forge_handle ) ->
+define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypto' ], ( MC, ide_event, account_model, session_model, forge_handle ) ->
 
     #private
     RegisterModel = Backbone.Model.extend {
@@ -45,23 +45,69 @@ define [ 'MC', 'event', 'account_model', 'forge_handle' ], ( MC, ide_event, acco
                 console.log forge_result
                 if !forge_result.is_error
                     #
-                    result = forge_result.resolved_data
+                    #result = forge_result.resolved_data
 
                     #
+                    #forge_handle.cookie.deleteCookie()
+
+                    #set cookies
+                    #forge_handle.cookie.setCookie result
+
+                    #set madeiracloud_ide_session_id
+                    #result.new_account = true
+                    #forge_handle.cookie.setCookie result
+                    #forge_handle.cookie.setIDECookie result
+                    #
+                    sessionStorage.setItem 'username', forge_result.param[ 1 ]
+                    sessionStorage.setItem 'password', forge_result.param[ 2 ]
+
+                    window.location.href = 'register.html#success'
+                else
+                    #
+                null
+
+        loginService : ->
+            console.log 'loginService'
+
+            return if !sessionStorage.getItem( 'username' ) or !sessionStorage.getItem( 'password' )
+
+            #invoke session.login api
+            session_model.login { sender : this }, sessionStorage.getItem( 'username' ), sessionStorage.getItem( 'password' )
+
+            #
+            sessionStorage.clear()
+
+            #login return handler (dispatch from service/session/session_model)
+            this.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
+
+                if !forge_result.is_error
+                    #login succeed
+
+                    result = forge_result.resolved_data
+
+                    #clear old cookie
                     forge_handle.cookie.deleteCookie()
 
                     #set cookies
                     forge_handle.cookie.setCookie result
 
                     #set madeiracloud_ide_session_id
-                    result.new_account = true
-                    forge_handle.cookie.setCookie result
                     forge_handle.cookie.setIDECookie result
-                    #
-                    window.location.href = 'register.html#success'
-                else
-                    #
-                null
+
+                    #set email
+                    localStorage.setItem 'email',     MC.base64Decode( forge_handle.cookie.getCookieByName( 'email' ))
+                    localStorage.setItem 'user_name', forge_handle.cookie.getCookieByName( 'username' )
+                    intercom_sercure_mode_hash = () ->
+                        intercom_api_secret = '4tGsMJzq_2gJmwGDQgtP2En1rFlZEvBhWQWEOTKE'
+                        hash = CryptoJS.HmacSHA256( MC.base64Decode($.cookie('email')), intercom_api_secret )
+                        console.log 'hash.toString(CryptoJS.enc.Hex) = ' + hash.toString(CryptoJS.enc.Hex)
+                        return hash.toString CryptoJS.enc.Hex
+                    localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
+
+                    #redirect to page ide.html
+                    window.location.href = 'ide.html'
+
+                    null
 
     }
 

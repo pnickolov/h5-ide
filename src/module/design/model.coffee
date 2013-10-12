@@ -81,6 +81,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                 if $.type(result.resolved_data) == 'array'
                     _.map result.resolved_data, ( ami ) ->
+                        ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
                         ami.osType = MC.aws.ami.getOSType ami
                         MC.data.dict_ami[ami.imageId] = ami
                         ide_event.trigger ide_event.SWITCH_MAIN

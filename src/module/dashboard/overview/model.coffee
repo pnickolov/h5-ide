@@ -119,11 +119,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeVpnConnections":
                 "title": "vpnConnectionId",
                 "sub_info": [
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
-                    { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
-                    { "key": [ "type" ], "show_key": "Type"},
-                    { "key": [ "routes", "item", 0], "show_key": "Routing"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "vpnGatewayId" ], "show_key": lang.ide.DASH_LBL_VIRTUAL_PRIVATE_GATEWAY},
+                    { "key": [ "customerGatewayId" ], "show_key": lang.ide.DASH_LBL_CUSTOMER_GATEWAY},
+                    { "key": [ "type" ], "show_key": lang.ide.PROP_CGW_APP_VPN_LBL_TYPE},
+                    { "key": [ "routes", "item", 0], "show_key": lang.ide.PROP_CGW_LBL_ROUTING}
                 ],
                 "btns": [
                     { "type": "download_configuration", "name": "Download Configuration" }

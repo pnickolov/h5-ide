@@ -167,7 +167,7 @@ header {
 footer {
 	width: 100%;
 	bottom: 0;
-	position: absolute;
+	position: relative;
 	color: #666;
 	text-align: center;
 	height: 80px;

@@ -677,6 +677,9 @@ $(document).ready(function ()
 		else if ( language === 'en' ) {
 			language = 'en-us';
 		}
+		else {
+			language = 'en-us';
+		}
 
 		MC.storage.set( 'language', language );
 

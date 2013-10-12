@@ -223,9 +223,9 @@ module.exports = function( grunt ) {
 									'requirejs',
 									'regex-replace:language',
 									'copy:publish_files',
+									'clean:temp',
 									'open:publish',
-									'connect:publish',
-									'clean:temp'
+									'connect:publish'
 	]);
 
 	/* task of use as release */

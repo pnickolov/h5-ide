@@ -59,7 +59,6 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     MC.data.is_loading_complete = true
                     ide_event.trigger ide_event.IDE_AVAILABLE
 
-                view.displayLoadTime()
 
             model.on 'change:recent_edited_stacks', () ->
                 console.log 'dashboard_change:recent_eidted_stacks'
@@ -86,18 +85,21 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
             # update aws credential
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
-                console.log 'dashboard_region:UPDATE_AWS_CREDENTIAL'
-
-                if Helper.hasCredential() and not Helper.accountIsDemo()
-                    view.clearDemo()
-                    view.enableSwitchRegion()
-                    view.reloadResource()
-                else if not Helper.accountIsDemo()
+                if Helper.hasCredential()
+                    if Helper.accountIsDemo() #demo case
+                        view.enableSwitchRegion()
+                        ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
+                        view.hideLoadTime()
+                    else # normal case
+                        view.clearDemo()
+                        view.enableSwitchRegion()
+                        view.reloadResource()
+                        view.displayLoadTime()
+                else # no credentia
                     view.disableSwitchRegion()
                     view.showCredential()
                     view.renderLoadingFaild()
-                else
-                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
+                    view.hideLoadTime()
 
             ide_event.onLongListen ide_event.ACCOUNT_DEMONSTRATE, () ->
                 view.setDemo()
@@ -105,13 +107,18 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 view.renderRegionDemo()
 
 
-            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', () ->
+            vpc_model.on 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN', ( result ) ->
                 model.accountReturnHandler()
-                if Helper.accountIsDemo()
-                    ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
 
-                if Helper.hasCredential()
+                if !result.is_error
                     view.enableSwitchRegion()
+                    if Helper.accountIsDemo()
+                        ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
+                        view.hideLoadTime()
+                    else
+                        view.displayLoadTime()
+                else
+                    view.hideLoadTime()
 
             ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
                 console.log 'UPDATE_DASHBOARD'

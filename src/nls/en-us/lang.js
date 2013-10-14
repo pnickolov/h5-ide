@@ -10,7 +10,8 @@ define({
 		'login-password' 			: 'Password',
 		'login-btn'      			: 'Log In',
 		'login-loading'  			: 'Logging In',
-		'login_waiting'	 			: 'One Minute...'
+		'login_waiting'	 			: 'One Minute...',
+		'madeira-offered-in'		: 'Madeira offered in'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'register' : {
@@ -249,6 +250,12 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
+		//linestyle
+		'TOOL_TIP_LINESTYLE'                          : '安全组规则连线类型...',
+		'TOOL_LBL_LINESTYLE_STRAIGHT'                 : '直线',
+		'TOOL_LBL_LINESTYLE_ELBOW'                    : '肘型线',
+		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : '二次贝赛尔曲线',
+		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
 		/******property module******/
 

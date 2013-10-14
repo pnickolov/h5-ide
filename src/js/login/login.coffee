@@ -149,12 +149,19 @@ define [ 'jquery', 'handlebars',
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.login[ text ]
-		#
-		$( '#container' ).html Handlebars.compile template
-		#
+
+		data =
+			english: $.cookie( 'lang' ) is 'en-us'
+
+		$( '#container' ).html (Handlebars.compile template) data
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )
-		$( '#footer' ).text 'version ' + version
+		$( '#footer .version' ).text 'Version ' + version
+		$('#footer .lang a').click ( ev ) ->
+			$.cookie 'lang', $(this).data 'lang'
+			MC.storage.set 'language', $(this).data 'lang'
+			window.location.reload()
+			false
 
 		return true

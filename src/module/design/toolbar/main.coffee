@@ -147,38 +147,63 @@ define [ 'jquery',
                 model.reqHanle idx, dag
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
-                    msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+
+                if flag
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+
                     #view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
                     view.notify 'info', msg
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
-                    msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
+
+                if flag
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
                     #view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
                     view.notify 'error', msg
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
 
-                    info = info.toLowerCase()
-                    info = info[0].toUpperCase() + info.substr(1)
+                if flag
 
-                    msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        info = info.toLowerCase()
+                        info = info[0].toUpperCase() + info.substr(1)
+
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
                     #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
                     view.notify 'info', msg
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
 
-                    info = info.toLowerCase()
-                    info = info[0].toUpperCase() + info.substr(1)
+                if flag
 
-                    msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        info = info.toLowerCase()
+                        info = info[0].toUpperCase() + info.substr(1)
+
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
                     #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
                     view.notify 'error', msg
 

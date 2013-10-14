@@ -62,13 +62,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                     sessionStorage.setItem 'password', forge_result.param[ 2 ]
 
 
-                    #redirect to page register.html
-                    if document.domain.indexOf('madeiracloud.com') != -1
-                        #domain is *.madeiracloud.com
-                        window.location.href = 'https://ide.madeiracloud.com/register#success'
-                    else
-                        #domain is not *.madeiracloud.com, maybe localhost
-                        window.location.href = '/register#success'
+                    window.location.href = "register.html#success"
 
 
                     
@@ -114,13 +108,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                         return hash.toString CryptoJS.enc.Hex
                     localStorage.setItem 'user_hash', intercom_sercure_mode_hash()
 
-                    #redirect to page ide.html
-                    if document.domain.indexOf('madeiracloud.com') != -1
-                        #domain is *.madeiracloud.com
-                        window.location.href = 'https://ide.madeiracloud.com/ide.html'
-                    else
-                        #domain is not *.madeiracloud.com, maybe localhost
-                        window.location.href = 'ide.html'
+                    window.location.href = "/ide.html"
 
 
                     null

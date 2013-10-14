@@ -232,7 +232,7 @@ define [ 'event',
 
                 #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
                 #$('#account-passowrd-info').html html_str
-                $('#account-passowrd-info').html 'Current password is wrong. <a href="/reset" target="_blank">Forget password?</a>'
+                $('#account-passowrd-info').html 'Current password is wrong. <a href="reset.html" target="_blank">Forget password?</a>'
 
             else
 

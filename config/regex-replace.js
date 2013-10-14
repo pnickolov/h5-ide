@@ -38,7 +38,7 @@ module.exports = {
 
 
     href: {
-        src: [ '<%= release %>/component/awscredential/view.coffee', '<%= release %>/js/ide/ide.coffee', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.coffee', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*' ],
+        src: [ '<%= release %>/component/awscredential/view.*', '<%= release %>/js/ide/ide.*', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.*', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*' ],
         actions: [
             {
                 name: 'href-register',

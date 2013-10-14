@@ -701,6 +701,24 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
+                            if flag is 'TERMINATE_APP'
+
+                                appId = id
+                                appName = name
+
+                                mainContent = 'The app ' + appName + ' terminated failed, do you want to delete forcibly?'
+                                descContent = ''
+                                template = MC.template.modalForceDeleteApp {
+                                    title : 'Force to delete app',
+                                    main_content : mainContent,
+                                    desc_content : descContent
+                                }
+                                modal template, false, () ->
+                                    $('#modal-confirm-delete').click () ->
+                                        # force to delete app
+                                        me.terminateApp(region, appId, appName, 1)
+                                        modal.close()
+
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 

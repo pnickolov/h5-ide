@@ -250,8 +250,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 region  = result.param[3]
                 id      = result.param[4]
                 name    = result.param[5]
+                flag    = result.param[6]
 
-                me.handleRequest result, 'TERMINATE_APP', region, id, name
+                if not flag or flag == 0    # send request to terminate the app
+                    me.handleRequest result, 'TERMINATE_APP', region, id, name
+
+                else    # force terminating the app
+                    if !result.is_error      # success
+                        me.setFlag id, 'TERMINATED_APP', region
+                        ide_event.trigger ide_event.TERMINATED_APP, name, id
+
+                        # remove the app name from app_list
+                        if name in MC.data.app_list[region]
+                            MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                    else            # failed
+                        me.setFlag id, 'STOPPED_APP', region
+
+                    # update resource
+                    ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                 # track
                 # analytics.track "Terminated App",
@@ -551,11 +568,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
-        terminateApp : (region, id, name) ->
+        terminateApp : (region, id, name, flag) ->
             me = this
 
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
-            app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
+            app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name, flag
 
         handleRequest : (result, flag, region, id, name) ->
             me = this

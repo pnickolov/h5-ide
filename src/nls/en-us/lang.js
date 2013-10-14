@@ -10,7 +10,8 @@ define({
 		'login-password' 			: 'Password',
 		'login-btn'      			: 'Log In',
 		'login-loading'  			: 'Logging In',
-		'login_waiting'	 			: 'One Minute...'
+		'login_waiting'	 			: 'One Minute...',
+		'madeira-offered-in'		: 'Madeira offered in'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'register' : {

@@ -133,10 +133,10 @@ define [ 'jquery',
                 console.log 'design_toolbar START_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
                 model.startApp(region, app_id, app_name)
 
-            ide_event.onLongListen 'TERMINATE_APP', (region, app_id, app_name) ->
+            ide_event.onLongListen 'TERMINATE_APP', (region, app_id, app_name, flag) ->
             #view.on 'TOOLBAR_TERMINATE_CLICK', (data) ->
-                console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
-                model.terminateApp(region, app_id, app_name)
+                console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
+                model.terminateApp(region, app_id, app_name, flag)
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'

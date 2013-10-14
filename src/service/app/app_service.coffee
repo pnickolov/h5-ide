@@ -178,10 +178,16 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
         #1.resolve return_code
         forge_result = result_vo.processForgeReturnHandler result, return_code, param
 
+        flag = param[6]
+
         #2.resolve return_data when return_code is E_OK
         if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
 
-            resolved_data = resolveTerminateResult result
+            if flag and flag == 1
+                resolved_data = result
+
+            else
+                resolved_data = resolveTerminateResult result
 
             forge_result.resolved_data = resolved_data
 
@@ -532,8 +538,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
         true
 
     #def terminate(self, username, session_id, region_name, app_id, app_name=None):
-    terminate = ( src, username, session_id, region_name, app_id, app_name=null, callback ) ->
-        send_request "terminate", src, [ username, session_id, region_name, app_id, app_name ], parserTerminateReturn, callback
+    terminate = ( src, username, session_id, region_name, app_id, app_name=null, flag=null, callback ) ->
+        send_request "terminate", src, [ username, session_id, region_name, app_id, app_name, flag ], parserTerminateReturn, callback
         true
 
     #def start(self, username, session_id, region_name, app_id, app_name=None):

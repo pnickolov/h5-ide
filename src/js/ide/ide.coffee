@@ -64,12 +64,7 @@ define [ 'MC', 'event', 'handlebars'
 			if !forge_handle.cookie.checkAllCookie()
 				#user session not exist, go to login page
 
-                if document.domain.indexOf('madeiracloud.com') != -1
-                    #domain is *.madeiracloud.com
-                    window.location.href = 'https://ide.madeiracloud.com/login/'
-                else
-                    #domain is not *.madeiracloud.com, maybe localhost
-                    window.location.href = 'login.html'
+                window.location.href = "login.html"
 
 
 		#clear cookie in 'ide.madeiracloud.com'
@@ -161,7 +156,7 @@ define [ 'MC', 'event', 'handlebars'
 			if MC.data.is_reset_session
 				MC.data.is_reset_session = false
 			else
-				#window.location.href = 'login.html'
+				#window.location.href = "login.html"
 				#
 				relogin()
 			null

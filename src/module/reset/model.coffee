@@ -42,13 +42,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 if !forge_result.is_error
                     #
 
-                    #redirect to page reset.html
-                    if document.domain.indexOf('madeiracloud.com') != -1
-                        #domain is *.madeiracloud.com
-                        window.location.href = 'https://ide.madeiracloud.com/reset#email'
-                    else
-                        #domain is not *.madeiracloud.com, maybe localhost
-                        window.location.href = '/reset#email'
+                    window.location.href = "reset.html#email"
 
 
                     
@@ -69,7 +63,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                     this.trigger 'KEY_VALID'
                 else
                     #
-                    window.location.href = '/reset#expire'
+                    window.location.href = "reset.html#expire"
                 null
 
         updatePasswordServer : ( result ) ->
@@ -81,13 +75,8 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
                 console.log forge_result
                 if !forge_result.is_error
                     #
-                    #redirect to page reset.html
-                    if document.domain.indexOf('madeiracloud.com') != -1
-                        #domain is *.madeiracloud.com
-                        window.location.href = 'https://ide.madeiracloud.com/reset#success'
-                    else
-                        #domain is not *.madeiracloud.com, maybe localhost
-                        window.location.href = '/reset#success'
+
+                    window.location.href = 'reset.html#success'
 
 
                 else

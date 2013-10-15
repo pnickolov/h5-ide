@@ -109,7 +109,7 @@ define({
 		'RES_LBL_QUICK_START_AMI'     : '推荐的映像',
 		'RES_LBL_MY_AMI'              : '我的映像',
 		'RES_LBL_FAVORITE_AMI'        : '收藏的映像',
-		'RES_LBL_NEW_VOL'             : '新的Volume',
+		'RES_LBL_NEW_VOL'             : '新的卷',
 		'RES_LBL_NEW_ELB'             : '负载均衡器',
 		'RES_LBL_NEW_ASG'             : 'Auto Scaling 组',
 		'RES_LBL_NEW_ASG_NO_CONFIG'   : '无配置',
@@ -124,7 +124,7 @@ define({
 
 		'RES_TIP_TOGGLE_RESOURCE_PANEL' : '显示/隐藏 资源面板',
 		'RES_TIP_DRAG_AZ'               : '拖放到画板来使用这个可用区域',
-		'RES_TIP_DRAG_NEW_VOLUME'       : '拖放到一个实例来附加一个新Volume。',
+		'RES_TIP_DRAG_NEW_VOLUME'       : '拖放到一个实例来附加一个新卷。',
 		'RES_TIP_DRAG_NEW_ELB'          : '拖放到画板来创建一个新负载均衡器。',
 		'RES_TIP_DRAG_NEW_ASG'          : '拖放到画板来创建一个新Auto Scaling组。',
 		'RES_TIP_DRAG_NEW_SUBNET'       : '拖放到一个可用区域来创建一个新子网。',
@@ -145,7 +145,7 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******canvas module******/
-		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volume和快照必须拖放到实例或映像。',
+		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : '卷和快照必须拖放到实例或映像。',
 		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : '子网必须拖放到可用区域。',
 		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : '实例必须拖放到子网或Auto Scaling组。',
 		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : '实例必须拖放到可用区域。',
@@ -284,7 +284,7 @@ define({
 		'PROP_INSTANCE_PRIVATE_DNS'				: '内网域名',
 		'PROP_INSTANCE_NUMBER'					: '实例数量',
 		'PROP_INSTANCE_REQUIRE'					: '必须',
-		'PROP_INSTANCE_AMI'						: '镜像',
+		'PROP_INSTANCE_AMI'						: '映像',
 		'PROP_INSTANCE_TYPE'					: '实例类型',
 		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
 		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
@@ -310,8 +310,8 @@ define({
 		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
 		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
 		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
-		'PROP_INSTANCE_AMI_ID'					: '镜像ID',
-		'PROP_INSTANCE_AMI_NAME'				: '镜像名称',
+		'PROP_INSTANCE_AMI_ID'					: '映像ID',
+		'PROP_INSTANCE_AMI_NAME'				: '映像名称',
 		'PROP_INSTANCE_AMI_DESC'				: '描述',
 		'PROP_INSTANCE_AMI_ARCHITECH'			: '架构',
 		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: '虚拟化',
@@ -700,7 +700,7 @@ define({
 		'PROP_ASG_LBL_VALIDATE_SNS'				: '验证SNS主题',
 		'PROP_ASG_MSG_NO_NOTIFICATION_WARN'		: '没有设置Notification Configuration',
 		'PROP_ASG_MSG_SNS_WARN'					: '现在SNS还没有设置订阅信息，请去模板属性框设置，以便收到通知',
-		'PROP_ASG_MSG_DROP_LC'					: '请拖拽镜像来建立Launch Configuration',
+		'PROP_ASG_MSG_DROP_LC'					: '请拖拽映像来建立Launch Configuration',
 		'PROP_ASG_TERMINATION_EDIT'				: '编辑终止策略',
 		'PROP_ASG_TERMINATION_TEXT_WARN'		: '你能选择最少一种策略，策略执行顺序是从上到下',
 		'PROP_ASG_TERMINATION_MSG_DRAG'			: '拖拽以便调整顺序',
@@ -785,9 +785,9 @@ define({
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		//#### topmenu
-		'HEAD_LABEL_MENUITEM_USER_TOUR'  : '教程',
-		'HEAD_LABEL_MENUITEM_DOC'        : '文档',
-		'HEAD_LABEL_MENUITEM_SETTING'    : '设置',
+		'HEAD_LABEL_MENUITEM_USER_TOUR'  : '用户教程',
+		'HEAD_LABEL_MENUITEM_DOC'        : '使用文档',
+		'HEAD_LABEL_MENUITEM_SETTING'    : '账号设置',
 		'HEAD_LABEL_MENUITEM_LOGOUT'     : '登出',
 		//#### topmenu
 
@@ -831,14 +831,12 @@ define({
 		'DASH_LBL_STACK'						    : '模板',
 		'DASH_LBL_RECENT_EDITED_STACK'			    : '最近修改的模板',
 		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : '最近启动的实例',
-		'DASH_LBL_NO_APP'							: '该地区没有应用',
-		'DASH_LBL_NO_STACK'							: '该地区还没有模板',
-		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: '你可以通过模板创建应用',
-		'DASH_LBL_CREATE_NEW_STACK_HERE'			: '点击这里创建新模板',
+		'DASH_LBL_NO_APP'							: '该地区没有应用<br />你可以通过模板创建应用',
+		'DASH_LBL_NO_STACK'							: '该地区还没有模板<br />点击这里创建新模板',
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
 		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',
-		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_VOLUME'		  				    : '卷',
 		'DASH_LBL_LOAD_BALANCER'				    : '负载均衡器',
 		'DASH_LBL_VPN'								: 'VPN',
 

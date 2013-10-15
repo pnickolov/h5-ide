@@ -11,7 +11,7 @@ define({
 		'login-btn'      			: 'Log In',
 		'login-loading'  			: 'Logging In',
 		'login_waiting'	 			: 'One Minute...',
-		'madeira-offered-in'		: 'Madeira offered in'
+		'madeira-offered-in'		: '&copy; MadeiraCloud offered in'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'register' : {

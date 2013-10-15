@@ -10,7 +10,7 @@
 */
 
 var version  = version || {},
-    language = localStorage.getItem( 'language' ) || $.cookie('lang') || 'en-us';
+    language = localStorage.getItem( 'language' ) || 'en-us';
 
 (function() {
   'use strict';

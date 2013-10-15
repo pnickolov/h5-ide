@@ -11,7 +11,7 @@ define({
 		'login-btn'      			: '登录',
 		'login-loading'  			: '正在登录',
 		'login_waiting'	 			: '稍等...',
-		'madeira-offered-in'		: 'Madeira 还提供'
+		'madeira-offered-in'		: '&copy; MadeiraCloud 还提供'
 	},
 	'register' : {
 		'register'					: '注册',

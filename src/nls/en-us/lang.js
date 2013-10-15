@@ -756,6 +756,46 @@ define({
 		//#### topmenu
 
 		/****** account credential module ******/
+		'HEAD_LABEL_SETTING'			  : 'Settings',
+		'HEAD_LABEL_ACCOUNT'			  : 'Account',
+		'HEAD_LABEL_CREDENTIAL'			  : 'AWS Credentials',
+		'HEAD_LABEL_ACCOUNT_USERNAME'	  : 'Username',
+		'HEAD_LABEL_ACCOUNT_EMAIL'		  : 'Email Address',
+		'HEAD_LABEL_CHANGE_PASSWORD'	  : 'Change Password',
+		'HEAD_LABEL_CURRENT_PASSWORD'	  : 'Current Password',
+		'HAED_LABEL_NEW_PASSWORD'		  : 'New Password',
+		'HEAD_LABEL_REMOVE_CREDENTIAL'    : 'Remove Credential',		
+		'HEAD_LABEL_ACCOUNT_CHANGE'		  : 'Change',
+		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : 'Update',
+		'HEAD_LABEL_ACCOUNT_CANCEL'		  : 'Cancel',
+		'HEAD_LABEL_ACCOUNT_PERIOD'		  : '.',
+		'HEAD_LABEL_ACCOUNT_QUESTION'	  : '?',
+
+		'HEAD_BTN_CHANGE'			  	  : 'Change',
+		'HEAD_BTN_UPDATE'			  	  : 'Update',
+		'HEAD_BTN_CANCEL'				  : 'Cancel',
+		'HEAD_BTN_SUBMIT'				  : 'Submit',
+		'HEAD_BTN_CLOSE'				  : 'Close',
+		'HEAD_BTN_DONE'					  : 'Done',
+
+
+		'HEAD_INFO_ACCOUNT_LIST'		  : 'You have connected with following AWS account:',
+		'HEAD_INFO_REMOVE_CREDENTIAL1'	  : 'By removing Credentials, you will be in the demo mode.',
+		'HEAD_INFO_REMOVE_CREDENTIAL2'	  : 'If you want to launch stack into app, you need to provide valid AWS Credentials.',
+		'HEAD_INFO_REMOVE_CREDENTIAL3'	  : 'The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.',
+		'HEAD_INFO_LOADING'			  	  : 'loading...',
+		'HEAD_INFO_LOADING_RESOURCE'	  : 'Loading resources...',
+		'HEAD_WARN_UPDATE_CREDENTIAL'	  : 'Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps ﬁrst.',
+
+		'HEAD_INFO_PROVIDE_CREDENTIAL1'   : 'Do not want to provide AWS Credentials now?',
+		'HEAD_INFO_DEMO_MODE'			  : 'You can design stack in the demo mode. Yet, with following drawbacks:',
+		'HEAD_INFO_WELCOME'				  : 'Welcome to MadeiraCloud, ',
+		'HEAD_INFO_PROVIDE_CREDENTIAL2'	  : 'To start designing cloud architecture, please provide your AWS credentials:',
+		'HEAD_INFO_PROVIDE_CREDENTIAL3'   : 'To launch and manage AWS resources, please provide your AWS account credentials.',
+		'HEAD_ERR_AUTHENTICATION' 		  : 'Authentication failed. Please check your AWS Credentials and try again.',
+		'HEAD_CHANGE_CREDENTIAL'		  : 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. ',
+		'HEAD_INFO_CONFIRM_REMOVE'		  : 'Do you conﬁrm to remove AWS Credentials of account ',
+
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
@@ -768,10 +808,14 @@ define({
 		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters.',
 		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
-		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
 		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : 'Password has been updated.',
-		'HEAD_MSG_ERR_UPDATE_EMAIL'       : 'Update email address failed.',
 		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : 'Update password failed.',
+		'HEAD_MSG_ERR_WRONG_PASSWORD'	  : 'Current password is wrong.',
+		'HEAD_MSG_INFO_FORGET_PASSWORD'	  : 'Forget password?',
+		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL1'      : 'Update email address failed.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL2'	  : 'The email address is already taken.',
+		'HEAD_MSG_ERR_UPDATE_EMAIL3'	  : 'It`s not an email address.',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/

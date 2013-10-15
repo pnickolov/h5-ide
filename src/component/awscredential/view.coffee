@@ -173,7 +173,7 @@ define [ 'event',
             status.removeClass 'error-status'
 
             if flag and flag is 'is_failed'
-                status.show().text 'The email address is already taken.'
+                status.show().text  lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL2
 
             else if email
 
@@ -187,7 +187,7 @@ define [ 'event',
                         me.trigger 'UPDATE_ACCOUNT_EMAIL', email
 
                 else
-                    status.show().text 'It`s not an email address.'
+                    status.show().text lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
 
         clickCancelEmail : (event) ->
             console.log 'account_setting_tab clickCancelEmail'
@@ -232,7 +232,7 @@ define [ 'event',
 
                 #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
                 #$('#account-passowrd-info').html html_str
-                $('#account-passowrd-info').html 'Current password is wrong. <a href="reset.html" target="_blank">Forget password?</a>'
+                $('#account-passowrd-info').html '{{ i18n “HEAD_MSG_ERR_WRONG_PASSWORD” }} <a href="reset.html" target="_blank">{{ i18n “HEAD_MSG_INFO_FORGET_PASSWORD” }}</a>'
 
             else
 
@@ -274,8 +274,8 @@ define [ 'event',
                 $( '#awscredentials-submit' ).removeAttr 'disabled'
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html skip_tmpl
-                $( '#AWSCredential-welcome').text 'Do not want to provide AWS Credentials now?'
-                $( '#AWSCredential-info').find('p').text 'You can design stack in the demo mode. Yet, with following drawbacks:'
+                $( '#AWSCredential-welcome').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL1
+                $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_DEMO_MODE
                 $( '#AWSCredential-welcome-img').hide()
                 $( '#AWSCredential-form').find('h4').hide()
 
@@ -284,11 +284,11 @@ define [ 'event',
                 $target.attr( 'data-type', 'skip' )
                 $target.text( 'Skip' )
                 $( '#awscredentials-submit' ).attr 'disabled', true
-                $( '#awscredentials-submit' ).text( 'Submit' )
+                $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                 #
                 $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-                $( '#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
-                $( '#AWSCredential-info').find('p').text 'To start designing cloud architecture, please provide your AWS credentials:'
+                $( '#AWSCredential-welcome').text lang.ide.HEAD_INFO_WELCOME + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
                 $( '#AWSCredential-welcome-img').show()
                 $( '#AWSCredential-form').find('h4').show()
             null
@@ -366,10 +366,10 @@ define [ 'event',
 
                     #$('#AWSCredential-failed').hide()
                     if @state is 'credential'
-                        $('#AWSCredential-info').find('p').text 'To launch and manage AWS resources, please provide your AWS account credentials.'
+                        $('#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL3
                     else if @state is 'welcome'
-                        $('#AWSCredential-welcome').text 'Welcome to MadeiraCloud, ' + MC.forge.cookie.getCookieByName( 'username' ) + '.'
-                        $('#AWSCredential-info').find('p').text  'To start designing cloud architecture, please provide your AWS credentials.'
+                        $('#AWSCredential-welcome').text lang.ide.HEAD_INFO_WELCOME + MC.forge.cookie.getCookieByName( 'username' ) + lang.ide.HEAD_LABEL_ACCOUNT_PERIOD
+                        $('#AWSCredential-info').find('p').text  lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
 
                     # set buttons style
                     $('#awscredentials-remove').hide()
@@ -382,7 +382,7 @@ define [ 'event',
 
                     #$('#AWSCredential-failed').show()
                     # $('#AWSCredential-info').addClass('error')
-                    $('#AWSCredential-info').find('p').text 'Authentication failed. Please check your AWS Credentials and try again.'
+                    $('#AWSCredential-info').find('p').text lang.ide.HEAD_ERR_AUTHENTICATION
 
                     right_count = 0
                     if last_account_id
@@ -399,7 +399,7 @@ define [ 'event',
                         $('#awscredentials-submit').attr('disabled', false)
 
                     if @state is 'welcome'
-                        $( '#awscredentials-submit' ).text 'Submit'
+                        $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                         $( '#awscredentials-skip' ).show()
 
                 else if flag is 'on_update'
@@ -429,7 +429,7 @@ define [ 'event',
                     if @state is 'welcome'
                         $( '#awscredentials-skip' ).hide()
                         $( '#awscredentials-skip' ).attr( 'data-type', 'done' )
-                        $( '#awscredentials-submit' ).text 'Done'
+                        $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_DONE
                         $( '#awscredentials-submit' ).removeAttr 'disabled'
 
                 else if flag is 'in_update'
@@ -439,7 +439,7 @@ define [ 'event',
                     $('#AWSCredentials-submiting').hide()
                     $('#AWSCredentials-update').hide()
 
-                    $('#AWSCredential-info').find('p').text 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. '
+                    $('#AWSCredential-info').find('p').text lang.ide.HEAD_CHANGE_CREDENTIAL
 
                     # set content
                     $('#aws-credential-account-id').val me.model.attributes.account_id
@@ -465,7 +465,7 @@ define [ 'event',
                     $('#AWSCredentials-submiting').show()
                     $('#AWSCredentials-update').hide()
 
-                    $('#AWSCredentials-loading-text').text('Loading resources...')
+                    $('#AWSCredentials-loading-text').text lang.ide.HEAD_INFO_LOADING_RESOURCE
 
                     $('#AWSCredential-info-wrap').hide()
 
@@ -473,7 +473,7 @@ define [ 'event',
 
                     $('#AWSCredential-info').hide()
                     $('#AWSCredentials-remove-wrap').show()
-                    $('#AWSCredential-remove-head').find('p').text 'Do you conﬁrm to remove AWS Credentials of account ' + me.model.attributes.account_id + '?'
+                    $('#AWSCredential-remove-head').find('p').text lang.ide.HEAD_INFO_CONFIRM_REMOVE + me.model.attributes.account_id + lang.ide.HEAD_LABEL_ACCOUNT_QUESTION
                     $('#awscredentials-submit').hide()
                     $('#AWSCredential-form').find('ul').hide()
 

@@ -1,7 +1,7 @@
 <!-- AWSCredential -->
 <div id="account-setting-wrap" class="modal-welcome" style="width: 550px">
 	<div class="modal-header">
-		<h3>Welcome</h3>
+		<h3>{{ i18n "HEAD_LABEL_WELCOME" }}</h3>
 		<i class="modal-close">&times;</i>
 	</div>
 
@@ -17,19 +17,19 @@
 			<img src="./assets/images/ide/welcome-img.png" id="AWSCredential-welcome-img" alt=""/>
 
 			<div id="AWSCredential-form">
-				<h4 class="modal-text-major">Provide AWS Credentials</h4>
+				<h4 class="modal-text-major">{{ i18n "HEAD_LABEL_PROVIDE_CREDENTIAL" }}</h4>
 				<ul>
 					loading...
 				</ul>
 			</div>
 
 			<div id="AWSCredentials-submiting">
-				loading...
+				{{ i18n "HEAD_INFO_LOADING" }}
 			</div>
 
 			<div id="AWSCredentials-update">
 				<div class="AWSCredentials-body-info">
-					<h5>You have connected with following AWS account:</h5>
+					<h5>{{ i18n "HEAD_INFO_ACCOUNT_LIST" }}</h5>
 					<div class="AWSCredentials-account-info">
 						<span id="aws-credential-update-account-id">{{account_id}}</span>
 					</div>
@@ -42,8 +42,8 @@
 
 	<div class="modal-footer">
 		<div id="welcome-btn-wrap">
-			<a id="awscredentials-skip" data-type="skip" href="javascript:void(0)">Skip</a>
-			<button id="awscredentials-submit" class="btn btn-blue">Submit</button>
+			<a id="awscredentials-skip" data-type="skip" href="javascript:void(0)">{{ i18n "HEAD_LABEL_ACCOUNT_SKIP" }}</a>
+			<button id="awscredentials-submit" class="btn btn-blue">{{ i18n "HEAD_BTN_SUBMIT" }}</button>
 		</div>
 	</div>
 </div>

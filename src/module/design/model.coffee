@@ -279,7 +279,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             
             _.each MC.canvas_data.component, (compObj) ->
 
-                if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                     imageId = compObj.resource.ImageId
                     if imageId and !MC.data.dict_ami[imageId]
                         ami_list.push imageId

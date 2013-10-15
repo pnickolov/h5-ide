@@ -5,19 +5,20 @@ cd $DIR
 
 FILENAME="ide.tar.gz"
 
-cd ../../src
+cd ${DIR}/../../src
 
 echo "now will deploy develop version to 26.7"
-echo "start make..."
-grunt make_all
+echo "start make(grunt debug)..."
+grunt debug
 echo "make done"
 echo
 
+cd ${DIR}/../../debug
+
 COMMIT=`git log -n 1 | grep commit | awk '{print $2}' `
 echo ">generate commit id: ${COMMIT}"
-echo ${COMMIT} > commit
+echo "${COMMIT:0:3}.dev" > commit
 echo ""
-
 
 rm ${FILENAME} -rf
 echo "start tar..."

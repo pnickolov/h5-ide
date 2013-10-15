@@ -55,6 +55,15 @@ module.exports = {
 		}]
 	},
 
+	debug: {
+		files: [{
+			expand : true,
+			cwd    : '<%= src %>/',
+			src    : [ '**'] ,
+			dest   : '<%= debug %>/',
+		}]
+	},
+
 	lib_aws: {
 		files: [{
 			expand : true,

@@ -27,7 +27,7 @@
         {{#with global_list.DescribeInstances}}
             <li id="global-region-resource-instance">
                 <div class="global-region-resource-header">
-                    <h5>Running Instance</h5>
+                    <h5>{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -53,7 +53,7 @@
         {{#with global_list.DescribeAddresses}}
             <li id="global-region-resource-eip">
                 <div class="global-region-resource-header">
-                    <h5>Elastic IP</h5>
+                    <h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-eip" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -79,7 +79,7 @@
         {{#with global_list.DescribeVolumes}}
         <li id="global-region-resource-volume">
             <div class="global-region-resource-header">
-                <h5>Volume</h5>
+                <h5>{{i18n "DASH_LBL_VOLUME"}}</h5>
                 <div class="global-region-resource-count-wrap">
                     <i id="global-resource-icon-vol" class="global-resource-icon"></i>
                     <span class="global-region-resource-count">{{total}}</span>
@@ -105,7 +105,7 @@
         {{#with global_list.DescribeLoadBalancers}}
             <li id="global-region-resource-elb">
                 <div class="global-region-resource-header">
-                    <h5>Load Balancer</h5>
+                    <h5>{{i18n "DASH_LBL_LOAD_BALANCER"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-elb" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -129,7 +129,8 @@
         {{/with}}
 
         {{#with global_list.DescribeVpnConnections}}
-            <li id="global-region-resource-vpn"> <div class="global-region-resource-header"> <h5>VPN</h5>
+            <li id="global-region-resource-vpn"> <div class="global-region-resource-header">
+                    <h5>{{i18n "DASH_LBL_VPN"}}</h5>
                     <div class="global-region-resource-count-wrap">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
                         <span class="global-region-resource-count">{{total}}</span>
@@ -164,14 +165,14 @@
                 <a href="javascript:void(0)" {{#if app}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-app"></i>
                     <span class="region-resource-tab-number">{{#if cur_app_list}}{{ cur_app_list.length }}{{else}}0{{/if}}</span>
-                    <span class="region-resource-tab-type">App</span>
+                    <span class="region-resource-tab-type">{{i18n "DASH_LBL_APP"}}</span>
                 </a>
             </li>
             <li>
                 <a href="javascript:void(0)" {{#if stack}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
-                    <span class="region-resource-tab-type">Stack</span>
+                    <span class="region-resource-tab-type">{{i18n "DASH_LBL_STACK"}}</span>
                     <button id="btn-create-stack" href="javascript:void(0)" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"></button>
                 </a>
             </li>
@@ -222,11 +223,11 @@
                                     <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
                                     <div class="region-resource-action clearfix">
                                         {{#if isrunning}}
-                                            <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Stop App", "body":"Do you confirm to stop {{name}}?", "confirm":"Stop", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
                                         {{else}}
-                                            <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Run App", "body":"Do you confirm to start {{name}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_START_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_START_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
                                         {{/if}}
-                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Terminate App", "body":"Do you confirm to terminate {{name}}?", "confirm":"Terminate", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>
@@ -234,9 +235,8 @@
                         {{/if}}
                     {{else}}
                         <div class="blank-widget">
-                            There is no App in this region.<br />You can run app from a stack.
+                           {{i18n "DASH_LBL_NO_APP"}}.<br />{{i18n "DASH_LBL_CREATE_NEW_APP_FROM_STACK"}}.
                         </div>
-                        <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
                     {{/each}}
 
                 </ul>
@@ -260,16 +260,16 @@
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
                                     <div class="region-resource-action clearfix">
-                                        <i class="icon-duplicate modal duplicate-stack" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Duplicate Stack", "body":"Stack Name:", "input":"{{name}}-copy", "confirm":"Save", "color":"blue" }' data-modal-dismiss="true"></i>
+                                        <i class="icon-duplicate modal duplicate-stack" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_TIP_DUPLICATE_STACK"}}}", "body":"{{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}}", "input":"{{name}}-copy", "confirm":"{{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
 
-                                        <i class="icon-delete modal delete-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"Confirm to Delete", "body":"Do you confirm to delete {{name}}?", "confirm":"Delete", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="icon-delete modal delete-stack"  id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_TIP_DELETE_STACK"}}}", "body":"{{i18n "TOOL_POP_BODY_DELETE_STACK"}} {{name}}?", "confirm":"{{{i18n "TOOL_POP_BTN_DELETE_STACK"}}}", "color":"red" }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>
                         </li>
                     {{else}}
                         <div class="blank-widget">
-                            There is no stack in this region yet.<br />Create a new stack from here.
+                            {{i18n "DASH_LBL_NO_STACK"}}.<br />{{i18n "DASH_LBL_CREATE_NEW_STACK_HERE"}}.
                             <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
                         </div>
                     {{/each}}
@@ -294,7 +294,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item on" data-resource-type="DescribeInstances">
                         <i id="global-resource-icon-instance" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Instance}}</span>
-                        <span class="region-resource-name">Instance</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_INSTANCE"}}</span>
                     </a>
                 </li>
 
@@ -302,7 +302,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAddresses">
                         <i id="global-resource-icon-eip" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{EIP}}</span>
-                        <span class="region-resource-name">Elastic IP</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span>
                     </a>
                 </li>
 
@@ -310,7 +310,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVolumes">
                         <i id="global-resource-icon-vol" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{Volume}}</span>
-                        <span class="region-resource-name">Volume</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VOLUME"}}</span>
                     </a>
                 </li>
 
@@ -318,7 +318,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpcs">
                         <i id="global-resource-icon-vpc" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPC}}</span>
-                        <span class="region-resource-name">VPC</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VPC"}}</span>
                     </a>
                 </li>
 
@@ -326,7 +326,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeVpnConnections">
                         <i id="global-resource-icon-vpn" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{VPN}}</span>
-                        <span class="region-resource-name">VPN</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_VPN"}}</span>
                     </a>
                 </li>
 
@@ -334,7 +334,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeLoadBalancers">
                         <i id="global-resource-icon-elb" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{ELB}}</span>
-                        <span class="region-resource-name">Load Balancer</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span>
                     </a>
                 </li>
 
@@ -342,7 +342,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAutoScalingGroups">
                         <i id="global-resource-icon-asg" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{AutoScalingGroup}}</span>
-                        <span class="region-resource-name">Auto Scaling Group</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span>
                     </a>
                 </li>
 
@@ -350,7 +350,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="DescribeAlarms">
                         <i id="global-resource-icon-cwa" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{CW}}</span>
-                        <span class="region-resource-name">CloudWatch Alarm</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span>
                     </a>
                 </li>
 
@@ -358,7 +358,7 @@
                     <a href="javascript:void(0)" class="region-resource-tab-item" data-resource-type="ListSubscriptions">
                         <i id="global-resource-icon-sns" class="global-resource-icon"></i>
                         <span class="region-resource-count">{{SNS}}</span>
-                        <span class="region-resource-name">SNS Subscription</span>
+                        <span class="region-resource-name">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span>
                     </a>
                 </li>
             </ul>
@@ -376,12 +376,12 @@
     <table class="table-head">
         <thead>
             <tr>
-                <th class="sortable" style="width: 25%">Instance Name/ID</th>
-                <th class="sortable" style="width: 17%">Status</th>
-                <th class="sortable" style="width: 20%" data-row-type="datetime">Launch Time</th>
-                <th class="sortable" style="width: 15%">AMI</th>
-                <th class="sortable" style="width: 15%">Availability Zone</th>
-                <th class="sortable" style="width: 8%">Detail</th>
+                <th class="sortable" style="width: 25%">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                <th class="sortable" style="width: 17%">{{i18n "DASH_LBL_STATUS"}}</th>
+                <th class="sortable" style="width: 20%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
+                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AMI"}}</th>
+                <th class="sortable" style="width: 15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+                <th class="sortable" style="width: 8%">{{i18n "DASH_LBL_DETAIL"}}</th>
             </tr>
         </thead>
     </table>
@@ -410,7 +410,7 @@
                                     <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                     {{/if}}
                                     {{else}}
-                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                     {{/if}}
                                 </div>
                                 <div>
@@ -426,7 +426,7 @@
                         </tr>
                         {{else}}
                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                            <p>There is no instance in this region.</p>
+                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                         </div>
                         {{/each}}
 
@@ -442,9 +442,9 @@
         <table class="table-head">
             <thead>
                 <tr>
-                    <th style="width:40%">IP</th>
-                    <th class="sortable" style="width:40%">Associated Instance</th>
-                    <th style="width:20%">Detail</th>
+                    <th style="width:40%">{{i18n "DASH_LBL_IP"}}</th>
+                    <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ASSOCIATED_INSTANCE"}}</th>
+                    <th style="width:20%">{{i18n "DASH_LBL_DETAIL"}}</th>
                 </tr>
             </thead>
         </table>
@@ -469,7 +469,7 @@
                             </tr>
                             {{else}}
                             <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                <p>There is no Elastic IP in this region.</p>
+                                <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_ELASTIC_IP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                             </div>
                             {{/each}}
 
@@ -485,12 +485,12 @@
             <table class="table-head">
                 <thead>
                     <tr>
-                        <th class="sortable" style="width:16%">Name/ID</th>
-                        <th class="sortable" style="width:18%">Status</th>
-                        <th class="sortable" style="width:21%" data-row-type="datetime">Create Time</th>
-                        <th class="sortable" style="width:15%">Device Name</th>
-                        <th class="sortable" style="width:15%">Attachment Status</th>
-                        <th style="width:15%">Detail</th>
+                        <th class="sortable" style="width:16%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                        <th class="sortable" style="width:18%">{{i18n "DASH_LBL_STATUS"}}</th>
+                        <th class="sortable" style="width:21%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
+                        <th class="sortable" style="width:15%">{{i18n "DASH_LBL_DEVICE_NAME"}}</th>
+                        <th class="sortable" style="width:15%">{{i18n "DASH_LBL_ATTACHMENT_STATUS"}}</th>
+                        <th style="width:15%">{{i18n "DASH_LBL_DETAIL"}}</th>
                     </tr>
                 </thead>
             </table>
@@ -519,7 +519,7 @@
                                             <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                             {{/if}}
                                             {{else}}
-                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                             {{/if}}
                                         </div>
                                         <div>
@@ -534,7 +534,7 @@
                                 </tr>
                                 {{else}}
                                 <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                    <p>There is no volume in this region.</p>
+                                    <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VOLUME"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                 </div>
                                 {{/each}}
 
@@ -550,11 +550,11 @@
                 <table class="table-head">
                     <thead>
                         <tr>
-                            <th class="sortable" style="width:25%">Name/ID</th>
-                            <th class="sortable" style="width:20%">Status</th>
-                            <th class="sortable" style="width:25%">CIDR</th>
-                            <th class="sortable" style="width:20%">DHCP Settings</th>
-                            <th style="width:10%">Detail</th>
+                            <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                            <th class="sortable" style="width:25%">{{i18n "DASH_LBL_CIDR"}}</th>
+                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_DHCP_SETTINGS"}}</th>
+                            <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                         </tr>
                     </thead>
                 </table>
@@ -582,7 +582,7 @@
                                                 <span class="table-app-link truncate tooltip" data-tooltip='App created by other user' >[{{ app }}]</span>
                                                 {{/if}}
                                                 {{else}}
-                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                                <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                                 {{/if}}
                                             </div>
                                             <div>
@@ -600,7 +600,7 @@
                                     </tr>
                                     {{else}}
                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                        <p>There is no VPC in this region.</p>
+                                        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPC"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                     </div>
                                     {{/each}}
 
@@ -616,11 +616,11 @@
                     <table class="table-head">
                         <thead>
                             <tr>
-                                <th class="sortable" style="width:25%">Name/ID</th>
-                                <th class="sortable" style="width:20%">Status</th>
-                                <th class="sortable" style="width:25%">Virtual Private Gateway</th>
-                                <th class="sortable" style="width:20%">Customer Gateway</th>
-                                <th style="width:10%">Detail</th>
+                                <th class="sortable" style="width:25%">{{i18n "DASH_LBL_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                                <th class="sortable" style="width:25%">{{i18n "DASH_LBL_VIRTUAL_PRIVATE_GATEWAY"}}</th>
+                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_CUSTOMER_GATEWAY"}}</th>
+                                <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                             </tr>
                         </thead>
                     </table>
@@ -649,7 +649,7 @@
                                                     <span class="table-app-link truncate tooltip" data-tooltip='App created by current user' >[{{ app }}]</span>
                                                     {{/if}}
                                                     {{else}}
-                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+                                                    <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
                                                     {{/if}}
                                                 </div>
                                                 <div>
@@ -663,7 +663,7 @@
                                         </tr>
                                         {{else}}
                                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                            <p>There is no VPN in this region.</p>
+                                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPN"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                         </div>
                                         {{/each}}
 
@@ -679,11 +679,11 @@
                         <table class="table-head">
                             <thead>
                                 <tr>
-                                    <th class="sortable" style="width:25%">DNS Name</th>
-                                    <th class="sortable" style="width:20%" data-row-type="datetime">Create time</th>
-                                    <th class="sortable" style="width:25%">Availability Zone</th>
-                                    <th class="sortable" style="width:20%">Status</th>
-                                    <th style="width:10%">Detail</th>
+                                    <th class="sortable" style="width:25%">{{i18n "DASH_LBL_DNS_NAME"}}</th>
+                                    <th class="sortable" style="width:20%" data-row-type="datetime">{{i18n "DASH_LBL_CREATE_TIME"}}</th>
+                                    <th class="sortable" style="width:25%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+                                    <th class="sortable" style="width:20%">{{i18n "DASH_LBL_STATUS"}}</th>
+                                    <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                 </tr>
                             </thead>
                         </table>
@@ -711,7 +711,7 @@
                                             </tr>
                                             {{else}}
                                             <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                <p>There is no Load Balancer in this region.</p>
+                                                <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_LOAD_BALANCER"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                             </div>
                                             {{/each}}
 
@@ -727,10 +727,10 @@
                             <table class="table-head">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" style="width:20%">Name</th>
-                                        <th class="sortable" style="width:50%">Current/Last Activity</th>
-                                        <th class="sortable" style="width:20%">Activity Status</th>
-                                        <th style="width:10%">Detail</th>
+                                        <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+                                        <th class="sortable" style="width:50%">{{i18n "DASH_LBL_CURRENT"}}/{{i18n "DASH_LBL_LAST_ACTIVITY"}}</th>
+                                        <th class="sortable" style="width:20%">{{i18n "DASH_LBL_ACTIVITY_STATUS"}}</th>
+                                        <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -757,7 +757,7 @@
                                                             <span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
                                                             {{/if}}
                                                             {{else}}
-                                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASHBOARD_TXT_UNMANAGED" }}] </span>
+                                                            <span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASH_LBL_UNMANAGED" }}] </span>
                                                             {{/if}}
                                                         </div>
                                                         <div>
@@ -771,7 +771,7 @@
                                                 {{else}}
                                                 <!-- Blank Slate -->
                                                 <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                    <p>There is no Auto Scaling Group in this region.</p>
+                                                    <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                 </div>
                                                 {{/each}}
 
@@ -787,11 +787,11 @@
                                 <table class="table-head">
                                     <thead>
                                         <tr>
-                                            <th class="sortable" style="width:20%">Name</th>
-                                            <th class="sortable" style="width:30%">Dimension</th>
-                                            <th class="sortable" style="width:30%">Threshold</th>
-                                            <th class="sortable" style="width:10%">State</th>
-                                            <th style="width:10%">Detail</th>
+                                            <th class="sortable" style="width:20%">{{i18n "DASH_LBL_NAME"}}</th>
+                                            <th class="sortable" style="width:30%">{{i18n "DASH_LBL_DIMENSION"}}</th>
+                                            <th class="sortable" style="width:30%">{{i18n "DASH_LBL_THRESHOLD"}}</th>
+                                            <th class="sortable" style="width:10%">{{i18n "DASH_LBL_STATE"}}</th>
+                                            <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -821,7 +821,7 @@
                                                     {{else}}
                                                     <!-- Blank Slate -->
                                                     <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                        <p>There is no CloudWatch Alarm in this region.</p>
+                                                        <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                     </div>
                                                     {{/each}}
 
@@ -837,10 +837,10 @@
                                     <table class="table-head">
                                         <thead>
                                             <tr>
-                                                <th class="sortable" style="width:30%">Topic Name</th>
-                                                <th class="sortable" style="width:40%">Endpoint and Protocol</th>
-                                                <th class="sortable" style="width:20%">Confirmation</th>
-                                                <th style="width:10%">Detail</th>
+                                                <th class="sortable" style="width:30%">{{i18n "DASH_LBL_TOPIC_NAME"}}</th>
+                                                <th class="sortable" style="width:40%">{{i18n "DASH_LBL_ENDPOINT_AND_PROTOCOL"}}</th>
+                                                <th class="sortable" style="width:20%">{{i18n "DASH_LBL_CONFIRMATION"}}</th>
+                                                <th style="width:10%">{{i18n "DASH_LBL_DETAIL"}}</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -867,7 +867,7 @@
                                                         {{else}}
                                                         <!-- Blank Slate -->
                                                         <div class="dashboard-widget-body dashboard-widget-body-table table-tall blank-widget">
-                                                            <p>There is no SNS Subscription in this region.</p>
+                                                            <p>{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</p>
                                                         </div>
 
                                                         {{/each}}
@@ -881,7 +881,7 @@
 <!--{{ .recent }}-->
 <div id="global-region-status-tab-wrap" class="clearfix">
     <a href="javascript:void(0)" id="global-region-status-tab-app" class="global-region-status-tab-item">
-        <h5>App</h5>
+        <h5>{{i18n "DASH_LBL_APP"}}</h5>
         <div id="global-region-status-app" class="global-region-status-count-wrap">
             <i class="global-region-status-icon global-region-status-icon-app"></i>
             <span id="global-region-status-app-count" class="global-region-status-count">{{result_list.total_app}}</span>
@@ -889,7 +889,7 @@
     </a>
 
     <a href="javascript:void(0)" id="global-region-status-tab-stack" class="global-region-status-tab-item on">
-        <h5>Stack</h5>
+        <h5>{{i18n "DASH_LBL_STACK"}}</h5>
         <div id="global-region-status-stack" class="global-region-status-count-wrap">
             <i class="global-region-status-icon global-region-status-icon-stack"></i>
             <span id="global-region-status-statck-count" class="global-region-status-count">{{result_list.total_stack}}</span>
@@ -904,7 +904,7 @@
             <div class="global-region-status-body">
                 <div class="global-region-status-list">
                     <div class="global-region-status-header">
-                        <h4>Recently Launched App</h4>
+                        <h4>{{i18n "DASH_LBL_RECENT_LAUNCHED_STACK"}}</h4>
                     </div>
                     <ul>
                         {{#each recent_launched_apps }}
@@ -935,7 +935,7 @@
             <div class="global-region-status-body">
                 <div class="global-region-status-list">
                     <div class="global-region-status-header">
-                        <h4>Recently Edited Stack</h4>
+                        <h4>{{i18n "DASH_LBL_RECENT_EDITED_STACK"}}</h4>
                     </div>
                     <ul>
                         {{#each recent_edited_stacks }}

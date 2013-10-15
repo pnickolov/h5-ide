@@ -2,21 +2,21 @@
 
 
 	<dl class="dl-horizontal dl-region-type property-control-group">
-		<dt><label>Region</label></dt>
+		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
 		<dd>{{property_detail.region}}</dd>
-		<dt><label>Type</label></dt>
+		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
 		<dd>{{property_detail.type}}</dd>
 	</dl>
 
-	<div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-	<div class="option-group sg-group">loading...</div>
+	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group sg-group"></div>
 
 	{{#if property_detail.is_vpc}}
-	<div class="option-group-head">Network ACL<span class="property-head-num-wrap">({{network_acl.length}})</span></div>
+	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{network_acl.length}})</span></div>
 	<div class="option-group stack-property-acl-list"></div>
 	{{/if}}
 
-	<div class="option-group-head">SNS Topic Subscription<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
+	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
 	<div class="option-group">
 		{{#if subscription}}
 		<div class="property-group-head">SNS Topic</div>
@@ -45,22 +45,22 @@
     </ul>
 		{{else}}
 		<div class="property-control-group">
-			<p class="property-info tac">This app has no SNS Topic</p>
+			<p class="property-info tac">{{ i18n "PROP_APP_SNS_NONE" }}</p>
 		</div>
 		{{/if}}
 	</div>
 
 	<div class="option-group-head">
-		Cost Estimation
-		<span class="cost-counter right">{{#if total_fee}} ${{total_fee}}/month {{/if}}</span>
+		{{ i18n "PROP_STACK_TIT_COST_ESTIMATION" }}
+		<span class="cost-counter right">{{#if total_fee}} ${{total_fee}}/{{ i18n "PROP_STACK_LBL_COST_CYCLE" }} {{/if}}</span>
 	</div>
 	<div class="option-group">
 		<table class="table cost-estimation-table">
 			<thead>
 				<tr>
-					<th style="">Resource</th>
-					<th style="">Size/Type</th>
-					<th style="">Fee($)</th>
+					<th style="">{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
+					<th style="">{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
+					<th style="">{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
 				</tr>
 			</thead>
 

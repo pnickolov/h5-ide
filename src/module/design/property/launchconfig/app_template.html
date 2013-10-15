@@ -1,27 +1,27 @@
 <article class="property-app">
-  <div class="option-group-head expand">Launch Configuration</div>
+  <div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
   <div class="option-group">
 
     <dl class="dl-vertical">
-      <dt>Create Time</dt>
+      <dt>{{i18n "PROP_LC_CREATE_TIME"}}</dt>
       <dd>{{timeStr lc.CreatedTime}}</dd>
     </dl>
 
     <dl class="dl-vertical">
-      <dt>AMI</dt>
+      <dt>{{i18n "PROP_INSTANCE_AMI"}}</dt>
       <dd>{{lc.ImageId}}<dd>
-      <dt>Instance Type</dt>
+      <dt>{{i18n "PROP_INSTANCE_TYPE"}}</dt>
       <dd>{{lc.InstanceType}}</dd>
-      <dt>Key Pair</dt>
+      <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
       <dd><a href="#" class="icon-download" id="property-app-keypair">{{lc.KeyName}}</a></dd>
     </dl>
 
     <dl class="dl-vertical">
-      <dt>EBS Optimized</dt>
+      <dt>{{i18n "PROP_INSTANCE_EBS_OPTIMIZED"}}</dt>
       <dd>{{lc.EbsOptimized}}<dd>
     </dl>
   </div>
 
-  <div class="option-group-head expand">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 </article>

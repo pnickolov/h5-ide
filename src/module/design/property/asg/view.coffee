@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC, zeroclipboard ) ->
+define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC, zeroclipboard, lang ) ->
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -150,7 +150,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
                     data.push { name : policy, checked : true }
                     checked[ policy ] = true
 
-            for p in ["OldestInstance", "NewestInstance", "OldestLaunchConfiguration", "ClosestToNextInstanceHour"]
+            for p in [lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST, lang.ide.PROP_ASG_TERMINATION_POLICY_NEWEST, lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.ide.PROP_ASG_TERMINATION_POLICY_CLOSEST]
                 if not checked[ p ]
                     data.push { name : p, checked : false }
 
@@ -242,7 +242,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
             data = $.extend true, {}, this.model.attributes.policies[ uid ]
 
             data.uid            = uid
-            data.title          = "Edit"
+            data.title          = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
             data.detail_monitor = this.model.attributes.detail_monitor
 
             this.showScalingPolicy( data )
@@ -281,7 +281,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'backbone', 'jquery', 'handlebars', 
         showScalingPolicy : ( data ) ->
             if !data
                 data =
-                    title   : "Add"
+                    title   : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
                     second  : 300
                     periods : 2
                     step    : 1

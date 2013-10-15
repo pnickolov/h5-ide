@@ -1,18 +1,18 @@
 <div id="reset-form-wrap" class="box-wrapper">
 	<div class="box-header">
-		<h2>Forgot Password</h2>
+		<h2>{{ i18n "pre-reset" }}</h2>
 		<div class="title-link">
-			<a href="register.html">Register</a> / <a href="login.html">Log in</a>.
+			<a href="register.html">{{ i18n "reset-register" }}</a> / <a href="login.html">{{ i18n "reset-login" }}</a>.
 		</div>
 	</div>
-	<p class="account-instruction">Provide the email address or username you registered with MadeiraCloud. An email with link to reset password will be sent to you soon.</p>
+	<p class="account-instruction">{{ i18n "email-label" }}</p>
 
 	<form id="reset-form" method="post" action="" class="box-body">
 		<div id="email-verification-status" class="verification-status"></div>
-		<label for="reset-pw-email" class="account-label">Username or Email Address</label>
+		<label for="reset-pw-email" class="account-label">{{ i18n "account-label" }}</label>
 		<input class="account-input" autocomplete="off" name="name" class="reset-input" type="text" id="reset-pw-email" />
 		<div class="account-btn-wrap">
-			<input class="btn btn-primary btn-large account-btn" id="reset-btn" type="submit" value="Send Reset Password Email" disabled>
+			<input class="btn btn-primary btn-large account-btn" id="reset-btn" type="submit" value="{{ i18n "reset-btn" }}" disabled>
 		</div>
 	</form>
 </div>

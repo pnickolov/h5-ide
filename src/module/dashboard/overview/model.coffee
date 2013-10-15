@@ -84,144 +84,144 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeVolumes":
                 "title": "volumeId",
                 "sub_info":[
-                    { "key": [ "volumeId" ], "show_key": "Volume ID"},
-                    { "key": [ "attachmentSet", "item",0, "device"  ], "show_key": "Device Name"},
-                    { "key": [ "snapshotId" ], "show_key": "Snapshot ID"},
-                    { "key": [ "size" ], "show_key": "Volume Size(GiB)"}
-                    { "key": [ "createTime" ], "show_key": "Create Time"},
-                    { "key": [ "attachmentSet" ], "show_key": "AttachmentSet"},
-                    { "key": [ "status" ], "show_key": "status"},
-                    { "key": [ "attachmentSet", "item", "status" ], "show_key": "AttachmentSet"},
-                    { "key": [ "availabilityZone" ], "show_key": "Availability Zone"},
-                    { "key": [ "volumeType" ], "show_key": "Volume Type"},
-                    { "key": [ "Iops" ], "show_key": "Iops"}
+                    { "key": [ "volumeId" ], "show_key": lang.ide.PROP_VOLUME_ID},
+                    { "key": [ "attachmentSet", "item",0, "device"  ], "show_key": lang.ide.DASH_LBL_DEVICE_NAME},
+                    { "key": [ "snapshotId" ], "show_key": lang.ide.PROP_VOLUME_SNAPSHOT_ID},
+                    { "key": [ "size" ], "show_key": "#{lang.ide.PROP_VOLUME_SIZE}(GiB)"}
+                    { "key": [ "createTime" ], "show_key": lang.ide.PROP_VOLUME_CREATE_TIME},
+                    { "key": [ "attachmentSet" ], "show_key": lang.ide.PROP_VOLUME_ATTACHMENT_SET},
+                    { "key": [ "status" ], "show_key": lang.ide.PROP_VOLUME_STATE},
+                    { "key": [ "attachmentSet", "item", "status" ], "show_key": lang.ide.PROP_VOLUME_ATTACHMENT_SET},
+                    { "key": [ "availabilityZone" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE},
+                    { "key": [ "volumeType" ], "show_key": lang.ide.PROP_VOLUME_TYPE},
+                    { "key": [ "Iops" ], "show_key": lang.ide.PROP_VOLUME_TYPE_IOPS}
                 ]
             "DescribeInstances":
                 "title": "instanceId",
                 "sub_info": [
-                    { "key": [ "instanceState", "name" ], "show_key": "Status"},
-                    { "key": [ "keyName" ], "show_key": "Key Pair Name"},
-                    { "key": [ "monitoring", "state" ], "show_key": "Monitoring"},
-                    { "key": [ "ipAddress" ], "show_key": "Primary Public IP"},
-                    { "key": [ "dnsName" ], "show_key": "Public DNS"},
-                    { "key": [ "privateIpAddress" ], "show_key": "Primary Private IP"},
-                    { "key": [ "privateDnsName" ], "show_key": "Private DNS"},
-                    { "key": [ "launchTime" ], "show_key": "Launch Time"},
-                    { "key": [ "placement", "availabilityZone" ], "show_key": "Zone"},
-                    { "key": [ "amiLaunchIndex" ], "show_key": "AMI Launch Index"},
-                    { "key": [ "instanceType" ], "show_key": "Instance Type"},
-                    { "key": [ "ebsOptimized" ], "show_key": "EBS Optimized"},
-                    { "key": [ "rootDeviceType" ], "show_key": "Root Device Type"},
-                    { "key": [ "placement", "tenancy" ], "show_key": "Tenancy"},
-                    { "key": [ "blockDeviceMapping", "item"], "show_key": "Block Devices"}
-                    { "key": ['networkInterfaceSet', 'item'], "show_key": "NetworkInterface"}
+                    { "key": [ "instanceState", "name" ], "show_key": lang.ide.PROP_INSTANCE_STATUS},
+                    { "key": [ "keyName" ], "show_key": lang.ide.PROP_INSTANCE_KEY_PAIR},
+                    { "key": [ "monitoring", "state" ], "show_key": lang.ide.PROP_INSTANCE_KEY_MONITORING},
+                    { "key": [ "ipAddress" ], "show_key": lang.ide.PROP_INSTANCE_PRIMARY_PUBLIC_IP},
+                    { "key": [ "dnsName" ], "show_key": lang.ide.PROP_INSTANCE_PUBLIC_DNS},
+                    { "key": [ "privateIpAddress" ], "show_key": lang.ide.PROP_INSTANCE_PRIMARY_PRIVATE_IP},
+                    { "key": [ "privateDnsName" ], "show_key": lang.ide.PROP_INSTANCE_PRIVATE_DNS},
+                    { "key": [ "launchTime" ], "show_key": lang.ide.PROP_INSTANCE_LAUNCH_TIME},
+                    { "key": [ "placement", "availabilityZone" ], "show_key": lang.ide.PROP_INSTANCE_KEY_ZONE},
+                    { "key": [ "amiLaunchIndex" ], "show_key": lang.ide.PROP_INSTANCE_AMI_LAUNCH_INDEX},
+                    { "key": [ "instanceType" ], "show_key": lang.ide.PROP_INSTANCE_TYPE},
+                    { "key": [ "ebsOptimized" ], "show_key": lang.ide.PROP_INSTANCE_EBS_OPTIMIZED},
+                    { "key": [ "rootDeviceType" ], "show_key": lang.ide.PROP_INSTANCE_ROOT_DEVICE_TYPE},
+                    { "key": [ "placement", "tenancy" ], "show_key": lang.ide.PROP_INSTANCE_TENANCY},
+                    { "key": [ "blockDeviceMapping", "item"], "show_key": lang.ide.PROP_INSTANCE_BLOCK_DEVICE}
+                    { "key": ['networkInterfaceSet', 'item'], "show_key": lang.ide.PROP_INSTANCE_AMI_NETWORK_INTERFACE}
                 ]
             "DescribeVpnConnections":
                 "title": "vpnConnectionId",
                 "sub_info": [
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "vpnGatewayId" ], "show_key": "Virtual Private Gateway"},
-                    { "key": [ "customerGatewayId" ], "show_key": "Customer Gateway"},
-                    { "key": [ "type" ], "show_key": "Type"},
-                    { "key": [ "routes", "item", 0], "show_key": "Routing"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "vpnGatewayId" ], "show_key": lang.ide.DASH_LBL_VIRTUAL_PRIVATE_GATEWAY},
+                    { "key": [ "customerGatewayId" ], "show_key": lang.ide.DASH_LBL_CUSTOMER_GATEWAY},
+                    { "key": [ "type" ], "show_key": lang.ide.PROP_CGW_APP_VPN_LBL_TYPE},
+                    { "key": [ "routes", "item", 0], "show_key": lang.ide.PROP_CGW_LBL_ROUTING}
                 ],
                 "btns": [
-                    { "type": "download_configuration", "name": "Download Configuration" }
+                    { "type": "download_configuration", "name": lang.ide.PROP_CGW_APP_TIT_DOWNLOAD_CONF }
                     ],
                 "detail_table": [
-                    { "key": [ "vgwTelemetry", "item" ], "show_key": "VPN Tunnel", "count_name": "tunnel"},
-                    { "key": [ "outsideIpAddress" ], "show_key": "IP Address"},
-                    { "key": [ "status" ], "show_key": "Status"},
-                    { "key": [ "lastStatusChange" ], "show_key": "Last Changed"},
-                    { "key": [ "statusMessage" ], "show_key": "Detail"}
+                    { "key": [ "vgwTelemetry", "item" ], "show_key": lang.ide.PROP_CGW_APP_VPN_LBL_TUNNEL, "count_name": "tunnel"},
+                    { "key": [ "outsideIpAddress" ], "show_key": lang.ide.PROP_CGW_LBL_IPADDR},
+                    { "key": [ "status" ], "show_key": lang.ide.DASH_LBL_STATUS},
+                    { "key": [ "lastStatusChange" ], "show_key": lang.ide.IDE_LBL_LAST_STATUS_CHANGE},
+                    { "key": [ "statusMessage" ], "show_key": lang.ide.DASH_LBL_DETAIL}
                 ]
             "DescribeVpcs":
                 "title": "vpcId",
                 "sub_info": [
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "cidrBlock" ], "show_key": "CIDR"},
-                    { "key": [ "instanceTenancy" ], "show_key": "Tenancy"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "cidrBlock" ], "show_key": lang.ide.DASH_LBL_CIDR},
+                    { "key": [ "instanceTenancy" ], "show_key": lang.ide.PROP_VPC_DETAIL_LBL_TENANCY}
                 ]
             "DescribeLoadBalancers":
                 "title": "LoadBalancerName",
                 "sub_info":[
-                    { "key": [ "state" ], "show_key": "State"},
-                    { "key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"},
-                    { "key": [ "CreatedTime" ], "show_key": "CreatedTime"}
+                    { "key": [ "state" ], "show_key": lang.ide.DASH_LBL_STATE},
+                    { "key": [ "AvailabilityZones", "member" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE},
+                    { "key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
                     { "key": [ "DNSName" ], "show_key": "DNSName"}
-                    { "key": [ "HealthCheck" ], "show_key": "HealthCheck"}
-                    { "key": [ "Instances", 'member' ], "show_key": "Instances"}
-                    { "key": [ "ListenerDescriptions", "member" ], "show_key": "ListenerDescriptions"}
-                    { "key": [ "SecurityGroups", "member"], "show_key": "SecurityGroups"}
-                    { "key": [ "Subnets", "member" ], "show_key": "Subnets"}
+                    { "key": [ "HealthCheck" ], "show_key": lang.ide.PROP_ELB_HEALTH_CHECK}
+                    { "key": [ "Instances", 'member' ], "show_key": lang.ide.DASH_LBL_DNS_NAME}
+                    { "key": [ "ListenerDescriptions", "member" ], "show_key": lang.ide.PROP_ELB_LBL_LISTENER_DESCRIPTIONS}
+                    { "key": [ "SecurityGroups", "member"], "show_key": lang.ide.PROP_ELB_SG_DETAIL}
+                    { "key": [ "Subnets", "member" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
             "DescribeAddresses":
                 "title": "publicIp",
                 "sub_info":[
-                    { "key": [ "domain" ], "show_key": "Domain"},
-                    { "key": [ "instanceId" ], "show_key": "InstanceId"},
-                    { "key": [ "publicIp" ], "show_key": "PublicIp"}
-                    { "key": [ "associationId" ], "show_key": "AssociationId"}
-                    { "key": [ "allocationId" ], "show_key": "AllocationId"}
-                    { "key": [ "networkInterfaceId"], "show_key": "NetworkInterfaceId"}
-                    { "key": [ "privateIpAddress"], "show_key": "PrivateIpAddress"}
-                    { "key": [ "SecurityGroups"], "show_key": "SecurityGroups"}
-                    { "key": [ "Subnets" ], "show_key": "Subnets"}
+                    { "key": [ "domain" ], "show_key": lang.ide.DASH_LBL_DOMAIN},
+                    { "key": [ "instanceId" ], "show_key": lang.ide.DASH_LBL_INSTANCE_ID},
+                    { "key": [ "publicIp" ], "show_key": lang.ide.PROP_INSTANCE_PUBLIC_IP}
+                    { "key": [ "associationId" ], "show_key": lang.ide.DASH_LBL_ASSOCIATION_ID}
+                    { "key": [ "allocationId" ], "show_key": lang.ide.DASH_LBL_ALLOCATION_ID}
+                    { "key": [ "networkInterfaceId"], "show_key": lang.ide.DASH_LBL_NETWORK_INTERFACE_ID}
+                    { "key": [ "privateIpAddress"], "show_key": lang.ide.DASH_LBL_PRIVATE_IP_ADDRESS}
+                    { "key": [ "SecurityGroups"], "show_key": lang.ide.PROP_INSTANCE_SG_DETAIL}
+                    { "key": [ "Subnets" ], "show_key": lang.ide.DASH_LBL_SUBNETS}
                 ]
             "DescribeAutoScalingGroups":
                 "title" : "AutoScalingGroupName"
                 "sub_info":[
-                    {"key": [ "AutoScalingGroupName" ], "show_key": "AutoScalingGroupName"}
-                    {"key": [ "AutoScalingGroupARN" ], "show_key": "AutoScalingGroupARN"}
-                    {"key": [ "AvailabilityZones", "member" ], "show_key": "AvailabilityZones"}
-                    {"key": [ "CreatedTime" ], "show_key": "CreatedTime"}
-                    {"key": [ "DefaultCooldown" ], "show_key": "DefaultCooldown"}
-                    {"key": [ "DesiredCapacity" ], "show_key": "DesiredCapacity"}
-                    {"key": [ "EnabledMetrics" ], "show_key": "EnabledMetrics"}
-                    {"key": [ "HealthCheckGracePeriod" ], "show_key": "HealthCheckGracePeriod"}
-                    {"key": [ "HealthCheckType" ], "show_key": "HealthCheckType"}
-                    {"key": [ "Instances" ], "show_key": "Instances"}
-                    {"key": [ "LaunchConfigurationName" ], "show_key": "LaunchConfigurationName"}
-                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": "LoadBalancerNames"}
-                    {"key": [ "MaxSize" ], "show_key": "MaxSize"}
-                    {"key": [ "MinSize" ], "show_key": "MinSize"}
-                    {"key": [ "Status" ], "show_key": "Status"}
-                    {"key": [ "TerminationPolicies", 'member' ], "show_key": "TerminationPolicies"}
-                    {"key": [ "VPCZoneIdentifier" ], "show_key": "VPCZoneIdentifier"}
+                    {"key": [ "AutoScalingGroupName" ], "show_key": lang.ide.DASH_LBL_AUTOSCALING_GROUP_NAME}
+                    {"key": [ "AutoScalingGroupARN" ], "show_key": lang.ide.DASH_LBL_AUTOSCALING_GROUP_ARN}
+                    {"key": [ "AvailabilityZones", "member" ], "show_key": lang.ide.DASH_LBL_AVAILABILITY_ZONE}
+                    {"key": [ "CreatedTime" ], "show_key": lang.ide.DASH_LBL_CREATE_TIME}
+                    {"key": [ "DefaultCooldown" ], "show_key": lang.ide.PROP_ASG_COOL_DOWN}
+                    {"key": [ "DesiredCapacity" ], "show_key": lang.ide.PROP_ASG_DESIRE_CAPACITY}
+                    {"key": [ "EnabledMetrics" ], "show_key": lang.ide.DASH_LBL_ENABLED_METRICS}
+                    {"key": [ "HealthCheckGracePeriod" ], "show_key": lang.ide.PROP_ASG_HEALTH_CHECK_CRACE_PERIOD}
+                    {"key": [ "HealthCheckType" ], "show_key": lang.ide.PROP_ASG_HEALTH_CHECK_TYPE}
+                    {"key": [ "Instances" ], "show_key": lang.ide.DASH_LBL_INSTANCE}
+                    {"key": [ "LaunchConfigurationName" ], "show_key": lang.ide.DASH_LBL_LAUNCH_CONFIGURATION_NAME}
+                    {"key": [ "LoadBalancerNames", 'member' ], "show_key": lang.ide.DASH_LBL_LOADBALANCER_NAMES}
+                    {"key": [ "MaxSize" ], "show_key": lang.ide.DASH_LBL_MAX_SIZE}
+                    {"key": [ "MinSize" ], "show_key": lang.ide.DASH_LBL_MIN_SIZE}
+                    {"key": [ "Status" ], "show_key": lang.ide.DASH_LBL_STATUS}
+                    {"key": [ "TerminationPolicies", 'member' ], "show_key": lang.ide.DASH_LBL_TERMINATION_POLICIES}
+                    {"key": [ "VPCZoneIdentifier" ], "show_key": lang.ide.DASH_LBL_VPC_ZONE_IDENTIFIER}
 
                 ]
 
             "DescribeAlarms":
                 "title" : "AlarmName"
                 "sub_info":[
-                    {"key": [ "ActionsEnabled" ], "show_key": "ActionsEnabled"}
-                    {"key": [ "AlarmActions", "member" ], "show_key": "AlarmActions"}
-                    {"key": [ "AlarmArn" ], "show_key": "AlarmArn"}
-                    {"key": [ "AlarmDescription" ], "show_key": "AlarmDescription"}
-                    {"key": [ "AlarmName" ], "show_key": "AlarmName"}
-                    {"key": [ "ComparisonOperator" ], "show_key": "ComparisonOperator"}
-                    {"key": [ "Dimensions" ], "show_key": "Dimensions"}
-                    {"key": [ "EvaluationPeriods" ], "show_key": "EvaluationPeriods"}
-                    {"key": [ "InsufficientDataActions" ], "show_key": "InsufficientDataActions"}
-                    {"key": [ "MetricName" ], "show_key": "MetricName"}
-                    {"key": [ "Namespace" ], "show_key": "Namespace"}
-                    {"key": [ "OKActions" ], "show_key": "OKActions"}
-                    {"key": [ "Period" ], "show_key": "Period"}
-                    {"key": [ "Statistic" ], "show_key": "Statistic"}
-                    {"key": [ "StateValue" ], "show_key": "StateValue"}
-                    {"key": [ "Threshold" ], "show_key": "Threshold"}
-                    {"key": [ "Unit" ], "show_key": "Unit"}
+                    {"key": [ "ActionsEnabled" ], "show_key": lang.ide.DASH_LBL_ACTIONS_ENABLED}
+                    {"key": [ "AlarmActions", "member" ], "show_key": lang.ide.DASH_LBL_ALARM_ACTIONS}
+                    {"key": [ "AlarmArn" ], "show_key": lang.ide.DASH_LBL_ALARM_ARN}
+                    {"key": [ "AlarmDescription" ], "show_key": lang.ide.DASH_LBL_ALARM_DESCRIPTION}
+                    {"key": [ "AlarmName" ], "show_key": lang.ide.DASH_LBL_ALARM_NAME}
+                    {"key": [ "ComparisonOperator" ], "show_key": lang.ide.DASH_LBL_COMPARISON_OPERATOR}
+                    {"key": [ "Dimensions" ], "show_key": lang.ide.DASH_LBL_DIMENSIONS}
+                    {"key": [ "EvaluationPeriods" ], "show_key": lang.ide.DASH_LBL_EVALUATION_PERIODS}
+                    {"key": [ "InsufficientDataActions" ], "show_key": lang.ide.DASH_LBL_INSUFFICIENT_DATA_ACTIONS}
+                    {"key": [ "MetricName" ], "show_key": lang.ide.DASH_LBL_METRIC_NAME}
+                    {"key": [ "Namespace" ], "show_key": lang.ide.DASH_LBL_NAMESPACE}
+                    {"key": [ "OKActions" ], "show_key": lang.ide.DASH_LBL_OK_ACTIONS}
+                    {"key": [ "Period" ], "show_key": lang.ide.DASH_LBL_PERIOD}
+                    {"key": [ "Statistic" ], "show_key": lang.ide.DASH_LBL_STATISTIC}
+                    {"key": [ "StateValue" ], "show_key": lang.ide.DASH_LBL_STATE_VALUE}
+                    {"key": [ "Threshold" ], "show_key": lang.ide.DASH_LBL_THRESHOLD}
+                    {"key": [ "Unit" ], "show_key": lang.ide.DASH_LBL_UNIT}
                 ]
 
             "ListSubscriptions":
 
                 "title" :   "Endpoint"
                 "sub_info" : [
-                    {"key": [ "Endpoint" ], "show_key": "Endpoint"}
-                    {"key": [ "Owner" ], "show_key": "Owner"}
-                    {"key": [ "Protocol" ], "show_key": "Protocol"}
-                    {"key": [ "SubscriptionArn" ], "show_key": "SubscriptionArn"}
-                    {"key": [ "TopicArn" ], "show_key": "TopicArn"}
+                    {"key": [ "Endpoint" ], "show_key": lang.ide.DASH_LBL_ENDPOINT}
+                    {"key": [ "Owner" ], "show_key": lang.ide.DASH_LBL_OWNER}
+                    {"key": [ "Protocol" ], "show_key": lang.ide.DASH_LBL_PROTOCOL}
+                    {"key": [ "SubscriptionArn" ], "show_key": lang.ide.DASH_LBL_SUBSCRIPTION_ARN}
+                    {"key": [ "TopicArn" ], "show_key": lang.ide.DASH_LBL_TOPIC_ARN}
 
                 ]
 
@@ -757,7 +757,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
         #parse bubble value or detail value for unmanagedSource
         parseSourceValue : ( type, value, keys, name )->
-
             me = this
 
             keys_to_parse  = null

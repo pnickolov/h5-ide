@@ -2,46 +2,46 @@
   <div class="option-group-head expand">Network Interface Details</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>Device Name</dt>
+      <dt>{{i18n "PROP_ENI_DEVICE_NAME"}}</dt>
       <dd>{{name}}</dd>
-      <dt>Network Interface ID</dt>
+      <dt>{{i18n "PROP_ENI_ID"}}</dt>
       <dd>{{networkInterfaceId}}</dd>
-      <dt>State</dt>
+      <dt>{{i18n "PROP_ENI_STATE"}}</dt>
       <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
       {{#if description}}
-      <dt>Description</dt>
+      <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
       <dd>{{description}}</dd>
       {{/if}}
-      <dt>Source/Destination Check</dt>
+      <dt>{{i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
       <dd>{{sourceDestCheck}}</dd>
     </dl>
     <div class="hidden-details">
-      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ Show details</span><span class="details-on">- Hide details</span></a>
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP_ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP_ENI_HIDE_DETAIL" }}</span></a>
       <dl class="dl-vertical">
-        <dt>VPC ID</dt>
+        <dt>{{ i18n "PROP_ENI_VPC_ID" }}</dt>
         <dd>{{vpcId}}</dd>
-        <dt>Subnet ID</dt>
+        <dt>{{ i18n "PROP_ENI_SUBNET_ID" }}</dt>
         <dd>{{subnetId}}</dd>
         {{#if attachment}}
-        <dt>Attachment ID</dt>
+        <dt>{{ i18n "PROP_ENI_ATTACHMENT_ID" }}</dt>
         <dd>{{attachment.attachmentId}}</dd>
-        <dt>Attachment Owner</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_OWNER" }}</dt>
         <dd>{{attachment.instanceOwnerId}}</dd>
-        <dt>Attachment Status</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_STATE" }}</dt>
         <dd>{{attachment.status}}</dd>
         {{/if}}
-        <dt>Mac Address</dt>
+        <dt>{{ i18n "PROP_ENI_MAC_ADDRESS" }}</dt>
         <dd>{{macAddress}}</dd>
         {{#if association.publicDnsName}}
-        <dt>Public DNS</dt>
+        <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
         <dd>{{association.publicDnsName}}</dd>
         {{/if}}
         {{#if privateDnsName}}
-        <dt>Private DNS</dt>
+        <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
         <dd>{{privateDnsName}}</dd>
         {{/if}}
         {{#if ownerId}}
-        <dt>IP Owner</dt>
+        <dt>{{ i18n "PROP_ENI_IP_OWNER" }}</dt>
         <dd>{{ownerId}}</dd>
         {{/if}}
       </dl>
@@ -49,8 +49,8 @@
 
     <table class="table">
       <tr>
-        <th>IP Address</th>
-        <th>Public IP</th>
+        <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
+        <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
       </tr>
       {{#each privateIpAddressesSet.item}}
       <tr>
@@ -62,6 +62,6 @@
   </div>
 
 
-  <div class="option-group-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head">{{i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>

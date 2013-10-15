@@ -64,7 +64,8 @@ define [ 'backbone', 'MC' ], () ->
 
 
           if vpn.vgwTelemetry and vpn.vgwTelemetry.item
-            vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item ) ->
+            vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
+              item.index = idx + 1
               item.stateColor = twoStateColorMap[item.status]
               item
 

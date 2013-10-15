@@ -255,6 +255,21 @@ body {
 	body {
 		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 	}
+
+	.locale-en {
+		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	}
+
+	.locale-zh {
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
+	}
+
+	.locale-zh button,
+	.locale-zh input,
+	.locale-zh select,
+	.locale-zh textarea {
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
+	}
 }
 
 /* Hide Selection */

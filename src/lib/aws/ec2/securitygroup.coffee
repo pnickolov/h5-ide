@@ -158,7 +158,9 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 		allDispRuleAry = []
 
-		_.each allRuleAry, (ruleObj) ->
+		_.each allRuleAry, (originRuleObj) ->
+
+			ruleObj = _.clone originRuleObj
 
 			ipRanges = ''
 			if ruleObj.ipRanges
@@ -182,6 +184,9 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			dispPort = ruleObj.fromPort + partType + ruleObj.toPort
 			if Number(ruleObj.fromPort) is Number(ruleObj.toPort) and ruleObj.ipProtocol isnt 'icmp'
 				dispPort = ruleObj.toPort
+
+			if !ruleObj.fromPort or !ruleObj.toPort
+				dispPort = '-'
 
 			dispSGObj =
 				fromPort : ruleObj.fromPort

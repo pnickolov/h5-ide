@@ -80,6 +80,21 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
                         entry.protocolName = 'Custom'
 
+                    if entry.protocol is 1 or entry.protocol is '1'
+                        entry.partType = '/'
+                    else
+                        entry.partType = '-'
+
+                    dispPort = '-'
+                    # icmp
+                    if entry.protocol is '1' or entry.protocol is 1
+                        dispPort = entry.icmpTypeCode.type + entry.partType + entry.icmpTypeCode.code
+                    else if entry.portRange
+                        dispPort = entry.portRange.from + entry.partType + entry.portRange.to
+                        if Number(entry.portRange.from) is Number(entry.portRange.to)
+                            dispPort = entry.portRange.to
+                    entry.dispPort = dispPort
+
                     null
 
             if aclObj.associationSet and aclObj.associationSet.item

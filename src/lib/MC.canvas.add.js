@@ -1149,7 +1149,11 @@ MC.canvas.add = function (flag, option, coordinate)
 			if (create_mode)
 			{//write
 
-				ami_info = MC.data.config[MC.canvas.data.get('region')].ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+				ami_info = MC.data.dict_ami[MC.canvas_data.component[option.instance_id].resource.ImageId];
+				if (!ami_info){
+					notification('warning', 'The AMI(' + MC.canvas_data.component[option.instance_id].resource.ImageId + ') is not exist now, try to use another AMI.', false);
+					return null;
+				}
 
 				//set deviceName
 				device_name = null;

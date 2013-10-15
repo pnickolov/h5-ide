@@ -871,6 +871,12 @@ define({
 		'DASH_LBL_THRESHOLD'	 					: 'Threshold',
 		'DASH_LBL_UNIT'	 							: 'Unit',
 
+		'DASH_LBL_ENDPOINT'							: 'Endpoint',
+		'DASH_LBL_OWNER'							: 'Owner',
+		'DASH_LBL_PROTOCOL'							: 'Protocol',
+		'DASH_LBL_SUBSCRIPTION_ARN'					: 'Subscription ARN',
+		'DASH_LBL_TOPIC_ARN'						: 'Topic ARN',
+
 		'DASH_BUB_NAME'	    	    				: 'Name',
 		'DASH_BUB_DESCRIPTION'						: 'Description',
 		'DASH_BUB_ARCHITECTURE'	    	    		: 'Architecture',

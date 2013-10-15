@@ -217,11 +217,11 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 "title" :   "Endpoint"
                 "sub_info" : [
-                    {"key": [ "Endpoint" ], "show_key": "Endpoint"}
-                    {"key": [ "Owner" ], "show_key": "Owner"}
-                    {"key": [ "Protocol" ], "show_key": "Protocol"}
-                    {"key": [ "SubscriptionArn" ], "show_key": "SubscriptionArn"}
-                    {"key": [ "TopicArn" ], "show_key": "TopicArn"}
+                    {"key": [ "Endpoint" ], "show_key": lang.ide.DASH_LBL_ENDPOINT}
+                    {"key": [ "Owner" ], "show_key": lang.ide.DASH_LBL_OWNER}
+                    {"key": [ "Protocol" ], "show_key": lang.ide.DASH_LBL_PROTOCOL}
+                    {"key": [ "SubscriptionArn" ], "show_key": lang.ide.DASH_LBL_SUBSCRIPTION_ARN}
+                    {"key": [ "TopicArn" ], "show_key": lang.ide.DASH_LBL_TOPIC_ARN}
 
                 ]
 

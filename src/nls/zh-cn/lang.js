@@ -905,6 +905,12 @@ define({
         'DASH_LBL_THRESHOLD'                        : '阈值',
         'DASH_LBL_UNIT'                             : '单位',
 
+        'DASH_LBL_ENDPOINT'                         : '终端',
+        'DASH_LBL_OWNER'                            : '拥有者',
+        'DASH_LBL_PROTOCOL'                         : '协议',
+        'DASH_LBL_SUBSCRIPTION_ARN'                 : '订阅 ARN',
+        'DASH_LBL_TOPIC_ARN'                        : '主题 ARN',
+
 		'DASH_BUB_NAME'	    	    				: '名称',
 		'DASH_BUB_DESCRIPTION'						: '描述',
 		'DASH_BUB_ARCHITECTURE'	    	    		: '架构',

@@ -1,10 +1,10 @@
 <article id="instance-property-detail" data-uid="{{component.uid}}">
 
-	<div class="option-group-head expand">Instance Details</div>
+	<div class="option-group-head expand">{{ i18n "PROP_INSTANCE_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-instance-name" >Hostname</label>
-			<span class="required-input right">Required</span>
+			<label class="left" for="property-instance-name" >{{ i18n "PROP_INSTANCE_HOSTNAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
 
 			<div class="property-instance-name-wrap {{#ifCond number 1}}single{{/ifCond}}">
 				<div class="name-count-wrap">
@@ -17,19 +17,19 @@
 
 		</section>
 		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-instance-count" >Number of Instance</label>
-			<span class="required-input right">Required</span>
+			<label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
+			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
 			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
 		</section>
 		<section class="property-control-group">
-			<label>AMI</label>
+			<label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
 			<div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
 				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
 				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label class="left">Instance Type</label>
+			<label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
 				<ul class="dropdown">
@@ -51,20 +51,20 @@
 		</section>
 		{{#unless classic_stack}}
 		<section class="property-control-group">
-			<label class="left">Tenancy</label>
+			<label class="left">{{ i18n "PROP_INSTANCE_TENANCY" }}</label>
 			<div class="selectbox" id="tenancy-select">
 				<div class="selection">{{#if tenacy}}Default{{else}}Dedicated{{/if}}</div>
 				<ul class="dropdown" tabindex="-1">
 					{{#unless force_tenacy}}
-					<li class="item {{#if tenacy}}selected{{/if}}" data-id="default">Default</li>
+					<li class="item {{#if tenacy}}selected{{/if}}" data-id="default">{{ i18n "PROP_INSTANCE_TENANCY_DEFAULT" }}</li>
 					{{/unless}}
-					<li class="item {{#unless tenacy}}selected{{/unless}}" data-id="dedicated">Delicated</li>
+					<li class="item {{#unless tenacy}}selected{{/unless}}" data-id="dedicated">{{ i18n "PROP_INSTANCE_TENANCY_DELICATED" }}</li>
 				</ul>
 			</div>
 		</section>
 		{{/unless}}
 		<section class="property-control-group">
-			<label class="left">Key Pair</label>
+			<label class="left">{{ i18n "PROP_INSTANCE_KEY_PAIR" }}</label>
 			<div class="selectbox" id="keypair-select">
 				<div class="selection"></div>
 				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
@@ -81,7 +81,7 @@
 				</div>
 
 				<div class="editor">
-					<a href="#" class="editbtn">Create New Key Pair</a>
+					<a href="#" class="editbtn">{{ i18n "PROP_INSTANCE_NEW_KP" }}</a>
 					<div class="edit">
 						<button class="btn btn-blue">OK</button>
 						<span class="fitfloat">
@@ -93,7 +93,7 @@
 		</section>
 	</div>
 
-	<div class="option-group-head">Advanced Details</div>
+	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<div class="checkbox">
@@ -104,21 +104,21 @@
 				{{/if}}
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
-			<label for="property-instance-enable-cloudwatch" >Enable CloudWatch Detailed Monitoring</label>
+			<label for="property-instance-enable-cloudwatch" >{{ i18n "PROP_INSTANCE_CW_ENABLED" }}</label>
 
-			<p class="hide property-info" id="property-cloudwatch-warn">Data is available in 1-minute periods at an additional cost. For information about pricing, go to the <a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+			<p class="hide property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
-			<label class="left" for="property-instance-user-data">User Data</label>
+			<label class="left" for="property-instance-user-data">{{ i18n "PROP_INSTANCE_USER_DATA" }}</label>
 			<textarea id="property-instance-user-data">{{component.resource.UserData.Data}}</textarea>
 		</section>
 	</div>
 
 	{{# if component.resource.VpcId}}
-	<div class="option-group-head">Network Interface Details</div>
+	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
-			<label class="left" for="property-instance-ni-description">Description</label>
+			<label class="left" for="property-instance-ni-description">{{ i18n "PROP_INSTANCE_ENI_DESC" }}</label>
 			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
 		</section>
 		<section class="property-control-group">
@@ -130,7 +130,7 @@
 				{{/if}}
 				<label for="property-instance-source-check"></label>
 			</div>
-			<label for="property-instance-source-check">Enable Source/Destination Checking</label>
+			<label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">
@@ -141,13 +141,13 @@
 				{{/if}}
 				<label for="property-instance-public-ip"></label>
 			</div>
-			<label for="property-instance-public-ip">Automatically assign Public IP</label>
+			<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
 		</section>
 		<section class="property-control-group">
 			<div class="network-list-wrap">
 				<div class="network-list-header clearfix">
-					IP Address
-					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">Add IP</button>
+					{{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
+					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
 				</div>
 				<ul class="network-list" id="property-network-list" data-bind="true">
 
@@ -157,6 +157,6 @@
 	</div>
 	{{/if}}
 
-	<div class="option-group-head" id="sg-head">Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>

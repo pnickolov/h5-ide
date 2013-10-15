@@ -14,7 +14,7 @@ require.config {
 
 	deps                  : [ 'main' ]
 
-	locale                : 'en-us'
+	locale                : language
 
 	urlArgs               : 'v=' + version
 

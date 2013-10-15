@@ -1,23 +1,73 @@
 define({
 	'login' : {
-		'login'          : 'Log In',
-		'login-register' : 'New to MadeiraCloud? ',
-		'link-register'  : 'Register',
-		'error-msg-1'    : 'Username or email does not match the password.',
-		'error-msg-2'    : 'Hey, you forgot to enter a username or email.',
-		'link-foget'     : 'Forgot your Password?',
-		'login-user'     : 'Username or email',
-		'login-password' : 'Password',
-		'login-btn'      : 'Log In',
-		'login-loading'  : 'Logging In'
+		'login'          			: 'Log In',
+		'login-register' 			: 'New to MadeiraCloud? ',
+		'link-register'  			: 'Register',
+		'error-msg-1'    			: 'Username or email does not match the password.',
+		'error-msg-2'    			: 'Hey, you forgot to enter a username or email.',
+		'link-foget'     			: 'Forgot your Password?',
+		'login-user'     			: 'Username or email',
+		'login-password' 			: 'Password',
+		'login-btn'      			: 'Log In',
+		'login-loading'  			: 'Logging In',
+		'login_waiting'	 			: 'One Minute...',
+		'madeira-offered-in'		: 'Madeira offered in'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
+	'register' : {
+		'register'					: 'Register',
+		'register-login'			: 'Already a user?',
+		'link-login'				: 'Log in',
+		'register-username'			: 'Username',
+		'register-email'			: 'Email',
+		'register-password'			: 'Password',
+		'register-policy'			: 'By clicking the create account button, you agree to our',
+		'link-policy'				: 'Terms of Service',
+		'register-btn'				: 'Create Account',
+		'register-success'			: 'Registered Successfully',
+		'account-instruction'		: 'Thanks for signing up with MadeiraCloud.',
+		'register-get-start'		: 'Get Started',
+
+		'username_available'		: 'This username is available.',
+		'username_not_matched'		: 'Username not matched.',
+		'username_required'			: 'Username is required.',
+		'username_taken'			: 'Username has been taken. Please choose another.',
+		'email_available'			: 'This email address is available.',
+		'email_not_valid'			: 'This is not a valid email address.',
+		'email_used'				: 'This email address has been used.',
+		'password_ok'				: 'This password is OK.',
+		'password_shorter'			: 'Password must contain at least 6 letters.',
+		'password_required'			: 'Password is required.',
+		'reginster_waiting'			: 'One Minute...'
+	},
+	'reset' : {
+		'pre-reset'					: 'Forgot Password',
+		'reset'						: 'Reset Password',
+		'reset-register'			: 'Register',
+		'reset-login'				: 'Log in',
+		'email-label'				: 'Provide the email address or username you registered with MadeiraCloud. An email with link to reset password will be sent to you soon.',
+		'account-label'				: 'Username or Email Address',
+		'reset-btn'					: 'Send Reset Password Email',
+		'send-email-info'			: 'An email with link to reset password has been sent to your registered email address.',
+		'check-email-info'			: 'Check your inbox (or look in your spam folder, you never know).',
+		'expired-info'				: 'Password reset URL is invalid or has expired.',
+		'reset-relogin'				: 'Log in MadeiraCloud',
+		'reset-new-password'		: 'New Password',
+		'reset-done-btn'			: 'Done',
+		'reset-success-info'		: 'You have successfully reset password.',
+
+		'reset_waiting'				: 'One Minute...',
+		'reset_password_shorter'	: 'Password must contain at least 6 characters.',
+		'reset_password_required'	: 'Password is required.',
+		'reset_btn'					: 'Send Reset Password Email',
+		'reset_error_state'			: 'The username or email address is not registered with MadeiraCloud.'
+	},
 	'ide' : {
-		'NAV_TIT_DASHBOARD' : 'Dashboard',
-		'NAV_TIT_APPS'      : 'Apps',
-		'NAV_TIT_STACKS'    : 'Stacks',
-		'NAV_LBL_GLOBAL'    : 'Global',
-		'account-settings'  : 'Account Settings',
+		'NAV_TIT_DASHBOARD' 		: 'Dashboard',
+		'NAV_TIT_APPS'      		: 'Apps',
+		'NAV_TIT_STACKS'    		: 'Stacks',
+		'NAV_LBL_GLOBAL'    		: 'Global',
+		'account-settings'  		: 'Account Settings',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/** RESOURCE NAMING CONVENTIONS
@@ -200,8 +250,252 @@ define({
 		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
 		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
 
+		//linestyle
+		'TOOL_TIP_LINESTYLE'                          : '安全组规则连线类型...',
+		'TOOL_LBL_LINESTYLE_STRAIGHT'                 : '直线',
+		'TOOL_LBL_LINESTYLE_ELBOW'                    : '肘型线',
+		'TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER'        : '二次贝赛尔曲线',
+		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
 		/******property module******/
+
+		'PROP_LBL_REQUIRED'                     : 'Required',
+
+		//##### stack property module
+		'PROP_STACK_LBL_NAME'                       : 'Stack Name',
+		'PROP_STACK_LBL_REGION'                     : 'Region',
+		'PROP_STACK_LBL_TYPE'                       : 'Type',
+		'PROP_STACK_TIT_SG'                         : 'Security Groups',
+		'PROP_STACK_TIT_ACL'                        : 'Network ACL',
+		'PROP_STACK_TIT_SNS'                        : 'SNS Topic Subscription',
+		'PROP_STACK_BTN_ADD_SUB'                    : 'Add Subscription',
+		'PROP_STACK_TIT_COST_ESTIMATION'            : 'Cost Estimation',
+		'PROP_STACK_LBL_COST_CYCLE'                 : 'month',
+		'PROP_STACK_COST_COL_RESOURCE'              : 'Resource',
+		'PROP_STACK_COST_COL_SIZE_TYPE'             : 'Size/Type',
+		'PROP_STACK_COST_COL_FEE'                   : 'Fee($)',
+		'PROP_STACK_LBL_AWS_EC2_PRICING'            : 'Amazon EC2 Pricing',
+		'PROP_STACK_ACL_LBL_RULE'                   : 'rules',
+		'PROP_STACK_ACL_LBL_ASSOC'                  : 'associations',
+		'PROP_STACK_ACL_BTN_DELETE'                 : 'Delete',
+		'PROP_STACK_ACL_TIP_DETAIL'                 : 'Go to Network ACL Details',
+		'PROP_STACK_BTN_CREATE_NEW_ACL'             : 'Create new Network ACL...',
+		//##### stack property module
+
+
+		//##### app property module
+		'PROP_APP_SNS_NONE'                         : 'This app has no SNS Topic',
+		//##### app property module
+
+
+		//##### az property module
+		'PROP_AZ_LBL_SWITCH'                            : 'Quick Switch Availability Zone',
+		//##### az property module
+
+
+		//##### vpc property module
+		'PROP_VPC_TIT_DETAIL'                                            : 'VPC Details',
+		'PROP_VPC_DETAIL_LBL_NAME'                                       : 'Name',
+		'PROP_VPC_DETAIL_LBL_CIDR_BLOCK'                                 : 'CIDR Block',
+		'PROP_VPC_DETAIL_LBL_TENANCY'                                    : 'Tenancy',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT'                            : 'Default',
+		'PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED'                          : 'Dedicated',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION'                      : 'Enable DNS resolution',
+		'PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT'                : 'Enable DNS hostname support',
+		'PROP_VPC_TIT_DHCP_OPTION'                                       : 'DHCP Options',
+		'PROP_VPC_DHCP_LBL_NONE'                                         : 'None',
+		'PROP_VPC_DHCP_LBL_DEFAULT'                                      : 'Default DHCP',
+		'PROP_VPC_DHCP_LBL_SPECIFIED'                                    : 'Specified DHCP Options Set',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME'                        : 'Domain Name',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER'                 : 'Domain Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS'                  : 'AmazonProvidedDNS',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER'                         : 'NTP Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER'                : 'NetBIOS Name Server',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE'                  : 'NetBIOS Node Type',
+		'PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED'    : 'Not specified',
+		'PROP_VPC_APP_VPC_ID'                                            : 'VPC ID',
+		'PROP_VPC_APP_STATE'                                             : 'State',
+		'PROP_VPC_APP_CIDR'                                              : 'CIDR',
+		'PROP_VPC_APP_MAIN_RT'                                           : 'Main Route Table',
+		'PROP_VPC_APP_DEFAULT_ACL'                                       : 'Default Network ACL',
+		'PROP_VPC_DHCP_OPTION_SET_ID'                                    : 'DHCP Options Set ID',
+		//##### vpc property module
+
+
+		//##### subnet property module
+		'PROP_SUBNET_TIT_DETAIL'                                         : 'Subnet Details',
+		'PROP_SUBNET_DETAIL_LBL_NAME'                                    : 'Name',
+		'PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK'                              : 'CIDR Block',
+		'PROP_SUBNET_TIT_ASSOC_ACL'                                      : 'Associated Network ACL',
+		'PROP_SUBNET_BTN_CREATE_NEW_ACL'                                 : 'Create new Network ACL...',
+		'PROP_SUBNET_ACL_LBL_RULE'                                       : 'rules',
+		'PROP_SUBNET_ACL_LBL_ASSOC'                                      : 'associations',
+		'PROP_SUBNET_ACL_BTN_DELETE'                                     : 'Delete',
+		'PROP_SUBNET_ACL_TIP_DETAIL'                                     : 'Go to Network ACL Details',
+		'PROP_SUBNET_APP_ID'                                             : 'Subnet ID',
+		'PROP_SUBNET_APP_STATE'                                          : 'State',
+		'PROP_SUBNET_APP_CIDR'                                           : 'CIDR',
+		'PROP_SUBNET_APP_AVAILABLE_IP'                                   : 'Available IPs',
+		'PROP_SUBNET_APP_VPC_ID'                                         : 'VPC ID',
+		'PROP_SUBNET_APP_RT_ID'                                          : 'Route Table ID',
+		//##### subnet property module
+
+
+		//##### sg property module
+		'PROP_SG_TIT_DETAIL'                                             : 'Security Group Details',
+		'PROP_SG_DETAIL_LBL_NAME'                                        : 'Name',
+		'PROP_SG_DETAIL_LBL_DESCRIPTION'                                 : 'Description',
+		'PROP_SG_TIT_RULE'                                               : 'Rule',
+		'PROP_SG_RULE_SORT_BY'                                           : 'Sort by',
+		'PROP_SG_RULE_SORT_BY_DIRECTION'                                 : 'Direction',
+		'PROP_SG_RULE_SORT_BY_SRC_DEST'                                  : 'Source/Destination',
+		'PROP_SG_RULE_SORT_BY_PROTOCOL'                                  : 'Protocol',
+		'PROP_SG_TIT_MEMBER'                                             : 'Member',
+		'PROP_SG_TIP_CREATE_RULE'                                        : 'Create rule referencing IP Range',
+		'PROP_SG_TIP_REMOVE_RULE'                                        : 'Remove rule',
+		'PROP_SG_TIP_PROTOCOL'                                           : 'Protocol',
+		'PROP_SG_TIP_SRC'                                                : 'Source',
+		'PROP_SG_TIP_DEST'                                               : 'Destination',
+		'PROP_SG_TIP_INBOUND'                                            : 'Inbound',
+		'PROP_SG_TIP_OUTBOUND'                                           : 'Outbound',
+		'PROP_SG_TIP_PORT_CODE'                                          : 'Port or Code',
+		'PROP_SG_APP_SG_ID'                                              : 'Security Group ID',
+		'PROP_SG_APP_VPC_ID'                                             : 'VPC ID',
+		//##### sg property module
+
+
+		//##### sg list property module
+		'PROP_SGLIST_LBL_RULE'                                           : 'rules',
+		'PROP_SGLIST_LBL_MEMBER'                                         : 'members',
+		'PROP_SGLIST_LNK_DELETE'                                         : 'Delete',
+		'PROP_SGLIST_TIP_VIEW_DETAIL'                                    : 'View details',
+		'PROP_SGLIST_BTN_CREATE_NEW_SG'                                  : 'Create new Security Group...',
+		'PROP_SGLIST_TAB_GROUP'                                          : 'Group',
+		'PROP_SGLIST_TAB_RULE'                                           : 'Rule',
+		//##### sg list property module
+
+
+		//##### sg rule property module
+		'PROP_SGRULE_DESCRIPTION'                                        : 'The selected connection reflects following security group rule(s):',
+		'PROP_SGRULE_TIP_INBOUND'                                        : 'Inbound',
+		'PROP_SGRULE_TIP_OUTBOUND'                                       : 'Outbound',
+		'PROP_SGRULE_BTN_EDIT_RULE'                                      : 'Edit Related Rule',
+		//##### sg rule property module
+
+		//##### add sg rule pop - modalSGRule
+		'POP_SGRULE_TITLE_ADD'                                           : 'Add Security Group Rule',
+		'POP_SGRULE_TITLE_EDIT'                                          : 'Edit Security Group Rule',
+		'POP_SGRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_SGRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_SGRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_SGRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_SGRULE_LBL_DEST'                                            : 'Destination',
+		'POP_SGRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_SGRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_SGRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_SGRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_SGRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_SGRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_SGRULE_BTN_SAVE'                                            : 'Save',
+		'POP_SGRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_SGRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_SGRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		//##### add sg rule pop - modalSGRule
+
+		//##### acl property module
+		'PROP_ACL_LBL_NAME'                                              : 'Name',
+		'PROP_ACL_TIT_RULE'                                              : 'Rule',
+		'PROP_ACL_BTN_CREATE_NEW_RULE'                                   : 'Create new Network ACL Rule',
+		'PROP_ACL_RULE_SORT_BY'                                          : 'Sort by',
+		'PROP_ACL_RULE_SORT_BY_NUMBER'                                   : 'Rule Number',
+		'PROP_ACL_RULE_SORT_BY_ACTION'                                   : 'Action',
+		'PROP_ACL_RULE_SORT_BY_DIRECTION'                                : 'Direction',
+		'PROP_ACL_RULE_SORT_BY_SRC_DEST'                                 : 'Source/Destination',
+		'PROP_ACL_TIP_ACTION_ALLOW'                                      : 'allow',
+		'PROP_ACL_TIP_ACTION_DENY'                                       : 'deny',
+		'PROP_ACL_TIP_INBOUND'                                           : 'Inbound',
+		'PROP_ACL_TIP_OUTBOUND'                                          : 'Outbound',
+		'PROP_ACL_TIP_RULE_NUMBER'                                       : 'Rule Number',
+		'PROP_ACL_TIP_CIDR_BLOCK'                                        : 'CIDR Block',
+		'PROP_ACL_TIP_PROTOCOL'                                          : 'Protocol',
+		'PROP_ACL_TIP_PORT'                                              : 'Port',
+		'PROP_ACL_TIT_ASSOC'                                             : 'Associations',
+		'PROP_ACL_TIP_REMOVE_RULE'                                       : 'Remove rule',
+		'PROP_ACL_APP_ID'                                                : 'Network ACL ID',
+		'PROP_ACL_APP_IS_DEFAULT'                                        : 'Default',
+		'PROP_ACL_APP_VPC_ID'                                            : 'VPC ID',
+		//##### acl property module
+
+		//##### add sg rule pop - component/aclrule
+		'POP_ACLRULE_TITLE_ADD'                                           : 'Add Network ACL Rule',
+		'POP_ACLRULE_LBL_RULE_NUMBER'                                     : 'Rule Number',
+		'POP_ACLRULE_LBL_ACTION'                                          : 'Action',
+		'POP_ACLRULE_LBL_ACTION_ALLOW'                                    : 'Allow',
+		'POP_ACLRULE_LBL_ACTION_DENY'                                     : 'Deny',
+		'POP_ACLRULE_LBL_DIRECTION'                                       : 'Direction',
+		'POP_ACLRULE_LBL_INBOUND'                                         : 'Inbound',
+		'POP_ACLRULE_LBL_OUTBOUND'                                        : 'Outbound',
+		'POP_ACLRULE_LBL_SOURCE'                                          : 'Source',
+		'POP_ACLRULE_LBL_DEST'                                            : 'Destination',
+		'POP_ACLRULE_LBL_PROTOCOL'                                        : 'Protocol',
+		'POP_ACLRULE_PROTOCOL_TCP'                                        : 'TCP',
+		'POP_ACLRULE_PROTOCOL_UDP'                                        : 'UDP',
+		'POP_ACLRULE_PROTOCOL_ICMP'                                       : 'ICMP',
+		'POP_ACLRULE_PROTOCOL_CUSTOM'                                     : 'Custom',
+		'POP_ACLRULE_PROTOCOL_ALL'                                        : 'All',
+		'POP_ACLRULE_BTN_SAVE'                                            : 'Save',
+		'POP_ACLRULE_BTN_CANCEL'                                          : 'Cancel',
+		'POP_ACLRULE_PLACEHOLD_SOURCE'                                    : 'e.g., 192.168.2.0/24',
+		'POP_ACLRULE_PLACEHOLD_PORT_RANGE'                                : 'Port Range.eg.80 or 49152-65535',
+		'POP_ACLRULE_LBL_PORT_RANGE_ALL'                                  : 'Port Range:0-65535',
+		//##### add sg rule pop - component/aclrule
+
+
+		//##### vgw property module
+		'PROP_VGW_TXT_DESCRIPTION'           : 'The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel.',
+		//##### vgw property module
+
+
+		//##### vpn property module
+		'PROP_VPN_LBL_IP_PREFIX'             : 'Network IP Prefixes',
+		//##### vpn property module
+
+
+		//##### igw property module
+		'PROP_IGW_TXT_DESCRIPTION'           : 'The Internet gateway is the router on the AWS network that connects your VPC to the Internet.',
+		//##### igw property module
+
+
+		//##### cgw property module
+		'PROP_CGW_LBL_NAME'                     : 'Name',
+		'PROP_CGW_LBL_IPADDR'                   : 'IP Address',
+		'PROP_CGW_LBL_ROUTING'                  : 'Routing',
+		'PROP_CGW_LBL_STATIC'                   : 'Static',
+		'PROP_CGW_LBL_DYNAMIC'                  : 'Dynamic',
+		'PROP_CGW_LBL_BGP_ASN'                  : 'BGP ASN',
+		'PROP_CGW_APP_TIT_CGW'                  : 'Customer Gateway',
+		'PROP_CGW_APP_CGW_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_CGW_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_CGW_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_TIT_VPN'                  : 'VPN Connection',
+		'PROP_CGW_APP_VPN_LBL_ID'               : 'ID',
+		'PROP_CGW_APP_VPN_LBL_STATE'            : 'State',
+		'PROP_CGW_APP_VPN_LBL_TYPE'             : 'Type',
+		'PROP_CGW_APP_VPN_LBL_TUNNEL'           : 'VPN Tunnels',
+		'PROP_CGW_APP_VPN_COL_TUNNEL'           : 'Tunnel',
+		'PROP_CGW_APP_VPN_COL_IP'               : 'IP Address',
+		'PROP_CGW_APP_VPN_LBL_STATUS_RT'        : 'Status Routes',
+		'PROP_CGW_APP_VPN_COL_IP_PREFIX'        : 'IP Prefixes',
+		'PROP_CGW_APP_VPN_COL_SOURCE'           : 'Source',
+		'PROP_CGW_APP_TIT_DOWNLOAD_CONF'        : 'Download Configuration',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR'          : 'Vendor',
+		'PROP_CGW_APP_DOWN_LBL_PLATFORM'        : 'Platform',
+		'PROP_CGW_APP_DOWN_LBL_SOFTWARE'        : 'Software',
+		'PROP_CGW_APP_DOWN_LBL_GENERIC'         : 'Generic',
+		'PROP_CGW_APP_DOWN_LBL_VENDOR_AGNOSTIC' : 'Vendor Agnostic',
+		'PROP_CGW_APP_DOWN_BTN_DOWNLOAD'        : 'Download',
+		//##### cgw property module
+
 		// instance property module
 		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
 		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
@@ -216,6 +510,62 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
+		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_STATUS'					: 'Status',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
+		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
+		'PROP_INSTANCE_REQUIRE'					: 'Required',
+		'PROP_INSTANCE_AMI'						: 'AMI',
+		'PROP_INSTANCE_TYPE'					: 'Instance Type',
+		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Block Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Devices',
+		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
+		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
+		'PROP_INSTANCE_USER_DATA'				: 'User Data',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
+		'PROP_INSTANCE_ENI_DESC'				: 'Description',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
+		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
+		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: 'AMI ID',
+		'PROP_INSTANCE_AMI_NAME'				: 'Name',
+		'PROP_INSTANCE_AMI_DESC'				: 'Description',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: 'Architecture',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: 'Virtualization',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
+
+		'PROP_INSTANCE_KEY_MONITORING'			: 'Monitoring',
+		'PROP_INSTANCE_KEY_ZONE'				: 'Zone',
+		'PROP_INSTANCE_AMI_Launch_Index'		: 'AMI Launch Index',
+		'PROP_INSTANCE_AMI_NETWORK_INTERFACE'	: 'Network Interface',
+
+		//###### instance property module
+
+		// ---
 		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
 		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
 
@@ -224,9 +574,155 @@ define({
 		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
 		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
 
+		//###### volume property
+		'PROP_VOLUME_DEVICE_NAME'				: 'Device Name',
+		'PROP_VOLUME_SIZE'						: 'Volume Size',
+		'PROP_VOLUME_ID'						: 'Volume ID',
+		'PROP_VOLUME_STATE'						: 'State',
+		'PROP_VOLUME_CREATE_TIME'				: 'Create Time',
+		'PROP_VOLUME_SNAPSHOT_ID'				: 'Snapshot ID',
+		'PROP_VOLUME_SNAPSHOT'					: 'Snapshot',
+		'PROP_VOLUME_ATTACHMENT_STATE'			: 'Attachment Status',
+		'PROP_VOLUME_ATTACHMENT_SET'			: 'AttachmentSet',
+		'PROP_VOLUME_INSTANCE_ID'				: 'Instance ID',
+		'PROP_VOLUME_ATTACHMENT_TIME'			: 'Attach Time',
+		'PROP_VOLUME_TYPE'						: 'Volume Type',
+		'PROP_VOLUME_TYPE_STANDARD'				: 'Standard',
+		'PROP_VOLUME_TYPE_IOPS'					: 'Provisioned IOPS',
+		'PROP_VOLUME_MSG_WARN'					: 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.',
+		//###### volume property
+
+		//###### eni property
+		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_DETAIL'					: 'Network Interface Details',
+		'PROP_ENI_LBL_DESC'						: 'Description',
+		'PROP_ENI_SOURCE_DEST_CHECK'			: 'Enable Source/Destination Checking',
+		'PROP_ENI_AUTO_PUBLIC_IP'				: 'Automatically assign Public IP',
+		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
+		'PROP_ENI_ADD_IP'						: 'Add IP',
+		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
+
+		//###### eni property
+
+		//###### elb property
+		'PROP_ELB_DETAILS'						: 'Load Balancer Details',
+		'PROP_ELB_NAME'							: 'Name',
+		'PROP_ELB_REQUIRED'						: 'Required',
+		'PROP_ELB_SCHEME'						: 'Scheme',
+		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
+		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
+		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
+		'PROP_ELB_LBL_LISTENER_DESCRIPTIONS'	: 'Listener Descriptions',
+		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
+		'PROP_ELB_LBL_LISTENER_PUBLIC_KEY'		: 'Public Key Certificate',
+		'PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN': 'Certificate Chain',
+		'PROP_ELB_HEALTH_CHECK'					: 'Health Check',
+		'PROP_ELB_HEALTH_CHECK_DETAILS'			: 'Health Check Configuration',
+		'PROP_ELB_PING_PROTOCOL'				: 'Ping Protocol',
+		'PROP_ELB_PING_PORT'					: 'Ping	Port',
+		'PROP_ELB_PING_PATH'					: 'Ping Path',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL'		: 'Health Check Interval',
+		'PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS': 'Seconds',
+		'PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT'	: 'Response Timeout',
+		'PROP_ELB_HEALTH_THRESHOLD'				: 'Healthy Threshold',
+		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
+		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
+		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		//###### elb property
+
+		//###### autoscaling group property
+		'PROP_ASG_DETAILS'						: 'Auto Scaling Group Details',
+		'PROP_ASG_NAME'							: 'Name',
+		'PROP_ASG_REQUIRED'						: 'Required',
+		'PROP_ASG_CREATE_TIME'					: 'Create Time',
+		'PROP_ASG_MIN_SIZE'						: 'Minimum Size',
+		'PROP_ASG_MAX_SIZE'						: 'Maximum Size',
+		'PROP_ASG_DESIRE_CAPACITY'				: 'Desired Capacity',
+		'PROP_ASG_COOL_DOWN'					: 'Default Cooldown',
+		'PROP_ASG_DEFAULT_COOL_DOWN'			: 'Default Cooldown',
+		'PROP_ASG_INSTANCE'						: 'Instance',
+		'PROP_ASG_UNIT_SECONDS'					: 'Seconds',
+		'PROP_ASG_HEALTH_CHECK_TYPE'			: 'Health Check Type',
+		'PROP_ASG_HEALTH_CHECK_CRACE_PERIOD'	: 'Health Check Grace Period',
+		'PROP_ASG_POLICY'						: 'Policy',
+		'PROP_ASG_HAS_ELB_WARN'					: 'You need to connect this auto scaling group to a load balancer to enable this option.',
+		'PROP_ASG_TERMINATION_POLICY'			: 'Termination Policy',
+		'PROP_ASG_POLICY_TLT_NAME'				: 'Policy Name',
+		'PROP_ASG_POLICY_TLT_ALARM_METRIC'		: 'Alarm Metric',
+		'PROP_ASG_POLICY_TLT_THRESHOLD'			: 'Threshold',
+		'PROP_ASG_POLICY_TLT_PERIOD'			: 'Evaluation Period x Periords',
+		'PROP_ASG_POLICY_TLT_ACTION'			: 'Action Trigger',
+		'PROP_ASG_POLICY_TLT_ADJUSTMENT'		: 'Adjustment',
+		'PROP_ASG_POLICY_TLT_EDIT'				: 'Edit Scaling Policy',
+		'PROP_ASG_POLICY_TLT_REMOVE'			: 'Remove Scaling Policy',
+		'PROP_ASG_BTN_ADD_SCALING_POLICY'		: 'Add Scaling Policy',
+		'PROP_ASG_LBL_NOTIFICATION'				: 'Notification',
+		'PROP_ASG_LBL_SEND_NOTIFICATION'		: 'Send notification via SNS topic for:',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH'	: 'Successful instance launch',
+		'PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH'	: 'Failed instance launch',
+		'PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE'	: 'Successful instance termination',
+		'PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE'	: 'Failed instance termination',
+		'PROP_ASG_LBL_VALIDATE_SNS'				: 'Validating a configuraed SNS Topic',
+		'PROP_ASG_MSG_NO_NOTIFICATION_WARN'		: 'No notification configured for this auto scaling group',
+		'PROP_ASG_MSG_SNS_WARN'					: 'There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification.',
+		'PROP_ASG_MSG_DROP_LC'					: 'Drop AMI from Resrouce Panel to create Launch Configuration',
+		'PROP_ASG_TERMINATION_EDIT'				: 'Edit Termination Policy',
+		'PROP_ASG_TERMINATION_TEXT_WARN'		: 'You can either specify any one of the policies as a standalone policy, or you can list multiple policies in an ordered list. The policies are executed in the order they are listed.',
+		'PROP_ASG_TERMINATION_MSG_DRAG'			: 'Drag to sort policy',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST'	: 'OldestInstance',
+		'PROP_ASG_TERMINATION_POLICY_NEWEST'	: 'NewestInstance',
+		'PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH'	: 'OldestLaunchConfiguration',
+		'PROP_ASG_TERMINATION_POLICY_CLOSEST'	: 'ClosestToNextInstanceHour',
+		'PROP_ASG_ADD_POLICY_TITLE_ADD'			: 'Add',
+		'PROP_ASG_ADD_POLICY_TITLE_EDIT'		: 'Edit',
+		'PROP_ASG_ADD_POLICY_TITLE_CONTENT'		: 'Scaling Policy',
+		'PROP_ASG_ADD_POLICY_ALARM'				: 'Alarm',
+		'PROP_ASG_ADD_POLICY_WHEN'				: 'When',
+		'PROP_ASG_ADD_POLICY_IS'				: 'is',
+		'PROP_ASG_ADD_POLICY_FOR'				: 'for',
+		'PROP_ASG_ADD_POLICY_PERIOD'			: 'periods of',
+		'PROP_ASG_ADD_POLICY_SECONDS'			: 'seconds, enter ALARM state.',
+		'PROP_ASG_ADD_POLICY_START_SCALING'		: 'Start scaling activity when in',
+		'PROP_ASG_ADD_POLICY_STATE'				: 'state.',
+		'PROP_ASG_ADD_POLICY_SCALING_ACTIVITY'	: 'Scaling Activity',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT'		: 'Adjust number of instances by',
+		'PROP_ASG_ADD_POLICY_ADJUSTMENT_OF'		: 'of',
+		'PROP_ASG_ADD_POLICY_ADVANCED'			: 'Advanced',
+		'PROP_ASG_ADD_POLICY_ADVANCED_ALARM_OPTION'	: 'Alarm Options',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC'	: 'Statistic',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG'	: 'Average',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MIN'	: 'Minimum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MAX'	: 'Maximum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SAMPLE'	: 'SampleCount',
+		'PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SUM'	: 'Sum',
+		'PROP_ASG_ADD_POLICY_ADVANCED_SCALING_OPTION'	: 'Scaling Options',
+		'PROP_ASG_ADD_POLICY_ADVANCED_COOLDOWN_PERIOD'	: 'Cooldown Period',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_COOLDOWN_PERIOD'	: "The amount of time, in seconds, after a scaling activity completes before any further trigger-related scaling activities can start. If not specified, will use auto scaling group's default cooldown period.",
+		'PROP_ASG_ADD_POLICY_ADVANCED_MIN_ADJUST_STEP'	: 'Minimum Adjust Step',
+		'PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP'	: 'Changes the DesiredCapacity of the Auto Scaling group by at least the specified number of instances.',
+
+		//###### autoscaling group property
+
+		//###### launch configuration property
+		'PROP_LC_TITLE'							: 'Launch Configuation',
+		'PROP_LC_NAME'							: 'Name',
+		//###### launch configuration property
+
+		//###### route table property
+		'PROP_RT_ASSOCIATION'							: 'This is an association of ',
+		'PROP_RT_ASSOCIATION_TO'						: 'to',
+		'PROP_RT_NAME'									: 'Name',
+		'PROP_RT_LBL_ROUTE'								: 'Routes',
+		'PROP_RT_LBL_MAIN_RT'							: 'Main Route Table',
+		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
+		'PROP_RT_TARGET'								: 'Target',
+		'PROP_RT_DESTINATION'							: 'Destination',
+		//###### route table property
+
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
-		// Add new strings below this comment. Move above once English has been confirmed
+
 
 		/****** process module ******/
 		'PROC_TITLE'                 : 'Starting your app...',
@@ -278,14 +774,158 @@ define({
 
 		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
 
-		/****** Dashboard ******/
-		// Add new strings below this comment. Move above once English has been confirmed
-		'RELOAD_AWS_RESOURCE_SUCCESS'     : 'Status of resources is up to date.',
-		'DASHBOARD_TIP_UNMANAGED_RESOURCE': 'Unmanaged Resource',
-		'DASHBOARD_TXT_UNMANAGED'         : 'Unmanaged',
+		//###### dashboard module
+		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: 'Status of resources is up to date.',
 
-		/****** popup ******/
-		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.'
+
+		'DASH_TIP_UNMANAGED_RESOURCE'				: 'Unmanaged Resource',
+		'DASH_TIP_NO_RESOURCE_LEFT'					: 'There is no ',
+		'DASH_TIP_NO_RESOURCE_RIGHT'				: ' in this region',
+
+
+
+		'DASH_BTN_GLOBAL'							: 'Global',
+
+
+		'DASH_LBL_UNMANAGED'         				: 'Unmanaged',
+		'DASH_LBL_APP'								: 'App',
+		'DASH_LBL_STACK'						    : 'Stack',
+		'DASH_LBL_RECENT_EDITED_STACK'			    : 'Recently Edited Stack',
+		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
+		'DASH_LBL_NO_APP'							: 'There is no App in this region',
+		'DASH_LBL_NO_STACK'							: 'There is no stack in this region yet',
+		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: 'You can run app from a stack',
+		'DASH_LBL_CREATE_NEW_STACK_HERE'			: 'Create a new stack from here',
+
+
+		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
+		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
+		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_LOAD_BALANCER'				    : 'Load Balancer',
+		'DASH_LBL_VPN'	    	    				: 'VPN',
+
+		'DASH_LBL_INSTANCE'		        		    : 'Instance',
+		'DASH_LBL_VPC'		    	      		    : 'VPC',
+		'DASH_LBL_AUTO_SCALING_GROUP'		       	: 'Auto Scaling Group',
+		'DASH_LBL_CLOUDWATCH_ALARM'		        	: 'CloudWatch Alarm',
+		'DASH_LBL_SNS_SUBSCRIPTION'		        	: 'SNS Subscription',
+
+		'DASH_LBL_ID'	    	    				: 'ID',
+		'DASH_LBL_INSTANCE_ID'	    	 		    : 'Instance ID',
+		'DASH_LBL_INSTANCE_NAME'	    	 		: 'Instance Name',
+		'DASH_LBL_NAME'	    				 		: 'Name',
+		'DASH_LBL_STATUS'	    	    			: 'Status',
+		'DASH_LBL_STATE'	    	    			: 'State',
+		'DASH_LBL_LAUNCH_TIME'	    	    		: 'Launch Time',
+		'DASH_LBL_AMI'	    	    				: 'AMI',
+		'DASH_LBL_AVAILABILITY_ZONE'	    		: 'Availability Zone',
+		'DASH_LBL_DETAIL'	    	    			: 'Detail',
+		'DASH_LBL_IP'	    	    				: 'IP',
+		'DASH_LBL_ASSOCIATED_INSTANCE'	    	    : 'Associated Instance',
+		'DASH_LBL_CREATE_TIME'	    	   		 	: 'Create Time',
+		'DASH_LBL_DEVICE_NAME'	    	    		: 'Device Name',
+		'DASH_LBL_ATTACHMENT_STATUS'	    	    : 'Attachment Status',
+		'DASH_LBL_CIDR'	    	    				: 'CIDR',
+		'DASH_LBL_DHCP_SETTINGS'	    	    	: 'DHCP Settings',
+		'DASH_LBL_VIRTUAL_PRIVATE_GATEWAY'	    	: 'Virtual Private Gateway',
+		'DASH_LBL_CUSTOMER_GATEWAY'	    	    	: 'Customer Gateway',
+		'DASH_LBL_DNS_NAME'	    	    			: 'DNS Name',
+		'DASH_LBL_DOMAIN'	    	    			: 'Domain',
+		'DASH_LBL_CURRENT'	    	    			: 'Current',
+		'DASH_LBL_LAST_ACTIVITY'	    	    	: 'Last Activity',
+		'DASH_LBL_ACTIVITY_STATUS'	    	    	: 'Activity Status',
+		'DASH_LBL_DIMENSION'	    	    		: 'Dimension',
+		'DASH_LBL_THRESHOLD'	    	    		: 'Threshold',
+		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
+		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
+		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
+
+		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
+		'DASH_LBL_ASSOCIATION_ID'	    	    	: 'Association ID',
+		'DASH_LBL_ALLOCATION_ID'	    	    	: 'Allocation ID',
+		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : 'Network Interface ID',
+		'DASH_LBL_PRIVATE_IP_ADDRESS'	    	    : 'Private Ip Address',
+
+		'DASH_LBL_AUTOSCALING_GROUP_NAME'	    	: 'Auto Scaling Group Name',
+		'DASH_LBL_AUTOSCALING_GROUP_ARN'	    	: 'Auto Scaling Group ARN',
+		'DASH_LBL_ENABLED_METRICS'	    			: 'Enabled Metrics',
+		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : 'Launch Configuration Name',
+		'DASH_LBL_LOADBALANCER_NAMES'	    		: 'LoadBalancer Names',
+		'DASH_LBL_MAX_SIZE'	    					: 'MaxSize',
+		'DASH_LBL_MAX_SIZE'	    					: 'MinSize',
+		'DASH_LBL_TERMINATION_POLICIES'	    		: 'Termination Policies',
+		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC Zone Identifier',
+
+		'DASH_LBL_ACTIONS_ENABLED'					: 'Actions Enabled',
+		'DASH_LBL_ALARM_ACTIONS'					: 'Alarm Actions',
+		'DASH_LBL_ALARM_ARN'						: 'Alarm Arn',
+		'DASH_LBL_ALARM_DESCRIPTION'				: 'Alarm Description',
+		'DASH_LBL_ALARM_NAME'						: 'Alarm Name',
+		'DASH_LBL_COMPARISON_OPERATOR'				: 'Comparison Operator',
+		'DASH_LBL_DIMENSIONS'						: 'Dimensions',
+		'DASH_LBL_EVALUATION_PERIODS'				: 'Evaluation Periods',
+		'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'		: 'Insufficient Data Actions',
+		'DASH_LBL_METRIC_NAME'						: 'Metric Name',
+		'DASH_LBL_NAMESPACE'						: 'Namespace',
+		'DASH_LBL_OK_ACTIONS'						: 'OK Actions',
+		'DASH_LBL_PERIOD'							: 'Period',
+		'DASH_LBL_STATISTIC'	 					: 'Statistic',
+		'DASH_LBL_STATE_VALUE'	 					: 'State Value',
+		'DASH_LBL_THRESHOLD'	 					: 'Threshold',
+		'DASH_LBL_UNIT'	 							: 'Unit',
+
+		'DASH_LBL_ENDPOINT'							: 'Endpoint',
+		'DASH_LBL_OWNER'							: 'Owner',
+		'DASH_LBL_PROTOCOL'							: 'Protocol',
+		'DASH_LBL_SUBSCRIPTION_ARN'					: 'Subscription ARN',
+		'DASH_LBL_TOPIC_ARN'						: 'Topic ARN',
+
+		'DASH_BUB_NAME'	    	    				: 'Name',
+		'DASH_BUB_DESCRIPTION'						: 'Description',
+		'DASH_BUB_ARCHITECTURE'	    	    		: 'Architecture',
+		'DASH_BUB_IMAGELOCATION'	    	    	: 'Image Location',
+		'DASH_BUB_ISPUBLIC'	    	    			: 'Public',
+		'DASH_BUB_KERNELID'	    	    			: 'KernelId',
+		'DASH_BUB_ROOTDEVICENAME'	    	    	: 'Root Device Name',
+		'DASH_BUB_ROOTDEVICETYPE'	    	    	: 'Root Device Type',
+
+
+
+		//###### dashboard module
+
+		//###### ide
+
+		'IDE_COM_CREATE_NEW_STACK'						: 'Create new stack',
+
+		'IDE_LBL_REGION_NAME_us-east-1'					: 'US East',
+		'IDE_LBL_REGION_NAME_us-west-1'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_us-west-2'	  				: 'US West',
+		'IDE_LBL_REGION_NAME_eu-west-1'	  				: 'EU West',
+		'IDE_LBL_REGION_NAME_ap-southeast-1'    		: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-southeast-2'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_ap-northeast-1'			: 'Asia Pacific',
+		'IDE_LBL_REGION_NAME_sa-east-1'	    			: 'South America',
+
+		'IDE_LBL_REGION_NAME_SHORT_us-east-1'	  		: 'Virginia',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-1'	  		: 'California',
+		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
+		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
+		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
+
+		'IDE_LBL_LAST_STATUS_CHANGE'					: "Last Changed",
+		'IDE_LBL_ENABLED_METRICS'						: "Last Changed",
+
+		//###### ide
+
+
+		//###### popup
+
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.',
+		'POP_BTN_CLOSE'     		      : 'Close'
+
+		//###### popup
 
 	},
 	'service' : {

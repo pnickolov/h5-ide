@@ -1,5 +1,5 @@
 
-require [ 'domReady', 'router' ], ( domReady, router ) ->
+require [ 'domReady', 'router', 'i18n!nls/lang.js' ], ( domReady, router, lang ) ->
 
 	### env:prod ###
 	if window.location.protocol is 'http:' and window.location.hostname isnt 'localhost'
@@ -10,3 +10,7 @@ require [ 'domReady', 'router' ], ( domReady, router ) ->
 
 	domReady () ->
 		router.initialize()
+
+		#i18n
+		Handlebars.registerHelper 'i18n', ( text ) ->
+			new Handlebars.SafeString lang.reset[ text ]

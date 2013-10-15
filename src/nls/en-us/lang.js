@@ -748,6 +748,13 @@ define({
 		'CFM_BTN_DONT_ADD' : "Don't add",
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		//#### topmenu
+		'HEAD_LABEL_MENUITEM_USER_TOUR'  : 'User Tour',
+		'HEAD_LABEL_MENUITEM_DOC'        : 'Document',
+		'HEAD_LABEL_MENUITEM_SETTING'    : 'Setting',
+		'HEAD_LABEL_MENUITEM_LOGOUT'     : 'Logout',
+		//#### topmenu
+
 		/****** account credential module ******/
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',

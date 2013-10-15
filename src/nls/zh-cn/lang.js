@@ -240,11 +240,20 @@ define({
 		'TOOL_POP_BTN_TERMINATE_APP'            : '销毁',
 
 		//toolbar handler
-		'TOOL_MSG_INFO_REQ_SUCCESS'             : 'Sending request to %s %s...',
-		'TOOL_MSG_ERR_REQ_FAILED'               : 'Sending request to %s %s failed.',
-		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s successfully.',
-		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
-		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
+		'TOOL_MSG_INFO_REQ_SUCCESS'             : '正在发送 %s %s 请求...',
+		'TOOL_MSG_ERR_REQ_FAILED'               : '发送 %s %s 请求失败。',
+		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s 成功。',
+		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s 失败。',
+		'TOOL_MSG_ERR_SAVE_FAILED'              : '保存模块 %s 失败，请您检查并重新保存。',
+
+		'TOOLBAR_HANDLE_SAVE_STACK'             : '保存模块',
+		'TOOLBAR_HANDLE_CREATE_STACK'           : '创建模块',
+		'TOOLBAR_HANDLE_DUPLICATE_STACK'        : '复制模块',
+		'TOOLBAR_HANDLE_REMOVE_STACK'           : '删除模块',
+		'TOOLBAR_HANDLE_RUN_STACK'              : '运行模块',
+		'TOOLBAR_HANDLE_START_APP'              : '恢复应用',
+		'TOOLBAR_HANDLE_STOP_APP'               : '暂停应用',
+		'TOOLBAR_HANDLE_TERMINATE_APP'          : '销毁应用',
 		// Add new strings below this comment. Move above once English has been confirmed
 		//refresh button
 		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',

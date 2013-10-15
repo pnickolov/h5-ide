@@ -177,6 +177,8 @@ define [ 'event', 'i18n!nls/lang.js',
                 portTo = portFrom = ''
                 icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
                 icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
+                if !icmpCode
+                    icmpCode = '-1'
                 protocol = '1'
             else if protocol is 'custom'
                 protocol = $('#sg-protocol-' + protocol + ' input').val()

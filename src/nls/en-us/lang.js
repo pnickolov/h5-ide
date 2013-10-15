@@ -853,8 +853,23 @@ define({
 		'DASH_LBL_TERMINATION_POLICIES'	    		: 'Termination Policies',
 		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC Zone Identifier',
 
-
-
+		'DASH_LBL_ACTIONS_ENABLED'					: 'Actions Enabled',
+		'DASH_LBL_ALARM_ACTIONS'					: 'Alarm Actions',
+		'DASH_LBL_ALARM_ARN'						: 'Alarm Arn',
+		'DASH_LBL_ALARM_DESCRIPTION'				: 'Alarm Description',
+		'DASH_LBL_ALARM_NAME'						: 'Alarm Name',
+		'DASH_LBL_COMPARISON_OPERATOR'				: 'Comparison Operator',
+		'DASH_LBL_DIMENSIONS'						: 'Dimensions',
+		'DASH_LBL_EVALUATION_PERIODS'				: 'Evaluation Periods',
+		'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'		: 'Insufficient Data Actions',
+		'DASH_LBL_METRIC_NAME'						: 'Metric Name',
+		'DASH_LBL_NAMESPACE'						: 'Namespace',
+		'DASH_LBL_OK_ACTIONS'						: 'OK Actions',
+		'DASH_LBL_PERIOD'							: 'Period',
+		'DASH_LBL_STATISTIC'	 					: 'Statistic',
+		'DASH_LBL_STATE_VALUE'	 					: 'State Value',
+		'DASH_LBL_THRESHOLD'	 					: 'Threshold',
+		'DASH_LBL_UNIT'	 							: 'Unit',
 
 		'DASH_BUB_NAME'	    	    				: 'Name',
 		'DASH_BUB_DESCRIPTION'						: 'Description',

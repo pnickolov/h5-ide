@@ -194,23 +194,23 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             "DescribeAlarms":
                 "title" : "AlarmName"
                 "sub_info":[
-                    {"key": [ "ActionsEnabled" ], "show_key": "ActionsEnabled"}
-                    {"key": [ "AlarmActions", "member" ], "show_key": "AlarmActions"}
-                    {"key": [ "AlarmArn" ], "show_key": "AlarmArn"}
-                    {"key": [ "AlarmDescription" ], "show_key": "AlarmDescription"}
-                    {"key": [ "AlarmName" ], "show_key": "AlarmName"}
-                    {"key": [ "ComparisonOperator" ], "show_key": "ComparisonOperator"}
-                    {"key": [ "Dimensions" ], "show_key": "Dimensions"}
-                    {"key": [ "EvaluationPeriods" ], "show_key": "EvaluationPeriods"}
-                    {"key": [ "InsufficientDataActions" ], "show_key": "InsufficientDataActions"}
-                    {"key": [ "MetricName" ], "show_key": "MetricName"}
-                    {"key": [ "Namespace" ], "show_key": "Namespace"}
-                    {"key": [ "OKActions" ], "show_key": "OKActions"}
-                    {"key": [ "Period" ], "show_key": "Period"}
-                    {"key": [ "Statistic" ], "show_key": "Statistic"}
-                    {"key": [ "StateValue" ], "show_key": "StateValue"}
-                    {"key": [ "Threshold" ], "show_key": "Threshold"}
-                    {"key": [ "Unit" ], "show_key": "Unit"}
+                    {"key": [ "ActionsEnabled" ], "show_key": lang.ide.DASH_LBL_ACTIONS_ENABLED}
+                    {"key": [ "AlarmActions", "member" ], "show_key": lang.ide.DASH_LBL_ALARM_ACTIONS}
+                    {"key": [ "AlarmArn" ], "show_key": lang.ide.DASH_LBL_ALARM_ARN}
+                    {"key": [ "AlarmDescription" ], "show_key": lang.ide.DASH_LBL_ALARM_DESCRIPTION}
+                    {"key": [ "AlarmName" ], "show_key": lang.ide.DASH_LBL_ALARM_NAME}
+                    {"key": [ "ComparisonOperator" ], "show_key": lang.ide.DASH_LBL_COMPARISON_OPERATOR}
+                    {"key": [ "Dimensions" ], "show_key": lang.ide.DASH_LBL_DIMENSIONS}
+                    {"key": [ "EvaluationPeriods" ], "show_key": lang.ide.DASH_LBL_EVALUATION_PERIODS}
+                    {"key": [ "InsufficientDataActions" ], "show_key": lang.ide.DASH_LBL_INSUFFICIENT_DATA_ACTIONS}
+                    {"key": [ "MetricName" ], "show_key": lang.ide.DASH_LBL_METRIC_NAME}
+                    {"key": [ "Namespace" ], "show_key": lang.ide.DASH_LBL_NAMESPACE}
+                    {"key": [ "OKActions" ], "show_key": lang.ide.DASH_LBL_OK_ACTIONS}
+                    {"key": [ "Period" ], "show_key": lang.ide.DASH_LBL_PERIOD}
+                    {"key": [ "Statistic" ], "show_key": lang.ide.DASH_LBL_STATISTIC}
+                    {"key": [ "StateValue" ], "show_key": lang.ide.DASH_LBL_STATE_VALUE}
+                    {"key": [ "Threshold" ], "show_key": lang.ide.DASH_LBL_THRESHOLD}
+                    {"key": [ "Unit" ], "show_key": lang.ide.DASH_LBL_UNIT}
                 ]
 
             "ListSubscriptions":

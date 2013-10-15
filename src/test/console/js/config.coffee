@@ -16,6 +16,7 @@ require.config {
         'MC'        : 'lib/MC.core'
 
         #common lib
+        'i18n'      : 'vender/requirejs/i18n'
         'constant'  : 'lib/constant'
 
         #result_vo

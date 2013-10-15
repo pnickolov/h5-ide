@@ -14,5 +14,5 @@ var version  = version || {},
 
 (function() {
   'use strict';
-  version  = '130830.1912';
+  version = '130830.1912';
 })();

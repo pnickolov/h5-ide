@@ -37,8 +37,32 @@ module.exports = {
     },
 
 
-    href: {
+    href_release: {
         src: [ '<%= release %>/component/awscredential/view.*', '<%= release %>/js/ide/ide.*', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.*', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*' ],
+        actions: [
+            {
+                name: 'href-register',
+                search: '"register.html',
+                replace: '"/register/',
+                flags: 'g'
+            },
+            {
+                name: 'href-reset',
+                search: '"reset.html',
+                replace: '"/reset/',
+                flags: 'g'
+            },
+            {
+                name: 'href-login',
+                search: '"login.html',
+                replace: '"/login/',
+                flags: 'g'
+            }
+        ]
+    },
+
+    href_debug: {
+        src: [ '<%= debug %>/component/awscredential/view.*', '<%= debug %>/js/ide/ide.*', '<%= debug %>/js/login/template.html', '<%= debug %>/module/header/model.*', '<%= debug %>/module/register/*.*', '<%= debug %>/module/reset/*.*' ],
         actions: [
             {
                 name: 'href-register',

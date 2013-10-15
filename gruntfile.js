@@ -16,6 +16,7 @@ module.exports = function( grunt ) {
 		reset_temp : '~reset_temp',
 		vender     : 'vender',
 		components : 'bower_components',
+		debug      : 'debug',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -151,7 +152,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
 			'regex-replace:intercome',
-			'regex-replace:href',
+			'regex-replace:href_release',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
 			'dev_prod_switch:release',
@@ -159,6 +160,13 @@ module.exports = function( grunt ) {
 			'strip'
 		]);
 	});
+
+	grunt.registerTask( 'make_debug', function() {
+		grunt.task.run([
+			'regex-replace:href_debug'
+		]);
+	});
+
 	grunt.registerTask( 'dev_env', function() {
 		grunt.task.run([
 			'copy:dev_prod_switch_task',
@@ -229,6 +237,14 @@ module.exports = function( grunt ) {
 									'open:publish',
 									'connect:publish'
 	]);
+
+	/* task of use as release */
+	grunt.registerTask( 'debug', ['clean:debug',
+									'make_all',
+									'copy:debug',
+									'make_debug',
+	]);
+
 
 	/* task of use as release */
 	grunt.registerTask( 'deploy', [//release

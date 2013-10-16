@@ -42,7 +42,7 @@ define [ 'event',
         render     : (template) ->
             console.log 'account_setting_tab render'
             #
-            modal template, false
+            modal Handlebars.compile( template )(), false
             #
             this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
             #
@@ -143,7 +143,7 @@ define [ 'event',
             me = this
 
             obj = $(event.currentTarget)
-            if obj.text() is 'AWS Credentials'
+            if obj.text() is lang.ide.HEAD_LABEL_CREDENTIAL
                 if $.cookie('has_cred') is 'true'
                     me.showSetting('credential', 'on_update')
                 else
@@ -232,7 +232,7 @@ define [ 'event',
 
                 #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
                 #$('#account-passowrd-info').html html_str
-                $('#account-passowrd-info').html '{{ i18n “HEAD_MSG_ERR_WRONG_PASSWORD” }} <a href="reset.html" target="_blank">{{ i18n “HEAD_MSG_INFO_FORGET_PASSWORD” }}</a>'
+                $('#account-passowrd-info').html '{{ i18n "HEAD_MSG_ERR_WRONG_PASSWORD" }} <a href="reset.html" target="_blank">{{ i18n "HEAD_MSG_INFO_FORGET_PASSWORD" }}</a>'
 
             else
 

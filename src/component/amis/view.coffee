@@ -5,7 +5,7 @@
 define [ 'event',
          'backbone', 'jquery', 'handlebars',
          'UI.modal', 'jqpagination'
-], ( ide_event ) ->
+], ( ide_event, _, $, Handlebars ) ->
 
     AMIsView = Backbone.View.extend {
 
@@ -16,7 +16,8 @@ define [ 'event',
         render     : ( template ) ->
             console.log 'pop-up:amis run render'
             #
-            modal template, true
+            template = Handlebars.compile template
+            modal template {}, true
             #
             this.setElement $( '#modal-browse-community-ami' ).closest '#modal-wrap'
 

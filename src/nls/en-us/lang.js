@@ -953,6 +953,36 @@ define({
 
 		//###### dashboard module
 
+
+		//###### community amis module
+
+		'AMI_LBL_COMMUNITY_AMIS'					: 'Community AMIs',
+		'AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID'		: 'Search AMI by name or ID',
+		'AMI_LBL_ALL_PLATFORMS'						: 'All Platforms',
+
+		'AMI_LBL_VISIBILITY'						: 'Visibility',
+		'AMI_LBL_ARCHITECTURE'						: 'Architecture',
+		'AMI_LBL_ROOT_DEVICE_TYPE'					: 'Root Device Type',
+
+		'AMI_LBL_PUBLIC'							: 'Public',
+		'AMI_LBL_PRIVATE'							: 'Private',
+		'AMI_LBL_32_BIT'							: '32-bit',
+		'AMI_LBL_64_BIT'							: '64-bit',
+		'AMI_LBL_EBS'								: 'EBS',
+		'AMI_LBL_INSTANCE_STORE'					: 'Instance Store',
+
+		'AMI_LBL_SEARCH'							: 'Search',
+		'AMI_LBL_SEARCHING'							: 'Searching...',
+
+		'AMI_LBL_AMI_ID'							: 'AMI ID',
+		'AMI_LBL_AMI_NAME'							: 'AMI Name',
+		'AMI_LBL_ARCH'								: 'Arch',
+
+		'AMI_LBL_PAGEINFO'							: 'Showing %s of %s results',
+
+
+		//###### community amis module
+
 		//###### ide
 
 		'IDE_COM_CREATE_NEW_STACK'						: 'Create new stack',

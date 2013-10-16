@@ -197,6 +197,7 @@ define({
 		'TOOL_POP_TIT_DELETE_STACK'             : 'Delete Stack',
 		'TOOL_POP_BODY_DELETE_STACK'            : 'Do you confirm to delete stack',
 		'TOOL_POP_BTN_DELETE_STACK'             : 'Delete',
+		'TOOL_POP_BTN_CANCEL'     		        : 'Cancel',
 
 		//duplicate stack
 		'TOOL_TIP_DUPLICATE_STACK'              : 'Duplicate Stack',
@@ -222,19 +223,22 @@ define({
 		//stop app
 		'TOOL_TIP_STOP_APP'                     : "Stop this app's resources.",
 		'TOOL_POP_TIT_STOP_APP'                 : 'Confirm to stop app',
-		'TOOL_POP_BODY_STOP_APP'                : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_LEFT'           : 'Do you confirm to stop app',
+		'TOOL_POP_BODY_STOP_APP_RIGHT'          : '?',
 		'TOOL_POP_BTN_STOP_APP'                 : 'Stop',
 
 		//start app
 		'TOOL_TIP_START_APP'                    : "Start this app's resources.",
 		'TOOL_POP_TIT_START_APP'                : 'Confirm to start app',
-		'TOOL_POP_BODY_START_APP'               : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_LEFT'          : 'Do you confirm to start app',
+		'TOOL_POP_BODY_START_APP_RIGHT'         : '?',
 		'TOOL_POP_BTN_START_APP'                : 'Start',
 
 		//terminate app
 		'TOOL_TIP_TERMINATE_APP'                : "Permanently terminate this app's resources",
 		'TOOL_POP_TIT_TERMINATE_APP'            : 'Confirm to terminate app',
-		'TOOL_POP_BODY_TERMINATE_APP'           : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_LEFT'      : 'Do you confirm to terminate app',
+		'TOOL_POP_BODY_TERMINATE_APP_RIGHT'     : '?',
 		'TOOL_POP_BTN_TERMINATE_APP'            : 'Terminate',
 
 		//toolbar handler
@@ -244,6 +248,16 @@ define({
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s failed.',
 		'TOOL_MSG_ERR_SAVE_FAILED'              : 'Save stack %s failed, please check and save it again.',
 		// Add new strings below this comment. Move above once English has been confirmed
+		'TOOLBAR_HANDLE_SAVE_STACK'             : 'Save stack',
+		'TOOLBAR_HANDLE_CREATE_STACK'           : 'Create stack',
+		'TOOLBAR_HANDLE_DUPLICATE_STACK'        : 'Copy stack',
+		'TOOLBAR_HANDLE_REMOVE_STACK'           : 'Delete stack',
+		'TOOLBAR_HANDLE_RUN_STACK'              : 'Run stack',
+		'TOOLBAR_HANDLE_START_APP'              : 'Start app',
+		'TOOLBAR_HANDLE_STOP_APP'               : 'Stop app',
+		'TOOLBAR_HANDLE_TERMINATE_APP'          : 'Terminate app',
+
+
 		//refresh button
 		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
 		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
@@ -260,6 +274,63 @@ define({
 		/******property module******/
 
 		'PROP_LBL_REQUIRED'                     : 'Required',
+
+
+		//###### instance property module
+		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
+		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
+		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
+		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
+		'PROP_INSTANCE_STATE'					: 'State',
+		'PROP_INSTANCE_STATUS'					: 'Status',
+		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
+		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
+		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
+		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
+		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
+		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
+		'PROP_INSTANCE_REQUIRE'					: 'Required',
+		'PROP_INSTANCE_AMI'						: 'AMI',
+		'PROP_INSTANCE_TYPE'					: 'Instance Type',
+		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
+		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS Optimization',
+		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
+		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
+		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
+		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Block Device Type',
+		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Devices',
+		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
+		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
+		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
+		'PROP_INSTANCE_USER_DATA'				: 'User Data',
+		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
+		'PROP_INSTANCE_ENI_DESC'				: 'Description',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
+		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP': 'Source/Destination Checking',
+		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
+		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
+		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
+		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
+		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
+		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
+		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
+		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
+		'PROP_INSTANCE_AMI_ID'					: 'AMI ID',
+		'PROP_INSTANCE_AMI_NAME'				: 'Name',
+		'PROP_INSTANCE_AMI_DESC'				: 'Description',
+		'PROP_INSTANCE_AMI_ARCHITECH'			: 'Architecture',
+		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: 'Virtualization',
+		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
+		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
+		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
+
+		'PROP_INSTANCE_KEY_MONITORING'			: 'Monitoring',
+		'PROP_INSTANCE_KEY_ZONE'				: 'Zone',
+		'PROP_INSTANCE_AMI_LAUNCH_INDEX'		: 'AMI Launch Index',
+		'PROP_INSTANCE_AMI_NETWORK_INTERFACE'	: 'Network Interface',
+
+		//###### instance property module
 
 		//##### stack property module
 		'PROP_STACK_LBL_NAME'                       : 'Stack Name',
@@ -510,62 +581,6 @@ define({
 		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
 		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
 		// Add new strings below this comment. Move above once English has been confirmed
-
-		//###### instance property module
-		'PROP_INSTANCE_DETAIL'					: 'Instance Details',
-		'PROP_INSTANCE_HOSTNAME'				: 'Hostname',
-		'PROP_INSTANCE_INSTANCE_ID'				: 'Instance ID',
-		'PROP_INSTANCE_LAUNCH_TIME'				: 'Launch Time',
-		'PROP_INSTANCE_STATE'					: 'State',
-		'PROP_INSTANCE_STATUS'					: 'Status',
-		'PROP_INSTANCE_PRIMARY_PUBLIC_IP'		: 'Primary Public IP',
-		'PROP_INSTANCE_PUBLIC_IP'				: 'Public IP',
-		'PROP_INSTANCE_PUBLIC_DNS'				: 'Public DNS',
-		'PROP_INSTANCE_PRIMARY_PRIVATE_IP'		: 'Primary Private IP',
-		'PROP_INSTANCE_PRIVATE_DNS'				: 'Private DNS',
-		'PROP_INSTANCE_NUMBER'					: 'Number of Instance',
-		'PROP_INSTANCE_REQUIRE'					: 'Required',
-		'PROP_INSTANCE_AMI'						: 'AMI',
-		'PROP_INSTANCE_TYPE'					: 'Instance Type',
-		'PROP_INSTANCE_KEY_PAIR'				: 'Key Pair',
-		'PROP_INSTANCE_TENANCY'					: 'Tenancy',
-		'PROP_INSTANCE_TENANCY_DEFAULT'			: 'Default',
-		'PROP_INSTANCE_TENANCY_DELICATED'		: 'Delicated',
-		'PROP_INSTANCE_ROOT_DEVICE_TYPE'		: 'Block Device Type',
-		'PROP_INSTANCE_BLOCK_DEVICE'			: 'Block Devices',
-		'PROP_INSTANCE_NEW_KP'					: 'Create New Key Pair',
-		'PROP_INSTANCE_CW_ENABLED'				: 'Enable CloudWatch Detailed Monitoring',
-		'PROP_INSTANCE_ADVANCED_DETAIL'			: 'Advanced Details',
-		'PROP_INSTANCE_USER_DATA'				: 'User Data',
-		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
-		'PROP_INSTANCE_ENI_DETAIL'				: 'Network Interface Details',
-		'PROP_INSTANCE_ENI_DESC'				: 'Description',
-		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: 'Enable Source/Destination Checking',
-		'PROP_INSTANCE_ENI_AUTO_PUBLIC_IP'		: 'Automatically assign Public IP',
-		'PROP_INSTANCE_ENI_IP_ADDRESS'			: 'IP Address',
-		'PROP_INSTANCE_ENI_ADD_IP'				: 'Add IP',
-		'PROP_INSTANCE_SG_DETAIL'				: 'Security Groups',
-		'PROP_INSTANCE_IP_MSG_1'				: 'Specify an IP address or leave it as .x to automatically assign an IP.',
-		'PROP_INSTANCE_IP_MSG_2'				: 'Automatically assigned IP.',
-		'PROP_INSTANCE_IP_MSG_3'				: 'Associate with Elastic IP',
-		'PROP_INSTANCE_IP_MSG_4'				: 'Detach Elastic IP',
-		'PROP_INSTANCE_AMI_ID'					: 'AMI ID',
-		'PROP_INSTANCE_AMI_NAME'				: 'Name',
-		'PROP_INSTANCE_AMI_DESC'				: 'Description',
-		'PROP_INSTANCE_AMI_ARCHITECH'			: 'Architecture',
-		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: 'Virtualization',
-		'PROP_INSTANCE_AMI_KERNEL_ID'			: 'Kernel ID',
-		'PROP_INSTANCE_AMI_OS_TYPE'				: 'Type',
-		'PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE'	: 'Support Instance',
-
-		'PROP_INSTANCE_KEY_MONITORING'			: 'Monitoring',
-		'PROP_INSTANCE_KEY_ZONE'				: 'Zone',
-		'PROP_INSTANCE_AMI_Launch_Index'		: 'AMI Launch Index',
-		'PROP_INSTANCE_AMI_NETWORK_INTERFACE'	: 'Network Interface',
-
-		//###### instance property module
-
-		// ---
 		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
 		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
 
@@ -601,6 +616,18 @@ define({
 		'PROP_ENI_IP_ADDRESS'					: 'IP Address',
 		'PROP_ENI_ADD_IP'						: 'Add IP',
 		'PROP_ENI_SG_DETAIL'					: 'Security Groups',
+		'PROP_ENI_DEVICE_NAME'					: 'Device Name',
+		'PROP_ENI_STATE'						: 'State',
+		'PROP_ENI_ID'							: 'Network Interface ID',
+		'PROP_ENI_SHOW_DETAIL'					: 'More',
+		'PROP_ENI_HIDE_DETAIL'					: 'Hide',
+		'PROP_ENI_VPC_ID'						: 'VPC ID',
+		'PROP_ENI_SUBNET_ID'					: 'Subnet ID',
+		'PROP_ENI_ATTACHMENT_ID'				: 'Attachment ID',
+		'PROP_ENI_Attachment_OWNER'				: 'Owner',
+		'PROP_ENI_Attachment_STATE'				: 'State',
+		'PROP_ENI_MAC_ADDRESS'					: 'MAC Address',
+		'PROP_ENI_IP_OWNER'						: 'IP Owner',
 
 		//###### eni property
 
@@ -612,6 +639,7 @@ define({
 		'PROP_ELB_LISTENER_DETAIL'				: 'Listener Configuration',
 		'PROP_ELB_BTN_ADD_LISTENER'				: 'Add Listener',
 		'PROP_ELB_BTN_ADD_SERVER_CERTIFICATE'	: 'Add Server Certificate',
+		'PROP_ELB_SERVER_CERTIFICATE'			: 'Server Certificate',
 		'PROP_ELB_LBL_LISTENER_NAME'			: 'Name',
 		'PROP_ELB_LBL_LISTENER_DESCRIPTIONS'	: 'Listener Descriptions',
 		'PROP_ELB_LBL_LISTENER_PRIVATE_KEY'		: 'Private Key',
@@ -629,6 +657,13 @@ define({
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: 'Unhealthy Threshold',
 		'PROP_ELB_AVAILABILITY_ZONE'			: 'Availability Zones',
 		'PROP_ELB_SG_DETAIL'					: 'Security Groups',
+		'PROP_ELB_DNS_NAME'						: 'Dns',
+		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
+		'PROP_ELB_ELB_PROTOCOL'					: 'Load Balancer Protocol',
+		'PROP_ELB_PORT'							: 'Port',
+		'PROP_ELB_INSTANCE_PROTOCOL'			: 'Instance Protocol',
+		'PROP_ELB_DISTRIBUTION'					: 'Distribution',
+
 		//###### elb property
 
 		//###### autoscaling group property
@@ -640,8 +675,8 @@ define({
 		'PROP_ASG_MAX_SIZE'						: 'Maximum Size',
 		'PROP_ASG_DESIRE_CAPACITY'				: 'Desired Capacity',
 		'PROP_ASG_COOL_DOWN'					: 'Default Cooldown',
-		'PROP_ASG_DEFAULT_COOL_DOWN'			: 'Default Cooldown',
 		'PROP_ASG_INSTANCE'						: 'Instance',
+		'PROP_ASG_DEFAULT_COOL_DOWN'			: 'Default Cooldown',
 		'PROP_ASG_UNIT_SECONDS'					: 'Seconds',
 		'PROP_ASG_HEALTH_CHECK_TYPE'			: 'Health Check Type',
 		'PROP_ASG_HEALTH_CHECK_CRACE_PERIOD'	: 'Health Check Grace Period',
@@ -707,6 +742,7 @@ define({
 		//###### launch configuration property
 		'PROP_LC_TITLE'							: 'Launch Configuation',
 		'PROP_LC_NAME'							: 'Name',
+		'PROP_LC_CREATE_TIME'				    : 'Create Time',
 		//###### launch configuration property
 
 		//###### route table property
@@ -718,6 +754,9 @@ define({
 		'PROP_RT_SET_MAIN'								: 'Set as Main Route Table',
 		'PROP_RT_TARGET'								: 'Target',
 		'PROP_RT_DESTINATION'							: 'Destination',
+		'PROP_RT_ID'									: 'Route ID',
+		'PROP_RT_VPC_ID'								: 'VPC ID',
+
 		//###### route table property
 
 		/******navigation module******/
@@ -768,6 +807,9 @@ define({
 		'HEAD_LABEL_ACCOUNT_CHANGE'		  : 'Change',
 		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : 'Update',
 		'HEAD_LABEL_ACCOUNT_CANCEL'		  : 'Cancel',
+
+		'HEAD_LABEL_ACCOUNT_PERIOD'		  : '。',
+		'HEAD_LABEL_ACCOUNT_QUESTION'	  : '？',
 		'HEAD_LABEL_WELCOME'			  : 'Welcome',
 		'HEAD_LABEL_PROVIDE_CREDENTIAL'	  : 'Provide AWS Credentials',
 		'HEAD_LABEL_ACCOUNT_SKIP'		  : 'Skip',
@@ -781,7 +823,6 @@ define({
 		'HEAD_BTN_SUBMIT'				  : 'Submit',
 		'HEAD_BTN_CLOSE'				  : 'Close',
 		'HEAD_BTN_DONE'					  : 'Done',
-
 
 		'HEAD_INFO_ACCOUNT_LIST'		  : 'You have connected with following AWS account:',
 		'HEAD_INFO_REMOVE_CREDENTIAL1'	  : 'By removing Credentials, you will be in the demo mode.',
@@ -799,11 +840,15 @@ define({
 		'HEAD_ERR_AUTHENTICATION' 		  : 'Authentication failed. Please check your AWS Credentials and try again.',
 		'HEAD_CHANGE_CREDENTIAL'		  : 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. ',
 		'HEAD_INFO_CONFIRM_REMOVE'		  : 'Do you conﬁrm to remove AWS Credentials of account %s?',
+		'HEAD_INFO_CONNECTING'			  : 'Connecting AWS Account...',
 
+		'HEAD_TIP_AWS_ACCOUNT_ID' 		  : "Your AWS account number is shown in the upper-left area of your browser window when you're logged into your AWS Account. e.g., 123456789000",
+		'HEAD_TIP_ACCOUNT_ACCESS_KEY' 	  : "You will ﬁnd those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S",
+		'HEAD_TIP_ACCOUNT_SECRET_KEY'	  : "You will ﬁnd those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk",
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
-		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Chang other account id',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : 'Please chang other account id',
 		'HEAD_MSG_ERR_KEY_UPDATE'         : 'Update Key error, restore the previous key',
 		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : 'restore the demo key',
 
@@ -848,9 +893,7 @@ define({
 		'DASH_TIP_NO_RESOURCE_RIGHT'				: ' in this region',
 
 
-
 		'DASH_BTN_GLOBAL'							: 'Global',
-
 
 		'DASH_LBL_UNMANAGED'         				: 'Unmanaged',
 		'DASH_LBL_APP'								: 'App',
@@ -859,7 +902,6 @@ define({
 		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : 'Recently Launched App',
 		'DASH_LBL_NO_APP'							: 'There is no app in this region.<br />You can run app from a stack.',
 		'DASH_LBL_NO_STACK'							: 'There is no stack in this region yet.<br />Create a new stack from here.',
-
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : 'Running Instance',
 		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
@@ -902,7 +944,6 @@ define({
 		'DASH_LBL_TOPIC_NAME'	    	    		: 'Topic Name',
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: 'Endpoint and Protocol',
 		'DASH_LBL_CONFIRMATION'	    	    		: 'Confirmation',
-
 		'DASH_LBL_SUBNETS'	    	    			: 'Subnets',
 		'DASH_LBL_ASSOCIATION_ID'	    	    	: 'Association ID',
 		'DASH_LBL_ALLOCATION_ID'	    	    	: 'Allocation ID',
@@ -914,8 +955,8 @@ define({
 		'DASH_LBL_ENABLED_METRICS'	    			: 'Enabled Metrics',
 		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : 'Launch Configuration Name',
 		'DASH_LBL_LOADBALANCER_NAMES'	    		: 'LoadBalancer Names',
+		'DASH_LBL_MIN_SIZE'	    					: 'MinSize',
 		'DASH_LBL_MAX_SIZE'	    					: 'MaxSize',
-		'DASH_LBL_MAX_SIZE'	    					: 'MinSize',
 		'DASH_LBL_TERMINATION_POLICIES'	    		: 'Termination Policies',
 		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC Zone Identifier',
 
@@ -953,6 +994,14 @@ define({
 		'DASH_BUB_ROOTDEVICETYPE'	    	    	: 'Root Device Type',
 
 
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: 'Create stack as',
+		'DASH_POP_CREATE_STACK_CLASSIC'					: 'Classic Mode',
+		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: 'Resources will be created in classic platform',
+		'DASH_POP_CREATE_STACK_VPC'						: 'VPC Mode',
+		'DASH_POP_CREATE_STACK_VPC_INTRO'				: 'Resources will be created in new VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: 'Default VPC',
+		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: 'Customized VPC',
+		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: 'Resources will be created in default VPC',
 
 		//###### dashboard module
 
@@ -1009,7 +1058,6 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 
 		'IDE_LBL_LAST_STATUS_CHANGE'					: "Last Changed",
-		'IDE_LBL_ENABLED_METRICS'						: "Last Changed",
 
 		//###### ide
 

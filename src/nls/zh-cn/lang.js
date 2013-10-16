@@ -96,6 +96,7 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : '抱歉，模板/应用的格式太旧了，无法打开.',
 		'IDE_MSG_ERR_OPEN_TAB'        : '无法打开 模板/应用, 请重试',
 		'IDE_MSG_ERR_CONNECTION'      : '无法加载部分IDE内容，请重试',
 
@@ -245,7 +246,7 @@ define({
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s 成功。',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s 失败。',
 		'TOOL_MSG_ERR_SAVE_FAILED'              : '保存模块 %s 失败，请您检查并重新保存。',
-
+		// Add new strings below this comment. Move above once English has been confirmed
 		'TOOLBAR_HANDLE_SAVE_STACK'             : '保存模块',
 		'TOOLBAR_HANDLE_CREATE_STACK'           : '创建模块',
 		'TOOLBAR_HANDLE_DUPLICATE_STACK'        : '复制模块',
@@ -254,7 +255,7 @@ define({
 		'TOOLBAR_HANDLE_START_APP'              : '恢复应用',
 		'TOOLBAR_HANDLE_STOP_APP'               : '暂停应用',
 		'TOOLBAR_HANDLE_TERMINATE_APP'          : '销毁应用',
-		// Add new strings below this comment. Move above once English has been confirmed
+		
 		//refresh button
 		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : '完成应用( %s )的资源刷新。',
 		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : '刷新应用( %s )的资源失败, 请点击刷新按钮来重试。',
@@ -269,6 +270,8 @@ define({
 		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
 		/******property module******/
+
+		'PROP_LBL_REQUIRED'                     : '必填',
 
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: '实例设置',
@@ -327,8 +330,6 @@ define({
 		//###### instance property module
 
 
-
-		'PROP_LBL_REQUIRED'                     : '必填',
 
 		//##### stack property module
 		'PROP_STACK_LBL_NAME'                       : '模版名称',
@@ -825,8 +826,8 @@ define({
 		'HEAD_INFO_REMOVE_CREDENTIAL2'	  : '如果想启动应用，您需要提供有效的AWS证书。',
 		'HEAD_INFO_REMOVE_CREDENTIAL3'	  : '因为资源不一致的原因，在更新为可用的AWS证书后，您使用试用证书设计的模块不能被启动。',
 		'HEAD_INFO_LOADING'			  	  : '加载中...',
-		'HEAD_WARN_UPDATE_CREDENTIAL'	  : '还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。',
 		'HEAD_INFO_LOADING_RESOURCE'	  : '加载资源中...',
+		'HEAD_WARN_UPDATE_CREDENTIAL'	  : '还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。',
 
 		'HEAD_INFO_PROVIDE_CREDENTIAL1'   : '现在想提供AWS证书吗？',
 		'HEAD_INFO_DEMO_MODE'			  : '您可以使用试用证书进行模板设计，但有以下缺点：',
@@ -841,22 +842,27 @@ define({
 		'HEAD_TIP_AWS_ACCOUNT_ID' 		  : "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000",
 		'HEAD_TIP_ACCOUNT_ACCESS_KEY' 	  : "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S",
 		'HEAD_TIP_ACCOUNT_SECRET_KEY'	  : "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk",
-
-
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : '无效的帐户ID',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : '无效的访问密钥',
 		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : '无效的密钥',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : '账号相同，请输入不同的账号',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : '修改账号失败，恢复上一个账号',
+		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : '恢复到演示账号',
 
 		// account profile
 		'HEAD_MSG_ERR_NULL_PASSWORD'      : '请提供旧密码和新密码来完成重设密码操作。',
 		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : '密码最少6位且不能和您的用户名相同',
 		'HEAD_MSG_ERR_ERROR_PASSWORD'     : '密码错误',
 		'HEAD_MSG_ERR_RESET_PASSWORD'     : '忘记密码?',
-		'HEAD_MSG_INFO_UPDATE_EMAIL'      : '电子邮件地址修改成功。',
 		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : '密码修改成功。',
-		'HEAD_MSG_ERR_UPDATE_EMAIL'       : '电子邮件地址修改失败。',
-		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : '密码修改失败。',
-
+		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : '修改密码失败。',
+		'HEAD_MSG_ERR_WRONG_PASSWORD'	  : '密码错误',
+		'HEAD_MSG_INFO_FORGET_PASSWORD'	  : '是否重置密码?',
+		'HEAD_MSG_INFO_UPDATE_EMAIL'      : '电子邮件地址修改成功。',
+		'HEAD_MSG_ERR_UPDATE_EMAIL1'      : '修改邮箱地址失败',
+		'HEAD_MSG_ERR_UPDATE_EMAIL2'	  : '邮箱地址已被使用',
+		'HEAD_MSG_ERR_UPDATE_EMAIL3'	  : '非有效邮箱地址',
+		
 		'HEAD_LABEL_TOUR_DESIGN_DIAGRAM'  : '拖放到设计图',
 		'HEAD_LABEL_TOUR_CONNECT_PORT'    : '连接端口',
 		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '配置属性',
@@ -876,7 +882,6 @@ define({
 		'BEFOREUNLOAD_MESSAGE'            : '您有未保存的更改。',
 
 		//###### dashboard module
-
 		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: '资源更新完毕',
 
 
@@ -937,7 +942,6 @@ define({
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 		'DASH_LBL_SUBNETS'	    	    			: '子网',
-
 		'DASH_LBL_ASSOCIATION_ID'	    	    	: '关联 ID',
 		'DASH_LBL_ALLOCATION_ID'	    	    	: '分配 ID',
 		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : '网络接口 ID',
@@ -948,34 +952,34 @@ define({
 		'DASH_LBL_ENABLED_METRICS'	    			: '开启的指标',
 		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : '启动配置名称',
 		'DASH_LBL_LOADBALANCER_NAMES'	    		: '负载均衡器名称',
-		'DASH_LBL_MAX_SIZE'	    					: '最大值',
 		'DASH_LBL_MIN_SIZE'	    					: '最小值',
+		'DASH_LBL_MAX_SIZE'	    					: '最大值',
 		'DASH_LBL_TERMINATION_POLICIES'	    		: '结束策略',
 		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC区域标识符',
 
-        'DASH_LBL_ACTIONS_ENABLED'                  : '操作启用',
-        'DASH_LBL_ALARM_ACTIONS'                    : '警报操作',
-        'DASH_LBL_ALARM_ARN'                        : '警报 ARN',
-        'DASH_LBL_ALARM_DESCRIPTION'                : '警报描述',
-        'DASH_LBL_ALARM_NAME'                       : '警报名称',
-        'DASH_LBL_COMPARISON_OPERATOR'              : '比较操作符',
-        'DASH_LBL_DIMENSIONS'                       : '维度',
-        'DASH_LBL_EVALUATION_PERIODS'               : '评估周期',
-        'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'        : '数据不足操作',
-        'DASH_LBL_METRIC_NAME'                      : '指标名称',
-        'DASH_LBL_NAMESPACE'                        : '命名空间',
-        'DASH_LBL_OK_ACTIONS'                       : 'OK操作',
-        'DASH_LBL_PERIOD'                           : '周期',
-        'DASH_LBL_STATISTIC'                        : '统计数据',
-        'DASH_LBL_STATE_VALUE'                      : '状态值',
-        'DASH_LBL_THRESHOLD'                        : '阈值',
-        'DASH_LBL_UNIT'                             : '单位',
+		'DASH_LBL_ACTIONS_ENABLED'                  : '操作启用',
+		'DASH_LBL_ALARM_ACTIONS'                    : '警报操作',
+		'DASH_LBL_ALARM_ARN'                        : '警报 ARN',
+		'DASH_LBL_ALARM_DESCRIPTION'                : '警报描述',
+		'DASH_LBL_ALARM_NAME'                       : '警报名称',
+		'DASH_LBL_COMPARISON_OPERATOR'              : '比较操作符',
+		'DASH_LBL_DIMENSIONS'                       : '维度',
+		'DASH_LBL_EVALUATION_PERIODS'               : '评估周期',
+		'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'        : '数据不足操作',
+		'DASH_LBL_METRIC_NAME'                      : '指标名称',
+		'DASH_LBL_NAMESPACE'                        : '命名空间',
+		'DASH_LBL_OK_ACTIONS'                       : 'OK操作',
+		'DASH_LBL_PERIOD'                           : '周期',
+		'DASH_LBL_STATISTIC'                        : '统计数据',
+		'DASH_LBL_STATE_VALUE'                      : '状态值',
+		'DASH_LBL_THRESHOLD'                        : '阈值',
+		'DASH_LBL_UNIT'                             : '单位',
 
-        'DASH_LBL_ENDPOINT'                         : '终端',
-        'DASH_LBL_OWNER'                            : '拥有者',
-        'DASH_LBL_PROTOCOL'                         : '协议',
-        'DASH_LBL_SUBSCRIPTION_ARN'                 : '订阅 ARN',
-        'DASH_LBL_TOPIC_ARN'                        : '主题 ARN',
+		'DASH_LBL_ENDPOINT'                         : '终端',
+		'DASH_LBL_OWNER'                            : '拥有者',
+		'DASH_LBL_PROTOCOL'                         : '协议',
+		'DASH_LBL_SUBSCRIPTION_ARN'                 : '订阅 ARN',
+		'DASH_LBL_TOPIC_ARN'                        : '主题 ARN',
 
 		'DASH_BUB_NAME'	    	    				: '名称',
 		'DASH_BUB_DESCRIPTION'						: '描述',
@@ -998,34 +1002,34 @@ define({
 
 		//###### dashboard module
 
-        //###### community amis module
+		//###### community amis module
 
-        'AMI_LBL_COMMUNITY_AMIS'                    : '社区映像',
-        'AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID'      : '根据名称或ID搜索映像',
-        'AMI_LBL_ALL_PLATFORMS'                     : '所有平台',
+		'AMI_LBL_COMMUNITY_AMIS'                    : '社区映像',
+		'AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID'      : '根据名称或ID搜索映像',
+		'AMI_LBL_ALL_PLATFORMS'                     : '所有平台',
 
-        'AMI_LBL_VISIBILITY'                        : '可见性',
-        'AMI_LBL_ARCHITECTURE'                      : '架构',
-        'AMI_LBL_ROOT_DEVICE_TYPE'                  : '根设备类型',
+		'AMI_LBL_VISIBILITY'                        : '可见性',
+		'AMI_LBL_ARCHITECTURE'                      : '架构',
+		'AMI_LBL_ROOT_DEVICE_TYPE'                  : '根设备类型',
 
-        'AMI_LBL_PUBLIC'                            : '公用',
-        'AMI_LBL_PRIVATE'                           : '私有',
-        'AMI_LBL_32_BIT'                            : '32位',
-        'AMI_LBL_64_BIT'                            : '64位',
-        'AMI_LBL_EBS'                               : 'EBS',
-        'AMI_LBL_INSTANCE_STORE'                    : '实例存储',
+		'AMI_LBL_PUBLIC'                            : '公用',
+		'AMI_LBL_PRIVATE'                           : '私有',
+		'AMI_LBL_32_BIT'                            : '32位',
+		'AMI_LBL_64_BIT'                            : '64位',
+		'AMI_LBL_EBS'                               : 'EBS',
+		'AMI_LBL_INSTANCE_STORE'                    : '实例存储',
 
-        'AMI_LBL_SEARCH'                            : '搜索',
-        'AMI_LBL_SEARCHING'                         : '搜索中...',
+		'AMI_LBL_SEARCH'                            : '搜索',
+		'AMI_LBL_SEARCHING'                         : '搜索中...',
 
-        'AMI_LBL_AMI_ID'                            : '映像 ID',
-        'AMI_LBL_AMI_NAME'                          : '映像名称',
-        'AMI_LBL_ARCH'                              : '架构',
+		'AMI_LBL_AMI_ID'                            : '映像 ID',
+		'AMI_LBL_AMI_NAME'                          : '映像名称',
+		'AMI_LBL_ARCH'                              : '架构',
 
-        'AMI_LBL_PAGEINFO'                          : '当前显示 %s 条，共有 %s 条',
+		'AMI_LBL_PAGEINFO'                          : '当前显示 %s 条，共有 %s 条',
 
 
-        //###### community amis module
+		//###### community amis module
 
 		//###### ide
 
@@ -1056,10 +1060,34 @@ define({
 		//###### popup
 
 		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : '当前不可用。口令生成和加密通常需要30分钟时间。启动实例后在拿到生成的口令前，请至少等待15分钟。',
-
 		'POP_BTN_CLOSE'     		      : '关闭'
 
 		//###### popup
 
+	},
+	'service' : {
+		'ERROR_CODE_0_MESSAGE'  : '',//invoke API succeeded
+		'ERROR_CODE_1_MESSAGE'  : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_2_MESSAGE'  : '对不起,我们有一些技术问题,请稍后再试',
+		'ERROR_CODE_3_MESSAGE'  : '',//no use
+		'ERROR_CODE_4_MESSAGE'  : '',//no use
+		'ERROR_CODE_5_MESSAGE'  : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_6_MESSAGE'  : '',//no use
+		'ERROR_CODE_7_MESSAGE'  : '',//for guest
+		'ERROR_CODE_8_MESSAGE'  : '',//no use
+		'ERROR_CODE_9_MESSAGE'  : '对不起,您的AWS凭证没有足够的权限',
+		'ERROR_CODE_10_MESSAGE' : '',//no use
+		'ERROR_CODE_11_MESSAGE' : '',//no use
+		'ERROR_CODE_12_MESSAGE' : '对不起,我们有一些技术问题,请稍后再试',
+		'ERROR_CODE_13_MESSAGE' : '',//no use
+		'ERROR_CODE_14_MESSAGE' : '',//no use
+		'ERROR_CODE_15_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_16_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_17_MESSAGE' : '',//no use
+		'ERROR_CODE_18_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_19_MESSAGE' : '对不起，你的会话已过期，请重新登录',
+		'ERROR_CODE_20_MESSAGE' : '对不起，邀请已经结束',//for guest
+		'ERROR_CODE_21_MESSAGE' : '对不起，此账号已被锁住'
+		// Add new strings below this comment. Move above once English has been confirmed
 	}
 });

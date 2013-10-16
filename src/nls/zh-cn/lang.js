@@ -809,6 +809,9 @@ define({
 		'HEAD_LABEL_WELCOME'			  : '欢迎',
 		'HEAD_LABEL_PROVIDE_CREDENTIAL'	  : '请提供AWS证书',
 		'HEAD_LABEL_ACCOUNT_SKIP'		  : '跳过',
+		'HEAD_LABEL_ACCOUNT_ID'			  : '账户编号',
+		'HEAD_LABEL_ACCOUNT_ACCESS_KEY'   : '访问码编号',
+		'HEAD_LABEL_ACCOUNT_SECRET_KEY'	  : '密匙',
 
 		'HEAD_BTN_CHANGE'			  	  : '修改',
 		'HEAD_BTN_UPDATE'			  	  : '更新',

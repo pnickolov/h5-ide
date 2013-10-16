@@ -771,6 +771,9 @@ define({
 		'HEAD_LABEL_WELCOME'			  : 'Welcome',
 		'HEAD_LABEL_PROVIDE_CREDENTIAL'	  : 'Provide AWS Credentials',
 		'HEAD_LABEL_ACCOUNT_SKIP'		  : 'Skip',
+		'HEAD_LABEL_ACCOUNT_ID'			  : 'Account Number',
+		'HEAD_LABEL_ACCOUNT_ACCESS_KEY'   : 'Access Key ID',
+		'HEAD_LABEL_ACCOUNT_SECRET_KEY'	  : 'Secret Key',
 
 		'HEAD_BTN_CHANGE'			  	  : 'Change',
 		'HEAD_BTN_UPDATE'			  	  : 'Update',

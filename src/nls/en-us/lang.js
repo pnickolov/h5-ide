@@ -994,14 +994,14 @@ define({
 		'DASH_BUB_ROOTDEVICETYPE'	    	    	: 'Root Device Type',
 
 
-		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'	: 'Create stack as',
-		'DASH_POP_CREATE_STACK_CLASSIC'					: 'Classic Mode',
-		'DASH_POP_CREATE_STACK_CLASSIC_INTRO'			: 'Resources will be created in classic platform',
-		'DASH_POP_CREATE_STACK_VPC'						: 'VPC Mode',
-		'DASH_POP_CREATE_STACK_VPC_INTRO'				: 'Resources will be created in new VPC',
-		'DASH_POP_CREATE_STACK_DEFAULT_VPC'				: 'Default VPC',
-		'DASH_POP_CREATE_STACK_CUSTOM_VPC'				: 'Customized VPC',
-		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: 'Resources will be created in default VPC',
+		'DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN'    : 'Create this stack in',
+        'DASH_POP_CREATE_STACK_CLASSIC'                 : 'Classic',
+        'DASH_POP_CREATE_STACK_CLASSIC_INTRO'           : 'Resources will be created into the Classic platform',
+        'DASH_POP_CREATE_STACK_VPC'                     : 'VPC',
+        'DASH_POP_CREATE_STACK_VPC_INTRO'               : 'Resources will be created into a newly created VPC',
+        'DASH_POP_CREATE_STACK_DEFAULT_VPC'             : 'Default VPC',
+        'DASH_POP_CREATE_STACK_CUSTOM_VPC'              : 'Custom VPC',
+        'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'       : 'Resources will be created into the default VPC',
 
 		//###### dashboard module
 

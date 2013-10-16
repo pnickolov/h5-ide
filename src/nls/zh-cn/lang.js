@@ -995,6 +995,35 @@ define({
 
 		//###### dashboard module
 
+        //###### community amis module
+
+        'AMI_LBL_COMMUNITY_AMIS'                    : '社区映像',
+        'AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID'      : '根据名称或ID搜索映像',
+        'AMI_LBL_ALL_PLATFORMS'                     : '所有平台',
+
+        'AMI_LBL_VISIBILITY'                        : '可见性',
+        'AMI_LBL_ARCHITECTURE'                      : '架构',
+        'AMI_LBL_ROOT_DEVICE_TYPE'                  : '根设备类型',
+
+        'AMI_LBL_PUBLIC'                            : '公用',
+        'AMI_LBL_PRIVATE'                           : '私有',
+        'AMI_LBL_32_BIT'                            : '32位',
+        'AMI_LBL_64_BIT'                            : '64位',
+        'AMI_LBL_EBS'                               : 'EBS',
+        'AMI_LBL_INSTANCE_STORE'                    : '实例存储',
+
+        'AMI_LBL_SEARCH'                            : '搜索',
+        'AMI_LBL_SEARCHING'                         : '搜索中...',
+
+        'AMI_LBL_AMI_ID'                            : '映像 ID',
+        'AMI_LBL_AMI_NAME'                          : '映像名称',
+        'AMI_LBL_ARCH'                              : '架构',
+
+        'AMI_LBL_PAGEINFO'                          : '当前显示 %s 条，共有 %s 条',
+
+
+        //###### community amis module
+
 		//###### ide
 
 		'IDE_COM_CREATE_NEW_STACK'						: '创建模板',

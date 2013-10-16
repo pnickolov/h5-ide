@@ -839,8 +839,8 @@ define({
 		'HEAD_INFO_CONNECTING'			  : '正在连接AWS账号',
 
 		'HEAD_TIP_AWS_ACCOUNT_ID' 		  : "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000",
-		'HEAD_TIP_ACCOUNT_ACCESS_KEY' 	  : "通过点击 账号 > 安全性认证 菜单，然后切换到页面中间的 访问码 页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S",
-		'HEAD_TIP_ACCOUNT_SECRET_KEY'	  : "通过点击 账号 > 安全性认证 菜单，然后切换到页面中间的 访问码 页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk",
+		'HEAD_TIP_ACCOUNT_ACCESS_KEY' 	  : "通过点击 账号 &gt; 安全性认证 菜单，然后切换到页面中间的 访问码 页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S",
+		'HEAD_TIP_ACCOUNT_SECRET_KEY'	  : "通过点击 账号 &gt; 安全性认证 菜单，然后切换到页面中间的 访问码 页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk",
 
 
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : '无效的帐户ID',

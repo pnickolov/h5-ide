@@ -605,7 +605,7 @@ Loading...
 		</div>
 		{{/if}}
 	{{else}}
-		<div class="blank-widget">There is no app in this region.<br />You can run app from a stack.</div>
+		<div class="blank-widget">{{ i18n "DASH_LBL_NO_APP" }}</div>
 	{{/each}}
 
 <!--{{ .stat-stack }}-->
@@ -623,7 +623,7 @@ Loading...
 		</div>
 	{{else}}
 		<div class="blank-widget">
-			There is no stack in this region yet.<br />Create a new stack from here.
+			{{ i18n "DASH_LBL_NO_STACK" }}
 			<img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
 		</div>
 	{{/each}}

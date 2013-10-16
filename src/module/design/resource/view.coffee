@@ -4,11 +4,11 @@
 
 define [ 'event',
          'constant'
-         'backbone', 'jquery', 'handlebars',
+         'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
          'UI.selectbox', 'UI.toggleicon',
          # 'UI.searchbar',
          'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
-], ( ide_event, constant, Backbone, $ ) ->
+], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {
 
@@ -276,7 +276,7 @@ define [ 'event',
         communityShowLoading: () ->
             $( "#ami-table-wrap .scroll-content" ).hide()
             $( ".show-loading" ).show()
-            $( "#btn-search-ami" ).text( "Searching..." ).attr( "disabled", "" )
+            $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCHING ).attr( "disabled", "" )
             $( "#community-ami-page>div" ).hide()
             $("#ami-count").empty().html("Total: 0")
 
@@ -284,12 +284,14 @@ define [ 'event',
         communityShowContent: () ->
             $( ".show-loading" ).hide()
             $( "#ami-table-wrap .scroll-content" ).show()
-            $( "#btn-search-ami" ).text( "Search" ).removeAttr( "disabled" )
+            $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCH ).removeAttr( "disabled" )
             $( "#community-ami-page>div" ).show()
 
         communityPagerRender: ( current_page, max_page, total ) ->
             resourceView = @
-            $( '.page-tip' ).text "Showing #{if total > 50 then 50 else total} of #{total} results"
+            pageSize = if total > 50 then 50 else total
+
+            $( '.page-tip' ).text sprintf lang.ide.AMI_LBL_PAGEINFO, pageSize, total
 
             pagination = $ '.pagination'
 
@@ -307,7 +309,7 @@ define [ 'event',
             pagination.jqPagination({
                 current_page: current_page,
                 max_page: max_page,
-                page_string: '{current_page} of {max_page}'
+                page_string: "{current_page} / {max_page}"
                 paged: ((current_page, max_page) ->
                     (page) ->
                         if page isnt current_page and max_page >= page > 0

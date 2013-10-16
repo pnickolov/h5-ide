@@ -11,7 +11,8 @@ define({
 		'login-btn'      			: '登录',
 		'login-loading'  			: '正在登录',
 		'login_waiting'	 			: '稍等...',
-		'madeira-offered-in'		: 'Madeira 还提供'
+		'madeira-offered-in'		: '&copy; MadeiraCloud 还提供'
+		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'register' : {
 		'register'					: '注册',
@@ -96,12 +97,13 @@ define({
 
 		/******ide******/
 		// Add new strings below this comment. Move above once English has been confirmed
-		'IDE_MSG_ERR_OPEN_TAB'        : 'Unable to open the stack/app, please try again',
-		'IDE_MSG_ERR_CONNECTION'      : 'Unable to load some parts of the IDE, please refresh the browser',
+		'IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB' : '抱歉，模板/应用的格式太旧了，无法打开.',
+		'IDE_MSG_ERR_OPEN_TAB'        : '无法打开 模板/应用, 请重试',
+		'IDE_MSG_ERR_CONNECTION'      : '无法加载部分IDE内容，请重试',
 
 		/******resource panel module******/
 		'RES_TIT_RESOURCES'           : '资源',
-		'RES_TIT_AZ'                  : '可用区',
+		'RES_TIT_AZ'                  : '可用区域',
 		'RES_TIT_AMI'                 : '虚拟机映像',
 		'RES_TIT_VOL'                 : '虚拟磁盘和快照',
 		'RES_TIT_ELB_ASG'             : '负载均衡器和自动伸缩组',
@@ -109,72 +111,72 @@ define({
 		'RES_LBL_QUICK_START_AMI'     : '推荐的映像',
 		'RES_LBL_MY_AMI'              : '我的映像',
 		'RES_LBL_FAVORITE_AMI'        : '收藏的映像',
-		'RES_LBL_NEW_VOL'             : 'New Volume',
-		'RES_LBL_NEW_ELB'             : 'Load Balancer',
-		'RES_LBL_NEW_ASG'             : 'Auto Scaling Group',
-		'RES_LBL_NEW_ASG_NO_CONFIG'   : 'No Config',
-		'RES_LBL_NEW_SUBNET'          : 'Subnet',
-		'RES_LBL_NEW_RTB'             : 'Route Table',
-		'RES_LBL_NEW_IGW'             : 'Internet Gateway',
-		'RES_LBL_NEW_VGW'             : 'Virtual Gateway',
-		'RES_LBL_NEW_CGW'             : 'Customer Gateway',
-		'RES_LBL_NEW_ENI'             : 'Network Interface',
+		'RES_LBL_NEW_VOL'             : '新的卷',
+		'RES_LBL_NEW_ELB'             : '负载均衡器',
+		'RES_LBL_NEW_ASG'             : 'Auto Scaling 组',
+		'RES_LBL_NEW_ASG_NO_CONFIG'   : '无配置',
+		'RES_LBL_NEW_SUBNET'          : '子网',
+		'RES_LBL_NEW_RTB'             : '路由表',
+		'RES_LBL_NEW_IGW'             : '因特网网关',
+		'RES_LBL_NEW_VGW'             : '虚拟网关',
+		'RES_LBL_NEW_CGW'             : '客户网关',
+		'RES_LBL_NEW_ENI'             : '网络接口',
 		'RES_BTN_BROWSE_COMMUNITY_AMI': '浏览映像',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'RES_TIP_TOGGLE_RESOURCE_PANEL' : 'Show/Hide Resource Panel',
-		'RES_TIP_DRAG_AZ'               : 'Drag to the canvas to use this availability zone',
-		'RES_TIP_DRAG_NEW_VOLUME'       : 'Drag onto an instance to attach a new volume.',
-		'RES_TIP_DRAG_NEW_ELB'          : 'Drag to the canvas to create a new load balancer.',
-		'RES_TIP_DRAG_NEW_ASG'          : 'Drag to the canvas to create a new auto scaling group.',
-		'RES_TIP_DRAG_NEW_SUBNET'       : 'Drag to an availability zone to create a new subnet.',
-		'RES_TIP_DRAG_NEW_RTB'          : 'Drag to a VPC to create a new route table.',
-		'RES_TIP_DRAG_NEW_IGW'          : 'Drag to the canvas to create a new internet gateway.',
-		'RES_TIP_DRAG_NEW_VGW'          : 'Drag to the canvas to create a new virtual gateway.',
-		'RES_TIP_DRAG_NEW_CGW'          : 'Drag to the canvas to create a new customer gateway.',
-		'RES_TIP_DRAG_NEW_ENI'          : 'Drag to a subnet to create a new network interface.',
-		'RES_TIP_DRAG_HAS_IGW'          : 'This VPC already has an internet gateway.',
-		'RES_TIP_DRAG_HAS_VGW'          : 'This VPC already has a virtual gateway.',
+		'RES_TIP_TOGGLE_RESOURCE_PANEL' : '显示/隐藏 资源面板',
+		'RES_TIP_DRAG_AZ'               : '拖放到画板来使用这个可用区域',
+		'RES_TIP_DRAG_NEW_VOLUME'       : '拖放到一个实例来附加一个新卷。',
+		'RES_TIP_DRAG_NEW_ELB'          : '拖放到画板来创建一个新负载均衡器。',
+		'RES_TIP_DRAG_NEW_ASG'          : '拖放到画板来创建一个新Auto Scaling组。',
+		'RES_TIP_DRAG_NEW_SUBNET'       : '拖放到一个可用区域来创建一个新子网。',
+		'RES_TIP_DRAG_NEW_RTB'          : '拖放到一个VPC来创建一个路由表。',
+		'RES_TIP_DRAG_NEW_IGW'          : '拖放到画板来创建一个新互联网网关。',
+		'RES_TIP_DRAG_NEW_VGW'          : '拖放到画板来创建一个新虚拟网关。',
+		'RES_TIP_DRAG_NEW_CGW'          : '拖放到画板来创建一个新客户网关。',
+		'RES_TIP_DRAG_NEW_ENI'          : '拖放到一个子网来创建一个新网络接口。',
+		'RES_TIP_DRAG_HAS_IGW'          : '这个VPC已经有了一个互联网网关。',
+		'RES_TIP_DRAG_HAS_VGW'          : '这个VPC已经有了一个虚拟网关。',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: 'Unable to load community AMIs',
-		'RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS'		: 'AMI is added to Favorite AMI',
-		'RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED'		: 'Failed to add AMI to Favorite',
-		'RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS'	: 'AMI is removed from Favorite AMI',
-		'RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED'	: 'Failed to remove AMI from Favorite',
+		'RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED'		: '不能加载社区映像',
+		'RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS'		: '收藏映像成功',
+		'RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED'		: '收藏映像失败',
+		'RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS'	: '映像已从收藏列表中移除',
+		'RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED'	: '映像从收藏列表移除失败',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/******canvas module******/
-		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : 'Volumes and snapshots must be dragged to an instance or image.',
-		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : 'Subnets must be dragged to an availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : 'Instances must be dragged to a subnet or auto scaling group.',
-		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : 'Instances must be dragged to an availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_ENI'             : 'Network interfaces must be dragged to a subnet.',
-		'CVS_MSG_WARN_NOTMATCH_RTB'             : 'Route tables must be dragged inside a VPC but outside an availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_ELB'             : 'Load balancer must be dropped outside availability zone.',
-		'CVS_MSG_WARN_NOTMATCH_CGW'             : 'Customer gateways must be dragged outside the VPC.',
-		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : 'Nodes cannot overlap eachother.',
-		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s's type %s supports a maximum of %s network interfaces (including the primary).",
-		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : 'Network interfaces can only be attached to an instance in the same availability zone.',
-		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : 'Network interfaces must be in the same availability zone as the instance they are attached to.',
-		'CVS_MSG_ERR_DROP_ASG'                  : '%s is already in %s.',
-		'CVS_MSG_ERR_DEL_LC'                    : 'Currently modifying the launch configuration is not supported.',
-		'CVS_MSG_ERR_DEL_MAIN_RT'               : 'The main route table %s cannot be deleted. Please set another route table as the main and try again.',
-		'CVS_MSG_ERR_DEL_LINKED_RT'             : 'Subnets must be associated to a route table. Please associate the subnets with another route table first.',
-		'CVS_MSG_ERR_DEL_SBRT_LINE'             : 'Subnets must be associated with a route table.',
-		'CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE'     : 'Load balancer must attach to one subnet per Availability Zone.',
-		'CVS_MSG_ERR_DEL_LINKED_ELB'            : 'This subnet cannot be deleted because it is associated to a load balancer.',
-		'CVS_CFM_DEL'                           : 'Delete %s',
-		'CVS_CFM_DEL_IGW'                       : 'Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?',
-		'CVS_CFM_DEL_GROUP'                     : "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?",
-		'CVS_CFM_DEL_ASG'                       : 'Deleting this will delete the entire %s. Are you sure you want to delete it?',
-		'CVS_CFM_ADD_IGW'                       : 'An Internet Gateway is Required',
-		'CVS_CFM_ADD_IGW_MSG'                   : 'Automatically add an internet gateway to allow this %s to be publicly addressable?',
-		'CVS_MSG_ERR_ZOOMED_DROP_ERROR'         : 'Please reset the zoom to 100% before adding new resources.',
-		'CVS_TIP_EXPAND_W'						: 'Increase Canvas Width',
-		'CVS_TIP_SHRINK_W'						: 'Decrease Canvas Width',
-		'CVS_TIP_EXPAND_H'						: 'Increase Canvas Height',
-		'CVS_TIP_SHRINK_H'						: 'Decrease Canvas Height',
+		'CVS_MSG_WARN_NOTMATCH_VOLUME'          : '卷和快照必须拖放到实例或映像。',
+		'CVS_MSG_WARN_NOTMATCH_SUBNET'          : '子网必须拖放到可用区域。',
+		'CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET' : '实例必须拖放到子网或Auto Scaling组。',
+		'CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ'     : '实例必须拖放到可用区域。',
+		'CVS_MSG_WARN_NOTMATCH_ENI'             : '网络接口必须拖放到子网。',
+		'CVS_MSG_WARN_NOTMATCH_RTB'             : '路由表必须拖放到可用区域外的VPC部分。',
+		'CVS_MSG_WARN_NOTMATCH_ELB'             : '负载均衡器必须拖放到可用区域以外。',
+		'CVS_MSG_WARN_NOTMATCH_CGW'             : '客户网关必须拖放到VPC以外。',
+		'CVS_MSG_WARN_COMPONENT_OVERLAP'        : '节点不能互相重叠。',
+		'CVS_WARN_EXCEED_ENI_LIMIT'             : "%s 的 %s 最多支持%s个网络接口 (包括主要的)。",
+		'CVS_MSG_ERR_CONNECT_ENI_AMI'           : '网络接口只能连接到同一个可用区域的实例。',
+		'CVS_MSG_ERR_MOVE_ATTACHED_ENI'         : '网络接口必须跟它附加的实例在同一个可用区域。',
+		'CVS_MSG_ERR_DROP_ASG'                  : '%s已经存在于%s中。',
+		'CVS_MSG_ERR_DEL_LC'                    : '目前还不支持修改启动配置。',
+		'CVS_MSG_ERR_DEL_MAIN_RT'               : '主路由表：%s 不能被删除。 请将其他路由表设为主路由表后再重试。',
+		'CVS_MSG_ERR_DEL_LINKED_RT'             : '子网必须与路由表关联，请先将这个子网与一个路由表关联起来。',
+		'CVS_MSG_ERR_DEL_SBRT_LINE'             : '子网必须与路由表关联。',
+		'CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE'     : '每个可用区域中的负载均衡器只能连接一个子网。',
+		'CVS_MSG_ERR_DEL_LINKED_ELB'            : '由于这个子网关联着负载均衡器，所以它不能被删除。',
+		'CVS_CFM_DEL'                           : '删除 %s',
+		'CVS_CFM_DEL_IGW'                       : '如果没有互联网网关，面向互联网的负载均衡器和弹性IP将失去作用。确定要删除它吗？',
+		'CVS_CFM_DEL_GROUP'                     : "删除 %s 会同时删除其中的所有资源， 确定要删除它吗？",
+		'CVS_CFM_DEL_ASG'                       : '删除它会删除整个 %s，确定要删除它吗?',
+		'CVS_CFM_ADD_IGW'                       : '必须要有一个互联网网关',
+		'CVS_CFM_ADD_IGW_MSG'                   : '自动添加一个互联网网关允许这个 %s 被公开寻址?',
+		'CVS_MSG_ERR_ZOOMED_DROP_ERROR'         : '在添加新资源前，请重设缩放至100%。',
+		'CVS_TIP_EXPAND_W'						: '增加画板宽度',
+		'CVS_TIP_SHRINK_W'						: '减少画板宽度',
+		'CVS_TIP_EXPAND_H'						: '增加画板高度',
+		'CVS_TIP_SHRINK_H'						: '减少画板宽度',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 
@@ -245,7 +247,7 @@ define({
 		'TOOL_MSG_INFO_HDL_SUCCESS'             : '%s %s 成功。',
 		'TOOL_MSG_ERR_HDL_FAILED'               : '%s %s 失败。',
 		'TOOL_MSG_ERR_SAVE_FAILED'              : '保存模块 %s 失败，请您检查并重新保存。',
-
+		// Add new strings below this comment. Move above once English has been confirmed
 		'TOOLBAR_HANDLE_SAVE_STACK'             : '保存模块',
 		'TOOLBAR_HANDLE_CREATE_STACK'           : '创建模块',
 		'TOOLBAR_HANDLE_DUPLICATE_STACK'        : '复制模块',
@@ -254,12 +256,12 @@ define({
 		'TOOLBAR_HANDLE_START_APP'              : '恢复应用',
 		'TOOLBAR_HANDLE_STOP_APP'               : '暂停应用',
 		'TOOLBAR_HANDLE_TERMINATE_APP'          : '销毁应用',
-		// Add new strings below this comment. Move above once English has been confirmed
+
 		//refresh button
-		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : 'Refresh resources for app( %s ) complete.',
-		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : 'Refresh resources for app( %s ) falied, please click refresh tool button to retry.',
-		'TOOL_MSG_INFO_APP_REFRESH_START'       : 'Refresh resources for app( %s ) start ...',
-		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : 'Convert to stack json to CloudFormation format error',
+		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : '完成应用( %s )的资源刷新。',
+		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : '刷新应用( %s )的资源失败, 请点击刷新按钮来重试。',
+		'TOOL_MSG_INFO_APP_REFRESH_START'       : '开始刷新应用( %s )的资源 ...',
+		'TOOL_MSG_ERR_CONVERT_CLOUDFORMATION'   : '转换成CloudFormation出错',
 
 		//linestyle
 		'TOOL_TIP_LINESTYLE'                          : '安全组规则连线类型...',
@@ -269,6 +271,8 @@ define({
 		'TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER' : '光滑的二次贝塞尔曲线',
 
 		/******property module******/
+
+		'PROP_LBL_REQUIRED'                     : '必填',
 
 		//###### instance property module
 		'PROP_INSTANCE_DETAIL'					: '实例设置',
@@ -284,7 +288,7 @@ define({
 		'PROP_INSTANCE_PRIVATE_DNS'				: '内网域名',
 		'PROP_INSTANCE_NUMBER'					: '实例数量',
 		'PROP_INSTANCE_REQUIRE'					: '必须',
-		'PROP_INSTANCE_AMI'						: '镜像',
+		'PROP_INSTANCE_AMI'						: '映像',
 		'PROP_INSTANCE_TYPE'					: '实例类型',
 		'PROP_INSTANCE_KEY_PAIR'				: '秘钥',
 		'PROP_INSTANCE_EBS_OPTIMIZED'			: 'EBS 优化',
@@ -297,7 +301,7 @@ define({
 		'PROP_INSTANCE_CW_ENABLED'				: '打开CloudWatch监控',
 		'PROP_INSTANCE_ADVANCED_DETAIL'			: '高级设置',
 		'PROP_INSTANCE_USER_DATA'				: '用户数据',
-		'PROP_INSTANCE_CW_WARN'					: 'Data is available in 1-minute periods at an additional cost. For information about pricing, go to the ',
+		'PROP_INSTANCE_CW_WARN'					: '数据在一分钟内可用需要额外的话费。 获取价格信息，请去 ',
 		'PROP_INSTANCE_ENI_DETAIL'				: '网卡设置',
 		'PROP_INSTANCE_ENI_DESC'				: '描述',
 		'PROP_INSTANCE_ENI_SOURCE_DEST_CHECK'	: '打开 Source/Destination 检查',
@@ -310,8 +314,8 @@ define({
 		'PROP_INSTANCE_IP_MSG_2'				: '自动分配IP',
 		'PROP_INSTANCE_IP_MSG_3'				: '和Elastic IP进行关联',
 		'PROP_INSTANCE_IP_MSG_4'				: '取消关联Elastic IP',
-		'PROP_INSTANCE_AMI_ID'					: '镜像ID',
-		'PROP_INSTANCE_AMI_NAME'				: '镜像名称',
+		'PROP_INSTANCE_AMI_ID'					: '映像ID',
+		'PROP_INSTANCE_AMI_NAME'				: '映像名称',
 		'PROP_INSTANCE_AMI_DESC'				: '描述',
 		'PROP_INSTANCE_AMI_ARCHITECH'			: '架构',
 		'PROP_INSTANCE_AMI_VIRTUALIZATION'		: '虚拟化',
@@ -328,11 +332,9 @@ define({
 
 
 
-		'PROP_LBL_REQUIRED'                     : '必填',
-
 		//##### stack property module
 		'PROP_STACK_LBL_NAME'                       : '模版名称',
-		'PROP_STACK_LBL_REGION'                     : '区域',
+		'PROP_STACK_LBL_REGION'                     : '地区',
 		'PROP_STACK_LBL_TYPE'                       : '类型',
 		'PROP_STACK_TIT_SG'                         : '安全组',
 		'PROP_STACK_TIT_ACL'                        : '访问控制表',
@@ -358,7 +360,7 @@ define({
 
 
 		//##### az property module
-		'PROP_AZ_LBL_SWITCH'                            : '切换可用区',
+		'PROP_AZ_LBL_SWITCH'                            : '切换可用区域',
 		//##### az property module
 
 
@@ -533,7 +535,7 @@ define({
 
 
 		//##### igw property module
-		'PROP_IGW_TXT_DESCRIPTION'          : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
+		'PROP_IGW_TXT_DESCRIPTION'           : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
 		//##### igw property module
 
 
@@ -569,26 +571,26 @@ define({
 
 
 		// instance property module
-		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : 'Sorry, the selected resource not exist.',
-		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : 'Sorry, there was a problem downloading this key pair.',
-		'PROP_MSG_WARN_NO_STACK_NAME'           : 'Stack name empty or missing.',
-		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : 'This stack name is already in use.',
-		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s Instance\'s Network Interface can\'t exceed %s Private IP Addresses.',
-		'PROP_MSG_WARN_NO_APP_NAME'             : 'App name empty or missing.',
-		'PROP_MSG_WARN_REPEATED_APP_NAME'       : 'This app name is already in use.',
-		'PROP_MSG_WARN_INVALID_APP_NAME'		: 'App name is invalid.',
-		'PROP_WARN_EXCEED_ENI_LIMIT'            : 'Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type.',
-		'PROP_TEXT_DEFAULT_SG_DESC'             : 'Stack Default Security Group',
-		'PROP_TEXT_CUSTOM_SG_DESC'              : 'Custom Security Group',
-		'PROP_MSG_WARN_WHITE_SPACE'				: 'Stack name contains white space',
+		'PROP_MSG_ERR_RESOURCE_NOT_EXIST'       : '抱歉，选定的资源不存在。',
+		'PROP_MSG_ERR_DOWNLOAD_KP_FAILED'       : '抱歉，下载密钥对时出现了问题。',
+		'PROP_MSG_WARN_NO_STACK_NAME'           : '模板名称不能为空。',
+		'PROP_MSG_WARN_REPEATED_STACK_NAME'     : '这个模板名称已被占用。',
+		'PROP_MSG_WARN_ENI_IP_EXTEND'           : '%s 实例的网络接口不能超过 %s 私有IP地址。',
+		'PROP_MSG_WARN_NO_APP_NAME'             : '应用名称不能为空。',
+		'PROP_MSG_WARN_REPEATED_APP_NAME'       : '这个应用名称已被占用This app name is already in use.',
+		'PROP_MSG_WARN_INVALID_APP_NAME'		: '无效的应用名称。',
+		'PROP_WARN_EXCEED_ENI_LIMIT'            : '实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。',
+		'PROP_TEXT_DEFAULT_SG_DESC'             : '模板默认安全组',
+		'PROP_TEXT_CUSTOM_SG_DESC'              : '客户安全组',
+		'PROP_MSG_WARN_WHITE_SPACE'				: '模板名称不能包含空格',
 		// Add new strings below this comment. Move above once English has been confirmed
-		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : 'Sorry, there was a problem getting password data for instance ',
-		'PROP_MSG_ERR_AMI_NOT_FOUND'            : 'Can not find information for selected AMI( %s ), try to drag another AMI.',
+		'PROP_MSG_ERR_GET_PASSWD_FAILED'        : '抱歉，获取实例口令信息时出现了问题。',
+		'PROP_MSG_ERR_AMI_NOT_FOUND'            : '无法获取选中的( %s )AMI的信息，请拖拽其他的AMI。',
 
 		// sg property
-		'PROP_MSG_SG_CREATE'                    : "1 rule has been created in %s to allow %s %s %s.",
-		'PROP_MSG_SG_CREATE_MULTI'              : "%d rules have been created in %s and %s to allow %s %s %s.",
-		'PROP_MSG_SG_CREATE_SELF'               : "%d rules have been created in %s to allow %s send and receive traffic within itself.",
+		'PROP_MSG_SG_CREATE'                    : "1条规则被创建到 %s 来允许 %s %s %s。",
+		'PROP_MSG_SG_CREATE_MULTI'              : "%d条规则被创建到 %s 并且 %s 来允许 %s %s %s.",
+		'PROP_MSG_SG_CREATE_SELF'               : "%d条规则被创建到 %s 来允许 %s 它内部的收发通信.",
 
 		//###### volume property
 		'PROP_VOLUME_DEVICE_NAME'				: '挂载设备名',
@@ -609,7 +611,7 @@ define({
 		//###### volume property
 
 		//###### eni property
-		'PROP_ENI_LBL_ATTACH_WARN'				: 'Attach the Network Interface to an instance within the same availability zone.',
+		'PROP_ENI_LBL_ATTACH_WARN'				: '在同一个可用区域里面附加网络接口。',
 		'PROP_ENI_LBL_DETAIL'					: '网卡设置',
 		'PROP_ENI_LBL_DESC'						: '描述',
 		'PROP_ENI_SOURCE_DEST_CHECK'			: '打开 Source/Destination 检查',
@@ -655,7 +657,7 @@ define({
 		'PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT'	: '响应超时',
 		'PROP_ELB_HEALTH_THRESHOLD'				: '健康界限',
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: '不健康界限',
-		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区',
+		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区域',
 		'PROP_ELB_SG_DETAIL'					: '安全组',
 		'PROP_ELB_DNS_NAME'						: '域名',
 		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
@@ -700,7 +702,7 @@ define({
 		'PROP_ASG_LBL_VALIDATE_SNS'				: '验证SNS主题',
 		'PROP_ASG_MSG_NO_NOTIFICATION_WARN'		: '没有设置Notification Configuration',
 		'PROP_ASG_MSG_SNS_WARN'					: '现在SNS还没有设置订阅信息，请去模板属性框设置，以便收到通知',
-		'PROP_ASG_MSG_DROP_LC'					: '请拖拽镜像来建立Launch Configuration',
+		'PROP_ASG_MSG_DROP_LC'					: '请拖拽映像来建立Launch Configuration',
 		'PROP_ASG_TERMINATION_EDIT'				: '编辑终止策略',
 		'PROP_ASG_TERMINATION_TEXT_WARN'		: '你能选择最少一种策略，策略执行顺序是从上到下',
 		'PROP_ASG_TERMINATION_MSG_DRAG'			: '拖拽以便调整顺序',
@@ -738,9 +740,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'									: 'Launch Configuation',
-		'PROP_LC_NAME'									: '名称',
-		'PROP_LC_CREATE_TIME'							: '创建时间',
+		'PROP_LC_TITLE'							: '启动配置',
+		'PROP_LC_NAME'							: '名称',
+		'PROP_LC_CREATE_TIME'				    : '创建时间',
 		//###### launch configuration property
 
 		//###### route table property
@@ -757,58 +759,130 @@ define({
 		//###### route table property
 
 		/******navigation module******/
-		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
+		'NAV_DESMOD_NOT_FINISH_LOAD'            : '抱歉，设计模块正在加载，请稍后重试。',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** process module ******/
-		'PROC_TITLE'                 : 'Starting your app...',
-		'PROC_RLT_DONE_TITLE'        : 'Everything went smoothly!',
-		'PROC_RLT_DONE_SUB_TITLE'    : 'Your app will automatically open soon.',
-		'PROC_STEP_PREPARE'          : 'Preparing to start app...',
-		'PROC_RLT_FAILED_TITLE'      : 'Error Starting App.',
-		'PROC_RLT_FAILED_SUB_TITLE'  : 'Please fix the following issues and try again:',
-		'PROC_ERR_INFO'              : 'Error Details',
-		'PROC_CLOSE_TAB'             : 'Close Tab',
-		'PROC_STEP_REQUEST'          : 'Processing',
+		'PROC_TITLE'                 : '启动您的应用...',
+		'PROC_RLT_DONE_TITLE'        : '一切顺利!',
+		'PROC_RLT_DONE_SUB_TITLE'    : '您的应用将被自动打开。',
+		'PROC_STEP_PREPARE'          : '准备启动应用...',
+		'PROC_RLT_FAILED_TITLE'      : '启动应用错误。',
+		'PROC_RLT_FAILED_SUB_TITLE'  : '请先解决以下下问题，然后重试。',
+		'PROC_ERR_INFO'              : '错误详情',
+		'PROC_CLOSE_TAB'             : '关闭标签',
+		'PROC_STEP_REQUEST'          : '处理中',
 		// Add new strings below this comment. Move above once English has been confirmed
-		'PROC_FAILED_TITLE'          :  'Starting App Failed',
+		'PROC_FAILED_TITLE'          :  '启动应用错误',
 
 		/****** region module *****/
-		'REG_MSG_WARN_APP_PENDING'	 : 'Your app is in Processing. Please wait a moment.',
+		'REG_MSG_WARN_APP_PENDING'	 : '您的应用正在处理中，请稍等一会。',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** miscellaneous ******/
-		'CFM_BTN_DELETE'   : 'Delete',
-		'CFM_BTN_CANCEL'   : 'Cancel',
-		'CFM_BTN_ADD'      : 'Add',
-		'CFM_BTN_DONT_ADD' : "Don't add",
+		'CFM_BTN_DELETE'   : '删除',
+		'CFM_BTN_CANCEL'   : '取消',
+		'CFM_BTN_ADD'      : '添加',
+		'CFM_BTN_DONT_ADD' : "不要添加",
 		// Add new strings below this comment. Move above once English has been confirmed
 
+		//#### topmenu
+		'HEAD_LABEL_MENUITEM_USER_TOUR'  : '用户教程',
+		'HEAD_LABEL_MENUITEM_DOC'        : '使用文档',
+		'HEAD_LABEL_MENUITEM_SETTING'    : '账号设置',
+		'HEAD_LABEL_MENUITEM_LOGOUT'     : '登出',
+		//#### topmenu
+
 		/****** account credential module ******/
-		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
-		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',
-		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : 'Invalid secret key',
+		'HEAD_LABEL_SETTING'			  : '用户设置',
+		'HEAD_LABEL_ACCOUNT'			  : '账号',
+		'HEAD_LABEL_CREDENTIAL'			  : 'AWS 证书',
+		'HEAD_LABEL_ACCOUNT_USERNAME'	  : '用户名',
+		'HEAD_LABEL_ACCOUNT_EMAIL'		  : '电子邮件地址',
+		'HEAD_LABEL_CHANGE_PASSWORD'	  : '修改密码',
+		'HEAD_LABEL_CURRENT_PASSWORD'	  : '当前密码',
+		'HAED_LABEL_NEW_PASSWORD'		  : '新密码',
+		'HEAD_LABEL_REMOVE_CREDENTIAL'    : '移除证书',
+		'HEAD_LABEL_ACCOUNT_CHANGE'		  : '修改',
+		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : '更新',
+		'HEAD_LABEL_ACCOUNT_CANCEL'		  : '取消',
+		'HEAD_LABEL_ACCOUNT_PERIOD'		  : '。',
+		'HEAD_LABEL_ACCOUNT_QUESTION'	  : '？',
+		'HEAD_LABEL_WELCOME'			  : '欢迎',
+		'HEAD_LABEL_PROVIDE_CREDENTIAL'	  : '请提供AWS证书',
+		'HEAD_LABEL_ACCOUNT_SKIP'		  : '跳过',
+		'HEAD_LABEL_ACCOUNT_ID'			  : '账户编号',
+		'HEAD_LABEL_ACCOUNT_ACCESS_KEY'   : '访问码编号',
+		'HEAD_LABEL_ACCOUNT_SECRET_KEY'	  : '密匙',
+
+		'HEAD_BTN_CHANGE'			  	  : '修改',
+		'HEAD_BTN_UPDATE'			  	  : '更新',
+		'HEAD_BTN_CANCEL'				  : '取消',
+		'HEAD_BTN_SUBMIT'				  : '提交',
+		'HEAD_BTN_CLOSE'				  : '关闭',
+		'HEAD_BTN_DONE'					  : '完成',
+
+		'HEAD_INFO_ACCOUNT_LIST'		  : '您已经使用如下AWS账号连接:',
+		'HEAD_INFO_REMOVE_CREDENTIAL1'	  : '移除证书后，您还可以使用试用证书。',
+		'HEAD_INFO_REMOVE_CREDENTIAL2'	  : '如果想启动应用，您需要提供有效的AWS证书。',
+		'HEAD_INFO_REMOVE_CREDENTIAL3'	  : '因为资源不一致的原因，在更新为可用的AWS证书后，您使用试用证书设计的模块不能被启动。',
+		'HEAD_INFO_LOADING'			  	  : '加载中...',
+		'HEAD_INFO_LOADING_RESOURCE'	  : '加载资源中...',
+		'HEAD_WARN_UPDATE_CREDENTIAL'	  : '还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。',
+
+		'HEAD_INFO_PROVIDE_CREDENTIAL1'   : '现在想提供AWS证书吗？',
+		'HEAD_INFO_DEMO_MODE'			  : '您可以使用试用证书进行模板设计，但有以下缺点：',
+		'HEAD_INFO_WELCOME'				  : '欢迎来到MadeiraCloud, %s。',
+		'HEAD_INFO_PROVIDE_CREDENTIAL2'	  : '在开始您的云架构设计之前，请提供AWS证书：',
+		'HEAD_INFO_PROVIDE_CREDENTIAL3'   : '请提供您好AWS证书来加载和管理AWS资源。',
+		'HEAD_ERR_AUTHENTICATION' 		  : '授权失败，请检查您的AWS证书并重试。',
+		'HEAD_CHANGE_CREDENTIAL'		  : '如果您修改AWS证书，因为资源不一致性的原因，您之前创建的设计成果将不能使用。',
+		'HEAD_INFO_CONFIRM_REMOVE'		  : '您确定要移除账号%s的AWS证书吗？',
+		'HEAD_INFO_CONNECTING'			  : '正在连接AWS账号',
+
+		'HEAD_TIP_AWS_ACCOUNT_ID' 		  : "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000",
+		'HEAD_TIP_ACCOUNT_ACCESS_KEY' 	  : "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S",
+		'HEAD_TIP_ACCOUNT_SECRET_KEY'	  : "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk",
+		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : '无效的帐户ID',
+		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : '无效的访问密钥',
+		'HEAD_MSG_ERR_INVALID_SECRET_KEY' : '无效的密钥',
+		'HEAD_MSG_ERR_INVALID_SAME_ID'    : '账号相同，请输入不同的账号',
+		'HEAD_MSG_ERR_KEY_UPDATE'         : '修改账号失败，恢复上一个账号',
+		'HEAD_MSG_ERR_RESTORE_DEMO_KEY'   : '恢复到演示账号',
 
 		// account profile
-		'HEAD_MSG_ERR_NULL_PASSWORD'      : 'Provide both current and new password to change password.',
-		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : 'Password must contain at least 6 characters and not the same with your username.',
-		'HEAD_MSG_ERR_ERROR_PASSWORD'     : 'Current password is wrong.',
-		'HEAD_MSG_ERR_RESET_PASSWORD'     : 'Forget password?',
-		'HEAD_MSG_INFO_UPDATE_EMAIL'      : 'Email Address has been updated.',
-		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : 'Password has been updated.',
-		'HEAD_MSG_ERR_UPDATE_EMAIL'       : 'Update email address failed.',
-		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : 'Update password failed.',
+		'HEAD_MSG_ERR_NULL_PASSWORD'      : '请提供旧密码和新密码来完成重设密码操作。',
+		'HEAD_MSG_ERR_INVALID_PASSWORD'	  : '密码最少6位且不能和您的用户名相同',
+		'HEAD_MSG_ERR_ERROR_PASSWORD'     : '密码错误',
+		'HEAD_MSG_ERR_RESET_PASSWORD'     : '忘记密码?',
+		'HEAD_MSG_INFO_UPDATE_PASSWORD'   : '密码修改成功。',
+		'HEAD_MSG_ERR_UPDATE_PASSWORD'    : '修改密码失败。',
+		'HEAD_MSG_ERR_WRONG_PASSWORD'	  : '密码错误',
+		'HEAD_MSG_INFO_FORGET_PASSWORD'	  : '是否重置密码?',
+		'HEAD_MSG_INFO_UPDATE_EMAIL'      : '电子邮件地址修改成功。',
+		'HEAD_MSG_ERR_UPDATE_EMAIL1'      : '修改邮箱地址失败',
+		'HEAD_MSG_ERR_UPDATE_EMAIL2'	  : '邮箱地址已被使用',
+		'HEAD_MSG_ERR_UPDATE_EMAIL3'	  : '非有效邮箱地址',
+
+		'HEAD_LABEL_TOUR_DESIGN_DIAGRAM'  : '拖放到设计图',
+		'HEAD_LABEL_TOUR_CONNECT_PORT'    : '连接端口',
+		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '配置属性',
+		'HEAD_LABEL_TOUR_DO_MORE'		  : '使用工具栏',
+
+		'HEAD_INFO_TOUR_DESIGN_DIAGRAM'   : '轻松拖拽就可以添加可用区域、	主机、磁盘和所有其它的资源到画布中。',
+		'HEAD_INFO_TOUR_CONNECT_PORT' 	  : '通过端口可以设置安全组规则、建立依赖、生成路由以及其它很多。',
+		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '右侧的面板可以进行详细设置。',
+		'HEAD_INFO_TOUR_DO_MORE'		  : '通过工具栏可以运行模板、自定义可视化数据以及导出数据和资源。',
 		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** base_main.cofffee for module(x) ******/
-		'MODULE_RELOAD_MESSAGE'           : 'Sorry, there is some connectivity issue, IDE is trying to reload',
-		'MODULE_RELOAD_FAILED'            : 'Sorry, there is some connectivity issue, IDE cannot load, please refresh the browser',
+		'MODULE_RELOAD_MESSAGE'           : '抱歉，网络连接失败，IDE正在重新加载',
+		'MODULE_RELOAD_FAILED'            : '抱歉，网络连接失败，IDE不能加载，请刷新浏览器',
 		// Add new strings below this comment. Move above once English has been confirmed
 
-		'BEFOREUNLOAD_MESSAGE'            : 'You have unsaved changes.',
+		'BEFOREUNLOAD_MESSAGE'            : '您有未保存的更改。',
 
 		//###### dashboard module
-
 		'DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS'     	: '资源更新完毕',
 
 
@@ -824,14 +898,12 @@ define({
 		'DASH_LBL_STACK'						    : '模板',
 		'DASH_LBL_RECENT_EDITED_STACK'			    : '最近修改的模板',
 		'DASH_LBL_RECENT_LAUNCHED_STACK'		    : '最近启动的实例',
-		'DASH_LBL_NO_APP'							: '该地区没有应用',
-		'DASH_LBL_NO_STACK'							: '该地区还没有模板',
-		'DASH_LBL_CREATE_NEW_APP_FROM_STACK'		: '你可以通过模板创建应用',
-		'DASH_LBL_CREATE_NEW_STACK_HERE'			: '点击这里创建新模板',
+		'DASH_LBL_NO_APP'							: '该地区没有应用<br />你可以通过模板创建应用',
+		'DASH_LBL_NO_STACK'							: '该地区还没有模板<br />点击这里创建新模板',
 
 		'DASH_LBL_RUNNING_INSTANCE'				    : '运行的实例',
 		'DASH_LBL_ELASTIC_IP'					    : '弹性IP',
-		'DASH_LBL_VOLUME'		  				    : 'Volume',
+		'DASH_LBL_VOLUME'		  				    : '卷',
 		'DASH_LBL_LOAD_BALANCER'				    : '负载均衡器',
 		'DASH_LBL_VPN'								: 'VPN',
 
@@ -871,7 +943,6 @@ define({
 		'DASH_LBL_ENDPOINT_AND_PROTOCOL'	    	: '终端和协议',
 		'DASH_LBL_CONFIRMATION'	    	    		: '确认',
 		'DASH_LBL_SUBNETS'	    	    			: '子网',
-
 		'DASH_LBL_ASSOCIATION_ID'	    	    	: '关联 ID',
 		'DASH_LBL_ALLOCATION_ID'	    	    	: '分配 ID',
 		'DASH_LBL_NETWORK_INTERFACE_ID'	    	    : '网络接口 ID',
@@ -882,34 +953,34 @@ define({
 		'DASH_LBL_ENABLED_METRICS'	    			: '开启的指标',
 		'DASH_LBL_LAUNCH_CONFIGURATION_NAME'	    : '启动配置名称',
 		'DASH_LBL_LOADBALANCER_NAMES'	    		: '负载均衡器名称',
-		'DASH_LBL_MAX_SIZE'	    					: '最大值',
 		'DASH_LBL_MIN_SIZE'	    					: '最小值',
+		'DASH_LBL_MAX_SIZE'	    					: '最大值',
 		'DASH_LBL_TERMINATION_POLICIES'	    		: '结束策略',
 		'DASH_LBL_VPC_ZONE_IDENTIFIER'	    		: 'VPC区域标识符',
 
-        'DASH_LBL_ACTIONS_ENABLED'                  : '操作启用',
-        'DASH_LBL_ALARM_ACTIONS'                    : '警报操作',
-        'DASH_LBL_ALARM_ARN'                        : '警报 ARN',
-        'DASH_LBL_ALARM_DESCRIPTION'                : '警报描述',
-        'DASH_LBL_ALARM_NAME'                       : '警报名称',
-        'DASH_LBL_COMPARISON_OPERATOR'              : '比较操作符',
-        'DASH_LBL_DIMENSIONS'                       : '维度',
-        'DASH_LBL_EVALUATION_PERIODS'               : '评估周期',
-        'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'        : '数据不足操作',
-        'DASH_LBL_METRIC_NAME'                      : '指标名称',
-        'DASH_LBL_NAMESPACE'                        : '命名空间',
-        'DASH_LBL_OK_ACTIONS'                       : 'OK操作',
-        'DASH_LBL_PERIOD'                           : '周期',
-        'DASH_LBL_STATISTIC'                        : '统计数据',
-        'DASH_LBL_STATE_VALUE'                      : '状态值',
-        'DASH_LBL_THRESHOLD'                        : '阈值',
-        'DASH_LBL_UNIT'                             : '单位',
+		'DASH_LBL_ACTIONS_ENABLED'                  : '操作启用',
+		'DASH_LBL_ALARM_ACTIONS'                    : '警报操作',
+		'DASH_LBL_ALARM_ARN'                        : '警报 ARN',
+		'DASH_LBL_ALARM_DESCRIPTION'                : '警报描述',
+		'DASH_LBL_ALARM_NAME'                       : '警报名称',
+		'DASH_LBL_COMPARISON_OPERATOR'              : '比较操作符',
+		'DASH_LBL_DIMENSIONS'                       : '维度',
+		'DASH_LBL_EVALUATION_PERIODS'               : '评估周期',
+		'DASH_LBL_INSUFFICIENT_DATA_ACTIONS'        : '数据不足操作',
+		'DASH_LBL_METRIC_NAME'                      : '指标名称',
+		'DASH_LBL_NAMESPACE'                        : '命名空间',
+		'DASH_LBL_OK_ACTIONS'                       : 'OK操作',
+		'DASH_LBL_PERIOD'                           : '周期',
+		'DASH_LBL_STATISTIC'                        : '统计数据',
+		'DASH_LBL_STATE_VALUE'                      : '状态值',
+		'DASH_LBL_THRESHOLD'                        : '阈值',
+		'DASH_LBL_UNIT'                             : '单位',
 
-        'DASH_LBL_ENDPOINT'                         : '终端',
-        'DASH_LBL_OWNER'                            : '拥有者',
-        'DASH_LBL_PROTOCOL'                         : '协议',
-        'DASH_LBL_SUBSCRIPTION_ARN'                 : '订阅 ARN',
-        'DASH_LBL_TOPIC_ARN'                        : '主题 ARN',
+		'DASH_LBL_ENDPOINT'                         : '终端',
+		'DASH_LBL_OWNER'                            : '拥有者',
+		'DASH_LBL_PROTOCOL'                         : '协议',
+		'DASH_LBL_SUBSCRIPTION_ARN'                 : '订阅 ARN',
+		'DASH_LBL_TOPIC_ARN'                        : '主题 ARN',
 
 		'DASH_BUB_NAME'	    	    				: '名称',
 		'DASH_BUB_DESCRIPTION'						: '描述',
@@ -931,6 +1002,35 @@ define({
 		'DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO'		: '资源将被创建在新默认的VPC中',
 
 		//###### dashboard module
+
+		//###### community amis module
+
+		'AMI_LBL_COMMUNITY_AMIS'                    : '社区映像',
+		'AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID'      : '根据名称或ID搜索映像',
+		'AMI_LBL_ALL_PLATFORMS'                     : '所有平台',
+
+		'AMI_LBL_VISIBILITY'                        : '可见性',
+		'AMI_LBL_ARCHITECTURE'                      : '架构',
+		'AMI_LBL_ROOT_DEVICE_TYPE'                  : '根设备类型',
+
+		'AMI_LBL_PUBLIC'                            : '公用',
+		'AMI_LBL_PRIVATE'                           : '私有',
+		'AMI_LBL_32_BIT'                            : '32位',
+		'AMI_LBL_64_BIT'                            : '64位',
+		'AMI_LBL_EBS'                               : 'EBS',
+		'AMI_LBL_INSTANCE_STORE'                    : '实例存储',
+
+		'AMI_LBL_SEARCH'                            : '搜索',
+		'AMI_LBL_SEARCHING'                         : '搜索中...',
+
+		'AMI_LBL_AMI_ID'                            : '映像 ID',
+		'AMI_LBL_AMI_NAME'                          : '映像名称',
+		'AMI_LBL_ARCH'                              : '架构',
+
+		'AMI_LBL_PAGEINFO'                          : '当前显示 %s 条，共有 %s 条',
+
+
+		//###### community amis module
 
 		//###### ide
 
@@ -960,10 +1060,35 @@ define({
 
 		//###### popup
 
-		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : 'Not available yet. Password generation and encryption can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.',
+		'POP_DOWNLOAD_KP_NOT_AVAILABLE'   : '当前不可用。口令生成和加密通常需要30分钟时间。启动实例后在拿到生成的口令前，请至少等待15分钟。',
 		'POP_BTN_CLOSE'     		      : '关闭'
 
 		//###### popup
 
+	},
+	'service' : {
+		'ERROR_CODE_0_MESSAGE'  : '',//invoke API succeeded
+		'ERROR_CODE_1_MESSAGE'  : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_2_MESSAGE'  : '对不起,我们有一些技术问题,请稍后再试',
+		'ERROR_CODE_3_MESSAGE'  : '',//no use
+		'ERROR_CODE_4_MESSAGE'  : '',//no use
+		'ERROR_CODE_5_MESSAGE'  : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_6_MESSAGE'  : '',//no use
+		'ERROR_CODE_7_MESSAGE'  : '',//for guest
+		'ERROR_CODE_8_MESSAGE'  : '',//no use
+		'ERROR_CODE_9_MESSAGE'  : '对不起,您的AWS凭证没有足够的权限',
+		'ERROR_CODE_10_MESSAGE' : '',//no use
+		'ERROR_CODE_11_MESSAGE' : '',//no use
+		'ERROR_CODE_12_MESSAGE' : '对不起,我们有一些技术问题,请稍后再试',
+		'ERROR_CODE_13_MESSAGE' : '',//no use
+		'ERROR_CODE_14_MESSAGE' : '',//no use
+		'ERROR_CODE_15_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_16_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_17_MESSAGE' : '',//no use
+		'ERROR_CODE_18_MESSAGE' : '对不起,AWS有一些技术问题,请稍后再试',
+		'ERROR_CODE_19_MESSAGE' : '对不起，你的会话已过期，请重新登录',
+		'ERROR_CODE_20_MESSAGE' : '对不起，邀请已经结束',//for guest
+		'ERROR_CODE_21_MESSAGE' : '对不起，此账号已被锁住'
+		// Add new strings below this comment. Move above once English has been confirmed
 	}
 });

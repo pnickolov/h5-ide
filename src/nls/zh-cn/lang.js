@@ -12,6 +12,7 @@ define({
 		'login-loading'  			: '正在登录',
 		'login_waiting'	 			: '稍等...',
 		'madeira-offered-in'		: '&copy; MadeiraCloud 还提供'
+		// Add new strings below this comment. Move above once English has been confirmed
 	},
 	'register' : {
 		'register'					: '注册',
@@ -255,7 +256,7 @@ define({
 		'TOOLBAR_HANDLE_START_APP'              : '恢复应用',
 		'TOOLBAR_HANDLE_STOP_APP'               : '暂停应用',
 		'TOOLBAR_HANDLE_TERMINATE_APP'          : '销毁应用',
-		
+
 		//refresh button
 		'TOOL_MSG_INFO_APP_REFRESH_FINISH'      : '完成应用( %s )的资源刷新。',
 		'TOOL_MSG_INFO_APP_REFRESH_FAILED'      : '刷新应用( %s )的资源失败, 请点击刷新按钮来重试。',
@@ -534,7 +535,7 @@ define({
 
 
 		//##### igw property module
-		'PROP_IGW_TXT_DESCRIPTION'          : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
+		'PROP_IGW_TXT_DESCRIPTION'           : '互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器.',
 		//##### igw property module
 
 
@@ -739,9 +740,9 @@ define({
 		//###### autoscaling group property
 
 		//###### launch configuration property
-		'PROP_LC_TITLE'									: '启动配置',
-		'PROP_LC_NAME'									: '名称',
-		'PROP_LC_CREATE_TIME'							: '创建时间',
+		'PROP_LC_TITLE'							: '启动配置',
+		'PROP_LC_NAME'							: '名称',
+		'PROP_LC_CREATE_TIME'				    : '创建时间',
 		//###### launch configuration property
 
 		//###### route table property
@@ -862,7 +863,7 @@ define({
 		'HEAD_MSG_ERR_UPDATE_EMAIL1'      : '修改邮箱地址失败',
 		'HEAD_MSG_ERR_UPDATE_EMAIL2'	  : '邮箱地址已被使用',
 		'HEAD_MSG_ERR_UPDATE_EMAIL3'	  : '非有效邮箱地址',
-		
+
 		'HEAD_LABEL_TOUR_DESIGN_DIAGRAM'  : '拖放到设计图',
 		'HEAD_LABEL_TOUR_CONNECT_PORT'    : '连接端口',
 		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '配置属性',

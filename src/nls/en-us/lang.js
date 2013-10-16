@@ -10,7 +10,7 @@ define({
 		'login-password' 			: 'Password',
 		'login-btn'      			: 'Log In',
 		'login-loading'  			: 'Logging In',
-		'login_waiting'	 			: 'One Minute...',
+		'login_waiting'	 			: 'Please wait...',
 		'madeira-offered-in'		: '&copy; MadeiraCloud offered in'
 		// Add new strings below this comment. Move above once English has been confirmed
 	},
@@ -38,7 +38,7 @@ define({
 		'password_ok'				: 'This password is OK.',
 		'password_shorter'			: 'Password must contain at least 6 letters.',
 		'password_required'			: 'Password is required.',
-		'reginster_waiting'			: 'One Minute...'
+		'reginster_waiting'			: 'Please wait...'
 	},
 	'reset' : {
 		'pre-reset'					: 'Forgot Password',
@@ -56,7 +56,7 @@ define({
 		'reset-done-btn'			: 'Done',
 		'reset-success-info'		: 'You have successfully reset password.',
 
-		'reset_waiting'				: 'One Minute...',
+		'reset_waiting'				: 'Please wait...',
 		'reset_password_shorter'	: 'Password must contain at least 6 characters.',
 		'reset_password_required'	: 'Password is required.',
 		'reset_btn'					: 'Send Reset Password Email',
@@ -761,7 +761,7 @@ define({
 
 		/******navigation module******/
 		'NAV_DESMOD_NOT_FINISH_LOAD'            : 'Sorry, the designer module is loading now. Please try again after several seconds.',
-
+		// Add new strings below this comment. Move above once English has been confirmed
 
 		/****** process module ******/
 		'PROC_TITLE'                 : 'Starting your app...',
@@ -907,7 +907,7 @@ define({
 		'DASH_LBL_ELASTIC_IP'					    : 'Elastic IP',
 		'DASH_LBL_VOLUME'		  				    : 'Volume',
 		'DASH_LBL_LOAD_BALANCER'				    : 'Load Balancer',
-		'DASH_LBL_VPN'	    	    				: 'VPN',
+		'DASH_LBL_VPN'								: 'VPN',
 
 		'DASH_LBL_INSTANCE'		        		    : 'Instance',
 		'DASH_LBL_VPC'		    	      		    : 'VPC',

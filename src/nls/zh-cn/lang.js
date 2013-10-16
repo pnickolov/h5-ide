@@ -101,7 +101,7 @@ define({
 
 		/******resource panel module******/
 		'RES_TIT_RESOURCES'           : '资源',
-		'RES_TIT_AZ'                  : '可用区',
+		'RES_TIT_AZ'                  : '可用区域',
 		'RES_TIT_AMI'                 : '虚拟机映像',
 		'RES_TIT_VOL'                 : '虚拟磁盘和快照',
 		'RES_TIT_ELB_ASG'             : '负载均衡器和自动伸缩组',
@@ -332,7 +332,7 @@ define({
 
 		//##### stack property module
 		'PROP_STACK_LBL_NAME'                       : '模版名称',
-		'PROP_STACK_LBL_REGION'                     : '区域',
+		'PROP_STACK_LBL_REGION'                     : '地区',
 		'PROP_STACK_LBL_TYPE'                       : '类型',
 		'PROP_STACK_TIT_SG'                         : '安全组',
 		'PROP_STACK_TIT_ACL'                        : '访问控制表',
@@ -358,7 +358,7 @@ define({
 
 
 		//##### az property module
-		'PROP_AZ_LBL_SWITCH'                            : '切换可用区',
+		'PROP_AZ_LBL_SWITCH'                            : '切换可用区域',
 		//##### az property module
 
 
@@ -655,7 +655,7 @@ define({
 		'PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT'	: '响应超时',
 		'PROP_ELB_HEALTH_THRESHOLD'				: '健康界限',
 		'PROP_ELB_UNHEALTH_THRESHOLD'			: '不健康界限',
-		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区',
+		'PROP_ELB_AVAILABILITY_ZONE'			: '可用区域',
 		'PROP_ELB_SG_DETAIL'					: '安全组',
 		'PROP_ELB_DNS_NAME'						: '域名',
 		'PROP_ELB_HOST_ZONE_ID'					: 'Hosted Zone ID',
@@ -862,7 +862,7 @@ define({
 		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '配置属性',
 		'HEAD_LABEL_TOUR_DO_MORE'		  : '使用工具栏',
 
-		'HEAD_INFO_TOUR_DESIGN_DIAGRAM'   : '轻松拖拽就可以添加可用区、	主机、磁盘和所有其它的资源到画布中。',
+		'HEAD_INFO_TOUR_DESIGN_DIAGRAM'   : '轻松拖拽就可以添加可用区域、	主机、磁盘和所有其它的资源到画布中。',
 		'HEAD_INFO_TOUR_CONNECT_PORT' 	  : '通过端口可以设置安全组规则、建立依赖、生成路由以及其它很多。',
 		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '右侧的面板可以进行详细设置。',
 		'HEAD_INFO_TOUR_DO_MORE'		  : '通过工具栏可以运行模板、自定义可视化数据以及导出数据和资源。',

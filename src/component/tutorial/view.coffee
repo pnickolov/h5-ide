@@ -15,7 +15,7 @@ define [ 'event',
         render     : ( template ) ->
             console.log 'pop-up:stack run render'
             #
-            modal template, true
+            modal Handlebars.compile( template )(), true
             #
             this.setElement $( '#guide-carousel-modal' ).closest '#modal-wrap'
             #

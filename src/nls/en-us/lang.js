@@ -768,8 +768,9 @@ define({
 		'HEAD_LABEL_ACCOUNT_CHANGE'		  : 'Change',
 		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : 'Update',
 		'HEAD_LABEL_ACCOUNT_CANCEL'		  : 'Cancel',
-		'HEAD_LABEL_ACCOUNT_PERIOD'		  : '.',
-		'HEAD_LABEL_ACCOUNT_QUESTION'	  : '?',
+		'HEAD_LABEL_WELCOME'			  : 'Welcome',
+		'HEAD_LABEL_PROVIDE_CREDENTIAL'	  : 'Provide AWS Credentials',
+		'HEAD_LABEL_ACCOUNT_SKIP'		  : 'Skip',
 
 		'HEAD_BTN_CHANGE'			  	  : 'Change',
 		'HEAD_BTN_UPDATE'			  	  : 'Update',

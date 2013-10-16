@@ -46,8 +46,8 @@ define [ 'event',
             #
             this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
             #
-            $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-            $( '#AWSCredentials-submiting' ).html loading_tmpl
+            $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
+            $( '#AWSCredentials-submiting' ).html Handlebars.compile( loading_tmpl )
             #
             setTimeout () ->
                 modal.position()

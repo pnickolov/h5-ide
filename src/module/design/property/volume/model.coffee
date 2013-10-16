@@ -119,18 +119,14 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 volume_comp = components[ uid ]
 
                 if volume_comp.resource.AttachmentSet.Device[0] != '/'
-
                     device_name = 'xvd' + name
-
-                    volume_comp.name = device_name
 
                 else
                     device_name = '/dev/' + name
 
-                    volume_comp.name = name
-
                 #serverGroupName
-                volume_comp.serverGroupName = volume_comp.name
+                volume_comp.name = device_name
+                volume_comp.serverGroupName = device_name
 
                 MC.canvas.update uid, 'text', "volume_name", device_name
 

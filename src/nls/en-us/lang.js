@@ -1004,6 +1004,7 @@ define({
 		'IDE_LBL_REGION_NAME_SHORT_us-west-2'	  		: 'Oregon',
 		'IDE_LBL_REGION_NAME_SHORT_eu-west-1'	  		: 'Ireland',
 		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1'  	: 'Singapore',
+		'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2'		: 'Sydney',
 		'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1'		: 'Tokyo',
 		'IDE_LBL_REGION_NAME_SHORT_sa-east-1'	    	: 'Sao Paulo',
 

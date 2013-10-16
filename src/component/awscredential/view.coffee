@@ -368,7 +368,8 @@ define [ 'event',
                     if @state is 'credential'
                         $('#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL3
                     else if @state is 'welcome'
-                        $('#AWSCredential-welcome').text lang.ide.HEAD_INFO_WELCOME + MC.forge.cookie.getCookieByName( 'username' ) + lang.ide.HEAD_LABEL_ACCOUNT_PERIOD
+                        welcome_string = sprintf lang.ide.HEAD_INFO_WELCOME, MC.forge.cookie.getCookieByName( 'username' )
+                        $('#AWSCredential-welcome').text welcome_string
                         $('#AWSCredential-info').find('p').text  lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
 
                     # set buttons style
@@ -473,7 +474,9 @@ define [ 'event',
 
                     $('#AWSCredential-info').hide()
                     $('#AWSCredentials-remove-wrap').show()
-                    $('#AWSCredential-remove-head').find('p').text lang.ide.HEAD_INFO_CONFIRM_REMOVE + me.model.attributes.account_id + lang.ide.HEAD_LABEL_ACCOUNT_QUESTION
+
+                    confirm_remove = sprintf lang.ide.HEAD_INFO_CONFIRM_REMOVE, me.model.attributes.account_id
+                    $('#AWSCredential-remove-head').find('p').text confirm_remove
                     $('#awscredentials-submit').hide()
                     $('#AWSCredential-form').find('ul').hide()
 

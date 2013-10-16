@@ -764,7 +764,7 @@ define({
 		'HEAD_LABEL_CHANGE_PASSWORD'	  : 'Change Password',
 		'HEAD_LABEL_CURRENT_PASSWORD'	  : 'Current Password',
 		'HAED_LABEL_NEW_PASSWORD'		  : 'New Password',
-		'HEAD_LABEL_REMOVE_CREDENTIAL'    : 'Remove Credential',		
+		'HEAD_LABEL_REMOVE_CREDENTIAL'    : 'Remove Credential',
 		'HEAD_LABEL_ACCOUNT_CHANGE'		  : 'Change',
 		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : 'Update',
 		'HEAD_LABEL_ACCOUNT_CANCEL'		  : 'Cancel',
@@ -789,12 +789,12 @@ define({
 
 		'HEAD_INFO_PROVIDE_CREDENTIAL1'   : 'Do not want to provide AWS Credentials now?',
 		'HEAD_INFO_DEMO_MODE'			  : 'You can design stack in the demo mode. Yet, with following drawbacks:',
-		'HEAD_INFO_WELCOME'				  : 'Welcome to MadeiraCloud, ',
+		'HEAD_INFO_WELCOME'				  : 'Welcome to MadeiraCloud, %s.',
 		'HEAD_INFO_PROVIDE_CREDENTIAL2'	  : 'To start designing cloud architecture, please provide your AWS credentials:',
 		'HEAD_INFO_PROVIDE_CREDENTIAL3'   : 'To launch and manage AWS resources, please provide your AWS account credentials.',
 		'HEAD_ERR_AUTHENTICATION' 		  : 'Authentication failed. Please check your AWS Credentials and try again.',
 		'HEAD_CHANGE_CREDENTIAL'		  : 'If you change AWS Credentials, design previously created in current account may not work due to resource inconsistency. ',
-		'HEAD_INFO_CONFIRM_REMOVE'		  : 'Do you conﬁrm to remove AWS Credentials of account ',
+		'HEAD_INFO_CONFIRM_REMOVE'		  : 'Do you conﬁrm to remove AWS Credentials of account %s?',
 
 		'HEAD_MSG_ERR_INVALID_ACCOUNT_ID' : 'Invalid accout id',
 		'HEAD_MSG_ERR_INVALID_ACCESS_KEY' : 'Invalid access key',

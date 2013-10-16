@@ -800,7 +800,7 @@ define({
 		'HEAD_LABEL_CHANGE_PASSWORD'	  : '修改密码',
 		'HEAD_LABEL_CURRENT_PASSWORD'	  : '当前密码',
 		'HAED_LABEL_NEW_PASSWORD'		  : '新密码',
-		'HEAD_LABEL_REMOVE_CREDENTIAL'    : '移除证书',		
+		'HEAD_LABEL_REMOVE_CREDENTIAL'    : '移除证书',
 		'HEAD_LABEL_ACCOUNT_CHANGE'		  : '修改',
 		'HEAD_LABEL_ACCOUNT_UPDATE' 	  : '更新',
 		'HEAD_LABEL_ACCOUNT_CANCEL'		  : '取消',
@@ -827,12 +827,12 @@ define({
 
 		'HEAD_INFO_PROVIDE_CREDENTIAL1'   : '现在想提供AWS证书吗？',
 		'HEAD_INFO_DEMO_MODE'			  : '您可以使用试用证书进行模板设计，但有以下缺点：',
-		'HEAD_INFO_WELCOME'				  : '欢迎来到MadeiraCloud, ',
+		'HEAD_INFO_WELCOME'				  : '欢迎来到MadeiraCloud, %s。',
 		'HEAD_INFO_PROVIDE_CREDENTIAL2'	  : '在开始您的云架构设计之前，请提供AWS证书：',
 		'HEAD_INFO_PROVIDE_CREDENTIAL3'   : '请提供您好AWS证书来加载和管理AWS资源。',
 		'HEAD_ERR_AUTHENTICATION' 		  : '授权失败，请检查您的AWS证书并重试。',
 		'HEAD_CHANGE_CREDENTIAL'		  : '如果您修改AWS证书，因为资源不一致性的原因，您之前创建的设计成果将不能使用。',
-		'HEAD_INFO_CONFIRM_REMOVE'		  : '您确定要移除账号的AWS证书吗 ',
+		'HEAD_INFO_CONFIRM_REMOVE'		  : '您确定要移除账号%s的AWS证书吗？',
 		'HEAD_INFO_CONNECTING'			  : '正在连接AWS账号',
 
 		'HEAD_TIP_AWS_ACCOUNT_ID' 		  : "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000",

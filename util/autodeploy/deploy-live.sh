@@ -36,8 +36,9 @@ echo
 
 echo "- Step 4 ---------------------------------------------------"
 COMMIT=`git log -n 1 | grep commit | awk '{print $2}' `
+AUTHOR=`git config --list | grep "user.name" | awk  'BEGIN{FS="="}{print $2}'`
 echo ">generate commit id: ${COMMIT}"
-echo ${COMMIT} > ${PUBLISH_DIR}/commit
+echo -e "${COMMIT}\n${AUTHOR}" > ${PUBLISH_DIR}/commit
 echo ""
 
 echo "- Step 5 ---------------------------------------------------"

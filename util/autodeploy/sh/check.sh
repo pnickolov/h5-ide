@@ -150,6 +150,7 @@ then
         if [ -f ${TGT_DIR}.tmp/commit ]
         then
             COMMIT=`cat ${TGT_DIR}.tmp/commit | awk '{print $1}' | head -n 1 `
+            AUTHOR=`cat ${TGT_DIR}.tmp/commit | awk '{print $0}' | tail -n 1 `
         fi
 
         if [ "${COMMIT}" != "" ]
@@ -181,7 +182,7 @@ then
 
         echo "- Step 8 : backup ${TGT_DIR}.tmp/${FILENAME} to ${BAK_DIR}/${VER}-${FILENAME} -------------------------------"
         #backup tar
-        mv ${TGT_DIR}.tmp/${FILENAME} ${BAK_DIR}/${VER}-${FILENAME}
+        mv ${TGT_DIR}.tmp/${FILENAME} ${BAK_DIR}/${VER}-${AUTHOR/ /-}-${FILENAME}
         if [ $? -eq 0 ]
         then
             echo ">backup succeed!"

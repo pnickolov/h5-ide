@@ -61,6 +61,10 @@ module.exports = function( grunt ) {
 			'<%= src %>/**/*.html'
 		],
 
+		langsource  : [
+			'<%= src %>/nls/lang-source.js'
+		],
+
 		bower      : require( './config/bower.js' ),
 		copy       : require( './config/copy.js'  ),
 
@@ -127,6 +131,7 @@ module.exports = function( grunt ) {
 		});
 	});
 
+
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make_fast', function() {
 		grunt.task.run([
@@ -138,7 +143,8 @@ module.exports = function( grunt ) {
 			'coffeelint:files',
 			'coffee:compile_normal',
 			'jshint',
-			'csslint'
+			'csslint',
+			'lang'
 		]);
 	});
 	grunt.registerTask( 'make_all', function() {
@@ -269,6 +275,96 @@ module.exports = function( grunt ) {
 									'copy:publish_files',
 									'clean:temp'
 	]);
+
+	grunt.registerTask( 'merge_lang', function() {
+		var en_us = require('./src/nls/en-us/lang.js').lang;
+		var zh_cn = require('./src/nls/zh-cn/lang.js').lang;
+
+		var checkLang = function(en_us, zh_cn) {
+			var creature = {};
+			var rec = function(ob, cp, creature) {
+				if (ob === Object(ob) )
+					for (var k in ob) {
+						creature[k] = creature[k] || {};
+						if (ob[k] === Object(ob[k])) {
+							rec(ob[k], cp[k], creature[k]);
+						}
+						else if (ob[k] !== undefined) {
+							creature[k].en_us = ob[k];
+							creature[k].zh_cn = cp[k];
+						}
+						else{
+							console.log(ob);
+						}
+					}
+				else
+					return;
+			};
+
+			rec(en_us, zh_cn, creature);
+
+			return creature;
+		};
+
+		var creature = checkLang(en_us, zh_cn);
+		grunt.file.write('lang.js', JSON.stringify(creature));
+		grunt.loadNpmTasks('grunt-jsbeautifier');
+
+	});
+
+	grunt.registerTask('lang', function() {
+		var source_file = './src/nls/lang-source.js';
+		var zh_file = './src/nls/zh-cn/lang.js';
+		var en_file = './src/nls/en-us/lang.js';
+
+		var lang = require(source_file).lang;
+
+		var hit = function(obj) {
+			var hitKey = obj.zh_cn !== undefined && obj.en_us !== undefined;
+
+			var isString = toString.call(obj.zh_cn) == '[object String]' && toString.call(obj.en_us) == '[object String]';
+
+			if (hitKey && isString) {
+				return true;
+			}
+
+			return false;
+		};
+
+		var divorce = function(lang, en_us, zh_cn) {
+
+			if (lang === Object(lang) )
+				for (var k in lang) {
+					en_us[k] = en_us[k] || {};
+					zh_cn[k] = zh_cn[k] || {};
+
+					if (lang[k] === Object(lang[k])) {
+						if (hit(lang[k])){
+							en_us[k] = lang[k].en_us;
+							zh_cn[k]= lang[k].zh_cn;
+						} else {
+							divorce(lang[k], en_us[k], zh_cn[k]);
+						}
+					}
+				}
+
+		};
+
+		var format = function(obj) {
+			var s = JSON.stringify(obj);
+			return 'define(' + s + ');';
+		};
+
+		var zh_cn = {};
+		var en_us = {};
+
+		divorce(lang, en_us, zh_cn);
+
+		grunt.file.write(en_file, format(en_us));
+		grunt.file.write(zh_file, format(zh_cn));
+
+
+	});
 
 	/*
 	grunt.event.on( 'regarde:file', function (status, target, filepath) {

@@ -1,4 +1,4 @@
-exports.lang = {
+module.exports = {
     "login": {
         "login": {
             "en_us": "Log In",

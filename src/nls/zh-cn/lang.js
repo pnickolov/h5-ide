@@ -871,7 +871,7 @@ define({
 
 		'HEAD_INFO_TOUR_DESIGN_DIAGRAM'   : '轻松拖拽就可以添加可用区域、	主机、磁盘和所有其它的资源到画布中。',
 		'HEAD_INFO_TOUR_CONNECT_PORT' 	  : '通过端口可以设置安全组规则、建立依赖、生成路由以及其它很多。',
-		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : '右侧的面板可以进行详细设置。',
+		'HEAD_INFO_TOUR_CONFIG_PROPERTY'  : '右侧的面板可以进行详细设置。',
 		'HEAD_INFO_TOUR_DO_MORE'		  : '通过工具栏可以运行模板、自定义可视化数据以及导出数据和资源。',
 		// Add new strings below this comment. Move above once English has been confirmed
 

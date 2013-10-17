@@ -58,6 +58,7 @@ header {
 #main-body {
 	overflow: auto;
 	padding-bottom: 30px;
+	min-height: 300px;
 }
 
 .box-wrapper {

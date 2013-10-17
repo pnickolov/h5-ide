@@ -873,7 +873,7 @@ define({
 
 		'HEAD_INFO_TOUR_DESIGN_DIAGRAM'   : 'Add availability zone, instance, volume and all other resources to the canvas with easy drag and drop',
 		'HEAD_INFO_TOUR_CONNECT_PORT' 	  : 'Setting up security group rule, establishing attachment, creating route and a lot more can be done by connecting ports.',
-		'HEAD_LABEL_TOUR_CONFIG_PROPERTY' : 'Detailed configurations are done from the right side Property Panel.',
+		'HEAD_INFO_TOUR_CONFIG_PROPERTY'  : 'Detailed configurations are done from the right side Property Panel.',
 		'HEAD_INFO_TOUR_DO_MORE'		  : 'Running stack into live resources, customize the visualization or exporting from the toolbar.',
 		// Add new strings below this comment. Move above once English has been confirmed
 

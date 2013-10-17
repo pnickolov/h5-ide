@@ -8,7 +8,7 @@ define [ 'event',
 
     RegisterView = Backbone.View.extend {
 
-        el           :  '#container'
+        el           :  '#main-body'
 
         template     : Handlebars.compile tmpl
         success_tmpl : Handlebars.compile success_tmpl
@@ -135,14 +135,14 @@ define [ 'event',
             console.log 'showUsernameError'
             status = $('#username-verification-status')
             status.addClass( 'error-status' ).show().text 'Username has been taken. Please choose another.'
-            is_submit = false
+            @is_submit = false
             null
 
         showEmailError : ->
             console.log 'showEmailError'
             status = $('#email-verification-status')
             status.addClass( 'error-status' ).show().text 'This email address has been used.'
-            is_submit = false
+            @is_submit = false
             null
 
         loginEvent : ->

@@ -4427,8 +4427,7 @@ MC.canvas.event.siderbarDrag = {
 					// Move a little bit offset for Subnet because its port
 					if (node_type === 'AWS.VPC.Subnet')
 					{
-						coordinate.x -= 1;
-						coordinate.y -= 1;
+						//coordinate.x -= 1;
 					}
 
 					match_place = MC.canvas.isMatchPlace(

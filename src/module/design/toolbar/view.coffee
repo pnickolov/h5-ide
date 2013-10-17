@@ -142,7 +142,7 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
 
-                    modal.close()
+                    #modal.close()
 
                     # # check change and save stack
                     # ori_data = MC.canvas_property.original_json
@@ -153,10 +153,10 @@ define [ 'MC', 'event',
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     # hold on 0.5 second for data update
-                    setTimeout () ->
-                        me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
-                        MC.data.app_list[MC.canvas_data.region].push app_name
-                    , 500
+                    # setTimeout () ->
+                    #     me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
+                    #     MC.data.app_list[MC.canvas_data.region].push app_name
+                    # , 500
 
             true
 

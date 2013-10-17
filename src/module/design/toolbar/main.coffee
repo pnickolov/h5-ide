@@ -164,6 +164,14 @@ define [ 'jquery',
                 info = flag.replace /_/g, ' '
                 if info
 
+                    # run stack
+                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
+                        app_name = $('.modal-input-value').val()
+                        modal.close()
+
+                        model.runStack app_name, MC.canvas_data
+                        MC.data.app_list[MC.canvas_data.region].push app_name
+
                     info = info.toLowerCase()
                     info = info[0].toUpperCase() + info.substr(1)
 
@@ -174,6 +182,10 @@ define [ 'jquery',
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
                 info = flag.replace /_/g, ' '
                 if info
+                    # run stack
+                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
+                        app_name = $('.modal-input-value').val()
+                        modal.close()
 
                     info = info.toLowerCase()
                     info = info[0].toUpperCase() + info.substr(1)

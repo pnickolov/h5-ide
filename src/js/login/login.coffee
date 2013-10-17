@@ -150,7 +150,7 @@ define [ 'jquery', 'handlebars',
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.login[ text ]
 		#
-		$( '#container' ).html Handlebars.compile template
+		$( '#main-body' ).html Handlebars.compile template
 		#
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'

@@ -16,17 +16,18 @@ define [ 'jquery', 'event',
             view  = new View()
             model = new Model()
 
+            #
+            model.updateAccountService()  if MC.forge.cookie.getCookieByName( 'state' ) is '3'
+
             #view
             view.model    = model
+
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
             #render
             view.render template
-
-            #
-            model.updateAccountService()  if MC.forge.cookie.getCookieByName( 'state' ) is '3'
 
     unLoadModule = ( view, model ) ->
         console.log 'stack run unLoadModule'

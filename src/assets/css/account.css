@@ -58,6 +58,7 @@ header {
 #main-body {
 	overflow: auto;
 	padding-bottom: 30px;
+	min-height: 300px;
 }
 
 .box-wrapper {
@@ -77,7 +78,7 @@ header {
 	border     : none;
 	box-shadow : none;*/
 	background-color : #fff;
-	text-align : center; 
+	text-align : center;
 	padding    : 40px 0;≠
 }
 

@@ -11,7 +11,7 @@ define [ 'event',
 
     ResetView = Backbone.View.extend {
 
-        el       :  '#container'
+        el       :  '#main-body'
 
         template      : Handlebars.compile tmpl
         email_tmpl    : Handlebars.compile email_tmpl
@@ -20,7 +20,9 @@ define [ 'event',
         expire_tmpl   : Handlebars.compile expire_tmpl
         success_tmpl  : Handlebars.compile success_tmpl
 
-        events   :
+        is_submit     : false
+
+        events        :
             'keyup #reset-pw-email' : 'changeSendButtonState'
             'click #reset-btn'      : 'resetPasswordButtonEvent'
             'click #reset-password' : 'resetPasswordEvent'
@@ -54,6 +56,7 @@ define [ 'event',
         changeSendButtonState : ( event ) ->
             console.log 'changeSendButtonState'
             $('#email-verification-status').hide()
+            return if @is_submit
             if event.target.value then $( '#reset-btn' ).removeAttr 'disabled' else  $( '#reset-btn' ).attr 'disabled', true
 
         resetPasswordButtonEvent : ->
@@ -61,6 +64,7 @@ define [ 'event',
             $('#email-verification-status').hide()
             $( '#reset-btn' ).attr( 'disabled', true )
             $( '#reset-btn' ).attr( 'value', lang.reset.reset_waiting )
+            @is_submit = true
             this.trigger 'RESET_EMAIL', $( '#reset-pw-email' ).val()
             false
 
@@ -94,6 +98,7 @@ define [ 'event',
 
         showErrorMessage : ->
             console.log 'showErrorMessage'
+            @is_submit = false
             $( '#reset-btn' ).attr( 'disabled', false )
             $( '#reset-btn' ).attr( 'value', lang.reset.reset_btn )
             status = $('#email-verification-status')

@@ -153,7 +153,7 @@ define [ 'jquery', 'handlebars',
 		data =
 			english: $.cookie( 'lang' ) is 'en-us'
 
-		$( '#container' ).html (Handlebars.compile template) data
+		$( '#main-body' ).html (Handlebars.compile template) data
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )

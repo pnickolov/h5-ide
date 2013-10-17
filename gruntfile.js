@@ -16,6 +16,7 @@ module.exports = function( grunt ) {
 		reset_temp : '~reset_temp',
 		vender     : 'vender',
 		components : 'bower_components',
+		debug      : 'debug',
 
 		gruntfile  : [
 			'gruntfile.js',
@@ -77,6 +78,7 @@ module.exports = function( grunt ) {
 
 		replace          : require( './config/replace.js'        ),
 		"string-replace" : require( './config/string-replace.js' ),
+		"regex-replace"  : require( './config/regex-replace.js' ),
 
 		cssmin     : require( './config/cssmin.js'  ),
 		htmlmin    : require( './config/htmlmin.js' ),
@@ -149,6 +151,8 @@ module.exports = function( grunt ) {
 	});
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
+			'regex-replace:intercome',
+			'regex-replace:href_release',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
 			'dev_prod_switch:release',
@@ -156,6 +160,13 @@ module.exports = function( grunt ) {
 			'strip'
 		]);
 	});
+
+	grunt.registerTask( 'make_debug', function() {
+		grunt.task.run([
+			'regex-replace:href_debug'
+		]);
+	});
+
 	grunt.registerTask( 'dev_env', function() {
 		grunt.task.run([
 			'copy:dev_prod_switch_task',
@@ -218,12 +229,22 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['requirejs',
+	grunt.registerTask( 'publish', ['regex-replace:string',
+									'requirejs',
+									'regex-replace:language',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
 									'connect:publish'
 	]);
+
+	/* task of use as release */
+	grunt.registerTask( 'debug', ['clean:debug',
+									'make_all',
+									'copy:debug',
+									'make_debug',
+	]);
+
 
 	/* task of use as release */
 	grunt.registerTask( 'deploy', [//release
@@ -242,7 +263,9 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									//publish
+									'regex-replace:string',
 									'requirejs',
+									'regex-replace:language',
 									'copy:publish_files',
 									'clean:temp'
 	]);

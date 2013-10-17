@@ -358,7 +358,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 				if value.type == resource_type.AWS_EC2_Instance
 					if value.resource.SubnetId.indexOf( component.uid ) != -1
-						value.resource.Placement.AvailabilityZone = "1" # Set the Instance's subnet to something else, so we can change it.
+						value.resource.Placement.AvailabilityZone = ""
+						value.resource.SubnetId = "" # Set the Instance's subnet to something else, so we can change it.
 						this.changeP_Instance value, component.uid
 
 				else if value.type == resource_type.AWS_VPC_NetworkInterface

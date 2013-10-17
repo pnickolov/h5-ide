@@ -298,6 +298,11 @@ define [ 'event', 'i18n!nls/lang.js',
                 Helper.updateLoadTime MC.intervalDate( loadTime )
                 console.log 'timeupdate', loadTime
             ), 60001
+            $( '#global-refresh ').show()
+            null
+
+        hideLoadTime: () ->
+            $( '#global-refresh ').hide()
             null
 
         openApp: ( event ) ->

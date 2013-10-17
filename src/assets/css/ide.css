@@ -100,12 +100,20 @@ a {
 }
 
 .logo {
+	background: url('../images/ide/logo-t.png') center no-repeat;
 	margin: 7px 0;
 	height: 34px;
 	width: 160px;
+	opacity: 0.8;
 	position: absolute;
 	left: 8px;
+	text-indent: -9999px;
 }
+
+.logo:hover {
+	opacity: 1;
+}
+
 
 .header-menu {
 	float: right;
@@ -690,12 +698,12 @@ a {
 	opacity: 0;
 
 	width: 244px;
-	height: 100%;
 
-	z-index: -1;
-	position: fixed;
-	left: -300px;
-	top: 54px;
+	z-index  : -1;
+	position : fixed;
+	left     : -300px;
+	top      : 54px;
+	bottom   : 0;
 
 	-webkit-transition: left .1s;
 	-moz-transition: left .1s;

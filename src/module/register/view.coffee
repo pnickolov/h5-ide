@@ -147,7 +147,7 @@ define [ 'event',
 
         loginEvent : ->
             console.log 'loginEvent'
-            #window.location.href = 'ide.html'
+            #window.location.href = '/ide.html'
             this.trigger 'AUTO_LOGIN'
             null
 

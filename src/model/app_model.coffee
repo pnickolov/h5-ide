@@ -88,13 +88,13 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
 
 
         #terminate api (define function)
-        terminate : ( src, username, session_id, region_name, app_id, app_name=null ) ->
+        terminate : ( src, username, session_id, region_name, app_id, app_name=null, flag=null ) ->
 
             me = this
 
             src.model = me
 
-            app_service.terminate src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
+            app_service.terminate src, username, session_id, region_name, app_id, app_name, flag, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #terminate succeed

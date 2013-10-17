@@ -317,7 +317,8 @@ module.exports = function( grunt ) {
 		var zh_file = './src/nls/zh-cn/lang.js';
 		var en_file = './src/nls/en-us/lang.js';
 
-		var lang = require(source_file).lang;
+		delete require.cache[require.resolve(source_file)];
+		var lang = require(source_file);
 
 		var hit = function(obj) {
 			var hitKey = obj.zh_cn !== undefined && obj.en_us !== undefined;

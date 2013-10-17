@@ -176,6 +176,16 @@ define [ 'jquery',
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
 
                 if flag
+                    # run stack
+                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
+                        app_name = $('.modal-input-value').val()
+                        modal.close()
+
+                        model.runStack app_name, MC.canvas_data
+                        MC.data.app_list[MC.canvas_data.region].push app_name
+
+                    info = info.toLowerCase()
+                    info = info[0].toUpperCase() + info.substr(1)
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
@@ -193,6 +203,11 @@ define [ 'jquery',
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
 
                 if flag
+
+                    # run stack
+                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
+                        app_name = $('.modal-input-value').val()
+                        modal.close()
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

@@ -152,6 +152,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
 			'regex-replace:intercome',
+			'regex-replace:google_analytics',
 			'regex-replace:href_release',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
@@ -229,9 +230,9 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['regex-replace:string',
+	grunt.registerTask( 'publish', ['regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
@@ -263,9 +264,9 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									//publish
-									'regex-replace:string',
+									'regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp'
 	]);

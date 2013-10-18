@@ -3,33 +3,68 @@
 #  Base Class for View of Property Module
 ####################################
 
-define ['backbone', 'UI.selectbox'], ()->
+define [ 'backbone',
+         'jquery',
+         'handlebars',
+         'UI.selectbox',
+         'UI.notification',
+         'UI.multiinputbox'
+         'UI.modal',
+         'UI.selectbox',
+         'MC.validate',
+         'UI.parsley',
+         'UI.tooltip',
+         'UI.sortable',
+         'UI.slider'
+], ()->
+
+    ###
+
+    -------------------------------
+     PropertyView is a base class that every property view should inherit.
+    -------------------------------
+
+    ++ Class attributes ( Extra attributes from Backbone.View ) ++
+
+    # model : PropertyModel
+        description : This attributes points to the model that is associated with the view.
+
+
+
+    ++ Class Protocol ( Should be implemented by user ) ++
+
+    # render :
+        description : In this method, user should render its content to `this.$el`. If this method returns a string, it is consider as the title of the property, thus you don't have to call `setTile`.
+
+    ###
 
     PropertyView = Backbone.View.extend {
 
         setTitle : ( title ) ->
-            $("#property-title").html title
-
-        setSecondaryTitle : ( title ) ->
-            $("#property-second-title").html title
+            $( if this._isSub then "#property-second-title" else "#property-title" ).html title
 
         _load : () ->
             # The module is loaded. Here we re-init the view.
 
-            title = this.render()
+            $panel = $("#property-first-panel").find(".property-details")
 
-            # Set the element of the view to ".property-details > *:first-child"
-            # This will rebind the events to the element.
-            # The element will be replaced by another module when the other module loads
-            $target = $(".property-details").children().eq(0)
-            this.setElement $target
+            if not this._noRender
+                # Remove the old panel, so that the event is removed
+                $new_panel = $("<div class='property-content property-details'></div>").insertAfter( $panel )
+                $panel.remove()
+
+                this.setElement $new_panel
+                title = this.render()
+            else
+                # Recovering old tab, use setElement to bind the event
+                this.setElement $panel
 
             # If render() returns a string.
             # Assume it is the title of the property panel
             if _.isString title
                 this.setTitle title
 
-            # TODO : Do component initialization here
+            # TODO : Do all the component initialization here
             selectbox.init()
 
         _loadAsSub : () ->
@@ -43,19 +78,15 @@ define ['backbone', 'UI.selectbox'], ()->
 
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.
-            this.setElment this.$el.children().eq(0)
+            # this.setElment this.$el.children().eq(0)  # # # Not sure if this is necessary.
 
             # If render() returns a string.
             # Assume it is the title of the property panel
-            title = this.render()
             if _.isString title
-                this.setSecondaryTitle title
+                this.title title
 
-            # TODO : Do component initialization here
+            # TODO : Do all the component initialization here
             selectbox.init()
-
     }
 
-
     PropertyView
-

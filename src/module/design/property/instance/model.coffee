@@ -67,6 +67,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			this.set 'update_instance_title', this.get 'name'
 
 			MC.canvas.update(uid,'text','hostname', this.get('name'))
+
+			MC.data.validation.validComp(uid)
+
 			null
 
 

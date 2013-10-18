@@ -2,13 +2,14 @@
 #  validation
 #############################
 
-define [ 'event',
+define [ 'event', 'component/trustedadvisor/validation/main',
          'backbone', 'jquery', 'underscore'
 ], ( ide_event ) ->
 
     #privte
     validComp = ( obj ) ->
-        if obj
+        if MC.ta.instance.checkValue(obj)
+            alert('trustedadvisor!')
             true
         else
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj

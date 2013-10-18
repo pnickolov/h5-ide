@@ -143,8 +143,7 @@ module.exports = function( grunt ) {
 			'coffeelint:files',
 			'coffee:compile_normal',
 			'jshint',
-			'csslint',
-			'lang'
+			'csslint'
 		]);
 	});
 	grunt.registerTask( 'make_all', function() {
@@ -363,7 +362,6 @@ module.exports = function( grunt ) {
 
 		grunt.file.write(en_file, format(en_us));
 		grunt.file.write(zh_file, format(zh_cn));
-
 
 	});
 

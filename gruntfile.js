@@ -321,9 +321,9 @@ module.exports = function( grunt ) {
 		var lang = require(source_file);
 
 		var hit = function(obj) {
-			var hitKey = obj.zh_cn !== undefined && obj.en_us !== undefined;
+			var hitKey = obj.zh !== undefined && obj.en !== undefined;
 
-			var isString = toString.call(obj.zh_cn) == '[object String]' && toString.call(obj.en_us) == '[object String]';
+			var isString = toString.call(obj.zh) == '[object String]' && toString.call(obj.en) == '[object String]';
 
 			if (hitKey && isString) {
 				return true;
@@ -341,8 +341,8 @@ module.exports = function( grunt ) {
 
 					if (lang[k] === Object(lang[k])) {
 						if (hit(lang[k])){
-							en_us[k] = lang[k].en_us;
-							zh_cn[k]= lang[k].zh_cn;
+							en_us[k] = lang[k].en;
+							zh_cn[k]= lang[k].zh;
 						} else {
 							divorce(lang[k], en_us[k], zh_cn[k]);
 						}

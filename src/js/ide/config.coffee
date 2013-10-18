@@ -65,6 +65,9 @@ require.config {
 		'forge_handle'       : 'lib/forge/main'
 		'ta_handle'          : 'lib/ta/main'
 
+		#
+		'validation'         : 'component/trustedadvisor/validation'
+
 		#############################################
 		# ui/common
 		#############################################

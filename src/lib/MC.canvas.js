@@ -126,6 +126,7 @@ MC.canvas = {
 				{
 					comp_sg_list.push(value.GroupId);
 				});
+				break;
 		}
 
 		$.each(comp_sg_list, function(index, SG_uid)
@@ -1183,19 +1184,22 @@ MC.canvas = {
 							switch (MC.canvas_property.LINE_STYLE)
 							{
 								case 0: //straight
-										path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y
-										+ ' L ' + controlPoints[1].x + ' ' + controlPoints[1].y
-										+ ' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y
-										+ ' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
+									path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y +
+										' L ' + controlPoints[1].x + ' ' + controlPoints[1].y +
+										' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y +
+										' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
 									break;
+
 								case 1: //elbow
 									path = MC.canvas._round_corner(controlPoints);
 									break;
+
 								case 2: //bezier-q
-									path = MC.canvas._bezier_q_corner( controlPoints );
+									path = MC.canvas._bezier_q_corner(controlPoints);
 									break;
+
 								case 3: //bezier-qt
-									path = MC.canvas._bezier_qt_corner( controlPoints );
+									path = MC.canvas._bezier_qt_corner(controlPoints);
 									break;
 							}
 
@@ -1307,7 +1311,6 @@ MC.canvas = {
 			catch(error)
 			{
 				console.error('[MC.canvas.reConnect] create connection error');
-				console.info(value);
 			}
 		});
 
@@ -1941,7 +1944,7 @@ MC.canvas.layout = {
 			catch(error)
 			{
 				console.error('[MC.canvas.layout.init]init component error:');
-				console.info(value);
+
 				return true;//continue
 			}
 		});
@@ -1970,7 +1973,7 @@ MC.canvas.layout = {
 			catch(error)
 			{
 				console.error('[MC.canvas.layout.init]init sg_list error:');
-				console.info(value);
+
 				return true;//continue
 			}
 		});
@@ -1997,7 +2000,7 @@ MC.canvas.layout = {
 			catch(error)
 			{
 				console.error('[MC.canvas.layout.init]init sg color error:');
-				console.info(value);
+
 				return true;//continue
 			}
 		});
@@ -2024,7 +2027,7 @@ MC.canvas.layout = {
 				catch(error)
 				{
 					console.error('[MC.canvas.layout.init]add node error');
-					console.info(data);
+
 					return true;//continue
 				}
 			});
@@ -2048,7 +2051,7 @@ MC.canvas.layout = {
 				catch(error)
 				{
 					console.error('[MC.canvas.layout.init]add group error');
-					console.info(data);
+
 					return true;//continue
 				}
 			});
@@ -2058,9 +2061,7 @@ MC.canvas.layout = {
 			layout_data.component.group = {};
 		}
 
-
 		layout_data.connection = {};
-
 
 		//store json to original_json
 		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
@@ -2638,6 +2639,7 @@ MC.canvas.volume = {
 			node_option = target.data('option'),
 			bubble_box = $('#volume-bubble-box'),
 			original_node_volume_data,
+			new_volume_name,
 			target_volume_data,
 			original_node_id,
 			volume_type,
@@ -2689,19 +2691,19 @@ MC.canvas.volume = {
 			{
 				if (data_option.instance_id !== target_id)
 				{
-					var newVolumeName = MC.aws.ebs.getDeviceName(target_id, volume_id);
+					new_volume_name = MC.aws.ebs.getDeviceName(target_id, volume_id);
 					
 					data_json = JSON.stringify({
 						'instance_id': target_id,
 						'id': volume_id,
-						'name': newVolumeName,
+						'name': new_volume_name,
 						'snapshotId': data_option.snapshotId,
 						'volumeSize': data_option.volumeSize
 					});
 
 					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
 
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + newVolumeName + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + new_volume_name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
 
 					target_volume_data.push('#' + volume_id);
 
@@ -2710,19 +2712,15 @@ MC.canvas.volume = {
 					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 					document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
-					MC.canvas.data.set('component.' + volume_id + '.name', newVolumeName);
-					MC.canvas.data.set('component.' + volume_id + '.serverGroupName', newVolumeName);
-					MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.Device', newVolumeName);
+					MC.canvas.data.set('component.' + volume_id + '.name', new_volume_name);
+					MC.canvas.data.set('component.' + volume_id + '.serverGroupName', new_volume_name);
+					MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.Device', new_volume_name);
+					MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
+					MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
 
 					MC.canvas.volume.select.call( document.getElementById( volume_id ) );
 
-					MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
-
 					target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
-
-					MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
-
-					MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
 
 					// Update original data
 					original_node_id = data_option.instance_id;
@@ -4194,7 +4192,7 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = svg_canvas.offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
-				platform = MC.canvas.data.get('platform'),
+				platform = MC.canvas_data.platform,
 				shadow,
 				clone_node,
 				default_width,
@@ -4280,7 +4278,8 @@ MC.canvas.event.siderbarDrag = {
 					'target_type': target_component_type,
 					'canvas_offset': svg_canvas.offset(),
 					'node_type': node_type,
-					'shadow': shadow
+					'shadow': shadow,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO
 				});
 			}
 
@@ -4301,9 +4300,14 @@ MC.canvas.event.siderbarDrag = {
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
 			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
-			grid_width = MC.canvas.GRID_WIDTH,
-			grid_height = MC.canvas.GRID_HEIGHT,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+
+			// MC.canvas.GRID_WIDTH
+			grid_width = 10,
+
+			// MC.canvas.GRID_HEIGHT
+			grid_height = 10,
+
+			scale_ratio = event_data.scale_ratio,
 			coordinate = {
 				'x': Math.round((event.pageX - canvas_offset.left - 50) / (grid_width / scale_ratio)),
 				'y': Math.round((event.pageY - canvas_offset.top - 50) / (grid_height / scale_ratio))
@@ -4363,7 +4367,7 @@ MC.canvas.event.siderbarDrag = {
 					if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 					{
 						vpc_id = $('.AWS-VPC-VPC').attr('id');
-						vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
+						vpc_data = MC.canvas_data.layout.component.group[ vpc_id ];
 						vpc_coordinate = vpc_data.coordinate;
 
 						node_option.groupUId = vpc_id;

@@ -3,7 +3,7 @@
 #  Base Class for Property Module
 ####################################
 
-define [ 'event', 'backbone' ], ( event )->
+define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     activeModule        = null
     activeSubModule     = null
@@ -49,8 +49,6 @@ define [ 'event', 'backbone' ], ( event )->
 
     propertyTypeMap = {}
     propertyTypeMap.DEFAULT_TYPE = "default"
-    propertyMain    = null
-    propertyView    = null
 
     # # # # # # # # # # # # # # # # # # # # # # # # #
     ###
@@ -79,7 +77,7 @@ define [ 'event', 'backbone' ], ( event )->
 
     # subPanelID : String
                   ( Defined by user )
-        description : If is not falsy, this Module is meaned to be used as sub panel, or part of another module. For example, sglist / acl / sgrule should set this to true
+        description : If it is not falsy, this Module is meaned to be used as sub panel, or part of another module. For example, sglist / acl / sgrule should set this to something
 
     # uid        : String
                   ( Defined by library when property is loaded )
@@ -92,7 +90,14 @@ define [ 'event', 'backbone' ], ( event )->
 
     # handleTypes : String | StringArray
                   ( Defined by user )
-        description : This attribute is used to determine which Property should be shown. The String can be one of constant.AWS_RESOURCE_TYPE
+        description : This attribute is used to determine which Property should be shown. The String can be one of constant.AWS_RESOURCE_TYPE.
+        Examples :
+            "AWS.EC2.Instance",
+            "App:AWS.EC2.Instance"   ( `App:` means it only open when it's app mode )
+            "Stack:AWS.EC2.Instance" ( `Stack:` means it only open when it's design mode )
+            "vgw-vpn>cgw-vpn"        ( line between `vgw-vpn` and `cgw-vpn` )
+            "subnet-assoc-in>"       ( line between `subnet-assoc-in` and anything )
+
 
     # model     : PropertyModel
                   ( Assigned by user when `init#{type}` is called )
@@ -121,14 +126,21 @@ define [ 'event', 'backbone' ], ( event )->
 
     ++ Class Method ++
 
-    # extend :
-         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend
+    # load :
+        description : calling this method will should the property.
 
     # activeModule :
         description : Returns the currently showing property.
 
     # activeSubModule :
         description : Returns the currently showing sub property. Maybe null.
+
+
+
+    ++ Static Method ++
+
+    # extend :
+         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend. It's basically the same as triggering `ide_event.OPEN_PROPERTY`
 
     ###
 
@@ -142,10 +154,19 @@ define [ 'event', 'backbone' ], ( event )->
         App   : "App"
 
 
-    PropertyModule.prototype.extend = ( protoProps, staticProps ) ->
+    PropertyModule.prototype.load = ( componentUid ) ->
+        # TODO :
+        null
+
+
+
+    PropertyModule.extend = ( protoProps, staticProps ) ->
         if not protoProps.hasOwnProperty "handleTypes"
-            console.warning "The property doesn't specify what kind of component it can handle"
+            console.warn "The property doesn't specify what kind of component it can handle"
             return
+
+        if protoProps.handleTypes is ""
+            protoProps.handleTypes = propertyTypeMap.DEFAULT_TYPE
 
         # 1. Create a new property module
         newPropertyClass = Backbone.Model.extend.call PropertyModule, protoProps, staticProps
@@ -153,10 +174,14 @@ define [ 'event', 'backbone' ], ( event )->
 
         # 2. Register it
         if _.isString newProperty.handleTypes
-            propertyTypeMap[ newProperty.handleTypes || propertyTypeMap.DEFAULT_TYPE ] = newProperty
+            if propertyTypeMap.hasOwnProperty newProperty.handleTypes
+                console.warn "Duplicated property panel"
+            propertyTypeMap[ newProperty.handleTypes ] = newProperty
         else
             for type in newProperty.handleTypes
-                propertyTypeMap[ newProperty.handleTypes || propertyTypeMap.DEFAULT_TYPE ] = newProperty
+                if propertyTypeMap.hasOwnProperty type
+                    console.warn "Duplicated property panel"
+                propertyTypeMap[ type ] = newProperty
 
         # 3. Return the Property Class
         newPropertyClass
@@ -168,23 +193,12 @@ define [ 'event', 'backbone' ], ( event )->
         activeSubModule
 
 
-
-    PropertyModule.initialize = ( PropertyMain, PropertyView ) ->
-        # This method is called by PropertyMain to do proper setup.
-        # The dependency is injected, so that we don't have a hard
-        # dependency to the PropertyMain and PropertyView, thus no
-        # circular reference exists.
-        propertyMain = PropertyMain   # This is module/design/property/main
-        propertyView = PropertyView   # This is module/design/property/view
-
-        PropertyModule.initialize = null
-        null
-
-
+    # Class methods. They're used by design/property/main.
     PropertyModule.load  = ( componentType, componentUid, tab_type ) ->
-        if not componentType and not this._doLoad componentType, componentUid, tab_type
-            if componentType
-                console.error "Cannot open component for type: #{ componentType }, data : #{componentUid }"
+        if not componentType
+            this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
+        else if not this._doLoad componentType, componentUid, tab_type
+            console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"
             this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
         null
 
@@ -203,7 +217,7 @@ define [ 'event', 'backbone' ], ( event )->
         procName = "init#{property.type}"
         if property[ procName ]
             property.uid = componentUid
-            property[ procName ].call this, componentUid
+            property[ procName ].call property, componentUid
         else
             # The property cannot init. Default to use Stack property.
             return false
@@ -227,7 +241,7 @@ define [ 'event', 'backbone' ], ( event )->
         # 6. Re-init the `model` and `view`
         if property.model.init
             # Since the model is singleton, need to clear all the attributes.
-            property.model.clear()
+            property.model.clear( { silent : true } )
             # If the model cannot init. Default to use Stack property.
             if property.model.init( componentUid ) is false
                 return false
@@ -242,17 +256,14 @@ define [ 'event', 'backbone' ], ( event )->
 
         # 7. Tell view to Render
         if property.subPanelID
-            property.view._loadAsSub()
-            # In the previous version, here uses "ide_event.PROPERTY_OPEN_SUBPANEL" to open the subpanel.
-            # I'm against using ide_event, because it seems like something is decoupled, but it
-            # will create dependency hell, for example, you have no idea who will use your ide_event.
-            propertyView.opernSubPanel property.subPanelID
+            property.view._loadAsSub( property.subPanelID )
         else
             property.view._load()
 
         # 8. After load callback.
-        procName = "afterLoad#{type}"
-        property[ procName ] and property[ procName ].apply( property )
+        procName = "afterLoad#{property.type}"
+        if property[ procName ]
+            property[ procName ].call property
 
         true
 
@@ -273,6 +284,12 @@ define [ 'event', 'backbone' ], ( event )->
             PropertyModule.load snapshot.activeSubModuleType, snapshot.activeSubModuleId, snapshot.tab_type, true
 
         null
+
+    # The event object is used to communicate with design/property/view
+    # So that we don't have a reference to desing/property/view, avoiding
+    # a strong dependency on it.
+    PropertyModule.event = _.extend {}, Backbone.Events
+    PropertyModule.event.FORCE_SHOW = "forceshow"
 
 
     # Export PropertyModule

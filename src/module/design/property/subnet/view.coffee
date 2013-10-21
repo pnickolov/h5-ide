@@ -2,22 +2,21 @@
 #  View(UI logic) for design/property/subnet
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/acl.html',
+         'event'
+], ( PropertyView, template, acl_template, ide_event ) ->
 
-    SubnetView = Backbone.View.extend {
+    template     = Handlebars.compile template
+    acl_template = Handlebars.compile acl_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-subnet-tmpl' ).html()
-
-        acl_template: Handlebars.compile $( '#property-subnet-acl-tmpl' ).html()
+    SubnetView = PropertyView.extend {
 
         events   :
             'click #networkacl-create': 'openCreateAclPanel'
             'click .networkacl-edit': 'openEditAclPanel'
             "change #property-subnet-name" : 'onChangeName'
-            "change #property-cidr-block"  : 'onChangeCIDR'
             "focus #property-cidr-block"  : 'onFocusCIDR'
             "keypress #property-cidr-block"  : 'onPressCIDR'
             "blur #property-cidr-block"  : 'onBlurCIDR'
@@ -25,10 +24,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             "click .item-networkacl" : 'onClickACL'
             "change #networkacl-create"    : 'onCreateACL'
             'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
-
-        initialize : () ->
-            that = this
-            null
 
         render     : () ->
             console.log 'property:subnet render'
@@ -56,7 +51,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 data.CIDRPrefix = cidrDivAry[0]
                 data.CIDR = cidrDivAry[1]
 
-                $( '.property-details' ).html this.template data
+                @$el.html template data
                 this.refreshACLList()
 
                 if focusCIDR
@@ -64,9 +59,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                     ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
                     $('#property-cidr-block').val('').focus()
             else
-                $( '.property-details' ).html this.template data
+                @$el.html template data
 
-            null
+            @model.attributes.name
+
 
         openCreateAclPanel : ( event ) ->
             source = $(event.target)
@@ -79,7 +75,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
-            
+
             vpcUID = MC.aws.vpc.getVPCUID()
             aclObj.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
 
@@ -106,27 +102,15 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             MC.validate.preventDupname target, id, name, 'Subnet'
 
             # Notify changes
-            change.value   = name
-            change.event   = "CHANGE_NAME"
 
             if target.parsley 'validate'
-                this.trigger "CHANGE_NAME", change
-
-
-        onChangeCIDR : ( event ) ->
-
-            # change.handled = false
-            # change.value   = $("#property-cidr-prefix").html() + $("#property-cidr-block").val()
-            # change.event   = "CHANGE_CIDR"
-
-            # this.trigger "CHANGE_CIDR", change
-
-            null
+                this.trigger "CHANGE_NAME", name
+                @setTitle name
 
         onPressCIDR : ( event ) ->
-
             if (event.keyCode is 13)
                 $('#property-cidr-block').blur()
+            null
 
         onFocusCIDR : ( event ) ->
 
@@ -142,7 +126,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             $target = $(event.currentTarget)
             aclUID = $target.attr('acl-uid')
-            
+
             associationNum = Number($target.attr('acl-association'))
             aclName = $target.attr('acl-name')
 
@@ -215,21 +199,14 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else
-                change = {}
-                change.handled = false
-                change.value   = subnetCIDR
-                change.event   = "CHANGE_CIDR"
-                this.trigger "CHANGE_CIDR", change
+                this.trigger "CHANGE_CIDR", subnetCIDR
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
                 # $('#property-cidr-block').blur()
 
         onChangeACL : () ->
 
-            change.value = $( "#networkacl-list :checked" ).attr "data-uid"
-            change.event = "CHANGE_ACL"
-
-            this.trigger "CHANGE_ACL", change
+            this.trigger "CHANGE_ACL", $( "#networkacl-list :checked" ).attr "data-uid"
 
             this.refreshACLList()
 
@@ -238,44 +215,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             inputElem = $(event.currentTarget).find('input')
             inputElem.select()
 
-        onViewACL : () ->
-            null
-
-        onCreateACL : () ->
-            null
-
         refreshACLList : () ->
-            this.model.setId(this.model.get('uid'))
-            $('#networkacl-list').html this.acl_template(this.model.attributes)
+            this.model.init( this.model.get('uid') )
+            $('#networkacl-list').html acl_template(this.model.attributes)
 
     }
 
-    view = new SubnetView()
-
-    eventTgtMap =
-        "CHANGE_NAME" : "#property-subnet-name"
-        "CHANGE_CIDR" : "#property-cidr-block"
-
-    # When user enters new value, a `change` will trigger
-    # When the validation is handle in model, the change can be done with or without error.
-    change =
-        value   : ""
-        event   : ""
-        handled : true
-        done    : ( error ) ->
-            if this.handled
-                return
-
-            if error
-                # TODO : show error on the input
-
-                # Restore last value
-                $ipt = $( eventTgtMap[ this.event ] )
-                $ipt.val( $ipt.attr "lastValue" )
-            else
-                $( eventTgtMap[ this.event ] ).attr "lastValue", this.value
-
-            this.handled = true
-            null
-
-    return view
+    new SubnetView()

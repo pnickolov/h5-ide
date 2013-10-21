@@ -9,4 +9,4 @@
 	</li>
 {{/each}}
 </ul>
-{{#if stack_state}}<a href="javascript:void(0)" class="add-to-list action-link" id="stack-property-add-new-acl" title="Create new Network ACL">{{ i18n "PROP_STACK_BTN_CREATE_NEW_ACL" }}</button>{{/if}}
+{{#unless isApp}}<a href="javascript:void(0)" class="add-to-list action-link" id="stack-property-add-new-acl" title="Create new Network ACL">{{ i18n "PROP_STACK_BTN_CREATE_NEW_ACL" }}</button>{{/unless}}

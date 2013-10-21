@@ -12,8 +12,8 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
-        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html() || ""
+        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html() || ""
 
         events :
             'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'

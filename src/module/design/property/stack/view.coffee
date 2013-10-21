@@ -2,57 +2,38 @@
 #  View(UI logic) for design/property/stack
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars',
-    'UI.notification',
-    'UI.secondarypanel' ], ( ide_event ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/acl.html',
+         'text!./template/sub.html',
+         'event'
+], ( PropertyView, template, acl_template, sub_template, ide_event ) ->
 
-    StackView = Backbone.View.extend {
+    template     = Handlebars.compile template
+    acl_template = Handlebars.compile acl_template
+    sub_template = Handlebars.compile sub_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        stack_template  : Handlebars.compile $( '#property-stack-tmpl' ).html()
-        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
-        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
-        sub_template    : Handlebars.compile $( '#property-stack-sns-tmpl' ).html()
-
+    StackView = PropertyView.extend {
         events   :
-            # 'change #property-stack-name'           : 'stackNameChanged'
-            # 'click #add-sg-btn'                     : 'openSecurityGroup'
-            # 'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
-            # 'click .deleteSG'                       : 'deleteSecurityGroup'
-            # 'click .resetSG'                        : 'resetSecurityGroup'
-            # 'click .stack-property-acl-list .delete': 'deleteNetworkAcl'
-            # 'click #stack-property-add-new-acl'     : 'openCreateAclPanel'
-            # 'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
-
-            'change #property-stack-name'   : 'stackNameChanged'
-            # 'click #add-sg-btn'             : 'createSecurityGroup'
-            # 'click .deleteSG'               : 'deleteSecurityGroup'
-            # 'click .resetSG'                : 'resetSecurityGroup'
+            'change #property-stack-name'                        : 'stackNameChanged'
             'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
-            'click #stack-property-add-new-acl' : 'openCreateAclPanel'
-            'click .stack-property-acl-list .edit' : 'openEditAclPanel'
+            'click #stack-property-add-new-acl'                  : 'openCreateAclPanel'
+            'click .stack-property-acl-list .edit'               : 'openEditAclPanel'
 
             'click #property-sub-list .icon-edit' : 'editSNS'
             'click #property-sub-list .icon-del'  : 'delSNS'
-            'click #property-create-asg' : 'openSNSModal'
+            'click #property-create-asg'          : 'openSNSModal'
 
         render     : () ->
-            me = this
 
-            console.log 'property:stack render'
+            @$el.html( template( @model.attributes ) )
+            @setTitle( "Stack - " + this.model.attributes.property_detail.name )
 
-            #
-            this.undelegateEvents()
-            #
-            $( '.property-details' ).html this.stack_template this.model.attributes
+            @refreshACLList()
 
-            this.refreshACLList()
-            #
-            this.delegateEvents this.events
 
             MC.canvas_data.name = MC.canvas_data.name.replace(/\s+/g, '')
+
             $( '#property-stack-name' ).val(MC.canvas_data.name)
 
             this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg, true
@@ -60,7 +41,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
             null
 
         stackNameChanged : () ->
-            me = this
             stackNameInput = $ '#property-stack-name'
             stackId = @model.get( 'property_detail' ).id
             name = stackNameInput.val()
@@ -73,7 +53,10 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
                     return "Stack name \" #{name} \" is already in using. Please use another one."
 
             if stackNameInput.parsley 'validate'
-                me.trigger 'STACK_NAME_CHANGED', name
+                @trigger 'STACK_NAME_CHANGED', name
+                @setTitle "Stack - " + name
+            null
+
 
         openSecurityGroup : (event) ->
             source = $(event.target)
@@ -117,7 +100,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
             $target = $(event.currentTarget)
             aclUID = $target.attr('acl-uid')
-            
+
             associationNum = Number($target.attr('acl-association'))
             aclName = $target.attr('acl-name')
 
@@ -144,7 +127,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
         refreshACLList : () ->
             if MC.aws.vpc.getVPCUID()
                 this.model.getNetworkACL()
-                $('.stack-property-acl-list').html this.acl_template this.model.attributes
+                $('.stack-property-acl-list').html acl_template this.model.attributes
 
         openCreateAclPanel : ( event ) ->
             source = $(event.target)
@@ -342,6 +325,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars',
 
     }
 
-    view = new StackView()
-
-    return view
+    new StackView()

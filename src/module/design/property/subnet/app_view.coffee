@@ -10,7 +10,6 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-subnet-app-tmpl' ).html()
         events    :
             "click #property-app-subnet-acl" : 'showACLDetail'
 

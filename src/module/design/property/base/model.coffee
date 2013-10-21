@@ -3,7 +3,7 @@
 #  Base Class for Model of Property Module
 ####################################
 
-define [ 'backbone' ], ()->
+define [ 'backbone' ], ( Backbone )->
 
     ###
 
@@ -13,7 +13,7 @@ define [ 'backbone' ], ()->
 
     ###
 
-    PropertyModel = Backbone.View.extend {
+    PropertyModel = Backbone.Model.extend {
 
     }
 

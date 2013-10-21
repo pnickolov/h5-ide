@@ -7,8 +7,6 @@ define [ 'event',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template ) ->
 
-    template = Handlebars.compile template
-
     PropertyView = Backbone.View.extend {
 
         el         : '#property-panel'
@@ -41,20 +39,19 @@ define [ 'event',
                 d.toLocaleDateString() + " " + d.toTimeString()
 
             #listen
-            $( document.body ).on( 'click',           '#hide-property-panel', this.togglePropertyPanel                )
-                              .on( 'click',           '.option-group-head',   this.toggleOption                       )
-                              .on( 'click',           '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
-                              .on( 'DOMNodeInserted', '.property-wrap',       this, _.debounce( this.domChange, 0, false ))
+            $( document.body )
+                .on( 'click', '#hide-property-panel', this.togglePropertyPanel )
+                .on( 'click', '.option-group-head',   this.toggleOption )
+                .on( 'click', '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
+                .on( 'DOMNodeInserted', '.property-wrap', this, _.debounce( this.domChange, 0, false ))
 
-        render     : ( template ) ->
-            console.log 'property render'
-            this.$el.html template
+            null
+
+        render     : () ->
+            this.$el.html( template )
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
-
-        reRender   : ( template ) ->
-            console.log 're-property render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#property-panel' ).html template
+            null
 
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
@@ -63,11 +60,6 @@ define [ 'event',
             $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
             false
-
-        refresh : ->
-            console.log 'refresh'
-            selectbox.init()
-            temp_view.ready()
 
         updateHtml : ( back_dom ) ->
             console.log 'update property html'
@@ -126,8 +118,12 @@ define [ 'event',
                     "overflow"   : "visible"
                 })
 
-        setTitle : ( title ) ->
-            $("#property-title").html( title )
+        # This method is used to show the panel immediately if the panel is hidden.
+        forceShow : () ->
+            $( '#canvas-panel' ).removeClass 'right-hiden'
+            $( '#property-panel' ).removeClass 'hiden transition'
+            $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
+            null
 
         showSecondPanel : ( data ) ->
             $("#property-second-title").html( data.title ).attr( "data-id", data.id )

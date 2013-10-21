@@ -15,26 +15,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 	InstanceModel = PropertyModel.extend {
 
-		defaults :
-			'uid'         : null
-			'name'        : null
-			'update_instance_title' : null
-			'instance_type' : null
-			'instance_ami' : null
-			'instance_ami_property' : null
-			'keypair' : null
-			'component' : null
-			'sg_display' : null
-			'checkbox_display' : null
-			'eni_display'   : null
-			'ebs_optimized' : null
-			'tenacy' : null
-			'cloudwatch' : null
-			'user_data' : null
-			'eni_description' : null
-			'source_check' : null
-			'public_ip' : null
-
 		init : ( uid ) ->
 			@set 'uid', uid
 

@@ -32,7 +32,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                 inputValue = $(inputElem).val()
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
-                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    @forceShow()
                     $(inputElem).focus()
 
             @model.attributes.title
@@ -152,12 +152,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                     MC.aws.aws.disabledAllOperabilityArea(false)
                     return
 
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Route',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         inputElem.focus()

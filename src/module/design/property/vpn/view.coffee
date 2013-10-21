@@ -29,7 +29,7 @@ define [ '../base/view',
                     inputValue = $(inputElem).val()
                     if !inputValue
                         MC.aws.aws.disabledAllOperabilityArea(true)
-                        ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                        @forceShow()
                         $(inputElem).focus()
 
             "vpn:#{@model.attributes.vpn_detail.cgw_name}"
@@ -93,12 +93,12 @@ define [ '../base/view',
                     MC.aws.aws.disabledAllOperabilityArea(false)
                     return
 
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Connection',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         inputElem.focus()

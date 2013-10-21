@@ -26,7 +26,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             if !inputValue
                 MC.aws.aws.disabledAllOperabilityArea(true)
                 $(inputElem).focus()
-                ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                @forceShow()
 
             @model.attributes.name
 
@@ -101,12 +101,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                 haveError = false
 
             if haveError
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Customer Gateway',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         $('#property-cgw-ip').focus()

@@ -56,7 +56,7 @@ define [ '../base/view',
 
                 if focusCIDR
                     MC.canvas.update subnetUID, 'text', 'label', subnetName + ' ()'
-                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    @forceShow()
                     $('#property-cidr-block').val('').focus()
             else
                 @$el.html template data
@@ -134,12 +134,12 @@ define [ '../base/view',
             if associationNum
                 mainContent = 'Are you sure you want to delete ' + aclName + '?'
                 descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
-                template = MC.template.modalDeleteSGOrACL {
+                dialog_template = MC.template.modalDeleteSGOrACL {
                     title : 'Delete Network ACL',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->
                         MC.aws.acl.addAssociationToDefaultACL(subnetUID)
                         delete MC.canvas_data.component[aclUID]
@@ -183,12 +183,12 @@ define [ '../base/view',
                 haveError = false
 
             if haveError
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Subnet',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         $('#property-cidr-block').focus()

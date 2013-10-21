@@ -108,12 +108,12 @@ define [ '../base/view',
             if associationNum
                 mainContent = 'Are you sure you want to delete ' + aclName + '?'
                 descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
-                template = MC.template.modalDeleteSGOrACL {
+                dialog_template = MC.template.modalDeleteSGOrACL {
                     title : 'Delete Network ACL',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->
                         MC.aws.acl.addRelatedSubnetToDefaultACL(aclUID)
                         delete MC.canvas_data.component[aclUID]

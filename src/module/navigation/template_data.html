@@ -23,7 +23,7 @@
 {{else}}
 
 	<li>
-		<div class="nav-empty"><p>Currently there is no app.</p> <p>You can launch an app from stack.</p></div>
+		<div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>
 	</li>
 
 {{/if}}
@@ -31,7 +31,7 @@
 <!--{{ .stack-list-data }}-->
 {{#each stack_list }}
 <li>
-	<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span></a>
+	<a href="javascript:void(0)" class="nav-stack-region-title create-new-stack">{{ region_group }} ({{ region_count }})<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span></a>
 
 	<ul class="nav-region-list-items stack-list">
 
@@ -54,7 +54,7 @@
 				<li class="hide">
 					<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
 						{{ this }} (0)
-						<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+						<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span>
 					</a>
 				</li>
 
@@ -75,7 +75,7 @@
 			<li class="show">
 				<a href="javascript:void(0)" class="nav-stack-region-title create-new-empty-stack" data-empty-region-label="{{ this }}">
 					{{ this }} (0)
-					<span class="icon-new-stack nav-new-stack tooltip" data-tooltip="Create new stack"></span>
+					<span class="icon-new-stack nav-new-stack tooltip" data-tooltip='{{ i18n "IDE_COM_CREATE_NEW_STACK" }}'></span>
 				</a>
 			</li>
 

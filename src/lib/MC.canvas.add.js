@@ -1194,7 +1194,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if (device_name.length === 0)
 					{
 						//no valid deviceName
-						notification('warning', 'No valid device name to assign,cancel!', false);
+						notification('warning', 'Attached volume has reached instance limit.', false);
 						return null;
 					}
 
@@ -1242,7 +1242,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if (device_name.length === 0)
 					{
 						//no valid deviceName
-						notification('warning', 'No valid device name to assign,cancel!', false);
+						notification('warning', 'Attached volume has reached instance limit.', false);
 						return null;
 					}
 

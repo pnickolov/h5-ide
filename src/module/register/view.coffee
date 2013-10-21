@@ -4,7 +4,8 @@
 
 define [ 'event',
          'text!./module/register/template.html', 'text!./module/register/success.html',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, success_tmpl ) ->
+         'i18n!nls/lang.js',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, tmpl, success_tmpl, lang ) ->
 
     RegisterView = Backbone.View.extend {
 
@@ -54,15 +55,15 @@ define [ 'event',
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
-                    status.show().text 'This username is available.'
+                    status.show().text lang.register.username_available
                     #check vaild
                     this.trigger 'CHECK_REPEAT', value, null if event.type is 'blur'
                     true
                 else
-                    status.addClass('error-status').show().text 'Username should only contain alpha-number.'
+                    status.addClass('error-status').show().text lang.register.username_not_matched
                     false
             else
-                status.addClass('error-status').show().text 'Username is required.'
+                status.addClass('error-status').show().text lang.register.username_required
                 false
 
         verificationEmail : ->
@@ -75,12 +76,12 @@ define [ 'event',
             #@_checkButtonDisabled()
             #
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
-                status.show().text 'This email address is available.'
+                status.show().text lang.register.email_available
                 #check vaild
                 this.trigger 'CHECK_REPEAT', null, value if event.type is 'blur'
                 true
             else
-                status.addClass('error-status').show().text 'This is not a valid email address.'
+                status.addClass('error-status').show().text lang.register.email_not_valid
                 false
 
         verificationPassword : ->
@@ -96,13 +97,13 @@ define [ 'event',
                 if value.length > 5 # &&
                     #/[A-Z]{1}/.test(value) &&
                     #/[0-9]{1}/.test(value)
-                    status.show().text 'This password is OK.'
+                    status.show().text lang.register.password_ok
                     true
                 else
-                    status.addClass('error-status').show().text 'Password must contain at least 6 letters.'
+                    status.addClass('error-status').show().text lang.register.password_shorter
                     false
             else
-                status.addClass('error-status').show().text 'Password is required.'
+                status.addClass('error-status').show().text lang.register.password_required
                 false
 
         submit : ->
@@ -119,7 +120,7 @@ define [ 'event',
 
             if right_count is 3
                 #
-                $( '#register-btn' ).attr( 'value', 'Login...' )
+                $( '#register-btn' ).attr( 'value', lang.register.reginster_waiting )
                 $( '#register-btn' ).attr( 'disabled', true )
                 #
                 @is_submit = true
@@ -134,14 +135,14 @@ define [ 'event',
         showUsernameError : ->
             console.log 'showUsernameError'
             status = $('#username-verification-status')
-            status.addClass( 'error-status' ).show().text 'Username has been taken. Please choose another.'
+            status.addClass( 'error-status' ).show().text lang.ide.username_taken
             @is_submit = false
             null
 
         showEmailError : ->
             console.log 'showEmailError'
             status = $('#email-verification-status')
-            status.addClass( 'error-status' ).show().text 'This email address has been used.'
+            status.addClass( 'error-status' ).show().text lang.ide.email_used
             @is_submit = false
             null
 

@@ -117,7 +117,7 @@ define [ 'constant'] , ( constant ) ->
 
         error_message = ''
 
-        if result.length == 2
+        if _.isArray(result) and result.length == 2
 
             err_code = result[0]
             err_xml  = result[1]
@@ -131,6 +131,10 @@ define [ 'constant'] , ( constant ) ->
                     else
 
                         error_message = $($.parseXML(err_xml)).find('Error').find('Message').text()
+
+        else if _.isString(result)
+
+            error_message = result
 
         #return
         error_message

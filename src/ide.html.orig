@@ -91,10 +91,13 @@
 		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
 	</script>
 
+<<<<<<< HEAD
 	<!-- <script type="text/javascript" src="./lib/version.js"></script>
 	<script type="text/javascript" src="./lib/analytics.js"></script> -->
 
 	<!-- env:prod --#>
+=======
+>>>>>>> hotfix/google-analytics
 	<script type="text/javascript" src="./lib/intercom.js"></script>
 	<!-- env:prod:end -->
 

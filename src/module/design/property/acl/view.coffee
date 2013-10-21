@@ -2,8 +2,8 @@
 #  View(UI logic) for design/property/acl
 #############################
 
-define [ 'event',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, template, rule_template ) ->
+define [ 'event', 'i18n!nls/lang.js',
+         'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
 
    ACLView = Backbone.View.extend {
 
@@ -71,7 +71,7 @@ define [ 'event',
                     '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
                 )
 
-            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">Custom...</div></li>')
+            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">' + lang.ide.POP_ACLRULE_PROTOCOL_CUSTOM + '</div></li>')
 
             # scrollbar.init()
             return false
@@ -297,13 +297,20 @@ define [ 'event',
         modalRuleProtocolSelected : (event) ->
             protocolSelectElem = $(event.target)
             selectedValue = protocolSelectElem.find('.selected').attr('data-id')
-            $('#sg-protocol-select-result .sg-protocol-option-input').hide()
-            $('#sg-protocol-' + selectedValue).show()
 
-            icmpSelectElem = $('#protocol-icmp-main-select')
-            icmpSelectedValue = icmpSelectElem.find('.selected').attr('data-id')
-            if icmpSelectedValue isnt '3' and icmpSelectedValue isnt '5' and icmpSelectedValue isnt '11' and icmpSelectedValue isnt '12'
-                $('.protocol-icmp-sub-select').hide()
+            if selectedValue
+
+                $('#sg-protocol-custom').hide()
+                $('#sg-protocol-all').hide()
+
+                $('#sg-protocol-select-result .sg-protocol-option-input').hide()
+                $('#sg-protocol-' + selectedValue).show()
+
+                icmpSelectElem = $('#protocol-icmp-main-select')
+                icmpSelectedValue = icmpSelectElem.find('.selected').attr('data-id')
+                if icmpSelectedValue isnt '3' and icmpSelectedValue isnt '5' and icmpSelectedValue isnt '11' and icmpSelectedValue isnt '12'
+                    $('.protocol-icmp-sub-select').hide()
+
             null
 
         modalRuleICMPSelected : (event) ->
@@ -318,9 +325,9 @@ define [ 'event',
 
             inbound = $('#acl-add-model-direction-inbound').prop('checked')
             if inbound
-                $('#acl-add-model-bound-label').text('Source')
+                $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_SOURCE)
             else
-                $('#acl-add-model-bound-label').text('Destination')
+                $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_DEST)
 
         sortACLRule : ( event ) ->
             sg_rule_list = $('#acl-rule-list')

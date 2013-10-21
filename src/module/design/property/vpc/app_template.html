@@ -1,65 +1,65 @@
 <article class="property-app">
 
-  <div class="option-group-head expand">VPC Details</div>
+  <div class="option-group-head expand">{{ i18n "PROP_VPC_TIT_DETAIL" }}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>VPC ID</dt>
+      <dt>{{ i18n "PROP_VPC_APP_VPC_ID" }}</dt>
       <dd>{{vpcId}}</dd>
-      <dt>State</dt>
+      <dt>{{ i18n "PROP_VPC_APP_STATE" }}</dt>
       <dd><i class="status status-{{#if available}}green{{else}}orange{{/if}}"></i>{{state}}</dd>
-      <dt>CIDR</dt>
+      <dt>{{ i18n "PROP_VPC_APP_CIDR" }}</dt>
       <dd>{{cidrBlock}}</dd>
-      <dt>Tenancy</dt>
+      <dt>{{ i18n "PROP_VPC_DETAIL_LBL_TENANCY" }}</dt>
       <dd>{{instanceTenancy}}</dd>
-      <dt>Main Route Table</dt>
+      <dt>{{ i18n "PROP_VPC_APP_MAIN_RT" }}</dt>
       <dd>{{mainRTB}}</dd>
-      <dt>Default Network ACL</dt>
+      <dt>{{ i18n "PROP_VPC_APP_DEFAULT_ACL" }}</dt>
       <dd>{{defaultACL}}</dd>
     </dl>
   </div>
 
-  <div class="option-group-head expand">DHCP Options</div>
+  <div class="option-group-head expand">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</div>
   <div class="option-group">
 
   {{#if default_dhcp}}
   <div class="property-control-group">
-    <p>Default DHCP</p>
+    <p>{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</p>
   {{else}}
   {{#unless dhcp}}
-    <p>None</p>
+    <p>{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</p>
  </div>
     {{else}}
 
   <dl class="dl-vertical">
-    <dt>DHCP Options Set ID</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_OPTION_SET_ID" }}</dt>
     <dd>{{dhcpOptionsId}}</dd>
 
     {{#if dhcp.domainName}}
-    <dt>Domain Name</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</dt>
     <dd>{{dhcp.domainName.[0]}}</dd>
     {{/if}}
 
     {{#if dhcp.domainNameServers.length}}
-    <dt>Domain Name Server</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER" }}</dt>
     <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
     </dd>
     {{/if}}
 
     {{#if dhcp.ntpServers.length}}
-    <dt>NTP Server</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER" }}</dt>
     <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
     </dd>
     {{/if}}
 
 
     {{#if dhcp.netbiosNameServers.length}}
-    <dt>NetBIOS Name Server</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER" }}</dt>
     <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
     </dd>
     {{/if}}
 
     {{#if dhcp.netbiosNodeType}}
-    <dt>NetBIOS Node Type</dt>
+    <dt>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</dt>
     <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
     {{/if}}
 

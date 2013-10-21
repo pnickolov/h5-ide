@@ -92,7 +92,7 @@ define [ 'jquery', 'handlebars',
 			$( '.control-group' ).first().addClass 'error'
 			return false
 
-		$( '#login-btn'   ).attr( 'value', 'Login...' )
+		$( '#login-btn'   ).attr( 'value', lang.login.login_waiting )
 		$( '#login-btn'   ).attr( 'disabled', true )
 
 		#invoke session.login api
@@ -149,12 +149,19 @@ define [ 'jquery', 'handlebars',
 		#i18n
 		Handlebars.registerHelper 'i18n', ( text ) ->
 			new Handlebars.SafeString lang.login[ text ]
-		#
-		$( '#main-body' ).html Handlebars.compile template
-		#
+
+		data =
+			english: $.cookie( 'lang' ) is 'en-us'
+
+		$( '#main-body' ).html (Handlebars.compile template) data
 		$( '#login-btn'   ).removeAttr 'disabled'
 		$( '#login-btn'   ).addClass 'enabled'
 		$( '#login-form'  ).submit( MC.login )
-		$( '#footer' ).text 'version ' + version
+		$( '#footer .version' ).text 'Version ' + version
+		$('#footer .lang a').click ( ev ) ->
+			$.cookie 'lang', $(this).data 'lang'
+			MC.storage.set 'language', $(this).data 'lang'
+			window.location.reload()
+			false
 
 		return true

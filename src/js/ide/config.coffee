@@ -1,13 +1,11 @@
 ###
-tmpDebug = console.log
-this.debug = () ->
-	tmpDebug.apply console, arguments
-
 emptyFunction = ->
-	for method of console
-		if Object.prototype.toString.call method is '[object Function]'
-			console[method] = emptyFunction
+
+for key, value of console
+	if key isnt 'debug' and Object.prototype.toString.call( value ) is '[object Function]'
+		console[ key ] = emptyFunction
 ###
+
 
 require.config {
 
@@ -17,7 +15,7 @@ require.config {
 
 	deps                     : [ 'main' ]
 
-	locale                   : 'en-us'
+	locale                   : language
 
 	urlArgs                  : 'v=' + version
 

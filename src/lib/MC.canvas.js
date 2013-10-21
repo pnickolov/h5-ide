@@ -3257,12 +3257,19 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = event.data.originalTarget,
-				originalTargetNode = $(originalTarget),
-				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
+			if (MC.canvas.getState() === 'app')
+			{
+				MC.canvas.instanceList.show.call( target[0], event);
+			}
+			else
+			{
+				var originalTarget = event.data.originalTarget,
+					originalTargetNode = $(originalTarget),
+					component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
-			MC.canvas.select( target_id );
-			MC.canvas.volume.close();
+				MC.canvas.select( target_id );
+				MC.canvas.volume.close();
+			}
 		}
 		else
 		{
@@ -3324,7 +3331,7 @@ MC.canvas.event.dragable = {
 					)
 				)
 				{
-					MC.canvas.position(target[0], coordinate.x, coordinate.y);
+					MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
 
 					MC.canvas.reConnect(target_id);
 
@@ -5176,6 +5183,29 @@ MC.canvas.event.selectNode = function (event)
 	{
 		MC.canvas.event.clearSelected();
 		MC.canvas.select(this.id);
+	}
+
+	return false;
+};
+
+MC.canvas.event.appMove = function (event)
+{
+	if (event.which === 1)
+	{
+		MC.canvas.event.clearSelected();
+
+		var target = $(this),
+			target_type = target.data('class');
+
+		if (target_type === 'AWS.EC2.Instance')
+		{
+			MC.canvas.event.dragable.mousedown.call( this, event );
+		}
+		else
+		{
+			MC.canvas.select( this.id );
+		}
+		
 	}
 
 	return false;

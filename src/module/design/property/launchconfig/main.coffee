@@ -25,6 +25,16 @@ define [ "../base/main",
             sglist_main.loadModule @model
             null
 
+        setupStack : () ->
+            me = this
+            @model.setup()
+            @model.on "KP_DOWNLOADED", (data, option)->
+                me.view.updateKPModal(data, option)
+
+            @view.on "REQUEST_KEYPAIR", (name)->
+                me.model.downloadKP(name)
+            null
+
         initApp : () ->
             @model = model
             @model.isApp = true
@@ -36,21 +46,11 @@ define [ "../base/main",
             null
     }
 
-    # model.getUID  uid
-    # model.getName()
     # model.getInstanceType()
     # model.getAmiDisp()
     # model.getAmi()
-    # model.getComponent()
-    # model.getKeyPair()
-    # # model.getSgDisp()
-    # model.getCheckBox()
-    # model.listen()
 
     # # ######################################
 
     # model.getAppLaunch uid
-
-    # model.on "KP_DOWNLOADED", (data, option)-> view.updateKPModal(data, option)
-    # view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
 

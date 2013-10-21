@@ -15,7 +15,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
   LaunchConfigModel = PropertyModel.extend {
 
-    listen : ->
+    setup : ->
       me = this
       this.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
@@ -256,107 +256,6 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       instance_type = instance_type[ami.virtualizationType]
 
       instance_type
-
-    removeSG : () ->
-
-      uid = this.get 'uid'
-
-      sg_uid = this.get 'remove_sg'
-
-      sg_id_ref = "@"+sg_uid+'.resource.GroupId'
-
-      if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-        sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
-
-        if sg_ids.length != 1
-
-          sg_ids.splice sg_ids.indexOf sg_id_ref, 1
-
-          $.each MC.canvas_property.sg_list, ( key, value ) ->
-
-            if value.uid == sg_uid
-
-              index = value.member.indexOf uid
-
-              value.member.splice index, 1
-
-              # delete member 0 sg
-
-              if value.member.length == 0 and value.name != 'DefaultSG'
-
-                MC.canvas_property.sg_list.splice key, 1
-
-                delete MC.canvas_data.component[sg_uid]
-
-                $.each MC.canvas_data.component, ( key, comp ) ->
-
-                  if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-
-                    $.each comp.resource.IpPermissions, ( i, rule ) ->
-
-                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                        MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
-
-                    $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
-
-                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                        MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
-
-              return false
-
-      else
-
-        $.each MC.canvas_data.component, ( key, comp ) ->
-
-          if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
-
-            if comp.GroupId.length != 1
-
-              $.each comp.GroupId, ( index, group) ->
-
-                if group.GroupId == sg_id_ref
-
-                  comp.GroupId.splice index, 1
-
-                  return false
-
-              $.each MC.canvas_property.sg_list, ( idx, value ) ->
-
-                if value.uid == sg_uid
-
-                  index = value.member.indexOf uid
-
-                  value.member.splice index, 1
-
-                  # delete member 0 sg
-
-                  if value.member.length == 0 and value.name != 'DefaultSG'
-
-                    MC.canvas_property.sg_list.splice idx, 1
-
-                    delete MC.canvas_data.component[sg_uid]
-
-                    $.each MC.canvas_data.component, ( key, comp ) ->
-
-                      if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-
-                        $.each comp.resource.IpPermissions, ( i, rule ) ->
-
-                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                            MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
-
-                        $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
-
-                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                            MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
-            return false
-
-      null
 
     getSGList : () ->
 

@@ -351,6 +351,11 @@ define [ 'event', 'i18n!nls/lang.js',
             console.debug data
 
             $( this.el ).html @overview data
+            #hack
+            setTimeout () ->
+                $( '.icon-dashboard' ).css { background: "url('#{ window.location.origin }/assets/images/ide/icon-dashboard.png') center center no-repeat" }
+            ,1000
+            null
 
         openItem : (event) ->
             console.log 'click item'

@@ -15,6 +15,9 @@ define [ 'backbone' ], ( Backbone )->
 
     PropertyModel = Backbone.Model.extend {
 
+      init : () ->
+        null
+
     }
 
     PropertyModel

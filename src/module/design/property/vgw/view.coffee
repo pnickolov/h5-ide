@@ -2,23 +2,14 @@
 #  View(UI logic) for design/property/vgw
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
-   VGWView = Backbone.View.extend {
-
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-vgw-tmpl' ).html()
-
-        #events   :
-
+    VGWView = PropertyView.extend {
         render     : () ->
             console.log 'property:vgw render'
-            $( '.property-details' ).html this.template
+            @$el.html template
+            "VPN-gateway"
 
     }
 
-    view = new VGWView()
-
-    return view
+    new VGWView()

@@ -2,14 +2,11 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
 
-    RTBView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-rtb-tmpl' ).html()
+    RTBView = PropertyView.extend {
 
         events   :
 
@@ -27,7 +24,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
         render     : () ->
             console.log 'property:rtb render'
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             # find empty inputbox and focus
             inputElemAry = $('.ip-main-input')
@@ -37,6 +34,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
                     $(inputElem).focus()
+
+            @model.attributes.title
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -87,7 +86,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             MC.validate.preventDupname target, id, name, 'Instance'
 
             if target.parsley 'validate'
-                this.trigger 'SET_NAME', id, name
+                @trigger 'SET_NAME', id, name
+                @setTitle name
 
         setMainRT : () ->
 
@@ -184,6 +184,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
     }
 
-    view = new RTBView()
-
-    return view
+    new RTBView()

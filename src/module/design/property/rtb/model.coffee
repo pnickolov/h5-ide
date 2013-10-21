@@ -2,18 +2,14 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ './base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    RTBModel = Backbone.Model.extend {
+    RTBModel = PropertyModel.extend {
 
         defaults :
             'route_table' : null
             'association' : null
             'title'       : null
-
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
 
         setName : ( uid, name ) ->
 
@@ -92,9 +88,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             this.set 'route_table', rt
 
+        reInit : () ->
+            @init( @get( "uid" ) )
+            null
 
+        init : ( uid ) ->
 
-        getRoute : ( uid ) ->
+            @set "uid", uid
 
             # uid might be a line connecting RTB and Subnet
             connection = MC.canvas_data.layout.connection[ uid ]
@@ -307,6 +307,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     }
 
-    model = new RTBModel()
-
-    return model
+    new RTBModel()

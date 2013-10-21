@@ -10,7 +10,6 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-volume-app-tmpl' ).html()
 
         render     : () ->
             console.log 'property:volume app render', this.model.attributes

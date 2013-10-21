@@ -246,14 +246,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             activeModuleType    = componentType
 
         # 6. Re-init the `model` and `view`
-        if property.model.init
-            # Since the model is singleton, need to clear all the attributes.
-            property.model.clear( { silent : true } )
-            # If the model cannot init. Default to use Stack property.
-            if property.model.init( componentUid ) is false
-                return false
-        else
-            console.error "This model has no init() method. Type: #{componentType}."
+        # Since the model is singleton, need to clear all the attributes.
+        property.model.clear( { silent : true } )
+        # If the model cannot init. Default to use Stack property.
+        if property.model.init( componentUid ) is false
+            return false
 
         # Injects the model to the view. So that the view doesn't have hard dependency
         # to the model. Thus they're decoupled.

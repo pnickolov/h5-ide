@@ -7,8 +7,9 @@ define [ '../base/main',
          './view',
          './app_model',
          './app_view',
+         "../sglist/main",
          'constant'
-], ( PropertyModule, model, view, app_model, app_view, constant ) ->
+], ( PropertyModule, model, view, app_model, app_view, sglist_main, constant ) ->
 
     ElbModule = PropertyModule.extend {
 
@@ -79,6 +80,8 @@ define [ '../base/main',
             currentCert = @model.getCurrentCert()
             if currentCert
                 @view.refreshCertPanel currentCert
+
+            sglist_main.loadModule @model
             null
 
         initApp : ()->
@@ -87,6 +90,7 @@ define [ '../base/main',
             null
 
         afterLoadApp : () ->
+            sglist_main.loadModule @model
             null
 
 

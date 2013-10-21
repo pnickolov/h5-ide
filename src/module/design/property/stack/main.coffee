@@ -26,7 +26,7 @@ define [ '../base/main',
     ideEvents[ ide_event.UPDATE_STACK_LIST ] = ( flag )->
         if flag is 'NEW_STACK'
             @model.init()
-            @view.render()
+            @renderPropertyPanel()
         null
 
     StackModule = PropertyModule.extend {
@@ -78,7 +78,7 @@ define [ '../base/main',
 
         # This method will be called after this property has rendered
         afterLoadStack : () ->
-            sglist_main.loadModule model, true
+            sglist_main.loadModule @model
             null
 
         ### # # # # # # # # # # # #
@@ -92,7 +92,7 @@ define [ '../base/main',
             null
 
         afterLoadApp : () ->
-            sglist_main.loadModule model, true
+            sglist_main.loadModule @model
             null
 
         ### # # # # # # # # # #
@@ -101,7 +101,7 @@ define [ '../base/main',
         renderPropertyPanel : () ->
             @model.getProperty()
             @view.render()
-            sglist_main.loadModule @model, true
+            sglist_main.loadModule @model
     }
 
     null

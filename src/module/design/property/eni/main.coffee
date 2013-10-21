@@ -7,9 +7,10 @@ define [ "../base/main",
          "./view",
          "./app_model",
          "./app_view",
+         "../sglist/main",
          'event',
          "constant"
-], ( PropertyModule, model, view, app_model, app_view, ide_event, constant )->
+], ( PropertyModule, model, view, app_model, app_view, sglist_main, ide_event, constant )->
 
     ideEvents = {}
     ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
@@ -51,11 +52,15 @@ define [ "../base/main",
             null
 
         afterLoadStack : () ->
-            if not model.attributes.association
-                sglist_main.loadModule model
+            if not @model.attributes.association
+                sglist_main.loadModule @model
 
         initApp : () ->
             @model = app_model
             @view  = app_view
+            null
+
+        afterLoadApp : () ->
+            sglist_main.loadModule @model
             null
     }

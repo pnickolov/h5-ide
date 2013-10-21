@@ -7,9 +7,10 @@ define [ "../base/main",
          "./model",
          "./view",
          "./app_view",
+         "../sglist/main",
          "constant",
          "event"
-], ( PropertyModule, model, view, app_view, constant, ide_event ) ->
+], ( PropertyModule, model, view, app_view, sglist_main, constant, ide_event ) ->
 
     LCModule = PropertyModule.extend {
 
@@ -42,15 +43,6 @@ define [ "../base/main",
             null
 
         afterLoadApp : () ->
-            sglist_main.loadModule @model, true
+            sglist_main.loadModule @model
             null
     }
-
-    # model.getInstanceType()
-    # model.getAmiDisp()
-    # model.getAmi()
-
-    # # ######################################
-
-    # model.getAppLaunch uid
-

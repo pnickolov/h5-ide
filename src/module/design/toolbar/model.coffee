@@ -679,7 +679,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 # rollback
                                 tab_name = 'process-' + region + '-' + name
                                 if tab_name of MC.process and dones>0
-                                    dones = if MC.process[tab_name].flag_list.dones < dones then dones else MC.process[tab_name].flag_list.dones
+                                    dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
 
                                 flag_list.dones = dones
                                 flag_list.steps = steps

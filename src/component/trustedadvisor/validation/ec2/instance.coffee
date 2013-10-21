@@ -1,16 +1,12 @@
-define [ 'constant', 'MC' ], ( constant, MC ) ->
+define [ 'constant', 'MC', '../result_vo' ], ( constant, MC, result_vo ) ->
 
 	checkValue = ( uid ) ->
 
 		instanceObj = MC.canvas_data.component[uid]
 		instanceName = instanceObj.name
-		
-		result = {
-			level: "warn",
-			info: "The instance #{instanceName} need have a suitable EIP",
-			uid: uid
-		}
 
-		result
+		result_vo.set uid, 'warning', "The instance #{instanceName} need have a suitable EIP"
+
+		result_vo.get()
 
 	checkValue : checkValue

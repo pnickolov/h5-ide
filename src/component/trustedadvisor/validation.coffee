@@ -22,22 +22,14 @@ define [ 'event', 'component/trustedadvisor/validation/main',
                 true
             else
                 #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
-                
-                console.log(result)
                 #view.updateStatusBar(result)
-                
+
+                console.log result
                 console.log 'validation failed'
                 false
 
         else
             console.log 'func not found'
-
-        #if MC.ta.instance.checkValue(obj)
-        #    alert('trustedadvisor!')
-        #    true
-        #else
-        #    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
-        #    false
 
     validAll = ( obj ) ->
         if obj

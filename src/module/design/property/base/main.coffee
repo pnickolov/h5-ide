@@ -165,23 +165,30 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             console.warn "The property doesn't specify what kind of component it can handle"
             return
 
-        if protoProps.handleTypes is ""
-            protoProps.handleTypes = propertyTypeMap.DEFAULT_TYPE
-
         # 1. Create a new property module
         newPropertyClass = Backbone.Model.extend.call PropertyModule, protoProps, staticProps
         newProperty      = new newPropertyClass()
 
         # 2. Register it
         if _.isString newProperty.handleTypes
-            if propertyTypeMap.hasOwnProperty newProperty.handleTypes
-                console.warn "Duplicated property panel"
-            propertyTypeMap[ newProperty.handleTypes ] = newProperty
+            handleTypes = if protoProps.handleTypes is "" then [ propertyTypeMap.DEFAULT_TYPE ] else [ protoProps.handleTypes ]
         else
-            for type in newProperty.handleTypes
-                if propertyTypeMap.hasOwnProperty type
-                    console.warn "Duplicated property panel"
-                propertyTypeMap[ type ] = newProperty
+            handleTypes = newProperty.handleTypes
+
+        for type in handleTypes
+            if propertyTypeMap.hasOwnProperty type
+                console.warn "Duplicated property panel"
+
+            if type.indexOf ">"
+                # This type specified a line type.
+                # If it's like "cgw>", then it means every line that has a "cgw" port can be handled.
+                # If it's like "cgw>vpn", then it means only cgw to vpn or vpn to cgw port can be handled
+                types = type.split ">"
+                if types.length == 2 and types[1].length > 0
+                    # Revert the line type to be like "vpn>cgw"
+                    propertyTypeMap[ types[1] + ">" + types[0] ] = newProperty
+
+            propertyTypeMap[ type ] = newProperty
 
         # 3. Return the Property Class
         newPropertyClass

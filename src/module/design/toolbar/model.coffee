@@ -706,7 +706,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 appId = id
                                 appName = name
 
-                                mainContent = 'The app ' + appName + ' terminated failed, do you want to delete forcibly?'
+                                mainContent = 'The app ' + appName + ' failed to terminate. Do you want to force deleting it?'
                                 descContent = ''
                                 template = MC.template.modalForceDeleteApp {
                                     title : 'Force to delete app',

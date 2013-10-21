@@ -2,10 +2,12 @@
 #  View(UI logic) for design/property
 #############################
 
-define [ 'event'
-         'backbone', 'jquery', 'handlebars',
-         'UI.modal', 'UI.selectbox', 'UI.tooltip', 'UI.notification', 'UI.scrollbar', 'UI.toggleicon', 'UI.multiinputbox', 'MC.validate', 'UI.parsley'
-], ( ide_event ) ->
+define [ 'event',
+         'text!./template.html'
+         'backbone', 'jquery', 'handlebars'
+], ( ide_event, template ) ->
+
+    template = Handlebars.compile template
 
     PropertyView = Backbone.View.extend {
 

@@ -56,6 +56,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                 catch error
+                    console.error error
 
                 #
                 #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type

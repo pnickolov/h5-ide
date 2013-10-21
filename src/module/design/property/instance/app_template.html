@@ -114,7 +114,17 @@
         {{/if}}
       </dl>
     </div>
+    <section class="property-control-group">
+      <div class="network-list-wrap">
+        <div class="network-list-header clearfix">
+          {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
+          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+        </div>
+        <ul class="network-list" id="property-network-list" data-bind="true">
 
+        </ul>
+      </div>
+    </section>
     <table class="table table-small">
       <tr>
         <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>

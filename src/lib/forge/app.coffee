@@ -1,4 +1,4 @@
-define [ ], ( ) ->
+define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 
 	getNameById = ( app_id ) ->
@@ -25,5 +25,23 @@ define [ ], ( ) ->
 
 		app_name
 
+	existing_app_resource = ( resource_uid ) ->
+
+		result = null
+
+		switch MC.canvas_data.component[resource_uid].type
+
+			when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+				result = if MC.canvas_data.component[resource_uid].resource.InstanceId then true else false
+
+			when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+
+				result = if MC.canvas_data.component[resource_uid].resource.VolumeId then true else false
+
+		return result
+
+
 	#public
+	existing_app_resource : existing_app_resource
 	getNameById : getNameById

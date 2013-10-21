@@ -11,6 +11,7 @@ define [ 'event', 'MC',
 
         el       : $ document
         tagName  : $ '.property-details'
+        ip_list_template : Handlebars.compile $( '#property-ip-list-tmpl' ).html()
 
         events   :
             "click #property-app-keypair" : "downloadKeypair"
@@ -23,6 +24,8 @@ define [ 'event', 'MC',
         render     : () ->
             console.log 'property:instance app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes
+
+            this.refreshIPList()
 
 
         downloadKeypair : ( event ) ->
@@ -87,6 +90,36 @@ define [ 'event', 'MC',
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.target ).data("uid")
             false
+
+        refreshIPList : ( event ) ->
+            this.model.getEni()
+            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
+            this.changeIPAddBtnState()
+
+        changeIPAddBtnState : () ->
+
+            disabledBtn = false
+            instanceUID = this.model.get 'get_uid'
+
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
+            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+            if !currentENIComp
+                disabledBtn = true
+                return
+
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                disabledBtn = true
+
+            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
+            if disabledBtn
+                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
+                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
+            else
+                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
+
+            null
+
 
     }
 

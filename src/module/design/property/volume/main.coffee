@@ -25,7 +25,7 @@ define [ 'jquery',
         MC.data.current_sub_main = current_main
 
         #set view_type
-        if tab_type is 'OPEN_APP'
+        if tab_type is 'OPEN_APP' and MC.forge.app.existing_app_resource( uid )
             loadAppModule uid
             return
 

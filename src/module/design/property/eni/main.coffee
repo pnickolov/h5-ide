@@ -2,134 +2,60 @@
 #  Controller for design/property/eni module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'text!./app_template.html',
-         'text!./ip_list_template.html',
-         'event'
-], ( $, template, app_template, ip_list_template, ide_event ) ->
+define [ "../base/main",
+         "./model",
+         "./view",
+         "./app_model",
+         "./app_view",
+         'event',
+         "constant"
+], ( PropertyModule, model, view, app_model, app_view, ide_event, constant )->
 
-    #
-    current_view  = null
-    current_model = null
+    ideEvents = {}
+    ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
+        @view.refreshIPList()
+        null
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-eni-tmpl">' + template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-eni-app-tmpl">' + app_template + '</script>'
-    ip_list_template = '<script type="text/x-handlebars-template" id="property-eni-ip-list-tmpl">' + ip_list_template + '</script>'
+    EniModule = PropertyModule.extend {
 
-    #load remote html template
-    $( 'head' ).append( template ).append( app_template )
-    $( 'head' ).append( template ).append( ip_list_template )
+        ideEvents : ideEvents
 
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
-        console.log 'eni main, tab_type = ' + tab_type
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-        MC.data.current_sub_main = current_main
+        setupStack : () ->
 
-        #set view_type
-        if tab_type is 'OPEN_APP'
-            loadAppModule uid
-            return
+            me = this
 
-        #
-        require [ './module/design/property/eni/view',
-                  './module/design/property/eni/model',
-                  './module/design/property/sglist/main'
-        ], ( view, model, sglist_main ) ->
+            @view.on 'SET_ENI_DESC', ( uid, value ) ->
+                me.model.setEniDesc uid, value
 
-            # added by song
-            model.clear({silent: true})
+            @view.on 'SET_ENI_SOURCE_DEST_CHECK', ( uid, check ) ->
+                me.model.setSourceDestCheck uid, check
 
-            #
-            if current_view then view.delegateEvents view.events
+            @view.on 'ADD_NEW_IP', ( uid ) ->
+                me.model.addNewIP uid
 
-            #
-            current_view  = view
-            current_model = model
+            @view.on 'ATTACH_EIP', ( uid, index, attach ) ->
+                me.model.attachEIP uid, index, attach
 
-            #view
-            view.model    = model
+            @view.on 'REMOVE_IP', ( uid, index ) ->
+                me.model.removeIP uid, index
 
-            model.set 'uid', uid
+            @view.on 'SET_IP_LIST', (inputIPAry) ->
+                me.model.setIPList inputIPAry
+            null
 
-            model.set 'type', 'stack'
+        initStack : () ->
+            @model = model
+            @view  = view
+            null
 
-            model.getENIDisplay uid
-            #render
-            view.render()
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.eni_display.name
-
-            ide_event.onLongListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST, () ->
-                view.refreshIPList()
-
+        afterLoadStack : () ->
             if not model.attributes.association
                 sglist_main.loadModule model
 
-            view.on 'SET_ENI_DESC', ( uid, value ) ->
-
-                model.setEniDesc uid, value
-
-            view.on 'SET_ENI_SOURCE_DEST_CHECK', ( uid, check ) ->
-
-                model.setSourceDestCheck uid, check
-
-            view.on 'ADD_NEW_IP', ( uid ) ->
-
-                model.addNewIP uid
-
-            view.on 'ATTACH_EIP', ( uid, index, attach ) ->
-
-                model.attachEIP uid, index, attach
-
-            view.on 'REMOVE_IP', ( uid, index ) ->
-
-                model.removeIP uid, index
-
-            view.on 'SET_IP_LIST', (inputIPAry) ->
-
-                model.setIPList inputIPAry
-
-
-    loadAppModule = ( uid ) ->
-        require [ './module/design/property/eni/app_view',
-                  './module/design/property/eni/app_model'
-                  './module/design/property/sglist/main'
-        ], ( view, model, sglist_main ) ->
-
-            # added by song
-            model.clear({silent: true})
-
-            #
-            if current_view then view.delegateEvents view.events
-
-            current_view  = view
-            current_model = model
-
-            #view
-            view.model    = model
-
-            model.init uid
-
-            model.set 'type', 'app'
-
-            view.render()
-
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
-
-            sglist_main.loadModule model, true
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        ide_event.offListen ide_event.PROPERTY_REFRESH_ENI_IP_LIST
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule
+        initApp : () ->
+            @model = app_model
+            @view  = app_view
+            null
+    }

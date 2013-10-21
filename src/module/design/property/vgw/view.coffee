@@ -4,10 +4,12 @@
 
 define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
+    template = Handlebars.compile template
+
     VGWView = PropertyView.extend {
         render     : () ->
             console.log 'property:vgw render'
-            @$el.html template
+            @$el.html template()
             "VPN-gateway"
 
     }

@@ -2,92 +2,41 @@
 #  Controller for design/property/az module
 ####################################
 
-define [ 'constant',
-         'jquery',
-         'text!./template.html',
-         'event'
-], ( constant, $, template, ide_event ) ->
+define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, model, view, constant ) ->
 
-    #
-    current_view  = null
-    current_model = null
+    ideEvents = {}
+    ideEvents[ ide_event.RELOAD_AZ ] = ( new_az_data ) ->
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-az-tmpl">' + template + '</script>'
-    #load remote html template
-    $( 'head' ).append template
-
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
-
-        if tab_type is "OPEN_APP"
-            # Do nothing
+        if !new_az_data
             return
 
-        #
-        MC.data.current_sub_main = current_main
+        me = this
 
-        #
-        require [ './module/design/property/az/view', './module/design/property/az/model' ], ( view, model ) ->
+        # wait for 'Resouce Panel Module' to process the data
+        # the processed data will be stored at MC.data.config.zone
+        doRefresh = () ->
+            if ( new_az_data.item.length == 0 )
+                return
 
-            # added by song
-            model.clear({silent: true})
+            me.model.reInit()
+            me.view.render()
 
-            #
-            if current_view then view.delegateEvents view.events
+        setTimeout doRefresh, 0
 
-            #
-            current_view  = view
-            current_model = model
-
-            model.setId uid
-            data = model.attributes
-
-            if data.needRefresh
-
-                refreshList = ( new_az_data ) ->
-                    # If we can't find a az panel with the same uid,
-                    # then the panel is removed.
-                    unloaded = !view.isPanelVisible( uid )
-
-                    # The fetch fails, wait for next fetch.
-                    if !new_az_data && !unloaded
-                        return
-
-                    ide_event.offListen ide_event.RELOAD_AZ, refreshList
-
-                    # If the property panel is unloaded, we will want
-                    # to remove the event listener, but not to refresh the panel
-                    if unloaded
-                        return
-
-                    # wait for 'Resouce Panel Module' to process the data
-                    # the processed data will be stored at MC.data.config.zone
-                    doRefresh = () ->
-                        if ( new_az_data.item.length == 0 )
-                            return
-
-                        model.setId uid
-                        view.render()
-
-                    setTimeout doRefresh, 0
-                    null
-
-                # If the az list is null/empty
-                # We might want to listen ide_event.OPEN_DESIGN
-                # so that we can update the list
-                ide_event.onLongListen ide_event.RELOAD_AZ, refreshList
+        null
 
 
-            view.model = model
-            view.render()
+    AZModule = PropertyModule.extend {
 
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Availability Zone"
+        ideEvents : ideEvents
 
-            view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
+        hanldeTypes : "Stack:" + constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
+        setupStack : ()->
+            me = this
+            @view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
                 # Set data
-                oldZone = model.setNewAZ oldZoneID, newZone
+                oldZone = me.model.setNewAZ oldZoneID, newZone
 
                 if !oldZone
                     return
@@ -107,21 +56,13 @@ define [ 'constant',
                 ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, res_type, filter
             null
 
-        null
 
+        initStack : ()->
+            @model = model
+            @view  = view
 
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+            null
+    }
 
-        # AZ use ide_event, but it's not need to unload here.
-        # The event callback will only be fired one time. And it also check if
-        # the panel is unloaded.
+    null
 
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule

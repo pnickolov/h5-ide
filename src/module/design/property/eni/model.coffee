@@ -2,20 +2,18 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ENIModel = Backbone.Model.extend {
+    ENIModel = PropertyModel.extend {
 
         defaults :
             'sg_display'     : null
             'eni_display'    : null
             'uid'            : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        init : ( uid ) ->
 
-        getENIDisplay : ( uid ) ->
+            @set 'uid', uid
 
             # The uid can be a line
             if MC.canvas_data.layout.connection[ uid ]
@@ -359,6 +357,4 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     }
 
-    model = new ENIModel()
-
-    return model
+    new ENIModel()

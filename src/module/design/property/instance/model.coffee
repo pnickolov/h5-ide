@@ -68,7 +68,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 
 			MC.canvas.update(uid,'text','hostname', this.get('name'))
 
-			MC.data.validation.validComp(uid)
+			MC.ta.validComp 'instance.checkValue', uid
 
 			null
 
@@ -621,7 +621,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 
 			if !ami.virtualizationType
 				ami.virtualizationType = 'paravirtual'
-				
+
 			instance_type = instance_type[ami.virtualizationType]
 
 			instance_type

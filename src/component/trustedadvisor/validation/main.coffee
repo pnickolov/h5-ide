@@ -1,5 +1,5 @@
 define ['MC',
-		'./ec2/instance'], (MC, instance_handler) ->
-	MC.ta = {
-		instance: instance_handler
-	}
+		'./ec2/instance'
+], ( MC, instance ) ->
+
+	instance : instance

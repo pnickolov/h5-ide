@@ -216,10 +216,20 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
+        tab_type_prefix = tab_type + ":"
         if not property
             # If we cannot find the property
             # then try using `App:XXXXX` and `Stack:XXXXX` to match
-            property = propertyTypeMap[ tab_type + ":" + componentType ]
+            property = propertyTypeMap[ tab_type_prefix + componentType ]
+
+        if not property and componentType.indexOf ">" > -1
+            # This is a line, we try to match part of the line.
+            # e.g. for type cgw-vpn>vgw-vpn, we match cgw-vpn> and vgw-vpn>
+            types = componentType.split ">"
+            property = propertyTypeMap[ types[0] + ">" ] ||
+                       propertyTypeMap[ types[1] + ">" ] ||
+                       propertyTypeMap[ tab_type_prefix + types[0] + ">" ] ||
+                       propertyTypeMap[ tab_type_prefix + types[0] + ">" ]
 
         if not property
             return false

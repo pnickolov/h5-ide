@@ -10,13 +10,17 @@ define [ '../base/model' ], ( PropertyModel ) ->
             'vpn_detail'    : null
             'cgw_uid'       : null
 
-        init : (line_option) ->
-            me = this
+        init : ( uid ) ->
 
-            vpn_detail = {}
+            vpn_detail  = {}
+            line_option = MC.canvas.lineTarget uid
 
-            cgw_uid = node.uid for node in line_option when node.port == 'cgw-vpn'
-            vgw_uid = node.uid for node in line_option when node.port == 'vgw-vpn'
+            line_option_map = {}
+            line_option_map[ line_option[0].port ] = line_option[0].uid
+            line_option_map[ line_option[1].port ] = line_option[1].uid
+
+            cgw_uid = line_option_map[ 'cgw-vpn' ]
+            vgw_uid = line_option_map[ 'vgw-vpn' ]
 
             if cgw_uid and vgw_uid
                 vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
@@ -41,13 +45,12 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                         null
 
-            me.set 'vpn_detail', vpn_detail
-            me.set 'cgw_uid', cgw_uid
+            @set 'vpn_detail', vpn_detail
+            @set 'cgw_uid', cgw_uid
 
         delIP : (ip) ->
-            me = this
 
-            vpn_detail = me.get 'vpn_detail'
+            vpn_detail = @get 'vpn_detail'
 
             if ip in vpn_detail.ips
                 vpn_detail.ips.splice vpn_detail.ips.indexOf(ip), 1
@@ -60,9 +63,9 @@ define [ '../base/model' ], ( PropertyModel ) ->
                         MC.canvas_data.component[ vpn_detail.uid ].resource.Routes.splice(routes.indexOf(route), 1)
                         break
 
-                me.set 'vpn_detail', vpn_detail
+                @set 'vpn_detail', vpn_detail
 
-                me.trigger 'UPDATE_VPN_DATA'
+                @trigger 'UPDATE_VPN_DATA'
 
             null
 

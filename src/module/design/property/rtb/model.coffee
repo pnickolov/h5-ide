@@ -2,7 +2,7 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ './base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
     RTBModel = PropertyModel.extend {
 

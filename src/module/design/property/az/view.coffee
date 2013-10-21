@@ -14,7 +14,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
         render     : () ->
             console.log 'property:az render', this.model.attributes
 
-            @el.html template @model.attributes
+            @$el.html template @model.attributes
             "Availability Zone"
 
         azSelect   : ( event, newAZName ) ->

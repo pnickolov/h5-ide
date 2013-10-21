@@ -161,9 +161,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
 
     PropertyModule.extend = ( protoProps, staticProps ) ->
+        ### env:dev ###
         if not protoProps.hasOwnProperty "handleTypes"
             console.warn "The property doesn't specify what kind of component it can handle"
             return
+        ### env:dev:end ###
 
         # 1. Create a new property module
         newPropertyClass = Backbone.Model.extend.call PropertyModule, protoProps, staticProps
@@ -214,6 +216,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
+        if not property
+            # If we cannot find the property
+            # then try using `App:XXXXX` and `Stack:XXXXX` to match
+            property = propertyTypeMap[ tab_type + ":" + componentType ]
+
         if not property
             return false
 

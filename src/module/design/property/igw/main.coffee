@@ -6,7 +6,7 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
 
     IGWModule = PropertyModule.extend {
 
-        hanldeTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
         initStack : ()->
             @model = model

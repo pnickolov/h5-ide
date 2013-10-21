@@ -3,7 +3,12 @@
 ####################################
 
 define [ '../base/main',
-         './model'
+         './model',
+         './view',
+         './app_model',
+         './app_view',
+         'event',
+         'constant'
 ], ( PropertyModule, model, view, app_model, app_view, ide_event, constant ) ->
 
     ideEvents = {}

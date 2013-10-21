@@ -15,6 +15,7 @@ define [ 'backbone',
          'UI.parsley',
          'UI.tooltip',
          'UI.sortable',
+         'UI.toggleicon',
          'UI.slider'
 ], ()->
 

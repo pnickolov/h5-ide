@@ -2,7 +2,7 @@
 #  Controller for design/property/az module
 ####################################
 
-define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, model, view, constant ) ->
+define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyModule, model, view, constant, ide_event ) ->
 
     ideEvents = {}
     ideEvents[ ide_event.RELOAD_AZ ] = ( new_az_data ) ->
@@ -30,7 +30,7 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
 
         ideEvents : ideEvents
 
-        hanldeTypes : "Stack:" + constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+        handleTypes : "Stack:" + constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 
         setupStack : ()->
             me = this

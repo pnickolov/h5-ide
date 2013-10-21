@@ -15,11 +15,17 @@ define [ 'event', 'component/trustedadvisor/validation/main',
 
         if _.isFunction func
 
-            if func obj
+            result = func obj
+
+            if !result
                 console.log 'validation success'
                 true
             else
                 #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
+                
+                console.log(result)
+                #view.updateStatusBar(result)
+                
                 console.log 'validation failed'
                 false
 

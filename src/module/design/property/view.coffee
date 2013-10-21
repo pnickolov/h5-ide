@@ -139,7 +139,7 @@ define [ 'event',
                 $("#property-second-panel").hide()
             $("#property-first-panel").show().animate {left:"0%"}, 200
 
-            this.trigger "HIDE_SUBPANEL", $("#property-second-title").attr( "data-id" )
+            this.trigger "HIDE_SUBPANEL"
             false
 
         immHideSecondPanel : () ->

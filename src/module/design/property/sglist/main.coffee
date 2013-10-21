@@ -18,10 +18,6 @@ define [ './model',
     view.on 'OPEN_SG', (sgUID) ->
         ide_event.trigger ide_event.OPEN_SG, sgUID
 
-    ide_event.onLongListen ide_event.PROPERTY_HIDE_SUBPANEL, (id) ->
-        if id is "SG"
-            view.render()
-
     view.model = model
 
     refresh = () ->

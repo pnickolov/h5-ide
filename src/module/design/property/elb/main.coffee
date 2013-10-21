@@ -15,6 +15,11 @@ define [ '../base/main',
 
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+        onUnloadSubPanel : ( id )->
+            if id is "SG"
+                sglist_main.loadModule @model
+            null
+
         setupStack : () ->
             me = this
             @view.on 'ELB_NAME_CHANGED', ( value ) ->

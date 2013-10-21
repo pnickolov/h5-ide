@@ -23,6 +23,11 @@ define [ "../base/main",
 
         handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, 'component_asg_instance' ]
 
+        onUnloadSubPanel : ( id )->
+            if id is "SG"
+                sglist_main.loadModule @model
+            null
+
         initStack : ()->
             @model = model
             @view  = view

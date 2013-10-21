@@ -40,13 +40,6 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         null
 
-    # TODO : Set activeSubModule to null, when :
-    # 1. Second panel is hidden
-    # 2. Tag switch to another one.
-    ide_event.onLongListen "HIDE_SECOND_PANEL", ()->
-        activeSubModule = null
-        null
-
     propertyTypeMap = {}
     propertyTypeMap.DEFAULT_TYPE = "default"
 
@@ -122,11 +115,14 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
          example     : afterLoadApp, afterLoadStack
          description : These methods are called when the property finished loading. The view is guaranteed to be loaded.
 
+    # onUnloadSubPanel(id) :
+        description : This method is called when sub panel is closed. id is the sub panel's `subPanelID`.
+
 
 
     ++ Class Method ++
 
-    # load :
+    # load(uid) :
         description : calling this method will should the property.
 
     # activeModule :
@@ -287,6 +283,17 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             property[ procName ].call property
 
         true
+
+    PropertyModule.onUnloadSubPanel = () ->
+
+        # Calls `onUnloadSubPanel` callback for current main property module
+        if activeModule.onUnloadSubPanel
+            activeSubModule.onUnloadSubPanel( activeSubModule.subPanelID )
+
+        activeSubModule     = null
+        activeSubModuleType = null
+
+        null
 
     PropertyModule.snapshot = ()->
         data =

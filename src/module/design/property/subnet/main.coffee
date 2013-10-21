@@ -7,20 +7,16 @@ define [ '../base/main',
          './view',
          './app_model',
          './app_view',
-         'constant',
-         'event'
-], ( PropertyModule, model, view, app_model, app_view, constant, ide_event ) ->
-
-    ideEvents = {}
-    ideEvents[ ide_event.PROPERTY_HIDE_SUBPANEL ] = ( id ) ->
-        if id is "ACL"
-            view.refreshACLList()
-        null
+         'constant'
+], ( PropertyModule, model, view, app_model, app_view, constant ) ->
 
     SubnetModule = PropertyModule.extend {
 
-        ideEvents   : ideEvents
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+
+        onUnloadSubPanel : ( id )->
+            if id is "ACL"
+                @view.refreshACLList()
 
         setupStack : () ->
             me = this

@@ -41,6 +41,10 @@ define [ 'event',
 			view.forceShow()
 			null
 
+		view.on "HIDE_SUBPANEL", ()->
+			PropertyBaseModule.onUnloadSubPanel()
+			null
+
 
 		if !MC.data.propertyHeadStateMap
 			MC.data.propertyHeadStateMap = {}
@@ -142,9 +146,6 @@ define [ 'event',
 
 		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->
 			view.showSecondPanel data
-
-		view.on "HIDE_SUBPANEL", ( id ) ->
-			ide_event.trigger ide_event.PROPERTY_HIDE_SUBPANEL, id
 
 
 	unLoadModule = () ->

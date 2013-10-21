@@ -13,11 +13,6 @@ define [ '../base/main',
     # ide_events handlers are called with the scope ( this ) of current property.
     ideEvents = {}
 
-    ideEvents[ ide_event.PROPERTY_HIDE_SUBPANEL ] = ( id ) ->
-        if id is "ACL"
-            @view.refreshACLList()
-        null
-
     ideEvents[ ide_event.RESOURCE_QUICKSTART_READY ] = ()->
         @model.getCost()
         @renderPropertyPanel()
@@ -34,6 +29,12 @@ define [ '../base/main',
         ideEvents : ideEvents
 
         handleTypes : ""
+
+        onUnloadSubPanel : ( id )->
+            if id is "SG"
+                sglist_main.loadModule @model
+            else if id is "ACL"
+                @view.refreshACLList()
 
         ### # # # # # # # # # # # #
         # For stack mode

@@ -151,9 +151,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
 
     PropertyModule.prototype.load = ( componentUid ) ->
-        # TODO :
+        componentType = if _.isString @handleTypes then @handleTypes else @handleTypes[0]
+        PropertyModule.load( componentType, componentUid, activeModule.type )
         null
-
 
 
     PropertyModule.extend = ( protoProps, staticProps ) ->

@@ -2,27 +2,24 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ '../base/view',
+         'text!./template/stack.html'
+], ( PropertyView, template ) ->
 
-   VPNView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-vpn-tmpl' ).html()
-
+    VPNView = PropertyView.extend {
         events   :
-            "change #property-vpn-ips input"    : 'addIP'
-            "REMOVE_ROW #property-vpn-ips"      : 'removeIP'
+            "REMOVE_ROW #property-vpn-ips"       : 'removeIP'
 
             "focus #property-vpn-ips input"      : 'onFocusCIDR'
             "keypress #property-vpn-ips input"   : 'onPressCIDR'
             "blur #property-vpn-ips input"       : 'onBlurCIDR'
 
-        render     : () ->
+        render : ()->
             console.log 'property:vpn render'
 
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             # find empty inputbox and focus
             vpn_detail = this.model.get('vpn_detail')
@@ -35,13 +32,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
                         ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
                         $(inputElem).focus()
 
-        addIP : (event) ->
-            # ips = []
-            # $("#property-vpn-ips input").each ()->
-            #     ips.push $(this).val()
-
-            # this.trigger 'VPN_IP_UPDATE', ips
-            null
+            "vpn:#{@model.attributes.vpn_detail.cgw_name}"
 
         removeIP : (event, ip) ->
             if not ip
@@ -55,9 +46,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
             null
 
         onPressCIDR : ( event ) ->
-
             if (event.keyCode is 13)
                 $(event.currentTarget).blur()
+            null
 
         onFocusCIDR : ( event ) ->
 
@@ -133,9 +124,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.notification', 'UI.mul
                 MC.aws.aws.disabledAllOperabilityArea(false)
 
             null
-
     }
 
-    view = new VPNView()
-
-    return view
+    new VPNView()

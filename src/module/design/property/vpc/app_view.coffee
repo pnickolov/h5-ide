@@ -10,8 +10,6 @@ define [ 'event', 'MC',
         el       : $ document
         tagName  : $ '.property-details'
 
-        template  : Handlebars.compile $( '#property-vpc-app-tmpl' ).html()
-
         render     : () ->
             console.log 'property:eni app render', this.model.attributes
             $( '.property-details' ).html this.template this.model.attributes

@@ -2,19 +2,15 @@
 #  View Mode for design/property/vpn
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    VPNModel = Backbone.Model.extend {
+    VPNModel = PropertyModel.extend {
 
         defaults :
             'vpn_detail'    : null
             'cgw_uid'       : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        getVPN : (line_option) ->
+        init : (line_option) ->
             me = this
 
             vpn_detail = {}
@@ -83,6 +79,4 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     }
 
-    model = new VPNModel()
-
-    return model
+    new VPNModel()

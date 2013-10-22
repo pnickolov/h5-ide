@@ -113,7 +113,7 @@ define [ 'event',
             return if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
 
             if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
-                return null
+                return undefined
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
 

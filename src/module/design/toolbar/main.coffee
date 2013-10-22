@@ -184,9 +184,6 @@ define [ 'jquery',
                         model.runStack app_name, MC.canvas_data
                         MC.data.app_list[MC.canvas_data.region].push app_name
 
-                    info = info.toLowerCase()
-                    info = info[0].toUpperCase() + info.substr(1)
-
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
                         msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], name

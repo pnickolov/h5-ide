@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #############################
 #
 # /home/ec2-user/ide/check.sh
@@ -168,7 +168,7 @@ then
         cd ${TGT_DIR}.tmp/lib
 
         #for live
-        sed -i "/version=\"/cvar version=version||{};\!function(){version=\"${VER}\"}();" version.js
+        sed -i "s/version=\".*\"/version=\"${VER}\"/g"  version.js
 
         #for debug
         #sed -i "/  version = '/c   version = '${VER}'" version.js

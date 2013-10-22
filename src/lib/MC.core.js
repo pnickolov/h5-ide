@@ -681,9 +681,9 @@ $(document).ready(function ()
 			language = 'en-us';
 		}
 
-		MC.storage.set( 'language', language );
+		// MC.storage.set( 'language', language );
 
-		$.cookie('lang', language);
+		// $.cookie('lang', language);
 	}
 
 	$(document.body).addClass('locale-' + language);

@@ -94,6 +94,8 @@ module.exports = function( grunt ) {
 
 		concat     : require( './config/concat.js'  ),
 
+		lang       : require( './config/lang.js'    ),
+
 		sweep      : require( './config/sweep.js'   )
 
 	};
@@ -143,8 +145,7 @@ module.exports = function( grunt ) {
 			'coffeelint:files',
 			'coffee:compile_normal',
 			'jshint',
-			'csslint',
-			'lang'
+			'csslint'
 		]);
 	});
 	grunt.registerTask( 'make_all', function() {
@@ -158,6 +159,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
 			'regex-replace:intercome',
+			'regex-replace:google_analytics',
 			'regex-replace:href_release',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
@@ -235,9 +237,9 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['regex-replace:string',
+	grunt.registerTask( 'publish', ['regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
@@ -269,102 +271,34 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									//publish
-									'regex-replace:string',
+									'regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp'
 	]);
 
 	grunt.registerTask( 'merge_lang', function() {
-		var en_us = require('./src/nls/en-us/lang.js').lang;
-		var zh_cn = require('./src/nls/zh-cn/lang.js').lang;
 
-		var checkLang = function(en_us, zh_cn) {
-			var creature = {};
-			var rec = function(ob, cp, creature) {
-				if (ob === Object(ob) )
-					for (var k in ob) {
-						creature[k] = creature[k] || {};
-						if (ob[k] === Object(ob[k])) {
-							rec(ob[k], cp[k], creature[k]);
-						}
-						else if (ob[k] !== undefined) {
-							creature[k].en_us = ob[k];
-							creature[k].zh_cn = cp[k];
-						}
-						else{
-							console.log(ob);
-						}
-					}
-				else
-					return;
-			};
+		var done = this.async();
 
-			rec(en_us, zh_cn, creature);
-
-			return creature;
-		};
-
-		var creature = checkLang(en_us, zh_cn);
-		grunt.file.write('lang.js', JSON.stringify(creature));
-		grunt.loadNpmTasks('grunt-jsbeautifier');
+		//call config/lang.js
+		config.lang.merge( grunt, function() {
+			console.log( 'i18n merge complete!' );
+			done();
+		});
 
 	});
 
-	grunt.registerTask('lang', function() {
-		var source_file = './src/nls/lang-source.js';
-		var zh_file = './src/nls/zh-cn/lang.js';
-		var en_file = './src/nls/en-us/lang.js';
+	grunt.registerTask( 'lang', function() {
 
-		delete require.cache[require.resolve(source_file)];
-		var lang = require(source_file);
+		var done = this.async();
 
-		var hit = function(obj) {
-			var hitKey = obj.zh_cn !== undefined && obj.en_us !== undefined;
-
-			var isString = toString.call(obj.zh_cn) == '[object String]' && toString.call(obj.en_us) == '[object String]';
-
-			if (hitKey && isString) {
-				return true;
-			}
-
-			return false;
-		};
-
-		var divorce = function(lang, en_us, zh_cn) {
-
-			if (lang === Object(lang) )
-				for (var k in lang) {
-					en_us[k] = en_us[k] || {};
-					zh_cn[k] = zh_cn[k] || {};
-
-					if (lang[k] === Object(lang[k])) {
-						if (hit(lang[k])){
-							en_us[k] = lang[k].en_us;
-							zh_cn[k]= lang[k].zh_cn;
-						} else {
-							divorce(lang[k], en_us[k], zh_cn[k]);
-						}
-					}
-				}
-
-		};
-
-		var format = function(obj) {
-			var s = JSON.stringify(obj);
-			return 'define(' + s + ');';
-		};
-
-		var zh_cn = {};
-		var en_us = {};
-
-		divorce(lang, en_us, zh_cn);
-
-		grunt.file.write(en_file, format(en_us));
-		grunt.file.write(zh_file, format(zh_cn));
-
-
+		//call config/lang.js
+		config.lang.run( grunt, function() {
+			console.log( 'i18n create complete!' );
+			done();
+		});
 	});
 
 	/*

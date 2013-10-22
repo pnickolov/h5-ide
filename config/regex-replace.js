@@ -1,6 +1,6 @@
 module.exports = {
 
-    string: {
+    static_lang: {
         src: [ '<%= src %>/js/login/config.js', '<%= src %>/js/ide/config.js', '<%= src %>/js/register/config.js', '<%= src %>/js/reset/config.js' ],
         actions: [
             {
@@ -12,7 +12,7 @@ module.exports = {
         ]
     },
 
-    language: {
+    dynamic_lang: {
         src: [ '<%= src %>/js/login/config.js', '<%= src %>/js/ide/config.js', '<%= src %>/js/register/config.js', '<%= src %>/js/reset/config.js' ],
         actions: [
             {
@@ -36,6 +36,17 @@ module.exports = {
         ]
     },
 
+    google_analytics: {
+        src: [ '<%= release %>/login.html', '<%= release %>/ide.html', '<%= release %>/register.html', '<%= release %>/reset.html' ],
+        actions: [
+            {
+                name: 'prod',
+                search: '<!-- env:prod --#>',
+                replace: '<!-- env:prod -->',
+                flags: 'g'
+            }
+        ]
+    },
 
     href_release: {
         src: [ '<%= release %>/component/awscredential/view.*', '<%= release %>/js/ide/ide.*', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.*', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*' ],

@@ -85,7 +85,7 @@ define [ 'event',
 				return
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( tab_type )
+			tab_type = getTabType( uid )
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
@@ -121,8 +121,8 @@ define [ 'event',
 
 			type
 
-		getTabType = ( tab_type )->
-			MC.canvas.getState()
+		getTabType = ( uid )->
+			tab_type = MC.canvas.getState()
 			if tab_type is "app"
 				tab_type = PropertyBaseModule.TYPE.App
 			else if tab_type is "stack"

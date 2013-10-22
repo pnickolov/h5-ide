@@ -238,6 +238,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       data.instance_type = view_instance_type
       data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
+      null
 
     _getInstanceType : ( ami ) ->
       instance_type = MC.data.instance_type[MC.canvas_data.region]

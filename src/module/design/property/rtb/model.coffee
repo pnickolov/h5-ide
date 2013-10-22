@@ -96,7 +96,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             @set "uid", uid
 
-            # uid might be a line connecting RTB and Subnet
+            # uid might be a line connecting RTB and other resource
             connection = MC.canvas_data.layout.connection[ uid ]
             if connection
                 data = {}
@@ -104,12 +104,17 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     component = MC.canvas_data.component[ uid ]
                     if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
                         data.subnet = component.name
-                    else
-                        data.rtb    = component.name
+                        has_subnet = true
+                    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                        data.rtb  = component.name
+                        route_uid = uid
 
-                this.set 'association', data
-                this.set 'title', 'Subnet-RT Association'
-                return
+                if has_subnet
+                    this.set 'association', data
+                    this.set 'title', 'Subnet-RT Association'
+                    return
+                else
+                    uid = route_uid
 
 
             # This is a route table component

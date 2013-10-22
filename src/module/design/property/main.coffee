@@ -12,6 +12,8 @@ define [ 'event',
 
 				'./module/design/property/stack/main',
 				'./module/design/property/instance/main',
+				'./module/design/property/connection/main',
+				'./module/design/property/staticsub/main',
 				'./module/design/property/sg/main',
 				'./module/design/property/sgrule/main',
 				'./module/design/property/volume/main',
@@ -133,11 +135,6 @@ define [ 'event',
 			tab_type
 
 		### Helper Functions End ###
-
-		### LEGACY ###
-		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->
-			view.showSecondPanel data
-		### ###
 
 
 	unLoadModule = () ->

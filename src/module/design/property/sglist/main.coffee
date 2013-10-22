@@ -28,7 +28,7 @@ define [ '../base/main',
 
     loadModule = ( parent_model ) ->
         model.set 'parent_model', parent_model
-        model.set 'app_view', MC.canvas.getState() is 'app'
+        model.set 'app_view', MC.canvas.getState() isnt 'stack'
 
         view.render()
         null

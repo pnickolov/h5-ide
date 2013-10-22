@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
     template = Handlebars.compile template
 

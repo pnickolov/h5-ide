@@ -113,14 +113,7 @@ define [ '../base/view',
 
 
         showSnapshotDetail : ( event ) ->
-            console.log 'showSnapshotDetail'
-
-            target = $('#snapshot-info-group')
-            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                title : $( event.target ).text()
-                dom   : MC.template.snapshotSecondaryPanel target.data( 'secondarypanel-data' )
-                id    : 'Snapshot'
-            }
+            @trigger "OPEN_SNAPSHOT", $("#snapshot-info-group").data("uid")
             null
     }
 

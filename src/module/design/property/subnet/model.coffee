@@ -14,30 +14,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         init : ( uid ) ->
 
-            # The uid can be a line
-            if MC.canvas_data.layout.connection[ uid ]
-                this.set "name", "Load Balancer-Subnet Association"
-                connection = MC.canvas_data.layout.connection[ uid ]
-                elb_id     = null
-                subnet_id  = null
-                for uid, value of connection.target
-                    if value is "elb-assoc"
-                        elb_id = uid
-                    else
-                        subnet_id = uid
-
-                this.set "association", {
-                    elb : MC.canvas_data.component[elb_id].name
-                    subnet : MC.canvas_data.component[subnet_id].name
-                }
-                return
-            else
-                this.set "association", null
-
-
             subnet_component = MC.canvas_data.component[ uid ]
 
-            if !subnet_component then return
+            if !subnet_component then return false
 
             networkACLs = []
 

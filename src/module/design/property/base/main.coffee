@@ -41,6 +41,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         null
 
     propertyTypeMap = {}
+    propertyTypeRegExpArr = []
     propertyTypeMap.DEFAULT_TYPE = "default"
 
     propertySubTypeMap = {}
@@ -180,14 +181,28 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             return newPropertyClass
 
         # 2.2 Register main panel to propertyTypeMap
-        if _.isString newProperty.handleTypes
-            handleTypes = if protoProps.handleTypes is "" then [ propertyTypeMap.DEFAULT_TYPE ] else [ protoProps.handleTypes ]
+        if protoProps.handleTypes is ""
+            handleTypes = [ propertyTypeMap.DEFAULT_TYPE ]
+        else if _.isString( protoProps.handleTypes ) or not protoProps.handleTypes.hasOwnProperty "length"
+            # This might be string or regexp
+            handleTypes = [ protoProps.handleTypes ]
         else
-            handleTypes = newProperty.handleTypes
+            handleTypes = protoProps.handleTypes
+
 
         for type in handleTypes
+            ### env:dev ###
             if propertyTypeMap.hasOwnProperty type
                 console.warn "Duplicated property panel"
+            ### env:dev:end ###
+
+            if not type.hasOwnProperty "length"
+                # Assume this is a regexp
+                propertyTypeRegExpArr.push {
+                    regexp : type
+                    prop   : newProperty
+                }
+                continue
 
             if type.indexOf ">"
                 # This type specified a line type.
@@ -235,13 +250,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             property = propertyTypeMap[ tab_type_prefix + componentType ]
 
         if not property and componentType.indexOf ">" > -1
-            # This is a line, we try to match part of the line.
-            # e.g. for type cgw-vpn>vgw-vpn, we match cgw-vpn> and vgw-vpn>
-            types = componentType.split ">"
-            property = propertyTypeMap[ types[0] + ">" ] ||
-                       propertyTypeMap[ types[1] + ">" ] ||
-                       propertyTypeMap[ tab_type_prefix + types[0] + ">" ] ||
-                       propertyTypeMap[ tab_type_prefix + types[0] + ">" ]
+            # This is a line, we try to match the line using regexp
+            for r in propertyTypeRegExpArr
+                if componentType.match r.regexp
+                    property = r.prop
+                    break
 
         if not property
             return false

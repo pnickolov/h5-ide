@@ -1,7 +1,4 @@
 <article data-bind="true">
-  {{#if association}}
-  <div class="property-control-group">A Virtual Network Interface is placed in {{association.subnet}} for {{association.elb}} to allow traffic be routed to this availability zone.</div>
-  {{else}}
   <div class="option-group-head expand" id="subnet-property-detail">{{ i18n "PROP_SUBNET_TIT_DETAIL" }}</div>
   <div class="option-group">
     <section class="property-control-group" data-bind="true">
@@ -25,6 +22,5 @@
     <ul id="networkacl-list" class="acl-sg-info-list acl-info-list property-list stack-property-acl-list"></ul>
     <a href="#" class="add-to-list action-link" id="networkacl-create">{{ i18n "PROP_SUBNET_BTN_CREATE_NEW_ACL" }}</a>
   </div>
-  {{/if}}
 </article>
 

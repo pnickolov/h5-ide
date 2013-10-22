@@ -68,3 +68,4 @@ define [ "../base/main",
             sglist_main.loadModule @model
             null
     }
+    null

@@ -6,7 +6,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
 
     template = Handlebars.compile template
 
-    SubnetAppView = Backbone.View.extend {
+    SubnetAppView = PropertyView.extend {
 
         events    :
             "click #property-app-subnet-acl" : 'showACLDetail'

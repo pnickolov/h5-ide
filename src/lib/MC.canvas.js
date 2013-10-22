@@ -2492,6 +2492,7 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
+			MC.canvas.getState() !== 'app' &&
 			event.target === document.body
 		)
 		{

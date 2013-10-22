@@ -15,26 +15,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             @set 'uid', uid
 
-            # The uid can be a line
-            if MC.canvas_data.layout.connection[ uid ]
-                this.set "eni_display", { name : "Instance-ENI Attachment" }
-                connection = MC.canvas_data.layout.connection[ uid ]
-                instance_id = null
-                eni_id = null
-                for uid, value of connection.target
-                    if value is "eni-attach"
-                        eni_id = uid
-                    else
-                        instance_id = uid
-
-                this.set "association", {
-                    eni : MC.canvas_data.component[eni_id].name
-                    instance : MC.canvas_data.component[instance_id].name
-                }
-                return
-            else
-                this.set "association", null
-
             me = this
 
             eni_component = $.extend true, {}, MC.canvas_data.component[uid]

@@ -2,20 +2,20 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ElbModel = Backbone.Model.extend {
+    ElbModel = PropertyModel.extend {
 
         defaults :
-            'elb_detail'    : null
-            'health_detail' : null
-            'listener_detail'   :   null
-            'az_detail' :   null
-            'component' :   null
-            'uid'       :   null
-            'is_elb'    :   true
-            'server_cert' : null
-            'have_vpc' : null
+            'elb_detail'      : null
+            'health_detail'   : null
+            'listener_detail' : null
+            'az_detail'       : null
+            'component'       : null
+            'uid'             : null
+            'is_elb'          : true
+            'server_cert'     : null
+            'have_vpc'        : null
 
         init : ( uid ) ->
 
@@ -166,7 +166,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             defaultVPC = false
             if MC.aws.aws.checkDefaultVPC()
                 defaultVPC = true
-            
+
             if defaultVPC or MC.canvas_data.component[uid].resource.VpcId
                 this.set 'have_vpc', true
             else
@@ -174,8 +174,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setELBName  : ( uid, value ) ->
+        setELBName  : ( value ) ->
             console.log 'setELBName = ' + value
+
+            uid = @get 'uid'
 
             # before, modify elb default sg name
             elbSG = MC.aws.elb.getElbDefaultSG uid
@@ -192,14 +194,10 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        getELBName  : ( uid ) ->
-            console.log 'getELBName = ' + value
-            MC.canvas_data.component[ uid ].LoadBalancerName
-
-            #this.set 'set_host', 'host'
-
-        setScheme   : ( uid, value ) ->
+        setScheme   : ( value ) ->
             console.log 'setScheme = ' + value
+
+            uid = @get 'uid'
 
             component = MC.canvas_data.component[ uid ]
 
@@ -217,8 +215,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             component
 
-        setHealthProtocol   : ( uid, value ) ->
+        setHealthProtocol   : ( value ) ->
             console.log 'setHealthProtocol = ' + value
+
+            uid = @get 'uid'
+
             target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
             new_target = value + ':' + target.split(':')[1]
 
@@ -229,8 +230,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setHealthPort: ( uid, value ) ->
+        setHealthPort: ( value ) ->
             console.log 'setHealthPort = ' + value
+
+            uid = @get 'uid'
+
             target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
             new_target = target.split(':')[0] + ':' + value + '/' + target.split('/')[1]
 
@@ -238,8 +242,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setHealthPath: ( uid, value ) ->
+        setHealthPath: ( value ) ->
             console.log 'setHealthPath = ' + value
+
+            uid = @get 'uid'
+
             target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
             new_target = target.split('/')[0] + value
 
@@ -247,39 +254,49 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setHealthInterval: ( uid, value ) ->
+        setHealthInterval: ( value ) ->
             console.log 'setHealthInterval = ' + value
+
+            uid = @get 'uid'
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.Interval = Number(value)
 
             null
 
-        setHealthTimeout: ( uid, value ) ->
+        setHealthTimeout: ( value ) ->
             console.log 'setHealthTimeout = ' + value
+
+            uid = @get 'uid'
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.Timeout = Number(value)
 
             null
 
-        setHealthUnhealth: ( uid, value ) ->
+        setHealthUnhealth: ( value ) ->
             console.log 'setHealthUnhealth = ' + value
+
+            uid = @get 'uid'
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.UnhealthyThreshold = Number(value)
 
             null
 
-        setHealthHealth: ( uid, value ) ->
+        setHealthHealth: ( value ) ->
             console.log 'setHealthHealth = ' + value
+
+            uid = @get 'uid'
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.HealthyThreshold = Number(value)
 
             null
 
-        setListenerAry: ( uid, value ) ->
+        setListenerAry: ( value ) ->
             console.log 'setHealthHealth = ' + value
 
+            uid = @get 'uid'
+
             #clean ami
-            currentCert = this.getCurrentCert(uid)
+            currentCert = this.getCurrentCert( uid )
             delCertComp = true
             if currentCert
                 currentCertUID = currentCert.uid
@@ -301,7 +318,11 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             null
 
         getCurrentCert: ( uid ) ->
+
             console.log 'getCurrentCert'
+
+            if not uid
+                uid = @get 'uid'
 
             certUID = ''
             listenerAry = MC.canvas_data.component[ uid ].resource.ListenerDescriptions
@@ -315,7 +336,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             MC.canvas_data.component[certUID]
 
-        setListenerCert: ( uid, value ) ->
+        setListenerCert: ( value ) ->
+
+            uid = @get 'uid'
 
             listenerAry = MC.canvas_data.component[uid].resource.ListenerDescriptions
 
@@ -356,7 +379,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        removeAZFromELB: ( uid, value ) ->
+        removeAZFromELB: ( value ) ->
+
+            uid = @get 'uid'
 
             azName = value
             elbComp = MC.canvas_data.component[uid]
@@ -371,7 +396,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        addAZToELB: ( uid, value ) ->
+        addAZToELB: ( value ) ->
+
+            uid = @get 'uid'
 
             azName = value
             addAZToElb = true
@@ -431,6 +458,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             null
     }
 
-    model = new ElbModel()
-
-    return model
+    new ElbModel()

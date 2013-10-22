@@ -1,4 +1,4 @@
-<article id="instance-property-detail" data-uid="{{component.uid}}">
+<article>
 
 	<div class="option-group-head expand">{{ i18n "PROP_INSTANCE_DETAIL" }}</div>
 	<div class="option-group">
@@ -97,7 +97,7 @@
 	<div class="option-group">
 		<section class="property-control-group">
 			<div class="checkbox">
-				{{#if checkbox_display.monitoring}}
+				{{#if monitoring}}
 				<input id="property-instance-enable-cloudwatch" type="checkbox" checked="true" value="None" name="property-instance-enable-cloudwatch" />
 				{{else}}
 				<input id="property-instance-enable-cloudwatch" type="checkbox" value="None" name="property-instance-enable-cloudwatch" />

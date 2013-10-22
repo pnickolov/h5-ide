@@ -2,36 +2,26 @@
 #  View(UI logic) for design/property/stack(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars',
-         'UI.notification',
-         'UI.secondarypanel' ], ( ide_event, MC ) ->
+define [ '../base/view',
+         'text!./template/app.html',
+         'text!./template/acl.html',
+         'event'
+], ( PropertyView, template, acl_template, ide_event ) ->
 
-    InstanceAppView = Backbone.View.extend {
+    template     = Handlebars.compile template
+    acl_template = Handlebars.compile acl_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        app_template    : Handlebars.compile $( '#property-app-tmpl' ).html()
-        acl_template    : Handlebars.compile $( '#property-stack-acl-tmpl' ).html()
+    InstanceAppView = PropertyView.extend {
 
         events :
             'click #sg-info-list .sg-edit-icon'     : 'openSecurityGroup'
             'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
 
         render     : () ->
-            me = this
+            @$el.html template @model.attributes
+            @refreshACLList()
 
-            console.log 'instance app render'
-
-            #
-            this.undelegateEvents()
-            #
-            $( '.property-details' ).html this.app_template this.model.attributes
-
-            this.refreshACLList()
-            #
-            this.delegateEvents this.events
+            "App - " + @model.attributes.property_detail.name
 
         openSecurityGroup : (event) ->
             source = $(event.target)
@@ -40,7 +30,7 @@ define [ 'event', 'MC',
             else
                 target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+            @trigger "OPEN_SG", target.data('secondarypanel-data')
 
         deleteNetworkAcl : (event) ->
             aclUID = $(event.target).attr('acl-uid')
@@ -66,7 +56,7 @@ define [ 'event', 'MC',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            ide_event.trigger ide_event.OPEN_ACL, aclUID
+            @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)
@@ -75,10 +65,7 @@ define [ 'event', 'MC',
             else
                 target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
-
+            @trigger "OPEN_ACL", source.attr('acl-uid')
     }
 
-    view = new InstanceAppView()
-
-    return view
+    new InstanceAppView()

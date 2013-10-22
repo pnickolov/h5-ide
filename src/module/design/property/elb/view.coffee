@@ -2,14 +2,10 @@
 #  View(UI logic) for design/property/elb
 #############################
 
-define ['event', 'MC',
-        'backbone', 'jquery', 'handlebars',
-        'UI.secondarypanel',
-        'UI.selectbox',
-        'UI.tooltip',
-        'UI.notification',
-        'UI.toggleicon',
-        'UI.slider'], ( ide_event, MC ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'event'
+], ( PropertyView, template, ide_event ) ->
 
     Helper =
         makeInRange: ( value, range , $target, deflt ) ->
@@ -28,23 +24,9 @@ define ['event', 'MC',
             $target.val( value )
             value
 
-    ElbView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
-
-        ###
-        initialize : ->
-            #handlebars equal logic
-            Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
-                if v1 is v2
-                    return options.fn this
-                options.inverse this
-
-            null
-        ###
+    ElbView = PropertyView.extend {
 
         events   :
             'change #property-elb-name' : 'elbNameChange'
@@ -72,12 +54,12 @@ define ['event', 'MC',
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
 
-        render     : ( attributes ) ->
+        render     : () ->
 
-            console.log 'property:elb render'
-            $( '.property-details' ).html this.template(attributes)
+            @$el.html template @model.attributes
 
-            health_detail = this.model.get('health_detail')
+            health_detail = @model.get('health_detail')
+
             $('#elb-property-slider-unhealthy').setSliderValue(health_detail.unhealthy_threshold)
             $('#elb-property-slider-healthy').setSliderValue(health_detail.healthy_threshold)
 
@@ -95,9 +77,7 @@ define ['event', 'MC',
                 if !Canremove then Canremove = true
                 null
 
-            this.trigger 'REFRESH_CERT_PANEL_DATA'
-
-            ide_event.trigger 'PROPERTY_RENDER_COMPLETE'
+            @model.attributes.component.name
 
         elbNameChange : ( event ) ->
             console.log 'elbNameChange'
@@ -111,6 +91,7 @@ define ['event', 'MC',
                 return
 
             @trigger 'ELB_NAME_CHANGED', value
+            @setTitle value
             MC.canvas.update cid, 'text', 'elb_name', value
             @trigger 'REFRESH_SG_LIST'
 
@@ -366,6 +347,4 @@ define ['event', 'MC',
             null
     }
 
-    view = new ElbView()
-
-    return view
+    new ElbView()

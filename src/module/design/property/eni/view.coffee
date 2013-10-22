@@ -2,24 +2,18 @@
 #  View(UI logic) for design/property/eni
 #############################
 
-define [ 'event',
-         'i18n!nls/lang.js',
-         'backbone',
-         'jquery',
-         'handlebars',
-         'UI.tooltip',
-         'UI.tablist' ], ( ide_event, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/ip_list.html',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, ip_list_template, lang ) ->
 
-   ENIView = Backbone.View.extend {
+    template = Handlebars.compile template
+    ip_list_template = Handlebars.compile ip_list_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-eni-tmpl' ).html()
-        ip_list_template : Handlebars.compile $( '#property-eni-ip-list-tmpl' ).html()
+    ENIView = PropertyView.extend {
 
         events   :
-
             "change #property-eni-desc"             : "setEniDesc"
             "change #property-eni-source-check"     : "setEniSourceDestCheck"
             'click #property-eni-ip-add'            : "addIPtoList"
@@ -29,11 +23,13 @@ define [ 'event',
 
         render     : () ->
             console.log 'property:eni render'
-            $('.property-details').html this.template this.model.attributes
+            @$el.html( template( @model.attributes ) )
 
-            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
+            $( '#property-eni-list' ).html( ip_list_template( @model.attributes ) )
 
-            this.changeIPAddBtnState()
+            @changeIPAddBtnState()
+
+            @model.attributes.eni_display.name
 
         setEniDesc : ( event ) ->
 
@@ -130,7 +126,7 @@ define [ 'event',
         refreshIPList : ( event ) ->
             eniUID = this.model.get 'uid'
             this.model.getENIDisplay(eniUID)
-            $( '#property-eni-list' ).html(this.ip_list_template(this.model.attributes))
+            $( '#property-eni-list' ).html( ip_list_template( @model.attributes))
 
         changeIPAddBtnState : () ->
 
@@ -159,6 +155,4 @@ define [ 'event',
 
     }
 
-    view = new ENIView()
-
-    return view
+    new ENIView()

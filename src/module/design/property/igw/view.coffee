@@ -2,23 +2,15 @@
 #  View(UI logic) for design/property/igw
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
-   IGWView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-igw-tmpl' ).html()
-
-        #events   :
-
-        render     : () ->
+    IGWView = PropertyView.extend {
+        render : () ->
             console.log 'property:igw render'
-            $( '.property-details' ).html this.template
-
+            @$el.html template()
+            "Internet-gateway"
     }
 
-    view = new IGWView()
-
-    return view
+    new IGWView()

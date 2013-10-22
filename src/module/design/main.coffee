@@ -8,7 +8,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
     loadModule = () ->
 
         #load remote design.js
-        require [ 'design_view', 'design_model', 'event' ], ( View, model, ide_event ) ->
+        require [ 'design_view', 'design_model', 'property', 'event' ], ( View, model, property_main, ide_event ) ->
 
             #
             design_view_init       = null
@@ -49,7 +49,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                 if tab_id.split( '-' )[0] is 'process'
                     model.saveProcessTab tab_id
                 else
-                    model.saveTab tab_id, view.html(), model.getCanvasData(), model.getCanvasProperty(), model.getPropertyPanel(), model.getLastOpenProperty(), model.getOriginData()
+                    model.saveTab tab_id, view.html(), model.getCanvasData(), model.getCanvasProperty(), property_main.snapshot(), model.getOriginData()
                 null
 
             #listen SWITCH_TAB
@@ -65,7 +65,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                     #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                                            
+
                         #when OPEN_STACK or OPEN_APP result is resolved_data
                         model.setCanvasData result.resolved_data[0]
 
@@ -80,6 +80,9 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                     #temp
                     #when NEW_STACK result is tab_id
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
+
+                    # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
+                    ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
                 null
 
             #listen
@@ -107,6 +110,10 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                 # update app data from mongo
                 model.updateAppTab region_name, app_id
 
+                null
+
+            model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
+                property_main.restore property_panel
                 null
 
 

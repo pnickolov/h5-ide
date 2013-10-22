@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define [ 'constant','backbone' ], (constant) ->
 
 	SGListModel = Backbone.Model.extend {
 
@@ -14,9 +14,6 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			'sg_rule_list' : null
 			'app_view' : null
 			'only_one_sg' : null
-
-		initialize : ->
-			null
 
 		_getSGRefNum : (sgUID) ->
 			refNum = 0
@@ -278,6 +275,4 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 			delete MC.canvas_data.component[sgUID]
 	}
 
-	model = new SGListModel()
-
-	return model
+	new SGListModel()

@@ -1,4 +1,4 @@
-<article id="instance-property-detail" data-uid="{{component.uid}}">
+<article>
 
 	<div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
 	<div class="option-group">
@@ -9,7 +9,7 @@
 		</section>
 		<section class="property-control-group">
 			<label>{{i18n "PROP_INSTANCE_AMI"}}</label>
-			<div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-secondarypanel-data='{{{instance_ami_property}}}'>
+			<div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-ami="{{imageId}}">
 				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
 				<div class="property-ami-label">{{instance_ami.name}}</div>
 			</div>
@@ -30,7 +30,7 @@
 		</section>
 		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
 			<div class="checkbox">
-				{{#if checkbox_display.ebsOptimized}}
+				{{#if ebsOptimized}}
 				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
 				{{else}}
 				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
@@ -73,7 +73,7 @@
 	<div class="option-group">
 		<section class="property-control-group">
 			<div class="checkbox">
-				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if checkbox_display.monitorEnabled}}{{#if checkbox_display.monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
+				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if monitorEnabled}}{{#if monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
 			<label for="property-instance-enable-cloudwatch">{{i18n "PROP_INSTANCE_CW_ENABLED"}}</label>
@@ -82,7 +82,7 @@
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
-			<textarea id="property-instance-user-data">{{component.resource.UserData}}</textarea>
+			<textarea id="property-instance-user-data">{{userData}}</textarea>
 		</section>
 	</div>
 

@@ -2,28 +2,23 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
 
-   CGWView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-cgw-tmpl' ).html()
+    CGWView = PropertyView.extend {
 
         events   :
             "click #property-cgw .cgw-routing input" : 'onChangeRouting'
             "change #property-cgw-bgp"  : 'onChangeBGP'
             "change #property-cgw-name" : 'onChangeName'
-            # "change #property-cgw-ip"   : 'onChangeIP'
 
             "focus #property-cgw-ip"  : 'onFocusIP'
             "keypress #property-cgw-ip"  : 'onPressIP'
             "blur #property-cgw-ip"  : 'onBlurIP'
 
         render     : () ->
-            console.log 'property:cgw render'
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             # find empty inputbox and focus
             inputElem = $('#property-cgw-ip')
@@ -31,7 +26,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             if !inputValue
                 MC.aws.aws.disabledAllOperabilityArea(true)
                 $(inputElem).focus()
-                ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                @forceShow()
+
+            @model.attributes.name
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')
@@ -58,7 +55,9 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             MC.validate.preventDupname $target, id, 'Customer Gateway'
 
             if $target.parsley 'validate'
-                @trigger "CHANGE_NAME", $target.val()
+                name = $target.val()
+                @trigger "CHANGE_NAME", name
+                @setTitle name
 
         onChangeIP   : ( event ) ->
             this.trigger "CHANGE_IP", event.currentTarget.value
@@ -102,12 +101,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 haveError = false
 
             if haveError
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Customer Gateway',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         $('#property-cgw-ip').focus()
@@ -124,6 +123,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 # $('#property-cidr-block').blur()
     }
 
-    view = new CGWView()
-
-    return view
+    new CGWView()

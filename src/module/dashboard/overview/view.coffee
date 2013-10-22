@@ -6,7 +6,7 @@ define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
          'constant',
-         'backbone', 'jquery', 'handlebars', 'MC.ide.template'
+         'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
 ], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant ) ->
 
     current_region = null

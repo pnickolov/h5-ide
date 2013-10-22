@@ -2,21 +2,16 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
-        'UI.selectbox',
-        'UI.tooltip',
-        'UI.notification',
-        'UI.modal',
-        'UI.tablist',
-        'UI.toggleicon'], ( ide_event, MC, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/ip_list.html',
+         'event',
+         'i18n!nls/lang.js' ], ( PropertyView, template, ip_list_template, ide_event, lang ) ->
 
-    InstanceView = Backbone.View.extend {
+    template =  Handlebars.compile template
+    ip_list_template = Handlebars.compile ip_list_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-instance-tmpl' ).html()
-        ip_list_template : Handlebars.compile $( '#property-ip-list-tmpl' ).html()
+    InstanceView = PropertyView.extend {
 
         events   :
             'change .instance-name'                       : 'instanceNameChange'
@@ -40,36 +35,32 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             'click .toggle-eip'   : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
 
-        render     : ( attributes ) ->
-            console.log 'property:instance render'
-            #
-            this.undelegateEvents()
+        render : ( attributes ) ->
 
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
                 this.model.attributes.component.resource.VpcId = defaultVPCId
 
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
-            this.refreshIPList()
-
-            this.delegateEvents this.events
+            @refreshIPList()
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
+            @model.attributes.name
+
         instanceNameChange : ( event ) ->
-            console.log 'instanceNameChange'
 
             target = $ event.currentTarget
             name = target.val()
-            id = @model.get 'get_uid'
-
+            id = @model.get 'uid'
 
             MC.validate.preventDupname target, id, name, 'Instance'
 
 
             if target.parsley 'validate'
-                this.model.set 'name', name
+                @model.setName name
+                @setTitle name
             null
 
         countChange : ( event ) ->
@@ -81,7 +72,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
             if target.parsley 'validate'
                 val = +target.val()
-                @trigger "COUNT_CHANGE", val
+                @model.setCount val
                 $(".property-instance-name-wrap").toggleClass("single", val == 1)
                 $("#property-instance-name-count").text val
                 @setEditableIP val == 1
@@ -111,12 +102,13 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             if not has_ebs
                 $ebs.prop "checked", false
 
-            instanceUID = this.model.get 'get_uid'
+            instanceUID = this.model.get 'uid'
             MC.aws.eni.reduceAllENIIPList(instanceUID)
             this.refreshIPList()
 
         ebsOptimizedSelect : ( event ) ->
-            this.model.set 'ebs_optimized', event.target.checked
+            @model.setEbsOptimized event.target.checked
+            null
 
         tenancySelect : ( event, value ) ->
             $type = $("#instance-type-select")
@@ -128,24 +120,29 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
                 if $t1.hasClass("selected") and not show
                     $type.find(".item:not([data-id='t1.micro'])").eq(0).click()
-            this.model.set 'tenacy', value
+
+            @model.setTenancy value
+            null
 
         cloudwatchSelect : ( event ) ->
-            this.model.set 'cloudwatch', event.target.checked
+            @model.setCloudWatch event.target.checked
             $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
 
         userdataChange : ( event ) ->
-            this.model.set 'user_data', event.target.value
+            @model.setUserData event.target.value
+            null
 
         eniDescriptionChange : ( event ) ->
-            this.model.set 'eni_description', event.target.value
+            @model.setEniDescription event.target.value
+            null
 
         sourceCheckChange : ( event ) ->
-            this.model.set 'source_check', event.target.checked
+            @model.setSourceCheck event.target.checked
+            null
 
         publicIpChange : ( event ) ->
-
-            this.model.set 'public_ip', event.target.checked
+            @model.setPublicIp event.target.checked
+            null
 
         setKP : ( event, id ) ->
             @model.setKP id
@@ -165,7 +162,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
         addIPtoList: (event) ->
 
             subnetCIDR = ''
-            instanceUID = this.model.get 'get_uid'
+            instanceUID = this.model.get 'uid'
 
             # validate max ip num
             maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
@@ -192,9 +189,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             }))
 
             $('#property-network-list').append tmpl
-            this.trigger 'ADD_NEW_IP'
-
-            this.updateEIPList()
+            @model.addNewIP()
+            @updateEIPList()
             false
 
         removeIPfromList: (event, id) ->
@@ -203,9 +199,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             index = $li.index()
             $li.remove()
 
-            this.trigger 'REMOVE_IP', index
-
-            this.updateEIPList()
+            @model.removeIP index
+            @updateEIPList()
 
         openAmiPanel : ( event ) ->
             console.log 'openAmiPanel'
@@ -227,9 +222,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             # todo, need a index of eip
             index = $(event.currentTarget).closest("li").index()
             if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
-            this.trigger 'ATTACH_EIP', index, attach
 
-            this.updateEIPList()
+            @model.attachEIP eip_index, attach
+            @updateEIPList()
 
         updateEIPList: (event) ->
 
@@ -246,14 +241,15 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
                 })
                 null
 
-            this.trigger 'SET_IP_LIST', currentAvailableIPAry
+            @model.setIPList currentAvailableIPAry
 
             this.changeIPAddBtnState()
+            null
 
         changeIPAddBtnState : () ->
 
             disabledBtn = false
-            instanceUID = this.model.get 'get_uid'
+            instanceUID = this.model.get 'uid'
 
             maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
             currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
@@ -307,11 +303,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
             return false
 
         refreshIPList : ( event ) ->
-            this.model.getEni()
-            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
+            @model.getEni()
+            $( '#property-network-list' ).html( ip_list_template( @model.attributes ) )
             this.changeIPAddBtnState()
     }
 
-    view = new InstanceView()
-
-    return view
+    new InstanceView()

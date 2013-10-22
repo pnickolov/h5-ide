@@ -37,10 +37,8 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
-        UPDATE_PROPERTY        : 'UPDATE_PROPERTY'
         OPEN_SG                : 'OPEN_SG'
         OPEN_ACL               : 'OPEN_ACL'
-        RELOAD_PROPERTY        : 'RELOAD_PROPERTY'
         RELOAD_AZ              : 'RELOAD_AZ'
 
         #tab
@@ -85,10 +83,7 @@ define [ 'underscore', 'backbone' ], () ->
 
         DELETE_COMPONENT       : 'DELETE_COMPONENT'
 
-        PROPERTY_TITLE_CHANGE  : 'PROPERTY_TITLE_CHANGE'
         PROPERTY_OPEN_SUBPANEL : 'PROPERTY_OPEN_SUBPANEL'
-        PROPERTY_HIDE_SUBPANEL : 'PROPERTY_HIDE_SUBPANEL'
-        PROPERTY_RENDER_COMPLETE : 'PROPERTY_RENDER_COMPLETE'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
 
         CANVAS_CREATE_LINE     : 'CANVAS_CREATE_LINE'

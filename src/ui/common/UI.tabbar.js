@@ -104,10 +104,13 @@ var Tabbar = {
 
 	add: function (tab_id, tab_name)
 	{
+		var tab_type = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
+
 		$('#tab-bar ul').append(
 			MC.template.tab.item({
 				'tab_id': tab_id,
-				'tab_name': tab_name
+				'tab_name': tab_name,
+				'tab_type': tab_type
 			})
 		);
 
@@ -158,13 +161,14 @@ var Tabbar = {
 		}
 		else
 		{
-			Tabbar.current = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
+			Tabbar.current = tab_item.data('tab-type');
 		}
 
 		return tab_id;
 	},
 
-	closeTabRestriction : function(event) {
+	closeTabRestriction : function(event)
+	{
 		var target = $(this).parent(),
 			tab_name = target.find('a').attr('title').replace(' - stack', ''),
 			tab_id = target.attr('id').replace('tab-bar-', '');

@@ -747,23 +747,23 @@ module.exports = {
             "zh": "转换成CloudFormation出错"
         },
         "TOOL_TIP_LINESTYLE": {
-            "en": "安全组规则连线类型...",
+            "en": "Security Group Rule Line Style...",
             "zh": "安全组规则连线类型..."
         },
         "TOOL_LBL_LINESTYLE_STRAIGHT": {
-            "en": "直线",
+            "en": "Straight",
             "zh": "直线"
         },
         "TOOL_LBL_LINESTYLE_ELBOW": {
-            "en": "肘型线",
+            "en": "Elbow",
             "zh": "肘型线"
         },
         "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER": {
-            "en": "二次贝赛尔曲线",
+            "en": "Quadratic Belzier curve",
             "zh": "二次贝赛尔曲线"
         },
         "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER": {
-            "en": "光滑的二次贝塞尔曲线",
+            "en": "Smooth quadratic Belzier curve",
             "zh": "光滑的二次贝塞尔曲线"
         },
         "PROP_LBL_REQUIRED": {

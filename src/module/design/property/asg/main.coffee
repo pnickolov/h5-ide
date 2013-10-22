@@ -2,115 +2,65 @@
 #  Controller for design/property/launchconfig module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'text!./term_template.html',
-         'text!./policy_template.html',
-         'text!./app_template.html',
-         'event'
-], ( $, template, term_template, policy_template, app_template, ide_event ) ->
+define [ '../base/main',
+         './model',
+         './view',
+         'constant'
+], ( PropertyModule, model, view, constant ) ->
 
-    #
-    current_view     = null
-    current_model    = null
+    AsgModule = PropertyModule.extend {
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-asg-tmpl">' + template + '</script>'
-    term_template = '<script type="text/x-handlebars-template" id="property-asg-term-tmpl">' + term_template + '</script>'
-    policy_template = '<script type="text/x-handlebars-template" id="property-asg-policy-tmpl">' + policy_template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-asg-app-tmpl">' + app_template + '</script>'
-    #load remote html template
-    $( 'head' ).append( template ).append( term_template ).append( policy_template ).append( app_template )
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
+        setupStack : () ->
+            me = this
 
-        # What does this mean ?
-        MC.data.current_sub_main = current_main
+            @view.on 'SET_SNS_OPTION', ( checkArray ) ->
+                me.model.setSNSOption checkArray
 
+            @view.on 'SET_TERMINATE_POLICY', ( policies ) ->
+                me.model.setTerminatePolicy policies
 
-        require [ './module/design/property/asg/view',
-                  './module/design/property/asg/model',
-        ], ( view, model, sglist_main ) ->
+            @view.on 'SET_HEALTH_TYPE', ( type ) ->
+                me.model.setHealthCheckType type
 
-            # added by song
-            model.clear({silent: true})
+            @view.on 'SET_ASG_NAME', ( name ) ->
+                me.model.setASGName name
 
-            #
-            if current_view then view.delegateEvents view.events
+            @view.on 'SET_ASG_MIN', ( value ) ->
+                me.model.setASGMin value
 
-            #
-            current_view  = view
-            current_model = model
-            #
+            @view.on 'SET_ASG_MAX', ( value ) ->
+                me.model.setASGMax value
 
-            #view
-            view.model    = model
+            @view.on 'SET_DESIRE_CAPACITY', ( value ) ->
+                me.model.setASGDesireCapacity value
 
-            model.setUID uid
+            @view.on 'SET_COOL_DOWN', ( value ) ->
+                me.model.setASGCoolDown value
 
-            if tab_type == "OPEN_APP"
-                model.getASGDetailApp uid
+            @view.on 'SET_HEALTH_CHECK_GRACE', ( value ) ->
+                me.model.setHealthCheckGrace value
 
-            else
-                model.getASGDetail uid
+            @view.on 'SET_POLICY', ( data ) ->
+                me.model.setPolicy data
 
-            view.render( tab_type == "OPEN_APP" )
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, if model.attributes.asg then model.attributes.asg.AutoScalingGroupName else model.attributes.asg_name
+            @view.on 'DELETE_POLICY', ( uid ) ->
+                me.model.delPolicy uid
 
-            view.on 'SET_SNS_OPTION', ( checkArray ) ->
+            null
 
-                model.setSNSOption uid, checkArray
+        initStack : ()->
+            @model = model
+            @model.isApp = false
+            @view  = view
+            null
 
-            view.on 'SET_TERMINATE_POLICY', ( policies ) ->
+        initApp : ()->
+            @model = model
+            @model.isApp = false
+            @view = view
+            null
+    }
+    null
 
-                model.setTerminatePolicy policies
-
-            view.on 'SET_HEALTH_TYPE', ( type ) ->
-
-                model.setHealthCheckType uid, type
-
-            view.on 'SET_ASG_NAME', ( name ) ->
-
-                model.setASGName uid, name
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, name
-
-            view.on 'SET_ASG_MIN', ( value ) ->
-
-                model.setASGMin uid, value
-
-            view.on 'SET_ASG_MAX', ( value ) ->
-
-                model.setASGMax uid, value
-
-            view.on 'SET_DESIRE_CAPACITY', ( value ) ->
-
-                model.setASGDesireCapacity uid, value
-
-            view.on 'SET_COOL_DOWN', ( value ) ->
-
-                model.setASGCoolDown uid, value
-
-            view.on 'SET_HEALTH_CHECK_GRACE', ( value ) ->
-
-                model.setHealthCheckGrace uid, value
-
-            view.on 'SET_POLICY', ( data ) ->
-
-                model.setPolicy uid, data
-
-            view.on 'DELETE_POLICY', ( uid ) ->
-
-                model.delPolicy uid
-
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule

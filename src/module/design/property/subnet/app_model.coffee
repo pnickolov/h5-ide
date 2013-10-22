@@ -2,14 +2,9 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ 'constant', 'backbone', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    SubnetAppModel = Backbone.Model.extend {
-
-        ###
-        defaults :
-
-        ###
+    SubnetAppModel = PropertyModel.extend {
 
         init : ( subnet_uid )->
 

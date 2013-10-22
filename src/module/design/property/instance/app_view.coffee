@@ -2,28 +2,21 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ 'event', 'MC',
-         'i18n!nls/lang.js',
-         'UI.zeroclipboard',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, lang, zeroclipboard ) ->
+define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zeroclipboard' ], ( PropertyView, template, lang, zeroclipboard )->
 
-    InstanceAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    InstanceAppView = PropertyView.extend {
 
         events   :
             "click #property-app-keypair" : "downloadKeypair"
             "click #property-app-ami" : "openAmiPanel"
 
-        template  : Handlebars.compile $( '#property-instance-app-tmpl' ).html()
-
         kpModalClosed : false
 
-        render     : () ->
-            console.log 'property:instance app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
-
+        render : () ->
+            @$el.html template @model.attributes
+            @model.attributes.name
 
         downloadKeypair : ( event ) ->
             keypair = $( event.currentTarget ).html()
@@ -90,6 +83,4 @@ define [ 'event', 'MC',
 
     }
 
-    view = new InstanceAppView()
-
-    return view
+    new InstanceAppView()

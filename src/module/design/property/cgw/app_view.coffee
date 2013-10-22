@@ -2,21 +2,15 @@
 #  View(UI logic) for design/property/cgw(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template ) ->
 
-    CGWAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    CGWAppView = PropertyView.extend {
 
-        template : Handlebars.compile $( '#property-cgw-app-tmpl' ).html()
-
-        render     : () ->
-            console.log 'property:cgw app render'
-            $( '.property-details' ).html this.template this.model.attributes
+        render : () ->
+            $el.html template @model.attributes
+            @model.attributes.name
     }
 
-    view = new CGWAppView()
-
-    return view
+    new CGWAppView()

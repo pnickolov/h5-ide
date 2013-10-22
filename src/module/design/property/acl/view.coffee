@@ -2,17 +2,18 @@
 #  View(UI logic) for design/property/acl
 #############################
 
-define [ 'event', 'i18n!nls/lang.js',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/rule_item.html',
+         'text!acl_template',
+         'i18n!nls/lang.js'
+], ( PropertyView, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
 
-   ACLView = Backbone.View.extend {
+    htmlTpl  = Handlebars.compile htmlTpl
+    ruleTpl  = Handlebars.compile ruleTpl
+    rulePopupTpl = Handlebars.compile rulePopupTpl
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        htmlTpl  : Handlebars.compile $('#property-acl-tmpl').html()
-        ruleTpl  : Handlebars.compile $('#property-acl-rule-tmpl').html()
-        rulePopupTpl : Handlebars.compile $('#property-acl-rule-popup-tmpl').html()
+    ACLView = PropertyView.extend {
 
         initialize : ->
             $('#sg-protocol-udp').hide()
@@ -37,18 +38,12 @@ define [ 'event', 'i18n!nls/lang.js',
             'change #acl-add-model-direction-outbound'   : 'changeBoundInModal'
             'change #acl-add-model-direction-inbound'    : 'changeBoundInModal'
 
-        render     : () ->
-            console.log 'property:acl render'
-
-            $dom = this.htmlTpl this.model.attributes
-
-            self = this
-            self.refreshRuleList self.model.attributes.component
-
-            $dom
+        render : () ->
+            @$el.html htmlTpl @model.attributes
+            @model.attributes.component.name
 
         showCreateRuleModal : () ->
-            modal this.rulePopupTpl({}, true)
+            modal rulePopupTpl({}, true)
 
             subnetMap = {}
 
@@ -204,7 +199,8 @@ define [ 'event', 'i18n!nls/lang.js',
 
             null
 
-        refreshRuleList : (value) ->
+        refreshRuleList : () ->
+            value = @model.attributes.component
             entrySet = value.resource.EntrySet
 
             newEntrySet = []
@@ -252,7 +248,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
                 null
 
-            $('#acl-rule-list').html this.ruleTpl({
+            $('#acl-rule-list').html ruleTpl({
                 content: newEntrySet
             })
 
@@ -281,7 +277,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 currentRuleNumber = '32767'
             currentRuleEngress = parentElem.attr('rule-engress')
             this.trigger 'REMOVE_RULE_FROM_ACL', currentRuleNumber, currentRuleEngress
-            this.refreshRuleList this.model.attributes.component
+            this.refreshRuleList()
 
         aclNameChanged : (event) ->
             target = $ event.currentTarget
@@ -367,6 +363,4 @@ define [ 'event', 'i18n!nls/lang.js',
                 $(b).find('.acl-rule-reference').attr('data-id')
     }
 
-    view = new ACLView()
-
-    return view
+    new ACLView()

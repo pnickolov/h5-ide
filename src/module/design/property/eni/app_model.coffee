@@ -2,9 +2,9 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ 'backbone', 'MC' ], () ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    EniAppModel = Backbone.Model.extend {
+    EniAppModel = PropertyModel.extend {
 
         defaults :
           id: null

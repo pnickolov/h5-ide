@@ -2,20 +2,20 @@
 #  View Mode for design/property/az
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    AZModel = Backbone.Model.extend {
+    AZModel = PropertyModel.extend {
 
         defaults :
             id : null
             component : null
             az_list : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        reInit : () ->
+            @init @get "uid"
+            null
 
-        setId : ( uid ) ->
+        init : ( uid ) ->
             data =
                 id        : uid
                 component : MC.canvas_data.layout.component.group[uid]
@@ -34,6 +34,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 ]
 
             this.set data
+            null
 
         possibleAZList : ( datalist, selectedItemName ) ->
             if !datalist
@@ -104,6 +105,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             oldZoneName
     }
 
-    model = new AZModel()
-
-    return model
+    new AZModel()

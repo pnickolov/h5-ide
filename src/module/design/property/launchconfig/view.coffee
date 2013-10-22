@@ -2,20 +2,11 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
-        'UI.selectbox',
-        'UI.tooltip',
-        'UI.notification',
-        'UI.modal',
-        'UI.tablist',
-        'UI.toggleicon' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
 
-    LanchConfigView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-launchconfig-tmpl' ).html()
+    LanchConfigView = PropertyView.extend {
 
         events   :
             'change .launch-configuration-name'           : 'lcNameChange'
@@ -23,7 +14,6 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
-            'change #property-instance-source-check'      : 'sourceCheckChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #keypair-select'               : "setKP"
             'EDIT_UPDATE #keypair-select'                 : "addKP"
@@ -31,23 +21,25 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
 
             'click #property-ami'                         : 'openAmiPanel'
 
-        render     : ( attributes ) ->
-            console.log 'property:instance render'
+        render : () ->
 
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
+
+            @model.attributes.name
 
 
         lcNameChange : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
 
-            id = @model.get 'get_uid'
+            id = @model.get 'uid'
             MC.validate.preventDupname target, id, name, 'LaunchConfiguration'
 
             if target.parsley 'validate'
-                @trigger "NAME_CHANGE", name
+                @model.setName name
+                @setTitle name
 
         instanceTypeSelect : ( event, value )->
 
@@ -58,17 +50,15 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
                 $ebs.prop "checked", false
 
         ebsOptimizedSelect : ( event ) ->
-            this.model.set 'ebs_optimized', event.target.checked
+            @model.setEbsOptimized event.target.checked
+            null
 
         cloudwatchSelect : ( event ) ->
-            this.model.set 'cloudwatch', event.target.checked
+            @model.setCloudWatch event.target.checked
             $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
 
         userdataChange : ( event ) ->
-            this.model.set 'user_data', event.target.value
-
-        sourceCheckChange : ( event ) ->
-            this.model.set 'source_check', event.target.checked
+            @model.setUserData event.target.value
 
         setKP : ( event, id ) ->
             @model.setKP id
@@ -129,6 +119,4 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars',
             return false
     }
 
-    view = new LanchConfigView()
-
-    return view
+    new LanchConfigView()

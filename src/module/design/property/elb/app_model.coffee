@@ -2,12 +2,12 @@
 #  View Mode for design/property/elb
 #############################
 
-define [ 'constant', 'backbone', 'MC' ], (constant) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ElbAppModel = Backbone.Model.extend {
+    ElbAppModel = PropertyModel.extend {
 
         defaults :
-            'id'    : null
+            'id'  : null
 
         init : ( elb_uid )->
 

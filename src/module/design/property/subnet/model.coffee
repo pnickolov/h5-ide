@@ -2,9 +2,9 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    SubnetModel = Backbone.Model.extend {
+    SubnetModel = PropertyModel.extend {
 
         defaults :
             uid  : null
@@ -12,11 +12,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             CIDR : null
             networkACL : null # Array
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        setId : ( uid ) ->
+        init : ( uid ) ->
 
             # The uid can be a line
             if MC.canvas_data.layout.connection[ uid ]
@@ -42,7 +38,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             subnet_component = MC.canvas_data.component[ uid ]
 
             if !subnet_component then return
-            
+
             networkACLs = []
 
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
@@ -144,6 +140,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             null
     }
 
-    model = new SubnetModel()
-
-    return model
+    new SubnetModel()

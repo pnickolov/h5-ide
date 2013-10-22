@@ -2,55 +2,21 @@
 #  Controller for design/property/igw module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'event'
-], ( $, template, ide_event ) ->
+define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, model, view, constant )->
 
-    #
-    current_view  = null
-    current_model = null
+    IGWModule = PropertyModule.extend {
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-igw-tmpl">' + template + '</script>'
-    #load remote html template
-    $( 'head' ).append template
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
-    #private
-    loadModule = ( uid, current_main ) ->
+        initStack : ()->
+            @model = model
+            @view  = view
+            null
 
-        #
-        MC.data.current_sub_main = current_main
+        initApp : ()->
+            @model = model
+            @view  = view
+            null
+    }
 
-        #
-        require [ './module/design/property/igw/view', './module/design/property/igw/model' ], ( view, model ) ->
-
-            # added by song
-            model.clear({silent: true})
-            
-            #
-            if current_view then view.delegateEvents view.events
-
-            #
-            current_view  = view
-            current_model = model
-
-            #view
-            view.model    = model
-            #render
-            view.render()
-
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, "Internet-gateway"
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        #ide_event.offListen ide_event.<EVENT_TYPE>
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule
+    null

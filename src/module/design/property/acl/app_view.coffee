@@ -2,22 +2,20 @@
 #  View(UI logic) for design/property/acl(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view',
+         'text!./template/app.html'
+], ( PropertyView, template ) ->
 
-    ACLAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template  : Handlebars.compile $( '#property-acl-app-tmpl' ).html()
+    ACLAppView = PropertyView.extend {
 
         events    :
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
 
         render     : () ->
-            console.log 'property:acl app render'
-            this.template this.model.attributes
+            @$el.html template @model.attributes
+            @model.attributes.component.name
 
         sortACLRule : ( event ) ->
             sg_rule_list = $('#acl-rule-list')
@@ -58,6 +56,4 @@ define [ 'event', 'MC',
 
     }
 
-    view = new ACLAppView()
-
-    return view
+    new ACLAppView()

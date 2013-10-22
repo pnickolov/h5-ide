@@ -2,7 +2,10 @@
 #  View(UI logic) for design/property/vpc
 #############################
 
-define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'underscore', 'UI.multiinputbox' ], ( ide_event, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html'
+         'i18n!nls/lang.js'
+], ( PropertyView, template, lang ) ->
 
     # Helpers
     mapFilterInput = ( selector ) ->
@@ -23,12 +26,9 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'under
             $( '#property-amazon-dns' ).removeAttr( "disabled" )
 
 
-    VPCView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-vpc-tmpl' ).html()
+    VPCView = PropertyView.extend {
 
         events   :
             'change #property-vpc-name'       : 'onChangeName'
@@ -60,10 +60,12 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'under
                 , { id : 8 , value : 8, selected : selectedType == 8 }
             ]
 
-            $( '.property-details' ).html this.template data
+            @$el.html( template( data ) )
             $( '#property-domain-server' ).on( 'ADD_ROW REMOVE_ROW', updateAmazonCB )
             updateAmazonCB()
             multiinputbox.update( $("#property-domain-server") )
+
+            @model.attributes.component.name
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -83,7 +85,8 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'under
                     return 'This value should be a valid VPC name.'
 
             if target.parsley 'validate'
-                this.trigger "CHANGE_NAME", name
+                @model.setName name
+                @setTitle name
 
         onChangeCidr : ( event ) ->
             target = $ event.currentTarget
@@ -161,6 +164,4 @@ define [ 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'under
             null
     }
 
-    view = new VPCView()
-
-    return view
+    new VPCView()

@@ -2,9 +2,9 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ 'backbone', 'MC' ], () ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    RTBAppModel = Backbone.Model.extend {
+    RTBAppModel = PropertyModel.extend {
 
         init : ( rtb_uid )->
 

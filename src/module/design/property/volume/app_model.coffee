@@ -2,14 +2,9 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ 'backbone', 'MC' ], () ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    VolumeAppModel = Backbone.Model.extend {
-
-        ###
-        defaults :
-
-        ###
+    VolumeAppModel = PropertyModel.extend {
 
         init : ( volume_uid )->
 

@@ -2,14 +2,14 @@
 #  View(UI logic) for design/property/volume
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'event'
+], ( PropertyView, template, ide_event ) ->
 
-    VolumeView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-volume-tmpl' ).html()
+    VolumeView = PropertyView.extend {
 
         events   :
             'click #volume-type-radios input' : 'volumeTypeChecked'
@@ -24,9 +24,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
         render     : () ->
             console.log 'property:volume render'
             #
-            this.undelegateEvents()
-            #
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html( template( @model.attributes ) )
             # parsley bind
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
@@ -41,7 +39,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
                 else if( val > 10 * volume_size)
                     return 'IOPS must be less than 10 times of volume size.'
             #
-            this.delegateEvents this.events
+
+            @model.attributes.volume_detail.name
 
         volumeTypeChecked : ( event ) ->
             if($('#volume-type-radios input:checked').val() is 'radio-standard')
@@ -72,6 +71,7 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
 
             if target.parsley 'validate'
                 this.trigger 'DEVICE_NAME_CHANGED', name
+                @setTitle name
 
         processIops: ( event ) ->
             size = parseInt event.currentTarget.value, 10
@@ -124,6 +124,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
             null
     }
 
-    view = new VolumeView()
-
-    return view
+    new VolumeView()

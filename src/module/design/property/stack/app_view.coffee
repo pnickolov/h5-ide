@@ -40,7 +40,7 @@ define [ '../base/view',
         refreshACLList : () ->
             if MC.aws.vpc.getVPCUID() or MC.aws.aws.checkDefaultVPC()
                 this.model.getNetworkACL()
-                $('.stack-property-acl-list').html this.acl_template this.model.attributes
+                $('.stack-property-acl-list').html acl_template this.model.attributes
 
         openCreateAclPanel : ( event ) ->
             source = $(event.target)

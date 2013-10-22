@@ -44,11 +44,15 @@ define [ 'event',
                     ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
+            #
+            @_hideStatubar()
             null
 
         toggleWaiting : () ->
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
+            #
+            @_hideStatubar()
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
@@ -112,6 +116,11 @@ define [ 'event',
                 return null
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
+
+        _hideStatubar : ->
+            console.log '_hideStatubar'
+            #
+            $( '#status-bar-modal' ).empty() if $.trim( $( '#status-bar-modal' ).html() )
     }
 
     view = new MainView()

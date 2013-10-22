@@ -2,9 +2,7 @@
 #  pop-up for component/trustedadvisor module
 ####################################
 
-define [ 'jquery', 'event',
-         'text!./template.html'
-], ( $, ide_event, template ) ->
+define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
     loadModule = ( type ) ->
@@ -23,7 +21,7 @@ define [ 'jquery', 'event',
                 unLoadModule view, model
 
             #render
-            view.render type, template
+            view.render type
 
     unLoadModule = ( view, model ) ->
         console.log 'trusted advisor run unLoadModule'

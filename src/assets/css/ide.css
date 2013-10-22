@@ -6873,3 +6873,11 @@ a.action-link:hover {
 #main-statusbar .icon-statusbar-info {
 	background-color: #72D5FF;
 }
+
+#status-bar-modal {
+	width: 500px;
+	position: absolute;
+	bottom: 50px;
+	right: 100px;
+	z-index: 9999;
+}

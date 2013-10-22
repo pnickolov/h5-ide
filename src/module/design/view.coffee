@@ -8,7 +8,8 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
         el          : '#tab-content-design'
 
-        initialize  : ->
+        events      :
+            'click .status-bar' : 'statusbarClick'
 
         render   : () ->
             console.log 'design render'
@@ -54,6 +55,10 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 ide_event.trigger ide_event.SWITCH_WAITING_BAR
                 MC.data.current_tab_type = null
             null
+
+        statusbarClick : ->
+            console.log 'statusbarClick'
+            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar'
 
     }
 

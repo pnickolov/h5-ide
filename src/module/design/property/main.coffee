@@ -136,11 +136,6 @@ define [ 'event',
 
 		### Helper Functions End ###
 
-		### LEGACY ###
-		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->
-			view.showSecondPanel data
-		### ###
-
 
 	unLoadModule = () ->
 		null

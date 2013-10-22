@@ -9,7 +9,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
     StaticSubView = PropertyView.extend {
         render : () ->
             @$el.html template @model.attributes
-            @model.attributes.name
+            if @model.attributes.ami then "Ami" else "Snapshot"
     }
 
     new StaticSubView()

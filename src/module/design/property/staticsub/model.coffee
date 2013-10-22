@@ -11,10 +11,18 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             # If this uid is ami uid
             if MC.data.dict_ami[ uid ]
                 @set MC.data.dict_ami[ uid ]
-                @set "name", "Ami"
                 @set "ami", true
+                return
 
-            null
+            # If this uid is snapshot uid
+            snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
+            if snapshot_list and snapshot_list.item
+                for item in snapshot_list.item
+                    if item.snapshotId is uid
+                        @set item
+                        return
+
+            false
     }
 
     new StaticSubModel()

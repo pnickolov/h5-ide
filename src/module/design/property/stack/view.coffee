@@ -57,43 +57,6 @@ define [ '../base/view',
                 @setTitle "Stack - " + name
             null
 
-
-        openSecurityGroup : (event) ->
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
-            @trigger "OPEN_SG", target.data('secondarypanel-data')
-
-        # deleteSecurityGroup : (event) ->
-        #     me = this
-
-        #     target = $(event.target).parents('div:eq(0)')
-        #     uid = target.attr('uid')
-        #     name = target.children('p.title').text()
-
-        #     console.log "Remove sg:" + uid
-
-        #     me.trigger 'DELETE_STACK_SG', uid
-
-        #     target.remove()
-
-        #     notification 'info', name + ' is deleted.'
-
-        #     null
-
-        # resetSecurityGroup : (event) ->
-        #     me = this
-
-        #     target = $(event.target).parents('div:eq(0)')
-        #     uid = target.attr('uid')
-
-        #     me.trigger 'RESET_STACK_SG', uid
-
-        #     null
-
         deleteNetworkAcl : (event) ->
 
             that = this

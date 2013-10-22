@@ -63,7 +63,6 @@ require.config {
 		#############################################
 		'aws_handle'         : 'lib/aws/main'
 		'forge_handle'       : 'lib/forge/main'
-		'ta_handle'          : 'lib/ta/main'
 
 		#
 		'validation'         : 'component/trustedadvisor/validation'

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #############################
 #
 # /home/ec2-user/ide/transfer.sh

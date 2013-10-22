@@ -9,7 +9,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
     CGWAppView = PropertyView.extend {
 
         render : () ->
-            $el.html template @model.attributes
+            @$el.html template @model.attributes
             @model.attributes.name
     }
 

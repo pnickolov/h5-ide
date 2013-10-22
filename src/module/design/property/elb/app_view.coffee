@@ -11,7 +11,7 @@ define [ '../base/view',
     ElbAppView = PropertyView.extend {
 
         render : () ->
-            $el.html template @model.attributes
+            @$el.html template @model.attributes
             zeroclipboard.copy $("#property-app-elb-dnss .icon-copy")
 
             @model.attributes.name

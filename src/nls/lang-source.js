@@ -622,6 +622,10 @@ module.exports = {
             "en": "Stop this app's resources.",
             "zh": "暂停应用"
         },
+        "TOOL_TIP_UPDATE_APP": {
+            "en": "Edit this app",
+            "zh": "编辑应用"
+        },
         "TOOL_POP_TIT_STOP_APP": {
             "en": "Confirm to stop app",
             "zh": "确认暂停"

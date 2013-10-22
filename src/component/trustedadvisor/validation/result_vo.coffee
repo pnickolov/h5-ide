@@ -1,7 +1,8 @@
 
 define [ 'MC' ], ( MC ) ->
 
-	result = {}
+	result   = {}
+	list_arr = []
 
 	set = ( uid, level, info ) ->
 		result = {
@@ -9,9 +10,14 @@ define [ 'MC' ], ( MC ) ->
 			info  : info,
 			uid   : uid
 		}
+		list_arr.push result
 
-	get = () ->
+	get = ->
 		result
 
-	set : set
-	get : get
+	list = ->
+		list_arr
+
+	set  : set
+	get  : get
+	list : list

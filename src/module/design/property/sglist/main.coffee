@@ -2,10 +2,11 @@
 #  Controller for design/property/sglist module
 ####################################
 
-define [ './model',
+define [ '../base/main',
+         './model',
          './view',
          'event'
-], ( model, view, ide_event ) ->
+], ( PropertyModel, model, view, ide_event ) ->
 
     view.on 'ASSIGN_SG_TOCOMP', (sgUID, sgChecked) ->
         model.assignSGToComp sgUID, sgChecked
@@ -16,7 +17,8 @@ define [ './model',
         ide_event.trigger ide_event.REDRAW_SG_LINE
 
     view.on 'OPEN_SG', (sgUID) ->
-        ide_event.trigger ide_event.OPEN_SG, sgUID
+        PropertyModel.loadSubPanel "SG", sgUID
+        null
 
     view.model = model
 

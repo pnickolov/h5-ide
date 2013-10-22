@@ -30,7 +30,7 @@ define [ '../base/view',
             else
                 target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_SG, target.data('secondarypanel-data')
+            @trigger "OPEN_SG", target.data('secondarypanel-data')
 
         deleteNetworkAcl : (event) ->
             aclUID = $(event.target).attr('acl-uid')

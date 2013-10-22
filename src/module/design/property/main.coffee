@@ -36,6 +36,7 @@ define [ 'event',
 		view = new View()
 		view.render()
 
+		# Setup view / PropertyBaseView / PropertyBaseModule events.
 		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, () ->
 			view.forceShow()
 			null
@@ -112,21 +113,10 @@ define [ 'event',
 
 			null
 
-		#listen OPEN_SG
-		ide_event.onLongListen ide_event.OPEN_SG, ( sg_uid ) ->
-
-			# if resource not exist in app state
-			currentState = MC.canvas.getState()
-			if sg_uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(sg_uid)
-				notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
-				return
-
-			console.log 'OPEN_SG'
-			sg_main.loadModule( sg_uid )
-			null
-
+		### LEGACY ###
 		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->
 			view.showSecondPanel data
+		### ###
 
 
 	unLoadModule = () ->

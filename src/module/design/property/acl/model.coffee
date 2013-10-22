@@ -37,6 +37,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 null
 
             this.set 'associations', associationsAry
+            this.set 'uid', uid
 
             null
 
@@ -131,7 +132,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 subnet_cidr: subnetComp.resource.CidrBlock
             }
 
-        addRuleToACL : (uid, ruleObj) ->
+        addRuleToACL : (ruleObj) ->
+            uid = @get 'uid'
+
             newEntrySet = []
 
             originEntrySet = MC.canvas_data.component[uid].resource.EntrySet
@@ -169,7 +172,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             null
 
-        removeRuleFromACL : (uid, ruleNum, ruleEngress) ->
+        removeRuleFromACL : (ruleNum, ruleEngress) ->
+            uid = @get 'uid'
             currentEntrySet = MC.canvas_data.component[uid].resource.EntrySet
             newEntrySet = _.filter currentEntrySet, (ruleObj) ->
                 if ruleObj.RuleNumber is ruleNum and ruleEngress is ruleObj.Egress
@@ -179,11 +183,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             MC.canvas_data.component[uid].resource.EntrySet = newEntrySet
             null
 
-        setACLName : (uid, aclName) ->
+        setACLName : (aclName) ->
+            uid = @get 'uid'
             MC.canvas_data.component[uid].name = aclName
             null
 
-        haveRepeatRuleNumber : (uid, newRuleNumber) ->
+        haveRepeatRuleNumber : (newRuleNumber) ->
+            uid = @get 'uid'
             result = false
             entrySet = MC.canvas_data.component[uid].resource.EntrySet
             _.each entrySet, (entryObj) ->

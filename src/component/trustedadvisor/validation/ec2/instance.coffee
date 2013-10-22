@@ -1,10 +1,10 @@
-define [ 'constant', 'MC', '../result_vo' ], ( constant, MC, resultVO ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
 	checkValue = ( uid ) ->
 
 		instanceObj = MC.canvas_data.component[uid]
 		instanceName = instanceObj.name
-
-		resultVO.set resultVO.WARNING, "The instance #{instanceName} need have a suitable EIP", uid
+        msg = lang.ide.TA_INSTANCE_NEED_HAVE_A_SUITABLE_EIP instanceName
+		resultVO.set resultVO.WARNING, msg, uid
 
 	checkValue : checkValue

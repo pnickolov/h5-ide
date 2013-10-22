@@ -21,6 +21,8 @@ define [ '../base/view',
 
             @$el.html template @model.attributes
 
+            me = this
+
             # find empty inputbox and focus
             vpn_detail = this.model.get('vpn_detail')
             if !vpn_detail.is_dynamic
@@ -29,7 +31,7 @@ define [ '../base/view',
                     inputValue = $(inputElem).val()
                     if !inputValue
                         MC.aws.aws.disabledAllOperabilityArea(true)
-                        @forceShow()
+                        me.forceShow()
                         $(inputElem).focus()
 
             "vpn:#{@model.attributes.vpn_detail.cgw_name}"

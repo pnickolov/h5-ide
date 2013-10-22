@@ -64,6 +64,8 @@ a {
 	overflow : hidden;
 }
 
+.ovfh { overflow : hidden; }
+
 .truncate {
 	/*width: 250px;*/
 	white-space: nowrap;
@@ -3294,6 +3296,10 @@ td.table-action a.btn {
 /*	margin-right: 4px;*/
     border-radius : 0 4px 4px 0;
     border-left   : 1px solid #CFCFCF;
+}
+
+.toolbar-btn-group .icon-update-app {
+		border-right : 1px solid #CFCFCF;
 }
 
 .toolbar-btn-group .btn-toolbar:only-child{

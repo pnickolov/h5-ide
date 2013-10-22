@@ -626,6 +626,14 @@ module.exports = {
             "en": "Edit this app",
             "zh": "编辑应用"
         },
+        "TOOL_TIP_SAVE_UPDATE_APP": {
+            "en": "Save this app",
+            "zh": "更新应用"
+        },
+        "TOOL_TIP_CANCEL_UPDATE_APP": {
+            "en": "Cancel editing this app",
+            "zh": "取消更新应用"
+        },
         "TOOL_POP_TIT_STOP_APP": {
             "en": "Confirm to stop app",
             "zh": "确认暂停"

@@ -11,7 +11,7 @@ define [ '../base/main',
 
 	SgRuleModule = PropertyModule.extend {
 
-		handleTypes : /.+-sg\>/
+		handleTypes : /.+-sg/
 
 		setupStack : ()->
 			view.on "EDIT_RULE", ( line_id ) ->

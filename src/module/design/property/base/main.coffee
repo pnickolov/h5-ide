@@ -254,7 +254,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             for r in propertyTypeRegExpArr
                 if componentType.match r.regexp
                     property = r.prop
-                break
+                    break
 
         if not property
             return false

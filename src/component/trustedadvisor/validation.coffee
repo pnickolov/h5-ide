@@ -8,28 +8,34 @@ define [ 'event', 'component/trustedadvisor/validation/main',
 
     #privte
     validComp = ( type, obj ) ->
-        temp     = type.split '.'
-        filename = temp[ 0 ]
-        method   = temp[ 1 ]
-        func     = validation_main[ filename ][ method ]
 
-        if _.isFunction func
+        try
 
-            result = func obj
+            temp     = type.split '.'
+            filename = temp[ 0 ]
+            method   = temp[ 1 ]
+            func     = validation_main[ filename ][ method ]
 
-            if !result
-                console.log 'validation success'
-                true
+            if _.isFunction func
+
+                result = func obj
+
+                if !result
+                    console.log 'validation success'
+                    true
+                else
+                    #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
+                    #view.updateStatusBar(result)
+
+                    console.log result
+                    console.log 'validation failed'
+                    false
+
             else
-                #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
-                #view.updateStatusBar(result)
+                console.log 'func not found'
 
-                console.log result
-                console.log 'validation failed'
-                false
-
-        else
-            console.log 'func not found'
+        catch error
+            console.log "validComp error #{ error }"
 
     validAll = ( obj ) ->
         #validComp 'instance.checkValue', uid

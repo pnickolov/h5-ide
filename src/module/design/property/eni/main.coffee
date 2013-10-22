@@ -24,8 +24,7 @@ define [ "../base/main",
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
         onUnloadSubPanel : ( id )->
-            if id is "SG"
-                sglist_main.loadModule @model
+            sglist_main.onUnloadSubPanel id
             null
 
         setupStack : () ->

@@ -2,20 +2,20 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ACLModel = Backbone.Model.extend {
+    ACLModel = PropertyModel.extend {
 
         defaults :
             'component'    : null
             'associations' : null
             'is_default'   : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
         init : (uid) ->
+
+            if @isApp
+                appInit( uid )
+                return
 
             allComp = MC.canvas_data.component
             aclObj = MC.canvas_data.component[uid]
@@ -193,6 +193,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             return result
     }
 
-    model = new ACLModel()
-
-    return model
+    new ACLModel()

@@ -43,6 +43,8 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     propertyTypeMap = {}
     propertyTypeMap.DEFAULT_TYPE = "default"
 
+    propertySubTypeMap = {}
+
     # # # # # # # # # # # # # # # # # # # # # # # # #
     ###
     # Above is internal implementation. User doesn't have to care about its detail.
@@ -122,7 +124,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     ++ Class Method ++
 
-    # load(uid) :
+    # loadSubPanel( subPanelID, componentUid ) :
         description : calling this method will should the property. It does nothing if the property module is main module, not sub module.
 
     # activeModule :
@@ -150,15 +152,17 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         App   : "App"
 
 
-    PropertyModule.prototype.load = ( componentUid ) ->
-        componentType = if _.isString @handleTypes then @handleTypes else @handleTypes[0]
-        PropertyModule.load( componentType, componentUid, activeModule.type )
-        null
+    PropertyModule.prototype.loadSubPanel = ( subPanelID, componentUid, noRender ) ->
+        subPanel = propertySubTypeMap[ subPanelID ]
+        if not subPanel
+            return
 
+        PropertyModule._doLoadProperty subPanelID, subPanel, componentUid, activeModule.type, noRender
+        null
 
     PropertyModule.extend = ( protoProps, staticProps ) ->
         ### env:dev ###
-        if not protoProps.hasOwnProperty "handleTypes"
+        if not ( protoProps.hasOwnProperty( "handleTypes" ) or protoProps.hasOwnProperty( "subPanelID" ) )
             console.warn "The property doesn't specify what kind of component it can handle"
             return
         ### env:dev:end ###
@@ -168,6 +172,13 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         newProperty      = new newPropertyClass()
 
         # 2. Register it
+
+        # 2.1 If the panel is subpanel, register it to propertySubTypeMap
+        if newProperty.subPanelID
+            propertySubTypeMap[ newProperty.subPanelID ] = newProperty
+            return newPropertyClass
+
+        # 2.2 Register main panel to propertyTypeMap
         if _.isString newProperty.handleTypes
             handleTypes = if protoProps.handleTypes is "" then [ propertyTypeMap.DEFAULT_TYPE ] else [ protoProps.handleTypes ]
         else
@@ -191,12 +202,16 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         # 3. Return the Property Class
         newPropertyClass
 
-    PropertyModule.activeModule = PropertyModule.prototype.activeModule = () ->
+    PropertyModule.prototype.activeModule = () ->
         activeModule
 
-    PropertyModule.activeSubModule = PropertyModule.prototype.activeSubModule = () ->
+    PropertyModule.prototype.activeSubModule = () ->
         activeSubModule
 
+
+    PropertyModule.activeModule = PropertyModule.prototype.activeModule
+    PropertyModule.activeSubModule = PropertyModule.prototype.activeSubModule
+    PropertyModule.loadSubPanel = PropertyModule.prototype.loadSubPanel
 
     # Class methods. They're used by design/property/main.
     PropertyModule.load  = ( componentType, componentUid, tab_type ) ->
@@ -230,10 +245,15 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         if not property
             return false
 
-        # 2. Set the property type to "App" or "Stack"
+        # Return _doLoadProperty's return value.
+        PropertyModule._doLoadProperty componentType, property, componentUid, tab_type, noRender
+
+    PropertyModule._doLoadProperty = ( componentType, property, componentUid, tab_type, noRender ) ->
+
+        # 1. Set the property type to "App" or "Stack"
         property.type = tab_type
 
-        # 3. Init
+        # 2. Init
         procName = "init#{property.type}"
         if property[ procName ]
             property.uid = componentUid
@@ -242,13 +262,13 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             # The property cannot init. Default to use Stack property.
             return false
 
-        # 4. Setup ( Only run once )
+        # 3. Setup ( Only run once )
         procName = "setup#{property.type}"
         if property[ procName ]
             property[ procName ].call property
             property[ procName ] = null
 
-        # 5. Register the property as active property
+        # 4. Register the property as active property
         if property.subPanelID
             activeSubModule     = property
             activeSubModuleType = componentType
@@ -258,7 +278,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             activeModule        = property
             activeModuleType    = componentType
 
-        # 6. Re-init the `model` and `view`
+        # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
         property.model.clear( { silent : true } )
         # If the model cannot init. Default to use Stack property.
@@ -271,13 +291,13 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         property.view._isSub    = !!property.subPanelID
         property.view._noRender = noRender # If we are restore state of a tab, no need to render the property panel
 
-        # 7. Tell view to Render
+        # 6. Tell view to Render
         if property.subPanelID
             property.view._loadAsSub( property.subPanelID )
         else
             property.view._load()
 
-        # 8. After load callback.
+        # 7. After load callback.
         procName = "afterLoad#{property.type}"
         if property[ procName ]
             property[ procName ].call property
@@ -288,7 +308,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # Calls `onUnloadSubPanel` callback for current main property module
         if activeModule.onUnloadSubPanel
-            activeSubModule.onUnloadSubPanel( activeSubModule.subPanelID )
+            activeModule.onUnloadSubPanel( activeSubModule.subPanelID )
 
         activeSubModule     = null
         activeSubModuleType = null
@@ -309,7 +329,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type, true
 
         if snapshot.activeSubModuleType
-            PropertyModule.load snapshot.activeSubModuleType, snapshot.activeSubModuleId, snapshot.tab_type, true
+            PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
 
         null
 

@@ -125,11 +125,11 @@ define [ 'event',
             $( '#hide-property-panel' ).removeClass( 'icon-caret-left' ).addClass( 'icon-caret-right' )
             null
 
-        showSecondPanel : ( data ) ->
-            $("#property-second-title").html( data.title ).attr( "data-id", data.id )
+        showSecondPanel : () ->
             $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
 
-            $("#property-second-panel").show().animate({left:"0%"}, 200).find(".property-content").html( data.dom )
+            $("#property-second-panel").show().animate({left:"0%"}, 200)
+
             $("#property-first-panel").animate {left:"-30%"}, 200, ()->
                 $("#property-first-panel").hide()
 

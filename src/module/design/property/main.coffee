@@ -32,13 +32,16 @@ define [ 'event',
 	#private
 	loadModule = () ->
 
-		view = new View()
-
 		# Render property panel frames.
+		view = new View()
 		view.render()
 
 		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, () ->
 			view.forceShow()
+			null
+
+		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL, () ->
+			view.showSecondPanel()
 			null
 
 		view.on "HIDE_SUBPANEL", ()->
@@ -120,19 +123,6 @@ define [ 'event',
 
 			console.log 'OPEN_SG'
 			sg_main.loadModule( sg_uid )
-			null
-
-		#listen OPEN_ACL
-		ide_event.onLongListen ide_event.OPEN_ACL, ( acl_uid ) ->
-
-			# if resource not exist in app state
-			currentState = MC.canvas.getState()
-			if acl_uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(acl_uid)
-				notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
-				return
-
-			console.log 'OPEN_ACL'
-			acl_main.loadModule( acl_uid, tab_type )
 			null
 
 		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->

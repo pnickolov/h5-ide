@@ -17,7 +17,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
             null
 
         showACLDetail : () ->
-            this.trigger 'OPEN_ACL', $("#property-app-subnet-acl").attr("data-uid")
+            @trigger 'OPEN_ACL', $("#property-app-subnet-acl").attr("data-uid")
             null
     }
 

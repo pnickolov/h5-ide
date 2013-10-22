@@ -31,9 +31,10 @@ define [ '../base/main',
         handleTypes : ""
 
         onUnloadSubPanel : ( id )->
-            if id is "SG"
-                sglist_main.loadModule @model
-            else if id is "ACL"
+
+            sglist_main.onUnloadSubPanel id
+
+            if id is "ACL"
                 @view.refreshACLList()
 
         ### # # # # # # # # # # # #
@@ -68,6 +69,10 @@ define [ '../base/main',
                 # The view might be app view, because app_model is the same as stack_model.
                 if me.view.updateSNSList
                     me.view.updateSNSList sns_list, has_asg
+
+            @view.on 'OPEN_ACL', ( uid ) ->
+                PropertyModule.loadSubPanel( "ACL", uid )
+                null
             null
 
         # In initStack, all we have to do is to assign this.model / this.view
@@ -85,6 +90,11 @@ define [ '../base/main',
         ### # # # # # # # # # # # #
         # For app mode
         ###
+
+        setupApp : () ->
+            @view.on 'OPEN_ACL', ( uid ) ->
+                PropertyModule.loadSubPanel( "ACL", uid )
+                null
 
         initApp : ( uid ) ->
             @model = model

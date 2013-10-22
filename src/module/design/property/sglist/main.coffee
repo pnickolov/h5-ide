@@ -31,6 +31,12 @@ define [ './model',
         view.render()
         null
 
+    onUnloadSubPanel = ( id ) ->
+        if id is "SG"
+            view.render()
+
+
     #public
-    loadModule : loadModule
-    refresh    : refresh
+    loadModule       : loadModule
+    refresh          : refresh
+    onUnloadSubPanel : onUnloadSubPanel

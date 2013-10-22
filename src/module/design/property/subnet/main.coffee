@@ -36,6 +36,10 @@ define [ '../base/main',
             @view.on "SET_NEW_ACL", ( acl_uid ) ->
                 @model.setACL acl_uid
                 null
+
+            @view.on 'OPEN_ACL', ( acl_uid ) ->
+                PropertyModule.loadSubPanel "ACL", acl_uid
+                null
             null
 
         initStack : () ->
@@ -45,7 +49,7 @@ define [ '../base/main',
 
         setupApp : () ->
             @view.on 'OPEN_ACL', ( acl_uid ) ->
-                ide_event.trigger ide_event.OPEN_ACL, acl_uid
+                PropertyModule.loadSubPanel "ACL", acl_uid
                 null
 
         initApp : () ->

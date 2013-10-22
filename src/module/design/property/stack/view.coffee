@@ -146,7 +146,7 @@ define [ '../base/view',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            ide_event.trigger ide_event.OPEN_ACL, aclUID
+            @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
             source = $(event.currentTarget)
@@ -157,7 +157,7 @@ define [ '../base/view',
 
             aclUID = source.attr('acl-uid')
 
-            ide_event.trigger ide_event.OPEN_ACL, aclUID
+            @trigger "OPEN_ACL", aclUID
 
         updateSNSList : ( snslist_data, hasASG, textOnly ) ->
 

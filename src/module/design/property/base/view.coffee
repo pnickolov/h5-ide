@@ -64,7 +64,8 @@ define [ 'backbone',
             if not @_noRender
                 # Remove the old panel, so that the event is removed
                 $new_panel = $("<div class='scroll-content property-content property-details'></div>").insertAfter( $panel )
-                $panel.remove()
+                # Remove children and detach it from DOM
+                $panel.empty().remove()
 
                 @setElement $new_panel
                 @render()
@@ -79,14 +80,15 @@ define [ 'backbone',
             # I'm against using ide_event, because it seems like something is decoupled, but it
             # will create dependency hell, for example, you have no idea who will use your ide_event.
             # Instead, we use our own event
-            PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL, subPanelID
+            PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL
 
             # Set the element to Second Panel Wrapper
             # So that subclass can use it to insert there content
             # It's a bit weird, but I don't have better idea at this moment.
             @setElement $("#property-second-panel .property-content")
 
-            title = @render()
+            if not @_noRender
+                @render()
 
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.

@@ -83,7 +83,7 @@ define [ '../base/view',
 
             this.trigger 'SET_NEW_ACL', aclUID
 
-            ide_event.trigger ide_event.OPEN_ACL, aclUID
+            @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
             source = $(event.target)
@@ -92,7 +92,7 @@ define [ '../base/view',
             else
                 target = source.parents('.secondary-panel').first()
 
-            ide_event.trigger ide_event.OPEN_ACL, source.attr('acl-uid')
+            @trigger "OPEN_ACL", source.attr('acl-uid')
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget

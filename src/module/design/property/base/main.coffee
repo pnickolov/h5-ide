@@ -123,7 +123,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     ++ Class Method ++
 
     # load(uid) :
-        description : calling this method will should the property.
+        description : calling this method will should the property. It does nothing if the property module is main module, not sub module.
 
     # activeModule :
         description : Returns the currently showing property.
@@ -191,10 +191,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         # 3. Return the Property Class
         newPropertyClass
 
-    PropertyModule.prototype.activeModule = () ->
+    PropertyModule.activeModule = PropertyModule.prototype.activeModule = () ->
         activeModule
 
-    PropertyModule.prototype.activeSubModule = () ->
+    PropertyModule.activeSubModule = PropertyModule.prototype.activeSubModule = () ->
         activeSubModule
 
 

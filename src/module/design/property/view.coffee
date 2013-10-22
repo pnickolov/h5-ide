@@ -11,7 +11,7 @@ define [ 'event',
 
         el         : '#property-panel'
 
-        back_dom   : 'none'
+        propertyHeadStateMap : {}
 
         initialize : ->
 
@@ -41,9 +41,9 @@ define [ 'event',
             #listen
             $( document.body )
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )
-                .on( 'click', '.option-group-head',   this.toggleOption )
+                .on( 'click', '.option-group-head',   _.bind( this.toggleOption, this ) )
                 .on( 'click', '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
-                .on( 'DOMNodeInserted', '.property-wrap', this, _.debounce( this.domChange, 0, false ))
+                .on( 'DOMNodeInserted', '.property-wrap', this, _.debounce( _.bind( this.domChange, this), 0, false ))
 
             null
 
@@ -53,6 +53,12 @@ define [ 'event',
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             null
 
+        getCurrentCompUid : () ->
+            event = {}
+            @trigger "GET_CURRENT_UID", event
+            event.uid
+
+
         togglePropertyPanel : ( event ) ->
             console.log 'togglePropertyPanel'
             $( '#property-panel' ).toggleClass( 'hiden' ).toggleClass( 'transition', true )
@@ -61,18 +67,12 @@ define [ 'event',
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
             false
 
-        updateHtml : ( back_dom ) ->
-            console.log 'update property html'
-            $( '#property-panel' ).html back_dom
-            null
-
         toggleOption : ( event ) ->
-            $target = $(event.target)
+            $toggle = $(event.currentTarget)
 
-            if $target.is("button") or $target.is("a")
+            if $toggle.is("button") or $toggle.is("a")
                 return
 
-            $toggle = $(this)
             hide    = $toggle.hasClass("expand")
             $target = $toggle.next()
 
@@ -84,15 +84,15 @@ define [ 'event',
             $toggle.toggleClass("expand")
 
             stackId = MC.canvas_data.id
-            if !MC.data.propertyHeadStateMap[stackId]
-                MC.data.propertyHeadStateMap[stackId] = {}
+            if !@propertyHeadStateMap[stackId]
+                @propertyHeadStateMap[stackId] = {}
 
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
                 # record head state
                 headElemAry = $('#property-panel').find('.option-group-head')
                 headExpandStateAry = []
-                headCompUID = $('#property-panel').attr('component-uid')
+                headCompUID = @getCurrentCompUid()
                 if !headCompUID then headCompUID = stackId
 
                 _.each headElemAry, (headElem) ->
@@ -102,7 +102,7 @@ define [ 'event',
                     null
 
                 if headCompUID
-                    MC.data.propertyHeadStateMap[stackId][headCompUID] = headExpandStateAry
+                    @propertyHeadStateMap[stackId][headCompUID] = headExpandStateAry
 
                 console.log(headExpandStateAry)
                 # added by song ######################################
@@ -154,32 +154,27 @@ define [ 'event',
             }
             null
 
+        load : () ->
+            # 1. Force to lost focus, so that value can be saved. Better than $("input:focus").
+            $( document.activeElement ).filter( 'input, textarea' ).blur()
+
+            # 2. Hide second panel if there's any
+            @immHideSecondPanel()
+            null
+
         domChange : ( event ) ->
             console.log 'property:listen DOMNodeInserted'
-            #console.log event.target
-            #console.log event.data.back_dom
-
-            #
-            back_dom = event.data.back_dom
-            #
-            # return if back_dom is 'none'
-            ###
-            temp = $( event.data.back_dom ).find( '#property-second-panel' ).find( '.property-content' ).html()
-            if temp isnt ''
-                event.data.back_dom = 'none'
-                $( '.property-content' ).html temp
-            ###
 
             stackId = MC.canvas_data.id
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
                 # restore head state
-                headCompUID = $('#property-panel').attr('component-uid')
+                headCompUID = @getCurrentCompUid()
                 if !headCompUID then headCompUID = stackId
 
                 headExpandStateAry = null
-                if MC.data.propertyHeadStateMap[stackId]
-                    headExpandStateAry = MC.data.propertyHeadStateMap[stackId][headCompUID]
+                if @propertyHeadStateMap[stackId]
+                    headExpandStateAry = @propertyHeadStateMap[stackId][headCompUID]
 
                 if headExpandStateAry
                     headElemAry = $('#property-panel').find('.option-group-head')
@@ -192,16 +187,12 @@ define [ 'event',
                         null
 
                 # clear invalid state in map
-                if MC.data.propertyHeadStateMap[stackId]
-                    _.each MC.data.propertyHeadStateMap[stackId], (stateAry, compUID) ->
+                if @propertyHeadStateMap[stackId]
+                    _.each @propertyHeadStateMap[stackId], (stateAry, compUID) ->
                         if !MC.canvas_data.component[compUID] and compUID isnt stackId and compUID.indexOf('i-') isnt 0
-                            delete MC.data.propertyHeadStateMap[stackId][compUID]
+                            delete @propertyHeadStateMap[stackId][compUID]
                         null
                 # added by song ######################################
-
-
-            event.data.back_dom = 'none'
-            # $( '#property-panel' ).html back_dom
 
             null
     }

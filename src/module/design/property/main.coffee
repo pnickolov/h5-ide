@@ -45,10 +45,10 @@ define [ 'event',
 			PropertyBaseModule.onUnloadSubPanel()
 			null
 
-
-		if !MC.data.propertyHeadStateMap
-			MC.data.propertyHeadStateMap = {}
-
+		view.on "GET_CURRENT_UID", ( event )->
+			activeModule = PropertyBaseModule.activeModule()
+			event.uid = if activeModule then activeModule.uid else ""
+			null
 
 
 		#listen OPEN_PROPERTY
@@ -60,18 +60,9 @@ define [ 'event',
 				notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
 				return
 
-			### LEGACY ###
-			$('#property-panel').attr('component-uid', uid)
-			### LEGACY ###
+			view.load()
 
-			# 1. Force to lost focus, so that value can be saved. Better than $("input:focus").
-			$( document.activeElement ).filter( 'input, textarea' ).blur()
-
-			# 2. Hide second panel if there's any
-			view.immHideSecondPanel()
-
-			# 3. Load property
-
+			# Load property
 			# Format `type` so that PropertyBaseModule knows about it.
 			# Here, type can be : ( according to the previous version of property/main )
 			# - "component_asg_volume"   => Volume Property

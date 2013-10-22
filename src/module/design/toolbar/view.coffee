@@ -122,7 +122,8 @@ define [ 'MC', 'event',
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 #
-                $( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
+                #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'stack'
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->

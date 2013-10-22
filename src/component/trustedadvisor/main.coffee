@@ -7,7 +7,7 @@ define [ 'jquery', 'event',
 ], ( $, ide_event, template ) ->
 
     #private
-    loadModule = ( obj ) ->
+    loadModule = ( type ) ->
 
         #
         require [ './component/trustedadvisor/view', './component/trustedadvisor/model' ], ( View, Model ) ->
@@ -23,7 +23,7 @@ define [ 'jquery', 'event',
                 unLoadModule view, model
 
             #render
-            view.render template
+            view.render type, template
 
     unLoadModule = ( view, model ) ->
         console.log 'trusted advisor run unLoadModule'

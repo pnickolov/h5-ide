@@ -1,5 +1,19 @@
-<div id="stack-run-modal" style="width:500px;height:500px;">
-	<button class="btn modal-close">Close</button>
-	stack run loading...
-	<a href="javascript:void(0);" class="stack-run-click">ssssssssssss</a>
+<div class="validation-content">
+	<ul class="tab">
+		<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error (1)</li>
+		<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning (2)</li>
+		<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice (2)</li>
+	</ul>
+	<div class="content_wrap">
+		<div id="item-error" class="content active">
+			<div class="title">
+				subnet-1 is attached with a load balancer. It must be smaller than /27.
+			</div>
+			<div class="description">
+				some blabla
+			</div>
+		</div>
+		<div id="item-warning" class="content">&nbsp;</div>
+		<div id="item-notice" class="content">&nbsp;</div>
+	</div>
 </div>

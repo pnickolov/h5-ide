@@ -12,12 +12,15 @@ define [ 'event',
         events   :
             'closed'                 : 'closedPopup'
 
-        render     : ( template ) ->
+        render     : ( type, template ) ->
             console.log 'pop-up:trusted advisor run render'
             #
-            modal template, true
+            #modal template, true
             #
-            this.setElement $( '#stack-run-modal' ).closest '#modal-wrap'
+            #this.setElement $( '#stack-run-modal' ).closest '#modal-wrap'
+            #
+            if type is 'stack'
+                $( '#modal-run-stack' ).find( 'summary' ).after template
 
         closedPopup : ->
             console.log 'closedPopup'

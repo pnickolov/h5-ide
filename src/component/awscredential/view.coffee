@@ -32,9 +32,9 @@ define [ 'event',
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
-            'blur #aws-credential-account-id'       : 'verificationKey'
-            'blur #aws-credential-access-key'       : 'verificationKey'
-            'blur #aws-credential-secret-key'       : 'verificationKey'
+            'keyup #aws-credential-account-id'       : 'verificationKey'
+            'keyup #aws-credential-access-key'       : 'verificationKey'
+            'keyup #aws-credential-secret-key'       : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'

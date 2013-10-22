@@ -32,10 +32,9 @@ define [ 'event', 'component/trustedadvisor/validation/main',
             console.log 'func not found'
 
     validAll = ( obj ) ->
-        if obj
-            true
-        else
-            #ide_event.trigger ide_event.APP_VALID_FAILED xxx
+        #validComp 'instance.checkValue', uid
+        #validComp 'instance.bbb', uid
+        #validComp 'instance.ccc', uid
 
     #public
     validComp : validComp

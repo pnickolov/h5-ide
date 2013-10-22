@@ -16,6 +16,8 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             this.$el.html template
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
+            #
+            $( '#main-statusbar' ).html MC.template.statusbar()
 
         listen   : ( model ) ->
             #set this.model

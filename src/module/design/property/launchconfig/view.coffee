@@ -74,14 +74,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
 
         openAmiPanel : ( event ) ->
-            target = $('#property-ami')
-
-            console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
-            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                title : $( event.target ).text()
-                dom   : MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
-                id    : 'Ami'
-            }
+            @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
         deleteKP : ( event ) ->

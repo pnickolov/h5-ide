@@ -2,45 +2,33 @@
 #  View(UI logic) for design/property/sgrule
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/app.html'
+], ( PropertyView, template, app_template ) ->
 
-    SGRuleView = Backbone.View.extend {
+    template     = Handlebars.compile template
+    app_template = Handlebars.compile app_template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-sgrule-tmpl' ).html()
-        app_template : Handlebars.compile $( '#property-sgrule-app-tmpl' ).html()
-
+    SgRuleView = PropertyView.extend {
         events   :
             "click #sg-edit-rule-button" : "onEditRule"
 
-        render     : (is_app_view) ->
+
+        render : () ->
             console.log 'property:sgrule render'
 
-            this.model.attributes.isAppView = this.isAppView
+            tpl = if @model.isApp then app_template else template
 
-            data = this.model.attributes
-            data.isAppView = this.isAppView
+            @$el.html tpl @model.attributes
 
-            if is_app_view
-                $( '.property-details' ).html this.app_template data
-            else
-                $( '.property-details' ).html this.template data
-
+            "Security Group Rule"
 
         onEditRule : ( event ) ->
-
             line_id = $("#property-sgrule").data('line')
-
             this.trigger "EDIT_RULE", line_id
-
-        setAppView : ( isAppView ) ->
-            this.isAppView = isAppView
             null
 
     }
 
-    view = new SGRuleView()
-
-    return view
+    new SgRuleView()

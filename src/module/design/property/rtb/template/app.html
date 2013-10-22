@@ -1,5 +1,9 @@
 <article class="property-app">
 
+  {{#if association}}
+  <div class="property-control-group">{{i18n "PROP_RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP_RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
+  {{else}}
+
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_RT_ID"}}</dt>
     <dd>{{routeTableId}}</dd>
@@ -40,4 +44,5 @@
       {{/each}}
     </table>
   </div>
+  {{/if}}
 </article>

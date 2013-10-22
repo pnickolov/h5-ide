@@ -36,6 +36,10 @@ define [ "../base/main",
             @model.once 'REFRESH_PANEL', ()->
                 me.view.render()
 
+            @view.on "OPEN_SNAPSHOT", (id)->
+                PropertyModule.loadSubPanel "STATIC", id
+                null
+
             null
 
         initStack : ()->

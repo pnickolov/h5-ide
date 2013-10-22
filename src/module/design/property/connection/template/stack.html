@@ -1,0 +1,11 @@
+<article>
+
+{{#if eniAsso}}
+	<div class="property-control-group">This is an attachment of {{eniAsso.instance}} to {{eniAsso.eni}}</div>
+{{else}}
+	{{#if subnetAsso}}
+  <div class="property-control-group">A Virtual Network Interface is placed in {{subnetAsso.subnet}} for {{subnetAsso.elb}} to allow traffic be routed to this availability zone.</div>
+  {{/if}}
+{{/if}}
+
+</article>

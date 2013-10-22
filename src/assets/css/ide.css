@@ -49,6 +49,7 @@ a {
 .mgl80 { margin-left  : 80px; }
 .mgr10 { margin-right : 10px; }
 .mgt10 { margin-top   : 10px; }
+.mgl5  { margin-left  : 5px;  }
 
 .lh30  { line-height : 30px; }
 
@@ -4834,10 +4835,6 @@ a.action-link:hover {
 #snapshot-info-group span {
 	font-size: 12px;
 	color: #aaa;
-}
-
-#snapshot-info-group span:last-child {
-	margin-left: 5px;
 }
 
 /* az property panel, can also be used for panels like az's */

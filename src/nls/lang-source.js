@@ -3289,8 +3289,8 @@ module.exports = {
 
         //#### Trust Advisor
 
-        "TA_INSTANCE_NEED_HAVE_A_SUITABLE_EIP": {
-            "en": "The instance %s need have a suitable EIP",
+        "TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE": {
+            "en": "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN",
             "zh": ""
         },
         // TA Developer write code below plz.

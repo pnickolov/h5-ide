@@ -1,11 +1,17 @@
 <div class="validation-content">
 	<ul class="tab">
-		<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error (1)</li>
-		<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning (2)</li>
-		<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice (2)</li>
+		<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error ({{ error_list.length }})</li>
+		<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning ({{ warning_list.length }})</li>
+		<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice ({{ notice_list.length }})</li>
 	</ul>
 	<div class="content_wrap">
 		<div id="item-error" class="content active">
+			{{#each error_list }}
+				<div class="title">
+					{{ this }}
+				</div>
+			{{/each}}
+			<!--
 			<div class="title">
 				subnet-1 is attached with a load balancer. It must be smaller than /27.
 			</div>
@@ -15,19 +21,21 @@
 			<div class="title">
 				subnet-3 is attached with a load balancer. It must be smaller than /27.
 			</div>
+			-->
 		</div>
 		<div id="item-warning" class="content">
-			<div class="title">
-				subnet-4 is attached with a load balancer. It must be smaller than /27.
-			</div>
-			<div class="title">
-				subnet-5 is attached with a load balancer. It must be smaller than /27.
-			</div>
+			{{#each warning_list }}
+				<div class="title">
+					{{ this }}
+				</div>
+			{{/each}}
 		</div>
 		<div id="item-notice" class="content">
-			<div class="title">
-				subnet-6 is attached with a load balancer. It must be smaller than /27.
-			</div>
+			{{#each notice_list }}
+				<div class="title">
+					{{ this }}
+				</div>
+			{{/each}}
 		</div>
 	</div>
 </div>

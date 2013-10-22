@@ -2,23 +2,15 @@
 #  View(UI logic) for design/property/eni(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template ) ->
 
-    EniAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    EniAppView = PropertyView.extend {
 
-        template  : Handlebars.compile $( '#property-eni-app-tmpl' ).html()
-
-        render     : () ->
-            console.log 'property:eni app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
-
-
+        render : () ->
+            $el.html template @model.attributes
+            @model.attributes.name
     }
 
-    view = new EniAppView()
-
-    return view
+    new EniAppView()

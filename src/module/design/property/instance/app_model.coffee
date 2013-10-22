@@ -2,24 +2,19 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'backbone', 'MC' ], ( keypair_model, instance_model, constant, lang ) ->
+define [ '../base/model',
+    'keypair_model',
+    'instance_model',
+    'constant',
+    'i18n!nls/lang.js'
+], ( PropertyModel, keypair_model, instance_model, constant, lang ) ->
 
-    AppInstanceModel = Backbone.Model.extend {
-
-        ###
-        defaults :
-            'instance' : # ( Extra Propeties )
-                isRunning   : false
-                isPending   : false
-                blockDevice : ""
-
-        ###
+    AppInstanceModel = PropertyModel.extend {
 
         defaults :
             'id' : null
 
-        init : ( instance_id )->
-
+        setup : () ->
             me = this
 
             me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
@@ -135,6 +130,8 @@ define ['keypair_model', 'instance_model', 'constant', 'i18n!nls/lang.js' ,'back
 
                 null
 
+
+        init : ( instance_id )->
 
             @set 'id', instance_id
 

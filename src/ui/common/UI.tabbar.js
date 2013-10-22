@@ -158,7 +158,7 @@ var Tabbar = {
 		}
 		else
 		{
-			Tabbar.current = tab_id.match(/([A-Za-z0-9])*/ig)[0];
+			Tabbar.current = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
 		}
 
 		return tab_id;

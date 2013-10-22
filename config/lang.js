@@ -3,7 +3,7 @@ module.exports.run = function( grunt, callback ) {
 
 	var fs          = require( 'fs' ),
 		path        = fs.realpathSync( '.' ),
-		source_file = path + '/src/nls/lang-source.js',
+		source_file = path + '/src/nls/lang-source.coffee',
 		zh_file     = path + '/src/nls/zh-cn/lang.js',
 		en_file     = path + '/src/nls/en-us/lang.js',
 		lang        = require( source_file ),
@@ -91,7 +91,6 @@ module.exports.merge = function( grunt, callback ) {
 
 	var creature = checkLang(en_us, zh_cn);
 	grunt.file.write('lang.js', JSON.stringify(creature));
-	grunt.loadNpmTasks('grunt-jsbeautifier');
 
 	callback();
 };

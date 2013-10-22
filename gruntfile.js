@@ -54,7 +54,8 @@ module.exports = function( grunt ) {
 		],
 
 		coffeefiles : [
-			'<%= src %>/**/*.coffee'
+			'<%= src %>/**/*.coffee',
+			'!<%= src %>/nls/lang-source.coffee'
 		],
 
 		htmlfiles   : [
@@ -62,7 +63,7 @@ module.exports = function( grunt ) {
 		],
 
 		langfiles  : [
-			'<%= src %>/nls/lang-source.js'
+			'<%= src %>/nls/lang-source.coffee'
 		],
 
 		bower      : require( './config/bower.js' ),

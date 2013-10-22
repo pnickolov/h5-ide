@@ -42,10 +42,7 @@ define [ 'event', 'component/trustedadvisor/validation/main',
         #validComp 'instance.bbb', uid
         #validComp 'instance.ccc', uid
 
-    list     = ->
-        validation_main.list()
-
     #public
     validComp : validComp
     validAll  : validAll
-    list      : list
+    list      : validation_main.list()

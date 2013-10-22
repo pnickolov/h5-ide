@@ -4,15 +4,14 @@
 
 define [ 'event',
          'text!./template.html', 'text!./modal_template.html',
-         'backbone', 'jquery', 'handlebars',
-         'UI.modal'
+         'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template, modal_template ) ->
 
     TrustedAdvisorView = Backbone.View.extend {
 
-        el       : '#status-bar-modal'
+        el         : '#status-bar-modal'
 
-        events   :
+        events     :
             'click .modal-close'   : 'closedPopup'
 
         render     : ( type ) ->
@@ -21,7 +20,7 @@ define [ 'event',
             if type is 'stack'
                 $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after template
                 @closedPopup() if $.trim( @$el.html() )
-            if type is 'statusbar'
+            else if type is 'statusbar'
                 @$el.html modal_template
                 @$el.find( '#modal-run-stack' ).html template
 

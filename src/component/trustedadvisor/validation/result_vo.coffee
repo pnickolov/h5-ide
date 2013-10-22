@@ -10,6 +10,8 @@ define [ 'MC' ], ( MC ) ->
 			info  : info,
 			uid   : uid
 		}
+		list_arr.push result
+		result
 
 	get = ->
 		result
@@ -20,7 +22,7 @@ define [ 'MC' ], ( MC ) ->
 	set  : set
 	get  : get
 	list : list
-	
+
 	ERROR : 'ERROR'
 	WARNING : 'WARNING'
 	NOTICE : 'NOTICE'

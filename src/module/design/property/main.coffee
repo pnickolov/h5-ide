@@ -7,6 +7,7 @@ define [ 'event',
 				'./module/design/property/view',
 				'./module/design/property/base/main',
 				'./module/design/property/base/view',
+				'lib/forge/app'
 				'i18n!nls/lang.js',
 
 				'./module/design/property/stack/main',
@@ -27,7 +28,7 @@ define [ 'event',
 				'./module/design/property/acl/main',
 				'./module/design/property/launchconfig/main',
 				'./module/design/property/asg/main'
-], ( ide_event, constant, MC, View, PropertyBaseModule, PropertyBaseView, lang ) ->
+], ( ide_event, constant, MC, View, PropertyBaseModule, PropertyBaseView, forge_app, lang ) ->
 
 	#private
 	loadModule = () ->
@@ -77,6 +78,24 @@ define [ 'event',
 			# If type is "component", type should be changed to `constant.AWS_RESOURCE_TYPE`
 			# If type is "line", type should be changed to `PORTATYPE>PORTBTYPE`
 
+			type = getComponentType( type )
+
+			# We cannot format the type for "component" / "line", then do not refresh the property panel
+			if type is null
+				return
+
+			# Tell `PropertyBaseModule` to load corresponding property panel.
+			tab_type = getTabType( tab_type )
+
+			try
+				PropertyBaseModule.load type, uid, tab_type
+			catch error
+				console.error "Cannot open property panel", error
+
+			null
+
+		### Helper Functions Start ###
+		getComponentType = ( type )->
 			if type is "component"
 				type = null # Reset type.
 
@@ -92,6 +111,7 @@ define [ 'event',
 						group = MC.canvas_data.layout.component.group[ uid ]
 						if group
 							type = group.type
+
 			else if type is "line"
 				type = null # Reset type
 				if MC.canvas_data.layout.connection[uid]
@@ -99,19 +119,23 @@ define [ 'event',
 					if line_option.length == 2
 						type = line_option[0].port + '>' + line_option[1].port
 
-			# We cannot format the type for "component" / "line", then do not refresh the property panel
-			if type is null
-				return
+			type
 
-			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = MC.canvas.getState()
+		getTabType = ( tab_type )->
+			MC.canvas.getState()
+			if tab_type is "app"
+				tab_type = PropertyBaseModule.TYPE.App
+			else if tab_type is "stack"
+				tab_type = PropertyBaseModule.TYPE.Stack
+			else
+				if forge_app.existing_app_resource( uid )
+					tab_type = PropertyBaseModule.TYPE.AppEdit
+				else
+					tab_type = PropertyBaseModule.TYPE.Stack
 
-			try
-				PropertyBaseModule.load type, uid, if tab_type is "app" then PropertyBaseModule.TYPE.App else PropertyBaseModule.TYPE.Stack
-			catch error
-				console.error "Cannot open property panel", error
+			tab_type
 
-			null
+		### Helper Functions End ###
 
 		### LEGACY ###
 		ide_event.onLongListen ide_event.PROPERTY_OPEN_SUBPANEL, ( data ) ->

@@ -148,8 +148,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         null
 
     PropertyModule.TYPE = PropertyModule.prototype.TYPE =
-        Stack : "Stack"
-        App   : "App"
+        Stack   : "Stack"
+        App     : "App"
+        AppEdit : "AppEdit"
 
 
     PropertyModule.prototype.loadSubPanel = ( subPanelID, componentUid, noRender ) ->

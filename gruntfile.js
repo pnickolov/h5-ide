@@ -61,7 +61,7 @@ module.exports = function( grunt ) {
 			'<%= src %>/**/*.html'
 		],
 
-		langsource  : [
+		langfiles  : [
 			'<%= src %>/nls/lang-source.js'
 		],
 

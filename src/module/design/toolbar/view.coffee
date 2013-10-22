@@ -4,17 +4,19 @@
 
 define [ 'MC', 'event',
          'i18n!nls/lang.js',
+         'text!./stack_template.html',
+         'text!./app_template.html',
          'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification'
-], ( MC, ide_event, lang, zeroclipboard ) ->
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard ) ->
+
+    stack_tmpl = Handlebars.compile stack_tmpl
+    app_tmpl   = Handlebars.compile app_tmpl
 
     ToolbarView = Backbone.View.extend {
 
         el         : document
-
-        stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
-        app_tmpl   : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events     :
             ### env:dev ###
@@ -51,9 +53,9 @@ define [ 'MC', 'event',
 
             #
             if type is 'app'
-                $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+                $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
-                $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
             #set line style
             lines =
@@ -102,9 +104,9 @@ define [ 'MC', 'event',
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
                 #
                 if type is 'stack'
-                    $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                    $( '#main-toolbar' ).html stack_tmpl this.model.attributes
                 else
-                    $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+                    $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
         clickRunIcon : ->
             me = this

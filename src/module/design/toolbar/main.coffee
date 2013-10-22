@@ -3,23 +3,13 @@
 ####################################
 
 define [ 'jquery',
-         'text!./module/design/toolbar/stack_template.html',
-         'text!./module/design/toolbar/app_template.html',
          'event',
          'i18n!nls/lang.js'
-], ( $, stack_template, app_template, ide_event, lang ) ->
+], ( $, ide_event, lang ) ->
 
     #private
     loadModule = () ->
 
-        #add handlebars script
-        stack_template = '<script type="text/x-handlebars-template" id="toolbar-stack-tmpl">' + stack_template + '</script>'
-        app_template   = '<script type="text/x-handlebars-template" id="toolbar-app-tmpl">'   + app_template   + '</script>'
-        #load remote html template
-        $( 'head' ).append stack_template
-        $( 'head' ).append app_template
-
-        #
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
             #view

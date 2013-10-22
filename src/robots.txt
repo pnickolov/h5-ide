@@ -1,0 +1,6 @@
+User-Agent: *
+Disallow: 
+Disallow: /ide.html
+Disallow: /login/
+Disallow: /register/
+Disallow: /reset/

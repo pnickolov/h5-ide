@@ -27,12 +27,13 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             @$el.html template @model.attributes
 
             # find empty inputbox and focus
+            me = this
             inputElemAry = $('.ip-main-input')
             _.each inputElemAry, (inputElem) ->
                 inputValue = $(inputElem).val()
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
-                    @forceShow()
+                    me.forceShow()
                     $(inputElem).focus()
 
             @model.attributes.title

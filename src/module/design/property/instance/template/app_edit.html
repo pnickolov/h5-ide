@@ -31,7 +31,17 @@
       <dd><a href="#" data-uid="{{imageId}}" id="property-app-ami">{{imageId}}</a><dd>
 
       <dt>{{i18n "PROP_INSTANCE_TYPE"}}</dt>
-      <dd>{{instanceType}}</dd>
+      <dd><div class="selectbox selectbox-mega" id="instance-type-select">
+        <div class="selection"></div>
+        <ul class="dropdown">
+          {{#each instance_type}}
+          <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
+            <div class="main truncate">{{main}}</div>
+            <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+          </li>
+          {{/each}}
+        </ul>
+      </div></dd>
 
       <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
       <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
@@ -114,19 +124,17 @@
         {{/if}}
       </dl>
     </div>
-    <table class="table table-small">
-      <tr>
-        <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
-        <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
-      </tr>
-      {{#each eni.privateIpAddressesSet.item}}
-      <tr>
-        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
-        <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
-      </tr>
-      {{/each}}
-    </table>
+    <section class="property-control-group">
+      <div class="network-list-wrap">
+        <div class="network-list-header clearfix">
+          {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
+          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+        </div>
+        <ul class="network-list" id="property-network-list" data-bind="true">
 
+        </ul>
+      </div>
+    </section>
   </div>
   {{/if}}
 

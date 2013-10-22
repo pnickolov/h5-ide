@@ -80,11 +80,6 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
             this.trigger "OPEN_AMI", $( event.target ).data("uid")
             false
 
-        refreshIPList : ( event ) ->
-            this.model.getEni()
-            $( '#property-network-list' ).html(this.ip_list_template(this.model.attributes))
-            this.changeIPAddBtnState()
-
         changeIPAddBtnState : () ->
 
             disabledBtn = false

@@ -1,10 +1,10 @@
-define [ 'constant', 'MC', '../result_vo' ], ( constant, MC, resultVO ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
 	checkValue = ( uid ) ->
 
-		instanceObj = MC.canvas_data.component[uid]
-		instanceName = instanceObj.name
+        instanceObj = MC.canvas_data.component[uid]
+        instanceName = instanceObj.name
+        msg = sprintf lang.ide.TA_INSTANCE_NEED_HAVE_A_SUITABLE_EIP, instanceName
+        resultVO.set resultVO.WARNING, msg, uid
 
-		resultVO.set resultVO.WARNING, "The instance #{instanceName} need have a suitable EIP", uid
-
-	checkValue : checkValue
+    checkValue : checkValue

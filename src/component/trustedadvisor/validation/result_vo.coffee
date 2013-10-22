@@ -5,11 +5,11 @@ define [ 'MC' ], ( MC ) ->
 	list_arr = []
 
 	set = ( level, info, uid ) ->
-		result = {
+		result =
 			level : level,
 			info  : info,
 			uid   : uid
-		}
+
 		list_arr.push result
 		result
 

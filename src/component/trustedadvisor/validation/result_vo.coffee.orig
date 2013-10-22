@@ -4,33 +4,29 @@ define [ 'MC' ], ( MC ) ->
 	result   = {}
 	list_arr = []
 
-	set = (level, info, uid) ->
-		result = {
+	set = ( level, info, uid ) ->
+		result =
 			level : level,
 			info  : info,
 			uid   : uid
-		}
 <<<<<<< HEAD
+		}
 		list_arr.push result
 =======
-		result
+
 >>>>>>> origin/feature/trusted-advisor
+		result
 
 	get = ->
 		result
 
-<<<<<<< HEAD
 	list = ->
 		list_arr
 
 	set  : set
 	get  : get
 	list : list
-=======
-	set : set
-	get : get
 
 	ERROR : 'ERROR'
 	WARNING : 'WARNING'
 	NOTICE : 'NOTICE'
->>>>>>> origin/feature/trusted-advisor

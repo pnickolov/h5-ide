@@ -3285,7 +3285,27 @@ module.exports = {
         "POP_BTN_CLOSE": {
             "en": "Close",
             "zh": "关闭"
+        },
+
+        //#### Trust Advisor
+
+        "TA_INSTANCE_NEED_HAVE_A_SUITABLE_EIP": {
+            "en": "The instance %s need have a suitable EIP",
+            "zh": ""
+        },
+        // TA Developer write code below plz.
+
+
+
+
+
+        // TA Developer write code above plz.
+
+        "TA_TAKE_POSITION": {
+            "en": "",
+            "zh": ""
         }
+
     },
     "service": {
         "ERROR_CODE_0_MESSAGE": {

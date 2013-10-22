@@ -13,11 +13,11 @@ define [ 'MC' ], ( MC) ->
 		#check deviceName
 		if ami_info and ami_info.virtualizationType != 'hvm'
 			#linux
-			device_list = ['f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+			device_list = 'f g h i j k l m n o p q r s t u v w x y z'.split(' ')
 
 		else
 			#windows
-			device_list = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+			device_list = 'a b c d e f g h i j k l m n o p'.split(' ')
 
 
 		$.each ami_info.blockDeviceMapping, (key, value) ->

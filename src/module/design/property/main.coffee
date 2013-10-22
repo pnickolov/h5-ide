@@ -85,7 +85,7 @@ define [ 'event',
 				return
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( tab_type )
+			tab_type = getTabType( tab_type, uid )
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
@@ -95,7 +95,7 @@ define [ 'event',
 			null
 
 		### Helper Functions Start ###
-		getComponentType = ( type )->
+		getComponentType = ( type, uid )->
 			if type is "component"
 				type = null # Reset type.
 

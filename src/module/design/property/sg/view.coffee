@@ -47,6 +47,8 @@ define [ '../base/view',
 
             @forceShow()
 
+            # The secondary property will slide out.
+            # We need to focus the input after it finishes transition
             setTimeout () ->
                 $('#securitygroup-name').focus()
             , 200

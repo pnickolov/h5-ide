@@ -178,7 +178,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       ami_id = MC.canvas_data.component[ uid ].resource.ImageId
       ami    = MC.data.dict_ami[ami_id]
 
-      data[ 'instance_ami' ] = {
+      data.instance_ami = {
         name : ami.name
         icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
       }
@@ -187,7 +187,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     getKeyPair : ( uid, data )->
 
       keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
-      data[ 'keypair' ] = MC.aws.kp.getList( keypair_id )
+      data.keypair = MC.aws.kp.getList( keypair_id )
 
       null
 
@@ -236,8 +236,9 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         name     : value
         selected : current_instance_type is value
 
-      data[ 'instance_type' ] = view_instance_type
-      data[ 'can_set_ebs' ]   = EbsMap.hasOwnProperty current_instance_type
+      data.instance_type = view_instance_type
+      data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
+      null
 
     _getInstanceType : ( ami ) ->
       instance_type = MC.data.instance_type[MC.canvas_data.region]

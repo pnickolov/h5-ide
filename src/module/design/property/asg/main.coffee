@@ -62,4 +62,5 @@ define [ '../base/main',
             @view = view
             null
     }
+    null
 

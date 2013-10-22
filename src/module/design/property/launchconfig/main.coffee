@@ -38,6 +38,9 @@ define [ "../base/main",
 
             @view.on "REQUEST_KEYPAIR", (name)->
                 me.model.downloadKP(name)
+
+            @view.on "OPEN_AMI", (id)->
+                PropertyModule.loadSubPanel "STATIC", id
             null
 
         initApp : () ->

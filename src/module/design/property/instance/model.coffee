@@ -20,7 +20,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			@getName()
 			@getInstanceType()
-			@getAmiDisp()
 			@getAmi()
 			@getComponent()
 			@getKeyPair()
@@ -414,36 +413,27 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			this.set 'eni_display', eni_detail
 
 		getComponent : () ->
-
 			this.set 'component', MC.canvas_data.component[ this.get( 'uid') ]
+			null
 
 		getAmi : () ->
 
 			uid = this.get 'uid'
 
 			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+			ami    = MC.data.dict_ami[ami_id]
 
-			this.set 'instance_ami_property', JSON.stringify(MC.data.dict_ami[ami_id])
-
-		getAmiDisp : () ->
-
-			uid = this.get 'uid'
-
-			disp = {}
-
-			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
-
-			if MC.data.dict_ami[ami_id]
-
-				disp.name = MC.data.dict_ami[ami_id].name
-
-				disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
-
-			else
-
+			if not ami
 				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
+				return
 
-			this.set 'instance_ami', disp
+			this.set 'instance_ami', {
+				name : ami.name
+				icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+			}
+
+			this.set 'ami_uid', ami_id
+			null
 
 		getKeyPair : ()->
 

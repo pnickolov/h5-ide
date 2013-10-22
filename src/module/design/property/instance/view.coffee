@@ -35,7 +35,7 @@ define [ '../base/view',
             'click .toggle-eip'   : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
 
-        render : ( attributes ) ->
+        render : () ->
 
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId

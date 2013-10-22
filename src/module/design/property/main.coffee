@@ -78,14 +78,14 @@ define [ 'event',
 			# If type is "component", type should be changed to `constant.AWS_RESOURCE_TYPE`
 			# If type is "line", type should be changed to `PORTATYPE>PORTBTYPE`
 
-			type = getComponentType( type )
+			type = getComponentType( type, uid )
 
 			# We cannot format the type for "component" / "line", then do not refresh the property panel
 			if type is null
 				return
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( tab_type, uid )
+			tab_type = getTabType( uid )
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
@@ -121,8 +121,8 @@ define [ 'event',
 
 			type
 
-		getTabType = ( tab_type )->
-			MC.canvas.getState()
+		getTabType = ( uid )->
+			tab_type = MC.canvas.getState()
 			if tab_type is "app"
 				tab_type = PropertyBaseModule.TYPE.App
 			else if tab_type is "stack"

@@ -4,8 +4,9 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'text!./template/app.html'
-], ( PropertyView, template, app_template ) ->
+         'text!./template/app.html',
+         'constant'
+], ( PropertyView, template, app_template, constant ) ->
 
     template     = Handlebars.compile template
     app_template = Handlebars.compile app_template

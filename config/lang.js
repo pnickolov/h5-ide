@@ -26,7 +26,6 @@ module.exports.run = function( grunt, callback ) {
 	};
 
 	var check = function(lang) {
-
 		var recursion = function (l, key) {
 			if (hit(l)) {
 				checkEnHasCN(l.en, key);
@@ -43,9 +42,10 @@ module.exports.run = function( grunt, callback ) {
 			grunt.log.error("Lang File Error: " + e);
 			return false;
 		}
+		return true;
 
 	};
-
+	// more fast than checkEnHasCNReg below
 	var checkEnHasCN = function(lang, key) {
 		 for(var i = 0; i < lang.length; i++) {
 			 if(lang.charCodeAt(i) >= 0x4E00 && lang.charCodeAt(i) <= 0x9FA5) {
@@ -53,6 +53,12 @@ module.exports.run = function( grunt, callback ) {
 	         }
 		 }
 	};
+
+	var checkEnHasCNReg = function(lang, key) {
+		 var re = /.*[\u4e00-\u9fa5]+.*$/;
+		 if(re.test(lang))
+		 	throw '"' + key + ': ' + lang + '" has Chinese charactor';
+	}
 
 
 	var divorce = function(lang, en_us, zh_cn) {
@@ -83,9 +89,11 @@ module.exports.run = function( grunt, callback ) {
 		return 'define(' + s + ');';
 	};
 
+	// do check
 	if (!check(lang))
 		return false;
 
+	// do divorce
 	divorce(lang, en_us, zh_cn);
 
 	grunt.file.write(en_file, format(en_us));

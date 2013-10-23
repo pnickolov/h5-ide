@@ -383,6 +383,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         if not ( feeMap and feeMap.ami and feeMap.price )
             return { 'cost_list' : cost_list, 'total_fee' : total_fee }
 
+        currency = feeMap.price.currency
+
         _.map data.component, (item) ->
             uid = item.uid
             name = item.name
@@ -395,49 +397,77 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 number = if item.number then item.number else 1
 
+                # osFamily
+                osFamily = data.layout.component.node[item.uid].osFamily
+                osType = data.layout.component.node[item.uid].osType
+                # if not osType
+                #     return
+                # if not osFamily
+                #     if osType in constant.LINUX
+                #         osFamily = 'linux'
+                #     else if osType in constant.WINDOWS
+                #         osFamily = 'mswin'
+                #     else
+                #         continue
 
-
-                if 'ami' of feeMap
-
-                    fee = unit = null
-
-                    if imageId of feeMap.ami    #quickstart ami
-
-                        ami = v for k,v of feeMap.ami when v.imageId == imageId
-
-                        if feeMap.ami[imageId].osType is 'win'
-                            os = 'windows'
-                        else
-                            os = 'linux-other'
-
-                        size_list = size.split('.')
-                        fee  = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                        unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
-
-                    else if imageId of MC.data.dict_ami    # community ami
-
-                        com = MC.data.dict_ami[imageId]
-
-                        if com.osType is 'win'
-                            os = 'windows'
-                        else
-                            os = 'linux-other'
-
-                        size_list = size.split('.')
-                        fee  = feeMap.price['instance'][os][size_list[0]][size_list[1]].fee
-                        unit = feeMap.price['instance'][os][size_list[0]][size_list[1]].unit
+                if size and imageId and osFamily and 'instance' of feeMap.price
+                    size_list = size.split('.')
+                    unit = feeMap.price['instance']['unit']
+                    fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily]['USD']
 
                     if fee and unit
-                        cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
+                        cost_list.push { 'resource' : name, 'size' : number, 'type' : size, 'fee' : fee , 'unit' : (if unit is 'hour' then '/hr' else '/mo') }
 
                         total_fee += fee * 24 * 30 * number
 
-                        ## detail monitor
+                        # detail monitor
                         if item.resource.Monitoring is 'enabled'
 
                             fee = 3.50
-                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
+                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee, 'unit' : '/mo', 'size' : 1 }
                             total_fee += fee
+
+                # if 'ami' of feeMap
+
+                #     fee = unit = null
+
+                #     if imageId of feeMap.ami    #quickstart ami
+
+                #         ami = v for k,v of feeMap.ami when v.imageId == imageId
+
+                #         if feeMap.ami[imageId].osType is 'win'
+                #             os = 'windows'
+                #         else
+                #             os = 'linux-other'
+
+                #         size_list = size.split('.')
+                #         fee  = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                #         unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+
+                #     else if imageId of MC.data.dict_ami    # community ami
+
+                #         com = MC.data.dict_ami[imageId]
+
+                #         if com.osType is 'win'
+                #             os = 'windows'
+                #         else
+                #             os = 'linux-other'
+
+                #         size_list = size.split('.')
+                #         fee  = feeMap.price['instance'][os][size_list[0]][size_list[1]].fee
+                #         unit = feeMap.price['instance'][os][size_list[0]][size_list[1]].unit
+
+                #     if fee and unit
+                #         cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
+
+                #         total_fee += fee * 24 * 30 * number
+
+                #         ## detail monitor
+                #         if item.resource.Monitoring is 'enabled'
+
+                #             fee = 3.50
+                #             cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
+                #             total_fee += fee
 
                 ##attached volume
                 vols = item.resource.BlockDeviceMapping

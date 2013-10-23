@@ -824,6 +824,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 				component_layout.osType =  option.osType;
+				//add osFamily by michael in 20131023
+				component_layout.osFamily = option.osFamily;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;

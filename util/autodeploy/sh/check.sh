@@ -150,7 +150,7 @@ then
         if [ -f ${TGT_DIR}.tmp/commit ]
         then
             COMMIT=`cat ${TGT_DIR}.tmp/commit | awk '{print $1}' | head -n 1 `
-            AUTHOR=`cat ${TGT_DIR}.tmp/commit | awk '{print $0}' | tail -n 1 `
+            AUTHOR=`cat ${TGT_DIR}.tmp/commit | awk '{print $0}' | head -n 2 | tail -n 1 `
         fi
 
         if [ "${COMMIT}" != "" ]

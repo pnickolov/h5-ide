@@ -30,12 +30,18 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			this.deleteResMap    = {}
 			this.beforeDeleteMap = {}
 
+			# Delete handlers for App Edit
+			this.deleteResAppEditMap = {}
+			this.beforeDeleteAppEditMap = {}
+
 			for key, value of resource_map
 				this.changeParentMap[ resource_type[key] ] = this['changeP_'   + value]
 				this.validateDropMap[ resource_type[key] ] = this['beforeD_'   + value]
 				this.deleteResMap[    resource_type[key] ] = this['deleteR_'   + value]
 				this.beforeDeleteMap[ resource_type[key] ] = this['beforeDel_' + value]
 
+				this.deleteResAppEditMap[ resource_type[key] ]    = this['deleteR_AE_'   + value]
+				this.beforeDeleteAppEditMap[ resource_type[key] ] = this['beforeDel_AE_' + value]
 			null
 
 		#show notification when place is blank
@@ -100,6 +106,12 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 		# An object is about to be dropped. Test if the object can be dropped
 		beforeDrop : ( event, src_node, tgt_parent ) ->
+
+			# We don't support change parent in App Edit Mode yet.
+			if MC.canvas.getState() is "app-edit"
+				event.preventDefault()
+				return
+
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]

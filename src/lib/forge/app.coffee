@@ -29,15 +29,25 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		result = null
 
-		switch MC.canvas_data.component[resource_uid].type
+		if MC.canvas_data.component[resource_uid]
 
-			when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+			switch MC.canvas_data.component[resource_uid].type
 
-				result = if MC.canvas_data.component[resource_uid].resource.InstanceId then true else false
+				when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-			when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+					result = if MC.canvas_data.component[resource_uid].resource.InstanceId then true else false
 
-				result = if MC.canvas_data.component[resource_uid].resource.VolumeId then true else false
+				when constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+
+					result = if MC.canvas_data.component[resource_uid].resource.VolumeId then true else false
+
+				when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+					result = if MC.canvas_data.component[resource_uid].resource.AutoScalingGroupARN then true else false
+
+				when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+					result = if MC.canvas_data.component[resource_uid].resource.LaunchConfigurationARN then true else false
 
 		return result
 

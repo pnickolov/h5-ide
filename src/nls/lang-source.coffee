@@ -655,6 +655,18 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
+    TOOL_TIP_UPDATE_APP:
+      en: "Update App"
+      zh: "更新应用"
+
+    TOOL_TIP_SAVE_UPDATE_APP:
+      en: "Save App updates"
+      zh: "保存应用更新"
+
+    TOOL_TIP_CANCEL_UPDATE_APP:
+      en: "Cancel App updates"
+      zh: "取消应用更新"
+
     TOOL_TIP_TERMINATE_APP:
       en: "Permanently terminate this app's resources"
       zh: "销毁应用"

@@ -28,7 +28,7 @@ module.exports.run = function( grunt, callback ) {
 	var check = function(lang) {
 		var recursion = function (l, key) {
 			if (hit(l)) {
-				checkEnHasCN(l.en, key);
+				checkEnInvalid(l.en, key);
 			} else {
 				for (var k in l) {
 					recursion(l[k], k);
@@ -50,6 +50,14 @@ module.exports.run = function( grunt, callback ) {
 		 for(var i = 0; i < lang.length; i++) {
 			 if(lang.charCodeAt(i) >= 0x4E00 && lang.charCodeAt(i) <= 0x9FA5) {
 			 	throw '"' + key + ': ' + lang + '" has Chinese charactor';
+	         }
+		 }
+	};
+
+	var checkEnInvalid = function(lang, key) {
+		 for(var i = 0; i < lang.length; i++) {
+			 if(lang.charCodeAt(i) <= 0x00 || lang.charCodeAt(i) >= 0xff) {
+			 	throw '"' + key + ': ' + lang + '" has Invalid charactor [ ' + lang[i] + ' ]';
 	         }
 		 }
 	};

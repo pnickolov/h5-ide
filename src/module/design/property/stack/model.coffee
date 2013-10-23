@@ -10,7 +10,6 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             'property_detail'   : null
             'network_acl'       : null
             'cost_list'         : null
-            'type'              : 'stack'
             'total_fee'         : null
 
         init : ( componentUid ) ->
@@ -22,6 +21,9 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
                 @getSubscription()
 
             @getProperty()
+
+            # Use by sglist_main to determine this is Stack Property Model
+            @set 'is_stack', true
             null
 
         getProperty : ->
@@ -58,12 +60,7 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
 
         getSGList : ->
-
-            allComp = MC.canvas_data.component
-
-            sgUIDAry = []
-
-            return sgUIDAry
+            []
 
         addSubscription : ( data ) ->
 

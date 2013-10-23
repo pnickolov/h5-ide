@@ -167,6 +167,16 @@ var Tabbar = {
 		return tab_id;
 	},
 
+	updateState : function( tab_id, tab_type )
+	{
+		var $tab = $( "#tab-bar-" + tab_id );
+		if ( $tab.hasClass("active") ) {
+			Tabbar.current = tab_type;
+		}
+		$tab.data("tab-type", tab_type);
+		return true;
+	},
+
 	closeTabRestriction : function(event)
 	{
 		var target = $(this).parent(),

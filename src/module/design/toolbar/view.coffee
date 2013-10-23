@@ -8,7 +8,8 @@ define [ 'MC', 'event',
          'text!./app_template.html',
          'UI.zeroclipboard',
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.notification'
+         'UI.selectbox', 'UI.notification',
+         "UI.tabbar"
 ], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard ) ->
 
     stack_tmpl = Handlebars.compile stack_tmpl
@@ -456,6 +457,7 @@ define [ 'MC', 'event',
             $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").show()
 
             # 3. Update MC.canvas.getState() to return 'app-edit'
+            Tabbar.updateState( MC.data.current_tab_id, "app-edit" )
 
 
             null
@@ -475,6 +477,7 @@ define [ 'MC', 'event',
             $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").hide()
 
             # 3. Update MC.canvas.getState() to return 'app'
+            Tabbar.updateState( MC.data.current_tab_id, "app" )
 
             null
 

@@ -2,7 +2,6 @@
 define [ 'MC' ], ( MC ) ->
 
 	result   = {}
-	list_arr = []
 
 	set = ( level, info, uid ) ->
 		#
@@ -11,19 +10,15 @@ define [ 'MC' ], ( MC ) ->
 			info  : info,
 			uid   : uid
 		#
-		list_arr.push result
+		MC.ta.list.push result
 		#
 		result
 
 	get = ->
 		result
 
-	list = ->
-		list_arr
-
 	set  : set
 	get  : get
-	list : list
 
 	ERROR   : 'ERROR'
 	WARNING : 'WARNING'

@@ -54,6 +54,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                         model.reDrawSgLine()
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                    #
+                    MC.ta.list = []
 
                 catch error
                     console.error error

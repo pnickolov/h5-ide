@@ -88,9 +88,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         null
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid }
             null
 
         saveProcessTab : ( tab_id ) ->
@@ -115,6 +115,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             this.setCanvasProperty    MC.tab[ tab_id ].property
             #
             this.setPropertyPanel     MC.tab[ tab_id ].property_panel
+            #
+            this.setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             #
             null
 
@@ -179,6 +181,16 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         getOriginData :  ->
             console.log 'getOriginData'
             $.extend true, {}, MC.data.origin_canvas_data
+
+        setTAValidation : ( data ) ->
+            console.log 'setTAValidation'
+            MC.ta.list = $.extend true, [], data
+            null
+
+        getTAValidation : () ->
+            console.log 'getTAValidation'
+            #MC.ta.list
+            $.extend true, [], MC.ta.list
 
         describeInstancesOfASG : (region) ->
 

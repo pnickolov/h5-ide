@@ -45,4 +45,3 @@ define [ 'event', 'component/trustedadvisor/validation/main',
     #public
     validComp : validComp
     validAll  : validAll
-    list      : validation_main.list()

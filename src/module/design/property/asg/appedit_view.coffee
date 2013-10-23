@@ -10,6 +10,7 @@ define [ '../base/view', 'text!./template/app_edit.html', 'i18n!nls/lang.js', 'U
         events   :
             "change #property-asg-min"                     : "setSizeGroup"
             "change #property-asg-max"                     : "setSizeGroup"
+            "change #property-asg-capacity"                : "setSizeGroup"
 
         render : () ->
             @$el.html template @model.attributes

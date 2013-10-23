@@ -36,6 +36,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
           asg.TerminationPolicies = asg.TerminationPolicies.member
 
+          asg.MinSize = asg_comp.resource.MinSize
+          asg.MaxSize = asg_comp.resource.MaxSize
+          asg.DesiredCapacity = asg_comp.resource.DesiredCapacity
+
           this.set 'asg', asg
 
 
@@ -184,6 +188,30 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
           this.set 'subnets', instances_display
           this.set 'instance_count', instance_count
+
+    setASGMin : ( value ) ->
+
+      uid = @get 'uid'
+
+      MC.canvas_data.component[uid].resource.MinSize = value
+
+      null
+
+    setASGMax : ( value ) ->
+
+      uid = @get 'uid'
+
+      MC.canvas_data.component[uid].resource.MaxSize = value
+
+      null
+
+    setASGDesireCapacity : ( value ) ->
+
+      uid = @get 'uid'
+
+      MC.canvas_data.component[uid].resource.DesiredCapacity = value
+
+      null
 
   }
 

@@ -14,6 +14,19 @@ define [ '../base/main',
 
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
+        setupAppEdit : () ->
+
+            me = this
+
+            @view.on 'SET_ASG_MIN', ( value ) ->
+                me.model.setASGMin value
+
+            @view.on 'SET_ASG_MAX', ( value ) ->
+                me.model.setASGMax value
+
+            @view.on 'SET_DESIRE_CAPACITY', ( value ) ->
+                me.model.setASGDesireCapacity value
+
         setupStack : () ->
             me = this
 

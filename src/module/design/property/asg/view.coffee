@@ -87,9 +87,9 @@ define [ '../base/view',
 
                 data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
 
-            template = if @model.isApp then app_template else template
+            tpl = if @model.isApp then app_template else template
 
-            @$el.html template data
+            @$el.html tpl data
 
             if @model.isApp
                 zeroclipboard.copy $( "#property_app_asg .icon-copy" )

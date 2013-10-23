@@ -145,6 +145,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_normal',
+			'lang',
 			'jshint',
 			'csslint'
 		]);
@@ -153,6 +154,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_all',
+			'lang',
 			'jshint',
 			'csslint'
 		]);

@@ -16,7 +16,7 @@ echo
 cd ${DIR}/../../debug
 
 COMMIT=`git log -n 1 | grep commit | awk '{print $2}' `
-AUTHOR=`git config --list | grep "user.name" | awk  'BEGIN{FS="="}{print $2}'`
+AUTHOR=`git config --list | grep "^user.name" | awk  'BEGIN{FS="="}{print $2}'`
 echo ">generate commit id: ${COMMIT}"
 echo -e "${COMMIT:0:3}.dev\n${AUTHOR}" > commit
 echo ""

@@ -5,12 +5,14 @@ define [ 'MC' ], ( MC ) ->
 	list_arr = []
 
 	set = ( level, info, uid ) ->
+		#
 		result =
 			level : level,
 			info  : info,
 			uid   : uid
-
+		#
 		list_arr.push result
+		#
 		result
 
 	get = ->
@@ -23,6 +25,6 @@ define [ 'MC' ], ( MC ) ->
 	get  : get
 	list : list
 
-	ERROR : 'ERROR'
+	ERROR   : 'ERROR'
 	WARNING : 'WARNING'
-	NOTICE : 'NOTICE'
+	NOTICE  : 'NOTICE'

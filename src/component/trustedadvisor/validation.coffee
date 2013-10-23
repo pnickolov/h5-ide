@@ -24,11 +24,11 @@ define [ 'event', 'component/trustedadvisor/validation/main',
                     console.log 'validation success'
                     true
                 else
-                    #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule obj
-                    #view.updateStatusBar(result)
-
                     console.log result
                     console.log 'validation failed'
+                    #
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR, result.level
+                    #
                     false
 
             else

@@ -19,4 +19,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 		tipInfo = sprintf lang.ide.TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
 		resultVO.set resultVO.WARNING, tipInfo
 
-	isVPCCanConnectOutside
+	isVPCCanConnectOutside : isVPCCanConnectOutside

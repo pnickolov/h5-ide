@@ -64,6 +64,9 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
 
+        #status bar
+        UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
+
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'

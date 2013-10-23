@@ -60,6 +60,15 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             console.log 'statusbarClick'
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar'
 
+        updateStatusbar : ( level ) ->
+            console.log 'updateStatusbar, level = ' + level
+            $new_status = $( '.icon-statusbar-' + level.toLowerCase() )
+            outerHTML   = $new_status.get( 0 ).outerHTML
+            count       = $new_status.parent().html().replace( outerHTML, '' )
+            count       = parseInt( count, 10 ) + 1
+            $new_status.parent().html outerHTML + count
+            null
+
     }
 
     return DesignView

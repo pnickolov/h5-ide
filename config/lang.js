@@ -1,4 +1,5 @@
 
+
 module.exports.run = function( grunt, callback ) {
 
 	var fs          = require( 'fs' ),
@@ -24,9 +25,39 @@ module.exports.run = function( grunt, callback ) {
 		return false;
 	};
 
+	var check = function(lang) {
+
+		var recursion = function (l, key) {
+			if (hit(l)) {
+				checkEnHasCN(l.en, key);
+			} else {
+				for (var k in l) {
+					recursion(l[k], k);
+				}
+			}
+		};
+
+		try {
+			recursion(lang);
+		} catch (e) {
+			grunt.log.error("Lang File Error: " + e);
+			return false;
+		}
+
+	};
+
+	var checkEnHasCN = function(lang, key) {
+		 for(var i = 0; i < lang.length; i++) {
+			 if(lang.charCodeAt(i) >= 0x4E00 && lang.charCodeAt(i) <= 0x9FA5) {
+			 	throw '"' + key + ': ' + lang + '" has Chinese charactor';
+	         }
+		 }
+	};
+
+
 	var divorce = function(lang, en_us, zh_cn) {
 
-		if (lang === Object(lang) )
+		if (lang === Object(lang) ) {
 			for (var k in lang) {
 				en_us[k] = en_us[k] || {};
 				zh_cn[k] = zh_cn[k] || {};
@@ -38,8 +69,12 @@ module.exports.run = function( grunt, callback ) {
 					} else {
 						divorce(lang[k], en_us[k], zh_cn[k]);
 					}
+				} else {
+					return false;
 				}
 			}
+		}
+
 
 	};
 
@@ -47,6 +82,9 @@ module.exports.run = function( grunt, callback ) {
 		var s = JSON.stringify(obj);
 		return 'define(' + s + ');';
 	};
+
+	if (!check(lang))
+		return false;
 
 	divorce(lang, en_us, zh_cn);
 

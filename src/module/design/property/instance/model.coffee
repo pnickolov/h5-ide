@@ -35,7 +35,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			component.name = component.serverGroupName = value
 
 			MC.canvas.update(uid,'text','hostname', value)
-			MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 			null
 

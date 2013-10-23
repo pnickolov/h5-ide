@@ -678,6 +678,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				else if value.type == resource_type.AWS_EC2_EIP
 					if MC.extractID( value.resource.InstanceId ) == component.uid
 						delete MC.canvas_data.component[key]
+						# TA Validation
+						MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 				# remove instance relate routetable
 				else if value.type == resource_type.AWS_VPC_RouteTable
@@ -696,7 +698,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
 						delete MC.canvas_data.component[ key ]
-
+						# TA Validation
+						MC.ta.validComp 'instance.isVPCCanConnectOutside'
 			null
 
 		deleteR_RouteTable : ( component ) ->
@@ -1928,6 +1931,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			else
 				@setEipVPC uid, state
+				
+			# TA Validation
+			MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 		setEipClassic : ( uid, state ) ->
 			if state == 'on'

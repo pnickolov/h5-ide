@@ -134,6 +134,8 @@ define [ 'event',
 
 			tab_type
 
+		null
+
 		### Helper Functions End ###
 
 

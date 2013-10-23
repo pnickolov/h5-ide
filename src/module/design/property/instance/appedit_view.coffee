@@ -9,7 +9,9 @@ define [ '../base/view',
     ip_list_template = Handlebars.compile ip_list_template
     InstanceView = PropertyView.extend {
 
-        events : {}
+        events :
+            'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
+
 
         render : ( ) ->
 
@@ -52,6 +54,24 @@ define [ '../base/view',
             @model.getEni()
             $( '#property-network-list' ).html( ip_list_template( @model.attributes ) )
             this.changeIPAddBtnState()
+
+        instanceTypeSelect : ( event, value )->
+
+            canset = @model.canSetInstanceType value
+            if canset isnt true
+                notification "error", canset
+                event.preventDefault()
+                return
+
+            has_ebs = @model.setInstanceType value
+            $ebs = $("#property-instance-ebs-optimized")
+            $ebs.closest(".property-control-group").toggle has_ebs
+            if not has_ebs
+                $ebs.prop "checked", false
+
+            instanceUID = this.model.get 'uid'
+            MC.aws.eni.reduceAllENIIPList(instanceUID)
+            this.refreshIPList()
     }
 
     new InstanceView()

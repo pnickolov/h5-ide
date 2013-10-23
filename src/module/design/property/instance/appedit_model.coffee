@@ -256,6 +256,63 @@ define [ '../base/model',
 			instance_type = instance_type[ami.virtualizationType]
 
 			instance_type
+
+		canSetInstanceType : ( value ) ->
+			uid        = this.get 'id'
+			type_ary   = value.split '.'
+			eni_number = 0
+
+			for index, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and MC.extractID( comp.resource.Attachment.InstanceId ) is uid
+
+					++eni_number
+
+			config = MC.data.config[MC.canvas_data.component[uid].resource.Placement.AvailabilityZone[0...-1]]
+			max_eni_num = config.instance_type[type_ary[0]][type_ary[1]].eni
+
+			if eni_number <= 2 or eni_number <= max_eni_num
+				return true
+
+			return sprintf lang.ide.PROP_WARN_EXCEED_ENI_LIMIT, value, max_eni_num
+
+		setInstanceType  : ( value ) ->
+
+			component = MC.canvas_data.component[ this.get 'id' ]
+			component.resource.InstanceType = value
+
+			has_ebs = EbsMap.hasOwnProperty value
+			if not has_ebs
+				component.resource.EbsOptimized = "false"
+
+			has_ebs
+
+		getSGList : () ->
+
+			sgUIDAry = []
+			uid = this.get 'id'
+
+			if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
+
+				defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
+				eniUID = defaultENIComp.uid
+
+				sgAry = MC.canvas_data.component[eniUID].resource.GroupSet
+
+				sgUIDAry = []
+				_.each sgAry, (value) ->
+					sgUID = value.GroupId.slice(1).split('.')[0]
+					sgUIDAry.push sgUID
+					null
+			else
+				sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
+
+				sgUIDAry = []
+				_.each sgAry, (value) ->
+					sgUID = value.slice(1).split('.')[0]
+					sgUIDAry.push sgUID
+					null
+
+			return sgUIDAry
 	}
 
 	new AmiAppEditModel()

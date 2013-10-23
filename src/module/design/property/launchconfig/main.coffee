@@ -49,6 +49,12 @@ define [ "../base/main",
             @view  = app_view
             null
 
+        initAppEdit : () ->
+            @model = model
+            @model.isApp = true
+            @view  = app_view
+            null
+
         afterLoadApp : () ->
             sglist_main.loadModule @model
             null

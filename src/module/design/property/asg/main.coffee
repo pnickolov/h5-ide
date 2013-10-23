@@ -60,7 +60,7 @@ define [ '../base/main',
 
         initApp : ()->
             @model = model
-            @model.isApp = false
+            @model.isApp = true
             @view = view
             null
 

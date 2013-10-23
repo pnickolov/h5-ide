@@ -380,94 +380,48 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         feeMap = MC.data.config[region]
 
         #no config data load
-        if not ( feeMap and feeMap.ami and feeMap.price )
+        if not ( feeMap and 'price' of feeMap )
             return { 'cost_list' : cost_list, 'total_fee' : total_fee }
 
-        currency = feeMap.price.currency
+        currency = if 'currency' of feeMap.price then feeMap.price.currency else 'USD'
 
-        _.map data.component, (item) ->
-            uid = item.uid
+        for uid of data.component
+            item = data.component[uid]
             name = item.name
             type = item.type
 
             # instance
             if item.type is 'AWS.EC2.Instance'
                 size = item.resource.InstanceType
-                imageId = item.resource.ImageId
-
                 number = if item.number then item.number else 1
 
                 # osFamily
                 osFamily = data.layout.component.node[item.uid].osFamily
                 osType = data.layout.component.node[item.uid].osType
-                # if not osType
-                #     return
-                # if not osFamily
-                #     if osType in constant.LINUX
-                #         osFamily = 'linux'
-                #     else if osType in constant.WINDOWS
-                #         osFamily = 'mswin'
-                #     else
-                #         continue
+                if not osType
+                    continue
+                if not osFamily
+                    if osType in constant.LINUX
+                        osFamily = 'linux'
+                    else if osType in constant.WINDOWS
+                        osFamily = 'mswin'
+                    else
+                        continue
 
-                if size and imageId and osFamily and 'instance' of feeMap.price
+                if size and osFamily and 'instance' of feeMap.price
                     size_list = size.split('.')
                     unit = feeMap.price['instance']['unit']
-                    fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily]['USD']
+                    fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily][currency]
 
                     if fee and unit
-                        cost_list.push { 'resource' : name, 'size' : number, 'type' : size, 'fee' : fee , 'unit' : (if unit is 'hour' then '/hr' else '/mo') }
-
-                        total_fee += fee * 24 * 30 * number
+                        cost_list.push { 'resource' : name, 'size' : number, 'type' : size, 'fee' : fee , 'unit' : (if unit is 'perhr' then '/hr' else '/mo') }
 
                         # detail monitor
                         if item.resource.Monitoring is 'enabled'
 
                             fee = 3.50
-                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee, 'unit' : '/mo', 'size' : 1 }
-                            total_fee += fee
-
-                # if 'ami' of feeMap
-
-                #     fee = unit = null
-
-                #     if imageId of feeMap.ami    #quickstart ami
-
-                #         ami = v for k,v of feeMap.ami when v.imageId == imageId
-
-                #         if feeMap.ami[imageId].osType is 'win'
-                #             os = 'windows'
-                #         else
-                #             os = 'linux-other'
-
-                #         size_list = size.split('.')
-                #         fee  = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                #         unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
-
-                #     else if imageId of MC.data.dict_ami    # community ami
-
-                #         com = MC.data.dict_ami[imageId]
-
-                #         if com.osType is 'win'
-                #             os = 'windows'
-                #         else
-                #             os = 'linux-other'
-
-                #         size_list = size.split('.')
-                #         fee  = feeMap.price['instance'][os][size_list[0]][size_list[1]].fee
-                #         unit = feeMap.price['instance'][os][size_list[0]][size_list[1]].unit
-
-                #     if fee and unit
-                #         cost_list.push { 'resource' : name, 'size' : size, 'fee' : fee + (if unit is 'hour' then '/hr' else '/mo') }
-
-                #         total_fee += fee * 24 * 30 * number
-
-                #         ## detail monitor
-                #         if item.resource.Monitoring is 'enabled'
-
-                #             fee = 3.50
-                #             cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
-                #             total_fee += fee
+                            cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee, 'unit' : '/mo'}
+                            #total_fee += fee
 
                 ##attached volume
                 vols = item.resource.BlockDeviceMapping
@@ -475,38 +429,22 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     for vol_uid in vols
                         volume = data.component[vol_uid.split('#')[1]]
                         if volume.resource.VolumeType is 'standard'
-                            vol_fee = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+                            vol_fee = i.ebsVols.currency for i in feeMap.price.ebs.types when 'ebsVols' of i and i.ebsVols.unit is 'perGBmoProvStorage'
                         else
-                            vol_fee = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
+                            vol_fee = i.ebsVols.currency for i in feeMap.price.ebs.types when 'ebsPIOPSVols' of i and i.ebsPIOPSVols.unit is 'perGBmoProvStorage'
 
-                        cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee.fee + '/GB/mo' }
+                        cost_list.push { 'resource' : name + ' - ' + volume.name, 'size' :  volume.resource.Size + 'G', 'fee' : vol_fee, 'unit' : '/GB/mo', 'count' : number }
 
-                        total_fee += parseFloat(vol_fee.fee * volume.resource.Size * number)
+                        #total_fee += parseFloat(vol_fee.fee * volume.resource.Size * number)
 
             # elb
             else if item.type is 'AWS.ELB'
-                if 'price' of feeMap and 'elb' of feeMap.price
-                    elb = i for i in feeMap.price.elb when i.unit is 'perELBHour'
+                if 'elb' of feeMap.price and 'types' of feeMap.price.elb
+                    elb_fee = i.currency for i in feeMap.price.elb.types when i.unit is 'perELBHour'
 
-                    cost_list.push { 'type' : type, 'resource' : name, 'fee' : elb.fee + '/hr' }
+                    cost_list.push { 'type' : type, 'resource' : name, 'fee' : elb_fee, 'unit' : '/hr' }
 
-                    total_fee += elb.fee * 24 * 30
-
-            # volume
-            # else if item.type is 'AWS.EC2.EBS.Volume'
-            #     if 'price' of feeMap and 'ebs' of feeMap.price
-            #         if item.resource.VolumeType is 'standard'
-            #             vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
-            #         else
-            #             vol = i for i in feeMap.price.ebs.ebsPIOPSVols when i.unit is 'perGBmoProvStorage'
-
-            #         # get attached instanc name
-            #         instance_uid    = item.resource.AttachmentSet.InstanceId.split('@')[1].split('.')[0]
-            #         instance_name   = MC.canvas_data.component[instance_uid].name
-
-            #         cost_list.push { 'resource' : instance_name + ' - ' + name, 'size' :  item.resource.Size + 'G', 'fee' : vol.fee + '/GB/mo' }
-
-            #         total_fee += parseFloat(vol.fee * item.resource.Size)
+                    #total_fee += elb_fee * 24 * 30
 
             # asg
             else if item.type is 'AWS.AutoScaling.Group'
@@ -517,59 +455,108 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 if config
 
-                    asg_price = 0
-
-                    imageId = config.resource.ImageId
+                    asg_fee = 0
                     size    = config.resource.InstanceType
 
-                    ami = v for k,v of feeMap.ami when v.imageId == imageId
-
-                    if 'ami' of feeMap and imageId of feeMap.ami
-
-                        if feeMap.ami[imageId].osType is 'win'
-                            os = 'windows'
+                    # osFamily
+                    osFamily = data.layout.component.node[config.uid].osFamily
+                    osType = data.layout.component.node[config.uid].osType
+                    if not osType
+                        continue
+                    if not osFamily
+                        if osType in constant.LINUX
+                            osFamily = 'linux'
+                        else if osType in constant.WINDOWS
+                            osFamily = 'mswin'
                         else
-                            os = 'linux-other'
+                            continue
 
+                    if size and osFamily and 'instance' of feeMap.price
                         size_list = size.split('.')
-                        fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
-                        unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+                        unit = feeMap.price['instance']['unit']
+                        fee = feeMap.price['instance'][size_list[0]][size_list[1]]['onDemand'][osFamily][currency]
 
-                        if unit is 'hour'
-                            asg_price += fee * 24 * 30
+                        if not fee or not unit
+                            continue
+                        if unit is 'perhr'
+                            asg_fee += fee * 24 * 30 * number
                         else
-                            asg_price += fee
+                            asg_fee += fee
 
                     if config.resource.BlockDeviceMapping
                         for block in config.resource.BlockDeviceMapping
-                            vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
-                            asg_price += block.Ebs.VolumeSize * vol.fee
+                            vol_fee = i.ebsVols.currency for i in feeMap.price.ebs.types when 'ebsVols' of i and i.ebsVols.unit is 'perGBmoProvStorage'
+                            asg_fee += block.Ebs.VolumeSize * vol_fee
 
-                    if asg_price > 0
-
-                        cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_price.toFixed(3) + '/mo'}
-                        total_fee += asg_price * cap
+                    if asg_fee > 0
+                        cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_price.toFixed(3), 'unit' : '/mo'}
+                        #total_fee += asg_price * cap
 
                     ## detail monitor
                     if config.resource.InstanceMonitoring is 'enabled'
-
                         fee = 3.50
-                        cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
-                        total_fee += fee
+                        cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee, 'unit' : '/mo' }
+                        #total_fee += fee
+
+
+
+                    # ami = v for k,v of feeMap.ami when v.imageId == imageId
+
+                    # if 'ami' of feeMap and imageId of feeMap.ami
+
+                    #     if feeMap.ami[imageId].osType is 'win'
+                    #         os = 'windows'
+                    #     else
+                    #         os = 'linux-other'
+
+                    #     size_list = size.split('.')
+                    #     fee = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].fee
+                    #     unit = feeMap.ami[imageId].price[os][size_list[0]][size_list[1]].unit
+
+                    #     if unit is 'hour'
+                    #         asg_price += fee * 24 * 30
+                    #     else
+                    #         asg_price += fee
+
+                    # if config.resource.BlockDeviceMapping
+                    #     for block in config.resource.BlockDeviceMapping
+                    #         vol = i for i in feeMap.price.ebs.ebsVols when i.unit is 'perGBmoProvStorage'
+                    #         asg_price += block.Ebs.VolumeSize * vol.fee
+
+                    # if asg_price > 0
+
+                    #     cost_list.push {'resource' : name, 'size' : cap, 'fee' : asg_price.toFixed(3) + '/mo'}
+                    #     total_fee += asg_price * cap
+
+                    # ## detail monitor
+                    # if config.resource.InstanceMonitoring is 'enabled'
+
+                    #     fee = 3.50
+                    #     cost_list.push { 'resource' : name, 'type' : 'Detailed Monitoring', 'fee' : fee + '/mo' }
+                    #     total_fee += fee
 
             ## alarm
             else if item.type is 'AWS.CloudWatch.CloudWatch'
                 period = parseInt(item.resource.Period, 10)
                 if period and period <= 300
                     fee = 0.10
-                    cost_list.push {'resource' : name, 'size' : '', 'fee' : fee + '/mo'}
-                    total_fee += fee
+                    cost_list.push {'resource' : name, 'size' : '', 'fee' : fee, 'unit' : '/mo'}
+                    #total_fee += fee
 
             null
 
         # sort with type
         cost_list.sort (a, b) ->
             return if a.type <= b.type then 1 else -1
+
+        # compute total fee
+        for c of cost_list
+            fee = c.fee
+            size = if 'size' of c then c.size else 1
+            count = if 'count' of c then c.count else 1
+            unit = if c.unit and c.unit == '/hr' then 24 else 1
+
+            total_fee += fee * unit * size * count
 
         return { 'cost_list' : cost_list, 'total_fee' : total_fee.toFixed(2) }
 

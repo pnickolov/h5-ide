@@ -91,6 +91,7 @@ define [ 'event',
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
+				view.afterLoad()
 			catch error
 				console.error "Cannot open property panel", error
 
@@ -135,7 +136,6 @@ define [ 'event',
 			tab_type
 
 		null
-
 		### Helper Functions End ###
 
 

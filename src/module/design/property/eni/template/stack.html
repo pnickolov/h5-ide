@@ -1,7 +1,3 @@
-{{#if association}}
-<div class="property-control-group">This is an attachment of {{association.eni}} to {{association.instance}}</div>
-{{else}}
-
 <article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
   {{ i18n "PROP_ENI_LBL_ATTACH_WARN" }}
 </article>
@@ -38,4 +34,3 @@
   <div class="option-group-head">{{ i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group">Loading...</div>
 </article>
-{{/if}}

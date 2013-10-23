@@ -33,6 +33,11 @@ define [ "../base/main",
             sglist_main.onUnloadSubPanel id
             null
 
+        setupStack : () ->
+            @view.on "OPEN_AMI", (id) ->
+                PropertyModule.loadSubPanel "STATIC", id
+            null
+
         initStack : ()->
             @model = model
             @view  = view
@@ -51,12 +56,7 @@ define [ "../base/main",
                 me.model.downloadKP(name)
 
             @view.on "OPEN_AMI", (id) ->
-                data = me.model.getAMI id
-                ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                    title : id
-                    dom   : MC.template.aimSecondaryPanel data
-                    id    : 'Ami'
-                }
+                PropertyModule.loadSubPanel "STATIC", id
             null
 
         initApp : () ->

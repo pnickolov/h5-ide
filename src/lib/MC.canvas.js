@@ -16,7 +16,8 @@ MC.canvas_property = {};
 MC.canvas = {
 	getState: function ()
 	{
-		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		return Tabbar.current;
+		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
 	},
 
 	display: function (id, key, is_visible)
@@ -2492,6 +2493,7 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
+			MC.canvas.getState() !== 'app' &&
 			event.target === document.body
 		)
 		{

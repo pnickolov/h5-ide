@@ -71,7 +71,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                         if item.snapshotId is volume_detail.snapshot_id
                             volume_detail.snapshot_size = item.volumeSize
                             volume_detail.snapshot_desc = item.description
-                            volume_detail.snapshot = JSON.stringify item
                             break
 
             if volume_detail.volume_size < 10

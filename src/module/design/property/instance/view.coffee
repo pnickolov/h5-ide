@@ -203,18 +203,7 @@ define [ '../base/view',
             @updateEIPList()
 
         openAmiPanel : ( event ) ->
-            console.log 'openAmiPanel'
-            target = $('#property-ami')
-
-            console.log MC.template.aimSecondaryPanel target.data( 'secondarypanel-data' )
-
-            data = target.data( 'secondarypanel-data' )
-            data.instance_type = data.instanceType
-            ide_event.trigger ide_event.PROPERTY_OPEN_SUBPANEL, {
-                title : data.imageId
-                dom   : MC.template.aimSecondaryPanel data
-                id    : 'Ami'
-            }
+            @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
         addEIP : ( event ) ->

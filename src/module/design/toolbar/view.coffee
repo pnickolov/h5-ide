@@ -48,6 +48,11 @@ define [ 'MC', 'event',
             'click .icon-refresh'           : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
+            'click #toolbar-edit-app'        : 'clickEditApp'
+            'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
+            'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
+
+
         render   : ( type ) ->
             console.log 'toolbar render'
 
@@ -442,6 +447,36 @@ define [ 'MC', 'event',
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
+
+        clickEditApp : (event) ->
+            # 1. Show Resource Panel
+
+            # 2. Toggle Toolbar Button
+            $("#toolbar_appmodel, #toolbar-edit-app").hide()
+            $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").show()
+
+            # 3. Update MC.canvas.getState() to return 'app-edit'
+
+
+            null
+
+        clickSaveEditApp : (event)->
+            # 1. Send save request
+
+            # After success then do the clickCancelEditApp routine.
+            null
+
+        clickCancelEditApp : (event)->
+
+            # 1. Hide Resource Panel
+
+            # 2. Toggle Toolbar Button
+            $("#toolbar_appmodel, #toolbar-edit-app").show()
+            $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").hide()
+
+            # 3. Update MC.canvas.getState() to return 'app'
+
+            null
 
     }
 

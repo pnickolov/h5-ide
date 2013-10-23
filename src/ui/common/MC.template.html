@@ -1006,6 +1006,18 @@ Additional Notes and Questions
 	</ul>
 </div>
 
+<!-- instanceListItem -->
+<li>
+	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+		<i class="instanceList-item-status status status-{{status}}"></i>
+		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+			<span class="instanceList-item-number">{{volume}}</span>
+		</div>
+		<span class="instanceList-item-label">{{name}}</span>
+	</a>
+</li>
+
 <!-- eniList -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
@@ -1023,6 +1035,14 @@ Additional Notes and Questions
 		{{/each}}
 	</ul>
 </div>
+
+<!-- eniListItem -->
+<li>
+	<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+		<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
+		<span class="eniList-item-label">{{name}}</span>
+	</a>
+</li>
 
 <!-- setupCIDRConfirm -->
 <div style="width:420px">

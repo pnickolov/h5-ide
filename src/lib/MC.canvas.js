@@ -2893,6 +2893,22 @@ MC.canvas.asgList = {
 };
 
 MC.canvas.instanceList = {
+	add: function (data)
+	{
+		$('#instanceList').append(
+			MC.template.instanceListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -2980,6 +2996,22 @@ MC.canvas.instanceList = {
 };
 
 MC.canvas.eniList = {
+	add: function (data)
+	{
+		$('#eniList').append(
+			MC.template.eniListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();

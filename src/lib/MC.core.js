@@ -104,7 +104,7 @@ var MC = {
 				{
 					api_frame[0].contentWindow.postMessage({
 						id: guid,
-						url: VER + option.url,
+						url: '' + VER + option.url,
 						method: option.method || '',
 						params: option.data || {}
 					}, '*');
@@ -665,6 +665,29 @@ var returnTrue = function () {return true},
 /* Global initialization */
 $(document).ready(function ()
 {
+	var language = $.cookie('lang');
+
+	if (language === undefined)
+	{
+		language = navigator.language.replace(/-[\w]*/ig, '');
+
+		if ( language === 'zh' ) {
+			language = 'zh-cn';
+		}
+		else if ( language === 'en' ) {
+			language = 'en-us';
+		}
+		else {
+			language = 'en-us';
+		}
+
+		// MC.storage.set( 'language', language );
+
+		// $.cookie('lang', language);
+	}
+
+	$(document.body).addClass('locale-' + language);
+
 	// Detecting browser and add the class name on body, so that we can use specific CSS style
 	// or for specific usage.
 	MC.browserDetect();

@@ -1,6 +1,6 @@
 <div style="width:850px;" id="modal-browse-community-ami">
 	<div class="modal-header">
-		<h3>Community AMIs</h3>
+		<h3>{{i18n "AMI_LBL_COMMUNITY_AMIS"}}</h3>
 		<i class="modal-close">×</i>
 	</div>
 
@@ -8,13 +8,13 @@
 		<div class="content-wrap">
 			<div id="ami-search-option">
 				<div>
-					<input id="community-ami-input" class="input" type="text" placeholder="Search AMI by name or ID" />
+					<input id="community-ami-input" class="input" type="text" placeholder="{{{i18n "AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID"}}}" />
 				</div>
 
 				<div id="selectbox-ami-platform" class="selectbox">
-					<div class="selection">All Platforms</div>
+					<div class="selection">{{i18n "AMI_LBL_ALL_PLATFORMS"}}</div>
 					<ul class="dropdown" tabindex="-1">
-						<li class="item selected" data-id="">All Platforms</li>
+						<li class="item selected" data-id="">{{i18n "AMI_LBL_ALL_PLATFORMS"}}</li>
 						<li class="item" data-id="amazonlinux">
 							<i class="icon-amz-linux icon-ami-os"></i>
 							<span>Amazon Linux</span>
@@ -59,32 +59,32 @@
 				</div>
 
 				<div class="ami-option-group">
-					<h5>Visibility</h5>
+					<h5>{{i18n "AMI_LBL_VISIBILITY"}}</h5>
 					<div class="ami-option-wrap" id="filter-ami-type">
-						<button type="button" class="btn active">Public</button>
-						<button type="button" class="btn">Private</button>
+						<button type="button" class="btn active">{{i18n "AMI_LBL_PUBLIC"}}</button>
+						<button type="button" class="btn">{{i18n "AMI_LBL_PRIVATE"}}</button>
 					</div>
 				</div>
 
 				<div class="ami-option-group">
-					<h5>Architecture</h5>
+					<h5>{{i18n "AMI_LBL_ARCHITECTURE"}}</h5>
 					<div class="ami-option-wrap" id="filter-ami-32bit-64bit">
-						<button type="button" class="btn active">32-bit</button>
-						<button type="button" class="btn">64-bit</button>
+						<button type="button" class="btn active">{{i18n "AMI_LBL_32_BIT"}}</button>
+						<button type="button" class="btn">{{i18n "AMI_LBL_64_BIT"}}</button>
 					</div>
 				</div>
 
 				<div class="ami-option-group">
-					<h5>Root Device Type</h5>
+					<h5>{{i18n "AMI_LBL_ROOT_DEVICE_TYPE"}}</h5>
 					<div class="ami-option-wrap" id="filter-ami-EBS-Instance">
-						<button type="button" class="btn active">EBS</button>
-						<button type="button" class="btn">Instance Store</button>
+						<button type="button" class="btn active">{{i18n "AMI_LBL_EBS"}}</button>
+						<button type="button" class="btn">{{i18n "AMI_LBL_INSTANCE_STORE"}}</button>
 					</div>
 				</div>
 
 				<!-- <div id="ami-count">Total: 0</div> -->
 
-				<div id="btn-search-ami" class="btn btn-blue" disabled>Searching...</div>
+				<div id="btn-search-ami" class="btn btn-blue" disabled>{{i18n "AMI_LBL_SEARCHING"}}</div>
 			</div>
 
 			<div id="ami-data-wrap">
@@ -93,9 +93,9 @@
 						<thead>
 							<tr>
 								<th style="width: 40px;"></th>
-								<th style="width: 104px;">AMI ID</th>
-								<th>AMI Name</th>
-								<th style="width: 62px;" class="sortable">Arch</th>
+								<th style="width: 104px;">{{i18n "AMI_LBL_AMI_ID"}}</th>
+								<th>{{i18n "AMI_LBL_AMI_NAME"}}</th>
+								<th style="width: 62px;" class="sortable">{{i18n "AMI_LBL_ARCH"}}</th>
 							</tr>
 						</thead>
 					</table>

@@ -1,25 +1,25 @@
 <article>
-  <div class="option-group-head expand" id="vpc-property-detail">VPC Details</div>
+  <div class="option-group-head expand" id="vpc-property-detail">{{ i18n "PROP_VPC_TIT_DETAIL" }}</div>
   <div class="option-group" data-bind="true">
     <section class="property-control-group clearfix">
-      <label class="left" for="property-vpc-name">Name</label>
-      <span class="required-input right">Required</span>
+      <label class="left" for="property-vpc-name">{{ i18n "PROP_VPC_DETAIL_LBL_NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
       <input class="input vpc-name" type="text" value="{{component.name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
     </section>
 
     <section class="property-control-group clearfix">
-      <label class="left" for="property-cidr-block">CIDR Block</label>
-      <span class="required-input right">Required</span>
+      <label class="left" for="property-cidr-block">{{ i18n "PROP_VPC_DETAIL_LBL_CIDR_BLOCK" }}</label>
+      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
       <input class="input cidr-block tooltip" type="text" value="{{component.resource.CidrBlock}}" id="property-cidr-block" data-tooltip="e.g. 10.0.0.0/16" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
     </section>
 
     <section class="property-control-group">
-      <label class="left">Tenancy</label>
+      <label class="left">{{ i18n "PROP_VPC_DETAIL_LBL_TENANCY" }}</label>
       <div class="selectbox selectbox-mega" id="property-tenancy">
-        <div class="selection">{{#if defaultTenancy}}Default{{else}}Dedicated{{/if}}</div>
+        <div class="selection">{{#if defaultTenancy}}{{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}}{{else}}Dedicated{{/if}}</div>
         <ul class="dropdown" tabindex="-1">
-          <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">Default</li>
-          <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">Dedicated</li>
+          <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}</li>
+          <li class="item{{#if defaultTenancy}}{{else}} selected{{/if}}" data-id="dedicated">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED" }}</li>
         </ul>
       </div>
       <div id="desc-dedicated" class="property-info">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a target="_blank" href="http://aws.amazon.com/cn/dedicated-instances/">Additional charges will apply.</a></div>
@@ -30,7 +30,7 @@
         <input id="property-dns-resolution" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-resolution">
         <label for="property-dns-resolution"></label>
       </div>
-      <label for="property-dns-resolution">Enable DNS resolution</label>
+      <label for="property-dns-resolution">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
     </section>
 
     <section class="property-control-group">
@@ -38,18 +38,18 @@
         <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
         <label for="property-dns-hostname"></label>
       </div>
-      <label for="property-dns-hostname">Enable DNS hostname support</label>
+      <label for="property-dns-hostname">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
     </section>
   </div>
 
-  <div class="option-group-head">DHCP Options</div>
+  <div class="option-group-head">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</div>
   <div class="option-group" id="dhcp-property-detail" data-type="true">
     <section class="property-control-group">
       <div class="radio property-dhcp">
         <input id="property-dhcp-none" type="radio" name="dhcp-opts" {{#if dhcp.none}}checked="checked"  {{/if}}value="none" />
         <label for="property-dhcp-none"></label>
       </div>
-      <label for="property-dhcp-none">None</label>
+      <label for="property-dhcp-none">{{ i18n "PROP_VPC_DHCP_LBL_NONE" }}</label>
     </section>
 
     <section class="property-control-group">
@@ -57,7 +57,7 @@
         <input id="property-dhcp-default" type="radio" name="dhcp-opts" {{#if dhcp.default}}checked="checked" {{/if}}value="none" />
         <label for="property-dhcp-default"></label>
       </div>
-      <label for="property-dhcp-default">Default</label>
+      <label for="property-dhcp-default">{{ i18n "PROP_VPC_DHCP_LBL_DEFAULT" }}</label>
     </section>
 
     <section class="property-control-group">
@@ -65,25 +65,25 @@
         <input id="property-dhcp-spec" type="radio" name="dhcp-opts" {{#if dhcp.hasDhcp}}checked="checked"{{/if}} value="specified"/>
         <label for="property-dhcp-spec"></label>
       </div>
-      <label for="property-dhcp-spec">Specified DHCP Options Set</label>
+      <label for="property-dhcp-spec">{{ i18n "PROP_VPC_DHCP_LBL_SPECIFIED" }}</label>
 
       <div class="property-info {{#if dhcp.hasDhcp}}hide{{/if}}" id="property-dhcp-desc">Specify Domain Name, DNS Server, NTP server NetBIOS Name Server or NetBIOS Node Type.</div>
     </section>
 
     <section id="property-dhcp-options" data-bind="true" class="property-control-group-sub {{#unless dhcp.hasDhcp}}hide{{/unless}}">
       <div class="property-control-group">
-        <label class="left" for="property-dhcp-domain">Domain Name</label>
+        <label class="left" for="property-dhcp-domain">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</label>
         <input class="input tooltip" type="text" value="{{dhcp.domainName}}" data-tooltip="Enter the domain name that should be used for your hosts" id="property-dhcp-domain" maxlength="255" data-type="domain" data-ignore="true"/>
       </div>
 
       <div class="property-control-group">
-        <label>Domain Name Server</label>
+        <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER" }}</label>
         <div>
           <div class="checkbox left">
             <input id="property-amazon-dns" {{#if dhcp.useAmazonDns}}checked="checked"{{/if}}type="checkbox">
             <label for="property-amazon-dns"></label>
           </div>
-          <label for="property-amazon-dns">AmazonProvidedDNS</label>
+          <label for="property-amazon-dns">{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_AMZN_PROVIDED_DNS" }}</label>
         </div>
 
         <div id="property-domain-server" class="multi-input" data-max-row="{{#if dhcp.useAmazonDns}}3{{else}}4{{/if}}">
@@ -102,7 +102,7 @@
       </div>
 
       <div class="property-control-group">
-        <label>NTP Server</label>
+        <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NTP_SERVER" }}</label>
         <div id="property-ntp-server" class="multi-input" data-max-row="4">
           {{#each dhcp.ntpServers}}
           <div class="multi-ipt-row">
@@ -119,7 +119,7 @@
       </div>
 
       <div class="property-control-group">
-        <label>NetBIOS Name Server</label>
+        <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER" }}</label>
         <div id="property-netbios-server" class="multi-input" data-max-row="4">
           {{#each dhcp.netbiosServers}}
           <div class="multi-ipt-row">
@@ -136,9 +136,9 @@
       </div>
 
       <div class="property-control-group">
-        <label>NetBIOS Node Type</label>
+        <label>{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</label>
         <div class="selectbox selectbox-mega" id="property-netbios-type">
-          <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}Not specified{{/if}}</div>
+          <div class="selection tooltip" data-tooltip="Select NetBOIS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)">{{#if dhcp.netbiosType}}{{dhcp.netbiosType}}{{else}}{{{ i18n "PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED" }}}{{/if}}</div>
           <ul class="dropdown" tabindex="-1">
             {{#each dhcp.netbiosTypes}}
             <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}">{{value}}</li>

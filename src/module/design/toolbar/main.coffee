@@ -147,23 +147,35 @@ define [ 'jquery',
                 model.reqHanle idx, dag
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
-                    msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+
+                if flag
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
+
                     #view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
                     view.notify 'info', msg
 
             model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
-                    msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
+
+                if flag
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, lang.ide[str_idx], name
+
+                    else
+                        info = flag.replace /_/g, ' '
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
                     #view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
                     view.notify 'error', msg
 
             model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
 
+                if flag
                     # run stack
                     if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
                         app_name = $('.modal-input-value').val()
@@ -172,25 +184,38 @@ define [ 'jquery',
                         model.runStack app_name, MC.canvas_data
                         MC.data.app_list[MC.canvas_data.region].push app_name
 
-                    info = info.toLowerCase()
-                    info = info[0].toUpperCase() + info.substr(1)
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], name
 
-                    msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
+                    else
+                        info = flag.replace /_/g, ' '
+                        info = info.toLowerCase()
+                        info = info[0].toUpperCase() + info.substr(1)
+
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
                     #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
                     view.notify 'info', msg
 
             model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
-                info = flag.replace /_/g, ' '
-                if info
+
+                if flag
+
                     # run stack
                     if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
                         app_name = $('.modal-input-value').val()
                         modal.close()
 
-                    info = info.toLowerCase()
-                    info = info[0].toUpperCase() + info.substr(1)
+                    str_idx = 'TOOLBAR_HANDLE_' + flag
+                    if str_idx of lang.ide
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, lang.ide[str_idx], name
 
-                    msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
+                    else
+                        info = flag.replace /_/g, ' '
+                        info = info.toLowerCase()
+                        info = info[0].toUpperCase() + info.substr(1)
+
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
                     #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
                     view.notify 'error', msg
 

@@ -92,7 +92,7 @@ Loading...
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
 										{{/if}}
 										{{ host }}
 										<span class="resource-id">( {{ instanceId }} )</span>
@@ -178,7 +178,7 @@ Loading...
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
 										{{/if}}
 										{{ volumeId }}
 									</td>
@@ -229,7 +229,7 @@ Loading...
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
 										{{/if}}
 										{{ vpcId }}
 									</td>
@@ -282,7 +282,7 @@ Loading...
 												<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 											{{/if}}
 										{{else}}
-											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASHBOARD_TXT_UNMANAGED" }}</span>
+											<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >{{ i18n "DASH_LBL_UNMANAGED" }}</span>
 										{{/if}}
 										{{ vpnConnectionId }}
 									</td>
@@ -372,7 +372,7 @@ Loading...
 											<span class="table-app-link truncate tooltip" data-tooltip="App created by other user" >[{{ app }}]</span>
 										{{/if}}
 									{{else}}
-										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASHBOARD_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASHBOARD_TXT_UNMANAGED" }}] </span>
+										<span class="table-app-link truncate table-app-link-unmanaged tooltip" data-tooltip='{{ i18n "DASH_TIP_UNMANAGED_RESOURCE" }}' >[{{ i18n "DASH_LBL_UNMANAGED" }}] </span>
 									{{/if}}
 									{{AutoScalingGroupName}}
 									</td>
@@ -605,7 +605,7 @@ Loading...
 		</div>
 		{{/if}}
 	{{else}}
-		<div class="blank-widget">There is no app in this region.<br />You can run app from a stack.</div>
+		<div class="blank-widget">{{ i18n "DASH_LBL_NO_APP" }}</div>
 	{{/each}}
 
 <!--{{ .stat-stack }}-->
@@ -623,7 +623,7 @@ Loading...
 		</div>
 	{{else}}
 		<div class="blank-widget">
-			There is no stack in this region yet.<br />Create a new stack from here.
+			{{ i18n "DASH_LBL_NO_STACK" }}
 			<img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
 		</div>
 	{{/each}}

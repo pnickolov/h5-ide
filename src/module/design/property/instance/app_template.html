@@ -1,115 +1,115 @@
 <article class="property-app">
-  <div class="option-group-head expand">Instance Details</div>
+  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>Instance ID</dt>
+      <dt>{{i18n "PROP_INSTANCE_INSTANCE_ID"}}</dt>
       <dd>{{instanceId}}</dd>
 
-      <dt>State</dt>
+      <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
       <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
 
-      <dt>Launch Time</dt>
+      <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
       <dd>{{timeStr launchTime}}</dd>
     </dl>
 
     <dl class="dl-vertical">
-      <dt>Primary Public IP</dt>
+      <dt>{{i18n "PROP_INSTANCE_PRIMARY_PUBLIC_IP"}}</dt>
       <dd>{{emptyStr ipAddress}}</dd>
 
-      <dt>Public DNS</dt>
+      <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
       <dd>{{emptyStr dnsName}}</dd>
 
-      <dt>Primary Private IP</dt>
+      <dt>{{i18n "PROP_INSTANCE_PRIMARY_PRIVATE_IP"}}</dt>
       <dd>{{emptyStr privateIpAddress}}</dd>
 
-      <dt>Private DNS</dt>
+      <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
       <dd>{{emptyStr privateDnsName}}</dd>
     </dl>
 
     <dl class="dl-vertical">
-      <dt>AMI</dt>
+      <dt>{{i18n "PROP_INSTANCE_AMI"}}</dt>
       <dd><a href="#" data-uid="{{imageId}}" id="property-app-ami">{{imageId}}</a><dd>
 
-      <dt>Instance Type</dt>
+      <dt>{{i18n "PROP_INSTANCE_TYPE"}}</dt>
       <dd>{{instanceType}}</dd>
 
-      <dt>Key Pair</dt>
+      <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
       <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
 
     </dl>
 
     <dl class="dl-vertical">
-      <dt>EBS Optimized</dt>
+      <dt>{{i18n "PROP_INSTANCE_EBS_OPTIMIZED"}}</dt>
       <dd>{{emptyStr ebsOptimized}}<dd>
 
-      <dt>Tenancy</dt>
+      <dt>{{i18n "PROP_INSTANCE_TENANCY"}}</dt>
       <dd>{{emptyStr placement.tenancy}}</dd>
 
-      <dt>Root Device Type</dt>
+      <dt>{{i18n "PROP_INSTANCE_ROOT_DEVICE_TYPE"}}</dt>
       <dd>{{emptyStr rootDeviceType}}</dd>
 
-      <dt>Block Device</dt>
+      <dt>{{i18n "PROP_INSTANCE_BLOCK_DEVICE"}}</dt>
       <dd>{{emptyStr blockDevice}}</dd>
     </dl>
   </div>
 
   {{#if eni}}
-  <div class="option-group-head">Network Interface Details</div>
+  <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>Device Name</dt>
+      <dt>{{i18n "PROP_ENI_DEVICE_NAME"}}</dt>
       <dd>{{eni.name}}</dd>
 
-      <dt>Network Interface ID</dt>
+      <dt>{{i18n "PROP_ENI_ID"}}</dt>
       <dd>{{eni.networkInterfaceId}}</dd>
 
-      <dt>State</dt>
+      <dt>{{i18n "PROP_ENI_STATE"}}</dt>
       <dd><i class="status status-{{#if eni.isInUse}}green{{else}}orange{{/if}}"></i>{{eni.status}}</dd>
 
       {{#if eni.description}}
-      <dt>Description</dt>
+      <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
       <dd>{{eni.description}}</dd>
       {{/if}}
 
-      <dt>Source/Destination Check</dt>
+      <dt>{{i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
       <dd>{{eni.sourceDestCheck}}</dd>
     </dl>
 
     <div class="hidden-details">
-      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ Show details</span><span class="details-on">- Hide details</span></a>
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP_ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP_ENI_HIDE_DETAIL" }}</span></a>
 
       <dl class="dl-vertical">
-        <dt>VPC ID</dt>
+        <dt>{{ i18n "PROP_ENI_VPC_ID" }}</dt>
         <dd>{{eni.vpcId}}</dd>
 
-        <dt>Subnet</dt>
+        <dt>{{ i18n "PROP_ENI_SUBNET_ID" }}</dt>
         <dd>{{eni.subnetId}}</dd>
 
         {{#if eni.attachment}}
-        <dt>Attachment ID</dt>
+        <dt>{{ i18n "PROP_ENI_ATTACHMENT_ID" }}</dt>
         <dd>{{emptyStr eni.attachment.attachmentId}}</dd>
 
-        <dt>Attachment Owner</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_OWNER" }}</dt>
         <dd>{{emptyStr eni.instanceOwnerId}}</dd>
 
-        <dt>Attachment Status</dt>
+        <dt>{{ i18n "PROP_ENI_Attachment_STATE" }}</dt>
         <dd>{{emptyStr eni.attachment.status}}</dd>
         {{/if}}
       </dl>
       <dl class="dl-vertical">
-        <dt>Mac Address</dt>
+        <dt>{{ i18n "PROP_ENI_MAC_ADDRESS" }}</dt>
         <dd>{{emptyStr eni.macAddress}}</dd>
 
         {{#if eni.association.publicDnsName}}
-        <dt>Public DNS</dt>
+        <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
         <dd>{{eni.association.publicDnsName}}</dd>
         {{/if}}
         {{#if eni.privateDnsName}}
-        <dt>Private DNS</dt>
+        <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
         <dd>{{eni.privateDnsName}}</dd>
         {{/if}}
         {{#if eni.ownerId}}
-        <dt>IP Owner</dt>
+        <dt>{{ i18n "PROP_ENI_IP_OWNER" }}</dt>
         <dd>{{eni.ownerId}}</dd>
         {{/if}}
       </dl>
@@ -117,8 +117,8 @@
 
     <table class="table table-small">
       <tr>
-        <th>IP Address</th>
-        <th>Public IP</th>
+        <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
+        <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
       </tr>
       {{#each eni.privateIpAddressesSet.item}}
       <tr>
@@ -131,7 +131,7 @@
   </div>
   {{/if}}
 
-  <div class="option-group-head"> Security Groups<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 
 </article>

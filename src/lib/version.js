@@ -9,7 +9,8 @@
 # **********************************************************
 */
 
-var version = version || {};
+var version  = version || {},
+    language = 'en-us';
 
 (function() {
   'use strict';

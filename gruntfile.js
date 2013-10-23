@@ -61,6 +61,10 @@ module.exports = function( grunt ) {
 			'<%= src %>/**/*.html'
 		],
 
+		langsource  : [
+			'<%= src %>/nls/lang-source.js'
+		],
+
 		bower      : require( './config/bower.js' ),
 		copy       : require( './config/copy.js'  ),
 
@@ -89,6 +93,8 @@ module.exports = function( grunt ) {
 		"dev_prod_switch": require( './config/dev_prod_switch.js'),
 
 		concat     : require( './config/concat.js'  ),
+
+		lang       : require( './config/lang.js'    ),
 
 		sweep      : require( './config/sweep.js'   )
 
@@ -126,6 +132,7 @@ module.exports = function( grunt ) {
 
 		});
 	});
+
 
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make_fast', function() {
@@ -270,6 +277,29 @@ module.exports = function( grunt ) {
 									'copy:publish_files',
 									'clean:temp'
 	]);
+
+	grunt.registerTask( 'merge_lang', function() {
+
+		var done = this.async();
+
+		//call config/lang.js
+		config.lang.merge( grunt, function() {
+			console.log( 'i18n merge complete!' );
+			done();
+		});
+
+	});
+
+	grunt.registerTask( 'lang', function() {
+
+		var done = this.async();
+
+		//call config/lang.js
+		config.lang.run( grunt, function() {
+			console.log( 'i18n create complete!' );
+			done();
+		});
+	});
 
 	/*
 	grunt.event.on( 'regarde:file', function (status, target, filepath) {

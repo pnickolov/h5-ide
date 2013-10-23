@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #############################
 #
 # /home/ec2-user/ide/check.sh
@@ -150,7 +150,7 @@ then
         if [ -f ${TGT_DIR}.tmp/commit ]
         then
             COMMIT=`cat ${TGT_DIR}.tmp/commit | awk '{print $1}' | head -n 1 `
-            AUTHOR=`cat ${TGT_DIR}.tmp/commit | awk '{print $0}' | tail -n 1 `
+            AUTHOR=`cat ${TGT_DIR}.tmp/commit | awk '{print $0}' | head -n 2 | tail -n 1 `
         fi
 
         if [ "${COMMIT}" != "" ]
@@ -168,7 +168,7 @@ then
         cd ${TGT_DIR}.tmp/lib
 
         #for live
-        sed -i "/version=\"/cvar version=version||{};\!function(){version=\"${VER}\"}();" version.js
+        sed -i "s/version=\".*\"/version=\"${VER}\"/g"  version.js
 
         #for debug
         #sed -i "/  version = '/c   version = '${VER}'" version.js

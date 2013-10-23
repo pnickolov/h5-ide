@@ -140,7 +140,7 @@ define [ 'text!./template.html',
           false
 
         onDirChange : () ->
-          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then "Source" else "Destination" )
+          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then lang.ide.POP_SGRULE_LBL_SOURCE else lang.ide.POP_SGRULE_LBL_DEST )
 
         onProtocolChange : ( event, id ) ->
           $(".sg-proto-input").hide()

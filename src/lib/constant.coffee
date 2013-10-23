@@ -1,6 +1,6 @@
 
 
-define [], () ->
+define ['i18n!/nls/lang.js'], ( lang ) ->
 
 	#private
 	AWS_RESOURCE_TYPE = {
@@ -24,7 +24,6 @@ define [], () ->
 		AWS_VPC_VPNConnection     					: "AWS.VPC.VPNConnection"
 		AWS_VPC_NetworkAcl        					: "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate 					: "AWS.IAM.ServerCertificate"
-		#
 		AWS_AutoScaling_Group                      	: 'AWS.AutoScaling.Group'
 		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
 		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
@@ -34,6 +33,43 @@ define [], () ->
 		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
 		AWS_SNS_Topic                              	: 'AWS.SNS.Topic'
 	}
+
+	# AWS_RESOURCE_TYPE = {}
+
+	# AWS_RESOURCE_TYPES = [
+	# 	"AWS.EC2.AvailabilityZone"
+	# 	"AWS.EC2.Instance"
+	# 	"AWS.EC2.KeyPair"
+	# 	"AWS.EC2.SecurityGroup"
+	# 	"AWS.EC2.EIP"
+	# 	"AWS.EC2.AMI"
+	# 	"AWS.EC2.EBS.Volume"
+	# 	"AWS.EC2.EBS.Snapshot"
+	# 	"AWS.ELB"
+	# 	"AWS.VPC.VPC"
+	# 	"AWS.VPC.Subnet"
+	# 	"AWS.VPC.InternetGateway"
+	# 	"AWS.VPC.RouteTable"
+	# 	"AWS.VPC.VPNGateway"
+	# 	"AWS.VPC.CustomerGateway"
+	# 	"AWS.VPC.NetworkInterface"
+	# 	"AWS.VPC.DhcpOptions"
+	# 	"AWS.VPC.VPNConnection"
+	# 	"AWS.VPC.NetworkAcl"
+	# 	"AWS.IAM.ServerCertificate"
+	# 	#
+	# 	"AWS.AutoScaling.Group"
+	# 	"AWS.AutoScaling.LaunchConfiguration"
+	# 	"AWS.AutoScaling.NotificationConfiguration"
+	# 	"AWS.AutoScaling.ScalingPolicy"
+	# 	"AWS.AutoScaling.ScheduledActions"
+	# 	"AWS.CloudWatch.CloudWatch"
+	# 	"AWS.SNS.Subscription"
+	# 	"AWS.SNS.Topic"
+	# ]
+
+	# for value in AWS_RESOURCE_TYPES
+	# 	AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -161,22 +197,22 @@ define [], () ->
 	#private
 	REGION_SHORT_LABEL = {}
 	REGION_LABEL = {}
-	REGION_SHORT_LABEL[ 'us-east-1' ]      = 'Virginia'
-	REGION_LABEL[ 'us-east-1' ]      = 'US East'
-	REGION_SHORT_LABEL[ 'us-west-1' ]      = 'California'
-	REGION_LABEL[ 'us-west-1' ]      = 'US West'
-	REGION_SHORT_LABEL[ 'us-west-2' ]      = 'Oregon'
-	REGION_LABEL[ 'us-west-2' ]      = 'US West'
-	REGION_SHORT_LABEL[ 'eu-west-1' ]      = 'Ireland'
-	REGION_LABEL[ 'eu-west-1' ]      = 'EU West'
-	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = 'Singapore'
-	REGION_LABEL[ 'ap-southeast-1' ] = 'Asia Pacific'
-	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = 'Sydney'
-	REGION_LABEL[ 'ap-southeast-2' ] = 'Asia Pacific'
-	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = 'Tokyo'
-	REGION_LABEL[ 'ap-northeast-1' ] = 'Asia Pacific'
-	REGION_SHORT_LABEL[ 'sa-east-1' ]      = 'Sao Paulo'
-	REGION_LABEL[ 'sa-east-1' ]      = 'South America'
+	REGION_SHORT_LABEL[ 'us-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+	REGION_LABEL[ 'us-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-east-1']
+	REGION_SHORT_LABEL[ 'us-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+	REGION_LABEL[ 'us-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-west-1']
+	REGION_SHORT_LABEL[ 'us-west-2' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+	REGION_LABEL[ 'us-west-2' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_us-west-2']
+	REGION_SHORT_LABEL[ 'eu-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+	REGION_LABEL[ 'eu-west-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_eu-west-1']
+	REGION_SHORT_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+	REGION_LABEL[ 'ap-southeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+	REGION_SHORT_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+	REGION_LABEL[ 'ap-southeast-2' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+	REGION_SHORT_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+	REGION_LABEL[ 'ap-northeast-1' ] = lang.ide[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+	REGION_SHORT_LABEL[ 'sa-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+	REGION_LABEL[ 'sa-east-1' ]      = lang.ide[ 'IDE_LBL_REGION_NAME_sa-east-1']
 
 	#private
 	RETURN_CODE = {

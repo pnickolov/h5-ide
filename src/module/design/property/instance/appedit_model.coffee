@@ -2,17 +2,68 @@
 #  View Mode for design/property/instance (app)
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model',
+	'constant',
+	'i18n!nls/lang.js'
+], ( PropertyModel, constant, lang ) ->
+
+	EbsMap =
+		"m1.large"   : true
+		"m1.xlarge"  : true
+		"m2.2xlarge" : true
+		"m2.4xlarge" : true
+		"m3.xlarge"  : true
+		"m3.2xlarge" : true
+		"c1.xlarge"  : true
 
 	AmiAppEditModel = PropertyModel.extend {
 
 		init : ( uid ) ->
-			@set 'uid', uid
+			@set 'id', uid
 			@getInstanceType()
+
+
+			instance_id = MC.canvas_data.component[uid].resource.InstanceId
+
+			myInstanceComponent = MC.canvas_data.component[ instance_id ]
+
+			# The instance_id might be component uid or aws id
+			if myInstanceComponent
+				instance_id = myInstanceComponent.resource.InstanceId
+
+			app_data = MC.data.resource_list[ MC.canvas_data.region ]
+
+			if app_data[ instance_id ]
+
+				instance = $.extend true, {}, app_data[ instance_id ]
+				instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
+
+				# Possible value : running, stopped, pending...
+				instance.isRunning = instance.instanceState.name == "running"
+				instance.isPending = instance.instanceState.name == "pending"
+				instance.instanceState.name = MC.capitalize instance.instanceState.name
+				instance.blockDevice = ""
+				if instance.blockDeviceMapping && instance.blockDeviceMapping.item
+					deviceName = []
+					for i in instance.blockDeviceMapping.item
+						deviceName.push i.deviceName
+
+					instance.blockDevice = deviceName.join ", "
+
+				# Eni Data
+				instance.eni = this.getEniData instance
+
+				this.set instance
+
+			else
+
+				console.log 'Can not found data for this instance: ' + instance_id
+
+			null
 
 		getInstanceType : () ->
 
-			uid = this.get 'uid'
+			uid = this.get 'id'
 			component = MC.canvas_data.component[ uid ]
 
 			tenacy = component.resource.Placement.Tenancy isnt 'dedicated'
@@ -65,7 +116,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
 		getEni : () ->
 
-			uid = this.get 'uid'
+			uid = this.get 'id'
 			instanceUID = uid
 
 			defaultVPCId = MC.aws.aws.checkDefaultVPC()
@@ -142,6 +193,69 @@ define [ '../base/model' ], ( PropertyModel ) ->
 				eni_detail.multi_enis = false
 
 			this.set 'eni_display', eni_detail
+
+		getEniData : ( instance_data ) ->
+
+            if not instance_data.networkInterfaceSet
+                return null
+
+            for i in instance_data.networkInterfaceSet.item
+                if i.attachment.deviceIndex == "0"
+                    id = i.networkInterfaceId
+                    data = i
+                    break
+
+            TYPE_ENI = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+            if not id
+                return null
+
+            for key, value of MC.canvas_data.component
+                if value.type == TYPE_ENI && value.resource.NetworkInterfaceId == id
+                    component = value
+                    break
+
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
+
+            if not appData[id]
+                # Use data inside networkInterfaceSet
+                data = $.extend true, {}, data
+            else
+                # Use data inside appData
+                data = $.extend true, {}, appData[ id ]
+
+            data.name = if component then component.name else id
+            if data.status == "in-use"
+                data.isInUse = true
+
+            data.sourceDestCheck = if data.sourceDestCheck is "true" then "enabled" else "disabled"
+
+            for i in data.privateIpAddressesSet.item
+                i.primary = i.primary == true
+
+            data
+
+		_getInstanceType : ( ami ) ->
+			instance_type = MC.data.instance_type[MC.canvas_data.region]
+			if ami.virtualizationType == 'hvm'
+				instance_type = instance_type.windows
+			else
+				instance_type = instance_type.linux
+			if ami.rootDeviceType == 'ebs'
+				instance_type = instance_type.ebs
+			else
+				instance_type = instance_type['instance store']
+			if ami.architecture == 'x86_64'
+				instance_type = instance_type["64"]
+			else
+				instance_type = instance_type["32"]
+
+			if !ami.virtualizationType
+				ami.virtualizationType = 'paravirtual'
+
+			instance_type = instance_type[ami.virtualizationType]
+
+			instance_type
 	}
 
 	new AmiAppEditModel()

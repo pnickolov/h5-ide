@@ -3,10 +3,10 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/app_edit.html', 'i18n!nls/lang.js', 'UI.zeroclipboard'  ], ( PropertyView, template, lang, zeroclipboard ) ->
+         'text!./template/app_edit.html', 'i18n!nls/lang.js', 'UI.zeroclipboard','text!./template/ip_list.html'  ], ( PropertyView, template, lang, zeroclipboard, ip_list_template ) ->
 
     template = Handlebars.compile template
-
+    ip_list_template = Handlebars.compile ip_list_template
     InstanceView = PropertyView.extend {
 
         events : {}

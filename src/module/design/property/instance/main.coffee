@@ -15,7 +15,7 @@ define [ "../base/main",
 ], ( PropertyModule,
      model, view,
      app_model, app_view,
-     appedit_view, appedit_model,
+     appedit_model, appedit_view,
      sglist_main, constant, ide_event ) ->
 
     ideEvents = {}

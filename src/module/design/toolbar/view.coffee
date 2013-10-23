@@ -459,7 +459,7 @@ define [ 'MC', 'event',
             # 3. Update MC.canvas.getState() to return 'app-edit'
             Tabbar.updateState( MC.data.current_tab_id, "app-edit" )
 
-
+            # 4. Trigger OPEN_PROPERTY
             null
 
         clickSaveEditApp : (event)->
@@ -478,6 +478,8 @@ define [ 'MC', 'event',
 
             # 3. Update MC.canvas.getState() to return 'app'
             Tabbar.updateState( MC.data.current_tab_id, "app" )
+
+            # 3. Trigger OPEN_PROPERTY
 
             null
 

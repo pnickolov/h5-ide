@@ -10,53 +10,55 @@ var listen = function ()
 
 	MC.paper = Canvon('#svg_canvas');
 
+	canvas_container.off('.CANVAS_EVENT');
+
 	if (canvas_state === 'app')
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
-			.on('click', '.line', MC.canvas.event.selectLine)
-			.on('mousedown', MC.canvas.event.clearSelected)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
-			.on('selectstart', returnFalse)
-			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
-			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
-			.on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('mouseenter.CANVAS_EVENT mouseleave', '.node', MC.canvas.event.nodeHover)
+			.on('selectstart.CANVAS_EVENT', returnFalse)
+			.on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
+			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.selectNode)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	if (canvas_state === 'app-edit')
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
-			.on('mousedown', '.dragable', MC.canvas.event.appMove)
-			.on('click', '.line', MC.canvas.event.selectLine)
-			.on('mousedown', MC.canvas.event.clearSelected)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
-			.on('selectstart', returnFalse)
-			.on('mousedown', '.node-launchconfiguration-label', MC.canvas.asgList.show)
-			.on('mousedown', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			.on('mousedown', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
+			.on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('mouseenter.CANVAS_EVENT mouseleave', '.node', MC.canvas.event.nodeHover)
+			.on('selectstart.CANVAS_EVENT', returnFalse)
+			.on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	if (canvas_state === 'stack')
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
-			.on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-			.on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-			.on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown)
-			.on('mouseenter mouseleave', '.node', MC.canvas.event.nodeHover)
-			.on('click', '.line', MC.canvas.event.selectLine)
-			.on('mousedown', MC.canvas.event.clearSelected)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.clickBlank)
-			.on('selectstart', returnFalse)
-			.on('mousedown', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.drawConnection.mousedown)
+			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
+			.on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+			.on('mouseenter.CANVAS_EVENT mouseleave', '.node', MC.canvas.event.nodeHover)
+			.on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('selectstart.CANVAS_EVENT', returnFalse)
+			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);

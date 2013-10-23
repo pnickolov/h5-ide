@@ -28,7 +28,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
 
     adjustTooltip =
         "ChangeInCapacity"        : "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-        "ExactCapacity"           : "Change the current capacity of your Auto Scaling group to the exact value speciﬁed."
+        "ExactCapacity"           : "Change the current capacity of your Auto Scaling group to the exact value specified."
         "PercentChangeInCapacity" : "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
 
     unitMap =

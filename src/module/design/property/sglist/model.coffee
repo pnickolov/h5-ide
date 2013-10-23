@@ -55,13 +55,16 @@ define [ 'constant','backbone' ], (constant) ->
 			allElbSGAry   = MC.aws.elb.getAllElbSGUID()
 			allSGUIDAry   = []
 			displaySGAry  = []
+			allElbSGMap   = {}
+
+			for uid in allElbSGAry
+				allElbSGMap[ uid ] = true
 
 			for uid, comp of MC.canvas_data.component
 				if comp.type isnt 'AWS.EC2.SecurityGroup'
 					continue
-				if isELBParent or isStackParent or not ( uid in allElbSGAry )
+				if isELBParent or isStackParent or not allElbSGMap.hasOwnProperty( uid )
 					allSGUIDAry.push uid
-
 
 			sg_full        = { full : false }
 			enabledSGCount = 0

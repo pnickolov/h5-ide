@@ -41,9 +41,8 @@ define [ 'event',
             #listen
             $( document.body )
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )
-                .on( 'click', '.option-group-head',   _.bind( this.toggleOption, this ) )
-                .on( 'click', '#hide-second-panel',   _.bind( this.hideSecondPanel, this     ))
-                .on( 'DOMNodeInserted', '.property-wrap', this, _.debounce( _.bind( this.domChange, this), 0, false ))
+                .on( 'click', '.option-group-head', _.bind( this.toggleOption, this ))
+                .on( 'click', '#hide-second-panel', _.bind( this.hideSecondPanel, this ))
 
             null
 
@@ -162,9 +161,7 @@ define [ 'event',
             @immHideSecondPanel()
             null
 
-        domChange : ( event ) ->
-            console.log 'property:listen DOMNodeInserted'
-
+        afterLoad : ()->
             stackId = MC.canvas_data.id
             if $('#property-second-panel').is(':hidden')
                 # added by song ######################################
@@ -193,7 +190,6 @@ define [ 'event',
                             delete @propertyHeadStateMap[stackId][compUID]
                         null
                 # added by song ######################################
-
             null
     }
 

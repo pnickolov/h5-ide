@@ -248,6 +248,14 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
 
+            # if is Server Group, disabled ip inputbox
+            instanceUID = this.model.get 'get_uid'
+            countNum = MC.canvas_data.component[instanceUID].number
+            if countNum is 1
+                @setEditableIP true
+            else
+                @setEditableIP false
+
             this.changeIPAddBtnState()
 
         changeIPAddBtnState : () ->

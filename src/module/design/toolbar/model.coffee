@@ -355,7 +355,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -402,6 +402,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 # update app resource
                 #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
+
+            else if flag is 'UPDATE_APP'
+                if id of item_state_map
+                    item_state_map[id].is_app_updating = value
 
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
@@ -486,6 +490,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             run_stack_map[region][app_name] = data
 
+            null
+
+        updateApp : ( is_update )->
+            @setFlag MC.canvas_data.id 'UPDATE_APP', is_update
             null
 
         #zoomin

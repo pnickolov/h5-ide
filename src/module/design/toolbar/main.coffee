@@ -88,6 +88,11 @@ define [ 'jquery',
                 console.log 'TOOLBAR_ZOOM_OUT'
                 model.zoomOut()
 
+            view.on 'UPDATE_APP', ( is_update ) ->
+                if is_update
+                    model.updateApp is_update
+                null
+
             #run
             view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->
                 console.log 'design_toolbar_click:runStack'

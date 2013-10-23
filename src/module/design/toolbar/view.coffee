@@ -453,8 +453,7 @@ define [ 'MC', 'event',
             # 1. Show Resource Panel
 
             # 2. Toggle Toolbar Button
-            $("#toolbar_appmodel, #toolbar-edit-app").hide()
-            $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").show()
+            @trigger "UPDATE_APP", true
 
             # 3. Update MC.canvas.getState() to return 'app-edit'
             Tabbar.updateState( MC.data.current_tab_id, "app-edit" )
@@ -484,8 +483,7 @@ define [ 'MC', 'event',
             # 1. Hide Resource Panel
 
             # 2. Toggle Toolbar Button
-            $("#toolbar_appmodel, #toolbar-edit-app").show()
-            $("#toolbar-cancel-edit-app, #toolbar-save-edit-app").hide()
+            @trigger "UPDATE_APP", false
 
             # 3. Update MC.canvas.getState() to return 'app'
             Tabbar.updateState( MC.data.current_tab_id, "app" )

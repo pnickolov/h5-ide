@@ -463,7 +463,18 @@ define [ 'MC', 'event',
             null
 
         clickSaveEditApp : (event)->
+            me = this
+            console.log 'click save app'
+
             # 1. Send save request
+            # check credential
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
             # After success then do the clickCancelEditApp routine.
             null

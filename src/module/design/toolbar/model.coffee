@@ -276,6 +276,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #     app_region: region,
                 #     app_name: name
 
+            #####listen APP_UPDATE_RETURN
+            me.on 'APP_UPDATE_RETURN', (result) ->
+                console.log 'APP_UPDATE_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[5]
+
+                name    = item_state_map[id].name
+
+                me.handleRequest result, 'SAVE_APP', region, id, name
+
             #####listen APP_GETKEY_RETURN
             me.on 'APP_GET_KEY_RETURN', (result) ->
                 console.log 'APP_GET_KEY_RETURN'
@@ -424,9 +435,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         saveStack : (data) ->
             me = this
 
-            region = data.region
-            id = data.id
-            name = data.name
+            region  = data.region
+            id      = data.id
+            name    = data.name
 
             #instance store ami check
             #data.has_instance_store_ami = me.isInstanceStore data
@@ -574,6 +585,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name, flag
 
+        saveApp : (data) ->
+            me = this
+
+            region  = data.region
+            id      = data.id
+
+            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
+
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
@@ -701,7 +720,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-                            if flag is 'TERMINATE_APP'
+                            else if flag is 'TERMINATE_APP'
 
                                 appId = id
                                 appName = name
@@ -754,6 +773,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     # remove the app name from app_list
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                                when 'SAVE_APP'
+                                    if me.item_state_map[id].is_running
+                                        me.setFlag id, 'RUNNING_APP', region
+                                    else
+                                        me.setFlag id, 'STOPPED_APP', region
+
+                                    #ide_event.trigger ide_event.SAVED_APP, name, id
 
                                 else
                                     console.log 'not support toolbar operation:' + flag

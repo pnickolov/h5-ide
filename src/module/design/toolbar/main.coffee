@@ -128,6 +128,10 @@ define [ 'jquery',
                 console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
                 model.terminateApp(region, app_id, app_name, flag)
 
+            ide_event.onLongListen ide_event.SAVE_APP, (data) ->
+                console.log 'design_toolbar SAVE_APP'
+                model.saveApp(data)
+
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'
                 model.saveStack()

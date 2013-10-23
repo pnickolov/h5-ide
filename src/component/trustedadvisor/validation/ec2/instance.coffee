@@ -1,6 +1,9 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
-	isVPCCanConnectOutside = () ->
+	isVPCCanConnectOutside = ( type ) ->
+
+		#test
+		MC.ta.resultVO = resultVO
 
 		# check if have vpn and eip
 		isHaveVPN = false
@@ -14,9 +17,11 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 			null
 
 		if isHaveVPN or isHaveEIP
+			level = resultVO.del type
+			console.log 'level = ' + level
 			return null
 
 		tipInfo = sprintf lang.ide.TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
-		resultVO.set resultVO.WARNING, tipInfo
+		resultVO.set type, resultVO.WARNING, tipInfo
 
 	isVPCCanConnectOutside : isVPCCanConnectOutside

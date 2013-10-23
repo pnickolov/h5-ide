@@ -18,7 +18,7 @@ define [ 'event', 'component/trustedadvisor/validation/main',
 
             if _.isFunction func
 
-                result = func obj
+                result = func type, obj
 
                 if !result
                     console.log 'validation success'
@@ -26,8 +26,6 @@ define [ 'event', 'component/trustedadvisor/validation/main',
                 else
                     console.log result
                     console.log 'validation failed'
-                    #
-                    ide_event.trigger ide_event.UPDATE_STATUS_BAR, result.level
                     #
                     false
 

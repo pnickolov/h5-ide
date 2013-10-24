@@ -888,7 +888,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
 
-				option.osType = component_layout.osType ;
+				option.osType = component_layout.osType;
+				if(component_layout.osType == 'win'){
+					option.osType = 'windows';
+				}
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
 				option.virtualizationType = component_layout.virtualizationType;

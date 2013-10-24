@@ -97,6 +97,18 @@ define [ '../base/main',
             sglist_main.loadModule @model
             null
 
+        initAppEdit : ()->
+            @model = app_model
+            @view  = app_view
+            null
+
+        afterLoadAppEdit : ()->
+            # Use Stack model to handle sglist interaction
+            model.init( @model.get "componentUid" )
+            sglist_main.loadModule model
+            null
+
+
 
     }
     null

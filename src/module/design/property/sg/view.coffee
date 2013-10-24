@@ -39,7 +39,7 @@ define [ '../base/view',
 
 
         render : () ->
-            if @model.isApp
+            if @model.isReadOnly
                 tpl = app_template
             else
                 tpl = template

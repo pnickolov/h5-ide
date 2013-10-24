@@ -103,7 +103,10 @@ define [ 'event',
                 if headCompUID
                     stackMap = @propertyHeadStateMap[stackId]
                     stackMap[ headCompUID ] = headExpandStateAry
-                    stackMap[ MC.canvas_data.component[headCompUID].type ] = headExpandStateAry
+
+                    component = MC.canvas_data.component[headCompUID]
+                    if component
+                        stackMap[ component.type ] = headExpandStateAry
 
                 # added by song ######################################
 
@@ -174,8 +177,9 @@ define [ 'event',
                 stackMap = @propertyHeadStateMap[stackId]
                 if stackMap
                     headExpandStateAry = stackMap[headCompUID]
-                    if not headExpandStateAry
-                        headExpandStateAry = stackMap[ MC.canvas_data.component[headCompUID].type ]
+                    component = MC.canvas_data.component[headCompUID]
+                    if not headExpandStateAry and component
+                        headExpandStateAry = stackMap[ component.type ]
 
                 if headExpandStateAry
                     headElemAry = $('#property-panel').find('.option-group-head')

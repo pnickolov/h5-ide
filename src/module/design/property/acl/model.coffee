@@ -14,7 +14,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         init : (uid) ->
 
             if @isApp
-                appInit( uid )
+                @appInit( uid )
                 return
 
             allComp = MC.canvas_data.component
@@ -43,7 +43,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         appInit : ( uid ) ->
 
-            aclObj = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.NetworkAclId]
+            component = MC.canvas_data.component[uid]
+
+            aclObj = MC.data.resource_list[MC.canvas_data.region][ component.resource.NetworkAclId ]
+            aclObj.name = component.name
 
             #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
 

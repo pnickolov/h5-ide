@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, constant, forge_app ) ->
 
     SgModel = PropertyModel.extend {
 
@@ -83,6 +83,11 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             @set( 'is_elb_sg', is_elb_sg )
 
             inputReadOnly = is_elb_sg or @isAppEdit
+
+            if not forge_app.existing_app_resource( uid )
+                # The SG has no aws resource associated. Meaning it
+                # is a newly created SG. So the input should be editable
+                inputReadOnly = false
 
             if inputReadOnly or sg_detail.component.name is 'DefaultSG'
                 @set( 'nameReadOnly', true )

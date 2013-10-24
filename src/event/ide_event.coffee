@@ -39,6 +39,9 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         RELOAD_AZ              : 'RELOAD_AZ'
 
+        #resource panel
+        UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
+
         #tab
         ADD_STACK_TAB          : 'ADD_STACK_TAB'
         OPEN_STACK_TAB         : 'OPEN_STACK_TAB'
@@ -63,6 +66,7 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
+        UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'

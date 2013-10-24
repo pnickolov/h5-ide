@@ -49,6 +49,7 @@ define [ 'MC', 'event',
             'click .icon-refresh'           : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
+            #app edit
             'click #toolbar-edit-app'        : 'clickEditApp'
             'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
             'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
@@ -115,6 +116,7 @@ define [ 'MC', 'event',
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
         clickRunIcon : ->
+            console.log 'clickRunIcon'
             me = this
 
             # check credential
@@ -449,14 +451,17 @@ define [ 'MC', 'event',
             console.log 'toolbar clickRefreshApp'
             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
 
-        clickEditApp : (event) ->
+        clickEditApp : ->
+            console.log 'clickEditApp'
             # 1. Show Resource Panel
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
 
             # 2. Toggle Toolbar Button
-            @trigger "UPDATE_APP", true
+            #@trigger "UPDATE_APP", true
 
             # 3. Update MC.canvas.getState() to return 'appedit'
-            #Tabbar.updateState( MC.data.current_tab_id, "appedit" )
+            Tabbar.updateState( MC.data.current_tab_id, "appedit" )
+            #ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
 
             # 4. Trigger OPEN_PROPERTY
             null

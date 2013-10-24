@@ -131,6 +131,9 @@ define [ 'event',
                     temp.attr 'data-tab-id', tab_id
                     temp.attr 'href',        '#tab-content-' + tab_id
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
+                    #
+                    Tabbar.updateState tab_id, 'app'
+                    #
                     null
             return original_tab_id
 
@@ -142,6 +145,16 @@ define [ 'event',
                     if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
+
+        updateTabType : ( tab_id, tab_type ) ->
+            console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+            _.each $( '.tabbar-group' ).children(), ( item ) ->
+                $item = $( item )
+                if $item.attr( 'id' ) is 'tab-bar-' + tab_id
+                    #$item.attr( 'data-tab-type', tab_type )
+                    $item.data( 'tab-type', tab_type )
+                    Tabbar.current = tab_type
+                    null
 
         closeTabRestriction : ( event, target, tab_name, tab_id ) ->
             console.log 'closeTabRestriction', target, tab_name, tab_id

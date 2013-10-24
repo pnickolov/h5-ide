@@ -146,15 +146,15 @@ define [ 'event',
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
 
-        updateTabType : ( tab_id, tab_type ) ->
-            console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
-            _.each $( '.tabbar-group' ).children(), ( item ) ->
-                $item = $( item )
-                if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-                    #$item.attr( 'data-tab-type', tab_type )
-                    $item.data( 'tab-type', tab_type )
-                    Tabbar.current = tab_type
-                    null
+        #updateTabType : ( tab_id, tab_type ) ->
+        #    console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+        #    _.each $( '.tabbar-group' ).children(), ( item ) ->
+        #        $item = $( item )
+        #        if $item.attr( 'id' ) is 'tab-bar-' + tab_id
+        #            #$item.attr( 'data-tab-type', tab_type )
+        #            $item.data( 'tab-type', tab_type )
+        #            Tabbar.current = tab_type
+        #            null
 
         closeTabRestriction : ( event, target, tab_name, tab_id ) ->
             console.log 'closeTabRestriction', target, tab_name, tab_id

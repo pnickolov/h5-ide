@@ -613,6 +613,9 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 					return false
 
+			# TA Validation
+			MC.ta.validComp 'instance.isVPCCanConnectOutside'
+
 		getSGList : () ->
 
 			sgUIDAry = []

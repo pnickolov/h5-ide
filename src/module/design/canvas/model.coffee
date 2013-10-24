@@ -750,6 +750,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# Enable VGW in resource panel
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, resource_type.AWS_VPC_VPNGateway
 
+			# TA Validation
+			MC.ta.validComp 'instance.isVPCCanConnectOutside'
+
 			null
 
 		deleteR_CGW : ( component ) ->
@@ -760,6 +763,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				if MC.extractID( value.resource.CustomerGatewayId ) is component.id
 					delete MC.canvas_data.component[ key ]
 					break
+
+			# TA Validation
+			MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 			null
 
@@ -1016,6 +1022,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.delVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+				# TA Validation
+				MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 			# === SG Lines ===
 			# ELB <==> Instance
@@ -1451,6 +1459,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# VGW <==> CGW
 			else if portMap['vgw-vpn'] and portMap['cgw-vpn']
 				MC.aws.vpn.addVPN(portMap['vgw-vpn'], portMap['cgw-vpn'])
+				# TA Validation
+				MC.ta.validComp 'instance.isVPCCanConnectOutside'
 
 			else if portMap['elb-sg-out'] and portMap['launchconfig-sg']
 

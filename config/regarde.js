@@ -18,6 +18,11 @@ module.exports = {
 	index: {
 		files: '<%= htmlfiles %>',
 		tasks: [ 'livereload' ]
+	},
+
+	lang: {
+		files: '<%= langfiles %>',
+		tasks: [ 'lang' ]
 	}
 
 };

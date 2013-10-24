@@ -493,7 +493,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         updateApp : ( is_update )->
-            @setFlag MC.canvas_data.id 'UPDATE_APP', is_update
+            @setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
             null
 
         #zoomin

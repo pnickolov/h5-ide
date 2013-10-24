@@ -89,8 +89,7 @@ define [ 'jquery',
                 model.zoomOut()
 
             view.on 'UPDATE_APP', ( is_update ) ->
-                if is_update
-                    model.updateApp is_update
+                model.updateApp is_update
                 null
 
             #run

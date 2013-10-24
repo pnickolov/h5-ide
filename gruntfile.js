@@ -298,9 +298,11 @@ module.exports = function( grunt ) {
 		var done = this.async();
 
 		//call config/lang.js
-		config.lang.run( grunt, function() {
-			console.log( 'i18n create complete!' );
-			done();
+		config.lang.run( grunt, function(success) {
+			if (success) {
+				console.log( 'i18n create complete!' );
+			}
+			done(success);
 		});
 	});
 

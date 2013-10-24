@@ -98,8 +98,10 @@ module.exports.run = function( grunt, callback ) {
     };
 
     // do check
-    if (!check(lang))
+    if (!check(lang)) {
+        callback(false);
         return false;
+    }
 
     // do divorce
     divorce(lang, en_us, zh_cn);
@@ -107,7 +109,7 @@ module.exports.run = function( grunt, callback ) {
     grunt.file.write(en_file, format(en_us));
     grunt.file.write(zh_file, format(zh_cn));
 
-    callback();
+    callback(true);
 
 };
 

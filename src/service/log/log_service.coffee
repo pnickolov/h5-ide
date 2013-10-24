@@ -44,6 +44,9 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
                     forge_result.is_error         = true
                     forge_result.error_message    = result.toString()
 
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+                    forge_result.param = param_ary
+
                     callback forge_result
             }
 

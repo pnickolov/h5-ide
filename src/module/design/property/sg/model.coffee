@@ -13,7 +13,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         init : ( uid ) ->
 
-            if @isApp
+            if @isReadOnly
                 @appInit uid
                 return
 
@@ -78,8 +78,18 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     null
 
             @set( 'sg_detail', sg_detail )
-            @set( 'isDefault', sg_detail.component.name is 'DefaultSG' )
-            @set( 'is_elb_sg', MC.aws.elb.isELBDefaultSG(uid) )
+
+            is_elb_sg = MC.aws.elb.isELBDefaultSG(uid)
+            @set( 'is_elb_sg', is_elb_sg )
+
+            inputReadOnly = is_elb_sg or @isAppEdit
+
+            if inputReadOnly or sg_detail.component.name is 'DefaultSG'
+                @set( 'nameReadOnly', true )
+
+            if inputReadOnly
+                @set( 'descReadOnly', true )
+
             @set( 'uid', uid )
             null
 

@@ -121,7 +121,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
 
-            this.set elb
+            @set elb
+            @set "componentUid", myElbComponent.uid
 
         getSGList : () ->
 

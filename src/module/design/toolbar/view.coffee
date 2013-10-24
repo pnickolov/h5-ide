@@ -453,15 +453,16 @@ define [ 'MC', 'event',
 
         clickEditApp : ->
             console.log 'clickEditApp'
-            # 1. Show Resource Panel
-            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
 
-            # 2. Toggle Toolbar Button
-            @trigger "UPDATE_APP", true
-
-            # 3. Update MC.canvas.getState() to return 'appedit'
+            # 1. Update MC.canvas.getState() to return 'appedit'
             Tabbar.updateState( MC.data.current_tab_id, "appedit" )
             #ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+
+            # 2. Show Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
+
+            # 3. Toggle Toolbar Button
+            @trigger "UPDATE_APP", true
 
             # 4. Trigger OPEN_PROPERTY
             null
@@ -485,15 +486,16 @@ define [ 'MC', 'event',
 
         clickCancelEditApp : (event)->
 
-            # 1. Hide Resource Panel
-
-            # 2. Toggle Toolbar Button
-            @trigger "UPDATE_APP", false
-
-            # 3. Update MC.canvas.getState() to return 'app'
+            # 1. Update MC.canvas.getState() to return 'app'
             Tabbar.updateState( MC.data.current_tab_id, "app" )
 
-            # 3. Trigger OPEN_PROPERTY
+            # 2. Hide Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
+
+            # 3. Toggle Toolbar Button
+            @trigger "UPDATE_APP", false
+
+            # 4. Trigger OPEN_PROPERTY
 
             null
 

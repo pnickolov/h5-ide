@@ -214,6 +214,8 @@ define [ 'event',
                 if Tabbar.current is 'appedit'
                     if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'hiden' and !$( '#resource-panel' ).hasClass( 'hiden' )
                         $( '#hide-resource-panel' ).trigger 'click'
+                    else if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show' and $( '#resource-panel' ).hasClass( 'hiden' )
+                        $( '#hide-resource-panel' ).trigger 'click'
                     return
                 #
                 $( '#hide-resource-panel' ).hide()
@@ -229,6 +231,10 @@ define [ 'event',
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
+            else if type is 'hide'
+                $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
+                $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
+                $( '#hide-resource-panel' ).hide()
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

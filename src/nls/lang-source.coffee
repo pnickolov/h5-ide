@@ -1724,12 +1724,12 @@ module.exports =
       zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。"
 
     PROP_TEXT_DEFAULT_SG_DESC:
-      en: "Stack Default Security Group"
-      zh: "模板默认安全组"
+      en: "Default Security Group"
+      zh: "Default Security Group"
 
     PROP_TEXT_CUSTOM_SG_DESC:
       en: "Custom Security Group"
-      zh: "客户安全组"
+      zh: "Custom Security Group"
 
     PROP_MSG_WARN_WHITE_SPACE:
       en: "Stack name contains white space"

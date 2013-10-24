@@ -212,7 +212,7 @@ define [ '../base/view',
             index = $(event.currentTarget).closest("li").index()
             if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
 
-            @model.attachEIP eip_index, attach
+            @model.attachEIP index, attach
             @updateEIPList()
 
         updateEIPList: (event) ->

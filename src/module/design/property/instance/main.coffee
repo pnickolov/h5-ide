@@ -72,7 +72,7 @@ define [ 'jquery',
 
             sglist_main.loadModule model
 
-            model.set 'type', 'stack'
+            # model.set 'type', 'stack'
 
             #
             model.listen()
@@ -142,7 +142,7 @@ define [ 'jquery',
 
             model.init(uid)
 
-            model.set 'type', 'app'
+            # model.set 'type', 'app'
 
             view.render()
             # Set title

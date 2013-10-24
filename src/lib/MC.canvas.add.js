@@ -2203,6 +2203,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					component_layout.osType =  option.osType;
+					//add osFamily by michael in 20131024
+					component_layout.osFamily = option.osFamily;
 					component_layout.architecture =  option.architecture;
 					component_layout.rootDeviceType =  option.rootDeviceType;
 					component_layout.virtualizationType = option.virtualizationType;
@@ -2220,6 +2222,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					option.osType = component_layout.osType ;
+					//add osFamily by michael in 20131024
+					option.osFamily = component_layout.osFamily;
 					option.architecture = component_layout.architecture ;
 					option.rootDeviceType = component_layout.rootDeviceType ;
 					option.virtualizationType = component_layout.virtualizationType;
@@ -2275,6 +2279,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 
 				option.osType = component_layout.osType ;
+				//add osFamily by michael in 20131024
+				option.osFamily = component_layout.osFamily;
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
 				option.virtualizationType = component_layout.virtualizationType;

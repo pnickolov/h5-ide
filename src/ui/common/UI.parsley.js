@@ -592,7 +592,8 @@
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
             ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
             domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
-            digits: '^[0-9]*$'
+            digits: '^[0-9]*$',
+            ascii: '^[\x00-\x7F]*$'
           };
 
           vlidateType = this.options.type;
@@ -1724,6 +1725,7 @@
 // global bind some event
 // focus, submit
 var globalBindList = 'focus';
+var bindElements = 'form[data-validate="parsley"] input, [data-bind="true"] input, form[data-validate="parsley"] textarea, [data-bind="true"] textarea';
 
 var isBind = function( elem ) {
   elem = elem instanceof $ ? elem : $( elem );
@@ -1798,7 +1800,7 @@ $(document.body).on( 'click', '.parsley-submit', bindForm);
 $(document.body).on( 'click', '.parsley-submit', formValidate);
 
 // global bind on single input
-$(document.body).on( globalBindList, 'form[data-validate="parsley"] input, [data-bind="true"] input', bindFiled );
+$(document.body).on( globalBindList, bindElements, bindFiled );
 
 
 

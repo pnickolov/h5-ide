@@ -56,15 +56,14 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 			stackType = parent_model.get 'type'
 
-			if stackType is 'stack'
+			if stackType in ['stack', 'app']
 				stackType = true
 			else
 				stackType = false
 			this.set 'is_stack_sg', stackType
 
-			appView = false
-			if parent_model.get('type') is 'app'
-				appView = true
+			currentState = MC.canvas.getState()
+			appView = (currentState is 'app')
 
 			stackComp = false
 			if parent_model.get('is_stack') is true
@@ -100,7 +99,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 				sgHideCheck = false
 
-				if parent_model.get('type') is 'app'
+				if appView
 					sgHideCheck = true
 
 				if parent_model.get('is_stack') is true
@@ -111,7 +110,7 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					sgIsDefault = true
 
 				needShow = true
-				if !sgChecked and parent_model.get('type') is 'app' and !parent_model.get('is_stack')
+				if !sgChecked and !stackType and appView
 					needShow = false
 
 				# need to display
@@ -148,10 +147,8 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 				# In VPC, user can only select 5 SG
 				sg_full.full = true
 
-			isAppView = that.get 'app_view'
-
 			refSGLength = 0
-			if stackType and stackComp and !isAppView
+			if stackType and stackComp and !appView
 				refSGLength = displaySGAry.length
 			else
 				refSGLength = enabledSGCount
@@ -200,7 +197,10 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 					if value.ToPort is value.FromPort
 						value.display_port = value.ToPort
 					else
-						value.display_port = value.FromPort + '-' + value.ToPort
+						partType = '-'
+						if value.IpProtocol is 'icmp'
+							partType = '/'
+						value.display_port = value.FromPort + partType + value.ToPort
 
 					if value.IpRanges.slice(0,1) is '@'
 
@@ -228,7 +228,10 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 						if value.ToPort is value.FromPort
 							value.display_port = value.ToPort
 						else
-							value.display_port = value.FromPort + '-' + value.ToPort
+							partType = '-'
+							if value.IpProtocol is 'icmp'
+								partType = '/'
+							value.display_port = value.FromPort + partType + value.ToPort
 
 						if value.IpRanges.slice(0,1) is '@'
 
@@ -251,7 +254,22 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
 				null
 
-			that.set 'sg_rule_list', sgRuleAry
+			unionSGRuleAry = []
+
+			isInAry = (obj, ary) ->
+				result = false
+				_.each ary, (oriObj) ->
+					if _.isEqual(obj, oriObj)
+						result = true
+					null
+				result
+
+			_.each sgRuleAry, (itemObj) ->
+				if !isInAry(itemObj, unionSGRuleAry)
+					unionSGRuleAry.push(itemObj)
+				null
+
+			that.set 'sg_rule_list', unionSGRuleAry
 
 			null
 

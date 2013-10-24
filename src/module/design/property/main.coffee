@@ -131,11 +131,12 @@ define [ 'event',
 			else if tab_type is "stack"
 				tab_type = PropertyBaseModule.TYPE.Stack
 			else if uid isnt ""
-				if forge_app.existing_app_resource( uid )
+				if forge_app.existing_app_resource( uid ) is true
 					tab_type = PropertyBaseModule.TYPE.AppEdit
+				else if forge_app.existing_app_resource( uid ) is false
+					tab_type = PropertyBaseModule.TYPE.Stack
 				else
 					tab_type = PropertyBaseModule.TYPE.App
-
 			tab_type
 
 		null

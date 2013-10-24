@@ -49,6 +49,10 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 					result = if MC.canvas_data.component[resource_uid].resource.LaunchConfigurationARN then true else false
 
+				when constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+
+					result = if MC.canvas_data.component[resource_uid].resource.GroupId then true else false
+
 		return result
 
 

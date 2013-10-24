@@ -62,6 +62,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type
+            #
             $new_status = $( '.icon-statusbar-' + level.toLowerCase() )
             outerHTML   = $new_status.get( 0 ).outerHTML
             count       = $new_status.parent().html().replace( outerHTML, '' )
@@ -69,7 +70,10 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 count   = parseInt( count, 10 ) + 1
             else if type is 'delete'
                 count   = parseInt( count, 10 ) - 1
+            #
             $new_status.parent().html outerHTML + count
+            #
+            ide_event.trigger ide_event.UPDATE_TA_MODAL
             null
 
     }

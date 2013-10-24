@@ -3,7 +3,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 	result   = {}
 
-	set = ( key, level, info, uid ) ->
+	add = ( key, level, info, uid ) ->
 		#
 		result =
 			key   : key
@@ -19,9 +19,6 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		#
 		result
 
-	get = ->
-		result
-
 	del = ( key ) ->
 		delete_obj = {}
 		#
@@ -33,11 +30,10 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		#
 		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
 		#
-		null
+		MC.ta.list
 
 
-	set  : set
-	get  : get
+	add  : add
 	del  : del
 
 	ERROR   : 'ERROR'

@@ -19,11 +19,21 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
-
-            model.createList()
-
-            #render
-            view.render type
+            #
+            render = ->
+                console.log 'ta render'
+                model.createList()
+                view.render type
+            #
+            render()
+            #
+            ide_event.onLongListen ide_event.UPDATE_TA_MODAL, () ->
+                console.log 'UPDATE_TA_MODAL'
+                render()
+            #
+            ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
+                console.log 'UNLOAD_TA_MODAL'
+                unLoadModule view, model
 
     unLoadModule = ( view, model ) ->
         console.log 'trusted advisor run unLoadModule'
@@ -33,7 +43,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
         #
         view  = null
         model = null
-        #ide_event.offListen ide_event.<EVENT_TYPE>
+        #
+        ide_event.offListen ide_event.UPDATE_TA_MODAL
+        ide_event.offListen ide_event.UNLOAD_TA_MODAL
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

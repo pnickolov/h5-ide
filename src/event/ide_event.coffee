@@ -64,8 +64,10 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
 
-        #status bar
+        #status bar & ta
         UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
+        UPDATE_TA_MODAL        : 'UPDATE_TA_MODAL'
+        UNLOAD_TA_MODAL        : 'UNLOAD_TA_MODAL'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'

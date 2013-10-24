@@ -119,8 +119,9 @@ define [ 'event',
 
         _hideStatubar : ->
             console.log '_hideStatubar'
-            #
-            $( '#status-bar-modal' ).empty() if $.trim( $( '#status-bar-modal' ).html() )
+            if $.trim( $( '#status-bar-modal' ).html() )
+                $( '#status-bar-modal' ).empty()
+                ide_event.trigger ide_event.UNLOAD_TA_MODAL
     }
 
     view = new MainView()

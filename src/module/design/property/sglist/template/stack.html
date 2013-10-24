@@ -43,12 +43,12 @@
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{sgColor}}" ></div>{{sgName}}</div>
 					<div class="col2-2 truncate">{{sgDesc}}</div>
-					<div class="col2-3 truncate">{{sgRuleNum}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{sgMemberNum}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#unless sgIsDefault}}{{#unless appView}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/unless}}{{/unless}}</div>
+					<div class="col2-3 truncate">{{sgRuleNum}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{sgMemberNum}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#unless sgIsDefault}}{{#unless readonly}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/unless}}{{/unless}}</div>
 				</div>
 			</li>
 			{{/each}}
 		</ul>
-		{{#unless app_view}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">{{ i18n "PROP_SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
+		{{#unless readonly}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">{{ i18n "PROP_SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
 	</div>
 	<div id="item-rule" class="tab-item">
 		<div class="rule-list-sort property-control-group">

@@ -137,6 +137,10 @@ define [ 'event',
 					tab_type = PropertyBaseModule.TYPE.Stack
 				else
 					tab_type = PropertyBaseModule.TYPE.App
+
+				# ########## For Develop # #################
+				tab_type = PropertyBaseModule.TYPE.AppEdit
+
 			tab_type
 
 		null

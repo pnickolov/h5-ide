@@ -45,7 +45,7 @@ define [ "../base/main",
         initApp : () ->
             @model = model
             @model.isApp = true
-            @view = view
+            @view = app_view
             null
     }
     null

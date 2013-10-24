@@ -24,6 +24,7 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
             # Use by sglist_main to determine this is Stack Property Model
             @set 'is_stack', true
+            @set 'isApp', @isApp
             null
 
         getProperty : ->

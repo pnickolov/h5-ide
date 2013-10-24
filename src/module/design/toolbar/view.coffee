@@ -456,7 +456,7 @@ define [ 'MC', 'event',
             @trigger "UPDATE_APP", true
 
             # 3. Update MC.canvas.getState() to return 'appedit'
-            #Tabbar.updateState( MC.data.current_tab_id, "appedit" )
+            Tabbar.updateState( MC.data.current_tab_id, "appedit" )
 
             # 4. Trigger OPEN_PROPERTY
             null

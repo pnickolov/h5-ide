@@ -29,7 +29,7 @@ var listen = function ()
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 
-	if (canvas_state === 'app-edit')
+	if (canvas_state === 'appedit')
 	{
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)

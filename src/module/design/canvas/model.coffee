@@ -108,7 +108,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 		beforeDrop : ( event, src_node, tgt_parent ) ->
 
 			# We don't support change parent in App Edit Mode yet.
-			if MC.canvas.getState() is "app-edit"
+			if MC.canvas.getState() is "appedit"
 				event.preventDefault()
 				return
 

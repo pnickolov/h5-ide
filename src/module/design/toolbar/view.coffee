@@ -455,8 +455,8 @@ define [ 'MC', 'event',
             # 2. Toggle Toolbar Button
             @trigger "UPDATE_APP", true
 
-            # 3. Update MC.canvas.getState() to return 'app-edit'
-            Tabbar.updateState( MC.data.current_tab_id, "app-edit" )
+            # 3. Update MC.canvas.getState() to return 'appedit'
+            #Tabbar.updateState( MC.data.current_tab_id, "appedit" )
 
             # 4. Trigger OPEN_PROPERTY
             null

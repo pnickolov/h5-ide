@@ -16,8 +16,16 @@ MC.canvas_property = {};
 MC.canvas = {
 	getState: function ()
 	{
-		return Tabbar.current;
+		//return Tabbar.current;
 		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		var state = '';
+		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
+			state = 'stack';
+		}
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+			state = Tabbar.current;
+		}
+		return state;
 	},
 
 	display: function (id, key, is_visible)
@@ -5247,7 +5255,7 @@ MC.canvas.event.appMove = function (event)
 		{
 			MC.canvas.select( this.id );
 		}
-		
+
 	}
 
 	return false;

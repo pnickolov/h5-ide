@@ -47,7 +47,7 @@ define [ 'jquery',
 
             view.model    = model
 
-            model.set 'type', 'stack'
+            # model.set 'type', 'stack'
 
             view.on 'ELB_NAME_CHANGED', ( value ) ->
                 model.setELBName uid, value
@@ -137,7 +137,7 @@ define [ 'jquery',
             #view
             view.model    = model
 
-            model.set 'type', 'app'
+            # model.set 'type', 'app'
 
             model.init uid
             view.render()

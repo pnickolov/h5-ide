@@ -54,7 +54,7 @@ define [ 'jquery',
 
             model.set 'uid', uid
 
-            model.set 'type', 'stack'
+            # model.set 'type', 'stack'
 
             model.getENIDisplay uid
             #render
@@ -113,7 +113,7 @@ define [ 'jquery',
 
             model.init uid
 
-            model.set 'type', 'app'
+            # model.set 'type', 'app'
 
             view.render()
 

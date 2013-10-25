@@ -10,7 +10,9 @@ var listen = function ()
 
 	MC.paper = Canvon('#svg_canvas');
 
-	canvas_container.off('.CANVAS_EVENT');
+	canvas_container
+		.off('.CANVAS_EVENT')
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack');
 
 	if (canvas_state === 'app')
 	{

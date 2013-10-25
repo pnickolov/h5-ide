@@ -123,11 +123,14 @@ define [ 'event', 'i18n!nls/lang.js',
             @status.isDemo = false
             null
 
-        reloadResource: ->
+        reloadResource: ( event, skip_load) ->
             if Helper.hasCredential() and not @status.isDemo
                 @status.reloading = true
                 @showLoading '#global-view, #region-resource-wrap'
-                @trigger 'RELOAD_RESOURCE'
+                if !skip_load
+                # skip_load true means refresh after DescribeAccountAttributes
+                # skip_load false means refresh by click refresh icon on ovewview
+                    @trigger 'RELOAD_RESOURCE'
             else
                 @showCredential()
 

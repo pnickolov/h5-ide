@@ -5244,6 +5244,7 @@ MC.canvas.keypressed = [];
 MC.canvas.event.keyEvent = function (event)
 {
 	if (
+		Tabbar.current === 'new' ||
 		Tabbar.current === 'app' ||
 		Tabbar.current === 'stack'
 	)

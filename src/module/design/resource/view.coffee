@@ -235,6 +235,7 @@ define [ 'event',
                 #
                 $($('.fixedaccordion').children()[0]).hide()
                 $($('.fixedaccordion').children()[3]).hide()
+                $($('.fixedaccordion').children()[4]).hide() if $('.fixedaccordion').children()[4]
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
                 $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
@@ -242,6 +243,7 @@ define [ 'event',
                 #
                 $($('.fixedaccordion').children()[0]).show()
                 $($('.fixedaccordion').children()[3]).show()
+                $($('.fixedaccordion').children()[4]).show() if $('.fixedaccordion').children()[4]
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

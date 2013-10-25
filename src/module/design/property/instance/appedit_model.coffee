@@ -12,6 +12,7 @@ define [ '../base/model',
 
 		init : ( uid ) ->
 
+			@set 'uid',    uid
 			myInstanceComponent = MC.canvas_data.component[ uid ]
 
 			# Find out AMI
@@ -42,7 +43,7 @@ define [ '../base/model',
 
 			@set 'instance_type', instance_type_list
 
-			@set 'uid',    uid
+
 			@set 'number', myInstanceComponent.number
 			@set 'name',   myInstanceComponent.serverGroupName
 			null

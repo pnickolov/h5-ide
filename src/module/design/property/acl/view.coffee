@@ -115,14 +115,22 @@ define [ 'event', 'i18n!nls/lang.js',
                 'tcp':
                     dom: $('#sg-protocol-tcp input')
                     method: ( val ) ->
-                        if not MC.validate.portRange(val)
-                            return 'Must be a valid format of number.'
+                        portAry = []
+                        portAry = MC.validate.portRange(val)
+                        if not portAry
+                            return 'Must be a valid format of port range.'
+                        if not MC.validate.portValidRange(portAry)
+                            return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
                         null
                 'udp':
                     dom: $('#sg-protocol-udp input')
                     method: ( val ) ->
-                        if not MC.validate.portRange(val)
+                        portAry = []
+                        portAry = MC.validate.portRange(val)
+                        if not portAry
                             return 'Must be a valid format of port range.'
+                        if not MC.validate.portValidRange(portAry)
+                            return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
                         null
                 'custom':
                     dom: $('#sg-protocol-custom input')
@@ -184,8 +192,8 @@ define [ 'event', 'i18n!nls/lang.js',
                 protocol = $('#sg-protocol-' + protocol + ' input').val()
                 portTo = portFrom = ''
             else if protocol is 'all'
-                portTo = '0'
-                portFrom = '65535'
+                portFrom = '0'
+                portTo = '65535'
                 protocol = '-1'
 
             this.trigger 'ADD_RULE_TO_ACL', {
@@ -243,7 +251,10 @@ define [ 'event', 'i18n!nls/lang.js',
                 if value.Protocol is '1'
                     newRuleObj.port = value.IcmpTypeCode.Type + '/' + value.IcmpTypeCode.Code
                 else
-                    newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
+                    if value.PortRange.From is value.PortRange.To
+                        newRuleObj.port = value.PortRange.From
+                    else
+                        newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
 
                     if (value.PortRange.To is '') and (value.PortRange.From is '')
                         newRuleObj.port = 'All'

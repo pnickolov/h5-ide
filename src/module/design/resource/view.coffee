@@ -231,10 +231,16 @@ define [ 'event',
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
+                #
+                $($('.fixedaccordion').children()[0]).hide()
+                $($('.fixedaccordion').children()[3]).hide()
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
                 $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
                 $( '#hide-resource-panel' ).hide()
+                #
+                $($('.fixedaccordion').children()[0]).show()
+                $($('.fixedaccordion').children()[3]).show()
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

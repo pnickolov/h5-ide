@@ -1,6 +1,6 @@
-define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang ) ->
 
-	isEBSOptimizedForAttachedProvisionedVolume = ( type ) ->
+	isVPCAbleConnectToOutside = ( type ) ->
 
 		#test
 		# MC.ta.resultVO = resultVO
@@ -26,4 +26,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			info: tipInfo
 		}
 
-	isEBSOptimizedForAttachedProvisionedVolume : isEBSOptimizedForAttachedProvisionedVolume
+	isVPCAbleConnectToOutside : isVPCAbleConnectToOutside

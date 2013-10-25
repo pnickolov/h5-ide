@@ -437,6 +437,11 @@ use redirection server name:i:0\n"
 
 	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
 
+	TA =
+		ERROR: 'ERROR',
+		WARNING: 'WARNING',
+		NOTICE: 'NOTICE'
+
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
 	INSTANCE_STATES         : INSTANCE_STATES
@@ -460,3 +465,4 @@ use redirection server name:i:0\n"
 	COOKIE_OPTION           : COOKIE_OPTION
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
+	TA                      : TA

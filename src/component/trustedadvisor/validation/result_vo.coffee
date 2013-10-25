@@ -35,7 +35,3 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 	add  : add
 	del  : del
-
-	ERROR   : 'ERROR'
-	WARNING : 'WARNING'
-	NOTICE  : 'NOTICE'

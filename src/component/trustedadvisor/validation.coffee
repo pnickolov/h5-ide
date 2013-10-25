@@ -2,9 +2,9 @@
 #  validation
 #############################
 
-define [ 'event', 'component/trustedadvisor/validation/main',
+define [ 'event', './validation/main', './validation/result_vo',
          'jquery', 'underscore'
-], ( ide_event, validation_main ) ->
+], ( ide_event, validation_main, resultVO ) ->
 
     #privte
     validComp = ( type, obj ) ->
@@ -17,18 +17,15 @@ define [ 'event', 'component/trustedadvisor/validation/main',
             func     = validation_main[ filename ][ method ]
 
             if _.isFunction func
-
+                
                 result = func type, obj
 
                 if !result
-                    console.log 'validation success'
+                    resultVO.del type
                     true
                 else
-                    console.log result
-                    console.log 'validation failed'
-                    #
+                    resultVO.add type, result.level, result.info
                     false
-
             else
                 console.log 'func not found'
 

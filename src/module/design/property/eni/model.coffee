@@ -290,9 +290,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                             MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
-            # TA Validation
-            MC.ta.validComp 'instance.isVPCCanConnectOutside'
-
         removeIP : ( eni_uid, index ) ->
 
             ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'

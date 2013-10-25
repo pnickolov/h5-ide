@@ -44,7 +44,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 			this.listenTo this, 'change:cloudwatch', this.setCloudWatch
 			this.listenTo this, 'change:user_data', this.setUserData
 			this.listenTo this, 'change:eni_description' , this.setEniDescription
-			this.listenTo this, 'change:tenacy' , this.setTenancy
 			this.listenTo this, 'change:source_check', this.setSourceCheck
 			this.listenTo this, 'change:add_sg', this.addSGtoInstance
 			this.listenTo this, 'change:remove_sg', this.removeSG
@@ -146,8 +145,8 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 		setTenancy : ( value ) ->
 
 			uid  = this.get 'get_uid'
-
-			MC.canvas_data.component[ uid ].resource.Placement.Tenancy = this.get 'tenacy'
+			@set 'tenacy', value isnt 'dedicated'
+			MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value
 
 			null
 
@@ -618,7 +617,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js', 'backbone', 'jquery', 'undersc
 
 			if !ami.virtualizationType
 				ami.virtualizationType = 'paravirtual'
-				
+
 			instance_type = instance_type[ami.virtualizationType]
 
 			instance_type

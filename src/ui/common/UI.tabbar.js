@@ -151,6 +151,8 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
+		tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
+
 		if (tab_id === 'dashboard')
 		{
 			scrollbar.scrollTo($('#global-region-wrap'), {'top': 1});
@@ -161,8 +163,6 @@ var Tabbar = {
 		{
 			Tabbar.current = tab_item.data('tab-type');
 		}
-
-		tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
 
 		return tab_id;
 	},

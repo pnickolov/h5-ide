@@ -1094,6 +1094,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
+                #refresh aws resouce after DescribeAccountAttributes finished
+                setTimeout () ->
+                    me.describeAWSResourcesService()
+                , 2000
+                
+
                 null
 
             else

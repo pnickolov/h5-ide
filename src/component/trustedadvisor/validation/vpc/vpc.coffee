@@ -1,6 +1,6 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang ) ->
 
-	isVPCAbleConnectToOutside = ( type ) ->
+	isVPCAbleConnectToOutside = () ->
 
 		#test
 		# MC.ta.resultVO = resultVO
@@ -21,9 +21,9 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
 		tipInfo = sprintf lang.ide.TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
 
-		return {
-			level: constant.TA.WARNING,
-			info: tipInfo
-		}
+		# return
+		level: constant.TA.WARNING
+		info: tipInfo
+
 
 	isVPCAbleConnectToOutside : isVPCAbleConnectToOutside

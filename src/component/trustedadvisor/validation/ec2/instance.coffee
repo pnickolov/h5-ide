@@ -1,6 +1,6 @@
 define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
-	isEBSOptimizedForAttachedProvisionedVolume = ( type ) ->
+	isEBSOptimizedForAttachedProvisionedVolume = () ->
 
 		#test
 		# MC.ta.resultVO = resultVO
@@ -21,9 +21,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		tipInfo = sprintf lang.ide.TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
 
-		return {
-			level: constant.TA.WARNING,
-			info: tipInfo
-		}
+		# return
+		level: constant.TA.WARNING
+		info: tipInfo
 
 	isEBSOptimizedForAttachedProvisionedVolume : isEBSOptimizedForAttachedProvisionedVolume

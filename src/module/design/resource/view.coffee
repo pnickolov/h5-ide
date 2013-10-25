@@ -7,7 +7,7 @@ define [ 'event',
          'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
          'UI.selectbox', 'UI.toggleicon',
          # 'UI.searchbar',
-         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table', 'UI.accordion'
 ], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {
@@ -233,6 +233,8 @@ define [ 'event',
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
                 #
+                #$($('.fixedaccordion').children()[1]).find('.accordion-body').slideDown 300
+                #$($('.fixedaccordion').children()[1]).addClass 'expanded'
                 $($('.fixedaccordion').children()[0]).hide()
                 $($('.fixedaccordion').children()[3]).hide()
                 $($('.fixedaccordion').children()[4]).hide() if $('.fixedaccordion').children()[4]
@@ -241,6 +243,8 @@ define [ 'event',
                 $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
                 $( '#hide-resource-panel' ).hide()
                 #
+                #$($('.fixedaccordion').children()[1]).find('.accordion-body').slideDown 300
+                #$($('.fixedaccordion').children()[1]).removeClass 'expanded'
                 $($('.fixedaccordion').children()[0]).show()
                 $($('.fixedaccordion').children()[3]).show()
                 $($('.fixedaccordion').children()[4]).show() if $('.fixedaccordion').children()[4]

@@ -306,9 +306,9 @@ define [ 'jquery', 'event', 'base_main',
                     if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #listen
-            #ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
-            #    console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
-            #    view.updateTabType tab_id, tab_type
+            ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
+                console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+                Tabbar.updateState tab_id, tab_type
 
             #listen
             ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region, result ) ->

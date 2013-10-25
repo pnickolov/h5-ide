@@ -455,8 +455,7 @@ define [ 'MC', 'event',
             console.log 'clickEditApp'
 
             # 1. Update MC.canvas.getState() to return 'appedit'
-            Tabbar.updateState( MC.data.current_tab_id, "appedit" )
-            #ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
 
             # 2. Show Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
@@ -487,7 +486,7 @@ define [ 'MC', 'event',
         clickCancelEditApp : (event)->
 
             # 1. Update MC.canvas.getState() to return 'app'
-            Tabbar.updateState( MC.data.current_tab_id, "app" )
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
 
             # 2. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'

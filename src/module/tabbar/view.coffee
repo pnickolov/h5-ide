@@ -132,7 +132,8 @@ define [ 'event',
                     temp.attr 'href',        '#tab-content-' + tab_id
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
                     #
-                    Tabbar.updateState tab_id, 'app'
+                    #Tabbar.updateState tab_id, tab_id.split( '-' )[0]
+                    ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, tab_id, tab_id.split( '-' )[0]
                     #
                     null
             return original_tab_id

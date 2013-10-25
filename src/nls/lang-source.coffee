@@ -2416,15 +2416,15 @@ module.exports =
       zh: "用户教程"
 
     HEAD_LABEL_MENUITEM_DOC:
-      en: "Document"
+      en: "Documentation"
       zh: "使用文档"
 
     HEAD_LABEL_MENUITEM_SETTING:
-      en: "Setting"
+      en: "Settings"
       zh: "账号设置"
 
     HEAD_LABEL_MENUITEM_LOGOUT:
-      en: "Logout"
+      en: "Log out"
       zh: "登出"
 
     HEAD_LABEL_SETTING:

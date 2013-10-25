@@ -55,6 +55,9 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.DISABLE_RESOURCE_ITEM, ( type, filter ) ->
                 view.disableItem type, filter
 
+            ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, ( type ) ->
+                view.updateResourceState type
+
             view.on 'LOADING_COMMUNITY_AMI', ( region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum ) ->
                 # name = $('#community-ami-input').val()
                 # platform = $('#selectbox-ami-platform').find('.selected').data('id')

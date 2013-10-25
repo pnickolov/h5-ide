@@ -130,15 +130,26 @@ define [ 'event',
 				tab_type = PropertyBaseModule.TYPE.App
 			else if tab_type is "stack"
 				tab_type = PropertyBaseModule.TYPE.Stack
-			else if uid isnt ""
-				if forge_app.existing_app_resource( uid ) is true
-					tab_type = PropertyBaseModule.TYPE.AppEdit
-				else if forge_app.existing_app_resource( uid ) is false
-					tab_type = PropertyBaseModule.TYPE.Stack
-				else
-					tab_type = PropertyBaseModule.TYPE.App
+			else
+				tab_type = PropertyBaseModule.TYPE.AppEdit
 
-				# ########## For Develop # #################
+				# If component has associated aws resource, it's AppEdit mode ( Partially Editable )
+				# Otherwise, it's Stack mode ( Fully Editable )
+				if uid isnt ""
+					awsResource = forge_app.existing_app_resource( uid )
+					if awsResource is true
+						tab_type = PropertyBaseModule.TYPE.AppEdit
+					else if awsResource is false
+						tab_type = PropertyBaseModule.TYPE.Stack
+					else
+						# This property is not covered, fallback to App mode
+						tab_type = PropertyBaseModule.TYPE.App
+						### env:dev ###
+						console.warn "lib/forge/app:existing_app_resource does not handle component. Uid :", uid
+						### env:dev:end ###
+
+
+				# ########## For Develop (Force anything to be AppEdit mode right now ) # #################
 				tab_type = PropertyBaseModule.TYPE.AppEdit
 
 			tab_type

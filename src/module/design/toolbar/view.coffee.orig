@@ -453,15 +453,18 @@ define [ 'MC', 'event',
 
         clickEditApp : ->
             console.log 'clickEditApp'
-
-            # 1. Update MC.canvas.getState() to return 'appedit'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
-
-            # 2. Show Resource Panel and call canvas_layout.listen()
+            # 1. Show Resource Panel
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
 
-            # 3. Toggle Toolbar Button
-            @trigger "UPDATE_APP", true
+            # 2. Toggle Toolbar Button
+            #@trigger "UPDATE_APP", true
+
+            # 3. Update MC.canvas.getState() to return 'appedit'
+            Tabbar.updateState( MC.data.current_tab_id, "appedit" )
+<<<<<<< HEAD
+            #ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+=======
+>>>>>>> origin/feature/app-update
 
             # 4. Trigger OPEN_PROPERTY
             null
@@ -483,42 +486,21 @@ define [ 'MC', 'event',
             # After success then do the clickCancelEditApp routine.
             null
 
-        clickCancelEditApp : ->
-            console.log 'clickCancelEditApp'
+        clickCancelEditApp : (event)->
 
-            data        = $.extend true, {}, MC.canvas_data
-            origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            # 1. Hide Resource Panel
 
-            if _.isEqual( data, origin_data )
-                @_return2App()
-            else
-                modal MC.template.cancelAppEdit2App(), true
-                $( document.body ).one 'click', '#return-app-confirm', this, @_return2App
-            null
+            # 2. Toggle Toolbar Button
+            @trigger "UPDATE_APP", false
 
-        _return2App : ( target ) ->
-            console.log '_return2App'
+            # 3. Update MC.canvas.getState() to return 'app'
+            Tabbar.updateState( MC.data.current_tab_id, "app" )
 
-            # 1. Update MC.canvas.getState() to return 'app'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
-
-            # 2. Hide Resource Panel and call canvas_layout.listen()
-            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
-
-            # 3. Toggle Toolbar Button
-            if target then me = target.data else me = this
-            me.trigger "UPDATE_APP", false
-
-            # 4. Trigger OPEN_PROPERTY
-
-            # 5. Close modal
-            modal.close()
-
-            # 6. restore canvas to app model
-            ide_event.trigger ide_event.RESTORE_CANVAS if target
+            # 3. Trigger OPEN_PROPERTY
 
             null
 
     }
 
     return ToolbarView
+

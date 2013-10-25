@@ -13,6 +13,9 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
             this.listenTo ide_event, 'SWITCH_TAB', ()->
                 canvas_layout.listen()
 
+            this.listenTo ide_event, 'UPDATE_RESOURCE_STATE', ()->
+                canvas_layout.listen()
+
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )

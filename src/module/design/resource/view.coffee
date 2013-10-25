@@ -173,35 +173,36 @@ define [ 'event',
             id = target.data( 'id' )
             resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id
 
-        toggleResourcePanel : ( event ) ->
+        toggleResourcePanel : ->
             console.log 'toggleResourcePanel'
             #
-            $( '#resource-panel' ).toggleClass 'hiden'
-            $( '#canvas-panel' ).toggleClass 'left-hiden'
+            $( '#resource-panel'      ).toggleClass 'hiden'
+            $( '#canvas-panel'        ).toggleClass 'left-hiden'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
-            console.log $( '#resource-panel' ).attr( 'class' )
-
+            #
             if $( '#resource-panel' ).hasClass( 'hiden' ) then state = 'hiden' else state = 'show'
             $( '#hide-resource-panel' ).attr 'data-current-state', state
+            #
+            null
 
         hideResourcePanel : ( type ) ->
             console.log 'hideResourcePanel = ' + type
             #
-            #if type is 'OPEN_APP'
-            #    #$( '#hide-resource-panel' ).attr 'data-current-state', 'hiden'
-            #    #$( '#hide-resource-panel' ).trigger 'click'
-            #    #$( '#hide-resource-panel' ).hide()
-            #else
-            #    #
-            this.recalcAccordion()
+            if type is 'OPEN_APP'
+                $( '#hide-resource-panel' ).attr 'data-current-state', 'hiden'
+                $( '#hide-resource-panel' ).trigger 'click'
+                $( '#hide-resource-panel' ).hide()
+            else
+                #
+                this.recalcAccordion()
             #
-            if type in [ 'OPEN_STACK', 'NEW_STACK', 'OPEN_APP' ]
+            if type in [ 'OPEN_STACK', 'NEW_STACK' ]
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 if $( '#resource-panel' ).hasClass("hiden") then $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
 
-            if type in [ 'OLD_STACK', 'OLD_APP' ]
+            if type in [ 'OLD_STACK' ]
                 $( '#hide-resource-panel' ).show()
                 if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show'
                     if $( '#resource-panel' ).hasClass("hiden")
@@ -209,13 +210,38 @@ define [ 'event',
                 else
                     if not $( '#resource-panel' ).hasClass("hiden")
                         $( '#hide-resource-panel' ).trigger 'click'
-            #else if type is 'OLD_APP'
-            #    $( '#hide-resource-panel' ).hide()
-            #    if not $( '#resource-panel' ).hasClass("hiden")
-            #        $( '#hide-resource-panel' ).trigger 'click'
+            else if type is 'OLD_APP'
+                #
+                if Tabbar.current is 'appedit'
+                    if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'hiden' and !$( '#resource-panel' ).hasClass( 'hiden' )
+                        $( '#hide-resource-panel' ).trigger 'click'
+                    else if $( '#hide-resource-panel' ).attr( 'data-current-state' ) is 'show' and $( '#resource-panel' ).hasClass( 'hiden' )
+                        $( '#hide-resource-panel' ).trigger 'click'
+                    return
+                #
+                $( '#hide-resource-panel' ).hide()
+                if not $( '#resource-panel' ).hasClass("hiden")
+                    $( '#hide-resource-panel' ).trigger 'click'
             #
             console.log $( '#hide-resource-panel' ).attr 'data-current-state'
             null
+
+        updateResourceState : ( type ) ->
+            console.log 'updateResourceState, type = ' + type
+            if type is 'show'
+                $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
+                $( '#hide-resource-panel' ).trigger 'click'
+                $( '#hide-resource-panel' ).show()
+                #
+                $($('.fixedaccordion').children()[0]).hide()
+                $($('.fixedaccordion').children()[3]).hide()
+            else if type is 'hide'
+                $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
+                $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
+                $( '#hide-resource-panel' ).hide()
+                #
+                $($('.fixedaccordion').children()[0]).show()
+                $($('.fixedaccordion').children()[3]).show()
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

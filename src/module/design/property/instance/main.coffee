@@ -68,9 +68,18 @@ define [ "../base/main",
             sglist_main.loadModule @model
             null
 
+        setupAppEdit : () ->
+            @view.on "OPEN_AMI", (id) ->
+                PropertyModule.loadSubPanel "STATIC", id
+            null
+
         initAppEdit : () ->
             @model = appedit_model
             @view  = appedit_view
+            null
+
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
             null
 
     }

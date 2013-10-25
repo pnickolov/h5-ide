@@ -3,9 +3,10 @@
 #############################
 
 define [ '../base/model',
+	'./model',
 	'constant',
 	'i18n!nls/lang.js'
-], ( PropertyModel, constant, lang ) ->
+], ( PropertyModel, stack_model, constant, lang ) ->
 
 	AmiAppEditModel = PropertyModel.extend {
 
@@ -41,7 +42,7 @@ define [ '../base/model',
 
 			@set 'instance_type', instance_type_list
 
-			@set 'id',     uid
+			@set 'uid',    uid
 			@set 'number', myInstanceComponent.number
 			@set 'name',   myInstanceComponent.serverGroupName
 			null
@@ -61,6 +62,10 @@ define [ '../base/model',
 				return list
 			else
 				return []
+
+		getSGList        : stack_model.getSGList
+		assignSGToComp   : stack_model.assignSGToComp
+		unAssignSGToComp : stack_model.unAssignSGToComp
 	}
 
 	new AmiAppEditModel()

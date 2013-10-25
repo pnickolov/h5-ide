@@ -128,7 +128,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
                 if $t1.hasClass("selected") and not show
                     $type.find(".item:not([data-id='t1.micro'])").eq(0).click()
-            this.model.set 'tenacy', value
+
+            @model.setTenancy value
+            null
 
         cloudwatchSelect : ( event ) ->
             this.model.set 'cloudwatch', event.target.checked

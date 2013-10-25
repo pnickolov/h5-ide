@@ -78,5 +78,9 @@ define [ "../base/main",
             @view  = appedit_view
             null
 
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
+            null
+
     }
     null

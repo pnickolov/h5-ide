@@ -7,7 +7,7 @@ define [ 'event', './validation/main', './validation/result_vo',
 ], ( ide_event, validation_main, resultVO ) ->
 
     #privte
-    validComp = ( type, obj ) ->
+    validComp = ( type ) ->
 
         try
 
@@ -17,8 +17,9 @@ define [ 'event', './validation/main', './validation/result_vo',
             func     = validation_main[ filename ][ method ]
 
             if _.isFunction func
-                
-                result = func type, obj
+
+                args = Array.prototype.slice.call arguments, 1
+                result = func.apply validation_main[ filename ], args
 
                 if !result
                     resultVO.del type
@@ -26,6 +27,7 @@ define [ 'event', './validation/main', './validation/result_vo',
                 else
                     resultVO.add type, result.level, result.info
                     false
+                return result
             else
                 console.log 'func not found'
 

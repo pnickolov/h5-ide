@@ -173,17 +173,18 @@ define [ 'event',
             id = target.data( 'id' )
             resourceView.trigger 'TOGGLE_FAV', resourceView.region, 'remove', id
 
-        toggleResourcePanel : ( event ) ->
+        toggleResourcePanel : ->
             console.log 'toggleResourcePanel'
             #
-            $( '#resource-panel' ).toggleClass 'hiden'
-            $( '#canvas-panel' ).toggleClass 'left-hiden'
+            $( '#resource-panel'      ).toggleClass 'hiden'
+            $( '#canvas-panel'        ).toggleClass 'left-hiden'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-resource-panel' ).toggleClass 'icon-caret-right'
-            console.log $( '#resource-panel' ).attr( 'class' )
-
+            #
             if $( '#resource-panel' ).hasClass( 'hiden' ) then state = 'hiden' else state = 'show'
             $( '#hide-resource-panel' ).attr 'data-current-state', state
+            #
+            null
 
         hideResourcePanel : ( type ) ->
             console.log 'hideResourcePanel = ' + type

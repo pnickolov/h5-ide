@@ -167,7 +167,7 @@ define [ 'event',
 
             @current_tab = target
 
-            if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
+            if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
                 @trueCloseTab @current_tab, tab_id
                 return
 

@@ -483,7 +483,21 @@ define [ 'MC', 'event',
             # After success then do the clickCancelEditApp routine.
             null
 
-        clickCancelEditApp : (event)->
+        clickCancelEditApp : ->
+            console.log 'clickCancelEditApp'
+
+            data        = $.extend true, {}, MC.canvas_data
+            origin_data = $.extend true, {}, MC.data.origin_canvas_data
+
+            if _.isEqual( data, origin_data )
+                @_return2App()
+            else
+                modal MC.template.cancelAppEdit2App(), true
+                $( document.body ).one 'click', '#return-app-confirm', this, @_return2App
+            null
+
+        _return2App : ( target ) ->
+            console.log '_return2App'
 
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
@@ -492,13 +506,19 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
 
             # 3. Toggle Toolbar Button
-            @trigger "UPDATE_APP", false
+            if target then me = target.data else me = this
+            me.trigger "UPDATE_APP", false
 
             # 4. Trigger OPEN_PROPERTY
+
+            # 5. Close modal
+            modal.close()
+
+            # 6. restore canvas to app model
+            ide_event.trigger ide_event.RESTORE_CANVAS if target
 
             null
 
     }
 
     return ToolbarView
-

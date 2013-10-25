@@ -62,6 +62,19 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null
 
+            #listen RESTORE_CANVAS
+            ide_event.onLongListen ide_event.RESTORE_CANVAS, () ->
+                console.log 'RESTORE_CANVAS'
+                #
+                MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
+                #
+                view.render template
+                MC.canvas.layout.init()
+                model.initLine()
+                model.reDrawSgLine()
+                #
+                null
+
             ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
                 MC.canvas.connect $("#" + from_node), from_target_port, $("#" + to_node), to_target_port, line_option
 

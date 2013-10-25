@@ -287,6 +287,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 me.handleRequest result, 'SAVE_APP', region, id, name
 
+                #
+                #MC.canvas_data             = $.extend true, {}, result.param[4]
+                #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
+                null
+
             #####listen APP_GETKEY_RETURN
             me.on 'APP_GET_KEY_RETURN', (result) ->
                 console.log 'APP_GET_KEY_RETURN'

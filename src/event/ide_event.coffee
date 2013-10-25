@@ -78,6 +78,9 @@ define [ 'underscore', 'backbone' ], () ->
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB      : 'RETURN_REGION_TAB'
 
+        #
+        RESTORE_CANVAS         : 'RESTORE_CANVAS'
+
         # User Input Change Event
         NEED_IGW               : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM   : 'ENABLE_RESOURCE_ITEM'

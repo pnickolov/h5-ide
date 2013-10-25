@@ -192,11 +192,14 @@ define [ 'event',
                         null
 
                 # clear invalid state in map
-                if @propertyHeadStateMap[stackId]
-                    _.each @propertyHeadStateMap[stackId], (stateAry, compUID) ->
-                        if !MC.canvas_data.component[compUID] and compUID isnt stackId and compUID.indexOf('i-') isnt 0
-                            delete @propertyHeadStateMap[stackId][compUID]
-                        null
+                stateMap = @propertyHeadStateMap[stackId]
+                if stateMap
+                    for compUID, stateAry of stateMap
+                        if MC.canvas_data.component[ compUID ]
+                            continue
+                        if compUID is stackId or compUID.indexOf( 'i-' ) is 0
+                            continue
+                        delete stateMap[ compUID ]
                 # added by song ######################################
             null
     }

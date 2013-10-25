@@ -3289,13 +3289,10 @@ module.exports =
       en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN"
       zh: ""
 
-
-    # TA Developer write code below plz.
-
-    # TA Developer write code above plz.
-    TA_TAKE_POSITION:
-      en: ""
+    TA_CIDR_ERROR_CONNECT_TO_ELB:
+      en: '%s is attached with a load balancer. It must be smaller than /27.'
       zh: ""
+
 
   service:
     ERROR_CODE_0_MESSAGE:

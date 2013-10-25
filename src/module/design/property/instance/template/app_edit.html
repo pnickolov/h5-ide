@@ -1,143 +1,58 @@
 <article class="property-app">
-  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}</div>
-  <div class="option-group">
-    <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_INSTANCE_ID"}}</dt>
-      <dd>{{instanceId}}</dd>
+	<div id="prop-appedit-ami-list">
 
-      <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
-      <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
+	</div>
+	<div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}</div>
+	<div class="option-group">
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
+			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+			<input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
+		</section>
 
-      <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
-      <dd>{{timeStr launchTime}}</dd>
-    </dl>
+		{{#if ami}}
+		<section class="property-control-group">
+			<label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
+			<div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-uid='{{ami.id}}'>
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{ami.icon}}" / >
+				<div class="property-ami-label">{{ami.name}}</div>
+			</div>
+		</section>
+		{{/if}}
 
-    <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_PRIMARY_PUBLIC_IP"}}</dt>
-      <dd>{{emptyStr ipAddress}}</dd>
+		{{#if instance_type.length}}
+		<section class="property-control-group">
+			<label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
+			<div class="selectbox selectbox-mega" id="instance-type-select">
+				<div class="selection"></div>
+				<ul class="dropdown">
+					{{#each instance_type}}
+					<li class="{{#if selected}}selected {{/if}}tooltip item {{#if hide}} hide{{/if}}" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+						<div class="main truncate">{{main}}</div>
+						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</section>
+		{{/if}}
+	</div>
 
-      <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
-      <dd>{{emptyStr dnsName}}</dd>
+	<div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<div class="network-list-wrap">
+				<div class="network-list-header clearfix">
+					{{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
+					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+				</div>
+				<ul class="network-list" id="property-network-list" data-bind="true">
 
-      <dt>{{i18n "PROP_INSTANCE_PRIMARY_PRIVATE_IP"}}</dt>
-      <dd>{{emptyStr privateIpAddress}}</dd>
+				</ul>
+			</div>
+		</section>
+	</div>
 
-      <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
-      <dd>{{emptyStr privateDnsName}}</dd>
-    </dl>
-
-    <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_AMI"}}</dt>
-      <dd><a href="#" data-uid="{{imageId}}" id="property-app-ami">{{imageId}}</a><dd>
-
-      <dt>{{i18n "PROP_INSTANCE_TYPE"}}</dt>
-      <dd><div class="selectbox selectbox-mega" id="instance-type-select">
-        <div class="selection"></div>
-        <ul class="dropdown">
-          {{#each instance_type}}
-          <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
-            <div class="main truncate">{{main}}</div>
-            <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
-          </li>
-          {{/each}}
-        </ul>
-      </div></dd>
-
-      <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
-      <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
-
-    </dl>
-
-    <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_EBS_OPTIMIZED"}}</dt>
-      <dd>{{emptyStr ebsOptimized}}<dd>
-
-      <dt>{{i18n "PROP_INSTANCE_TENANCY"}}</dt>
-      <dd>{{emptyStr placement.tenancy}}</dd>
-
-      <dt>{{i18n "PROP_INSTANCE_ROOT_DEVICE_TYPE"}}</dt>
-      <dd>{{emptyStr rootDeviceType}}</dd>
-
-      <dt>{{i18n "PROP_INSTANCE_BLOCK_DEVICE"}}</dt>
-      <dd>{{emptyStr blockDevice}}</dd>
-    </dl>
-  </div>
-
-  {{#if eni}}
-  <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
-  <div class="option-group">
-    <dl class="dl-vertical">
-      <dt>{{i18n "PROP_ENI_DEVICE_NAME"}}</dt>
-      <dd>{{eni.name}}</dd>
-
-      <dt>{{i18n "PROP_ENI_ID"}}</dt>
-      <dd>{{eni.networkInterfaceId}}</dd>
-
-      <dt>{{i18n "PROP_ENI_STATE"}}</dt>
-      <dd><i class="status status-{{#if eni.isInUse}}green{{else}}orange{{/if}}"></i>{{eni.status}}</dd>
-
-      {{#if eni.description}}
-      <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
-      <dd>{{eni.description}}</dd>
-      {{/if}}
-
-      <dt>{{i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
-      <dd>{{eni.sourceDestCheck}}</dd>
-    </dl>
-
-    <div class="hidden-details">
-      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP_ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP_ENI_HIDE_DETAIL" }}</span></a>
-
-      <dl class="dl-vertical">
-        <dt>{{ i18n "PROP_ENI_VPC_ID" }}</dt>
-        <dd>{{eni.vpcId}}</dd>
-
-        <dt>{{ i18n "PROP_ENI_SUBNET_ID" }}</dt>
-        <dd>{{eni.subnetId}}</dd>
-
-        {{#if eni.attachment}}
-        <dt>{{ i18n "PROP_ENI_ATTACHMENT_ID" }}</dt>
-        <dd>{{emptyStr eni.attachment.attachmentId}}</dd>
-
-        <dt>{{ i18n "PROP_ENI_Attachment_OWNER" }}</dt>
-        <dd>{{emptyStr eni.instanceOwnerId}}</dd>
-
-        <dt>{{ i18n "PROP_ENI_Attachment_STATE" }}</dt>
-        <dd>{{emptyStr eni.attachment.status}}</dd>
-        {{/if}}
-      </dl>
-      <dl class="dl-vertical">
-        <dt>{{ i18n "PROP_ENI_MAC_ADDRESS" }}</dt>
-        <dd>{{emptyStr eni.macAddress}}</dd>
-
-        {{#if eni.association.publicDnsName}}
-        <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
-        <dd>{{eni.association.publicDnsName}}</dd>
-        {{/if}}
-        {{#if eni.privateDnsName}}
-        <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
-        <dd>{{eni.privateDnsName}}</dd>
-        {{/if}}
-        {{#if eni.ownerId}}
-        <dt>{{ i18n "PROP_ENI_IP_OWNER" }}</dt>
-        <dd>{{eni.ownerId}}</dd>
-        {{/if}}
-      </dl>
-    </div>
-    <section class="property-control-group">
-      <div class="network-list-wrap">
-        <div class="network-list-header clearfix">
-          {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
-          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
-        </div>
-        <ul class="network-list" id="property-network-list" data-bind="true">
-
-        </ul>
-      </div>
-    </section>
-  </div>
-  {{/if}}
-
-  <div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group"></div>
+	<div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group sg-group"></div>
 </article>

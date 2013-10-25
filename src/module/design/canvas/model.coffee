@@ -1229,6 +1229,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# ELB <==> Subnet
 			else if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUid       = portMap['elb-assoc']
+				subnetUid    = portMap['subnet-assoc-in']
+
+				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid, elbUid)
+				console.debug ta
+				if ta
+					notification 'warning', ta.info
+					this.deleteObject null, { type : "line", id : line_id }
+					return
+
 				deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
 
 				# Connecting Elb to Subnet might need to disconnect Elb from another Subnet

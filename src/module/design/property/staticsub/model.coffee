@@ -9,8 +9,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         init : ( uid ) ->
 
             # If this uid is ami uid
-            if MC.data.dict_ami[ uid ]
-                @set MC.data.dict_ami[ uid ]
+            ami = MC.data.dict_ami[ uid ]
+            if ami
+                @set ami
+                @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
                 @set "ami", true
                 return
 

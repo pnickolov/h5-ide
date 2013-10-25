@@ -12,7 +12,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		# expand instance firt
 		for uid, comp of comp_data
 
-			if comp.type is res_type.AWS_EC2_Instance
+			if comp.type is res_type.AWS_EC2_Instance and json_data.layout.component.node[ uid ]
 
 				expandInstance json_data, uid
 
@@ -69,6 +69,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	expandInstance = ( json_data, uid ) ->
 
 		comp_data         = json_data.component
+		layout_data 	  = json_data.layout
 		ins_comp          = comp_data[uid]
 		ins_num           = ins_comp.number
 		server_group_name = ins_comp.serverGroupName
@@ -121,26 +122,43 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if ins_num
 
+			for instance_uid, instance of comp_data
+
+				if instance.type is 'AWS.EC2.Instance' and instance_uid in MC.canvas_data.layout.component.node[uid].instanceList and instance_uid not in instance_list
+
+					delete comp_data[instance.uid]
+
 			for i, instance_id of instance_list
 
-				new_comp = $.extend( true, {}, ins_comp )
+				if comp_data[ ins_comp.uid ]
 
-				#generate uid
-				new_comp.uid = instance_id
+					for v in ins_comp.resource
 
-				#generate name
-				new_comp.name = server_group_name + '-' + i
+						if v isnt "InstanceId"
 
-				#index in server group
-				new_comp.index = parseInt(i, 10)
+							comp_data[ ins_comp.uid ].resource[v] = ins_comp.resource[v]
 
-				comp_data[ new_comp.uid ] = new_comp
 
-				if elbs.length > 0 and new_comp.uid isnt uid
+				else
 
-					for elb in elbs
+					new_comp = $.extend( true, {}, ins_comp )
 
-						json_data.component[elb].resource.Instances.push {"InstanceId": "@#{new_comp.uid}.resource.InstanceId"}
+					#generate uid
+					new_comp.uid = instance_id
+
+					#generate name
+					new_comp.name = server_group_name + '-' + i
+
+					#index in server group
+					new_comp.index = parseInt(i, 10)
+
+					comp_data[ new_comp.uid ] = new_comp
+
+					if elbs.length > 0 and new_comp.uid isnt uid
+
+						for elb in elbs
+
+							json_data.component[elb].resource.Instances.push {"InstanceId": "@#{new_comp.uid}.resource.InstanceId"}
 
 		else
 
@@ -160,6 +178,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		layout_data = json_data.layout
 
 		instance_uid = json_data.component[uid].resource.Attachment.InstanceId
+
+		if not json_data.layout.component.node[ instance_uid ]
+
+			return
 
 		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
 
@@ -272,6 +294,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
 
+		if not json_data.layout.component.node[ instance_uid ]
+
+			return
+
 		if not instance_uid
 
 			console.error "Volume(#{uid}) do not attach to any instance"
@@ -358,6 +384,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		instance_uid = json_data.component[uid].resource.InstanceId
 
 		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
+
+		if not json_data.layout.component.node[ instance_uid ]
+
+			return
 
 		eni_uid 	 = json_data.component[uid].resource.NetworkInterfaceId
 

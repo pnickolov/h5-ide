@@ -7,7 +7,7 @@ define [ 'event',
          'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
          'UI.selectbox', 'UI.toggleicon',
          # 'UI.searchbar',
-         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table', 'UI.fixedaccordion'
 ], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {
@@ -237,6 +237,7 @@ define [ 'event',
                 $( '#hide-resource-panel' ).show()
                 #open images & close volume
                 $($item[1]).find( '.fixedaccordion-head' ).trigger 'click'
+                fixedaccordion.resize()
                 #hide az and scaling
                 $($item[0]).hide()
                 $($item[3]).hide()

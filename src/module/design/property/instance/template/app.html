@@ -6,7 +6,7 @@
       <dd>{{instanceId}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
-      <dd><i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{instanceState.name}}</dd>
+      <dd><i class="status status-{{state}}"></i>{{state}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
       <dd>{{timeStr launchTime}}</dd>
@@ -64,7 +64,7 @@
       <dd>{{eni.networkInterfaceId}}</dd>
 
       <dt>{{i18n "PROP_ENI_STATE"}}</dt>
-      <dd><i class="status status-{{#if eni.isInUse}}green{{else}}orange{{/if}}"></i>{{eni.status}}</dd>
+      <dd><i class="status status-{{eni.status}}"></i>{{eni.status}}</dd>
 
       {{#if eni.description}}
       <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>

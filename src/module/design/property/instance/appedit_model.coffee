@@ -32,20 +32,32 @@ define [ '../base/model',
 			tenancy = myInstanceComponent.resource.Placement.Tenancy isnt 'dedicated'
 			instance_type_list = @getInstanceTypeList( ami, tenancy, myInstanceComponent.resource.InstanceType )
 
+			# Ebs Optimized
+			@set 'instance_type', instance_type_list
+			@set 'ebs_optimized', "" + myInstanceComponent.resource.EbsOptimized is "true"
+			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent.resource.InstanceType
+
+
 			# If the ami is linked to route table, cannot set server group
-			for uid, comp of MC.canvas_data.component
+			for comp_uid, comp of MC.canvas_data.component
 				if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 					continue
 
-				if comp.resource.RouteSet.join(",").indexOf( uid ) isnt -1
-					@set 'number_disable', true
+				found = false
+				for route in comp.resource.RouteSet
+					if route.InstanceId.indexOf( uid ) isnt -1
+						@set 'number_disable', true
+						found = true
+						break
+				if found
 					break
-
-			@set 'instance_type', instance_type_list
 
 
 			@set 'number', myInstanceComponent.number
 			@set 'name',   myInstanceComponent.serverGroupName
+
+			@getGroupList()
+			@getEni()
 			null
 
 		getInstanceTypeList : ( ami, tenancy, current_instance_type ) ->
@@ -64,9 +76,100 @@ define [ '../base/model',
 			else
 				return []
 
+			null
+
+		setCount : ( count ) ->
+			uid = @get( 'uid' )
+			MC.canvas_data.component[ uid ].number = count
+
+			@getGroupList()
+
+			# Update canvas's Instance and Eni count
+			MC.aws.instance.updateCount( uid, count )
+			null
+
+		getGroupList : ()->
+
+			uid = @get( 'uid' )
+
+			component   = MC.canvas_data.component[ uid ]
+			app_data    = MC.data.resource_list[ MC.canvas_data.region ]
+
+			if "" + component.number is "1"
+				instance_id = component.resource.InstanceId
+				instance    = app_data[ instance_id ]
+				if not instance
+					@set "group",  {
+						id         : instance_id
+						isPending  : true
+						state      : "Unknown"
+					}
+					return
+				else
+					@set "group", {
+						id         : instance_id
+						state      : MC.capitalize instance.instanceState.name
+						launchTime : instance.launchTime
+					}
+			else
+				old_components   = MC.data.origin_canvas_data.component
+				old_server_count = old_components[ uid ].number
+				groupname_prefix = component.serverGroupName + "-"
+
+				group = []
+
+				for old_uid, old_comp of old_components
+					if old_comp.serverGroupUid is uid
+						# This is our server group member.
+						# It might need to be removed
+						instance = app_data[ old_comp.resource.InstanceId ]
+						group.push {
+							name  : old_comp.name
+							id    : old_comp.resource.InstanceId
+							idx   : parseInt( old_comp.name.replace( groupname_prefix, "" ), 10 )
+							state : if instance then MC.capitalize(instance.instanceState.name) else "Unknown"
+						}
+
+				group = _.sortBy group, "idx"
+
+				if component.number != old_server_count
+					group.increment = component.number - old_server_count
+					if group.increment > 0
+						group.increment = "+" + group.increment
+
+					if component.number < old_server_count
+						for idx in [component.number..old_server_count-1]
+							group[ idx ].isOld = true
+
+					else
+						for idx in [old_server_count..component.number-1]
+							group.push {
+								name  : groupname_prefix + idx
+								isNew : true
+								state : "Unknown"
+							}
+
+						attr = if component.number < old_server_count then "isOld" else "isNew"
+
+				@set "group", group
+			null
+
+
 		getSGList        : stack_model.getSGList
 		assignSGToComp   : stack_model.assignSGToComp
 		unAssignSGToComp : stack_model.unAssignSGToComp
+
+		getEni : stack_model.getEni
+
+		setEbsOptimized    : stack_model.setEbsOptimized
+		canSetInstanceType : stack_model.canSetInstanceType
+		setInstanceType    : stack_model.setInstanceType
+
+		addIP     : stack_model.addIP
+		removeIP  : stack_model.removeIP
+		attachEIP : stack_model.attachEIP
+		canAddIP  : stack_model.canAddIP
+		setIPList : stack_model.setIPList
 	}
 
 	new AmiAppEditModel()

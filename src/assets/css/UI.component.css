@@ -994,6 +994,7 @@ textarea {
 
 .status-green,
 .status-running,
+.status-Running,
 .status-in-use,
 .status-attached {
 	background-color: #78d248;
@@ -1006,6 +1007,8 @@ textarea {
 
 .status-red,
 .status-stopped,
+.status-Stopped,
+.status-Terminated,
 .status-terminated {
 	background-color: #f34c39;
 	background-image: -webkit-linear-gradient(bottom, #e72222, #ff8d6f);
@@ -1017,6 +1020,7 @@ textarea {
 
 .status-blue,
 .status-available,
+.status-Available,
 .status-not-attached {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
@@ -1028,7 +1032,9 @@ textarea {
 
 .status-yellow,
 .status-pending,
+.status-Pending,
 .status-shutting-down,
+.status-Stopping,
 .status-stopping {
 	background-color: #d2c748;
 	background-image: -webkit-linear-gradient(bottom, #d3be5c, #fbf819);
@@ -1039,6 +1045,7 @@ textarea {
 }
 
 .status-grey,
+.status-Unknown,
 .status-unknown {
 	background-color: #a0a0a0;
 	background-image: -webkit-linear-gradient(bottom, #808080, #bababa);

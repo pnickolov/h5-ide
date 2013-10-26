@@ -16,7 +16,6 @@ define [ '../base/view',
         events   :
             'change .instance-name'                       : 'instanceNameChange'
             'change #property-instance-count'             : 'countChange'
-            'change .instance-type-select'                : 'instanceTypeSelect'
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
@@ -25,15 +24,19 @@ define [ '../base/view',
             'change #property-instance-public-ip'         : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "setKP"
-            'EDIT_UPDATE #keypair-select'                 : "addKP"
-            'click #instance-ip-add'                      : "addIPtoList"
-            'click #property-network-list .icon-remove'   : "removeIPfromList"
-            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
-            'change .input-ip'    : 'updateEIPList'
-            'click .toggle-eip'   : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
+
+            'OPTION_CHANGE #keypair-select'      : "setKP"
+            'EDIT_UPDATE #keypair-select'        : "addKP"
+            'click #keypair-select .icon-remove' : "deleteKP"
+            "EDIT_FINISHED #keypair-select"      : "updateKPSelect"
+
+            'click .toggle-eip'                         : 'setEIP'
+            'click #instance-ip-add'                    : "addIP"
+            'click #property-network-list .icon-remove' : "removeIP"
+            'change .input-ip'                          : 'syncIPList'
+
 
         render : () ->
 
@@ -45,7 +48,6 @@ define [ '../base/view',
 
             @refreshIPList()
 
-            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
             @model.attributes.name
 
@@ -82,11 +84,15 @@ define [ '../base/view',
 
             if enable
                 $parent.find(".input-ip").removeAttr "disabled"
-                $parent.find(".name").data "tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+                $parent.find(".name").data "tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1
 
             else
                 $parent.find(".input-ip").attr "disabled", "disabled"
-                $parent.find(".name").data "tooltip", "Automatically assigned IP."
+                $parent.find(".name").data "tooltip", lang.ide.PROP_INSTANCE_IP_MSG_2
+
+            # TODO :
+            # Change custom ip to automatic ip
+            null
 
         instanceTypeSelect : ( event, value )->
 
@@ -102,9 +108,7 @@ define [ '../base/view',
             if not has_ebs
                 $ebs.prop "checked", false
 
-            instanceUID = this.model.get 'uid'
-            MC.aws.eni.reduceAllENIIPList(instanceUID)
-            this.refreshIPList()
+            @refreshIPList()
 
         ebsOptimizedSelect : ( event ) ->
             @model.setEbsOptimized event.target.checked
@@ -157,107 +161,12 @@ define [ '../base/view',
         updateKPSelect : () ->
             # Add remove icon to the newly created item
             $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
-
-
-        addIPtoList: (event) ->
-
-            subnetCIDR = ''
-            instanceUID = this.model.get 'uid'
-
-            # validate max ip num
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp then return false
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                return false
-            # validate max ip num
-
-            defaultVPCId = MC.aws.aws.checkDefaultVPC()
-            if defaultVPCId
-                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
-                subnetCIDR = subnetObj.cidrBlock
-            else
-                subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
-                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
-
-            ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
-            tmpl = $(MC.template.networkListItem({
-                ipPrefix: ipPrefixSuffix[0],
-                ipSuffix: ipPrefixSuffix[1]
-            }))
-
-            $('#property-network-list').append tmpl
-            @model.addNewIP()
-            @updateEIPList()
-            false
-
-        removeIPfromList: (event, id) ->
-
-            $li = $(event.currentTarget).closest("li")
-            index = $li.index()
-            $li.remove()
-
-            @model.removeIP index
-            @updateEIPList()
+            null
 
         openAmiPanel : ( event ) ->
             @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
-        addEIP : ( event ) ->
-
-            # todo, need a index of eip
-            index = $(event.currentTarget).closest("li").index()
-            if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
-
-            @model.attachEIP index, attach
-            @updateEIPList()
-
-        updateEIPList: (event) ->
-
-            currentAvailableIPAry = []
-            ipInuptListItem = $('#property-network-list li')
-
-            _.each ipInuptListItem, (ipInputItem) ->
-                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
-                inputValue = $(ipInputItem).find('.input-ip').val()
-                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
-                currentAvailableIPAry.push({
-                    ip: inputValuePrefix + inputValue,
-                    eip: inputHaveEIP
-                })
-                null
-
-            @model.setIPList currentAvailableIPAry
-
-            this.changeIPAddBtnState()
-            null
-
-        changeIPAddBtnState : () ->
-
-            disabledBtn = false
-            instanceUID = this.model.get 'uid'
-
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp
-                disabledBtn = true
-                return
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                disabledBtn = true
-
-            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
-            if disabledBtn
-                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
-                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
-            else
-                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
-
-            null
 
         deleteKP : ( event ) ->
             me = this
@@ -291,10 +200,76 @@ define [ '../base/view',
 
             return false
 
+
+        addIP : () ->
+            if $("#instance-ip-add").hasClass("disabled")
+                return
+
+            data = @model.addIP()
+            $('#property-network-list').append ip_list_template( data )
+            @updateIPAddBtnState()
+            null
+
+        removeIP : ( event ) ->
+
+            $li = $(event.currentTarget).closest("li")
+            index = $li.index()
+            $li.remove()
+
+            @model.removeIP index
+            @updateIPAddBtnState()
+            null
+
+        setEIP : ( event ) ->
+            $target = $(event.currentTarget)
+            index   = $target.closest("li").index()
+            attach  = not $target.hasClass("associated")
+
+            @model.attachEIP index, attach
+            null
+
+        # This function is used to save IP List to model
+        syncIPList: () ->
+            currentAvailableIPAry = []
+            ipInuptListItem = $('#property-network-list li')
+
+            _.each ipInuptListItem, (ipInputItem) ->
+                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
+                inputValue = $(ipInputItem).find('.input-ip').val()
+                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
+                currentAvailableIPAry.push({
+                    ip: inputValuePrefix + inputValue,
+                    eip: inputHaveEIP
+                })
+                null
+
+            @model.setIPList currentAvailableIPAry
+            null
+
+        # This function is used to display IP List
         refreshIPList : ( event ) ->
-            @model.getEni()
-            $( '#property-network-list' ).html( ip_list_template( @model.attributes ) )
-            this.changeIPAddBtnState()
+            html = ""
+            for ip in @model.attributes.eni_display.eni_ips
+                html += ip_list_template ip
+
+            $( '#property-network-list' ).html( html )
+            @updateIPAddBtnState()
+            null
+
+        updateIPAddBtnState : ()->
+            enabled = @model.canAddIP()
+
+            if enabled is true
+                tooltip = "Add IP Address"
+            else
+                if _.isString enabled
+                    tooltip = enabled
+                else
+                    tooltip = "Cannot add IP address"
+                enabled = false
+
+            $("#instance-ip-add").toggleClass("disabled", !enabled).data("tooltip", tooltip)
+            null
     }
 
     new InstanceView()

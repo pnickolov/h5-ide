@@ -7,7 +7,7 @@ define [ 'event',
          'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
          'UI.selectbox', 'UI.toggleicon',
          # 'UI.searchbar',
-         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table', 'UI.accordion'
+         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {
@@ -228,26 +228,28 @@ define [ 'event',
 
         updateResourceState : ( type ) ->
             console.log 'updateResourceState, type = ' + type
+            #
+            $item = $('.fixedaccordion').children()
+            #
             if type is 'show'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
-                #
-                #$($('.fixedaccordion').children()[1]).find('.accordion-body').slideDown 300
-                #$($('.fixedaccordion').children()[1]).addClass 'expanded'
-                $($('.fixedaccordion').children()[0]).hide()
-                $($('.fixedaccordion').children()[3]).hide()
-                $($('.fixedaccordion').children()[4]).hide() if $('.fixedaccordion').children()[4]
+                #open images & close volume
+                $($item[1]).find( '.fixedaccordion-head' ).trigger 'click'
+                #hide az and scaling
+                $($item[0]).hide()
+                $($item[3]).hide()
+                #hide vpc
+                $($item[4]).hide() if $item[4]
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
                 $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
                 $( '#hide-resource-panel' ).hide()
-                #
-                #$($('.fixedaccordion').children()[1]).find('.accordion-body').slideDown 300
-                #$($('.fixedaccordion').children()[1]).removeClass 'expanded'
-                $($('.fixedaccordion').children()[0]).show()
-                $($('.fixedaccordion').children()[3]).show()
-                $($('.fixedaccordion').children()[4]).show() if $('.fixedaccordion').children()[4]
+                #show all
+                $($item[0]).show()
+                $($item[3]).show()
+                $($item[4]).show() if $item[4]
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

@@ -150,10 +150,6 @@ define [ 'event',
 						console.warn "lib/forge/app:existing_app_resource does not handle component. Uid :", uid
 						### env:dev:end ###
 
-
-				# ########## For Develop (Force anything to be AppEdit mode right now ) # #################
-				tab_type = PropertyBaseModule.TYPE.AppEdit
-
 			tab_type
 
 		null

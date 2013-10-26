@@ -4,12 +4,10 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'text!./template/ip_list.html',
          'event',
-         'i18n!nls/lang.js' ], ( PropertyView, template, ip_list_template, ide_event, lang ) ->
+         'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, lang ) ->
 
     template =  Handlebars.compile template
-    ip_list_template = Handlebars.compile ip_list_template
 
     InstanceView = PropertyView.extend {
 
@@ -40,6 +38,7 @@ define [ '../base/view',
 
         render : () ->
 
+            # TODO : Remove following 3 lines
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
                 this.model.attributes.component.resource.VpcId = defaultVPCId
@@ -47,7 +46,6 @@ define [ '../base/view',
             @$el.html template @model.attributes
 
             @refreshIPList()
-
 
             @model.attributes.name
 
@@ -206,7 +204,7 @@ define [ '../base/view',
                 return
 
             data = @model.addIP()
-            $('#property-network-list').append ip_list_template( data )
+            $('#property-network-list').append MC.template.propertyIpListItem( data )
             @updateIPAddBtnState()
             null
 
@@ -230,18 +228,16 @@ define [ '../base/view',
 
         # This function is used to save IP List to model
         syncIPList: () ->
-            currentAvailableIPAry = []
-            ipInuptListItem = $('#property-network-list li')
+            currentAvailableIPAry = _.map $('#property-network-list li'), (ipInputItem) ->
+                $item   = $(ipInputItem)
+                prefix  = $item.find(".input-ip-prefix").text()
+                value   = $item.find(".input-ip").val()
+                has_eip = $item.find(".input-ip-eip-btn").hasClass("associated")
 
-            _.each ipInuptListItem, (ipInputItem) ->
-                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
-                inputValue = $(ipInputItem).find('.input-ip').val()
-                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
-                currentAvailableIPAry.push({
-                    ip: inputValuePrefix + inputValue,
-                    eip: inputHaveEIP
-                })
-                null
+                {
+                    ip  : prefix + value
+                    eip : has_eip
+                }
 
             @model.setIPList currentAvailableIPAry
             null
@@ -250,7 +246,7 @@ define [ '../base/view',
         refreshIPList : ( event ) ->
             html = ""
             for ip in @model.attributes.eni_display.eni_ips
-                html += ip_list_template ip
+                html += MC.template.propertyIpListItem ip
 
             $( '#property-network-list' ).html( html )
             @updateIPAddBtnState()

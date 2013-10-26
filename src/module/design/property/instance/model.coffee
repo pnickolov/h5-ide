@@ -90,7 +90,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			MC.aws.eni.reduceAllENIIPList( uid )
 
 			# Update IP List
-			@.getEni()
+			@getEni()
 
 			has_ebs
 

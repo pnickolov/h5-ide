@@ -1,29 +1,30 @@
-<article class="property-control-group" id="property-eni-attach-info" component="{{eni_display.uid}}" {{#if eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/if}}>
+<article class="property-control-group {{#if attached}}hide{{/if}}" id="property-eni-attach-info">
   {{ i18n "PROP_ENI_LBL_ATTACH_WARN" }}
 </article>
 
-<article id="property-eni-wrapper" {{#unless eni_display.resource.Attachment.InstanceId}}style="display:none;"{{/unless}}>
-
+<article id="property-eni-wrapper" {{#unless attached}}style="display:none;"{{/unless}}>
+{{#unless isAppEdit}}
   <div class="option-group-head expand">{{ i18n "PROP_ENI_LBL_DETAIL" }}</div>
   <div class="option-group">
     <section class="property-control-group">
       <label class="left" for="property-eni-desc">{{ i18n "PROP_ENI_LBL_DESC" }}</label>
-      <textarea id="property-eni-desc">{{eni_display.resource.Description}}</textarea>
+      <textarea id="property-eni-desc">{{desc}}</textarea>
     </section>
 
     <section class="property-control-group">
       <div class="checkbox">
-        <input id="property-eni-source-check" type="checkbox" {{#if eni_display.resource.SourceDestCheck}}checked="true"{{/if}} />
+        <input id="property-eni-source-check" type="checkbox" {{#if sourceDestCheck}}checked="checked"{{/if}} />
         <label for="property-eni-source-check"></label>
       </div>
       <label for="property-eni-source-check">{{ i18n "PROP_ENI_SOURCE_DEST_CHECK"}}</label>
     </section>
+{{/unless}}
 
     <section class="property-control-group">
       <div class="network-list-wrap">
         <div class="network-list-header">
           {{ i18n "PROP_ENI_IP_ADDRESS"}}
-          <button href="#" id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_ENI_ADD_IP"}}</button>
+          <button id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_ENI_ADD_IP"}}</button>
         </div>
         <ul class="network-list" id="property-eni-list" data-bind="true">
         </ul>

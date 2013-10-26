@@ -519,6 +519,25 @@ define [ 'MC', 'event',
 
             null
 
+        saveSuccess2App : ->
+            console.log 'saveSuccess2App'
+
+            # 1. Update MC.canvas.getState() to return 'app'
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+
+            # 2. Hide Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
+
+            # 3. Toggle Toolbar Button
+            @trigger "UPDATE_APP", false
+
+            # 4. Trigger OPEN_PROPERTY
+
+            # 5. update MC.data.origin_canvas_data
+            MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+            null
+
     }
 
     return ToolbarView

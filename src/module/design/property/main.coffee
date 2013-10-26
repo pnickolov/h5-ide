@@ -93,7 +93,9 @@ define [ 'event',
 				PropertyBaseModule.load type, uid, tab_type
 				view.afterLoad()
 			catch error
-				console.error "Cannot open property panel", error
+				### env:dev ###
+				console.error "Cannot open property panel", $.extend {}, error
+				### env:dev:end ###
 
 			null
 

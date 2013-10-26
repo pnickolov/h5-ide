@@ -3105,17 +3105,6 @@ MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
-		// // Ctrl Move event
-		// if (
-		// 	event.which === 1 &&
-		// 	event.ctrlKey
-		// )
-		// {
-		// 	MC.canvas.event.ctrlMove.mousedown.call(this, event);
-
-		// 	return false;
-		// }
-
 		if (event.which === 1)
 		{
 			var target = $(this),
@@ -5245,9 +5234,13 @@ MC.canvas.event.appMove = function (event)
 		MC.canvas.event.clearSelected();
 
 		var target = $(this),
-			target_type = target.data('class');
+			target_type = target.data('class'),
+			node_type = target.data('type');
 
-		if (target_type === 'AWS.EC2.Instance')
+		if (
+			target_type === 'AWS.EC2.Instance' ||
+			node_type === 'group'
+		)
 		{
 			MC.canvas.event.dragable.mousedown.call( this, event );
 		}
@@ -5255,7 +5248,6 @@ MC.canvas.event.appMove = function (event)
 		{
 			MC.canvas.select( this.id );
 		}
-
 	}
 
 	return false;

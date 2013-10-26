@@ -1,11 +1,10 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
-	isAbleConnectToELB = ( subnet_id, elb_id ) ->
-		console.debug subnet_id, elb_id
-		subnet = MC.canvas_data.component[ subnet_id ]
-		elb = MC.canvas_data.component[ elb_id ]
-
+	isAbleConnectToELB = ( subnetUid ) ->
+		subnet = MC.canvas_data.component[ subnetUid ]
 		cidr = + subnet.resource.CidrBlock.split('/')[1]
+		console.debug subnet.resource.CidrBlock
+		console.debug cidr
 
 		if cidr <= 27
 			return null

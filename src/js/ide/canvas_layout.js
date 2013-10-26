@@ -10,7 +10,9 @@ var listen = function ()
 
 	MC.paper = Canvon('#svg_canvas');
 
-	canvas_container.off('.CANVAS_EVENT');
+	canvas_container
+		.off('.CANVAS_EVENT')
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack');
 
 	if (canvas_state === 'app')
 	{
@@ -40,9 +42,9 @@ var listen = function ()
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter.CANVAS_EVENT mouseleave', '.node', MC.canvas.event.nodeHover)
 			.on('selectstart.CANVAS_EVENT', returnFalse)
-			.on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
-			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
+			// .on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
+			// .on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
+			// .on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
 	}
 

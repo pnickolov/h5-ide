@@ -743,6 +743,11 @@
 	display: none;
 }
 
+.canvas_state_app .instance-number,
+.canvas_state_app .eni-number {
+	text-decoration: underline;
+}
+
 .canvas_zoomed .resizer-wrap {
 	/*display: none;*/
 }

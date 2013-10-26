@@ -2,9 +2,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
 	isVPCAbleConnectToOutside = () ->
 
-		#test
-		# MC.ta.resultVO = resultVO
-
 		# check if have vpn and eip
 		isHaveVPN = false
 		isHaveEIP = false

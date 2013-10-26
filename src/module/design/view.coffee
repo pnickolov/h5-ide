@@ -28,9 +28,10 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
         html : ->
             data =
-                resource : $( '#resource-panel' ).html(),
-                property : $( '#property-panel' ).html(),
+                resource : $( '#resource-panel' ).html()
+                property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
+                statusbar: $( '#main-statusbar' ).html()
             data
 
         writeOldDesignHtml : ( event ) ->
@@ -41,6 +42,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             #
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
+            $( '#main-statusbar' ).html this.model.get( 'snapshot' ).statusbar
             ###
             this.$el.empty().html this.model.get 'snapshot'
             $( '#property-panel' ).html this.model.get( 'snapshot' ).property

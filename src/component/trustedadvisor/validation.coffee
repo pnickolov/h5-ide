@@ -11,6 +11,9 @@ define [ 'event', './validation/main', './validation/result_vo',
 
         try
 
+            #test
+            MC.ta.resultVO = resultVO
+
             temp     = type.split '.'
             filename = temp[ 0 ]
             method   = temp[ 1 ]

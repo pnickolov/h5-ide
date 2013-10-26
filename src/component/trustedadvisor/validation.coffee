@@ -35,9 +35,20 @@ define [ 'event', './validation/main', './validation/result_vo',
             console.log "validComp error #{ error }"
 
     validAll = ( obj ) ->
-        #validComp 'instance.checkValue', uid
-        #validComp 'instance.bbb', uid
-        #validComp 'instance.ccc', uid
+        components = MC.canvas_data.component
+
+        _.each components, ( component , id ) ->
+            typeName = _.last component.type.split '.'
+            type = typeName.toLowerCase()
+
+            _.each validation_main[ type ], ( func, funcName ) ->
+                result = func.call validation_main[ type ], id
+                resultVO.add funcName, result.level, result.info
+
+        resultVO
+
+
+
 
     #public
     validComp : validComp

@@ -25,7 +25,7 @@ define [ 'event', './validation/main', './validation/result_vo',
                     resultVO.del type
                     true
                 else
-                    resultVO.add type, result.level, result.info
+                    resultVO.add type, result.level, result.info, result.uid
                     false
                 return result
             else

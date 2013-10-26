@@ -3293,6 +3293,9 @@ module.exports =
       en: '%s is attached with a load balancer. It must be smaller than /27.'
       zh: ""
 
+    TA_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
+      en: "Instance %s has an attached Provisioned IOPS volume but is not EBS-Optimized"
+      zh: ""
 
   service:
     ERROR_CODE_0_MESSAGE:

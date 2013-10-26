@@ -34,20 +34,22 @@ define [ 'event', './validation/main', './validation/result_vo',
         catch error
             console.log "validComp error #{ error }"
 
-    validAll = ( obj ) ->
-        components = MC.canvas_data.component
+    validAll = ->
 
-        _.each components, ( component , uid ) ->
-            typeName = _.last component.type.split '.'
-            type = typeName.toLowerCase()
+        try
 
-            _.each validation_main[ type ], ( func, funcName ) ->
-                result = func.call validation_main[ type ], uid
-                resultVO.add funcName, result.level, result.info
+            components = MC.canvas_data.component
 
+            _.each components, ( component , uid ) ->
 
+                filename = _.last component.type.split '.'
+                filename = filename.toLowerCase()
 
+                _.each validation_main[ filename ], ( func, method ) ->
+                    validComp filename + '.' + method, uid
 
+        catch error
+            console.log "validAll error #{ error }"
 
     #public
     validComp : validComp

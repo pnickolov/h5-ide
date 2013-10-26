@@ -130,13 +130,13 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			for i, instance_id of instance_list
 
-				if comp_data[ ins_comp.uid ]
+				if comp_data[ instance_id ]
 
-					for v in ins_comp.resource
+					for k, v of ins_comp.resource
 
-						if v isnt "InstanceId"
+						if k isnt "InstanceId"
 
-							comp_data[ ins_comp.uid ].resource[v] = ins_comp.resource[v]
+							comp_data[ instance_id ].resource[k] = v
 
 
 				else
@@ -151,6 +151,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					#index in server group
 					new_comp.index = parseInt(i, 10)
+
+					new_comp.resource.InstanceId = ""
 
 					comp_data[ new_comp.uid ] = new_comp
 
@@ -179,7 +181,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		instance_uid = json_data.component[uid].resource.Attachment.InstanceId
 
-		if not json_data.layout.component.node[ instance_uid ]
+		if not json_data.layout.component.node[ instance_uid.split('.')[0][1...] ]
 
 			return
 
@@ -236,6 +238,15 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		# 		eni_list.push new_eni_uid
 
 		# 		i++
+		for e_uid, eni of comp_data
+
+			if eni.type is 'AWS.VPC.NetworkInterface'
+
+				tmp_eni_list = if MC.canvas_data.layout.component.node[uid] then MC.canvas_data.layout.component.node[uid].eniList else MC.canvas_data.layout.component.node[instance_uid].eniList
+
+				if e_uid in tmp_eni_list and e_uid not in eni_list
+
+					delete comp_data[eni.uid]
 
 		$.each eni_list, ( idx, eni_uid ) ->
 
@@ -251,7 +262,16 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.serverGroupENIName = eni_name
 
-				origin_eni.name = if "#{server_group_name}-#{idx}" not in eni_name then "#{server_group_name}-#{idx}-#{eni_name}" else eni_name
+				origin_eni.resource.NetworkInterfaceId = ""
+
+				if eni_name.indexOf("#{server_group_name}-0") >= 0
+
+					origin_eni.name = eni_name.replace "#{server_group_name}-0", "#{server_group_name}-#{idx}"
+
+				else
+					origin_eni.name = if eni_name.indexOf("#{server_group_name}-#{idx}")<0 then "#{server_group_name}-#{idx}-#{eni_name}" else eni_name
+
+
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
@@ -260,7 +280,13 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				comp_data[eni_uid] = origin_eni
 			else
 
-				json_data.component[eni_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[eni_uid].name then "#{server_group_name}-#{idx}-#{eni_name}" else json_data.component[eni_uid].name
+				for k, v of json_data.component[uid].resource
+
+					if k isnt "NetworkInterfaceId" and k isnt "Attachment"
+
+						comp_data[ eni_uid ].resource[k] = v
+
+				json_data.component[eni_uid].name = if json_data.component[eni_uid].name.indexOf("#{server_group_name}-#{idx}")<0  then "#{server_group_name}-#{idx}-#{eni_name}" else json_data.component[eni_uid].name
 
 				json_data.component[eni_uid].number = eni_number
 
@@ -340,6 +366,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		# 		i++
 
+		for v_uid, volume of comp_data
+
+			if volume.type is 'AWS.EC2.EBS.Volume'
+
+				v_list = MC.canvas_data.layout.component.node[ instance_uid ].volumeList[ uid ]
+
+				if not v_list
+
+					v_list =  [ uid ]
+
+				if v_uid in v_list and v_uid not in vol_list
+
+					delete comp_data[volume.uid]
+
 		$.each vol_list, ( idx, vol_uid ) ->
 
 			if not json_data.component[vol_uid]
@@ -352,7 +392,12 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.number = vol_number
 
-				origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.serverGroupName}" else origin_eni.name
+				if origin_eni.name.indexOf("#{server_group_name}-0") >= 0
+
+					origin_eni.name = origin_eni.replace "#{server_group_name}-0", "#{server_group_name}-#{idx}"
+				else
+
+					origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.serverGroupName}" else origin_eni.name
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
@@ -363,7 +408,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				comp_data[vol_uid] = origin_eni
 			else
 
-				json_data.component[vol_uid].name = if "#{server_group_name}-#{idx}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].serverGroupName}" else json_data.component[vol_uid].name
+				json_data.component[vol_uid].name = if "#{server_group_name}" not in json_data.component[vol_uid].name then "#{server_group_name}-#{idx}-#{json_data.component[vol_uid].serverGroupName}" else json_data.component[vol_uid].name
 
 				json_data.component[vol_uid].number = vol_number
 
@@ -385,10 +430,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		instance_uid = if instance_uid then instance_uid.split('.')[0][1...] else null
 
-		if not json_data.layout.component.node[ instance_uid ]
-
-			return
-
 		eni_uid 	 = json_data.component[uid].resource.NetworkInterfaceId
 
 		eni_uid 	 = if eni_uid then eni_uid.split('.')[0][1...] else null
@@ -407,6 +448,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		if not eni_uid
 
+			if not json_data.layout.component.node[ instance_uid ]
+
+				return
+
 			instance_list = json_data.layout.component.node[ instance_uid ].instanceList
 
 			eip_number = json_data.component[instance_uid].number
@@ -420,6 +465,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			eip_comp_number = eip_list.length
 
 		else
+
+			if not json_data.layout.component.node[ eni_uid ] and not json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)]
+
+				return
 
 			eni_list = if json_data.layout.component.node[ eni_uid ] then json_data.layout.component.node[ eni_uid ].eniList else json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eniList
 
@@ -468,6 +517,25 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			else
 				json_data.layout.component.node[json_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ] = eip_list
 
+
+		for eip_uid, eip of comp_data
+
+			if eip.type is 'AWS.EC2.EIP'
+				if not eni_uid
+
+					e_list = MC.canvas_data.layout.component.node[ instance_uid ].eipList
+
+				else
+					e_list = if MC.canvas_data.layout.component.node[ eni_uid ] then MC.canvas_data.layout.component.node[ eni_uid ].eipList[ uid ] else MC.canvas_data.layout.component.node[MC.canvas_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ]
+
+				if e_list.length is 0
+
+					e_list = [eip_uid]
+
+				if eip_uid in e_list and eip_uid not in eip_list
+
+					delete comp_data[eip_uid]
+
 		$.each eip_list, ( idx, eip_uid ) ->
 
 			if not json_data.component[eip_uid]
@@ -479,6 +547,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				origin_eip.index = idx
 
 				origin_eip.number = eip_number
+
+				origin_eip.resource.AllocationId = origin_eip.resource.AssociationId = origin_eip.resource.InstanceId = origin_eip.resource.NetworkInterfaceId = origin_eip.resource.PublicIp = ""
 
 				if eni_uid
 

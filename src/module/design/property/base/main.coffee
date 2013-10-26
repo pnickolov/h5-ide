@@ -243,11 +243,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
-        tab_type_prefix = tab_type + ":"
         if not property
             # If we cannot find the property
             # then try using `App:XXXXX` and `Stack:XXXXX` to match
-            property = propertyTypeMap[ tab_type_prefix + componentType ]
+            property = propertyTypeMap[ tab_type + ":" + componentType ]
 
         if not property and componentType.indexOf ">" > -1
             # This is a line, we try to match the line using regexp

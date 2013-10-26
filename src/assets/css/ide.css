@@ -3935,7 +3935,7 @@ a.sidebar-hider {
 	top          : 0;
 	left         : 0;
 	right        : 0;
-	bottom       : 0;
+	bottom       : 30px;
 	margin-left  : 246px;
 	margin-right : 280px;
 
@@ -6826,9 +6826,12 @@ a.action-link:hover {
 /* status bar */
 #main-statusbar {
 	position: absolute;
-	bottom: 8px;
+	bottom: 0;
+	right: 0;
+	left: 0;
 	z-index: 2;
-	width: 100%;
+	margin-left: 246px;
+	margin-right: 280px;
 	background-color: #5d5d5d;
 	height: 30px;
 	line-height: 30px;

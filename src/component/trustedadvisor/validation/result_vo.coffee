@@ -32,6 +32,22 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		#
 		MC.ta.list
 
+	hash = ( str ) ->
+		hash = 0
+		if str.length is 0
+			return hash
 
-	add  : add
-	del  : del
+		_.each str, ( v, i ) ->
+			char = str.charCodeAt(i)
+			hash = ( ( hash<<5 ) - hash ) + char
+			hash = hash & hash # Convert to 32bit integer
+
+		hash
+
+	reset = () ->
+		MC.ta.list = []
+
+
+	add  	: add
+	del  	: del
+	reset	: reset

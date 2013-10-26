@@ -37,15 +37,14 @@ define [ 'event', './validation/main', './validation/result_vo',
     validAll = ( obj ) ->
         components = MC.canvas_data.component
 
-        _.each components, ( component , id ) ->
+        _.each components, ( component , uid ) ->
             typeName = _.last component.type.split '.'
             type = typeName.toLowerCase()
 
             _.each validation_main[ type ], ( func, funcName ) ->
-                result = func.call validation_main[ type ], id
+                result = func.call validation_main[ type ], uid
                 resultVO.add funcName, result.level, result.info
 
-        resultVO
 
 
 

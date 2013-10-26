@@ -36,7 +36,9 @@ var listen = function ()
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
-			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
+			//.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
+			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
+			
 			.on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
 			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)

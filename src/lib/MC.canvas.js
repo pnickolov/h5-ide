@@ -3105,16 +3105,16 @@ MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
-		// Ctrl Move event
-		if (
-			event.which === 1 &&
-			event.ctrlKey
-		)
-		{
-			MC.canvas.event.ctrlMove.mousedown.call(this, event);
+		// // Ctrl Move event
+		// if (
+		// 	event.which === 1 &&
+		// 	event.ctrlKey
+		// )
+		// {
+		// 	MC.canvas.event.ctrlMove.mousedown.call(this, event);
 
-			return false;
-		}
+		// 	return false;
+		// }
 
 		if (event.which === 1)
 		{

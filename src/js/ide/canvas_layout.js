@@ -36,6 +36,8 @@ var listen = function ()
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+			.on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.appDrawConnection)
+
 			//.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
 			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
 			

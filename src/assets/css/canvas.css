@@ -246,7 +246,11 @@
 	stroke-width: 0;
 }
 
-.canvas_state_stack .port:hover {
+.canvas_state_stack .port:hover,
+.canvas_state_appedit .port-instance-sg:hover,
+.canvas_state_appedit .port-eni-sg:hover,
+.canvas_state_appedit .port-launchconfig-sg:hover,
+.canvas_state_appedit .port-elb-sg:hover {
 	fill: #F2F8FF;
 	stroke-width: 2;
 	cursor  : pointer;

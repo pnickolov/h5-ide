@@ -5253,6 +5253,22 @@ MC.canvas.event.appMove = function (event)
 	return false;
 };
 
+MC.canvas.event.appDrawConnection = function ()
+{
+	if ($(this).is([
+		'.port-instance-sg',
+		'.port-eni-sg',
+		'.port-launchconfig-sg',
+		'.port-elb-sg'
+		].join(', ')
+	))
+	{
+		MC.canvas.event.drawConnection.mousedown.call( this, event );
+	}
+
+	return false;
+};
+
 MC.canvas.event.clearList = function ()
 {
 	MC.canvas.instanceList.close();

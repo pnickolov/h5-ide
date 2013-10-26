@@ -28,7 +28,7 @@ var listen = function ()
 			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
 			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
 			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.selectNode)
-			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	if (canvas_state === 'appedit')
@@ -36,7 +36,10 @@ var listen = function ()
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
-			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
+			//.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.appMove)
+			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
+			
+			.on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
 			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
@@ -45,7 +48,7 @@ var listen = function ()
 			// .on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
 			// .on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
 			// .on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
-			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	if (canvas_state === 'stack')
@@ -60,7 +63,7 @@ var listen = function ()
 			.on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('selectstart.CANVAS_EVENT', returnFalse)
-			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown);
 	}
 
 	$('#tab-content-design').on('click', '#canvas-panel, #resource-panel', MC.canvas.volume.close);

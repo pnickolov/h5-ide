@@ -33,11 +33,11 @@ define [ '../base/model',
 			instance_type_list = @getInstanceTypeList( ami, tenancy, myInstanceComponent.resource.InstanceType )
 
 			# If the ami is linked to route table, cannot set server group
-			for uid, comp of MC.canvas_data.component
+			for comp_uid, comp of MC.canvas_data.component
 				if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 					continue
 
-				if comp.resource.RouteSet.join(",").indexOf( uid ) isnt -1
+				if comp.resource.RouteSet.join(",").indexOf( comp_uid ) isnt -1
 					@set 'number_disable', true
 					break
 
@@ -46,6 +46,8 @@ define [ '../base/model',
 
 			@set 'number', myInstanceComponent.number
 			@set 'name',   myInstanceComponent.serverGroupName
+
+			@getGroupList()
 			null
 
 		getInstanceTypeList : ( ami, tenancy, current_instance_type ) ->
@@ -63,6 +65,42 @@ define [ '../base/model',
 				return list
 			else
 				return []
+
+
+		setCount : ( count ) ->
+			uid = @get( 'uid' )
+			MC.canvas_data.component[ uid ].number = count
+
+			@getGroupList()
+
+			# TODO : Update canvas's Instance and Eni count
+			null
+
+		getGroupList : ()->
+
+			uid = @get( 'uid' )
+
+			component   = MC.canvas_data.component[ uid ]
+			app_data    = MC.data.resource_list[ MC.canvas_data.region ]
+
+			if "" + component.number is "1"
+				instance_id = component.resource.InstanceId
+				instance    = app_data[ instance_id ]
+				if not instance
+					@set "group", null
+					return
+				else
+					@set "group", {
+						id         : instance_id
+						isRunning  : instance.instanceState.name is "running"
+						isPending  : instance.instanceState.name is "pending"
+						state      : MC.capitalize instance.instanceState.name
+						launchTime : instance.launchTime
+					}
+			else
+				@set "group", null
+			null
+
 
 		getSGList        : stack_model.getSGList
 		assignSGToComp   : stack_model.assignSGToComp

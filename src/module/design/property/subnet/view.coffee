@@ -179,15 +179,25 @@ define [ '../base/view',
             else if MC.aws.subnet.isSubnetConflictInVPC(subnetUID, subnetCIDR)
                 mainContent = subnetCIDR + ' conflicts with other subnet.'
                 descContent = 'Please choose a CIDR block not conflicting with existing subnet.'
+            else if MC.aws.subnet.isConnectToELB subnetUID
+                isAbleConn = MC.aws.subnet.isAbleConnectToELB subnetUID
+                if isAbleConn
+                    mainContent = 'The subnet is attached with a load balancer. The CIDR must be smaller than /27.'
+                    descContent = ''
+                    noRemove = true
+                else
+                    haveError = false
             else
                 haveError = false
 
             if haveError
                 dialog_template = MC.template.setupCIDRConfirm {
-                    remove_content : 'Remove Subnet',
                     main_content : mainContent,
                     desc_content : descContent
                 }
+                if not noRemove
+                    dialog_template.remove_content = 'Remove Subnet'
+
                 modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->

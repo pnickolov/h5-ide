@@ -286,6 +286,13 @@ define [ 'MC' ], ( MC ) ->
 
 		return isCanDelete
 
+	isConnectToELB = (subnetUID) ->
+		subnetInELB =  "@#{subnetUID}.resource.SubnetId"
+		_.some MC.canvas_data.component, ( component, id ) ->
+			component.type is 'AWS.ELB' and _.contains component.resource.Subnets, subnetInELB
+
+
+
 	generateCIDRPossibile = () ->
 
 		currentVPCUID = MC.aws.vpc.getVPCUID()
@@ -332,6 +339,18 @@ define [ 'MC' ], ( MC ) ->
 
 		return result
 
+	isAbleConnectToELB = ( subnetUid ) ->
+		subnet = MC.canvas_data.component[ subnetUid ]
+		cidr = + subnet.resource.CidrBlock.split('/')[1]
+		console.debug subnet.resource.CidrBlock
+		console.debug cidr
+
+		if cidr <= 27
+			return true
+
+		false
+
+
 	#public
 	genCIDRPrefixSuffix            : genCIDRPrefixSuffix
 	isSubnetConflict               : isSubnetConflict
@@ -343,4 +362,9 @@ define [ 'MC' ], ( MC ) ->
 	isSubnetConflictInVPC          : isSubnetConflictInVPC
 	autoAssignSimpleCIDR           : autoAssignSimpleCIDR
 	canDeleteSubnetToELBConnection : canDeleteSubnetToELBConnection
-	generateCIDRPossibile : generateCIDRPossibile
+	generateCIDRPossibile 		   : generateCIDRPossibile
+	isConnectToELB				   : isConnectToELB
+	isAbleConnectToELB			   : isAbleConnectToELB
+
+
+

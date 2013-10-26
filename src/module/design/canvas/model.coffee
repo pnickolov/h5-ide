@@ -1231,7 +1231,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				elbUid       = portMap['elb-assoc']
 				subnetUid    = portMap['subnet-assoc-in']
 
-				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid, elbUid)
+				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid)
 				console.debug ta
 				if ta
 					notification 'warning', ta.info

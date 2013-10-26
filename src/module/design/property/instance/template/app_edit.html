@@ -35,9 +35,17 @@
 				</ul>
 			</div>
 		</section>
+		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
+			<div class="checkbox">
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
+				<label for="property-instance-ebs-optimized"></label>
+			</div>
+			<label for="property-instance-ebs-optimized">EBS Optimized</label>
+		</section>
 		{{/if}}
 	</div>
 
+	{{#if eni_display}}
 	<div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
 	<div class="option-group">
 		<section class="property-control-group">
@@ -52,6 +60,7 @@
 			</div>
 		</section>
 	</div>
+	{{/if}}
 
 	<div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group"></div>

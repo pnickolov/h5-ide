@@ -3,22 +3,29 @@
 #############################
 
 define [ '../base/view',
+         './view',
          'text!./template/app_edit.html',
          'text!./template/app_edit_ami_list.html',
-         'i18n!nls/lang.js',
-         'text!./template/ip_list.html'
-], ( PropertyView, template, ami_list_template, lang, ip_list_template ) ->
+         'i18n!nls/lang.js'
+], ( PropertyView, stack_view, template, ami_list_template, lang ) ->
 
     template          = Handlebars.compile template
-    ip_list_template  = Handlebars.compile ip_list_template
     ami_list_template = Handlebars.compile ami_list_template
 
     InstanceView = PropertyView.extend {
 
         events :
             'change #property-instance-count'     : "countChange"
-            'OPTION_CHANGE #instance-type-select' : "instanceTypeSelect"
             'click #property-ami'                 : "openAmiPanel"
+
+            'OPTION_CHANGE #instance-type-select'     : "instanceTypeSelect"
+            'change #property-instance-ebs-optimized' : 'ebsOptimizedSelect'
+
+            'click .toggle-eip'                         : 'setEIP'
+            'click #instance-ip-add'                    : "addIP"
+            'click #property-network-list .icon-remove' : "removeIP"
+            'change .input-ip'                          : 'syncIPList'
+
 
 
         render : ( ) ->
@@ -26,6 +33,7 @@ define [ '../base/view',
             @$el.html template @model.attributes
 
             @updateInstanceList()
+            @refreshIPList()
 
             # Return title of property
             @model.attributes.name
@@ -55,11 +63,19 @@ define [ '../base/view',
             @updateInstanceList()
             null
 
-        instanceTypeSelect : ( event ) ->
-            # TODO :
-            # type = $("#instance-type-select").find(".selected").attr("data-id")
-            # @model.setInstanceType type
+        ebsOptimizedSelect : ( event )->
+            @model.setEbsOptimized event.target.checked
             null
+
+        instanceTypeSelect  : stack_view.instanceTypeSelect
+
+        addIP               : stack_view.addIP
+        removeIP            : stack_view.removeIP
+        setEIP              : stack_view.setEIP
+        syncIPList          : stack_view.syncIPList
+        refreshIPList       : stack_view.refreshIPList
+        updateIPAddBtnState : stack_view.updateIPAddBtnState
+
 
     }
 

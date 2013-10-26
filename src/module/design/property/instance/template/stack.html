@@ -114,7 +114,7 @@
 		</section>
 	</div>
 
-	{{# if component.resource.VpcId}}
+	{{#if eni_display}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
@@ -134,11 +134,7 @@
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">
-				{{#if eni_display.asso_public_ip}}
-				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} checked="true" value="None" name="property-instance-public-ip" />
-				{{else}}
-				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} value="None" name="property-instance-public-ip" />
-				{{/if}}
+				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} {{#if eni_display.asso_public_ip}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
 				<label for="property-instance-public-ip"></label>
 			</div>
 			<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>

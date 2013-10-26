@@ -1,5 +1,14 @@
 define [ 'constant', 'MC' ], ( constant, MC ) ->
 
+	EbsMap =
+		"m1.large"   : true
+		"m1.xlarge"  : true
+		"m2.2xlarge" : true
+		"m2.4xlarge" : true
+		"m3.xlarge"  : true
+		"m3.2xlarge" : true
+		"c1.xlarge"  : true
+
 	updateCount = ( uid, count ) ->
 
 		for c_uid, comp of MC.canvas_data.component
@@ -26,6 +35,8 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 				MC.canvas.display( eni, 'eni-number-group', false )
 				MC.canvas.display( eni, 'port-eni-rtb', true )
 
+	canSetEbsOptimized = ( instance_type ) ->
+		EbsMap.hasOwnProperty instance_type
 
 
 	#update state icon of instance
@@ -42,5 +53,6 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		null
 
 	#public
-	updateCount : updateCount
-	updateStateIcon : updateStateIcon
+	updateCount        : updateCount
+	updateStateIcon    : updateStateIcon
+	canSetEbsOptimized : canSetEbsOptimized

@@ -7,7 +7,7 @@
     <dd>{{group.id}}</dd>
 
     <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
-    <dd><i class="status status-{{#if group.isRunning}}green{{else}}{{#if group.isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{group.state}}</dd>
+    <dd><i class="status status-{{group.state}}"></i>{{group.state}}</dd>
 
     <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
     <dd>{{timeStr group.launchTime}}</dd>
@@ -19,7 +19,7 @@
   <ul class="appedit-servers-list">
   {{#each group}}
     <li {{#if disabled}}class="disabled"{{/if}}>
-      <i class="status status-{{#if isRunning}}green{{else}}{{#if isPending}}orange{{else}}red{{/if}}{{/if}}"></i>{{name}}
+      <i class="status status-{{state}}"></i>{{name}}
       {{#if id}}<span class="subtitle">({{id}})</span>{{/if}}
       {{#if isNew}}<div>Launch after applying updates</div>
       {{else}}{{#if isOld}}<div>Terminate after applying updates</div>{{/if}}

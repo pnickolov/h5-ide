@@ -1,12 +1,16 @@
-{{#each eni_display.eni_ips}}
 <li class="input-ip-item">
-	<div class="name tooltip" data-tooltip={{#ifCond ../number 1}}"{{i18n 'PROP_INSTANCE_IP_MSG_1'}}"{{else}}"{{i18n 'PROP_INSTANCE_IP_MSG_2'}}"{{/ifCond}}>
-		<label for="instance-ip-1" class="input-ip-prefix">{{prefix}}</label>
-		<input type="text" class="input input-ip" {{#ifCond ../number 1}}{{else}}disabled="disabled"{{/ifCond}} value="{{suffix}}" id="instance-ip-1" data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+	<div class="name tooltip" data-tooltip={{#if customizable}}"{{i18n 'PROP_INSTANCE_IP_MSG_1'}}"{{else}}"{{i18n 'PROP_INSTANCE_IP_MSG_2'}}"{{/if}}>
+		<label><span class="input-ip-prefix">{{prefix}}</span>
+		<input type="text" class="input input-ip" {{#unless customizable}}disabled="disabled"{{/unless}} value="{{suffix}}" data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+    </label>
 	</div>
 
-	<div class="input-ip-eip-btn toggle-icon tooltip toggle-eip{{#if has_eip}} associated{{/if}}" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
+  {{#if has_eip}}
+  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
+  {{else}}
+  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
+  {{/if}}
 
-	{{#unless Primary}}<div class="icon-remove"></div>{{/unless}}
+
+	{{#if deletable}}<div class="icon-remove"></div>{{/if}}
 </li>
-{{/each}}

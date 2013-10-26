@@ -149,9 +149,7 @@ define [ '../base/model',
                 instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
 
                 # Possible value : running, stopped, pending...
-                instance.isRunning = instance.instanceState.name == "running"
-                instance.isPending = instance.instanceState.name == "pending"
-                instance.instanceState.name = MC.capitalize instance.instanceState.name
+                instance.state = MC.capitalize instance.instanceState.name
                 instance.blockDevice = ""
                 if instance.blockDeviceMapping && instance.blockDeviceMapping.item
                     deviceName = []

@@ -394,7 +394,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				if origin_eni.name.indexOf("#{server_group_name}-0") >= 0
 
-					origin_eni.name = origin_eni.replace "#{server_group_name}-0", "#{server_group_name}-#{idx}"
+					origin_eni.name = origin_eni.name.replace "#{server_group_name}-0", "#{server_group_name}-#{idx}"
 				else
 
 					origin_eni.name = if "#{server_group_name}-#{idx}" not in origin_eni.name then "#{server_group_name}-#{idx}-#{origin_eni.serverGroupName}" else origin_eni.name

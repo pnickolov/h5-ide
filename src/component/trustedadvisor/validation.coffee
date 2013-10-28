@@ -55,6 +55,8 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
                     validComp('elb.isHaveInstanceAttached', compUID)
                     validComp('elb.isAttachELBToMultiAZ', compUID)
                     validComp('elb.isRedirectPortHttpsToHttp', compUID)
+                else if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+                    validComp('sg.isSGRuleExceedFitNum', compUID)
 
                 null
 

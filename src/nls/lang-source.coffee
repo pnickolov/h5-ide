@@ -3318,6 +3318,11 @@ module.exports =
       en: "Load Balancer %s redirects 443 to 443. Suggest to use load balancer to decrypt and redirect to port 80"
       zh: ""
 
+    # SG
+    TA_INFO_WARNING_SG_RULE_EXCEED_FIT_NUM:
+      en: "Security Group %s has more than %s rules, If a security group has a large number of rules, performance can be degraded"
+      zh: ""
+
     ##### Trust Advisor
 
   service:

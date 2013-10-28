@@ -245,7 +245,7 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 			for index_value in [min_index..max_index]
 				modify_index_refs["@#{uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
 
-			comp.PrivateIpAddressSet.splice index, 1
+			comp.resource.PrivateIpAddressSet.splice index, 1
 			remove_uid = null
 
 			for u, c of MC.canvas_data.component

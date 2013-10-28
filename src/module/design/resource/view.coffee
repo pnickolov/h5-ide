@@ -77,7 +77,10 @@ define [ 'event',
             $accordionWrap   = $accordion.closest ".fixedaccordion"
             $accordionParent = $accordionWrap.parent()
 
-            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $accordionWrap.children(":visible").length * $target.outerHeight()
+            $visibleAccordion = $accordionWrap.children().filter ()->
+                $(this).css('display') isnt 'none'
+
+            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $visibleAccordion.length * $target.outerHeight()
 
             $body.outerHeight height
 
@@ -97,7 +100,11 @@ define [ 'event',
             $accordions = $("#resource-panel").children(".fixedaccordion").children()
             $accordion  = $accordions.filter(".expanded")
             if $accordion.length is 0
-                $accordion = $accordions.eq(0)
+                $accordion = $accordions.filter ()->
+                    $(this).css('display') isnt 'none'
+
+            if $accordion.length is 0
+                return
 
             $target = $accordion.removeClass( 'expanded' ).children( '.fixedaccordion-head' )
             this.updateAccordion( { currentTarget : $target[0] }, true )
@@ -228,15 +235,13 @@ define [ 'event',
 
         updateResourceState : ( type ) ->
             console.log 'updateResourceState, type = ' + type
-            #
-            $item = $('.fixedaccordion').children()
+            # Get all accordion, and make them not `expanded`
+            $item = $('.fixedaccordion').children().removeClass("expanded")
             #
             if type is 'show'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
-                #open images & close volume
-                $item.eq(1).find( '.fixedaccordion-head' ).trigger 'click'
 
                 #hide az and scaling
                 $item.eq(0).hide()
@@ -244,8 +249,10 @@ define [ 'event',
                 #hide vpc
                 $item.eq(4).hide()
 
+                #open images & close volume
+                # Need to hide other items first
+                # Then recalc the accodion
                 @recalcAccordion()
-
 
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'

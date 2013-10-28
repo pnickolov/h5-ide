@@ -47,7 +47,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             filename = filename.toLowerCase()
 
             _.each validation_main[ filename ], ( func, method ) ->
-                if needValid filename, func, component
+                if needValid filename, method, component
                     validComp filename + '.' + method, uid
 
         resultVO.result()
@@ -63,8 +63,15 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             all: ( component ) ->
                 true
 
+    # debug validation method, if exist anyother method will not be called
+    validDebug = 'isAbleConnectToELB'
+
 
     needValid = ( filename, funcName, component ) ->
+        # debug mode
+        if validDebug
+            return validDebug is funcName
+
         fileNeed = validList[ filename ]
 
         if fileNeed
@@ -77,7 +84,6 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
     isNeeded = ( obj, key, params ) ->
         not obj[ key ] or obj[ key ]( params )
-
 
 
 

@@ -47,7 +47,6 @@ require.config {
 		#ui
 		'UI.tooltip'        : 'ui/common/UI.tooltip'
 		'UI.scrollbar'      : 'ui/common/UI.scrollbar'
-		'UI.accordion'      : 'ui/common/UI.accordion'
 		'UI.tabbar'         : 'ui/common/UI.tabbar'
 		'UI.bubble'         : 'ui/common/UI.bubble'
 		'UI.modal'          : 'ui/common/UI.modal'

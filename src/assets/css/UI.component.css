@@ -1231,23 +1231,7 @@ textarea {
 	display: block;
 }
 
-.accordion-head {
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-}
-
 /* Accordion default style */
-.accordion-default .accordion-head {
-	border: 1px solid #ccc;
-	padding: 10px;
-	font-weight: 700;
-	color: #333;
-}
-
 .accordion-default .accordion-body {
 	padding: 10px;
 	/*color: #e0e0e0;*/

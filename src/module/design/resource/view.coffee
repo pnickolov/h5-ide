@@ -236,7 +236,7 @@ define [ 'event',
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
                 #open images & close volume
-                $item.eq(0).find( '.fixedaccordion-head' ).trigger 'click'
+                $item.eq(1).find( '.fixedaccordion-head' ).trigger 'click'
 
                 #hide az and scaling
                 $item.eq(0).hide()

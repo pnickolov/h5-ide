@@ -678,8 +678,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
                 resourceId = compRes.VpnGatewayId
 
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                resourceId = compRes.AutoScalingGroupARN
+            # In stopped app, ASG doesn't have AWS Resource
+            # when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                # resourceId = compRes.AutoScalingGroupARN
 
             when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                 resourceId = compRes.LaunchConfigurationARN

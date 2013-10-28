@@ -3,11 +3,11 @@
 #############################
 
 define [ '../base/view',
-         './view',
-         'text!./template/app_edit.html',
-         'text!./template/app_edit_ami_list.html',
+         '../instance/view'
+         'text!./template/app.html',
+         'text!./template/ami_list.html',
          'i18n!nls/lang.js'
-], ( PropertyView, stack_view, template, ami_list_template, lang ) ->
+], ( PropertyView, instance_view, template, ami_list_template, lang ) ->
 
     template          = Handlebars.compile template
     ami_list_template = Handlebars.compile ami_list_template
@@ -58,7 +58,6 @@ define [ '../base/view',
 
             val = +target.val()
             @model.setCount val
-            # @setEditableIP val == 1
 
             @updateInstanceList()
             null
@@ -67,14 +66,14 @@ define [ '../base/view',
             @model.setEbsOptimized event.target.checked
             null
 
-        instanceTypeSelect  : stack_view.instanceTypeSelect
+        instanceTypeSelect  : instance_view.instanceTypeSelect
 
-        addIP               : stack_view.addIP
-        removeIP            : stack_view.removeIP
-        setEIP              : stack_view.setEIP
-        syncIPList          : stack_view.syncIPList
-        refreshIPList       : stack_view.refreshIPList
-        updateIPAddBtnState : stack_view.updateIPAddBtnState
+        addIP               : instance_view.addIP
+        removeIP            : instance_view.removeIP
+        setEIP              : instance_view.setEIP
+        syncIPList          : instance_view.syncIPList
+        refreshIPList       : instance_view.refreshIPList
+        updateIPAddBtnState : instance_view.updateIPAddBtnState
 
 
     }

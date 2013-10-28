@@ -3,16 +3,18 @@
 #############################
 
 define [ '../base/model',
-	'./model',
+	'../instance/model'
 	'constant',
 	'i18n!nls/lang.js'
-], ( PropertyModel, stack_model, constant, lang ) ->
+], ( PropertyModel, instance_model, constant, lang ) ->
 
-	AmiAppEditModel = PropertyModel.extend {
+	ServerGroupModel = PropertyModel.extend {
 
 		init : ( uid ) ->
 
-			@set 'uid',    uid
+			@set 'uid', uid
+			@set 'readOnly', not @isAppEdit
+
 			myInstanceComponent = MC.canvas_data.component[ uid ]
 
 			# Find out AMI
@@ -155,21 +157,21 @@ define [ '../base/model',
 			null
 
 
-		getSGList        : stack_model.getSGList
-		assignSGToComp   : stack_model.assignSGToComp
-		unAssignSGToComp : stack_model.unAssignSGToComp
+		getSGList        : instance_model.getSGList
+		assignSGToComp   : instance_model.assignSGToComp
+		unAssignSGToComp : instance_model.unAssignSGToComp
 
-		getEni : stack_model.getEni
+		getEni : instance_model.getEni
 
-		setEbsOptimized    : stack_model.setEbsOptimized
-		canSetInstanceType : stack_model.canSetInstanceType
-		setInstanceType    : stack_model.setInstanceType
+		setEbsOptimized    : instance_model.setEbsOptimized
+		canSetInstanceType : instance_model.canSetInstanceType
+		setInstanceType    : instance_model.setInstanceType
 
-		addIP     : stack_model.addIP
-		removeIP  : stack_model.removeIP
-		attachEIP : stack_model.attachEIP
-		canAddIP  : stack_model.canAddIP
-		setIPList : stack_model.setIPList
+		addIP     : instance_model.addIP
+		removeIP  : instance_model.removeIP
+		attachEIP : instance_model.attachEIP
+		canAddIP  : instance_model.canAddIP
+		setIPList : instance_model.setIPList
 	}
 
-	new AmiAppEditModel()
+	new ServerGroupModel()

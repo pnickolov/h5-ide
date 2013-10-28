@@ -3000,7 +3000,7 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
 	}

@@ -12,6 +12,7 @@ define [ 'event',
 
 				'./module/design/property/stack/main',
 				'./module/design/property/instance/main',
+				'./module/design/property/servergroup/main',
 				'./module/design/property/connection/main',
 				'./module/design/property/staticsub/main',
 				'./module/design/property/sg/main',

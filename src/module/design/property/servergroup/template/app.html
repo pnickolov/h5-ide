@@ -1,0 +1,69 @@
+<article class="property-app">
+  <div id="prop-appedit-ami-list">
+
+  </div>
+  {{#unless readOnly}}
+  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}</div>
+  <div class="option-group">
+    <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
+      <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+      <input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="You cannot specify instance number, since the instance is connected to a route-table."{{else}}data-tooltip="If the quantity is more than 1, host name will be the string you provide plus number index."{{/if}}/>
+    </section>
+
+    {{#if ami}}
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
+      <div id="property-ami" class="property-block-wrap clearfix secondary-panel" data-uid='{{ami.id}}'>
+        <img class="property-ami-icon left" src="./assets/images/ide/ami/{{ami.icon}}" / >
+        <div class="property-ami-label">{{ami.name}}</div>
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if instance_type.length}}
+    <section class="property-control-group">
+      <label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
+      <div class="selectbox selectbox-mega" id="instance-type-select">
+        <div class="selection"></div>
+        <ul class="dropdown">
+          {{#each instance_type}}
+          <li class="{{#if selected}}selected {{/if}}tooltip item {{#if hide}} hide{{/if}}" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+            <div class="main truncate">{{main}}</div>
+            <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>
+    <section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
+      <div class="checkbox">
+        <input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
+        <label for="property-instance-ebs-optimized"></label>
+      </div>
+      <label for="property-instance-ebs-optimized">EBS Optimized</label>
+    </section>
+    {{/if}}
+  </div>
+
+  {{#if eni_display}}
+  <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
+  <div class="option-group">
+    <section class="property-control-group">
+      <div class="network-list-wrap">
+        <div class="network-list-header clearfix">
+          {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
+          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+        </div>
+        <ul class="network-list" id="property-network-list" data-bind="true">
+
+        </ul>
+      </div>
+    </section>
+  </div>
+  {{/if}}
+
+  <div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group"></div>
+  {{/unless}}
+</article>

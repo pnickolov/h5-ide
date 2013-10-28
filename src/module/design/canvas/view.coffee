@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, canvas_layout ) ->
+define [ 'event', 'canvas_layout', 'constant', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, canvas_layout, constant ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -20,9 +20,10 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
                 .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
+                .on( 'CANVAS_INSTANCE_SELECTED',    '#svg_canvas', this.showInstanceProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
-                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -34,9 +35,19 @@ define [ 'event', 'canvas_layout', 'MC.canvas', 'backbone', 'jquery', 'handlebar
             console.log 're-canvas render'
             if $.trim( this.$el.html() ) is 'loading...' then $( '#canvas' ).html template
 
+        showInstanceProperty : ( event, uid ) ->
+            # Directly open the instance property
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
-            ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+            # In App / AppEdit mode, when clicking Instance. Switch to ServerGroup
+            component = MC.canvas_data.component[uid]
+            if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                type = "component_server_group"
+            else
+                type = "component"
+            ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
 
         showASGVolumeProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid

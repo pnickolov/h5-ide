@@ -2815,7 +2815,7 @@ MC.canvas.asgList = {
 		{
 			MC.canvas.event.clearList();
 
-			var target = this.parentNode.parentNode,
+			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
@@ -2926,7 +2926,7 @@ MC.canvas.instanceList = {
 		{
 			MC.canvas.event.clearList();
 
-			var target = this.parentNode.parentNode,
+			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
 			   	canvas_offset = $('#svg_canvas').offset();
@@ -3031,7 +3031,7 @@ MC.canvas.eniList = {
 		{
 			MC.canvas.event.clearList();
 
-			var target = this.parentNode.parentNode,
+			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
 				canvas_offset = $('#svg_canvas').offset();

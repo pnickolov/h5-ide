@@ -1071,6 +1071,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_instance-number'
 					})
 				).attr({
+					'class': 'instance-number-group',
 					'id': group.id + '_instance-number-group',
 					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
@@ -2064,6 +2065,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_eni-number'
 					})
 				).attr({
+					'class': 'eni-number-group',
 					'id': group.id + '_eni-number-group',
 					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
@@ -2414,6 +2416,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_instance-number'
 					})
 				).attr({
+					'class': 'instance-number-group',
 					'id': group.id + '_instance-number-group',
 					'display': ( MC.canvas.getState() === 'stack' ) ? 'none' : 'block'
 				})

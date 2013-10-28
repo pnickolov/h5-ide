@@ -2424,7 +2424,7 @@ module.exports =
       zh: "账号设置"
 
     HEAD_LABEL_MENUITEM_LOGOUT:
-      en: "Log out"
+      en: "Log Out"
       zh: "登出"
 
     HEAD_LABEL_SETTING:

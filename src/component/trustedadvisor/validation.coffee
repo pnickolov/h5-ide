@@ -2,9 +2,9 @@
 #  validation
 #############################
 
-define [ 'event', './validation/main', './validation/result_vo',
+define [ 'constant', 'event', './validation/main', './validation/result_vo',
          'jquery', 'underscore'
-], ( ide_event, validation_main, resultVO ) ->
+], ( constant, ide_event, validation_main, resultVO ) ->
 
     #privte
     validComp = ( type ) ->
@@ -41,15 +41,26 @@ define [ 'event', './validation/main', './validation/result_vo',
 
         try
 
-            components = MC.canvas_data.component
+            allComps = MC.canvas_data.component
 
-            _.each components, ( component , uid ) ->
+            # independent validation
+            _.each allComps, (compObj, uid) ->
+                compType = compObj.type
+                compUID = uid
 
-                filename = _.last component.type.split '.'
-                filename = filename.toLowerCase()
+                if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    validComp('instance.isEBSOptimizedForAttachedProvisionedVolume', compUID)
+                else if compType is constant.AWS_RESOURCE_TYPE.AWS_ELB
+                    validComp('elb.isHaveIGWForInternetELB', compUID)
+                    validComp('elb.isHaveInstanceAttached', compUID)
+                    validComp('elb.isAttachELBToMultiAZ', compUID)
 
-                _.each validation_main[ filename ], ( func, method ) ->
-                    validComp filename + '.' + method, uid
+                null
+
+            # global validation
+            validComp('vpc.isVPCAbleConnectToOutside')
+
+            return MC.ta.list
 
         catch error
             console.log "validAll error #{ error }"

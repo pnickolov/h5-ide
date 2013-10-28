@@ -49,5 +49,21 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			level: constant.TA.ERROR
 			info: tipInfo
 
+	isAttachELBToMultiAZ = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+
+		# attached AZ array
+		attachedAZAry = elbComp.resource.AvailabilityZones
+		if attachedAZAry.length isnt 1
+			return null
+		else
+			elbName = elbComp.name
+			tipInfo = sprintf lang.ide.TA_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ, elbName
+			# return
+			level: constant.TA.WARNING
+			info: tipInfo
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
+	isAttachELBToMultiAZ : isAttachELBToMultiAZ

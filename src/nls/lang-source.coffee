@@ -3306,6 +3306,10 @@ module.exports =
       en: "Load Balancer %s has no attached instance or auto scaling group"
       zh: ""
 
+    TA_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
+      en: "Load Balancer %s is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance"
+      zh: ""
+
     ##### Trust Advisor
 
   service:

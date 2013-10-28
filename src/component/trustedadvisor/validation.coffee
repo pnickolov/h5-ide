@@ -39,35 +39,51 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
     validAll = ->
 
-        try
+        components = MC.canvas_data.component
 
-            allComps = MC.canvas_data.component
+        _.each components, ( component , uid ) ->
 
-            # independent validation
-            _.each allComps, (compObj, uid) ->
-                compType = compObj.type
-                compUID = uid
+            filename = _.last component.type.split '.'
+            filename = filename.toLowerCase()
 
-                if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                    validComp('instance.isEBSOptimizedForAttachedProvisionedVolume', compUID)
-                else if compType is constant.AWS_RESOURCE_TYPE.AWS_ELB
-                    validComp('elb.isHaveIGWForInternetELB', compUID)
-                    validComp('elb.isHaveInstanceAttached', compUID)
-                    validComp('elb.isAttachELBToMultiAZ', compUID)
-                    validComp('elb.isRedirectPortHttpsToHttp', compUID)
-                else if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-                    validComp('sg.isSGRuleExceedFitNum', compUID)
+            _.each validation_main[ filename ], ( func, method ) ->
+                if needValid filename, func, component
+                    validComp filename + '.' + method, uid
 
-                null
+        resultVO.result()
 
-            # global validation
-            validComp('vpc.isVPCAbleConnectToOutside')
 
-            return MC.ta.list
+    validList =
+        instance:
+            all: ( component ) ->
+                true
+            isEBSOptimizedForAttachedProvisionedVolume: ( component ) ->
+                true
+        vpc:
+            all: ( component ) ->
+                true
 
-        catch error
-            console.log "validAll error #{ error }"
+
+    needValid = ( filename, funcName, component ) ->
+        fileNeed = validList[ filename ]
+
+        if fileNeed
+            allNeed     = isNeeded fileNeed, 'all', component
+            funcNeed    = isNeeded fileNeed, funcName, component
+            return allNeed and funcNeed
+        else
+            return true
+
+
+    isNeeded = ( obj, key, params ) ->
+        not obj[ key ] or obj[ key ]( params )
+
+
+
+
 
     #public
     validComp : validComp
     validAll  : validAll
+    needValid : needValid
+

@@ -47,7 +47,12 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 	reset = () ->
 		MC.ta.list = []
 
+	result = () ->
+		MC.ta.list
 
-	add  	: add
-	del  	: del
-	reset	: reset
+
+	add  		: add
+	del  		: del
+	reset		: reset
+	result		: result
+

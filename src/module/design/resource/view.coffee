@@ -235,14 +235,17 @@ define [ 'event',
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
+                #open images & close volume
+                $item.eq(0).find( '.fixedaccordion-head' ).trigger 'click'
+
                 #hide az and scaling
                 $item.eq(0).hide()
                 $item.eq(3).hide()
                 #hide vpc
                 $item.eq(4).hide()
 
-                #open images & close volume
                 @recalcAccordion()
+
 
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'

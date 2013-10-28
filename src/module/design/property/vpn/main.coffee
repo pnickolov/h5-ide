@@ -30,6 +30,11 @@ define [ '../base/main',
             @model = model
             null
 
+        initAppEdit : () ->
+            @view = view
+            @model = model
+            null
+
 
     }
     null

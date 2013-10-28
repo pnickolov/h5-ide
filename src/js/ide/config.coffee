@@ -69,13 +69,11 @@ require.config {
 		#############################################
 		'UI.tooltip'         : 'ui/common/UI.tooltip'
 		'UI.scrollbar'       : 'ui/common/UI.scrollbar'
-		'UI.accordion'       : 'ui/common/UI.accordion'
 		'UI.tabbar'          : 'ui/common/UI.tabbar'
 		'UI.bubble'          : 'ui/common/UI.bubble'
 		'UI.modal'           : 'ui/common/UI.modal'
 		'UI.table'           : 'ui/common/UI.table'
 		'UI.tablist'         : 'ui/common/UI.tablist'
-		'UI.fixedaccordion'  : 'ui/common/UI.fixedaccordion'
 		'UI.selectbox'       : 'ui/common/UI.selectbox'
 		'UI.toggleicon'      : 'ui/common/UI.toggleicon'
 		'UI.searchbar'       : 'ui/common/UI.searchbar'
@@ -307,16 +305,10 @@ require.config {
 		'UI.scrollbar' :
 			deps       : [ 'jquery' ]
 
-		'UI.accordion' :
-			deps       : [ 'jquery' ]
-
 		'UI.table'     :
 			deps       : [ 'jquery' ]
 
 		'UI.tablist'   :
-			deps       : [ 'jquery' ]
-
-		'UI.fixedaccordion' :
 			deps       : [ 'jquery' ]
 
 		'UI.selectbox' :

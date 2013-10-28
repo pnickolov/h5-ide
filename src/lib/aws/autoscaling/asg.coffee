@@ -39,7 +39,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				asg_data = appData[ asg_comp.resource.AutoScalingGroupARN ]
 
 				if asg_data
-					MC.canvas.update uid, 'text', 'lc_name', asg_data.Instances.member.length + " in service"
+					MC.canvas.update uid, 'text', 'instance-number', asg_data.Instances.member.length
 		null
 
 

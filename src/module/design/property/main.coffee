@@ -145,7 +145,7 @@ define [ 'event',
 						tab_type = PropertyBaseModule.TYPE.Stack
 					else
 						# This property is not covered, fallback to App mode
-						tab_type = PropertyBaseModule.TYPE.App
+						tab_type = PropertyBaseModule.TYPE.AppEdit
 						### env:dev ###
 						console.warn "lib/forge/app:existing_app_resource does not handle component. Uid :", uid
 						### env:dev:end ###

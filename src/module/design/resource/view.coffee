@@ -7,7 +7,7 @@ define [ 'event',
          'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
          'UI.selectbox', 'UI.toggleicon',
          # 'UI.searchbar',
-         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table', 'UI.fixedaccordion'
+         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {
@@ -235,22 +235,22 @@ define [ 'event',
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'show'
                 $( '#hide-resource-panel' ).trigger 'click'
                 $( '#hide-resource-panel' ).show()
-                #open images & close volume
-                $($item[1]).find( '.fixedaccordion-head' ).trigger 'click'
-                fixedaccordion.resize()
                 #hide az and scaling
-                $($item[0]).hide()
-                $($item[3]).hide()
+                $item.eq(0).hide()
+                $item.eq(3).hide()
                 #hide vpc
-                $($item[4]).hide() if $item[4]
+                $item.eq(4).hide()
+
+                #open images & close volume
+                @recalcAccordion()
+
             else if type is 'hide'
                 $( '#hide-resource-panel' ).attr 'data-current-state', 'hide'
                 $( '#hide-resource-panel' ).trigger 'click' if !$( '#resource-panel' ).hasClass( 'hiden' )
                 $( '#hide-resource-panel' ).hide()
                 #show all
-                $($item[0]).show()
-                $($item[3]).show()
-                $($item[4]).show() if $item[4]
+                $item.show()
+            null
 
         availabilityZoneRender : () ->
             console.log 'availabilityZoneRender'

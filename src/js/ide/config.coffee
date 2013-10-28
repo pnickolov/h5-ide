@@ -74,7 +74,6 @@ require.config {
 		'UI.modal'           : 'ui/common/UI.modal'
 		'UI.table'           : 'ui/common/UI.table'
 		'UI.tablist'         : 'ui/common/UI.tablist'
-		'UI.fixedaccordion'  : 'ui/common/UI.fixedaccordion'
 		'UI.selectbox'       : 'ui/common/UI.selectbox'
 		'UI.toggleicon'      : 'ui/common/UI.toggleicon'
 		'UI.searchbar'       : 'ui/common/UI.searchbar'
@@ -310,9 +309,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.tablist'   :
-			deps       : [ 'jquery' ]
-
-		'UI.fixedaccordion' :
 			deps       : [ 'jquery' ]
 
 		'UI.selectbox' :

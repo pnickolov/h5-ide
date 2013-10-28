@@ -52,7 +52,7 @@ define [ "../base/main",
             @view  = view
             null
 
-        afterLoadApp : () ->
+        afterLoadAppEdit : () ->
             sglist_main.loadModule @model
             null
     }

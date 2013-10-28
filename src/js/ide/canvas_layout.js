@@ -24,10 +24,10 @@ var listen = function ()
 			.on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter.CANVAS_EVENT mouseleave', '.node', MC.canvas.event.nodeHover)
 			.on('selectstart.CANVAS_EVENT', returnFalse)
-			.on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label', MC.canvas.asgList.show)
-			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
 			.on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.selectNode)
+			.on('mousedown.CANVAS_EVENT', '.node-launchconfiguration-label .instance-number', MC.canvas.asgList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance .instance-number', MC.canvas.instanceList.show)
+			.on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface .eni-number', MC.canvas.eniList.show)
 			.on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown);
 	}
 

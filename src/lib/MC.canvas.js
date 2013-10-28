@@ -2815,12 +2815,13 @@ MC.canvas.asgList = {
 		{
 			MC.canvas.event.clearList();
 
-			var target = this.parentNode,
+			var target = this.parentNode.parentNode,
+				target_id = target.id,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( this.id );
+			var uid     = MC.extractID( target_id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			if (!layout) {
 				return;
@@ -2925,17 +2926,19 @@ MC.canvas.instanceList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
+			var target = this.parentNode.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+			   	canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_instance-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-			   	canvas_offset = $('#svg_canvas').offset();
-
-			var uid     = MC.extractID( this.id ),
+			var uid     = MC.extractID( target_id ),
 			    layout  = MC.canvas_data.layout.component.node[ uid ];
 
 			var temp_data = {
@@ -3028,18 +3031,19 @@ MC.canvas.eniList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			var target = this.parentNode.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_eni-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
-
-
-			var uid      = MC.extractID( this.id ),
+			var uid      = MC.extractID( target_id ),
 			    layout   = MC.canvas_data.layout.component.node[ uid ],
 			    eni_comp = MC.canvas_data.component[ uid ];
 

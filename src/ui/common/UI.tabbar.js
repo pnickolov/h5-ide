@@ -3,51 +3,63 @@
 #* Filename: UI.tabbar
 #* Creator: Angel
 #* Description: UI.tabbar
-#* Date: 20130829
+#* Date: 20131022
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 var Tabbar = {
+	// Default
+	current: 'dashboard',
+
 	mousedown: function (event)
 	{
-		if (this.id === 'tab-bar-dashboard')
+		if (event.which === 1)
 		{
-			Tabbar.open('dashboard');
+			if ($(event.target).hasClass('icon-close'))
+			{
+				return false;
+			} 
 
-			return false;
+			if (this.id === 'tab-bar-dashboard')
+			{
+				Tabbar.open('dashboard');
+
+				return false;
+			}
+
+			var target = $(this),
+				position = target.position(),
+				tab_list = $('#tab-bar li'),
+				dragging_tab = target.clone();
+
+			dragging_tab.css({
+				'position': 'absolute',
+				'left': position.left
+			});
+
+			$('#tab-bar ul').append(dragging_tab);
+			target.css('visibility', 'hidden');
+
+			$(document.body).append('<div id="overlayer"></div>');
+
+			$(document)
+				.on('mousemove', {
+					'target': target,
+					'dragging_tab': dragging_tab,
+					'offset_left': event.pageX - target.offset().left,
+					'tab_list': tab_list,
+					'tab_width': tab_list.width(),
+					'tabbar_offsetLeft': $('#tab-bar').offset().left
+				}, Tabbar.mousemove)
+				.on('mouseup', {
+					'target': target,
+					'dragging_tab': dragging_tab
+				}, Tabbar.mouseup);
+
+			MC.canvas.volume.close();
+			MC.canvas.event.clearList();
 		}
-
-		var target = $(this),
-			position = target.position(),
-			tab_list = $('#tab-bar li'),
-			dragging_tab = target.clone();
-
-		dragging_tab.css({
-			'position': 'absolute',
-			'left': position.left
-		});
-
-		$('#tab-bar ul').append(dragging_tab);
-		target.css('visibility', 'hidden');
-
-		$(document.body).append('<div id="overlayer"></div>');
-
-		$(document)
-			.on('mousemove', {
-				'target': target,
-				'dragging_tab': dragging_tab,
-				'offset_left': event.pageX - target.offset().left,
-				'tab_list': tab_list,
-				'tab_width': tab_list.width(),
-				'tabbar_offsetLeft': $('#tab-bar').offset().left
-			}, Tabbar.mousemove)
-			.on('mouseup', {
-				'target': target,
-				'dragging_tab': dragging_tab
-			}, Tabbar.mouseup);
-
-		MC.canvas.volume.close();
 
 		return false;
 	},
@@ -146,6 +158,12 @@ var Tabbar = {
 		if (tab_id === 'dashboard')
 		{
 			scrollbar.scrollTo($('#global-region-wrap'), {'top': 1});
+
+			Tabbar.current = 'dashboard';
+		}
+		else
+		{
+			Tabbar.current = tab_id.match(/([A-Za-z0-9])*/ig)[0];
 		}
 
 		return tab_id;
@@ -161,13 +179,18 @@ var Tabbar = {
 
 	close: function (event)
 	{
-		var target = $(this).parent(),
-			tab_id = target.attr('id').replace('tab-bar-', '');
+		event.stopImmediatePropagation();
 
-		target.remove();
-		Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
+		if (event.which === 1)
+		{
+			var target = $(this).parent(),
+				tab_id = target.attr('id').replace('tab-bar-', '');
 
-		$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+			target.remove();
+			Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
+
+			$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+		}
 
 		return false;
 	},
@@ -189,9 +212,9 @@ var Tabbar = {
 $(document).ready(function ()
 {
 	$('#tab-bar')
-		.on('mousedown', '.close-tab', Tabbar.close)
 		.on('mousedown', '.close-restriction', Tabbar.closeTabRestriction)
-		.on('mousedown', 'li', Tabbar.mousedown);
+		.on('mousedown', 'li', Tabbar.mousedown)
+		.on('click', '.close-tab', Tabbar.close);
 
 	$(window).resize(function ()
 	{

@@ -824,6 +824,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_layout.uid = group.id;
 				component_layout.groupUId = option.groupUId;
 				component_layout.osType =  option.osType;
+				//add osFamily by michael in 20131023
+				component_layout.osFamily = option.osFamily;
 				component_layout.architecture =  option.architecture;
 				component_layout.rootDeviceType =  option.rootDeviceType;
 				component_layout.virtualizationType = option.virtualizationType;
@@ -886,7 +888,10 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.x = component_layout.coordinate[0];
 				coordinate.y = component_layout.coordinate[1];
 
-				option.osType = component_layout.osType ;
+				option.osType = component_layout.osType;
+				if(component_layout.osType == 'win'){
+					option.osType = 'windows';
+				}
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
 				option.virtualizationType = component_layout.virtualizationType;
@@ -1194,7 +1199,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if (device_name.length === 0)
 					{
 						//no valid deviceName
-						notification('warning', 'No valid device name to assign,cancel!', false);
+						notification('warning', 'Attached volume has reached instance limit.', false);
 						return null;
 					}
 
@@ -1242,7 +1247,7 @@ MC.canvas.add = function (flag, option, coordinate)
 					if (device_name.length === 0)
 					{
 						//no valid deviceName
-						notification('warning', 'No valid device name to assign,cancel!', false);
+						notification('warning', 'Attached volume has reached instance limit.', false);
 						return null;
 					}
 
@@ -2201,6 +2206,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					component_layout.osType =  option.osType;
+					//add osFamily by michael in 20131024
+					component_layout.osFamily = option.osFamily;
 					component_layout.architecture =  option.architecture;
 					component_layout.rootDeviceType =  option.rootDeviceType;
 					component_layout.virtualizationType = option.virtualizationType;
@@ -2218,6 +2225,8 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_layout.uid = group.id;
 					component_layout.groupUId = option.groupUId;
 					option.osType = component_layout.osType ;
+					//add osFamily by michael in 20131024
+					option.osFamily = component_layout.osFamily;
 					option.architecture = component_layout.architecture ;
 					option.rootDeviceType = component_layout.rootDeviceType ;
 					option.virtualizationType = component_layout.virtualizationType;
@@ -2273,6 +2282,8 @@ MC.canvas.add = function (flag, option, coordinate)
 				coordinate.y = component_layout.coordinate[1];
 
 				option.osType = component_layout.osType ;
+				//add osFamily by michael in 20131024
+				option.osFamily = component_layout.osFamily;
 				option.architecture = component_layout.architecture ;
 				option.rootDeviceType = component_layout.rootDeviceType ;
 				option.virtualizationType = component_layout.virtualizationType;

@@ -24,7 +24,6 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		AWS_VPC_VPNConnection     					: "AWS.VPC.VPNConnection"
 		AWS_VPC_NetworkAcl        					: "AWS.VPC.NetworkAcl"
 		AWS_IAM_ServerCertificate 					: "AWS.IAM.ServerCertificate"
-		#
 		AWS_AutoScaling_Group                      	: 'AWS.AutoScaling.Group'
 		AWS_AutoScaling_LaunchConfiguration         : 'AWS.AutoScaling.LaunchConfiguration'
 		AWS_AutoScaling_NotificationConfiguration   : 'AWS.AutoScaling.NotificationConfiguration'
@@ -34,6 +33,43 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		AWS_SNS_Subscription                        : 'AWS.SNS.Subscription'
 		AWS_SNS_Topic                              	: 'AWS.SNS.Topic'
 	}
+
+	# AWS_RESOURCE_TYPE = {}
+
+	# AWS_RESOURCE_TYPES = [
+	# 	"AWS.EC2.AvailabilityZone"
+	# 	"AWS.EC2.Instance"
+	# 	"AWS.EC2.KeyPair"
+	# 	"AWS.EC2.SecurityGroup"
+	# 	"AWS.EC2.EIP"
+	# 	"AWS.EC2.AMI"
+	# 	"AWS.EC2.EBS.Volume"
+	# 	"AWS.EC2.EBS.Snapshot"
+	# 	"AWS.ELB"
+	# 	"AWS.VPC.VPC"
+	# 	"AWS.VPC.Subnet"
+	# 	"AWS.VPC.InternetGateway"
+	# 	"AWS.VPC.RouteTable"
+	# 	"AWS.VPC.VPNGateway"
+	# 	"AWS.VPC.CustomerGateway"
+	# 	"AWS.VPC.NetworkInterface"
+	# 	"AWS.VPC.DhcpOptions"
+	# 	"AWS.VPC.VPNConnection"
+	# 	"AWS.VPC.NetworkAcl"
+	# 	"AWS.IAM.ServerCertificate"
+	# 	#
+	# 	"AWS.AutoScaling.Group"
+	# 	"AWS.AutoScaling.LaunchConfiguration"
+	# 	"AWS.AutoScaling.NotificationConfiguration"
+	# 	"AWS.AutoScaling.ScalingPolicy"
+	# 	"AWS.AutoScaling.ScheduledActions"
+	# 	"AWS.CloudWatch.CloudWatch"
+	# 	"AWS.SNS.Subscription"
+	# 	"AWS.SNS.Topic"
+	# ]
+
+	# for value in AWS_RESOURCE_TYPES
+	# 	AWS_RESOURCE_TYPE[ value.replace('.', '_') ] = value
 
 	#private
 	AWS_RESOURCE_SHORT_TYPE = {
@@ -401,26 +437,31 @@ use redirection server name:i:0\n"
 
 	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
 
+	LINUX 	= ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
+	WINDOWS = ['windows', 'win']
+
 	#public
 	INSTANCE_TYPE			: INSTANCE_TYPE
-	INSTANCE_STATES         : INSTANCE_STATES
-	AWS_RESOURCE_TYPE       : AWS_RESOURCE_TYPE
+	INSTANCE_STATES			: INSTANCE_STATES
+	AWS_RESOURCE_TYPE		: AWS_RESOURCE_TYPE
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
-	AWS_PORT_NAME           : AWS_PORT_NAME
-	OS_TYPE                 : OS_TYPE
-	REGION_KEYS			    : REGION_KEYS
-	REGION_SHORT_LABEL	    : REGION_SHORT_LABEL
-	REGION_LABEL		    : REGION_LABEL
-	RETURN_CODE			    : RETURN_CODE
+	AWS_PORT_NAME			: AWS_PORT_NAME
+	OS_TYPE					: OS_TYPE
+	REGION_KEYS				: REGION_KEYS
+	REGION_SHORT_LABEL		: REGION_SHORT_LABEL
+	REGION_LABEL			: REGION_LABEL
+	RETURN_CODE				: RETURN_CODE
+	LINUX 					: LINUX
+	WINDOWS 				: WINDOWS
 	#SERVICE_ERROR_MESSAGE   : SERVICE_ERROR_MESSAGE
-	MESSAGE_E			    : MESSAGE_E
-	APP_STATE			    : APP_STATE
-	OPS_STATE			    : OPS_STATE
-	RECENT_NUM			    : RECENT_NUM
-	RECENT_DAYS			    : RECENT_DAYS
-	AWS_RESOURCE	    	: AWS_RESOURCE
+	MESSAGE_E				: MESSAGE_E
+	APP_STATE				: APP_STATE
+	OPS_STATE				: OPS_STATE
+	RECENT_NUM				: RECENT_NUM
+	RECENT_DAYS				: RECENT_DAYS
+	AWS_RESOURCE			: AWS_RESOURCE
 	SERVICE_REGION			: SERVICE_REGION
-	RDP_TMPL                : RDP_TMPL
-	COOKIE_OPTION           : COOKIE_OPTION
-	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
-	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
+	RDP_TMPL				: RDP_TMPL
+	COOKIE_OPTION			: COOKIE_OPTION
+	LOCAL_COOKIE_OPTION		: LOCAL_COOKIE_OPTION
+	DEMO_STACK_NAME_LIST	: DEMO_STACK_NAME_LIST

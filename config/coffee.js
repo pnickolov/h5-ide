@@ -7,7 +7,7 @@ module.exports = {
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
-            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee' ],
+            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee', '!nls/lang-source.coffee' ],
             dest   : '<%= src %>/',
             ext    : '.js'
         }]
@@ -21,7 +21,7 @@ module.exports = {
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
-            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee' ],
+            src    : [ '**/*.coffee', '!service/**/**/*.coffee', '!test/**/**/*.coffee', '!nls/lang-source.coffee' ],
             dest   : '<%= src %>/',
             ext    : '.js'
         }]
@@ -35,7 +35,7 @@ module.exports = {
         files: [{
             expand : true,
             cwd    : '<%= src %>/',
-            src    : [ '**/*.coffee' ],
+            src    : [ '**/*.coffee', '!nls/lang-source.coffee' ],
             dest   : '<%= src %>/',
             ext    : '.js'
         }]

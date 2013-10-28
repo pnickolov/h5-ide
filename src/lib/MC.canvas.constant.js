@@ -927,7 +927,8 @@ var constant_data = {
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
 				"GroupName": "DefaultSG",
 				"OwnerId": "",
-				"GroupDescription": lang.ide.PROP_TEXT_DEFAULT_SG_DESC
+				//"GroupDescription": lang.ide.PROP_TEXT_DEFAULT_SG_DESC
+				"GroupDescription": 'Default Security Group'
 			}
 
 		}

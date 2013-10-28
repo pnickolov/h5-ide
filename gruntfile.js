@@ -54,11 +54,16 @@ module.exports = function( grunt ) {
 		],
 
 		coffeefiles : [
-			'<%= src %>/**/*.coffee'
+			'<%= src %>/**/*.coffee',
+			'!<%= src %>/nls/lang-source.coffee'
 		],
 
 		htmlfiles   : [
 			'<%= src %>/**/*.html'
+		],
+
+		langfiles  : [
+			'<%= src %>/nls/lang-source.coffee'
 		],
 
 		bower      : require( './config/bower.js' ),
@@ -89,6 +94,8 @@ module.exports = function( grunt ) {
 		"dev_prod_switch": require( './config/dev_prod_switch.js'),
 
 		concat     : require( './config/concat.js'  ),
+
+		lang       : require( './config/lang.js'    ),
 
 		sweep      : require( './config/sweep.js'   )
 
@@ -127,6 +134,7 @@ module.exports = function( grunt ) {
 		});
 	});
 
+
 	/* task of use as make(compiler) */
 	grunt.registerTask( 'make_fast', function() {
 		grunt.task.run([
@@ -137,6 +145,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_normal',
+			'lang',
 			'jshint',
 			'csslint'
 		]);
@@ -145,6 +154,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_all',
+			'lang',
 			'jshint',
 			'csslint'
 		]);
@@ -152,6 +162,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'make_release', function() {
 		grunt.task.run([
 			'regex-replace:intercome',
+			'regex-replace:google_analytics',
 			'regex-replace:href_release',
 			'copy:dev_prod_switch_task',
 			'replace:prod_env_switch',
@@ -229,9 +240,9 @@ module.exports = function( grunt ) {
 	]);
 
 	/* run at r.js as publish */
-	grunt.registerTask( 'publish', ['regex-replace:string',
+	grunt.registerTask( 'publish', ['regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',
@@ -263,12 +274,37 @@ module.exports = function( grunt ) {
 									'copy:special_lib_del',
 									'copy:special_ui_del',
 									//publish
-									'regex-replace:string',
+									'regex-replace:static_lang',
 									'requirejs',
-									'regex-replace:language',
+									'regex-replace:dynamic_lang',
 									'copy:publish_files',
 									'clean:temp'
 	]);
+
+	grunt.registerTask( 'merge_lang', function() {
+
+		var done = this.async();
+
+		//call config/lang.js
+		config.lang.merge( grunt, function() {
+			console.log( 'i18n merge complete!' );
+			done();
+		});
+
+	});
+
+	grunt.registerTask( 'lang', function() {
+
+		var done = this.async();
+
+		//call config/lang.js
+		config.lang.run( grunt, function(success) {
+			if (success) {
+				console.log( 'i18n create complete!' );
+			}
+			done(success);
+		});
+	});
 
 	/*
 	grunt.event.on( 'regarde:file', function (status, target, filepath) {

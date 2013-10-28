@@ -46,7 +46,7 @@ module.exports = {
 			dest   : '<%= release %>/',
 			filter : function( filepath ) {
 				if ( filepath.indexOf( 'src\\test' ) == -1 ) {
-					return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+					return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( '.map' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
 				}
 				else {
 					return false;
@@ -71,7 +71,7 @@ module.exports = {
 			src    : [ '**' ] ,
 			dest   : '<%= release %>/lib/aws',
 			filter : function( filepath ) {
-				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( '.map' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
 			}
 		}]
 	},
@@ -83,7 +83,7 @@ module.exports = {
 			src    : [ '**' ] ,
 			dest   : '<%= release %>/lib/forge',
 			filter : function( filepath ) {
-				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
+				return filepath.indexOf( '.coffee' )  == -1 && filepath.indexOf( '.map' )  == -1 && filepath.indexOf( 'min.js' )  == -1 ? true : false;
 			}
 		}]
 	},

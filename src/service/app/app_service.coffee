@@ -53,6 +53,9 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
                     forge_result.is_error         = true
                     forge_result.error_message    = result.toString()
 
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+                    forge_result.param = param_ary
+
                     callback forge_result
             }
 

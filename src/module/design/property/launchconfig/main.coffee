@@ -58,5 +58,9 @@ define [ "../base/main",
         afterLoadApp : () ->
             sglist_main.loadModule @model
             null
+
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
+            null
     }
     null

@@ -54,7 +54,7 @@ define [ '../base/view',
                 $('#securitygroup-name').focus()
             , 200
 
-            if @model.isApp
+            if @model.isReadOnly
                 return @model.attributes.sg_app_detail.groupName
             else
                 return @model.attributes.sg_detail.component.resource.GroupName

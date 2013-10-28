@@ -258,6 +258,9 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       instance_type
 
+    isSGListReadOnly : ()->
+      true
+
     getSGList : () ->
 
       uid = this.get 'uid'

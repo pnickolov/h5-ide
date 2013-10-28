@@ -5326,7 +5326,8 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		Tabbar.current === 'app' ||
 		Tabbar.current === 'stack' ||
-		Tabbar.current === 'new'
+		Tabbar.current === 'new' ||
+		Tabbar.current === 'appedit'
 	)
 	{
 		var keyCode = event.which,
@@ -5353,7 +5354,10 @@ MC.canvas.event.keyEvent = function (event)
 				// For Mac
 				keyCode === 8
 			) &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length > 0 &&
 			event.target === document.body
 		)
@@ -5482,7 +5486,10 @@ MC.canvas.event.keyEvent = function (event)
 		// Move node - [up, down, left, right]
 		if (
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length === 1
 		)
 		{

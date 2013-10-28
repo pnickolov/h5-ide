@@ -3286,28 +3286,36 @@ module.exports =
 
     ##### Trust Advisor
 
-    TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
+    # VPC
+    TA_INFO_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
       en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN"
       zh: ""
 
-    TA_CIDR_ERROR_CONNECT_TO_ELB:
+    # Subnet
+    TA_INFO_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
       en: '%s is attached with a load balancer. It must be smaller than /27'
       zh: ""
 
-    TA_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
+    # Instance
+    TA_INFO_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance %s has an attached Provisioned IOPS volume but is not EBS-Optimized"
       zh: ""
 
-    TA_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
+    # ELB
+    TA_INFO_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
       en: "Load Balancer %s is internet-facing but VPC no have an Internet Gateway"
       zh: ""
 
-    TA_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
+    TA_INFO_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer %s has no attached instance or auto scaling group"
       zh: ""
 
-    TA_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
+    TA_INFO_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
       en: "Load Balancer %s is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance"
+      zh: ""
+
+    TA_INFO_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
+      en: "Load Balancer %s redirects 443 to 443. Suggest to use load balancer to decrypt and redirect to port 80"
       zh: ""
 
     ##### Trust Advisor

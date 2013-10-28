@@ -29,7 +29,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			instanceName = instanceComp.name
-			tipInfo = sprintf lang.ide.TA_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
+			tipInfo = sprintf lang.ide.TA_INFO_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo

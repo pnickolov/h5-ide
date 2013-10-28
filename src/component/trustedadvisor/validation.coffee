@@ -54,6 +54,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
                     validComp('elb.isHaveIGWForInternetELB', compUID)
                     validComp('elb.isHaveInstanceAttached', compUID)
                     validComp('elb.isAttachELBToMultiAZ', compUID)
+                    validComp('elb.isRedirectPortHttpsToHttp', compUID)
 
                 null
 

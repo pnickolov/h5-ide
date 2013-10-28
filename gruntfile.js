@@ -145,6 +145,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_normal',
+			'lang',
 			'jshint',
 			'csslint'
 		]);
@@ -153,6 +154,7 @@ module.exports = function( grunt ) {
 		grunt.task.run([
 			'coffeelint:files',
 			'coffee:compile_all',
+			'lang',
 			'jshint',
 			'csslint'
 		]);
@@ -296,9 +298,11 @@ module.exports = function( grunt ) {
 		var done = this.async();
 
 		//call config/lang.js
-		config.lang.run( grunt, function() {
-			console.log( 'i18n create complete!' );
-			done();
+		config.lang.run( grunt, function(success) {
+			if (success) {
+				console.log( 'i18n create complete!' );
+			}
+			done(success);
 		});
 	});
 

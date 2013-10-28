@@ -104,6 +104,17 @@ define [ '../base/view',
 
             this.updateEIPList()
 
+        setEditableIP : ( enable ) ->
+            $parent = $("#property-eni-list")
+
+            if enable
+                $parent.find(".input-ip").removeAttr "disabled"
+                $parent.find(".name").data "tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+
+            else
+                $parent.find(".input-ip").attr "disabled", "disabled"
+                $parent.find(".name").data "tooltip", "Automatically assigned IP."
+
         updateEIPList: (event) ->
 
             currentAvailableIPAry = []
@@ -120,6 +131,18 @@ define [ '../base/view',
                 null
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
+
+            # if is Server Group, disabled ip inputbox
+            eniUID = this.model.get 'uid'
+            currentENIComp = MC.canvas_data.component[eniUID]
+            instanceUIDRef = currentENIComp.resource.Attachment.InstanceId
+            if instanceUIDRef
+                instanceUID = instanceUIDRef.split('.')[0].slice(1)
+                countNum = MC.canvas_data.component[instanceUID].number
+                if countNum is 1
+                    @setEditableIP true
+                else
+                    @setEditableIP false
 
             this.changeIPAddBtnState()
 

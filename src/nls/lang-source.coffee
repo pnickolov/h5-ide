@@ -744,23 +744,23 @@ module.exports =
       zh: "转换成CloudFormation出错"
 
     TOOL_TIP_LINESTYLE:
-      en: "安全组规则连线类型..."
+      en: "Security Group Rule Line Style..."
       zh: "安全组规则连线类型..."
 
     TOOL_LBL_LINESTYLE_STRAIGHT:
-      en: "直线"
+      en: "Straight"
       zh: "直线"
 
     TOOL_LBL_LINESTYLE_ELBOW:
-      en: "肘型线"
+      en: "Elbow"
       zh: "肘型线"
 
     TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER:
-      en: "二次贝赛尔曲线"
+      en: "Quadratic Belzier curve"
       zh: "二次贝赛尔曲线"
 
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
-      en: "光滑的二次贝塞尔曲线"
+      en: "Smooth quadratic Belzier curve"
       zh: "光滑的二次贝塞尔曲线"
 
     PROP_LBL_REQUIRED:
@@ -1724,12 +1724,12 @@ module.exports =
       zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。"
 
     PROP_TEXT_DEFAULT_SG_DESC:
-      en: "Stack Default Security Group"
-      zh: "模板默认安全组"
+      en: "Default Security Group"
+      zh: "Default Security Group"
 
     PROP_TEXT_CUSTOM_SG_DESC:
       en: "Custom Security Group"
-      zh: "客户安全组"
+      zh: "Custom Security Group"
 
     PROP_MSG_WARN_WHITE_SPACE:
       en: "Stack name contains white space"
@@ -2416,15 +2416,15 @@ module.exports =
       zh: "用户教程"
 
     HEAD_LABEL_MENUITEM_DOC:
-      en: "Document"
+      en: "Documentation"
       zh: "使用文档"
 
     HEAD_LABEL_MENUITEM_SETTING:
-      en: "Setting"
+      en: "Settings"
       zh: "账号设置"
 
     HEAD_LABEL_MENUITEM_LOGOUT:
-      en: "Logout"
+      en: "Log out"
       zh: "登出"
 
     HEAD_LABEL_SETTING:
@@ -2476,11 +2476,11 @@ module.exports =
       zh: "取消"
 
     HEAD_LABEL_ACCOUNT_PERIOD:
-      en: "。"
+      en: "."
       zh: "。"
 
     HEAD_LABEL_ACCOUNT_QUESTION:
-      en: "？"
+      en: "?"
       zh: "？"
 
     HEAD_LABEL_WELCOME:
@@ -2556,7 +2556,7 @@ module.exports =
       zh: "加载资源中..."
 
     HEAD_WARN_UPDATE_CREDENTIAL:
-      en: "Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps ﬁrst."
+      en: "Cannot change AWS Credentials now since you have unterminated app. If you want to change AWS Credentials, terminate all your apps first."
       zh: "还有没被销毁的应用，您现在不能修改当前AWS证书。如果你想修改AWS证书，首先需要销毁所有已有应用。"
 
     HEAD_INFO_PROVIDE_CREDENTIAL1:
@@ -2588,7 +2588,7 @@ module.exports =
       zh: "如果您修改AWS证书，因为资源不一致性的原因，您之前创建的设计成果将不能使用。"
 
     HEAD_INFO_CONFIRM_REMOVE:
-      en: "Do you conﬁrm to remove AWS Credentials of account %s?"
+      en: "Do you confirm to remove AWS Credentials of account %s?"
       zh: "您确定要移除账号%s的AWS证书吗？"
 
     HEAD_INFO_CONNECTING:
@@ -2600,11 +2600,11 @@ module.exports =
       zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000"
 
     HEAD_TIP_ACCOUNT_ACCESS_KEY:
-      en: "You will ﬁnd those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
+      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., ABCDEFGHIJ1LMNOPQR2S"
       zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如ABCDEFGHIJ1LMNOPQR2S"
 
     HEAD_TIP_ACCOUNT_SECRET_KEY:
-      en: "You will ﬁnd those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
+      en: "You will find those keys in Account > Security Credentials menu under Access Keys tab in the box at the middle of the page. e.g., aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
       zh: "通过点击&nbsp;账号&nbsp;&gt;安全性认证&nbsp;菜单，然后切换到页面中间的&nbsp;访问码&nbsp;页面，您将能找到您的访问码。 例如aBCDefgH/ Ijklmnopq1Rs2tUVWXY3AbcDeFGhijk"
 
     HEAD_MSG_ERR_INVALID_ACCOUNT_ID:
@@ -3321,6 +3321,15 @@ module.exports =
     ##### Trust Advisor
 
   service:
+
+    "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
+      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again"
+      zh: "对不起,AWS有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
+
+    "ERROR_CODE_-1_MESSAGE":
+      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      zh: "对不起,AWS有一些技术问题,请稍后再试"
+
     ERROR_CODE_0_MESSAGE:
       en: ""
       zh: ""

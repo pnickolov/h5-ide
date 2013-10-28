@@ -66,18 +66,19 @@ define [ 'jquery', 'event',
                 # push event
                 ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL
 
-                if model.attributes.is_authenticated
+                if view
+                    if model.attributes.is_authenticated
 
-                    # update loading
-                    view.showSetting('credential', 'load_resource')
+                        # update loading
+                        view.showSetting('credential', 'load_resource')
 
-                    # hold on 2 second
-                    setTimeout () ->
-                        view.showSetting('credential', 'on_update')
-                    , 2000
+                        # hold on 2 second
+                        setTimeout () ->
+                            view.showSetting('credential', 'on_update')
+                        , 2000
 
-                else
-                    view.showSetting('credential', 'is_failed')
+                    else
+                        view.showSetting('credential', 'is_failed')
 
             view.on 'UPDATE_ACCOUNT_EMAIL', (email) ->
                 console.log 'UPDATE_ACCOUNT_EMAIL'

@@ -304,15 +304,26 @@ define [ 'MC', 'event', 'handlebars'
 					if error.param[0].url in [ '/stack/', '/app/' ]
 						ide_event.trigger ide_event.CLOSE_TAB, null, error.param[4][0]
 			else
+
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'
 				console.log lang.service[ label ]
+
 				return if error.error_message.indexOf( 'AWS was not able to validate the provided access credentials' ) isnt -1
 				return if error.param[0].url is '/session/' and error.param[0].method is 'login'
+
+				if error.return_code == -1 and error.error_message == "200"
+					if error.param[0].url is '/aws/' and error.param[0].method is 'resource'
+						notification 'warning', lang.service["ERROR_CODE_-1_MESSAGE_AWS_RESOURCE"]
+					else
+						notification 'warning', label
+					return
+
 				#
 				if error.error_message
 					notification 'warning', error.error_message
 				else
 					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
+
 
 		###########################
 		#listen to the request list

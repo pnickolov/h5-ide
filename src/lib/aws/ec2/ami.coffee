@@ -13,7 +13,7 @@ define [ 'MC' ], ( MC) ->
 
 		if  ami.platform and ami.platform == 'windows'
 
-			found.push 'win'
+			found.push 'windows'
 
 		else
 
@@ -21,11 +21,11 @@ define [ 'MC' ], ( MC) ->
 			found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
 
 			#check ami.description
-			if found.length == 0
+			if found.length == 0 and 'description' of ami
 				found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
 
 			#check ami.imageLocation
-			if found.length == 0
+			if found.length == 0 and 'imageLocation' of ami
 				found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
 
 		if found.length == 0

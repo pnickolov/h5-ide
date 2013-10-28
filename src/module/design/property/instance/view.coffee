@@ -232,6 +232,14 @@ define [ '../base/view',
 
             @model.setIPList currentAvailableIPAry
 
+            # if is Server Group, disabled ip inputbox
+            instanceUID = this.model.get 'get_uid'
+            countNum = MC.canvas_data.component[instanceUID].number
+            if countNum is 1
+                @setEditableIP true
+            else
+                @setEditableIP false
+
             this.changeIPAddBtnState()
             null
 

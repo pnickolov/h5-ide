@@ -701,7 +701,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-                            if flag is 'TERMINATE_APP'
+                            else if flag is 'TERMINATE_APP'
 
                                 appId = id
                                 appName = name

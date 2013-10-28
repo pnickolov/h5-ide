@@ -17,7 +17,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_INFO_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW, elbName
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -44,7 +44,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_INFO_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -59,7 +59,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_INFO_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ, elbName
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ, elbName
 			# return
 			level: constant.TA.WARNING
 			info: tipInfo
@@ -83,7 +83,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_INFO_NOTICE_ELB_REDIRECT_PORT_443_TO_443, elbName
+			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443, elbName
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo

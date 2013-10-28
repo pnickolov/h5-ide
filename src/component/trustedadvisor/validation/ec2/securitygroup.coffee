@@ -19,7 +19,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# have vpc
 			if sgTotalRuleNum > 50
 				sgName = sgComp.name
-				tipInfo = sprintf lang.ide.TA_INFO_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
+				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo
@@ -28,7 +28,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# no vpc
 			if sgTotalRuleNum > 100
 				sgName = sgComp.name
-				tipInfo = sprintf lang.ide.TA_INFO_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 100
+				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 100
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo

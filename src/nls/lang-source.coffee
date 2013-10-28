@@ -3287,39 +3287,39 @@ module.exports =
     ##### Trust Advisor
 
     # VPC
-    TA_INFO_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
+    TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
       en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN"
       zh: ""
 
     # Subnet
-    TA_INFO_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
+    TA_MSG_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
       en: '%s is attached with a load balancer. It must be smaller than /27'
       zh: ""
 
     # Instance
-    TA_INFO_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
+    TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance %s has an attached Provisioned IOPS volume but is not EBS-Optimized"
       zh: ""
 
     # ELB
-    TA_INFO_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
+    TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
       en: "Load Balancer %s is internet-facing but VPC no have an Internet Gateway"
       zh: ""
 
-    TA_INFO_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
+    TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer %s has no attached instance or auto scaling group"
       zh: ""
 
-    TA_INFO_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
+    TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
       en: "Load Balancer %s is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance"
       zh: ""
 
-    TA_INFO_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
+    TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
       en: "Load Balancer %s redirects 443 to 443. Suggest to use load balancer to decrypt and redirect to port 80"
       zh: ""
 
     # SG
-    TA_INFO_WARNING_SG_RULE_EXCEED_FIT_NUM:
+    TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group %s has more than %s rules, If a security group has a large number of rules, performance can be degraded"
       zh: ""
 

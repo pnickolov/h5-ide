@@ -31,7 +31,7 @@ define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_pa
                 success : ( result, return_code ) ->
 
                     #resolve result
-                    param_ary.splice 0, 0, src
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
                     result_vo.@@api-type_result = parser result, return_code, param_ary
 
                     callback result_vo.@@api-type_result
@@ -41,6 +41,9 @@ define [ 'MC', '@@resource-name_parser', 'result_vo' ], ( MC, @@resource-name_pa
                     result_vo.@@api-type_result.return_code      = return_code
                     result_vo.@@api-type_result.is_error         = true
                     result_vo.@@api-type_result.error_message    = result.toString()
+
+                    param_ary.splice 0, 0, { url:URL, method:api_name, src:src }
+                    @@api-type_result.param = param_ary
 
                     callback result_vo.@@api-type_result
             }

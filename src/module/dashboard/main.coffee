@@ -93,8 +93,15 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     else # normal case
                         view.clearDemo()
                         view.enableSwitchRegion()
-                        view.reloadResource()
+                        view.reloadResource( null, true ) if view  #skip_load=true, only show loading progress
                         view.displayLoadTime()
+
+                    #reset config data after chagne credential
+                    MC.data.config = {}
+                    MC.data.config[r] = {} for r in constant.REGION_KEYS
+
+                    null
+
                 else # no credentia
                     view.disableSwitchRegion()
                     view.showCredential()
@@ -122,7 +129,7 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
             ide_event.onLongListen ide_event.UPDATE_DASHBOARD, () ->
                 console.log 'UPDATE_DASHBOARD'
-                view.reloadResource() if view
+                view.reloadResource( null,false ) if view  #skip_load=false, do loading resource
 
             if MC.forge.cookie.getCookieByName('state') is '1' # new account show welcome dialog
                 view.showCredential 'welcome'
@@ -133,7 +140,6 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
             #model
             model.describeAccountAttributesService()
 
-            model.describeAWSResourcesService()
 
             ide_event.onLongListen 'RESULT_APP_LIST', ( result ) ->
                 overview_app = result

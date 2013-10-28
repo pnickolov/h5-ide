@@ -16,6 +16,11 @@ var Tabbar = {
 	{
 		if (event.which === 1)
 		{
+			if ($(event.target).hasClass('icon-close'))
+			{
+				return false;
+			} 
+
 			if (this.id === 'tab-bar-dashboard')
 			{
 				Tabbar.open('dashboard');
@@ -191,13 +196,18 @@ var Tabbar = {
 
 	close: function (event)
 	{
-		var target = $(this).parent(),
-			tab_id = target.attr('id').replace('tab-bar-', '');
+		event.stopImmediatePropagation();
 
-		target.remove();
-		Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
+		if (event.which === 1)
+		{
+			var target = $(this).parent(),
+				tab_id = target.attr('id').replace('tab-bar-', '');
 
-		$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+			target.remove();
+			Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
+
+			$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+		}
 
 		return false;
 	},
@@ -219,9 +229,9 @@ var Tabbar = {
 $(document).ready(function ()
 {
 	$('#tab-bar')
-		.on('mousedown', '.close-tab', Tabbar.close)
 		.on('mousedown', '.close-restriction', Tabbar.closeTabRestriction)
-		.on('mousedown', 'li', Tabbar.mousedown);
+		.on('mousedown', 'li', Tabbar.mousedown)
+		.on('click', '.close-tab', Tabbar.close);
 
 	$(window).resize(function ()
 	{

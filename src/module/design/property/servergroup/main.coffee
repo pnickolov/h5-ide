@@ -21,7 +21,7 @@ define [ "../base/main",
 
         initApp : ()->
             @model = app_model
-            @model.isAppEdit = false
+            @model.isApp = true
             @view  = app_view
             null
 
@@ -32,7 +32,7 @@ define [ "../base/main",
 
         initAppEdit : ()->
             @model = app_model
-            @model.isAppEdit = true
+            @model.isApp = false
             @view  = app_view
             null
 

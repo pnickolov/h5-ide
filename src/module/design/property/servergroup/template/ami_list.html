@@ -1,6 +1,6 @@
 {{#if group}}
 {{#unless group.length}}
-<div class="option-group-head">Instance Summary</div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">Instance Summary</div>
 <div class="option-group">
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_INSTANCE_INSTANCE_ID"}}</dt>
@@ -14,7 +14,7 @@
   </dl>
 <div>
 {{else}}
-<div class="option-group-head">Server Group Members ({{group.length}}) <span class="appedit-head-meta">{{group.increment}}</span></div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">Server Group Members ({{group.length}}) <span class="appedit-head-meta">{{group.increment}}</span></div>
 <div class="option-group">
   <ul class="appedit-servers-list">
   {{#each group}}

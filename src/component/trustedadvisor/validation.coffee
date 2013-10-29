@@ -89,13 +89,15 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
     validAll = ->
 
         components = MC.canvas_data.component
-
+        resultVO.reset()
         _.each components, ( component , uid ) ->
             filename = _getFilename component.type
 
             _.each validation_main[ filename ], ( func, method ) ->
                 if _needValid filename, method, component
-                    validComp filename + '.' + method, uid
+                    result = validation_main[ filename ][ method ]( uid )
+                    if result
+                        resultVO.add method, result.level, result.info, uid
 
         resultVO.result()
 

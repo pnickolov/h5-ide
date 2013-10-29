@@ -169,12 +169,18 @@ var Tabbar = {
 		return tab_id;
 	},
 
-	closeTabRestriction : function(event) {
-		var target = $(this).parent(),
-			tab_name = target.find('a').attr('title').replace(' - stack', ''),
-			tab_id = target.attr('id').replace('tab-bar-', '');
+	closeTabRestriction : function(event)
+	{
 
-		$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
+		if (event.which === 1)
+		{
+			var target = $(this).parent(),
+				tab_name = target.find('a').attr('title').replace(' - stack', ''),
+				tab_id = target.attr('id').replace('tab-bar-', '');
+
+			$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
+		}
+
 	},
 
 	close: function (event)

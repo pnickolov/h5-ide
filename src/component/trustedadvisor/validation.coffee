@@ -34,17 +34,27 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             return true
 
 
+
     _isNeeded = ( obj, key, params ) ->
         not obj[ key ] or obj[ key ]( params )
+
+    _getFilename = ( componentType ) ->
+        if _componentTypeToFileMap[ componentType ]
+            return _componentTypeToFileMap[ componentType ]
+
+        filename = _.last componentType.split '.'
+        filename = filename.toLowerCase()
+        filename
+
+    _componentTypeToFileMap =
+        'AWS.AutoScaling.Group': 'asg'
 
     # debug validation method, if exist anyother method will not be called
 
     _validDebug = ''
 
 
-    ####################################
     ########## will be public ##########
-    ####################################
 
     validComp = ( type ) ->
 
@@ -81,9 +91,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
         components = MC.canvas_data.component
 
         _.each components, ( component , uid ) ->
-
-            filename = _.last component.type.split '.'
-            filename = filename.toLowerCase()
+            filename = _getFilename component.type
 
             _.each validation_main[ filename ], ( func, method ) ->
                 if _needValid filename, method, component

@@ -83,6 +83,29 @@ define [ 'MC' ], ( MC ) ->
 
 		return allOtherIPAry
 
+	getAllNoAutoAssignIPInCIDR = (subnetUIDRefOrAZ) ->
+
+		defaultVPCId = MC.aws.aws.checkDefaultVPC()
+
+		allCompAry = MC.canvas_data.component
+
+		allOtherIPAry = []
+
+		_.each allCompAry, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				currentSubnetUIDRef = compObj.resource.SubnetId
+				currentAZName = compObj.resource.AvailabilityZone
+				if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or
+					(defaultVPCId and currentAZName is subnetUIDRefOrAZ)
+						privateIpAddressSet = compObj.resource.PrivateIpAddressSet
+						_.each privateIpAddressSet, (value) ->
+							if value.AutoAssign in ['false', false]
+								allOtherIPAry.push value.PrivateIpAddress
+							null
+			null
+
+		return allOtherIPAry
+
 	saveIPList = (eniUID, ipList) ->
 
 		eniComp = MC.canvas_data.component[eniUID]
@@ -357,3 +380,4 @@ define [ 'MC' ], ( MC ) ->
 	getENIMaxIPNum : getENIMaxIPNum
 	reduceIPNumByInstanceType : reduceIPNumByInstanceType
 	reduceAllENIIPList : reduceAllENIIPList
+	getAllNoAutoAssignIPInCIDR : getAllNoAutoAssignIPInCIDR

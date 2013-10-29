@@ -196,7 +196,7 @@ define [ 'MC' ], ( MC ) ->
 			return null
 
 	#for default vpc, subnetuid is az name
-	updateAllENIIPList = (subnetUidOrAZ) ->
+	updateAllENIIPList = (subnetUidOrAZ, notForce) ->
 
 		defaultVPC = false
 		if MC.aws.aws.checkDefaultVPC()
@@ -206,19 +206,25 @@ define [ 'MC' ], ( MC ) ->
 		subnetCIDR = ''
 		azName = ''
 		subnetRef = ''
+
+		filterAry = []
 		if defaultVPC
 			azName = subnetUidOrAZ
 			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
+			if notForce
+				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(azName)
 			subnetCIDR = subnetObj.cidrBlock
 			needIPCount = MC.aws.eni.getSubnetNeedIPCount(azName)
 		else
 			subnetComp = MC.canvas_data.component[subnetUidOrAZ]
 			if !subnetComp then return
 			subnetRef = '@' + subnetComp.uid + '.resource.SubnetId'
+			if notForce
+				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(subnetRef)
 			subnetCIDR = subnetComp.resource.CidrBlock
 			needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
 
-		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, [], needIPCount)
+		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, filterAry, needIPCount)
 
 		# needIPCount = 0
 		# _.each MC.canvas_data.component, (compObj) ->
@@ -242,7 +248,7 @@ define [ 'MC' ], ( MC ) ->
 			if (!defaultVPC and compObj.resource.SubnetId is subnetRef) or (defaultVPC and compObj.resource.AvailabilityZone is azName)
 				newPrivateIpAddressSet = _.map compObj.resource.PrivateIpAddressSet, (ipObj) ->
 					newIpObj = $.extend true, {}, ipObj
-					if newIpObj.AutoAssign in [true, 'true']
+					if !notForce or newIpObj.AutoAssign in [true, 'true']
 						newIpObj.PrivateIpAddress = assignedIPAry[i++]
 						newIpObj.AutoAssign = true
 					return newIpObj

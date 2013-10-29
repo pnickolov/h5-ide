@@ -311,9 +311,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			azName = MC.canvas_data.layout.component.group[azUID].name
-			MC.aws.subnet.updateAllENIIPList(azName)
+			MC.aws.subnet.updateAllENIIPList(azName, true)
 		else
-			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1))
+			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true)
 
 		# restore canvas comps
 		comp_data = $.extend( true, {}, MC.canvas_data.component )

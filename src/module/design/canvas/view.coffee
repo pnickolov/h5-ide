@@ -42,13 +42,12 @@ define [ 'event', 'canvas_layout', 'constant', 'MC.canvas', 'backbone', 'jquery'
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
             # In App / AppEdit mode, when clicking Instance. Switch to ServerGroup
+            type  = "component"
             state = MC.canvas.getState()
             if state is "app" or state is "appedit"
                 component = MC.canvas_data.component[uid]
                 if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                     type = "component_server_group"
-                else
-                    type = "component"
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
 

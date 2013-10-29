@@ -28,8 +28,8 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
         if fileNeed
             allNeed     = _isNeeded fileNeed, 'all', component
-            funcNeed    = _isNeeded fileNeed, method, component
-            return allNeed and funcNeed
+            methodNeed    = _isNeeded fileNeed, method, component
+            return allNeed and methodNeed
         else
             return true
 

@@ -95,7 +95,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	# 	# get attached instance array
 	# 	attachedInstanceAry = elbComp.resource.Instances
 	# 	attachedInstanceAry = _.map attachedInstanceAry, (instanceRef) ->
-	# 		instanceUID = instanceRef.split('.')[0].slice(0)
+	# 		instanceUID = instanceRef.split('.')[0].slice(1)
 	# 		return instanceUID
 
 	# 	# get attached asg array

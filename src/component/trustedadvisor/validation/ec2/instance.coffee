@@ -34,4 +34,95 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			level: constant.TA.NOTICE
 			info: tipInfo
 
+	_getSGCompRuleLength = (sgUID) ->
+		sgComp = MC.canvas_data.component[sgUID]
+		sgInboundRuleAry = sgComp.resource.IpPermissions
+		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
+
+		# count sg rule total number
+		sgTotalRuleNum = 0
+		if sgInboundRuleAry
+			sgTotalRuleNum += sgInboundRuleAry.length
+		if sgOutboundRuleAry
+			sgTotalRuleNum += sgOutboundRuleAry.length
+		return sgTotalRuleNum
+
+	isAssociatedSGRuleExceedFitNum = (instanceUID) ->
+
+		instanceComp = MC.canvas_data.component[instanceUID]
+		instanceType = instanceComp.type
+		isInstanceComp = instanceType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+		# check platform type
+		platformType = MC.canvas_data.platform
+		if platformType isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			# have vpc, count eni's sg rule number
+			sgUIDAry = []
+			if isInstanceComp
+				# get associated eni sg for instance
+				_.each MC.canvas_data.component, (compObj) ->
+					if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+						associatedInstanceRef = compObj.resource.Attachment.InstanceId
+						associatedInstanceUID = associatedInstanceRef.split('.')[0].slice(1)
+						if associatedInstanceUID is instanceUID
+							eniSGAry = compObj.resource.GroupSet
+							_.each eniSGAry, (sgObj) ->
+								eniSGUIDRef = sgObj.GroupId
+								eniSGUID = eniSGUIDRef.split('.')[0].slice(1)
+								if !(eniSGUID in sgUIDAry)
+									sgUIDAry.push(eniSGUID)
+								null
+					null
+			else
+				# get all LSG's sg
+				lsgSGAry = instanceComp.resource.SecurityGroups
+				_.each lsgSGAry, (sgRef) ->
+					sgUID = sgRef.split('.')[0].slice(1)
+					if !(sgUID in sgUIDAry)
+						sgUIDAry.push(sgUID)
+					null
+
+			# loop sg array to count rule number
+			totalSGRuleNum = 0
+			_.each sgUIDAry, (sgUID) ->
+				totalSGRuleNum += _getSGCompRuleLength(sgUID)
+				null
+
+			if totalSGRuleNum > 50
+				instanceName = instanceComp.name
+				tipInfo = sprintf lang.ide.TA_INFO_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
+				return {
+					level: constant.TA.WARNING,
+					info: tipInfo
+				}
+
+		else
+			# no vpc
+			sgUIDAry = []
+			if isInstanceComp
+				instanceSGAry = instanceComp.resource.SecurityGroup
+			else
+				instanceSGAry = instanceComp.resource.SecurityGroups
+			_.each instanceSGAry, (sgRef) ->
+				sgUID = sgRef.split('.')[0].slice(1)
+				if !(sgUID in sgUIDAry)
+					sgUIDAry.push(sgUID)
+				null
+
+			# loop sg array to count rule number
+			totalSGRuleNum = 0
+			_.each sgUIDAry, (sgUID) ->
+				totalSGRuleNum += _getSGCompRuleLength(sgUID)
+				null
+
+			if totalSGRuleNum > 100
+				instanceName = instanceComp.name
+				tipInfo = sprintf lang.ide.TA_INFO_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
+				return {
+					level: constant.TA.WARNING,
+					info: tipInfo
+				}
+
+		return null
+
 	isEBSOptimizedForAttachedProvisionedVolume : isEBSOptimizedForAttachedProvisionedVolume
+	isAssociatedSGRuleExceedFitNum : isAssociatedSGRuleExceedFitNum

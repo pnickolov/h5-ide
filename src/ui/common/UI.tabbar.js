@@ -218,7 +218,7 @@ var Tabbar = {
 $(document).ready(function ()
 {
 	$('#tab-bar')
-		.on('mousedown', '.close-restriction', Tabbar.closeTabRestriction)
+		.on('click', '.close-restriction', Tabbar.closeTabRestriction)
 		.on('mousedown', 'li', Tabbar.mousedown)
 		.on('click', '.close-tab', Tabbar.close);
 

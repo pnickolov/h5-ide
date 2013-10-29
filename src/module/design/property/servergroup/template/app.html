@@ -21,6 +21,7 @@
     </section>
     {{/if}}
 
+    {{#if type_editable}}
     {{#if instance_type.length}}
     <section class="property-control-group">
       <label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
@@ -42,6 +43,12 @@
         <label for="property-instance-ebs-optimized"></label>
       </div>
       <label for="property-instance-ebs-optimized">EBS Optimized</label>
+    </section>
+    {{/if}}
+    {{else}}
+    <section class="property-control-group">
+      <label>{{ i18n "PROP_INSTANCE_TYPE" }}</label>
+      <p class="property-info">Updating instance type is disabled for Instances using instance store for root device.</p>
     </section>
     {{/if}}
   </div>

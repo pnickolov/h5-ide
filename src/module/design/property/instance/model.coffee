@@ -83,7 +83,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			component = MC.canvas_data.component[ uid ]
 			component.resource.InstanceType = value
 
-			has_ebs = MC.aws.instance.canSetEbsOptimized value
+			has_ebs = MC.aws.instance.canSetEbsOptimized component
 			if not has_ebs
 				component.resource.EbsOptimized = "false"
 
@@ -414,7 +414,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				}]
 
 			this.set 'instance_type', view_instance_type
-			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized current_instance_type
+			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized component
 
 			null
 

@@ -44,9 +44,10 @@ define [ 'event', 'canvas_layout', 'constant', 'MC.canvas', 'backbone', 'jquery'
             # In App / AppEdit mode, when clicking Instance. Switch to ServerGroup
             type  = "component"
             state = MC.canvas.getState()
-            if state is "app" or state is "appedit"
-                component = MC.canvas_data.component[uid]
-                if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+            component = MC.canvas_data.component[uid]
+            if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                if state is "appedit" or (state is "app" and  "" + component.number is not "1")
                     type = "component_server_group"
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid

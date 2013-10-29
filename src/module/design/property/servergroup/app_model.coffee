@@ -27,6 +27,8 @@ define [ '../base/model',
 					name : ami.name
 					icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 				}
+
+				@set 'type_editable', ami.rootDeviceType isnt "instance-store"
 			else
 				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
 
@@ -37,7 +39,7 @@ define [ '../base/model',
 			# Ebs Optimized
 			@set 'instance_type', instance_type_list
 			@set 'ebs_optimized', "" + myInstanceComponent.resource.EbsOptimized is "true"
-			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent.resource.InstanceType
+			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent
 
 
 			# If the ami is linked to route table, cannot set server group

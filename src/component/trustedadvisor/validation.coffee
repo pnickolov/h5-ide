@@ -6,7 +6,46 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
          'jquery', 'underscore'
 ], ( constant, ide_event, validation_main, resultVO ) ->
 
-    #privte
+    # private
+
+    _validList =
+        instance:
+            all: ( component ) ->
+                true
+            isEBSOptimizedForAttachedProvisionedVolume: ( component ) ->
+                true
+        vpc:
+            all: ( component ) ->
+                true
+
+
+    _needValid = ( filename, method, component ) ->
+        # debug mode
+        if _validDebug
+            return _validDebug is method
+
+        fileNeed = _validList[ filename ]
+
+        if fileNeed
+            allNeed     = _isNeeded fileNeed, 'all', component
+            funcNeed    = _isNeeded fileNeed, method, component
+            return allNeed and funcNeed
+        else
+            return true
+
+
+    _isNeeded = ( obj, key, params ) ->
+        not obj[ key ] or obj[ key ]( params )
+
+    # debug validation method, if exist anyother method will not be called
+
+    _validDebug = ''
+
+
+    ####################################
+    ########## will be public ##########
+    ####################################
+
     validComp = ( type ) ->
 
         try
@@ -47,43 +86,10 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             filename = filename.toLowerCase()
 
             _.each validation_main[ filename ], ( func, method ) ->
-                if needValid filename, method, component
+                if _needValid filename, method, component
                     validComp filename + '.' + method, uid
 
         resultVO.result()
-
-
-    validList =
-        instance:
-            all: ( component ) ->
-                true
-            isEBSOptimizedForAttachedProvisionedVolume: ( component ) ->
-                true
-        vpc:
-            all: ( component ) ->
-                true
-
-    # debug validation method, if exist anyother method will not be called
-    validDebug = 'isAbleConnectToELB'
-
-
-    needValid = ( filename, funcName, component ) ->
-        # debug mode
-        if validDebug
-            return validDebug is funcName
-
-        fileNeed = validList[ filename ]
-
-        if fileNeed
-            allNeed     = isNeeded fileNeed, 'all', component
-            funcNeed    = isNeeded fileNeed, funcName, component
-            return allNeed and funcNeed
-        else
-            return true
-
-
-    isNeeded = ( obj, key, params ) ->
-        not obj[ key ] or obj[ key ]( params )
 
 
 
@@ -91,5 +97,4 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
     #public
     validComp : validComp
     validAll  : validAll
-    needValid : needValid
 

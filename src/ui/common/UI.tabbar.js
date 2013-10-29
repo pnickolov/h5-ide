@@ -19,7 +19,7 @@ var Tabbar = {
 			if ($(event.target).hasClass('icon-close'))
 			{
 				return false;
-			} 
+			}
 
 			if (this.id === 'tab-bar-dashboard')
 			{
@@ -181,7 +181,7 @@ var Tabbar = {
 	{
 		event.stopImmediatePropagation();
 
-		if (event.which === 1)
+		if (event.which === 1 || $(event.currentTarget).hasClass('auto-close') )
 		{
 			var target = $(this).parent(),
 				tab_id = target.attr('id').replace('tab-bar-', '');

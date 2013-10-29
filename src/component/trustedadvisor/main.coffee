@@ -5,7 +5,7 @@
 define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     #private
-    loadModule = ( type ) ->
+    loadModule = ( type, status ) ->
 
         #
         require [ './component/trustedadvisor/view', './component/trustedadvisor/model' ], ( View, Model ) ->
@@ -23,7 +23,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             render = ->
                 console.log 'ta render'
                 model.createList()
-                view.render type
+                view.render type, status
             #
             render()
             #

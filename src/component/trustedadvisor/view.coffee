@@ -14,8 +14,8 @@ define [ 'event',
         events     :
             'click .modal-close'   : 'closedPopup'
 
-        render     : ( type ) ->
-            console.log 'pop-up:trusted advisor run render'
+        render     : ( type, status ) ->
+            console.log 'pop-up:trusted advisor run render', status
             #
             if type is 'stack'
                 $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
@@ -23,6 +23,14 @@ define [ 'event',
             else if type is 'statusbar'
                 @$el.html modal_template
                 @$el.find( '#modal-run-stack' ).html Handlebars.compile( template )( @model.attributes )
+            #
+            @_clickCurrentTab status
+
+        _clickCurrentTab : ( status ) ->
+            console.log '_clickCurrentTab, status = ' + status
+            return if !status
+            _.each $( '.tab' ).find( 'li' ), ( item ) ->
+                $(item).trigger 'click' if $( item ).attr( 'data-tab-target' ) is '#item-' + status
 
         closedPopup : ->
             console.log 'closedPopup'

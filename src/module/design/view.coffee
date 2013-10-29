@@ -58,9 +58,10 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 MC.data.current_tab_type = null
             null
 
-        statusbarClick : ->
+        statusbarClick : ( event ) ->
             console.log 'statusbarClick'
-            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar'
+            status = _.last $(event.currentTarget).attr( 'class' ).split '-'
+            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
 
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type

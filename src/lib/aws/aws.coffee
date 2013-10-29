@@ -710,6 +710,34 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         else
             return false
 
+    getChanges = (data, ori_data) ->
+        me = this
+
+        isChanged = false
+        instance_list = []
+
+        # first check change
+        new_str = JSON.stringify(data)
+        ori_str = JSON.stringify(ori_data)
+        if new_str != ori_str
+            isChanged = true
+
+            for uid of data.component
+                item = data.component[uid]
+
+                # only instance
+                if item.type is 'AWS.EC2.Instance'
+                    # check instance size
+                    size = item.resource.InstanceType
+                    if uid of ori_data.component and ori_data.component[uid].resource.InstanceType == size
+                        continue
+
+                    instance_list.push {'name':item.name, 'instance_id':item.resource.InstanceId}
+
+                ## asg
+
+        {'isChanged':isChanged, 'changes':instance_list}
+
     #public
     getNewName                  : getNewName
     cacheResource               : cacheResource

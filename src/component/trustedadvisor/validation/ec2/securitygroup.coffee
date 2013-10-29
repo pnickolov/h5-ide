@@ -36,4 +36,24 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		return null
 
+	isStackUsingOnlyOneSG = () ->
+
+		refSGNum = 0
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+				sgUID = compObj.uid
+				allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+				if allRefComp.length > 0
+					refSGNum++
+			null
+
+		if refSGNum is 1
+			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG
+			# return
+			level: constant.TA.NOTICE
+			info: tipInfo
+		else
+			return null
+
 	isSGRuleExceedFitNum : isSGRuleExceedFitNum
+	isStackUsingOnlyOneSG : isStackUsingOnlyOneSG

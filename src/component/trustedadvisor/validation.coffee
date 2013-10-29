@@ -48,6 +48,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
     _componentTypeToFileMap =
         'AWS.AutoScaling.Group': 'asg'
+        'AWS.EC2.SecurityGroup': 'sg'
 
     # debug validation method, if exist anyother method will not be called
 

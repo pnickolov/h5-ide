@@ -3325,6 +3325,9 @@ module.exports =
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group %s has more than %s rules, If a security group has a large number of rules, performance can be degraded"
       zh: ""
+    TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG:
+      en: "This stack is only using 1 security group"
+      zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:

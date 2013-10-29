@@ -3323,6 +3323,11 @@ module.exports =
       en: "Security Group %s has more than %s rules, If a security group has a large number of rules, performance can be degraded"
       zh: ""
 
+    # ASG
+    TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
+      en:"%s has no launch configuration."
+      zh:""
+
     ##### Trust Advisor
 
   service:

@@ -463,6 +463,7 @@ define [ 'MC', 'event',
             # 3. Toggle Toolbar Button
             @trigger "UPDATE_APP", true
 
+            MC.aws.eni.markAutoAssginFalse()
             # 4. Trigger OPEN_PROPERTY
             null
 

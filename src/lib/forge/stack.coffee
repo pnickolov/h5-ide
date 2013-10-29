@@ -392,6 +392,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				origin_eni.number = vol_number
 
+				origin_eni.resource.VolumeId = ""
+
 				if origin_eni.name.indexOf("#{server_group_name}-0") >= 0
 
 					origin_eni.name = origin_eni.name.replace "#{server_group_name}-0", "#{server_group_name}-#{idx}"
@@ -549,6 +551,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				origin_eip.number = eip_number
 
 				origin_eip.resource.AllocationId = origin_eip.resource.AssociationId = origin_eip.resource.InstanceId = origin_eip.resource.NetworkInterfaceId = origin_eip.resource.PublicIp = ""
+
+				origin_eip.resource.PublicIp = ""
 
 				if eni_uid
 

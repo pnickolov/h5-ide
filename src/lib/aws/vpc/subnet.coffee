@@ -237,11 +237,15 @@ define [ 'MC' ], ( MC ) ->
 
 		i = 0
 		_.each MC.canvas_data.component, (compObj) ->
+			if (compObj.type isnt 'AWS.VPC.NetworkInterface')
+				return
 			if (!defaultVPC and compObj.resource.SubnetId is subnetRef) or (defaultVPC and compObj.resource.AvailabilityZone is azName)
 				newPrivateIpAddressSet = _.map compObj.resource.PrivateIpAddressSet, (ipObj) ->
-					ipObj.PrivateIpAddress = assignedIPAry[i++]
-					ipObj.AutoAssign = true
-					return ipObj
+					newIpObj = $.extend true, {}, ipObj
+					if newIpObj.AutoAssign in [true, 'true']
+						newIpObj.PrivateIpAddress = assignedIPAry[i++]
+						newIpObj.AutoAssign = true
+					return newIpObj
 				MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newPrivateIpAddressSet
 			null
 

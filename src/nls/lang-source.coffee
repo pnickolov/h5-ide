@@ -2031,6 +2031,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ASG_SUMMARY:
+      en: "Auto Scaling Group Summary"
+      zh: "自动伸缩组摘要"
+
     PROP_ASG_DETAILS:
       en: "Auto Scaling Group Details"
       zh: "自动伸缩组配置"

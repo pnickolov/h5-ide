@@ -6,9 +6,9 @@ define [ '../base/main',
          './model',
          './view',
          'constant',
-         './appedit_model',
-         './appedit_view'
-], ( PropertyModule, model, view, constant, app_edit_model, app_edit_view ) ->
+         './app_model',
+         './app_view'
+], ( PropertyModule, model, view, constant, app_model, app_view ) ->
 
     AsgModule = PropertyModule.extend {
 
@@ -67,20 +67,20 @@ define [ '../base/main',
 
         initStack : ()->
             @model = model
-            @model.isApp = false
             @view  = view
             null
 
         initApp : ()->
-            @model = model
-            @model.isApp = true
-            @view = view
+            @model = app_model
+            @model.isAppEdit = false
+            @view = app_view
             null
 
 
         initAppEdit : ()->
-            @model = app_edit_model
-            @view = app_edit_view
+            @model = app_model
+            @model.isAppEdit = true
+            @view = app_view
             null
     }
     null

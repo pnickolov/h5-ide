@@ -2,18 +2,27 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', 'text!./template/app_edit.html', 'i18n!nls/lang.js', 'UI.zeroclipboard' ], ( PropertyView, template, lang, zeroclipboard )->
+define [ '../base/view',
+         'text!./template/app.html',
+         'i18n!nls/lang.js',
+         'UI.zeroclipboard'
+], ( PropertyView, template, lang, zeroclipboard )->
 
     template = Handlebars.compile template
 
-    AutoScalingGroupAppEditView = PropertyView.extend {
+    ASGAppEditView = PropertyView.extend {
         events   :
-            "change #property-asg-min"                     : "setSizeGroup"
-            "change #property-asg-max"                     : "setSizeGroup"
-            "change #property-asg-capacity"                : "setSizeGroup"
+            "change #property-asg-min"      : "setSizeGroup"
+            "change #property-asg-max"      : "setSizeGroup"
+            "change #property-asg-capacity" : "setSizeGroup"
 
         render : () ->
             @$el.html template @model.attributes
+
+            $name = $( "#property_app_asg .icon-copy" )
+            if $name.length
+                zeroclipboard.copy $name
+
             @model.attributes.name
 
 
@@ -46,4 +55,4 @@ define [ '../base/view', 'text!./template/app_edit.html', 'i18n!nls/lang.js', 'U
                 @trigger 'SET_DESIRE_CAPACITY', $capacity.val()
     }
 
-    new AutoScalingGroupAppEditView()
+    new ASGAppEditView()

@@ -204,7 +204,7 @@ define [ '../base/view',
                     protocol : "Email"
                     title    : "Add"
 
-            modal this.sub_template data
+            modal sub_template data
 
             $modal = $("#property-asg-sns-modal")
 

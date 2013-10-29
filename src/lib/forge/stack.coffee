@@ -282,9 +282,22 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				for k, v of json_data.component[uid].resource
 
-					if k isnt "NetworkInterfaceId" and k isnt "Attachment"
+					if k isnt "NetworkInterfaceId" and k isnt "Attachment" and k isnt "PrivateIpAddressSet"
 
 						comp_data[ eni_uid ].resource[k] = v
+
+					if k is "PrivateIpAddressSet"
+
+						ipset = $.extend true, [], v
+
+						for i, j of ipset
+
+							if j.AutoAssign in [false, 'false']
+
+								ipset[i].PrivateIpAddress = comp_data[ eni_uid ].resource.PrivateIpAddressSet[i].PrivateIpAddress
+
+						comp_data[ eni_uid ].resource[k] = ipset
+
 
 				json_data.component[eni_uid].name = if json_data.component[eni_uid].name.indexOf("#{server_group_name}-#{idx}")<0  then "#{server_group_name}-#{idx}-#{eni_name}" else json_data.component[eni_uid].name
 

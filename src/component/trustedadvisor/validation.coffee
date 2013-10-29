@@ -8,6 +8,15 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
     # private
 
+    # debug validation method, if exist anyother method will not be called
+    _validDebug = ''
+
+
+    _componentTypeToFileMap =
+        'AWS.AutoScaling.Group': 'asg'
+        'AWS.EC2.SecurityGroup': 'sg'
+
+
     _validList =
         instance:
             all: ( component ) ->
@@ -34,7 +43,6 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             return true
 
 
-
     _isNeeded = ( obj, key, params ) ->
         not obj[ key ] or obj[ key ]( params )
 
@@ -45,14 +53,6 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
         filename = _.last componentType.split '.'
         filename = filename.toLowerCase()
         filename
-
-    _componentTypeToFileMap =
-        'AWS.AutoScaling.Group': 'asg'
-        'AWS.EC2.SecurityGroup': 'sg'
-
-    # debug validation method, if exist anyother method will not be called
-
-    _validDebug = ''
 
 
     ########## will be public ##########
@@ -101,8 +101,6 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
                         resultVO.add method, result.level, result.info, uid
 
         resultVO.result()
-
-
 
 
     #public

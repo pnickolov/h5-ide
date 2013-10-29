@@ -2139,6 +2139,10 @@ module.exports =
       en: "Notification"
       zh: "通知"
 
+    PROP_ASG_LBL_SEND_NOTIFICATION_D:
+      en: "Send notification via SNS topic"
+      zh: "通过SNS发送通知"
+
     PROP_ASG_LBL_SEND_NOTIFICATION:
       en: "Send notification via SNS topic for:"
       zh: "通过SNS发送通知"

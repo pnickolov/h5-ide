@@ -1724,7 +1724,7 @@ var constant_data = {
 
 				],
 				'MetricName': '',
-				'Namespace': '',
+				'Namespace': 'AWS/AutoScaling',
 				'OKAction': [
 
 				],

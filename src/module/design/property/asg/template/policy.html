@@ -107,7 +107,7 @@
 							<div class="selectbox" id="asg-policy-statistics">
 							<div class="selection">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG"}}</div>
 							<ul class="dropdown" tabindex="-1">
-								<li data-id="Average" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG"}}</li>
+								<li data-id="Average" class="item selected">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_AVG"}}</li>
 								<li data-id="Maximum" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MIN"}}</li>
 								<li data-id="Minimum" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_MAX"}}</li>
 								<li data-id="SampleCount" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADVANCED_STATISTIC_SAMPLE"}}</li>
@@ -137,7 +137,7 @@
 							<input id="asg-policy-notify" type="checkbox" {{#if notify}}checked="checked"{{/if}}/>
 							<label for="asg-policy-notify"></label>
 						</div>
-						<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION"}}</label>
+						<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION_D"}}</label>
 
 						{{#if noSNS}}
 						<p {{#unless notify}}class="hide property-warning"{{/unless}} id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>

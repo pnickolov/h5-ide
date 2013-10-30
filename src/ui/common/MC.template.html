@@ -1178,3 +1178,38 @@ Additional Notes and Questions
 		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
+
+<!-- restartInstance -->
+<div style="width:420px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body" style="height:150px;">
+		<div class="modal-text-wraper">
+			<div class="modal-text-major">To update the properties you have changed, following instances need to restart:</div>
+			<ul class="clearfix">
+				<li>host-name (instance-id)</li>
+				<li>host-name (instance-id)</li>
+				<li>host-name (instance-id)</li>
+			</ul>
+			<div id="instance-type" class="modal-text-major">If any of the instance has been automatically assigned public IP, the IP will change after restart.</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="close-restart-instance" class="btn btn-blue" style="width:160px;">Continue to Update</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>
+
+<!-- updateApp -->
+<div style="width:420px">
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">Do you conﬁrm to update the changes?</div>
+			<div class="update-app-notice">The app is currently stopped. To apply updates, the app will be started automatically.</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="close-update-app" class="btn btn-blue">Update</button>
+		<button class="btn modal-close btn-silver">Cancel</button>
+	</div>
+</div>

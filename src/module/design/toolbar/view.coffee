@@ -466,6 +466,7 @@ define [ 'MC', 'event',
 
             MC.aws.eni.markAutoAssginFalse()
             # 4. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
             null
 
         clickSaveEditApp : (event)->
@@ -559,6 +560,7 @@ define [ 'MC', 'event',
             me.trigger "UPDATE_APP", false
 
             # 4. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
 
             # 5. Close modal
             modal.close()
@@ -581,6 +583,7 @@ define [ 'MC', 'event',
             @trigger "UPDATE_APP", false
 
             # 4. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
 
             # 5. update MC.data.origin_canvas_data
             MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data

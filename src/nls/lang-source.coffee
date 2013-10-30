@@ -3328,6 +3328,9 @@ module.exports =
     TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG:
       en: "This stack is only using 1 security group"
       zh: ""
+    TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
+      en: "Security Group %s is using 'ALL' protocol traffic"
+      zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:

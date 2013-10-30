@@ -2,10 +2,10 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ '../base/view',
+define [ '../base/view', 'constant',
          'text!./template/stack.html',
          'text!./template/app.html'
-], ( PropertyView, template, app_template ) ->
+], ( PropertyView, constant, template, app_template ) ->
 
     template     = Handlebars.compile template
     app_template = Handlebars.compile app_template

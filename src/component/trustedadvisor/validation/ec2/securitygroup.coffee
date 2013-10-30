@@ -55,5 +55,36 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		else
 			return null
 
+	isUsingAllProtocolInRule = (sgUID) ->
+
+		sgComp = MC.canvas_data.component[sgUID]
+		sgInboundRuleAry = sgComp.resource.IpPermissions
+		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
+
+		# check if have ALL protocol's rule
+		haveAllProtocolRule = false
+		_.each sgInboundRuleAry, (ruleObj) ->
+			ruleProtocol = ruleObj.IpProtocol
+			if ruleProtocol in ['-1', -1]
+				haveAllProtocolRule = true
+			null
+		if !haveAllProtocolRule
+			_.each sgOutboundRuleAry, (ruleObj) ->
+				ruleProtocol = ruleObj.IpProtocol
+				if ruleProtocol in ['-1', -1]
+					haveAllProtocolRule = true
+				null
+
+		if haveAllProtocolRule
+			sgName = sgComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE, sgName
+			return {
+				level: constant.TA.WARNING,
+				info: tipInfo
+			}
+
+		return null
+
 	isSGRuleExceedFitNum : isSGRuleExceedFitNum
 	isStackUsingOnlyOneSG : isStackUsingOnlyOneSG
+	isUsingAllProtocolInRule : isUsingAllProtocolInRule

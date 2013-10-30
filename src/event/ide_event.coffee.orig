@@ -39,12 +39,14 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         RELOAD_AZ              : 'RELOAD_AZ'
 
+<<<<<<< HEAD
+        #resource panel
+        UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
+=======
         #design overlay
         SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
         HIDE_DESIGN_OVERLAY    : 'HIDE_DESIGN_OVERLAY'
-
-        #resource panel
-        UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
+>>>>>>> feature/new-app-state-change-process
 
         #tab
         ADD_STACK_TAB          : 'ADD_STACK_TAB'

@@ -1179,6 +1179,7 @@ Additional Notes and Questions
 	</div>
 </div>
 
+<<<<<<< HEAD
 <!-- restartInstance -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
@@ -1213,7 +1214,7 @@ Additional Notes and Questions
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
-
+=======
 <!-- openTabFail -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Oops! There has been some issue loading the app.</div>
@@ -1250,3 +1251,4 @@ Additional Notes and Questions
 <div class="overlay-content-wrap">
 
 </div>
+>>>>>>> feature/new-app-state-change-process

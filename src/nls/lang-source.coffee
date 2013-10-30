@@ -3331,6 +3331,15 @@ module.exports =
     TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
       en: "Security Group %s is using 'ALL' protocol traffic"
       zh: ""
+    TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
+      en: "Security Group %s has inbound rule which traffic from 0.0.0.0 is not targeting port 80 or 443"
+      zh: ""
+    TA_MSG_NOTICE_SG_RULE_USING_PORT_22:
+      en: "Security Group %s has rule which using port 22. To enhance security, suggest to use other port than 22"
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
+      en: "Security Group %s has outbound rule towards 0.0.0.0/0. Suggest to change to more specific range"
+      zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:

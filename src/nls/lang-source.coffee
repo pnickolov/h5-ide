@@ -3354,6 +3354,10 @@ module.exports =
       en: "VPC has instance with Elastic IP must have an Internet Gateway."
       zh: ""
 
+    TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
+      en: "%s has route to %s. If %s is working as NAT instance, it should be assigned with an Elastic IP."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

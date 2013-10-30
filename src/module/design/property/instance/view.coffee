@@ -244,6 +244,9 @@ define [ '../base/view',
 
         # This function is used to display IP List
         refreshIPList : ( event ) ->
+            if not @model.attributes.eni_ips
+                return
+
             html = ""
             for ip in @model.attributes.eni_ips
                 html += MC.template.propertyIpListItem ip

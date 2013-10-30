@@ -274,25 +274,6 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       return sgUIDAry
 
-    setIPList : (inputIPAry) ->
-
-      # find eni0
-      eniUID = ''
-      currentInstanceUID = this.get 'uid'
-      currentInstanceUIDRef = '@' + currentInstanceUID + '.resource.InstanceId'
-      allComp = MC.canvas_data.component
-      _.each allComp, (compObj) ->
-        if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-          instanceUIDRef = compObj.resource.Attachment.InstanceId
-          deviceIndex = compObj.resource.Attachment.DeviceIndex
-          if (currentInstanceUIDRef is instanceUIDRef) and (deviceIndex is '0')
-            eniUID = compObj.uid
-        null
-
-      if eniUID
-        realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
-        MC.aws.eni.saveIPList eniUID, realIPAry
-
     getAppLaunch : ( uid ) ->
 
       component = MC.canvas_data.component[uid]

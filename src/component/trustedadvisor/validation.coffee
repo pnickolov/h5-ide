@@ -15,7 +15,9 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
     _componentTypeToFileMap =
         'AWS.AutoScaling.Group'     : 'asg'
         'AWS.EC2.SecurityGroup'     : 'sg'
-
+        'AWS.VPC.VPNGateway'        : 'vpn'
+        'AWS.VPC.VPNGateway'        : 'vpn'
+        'AWS.VPC.InternetGateway'   : 'igw'
 
     _globalList =
         eip: [ 'isHasIGW' ]

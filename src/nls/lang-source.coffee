@@ -3362,6 +3362,14 @@ module.exports =
       en: "Only 1 availability zone is used. Multiple availability zone can improve fault tolerance."
       zh: ""
 
+    TA_MSG_WARNING_NO_RTB_CONNECT_IGW:
+      en: "No route table is connected to Internet-gateway."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_VGW:
+      en: "No route table is connected to VPN-gateway."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

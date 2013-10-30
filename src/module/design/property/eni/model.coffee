@@ -47,12 +47,15 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 					prefix       : prefixSuffixAry[0]
 					customizable : ip_customizable
 					deletable    : "" + ip.Primary isnt "true"
+					eip          : false
 				}
 
 				if "" + ip.AutoAssign is "true"
 					ip_view.suffix = prefixSuffixAry[1]
 				else
 					ip_view.suffix = MC.aws.eni.getENIDivIPAry(subnetCIDR, ip.PrivateIpAddress)[1]
+
+				ip_view.ip = ip_view.prefix + ip_view.suffix
 
 				checkEIPMap[ "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" ] = ip_view
 				data.ips.push ip_view
@@ -61,7 +64,7 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
 						ip = checkEIPMap[ comp.resource.PrivateIpAddress ]
 						if ip
-							ip.has_eip = true
+							ip.eip = true
 
 			@set data
 			null
@@ -137,21 +140,6 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 			uid  = @get 'uid'
 			comp = MC.canvas_data.component[ uid ]
 
-			ip_detail = {
-				"Association" : {
-					"AssociationID" : ""
-					"PublicDnsName" : ""
-					"AllocationID"  : ""
-					"InstanceId"    : ""
-					"IpOwnerId"     : ""
-					"PublicIp"      : ""
-				}
-				"PrivateIpAddress" : "10.0.0.1"
-				"AutoAssign"       : "true"
-				"Primary"          : false
-			}
-			comp.resource.PrivateIpAddressSet.push ip_detail
-
 			# Return a newly created IP object to view, so that it can render it
 			defaultVPCId = MC.aws.aws.checkDefaultVPC()
 			subnetCIDR   = ''
@@ -171,17 +159,32 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 
 				ip_customizable = parseInt(instance.number, 10) is 1
 
-			return {
+			newIP =
 				customizable : ip_customizable
 				prefix       : prefixSuffixAry[0]
 				suffix       : "x"
 				deletable    : true
-			}
+				ip           : prefixSuffixAry[0] + "x"
+				eip          : false
+
+			@attributes.ips.push newIP
+
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList uid, @attributes.ips
+			MC.aws.eni.saveIPList uid, realIPAry
+
+			# Return newly created IP to view to render
+			newIP
 
 		attachEIP : ( eip_index, attach ) ->
 
 			eni_uid = @get 'uid'
 
+			# Update eip state in model data
+			@attributes.ips[ eip_index ].eip = attach
+
+
+			# Update component
 			if attach
 
 				eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
@@ -234,6 +237,10 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 			uid  = @get 'uid'
 			comp = MC.canvas_data.component[uid]
 
+			# Update Model data
+			@attributes.ips.splice index, 1
+
+			# Update EIP Component
 			ip_ref  = "@#{uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
 			eni_ref = "@#{uid}.resource.NetworkInterfaceId"
 
@@ -256,11 +263,15 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 
 				if modify_index_refs[ c.resource.PrivateIpAddress ]
 					idx = parseInt(c.resource.PrivateIpAddress.split('.')[3],10)-1
-					c.resource.PrivateIpAddress = "@#{comp_uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+					c.resource.PrivateIpAddress = "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
 				else if c.resource.PrivateIpAddress is ip_ref
 					remove_uid = u
 
 			delete MC.canvas_data.component[remove_uid]
+
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList uid, @attributes.ips
+			MC.aws.eni.saveIPList uid, realIPAry
 			null
 
 		canAddIP : ()->
@@ -282,11 +293,18 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 
 		setIPList : (inputIPAry) ->
 
-			# get all other ip in cidr
 			eniUID = this.get 'uid'
 
-			realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
+			# Update data in model
+			for ip, idx in inputIPAry
+				model_ip = @attributes.ips[ idx ]
 
+				model_ip.ip     = ip.ip
+				model_ip.eip    = ip.eip
+				model_ip.suffix = ip.suffix
+
+			# Update data in component
+			realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
 			MC.aws.eni.saveIPList eniUID, realIPAry
 
 	}

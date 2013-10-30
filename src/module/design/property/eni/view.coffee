@@ -71,8 +71,9 @@ define [ '../base/view',
                 has_eip = $item.find(".input-ip-eip-btn").hasClass("associated")
 
                 {
-                    ip  : prefix + value
-                    eip : has_eip
+                    ip     : prefix + value
+                    eip    : has_eip
+                    suffix : value
                 }
 
             @model.setIPList currentAvailableIPAry

@@ -53,6 +53,12 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 MC.data.current_tab_type = null
             null
 
+        showLayerPanel : ( state ) ->
+            console.log 'showLayerPanel'
+            # state include:
+            # 1. open fail
+            # 2. process( starting, stopping, updating, terminating, changed fail )
+
     }
 
     return DesignView

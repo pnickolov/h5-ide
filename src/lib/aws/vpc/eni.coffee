@@ -359,6 +359,35 @@ define [ 'MC' ], ( MC ) ->
 					MC.aws.eni.reduceIPNumByInstanceType(compObj.uid)
 			null
 
+	haveIPConflictWithOtherENI = (ipAddr, eniUID) ->
+
+		conflict = false
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				ipAry = compObj.resource.PrivateIpAddressSet
+				_.each ipAry, (ipObj, innerIdx) ->
+					if compObj.uid isnt eniUID
+						if ipObj.AutoAssign in [false, 'false']
+							currentIPAddr = ipObj.PrivateIpAddress
+							if currentIPAddr is ipAddr
+								conflict = true
+						null
+			null
+		return conflict
+
+	updateAllInstanceENIIPToAutoAssign = (instanceUID) ->
+
+		instanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				if compObj.resource.Attachment.InstanceId is instanceUIDRef
+					eniIPAry = compObj.resource.PrivateIpAddressSet
+					newENIIPAry = _.map eniIPAry, (ipObj) ->
+						ipObj.AutoAssign = true
+						return ipObj
+					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
+			null
+
 	#public
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
@@ -373,3 +402,5 @@ define [ 'MC' ], ( MC ) ->
 	reduceIPNumByInstanceType : reduceIPNumByInstanceType
 	reduceAllENIIPList : reduceAllENIIPList
 	getAllNoAutoAssignIPInCIDR : getAllNoAutoAssignIPInCIDR
+	haveIPConflictWithOtherENI : haveIPConflictWithOtherENI
+	updateAllInstanceENIIPToAutoAssign : updateAllInstanceENIIPToAutoAssign

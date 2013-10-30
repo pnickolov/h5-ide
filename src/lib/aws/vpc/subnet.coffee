@@ -342,6 +342,48 @@ define [ 'MC' ], ( MC ) ->
 
 		return result
 
+	isIPInSubnet = (ipAddr, subnetCIDR) ->
+
+		subnetIPAry = subnetCIDR.split('/')
+		subnetSuffix = Number(subnetIPAry[1])
+		subnetAddrAry = subnetIPAry[0].split('.')
+		subnetIPBinStr = _getCidrBinStr subnetIPAry[0]
+
+		subnetIPBinStrDiv = subnetIPBinStr.slice(0, subnetSuffix)
+
+		ipAddrBinStr = _getCidrBinStr ipAddr
+
+		ipAddrBinStrDiv = ipAddrBinStr.slice(0, subnetSuffix)
+		ipAddrBinStrDivAnti = ipAddrBinStr.slice(subnetSuffix)
+
+		suffixLength = 32 - subnetSuffix
+		suffixZeroAry = _.map [1...suffixLength + 1], () ->
+			return '0'
+		suffixZeroStr = suffixZeroAry.join('')
+		suffixOneStr = suffixZeroStr.replace(/0/g, '1')
+
+		suffixZeroStrNum = parseInt suffixZeroStr, 2
+		suffixOneStrNum = parseInt suffixOneStr, 2
+
+		readyAssignAry = [suffixZeroStrNum...suffixOneStrNum + 1]
+		readyAssignAryLength = readyAssignAry.length
+
+		result = false
+		filterAry = []
+		_.each readyAssignAry, (value, idx) ->
+			newIPBinStr = _addZeroToLeftStr(value.toString(2), suffixLength)
+			if idx in [0, 1, 2, 3, readyAssignAryLength - 1]
+				filterAry.push(newIPBinStr)
+			null
+		
+		if ipAddrBinStrDivAnti in filterAry
+			return false
+
+		if subnetIPBinStrDiv is ipAddrBinStrDiv
+			return true
+		else
+			return false
+
 	#public
 	genCIDRPrefixSuffix            : genCIDRPrefixSuffix
 	isSubnetConflict               : isSubnetConflict
@@ -353,4 +395,5 @@ define [ 'MC' ], ( MC ) ->
 	isSubnetConflictInVPC          : isSubnetConflictInVPC
 	autoAssignSimpleCIDR           : autoAssignSimpleCIDR
 	canDeleteSubnetToELBConnection : canDeleteSubnetToELBConnection
-	generateCIDRPossibile : generateCIDRPossibile
+	generateCIDRPossibile          : generateCIDRPossibile
+	isIPInSubnet                   : isIPInSubnet

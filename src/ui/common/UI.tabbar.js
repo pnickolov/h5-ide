@@ -19,7 +19,7 @@ var Tabbar = {
 			if ($(event.target).hasClass('icon-close'))
 			{
 				return false;
-			} 
+			}
 
 			if (this.id === 'tab-bar-dashboard')
 			{
@@ -187,18 +187,23 @@ var Tabbar = {
 
 	closeTabRestriction : function(event)
 	{
-		var target = $(this).parent(),
-			tab_name = target.find('a').attr('title').replace(' - stack', ''),
-			tab_id = target.attr('id').replace('tab-bar-', '');
 
-		$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
+		if (event.which === 1)
+		{
+			var target = $(this).parent(),
+				tab_name = target.find('a').attr('title').replace(' - stack', ''),
+				tab_id = target.attr('id').replace('tab-bar-', '');
+
+			$('#tab-bar').trigger('CLOSE_TAB_RESTRICTION', [ target, tab_name, tab_id ]);
+		}
+
 	},
 
 	close: function (event)
 	{
 		event.stopImmediatePropagation();
 
-		if (event.which === 1)
+		if (event.which === 1 || $(event.currentTarget).hasClass('auto-close') )
 		{
 			var target = $(this).parent(),
 				tab_id = target.attr('id').replace('tab-bar-', '');
@@ -229,7 +234,7 @@ var Tabbar = {
 $(document).ready(function ()
 {
 	$('#tab-bar')
-		.on('mousedown', '.close-restriction', Tabbar.closeTabRestriction)
+		.on('click', '.close-restriction', Tabbar.closeTabRestriction)
 		.on('mousedown', 'li', Tabbar.mousedown)
 		.on('click', '.close-tab', Tabbar.close);
 

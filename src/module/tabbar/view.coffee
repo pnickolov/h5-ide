@@ -98,7 +98,8 @@ define [ 'event',
             target = $( '#tab-bar-' + tab_id ).find( '.close-tab' )
             return if $( '#tab-bar-' + tab_id ).length is 0
             if target.length > 0
-                target.trigger 'mousedown'
+                target.addClass 'auto-close'
+                target.trigger 'click'
             else
                 @trueCloseTab null, tab_id
             null

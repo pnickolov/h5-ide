@@ -1,6 +1,6 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
-    isHaveLaunchConfiguration = ( uid ) ->
+    isHasLaunchConfiguration = ( uid ) ->
         asg = MC.canvas_data.component[ uid ]
         if asg.resource.LaunchConfigurationName
             return null
@@ -13,6 +13,20 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         uid     : uid
 
 
+    isELBHasHealthCheck = ( uid ) ->
+        asg =  MC.canvas_data.component[ uid ]
+
+        isConnectELB = MC.aws.asg.isConnectELB( uid )
+        if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
+            return null
+
+        tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK, asg.name
+
+        # return
+        level   : constant.TA.WARNING
+        info    : tipInfo
+        uid     : uid
 
     # public
-    isHaveLaunchConfiguration : isHaveLaunchConfiguration
+    isHasLaunchConfiguration    : isHasLaunchConfiguration
+    isELBHasHealthCheck         : isELBHasHealthCheck

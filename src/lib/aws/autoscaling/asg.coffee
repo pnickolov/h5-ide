@@ -91,9 +91,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		result
 
+	isConnectELB = ( uid ) ->
+		MC.canvas_data.component[ uid ].resource.LoadBalancerNames.length > 0
+
 
 	#public
 	getAZofASGNode      : getAZofASGNode
 	getASGInAZ          : getASGInAZ
 	updateASGCount      : updateASGCount
+	isConnectELB		: isConnectELB
+
 

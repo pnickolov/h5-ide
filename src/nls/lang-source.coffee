@@ -3334,6 +3334,10 @@ module.exports =
       en:"%s has no launch configuration."
       zh:""
 
+    TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK:
+      en: "%s has connected to Elastic Load Balancing but the Elastic Load Balancing health check is not enabled."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

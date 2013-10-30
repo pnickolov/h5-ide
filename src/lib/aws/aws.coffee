@@ -751,3 +751,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     checkResource               : checkResource
     getRegionName               : getRegionName
     isExistResourceInApp        : isExistResourceInApp
+    getChanges                  : getChanges

@@ -479,7 +479,25 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
-                ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+                # check changes
+                diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
+
+                if diff_data.isChanged
+
+                    state = constant.APP_STATE.APP_STATE_STOPPED
+                    platform = 'vpc'
+
+                    # check app state
+                    if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+                    if MC.canvas_data.platform is "ec2-classic"
+                        platform = 'ec2'
+
+                    ## modal init
+                    # {'state':state, 'platform':platform, 'instance_list':diff_data.changes}
+
+                    ## confirm button and push event
+                    ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
             # After success then do the clickCancelEditApp routine.
             null

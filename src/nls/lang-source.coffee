@@ -1295,6 +1295,10 @@ module.exports =
       en: "Security Group ID"
       zh: "安全组标识"
 
+    PROP_SG_APP_SG_NAME:
+      en: "Security Group Name"
+      zh: "安全组名字"
+
     PROP_SG_APP_VPC_ID:
       en: "VPC ID"
       zh: "VPC标识"

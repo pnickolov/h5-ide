@@ -16,7 +16,7 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
             comp_res  = component.resource
 
             # Get Basic Info
-            @set 'name', comp_res.GroupName
+            @set 'name', component.name
             @set 'description', comp_res.GroupDescription
 
             # Get Members
@@ -48,7 +48,7 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
             else if @isAppEdit
                 # In AppEdit mode, if the SG has no aws resource associated :
                 # Meaning it is a newly created SG. So the input should be editable
-                inputReadOnly = not forge_app.existing_app_resource( uid )
+                inputReadOnly = forge_app.existing_app_resource( uid )
 
             if inputReadOnly or comp_res.name is 'DefaultSG'
                 @set 'nameReadOnly', true
@@ -106,7 +106,8 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
             #get sg name
             sg_app_detail =
                 uid         : sg_uid
-                name        : currentAppSG.groupName
+                name        : currentSGComp.name
+                groupName   : currentAppSG.groupName
                 description : currentAppSG.groupDescription
                 groupId     : currentAppSG.groupId
                 ownerId     : currentAppSG.ownerId

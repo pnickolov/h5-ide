@@ -103,7 +103,7 @@ define [ 'constant','backbone' ], (constant) ->
 				# need to display
 				sgDisplayObj =
 					sgUID       : uid
-					sgName      : sgCompRes.GroupName
+					sgName      : sgComp.name
 					sgDesc      : sgCompRes.GroupDescription
 					sgRuleNum   : sgIpPermissionsLength + sgIpPermissionsEgressLength
 					sgMemberNum : @_getSGRefNum uid

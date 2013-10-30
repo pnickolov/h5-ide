@@ -3146,7 +3146,7 @@ td.table-action a.btn {
 	background-image: url('../images/ide/icon/icon-ami-os.png');
 }
 
-.icon-cent {
+.icon-centos {
 	background-position: -24px;
 }
 
@@ -3162,7 +3162,7 @@ td.table-action a.btn {
 	background-position: -96px;
 }
 
-.icon-open-suse {
+.icon-opensuse {
 	background-position: -120px;
 }
 
@@ -3174,11 +3174,11 @@ td.table-action a.btn {
 	background-position: -168px;
 }
 
-.icon-win {
+.icon-windows {
 	background-position: -192px;
 }
 
-.icon-other-linux {
+.icon-linux-other {
 	background-position: -216px;
 }
 

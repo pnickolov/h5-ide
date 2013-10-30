@@ -154,6 +154,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					new_comp.resource.InstanceId = ""
 
+					new_comp.resource.PrivateIpAddress = ""
+
 					comp_data[ new_comp.uid ] = new_comp
 
 					if elbs.length > 0 and new_comp.uid isnt uid
@@ -272,10 +274,15 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					origin_eni.name = if eni_name.indexOf("#{server_group_name}-#{idx}")<0 then "#{server_group_name}-#{idx}-#{eni_name}" else eni_name
 
 
+				for k, v of origin_eni.resource.PrivateIpAddressSet
+
+					v.AutoAssign = true
 
 				attach_instance = "@#{instance_list[idx]}.resource.InstanceId"
 
 				origin_eni.resource.Attachment.InstanceId = attach_instance
+
+				origin_eni.resource.Attachment.AttachmentId = ""
 
 				comp_data[eni_uid] = origin_eni
 			else
@@ -311,9 +318,15 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			azName = MC.canvas_data.layout.component.group[azUID].name
-			MC.aws.subnet.updateAllENIIPList(azName, true)
+			if MC.canvas.getState() is 'appedit'
+				MC.aws.subnet.updateAllENIIPList(azName, true)
+			else
+				MC.aws.subnet.updateAllENIIPList(azName, false)
 		else
-			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true)
+			if MC.canvas.getState() is 'appedit'
+				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true)
+			else
+				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false)
 
 		# restore canvas comps
 		comp_data = $.extend( true, {}, MC.canvas_data.component )
@@ -536,12 +549,17 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		for eip_uid, eip of comp_data
 
 			if eip.type is 'AWS.EC2.EIP'
+				e_list = []
 				if not eni_uid
 
 					e_list = MC.canvas_data.layout.component.node[ instance_uid ].eipList
 
 				else
 					e_list = if MC.canvas_data.layout.component.node[ eni_uid ] then MC.canvas_data.layout.component.node[ eni_uid ].eipList[ uid ] else MC.canvas_data.layout.component.node[MC.canvas_data.component[eni_uid].resource.Attachment.InstanceId.split('.')[0].slice(1)].eipList[ uid ]
+
+				if not e_list
+
+					e_list = []
 
 				if e_list.length is 0
 

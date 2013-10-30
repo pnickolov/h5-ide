@@ -234,8 +234,9 @@ define [ '../base/view',
                 has_eip = $item.find(".input-ip-eip-btn").hasClass("associated")
 
                 {
-                    ip  : prefix + value
-                    eip : has_eip
+                    ip     : prefix + value
+                    eip    : has_eip
+                    suffix : value
                 }
 
             @model.setIPList currentAvailableIPAry
@@ -244,7 +245,7 @@ define [ '../base/view',
         # This function is used to display IP List
         refreshIPList : ( event ) ->
             html = ""
-            for ip in @model.attributes.eni_display.eni_ips
+            for ip in @model.attributes.eni_ips
                 html += MC.template.propertyIpListItem ip
 
             $( '#property-network-list' ).html( html )

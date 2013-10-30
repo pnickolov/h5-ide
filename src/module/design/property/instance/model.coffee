@@ -270,13 +270,15 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					description    : comp.resource.Description
 					asso_public_ip : comp.resource.AssociatePublicIpAddress || false
 					sourceCheck    : "" + comp.resource.SourceDestCheck is "true"
-					eni_ips        : []
 				}
+
+				eni_ips = []
 
 				for ip, idx in comp.resource.PrivateIpAddressSet
 
 					ip_view = {
 						prefix       : prefixSuffixAry[0]
+						eip          : false
 						customizable : ip_customizable
 						deletable    : "" + ip.Primary isnt "true"
 					}
@@ -286,18 +288,22 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					else
 						ip_view.suffix = MC.aws.eni.getENIDivIPAry(subnetCIDR, ip.PrivateIpAddress)[1]
 
+					ip_view.ip = ip_view.prefix + ip_view.suffix
+
 					checkEIPMap[ "@#{comp_uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" ] = ip_view
-					eni_detail.eni_ips.push ip_view
+					eni_ips.push ip_view
 
 				for comp_uid, comp of MC.canvas_data.component
 					if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
 							ip = checkEIPMap[ comp.resource.PrivateIpAddress ]
 							if ip
-								ip.has_eip = true
+								ip.eip = true
 
 			eni_detail.multi_enis = eni_count > 1
 
 			this.set 'eni_display', eni_detail
+			this.set 'eni_ips',     eni_ips
+			null
 
 		getComponent : () ->
 			this.set 'component', MC.canvas_data.component[ this.get( 'uid') ]
@@ -422,6 +428,10 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			instance_uid = this.get 'uid'
 
+			# Update eip state in model data
+			@attributes.eni_ips[ eip_index ].eip = attach
+
+			# Update component
 			$.each MC.canvas_data.component, ( key, val ) ->
 
 				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_uid and val.resource.Attachment.DeviceIndex == '0'
@@ -517,21 +527,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				if "" + comp.resource.Attachment.DeviceIndex isnt "0"
 					continue
 
-				comp.resource.PrivateIpAddressSet.push {
-					"Association" : {
-							"AssociationID" : ""
-							"PublicDnsName" : ""
-							"AllocationID"  : ""
-							"InstanceId"    : ""
-							"IpOwnerId"     : ""
-							"PublicIp"      : ""
-					}
-					"PrivateIpAddress" : "10.0.0.1"
-					"AutoAssign"       : "true"
-					"Primary"          : false
-				}
+				eniUID = comp_uid
 				break
-
 
 			# Return a newly created IP object to view, so that it can render it
 			defaultVPCId = MC.aws.aws.checkDefaultVPC()
@@ -546,16 +543,31 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( subnetCIDR )
 
-			return {
+			newIP =
 				customizable : parseInt( MC.canvas_data.component[ uid ].number, 10) == 1
 				prefix       : prefixSuffixAry[0]
 				suffix       : "x"
 				deletable    : true
-			}
+				ip           : prefixSuffixAry[0] + "x"
+				eip          : false
+
+			@attributes.eni_ips.push newIP
+
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList eniUID, @attributes.eni_ips
+			MC.aws.eni.saveIPList eniUID, realIPAry
+
+			# Return newly created IP to view to render
+			newIP
 
 		removeIP : ( index ) ->
 
 			uid = @get 'uid'
+
+			# Update Model data
+			@attributes.eni_ips.splice index, 1
+
+			# Update EIP Component
 			for comp_uid, comp of MC.canvas_data.component
 				if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 					continue
@@ -563,6 +575,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					continue
 				if "" + comp.resource.Attachment.DeviceIndex isnt "0"
 					continue
+
+				eniUID = comp_uid
 
 				ip_ref  = "@#{comp.uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
 				eni_ref = "@#{comp.uid}.resource.NetworkInterfaceId"
@@ -593,6 +607,9 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				delete MC.canvas_data.component[remove_uid]
 				break
 
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList eniUID, @attributes.eni_ips
+			MC.aws.eni.saveIPList eniUID, realIPAry
 			null
 
 		canAddIP : () ->
@@ -626,6 +643,15 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 						eniUID = compObj.uid
 				null
 
+			# Update data in model
+			for ip, idx in inputIPAry
+				model_ip = @attributes.eni_ips[ idx ]
+
+				model_ip.ip     = ip.ip
+				model_ip.eip    = ip.eip
+				model_ip.suffix = ip.suffix
+
+			# Update data in component
 			if eniUID
 				realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
 				MC.aws.eni.saveIPList eniUID, realIPAry

@@ -11,13 +11,14 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         asg_comp = MC.canvas_data.component[uid]
 
         data =
-          uid      : uid
-          name     : asg_comp.name
-          minSize  : asg_comp.resource.MinSize
-          maxSize  : asg_comp.resource.MaxSize
-          capacity : asg_comp.resource.DesiredCapacity
+          uid        : uid
+          name       : asg_comp.name
+          minSize    : asg_comp.resource.MinSize
+          maxSize    : asg_comp.resource.MaxSize
+          capacity   : asg_comp.resource.DesiredCapacity
+          isEditable : @isAppEdit
 
-        this.set data
+        @set data
 
         @getASGData( asg_comp.resource.AutoScalingGroupARN )
         null
@@ -37,9 +38,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
             @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
-        if @isAppEdit
-            @set 'isEditable', true
-        else
+        if not @isAppEdit
             @set 'lcName',   asg_data.LaunchConfigurationName
             @set 'cooldown', asg_data.DefaultCooldown
             @set 'healCheckType', asg_data.HealthCheckType

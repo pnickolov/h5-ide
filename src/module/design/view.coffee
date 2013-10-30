@@ -63,7 +63,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             console.log 'showDesignOverlay, state = ' + state
             # state include:
             # 1. open fail
-            # 2. process( starting, stopping, updating, terminating, changed fail )
+            # 2. process( starting, stopping, terminating, updating, changed fail )
 
             $item = $( '#overlay-panel' )
 

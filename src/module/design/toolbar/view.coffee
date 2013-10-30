@@ -521,10 +521,7 @@ define [ 'MC', 'event',
                                 $( '#instance-type' ).html 'The public and private addresses will be reassigned after the restart.'
                             else if obj.platform is 'vpc'
                                 $( '#instance-type' ).html 'If any of the instance has been automatically assigned public IP, the IP will change after restart.'
-                            $( document.body ).one 'click', '#close-restart-instance', this, @_restartInstance
-
-                    ## confirm button and push event
-                    #ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+                            $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
 
                 else
                     # return to app modal
@@ -593,6 +590,7 @@ define [ 'MC', 'event',
         _updateAndRun : ( event ) ->
             console.log '_updateAndRun'
             # 1. event.data.trigger 'xxxxx'
+            ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
             # 2. TO-DO
 

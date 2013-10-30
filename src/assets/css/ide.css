@@ -4442,9 +4442,7 @@ li:hover .rule-remove-icon {
 	display: none;
 }
 .sg-member-list .sg-member-name {
-	display: inline-block;
-	width: 230px;
-	word-wrap:break-word;
+	word-wrap : break-word;
 }
 
 /* Subnet Panel */

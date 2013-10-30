@@ -723,10 +723,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                             me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
-                            if flag is 'RUN_STACK'
-                                flag_list.is_failed = true
-                                flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
+                            flag_list.is_failed = true
+                            flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
+                            if flag is 'RUN_STACK'
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
@@ -762,11 +762,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]
 
+                            flag_list.app_id = app_id
+                            flag_list.is_done = true
+
                             switch flag
                                 when 'RUN_STACK'
-                                    flag_list.app_id = app_id
-                                    flag_list.is_done = true
-
                                     me.setFlag app_id, 'RUNNING_APP', region
 
                                 when 'START_APP'
@@ -786,10 +786,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
                                 when 'SAVE_APP'
-                                    if me.item_state_map[id].is_running
-                                        me.setFlag id, 'RUNNING_APP', region
-                                    else
-                                        me.setFlag id, 'STOPPED_APP', region
+                                    if id of item_state_map
+                                        if item_state_map[id].is_running
+                                            me.setFlag id, 'RUNNING_APP', region
+                                        else
+                                            me.setFlag id, 'STOPPED_APP', region
 
                                     #ide_event.trigger ide_event.SAVED_APP, name, id
 
@@ -804,7 +805,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             console.log 'not support request state:' + req.state
 
                     # send process data
-                    if flag_list and flag is 'RUN_STACK'
+                    if flag_list
 
                         tab_name = 'process-' + region + '-' + name
 

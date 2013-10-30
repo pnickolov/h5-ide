@@ -7,10 +7,11 @@ define [ 'MC', 'event',
          'text!./stack_template.html',
          'text!./app_template.html',
          'UI.zeroclipboard',
+         'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard ) ->
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard, constant ) ->
 
     stack_tmpl = Handlebars.compile stack_tmpl
     app_tmpl   = Handlebars.compile app_tmpl
@@ -494,10 +495,39 @@ define [ 'MC', 'event',
                         platform = 'ec2'
 
                     ## modal init
-                    # {'state':state, 'platform':platform, 'instance_list':diff_data.changes}
+                    obj = { 'state':state, 'platform':platform, 'instance_list':diff_data.changes }
+                    #obj.platform = 'vpc'
+                    #obj.instance_list = []
+                    #obj.state = constant.APP_STATE.APP_STATE_STOPPED
+                    #
+                    if obj.state is constant.APP_STATE.APP_STATE_STOPPED
+
+                        modal MC.template.updateApp()
+                        $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+
+                    else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
+
+                        if obj.instance_list.length is 0
+
+                            modal MC.template.updateApp()
+                            $( '.update-app-notice' ).empty()
+                            $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+
+                        else
+
+                            modal MC.template.restartInstance obj
+                            if obj.platform is 'ec2'
+                                $( '#instance-type' ).html 'The public and private addresses will be reassigned after the restart.'
+                            else if obj.platform is 'vpc'
+                                $( '#instance-type' ).html 'If any of the instance has been automatically assigned public IP, the IP will change after restart.'
+                            $( document.body ).one 'click', '#close-restart-instance', this, @_restartInstance
 
                     ## confirm button and push event
-                    ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+                    #ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+
+                else
+                    # return to app modal
+                    # @_return2App()
 
             # After success then do the clickCancelEditApp routine.
             null
@@ -555,6 +585,26 @@ define [ 'MC', 'event',
             # 5. update MC.data.origin_canvas_data
             MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
+            null
+
+        _updateAndRun : ( event ) ->
+            console.log '_updateAndRun'
+            # 1. event.data.trigger 'xxxxx'
+
+            # 2. TO-DO
+
+            # 3. close modal
+            modal.close()
+            null
+
+        _restartInstance : ( event ) ->
+            console.log '_restartInstance'
+            # 1. event.data.trigger 'xxxxx'
+
+            # 2. TO-DO
+
+            # 3. close modal
+            modal.close()
             null
 
     }

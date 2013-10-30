@@ -1186,11 +1186,11 @@ Additional Notes and Questions
 		<div class="modal-text-wraper">
 			<div class="modal-text-major">To update the properties you have changed, following instances need to restart:</div>
 			<ul class="clearfix">
-				<li>host-name (instance-id)</li>
-				<li>host-name (instance-id)</li>
-				<li>host-name (instance-id)</li>
+				{{#each instance_list}}
+				<li>{{ name }}( {{ instance_id }} )</li>
+				{{/each}}
 			</ul>
-			<div id="instance-type" class="modal-text-major">If any of the instance has been automatically assigned public IP, the IP will change after restart.</div>
+			<div id="instance-type" class="modal-text-major"></div>
 		</div>
 	</div>
 	<div class="modal-footer">

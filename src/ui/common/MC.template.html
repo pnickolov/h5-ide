@@ -636,8 +636,8 @@ Additional Notes and Questions
 
 <!-- propertyIpListItem -->
 <li class="input-ip-item">
-  <div class="name tooltip" data-tooltip={{#if customizable}}"{{i18n 'PROP_INSTANCE_IP_MSG_1'}}"{{else}}"{{i18n 'PROP_INSTANCE_IP_MSG_2'}}"{{/if}}>
-    <label><span class="input-ip-prefix">{{prefix}}</span>
+  <div class="name tooltip" data-tooltip="{{#if customizable}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{/if}}">
+    <label class="input-ip-wrap {{#unless customizable}}disabled{{/unless}}"><span class="input-ip-prefix">{{prefix}}</span>
     <input type="text" class="input input-ip" value="{{suffix}}" {{#unless customizable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
     </label>
   </div>

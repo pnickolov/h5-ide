@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template ) ->
+define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -72,7 +72,12 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
             # 2. switch state
             switch state
-                when 'OPEN_TAB_FAIL' then $item.html MC.template.openTabFail()
+                when 'OPEN_TAB_FAIL'                          then $item.html MC.template.openTabFail()
+                when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
+                when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
+                when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
+                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating()
+                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
 
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'

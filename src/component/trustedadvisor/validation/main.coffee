@@ -4,8 +4,9 @@ define ['MC',
         './vpc/vpc',
         './elb/elb',
         './ec2/securitygroup',
-        './autoscaling/asg'
-], ( MC, instance, subnet, vpc, elb, sg, asg) ->
+        './autoscaling/asg',
+        './ec2/eip'
+], ( MC, instance, subnet, vpc, elb, sg, asg, eip) ->
 
         instance : instance
         subnet: subnet
@@ -13,3 +14,4 @@ define ['MC',
         elb : elb
         sg  : sg
         asg : asg
+        eip : eip

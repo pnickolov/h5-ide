@@ -3350,6 +3350,10 @@ module.exports =
       en: "%s has connected to Elastic Load Balancing but the Elastic Load Balancing health check is not enabled."
       zh: ""
 
+    TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW:
+      en: "VPC has instance with Elastic IP must have an Internet Gateway."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

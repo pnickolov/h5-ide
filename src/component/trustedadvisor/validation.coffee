@@ -19,6 +19,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
     _globalList =
         eip: [ 'isHasIGW' ]
+        az: [ 'isAZAlone' ]
 
 
 

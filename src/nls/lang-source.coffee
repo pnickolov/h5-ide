@@ -3358,6 +3358,10 @@ module.exports =
       en: "%s has route to %s. If %s is working as NAT instance, it should be assigned with an Elastic IP."
       zh: ""
 
+    TA_MSG_WARNING_SINGLE_AZ:
+      en: "Only 1 availability zone is used. Multiple availability zone can improve fault tolerance."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

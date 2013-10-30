@@ -6,23 +6,10 @@ define [ '../base/main', './model', './view' ], ( PropertyModule, model, view ) 
 
     # Because the model and view is shared between different property modes
     # Wire up the view and model here.
-    view.on 'SET_SG_NAME', ( value ) ->
+    view.on 'NAME_CHANGE', ( value ) ->
         model.setSGName value
+        MC.aws.sg.updateSGColorLabel( PropertyModule.activeModule().uid )
         null
-
-    view.on 'REMOVE_SG_RULE', ( rule )->
-        model.removeSGRule  rule
-        null
-
-    view.on 'SET_SG_RULE', ( rule ) ->
-        model.setSGRule rule
-        null
-
-    view.on 'SET_SG_DESC', ( value ) ->
-        model.setSGDescription value
-        null
-
-
 
     SgModule = PropertyModule.extend {
 

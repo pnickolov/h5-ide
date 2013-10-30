@@ -65,7 +65,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                     #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                     #
                     if type is 'OPEN_STACK' or type is 'OPEN_APP'
-                                            
+
                         #when OPEN_STACK or OPEN_APP result is resolved_data
                         model.setCanvasData result.resolved_data[0]
 

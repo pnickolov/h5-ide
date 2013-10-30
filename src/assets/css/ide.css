@@ -6827,7 +6827,7 @@ a.action-link:hover {
 }
 
 /** Design Module Overlay **/
-#design-overlay {
+.design-overlay {
 	position: absolute;
 	top: 0;
 	right: 0;

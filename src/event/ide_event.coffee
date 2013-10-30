@@ -43,8 +43,9 @@ define [ 'underscore', 'backbone' ], () ->
         RELOAD_PROPERTY        : 'RELOAD_PROPERTY'
         RELOAD_AZ              : 'RELOAD_AZ'
 
-        #layer panel
-        OPEN_LAYER_PANEL       : 'OPEN_LAYER_PANEL'
+        #design overlay
+        SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
+        HIDE_DESIGN_OVERLAY    : 'HIDE_DESIGN_OVERLAY'
 
         #tab
         ADD_STACK_TAB          : 'ADD_STACK_TAB'

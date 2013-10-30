@@ -1485,7 +1485,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 				# Prevent SG Rule create from AMI to attached ENI
 				eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
-				if eni_comp and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
+				if eni_comp and eni_comp.resource.Attachment and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
 					return "The Network Interface is attached to the instance. No need to connect them by security group rule."
 
 				for key, value of portMap

@@ -81,15 +81,14 @@ define [ '../base/view',
             $parent = $("#property-network-list")
 
             if enable
-                $parent.find(".input-ip").removeAttr "disabled"
-                $parent.find(".name").data "tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1
+                $parent.find(".input-ip-wrap").removeClass("disabled")
+                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1)
+                       .find(".input-ip").removeAttr("disabled")
 
             else
-                $parent.find(".input-ip").attr "disabled", "disabled"
-                $parent.find(".name").data "tooltip", lang.ide.PROP_INSTANCE_IP_MSG_2
-
-            # TODO :
-            # Change custom ip to automatic ip
+                $parent.find(".input-ip-wrap").addClass("disabled")
+                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_2)
+                       .find(".input-ip").attr("disabled", "disabled")
             null
 
         instanceTypeSelect : ( event, value )->

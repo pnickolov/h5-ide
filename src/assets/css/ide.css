@@ -4495,22 +4495,22 @@ li:hover .rule-remove-icon {
 	/*border: 1px solid #ccc;*/
 }
 
-.network-list li {
+.network-list > .input-ip-item {
 	position: relative;
 	padding: 8px;
 	height: 20px;
 }
 
-.network-list li:nth-child(2n+1) {
+.network-list > .input-ip-item:nth-child(2n+1) {
 	background: #fcfcfc;
 }
 
-.network-list li .name{
+.network-list > .input-ip-item .name{
 	width: 150px;
 	float: left;
 }
 
-.network-list li .input-ip {
+.network-list > .input-ip-item .input-ip {
 	border-radius: 2px;
 	width: 25px;
 	height: 9px;
@@ -4522,25 +4522,35 @@ li:hover .rule-remove-icon {
 	color: #999;
 }
 
-.network-list li .input-ip:hover {
+.network-list > .input-ip-item .input-ip:hover {
 	background-color: #fcfcfc;
 	box-shadow: none;
 	color: #999;
 	border: 1px solid #ccc;
 }
 
-.network-list li .input-ip:focus {
+.network-list > .input-ip-item .input-ip:focus {
 	background-color: #fff;
 	box-shadow: none;
 	color: #666;
 	border: 1px solid #999;
 }
 
-.network-list li .input-ip:hover[disabled],
-.network-list li .input-ip[disabled] {
-	background : none;
-	border     : none;
-	color      : #999;
+.input-ip-wrap.disabled .input-ip-prefix:after {
+	content : "x";
+}
+
+.input-ip-wrap.disabled .input-ip {
+	display : none;
+}
+
+.network-list > .input-ip-item .input-ip:hover[disabled],
+.network-list > .input-ip-item .input-ip[disabled] {
+	background   : none;
+	border       : none;
+	color        : #999;
+	padding      : 0;
+	height       : 16px;
 }
 
 .toggle-eip {
@@ -4555,14 +4565,14 @@ li:hover .rule-remove-icon {
 }
 
 
-.network-list li .toggle-eip {
+.network-list > .input-ip-item .toggle-eip {
 	position: absolute;
 	right: 30px;
 	top: 50%;
 	margin-top: -8px;
 }
 
-.network-list > li > .icon-remove {
+.network-list > .input-ip-item > .icon-remove {
 	position   : absolute;
 	right      : 5px;
 	top        : 50%;
@@ -4570,7 +4580,7 @@ li:hover .rule-remove-icon {
 	cursor     : pointer;
 }
 
-.network-list > li > .icon-remove:hover {
+.network-list > .input-ip-item > .icon-remove:hover {
 	color : #F74A48;
 }
 

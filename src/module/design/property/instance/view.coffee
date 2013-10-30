@@ -75,11 +75,18 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
         countChange : ( event ) ->
             target = $ event.currentTarget
 
+            that = this
+
             target.parsley 'custom', ( val ) ->
                 if isNaN( val ) or val > 99 or val < 1
                     return 'This value must be >= 1 and <= 99'
 
             if target.parsley 'validate'
+
+                instanceUID = that.model.get 'get_uid'
+                MC.aws.eni.updateAllInstanceENIIPToAutoAssign(instanceUID)
+                this.refreshIPList()
+
                 val = +target.val()
                 @trigger "COUNT_CHANGE", val
                 $(".property-instance-name-wrap").toggleClass("single", val == 1)
@@ -237,16 +244,96 @@ define [ 'event', 'MC', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars',
 
             currentAvailableIPAry = []
             ipInuptListItem = $('#property-network-list li')
+            validSuccess = true
+            that = this
+            instanceUID = that.model.get 'get_uid'
+            eniComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+            eniUID = eniComp.uid
 
-            _.each ipInuptListItem, (ipInputItem) ->
+            currentInputValue = currentIdx = null
+            if event and event.currentTarget
+                currentInputValue = $(event.currentTarget).val()
+                currentIdx = $(event.currentTarget).parents('li').index()
+
+            _.each ipInuptListItem, (ipInputItem, idx) ->
                 inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
                 inputValue = $(ipInputItem).find('.input-ip').val()
+
+                prefixAry = inputValuePrefix.split('.')
+
+                ################################### validation
+                validDOM = $(ipInputItem).find('.input-ip')
+
+                validDOM.parsley 'custom', ( val ) ->
+
+                    ###### validation format
+                    ipIPFormatCorrect = false
+                    # for 10.0.0.
+                    if prefixAry.length is 4
+                        if inputValue is 'x'
+                            ipIPFormatCorrect = true
+                        if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
+                    # for 10.0.
+                    else
+                        if inputValue is 'x.x'
+                            ipIPFormatCorrect = true
+                        if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
+                    if !ipIPFormatCorrect
+                        return 'Invalid IP address'
+
+                    ###### validation if in subnet
+                    ipAddr = inputValuePrefix + inputValue
+                    if ipAddr.indexOf('x') is -1
+                        ipInSubnet = false
+                        subnetCIDR = ''
+                        defaultVPCId = MC.aws.aws.checkDefaultVPC()
+                        if defaultVPCId
+                            subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+                            subnetCIDR = subnetObj.cidrBlock
+                        else
+                            subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
+                            subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+
+                        ipInSubnet = MC.aws.subnet.isIPInSubnet(ipAddr, subnetCIDR)
+
+                        if !ipInSubnet
+                            return 'This IP address conflicts with subnet’s IP range'
+
+                    ###### validation if conflict with other eni
+                    if event and event.currentTarget
+                        currentInputValue = $(event.currentTarget).val()
+                    currentIPAddr = inputValuePrefix + currentInputValue
+                    if currentIPAddr.indexOf('x') is -1 and currentIdx is idx
+                        innerRepeat = false
+                        _.each ipInuptListItem, (ipInputItem1, idx1) ->
+                            inputValue1 = $(ipInputItem1).find('.input-ip').val()
+                            if currentIdx isnt idx1 and inputValue1 is currentInputValue
+                                innerRepeat = true
+                            null
+                        if innerRepeat
+                            return 'This IP address conflicts with other IP'
+                        if MC.aws.eni.haveIPConflictWithOtherENI(currentIPAddr, eniUID)
+                            return 'This IP address conflicts with other network interface’s IP'
+
+                    null
+
+                if event and event.currentTarget
+                    if not validDOM.parsley 'validate'
+                        validSuccess = false
+                ################################### validation
+
+
                 inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
                 currentAvailableIPAry.push({
                     ip: inputValuePrefix + inputValue,
                     eip: inputHaveEIP
                 })
                 null
+
+            if !validSuccess
+                return
 
             this.trigger 'SET_IP_LIST', currentAvailableIPAry
 

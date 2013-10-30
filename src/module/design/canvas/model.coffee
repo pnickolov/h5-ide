@@ -1513,11 +1513,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						azName = MC.canvas_data.component[uid].resource.Placement.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(azName)
+						MC.aws.subnet.updateAllENIIPList(azName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_VPC_NetworkInterface
 
@@ -1527,11 +1527,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						eniAZName = MC.canvas_data.component[uid].resource.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(eniAZName)
+						MC.aws.subnet.updateAllENIIPList(eniAZName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)

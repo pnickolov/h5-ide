@@ -31,14 +31,19 @@ define [ 'MC' ], ( MC ) ->
 
 		allIPAry = []
 		availableIPCount = 0
-		_.each [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1], (value) ->
+		readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
+		readyAssignAryLength = readyAssignAry.length
+		_.each readyAssignAry, (value, idx) ->
 			newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
-
 			isAvailableIP = true
+			if idx in [0, 1, 2, 3]
+				isAvailableIP = false
+			if idx is readyAssignAryLength - 1
+				isAvailableIP = false
 			newIPAry = _.map [0, 8, 16, 24], (value) ->
 				newIPNum = (parseInt newIPBinStr.slice(value, value + 8), 2)
-				if value is 24 and (newIPNum in [0, 1, 2, 3, 255])
-					isAvailableIP = false
+				# if value is 24 and (newIPNum in [0, 1, 2, 3, 255])
+				# 	isAvailableIP = false
 				return newIPNum
 
 			newIPStr = newIPAry.join('.')

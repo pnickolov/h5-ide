@@ -4538,9 +4538,11 @@ li:hover .rule-remove-icon {
 
 .network-list li .input-ip:hover[disabled],
 .network-list li .input-ip[disabled] {
-	background : none;
-	border     : none;
-	color      : #999;
+	background   : none;
+	border       : none;
+	color        : #999;
+	padding      : 0;
+	height       : 16px;
 }
 
 .toggle-eip {

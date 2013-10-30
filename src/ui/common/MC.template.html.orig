@@ -686,14 +686,6 @@ Additional Notes and Questions
 			{{/if}}
 			</div>
 		</div>
-<!--     	<div class="modal-control-group clearfix">
-			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">Source</label>
-			{{#if isAdd}}
-			<input class="input" type="text" id="securitygroup-modal-description" name="securitygroup-modal-description" placeholder="IP Range.eg,10.0.1.0/24" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true"/>
-			{{else}}
-			<div id="securitygroup-modal-description">IP Range.eg,10.0.1.0/24</div>
-			{{/if}}
-		</div> -->
 
 		<div class="modal-control-group clearfix">
 			<label class="label-short" for="securitygroup-modal-description" id="rule-modal-ip-range">{{ i18n "POP_SGRULE_LBL_SOURCE" }}</label>
@@ -815,17 +807,18 @@ Additional Notes and Questions
 						<li class="item" data-id="0">TTL expired transit(0)</li>
 						<li class="item" data-id="1">fragmentation reasembly time exceeded(1)</li>
 					</ul>
-					</div>
-					<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
-						<div class="selection">All(-1)</div>
-						<ul class="dropdown" role="menu">
-							<li class="item selected" data-id="-1">All(-1)</li>
-							<li class="item" data-id="0">pointer indicates the error(0)</li>
-							<li class="item" data-id="1">missing a required option(1)</li>
-							<li class="item" data-id="2">bad length(2)</li>
-						</ul>
-					</div>
 				</div>
+
+				<div class="selectbox protocol-icmp-sub-select" id="protocol-icmp-sub-select-12">
+					<div class="selection">All(-1)</div>
+					<ul class="dropdown" role="menu">
+						<li class="item selected" data-id="-1">All(-1)</li>
+						<li class="item" data-id="0">pointer indicates the error(0)</li>
+						<li class="item" data-id="1">missing a required option(1)</li>
+						<li class="item" data-id="2">bad length(2)</li>
+					</ul>
+				</div>
+
 				<div class="sg-protocol-option-input" id="sg-protocol-custom">
 					<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
 				</div>
@@ -1179,7 +1172,6 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<<<<<<< HEAD
 <!-- restartInstance -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
@@ -1214,7 +1206,7 @@ Additional Notes and Questions
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
-=======
+
 <!-- openTabFail -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Oops! There has been some issue loading the app.</div>
@@ -1229,26 +1221,30 @@ Additional Notes and Questions
 
 <!-- appStarting -->
 <div class="overlay-content-wrap">
-
+	starting
 </div>
 
 <!-- appStopping -->
 <div class="overlay-content-wrap">
-
+	stopping
 </div>
 
 <!-- appTerminating -->
 <div class="overlay-content-wrap">
-
+	terminating
 </div>
 
 <!-- appUpdating -->
 <div class="overlay-content-wrap">
-
+	updating
 </div>
 
 <!-- appChangedfail -->
 <div class="overlay-content-wrap">
+<<<<<<< HEAD
 
+</div>
+=======
+	changed fail
 </div>
 >>>>>>> feature/new-app-state-change-process

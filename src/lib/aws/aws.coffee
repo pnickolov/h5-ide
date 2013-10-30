@@ -732,7 +732,19 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     if uid of ori_data.component and ori_data.component[uid].resource.InstanceType == size
                         continue
 
-                    instance_list.push {'name':item.name, 'instance_id':item.resource.InstanceId}
+                    # server group
+                    if item.number > 1 and uid of data.layout.component.node
+                        for inst_uid in data.layout.component.node[uid].instanceList
+                            inst_item = data.component[inst_uid]
+                            instance_list.push {'name':inst_item.name, 'instance_id':item.resource.InstanceId}
+
+                    else
+                        # filter server group instance
+                        inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                        if inst in instance_list
+                            continue
+
+                        instance_list.push inst
 
                 ## asg
 

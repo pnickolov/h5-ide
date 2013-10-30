@@ -752,6 +752,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 
+                            # exit app_update mode
+                            if flag is 'SAVE_APP'
+                                ide_event.trigger ide_event.APPEDIT_2_APP
+
+
                             # update region aws resource
                             ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
@@ -792,7 +797,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                         else
                                             me.setFlag id, 'STOPPED_APP', region
 
-                                    #ide_event.trigger ide_event.SAVED_APP, name, id
+                                    ide_event.trigger ide_event.APPEDIT_2_APP
 
                                 else
                                     console.log 'not support toolbar operation:' + flag

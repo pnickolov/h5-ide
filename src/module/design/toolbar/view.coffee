@@ -517,14 +517,16 @@ define [ 'MC', 'event',
 
                             modal MC.template.restartInstance obj
                             if obj.platform is 'ec2'
-                                $( '#instance-type' ).html 'The public and private addresses will be reassigned after the restart.'
+                                $( '#instance-type' ).html '{{ i18n "TOOL_POP_BODY_APP_UPDATE_EC2" }}'
                             else if obj.platform is 'vpc'
-                                $( '#instance-type' ).html 'If any of the instance has been automatically assigned public IP, the IP will change after restart.'
+                                $( '#instance-type' ).html '{{ i18n "TOOL_POP_BODY_APP_UPDATE_VPC" }}'
                             $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
 
                 else
-                    # return to app modal
-                    # @_return2App()
+
+                    notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
+                    # no changes and return to app modal
+                    ide_event.trigger ide_event.APPEDIT_2_APP
 
             # After success then do the clickCancelEditApp routine.
             null

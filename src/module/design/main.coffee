@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
+define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lang, constant ) ->
 
     #private
     loadModule = () ->
@@ -107,6 +107,18 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                 # update app data from mongo
                 model.updateAppTab region_name, app_id
 
+                null
+
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
+                console.log 'design:UPDATE_APP_STATE', type, obj
+                #
+                if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY type
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
+                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+                #
                 null
 
 

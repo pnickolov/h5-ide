@@ -3,8 +3,9 @@
 ####################################
 
 define [ 'jquery', 'event', 'base_main',
+         'constant'
          'UI.tabbar', 'UI.modal'
-], ( $, ide_event, base_main ) ->
+], ( $, ide_event, base_main, constant ) ->
 
     #private
     initialize = ->
@@ -247,17 +248,15 @@ define [ 'jquery', 'event', 'base_main',
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
-                console.log 'UPDATE_APP_STATE',type,obj
-                if type is 'TERMINATED_APP'
-                    #
+                console.log 'UPDATE_APP_STATE', type, obj
+                #
+                if type is constant.APP_STATE.APP_STATE_TERMINATED
                     view.trueCloseTab null, obj.id
-                    #
-                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                else if type in [ 'RUNNING_APP', 'STOPPED_APP' ]
-                    #
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
                     view.changeIcon obj.id
-                    #push event
-                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                #
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                #
                 null
 
             #listen

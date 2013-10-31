@@ -80,6 +80,16 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     #temp
                     #when NEW_STACK result is tab_id
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
+                #
+                if type in [ 'OPEN_APP', 'OLD_APP' ]
+                    # when open_app or old_app restore the scene
+
+                    # 1. update Tabbar.current( app and appedit)
+
+                    # 2. update toolbar
+
+                    # 3. update design-overlay when app changed
+                #
                 null
 
             #listen
@@ -114,8 +124,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
                 console.log 'design:UPDATE_APP_STATE', type, obj
                 #
-                if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
-                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY type
+                if obj.flag_list.is_failed
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
                 #

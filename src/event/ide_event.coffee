@@ -118,10 +118,11 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STACK_LIST      : 'UPDATE_STACK_LIST'
 
         #app/stack state
-        STARTED_APP            : 'STARTED_APP'
-        STOPPED_APP            : 'STOPPED_APP'
-        TERMINATED_APP         : 'TERMINATED_APP'
+        #STARTED_APP           : 'STARTED_APP'
+        #STOPPED_APP           : 'STOPPED_APP'
+        #TERMINATED_APP        : 'TERMINATED_APP'
         #STACK_DELETE          : 'STACK_DELETE'
+        UPDATE_APP_STATE       : 'UPDATE_APP_STATE'
 
         #canvas event save stack/app by ctrl+s
         CANVAS_SAVE            : 'CANVAS_SAVE'

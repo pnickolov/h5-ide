@@ -349,7 +349,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           topic_arn = "@#{comp_uid}.resource.TopicArn"
         else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is cw_name
           cw_comp = comp
-
+          cw_uid  = comp_uid
 
       policy_res = policy_comp.resource
       cw_res     = cw_comp.resource

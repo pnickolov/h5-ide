@@ -14,7 +14,7 @@
 
 	<div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
 			<span class="property-head-num-wrap">(<span id="rule-count">{{sg_detail.rules}}</span>)</span>
-			<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>
+			{{#unless is_elb_sg}}<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>{{/unless}}
 	</div>
 	<div class="option-group">
 <!-- 		<div id="sg-rule-empty" class="property-control-group {{#if sg_detail.component.resource.IpPermissions.length}}hide{{/if}}">

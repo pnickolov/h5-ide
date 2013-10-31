@@ -1,4 +1,4 @@
-define [ 'MC' ], ( MC ) ->
+define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	#private
 	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
@@ -33,7 +33,7 @@ define [ 'MC' ], ( MC ) ->
 		availableIPCount = 0
 		readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
 		readyAssignAryLength = readyAssignAry.length
-		_.each readyAssignAry, (value, idx) ->
+		$.each readyAssignAry, (idx, value) ->
 			newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
 			isAvailableIP = true
 			if idx in [0, 1, 2, 3]

@@ -122,7 +122,7 @@ define [ 'event',
         updateEIPList: (event) ->
 
             currentAvailableIPAry = []
-            ipInuptListItem = $('#property-eni-list li')
+            ipInuptListItem = $('#property-eni-list li.input-ip-item')
             validSuccess = true
             that = this
             eniUID = that.model.get 'uid'
@@ -136,11 +136,16 @@ define [ 'event',
             currentInputValue = currentIdx = null
             if event and event.currentTarget
                 currentInputValue = $(event.currentTarget).val()
-                currentIdx = $(event.currentTarget).parents('li').index()
+                currentIdx = $(event.currentTarget).parents('li.input-ip-item').index()
 
             _.each ipInuptListItem, (ipInputItem, idx) ->
+
+                if event and event.currentTarget
+                    currentInputValue = $(event.currentTarget).val()
+
                 inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
                 inputValue = $(ipInputItem).find('.input-ip').val()
+                currentInputIP = inputValuePrefix + currentInputValue
 
                 prefixAry = inputValuePrefix.split('.')
 
@@ -168,8 +173,8 @@ define [ 'event',
                         return 'Invalid IP address'
 
                     ###### validation if in subnet
-                    ipAddr = inputValuePrefix + inputValue
-                    if ipAddr.indexOf('x') is -1
+                    # ipAddr = inputValuePrefix + inputValue
+                    if currentInputValue.indexOf('x') is -1
                         ipInSubnet = false
                         subnetCIDR = ''
                         defaultVPCId = MC.aws.aws.checkDefaultVPC()
@@ -180,16 +185,13 @@ define [ 'event',
                             subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
                             subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
-                        ipInSubnet = MC.aws.subnet.isIPInSubnet(ipAddr, subnetCIDR)
+                        ipInSubnet = MC.aws.subnet.isIPInSubnet(currentInputIP, subnetCIDR)
 
                         if !ipInSubnet
                             return 'This IP address conflicts with subnet’s IP range'
 
                     ###### validation if conflict with other eni
-                    if event and event.currentTarget
-                        currentInputValue = $(event.currentTarget).val()
-                    currentIPAddr = inputValuePrefix + currentInputValue
-                    if currentIPAddr.indexOf('x') is -1 and currentIdx is idx
+                    if currentInputValue.indexOf('x') is -1
                         innerRepeat = false
                         _.each ipInuptListItem, (ipInputItem1, idx1) ->
                             inputValue1 = $(ipInputItem1).find('.input-ip').val()
@@ -198,12 +200,12 @@ define [ 'event',
                             null
                         if innerRepeat
                             return 'This IP address conflicts with other IP'
-                        if MC.aws.eni.haveIPConflictWithOtherENI(currentIPAddr, eniUID)
+                        if MC.aws.eni.haveIPConflictWithOtherENI(currentInputIP, eniUID)
                             return 'This IP address conflicts with other network interface’s IP'
 
                     null
 
-                if event and event.currentTarget
+                if event and event.currentTarget and currentIdx is idx
                     if not validDOM.parsley 'validate'
                         validSuccess = false
                 ################################### validation

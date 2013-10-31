@@ -91,22 +91,22 @@ a {
 	border-top: 4px solid #B25B91;
 	background-color: #272127;
 	position: relative;
-	height: 50px;
+	height: 45px;
 }
 
 #header {
 	/*background: #312d31;*/
-	height: 50px;
+	height: 45px;
 	z-index: 10;
 	position: absolute;
 	right: 0;
 }
 
 .logo {
-	background: url('../images/ide/logo-t.png') center no-repeat;
-	margin: 7px 0;
-	height: 34px;
-	width: 160px;
+	background: url('../images/ide/logo-square.png') center no-repeat;
+	margin: 8px 0;
+	height: 28px;
+	width: 25px;
 	opacity: 0.8;
 	position: absolute;
 	left: 8px;
@@ -679,7 +679,7 @@ a {
 
 #navigation {
 	position : absolute;
-	top      : 54px;
+	top      : 49px;
 	bottom: 0;
 	z-index  : 80;
 	width    : 45px;
@@ -907,7 +907,7 @@ a {
 #main {
 	position : absolute;
 	left     : 45px;
-	top      : 54px;
+	top      : 49px;
 	right    : 0;
 	bottom   : 0;
 }
@@ -919,14 +919,14 @@ a {
 
 /* Main Tab Bar */
 #tabbar-wrapper {
-	padding-left: 175px;
+	padding-left: 46px;
 	padding-right: 180px;
-	height: 50px;
+	height: 45px;
 }
 
 #tab-bar {
-	font-size: 13px;
-	padding: 21px 20px 0 0;
+	font-size: 14px;
+	padding: 0 20px 0 0;
 	width: 100%;
 	height: 29px;
 }
@@ -945,34 +945,35 @@ a {
 
 #tab-bar li {
 	float: left;
-	border-radius: 4px 4px 0 0;
-	background-color: #c9c9c9;
-	box-shadow: inset 0 1px #e4e4e4, inset 0 -4px 10px rgba(0,0,0,.1);
+	/*border-radius: 4px 4px 0 0;*/
+	background-color: #2a2c2e;
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), inset 0 -4px 10px rgba(0,0,0,.1);
 	position: relative;
-	margin-right: 2px;
 	-webkit-transition: width .2s;
 	-moz-transition: width .2s;
 	-ms-transition: width .2s;
 	-o-transition: width .2s;
 	transition: width .2s;
+	border: 1px solid #101010;
+	border-top: none;
 }
 
 .tab-bar-truncate {
 	display: block;
 	width: 180px;
-	height: 19px;
+	height: 35px;
 	padding: 4px 12px 6px 5px;
-	color: #666;
+	color: #b0b0b0;
 	line-height: 24px;
 }
 
 #tab-bar li.active {
-	background-color: #f0f0f0;
-	box-shadow: inset 0 1px #fff;
+	background-color: #1a85ed;
+	box-shadow: inset 0 1px rgba(255,255,255,.2);
 }
 
 #tab-bar li.active a {
-	color: #3892E3;
+	color: #d2d6db;
 }
 
 .close-tab {
@@ -1000,7 +1001,8 @@ a {
 
 #tab-bar-dashboard {
 	width: 114px !important;
-	margin-right: 4px !important;
+	border-left: none;
+	/*margin-right: 4px !important;*/
 }
 
 #tab-bar-dashboard .tab-bar-truncate {

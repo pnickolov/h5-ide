@@ -7,7 +7,7 @@ define [ 'event',
 				'./module/design/property/view',
 				'./module/design/property/base/main',
 				'./module/design/property/base/view',
-				'lib/forge/app'
+				'lib/forge/app',
 				'i18n!nls/lang.js',
 
 				'./module/design/property/stack/main',

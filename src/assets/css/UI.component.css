@@ -1194,7 +1194,8 @@ textarea {
 }
 
 .modal-control-group .input {
-	width: 190px;
+	width   : 210px;
+	padding : 7px 6px;
 }
 
 .resource-name-label {

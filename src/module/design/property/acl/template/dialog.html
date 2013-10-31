@@ -52,39 +52,6 @@
 	  </div>
 	  <input class="input" type="text" id="modal-acl-source-input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder='{{ i18n "POP_ACLRULE_PLACEHOLD_SOURCE" }}' >
 	</div>
-<!--     <div class="modal-row">
-	  <label for="Source">Protocol</label>
-		<div class="modal-acl-source-wrapper property-control-group">
-			<div class="selectbox selectbox-mega" id="acl-add-model-protocol-select">
-				<div class="selection">TCP</div>
-				<ul class="dropdown">
-					<li class="item tooltip selected" data-value="6"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip" data-value="17"><div class="main truncate">UDP</div></li>
-					<li class="item tooltip" data-value="1"><div class="main truncate">ICMP</div></li>
-					<li class="item tooltip" data-value="5"><div class="main truncate">Custom</div></li>
-					<li class="item tooltip" data-value="-1"><div class="main truncate">All</div></li>
-				</ul>
-			</div>
-		</div>
-		<div>
-			<input class="input" id="acl-rule-modal-port-input" type="text" placeholder="Port Range e.g.80 or 49152-65535" required="required" value="{{LoadBalancerPort}}"/>
-		</div>
-	</div>
- -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	<div class="modal-control-group clearfix">
 	  <label class="label-short" >{{ i18n "POP_ACLRULE_LBL_PROTOCOL" }}</label>
@@ -198,27 +165,13 @@
 		  </div>
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-custom">
-			<input type="number" name="protocol-custom-ranged" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
+			<input class="input" type="string" name="protocol-custom-ranged" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-all" required data-ignore="true" data-ignore-regexp="^[0-9-]*$">
 			{{ i18n "POP_ACLRULE_LBL_PORT_RANGE_ALL" }}
 		  </div>
-	  <!-- </div> -->
 	  </div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   </div>

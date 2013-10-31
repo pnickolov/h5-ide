@@ -123,14 +123,17 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
                 console.log 'design:UPDATE_APP_STATE', type, obj
-                #
+
+                # changed fail
                 if obj.flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type
+                # changed
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
-                #
+
                 null
 
 

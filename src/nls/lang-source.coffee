@@ -3370,6 +3370,10 @@ module.exports =
       en: "No route table is connected to VPN-gateway."
       zh: ""
 
+    TA_MSG_NOTICE_RT_HAS_NO_ALLOW_ACL:
+      en: "%s has no allow rule. But %s has route to %s associated %s."
+      zh: ""
+
     ##### Trust Advisor
 
   service:

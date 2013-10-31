@@ -18,6 +18,7 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
         'AWS.VPC.VPNGateway'        : 'vpn'
         'AWS.VPC.VPNGateway'        : 'vpn'
         'AWS.VPC.InternetGateway'   : 'igw'
+        'AWS.VPC.RouteTable'        : 'rtb'
 
     _globalList =
         eip: [ 'isHasIGW' ]

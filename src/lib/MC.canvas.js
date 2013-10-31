@@ -2600,7 +2600,8 @@ MC.canvas.volume = {
 				event.pageY - event.data.canvas_offset.top
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
-			event_data = event.data;
+			event_data = event.data,
+			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
 			event_data.originalX !== event.pageX ||
@@ -2619,7 +2620,7 @@ MC.canvas.volume = {
 
 		if (
 			match_node &&
-			$.inArray(node_type, ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+			$.inArray(node_type, target_type) > -1
 		)
 		{
 			if (
@@ -4287,7 +4288,14 @@ MC.canvas.event.siderbarDrag = {
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
-				Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				if (MC.canvas.getState() === 'appedit')
+				{
+					Canvon('.AWS-EC2-Instance').addClass('attachable');
+				}
+				else
+				{
+					Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				}
 
 				shadow.addClass('AWS-EC2-EBS-Volume');
 

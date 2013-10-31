@@ -577,8 +577,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP', region
+            # if flag isnt 'RUN_STACK'
+            #     me.setFlag id, 'PENDING_APP', region
 
             if !result.is_error
 
@@ -592,33 +592,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      : id
                     name    : name
 
-                # if ws
-                #     req_id = result.resolved_data.id
-                #     console.log 'request id:' + req_id
-
-                #     query = ws.collection.request.find({id:req_id})
-                #     handle = query.observeChanges {
-                #         added   : (idx, dag) ->
-                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                #             req = req_list[0]
-
-                #             console.log 'added request ' + req.data + "," + req.state
-
-                #             me.reqHanle flag, id, name, req, dag
-
-                #         changed : (idx, dag) ->
-                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                #             req = req_list[0]
-
-                #             console.log 'changed request ' + req.data + "," + req.state
-
-                #             me.reqHanle flag, id, name, req, dag
-
-                #             if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
-                #                 handle.stop()
-                #                 ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
-
-                #     }
+                if flag isnt 'RUN_STACK'
+                    me.setFlag id, 'PENDING_APP', region
+                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'PENDING_APP', {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit}
 
                 null
 
@@ -634,8 +610,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if name in MC.data.app_list[region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-        #reqHanle : (flag, id, name, req, dag) ->
-        reqHanle : (idx, dag) ->
+        #reqHandle : (flag, id, name, req, dag) ->
+        reqHandle : (idx, dag) ->
             me = this
 
             # fetch request
@@ -644,6 +620,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if req_list.length > 0
                 req = req_list[0]
                 req_id = req.id
+                time_update = if 'time_end' of req and req.time_end then req.time_end else req.time_begin
 
                 # filter request
                 if req_id of req_map
@@ -658,6 +635,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     flag_list = {}
 
                     region = req.region
+
+                    # check
+                    if not flag or not region or not id or not name
+                        return
+                    if not time_update
+                        time_update = Date.now()/1000
+
+                    # for dashboard region update
+                    item = {'region':region, 'id':id, 'name':name, 'time_update':time_update}
 
                     switch req.state
                         when constant.OPS_STATE.OPS_STATE_INPROCESS
@@ -722,6 +708,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 
+                            # update dashboard region app state
+                            if flag isnt 'RUN_STACK'
+                                ide_event.trigger ide_event.UPDATE_APP_STATE, 'STOPPED_APP', item
+
                             # update region aws resource
                             ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
@@ -739,17 +729,25 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                                     me.setFlag app_id, 'RUNNING_APP', region
 
+                                    item.id = app_id
+                                    item.has_instance_store_ami = me.isInstanceStore(run_stack_map[region][name])
+                                    #ide_event.trigger ide_event.UPDATE_APP_STATE, 'LAUNCHED_APP', name, id, time_update, has_instance_store_ami
+                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'LAUNCHED_APP', item
+
                                 when 'START_APP'
                                     me.setFlag id, 'RUNNING_APP', region
-                                    ide_event.trigger ide_event.STARTED_APP, name, id
+                                    #ide_event.trigger ide_event.STARTED_APP, name, id
+                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'RUNNING_APP', item
 
                                 when 'STOP_APP'
                                     me.setFlag id, 'STOPPED_APP', region
-                                    ide_event.trigger ide_event.STOPPED_APP, name, id
+                                    #ide_event.trigger ide_event.STOPPED_APP, name, id
+                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'STOPPED_APP', item
 
                                 when 'TERMINATE_APP'
                                     me.setFlag id, 'TERMINATED_APP', region
-                                    ide_event.trigger ide_event.TERMINATED_APP, name, id
+                                    #ide_event.trigger ide_event.TERMINATED_APP, name, id
+                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'TERMINATED_APP', item
 
                                     # remove the app name from app_list
                                     if name in MC.data.app_list[region]
@@ -802,17 +800,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if data
                 # generate s3 key
                 app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
-                # app_model.once 'APP_GET_KEY_RETURN', (result) ->
-                #     console.log 'APP_GET_KEY_RETURN'
-                #     console.log result
-
-                #     if !result.is_error
-                #         # trigger toolbar save png event
-                #         console.log 'app key:' + result.resolved_data
-
-                #         data.key = result.resolved_data
-
-                #         me.savePNG true, data
 
             null
 

@@ -144,7 +144,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx
-                model.reqHanle idx, dag
+                model.reqHandle idx, dag
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
 

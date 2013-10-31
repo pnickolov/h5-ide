@@ -109,7 +109,7 @@ a {
 	width: 25px;
 	opacity: 0.8;
 	position: absolute;
-	left: 8px;
+	left: 11px;
 	text-indent: -9999px;
 }
 
@@ -126,8 +126,8 @@ a {
 .header-menu .dropdown {
 	position           : relative;
 	float              : left;
-	line-height        : 50px;
-	height             : 50px;
+	line-height        : 45px;
+	height             : 45px;
 
 	border-left        : 1px solid #252225;
 
@@ -705,7 +705,7 @@ a {
 	z-index  : 75;
 	position : fixed;
 	left     : -300px;
-	top      : 54px;
+	top      : 48px;
 	bottom   : 0;
 
 	-webkit-transition: left .1s;
@@ -946,34 +946,45 @@ a {
 #tab-bar li {
 	float: left;
 	/*border-radius: 4px 4px 0 0;*/
-	background-color: #2a2c2e;
-	box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), inset 0 -4px 10px rgba(0,0,0,.1);
+	background-color: #37393A;
+	box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.21);
 	position: relative;
 	-webkit-transition: width .2s;
 	-moz-transition: width .2s;
 	-ms-transition: width .2s;
 	-o-transition: width .2s;
 	transition: width .2s;
-	border: 1px solid #101010;
-	border-top: none;
+	border-left: 1px solid #3D3D3D;
+	border-right: 1px solid #202020;
+	-webkit-transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+	-moz-transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+	-ms-transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+	-o-transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+	transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+}
+
+#tab-bar li:hover {
+	background-color: #434546;
+	box-shadow: none;
 }
 
 .tab-bar-truncate {
 	display: block;
-	width: 180px;
+	width: 224px;
 	height: 35px;
-	padding: 4px 12px 6px 5px;
+	padding: 10px 18px 0px 8px;
 	color: #b0b0b0;
 	line-height: 24px;
 }
 
 #tab-bar li.active {
-	background-color: #1a85ed;
+	background-color: #0C69C5;
 	box-shadow: inset 0 1px rgba(255,255,255,.2);
+	border-left: 1px solid transparent;
 }
 
 #tab-bar li.active a {
-	color: #d2d6db;
+	color: #eee;
 }
 
 .close-tab {
@@ -995,13 +1006,9 @@ a {
 	color: #fff;
 }
 
-#tab-bar li.active a.close-tab {
-	color: #999;
-}
-
 #tab-bar-dashboard {
-	width: 114px !important;
-	border-left: none;
+	width: 117px !important;
+	border-left: none !important;
 	/*margin-right: 4px !important;*/
 }
 
@@ -2298,7 +2305,7 @@ a {
 	position    : absolute;
 	top         : 50%;
 	right       : 5px;
-	margin-top  : -6px;
+	margin-top  : -7px;
 
 	width       : 16px;
 	height      : 16px;
@@ -2306,6 +2313,10 @@ a {
 	text-align  : center;
 	line-height : 16px;
 	color       : #aaa;
+}
+
+.close-tab:hover, .close-restriction:hover {
+	color: #F09595 !important;
 }
 
 #tab-bar li:hover a.close-tab, #tab-bar li:hover a.close-restriction {
@@ -2320,7 +2331,7 @@ a {
 }
 
 #tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
-	color   : #aaa;
+	color   : #ccc;
 	display : block;
 }
 
@@ -3229,20 +3240,13 @@ td.table-action a.btn {
 	/*padding     : 3px 0;*/
 	/*border-left : 1px solid #dedede;*/
 	float         : left;
-	margin        : 5px 3px;
-	border        : 1px solid #bbb;
-    border-radius : 6px;
+	/*margin        : 5px 3px;*/
+	/*border        : 1px solid #bbb;*/
+	border-right: 1px solid #e0e0e0;
+    /*border-radius : 6px;*/
     /*overflow      : hidden;*/
-    background: #E4E4E4;
-	box-shadow: 0 1px 0 rgba(255,255,255,.8), inset 0 1px 0 rgba(255,255,255,.6);
-}
-
-.toolbar-btn-group:first-child {
-	margin-left: 4px;
-}
-
-.toolbar-btn-primary {
-	border: 1px solid #0274C0;
+    /*background: #E4E4E4;*/
+	/*box-shadow: 0 1px 0 rgba(255,255,255,.8), inset 0 1px 0 rgba(255,255,255,.6);*/
 }
 
 .toolbar-btn-group .selectbox .dropdown {
@@ -3272,16 +3276,15 @@ td.table-action a.btn {
 	text-align : center;
 }
 
-
 .btn-toolbar {
 	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-	width       : 30px;
-	height      : 24px;
+	width       : 44px;
+	height      : 36px;
 
 	position    : relative;
 	float       : left;
 
-	line-height : 24px;
+	line-height : 36px;
 	text-align  : center;
 	color       : #616061;
 
@@ -3292,30 +3295,22 @@ td.table-action a.btn {
 }
 
 .toolbar-btn-group .btn-toolbar:first-child{
-    border-radius : 4px 0 0 4px;
+    /*border-radius : 4px 0 0 4px;*/
 }
 
 .toolbar-btn-group .btn-toolbar:last-child{
 /*	margin-right: 4px;*/
-    border-radius : 0 4px 4px 0;
-    border-left   : 1px solid #CFCFCF;
+/*    border-radius : 0 4px 4px 0;
+    border-left   : 1px solid #CFCFCF;*/
 }
 
 .toolbar-btn-group .icon-update-app {
-		border-right : 1px solid #CFCFCF;
+	border-right : 1px solid #CFCFCF;
 }
-
-.toolbar-btn-group .btn-toolbar:only-child{
-/*	margin-right: 4px;*/
-    border-radius : 4px;
-    border: none;
-}
-
 
 .btn-toolbar:hover {
-	color            : #c17ca7;
-	background-color : #f5f5f5;
-
+	color: #D868B1;
+	background-color: #E7E7E7;
 }
 
 .btn-toolbar.disabled {
@@ -3332,9 +3327,9 @@ td.table-action a.btn {
 .btn-toolbar.open {
 	/*background-color : #d0d0d0;*/
 
-	box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1);
+	/*box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1);*/
 	background-color: #FFF;
-	border-radius    : 4px;
+	/*border-radius    : 4px;*/
 }
 .btn-toolbar:hover .selection, .btn-toolbar.open .selection {
 	color         : #c17ca7 !important;
@@ -3360,13 +3355,29 @@ td.table-action a.btn {
 	background-color: #f3f3f3;
 }
 
-#toolbar-run {
-	width : 110px;
-	color : #fff;
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+#toolbar-cancel-edit-app {
+	color: #E03C3C;
 }
 
-#toolbar-run span {
+#toolbar-run,
+#toolbar-edit-app,
+#toolbar-save-edit-app {
+	width : 110px;
+	color : #fff;
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
+	background: #00B600;
+	border-right: 1px solid #0C8D0C;
+}
+
+#toolbar-run:hover,
+#toolbar-edit-app:hover,
+#toolbar-save-edit-app:hover {
+	background: #04A704;
+}
+
+#toolbar-run span,
+#toolbar-edit-app span,
+#toolbar-save-edit-app span {
 	margin-left : 10px;
 	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
@@ -3377,6 +3388,10 @@ td.table-action a.btn {
 
 .toolbar-line-style .dropdown li {
 	line-height: 31px;
+}
+
+#toolbar-edit-app {
+
 }
 
 /* Sidebars, including Resource Panle and Property Panel */

@@ -3341,6 +3341,14 @@ module.exports =
       en: "%s has connected to Elastic Load Balancing but the Elastic Load Balancing health check is not enabled."
       zh: ""
 
+    # CGW
+    TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT:
+      en:"Checking Customer Gateway IP Address conflict with exist resource..."
+      zh:""
+    TA_MSG_ERROR_CGW_IP_CONFLICT:
+      en:"Customer Gateway %s(%s) conflict with exist %s(%s)"
+      zh:""
+
     ##### Trust Advisor
 
   service:

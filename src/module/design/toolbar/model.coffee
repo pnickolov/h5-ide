@@ -424,9 +424,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         saveStack : (data) ->
             me = this
 
-            region = data.region
-            id = data.id
-            name = data.name
+            region  = data.region
+            id      = data.id
+            name    = data.name
 
             #instance store ami check
             #data.has_instance_store_ami = me.isInstanceStore data
@@ -629,6 +629,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      = req_map[req_id].id
                     name    = req_map[req_id].name
 
+                    region = req.region
+
                     # update header
                     #ide_event.trigger ide_event.UPDATE_HEADER, req
 
@@ -647,42 +649,40 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     switch req.state
                         when constant.OPS_STATE.OPS_STATE_INPROCESS
-                            if flag is 'RUN_STACK'
+                            #if flag is 'RUN_STACK'
+                            flag_list.is_inprocess = true
 
-                                flag_list.is_inprocess = true
+                            dones = 0
+                            steps = 0
 
-                                dones = 0
-                                steps = 0
+                            if 'dag' of dag # changed request
 
-                                if 'dag' of dag # changed request
+                                steps = dag.dag.step.length
+                                # check rollback
+                                dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                console.log 'done steps:' + dones
 
-                                    steps = dag.dag.step.length
+                            # rollback
+                            tab_name = 'process-' + region + '-' + name
+                            if tab_name of MC.process and dones>0
+                                dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
 
-                                    # check rollback
-                                    dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                                    console.log 'done steps:' + dones
+                            flag_list.dones = dones
+                            flag_list.steps = steps
 
-                                # rollback
-                                tab_name = 'process-' + region + '-' + name
-                                if tab_name of MC.process and dones>0
-                                    dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
-
-                                flag_list.dones = dones
-                                flag_list.steps = steps
-
-                                if dones > 0 and steps > 0
-                                    flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
-                                else
-                                    flag_list.rate = 0
+                            if dones > 0 and steps > 0
+                                flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                            else
+                                flag_list.rate = 0
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 
                             me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
-                            if flag is 'RUN_STACK'
-                                flag_list.is_failed = true
-                                flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
+                            flag_list.is_failed = true
+                            flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
+                            if flag is 'RUN_STACK'
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
@@ -722,11 +722,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]
 
+                            flag_list.app_id = app_id
+                            flag_list.is_done = true
+
                             switch flag
                                 when 'RUN_STACK'
-                                    flag_list.app_id = app_id
-                                    flag_list.is_done = true
-
                                     me.setFlag app_id, 'RUNNING_APP', region
 
                                     item.id = app_id
@@ -764,7 +764,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             console.log 'not support request state:' + req.state
 
                     # send process data
-                    if flag_list and flag is 'RUN_STACK'
+                    if flag_list
 
                         tab_name = 'process-' + region + '-' + name
 

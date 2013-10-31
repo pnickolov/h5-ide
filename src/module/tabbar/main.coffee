@@ -244,34 +244,50 @@ define [ 'jquery', 'event', 'base_main',
                 Tabbar.open app_id.toLowerCase(), tab_name + ' - app'
                 null
 
+
             #listen
-            ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
-                console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-                #
-                view.changeIcon app_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
+                console.log 'UPDATE_APP_STATE',type,obj
+                if type is 'TERMINATED_APP'
+                    #
+                    view.trueCloseTab null, obj.id
+                    #
+                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                else if type in [ 'RUNNING_APP', 'STOPPED_APP' ]
+                    #
+                    view.changeIcon obj.id
+                    #push event
+                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen
-            ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
-                console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-                #
-                view.changeIcon app_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                null
+            #ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
+            #    console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            #    #
+            #    view.changeIcon app_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
 
             #listen
-            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
-                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
-                #
-                view.trueCloseTab null, tab_id
-                #
-                #view.closeTab tab_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                null
+            #ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
+            #    console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            #    #
+            #    view.changeIcon app_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
+
+            #listen
+            #ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
+            #    console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
+            #    #
+            #    view.trueCloseTab null, tab_id
+            #    #
+            #    #view.closeTab tab_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
 
             #listen
             ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->

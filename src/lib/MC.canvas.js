@@ -3086,7 +3086,8 @@ MC.canvas.event.dragable = {
 				platform = MC.canvas_data.platform,
 				currentTarget = $(event.target),
 				shadow,
-				target_group_type;
+				target_group_type,
+				SVGtranslate;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
@@ -3163,6 +3164,18 @@ MC.canvas.event.dragable = {
 			}
 			else
 			{
+				// Caching the SVGtranslate object at first for fastest value manipulating.
+				if (shadow[0].transform.numberOfItems === 0)
+				{
+					SVGtranslate = shadow[0].transform.baseVal.appendItem(
+						shadow[0].ownerSVGElement.createSVGTransform()
+					);
+				}
+				else
+				{
+					SVGtranslate = shadow[0].transform.baseVal.getItem(0);
+				}
+
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
@@ -3181,7 +3194,12 @@ MC.canvas.event.dragable = {
 					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
-					'originalTarget': event.target
+					'originalTarget': event.target,
+					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target[0].id + '.size'),
+					'grid_width': MC.canvas.GRID_WIDTH,
+					'grid_height': MC.canvas.GRID_HEIGHT,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'SVGtranslate': SVGtranslate
 				});
 			}
 
@@ -3197,10 +3215,10 @@ MC.canvas.event.dragable = {
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
-			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target_id + '.size'),
-			grid_width = MC.canvas.GRID_WIDTH,
-			grid_height = MC.canvas.GRID_HEIGHT,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			component_size = event_data.component_size,
+			grid_width = event_data.grid_width,
+			grid_height = event_data.grid_height,
+			scale_ratio = event_data.scale_ratio,
 			coordinate = {
 				'x': Math.round((event.pageX - event_data.offsetX) / (grid_width / scale_ratio)),
 				'y': Math.round((event.pageY - event_data.offsetY) / (grid_height / scale_ratio))
@@ -3232,12 +3250,8 @@ MC.canvas.event.dragable = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
-		event_data.shadow[0].setAttribute('transform',
-			'translate(' +
-				coordinate.x * grid_width + ',' +
-				coordinate.y * grid_height +
-			')'
-		);
+		// Cached SVGtranslate (fast)
+		event_data.SVGtranslate.setTranslate(coordinate.x * grid_width, coordinate.y * grid_height);
 
 		return false;
 	},
@@ -3877,7 +3891,8 @@ MC.canvas.event.drawConnection = {
 				'option': connection_option,
 				'draw_line': $('#draw-line-connection'),
 				'port_name': port_name,
-				'canvas_offset': canvas_offset
+				'canvas_offset': canvas_offset,
+				'scale_ratio': scale_ratio
 			});
 
 			MC.canvas.event.clearSelected();
@@ -4032,7 +4047,7 @@ MC.canvas.event.drawConnection = {
 	{
 		var event_data = event.data,
 			canvas_offset = event_data.canvas_offset,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = event_data.scale_ratio,
 			endX = (event.pageX - canvas_offset.left) * scale_ratio,
 			endY = (event.pageY - canvas_offset.top) * scale_ratio,
 			startX = event_data.originalX,
@@ -4579,6 +4594,7 @@ MC.canvas.event.groupResize = {
 					'resizer': target,
 					'group_title': parent.find('.group-label'),
 					'target': group,
+					'originalTarget': group[0],
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
 					'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
@@ -4592,8 +4608,10 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					'group_border': parseInt(group.css('stroke-width'), 10) * 2,
+					//'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'group_min_padding': MC.canvas.GROUP_MIN_PADDING,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
 						parent.data('class'),
@@ -4614,17 +4632,19 @@ MC.canvas.event.groupResize = {
 	mousemove: function (event)
 	{
 		var event_data = event.data,
+			target = event_data.originalTarget,
 			direction = event_data.direction,
 			type = event_data.group_type,
-			group_border = event_data.group_border,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
+			//group_border = event_data.group_border,
+			scale_ratio = event_data.scale_ratio,
+			group_min_padding = event_data.group_min_padding,
 			left = Math.ceil((event.pageX - event_data.originalLeft) / 10) * 10 * scale_ratio,
 			max_left = event_data.originalWidth * scale_ratio - group_min_padding,
 			top = Math.ceil((event.pageY - event_data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event_data.originalHeight * scale_ratio - group_min_padding,
 			label_offset = event_data.label_offset,
-			prop;
+			prop,
+			key;
 
 		switch (direction)
 		{
@@ -4697,7 +4717,11 @@ MC.canvas.event.groupResize = {
 			prop.height = group_min_padding;
 		}
 
-		event_data.target.attr(prop);
+		// Using baseVal for best performance
+		for (key in prop)
+		{
+			target[ key ].baseVal.value = prop[ key ];
+		}
 
 		return false;
 	},

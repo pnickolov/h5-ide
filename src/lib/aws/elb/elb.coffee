@@ -221,8 +221,8 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		# --- Update Elb component
 		#
 
-		if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-			# For Classic
+		if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+			# For Classic / Default VPC
 			for az in elb_res.AvailabilityZones
 				azs[ az ] = true
 

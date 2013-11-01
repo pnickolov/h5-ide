@@ -700,8 +700,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 
-                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
-
                             flag_list.is_failed = true
                             flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
@@ -740,8 +738,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                         when constant.OPS_STATE.OPS_STATE_DONE
-
-                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]

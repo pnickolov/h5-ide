@@ -4210,7 +4210,7 @@ MC.canvas.event.siderbarDrag = {
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
 				node_type = target.data('type'),
-				target_component_type = target.data('component-type'),
+				target_type = target.data('component-type'),
 				platform = MC.canvas_data.platform,
 				shadow,
 				clone_node,
@@ -4228,7 +4228,7 @@ MC.canvas.event.siderbarDrag = {
 			$(document.body).append('<div id="drag_shadow"></div><div id="overlayer" class="grabbing"></div>');
 			shadow = $('#drag_shadow');
 
-			if (target_component_type === 'group')
+			if (target_type === 'group')
 			{
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 
@@ -4294,11 +4294,12 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
 				}, {
 					'target': target,
-					'target_type': target_component_type,
+					'target_type': target_type,
 					'canvas_offset': svg_canvas.offset(),
 					'node_type': node_type,
 					'shadow': shadow,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ]
 				});
 			}
 
@@ -4314,11 +4315,12 @@ MC.canvas.event.siderbarDrag = {
 	mousemove: function (event)
 	{
 		var event_data = event.data,
+			shadow = event_data.shadow[0],
 			canvas_offset = event_data.canvas_offset,
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
-			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			component_size = event_data.component_size,
 
 			// MC.canvas.GRID_WIDTH
 			grid_width = 10,
@@ -4348,10 +4350,8 @@ MC.canvas.event.siderbarDrag = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
-		event.data.shadow.css({
-			'top': event.pageY - 50,
-			'left': event.pageX - 50
-		});
+		shadow.style.top = (event.pageY - 50) + 'px';
+		shadow.style.left = (event.pageX - 50) + 'px';
 
 		return false;
 	},

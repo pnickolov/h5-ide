@@ -13,16 +13,14 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 			hash = ( ( hash<<5 ) - hash ) + char
 			hash = hash & hash # Convert to 32bit integer
 
-		hash
+		"k#{hash}"
 
 	_genKey = ( key, uid ) ->
 		_hash "#{key}|uid"
 
-	_genRes = ( key, level, info, uid ) ->
-		key   : _genKey key, uid
-		level : level
-		info  : info
-		uid   : uid
+	_genRes = ( key, result ) ->
+		_.extend {}, result, {key: _genKey(key), type: key}
+
 
 	_del = ( key ) ->
 		delete_obj = {}
@@ -42,22 +40,30 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'add', result.level
 
+	_replace = ( result ) ->
+		_.map MC.ta.list, ( item ) ->
+			if item.key is result.key
+				return result
+			item
+
 	_exist = ( key ) ->
 		_.contains( _.pluck( MC.ta.list, 'key' ) , key )
 
 	########## Public Method ##########
 
-	set = ( key, level, info, uid ) ->
+	set = ( key, result ) ->
+		res = _genRes key, result
+		k = res.key
 
-		res = _genRes.apply @, arguments
-		key = res.key
-
-		if not _exist key
-			_add res
+		if result
+			if not _exist k
+				_add res
+			else
+				_replace result
 		else
-			_del key
+			_del k
 
-		result()
+		MC.ta.list
 
 
 	reset = () ->

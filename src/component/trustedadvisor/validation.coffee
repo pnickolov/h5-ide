@@ -25,14 +25,12 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
         filename = filename.toLowerCase()
         filename
 
-    _pushResult = ( result, method, uid ) ->
-        if result
-            resultVO.set method, result.level, result.info, uid
-        null
+    _pushResult = ( result, method, filename) ->
+        resultVO.set "#{filename}.#{method}", result
 
-    _asyncCallback = ( method ) ->
+    _asyncCallback = ( method, filename ) ->
         ( result ) ->
-            _pushResult result, method, result.uid
+            _pushResult result, method, filename
 
 
     ########## Sub Validation Method ##########
@@ -42,7 +40,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
         globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 result = validation_main[ filename ][ method ]()
-                _pushResult result, method
+                _pushResult result, method, filename
 
     _validComponents = () ->
         components = MC.canvas_data.component
@@ -51,13 +49,13 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             _.each validation_main[ filename ], ( func, method ) ->
                 if not _isGlobal filename, method and not _isAsync filename, method
                     result = validation_main[ filename ][ method ]( uid )
-                    _pushResult result, method
+                    _pushResult result, method, filename
 
     _validAsync = ->
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]( _asyncCallback(method) )
-                _pushResult result, method
+                result = validation_main[ filename ][ method ]( _asyncCallback(method, filename) )
+                _pushResult result, method, filename
 
     ########## Public Method ##########
 
@@ -77,7 +75,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 args = Array.prototype.slice.call arguments, 1
                 result = func.apply validation_main[ filename ], args
 
-                resultVO.set type, result.level, result.info, result.uid
+                resultVO.set type, result
                 return result
             else
                 console.log 'func not found'
@@ -91,7 +89,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _validAsync()
 
-        _validAll()
+        validAll()
 
         resultVO.result()
 

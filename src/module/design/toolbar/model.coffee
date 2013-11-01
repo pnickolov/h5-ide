@@ -55,6 +55,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.canvas_property.original_json = JSON.stringify( data )
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
+                    
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     #update key
                     key = result.resolved_data.key
@@ -114,6 +116,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
 
                     ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 

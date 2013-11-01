@@ -6843,9 +6843,11 @@ a.action-link:hover {
 	padding-left: 10px;
 }
 
-#main-statusbar .btns {
-	padding-right: 28px;
+#main-statusbar .btn-ta-valid {
+	text-align: center;
 	float: right;
+	cursor: pointer;
+	width: 100px;
 }
 
 #main-statusbar .btns a {
@@ -6853,7 +6855,7 @@ a.action-link:hover {
 	color: #fff;
 }
 
-#main-statusbar [class^="icon-"], #main-statusbar [class*=" icon-"] {
+/*#main-statusbar [class^="icon-"], #main-statusbar [class*=" icon-"] {
 	display: inline-block;
 	height: 15px;
 	width: 15px;
@@ -6872,7 +6874,7 @@ a.action-link:hover {
 
 #main-statusbar .icon-statusbar-notice {
 	background-color: #72D5FF;
-}
+}*/
 
 #status-bar-modal {
 	width: 500px;

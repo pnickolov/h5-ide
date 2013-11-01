@@ -122,6 +122,9 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
             ide_event.onLongListen ide_event.UPDATE_STATUS_BAR, ( type, level ) ->
                 view.updateStatusbar type, level
 
+            ide_event.onLongListen ide_event.UPDATE_STATUS_BAR_SAVE_TIME, ( ) ->
+                view.updateStatusBarSaveTime()
+
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
                 property_main.restore property_panel
                 null

@@ -109,6 +109,7 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_STACK             : 'SAVE_STACK'
         UPDATE_APP_LIST        : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST      : 'UPDATE_STACK_LIST'
+        UPDATE_STATUS_BAR_SAVE_TIME : 'UPDATE_STATUS_BAR_SAVE_TIME'
 
         #app/stack state
         STARTED_APP            : 'STARTED_APP'

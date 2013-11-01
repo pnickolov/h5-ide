@@ -9,7 +9,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
         el          : '#tab-content-design'
 
         events      :
-            'click .status-bar' : 'statusbarClick'
+            'click .btn-ta-valid' : 'statusbarClick'
 
         render   : () ->
             console.log 'design render'
@@ -69,19 +69,29 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type
             #
-            $new_status = $( '.icon-statusbar-' + level.toLowerCase() )
-            outerHTML   = $new_status.get( 0 ).outerHTML
-            count       = $new_status.parent().html().replace( outerHTML, '' )
-            if type is 'add'
-                count   = parseInt( count, 10 ) + 1
-            else if type is 'delete'
-                count   = parseInt( count, 10 ) - 1
-            #
-            $new_status.parent().html outerHTML + count
+            # $new_status = $( '.icon-statusbar-' + level.toLowerCase() )
+            # outerHTML   = $new_status.get( 0 ).outerHTML
+            # count       = $new_status.parent().html().replace( outerHTML, '' )
+            # if type is 'add'
+            #     count   = parseInt( count, 10 ) + 1
+            # else if type is 'delete'
+            #     count   = parseInt( count, 10 ) - 1
+            # #
+            # $new_status.parent().html outerHTML + count
             #
             ide_event.trigger ide_event.UPDATE_TA_MODAL
             null
 
+        updateStatusBarSaveTime : () ->
+            saveTime = $.now() / 1000
+            clearInterval @timer
+            textTime = MC.intervalDate(saveTime)
+            $('.stack-save-time').text(textTime)
+            @timer = setInterval ( ->
+                textTime = MC.intervalDate(saveTime)
+                $('.stack-save-time').text(textTime)
+            ), 1000
+            null
     }
 
     return DesignView

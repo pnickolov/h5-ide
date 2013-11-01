@@ -30,7 +30,9 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             resultVO.set method, result.level, result.info, uid
         null
 
-    _asyncCallback = ( result ) ->
+    _asyncCallback = ( method ) ->
+        ( result ) ->
+            _pushResult result, method, result.uid
 
 
     ########## Sub Validation Method ##########
@@ -54,7 +56,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     _validAsync = ->
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]( callback )
+                result = validation_main[ filename ][ method ]( _asyncCallback(method) )
                 _pushResult result, method
 
     ########## Public Method ##########

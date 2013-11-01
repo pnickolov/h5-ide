@@ -15,11 +15,11 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 		hash
 
-	_genKey = ( key ) ->
+	_genKey = ( key, uid ) ->
 		_hash "#{key}|uid"
 
 	_genRes = ( key, level, info, uid ) ->
-		key   : _genKey key
+		key   : _genKey key, uid
 		level : level
 		info  : info
 		uid   : uid

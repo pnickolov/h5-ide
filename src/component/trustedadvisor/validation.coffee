@@ -33,7 +33,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     ########## Sub Validation Method ##########
 
     _validGlobal = () ->
-        _.each config._globalList, ( methods, filename ) ->
+        _.each config.globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 result = validation_main[ filename ][ method ]()
                 _pushResult result, method
@@ -48,6 +48,10 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     _pushResult result, method
 
     _validAsync = ->
+        _.each config.asyncList, ( methods, filename ) ->
+            _.each methods, ( method ) ->
+                result = validation_main[ filename ][ method ]()
+                _pushResult result, method
 
     ########## Public Method ##########
 
@@ -81,9 +85,15 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             console.log "validComp error #{ error }"
 
 
+
     validRun = ->
+
         _validAsync()
+
         _validAll()
+
+        resultVO.result()
+
 
     validAll = ->
 

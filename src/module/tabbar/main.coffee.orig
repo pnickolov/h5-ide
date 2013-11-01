@@ -252,11 +252,21 @@ define [ 'jquery', 'event', 'base_main',
                 #
                 if type is constant.APP_STATE.APP_STATE_TERMINATED
                     view.trueCloseTab null, obj.id
+<<<<<<< HEAD
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
                     view.changeIcon obj.id
                 #
-                #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 #
+=======
+                    #
+                    #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                else if type in [ 'RUNNING_APP', 'STOPPED_APP' ]
+                    #
+                    view.changeIcon obj.id
+                    #push event
+                    #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+>>>>>>> origin/feature/new-app-state-change-process
                 null
 
             #listen

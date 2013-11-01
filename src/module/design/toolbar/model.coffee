@@ -594,7 +594,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'PENDING_APP', region
-                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'PENDING_APP', {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit}
+
+                    item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_inprocess':true}}
+                    me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
 
                 null
 
@@ -757,8 +759,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 item.flag_list = flag_list
                                 me.updateAppState(req.state, flag, item)
 
-                    # update region aws resource and notification
+                    # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                        # update app list
+                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                        # update region resource
                         ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE

@@ -27,6 +27,10 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
 
             model.on 'USERNAME_REPEAT', () -> view.showUsernameError()
             model.on 'EMAIL_REPEAT',    () -> view.showEmailError()
+            model.on 'USERNAME_EMAIL_REPEAT', () -> view.showUsernameEmailError()
+            model.on 'USERNAME_EMAIL_VALID', () -> view.showUsernameEmailValid()
+            model.on 'USERNAME_VALID', () -> view.showUsernameValid()
+            model.on 'EMAIL_VALID', () -> view.showEmailValid()
 
             #render
             view.render type

@@ -35,12 +35,11 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             property_detail.type   = @getStackType()
             property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
 
-            if property_detail.is_vpc
-                property_detail.acl_list = @getNetworkACL()
-
             @set 'property_detail', property_detail
 
-            @getNetworkACL()
+
+            if MC.canvas_data.platform isnt MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and MC.canvas_data.platform isnt MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+                @getNetworkACL()
 
         getStackType : ->
 

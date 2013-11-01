@@ -283,6 +283,17 @@ define [ 'event',
                 $( '#register-btn' ).attr( 'disabled', true )
             null
 
+        resetCreateAccount : ->
+            console.log 'reset account button'
+
+            #reset create account button if login failed
+            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
+            $( '#register-btn' ).attr( 'disabled', false )
+
+            @_checkButtonDisabled()
+
+            null
+
     }
 
     return RegisterView

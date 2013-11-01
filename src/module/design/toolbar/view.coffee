@@ -518,9 +518,9 @@ define [ 'MC', 'event',
 
                             modal MC.template.restartInstance obj
                             if obj.platform is 'ec2'
-                                $( '#instance-type' ).html '{{ i18n "TOOL_POP_BODY_APP_UPDATE_EC2" }}'
+                                $( '#instance-type' ).html "{{ i18n 'TOOL_POP_BODY_APP_UPDATE_EC2' }}"
                             else if obj.platform is 'vpc'
-                                $( '#instance-type' ).html '{{ i18n "TOOL_POP_BODY_APP_UPDATE_VPC" }}'
+                                $( '#instance-type' ).html "{{ i18n 'TOOL_POP_BODY_APP_UPDATE_VPC' }}"
                             $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
 
                 else

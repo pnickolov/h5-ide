@@ -48,7 +48,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                         region = MC.process[tab_name].region
 
                         # save png
-                        app_name = MC.process[tab_name].app_name
+                        app_name = MC.process[tab_name].name
                         ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
 
                         return if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name

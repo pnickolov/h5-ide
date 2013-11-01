@@ -743,22 +743,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # update process state
                     if flag_list
 
-                        # init MC.process[id]
-                        tab_name = item.id
-                        if flag is 'RUN_STACK'
-                            tab_name = 'process-' + data.region + '-' + data.name
-
-                        # update process flow
-                        MC.process[tab_name].flag_list = flag_list
-
-                        # update run-stack process
-                        if flag is 'RUN_STACK'
-                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
-
-                        # update app state
-                        else
-                            item.flag_list = flag_list
-                            me.updateAppState(req.state, flag, item)
+                        item.flag_list = flag_list
+                        me.updateAppState(req.state, flag, item)
 
                     # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
@@ -817,14 +803,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if state
                 console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
 
-                # init MC.process[id]
+                # update MC.process[id]
                 tab_name = data.id
                 if flag is 'RUN_STACK'
                     tab_name = 'process-' + data.region + '-' + data.name
-                if not (tab_name of MC.process)
-                    MC.process[tab_name] = { 'tab_id' : data.id, 'app_name' : data.name, 'region' : data.region, 'flag_list' : data.flag_list }
+                MC.process[tab_name] = data
 
-                ide_event.trigger ide_event.UPDATE_APP_STATE, state, data
+                # push event
+                if flag is 'RUN_STACK'
+                    ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+
+                else
+                    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
 
         isInstanceStore : (data) ->
 

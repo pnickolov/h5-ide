@@ -263,7 +263,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		subnets
 
 	removeASGFromELB = ( elb_uid, asg_uid ) ->
-		asg = MC.canvas_data.component[ asg_uid]
+		asg = MC.canvas_data.component[ asg_uid ]
 		names = asg.resource.LoadBalancerNames.join(" ").replace("@#{elb_uid}.resource.LoadBalancerName", "")
 		asg.resource.LoadBalancerNames = if names.length is 0 then [] else names.split(" ")
 

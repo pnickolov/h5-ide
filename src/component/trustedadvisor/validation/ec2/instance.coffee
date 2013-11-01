@@ -89,7 +89,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 			if totalSGRuleNum > 50
 				instanceName = instanceComp.name
-				tipInfo = sprintf lang.ide.TA_INFO_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
+				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo
@@ -116,7 +116,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 			if totalSGRuleNum > 100
 				instanceName = instanceComp.name
-				tipInfo = sprintf lang.ide.TA_INFO_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
+				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo

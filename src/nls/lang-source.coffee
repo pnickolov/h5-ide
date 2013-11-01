@@ -3300,7 +3300,7 @@ module.exports =
     TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance %s has an attached Provisioned IOPS volume but is not EBS-Optimized"
       zh: ""
-    TA_INFO_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
+    TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
       en: "Instance %s has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded"
       zh: ""
 

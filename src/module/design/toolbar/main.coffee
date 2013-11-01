@@ -145,7 +145,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx
-                model.reqHanle idx, dag
+                model.reqHandle idx, dag
 
             ide_event.onLongListen ide_event.APPEDIT_2_APP, () ->
                 console.log 'APPEDIT_2_APP'

@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
+define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lang, constant ) ->
 
     #private
     loadModule = () ->
@@ -80,9 +80,11 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                     #temp
                     #when NEW_STACK result is tab_id
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
+<<<<<<< HEAD
 
                     # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
                     ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+=======
                 #
                 if type in [ 'OPEN_APP', 'OLD_APP' ]
 
@@ -103,6 +105,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                 #
                 ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
                 #
+>>>>>>> feature/new-app-state-change-process
                 null
 
             #listen
@@ -132,6 +135,12 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
 
                 null
 
+<<<<<<< HEAD
+            model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
+                property_main.restore property_panel
+                null
+
+=======
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
                 console.log 'design:UPDATE_APP_STATE', type, id
@@ -154,11 +163,7 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                 null
-
-            model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
-                property_main.restore property_panel
-                null
-
+>>>>>>> feature/new-app-state-change-process
 
     #private
     unLoadModule = () ->

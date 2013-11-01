@@ -609,8 +609,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP', region
+            # if flag isnt 'RUN_STACK'
+            #     me.setFlag id, 'PENDING_APP', region
 
             if !result.is_error
 
@@ -624,8 +624,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      : id
                     name    : name
 
-                item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
-                me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
+                if flag isnt 'RUN_STACK'
+                    me.setFlag id, 'PENDING_APP', region
+
+                    item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
+                    me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
 
                 null
 
@@ -661,11 +664,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     name    = req_map[req_id].name
                     region  = req.region
 
+<<<<<<< HEAD
+                    region = req.region
+
+                    # update header
+                    #ide_event.trigger ide_event.UPDATE_HEADER, req
+=======
                     # check
                     if not flag or not region or not id or not name
                         return
                     if not time_update
                         time_update = Date.now()/1000
+>>>>>>> feature/new-app-state-change-process
 
                     # for app update
                     item = {'region':region, 'id':id, 'name':name, 'time_update':time_update}
@@ -673,6 +683,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     switch req.state
                         when constant.OPS_STATE.OPS_STATE_INPROCESS
+<<<<<<< HEAD
+                            #if flag is 'RUN_STACK'
+=======
+>>>>>>> feature/new-app-state-change-process
                             flag_list.is_inprocess = true
 
                             dones = 0
@@ -700,11 +714,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 
-                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
-
                             flag_list.is_failed = true
                             flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
+<<<<<<< HEAD
+                            flag_list.is_failed = true
+                            flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
+
+=======
+>>>>>>> feature/new-app-state-change-process
                             if flag is 'RUN_STACK'
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]
@@ -741,16 +759,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         when constant.OPS_STATE.OPS_STATE_DONE
 
-                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
-
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]
 
                             flag_list.app_id = app_id
                             flag_list.is_done = true
 
+<<<<<<< HEAD
+=======
                             item.id = app_id
 
+>>>>>>> feature/new-app-state-change-process
                             switch flag
                                 when 'RUN_STACK'
                                     me.setFlag app_id, 'RUNNING_APP', region
@@ -787,8 +806,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         else
                             console.log 'not support request state:' + req.state
 
+<<<<<<< HEAD
+                    # send process data
+                    if flag_list
+
+                        tab_name = 'process-' + region + '-' + name
+=======
                     # update process state
                     if flag_list
+>>>>>>> feature/new-app-state-change-process
 
                         item.flag_list = flag_list
                         me.updateAppState(req.state, flag, item)

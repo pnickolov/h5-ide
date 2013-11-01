@@ -60,6 +60,7 @@ define [ '../base/view',
             @model.setCount val
 
             @updateInstanceList()
+            @setEditableIP( val is 1 )
             null
 
         ebsOptimizedSelect : ( event )->
@@ -74,6 +75,7 @@ define [ '../base/view',
         syncIPList          : instance_view.syncIPList
         refreshIPList       : instance_view.refreshIPList
         updateIPAddBtnState : instance_view.updateIPAddBtnState
+        setEditableIP       : instance_view.setEditableIP
 
 
     }

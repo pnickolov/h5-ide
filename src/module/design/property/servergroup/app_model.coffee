@@ -13,7 +13,7 @@ define [ '../base/model',
 		init : ( uid ) ->
 
 			@set 'uid', uid
-			@set 'readOnly', @isApp
+			@set 'readOnly', not @isAppEdit
 
 			myInstanceComponent = MC.canvas_data.component[ uid ]
 

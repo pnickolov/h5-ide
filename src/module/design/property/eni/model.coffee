@@ -43,11 +43,15 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 
 			checkEIPMap = {}
 			for ip, idx in component.resource.PrivateIpAddressSet
+
+				primary = "" + ip.Primary is "true"
+
 				ip_view = {
 					prefix       : prefixSuffixAry[0]
 					customizable : ip_customizable
-					deletable    : "" + ip.Primary isnt "true"
+					deletable    : not primary
 					eip          : false
+					notEditable  : @isAppEdit and primary
 				}
 
 				if "" + ip.AutoAssign is "true"

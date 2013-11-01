@@ -200,6 +200,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		components = MC.canvas_data.component
 
+		# Find ASG component
 		for uid, comp of components
 			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 				if comp.resource.LaunchConfigurationName.indexOf( lc_uid ) isnt -1
@@ -209,32 +210,53 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		if not asg
 			return []
 
+		# Insert ELB Uid into ASG component
 		if asg.resource.LoadBalancerNames.join(" ").indexOf( elb_uid ) is -1
 			asg.resource.LoadBalancerNames.push "@#{elb_uid}.resource.LoadBalancerName"
 
-		if asg.resource.VPCZoneIdentifier.length
-			subnets = asg.resource.VPCZoneIdentifier.split ","
-			subnets = _.map subnets, MC.extractID
-		else
-			subnets = []
-
-		azs = {}
-		for sb in subnets
-			if sb && components[ sb ]
-				azs[ components[ sb ].resource.AvailabilityZone ] = sb
 
 		elb_res = components[ elb_uid ].resource
+		azs     = {}
 
-		for az in elb_res.AvailabilityZones
-			delete azs[ az ]
+		# --- Update Elb component
+		#
 
-		subnets = []
-		linkedSubnets = elb_res.Subnets.join " "
-		for az, sb of azs
-			elb_res.AvailabilityZones.push az
-			if linkedSubnets.indexOf( sb ) is -1
-				subnets.push sb
-				elb_res.Subnets.push "@#{sb}.resource.SubnetId"
+		if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			# For Classic
+			for az in elb_res.AvailabilityZones
+				azs[ az ] = true
+
+			for az in asg.resource.AvailabilityZones
+				if not azs[ az ]
+					elb_res.AvailabilityZones.push az
+
+			return []
+		else
+			# For VPC
+
+			# Find out ASG's az
+			if asg.resource.VPCZoneIdentifier.length
+				subnets = asg.resource.VPCZoneIdentifier.split ","
+				subnets = _.map subnets, MC.extractID
+			else
+				subnets = []
+
+			for sb in subnets
+				if sb && components[ sb ]
+					azs[ components[ sb ].resource.AvailabilityZone ] = sb
+
+			# Ignore az that is connected to the elb
+			for az in elb_res.AvailabilityZones
+				delete azs[ az ]
+
+			# Add subnets to the elb component
+			subnets = []
+			linkedSubnets = elb_res.Subnets.join " "
+			for az, sb of azs
+				elb_res.AvailabilityZones.push az
+				if linkedSubnets.indexOf( sb ) is -1
+					subnets.push sb
+					elb_res.Subnets.push "@#{sb}.resource.SubnetId"
 
 
 		# Returns subnets that should linked to the elb

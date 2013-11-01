@@ -751,6 +751,14 @@ module.exports =
       en: "Refresh resources for app( %s ) start ..."
       zh: "开始刷新应用( %s )的资源 ..."
 
+    TOOL_POP_BODY_APP_UPDATE_EC2:
+      en: "The public and private addresses will be reassigned after the restart.",
+      zh: "重启后，公有/私有的IP地址将会被重新分配。"
+
+    TOOL_POP_BODY_APP_UPDATE_VPC:
+      en: "If any of the instance has been automatically assigned public IP, the IP will change after restart.",
+      zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
+
     TOOL_MSG_INFO_NO_CHANGES:
       en: "This app is't any change."
       zh: "当前App没有任何改变。"

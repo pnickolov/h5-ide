@@ -27,13 +27,17 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
     _pushResult = ( result, method, uid ) ->
         if result
-            resultVO.add method, result.level, result.info, uid
+            resultVO.set method, result.level, result.info, uid
         null
+
+    _asyncCallback = ( result ) ->
+
 
     ########## Sub Validation Method ##########
 
     _validGlobal = () ->
-        _.each config.globalList, ( methods, filename ) ->
+        _.each config.
+        globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 result = validation_main[ filename ][ method ]()
                 _pushResult result, method
@@ -50,7 +54,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     _validAsync = ->
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]()
+                result = validation_main[ filename ][ method ]( callback )
                 _pushResult result, method
 
     ########## Public Method ##########
@@ -71,12 +75,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 args = Array.prototype.slice.call arguments, 1
                 result = func.apply validation_main[ filename ], args
 
-                if !result
-                    resultVO.del type
-                    true
-                else
-                    resultVO.add type, result.level, result.info, result.uid
-                    false
+                resultVO.set type, result.level, result.info, result.uid
                 return result
             else
                 console.log 'func not found'

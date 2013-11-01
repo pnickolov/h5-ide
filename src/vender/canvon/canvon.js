@@ -103,7 +103,7 @@ Canvon.fn = Canvon.prototype = {
 
 	line: function (x1, y1, x2, y2, style)
 	{
-		var target  = this.draw(this, 'line'),
+		var target = this.draw(this, 'line'),
 			originalTarget = target[0];
 
 		originalTarget.x1.baseVal.value = x1;
@@ -116,18 +116,25 @@ Canvon.fn = Canvon.prototype = {
 
 	polyline: function (path, style)
 	{
-		var points = [],
+		var target = this.draw(this, 'polyline'),
+			originalTarget = target[0],
+			point,
 			length = path.length,
 			i;
 
+		originalTarget.points.clear();
+
 		for (i = 0; i < length; i++)
 		{
-			points.push(path[ i ].x + ',' + path[ i ].y);
+			point = SVG_CANVAS.createSVGPoint();
+
+			point.x = path[ i ][0];
+			point.y = path[ i ][1];
+
+			originalTarget.points.appendItem(point);
 		}
 
-		return this.draw(this, 'polyline').attr({
-			'points': points.join(' ')
-		}).css(style || {});
+		return target.css(style || {});
 	},
 
 	polygon: function (path, style)
@@ -137,6 +144,8 @@ Canvon.fn = Canvon.prototype = {
 			point,
 			length = path.length,
 			i;
+
+		originalTarget.points.clear();
 
 		for (i = 0; i < length; i++)
 		{
@@ -153,7 +162,7 @@ Canvon.fn = Canvon.prototype = {
 
 	circle: function (x, y, r, style)
 	{
-		var target  = this.draw(this, 'circle'),
+		var target = this.draw(this, 'circle'),
 			originalTarget = target[0];
 
 		originalTarget.cx.baseVal.value = x;
@@ -178,7 +187,7 @@ Canvon.fn = Canvon.prototype = {
 
 	rectangle: function (x, y, width, height, style)
 	{
-		var target  = this.draw(this, 'rect'),
+		var target = this.draw(this, 'rect'),
 			originalTarget = target[0];
 
 		originalTarget.x.baseVal.value = x;
@@ -198,52 +207,51 @@ Canvon.fn = Canvon.prototype = {
 
 	text: function (x, y, text, style)
 	{
-		var target  = this.draw(this, 'text'),
+		var target = this.draw(this, 'text'),
 			originalTarget = target[0],
 			SVGLength_x = SVG_CANVAS.createSVGLength(),
 			SVGLength_y = SVG_CANVAS.createSVGLength();
 
-		SVGLength_x.newValueSpecifiedUnits(5, x);
-		SVGLength_y.newValueSpecifiedUnits(5, y);
+		SVGLength_x.value = x;
+		SVGLength_y.value = y;
 
-		originalTarget.x.baseVal.appendItem(SVGLength_x);
-		originalTarget.y.baseVal.appendItem(SVGLength_y);
+		originalTarget.x.baseVal.initialize(SVGLength_x);
+		originalTarget.y.baseVal.initialize(SVGLength_y);
 
-		return target.text(text).css(style || {});
+		originalTarget.textContent = text;
+
+		return target.css(style || {});
 	},
 
 	image: function (src, x, y, width, height)
 	{
-		var image = this.draw(this, 'image').attr({
-			'x': x,
-			'y': y,
-			'width': width,
-			'height': height,
-			"preserveAspectRatio": "none"
-		});
+		var target = this.draw(this, 'image'),
+			originalTarget = target[0];
 
-		image[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
+		originalTarget.x.baseVal.value = x;
+		originalTarget.y.baseVal.value = y;
+		originalTarget.width.baseVal.value = width;
+		originalTarget.height.baseVal.value = height;
 
-		return image;
+		// SVG_PRESERVEASPECTRATIO_NONE = 1
+		originalTarget.preserveAspectRatio.baseVal.align = 1;
+		originalTarget.href.baseVal = src;
+
+		return target;
 	},
 
-	use: function (href, attr, style)
+	// use: function (href, attr, style)
+	// {
+	// 	var use = this.draw(this, 'use').attr(attr || {}).css(style || {});
+
+	// 	use[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
+
+	// 	return use;
+	// },
+
+	group: function (style)
 	{
-		var use = this.draw(this, 'use').attr(attr || {}).css(style || {});
-
-		use[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
-
-		return use;
-	},
-
-	group: function (x, y, width, height, style)
-	{
-		return this.draw(this, 'g').attr({
-			'x': x,
-			'y': y,
-			'width': width,
-			'height': height
-		}).css(style || {});
+		return this.draw(this, 'g').css(style || {});
 	},
 
 	addClass: function (name)

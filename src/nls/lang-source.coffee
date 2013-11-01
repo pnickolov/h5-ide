@@ -471,9 +471,13 @@ module.exports =
       en: "Subnets must be associated with a route table."
       zh: "子网必须与路由表关联。"
 
-    CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE:
-      en: "Load balancer must attach to one subnet per Availability Zone."
-      zh: "每个可用区域中的负载均衡器只能连接一个子网。"
+    CVS_MSG_ERR_DEL_ELB_LINE_1:
+      en: "Load balancer must attach to at least one subnet."
+      zh: "负载均衡器至少需要连接一个子网。"
+
+    CVS_MSG_ERR_DEL_ELB_LINE_2:
+      en: "Load balancer must attach to a subnet of its connected resource's AvailabilityZone"
+      zh: "负载均衡器和其他资源连接，它必须连接这些资源所在区域的一个子网。"
 
     CVS_MSG_ERR_DEL_LINKED_ELB:
       en: "This subnet cannot be deleted because it is associated to a load balancer."

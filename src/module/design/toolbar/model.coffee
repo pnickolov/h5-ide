@@ -729,14 +729,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 
-                            # exit app_update mode
-                            if flag is 'SAVE_APP'
-                                ide_event.trigger ide_event.APPEDIT_2_APP
-
-
-                            # update region aws resource
-                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
                         when constant.OPS_STATE.OPS_STATE_DONE
 
                             lst = req.data.split(' ')
@@ -773,8 +765,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                             me.setFlag id, 'RUNNING_APP', region
                                         else
                                             me.setFlag id, 'STOPPED_APP', region
-
-                                    ide_event.trigger ide_event.APPEDIT_2_APP
 
                                 else
                                     console.log 'not support toolbar operation:' + flag
@@ -824,6 +814,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     else if flag is 'TERMINATE_APP'
                         state = constant.APP_STATE.APP_STATE_TERMINATED
 
+                    else if flag is 'SAVE_APP'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
                 when constant.OPS_STATE.OPS_STATE_FAILED
                     state = constant.APP_STATE.APP_STATE_STOPPED
 
@@ -858,6 +851,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 else
                     ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+
+                    if flag is 'SAVE_APP'
+                        if req_state is constant.OPS_STATE.OPS_STATE_DONE
+                            ide_event.trigger ide_event.APPEDIT_2_APP
+
+                        else if req_state is constant.OPS_STATE.OPS_STATE_FAILED
+                            ide_event.trigger ide_event.APPEDIT_2_APP
 
         isInstanceStore : (data) ->
 

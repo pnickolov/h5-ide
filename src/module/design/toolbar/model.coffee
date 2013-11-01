@@ -814,7 +814,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'not support request state:' + req_state
 
             if state
-                ide_event.trigger ide_event.UPDATE_APP_STATE, state, item
+                ide_event.trigger ide_event.UPDATE_APP_STATE, state, data
 
         isInstanceStore : (data) ->
 

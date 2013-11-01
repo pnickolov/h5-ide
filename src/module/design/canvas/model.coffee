@@ -896,9 +896,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUID = portMap['elb-assoc']
 				subnetUID = portMap['subnet-assoc-in']
-				if !MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
-					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
-				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				res = MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
+				if res is true
+					MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				else
+					return { error : res }
 
 			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
 

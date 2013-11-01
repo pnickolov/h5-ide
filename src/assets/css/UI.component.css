@@ -680,6 +680,13 @@ textarea {
 }
 
 .property-content .radio input:disabled + label,
+.property-content .radio input[disabled] + label,
+.property-content .checkbox input:disabled + label,
+.property-content .checkbox input[disabled] + label {
+	opacity : 0.3;
+}
+
+/*.property-content .radio input:disabled + label,
 .property-content .radio input[disabled] + label  {
 	background: #616161;
 	border: 1px solid transparent;
@@ -699,7 +706,7 @@ textarea {
 .property-content .checkbox input:disabled + label:after,
 .property-content .checkbox input[disabled] + label:after {
 	background: #484343;
-}
+}*/
 
 .property-content .checkbox label,
 .property-content .radio label {

@@ -16,7 +16,17 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                 console.log forge_result
                 if !forge_result.is_error
                     if forge_result.param[1] and forge_result.param[2]
+                        #this.trigger 'USERNAME_EMAIL_VALID'
                         @registerService forge_result.param[1], forge_result.param[2], @get( 'password' )
+
+                    else
+                        if forge_result.param[1] and !forge_result.param[2]
+                            #only check username
+                            this.trigger 'USERNAME_VALID'
+                        else if !forge_result.param[1] and forge_result.param[2]
+                            #only check email
+                            this.trigger 'EMAIL_VALID'
+
                 else
                     switch forge_result.error_message
                         when 'username'
@@ -24,8 +34,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                         when  'email'
                             this.trigger 'EMAIL_REPEAT'
                         when 'username,email'
-                            this.trigger 'USERNAME_REPEAT'
-                            this.trigger 'EMAIL_REPEAT'
+                            this.trigger 'USERNAME_EMAIL_REPEAT'
                         else
                             console.log 'other error'
                 null

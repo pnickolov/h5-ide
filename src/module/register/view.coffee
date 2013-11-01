@@ -78,7 +78,7 @@ define [ 'event',
             #
             #@_checkButtonDisabled()
             #
-            if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
+            if value isnt '' and /^\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}$/.test(value)
                 #status.show().text lang.register.email_available
                 #check vaild
                 if event and event.type is "blur"

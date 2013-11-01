@@ -42,7 +42,7 @@ define [ 'event',
         render     : (template) ->
             console.log 'account_setting_tab render'
             #
-            modal Handlebars.compile( template )(), false
+            modal Handlebars.compile( template )(@model.get 'account_id'), false
             #
             this.setElement $( '#account-setting-wrap' ).closest '#modal-wrap'
             #

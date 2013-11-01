@@ -61,6 +61,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
 
         showDesignOverlay : ( state ) ->
             console.log 'showDesignOverlay, state = ' + state
+
             # state include:
             # 1. open fail
             # 2. process( starting, stopping, terminating, updating, changed fail )
@@ -88,7 +89,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
             $item.removeClass 'design-overlay'
 
             # 2. remove html
-            $item.empty()
+            $item.empty() if $.trim( $item.html() ) isnt ''
 
     }
 

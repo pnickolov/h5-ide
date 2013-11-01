@@ -90,6 +90,15 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # 2. update toolbar
 
                     # 3. update design-overlay when app changed
+                    if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
+                        if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                        else if type is 'OLD_APP'
+                            ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY                                  if MC.data.process[ tab_id ].flag_list.is_done
+                        else if type is 'OPEN_APP'
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending
+                #
+                ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
                 #
                 null
 
@@ -120,13 +129,19 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 null
 
-
             #listen
-            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
-                console.log 'design:UPDATE_APP_STATE', type, obj
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
+                console.log 'design:UPDATE_APP_STATE', type, id
+
+                #temp
+                MC.data.process             = {}
+                MC.data.process             = $.extend true, {}, MC.process
+                MC.data.process[ id ].state = type
+
+                return if MC.data.current_tab_id isnt id
 
                 # changed fail
-                if obj.flag_list and obj.flag_list.is_failed
+                if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
@@ -136,7 +151,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                 null
-
 
     #private
     unLoadModule = () ->

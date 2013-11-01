@@ -247,13 +247,13 @@ define [ 'jquery', 'event', 'base_main',
 
 
             #listen
-            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, obj ) ->
-                console.log 'UPDATE_APP_STATE', type, obj
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
+                console.log 'tabbar:UPDATE_APP_STATE', type, tab_id
                 #
                 if type is constant.APP_STATE.APP_STATE_TERMINATED
-                    view.trueCloseTab null, obj.id
+                    view.trueCloseTab null, tab_id
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
-                    view.changeIcon obj.id
+                    view.changeIcon tab_id
                 #
                 #ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 #

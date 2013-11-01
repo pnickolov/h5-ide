@@ -101,6 +101,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.tab  = {}
 		#set process tab
 		MC.process = {}
+		MC.data.process = {}
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 		#

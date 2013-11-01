@@ -272,11 +272,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         getAllNotExistAmiInStack : ( region, tab_id )->
 
             ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
-            
+
             me = this
 
             ami_list = []
-            
+
             _.each MC.canvas_data.component, (compObj) ->
 
                 if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration

@@ -1,4 +1,4 @@
-define [ 'MC' ], ( MC ) ->
+define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 	_addZeroToLeftStr = (str, n) ->
 		count = n - str.length + 1
@@ -260,41 +260,28 @@ define [ 'MC' ], ( MC ) ->
 	canDeleteSubnetToELBConnection = (elbUID, subnetUID) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
-		instanceRefAry = elbComp.resource.Instances
-		subnetRefAry = elbComp.resource.Subnets
 
-		isCanDelete = true
+		todeleteAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
 
-		subnetAry = []
-		_.each MC.canvas_data.component, (comp) ->
-			if comp.type is 'AWS.VPC.Subnet'
-				subnetAry.push(comp)
+		# Keep connection to one subnet at least
+		if elbComp.resource.Subnets.length <= 1
+			return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1
 
-		azAry = []
-		_.each subnetRefAry, (subnetRef) ->
-			subnetUID = subnetRef.split('.')[0].slice(1)
-			subnetComp = MC.canvas_data.component[subnetUID]
-			subnetAZ = subnetComp.resource.AvailabilityZone
-			azAry.push(subnetAZ)
-			null
+		# If we have resources connected to the elb, connection to the resources' subnet is
+		# not deletable
+		# Currently is Instance and ASG
 
-		azSubnetNumMap = {}
-		_.each azAry, (azName) ->
-			azSubnetNumMap[azName] = 0
-			_.each subnetAry, (subnetComp) ->
-				subnetAZ = subnetComp.resource.AvailabilityZone
-				if subnetAZ is azName
-					azSubnetNumMap[azName]++
-				null
-			null
+		for instance in elbComp.resource.Instances
+			if MC.canvas_data.component[MC.extractID(instance.InstanceId)].resource.Placement.AvailabilityZone is todeleteAZ
+				return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
 
-		currentAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
-		_.each azSubnetNumMap, (subnetNum, azName) ->
-			if subnetNum is 1 and azName is currentAZ
-				isCanDelete = false
-			null
+		for comp_uid, comp of MC.canvas_data.component
+			if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+				if comp.resource.LoadBalancerNames.join(" ").indexOf( elbUID ) != -1
+					if comp.resource.AvailabilityZones.join(" ").indexOf( todeleteAZ ) != -1
+						return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
 
-		return isCanDelete
+		return true
 
 	generateCIDRPossibile = () ->
 
@@ -375,7 +362,7 @@ define [ 'MC' ], ( MC ) ->
 			if idx in [0, 1, 2, 3, readyAssignAryLength - 1]
 				filterAry.push(newIPBinStr)
 			null
-		
+
 		if ipAddrBinStrDivAnti in filterAry
 			return false
 

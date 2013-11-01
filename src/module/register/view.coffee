@@ -44,7 +44,7 @@ define [ 'event',
                 else
                     @$el.html @template @model
 
-        verificationUser : ->
+        verificationUser : (event) ->
             console.log 'verificationUser'
             value  = $('#register-username').val()
             status = $('#username-verification-status')
@@ -57,7 +57,8 @@ define [ 'event',
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
                     status.show().text lang.register.username_available
                     #check vaild
-                    this.trigger 'CHECK_REPEAT', value, null if event.type is 'blur'
+                    if event and event.type is "blur"
+                        this.trigger 'CHECK_REPEAT', value, null
                     true
                 else
                     status.addClass('error-status').show().text lang.register.username_not_matched
@@ -66,7 +67,7 @@ define [ 'event',
                 status.addClass('error-status').show().text lang.register.username_required
                 false
 
-        verificationEmail : ->
+        verificationEmail : (event)->
             console.log 'verificationEmail'
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
@@ -78,13 +79,14 @@ define [ 'event',
             if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
                 status.show().text lang.register.email_available
                 #check vaild
-                this.trigger 'CHECK_REPEAT', null, value if event.type is 'blur'
+                if event and event.type is "blur"
+                    this.trigger 'CHECK_REPEAT', null, value
                 true
             else
                 status.addClass('error-status').show().text lang.register.email_not_valid
                 false
 
-        verificationPassword : ->
+        verificationPassword : ()->
             console.log 'verificationPassword'
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')

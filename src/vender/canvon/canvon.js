@@ -7,8 +7,8 @@
 (function () {
 
 var
-	ns = "http://www.w3.org/2000/svg",
-	SVG_CANVAS = document.createElementNS(ns, "svg");
+	NS = "http://www.w3.org/2000/svg",
+	SVG_CANVAS = document.createElementNS(NS, "svg");
 
 var Canvon = function (selector)
 {
@@ -33,7 +33,7 @@ Canvon.fn = Canvon.prototype = {
 
 	start: function (style)
 	{
-		var group = document.createElementNS(ns, 'g');
+		var group = document.createElementNS(NS, 'g');
 
 		if (style)
 		{
@@ -52,7 +52,7 @@ Canvon.fn = Canvon.prototype = {
 			return $(this.drawn);
 		}
 
-		var element = document.createElementNS(ns, type);
+		var element = document.createElementNS(NS, type);
 
 		if (canvas.drewGroup)
 		{

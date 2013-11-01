@@ -1373,8 +1373,27 @@ MC.canvas = {
 		x = x > 0 ? x : 0;
 		y = y > 0 ? y : 0;
 
+		var transformVal = node.transform.baseVal,
+			translateVal;
+
 		MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
-		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
+
+		if (transformVal.numberOfItems === 1)
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			transformVal.getItem(0).setTranslate(x * 10, y * 10);
+		}
+		else
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			translateVal = node.ownerSVGElement.createSVGTransform();
+
+			translateVal.setTranslate(x * 10, y * 10);
+
+			transformVal.appendItem(translateVal);
+		}
 
 		return true;
 	},

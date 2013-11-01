@@ -424,9 +424,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         saveStack : (data) ->
             me = this
 
-            region = data.region
-            id = data.id
-            name = data.name
+            region  = data.region
+            id      = data.id
+            name    = data.name
 
             #instance store ami check
             #data.has_instance_store_ami = me.isInstanceStore data
@@ -628,13 +628,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     flag    = req_map[req_id].flag
                     id      = req_map[req_id].id
                     name    = req_map[req_id].name
-
-                    # update header
-                    #ide_event.trigger ide_event.UPDATE_HEADER, req
-
-                    flag_list = {}
-
-                    region = req.region
+                    region  = req.region
 
                     # check
                     if not flag or not region or not id or not name
@@ -642,47 +636,43 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if not time_update
                         time_update = Date.now()/1000
 
-                    # for dashboard region update
+                    # for app update
                     item = {'region':region, 'id':id, 'name':name, 'time_update':time_update}
+                    flag_list = {}
 
                     switch req.state
                         when constant.OPS_STATE.OPS_STATE_INPROCESS
-                            if flag is 'RUN_STACK'
+                            flag_list.is_inprocess = true
 
-                                flag_list.is_inprocess = true
+                            dones = 0
+                            steps = 0
 
-                                dones = 0
-                                steps = 0
+                            if 'dag' of dag # changed request
 
-                                if 'dag' of dag # changed request
+                                steps = dag.dag.step.length
+                                # check rollback
+                                dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                console.log 'done steps:' + dones
 
-                                    steps = dag.dag.step.length
+                            # rollback
+                            tab_name = 'process-' + region + '-' + name
+                            if tab_name of MC.process and dones>0
+                                dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
 
-                                    # check rollback
-                                    dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                                    console.log 'done steps:' + dones
+                            flag_list.dones = dones
+                            flag_list.steps = steps
 
-                                # rollback
-                                tab_name = 'process-' + region + '-' + name
-                                if tab_name of MC.process and dones>0
-                                    dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
-
-                                flag_list.dones = dones
-                                flag_list.steps = steps
-
-                                if dones > 0 and steps > 0
-                                    flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
-                                else
-                                    flag_list.rate = 0
+                            if dones > 0 and steps > 0
+                                flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                            else
+                                flag_list.rate = 0
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 
-                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
+                            flag_list.is_failed = true
+                            flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
                             if flag is 'RUN_STACK'
-                                flag_list.is_failed = true
-                                flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
-
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
@@ -708,46 +698,34 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 
-                            # update dashboard region app state
-                            if flag isnt 'RUN_STACK'
-                                ide_event.trigger ide_event.UPDATE_APP_STATE, 'STOPPED_APP', item
-
                             # update region aws resource
                             ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                         when constant.OPS_STATE.OPS_STATE_DONE
 
-                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
-
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]
 
+                            flag_list.app_id = app_id
+                            flag_list.is_done = true
+
+                            item.id = app_id
+
                             switch flag
                                 when 'RUN_STACK'
-                                    flag_list.app_id = app_id
-                                    flag_list.is_done = true
-
                                     me.setFlag app_id, 'RUNNING_APP', region
 
                                     item.id = app_id
                                     item.has_instance_store_ami = me.isInstanceStore(run_stack_map[region][name])
-                                    #ide_event.trigger ide_event.UPDATE_APP_STATE, 'LAUNCHED_APP', name, id, time_update, has_instance_store_ami
-                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'LAUNCHED_APP', item
 
                                 when 'START_APP'
                                     me.setFlag id, 'RUNNING_APP', region
-                                    #ide_event.trigger ide_event.STARTED_APP, name, id
-                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'RUNNING_APP', item
 
                                 when 'STOP_APP'
                                     me.setFlag id, 'STOPPED_APP', region
-                                    #ide_event.trigger ide_event.STOPPED_APP, name, id
-                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'STOPPED_APP', item
 
                                 when 'TERMINATE_APP'
                                     me.setFlag id, 'TERMINATED_APP', region
-                                    #ide_event.trigger ide_event.TERMINATED_APP, name, id
-                                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'TERMINATED_APP', item
 
                                     # remove the app name from app_list
                                     if name in MC.data.app_list[region]
@@ -757,14 +735,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     console.log 'not support toolbar operation:' + flag
                                     return
 
-                            # update region aws resource
-                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
                         else
                             console.log 'not support request state:' + req.state
 
-                    # send process data
-                    if flag_list and flag is 'RUN_STACK'
+                    # update process state
+                    if flag_list
 
                         tab_name = 'process-' + region + '-' + name
 
@@ -773,11 +748,68 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                             MC.process[tab_name].flag_list = flag_list
 
-                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+                            # update run-stack process
+                            if flag is 'RUN_STACK'
+                                ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+
+                            # update app state
+                            else
+                                item.flag_list = flag_list
+                                me.updateAppState(req.state, flag, item)
+
+                    # update region aws resource and notification
+                    if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                        ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
+
+                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
+                        else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
                     # remove request from req_map
                     if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
                         delete req_map[req_id]
+
+        updateAppState : (req_state, flag, data) ->
+            me = this
+
+            state = null
+
+            switch req_state
+                when constant.OPS_STATE.OPS_STATE_DONE
+                    if flag is 'RUN_STACK'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    else if flag is 'START_APP'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    else if flag is 'STOP_APP'
+                        state = constant.APP_STATE.APP_STATE_STOPPED
+
+                    else if flag is 'TERMINATE_APP'
+                        state = constant.APP_STATE.APP_STATE_TERMINATED
+
+                when constant.OPS_STATE.OPS_STATE_FAILED
+                    state = constant.APP_STATE.APP_STATE_STOPPED
+
+                when constant.OPS_STATE.OPS_STATE_INPROCESS
+                    if flag is 'RUN_STACK'
+                        state = constant.APP_STATE.APP_STATE_INITIALIZING
+
+                    else if flag is 'START_APP'
+                        state = constant.APP_STATE.APP_STATE_STARTING
+
+                    else if flag is 'STOP_APP'
+                        state = constant.APP_STATE.APP_STATE_STOPPING
+
+                    else if flag is 'TERMINATE_APP'
+                        state = constant.APP_STATE.APP_STATE_TERMINATING
+
+                else
+                    console.log 'not support request state:' + req_state
+
+            if state
+                ide_event.trigger ide_event.UPDATE_APP_STATE, state, item
 
         isInstanceStore : (data) ->
 

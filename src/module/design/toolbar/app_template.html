@@ -1,14 +1,15 @@
+<section class="toolbar-btn-group toolbar-btn-primary">
+
+  {{#unless item_flags.is_app_updating}}
+  <a href="#" class="modal tooltip btn-toolbar icon-update-app" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}" id="toolbar-edit-app"><span>Edit App</span></a>
+  {{else}}
+  <a href="#" class="modal tooltip btn-toolbar icon-apply-app" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}" id="toolbar-save-edit-app"><span>Apply</span></a>
+  <a href="#" class="modal tooltip btn-toolbar icon-cancel-update-app" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}" id="toolbar-cancel-edit-app"></a>
+  {{/unless}}
+
+</section>
+
 <section class="toolbar-btn-group">
-
-  <span class="ovfh">
-    {{#unless item_flags.is_app_updating}}
-    <a href="#" class="modal tooltip btn-toolbar icon-update-app" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}" id="toolbar-edit-app"></a>
-    {{else}}
-    <a href="#" class="modal tooltip btn-toolbar icon-save-update-app" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}" id="toolbar-save-edit-app"></a>
-    <a href="#" class="modal tooltip btn-toolbar icon-cancel-update-app" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}" id="toolbar-cancel-edit-app"></a>
-    {{/unless}}
-  </span>
-
   {{#unless item_flags.is_app_updating}}
   <span class="app_model" id="toolbar_appmodel">
 

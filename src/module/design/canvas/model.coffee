@@ -109,6 +109,13 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			# We don't support change parent in App Edit Mode yet.
 			if MC.canvas.getState() is "appedit"
+
+				node = MC.canvas_data.layout.component.group[src_node]
+				if !node
+					node = MC.canvas_data.layout.component.node[src_node]
+				if !node || !node.groupUId || node.groupUId == tgt_parent
+					return
+
 				event.preventDefault()
 				return
 

@@ -223,9 +223,9 @@ var Tabbar = {
 			tabs_link = $('#tab-bar li a.tab-bar-truncate'),
 			tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
 
-		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
+		tab_item_width = tab_item_width > 220 ? 220 : tab_item_width;
 		tabs.css('width', tab_item_width);
-		tabs_link.css('width', tab_item_width - 20);
+		tabs_link.css('width', tab_item_width - 25);
 
 		return true;
 	}

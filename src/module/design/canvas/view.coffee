@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'canvas_layout', 'constant', 'MC.canvas', 'backbone', 'jquery', 'handlebars', 'UI.notification' ], ( ide_event, canvas_layout, constant ) ->
+define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( ide_event, canvas_layout, constant, forge_app ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -47,7 +47,9 @@ define [ 'event', 'canvas_layout', 'constant', 'MC.canvas', 'backbone', 'jquery'
 
             component = MC.canvas_data.component[uid]
             if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                if state is "appedit" or (state is "app" and  "" + component.number isnt "1")
+                # In AppEdit, newly created instance will make forge_app.existing_app_resource return false.
+                # In app mode, component's number that is not 1 is servergroup.
+                if ( state is "appedit" and forge_app.existing_app_resource( uid ) is true ) or (state is "app" and  "" + component.number isnt "1")
                     type = "component_server_group"
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid

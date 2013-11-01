@@ -128,6 +128,24 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					delete comp_data[instance.uid]
 
+					for elb in elbs
+
+						delete_index = []
+
+						for i, ins of json_data.component[elb].resource.Instances
+
+							if ins.InstanceId is "@#{instance_uid}.resource.InstanceId"
+
+								delete_index.push i
+
+						delete_index.sort()
+
+						delete_index.reverse()
+
+						for i in delete_index
+
+							json_data.component[elb].resource.Instances.splice i, 1
+
 			for i, instance_id of instance_list
 
 				if comp_data[ instance_id ]

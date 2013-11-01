@@ -465,6 +465,8 @@ define [ 'MC', 'event',
             @trigger "UPDATE_APP", true
 
             MC.aws.eni.markAutoAssginFalse()
+            MC.canvas.event.clearList()
+
             # 4. Trigger OPEN_PROPERTY
             ide_event.trigger ide_event.OPEN_PROPERTY
             null

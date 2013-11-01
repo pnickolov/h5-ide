@@ -7,10 +7,10 @@
 # **********************************************************
 */
 
-//json data for current tab
+// JSON data for current tab
 MC.canvas_data = {};
 
-//variable for current tab
+// Variable for current tab
 MC.canvas_property = {};
 
 MC.canvas = {
@@ -309,10 +309,6 @@ MC.canvas = {
 		{
 			$('#canvas_body')
 				.removeClass('canvas_zoomed');
-				// .off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				// .on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-				// .on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-				// .on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 		}
 
 		return true;
@@ -346,10 +342,6 @@ MC.canvas = {
 
 		$('#canvas_body')
 			.addClass('canvas_zoomed');
-			// .on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 
 		return true;
 	},
@@ -1271,14 +1263,19 @@ MC.canvas = {
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;
 
-					layout_connection_data = {
+					// layout_connection_data = {
+					// 	'target': connection_target_data,
+					// 	'auto': true,
+					// 	'point': [],
+					// 	'type': connection_option.type
+					// };
+
+					MC.canvas_data.layout.connection[ svg_line.id ] = {
 						'target': connection_target_data,
 						'auto': true,
 						'point': [],
 						'type': connection_option.type
 					};
-
-					MC.canvas_data.layout.connection[ svg_line.id ] = layout_connection_data;
 				}
 
 				return svg_line.id;
@@ -4964,8 +4961,7 @@ MC.canvas.event.groupResize = {
 				group_left = 5;
 			}
 		}
-
-		if (type !== 'AWS.VPC.VPC')
+		else
 		{
 			if (group_top <= 2)
 			{
@@ -5007,7 +5003,7 @@ MC.canvas.event.groupResize = {
 
 				if (igw_gateway[0])
 				{
-					igw_gateway_id = igw_gateway.attr('id');
+					igw_gateway_id = igw_gateway[0].id;
 					igw_gateway_data = layout_node_data[ igw_gateway_id ];
 					igw_top = igw_gateway_data.coordinate[1];
 
@@ -5029,7 +5025,7 @@ MC.canvas.event.groupResize = {
 
 				if (vgw_gateway[0])
 				{
-					vgw_gateway_id = vgw_gateway.attr('id');
+					vgw_gateway_id = vgw_gateway[0].id;
 					vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
 					vgw_top = vgw_gateway_data.coordinate[1];
 
@@ -5114,7 +5110,7 @@ MC.canvas.event.groupResize = {
 
 		if (type === 'AWS.VPC.Subnet')
 		{
-			// Re-draw group connection
+			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');
 			node_connections = layout_group_data[ group_id ].connection || {};
 

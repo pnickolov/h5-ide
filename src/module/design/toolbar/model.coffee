@@ -743,21 +743,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # update process state
                     if flag_list
 
-                        tab_name = 'process-' + region + '-' + name
+                        # init MC.process[id]
+                        tab_name = item.id
+                        if flag is 'RUN_STACK'
+                            tab_name = 'process-' + data.region + '-' + data.name
 
-                        # filter closed process tab
-                        if tab_name of MC.process
+                        # update process flow
+                        MC.process[tab_name].flag_list = flag_list
 
-                            MC.process[tab_name].flag_list = flag_list
+                        # update run-stack process
+                        if flag is 'RUN_STACK'
+                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
-                            # update run-stack process
-                            if flag is 'RUN_STACK'
-                                ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
-
-                            # update app state
-                            else
-                                item.flag_list = flag_list
-                                me.updateAppState(req.state, flag, item)
+                        # update app state
+                        else
+                            item.flag_list = flag_list
+                            me.updateAppState(req.state, flag, item)
 
                     # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED

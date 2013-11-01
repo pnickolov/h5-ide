@@ -44,7 +44,7 @@ define [ 'event',
                 else
                     @$el.html @template @model
 
-        verificationUser : ->
+        verificationUser : (event) ->
             console.log 'verificationUser'
             value  = $('#register-username').val()
             status = $('#username-verification-status')
@@ -58,7 +58,7 @@ define [ 'event',
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
                     #status.show().text lang.register.username_available
                     #check vaild
-                    this.trigger 'CHECK_REPEAT', value, null if event.type is 'blur'
+                    this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
                     true
                 else
                     status.addClass('error-status').show().text lang.register.username_not_matched
@@ -67,7 +67,7 @@ define [ 'event',
                 status.addClass('error-status').show().text lang.register.username_required
                 false
 
-        verificationEmail : ->
+        verificationEmail : (event) ->
             console.log 'verificationEmail'
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
@@ -80,7 +80,7 @@ define [ 'event',
             if value isnt '' and /^\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}$/.test(value)
                 #status.show().text lang.register.email_available
                 #check vaild
-                this.trigger 'CHECK_REPEAT', null, value if event.type is 'blur'
+                this.trigger 'CHECK_REPEAT', null, value #if event and event.type is 'blur'
                 true
             else
                 status.addClass('error-status').show().text lang.register.email_not_valid
@@ -91,6 +91,7 @@ define [ 'event',
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')
             status.text('')
+            $( '#register-btn' ).attr( 'disabled', true )
             status.removeClass( 'error-status' ).removeClass( 'verification-status' )
             status.show()
             #
@@ -107,11 +108,13 @@ define [ 'event',
                     true
                 else
                     status.addClass('error-status').show().text lang.register.password_shorter
+                    status.show()
                     $( '#register-btn' ).attr( 'disabled', true )
                     @_checkButtonDisabled()
                     false
             else
                 status.addClass('error-status').show().text lang.register.password_required
+                status.show()
                 $( '#register-btn' ).attr( 'disabled', true )
                 @_checkButtonDisabled()
                 false
@@ -273,7 +276,9 @@ define [ 'event',
             right_count = right_count + 1 if $('#register-password').val().trim() and $('#password-verification-status').hasClass('verification-status')
 
             if right_count is 3
-                $( '#register-btn' ).attr( 'disabled', false )
+                if $( '#register-btn' ).val() != lang.register.reginster_waiting
+                    console.log 'enable create account button'
+                    $( '#register-btn' ).attr( 'disabled', false )
             else
                 $( '#register-btn' ).attr( 'disabled', true )
             null

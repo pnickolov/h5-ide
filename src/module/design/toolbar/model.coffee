@@ -817,7 +817,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
 
                 # init MC.process[id]
-                tab_name = 'process-' + data.region + '-' + data.name
+                tab_name = data.id
+                if flag is 'RUN_STACK'
+                    tab_name = 'process-' + data.region + '-' + data.name
                 if not (tab_name of MC.process)
                     MC.process[tab_name] = { 'tab_id' : data.id, 'app_name' : data.name, 'region' : data.region, 'flag_list' : data.flag_list }
 

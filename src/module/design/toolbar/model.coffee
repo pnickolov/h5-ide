@@ -757,8 +757,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 item.flag_list = flag_list
                                 me.updateAppState(req.state, flag, item)
 
-                    # update region aws resource and notification
+                    # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                        # update app list
+                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                        # update region resource
                         ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE

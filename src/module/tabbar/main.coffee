@@ -252,12 +252,12 @@ define [ 'jquery', 'event', 'base_main',
                     #
                     view.trueCloseTab null, obj.id
                     #
-                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                    #ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 else if type in [ 'RUNNING_APP', 'STOPPED_APP' ]
                     #
                     view.changeIcon obj.id
                     #push event
-                    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                    #ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 null
 
             #listen

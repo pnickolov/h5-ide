@@ -82,7 +82,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
                 #
                 if type in [ 'OPEN_APP', 'OLD_APP' ]
-                    # when open_app or old_app restore the scene
+
+                    console.log 'when open_app or old_app restore the scene'
 
                     # 1. update Tabbar.current( app and appedit)
 
@@ -125,7 +126,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 console.log 'design:UPDATE_APP_STATE', type, obj
 
                 # changed fail
-                if obj.flag_list.is_failed
+                if obj.flag_list and obj.flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]

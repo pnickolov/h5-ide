@@ -55,7 +55,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		else
 			return null
 
-	isUsingAllProtocolInRule = (sgUID) ->
+	isHaveUsingAllProtocolRule = (sgUID) ->
 
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
@@ -85,6 +85,78 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		return null
 
+	isHaveFullZeroSourceToHTTPRule = (sgUID) ->
+
+		sgComp = MC.canvas_data.component[sgUID]
+		sgInboundRuleAry = sgComp.resource.IpPermissions
+
+		# check source 0.0.0.0 target to port 80/443
+		isFullZeroTargetOtherPort = false
+		validPortAry1 = [80, '80']
+		validPortAry2 = [443, '443']
+		_.each sgInboundRuleAry, (ruleObj) ->
+			if ruleObj.IpRanges is '0.0.0.0/0'
+				if !((ruleObj.FromPort in validPortAry1 and ruleObj.ToPort in validPortAry1) or
+					(ruleObj.FromPort in validPortAry2 and ruleObj.ToPort in validPortAry2))
+						isFullZeroTargetOtherPort = true
+			null
+
+		if isFullZeroTargetOtherPort
+			sgName = sgComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT, sgName
+			return {
+				level: constant.TA.WARNING,
+				info: tipInfo
+			}
+		return null
+
+	isHaveUsingPort22Rule = (sgUID) ->
+
+		sgComp = MC.canvas_data.component[sgUID]
+		sgInboundRuleAry = sgComp.resource.IpPermissions
+		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
+
+		# check if rule using port 22
+		isUsingPort22 = false
+		validPortAry = [22, '22']
+		_.each sgInboundRuleAry, (ruleObj) ->
+			if ruleObj.FromPort in validPortAry and ruleObj.ToPort in validPortAry
+				isUsingPort22 = true
+			null
+
+		if isUsingPort22
+			sgName = sgComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_SG_RULE_USING_PORT_22, sgName
+			return {
+				level: constant.TA.NOTICE,
+				info: tipInfo
+			}
+		return null
+
+	isHaveFullZeroOutboundRule = (sgUID) ->
+
+		sgComp = MC.canvas_data.component[sgUID]
+		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
+
+		# check if outbound rule have 0.0.0.0/0
+		isHaveFullZeroOutbound = false
+		_.each sgOutboundRuleAry, (ruleObj) ->
+			if ruleObj.IpRanges is '0.0.0.0/0'
+				isHaveFullZeroOutbound = true
+			null
+
+		if isHaveFullZeroOutbound
+			sgName = sgComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND, sgName
+			return {
+				level: constant.TA.WARNING,
+				info: tipInfo
+			}
+		return null
+
 	isSGRuleExceedFitNum : isSGRuleExceedFitNum
 	isStackUsingOnlyOneSG : isStackUsingOnlyOneSG
-	isUsingAllProtocolInRule : isUsingAllProtocolInRule
+	isHaveUsingAllProtocolRule : isHaveUsingAllProtocolRule
+	isHaveFullZeroSourceToHTTPRule : isHaveFullZeroSourceToHTTPRule
+	isHaveUsingPort22Rule : isHaveUsingPort22Rule
+	isHaveFullZeroOutboundRule : isHaveFullZeroOutboundRule

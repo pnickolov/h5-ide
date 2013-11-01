@@ -5,8 +5,13 @@ define ['MC',
         './elb/elb',
         './ec2/securitygroup',
         './autoscaling/asg',
+        './ec2/eip',
+        './ec2/az',
+        './vpn/vpn',
+        './vpc/igw',
+        './vpc/rtb',
         './vpc/cgw'
-], ( MC, instance, subnet, vpc, elb, sg, asg, cgw) ->
+], ( MC, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, rtb, cgw) ->
 
         instance : instance
         subnet: subnet
@@ -14,4 +19,9 @@ define ['MC',
         elb : elb
         sg  : sg
         asg : asg
+        eip : eip
+        az  : az
+        vpn : vpn
+        igw : igw
+        rtb : rtb
         cgw : cgw

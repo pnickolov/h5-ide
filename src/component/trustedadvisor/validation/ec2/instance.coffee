@@ -124,5 +124,37 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 		return null
 
-	isEBSOptimizedForAttachedProvisionedVolume : isEBSOptimizedForAttachedProvisionedVolume
-	isAssociatedSGRuleExceedFitNum : isAssociatedSGRuleExceedFitNum
+	isConnectRoutTableButNoEIP = ( uid ) ->
+        components = MC.canvas_data.component
+        instance = components[ uid ]
+        instanceId = "@#{uid}.resource.InstanceId"
+        RTB = ''
+
+        isConnectRTB = _.some components, ( component ) ->
+        	if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+        		_.some component.resource.RouteSet, ( rt ) ->
+        			if rt.InstanceId is instanceId
+        				RTB = component
+        				return true
+
+        hasEIP = _.some components, ( component ) ->
+        	if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and component.resource.InstanceId is instanceId
+        			return true
+
+       	if not isConnectRTB or hasEIP
+       		return null
+
+
+        tipInfo = sprintf lang.ide.TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB, RTB.name, instance.name, instance.name
+
+        # return
+        level   : constant.TA.NOTICE
+        info    : tipInfo
+        uid     : uid
+
+
+	isEBSOptimizedForAttachedProvisionedVolume 	: isEBSOptimizedForAttachedProvisionedVolume
+	isAssociatedSGRuleExceedFitNum 				: isAssociatedSGRuleExceedFitNum
+	isConnectRoutTableButNoEIP				 	: isConnectRoutTableButNoEIP
+
+

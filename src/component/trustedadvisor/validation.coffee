@@ -13,34 +13,37 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
 
     _componentTypeToFileMap =
-        'AWS.AutoScaling.Group': 'asg'
-        'AWS.EC2.SecurityGroup': 'sg'
+        'AWS.AutoScaling.Group'     : 'asg'
+        'AWS.EC2.SecurityGroup'     : 'sg'
+        'AWS.VPC.VPNGateway'        : 'vpn'
+        'AWS.VPC.VPNGateway'        : 'vpn'
+        'AWS.VPC.InternetGateway'   : 'igw'
+        'AWS.VPC.RouteTable'        : 'rtb'
+
+    _globalList =
+        eip: [ 'isHasIGW' ]
+        az: [ 'isAZAlone' ]
 
 
-    _validList =
-        instance:
-            all: ( component ) ->
-                true
-            isEBSOptimizedForAttachedProvisionedVolume: ( component ) ->
-                true
-        vpc:
-            all: ( component ) ->
-                true
 
+    ########## functional method and field ##########
 
-    _needValid = ( filename, method, component ) ->
-        # debug mode
-        if _validDebug
-            return _validDebug is method
+    _state = {}
 
-        fileNeed = _validList[ filename ]
-
-        if fileNeed
-            allNeed     = _isNeeded fileNeed, 'all', component
-            methodNeed    = _isNeeded fileNeed, method, component
-            return allNeed and methodNeed
-        else
+    _global = ( type ) ->
+        state = _state[ "global_#{type}" ]
+        if not state
+            state = true
             return true
+        false
+
+    _init = () ->
+        resultVO.reset()
+        _state = {}
+
+
+    _isGlobal = ( filename, method ) ->
+        _globalList[ filename ] and _.contains _globalList[ filename ], method
 
 
     _isNeeded = ( obj, key, params ) ->
@@ -54,6 +57,10 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
         filename = filename.toLowerCase()
         filename
 
+    _pushResult = ( result, method, uid ) ->
+        if result
+            resultVO.add method, result.level, result.info, uid
+        null
 
     ########## will be public ##########
 
@@ -61,7 +68,6 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
 
         try
 
-            #test
             MC.ta.resultVO = resultVO
 
             temp     = type.split '.'
@@ -90,15 +96,20 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
     validAll = ->
 
         components = MC.canvas_data.component
-        resultVO.reset()
+
+        _init()
+
         _.each components, ( component , uid ) ->
             filename = _getFilename component.type
-
             _.each validation_main[ filename ], ( func, method ) ->
-                if _needValid filename, method, component
+                if not _isGlobal filename, method
                     result = validation_main[ filename ][ method ]( uid )
-                    if result
-                        resultVO.add method, result.level, result.info, uid
+                    _pushResult result, method
+
+        _.each _globalList, ( methods, filename ) ->
+            _.each methods, ( method ) ->
+                result = validation_main[ filename ][ method ]()
+                _pushResult result, method
 
         resultVO.result()
 

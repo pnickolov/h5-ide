@@ -3331,6 +3331,15 @@ module.exports =
     TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
       en: "Security Group %s is using 'ALL' protocol traffic"
       zh: ""
+    TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
+      en: "Security Group %s has inbound rule which traffic from 0.0.0.0 is not targeting port 80 or 443"
+      zh: ""
+    TA_MSG_NOTICE_SG_RULE_USING_PORT_22:
+      en: "Security Group %s has rule which using port 22. To enhance security, suggest to use other port than 22"
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
+      en: "Security Group %s has outbound rule towards 0.0.0.0/0. Suggest to change to more specific range"
+      zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
@@ -3339,6 +3348,30 @@ module.exports =
 
     TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK:
       en: "%s has connected to Elastic Load Balancing but the Elastic Load Balancing health check is not enabled."
+      zh: ""
+
+    TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW:
+      en: "VPC has instance with Elastic IP must have an Internet Gateway."
+      zh: ""
+
+    TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
+      en: "%s has route to %s. If %s is working as NAT instance, it should be assigned with an Elastic IP."
+      zh: ""
+
+    TA_MSG_WARNING_SINGLE_AZ:
+      en: "Only 1 availability zone is used. Multiple availability zone can improve fault tolerance."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_IGW:
+      en: "No route table is connected to Internet-gateway."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_VGW:
+      en: "No route table is connected to VPN-gateway."
+      zh: ""
+
+    TA_MSG_NOTICE_RT_HAS_NO_ALLOW_ACL:
+      en: "%s has no allow rule. But %s has route to %s associated %s."
       zh: ""
 
     # CGW

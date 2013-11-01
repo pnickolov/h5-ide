@@ -237,6 +237,31 @@ define [ 'backbone', 'underscore', 'stack_service', 'ami_service', 'base_model' 
                 else
                     console.log 'ami.DescribeImages failed, error is ' + result.error_message
 
+
+
+        #verify api (define function)
+        verify : ( src, username, session_id, spec ) ->
+
+            me = this
+
+            src.model = me
+
+            stack_service.verify src, username, session_id, spec, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #verify succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STACK_VERIFY_RETURN', forge_result
+
+                else
+                #verify failed
+
+                    console.log 'stack.verify failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+
+
     }
 
     #############################################################

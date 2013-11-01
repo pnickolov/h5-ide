@@ -634,6 +634,7 @@ textarea {
 	top      : 2px;
 	left     : 2px;
 
+
 	background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAcklEQVQY02NgwA/YoJgoEA/Es4DYgJBCJSBeD8SboRinBiYg7kZS2IosyQ/Eakh8LySFq4FYHFlxGRBvBOJYqMRqJMU+yApNkSRAeC0Sux3dfSCTetE0wKyXxOWhMKhTYIr9CAUXyJMzgLgBagBBgDPGAI2LGdNt0T1AAAAAAElFTkSuQmCC');
 	background-size: 100% 100%;
 }
@@ -692,13 +693,7 @@ textarea {
 
 .property-content .checkbox input:disabled + label,
 .property-content .checkbox input[disabled] + label {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .checkbox input:disabled + label:after,
-.property-content .checkbox input[disabled] + label:after {
-	background: #484343;
+	opacity : 0.3;
 }
 
 .property-content .checkbox label,

@@ -80,6 +80,41 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			console.error '[expandInstance]instance number not match'
 
+
+		# check remove eip for app edit
+		if json_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+
+			if not comp_data[layout_data.component.node[uid].eipList[0]]
+
+				layout_data.component.node[uid].eipList = []
+
+		else
+
+			delete_index = []
+
+			for eip_uid, eip_tmp_list of layout_data.component.node[uid].eipList
+
+				if not comp_data[eip_uid]
+
+					delete_index.push eip_uid
+
+			for k in delete_index
+
+				delete layout_data.component.node[uid].eipList[k]
+
+		# check remove volume for app edit
+		delete_vol_index = []
+
+		for vol_uid, vol_tmp_list of layout_data.component.node[uid].volumeList
+
+			if not comp_data[vol_uid]
+
+				delete_vol_index.push vol_uid
+
+		for k in delete_vol_index
+
+			delete layout_data.component.node[uid].volumeList[k]
+
 		gernerateUId ins_num, instance_list
 		# ins_comp_number = instance_list.length
 
@@ -233,6 +268,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			if eni_list.length is 0
 
 				eni_list = json_data.layout.component.node[uid].eniList = [ uid ]
+
+			# app edit check remove eip
+
+			delete_index = []
+
+			for eip_uid, eip_tmp_list of layout_data.component.node[uid].eipList
+
+				if not comp_data[eip_uid]
+
+					delete_index.push eip_uid
+
+			for k in delete_index
+
+				delete layout_data.component.node[uid].eipList[k]
 
 		gernerateUId eni_number, eni_list
 		# eni_comp_number = eni_list.length

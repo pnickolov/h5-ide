@@ -751,6 +751,10 @@ module.exports =
       en: "Refresh resources for app( %s ) start ..."
       zh: "开始刷新应用( %s )的资源 ..."
 
+    TOOL_MSG_INFO_NO_CHANGES:
+      en: "This app is't any change."
+      zh: "当前App没有任何改变。"
+
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
       zh: "转换成CloudFormation出错"

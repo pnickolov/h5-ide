@@ -524,10 +524,9 @@ define [ 'MC', 'event',
                             $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
 
                 else
-                    notification 'info', 'lang.ide.TOOL_MSG_INFO_NO_CHANGES'
-                    #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
+                    notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal
-                    ide_event.trigger ide_event.APPEDIT_2_APP
+                    ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.current_tab_id
 
             # After success then do the clickCancelEditApp routine.
             null
@@ -569,8 +568,12 @@ define [ 'MC', 'event',
 
             null
 
-        saveSuccess2App : ->
-            console.log 'saveSuccess2App'
+        saveSuccess2App : ( tab_id ) ->
+            console.log 'saveSuccess2App, tab_id = ' + tab_id
+
+            if tab_id isnt MC.data.current_tab_id
+                MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
+                return
 
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'

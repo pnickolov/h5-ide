@@ -595,7 +595,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'PENDING_APP', region
 
-                    item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_inprocess':true}}
+                    item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
                     me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
 
                 null
@@ -814,6 +814,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'not support request state:' + req_state
 
             if state
+                console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
+
+                # init MC.process[id]
+                tab_name = 'process-' + data.region + '-' + data.name
+                if not (tab_name of MC.process)
+                    MC.process[tab_name] = { 'tab_id' : data.id, 'app_name' : data.name, 'region' : data.region, 'flag_list' : data.flag_list }
+
                 ide_event.trigger ide_event.UPDATE_APP_STATE, state, data
 
         isInstanceStore : (data) ->

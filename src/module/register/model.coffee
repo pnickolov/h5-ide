@@ -76,7 +76,9 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
 
                     
                 else
-                    #
+                    #login failed
+                    this.trigger 'RESET_CREATE_ACCOUNT'
+
                 null
 
         loginService : ->

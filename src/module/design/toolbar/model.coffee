@@ -833,6 +833,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     else if flag is 'TERMINATE_APP'
                         state = constant.APP_STATE.APP_STATE_TERMINATING
 
+                    else if flag is 'SAVE_APP'
+                        state = constant.APP_STATE.APP_STATE_UPDATING
+
                 else
                     console.log 'not support request state:' + req_state
 

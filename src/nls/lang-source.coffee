@@ -3382,6 +3382,11 @@ module.exports =
       en:"Customer Gateway %s(%s) conflict with exist %s(%s)"
       zh:""
 
+    # Stack
+    TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID:
+      en:"Checking Stack data format validity..."
+      zh:""
+
     ##### Trust Advisor
 
   service:

@@ -6,7 +6,6 @@ for key, value of console
 		console[ key ] = emptyFunction
 ###
 
-
 require.config {
 
 	baseUrl                  : './'
@@ -66,6 +65,7 @@ require.config {
 
 		#
 		'validation'         : 'component/trustedadvisor/validation'
+		'ta_conf'            : 'component/trustedadvisor/config'
 
 		#############################################
 		# ui/common

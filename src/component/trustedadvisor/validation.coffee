@@ -2,56 +2,24 @@
 #  validation
 #############################
 
-define [ 'constant', 'event', './validation/main', './validation/result_vo',
+define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/result_vo',
          'jquery', 'underscore'
-], ( constant, ide_event, validation_main, resultVO ) ->
+], ( constant, ide_event, config, validation_main, resultVO ) ->
 
-    # private
-
-    # debug validation method, if exist anyother method will not be called
-    _validDebug = ''
-
-
-    _componentTypeToFileMap =
-        'AWS.AutoScaling.Group'     : 'asg'
-        'AWS.EC2.SecurityGroup'     : 'sg'
-        'AWS.VPC.VPNGateway'        : 'vpn'
-        'AWS.VPC.VPNGateway'        : 'vpn'
-        'AWS.VPC.InternetGateway'   : 'igw'
-        'AWS.VPC.RouteTable'        : 'rtb'
-
-    _globalList =
-        eip: [ 'isHasIGW' ]
-        az: [ 'isAZAlone' ]
-
-
-
-    ########## functional method and field ##########
-
-    _state = {}
-
-    _global = ( type ) ->
-        state = _state[ "global_#{type}" ]
-        if not state
-            state = true
-            return true
-        false
+    ########## Functional Method ##########
 
     _init = () ->
         resultVO.reset()
-        _state = {}
-
 
     _isGlobal = ( filename, method ) ->
-        _globalList[ filename ] and _.contains _globalList[ filename ], method
+        config.globalList[ filename ] and _.contains config.globalList[ filename ], method
 
-
-    _isNeeded = ( obj, key, params ) ->
-        not obj[ key ] or obj[ key ]( params )
+    _isAsync = ( filename, method ) ->
+        config.asyncList[ filename ] and _.contains config.asyncList[ filename ], method
 
     _getFilename = ( componentType ) ->
-        if _componentTypeToFileMap[ componentType ]
-            return _componentTypeToFileMap[ componentType ]
+        if config.componentTypeToFileMap[ componentType ]
+            return config.componentTypeToFileMap[ componentType ]
 
         filename = _.last componentType.split '.'
         filename = filename.toLowerCase()
@@ -62,7 +30,26 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
             resultVO.add method, result.level, result.info, uid
         null
 
-    ########## will be public ##########
+    ########## Sub Validation Method ##########
+
+    _validGlobal = () ->
+        _.each config._globalList, ( methods, filename ) ->
+            _.each methods, ( method ) ->
+                result = validation_main[ filename ][ method ]()
+                _pushResult result, method
+
+    _validComponents = () ->
+        components = MC.canvas_data.component
+        _.each components, ( component , uid ) ->
+            filename = _getFilename component.type
+            _.each validation_main[ filename ], ( func, method ) ->
+                if not _isGlobal filename, method and not _isAsync filename, method
+                    result = validation_main[ filename ][ method ]( uid )
+                    _pushResult result, method
+
+    _validAsync = ->
+
+    ########## Public Method ##########
 
     validComp = ( type ) ->
 
@@ -93,23 +80,18 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
         catch error
             console.log "validComp error #{ error }"
 
-    validAll = ->
 
-        components = MC.canvas_data.component
+    validRun = ->
+        _validAsync()
+        _validAll()
+
+    validAll = ->
 
         _init()
 
-        _.each components, ( component , uid ) ->
-            filename = _getFilename component.type
-            _.each validation_main[ filename ], ( func, method ) ->
-                if not _isGlobal filename, method
-                    result = validation_main[ filename ][ method ]( uid )
-                    _pushResult result, method
+        _validComponents()
 
-        _.each _globalList, ( methods, filename ) ->
-            _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]()
-                _pushResult result, method
+        _validGlobal()
 
         resultVO.result()
 
@@ -117,4 +99,5 @@ define [ 'constant', 'event', './validation/main', './validation/result_vo',
     #public
     validComp : validComp
     validAll  : validAll
+    validRun  : validRun
 

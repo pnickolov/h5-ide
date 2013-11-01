@@ -592,9 +592,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      : id
                     name    : name
 
-                if flag isnt 'RUN_STACK'
-                    me.setFlag id, 'PENDING_APP', region
-                    ide_event.trigger ide_event.UPDATE_APP_STATE, 'PENDING_APP', {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit}
+                # if flag isnt 'RUN_STACK'
+                #     me.setFlag id, 'PENDING_APP', region
+                #     ide_event.trigger ide_event.UPDATE_APP_STATE, 'PENDING_APP', {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit}
 
                 null
 
@@ -666,6 +666,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                 flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
                             else
                                 flag_list.rate = 0
+
+                            if flag isnt 'RUN_STACK'
+                                me.setFlag id, 'PENDING_APP', region
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 

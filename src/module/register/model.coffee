@@ -16,7 +16,7 @@ define [ 'MC', 'event', 'account_model', 'session_model', 'forge_handle', 'crypt
                 console.log forge_result
                 if !forge_result.is_error
                     if forge_result.param[1] and forge_result.param[2]
-                        this.trigger 'USERNAME_EMAIL_VALID'
+                        #this.trigger 'USERNAME_EMAIL_VALID'
                         @registerService forge_result.param[1], forge_result.param[2], @get( 'password' )
 
                     else

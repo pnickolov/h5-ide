@@ -18,7 +18,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
             #
-            $( '#main-statusbar' ).html MC.template.statusbar()
+            $( '#statusbar-panel' ).html MC.template.statusbar()
 
         listen   : ( model ) ->
             #set this.model
@@ -31,7 +31,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 resource : $( '#resource-panel' ).html()
                 property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
-                statusbar: $( '#main-statusbar' ).html()
+                statusbar: $( '#statusbar-panel' ).html()
             data
 
         writeOldDesignHtml : ( event ) ->
@@ -42,7 +42,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             #
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
-            $( '#main-statusbar' ).html this.model.get( 'snapshot' ).statusbar
+            $( '#statusbar-panel' ).html this.model.get( 'snapshot' ).statusbar
             ###
             this.$el.empty().html this.model.get 'snapshot'
             $( '#property-panel' ).html this.model.get( 'snapshot' ).property
@@ -83,6 +83,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             null
 
         updateStatusBarSaveTime : () ->
+            console.log 'updateStatusBarSaveTime'
             saveTime = $.now() / 1000
             clearInterval @timer
             textTime = MC.intervalDate(saveTime)

@@ -6824,7 +6824,7 @@ a.action-link:hover {
 }
 
 /* status bar */
-#main-statusbar {
+#statusbar-panel {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -6838,24 +6838,24 @@ a.action-link:hover {
 	color: #fff;
 }
 
-#main-statusbar .info {
+#statusbar-panel .info {
 	float: left;
 	padding-left: 10px;
 }
 
-#main-statusbar .btn-ta-valid {
+#statusbar-panel .btn-ta-valid {
 	text-align: center;
 	float: right;
 	cursor: pointer;
 	width: 100px;
 }
 
-#main-statusbar .btns a {
+#statusbar-panel .btns a {
 	cursor: pointer;
 	color: #fff;
 }
 
-/*#main-statusbar [class^="icon-"], #main-statusbar [class*=" icon-"] {
+/*#statusbar-panel [class^="icon-"], #statusbar-panel [class*=" icon-"] {
 	display: inline-block;
 	height: 15px;
 	width: 15px;
@@ -6864,15 +6864,15 @@ a.action-link:hover {
 	margin:0 3px;
 }
 
-#main-statusbar .icon-statusbar-error {
+#statusbar-panel .icon-statusbar-error {
 	background-color: #FF2200;
 }
 
-#main-statusbar .icon-statusbar-warning {
+#statusbar-panel .icon-statusbar-warning {
 	background-color: #FF9300;
 }
 
-#main-statusbar .icon-statusbar-notice {
+#statusbar-panel .icon-statusbar-notice {
 	background-color: #72D5FF;
 }*/
 

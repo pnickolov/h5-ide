@@ -84,14 +84,28 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
         updateStatusBarSaveTime : () ->
             console.log 'updateStatusBarSaveTime'
-            saveTime = $.now() / 1000
+
+            # 1.set current time
+            save_time = $.now() / 1000
+
+            # 2.clear interval
             clearInterval @timer
-            textTime = MC.intervalDate(saveTime)
-            $('.stack-save-time').text(textTime)
+
+            # 3.set textTime
+            $item    = $('.stack-save-time')
+            $item.text MC.intervalDate save_time
+            $item.attr 'data-tab-id',    MC.data.current_tab_id
+            $item.attr 'data-save-time', save_time
+
+            # 4.loop
             @timer = setInterval ( ->
-                textTime = MC.intervalDate(saveTime)
-                $('.stack-save-time').text(textTime)
-            ), 1000
+
+                $item    = $('.stack-save-time')
+                if $item.attr( 'data-tab-id' ) is MC.data.current_tab_id
+                    $item.text MC.intervalDate $item.attr 'data-save-time'
+
+            ), 500
+            #
             null
     }
 

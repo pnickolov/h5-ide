@@ -121,6 +121,8 @@ define [ 'MC', 'event', 'handlebars'
 
 		#
 		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
+		#
+		MC.open_failed_list = {}
 
 		#############################
 		#  WebSocket

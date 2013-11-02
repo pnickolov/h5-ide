@@ -32,6 +32,10 @@ define [ 'event',
             target.fadeOut 'normal', () ->
                 target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
+            #test123
+            #delete MC.open_failed_list[ MC.data.current_tab_id ] if MC.open_failed_list[ MC.data.current_tab_id ]
+            #
+            null
 
         showLoading : ( tab_id, is_transparent ) ->
             console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
@@ -41,8 +45,9 @@ define [ 'event',
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
-                    notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
+                    #ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
+                    #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
+                    ide_event.tigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL'
             , 1000 * 30
             null
 

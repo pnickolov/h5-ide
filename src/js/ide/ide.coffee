@@ -122,9 +122,10 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
 
 		#trusted advisor
-		MC.ta      = {}
-		MC.ta      = validation
-		MC.ta.list = []
+		MC.ta            = {}
+		MC.ta            = validation
+		MC.ta.list       = []
+		MC.ta.state_list = {}
 
 		#############################
 		#  WebSocket

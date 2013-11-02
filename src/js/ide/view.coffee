@@ -45,7 +45,6 @@ define [ 'event',
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
             #
-            @_hideStatubar()
             null
 
         toggleWaiting : () ->
@@ -58,6 +57,8 @@ define [ 'event',
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
             if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
+            #
+            @_hideStatubar()
 
         showOverviewTab : () ->
             console.log 'showOverviewTab'
@@ -85,6 +86,9 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
+            @_hideStatubar()
+            #
+            null
 
         showProcessTab : () ->
             console.log 'showProcessTab'
@@ -94,6 +98,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
+            @_hideStatubar()
 
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'

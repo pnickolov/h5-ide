@@ -20,7 +20,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             temp         = {}
             #
             _.each MC.ta.list, ( obj ) ->
-                temp = { 'info' : obj.info, 'key' : obj.key }
+                temp = { 'info' : obj.info, 'key' : obj.key, 'type' : obj.type }
                 switch obj.level
                     when 'NOTICE'  then notice_list.push  temp
                     when 'WARNING' then warning_list.push temp
@@ -29,6 +29,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             @.set 'notice_list',   notice_list
             @.set 'warning_list', warning_list
             @.set 'error_list',   error_list
+            #
+            MC.ta.state_list = { 'notice_list' : notice_list, 'warning_list' : warning_list, 'error_list' : error_list }
 
     }
 

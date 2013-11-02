@@ -857,10 +857,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     if flag is 'SAVE_APP'
                         if req_state is constant.OPS_STATE.OPS_STATE_DONE
-                            ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
+                            ide_event.trigger ide_event.APPEDIT_2_APP, tab_name, data.region
 
                         else if req_state is constant.OPS_STATE.OPS_STATE_FAILED
-                            ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
+                            #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
+                            console.log 'app changed failed'
 
         isInstanceStore : (data) ->
 

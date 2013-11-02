@@ -338,7 +338,7 @@ define [ 'jquery', 'event', 'base_main',
 
             #listen
             ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->
-                console.log 'PROCESS_RUN_SUCCESS'
+                console.log 'PROCESS_RUN_SUCCESS, tab_id = ' + tab_id + ', region_name = ' + region_name
                 #set vo
                 model.set 'app_region_name', region_name
                 #

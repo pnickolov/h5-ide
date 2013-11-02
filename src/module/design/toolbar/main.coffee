@@ -147,9 +147,9 @@ define [ 'jquery',
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx
                 model.reqHandle idx, dag
 
-            ide_event.onLongListen ide_event.APPEDIT_2_APP, ( tab_id ) ->
-                console.log 'APPEDIT_2_APP, tab_id = ' + tab_id
-                view.saveSuccess2App tab_id
+            ide_event.onLongListen ide_event.APPEDIT_2_APP, ( tab_id, region ) ->
+                console.log 'APPEDIT_2_APP, tab_id = ' + tab_id + ', region = ' + region
+                view.saveSuccess2App tab_id, region
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
 

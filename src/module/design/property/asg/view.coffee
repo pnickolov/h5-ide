@@ -243,7 +243,6 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
 
             data.uid            = uid
             data.title          = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
-            data.detail_monitor = this.model.attributes.detail_monitor
 
             this.showScalingPolicy( data )
 
@@ -288,6 +287,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
                     name    : this.model.defaultScalingPolicyName()
 
             data.noSNS = not this.model.attributes.has_sns_topic
+            data.detail_monitor = this.model.attributes.detail_monitor
 
             modal this.policy_template(data), true
 

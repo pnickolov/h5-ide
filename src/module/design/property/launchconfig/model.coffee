@@ -140,10 +140,10 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       if this.get 'cloudwatch'
 
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'enabled'
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = true
 
       else
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'disabled'
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = false
 
 
       null
@@ -234,7 +234,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       resource = MC.canvas_data.component[ uid ].resource
 
       checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
-      checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+      checkbox.monitoring   = "" + resource.InstanceMonitoring is 'true'
 
       watches = []
       asg = null

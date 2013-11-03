@@ -234,7 +234,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       resource = MC.canvas_data.component[ uid ].resource
 
       checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
-      checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+      checkbox.monitoring   = "" + resource.InstanceMonitoring is 'true'
 
       watches = []
       asg = null

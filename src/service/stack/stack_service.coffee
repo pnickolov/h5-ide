@@ -241,7 +241,14 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #private (resolve result to vo )
     resolveInfoResult = ( result ) ->
         #resolve result
-
+        if result[0]
+            jsonString = JSON.stringify( result[0] )
+            if jsonString.indexOf("InstanceMonitoring") != -1
+            #patch for LaunchConfiguration
+                jsonString = jsonString.replace( new RegExp('"InstanceMonitoring":"enabled"',"gm"),'"InstanceMonitoring":true')
+                jsonString = jsonString.replace( new RegExp('"InstanceMonitoring":"disabled"',"gm"),'"InstanceMonitoring":false')
+                result[0] = JSON.parse(jsonString)
+        
         #return vo
         result
 

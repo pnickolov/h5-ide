@@ -140,10 +140,10 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       if this.get 'cloudwatch'
 
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'enabled'
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = true
 
       else
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = 'disabled'
+        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = false
 
 
       null

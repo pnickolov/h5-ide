@@ -4743,13 +4743,14 @@ MC.canvas.event.groupResize = {
 	},
 	mouseup: function (event)
 	{
-		var parent = event.data.parent,
-			target = event.data.target,
-			type = event.data.group_type,
-			group_title = event.data.group_title,
-			direction = event.data.direction,
+		var event_data = event.data,
+			parent = event_data.parent,
+			target = event_data.target,
+			type = event_data.group_type,
+			group_title = event_data.group_title,
+			direction = event_data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
-			canvas_offset = event.data.canvas_offset,
+			canvas_offset = event_data.canvas_offset,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
@@ -4771,7 +4772,7 @@ MC.canvas.event.groupResize = {
 			node_maxY = [],
 			component_size = MC.canvas.COMPONENT_SIZE,
 			group_padding = MC.canvas.GROUP_PADDING,
-			parentGroup = event.data.parentGroup,
+			parentGroup = event_data.parentGroup,
 			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			layout_connection_data,
 			parent_data,
@@ -4819,7 +4820,7 @@ MC.canvas.event.groupResize = {
 			}
 		}
 
-		$.each(event.data.group_child, function (index, item)
+		$.each(event_data.group_child, function (index, item)
 		{
 			if (layout_node_data[ item.id ])
 			{
@@ -4980,7 +4981,7 @@ MC.canvas.event.groupResize = {
 			group_width > group_padding &&
 			group_height > group_padding &&
 
-			event.data.group_child.length === MC.canvas.areaChild(
+			event_data.group_child.length === MC.canvas.areaChild(
 				group_id,
 				type,
 				group_left,
@@ -5065,15 +5066,6 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-			if (type === 'AWS.VPC.Subnet')
-			{
-				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-				event.data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
-
-				event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
-			}
-
 			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
 			MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
 
@@ -5081,35 +5073,32 @@ MC.canvas.event.groupResize = {
 		}
 		else
 		{
-			group_width = Math.round(event.data.originalWidth * scale_ratio / 10);
-			group_height = Math.round(event.data.originalHeight * scale_ratio / 10);
+			group_width = Math.round(event_data.originalWidth * scale_ratio / 10);
+			group_height = Math.round(event_data.originalHeight * scale_ratio / 10);
 
-			parent.attr('transform', event.data.originalTranslate);
+			parent.attr('transform', event_data.originalTranslate);
 
 			target.attr({
 				'x': 0,
 				'y': 0,
-				'width': event.data.originalWidth * scale_ratio,
-				'height': event.data.originalHeight * scale_ratio
+				'width': event_data.originalWidth * scale_ratio,
+				'height': event_data.originalHeight * scale_ratio
 			});
 
 			group_title.attr({
 				'x': label_coordinate[0],
 				'y': label_coordinate[1]
 			});
-
-			if (type === 'AWS.VPC.Subnet')
-			{
-				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-				event.data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
-
-				event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
-			}
 		}
 
 		if (type === 'AWS.VPC.Subnet')
 		{
+			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
+
+			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
+
 			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');
 			node_connections = layout_group_data[ group_id ].connection || {};
@@ -5127,7 +5116,7 @@ MC.canvas.event.groupResize = {
 		}
 
 		// Show label
-		parent.find('.group-label').show();
+		group_title.show();
 
 		$('#overlayer').remove();
 

@@ -140,7 +140,7 @@
 						<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION_D"}}</label>
 
 						{{#if noSNS}}
-						<p {{#unless notify}}class="hide property-warning"{{/unless}} id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>
+						<p class="{{#unless notify}}hide{{/unless}} property-warning" id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>
 						{{/if}}
 					</section>
 				</div>

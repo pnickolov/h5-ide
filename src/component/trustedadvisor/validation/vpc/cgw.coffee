@@ -7,15 +7,16 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 				callback = () ->
 
 			# get current stack all cgw
-			stackCGWIP = stackCGWName = null
+			stackCGWIP = stackCGWName = stackCGWUID = null
 			_.each MC.canvas_data.component, (compObj) ->
 				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 					stackCGWIP = compObj.resource.IpAddress
 					stackCGWName = compObj.name
+					stackCGWUID = compObj.uid
 				null
 
 			# if have cgw in stack
-			if stackCGWIP and stackCGWName
+			if stackCGWIP and stackCGWName and stackCGWUID
 
 				currentRegion = MC.canvas_data.region
 				cgwService.DescribeCustomerGateways {sender: this},
@@ -32,7 +33,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 							_.each cgwObjAry, (cgwObj) ->
 								cgwId = cgwObj.customerGatewayId
 								cgwIP = cgwObj.ipAddress
-								if stackCGWIP isnt cgwIP
+								cgwState = cgwObj.state
+								if stackCGWIP isnt cgwIP and cgwState is 'available'
 									conflictInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_IP_CONFLICT, stackCGWName, stackCGWIP, cgwId, cgwIP
 									checkResult = false
 								null
@@ -44,7 +46,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 						else
 							validResultObj = {
 								level: constant.TA.ERROR,
-								info: conflictInfo
+								info: conflictInfo,
+								uid: stackCGWUID
 							}
 							callback(validResultObj)
 							console.log(validResultObj)
@@ -55,7 +58,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 				tipInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT
 				return {
 					level: constant.TA.ERROR,
-					info: tipInfo
+					info: tipInfo,
+					uid: stackCGWUID
 				}
 
 			else

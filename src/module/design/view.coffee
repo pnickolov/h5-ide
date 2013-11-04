@@ -60,9 +60,13 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
 
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
+            btnDom = $(event.currentTarget)
+            currentText = btnDom.text()
+            btnDom.text('Verifying...')
             #
             MC.ta.validAll()
             #
+            btnDom.text(currentText)
             status = _.last $(event.currentTarget).attr( 'class' ).split '-'
             require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
 

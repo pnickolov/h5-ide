@@ -2321,7 +2321,6 @@ MC.canvas.volume = {
 			}
 			else
 			{
-				console.info(node_volume_data);
 				$.each(node_volume_data, function (index, item)
 				{
 					volume_id = item.replace('#', '');

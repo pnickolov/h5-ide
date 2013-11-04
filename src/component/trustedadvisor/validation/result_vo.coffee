@@ -18,8 +18,9 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 	_genKey = ( key, uid ) ->
 		_hash "#{key}|#{uid}"
 
-	_genRes = ( key, result ) ->
-		_.extend {}, result, {key: _genKey(key, result.uid), type: key}
+	_genRes = ( key, result, uid ) ->
+		uid = uid or result and result.uid or null
+		_.extend {}, result, {key: _genKey(key, uid), type: key}
 
 
 	_del = ( key ) ->
@@ -51,8 +52,8 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 	########## Public Method ##########
 
-	set = ( key, result ) ->
-		res = _genRes key, result
+	set = ( key, result, uid ) ->
+		res = _genRes key, result, uid
 		k = res.key
 
 		if result

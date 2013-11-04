@@ -25,8 +25,8 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
         filename = filename.toLowerCase()
         filename
 
-    _pushResult = ( result, method, filename) ->
-        resultVO.set "#{filename}.#{method}", result
+    _pushResult = ( result, method, filename, uid) ->
+        resultVO.set "#{filename}.#{method}", result, uid
 
     _asyncCallback = ( method, filename ) ->
         ( result ) ->
@@ -49,7 +49,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             _.each validation_main[ filename ], ( func, method ) ->
                 if not _isGlobal filename, method and not _isAsync filename, method
                     result = validation_main[ filename ][ method ]( uid )
-                    _pushResult result, method, filename
+                    _pushResult result, method, filename, uid
 
     _validAsync = ->
         _.each config.asyncList, ( methods, filename ) ->
@@ -86,6 +86,8 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
 
     validRun = ->
+
+        _init()
 
         _validAsync()
 

@@ -691,11 +691,11 @@ define [ 'constant',
 
 			for key, value of MC.canvas_data.component
 
-				# remove instance relate sg rule or sg ( Disabled because we do not support sg rule associated to instance )
-				###
-				if value.type == resource_type.AWS_EC2_SecurityGroup
-					this._removeInstanceFromSG key, component.uid
-				###
+				# # remove instance relate sg rule or sg ( Disabled because we do not support sg rule associated to instance )
+				# ###
+				# if value.type == resource_type.AWS_EC2_SecurityGroup
+				# 	this._removeInstanceFromSG key, component.uid
+				# ###
 
 				# remove instance relate eni
 

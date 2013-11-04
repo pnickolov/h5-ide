@@ -24,7 +24,7 @@ define [ 'event',
                 @$el.html modal_template
                 @$el.find( '#modal-run-stack' ).html Handlebars.compile( template )( @model.attributes )
             #
-            @_clickCurrentTab status
+            # @_clickCurrentTab status
             #
             $( '#btn-confirm' ).attr( 'disabled', true ) if MC.ta.state_list.error_list.length isnt 0
             #

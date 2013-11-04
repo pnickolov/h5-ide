@@ -61,14 +61,15 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
-            currentText = btnDom.text()
+            currentText = 'Verify stack'
             btnDom.text('Verifying...')
-            #
-            MC.ta.validAll()
-            #
-            btnDom.text(currentText)
-            status = _.last $(event.currentTarget).attr( 'class' ).split '-'
-            require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
+
+            setTimeout () ->
+                MC.ta.validAll()
+                btnDom.text(currentText)
+                status = _.last $(event.currentTarget).attr( 'class' ).split '-'
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
+            , 50
 
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type

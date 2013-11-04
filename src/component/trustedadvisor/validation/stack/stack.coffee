@@ -1,5 +1,13 @@
 define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../result_vo' ], ( constant, $, MC, lang, stackService ) ->
 
+	_getCompName = (compUID) ->
+
+		compName = ''
+		compObj = MC.canvas_data.component[compUID]
+		if compObj and compObj.name
+			compName = compObj.name
+		return compName
+
 	verify = (callback) ->
 
 		try
@@ -14,6 +22,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 
 					checkResult = true
 					returnInfo = null
+					errInfoStr = ''
 
 					if !result.is_error
 						validResultObj = result.resolved_data
@@ -22,7 +31,20 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 								callback(null)
 							else
 								checkResult = false
-								returnInfo = validResultObj.cause
+
+								try
+									returnInfo = validResultObj.cause
+									returnInfoObj = JSON.parse(returnInfo)
+
+									# get api call info
+									errCompUID = returnInfoObj.uid
+									errMessage = returnInfoObj.message
+									errCompName = _getCompName(errCompUID)
+
+									errInfoStr = "Resource #{errCompName} has format problem, #{errMessage}"
+
+								catch err
+									errInfoStr = "Stack format validation error"
 						else
 							callback(null)
 					else
@@ -33,7 +55,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 					else
 						validResultObj = {
 							level: constant.TA.ERROR,
-							info: returnInfo
+							info: errInfoStr
 						}
 						callback(validResultObj)
 						console.log(validResultObj)

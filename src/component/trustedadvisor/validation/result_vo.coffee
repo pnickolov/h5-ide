@@ -16,7 +16,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		"k#{hash}"
 
 	_genKey = ( key, uid ) ->
-		_hash "#{key}|uid"
+		_hash "#{key}|#{uid}"
 
 	_genRes = ( key, result ) ->
 		_.extend {}, result, {key: _genKey(key), type: key}

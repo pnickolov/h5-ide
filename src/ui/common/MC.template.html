@@ -1213,30 +1213,34 @@ Additional Notes and Questions
 	<button class="btn btn-blue">Reload</button>
 </div>
 
-<!-- openTabFail -->
-<div class="overlay-content-wrap">
-	<div class="overlay-text">Oops! There has been some issue loading the app.</div>
-	<button class="btn btn-blue">Reload</button>
-</div>
-
 <!-- appStarting -->
 <div class="overlay-content-wrap">
-	starting
+	<div class="overlay-text">Starting your app...</div>
+	<div class="loading-spinner"></div>
 </div>
 
 <!-- appStopping -->
 <div class="overlay-content-wrap">
-	stopping
+	<div class="overlay-text">Stopping your app...</div>
+	<div class="loading-spinner"></div>
 </div>
 
 <!-- appTerminating -->
 <div class="overlay-content-wrap">
-	terminating
+	<div class="overlay-text">Terminating your app...</div>
+	<div class="loading-spinner"></div>
 </div>
 
 <!-- appUpdating -->
 <div class="overlay-content-wrap">
-	updating
+	<div class="overlay-text">Updating your app...</div>
+	<div class="progress">
+		<div class="bar" id="progress_bar" style="width: 25%;"></div>
+	</div>
+	<p class="process-info">
+		<span><b class="num" id="progress_num">11</b> of</span>
+		<span><b class="total" id="progress_total">25</b> tasks</span>
+	</p>
 </div>
 
 <!-- appChangedfail -->

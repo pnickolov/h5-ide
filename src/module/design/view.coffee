@@ -59,7 +59,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 MC.data.current_tab_type = null
             null
 
-        showDesignOverlay : ( state ) ->
+        showDesignOverlay : ( state, tab_id, region ) ->
             console.log 'showDesignOverlay, state = ' + state
 
             # state include:
@@ -79,6 +79,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
                 when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating()
                 when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
+                when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
 
             if state is 'OPEN_TAB_FAIL' and MC.data.current_tab_id.split('-')[0] is 'app'
                 $( '#btn-fail-reload' ).one 'click', ( event ) ->
@@ -87,11 +88,15 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                     #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
                     #
                     null
+
             else if state is 'CHANGED_FAIL'
                 $( '#btn-changedfail' ).one 'click', ( event ) ->
                     ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
+            else if state is 'UPDATING_SUCCESS'
+                $( '#btn-updated-success' ).one 'click', ( event ) ->
+                    ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
 
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'

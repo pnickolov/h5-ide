@@ -6905,7 +6905,17 @@ a.action-link:hover {
 }
 
 /** Design Module Overlay **/
-.design-overlay {
+
+#overlay-panel {
+	opacity: 0;
+	-webkit-transition: opacity .2s;
+	-moz-transition: opacity .2s;
+	-ms-transition: opacity .2s;
+	-o-transition: opacity .2s;
+	transition: opacity .2s;
+}
+
+#overlay-panel.design-overlay {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -6914,6 +6924,7 @@ a.action-link:hover {
 	z-index: 5;
 	background-color: rgba(0, 0, 0, 0.8);
 	border-top: 1px solid #181818;
+	opacity: 1;
 }
 
 .overlay-content-wrap {

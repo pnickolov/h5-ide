@@ -552,12 +552,12 @@ define [ 'MC', 'event',
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
 
-            # 2. Hide Resource Panel and call canvas_layout.listen()
-            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
-
-            # 3. Toggle Toolbar Button
+            # 2. Toggle Toolbar Button
             if target then me = target.data else me = this
             me.trigger "UPDATE_APP", false
+
+            # 3. restore canvas to app model
+            ide_event.trigger ide_event.RESTORE_CANVAS if target
 
             # 4. Trigger OPEN_PROPERTY
             ide_event.trigger ide_event.OPEN_PROPERTY
@@ -565,12 +565,12 @@ define [ 'MC', 'event',
             # 5. Close modal
             modal.close()
 
-            # 6. restore canvas to app model
-            ide_event.trigger ide_event.RESTORE_CANVAS if target
-
-            # 7. delete MC.process and MC.data.process
+            # 6. delete MC.process and MC.data.process
             delete MC.process[ MC.data.current_tab_id ]
             delete MC.data.process[ MC.data.current_tab_id ]
+
+            # 7. Hide Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
 
             null
 

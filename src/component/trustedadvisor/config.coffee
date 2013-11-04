@@ -2,7 +2,7 @@ define({
 
     validDebug: ''
 
-    syncTimeout: 1
+    syncTimeout: 10000
 
     componentTypeToFileMap:
         'AWS.AutoScaling.Group'     : 'asg'

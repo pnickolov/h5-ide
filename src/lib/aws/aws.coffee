@@ -736,7 +736,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     if item.number > 1 and uid of data.layout.component.node
                         for inst_uid in data.layout.component.node[uid].instanceList
                             inst_item = data.component[inst_uid]
-                            instance_list.push {'name':inst_item.name, 'instance_id':item.resource.InstanceId}
+                            instance_list.push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
 
                     else
                         # filter server group instance

@@ -4,6 +4,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 		if MC.aws.subnet.isAbleConnectToELB uid
 			return null
 
+		subnet = MC.canvas_data.component[ subnetUid ]
 		tipInfo = sprintf lang.ide.TA_INFO_ERROR_CIDR_ERROR_CONNECT_TO_ELB, subnet.name
 
 		# return

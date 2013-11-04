@@ -792,8 +792,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                             me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
-                    # remove request from req_map
-                    if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
+                        # remove request from req_map
                         delete req_map[req_id]
 
         updateAppState : (req_state, flag, data) ->

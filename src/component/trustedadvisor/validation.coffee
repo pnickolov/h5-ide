@@ -115,7 +115,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _init()
 
-        #validAll()
+        validAll()
 
         _validAsync()
 

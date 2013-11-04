@@ -80,6 +80,19 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating()
                 when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
 
+            if state is 'OPEN_TAB_FAIL' and MC.data.current_tab_id.split('-')[0] is 'app'
+                $( '#btn-fail-reload' ).one 'click', ( event ) ->
+                    #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                    #test123
+                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
+                    #
+                    null
+            else if state is 'CHANGED_FAIL'
+                $( '#btn-changedfail' ).one 'click', ( event ) ->
+                    ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
+                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+
+
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'
 
@@ -90,6 +103,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
 
             # 2. remove html
             $item.empty() if $.trim( $item.html() ) isnt ''
+
+            null
 
     }
 

@@ -85,6 +85,7 @@ define [ 'underscore', 'backbone' ], () ->
         #appedit
         RESTORE_CANVAS         : 'RESTORE_CANVAS'
         APPEDIT_2_APP          : 'APPEDIT_2_APP'
+        APPEDIT_UPDATE_ERROR   : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event
         NEED_IGW               : 'NEED_IGW'

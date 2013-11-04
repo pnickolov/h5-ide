@@ -760,6 +760,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
                                 when 'SAVE_APP'
+                                    flag_list.is_updated = true
                                     if id of item_state_map
                                         if item_state_map[id].is_running
                                             me.setFlag id, 'RUNNING_APP', region

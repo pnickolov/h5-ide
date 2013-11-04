@@ -96,11 +96,13 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
                         if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                        else if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_updated
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
                         else if type is 'OLD_APP'
                             ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY                                  if MC.data.process[ tab_id ].flag_list.is_done
-                            if MC.data.process[ tab_id ].appedit2app
-                                ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
-                                MC.data.process[ tab_id ].appedit2app = null
+                            #if MC.data.process[ tab_id ].appedit2app
+                            #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
+                            #    MC.data.process[ tab_id ].appedit2app = null
                         else if type is 'OPEN_APP'
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                 #
@@ -130,8 +132,14 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 #is_manual = true
                 model.getAppResourcesService region_name, app_id, is_manual
 
-                # update app data from mongo
-                model.updateAppTab region_name, app_id
+                setTimeout ->
+                    #app update fail
+                    if MC.data.process[app_id] and MC.data.process[ app_id ].flag_list.is_failed
+                        return
+
+                    # update app data from mongo
+                    model.updateAppTab region_name, app_id
+                , 200
 
                 null
 
@@ -149,6 +157,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 # changed fail
                 if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                # update success
+                else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type

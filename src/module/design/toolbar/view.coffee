@@ -568,14 +568,18 @@ define [ 'MC', 'event',
             # 6. restore canvas to app model
             ide_event.trigger ide_event.RESTORE_CANVAS if target
 
+            # 7. delete MC.process and MC.data.process
+            delete MC.process[ MC.data.current_tab_id ]
+            delete MC.data.process[ MC.data.current_tab_id ]
+
             null
 
         saveSuccess2App : ( tab_id, region ) ->
             console.log 'saveSuccess2App, tab_id = ' + tab_id + ', region = ' + region
 
-            if tab_id isnt MC.data.current_tab_id
-                MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
-                return
+            #if tab_id isnt MC.data.current_tab_id
+            #    MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
+            #    return
 
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
@@ -583,17 +587,9 @@ define [ 'MC', 'event',
             # 2. push PROCESS_RUN_SUCCESS refresh current tab
             ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
 
-            # 3. Hide Resource Panel and call canvas_layout.listen()
-            #ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
-
-            # 4. Toggle Toolbar Button
-            #@trigger "UPDATE_APP", false
-
-            # 5. Trigger OPEN_PROPERTY
-            #ide_event.trigger ide_event.OPEN_PROPERTY
-
-            # 6. update MC.data.origin_canvas_data
-            #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+            # 3. delete MC.process and MC.data.process
+            delete MC.process[ MC.data.current_tab_id ]
+            delete MC.data.process[ MC.data.current_tab_id ]
 
             null
 

@@ -225,7 +225,7 @@ var Tabbar = {
 
 		tab_item_width = tab_item_width > 220 ? 220 : tab_item_width;
 		tabs.css('width', tab_item_width);
-		tabs_link.css('width', tab_item_width - 25);
+		tabs_link.css('width', tab_item_width - 30);
 
 		return true;
 	}

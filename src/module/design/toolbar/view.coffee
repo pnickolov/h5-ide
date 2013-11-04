@@ -577,9 +577,9 @@ define [ 'MC', 'event',
         saveSuccess2App : ( tab_id, region ) ->
             console.log 'saveSuccess2App, tab_id = ' + tab_id + ', region = ' + region
 
-            if tab_id isnt MC.data.current_tab_id
-                MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
-                return
+            #if tab_id isnt MC.data.current_tab_id
+            #    MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
+            #    return
 
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'

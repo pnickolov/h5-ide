@@ -687,28 +687,6 @@ textarea {
 	opacity : 0.3;
 }
 
-/*.property-content .radio input:disabled + label,
-.property-content .radio input[disabled] + label  {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .radio input:disabled + label:after,
-.property-content .radio input[disabled] + label:after {
-	background: #484343;
-}
-
-.property-content .checkbox input:disabled + label,
-.property-content .checkbox input[disabled] + label {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .checkbox input:disabled + label:after,
-.property-content .checkbox input[disabled] + label:after {
-	background: #484343;
-}*/
-
 .property-content .checkbox label,
 .property-content .radio label {
 	background: #fefefe;
@@ -2208,7 +2186,7 @@ input.parsley-error {
 	/*background-color: rgba(247,74,72,.2);*/
 	padding          : 5px;
 	color            : #fff;
-	z-index          : 60;
+	z-index          : 99;
 	border-radius    : 4px;
 	min-width        : 150px !important;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 1px 1px 5px rgba(0,0,0,.4);

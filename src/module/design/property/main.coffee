@@ -95,7 +95,7 @@ define [ 'event',
 				view.afterLoad()
 			catch error
 				### env:dev ###
-				console.error "Cannot open property panel", $.extend {}, error
+				throw error
 				### env:dev:end ###
 
 			null

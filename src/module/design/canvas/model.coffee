@@ -245,7 +245,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 						event.preventDefault()
 
 				notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_comp.name, tgt_az
-
+			else
+				if asg_az and src_asg_uid
+					MC.aws.asg.updateAttachedELBAZ(src_asg_uid, [tgt_az])
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->

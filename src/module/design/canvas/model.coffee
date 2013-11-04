@@ -1,14 +1,15 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'event', 'i18n!nls/lang.js',
-		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event, lang ) ->
+define [ 'constant',
+         'event',
+         'lib/forge/app',
+         'i18n!nls/lang.js',
+'backbone', 'UI.modal' ], ( constant, ide_event, forge_app, lang ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
 		initialize : ->
-			#listen
-
 			resource_type = constant.AWS_RESOURCE_TYPE
 
 			resource_map = {
@@ -264,7 +265,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 						event.preventDefault()
 
 				notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_comp.name, tgt_az
-
+			else
+				if asg_az and src_asg_uid
+					MC.aws.asg.updateAttachedELBAZ(src_asg_uid, [tgt_az])
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->
@@ -475,6 +478,21 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 		deleteObject : ( event, option ) ->
 
+			# In AppEdit mode, we use a different method collection to deal with deleting object.
+			# See if we need to hackjack the deleteResMap / beforeDeleteResMap here
+			isAppEdit = MC.canvas.getState() is "appedit"
+			hijack = isAppEdit and forge_app.existing_app_resource( option.id ) is true
+
+			if hijack
+				deleteMapBU       = this.deleteResMap
+				beforeDeleteMapBU = this.beforeDeleteMap
+				this.deleteResMap       = this.deleteResAppEditMap
+				this.beforeDeleteResMap = this.beforeDeleteAppEditMap
+
+			# Default to not allow delete things in app
+			if isAppEdit
+				result = false
+
 			option = $.extend {}, option
 
 			component = MC.canvas_data.component[ option.id ] ||
@@ -532,6 +550,12 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			else if event && event.preventDefault
 				event.preventDefault()
+
+
+			# Restore hijacked Maps
+			if hijack
+				this.deleteResMap    = deleteMapBU
+				this.beforeDeleteMap = beforeDeleteMapBU
 
 			result
 
@@ -667,13 +691,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			for key, value of MC.canvas_data.component
 
-				# remove instance relate sg rule or sg
+				# remove instance relate sg rule or sg ( Disabled because we do not support sg rule associated to instance )
+				###
 				if value.type == resource_type.AWS_EC2_SecurityGroup
 					this._removeInstanceFromSG key, component.uid
+				###
 
 				# remove instance relate eni
 
-				else if value.type == resource_type.AWS_VPC_NetworkInterface
+				if value.type == resource_type.AWS_VPC_NetworkInterface
 					if MC.extractID( value.resource.Attachment.InstanceId ) == component.uid
 
 						# reset eni after disconnect instance
@@ -707,6 +733,60 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				MC.aws.elb.removeAllELBForInstance(component.uid)
 
 			null
+
+		deleteR_AE_Instance : ( component ) ->
+
+			groupUID = component.uid
+			groupMap = {}
+
+			rtbResArr = []
+
+			deleteUID = []
+
+			# Find out instance in server group
+			for comp_uid, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if comp.serverGroupUid is groupUID
+						groupMap[ comp_uid ] = true
+						rtbResArr.push comp_uid
+						deleteUID.push comp_uid
+
+			eniMap = {}
+			for comp_uid, comp of MC.canvas_data.component
+
+				# Related Eni
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+					instance_uid = MC.extractID comp.reseource.Attachment.InstanceId
+					if groupMap[ instance_uid ]
+						eniMap[ comp_uid ] = true
+						rtbResArr.push comp_uid
+						deleteUID.push comp_uid
+
+				# Related Volume
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+					instance_uid = MC.extractID comp.resource.AttachmentSet.InstanceId
+					if groupMap[ instance_uid ]
+						deleteUID.push comp_uid
+
+			# EIP, RTB
+			for comp_uid, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+					eni_uid = MC.extractID comp.resource.NetworkInterfaceId
+					deleteUID.push comp_uid
+
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+					for rmID in rtbResArr
+						this._removeFromRTB comp_uid, rmID
+
+			# Remove resource
+			for comp_uid in deleteUID
+				MC.canvas.remove $("#" + comp_uid)[0]
+				delete MC.canvas_data.component[ comp_uid ]
+
+
+			this.trigger "DELETE_OBJECT_COMPLETE"
+			# Return false to do nothing, since we have done them already
+			false
 
 		deleteR_Eni : ( component ) ->
 			for key, value of MC.canvas_data.component
@@ -915,9 +995,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUID = portMap['elb-assoc']
 				subnetUID = portMap['subnet-assoc-in']
-				if !MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
-					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
-				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				res = MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
+				if res is true
+					MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				else
+					return { error : res }
 
 			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
 
@@ -1532,11 +1614,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						azName = MC.canvas_data.component[uid].resource.Placement.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(azName)
+						MC.aws.subnet.updateAllENIIPList(azName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_VPC_NetworkInterface
 
@@ -1546,11 +1628,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						eniAZName = MC.canvas_data.component[uid].resource.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(eniAZName)
+						MC.aws.subnet.updateAllENIIPList(eniAZName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)
@@ -2052,6 +2134,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				MC.canvas.update uid,'eip','eip_status', 'off'
 
 		askToAddIGW : ( component ) ->
+
+			if MC.canvas.getState() is "appedit"
+				return
 
 			resource_type = constant.AWS_RESOURCE_TYPE
 

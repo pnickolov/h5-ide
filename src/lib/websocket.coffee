@@ -14,6 +14,10 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 							refresh : notifyFunc = (notification) ->
 						}
 
+		Meteor._debug = ( message ) ->
+
+			console.debug.call console, message
+
 		if Meteor.isClient
 
 			Meteor.default_connection = Meteor.connect(host, true)

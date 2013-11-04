@@ -395,6 +395,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			else
 				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false)
 
+
 		# restore canvas comps
 		comp_data = $.extend( true, {}, MC.canvas_data.component )
 		MC.canvas_data.component = temp_comps
@@ -467,7 +468,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				if not v_list
 
-					v_list =  [ uid ]
+					v_list = []
+					#v_list =  [ uid ]
 
 				if v_uid in v_list and v_uid not in vol_list
 
@@ -628,9 +630,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 					e_list = []
 
-				if e_list.length is 0
+				#if e_list.length is 0
 
-					e_list = [eip_uid]
+				#	e_list = [eip_uid]
 
 				if eip_uid in e_list and eip_uid not in eip_list
 

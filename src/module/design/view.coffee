@@ -59,7 +59,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 MC.data.current_tab_type = null
             null
 
-        showDesignOverlay : ( state, tab_id, region ) ->
+        showDesignOverlay : ( state ) ->
             console.log 'showDesignOverlay, state = ' + state
 
             # state include:
@@ -77,7 +77,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
                 when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
                 when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
-                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating()
+                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.process[ MC.data.current_tab_id ].flag_list.dones }
                 when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
                 when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
 
@@ -97,6 +97,14 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
             else if state is 'UPDATING_SUCCESS'
                 $( '#btn-updated-success' ).one 'click', ( event ) ->
                     ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
+
+            else if state is constant.APP_STATE.APP_STATE_UPDATING and MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
+                $( '.overlay-content-wrap' ).find( '.progress' ).hide()
+                $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
+
+            else if state is constant.APP_STATE.APP_STATE_UPDATING and MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
+                $( '.overlay-content-wrap' ).find( '.progress' ).show()
+                $( '.overlay-content-wrap' ).find( '.process-info' ).show()
 
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'

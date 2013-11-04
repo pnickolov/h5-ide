@@ -84,8 +84,8 @@
 					<a href="#" class="editbtn">{{ i18n "PROP_INSTANCE_NEW_KP" }}</a>
 					<div class="edit">
 						<button class="btn btn-blue">OK</button>
-						<span class="fitfloat">
-							<input class="input" type="text" placeholder="Key Pair Name" />
+						<span class="fitfloat" data-bind="true">
+							<input class="input" type="text" placeholder="Key Pair Name" data-ignore="true"/>
 						</span>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 			</div>
 			<label for="property-instance-enable-cloudwatch" >{{ i18n "PROP_INSTANCE_CW_ENABLED" }}</label>
 
-			<p class="hide property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
 		</section>
 		<section class="property-control-group">
 			<label class="left" for="property-instance-user-data">{{ i18n "PROP_INSTANCE_USER_DATA" }}</label>

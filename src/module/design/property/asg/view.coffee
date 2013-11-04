@@ -240,7 +240,6 @@ define [ '../base/view',
 
             data.uid            = uid
             data.title          = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
-            data.detail_monitor = this.model.attributes.detail_monitor
 
             this.showScalingPolicy( data )
 
@@ -285,6 +284,7 @@ define [ '../base/view',
                     name    : this.model.defaultScalingPolicyName()
 
             data.noSNS = not this.model.attributes.has_sns_topic
+            data.detail_monitor = this.model.attributes.detail_monitor
 
             modal policy_template(data), true
 

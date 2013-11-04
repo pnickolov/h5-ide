@@ -96,12 +96,13 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     setEbsOptimized : ( value )->
       uid = this.get 'uid'
       MC.canvas_data.component[ uid ].resource.EbsOptimized = value
+
       null
 
     setCloudWatch : ( value ) ->
 
       uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = if value then 'enabled' else 'disabled'
+      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = value
       null
 
     setUserData : ( value ) ->
@@ -147,7 +148,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       resource = MC.canvas_data.component[ uid ].resource
 
       checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
-      checkbox.monitoring   = resource.InstanceMonitoring is 'enabled'
+      checkbox.monitoring   = "" + resource.InstanceMonitoring is 'true'
 
       watches = []
       asg = null

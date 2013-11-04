@@ -2510,11 +2510,12 @@ MC.canvas.volume = {
 				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
-				volume_id = $('#instance_volume_list').find('.selected').attr('id');
+				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
+				volumeList;
 
 			target_volume_data.splice(
 				target_volume_data.indexOf(
-					volume_id
+					'#' + volume_id
 				), 1
 			);
 
@@ -2526,6 +2527,18 @@ MC.canvas.volume = {
 
 			if (target_node.data('class') === 'AWS.EC2.Instance')
 			{
+				volumeList = MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+
+				if (volumeList)
+				{
+					$.each(volumeList, function (index, value)
+					{
+						MC.canvas.data.delete('component.' + value);
+					});
+
+					delete MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+				}
+
 				MC.canvas.data.delete('component.' + volume_id);
 			}
 

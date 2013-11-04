@@ -54,7 +54,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
                     #update key
                     key = result.resolved_data.key
@@ -111,7 +111,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
 
                     ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
 
@@ -154,7 +154,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'DUPLICATE_STACK', [new_id]
 
                     # open the duplicated stack when using toolbar
                     # if is_tab
@@ -183,6 +183,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'REMOVE_STACK', [id]
                     ide_event.trigger ide_event.CLOSE_TAB, name, id
 
                     me.setFlag id, 'DELETE_STACK'
@@ -795,7 +796,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
                         # update app list
-                        ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                        app_list = []
+                        if id.indexOf('app-') == 0
+                            app_list.push id
+
+                        if app_list
+                            ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
+                        else
+                            ide_event.trigger ide_event.UPDATE_APP_LIST
+
                         # update region resource
                         ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 

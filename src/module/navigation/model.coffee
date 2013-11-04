@@ -49,8 +49,15 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 return if result.is_error
 
-                #
-                app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                ids = result.param[4]
+                app_list = []
+
+                if ids
+                    new_app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                    app_list = _.union(app_list, new_app_list)
+
+                else
+                    app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log app_list
 
@@ -66,8 +73,15 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 return if result.is_error
 
-                #
-                stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                ids = result.param[4]
+                stack_list = []
+
+                if ids
+                    new_stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
+                    stack_list = _.union(stack_list, new_stack_list)
+
+                else
+                    stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
 
                 console.log stack_list
 
@@ -115,21 +129,55 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             null
 
         #app list
-        appListService : ->
+        appListService : (flag, ids) ->
 
             me = this
 
             #get service(model)
-            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            if flag and ids and flag is 'TERMINATE_APP'     # delete item from list when terminated app
+                new_app_list = []
+                app_list = me.get 'app_list'
+
+                for rv in app_list
+                    region_list = []
+                    for item in rv.region_name_group
+                        if item.id in ids
+                            continue
+
+                        region_list.push item
+
+                    new_app_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
+
+                me.set 'app_list', new_app_list
+
+            else
+                app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
 
 
         #stack list
-        stackListService : ->
+        stackListService : (flag, ids) ->
 
             me = this
 
             #get service(model)
-            stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
+            if flag and ids and flag is 'REMOVE_STACK'
+                new_stack_list = []
+                stack_list = me.get 'stack_list'
+
+                for rv in stack_list
+                    region_list = []
+                    for item in rv.region_name_group
+                        if item.id in ids
+                            continue
+
+                        region_list.push item
+
+                    new_stack_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
+
+                me.set 'stack_list', new_stack_list
+
+            else
+                stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
 
         #region empty list

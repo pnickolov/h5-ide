@@ -136,6 +136,10 @@ define [ 'MC', 'event',
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
                     console.log 'clickRunIcon'
 
+                    # disable button
+                    $('#btn-confirm').attr 'disabled', true
+                    $('.modal-close').attr 'disabled', true
+
                     app_name = $('.modal-input-value').val()
 
                     #check app name

@@ -1215,25 +1215,25 @@ Additional Notes and Questions
 
 <!-- appStarting -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Starting your app...</div>
+	<div class="overlay-text">Starting app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
 <!-- appStopping -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Stopping your app...</div>
+	<div class="overlay-text">Stopping app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
 <!-- appTerminating -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Terminating your app...</div>
+	<div class="overlay-text">Terminating app...</div>
 	<div class="loading-spinner"></div>
 </div>
 
 <!-- appUpdating -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Updating your app...</div>
+	<div class="overlay-text">Updating app...</div>
 	<div class="progress">
 		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
 	</div>
@@ -1251,7 +1251,12 @@ Additional Notes and Questions
 
 <!-- appChangedfail -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Oops! There has been some issue loading the app.</div>
-	<button class="btn btn-blue" id="btn-changedfail">Changed fail</button>
+	<div class="overlay-text">Oops! The app failed to start/stop/terminate.</div>
+	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+	<div class="result-error-info">
+		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+		<p class="detail">error details</p>
+	</div>
+	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
 

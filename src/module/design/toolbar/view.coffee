@@ -530,7 +530,7 @@ define [ 'MC', 'event',
                             $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
 
                 else
-                    notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
+                    #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal
                     @_return2App()
 

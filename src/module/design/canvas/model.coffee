@@ -264,7 +264,9 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 						event.preventDefault()
 
 				notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, asg_comp.name, tgt_az
-
+			else
+				if asg_az and src_asg_uid
+					MC.aws.asg.updateAttachedELBAZ(src_asg_uid, [tgt_az])
 
 		#change node from one parent to another parent
 		changeParent : ( event, src_node, tgt_parent ) ->
@@ -915,9 +917,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUID = portMap['elb-assoc']
 				subnetUID = portMap['subnet-assoc-in']
-				if !MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
-					return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_INSTANCE_LINE }
-				MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				res = MC.aws.subnet.canDeleteSubnetToELBConnection( elbUID, subnetUID )
+				if res is true
+					MC.aws.elb.removeSubnetFromELB elbUID, subnetUID
+				else
+					return { error : res }
 
 			else if portMap['launchconfig-sg'] and portMap['elb-sg-out']
 
@@ -1532,11 +1536,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						azName = MC.canvas_data.component[uid].resource.Placement.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(azName)
+						MC.aws.subnet.updateAllENIIPList(azName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_VPC_NetworkInterface
 
@@ -1546,11 +1550,11 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 					if defaultVPC
 						eniAZName = MC.canvas_data.component[uid].resource.AvailabilityZone
-						MC.aws.subnet.updateAllENIIPList(eniAZName)
+						MC.aws.subnet.updateAllENIIPList(eniAZName, true)
 					else
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
-						MC.aws.subnet.updateAllENIIPList(subnetUID)
+						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
 				when resource_type.AWS_ELB
 					MC.aws.elb.init(uid)

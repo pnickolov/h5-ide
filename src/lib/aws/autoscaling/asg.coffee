@@ -91,9 +91,24 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		result
 
+	updateAttachedELBAZ = (targetAsgUID, azAry) ->
+
+		asgComp = MC.canvas_data.component[targetAsgUID]
+		attachedELBAry = asgComp.resource.LoadBalancerNames
+		_.each attachedELBAry, (elbUIDRef) ->
+			elbUID = elbUIDRef.split('.')[0].slice(1)
+			elbComp = MC.canvas_data.component[elbUID]
+
+			# update AZ field
+			elbAZAry = elbComp.resource.AvailabilityZones
+			elbAZAryLength = elbAZAry.length
+
+			MC.canvas_data.component[elbUID].resource.AvailabilityZones = _.union(elbAZAry, azAry)
+
+			null
 
 	#public
 	getAZofASGNode      : getAZofASGNode
 	getASGInAZ          : getASGInAZ
 	updateASGCount      : updateASGCount
-
+	updateAttachedELBAZ : updateAttachedELBAZ

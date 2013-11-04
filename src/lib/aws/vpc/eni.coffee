@@ -1,4 +1,4 @@
-define [ 'MC' ], ( MC ) ->
+define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	#private
 	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
@@ -31,14 +31,19 @@ define [ 'MC' ], ( MC ) ->
 
 		allIPAry = []
 		availableIPCount = 0
-		_.each [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1], (value) ->
+		readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
+		readyAssignAryLength = readyAssignAry.length
+		$.each readyAssignAry, (idx, value) ->
 			newIPBinStr = ipAddrBinPrefixStr + _addZeroToLeftStr(value.toString(2), prefix)
-
 			isAvailableIP = true
+			if idx in [0, 1, 2, 3]
+				isAvailableIP = false
+			if idx is readyAssignAryLength - 1
+				isAvailableIP = false
 			newIPAry = _.map [0, 8, 16, 24], (value) ->
 				newIPNum = (parseInt newIPBinStr.slice(value, value + 8), 2)
-				if value is 24 and (newIPNum in [0, 1, 2, 3, 255])
-					isAvailableIP = false
+				# if value is 24 and (newIPNum in [0, 1, 2, 3, 255])
+				# 	isAvailableIP = false
 				return newIPNum
 
 			newIPStr = newIPAry.join('.')
@@ -365,6 +370,34 @@ define [ 'MC' ], ( MC ) ->
 					compIp.AutoAssign = false
 			null
 
+	haveIPConflictWithOtherENI = (ipAddr, eniUID) ->
+
+		conflict = false
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				ipAry = compObj.resource.PrivateIpAddressSet
+				_.each ipAry, (ipObj, innerIdx) ->
+					if compObj.uid isnt eniUID
+						if ipObj.AutoAssign in [false, 'false']
+							currentIPAddr = ipObj.PrivateIpAddress
+							if currentIPAddr is ipAddr
+								conflict = true
+						null
+			null
+		return conflict
+
+	updateAllInstanceENIIPToAutoAssign = (instanceUID) ->
+
+		instanceUIDRef = '@' + instanceUID + '.resource.InstanceId'
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+				if compObj.resource.Attachment.InstanceId is instanceUIDRef
+					eniIPAry = compObj.resource.PrivateIpAddressSet
+					newENIIPAry = _.map eniIPAry, (ipObj) ->
+						ipObj.AutoAssign = true
+						return ipObj
+					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
+			null
 
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
@@ -381,3 +414,5 @@ define [ 'MC' ], ( MC ) ->
 	reduceIPNumByInstanceType : reduceIPNumByInstanceType
 	reduceAllENIIPList : reduceAllENIIPList
 	getAllNoAutoAssignIPInCIDR : getAllNoAutoAssignIPInCIDR
+	haveIPConflictWithOtherENI : haveIPConflictWithOtherENI
+	updateAllInstanceENIIPToAutoAssign : updateAllInstanceENIIPToAutoAssign

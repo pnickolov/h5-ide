@@ -109,7 +109,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
       lc_uid  = MC.extractID( component.resource.LaunchConfigurationName )
       if lc_uid
         lc_comp = MC.canvas_data.component[ lc_uid ]
-      @set 'detail_monitor', if lc_comp then lc_comp.resource.InstanceMonitoring is 'enabled' else false
+      @set 'detail_monitor', if lc_comp then "" + lc_comp.resource.InstanceMonitoring is 'true' else false
 
       @set 'notification_type', nc_array
       @set 'policies', policies

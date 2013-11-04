@@ -395,6 +395,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			else
 				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false)
 
+
 		# restore canvas comps
 		comp_data = $.extend( true, {}, MC.canvas_data.component )
 		MC.canvas_data.component = temp_comps

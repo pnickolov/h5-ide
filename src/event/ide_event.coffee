@@ -68,6 +68,8 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
         UPDATE_TA_MODAL        : 'UPDATE_TA_MODAL'
         UNLOAD_TA_MODAL        : 'UNLOAD_TA_MODAL'
+        TA_SYNC_START          : 'TA_SYNC_START'
+        TA_SYNC_FINISH          : 'TA_SYNC_FINISH'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'

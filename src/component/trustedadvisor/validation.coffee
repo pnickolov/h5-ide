@@ -28,16 +28,34 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     _pushResult = ( result, method, filename, uid) ->
         resultVO.set "#{filename}.#{method}", result, uid
 
-    _asyncCallback = ( method, filename ) ->
+    _syncStart = () ->
+        ide_event.trigger ide_event.TA_SYNC_START
+
+    _genSyncFinish = ( times ) ->
+        _.after times, () ->
+            ide_event.trigger ide_event.TA_SYNC_FINISH
+            console.debug resultVO.result()
+
+    _asyncCallback = ( method, filename, done ) ->
+        hasRun = false
+        _.delay () ->
+            if not hasRun
+                hasRun = true
+                _pushResult null, method, filename
+                done()
+        , config.syncTimeout
+
         ( result ) ->
-            _pushResult result, method, filename
+            if not hasRun
+                hasRun = true
+                _pushResult result, method, filename
+                done()
 
 
     ########## Sub Validation Method ##########
 
     _validGlobal = () ->
-        _.each config.
-        globalList, ( methods, filename ) ->
+        _.each config.globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 result = validation_main[ filename ][ method ]()
                 _pushResult result, method, filename
@@ -52,9 +70,17 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     _pushResult result, method, filename, uid
 
     _validAsync = ->
+        finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
+            console.debug memo, arr
+            return memo + arr.length
+        ,0
+
+        _syncStart()
+        syncFinish = _genSyncFinish( finishTimes )
+
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]( _asyncCallback(method, filename) )
+                result = validation_main[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
                 _pushResult result, method, filename
 
     ########## Public Method ##########
@@ -89,9 +115,9 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _init()
 
-        _validAsync()
+        #validAll()
 
-        validAll()
+        _validAsync()
 
         resultVO.result()
 

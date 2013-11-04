@@ -2,6 +2,8 @@ define({
 
     validDebug: ''
 
+    syncTimeout: 1
+
     componentTypeToFileMap:
         'AWS.AutoScaling.Group'     : 'asg'
         'AWS.EC2.SecurityGroup'     : 'sg'

@@ -21,6 +21,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
+			uid: elbUID
 
 	isHaveInstanceAttached = (elbUID) ->
 
@@ -48,6 +49,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
+			uid: elbUID
 
 	isAttachELBToMultiAZ = (elbUID) ->
 
@@ -63,6 +65,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# return
 			level: constant.TA.WARNING
 			info: tipInfo
+			uid: elbUID
 
 	isRedirectPortHttpsToHttp = (elbUID) ->
 
@@ -87,6 +90,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo
+			uid: elbUID
 
 	# isRegisteredInstanceEvenlyAcrossAZ = (elbUID) ->
 

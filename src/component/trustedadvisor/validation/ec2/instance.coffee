@@ -33,6 +33,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo
+			uid: instanceUID
 
 	_getSGCompRuleLength = (sgUID) ->
 		sgComp = MC.canvas_data.component[sgUID]
@@ -92,7 +93,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
 				return {
 					level: constant.TA.WARNING,
-					info: tipInfo
+					info: tipInfo,
+					uid: instanceUID
 				}
 
 		else
@@ -119,7 +121,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				tipInfo = sprintf lang.ide.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
 				return {
 					level: constant.TA.WARNING,
-					info: tipInfo
+					info: tipInfo,
+					uid: instanceUID
 				}
 
 		return null

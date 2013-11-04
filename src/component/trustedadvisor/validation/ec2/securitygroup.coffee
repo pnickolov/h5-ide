@@ -31,7 +31,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 100
 				return {
 					level: constant.TA.WARNING,
-					info: tipInfo
+					info: tipInfo,
+					uid: sgUID
 				}
 
 		return null
@@ -80,7 +81,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE, sgName
 			return {
 				level: constant.TA.WARNING,
-				info: tipInfo
+				info: tipInfo,
+				uid: sgUID
 			}
 
 		return null
@@ -106,7 +108,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT, sgName
 			return {
 				level: constant.TA.WARNING,
-				info: tipInfo
+				info: tipInfo,
+				uid: sgUID
 			}
 		return null
 
@@ -129,7 +132,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_SG_RULE_USING_PORT_22, sgName
 			return {
 				level: constant.TA.NOTICE,
-				info: tipInfo
+				info: tipInfo,
+				uid: sgUID
 			}
 		return null
 
@@ -150,7 +154,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND, sgName
 			return {
 				level: constant.TA.WARNING,
-				info: tipInfo
+				info: tipInfo,
+				uid: sgUID
 			}
 		return null
 

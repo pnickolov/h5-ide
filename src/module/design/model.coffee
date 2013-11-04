@@ -139,7 +139,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         updateAppTabOriginDate : ( data, tab_id ) ->
             console.log 'updateAppTabOriginDate'
-            MC.tab[ tab_id ].origin_canvas_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+            MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
             null
 
         deleteTab    : ( tab_id ) ->

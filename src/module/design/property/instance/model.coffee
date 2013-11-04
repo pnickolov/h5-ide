@@ -276,11 +276,15 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 				for ip, idx in comp.resource.PrivateIpAddressSet
 
+					primary = "" + ip.Primary is "true"
+
 					ip_view = {
-						prefix       : prefixSuffixAry[0]
-						eip          : false
-						customizable : ip_customizable
-						deletable    : "" + ip.Primary isnt "true"
+						prefix          : prefixSuffixAry[0]
+						eip             : false
+						customizable    : ip_customizable
+						deletable       : not primary
+						# Editable is for primary ip. In AppEdit, it's always false.
+						notEditable     : @isAppEdit and primary
 					}
 
 					if "" + ip.AutoAssign is "true"

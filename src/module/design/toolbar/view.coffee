@@ -528,7 +528,7 @@ define [ 'MC', 'event',
                 else
                     notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal
-                    ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.current_tab_id
+                    @_return2App()
 
             # After success then do the clickCancelEditApp routine.
             null
@@ -570,8 +570,8 @@ define [ 'MC', 'event',
 
             null
 
-        saveSuccess2App : ( tab_id ) ->
-            console.log 'saveSuccess2App, tab_id = ' + tab_id
+        saveSuccess2App : ( tab_id, region ) ->
+            console.log 'saveSuccess2App, tab_id = ' + tab_id + ', region = ' + region
 
             if tab_id isnt MC.data.current_tab_id
                 MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
@@ -580,17 +580,20 @@ define [ 'MC', 'event',
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
 
-            # 2. Hide Resource Panel and call canvas_layout.listen()
-            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
+            # 2. push PROCESS_RUN_SUCCESS refresh current tab
+            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
 
-            # 3. Toggle Toolbar Button
-            @trigger "UPDATE_APP", false
+            # 3. Hide Resource Panel and call canvas_layout.listen()
+            #ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
 
-            # 4. Trigger OPEN_PROPERTY
-            ide_event.trigger ide_event.OPEN_PROPERTY
+            # 4. Toggle Toolbar Button
+            #@trigger "UPDATE_APP", false
 
-            # 5. update MC.data.origin_canvas_data
-            MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+            # 5. Trigger OPEN_PROPERTY
+            #ide_event.trigger ide_event.OPEN_PROPERTY
+
+            # 6. update MC.data.origin_canvas_data
+            #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
             null
 

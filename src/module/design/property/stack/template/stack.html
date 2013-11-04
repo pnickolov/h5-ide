@@ -15,7 +15,7 @@
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 
-	{{#if property_detail.is_vpc}}
+	{{#if network_acl}}
 	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{network_acl.length}})</span>
 	</div>
 	<div class="option-group stack-property-acl-list"></div>

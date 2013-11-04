@@ -587,24 +587,36 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "START_APP", item)
+
         stopApp : (region, id, name) ->
             me = this
 
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "START_APP", item)
+
         terminateApp : (region, id, name, flag) ->
             me = this
 
-            #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name, flag
+
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "TERMINATE_APP", item)
 
         saveApp : (data) ->
             me = this
 
             region  = data.region
             id      = data.id
+            name    = data.name
 
             app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
+
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "SAVE_APP", item)
 
         handleRequest : (result, flag, region, id, name) ->
             me = this
@@ -624,8 +636,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      : id
                     name    : name
 
-                item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
-                me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
+                # item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
+                # me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
 
                 null
 

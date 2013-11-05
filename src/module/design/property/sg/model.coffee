@@ -2,86 +2,94 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, constant, forge_app ) ->
 
     SgModel = PropertyModel.extend {
 
-        defaults :
-            'sg_detail'     : null
-            'sg_app_detail' : null
-            'is_elb_sg'     : false
-
         init : ( uid ) ->
 
-            if @isApp
+            if @isReadOnly
                 @appInit uid
                 return
 
-            me = this
+            component = MC.canvas_data.component[ uid ]
+            comp_res  = component.resource
 
-            sg_detail = {}
+            # Get Basic Info
+            @set 'name', component.name
+            @set 'description', comp_res.GroupDescription
 
-            sg_detail.component = $.extend true, {}, MC.canvas_data.component[uid]
+            # Get Members
+            members = MC.aws.sg.getAllRefComp(uid)
+            members = MC.aws.sg.convertMemberNameToReal(members)
+            @set 'members', members
 
-            if MC.canvas_data.component[uid].resource.IpPermissionsEgress
-                sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length + MC.canvas_data.component[uid].resource.IpPermissionsEgress.length
-            else
-                sg_detail.rules = MC.canvas_data.component[uid].resource.IpPermissions.length
+            # Get Rule Count
+            ruleCount = comp_res.IpPermissions.length
+            if comp_res.IpPermissionsEgress
+                ruleCount += comp_res.IpPermissionsEgress.length
+            @set 'ruleCount', ruleCount
 
-            sg_detail.members = MC.aws.sg.getAllRefComp(uid)
+            # Get Rules
+            ipPermissions       = $.extend true, [], comp_res.IpPermissions
+            ipPermissionsEgress = $.extend true, [], comp_res.IpPermissionsEgress
 
-            sg_detail.members = MC.aws.sg.convertMemberNameToReal(sg_detail.members)
+            @formatRule ipPermissions
+            @formatRule ipPermissionsEgress
 
-            if sg_detail.component.resource.IpPermissionsEgress
-                permissions = [sg_detail.component.resource.IpPermissions, sg_detail.component.resource.IpPermissionsEgress]
-            else
-                permissions = [sg_detail.component.resource.IpPermissions]
+            @set 'ipPermissions', ipPermissions
+            @set 'ipPermissionsEgress', ipPermissionsEgress
 
-            $.each permissions, (j, permission)->
+            # Set Editable
+            isElbSG = MC.aws.elb.isELBDefaultSG(uid)
 
-                $.each permission, ( i, rule ) ->
+            if isElbSG
+                inputReadOnly = true
+            else if @isAppEdit
+                # In AppEdit mode, if the SG has no aws resource associated :
+                # Meaning it is a newly created SG. So the input should be editable
+                inputReadOnly = forge_app.existing_app_resource( uid )
 
-                    if rule.IpRanges.indexOf('@') >=0
+            if inputReadOnly or comp_res.name is 'DefaultSG'
+                @set 'nameReadOnly', true
+            if inputReadOnly
+                @set 'descReadOnly', true
 
-                        rule.ip_display = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
+            # If the SG is Elb SG, its rule is not editable
+            @set 'ruleEditable', not isElbSG
 
-                    else
-
-                        rule.ip_display = rule.IpRanges
-
-                    if rule.IpProtocol in [-1, '-1']
-
-                        rule.protocol_display = 'all'
-
-                        rule.FromPort = 0
-
-                        rule.ToPort = 65535
-
-                    else if rule.IpProtocol not in ['tcp', 'udp', 'icmp', -1, '-1']
-
-                        rule.protocol_display = "custom(#{rule.IpProtocol})"
-
-                    else
-                        rule.protocol_display = rule.IpProtocol
-
-                    if rule.IpProtocol is 'icmp'
-                        rule.PartType = '/'
-                    else
-                        rule.PartType = '-'
-
-                    dispPort = rule.FromPort + rule.PartType + rule.ToPort
-                    if Number(rule.FromPort) is Number(rule.ToPort) and rule.IpProtocol isnt 'icmp'
-                        dispPort = rule.ToPort
-
-                    rule.DispPort = dispPort
-
-                    null
-
-            @set( 'sg_detail', sg_detail )
-            @set( 'isDefault', sg_detail.component.name is 'DefaultSG' )
-            @set( 'is_elb_sg', MC.aws.elb.isELBDefaultSG(uid) )
-            @set( 'uid', uid )
+            @set 'uid', uid
             null
+
+        formatRule : ( rules ) ->
+
+            components = MC.canvas_data.component
+
+            for rule, idx in rules
+
+                rule.ip_display = rule.IpRanges
+                if rule.IpRanges.indexOf('@') >= 0
+                    rule.ip_display = components[ MC.extractID( rule.IpRanges) ].name
+
+                # Protocol
+                protocol = "" + rule.IpProtocol
+                if protocol is "-1"
+                    rule.protocol_display = 'all'
+                    rule.FromPort   = 0
+                    rule.ToPort     = 65535
+                else if protocol isnt 'tcp' and protocol isnt 'udp' and protocol isnt 'icmp'
+                    rule.protocol_display = "custom(#{rule.IpProtocol})"
+                else
+                    rule.protocol_display = protocol
+
+                # Port
+                if rule.FromPort is rule.ToPort and rule.IpProtocol isnt 'icmp'
+                    rule.DispPort = rule.ToPort
+                else
+                    partType = if rule.IpProtocol is 'icmp' then '/' else '-'
+                    rule.DispPort = rule.FromPort + partType + rule.ToPort
+            null
+
 
         appInit : ( sg_uid ) ->
 
@@ -97,16 +105,18 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             #get sg name
             sg_app_detail =
-                groupName : currentAppSG.groupName
-                groupDescription : currentAppSG.groupDescription
-                groupId : currentAppSG.groupId
-                ownerId : currentAppSG.ownerId
-                vpcId : currentAppSG.vpcId
-                members : members
-                rules : rules
+                uid         : sg_uid
+                name        : currentSGComp.name
+                groupName   : currentAppSG.groupName
+                description : currentAppSG.groupDescription
+                groupId     : currentAppSG.groupId
+                ownerId     : currentAppSG.ownerId
+                vpcId       : currentAppSG.vpcId
+                members     : members
+                rules       : rules
 
-            @set 'sg_app_detail', sg_app_detail
-            @set 'uid', sg_uid
+            @set sg_app_detail
+            null
 
         setSGName : ( value ) ->
 
@@ -145,43 +155,46 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             null
 
 
-        setSGRule : ( rule ) ->
+        addSGRule : ( rule ) ->
 
             uid = @get 'uid'
 
-            rules = null
-            existing = false
+            comp_res = MC.canvas_data.component[uid].resource
 
-            if !rule.direction then rule.direction = 'inbound'
+            if !rule.direction
+                rule.direction = 'inbound'
+
             if rule.direction == 'inbound'
-                rules = MC.canvas_data.component[uid].resource.IpPermissions
+                rules = comp_res.IpPermissions
             else
-                rules = MC.canvas_data.component[uid].resource.IpPermissionsEgress
+                rules = comp_res.IpPermissionsEgress
 
-            _.map rules, ( existing_rule ) ->
-
-                if existing_rule.ToPort == rule.toport and existing_rule.FromPort == rule.fromport and existing_rule.IpRanges == rule.ipranges and existing_rule.IpProtocol == rule.protocol
-
-                    existing = true
-
-                    null
+            existing = _.some rules, ( existing_rule )->
+                existing_rule.ToPort is rule.toport and existing_rule.FromPort is rule.fromport and existing_rule.IpRanges is rule.ipranges and existing_rule.IpProtocol is rule.protocol
 
             if not existing
+                tmp =
+                    ToPort     : rule.toport
+                    FromPort   : rule.fromport
+                    IpRanges   : rule.ipranges
+                    IpProtocol : rule.protocol
+                    inbound    : rule.direction is 'inbound'
 
-                tmp = {}
-                tmp.ToPort = rule.toport
-                tmp.FromPort = rule.fromport
-                tmp.IpRanges = rule.ipranges
-                tmp.IpProtocol = rule.protocol
-
-                if rule.direction is 'inbound'
-                    MC.canvas_data.component[uid].resource.IpPermissions.push tmp
+                if tmp.inbound
+                    comp_res.IpPermissions.push tmp
                 else
-                    if MC.canvas_data.component[uid].resource.IpPermissionsEgress
-                        MC.canvas_data.component[uid].resource.IpPermissionsEgress.push tmp
+                    if not comp_res.IpPermissionsEgress
+                        comp_res.IpPermissionsEgress = []
+
+                    comp_res.IpPermissionsEgress.push tmp
+
+                # If not existing, return new data to let view to render
+                tmpArr = [ tmp ]
+                @formatRule tmpArr
+
+                return tmpArr[0]
 
             null
-
 
         removeSGRule : ( rule ) ->
 

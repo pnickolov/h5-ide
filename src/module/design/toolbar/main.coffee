@@ -3,23 +3,13 @@
 ####################################
 
 define [ 'jquery',
-         'text!./module/design/toolbar/stack_template.html',
-         'text!./module/design/toolbar/app_template.html',
          'event',
          'i18n!nls/lang.js'
-], ( $, stack_template, app_template, ide_event, lang ) ->
+], ( $, ide_event, lang ) ->
 
     #private
     loadModule = () ->
 
-        #add handlebars script
-        stack_template = '<script type="text/x-handlebars-template" id="toolbar-stack-tmpl">' + stack_template + '</script>'
-        app_template   = '<script type="text/x-handlebars-template" id="toolbar-app-tmpl">'   + app_template   + '</script>'
-        #load remote html template
-        $( 'head' ).append stack_template
-        $( 'head' ).append app_template
-
-        #
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
             #view
@@ -100,6 +90,10 @@ define [ 'jquery',
                 console.log 'TOOLBAR_ZOOM_OUT'
                 model.zoomOut()
 
+            view.on 'UPDATE_APP', ( is_update ) ->
+                model.updateApp is_update
+                null
+
             #run
             view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->
                 console.log 'design_toolbar_click:runStack'
@@ -140,13 +134,24 @@ define [ 'jquery',
                 console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
                 model.terminateApp(region, app_id, app_name, flag)
 
+            ide_event.onLongListen ide_event.SAVE_APP, (data) ->
+                console.log 'design_toolbar SAVE_APP'
+
+                data = MC.forge.stack.expandServerGroup data
+
+                model.saveApp(data)
+
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'
                 model.saveStack()
 
             ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx
-                model.reqHanle idx, dag
+                model.reqHandle idx, dag
+
+            ide_event.onLongListen ide_event.APPEDIT_2_APP, ( tab_id, region ) ->
+                console.log 'APPEDIT_2_APP, tab_id = ' + tab_id + ', region = ' + region
+                view.saveSuccess2App tab_id, region
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
 

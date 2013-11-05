@@ -14,6 +14,7 @@ define [ "../base/main",
 
     ideEvents = {}
     ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
+        @model.getIPList()
         @view.refreshIPList()
         null
 
@@ -27,31 +28,9 @@ define [ "../base/main",
             sglist_main.onUnloadSubPanel id
             null
 
-        setupStack : () ->
-
-            me = this
-
-            @view.on 'SET_ENI_DESC', ( uid, value ) ->
-                me.model.setEniDesc uid, value
-
-            @view.on 'SET_ENI_SOURCE_DEST_CHECK', ( uid, check ) ->
-                me.model.setSourceDestCheck uid, check
-
-            @view.on 'ADD_NEW_IP', ( uid ) ->
-                me.model.addNewIP uid
-
-            @view.on 'ATTACH_EIP', ( uid, index, attach ) ->
-                me.model.attachEIP uid, index, attach
-
-            @view.on 'REMOVE_IP', ( uid, index ) ->
-                me.model.removeIP uid, index
-
-            @view.on 'SET_IP_LIST', (inputIPAry) ->
-                me.model.setIPList inputIPAry
-            null
-
         initStack : () ->
             @model = model
+            @model.isAppEdit = false
             @view  = view
             null
 
@@ -65,6 +44,16 @@ define [ "../base/main",
             null
 
         afterLoadApp : () ->
+            sglist_main.loadModule @model
+            null
+
+        initAppEdit : () ->
+            @model = model
+            @model.isAppEdit = true
+            @view  = view
+            null
+
+        afterLoadAppEdit : () ->
             sglist_main.loadModule @model
             null
     }

@@ -10,6 +10,12 @@ define [ '../base/main',
          'event'
 ], ( PropertyModule, model, view, app_view, sglist_main, ide_event ) ->
 
+    # Listen shared view events here
+    app_view.on 'OPEN_ACL', ( uid ) ->
+        PropertyModule.loadSubPanel( "ACL", uid )
+        null
+
+
     # ide_events handlers are called with the scope ( this ) of current property.
     ideEvents = {}
 
@@ -91,11 +97,6 @@ define [ '../base/main',
         # For app mode
         ###
 
-        setupApp : () ->
-            @view.on 'OPEN_ACL', ( uid ) ->
-                PropertyModule.loadSubPanel( "ACL", uid )
-                null
-
         initApp : ( uid ) ->
             @model = model
             @model.isApp = true
@@ -108,6 +109,17 @@ define [ '../base/main',
 
         ### # # # # # # # # # #
         ###
+
+        initAppEdit : ()->
+            @model = model
+            @model.isApp = true
+            @view  = app_view
+            null
+
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
+            null
+
 
         renderPropertyPanel : () ->
             @model.getProperty()

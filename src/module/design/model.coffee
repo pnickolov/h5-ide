@@ -71,10 +71,12 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 if app_id == MC.canvas_data.id
                     #MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
                     @setCanvasData result.resolved_data[ 0 ]
+                    @setOriginData result.resolved_data[ 0 ]
                 # update MC.Tab[app_id]
                 else
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
-                    @updateAppTabDate result.resolved_data[ 0 ], app_id
+                    @updateAppTabDate       result.resolved_data[ 0 ], app_id
+                    @updateAppTabOriginDate result.resolved_data[ 0 ], app_id
                 null
 
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
@@ -135,6 +137,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
             MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+            null
+
+        updateAppTabOriginDate : ( data, tab_id ) ->
+            console.log 'updateAppTabOriginDate'
+            MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
             null
 
         deleteTab    : ( tab_id ) ->

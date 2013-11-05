@@ -39,12 +39,20 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         RELOAD_AZ              : 'RELOAD_AZ'
 
+        #design overlay
+        SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
+        HIDE_DESIGN_OVERLAY    : 'HIDE_DESIGN_OVERLAY'
+
+        #resource panel
+        UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
+
         #tab
         ADD_STACK_TAB          : 'ADD_STACK_TAB'
         OPEN_STACK_TAB         : 'OPEN_STACK_TAB'
         OPEN_APP_TAB           : 'OPEN_APP_TAB'
         OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
+        RELOAD_STACK_TAB       : 'RELOAD_STACK_TAB'
         CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
@@ -63,6 +71,7 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
+        UPDATE_TABBAR_TYPE    : 'UPDATE_TABBAR_TYPE'
 
         #status bar & ta
         UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
@@ -80,6 +89,11 @@ define [ 'underscore', 'backbone' ], () ->
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB      : 'RETURN_REGION_TAB'
+
+        #appedit
+        RESTORE_CANVAS         : 'RESTORE_CANVAS'
+        APPEDIT_2_APP          : 'APPEDIT_2_APP'
+        APPEDIT_UPDATE_ERROR   : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event
         NEED_IGW               : 'NEED_IGW'
@@ -114,10 +128,11 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_STATUS_BAR_SAVE_TIME : 'UPDATE_STATUS_BAR_SAVE_TIME'
 
         #app/stack state
-        STARTED_APP            : 'STARTED_APP'
-        STOPPED_APP            : 'STOPPED_APP'
-        TERMINATED_APP         : 'TERMINATED_APP'
+        #STARTED_APP           : 'STARTED_APP'
+        #STOPPED_APP           : 'STOPPED_APP'
+        #TERMINATED_APP        : 'TERMINATED_APP'
         #STACK_DELETE          : 'STACK_DELETE'
+        UPDATE_APP_STATE       : 'UPDATE_APP_STATE'
 
         #canvas event save stack/app by ctrl+s
         CANVAS_SAVE            : 'CANVAS_SAVE'

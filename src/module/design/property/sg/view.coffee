@@ -4,11 +4,14 @@
 
 define [ '../base/view', 'constant',
          'text!./template/stack.html',
-         'text!./template/app.html'
-], ( PropertyView, constant, template, app_template ) ->
+         'text!./template/app.html',
+         'text!./template/rule_item.html',
+         'constant'
+], ( PropertyView, template, app_template, rule_item_template, constant ) ->
 
-    template     = Handlebars.compile template
-    app_template = Handlebars.compile app_template
+    template           = Handlebars.compile template
+    app_template       = Handlebars.compile app_template
+    rule_item_template = Handlebars.compile rule_item_template
 
     SgView = PropertyView.extend {
 
@@ -18,27 +21,14 @@ define [ '../base/view', 'constant',
             'click #sg-add-rule-icon' : 'showCreateRuleModal'
             'click .rule-remove-icon' : 'removeRulefromList'
 
-            #for sg modal
-            'click #sg-modal-direction input'          : 'radioSgModalChange'
-            'OPTION_CHANGE #modal-protocol-select'     : 'sgModalSelectboxChange'
-            'OPTION_CHANGE #protocol-icmp-main-select' : 'icmpMainSelect'
-            'OPTION_CHANGE .protocol-icmp-sub-select'  : 'icmpSubSelect'
-            'click #sg-modal-save'                     : 'saveSgModal'
-            'click .editable-label'                    : 'editablelabelClick'
-            'change #sg-protocol-tcp input'            : 'tcpValueChange'
-            'change #sg-protocol-udp input'            : 'udpValueChange'
-            'change #sg-protocol-custom input'         : 'customValueChange'
-
             #for sg detail
             'change #securitygroup-name'           : 'setSGName'
             'change #securitygroup-description'    : 'setSGDescription'
             'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
-            'OPTION_CHANGE #sg-add-model-source-select' : 'modalRuleSourceSelected'
-
 
         render : () ->
-            if @model.isApp
+            if @model.isReadOnly
                 tpl = app_template
             else
                 tpl = template
@@ -53,21 +43,24 @@ define [ '../base/view', 'constant',
                 $('#securitygroup-name').focus()
             , 200
 
-            if @model.isApp
-                return @model.attributes.sg_app_detail.groupName
-            else
-                return @model.attributes.sg_detail.component.resource.GroupName
+            @model.get "name"
 
         #SG SecondaryPanel
+        bindRuleModelEvent : ()->
+            $("#sg-modal-direction").on("click", "input", @radioSgModalChange )
+            $("#modal-protocol-select").on("OPTION_CHANGE", @sgModalSelectboxChange )
+            $("#protocol-icmp-main-select").on("OPTION_CHANGE", @icmpMainSelect )
+            $("#sg-protocol-select-result").on("OPTION_CHANGE", ".protocol-icmp-sub-select", @icmpSubSelect )
+            $("#sg-modal-save").on("click", _.bind( @saveSgModal, @ ))
+            $("#sg-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected)
+            null
+
         showEditRuleModal : (event) ->
-            if this.model.get('is_elb_sg') then return
             modal MC.template.modalSGRule {isAdd:false}, true
+            @bindRuleModelEvent()
 
         showCreateRuleModal : (event) ->
-            if this.model.get('is_elb_sg') then return
-            isclassic = false
-            if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-                isclassic = true
+            isclassic = MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
 
             # get sg list
             sgList = []
@@ -82,24 +75,27 @@ define [ '../base/view', 'constant',
 
 
             modal MC.template.modalSGRule {isAdd:true, isclassic: isclassic, sgList: sgList}, true
+
+            @bindRuleModelEvent()
             return false
 
-        removeRulefromList: (event, id) ->
-            if this.model.get('is_elb_sg') then return
-            rule = {}
+        removeRulefromList: (event) ->
             li_dom = $(event.target).parents('li').first()
-            rule.inbound = li_dom.data('inbound')
-            rule.protocol = li_dom.data('protocol')
-            rule.fromport = li_dom.data('fromport')
-            rule.toport = li_dom.data('toport')
-            rule.iprange = li_dom.data('iprange')
-            # sg_uid = $("#sg-secondary-panel").attr "uid"
-            this.trigger 'REMOVE_SG_RULE', rule
-            $(event.target).parents('li').first().remove()
+            rule =
+                inbound  : li_dom.data('inbound')
+                protocol : li_dom.data('protocol')
+                fromport : li_dom.data('fromport')
+                toport   : li_dom.data('toport')
+                iprange  : li_dom.data('iprange')
 
-            ruleCount =$("#sg-rule-list").children().length
+            li_dom.remove()
+
+            ruleCount = $("#sg-rule-list").children().length
             $("#sg-rule-empty").toggle ruleCount == 0
             $("#rule-count").text ruleCount
+
+            @model.removeSGRule rule
+            null
 
         radioSgModalChange : (event) ->
             if $('#sg-modal-direction input:checked').val() is "inbound"
@@ -125,21 +121,20 @@ define [ '../base/view', 'constant',
             $("#protocol-icmp-main-select").data('protocal-sub', id)
 
         setSGName : ( event ) ->
-            id = @model.get( 'sg_detail' ).component.uid
+            id = @model.get 'uid'
             target = $ event.currentTarget
             name = target.val()
 
             MC.validate.preventDupname target, id, name, 'SG'
 
             if target.parsley 'validate'
-                this.trigger 'SET_SG_NAME', name
-
-            parentCompUID = $('#property-panel').attr('component-uid')
-            MC.aws.sg.updateSGColorLabel(parentCompUID)
+                @trigger 'NAME_CHANGE', name
+                @model.setSGName name
+            null
 
         setSGDescription : ( event ) ->
-            # sg_uid = $("#sg-secondary-panel").attr "uid"
-            this.trigger 'SET_SG_DESC', event.target.value
+            @model.setSGDescription event.target.value
+            null
 
         saveSgModal : ( event ) ->
             sg_direction = $('#sg-modal-direction input:checked').val()
@@ -152,8 +147,6 @@ define [ '../base/view', 'constant',
 
             sourceValue = $.trim($('#sg-add-model-source-select').find('.selected').attr('data-id'))
 
-            # sgUID = @model.get( 'sg_detail' ).component.uid
-            # sgName = @model.get( 'sg_detail' ).component.name
             sgUID = ''
             sgName = ''
             if descrition_dom.hasClass('input')
@@ -245,52 +238,22 @@ define [ '../base/view', 'constant',
             else
                 rule.ipranges = sgName
 
-            # sg_uid = $("#sg-secondary-panel").attr "uid"
-            # cur_count = Number $("#rule-count").text()
-            # cur_count = cur_count + 1
-            # $("#rule-count").text cur_count
-            # $("#sg-rule-list").append MC.template.sgRuleItem {rule:rule}
-
-            # $("#sg-rule-empty").toggle cur_count == 0
-
             rule.ipranges = sg_descrition
 
-            this.trigger "SET_SG_RULE", rule
+            data = @model.addSGRule rule
 
-            uid = @model.get( 'sg_detail' ).component.uid
-            @model.getSG(uid)
-            $dom = this.render()
-            $("#property-second-panel").find(".property-content").html($dom)
+            # Insert new rule
+            $("#sg-rule-list").append rule_item_template data
 
             MC.canvas.reDrawSgLine()
 
             modal.close()
 
-        editablelabelClick : ( event ) ->
-            editablelabel.create.call $(event.target)
-
-        tcpValueChange : ( event ) ->
-            #protocol_val = $( '#sg-protocol-tcp input' ).val()
-            null
-
-        udpValueChange : ( event ) ->
-            #protocol_val = $( '#sg-protocol-udp input' ).val()
-            null
-
-        customValueChange : ( event ) ->
-            #protocol_val = $( '#sg-protocol-custom input' ).val()
-            null
-
         modalRuleSourceSelected : (event) ->
             value = $.trim($(event.target).find('.selected').attr('data-id'))
-
-            if value is 'custom'
-                $('#securitygroup-modal-description').show()
-                $('#sg-add-model-source-select .selection').width(69)
-            else
-                $('#securitygroup-modal-description').hide()
-                $('#sg-add-model-source-select .selection').width(255)
-
+            isCustom = value is 'custom'
+            $('#securitygroup-modal-description').toggle( isCustom )
+            $('#sg-add-model-source-select .selection').width( if isCustom then 69 else 255 )
             null
 
         sortSgRule : ( event ) ->

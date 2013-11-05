@@ -35,7 +35,7 @@ define [ '../base/main',
 
                 # Trigger an event to tell canvas that we want an IGW
                 if value isnt 'internal' and !defaultVPC
-                    ide_event.trigger ide_event.NEED_IGW, elbComponent
+                    ide_event.trigger ide_event.NEED_IGW
 
                 return true
 
@@ -97,6 +97,18 @@ define [ '../base/main',
         afterLoadApp : () ->
             sglist_main.loadModule @model
             null
+
+        initAppEdit : ()->
+            @model = app_model
+            @view  = app_view
+            null
+
+        afterLoadAppEdit : ()->
+            # Use Stack model to handle sglist interaction
+            model.init( @model.get "componentUid" )
+            sglist_main.loadModule model
+            null
+
 
 
     }

@@ -4,19 +4,15 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'text!./template/ip_list.html',
-         'event',
-         'i18n!nls/lang.js' ], ( PropertyView, template, ip_list_template, ide_event, lang ) ->
+         'i18n!nls/lang.js' ], ( PropertyView, template, lang ) ->
 
     template =  Handlebars.compile template
-    ip_list_template = Handlebars.compile ip_list_template
 
     InstanceView = PropertyView.extend {
 
         events   :
             'change .instance-name'                       : 'instanceNameChange'
             'change #property-instance-count'             : 'countChange'
-            'change .instance-type-select'                : 'instanceTypeSelect'
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
@@ -25,18 +21,23 @@ define [ '../base/view',
             'change #property-instance-public-ip'         : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #tenancy-select'               : "tenancySelect"
-            'OPTION_CHANGE #keypair-select'               : "setKP"
-            'EDIT_UPDATE #keypair-select'                 : "addKP"
-            'click #instance-ip-add'                      : "addIPtoList"
-            'click #property-network-list .icon-remove'   : "removeIPfromList"
-            "EDIT_FINISHED #keypair-select"               : "updateKPSelect"
 
-            'change .input-ip'    : 'updateEIPList'
-            'click .toggle-eip'   : 'addEIP'
             'click #property-ami' : 'openAmiPanel'
+
+            'OPTION_CHANGE #keypair-select'      : "setKP"
+            'EDIT_UPDATE #keypair-select'        : "addKP"
+            'click #keypair-select .icon-remove' : "deleteKP"
+            "EDIT_FINISHED #keypair-select"      : "updateKPSelect"
+
+            'click .toggle-eip'                         : 'setEIP'
+            'click #instance-ip-add'                    : "addIP"
+            'click #property-network-list .icon-remove' : "removeIP"
+            'change .input-ip'                          : 'syncIPList'
+
 
         render : () ->
 
+            # TODO : Remove following 3 lines
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
                 this.model.attributes.component.resource.VpcId = defaultVPCId
@@ -44,8 +45,6 @@ define [ '../base/view',
             @$el.html template @model.attributes
 
             @refreshIPList()
-
-            $( "#keypair-select" ).on("click", ".icon-remove", _.bind(this.deleteKP, this) )
 
             @model.attributes.name
 
@@ -88,12 +87,15 @@ define [ '../base/view',
             $parent = $("#property-network-list")
 
             if enable
-                $parent.find(".input-ip").removeAttr "disabled"
-                $parent.find(".name").data "tooltip", "Specify an IP address or leave it as .x to automatically assign an IP."
+                $parent.find(".input-ip-wrap").removeClass("disabled")
+                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1)
+                       .find(".input-ip").removeAttr("disabled")
 
             else
-                $parent.find(".input-ip").attr "disabled", "disabled"
-                $parent.find(".name").data "tooltip", "Automatically assigned IP."
+                $parent.find(".input-ip-wrap").addClass("disabled")
+                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_2)
+                       .find(".input-ip").attr("disabled", "disabled")
+            null
 
         instanceTypeSelect : ( event, value )->
 
@@ -109,9 +111,7 @@ define [ '../base/view',
             if not has_ebs
                 $ebs.prop "checked", false
 
-            instanceUID = this.model.get 'uid'
-            MC.aws.eni.reduceAllENIIPList(instanceUID)
-            this.refreshIPList()
+            @refreshIPList()
 
         ebsOptimizedSelect : ( event ) ->
             @model.setEbsOptimized event.target.checked
@@ -164,196 +164,75 @@ define [ '../base/view',
         updateKPSelect : () ->
             # Add remove icon to the newly created item
             $("#keypair-select").find(".item:last-child").append('<span class="icon-remove"></span>')
-
-
-        addIPtoList: (event) ->
-
-            subnetCIDR = ''
-            instanceUID = this.model.get 'uid'
-
-            # validate max ip num
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp then return false
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                return false
-            # validate max ip num
-
-            defaultVPCId = MC.aws.aws.checkDefaultVPC()
-            if defaultVPCId
-                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
-                subnetCIDR = subnetObj.cidrBlock
-            else
-                subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
-                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
-
-            ipPrefixSuffix = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
-            tmpl = $(MC.template.networkListItem({
-                ipPrefix: ipPrefixSuffix[0],
-                ipSuffix: ipPrefixSuffix[1]
-            }))
-
-            $('#property-network-list').append tmpl
-            @model.addNewIP()
-            @updateEIPList()
-            false
-
-        removeIPfromList: (event, id) ->
-
-            $li = $(event.currentTarget).closest("li")
-            index = $li.index()
-            $li.remove()
-
-            @model.removeIP index
-            @updateEIPList()
+            null
 
         openAmiPanel : ( event ) ->
             @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
-        addEIP : ( event ) ->
+        validateIPList : (event, ipInuptListItem) ->
 
-            # todo, need a index of eip
-            index = $(event.currentTarget).closest("li").index()
-            if event.target.className.indexOf('associated') >= 0 then attach = true else attach = false
+            instanceUID = @model.get 'uid'
+            eniUID      = MC.aws.eni.getInstanceDefaultENI(instanceUID).uid
 
-            @model.attachEIP index, attach
-            @updateEIPList()
+            ################################### validation
+            validDOM         = $(event.currentTarget)
+            inputValue       = validDOM.val()
+            inputValuePrefix = validDOM.closest(".input-ip-item").find(".input-ip-prefix").text()
+            currentInputIP   = inputValuePrefix + inputValue
+            prefixAry        = inputValuePrefix.split('.')
 
-        updateEIPList: (event) ->
+            validDOM.parsley 'custom', ( val ) ->
 
-            currentAvailableIPAry = []
-            ipInuptListItem = $('#property-network-list li.input-ip-item')
-            validSuccess = true
-            that = this
-            instanceUID = that.model.get 'get_uid'
-            eniComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            eniUID = eniComp.uid
+                ###### validation format
+                ipIPFormatCorrect = false
+                # for 10.0.0.
+                if prefixAry.length is 4
+                    if inputValue is 'x'
+                        ipIPFormatCorrect = true
+                    if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                        ipIPFormatCorrect = true
+                # for 10.0.
+                else
+                    if inputValue is 'x.x'
+                        ipIPFormatCorrect = true
+                    if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                        ipIPFormatCorrect = true
+                if !ipIPFormatCorrect
+                    return 'Invalid IP address'
 
-            currentInputValue = currentIdx = null
-            if event and event.currentTarget
-                currentInputValue = $(event.currentTarget).val()
-                currentIdx = $(event.currentTarget).parents('li.input-ip-item').index()
-
-            _.each ipInuptListItem, (ipInputItem, idx) ->
-
-                if event and event.currentTarget
-                    currentInputValue = $(event.currentTarget).val()
-
-                inputValuePrefix = $(ipInputItem).find('.input-ip-prefix').text()
-                inputValue = $(ipInputItem).find('.input-ip').val()
-                currentInputIP = inputValuePrefix + currentInputValue
-
-                prefixAry = inputValuePrefix.split('.')
-
-                ################################### validation
-                validDOM = $(ipInputItem).find('.input-ip')
-
-                validDOM.parsley 'custom', ( val ) ->
-
-                    ###### validation format
-                    ipIPFormatCorrect = false
-                    # for 10.0.0.
-                    if prefixAry.length is 4
-                        if inputValue is 'x'
-                            ipIPFormatCorrect = true
-                        if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                            ipIPFormatCorrect = true
-                    # for 10.0.
+                ###### validation if in subnet
+                # ipAddr = inputValuePrefix + inputValue
+                if inputValue.indexOf('x') is -1
+                    ipInSubnet = false
+                    if MC.aws.aws.checkDefaultVPC()
+                        subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+                        subnetCIDR = subnetObj.cidrBlock
                     else
-                        if inputValue is 'x.x'
-                            ipIPFormatCorrect = true
-                        if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                            ipIPFormatCorrect = true
-                    if !ipIPFormatCorrect
-                        return 'Invalid IP address'
+                        subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
+                        subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
-                    ###### validation if in subnet
-                    # ipAddr = inputValuePrefix + inputValue
-                    if currentInputValue.indexOf('x') is -1
-                        ipInSubnet = false
-                        subnetCIDR = ''
-                        defaultVPCId = MC.aws.aws.checkDefaultVPC()
-                        if defaultVPCId
-                            subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
-                            subnetCIDR = subnetObj.cidrBlock
-                        else
-                            subnetUID = MC.canvas_data.component[instanceUID].resource.SubnetId.split('.')[0][1...]
-                            subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+                    ipInSubnet = MC.aws.subnet.isIPInSubnet(currentInputIP, subnetCIDR)
 
-                        ipInSubnet = MC.aws.subnet.isIPInSubnet(currentInputIP, subnetCIDR)
+                    if !ipInSubnet
+                        return 'This IP address conflicts with subnet’s IP range'
 
-                        if !ipInSubnet
-                            return 'This IP address conflicts with subnet’s IP range'
+                ###### validation if conflict with other eni
+                if inputValue.indexOf('x') is -1
+                    innerRepeat = 0
+                    _.each ipInuptListItem, (ipInputItem) ->
+                        if $(ipInputItem).find('.input-ip').val() is inputValue
+                            ++innerRepeat
+                        null
+                    if innerRepeat > 1
+                        return 'This IP address conflicts with other IP'
+                    if MC.aws.eni.haveIPConflictWithOtherENI(currentInputIP, eniUID)
+                        return 'This IP address conflicts with other network interface’s IP'
 
-                    ###### validation if conflict with other eni
-                    if currentInputValue.indexOf('x') is -1
-                        innerRepeat = false
-                        _.each ipInuptListItem, (ipInputItem1, idx1) ->
-                            inputValue1 = $(ipInputItem1).find('.input-ip').val()
-                            if currentIdx isnt idx1 and inputValue1 is currentInputValue
-                                innerRepeat = true
-                            null
-                        if innerRepeat
-                            return 'This IP address conflicts with other IP'
-                        if MC.aws.eni.haveIPConflictWithOtherENI(currentInputIP, eniUID)
-                            return 'This IP address conflicts with other network interface’s IP'
-
-                    null
-
-                if event and event.currentTarget and currentIdx is idx
-                    if not validDOM.parsley 'validate'
-                        validSuccess = false
-                ################################### validation
-
-                inputHaveEIP = $(ipInputItem).find('.input-ip-eip-btn').hasClass('associated')
-                currentAvailableIPAry.push({
-                    ip: inputValuePrefix + inputValue,
-                    eip: inputHaveEIP
-                })
                 null
 
-            if !validSuccess
-                return
+            validDOM.parsley 'validate'
 
-            @model.setIPList currentAvailableIPAry
-
-            # if is Server Group, disabled ip inputbox
-            instanceUID = this.model.get 'get_uid'
-            countNum = MC.canvas_data.component[instanceUID].number
-            if countNum is 1
-                @setEditableIP true
-            else
-                @setEditableIP false
-
-            this.changeIPAddBtnState()
-            null
-
-        changeIPAddBtnState : () ->
-
-            disabledBtn = false
-            instanceUID = this.model.get 'uid'
-
-            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
-            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
-            if !currentENIComp
-                disabledBtn = true
-                return
-
-            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
-            if maxIPNum is currentIPNum
-                disabledBtn = true
-
-            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
-            if disabledBtn
-                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
-                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
-            else
-                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
-
-            null
 
         deleteKP : ( event ) ->
             me = this
@@ -387,10 +266,83 @@ define [ '../base/view',
 
             return false
 
+
+        addIP : () ->
+            if $("#instance-ip-add").hasClass("disabled")
+                return
+
+            data = @model.addIP()
+            $('#property-network-list').append MC.template.propertyIpListItem( data )
+            @updateIPAddBtnState()
+            null
+
+        removeIP : ( event ) ->
+
+            $li = $(event.currentTarget).closest("li")
+            index = $li.index()
+            $li.remove()
+
+            @model.removeIP index
+            @updateIPAddBtnState()
+            null
+
+        setEIP : ( event ) ->
+            $target = $(event.currentTarget)
+            index   = $target.closest("li").index()
+            attach  = not $target.hasClass("associated")
+
+            @model.attachEIP index, attach
+            null
+
+        # This function is used to save IP List to model
+        syncIPList: ( event ) ->
+            ipItems = $('#property-network-list .input-ip-item')
+
+            if not @validateIPList event, ipItems
+                return
+
+            currentAvailableIPAry = _.map ipItems, (ipInputItem) ->
+                $item   = $(ipInputItem)
+                prefix  = $item.find(".input-ip-prefix").text()
+                value   = $item.find(".input-ip").val()
+                has_eip = $item.find(".input-ip-eip-btn").hasClass("associated")
+
+                {
+                    ip     : prefix + value
+                    eip    : has_eip
+                    suffix : value
+                }
+
+            @model.setIPList currentAvailableIPAry
+            null
+
+        # This function is used to display IP List
         refreshIPList : ( event ) ->
-            @model.getEni()
-            $( '#property-network-list' ).html( ip_list_template( @model.attributes ) )
-            this.changeIPAddBtnState()
+            if not @model.attributes.eni_ips
+                return
+
+            html = ""
+            for ip in @model.attributes.eni_ips
+                html += MC.template.propertyIpListItem ip
+
+            $( '#property-network-list' ).html( html )
+            @updateIPAddBtnState()
+            null
+
+        updateIPAddBtnState : ()->
+            enabled = @model.canAddIP()
+
+            if enabled is true
+                tooltip = "Add IP Address"
+            else
+                if _.isString enabled
+                    tooltip = enabled
+                else
+                    tooltip = "Cannot add IP address"
+                enabled = false
+
+            $("#instance-ip-add").toggleClass("disabled", !enabled).data("tooltip", tooltip)
+            null
     }
 
     new InstanceView()

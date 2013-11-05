@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template ) ->
+define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant, lang ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -24,14 +24,20 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             #set this.model
             this.model = model
             #listen model
-            this.listenTo this.model, 'change:snapshot', this.writeOldDesignHtml
+            this.listenTo this.model, 'change:snapshot',     @writeOldDesignHtml
+            this.listenTo ide_event,  'SHOW_DESIGN_OVERLAY', @showDesignOverlay
+            this.listenTo ide_event,  'HIDE_DESIGN_OVERLAY', @hideDesignOverlay
 
         html : ->
             data =
                 resource : $( '#resource-panel' ).html()
                 property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
+<<<<<<< HEAD
                 statusbar: $( '#statusbar-panel' ).html()
+=======
+                overlay  : $( '#overlay-panel'  ).html()
+>>>>>>> feature/app-update
             data
 
         writeOldDesignHtml : ( event ) ->
@@ -42,7 +48,13 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             #
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
+<<<<<<< HEAD
             $( '#statusbar-panel' ).html this.model.get( 'snapshot' ).statusbar
+=======
+            $( '#overlay-panel'  ).html this.model.get( 'snapshot' ).overlay
+            #
+            if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
+>>>>>>> feature/app-update
             ###
             this.$el.empty().html this.model.get 'snapshot'
             $( '#property-panel' ).html this.model.get( 'snapshot' ).property
@@ -58,6 +70,7 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
                 MC.data.current_tab_type = null
             null
 
+<<<<<<< HEAD
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
@@ -112,6 +125,94 @@ define [ 'event', 'text!./module/design/template.html', 'backbone', 'jquery', 'h
             ), 500
             #
             null
+=======
+        showDesignOverlay : ( state ) ->
+            console.log 'showDesignOverlay, state = ' + state
+
+            # state include:
+            # 1. open fail
+            # 2. process( starting, stopping, terminating, updating, changed fail )
+
+            $item = $( '#overlay-panel' )
+
+            # 1. add class
+            $item.addClass 'design-overlay'
+
+            # 2. switch state
+            switch state
+                when 'OPEN_TAB_FAIL'                          then $item.html MC.template.openTabFail()
+                when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
+                when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
+                when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
+                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
+                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail }
+                when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
+
+            # open tab fail( includ app and stack )
+            if state is 'OPEN_TAB_FAIL'
+                $( '#btn-fail-reload' ).one 'click', ( event ) ->
+                    if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
+                    ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                    #test123
+                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
+                    #
+                    null
+
+            # app changed fail
+            else if state is 'CHANGED_FAIL'
+                $( '#btn-changedfail' ).one 'click', ( event ) ->
+
+                    # hide overlay
+                    # ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
+                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+
+                    # delete MC.process and MC.data.process
+                    delete MC.process[ MC.data.current_tab_id ]
+                    delete MC.data.process[ MC.data.current_tab_id ]
+
+                    null
+
+            # app update success
+            else if state is 'UPDATING_SUCCESS'
+                $( '#btn-updated-success' ).one 'click', ( event ) ->
+
+                    ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
+
+                    # delete MC.process and MC.data.process
+                    delete MC.process[ MC.data.current_tab_id ]
+                    delete MC.data.process[ MC.data.current_tab_id ]
+
+                    null
+
+            # app updating( pending and processing )
+            else if state is constant.APP_STATE.APP_STATE_UPDATING
+
+                if MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
+
+                    $( '.overlay-content-wrap' ).find( '.progress' ).hide()
+                    $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
+
+                else if MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
+
+                    $( '.overlay-content-wrap' ).find( '.progress' ).show()
+                    $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+
+            null
+
+        hideDesignOverlay : ->
+            console.log 'hideDesignOverlay'
+
+            $item = $( '#overlay-panel' )
+
+            # 1. remove class
+            $item.removeClass 'design-overlay'
+
+            # 2. remove html
+            $item.empty() if $.trim( $item.html() ) isnt ''
+
+            null
+
+>>>>>>> feature/app-update
     }
 
     return DesignView

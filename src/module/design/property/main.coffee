@@ -7,11 +7,12 @@ define [ 'event',
 				'./module/design/property/view',
 				'./module/design/property/base/main',
 				'./module/design/property/base/view',
-				'lib/forge/app'
+				'lib/forge/app',
 				'i18n!nls/lang.js',
 
 				'./module/design/property/stack/main',
 				'./module/design/property/instance/main',
+				'./module/design/property/servergroup/main',
 				'./module/design/property/connection/main',
 				'./module/design/property/staticsub/main',
 				'./module/design/property/sg/main',
@@ -93,7 +94,9 @@ define [ 'event',
 				PropertyBaseModule.load type, uid, tab_type
 				view.afterLoad()
 			catch error
-				console.error "Cannot open property panel", error
+				### env:dev ###
+				throw error
+				### env:dev:end ###
 
 			null
 
@@ -132,6 +135,21 @@ define [ 'event',
 				tab_type = PropertyBaseModule.TYPE.Stack
 			else
 				tab_type = PropertyBaseModule.TYPE.AppEdit
+
+				# If component has associated aws resource, it's AppEdit mode ( Partially Editable )
+				# Otherwise, it's Stack mode ( Fully Editable )
+				if uid isnt ""
+					awsResource = forge_app.existing_app_resource( uid )
+					if awsResource is true
+						tab_type = PropertyBaseModule.TYPE.AppEdit
+					else if awsResource is false
+						tab_type = PropertyBaseModule.TYPE.Stack
+					else
+						# This property is not covered, fallback to App mode
+						tab_type = PropertyBaseModule.TYPE.AppEdit
+						### env:dev ###
+						console.warn "lib/forge/app:existing_app_resource does not handle component. Uid :", uid
+						### env:dev:end ###
 
 			tab_type
 

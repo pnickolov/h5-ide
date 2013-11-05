@@ -149,9 +149,7 @@ define [ '../base/model',
                 instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
 
                 # Possible value : running, stopped, pending...
-                instance.isRunning = instance.instanceState.name == "running"
-                instance.isPending = instance.instanceState.name == "pending"
-                instance.instanceState.name = MC.capitalize instance.instanceState.name
+                instance.state = MC.capitalize instance.instanceState.name
                 instance.blockDevice = ""
                 if instance.blockDeviceMapping && instance.blockDeviceMapping.item
                     deviceName = []
@@ -307,6 +305,95 @@ define [ '../base/model',
                         null
 
             return sgUIDAry
+
+        getEni : () ->
+
+            instance_id = this.get 'id'
+
+            uid = null
+
+            for key, value of MC.canvas_data.component
+
+                if value.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and value.resource.Attachment.InstanceId.split('.')[0].slice(1) is instance_id and value.resource.Attachment.DeviceIndex in [0, '0']
+
+                    uid = key
+
+            instanceUID = uid
+
+            defaultVPCId = MC.aws.aws.checkDefaultVPC()
+            if !MC.canvas_data.component[instance_id].resource.SubnetId and !defaultVPCId
+                return
+
+            eni_detail = {}
+
+            eni_detail.eni_ips = []
+
+            eni_count = 0
+
+            subnetCIDR = ''
+            if defaultVPCId
+                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+                subnetCIDR = subnetObj.cidrBlock
+            else
+                subnetUID = MC.canvas_data.component[instance_id].resource.SubnetId.split('.')[0][1...]
+                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+
+            prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+
+            _.map MC.canvas_data.component, ( val, key ) ->
+
+                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_id and val.resource.Attachment.DeviceIndex == '0'
+
+                    eni_detail.description = val.resource.Description
+
+                    if val.resource.AssociatePublicIpAddress
+
+                        eni_detail.asso_public_ip = val.resource.AssociatePublicIpAddress
+                    else
+                        eni_detail.asso_public_ip = false
+
+                    eni_detail.sourceCheck = true if val.resource.SourceDestCheck == 'true' or val.resource.SourceDestCheck == true
+
+                    eni_detail.eni_ips = $.extend true, {}, val.resource.PrivateIpAddressSet
+
+                    $.each eni_detail.eni_ips, ( idx, ip_detail) ->
+
+                        ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
+
+                        ip_detail.prefix = prefixSuffixAry[0]
+
+                        if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
+                            ip_detail.suffix = prefixSuffixAry[1]
+                        else
+                            # subnetComp = MC.aws.eni.getSubnetComp(uid)
+                            # subnetCIDR = subnetComp.resource.CidrBlock
+                            ipAddress = ip_detail.PrivateIpAddress
+                            fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
+                            ip_detail.suffix = fixPrefixSuffixAry[1]
+
+                        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+
+                            if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+
+                                ip_detail.has_eip = true
+
+                                return false
+                        eni_count += 1
+                        null
+                else if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_id
+
+                    eni_count += 1
+
+                null
+
+            if eni_count > 1
+
+                eni_detail.multi_enis = true
+
+            else
+                eni_detail.multi_enis = false
+
+            this.set 'eni_display', eni_detail
 
     }
 

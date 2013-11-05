@@ -16,7 +16,16 @@ MC.canvas_property = {};
 MC.canvas = {
 	getState: function ()
 	{
-		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		//return Tabbar.current;
+		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		var state = '';
+		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
+			state = 'stack';
+		}
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+			state = Tabbar.current;
+		}
+		return state;
 	},
 
 	display: function (id, key, is_visible)
@@ -2508,6 +2517,7 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
+			MC.canvas.getState() !== 'app' &&
 			event.target === document.body
 		)
 		{
@@ -2516,11 +2526,12 @@ MC.canvas.volume = {
 				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
-				volume_id = $('#instance_volume_list').find('.selected').attr('id');
+				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
+				volumeList;
 
 			target_volume_data.splice(
 				target_volume_data.indexOf(
-					volume_id
+					'#' + volume_id
 				), 1
 			);
 
@@ -2532,6 +2543,18 @@ MC.canvas.volume = {
 
 			if (target_node.data('class') === 'AWS.EC2.Instance')
 			{
+				volumeList = MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+
+				if (volumeList)
+				{
+					$.each(volumeList, function (index, value)
+					{
+						MC.canvas.data.delete('component.' + value);
+					});
+
+					delete MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+				}
+
 				MC.canvas.data.delete('component.' + volume_id);
 			}
 
@@ -2606,7 +2629,8 @@ MC.canvas.volume = {
 				event.pageY - event.data.canvas_offset.top
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
-			event_data = event.data;
+			event_data = event.data,
+			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
 			event_data.originalX !== event.pageX ||
@@ -2625,7 +2649,7 @@ MC.canvas.volume = {
 
 		if (
 			match_node &&
-			$.inArray(node_type, ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+			$.inArray(node_type, target_type) > -1
 		)
 		{
 			if (
@@ -2822,11 +2846,12 @@ MC.canvas.asgList = {
 			MC.canvas.event.clearList();
 
 			var target = this.parentNode,
+				target_id = target.id,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( this.id );
+			var uid     = MC.extractID( target_id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			if (!layout) {
 				return;
@@ -2907,6 +2932,22 @@ MC.canvas.asgList = {
 };
 
 MC.canvas.instanceList = {
+	add: function (data)
+	{
+		$('#instanceList').append(
+			MC.template.instanceListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -2915,17 +2956,19 @@ MC.canvas.instanceList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
+			var target = this.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+			   	canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_instance-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-			   	canvas_offset = $('#svg_canvas').offset();
-
-			var uid     = MC.extractID( this.id ),
+			var uid     = MC.extractID( target_id ),
 			    layout  = MC.canvas_data.layout.component.node[ uid ];
 
 			var temp_data = {
@@ -2987,13 +3030,29 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
 	}
 };
 
 MC.canvas.eniList = {
+	add: function (data)
+	{
+		$('#eniList').append(
+			MC.template.eniListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -3002,18 +3061,19 @@ MC.canvas.eniList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			var target = this.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_eni-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
-
-
-			var uid      = MC.extractID( this.id ),
+			var uid      = MC.extractID( target_id ),
 			    layout   = MC.canvas_data.layout.component.node[ uid ],
 			    eni_comp = MC.canvas_data.component[ uid ];
 
@@ -3079,17 +3139,6 @@ MC.canvas.event = {};
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
-		// Ctrl Move event
-		if (
-			event.which === 1 &&
-			event.ctrlKey
-		)
-		{
-			MC.canvas.event.ctrlMove.mousedown.call(this, event);
-
-			return false;
-		}
-
 		if (event.which === 1)
 		{
 			var target = $(this),
@@ -3291,12 +3340,19 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = event.data.originalTarget,
-				originalTargetNode = $(originalTarget),
-				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
+			if (MC.canvas.getState() === 'app')
+			{
+				MC.canvas.instanceList.show.call( target[0], event);
+			}
+			else
+			{
+				var originalTarget = event.data.originalTarget,
+					originalTargetNode = $(originalTarget),
+					component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
-			MC.canvas.select( target_id );
-			MC.canvas.volume.close();
+				MC.canvas.select( target_id );
+				MC.canvas.volume.close();
+			}
 		}
 		else
 		{
@@ -3358,7 +3414,7 @@ MC.canvas.event.dragable = {
 					)
 				)
 				{
-					MC.canvas.position(target[0], coordinate.x, coordinate.y);
+					MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
 
 					MC.canvas.reConnect(target_id);
 
@@ -4276,7 +4332,14 @@ MC.canvas.event.siderbarDrag = {
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
-				Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				if (MC.canvas.getState() === 'appedit')
+				{
+					Canvon('.AWS-EC2-Instance').addClass('attachable');
+				}
+				else
+				{
+					Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				}
 
 				shadow.addClass('AWS-EC2-EBS-Volume');
 
@@ -5219,6 +5282,48 @@ MC.canvas.event.selectNode = function (event)
 	return false;
 };
 
+MC.canvas.event.appMove = function (event)
+{
+	if (event.which === 1)
+	{
+		MC.canvas.event.clearSelected();
+
+		var target = $(this),
+			target_type = target.data('class'),
+			node_type = target.data('type');
+
+		if (
+			target_type === 'AWS.EC2.Instance' ||
+			node_type === 'group'
+		)
+		{
+			MC.canvas.event.dragable.mousedown.call( this, event );
+		}
+		else
+		{
+			MC.canvas.select( this.id );
+		}
+	}
+
+	return false;
+};
+
+MC.canvas.event.appDrawConnection = function ()
+{
+	if ($(this).is([
+		'.port-instance-sg',
+		'.port-eni-sg',
+		'.port-launchconfig-sg',
+		'.port-elb-sg'
+		].join(', ')
+	))
+	{
+		MC.canvas.event.drawConnection.mousedown.call( this, event );
+	}
+
+	return false;
+};
+
 MC.canvas.event.clearList = function ()
 {
 	MC.canvas.instanceList.close();
@@ -5278,7 +5383,9 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		Tabbar.current === 'new' ||
 		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack'
+		Tabbar.current === 'stack' ||
+		Tabbar.current === 'new' ||
+		Tabbar.current === 'appedit'
 	)
 	{
 		var keyCode = event.which,
@@ -5305,7 +5412,10 @@ MC.canvas.event.keyEvent = function (event)
 				// For Mac
 				keyCode === 8
 			) &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length > 0 &&
 			event.target === document.body
 		)
@@ -5434,7 +5544,10 @@ MC.canvas.event.keyEvent = function (event)
 		// Move node - [up, down, left, right]
 		if (
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length === 1
 		)
 		{

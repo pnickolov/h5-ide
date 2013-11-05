@@ -72,20 +72,17 @@ require.config {
 		#############################################
 		'UI.tooltip'         : 'ui/common/UI.tooltip'
 		'UI.scrollbar'       : 'ui/common/UI.scrollbar'
-		'UI.accordion'       : 'ui/common/UI.accordion'
 		'UI.tabbar'          : 'ui/common/UI.tabbar'
 		'UI.bubble'          : 'ui/common/UI.bubble'
 		'UI.modal'           : 'ui/common/UI.modal'
 		'UI.table'           : 'ui/common/UI.table'
 		'UI.tablist'         : 'ui/common/UI.tablist'
-		'UI.fixedaccordion'  : 'ui/common/UI.fixedaccordion'
 		'UI.selectbox'       : 'ui/common/UI.selectbox'
 		'UI.toggleicon'      : 'ui/common/UI.toggleicon'
 		'UI.searchbar'       : 'ui/common/UI.searchbar'
 		'UI.filter'          : 'ui/common/UI.filter'
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
-		'UI.secondarypanel'  : 'ui/common/UI.secondarypanel'
 		'UI.slider'          : 'ui/common/UI.slider'
 		'UI.editablelabel'   : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
@@ -151,11 +148,6 @@ require.config {
 		'property'           : 'module/design/property/main'
 		'canvas'             : 'module/design/canvas/main'
 		'toolbar'            : 'module/design/toolbar/main'
-
-		#############################################
-		# component
-		#############################################
-		'acl_template'       : 'component/aclrule/template.html'
 
 		#############################################
 		# events
@@ -310,16 +302,10 @@ require.config {
 		'UI.scrollbar' :
 			deps       : [ 'jquery' ]
 
-		'UI.accordion' :
-			deps       : [ 'jquery' ]
-
 		'UI.table'     :
 			deps       : [ 'jquery' ]
 
 		'UI.tablist'   :
-			deps       : [ 'jquery' ]
-
-		'UI.fixedaccordion' :
 			deps       : [ 'jquery' ]
 
 		'UI.selectbox' :
@@ -338,9 +324,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.secondarypanel' :
 			deps       : [ 'jquery' ]
 
 		'UI.slider'    :

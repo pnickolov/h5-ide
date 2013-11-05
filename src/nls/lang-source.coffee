@@ -488,8 +488,8 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?"
-      zh: "如果没有互联网网关，面向互联网的负载均衡器和弹性IP将失去作用。确定要删除它吗？"
+      en: "Internet-facing load balancers and elastic IPs require an internet gateway to function."
+      zh: "面向互联网的负载均衡器和弹性IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
@@ -504,8 +504,8 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway to allow this %s to be publicly addressable?"
-      zh: "自动添加一个互联网网关允许这个 %s 被公开寻址?"
+      en: "Automatically add an internet gateway for using EIP"
+      zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -620,11 +620,11 @@ module.exports =
       zh: "导出图片"
 
     TOOL_TIP_STOP_APP:
-      en: "Stop this app's resources."
+      en: "Stop This App's Resources."
       zh: "暂停应用"
 
     TOOL_POP_TIT_STOP_APP:
-      en: "Confirm to stop app"
+      en: "Confirm to Stop App"
       zh: "确认暂停"
 
     TOOL_POP_BODY_STOP_APP_LEFT:
@@ -640,11 +640,11 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start this app's resources."
+      en: "Start This App's Resources."
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:
-      en: "Confirm to start app"
+      en: "Confirm to Start App"
       zh: "确认恢复"
 
     TOOL_POP_BODY_START_APP_LEFT:
@@ -659,12 +659,24 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
+    TOOL_TIP_UPDATE_APP:
+      en: "Edit App"
+      zh: "更新应用"
+
+    TOOL_TIP_SAVE_UPDATE_APP:
+      en: "Apply Updates"
+      zh: "保存应用更新"
+
+    TOOL_TIP_CANCEL_UPDATE_APP:
+      en: "Discard Updates"
+      zh: "取消应用更新"
+
     TOOL_TIP_TERMINATE_APP:
-      en: "Permanently terminate this app's resources"
+      en: "Permanently Terminate This App's Resources"
       zh: "销毁应用"
 
     TOOL_POP_TIT_TERMINATE_APP:
-      en: "Confirm to terminate app"
+      en: "Confirm to Terminate App"
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:
@@ -742,6 +754,18 @@ module.exports =
     TOOL_MSG_INFO_APP_REFRESH_START:
       en: "Refresh resources for app( %s ) start ..."
       zh: "开始刷新应用( %s )的资源 ..."
+
+    TOOL_POP_BODY_APP_UPDATE_EC2:
+      en: "The public and private addresses will be reassigned after the restart.",
+      zh: "重启后，公有/私有的IP地址将会被重新分配。"
+
+    TOOL_POP_BODY_APP_UPDATE_VPC:
+      en: "If any of the instance has been automatically assigned public IP, the IP will change after restart.",
+      zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
+
+    TOOL_MSG_INFO_NO_CHANGES:
+      en: "This app is't any change."
+      zh: "当前App没有任何改变。"
 
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
@@ -1286,6 +1310,10 @@ module.exports =
     PROP_SG_APP_SG_ID:
       en: "Security Group ID"
       zh: "安全组标识"
+
+    PROP_SG_APP_SG_NAME:
+      en: "Security Group Name"
+      zh: "安全组名字"
 
     PROP_SG_APP_VPC_ID:
       en: "VPC ID"
@@ -2023,6 +2051,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ASG_SUMMARY:
+      en: "Auto Scaling Group Summary"
+      zh: "自动伸缩组摘要"
+
     PROP_ASG_DETAILS:
       en: "Auto Scaling Group Details"
       zh: "自动伸缩组配置"
@@ -2126,6 +2158,10 @@ module.exports =
     PROP_ASG_LBL_NOTIFICATION:
       en: "Notification"
       zh: "通知"
+
+    PROP_ASG_LBL_SEND_NOTIFICATION_D:
+      en: "Send notification via SNS topic"
+      zh: "通过SNS发送通知"
 
     PROP_ASG_LBL_SEND_NOTIFICATION:
       en: "Send notification via SNS topic for:"
@@ -3287,6 +3323,21 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    RUN_STACK:
+      en: "run stack"
+      zh: "运行"
+
+    START_APP:
+      en: "start app"
+      zh: "启动APP"
+
+    STOP_APP:
+      en: "stop app"
+      zh: "停止APP"
+
+    TERMINATE_APP:
+      en: "terminate app"
+      zh: "删除APP"
 
     ##### Trust Advisor
 

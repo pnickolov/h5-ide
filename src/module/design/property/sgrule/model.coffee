@@ -212,13 +212,13 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
             #get sg name
             sg_app_detail =
-                groupName : currentAppSG.groupName
+                groupName        : currentSGComp.name
                 groupDescription : currentAppSG.groupDescription
-                groupId : currentAppSG.groupId
-                ownerId : currentAppSG.ownerId
-                vpcId : currentAppSG.vpcId
-                members : members
-                rules : rules
+                groupId          : currentAppSG.groupId
+                ownerId          : currentAppSG.ownerId
+                vpcId            : currentAppSG.vpcId
+                members          : members
+                rules            : rules
 
             return sg_app_detail
 

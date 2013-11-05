@@ -1,6 +1,6 @@
 {{#each content}}
   <li rule-num="{{ruleNumber}}" rule-engress="{{egress}}">
-    <div class="tooltip acl-rule-number" data-id="{{ruleNumber}}" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</div>
+    <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
     <div class="acl-rule-details">
       <div class="rule-list-row">
         <div href="#" class="acl-rule-allow-cb tooltip icon-{{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>

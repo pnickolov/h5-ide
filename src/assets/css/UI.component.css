@@ -343,7 +343,7 @@ a.table-link {
 	overflow: hidden;
 	width: 350px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-	margin: 10px 0;
+	margin: 10px auto;
 }
 
 .progress .bar {
@@ -634,6 +634,7 @@ textarea {
 	top      : 2px;
 	left     : 2px;
 
+
 	background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAcklEQVQY02NgwA/YoJgoEA/Es4DYgJBCJSBeD8SboRinBiYg7kZS2IosyQ/Eakh8LySFq4FYHFlxGRBvBOJYqMRqJMU+yApNkSRAeC0Sux3dfSCTetE0wKyXxOWhMKhTYIr9CAUXyJMzgLgBagBBgDPGAI2LGdNt0T1AAAAAAElFTkSuQmCC');
 	background-size: 100% 100%;
 }
@@ -685,28 +686,6 @@ textarea {
 .property-content .checkbox input[disabled] + label {
 	opacity : 0.3;
 }
-
-/*.property-content .radio input:disabled + label,
-.property-content .radio input[disabled] + label  {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .radio input:disabled + label:after,
-.property-content .radio input[disabled] + label:after {
-	background: #484343;
-}
-
-.property-content .checkbox input:disabled + label,
-.property-content .checkbox input[disabled] + label {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .checkbox input:disabled + label:after,
-.property-content .checkbox input[disabled] + label:after {
-	background: #484343;
-}*/
 
 .property-content .checkbox label,
 .property-content .radio label {
@@ -1001,6 +980,7 @@ textarea {
 
 .status-green,
 .status-running,
+.status-Running,
 .status-in-use,
 .status-attached {
 	background-color: #78d248;
@@ -1013,6 +993,8 @@ textarea {
 
 .status-red,
 .status-stopped,
+.status-Stopped,
+.status-Terminated,
 .status-terminated {
 	background-color: #f34c39;
 	background-image: -webkit-linear-gradient(bottom, #e72222, #ff8d6f);
@@ -1024,6 +1006,7 @@ textarea {
 
 .status-blue,
 .status-available,
+.status-Available,
 .status-not-attached {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
@@ -1035,7 +1018,9 @@ textarea {
 
 .status-yellow,
 .status-pending,
+.status-Pending,
 .status-shutting-down,
+.status-Stopping,
 .status-stopping {
 	background-color: #d2c748;
 	background-image: -webkit-linear-gradient(bottom, #d3be5c, #fbf819);
@@ -1046,6 +1031,7 @@ textarea {
 }
 
 .status-grey,
+.status-Unknown,
 .status-unknown {
 	background-color: #a0a0a0;
 	background-image: -webkit-linear-gradient(bottom, #808080, #bababa);
@@ -1194,7 +1180,8 @@ textarea {
 }
 
 .modal-control-group .input {
-	width: 190px;
+	width   : 210px;
+	padding : 7px 6px;
 }
 
 .resource-name-label {
@@ -1231,23 +1218,7 @@ textarea {
 	display: block;
 }
 
-.accordion-head {
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-}
-
 /* Accordion default style */
-.accordion-default .accordion-head {
-	border: 1px solid #ccc;
-	padding: 10px;
-	font-weight: 700;
-	color: #333;
-}
-
 .accordion-default .accordion-body {
 	padding: 10px;
 	/*color: #e0e0e0;*/
@@ -1436,8 +1407,7 @@ textarea {
 }
 
 .dl-vertical:nth-of-type(2n+1) {
-	/*background : #f6f5f5;*/
-	background: rgba(255,255,255,.05);
+	background: #3F3E3F;
 }
 
 .property-app .dl-vertical .truncate {
@@ -1897,14 +1867,6 @@ textarea {
 	top: 8px;
 }
 
-#secondary-panel-wrap {
-	display: none;
-	position: absolute;
-	width: 0;
-	top: 0;
-	right: 0;
-}
-
 /* added by song */
 
 /* Slider */
@@ -2215,7 +2177,7 @@ input.parsley-error {
 	/*background-color: rgba(247,74,72,.2);*/
 	padding          : 5px;
 	color            : #fff;
-	z-index          : 60;
+	z-index          : 99;
 	border-radius    : 4px;
 	min-width        : 150px !important;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 1px 1px 5px rgba(0,0,0,.4);

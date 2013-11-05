@@ -2,339 +2,329 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, ide_event, lang ) ->
 
-    ENIModel = PropertyModel.extend {
+	ENIModel = PropertyModel.extend {
 
-        defaults :
-            'sg_display'     : null
-            'eni_display'    : null
-            'uid'            : null
+		defaults :
+			'uid'       : null
+			'isAppEdit' : false
 
-        init : ( uid ) ->
+		init : ( uid ) ->
 
-            @set 'uid', uid
+			component = MC.canvas_data.component[ uid ]
 
-            me = this
+			data = {
+				uid  : uid
+				name : component.name
+				desc : component.resource.Description
+				sourceDestCheck : "" + component.resource.SourceDestCheck is "true"
+				isAppEdit : @isAppEdit
+			}
 
-            eni_component = $.extend true, {}, MC.canvas_data.component[uid]
+			if component.resource.Attachment and component.resource.Attachment.InstanceId.length
+				data.attached = true
 
-            if eni_component.resource.SourceDestCheck == 'true' or eni_component.resource.SourceDestCheck == true then eni_component.resource.SourceDestCheck = true else eni_component.resource.SourceDestCheck = false
+			@set data
 
+			@getIPList()
+			null
 
-            defaultVPCId = MC.aws.aws.checkDefaultVPC()
-            subnetCIDR = ''
-            if defaultVPCId
-                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(uid)
-                subnetCIDR = subnetObj.cidrBlock
-            else
-                subnetUID = MC.canvas_data.component[uid].resource.SubnetId.split('.')[0][1...]
-                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+		getIPList : () ->
 
-            prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
+			uid = @get 'uid'
 
-            $.each eni_component.resource.PrivateIpAddressSet, ( idx, ip_detail) ->
+			components = MC.canvas_data.component
+			comp_res   = components[ uid ].resource
 
-                ip_ref = '@' + uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
+			if comp_res.Attachment and comp_res.Attachment.InstanceId.length
 
-                ip_detail.index = idx
+				instance_component = components[ MC.extractID comp_res.Attachment.InstanceId ]
 
-                ip_detail.prefix = prefixSuffixAry[0]
+				ip_customizable = parseInt(instance_component.number, 10) is 1
 
-                if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
-                    ip_detail.suffix = prefixSuffixAry[1]
-                else
-                    ipAddress = ip_detail.PrivateIpAddress
-                    fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
-                    ip_detail.suffix = fixPrefixSuffixAry[1]
+			# Get Ip List
+			if MC.aws.aws.checkDefaultVPC()
+				subnetCIDR = MC.aws.vpc.getSubnetForDefaultVPC(uid).cidrBlock
+			else
+				subnetCIDR = components[ MC.extractID comp_res.SubnetId ].resource.CidrBlock
 
-                $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
 
-                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
+			checkEIPMap = {}
+			ips = []
+			for ip, idx in comp_res.PrivateIpAddressSet
 
-                        ip_detail.has_eip = true
+				primary = "" + ip.Primary is "true"
 
-                        return false
+				ip_view = {
+					prefix       : prefixSuffixAry[0]
+					customizable : ip_customizable
+					deletable    : not primary
+					eip          : false
+					notEditable  : @isAppEdit and primary
+				}
 
-            me.set 'eni_display', eni_component
+				if "" + ip.AutoAssign is "true"
+					ip_view.suffix = prefixSuffixAry[1]
+				else
+					ip_view.suffix = MC.aws.eni.getENIDivIPAry(subnetCIDR, ip.PrivateIpAddress)[1]
 
-            if eni_component.resource.Attachment and eni_component.resource.Attachment.InstanceId.length
-                instance_component = MC.canvas_data.component[ MC.extractID eni_component.resource.Attachment.InstanceId ]
-                me.set 'multiple', parseInt(instance_component.number, 10) > 1
+				ip_view.ip = ip_view.prefix + ip_view.suffix
 
-            eni_sg = {}
+				checkEIPMap[ "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" ] = ip_view
+				ips.push ip_view
 
-            eni_sg.detail = []
+			TYPE_EIP = constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+			for comp_uid, comp of components
+				if comp.type is TYPE_EIP and comp.resource.PrivateIpAddress
+						ip = checkEIPMap[ comp.resource.PrivateIpAddress ]
+						if ip
+							ip.eip = true
 
-            eni_sg.all_sg = []
+			@set "ips", ips
+			null
 
-            eni_sg.rules_detail_ingress = []
+		setEniDesc : ( value ) ->
+			uid = @get 'uid'
+			MC.canvas_data.component[uid].resource.Description = value
 
-            eni_sg.rules_detail_egress = []
+			null
 
-            sg_ids = (g.GroupId for g in MC.canvas_data.component[ uid ].resource.GroupSet)
+		setSourceDestCheck : ( value ) ->
+			uid = @get 'uid'
+			MC.canvas_data.component[uid].resource.SourceDestCheck = value
 
-            sg_id_no_ref = []
+			null
 
-            _.map sg_ids, ( sg_id ) ->
+		getSGList : () ->
 
-                sg_uid = (sg_id.split ".")[0][1...]
+			uid = this.get 'uid'
+			sgAry = MC.canvas_data.component[uid].resource.GroupSet
 
-                sg_id_no_ref.push sg_uid
+			sgUIDAry = []
+			_.each sgAry, (value) ->
+				sgUID = value.GroupId.slice(1).split('.')[0]
+				sgUIDAry.push sgUID
+				null
 
-                _.map MC.canvas_property.sg_list, ( value, key ) ->
+			return sgUIDAry
 
-                    if value.uid == sg_uid
+		unAssignSGToComp : (sg_uid) ->
 
-                        sg_detail = {}
+			eniUID = this.get 'uid'
 
-                        sg_detail.uid = sg_uid
+			originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
 
-                        sg_detail.parent = uid
+			currentSG = '@' + sg_uid + '.resource.GroupName'
+			currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-                        sg_detail.members = value.member.length
+			originSGAry = _.filter originSGAry, (value) ->
+				value.GroupId isnt currentSGId
 
-                        sg_detail.rules = MC.canvas_data.component[sg_uid].resource.IpPermissions.length + MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress.length
+			MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
 
-                        sg_detail.name = MC.canvas_data.component[sg_uid].resource.GroupName
+			null
 
-                        sg_detail.desc = MC.canvas_data.component[sg_uid].resource.GroupDescription
+		assignSGToComp : (sg_uid) ->
 
-                        eni_sg.rules_detail_ingress = eni_sg.rules_detail_ingress.concat MC.canvas_data.component[sg_uid].resource.IpPermissions
+			eniUID = this.get 'uid'
 
-                        eni_sg.rules_detail_egress = eni_sg.rules_detail_egress.concat MC.canvas_data.component[sg_uid].resource.IpPermissionsEgress
+			originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
 
-                        eni_sg.detail.push sg_detail
+			currentSG = '@' + sg_uid + '.resource.GroupName'
+			currentSGId = '@' + sg_uid + '.resource.GroupId'
 
-            _.map MC.canvas_property.sg_list, (sg) ->
+			isInGroup = false
 
-                if sg.uid not in sg_id_no_ref
+			_.each originSGAry, (value) ->
+				if value.GroupId is currentSGId
+					isInGroup = true
+				null
 
-                    tmp = {}
+			if !isInGroup
+				originSGAry.push {
+					GroupName: currentSG
+					GroupId: currentSGId
+				}
 
-                    tmp.name = sg.name
+			MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
 
-                    tmp.uid = sg.uid
+			null
 
-                    eni_sg.all_sg.push tmp
+		addIP : () ->
+			uid  = @get 'uid'
+			comp = MC.canvas_data.component[ uid ]
 
-            eni_sg.total = eni_sg.detail.length
+			# Return a newly created IP object to view, so that it can render it
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			subnetCIDR   = ''
 
-            array_unique = ( origin_ary )->
+			if defaultVPCId
+				subnetObj  = MC.aws.vpc.getSubnetForDefaultVPC( uid )
+				subnetCIDR = subnetObj.cidrBlock
+			else
+				subnetUID  = MC.extractID comp.resource.SubnetId
+				subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
 
-                if origin_ary.length == 0
+			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( subnetCIDR )
 
-                    return []
+			ip_customizable = true
+			if comp.resource.Attachment and comp.resource.Attachment.InstanceId.length
+				instance = MC.canvas_data.component[ MC.extractID comp.resource.Attachment.InstanceId ]
 
-                ary = origin_ary.slice 0
+				ip_customizable = parseInt(instance.number, 10) is 1
 
+			newIP =
+				customizable : ip_customizable
+				prefix       : prefixSuffixAry[0]
+				suffix       : "x"
+				deletable    : true
+				ip           : prefixSuffixAry[0] + "x"
+				eip          : false
 
-                $.each ary, (idx, value)->
+			@attributes.ips.push newIP
 
-                    ary[idx] = JSON.stringify value
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList uid, @attributes.ips
+			MC.aws.eni.saveIPList uid, realIPAry
 
-                    null
+			# Return newly created IP to view to render
+			newIP
 
-                ary.sort()
+		attachEIP : ( eip_index, attach ) ->
 
-                tmp = [ary[0]]
+			eni_uid = @get 'uid'
 
-                _.map ary, ( val, i ) ->
+			# Update eip state in model data
+			@attributes.ips[ eip_index ].eip = attach
 
-                    if val != tmp[tmp.length - 1]
 
-                        tmp.push(val)
+			# Update component
+			if attach
 
+				eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
 
+				eip_uid = MC.guid()
 
-                return (JSON.parse node for node in tmp)
+				eip_component.uid = eip_uid
 
+				eip_component.resource.PrivateIpAddress = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
 
-            eni_sg.rules_detail_ingress = array_unique eni_sg.rules_detail_ingress
-            eni_sg.rules_detail_egress = array_unique eni_sg.rules_detail_egress
+				eip_component.resource.NetworkInterfaceId = '@' +  eni_uid + '.resource.NetworkInterfaceId'
 
-            me.set 'sg_display', eni_sg
+				eip_component.resource.Domain = 'vpc'
 
-        setEniDesc : ( uid , value ) ->
+				data = MC.canvas.data.get('component')
 
-            MC.canvas_data.component[uid].resource.Description = value
+				data[eip_uid] = eip_component
 
-            null
+				MC.canvas.data.set('component', data)
 
-        setSourceDestCheck : ( uid, value ) ->
+				MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 
-            MC.canvas_data.component[uid].resource.SourceDestCheck = value
+				ide_event.trigger ide_event.NEED_IGW
 
-            null
+			else
 
-        getSGList : () ->
+				ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
 
-            uid = this.get 'uid'
-            sgAry = MC.canvas_data.component[uid].resource.GroupSet
+				$.each MC.canvas_data.component, ( comp_uid, comp ) ->
 
-            sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.GroupId.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
+					if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
 
-            return sgUIDAry
+						delete MC.canvas_data.component[comp_uid]
 
-        unAssignSGToComp : (sg_uid) ->
+						#determine whether all eip are detach
 
-            eniUID = this.get 'uid'
+						existing = false
 
-            originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
+						$.each MC.canvas_data.component, ( k, v ) ->
 
-            currentSG = '@' + sg_uid + '.resource.GroupName'
-            currentSGId = '@' + sg_uid + '.resource.GroupId'
+							if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  eni_uid + '.resource.NetworkInterfaceId'
 
-            originSGAry = _.filter originSGAry, (value) ->
-                value.GroupId isnt currentSGId
+								existing = true
 
-            MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
+								return false
 
-            null
+						if not existing
 
-        assignSGToComp : (sg_uid) ->
+							MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
-            eniUID = this.get 'uid'
+		removeIP : ( index ) ->
+			uid  = @get 'uid'
+			comp = MC.canvas_data.component[uid]
 
-            originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
+			# Update Model data
+			@attributes.ips.splice index, 1
 
-            currentSG = '@' + sg_uid + '.resource.GroupName'
-            currentSGId = '@' + sg_uid + '.resource.GroupId'
+			# Update EIP Component
+			ip_ref  = "@#{uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
+			eni_ref = "@#{uid}.resource.NetworkInterfaceId"
 
-            isInGroup = false
+			min_index = index + 1
+			max_index = comp.resource.PrivateIpAddressSet.length - 1
 
-            _.each originSGAry, (value) ->
-                if value.GroupId is currentSGId
-                    isInGroup = true
-                null
+			modify_index_refs = {}
 
-            if !isInGroup
-                originSGAry.push {
-                    GroupName: currentSG
-                    GroupId: currentSGId
-                }
+			for index_value in [min_index..max_index]
+				modify_index_refs["@#{uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
 
-            MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
+			comp.resource.PrivateIpAddressSet.splice index, 1
+			remove_uid = null
 
-            null
+			for u, c of MC.canvas_data.component
+				if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+					continue
+				if c.resource.NetworkInterfaceId isnt eni_ref
+					continue
 
-        addNewIP : ( eni_uid ) ->
+				if modify_index_refs[ c.resource.PrivateIpAddress ]
+					idx = parseInt(c.resource.PrivateIpAddress.split('.')[3],10)-1
+					c.resource.PrivateIpAddress = "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+				else if c.resource.PrivateIpAddress is ip_ref
+					remove_uid = u
 
+			delete MC.canvas_data.component[remove_uid]
 
-            ip_detail = {
-                "Association" : {
-                        "AssociationID": ""
-                        "PublicDnsName": ""
-                        "AllocationID": ""
-                        "InstanceId": ""
-                        "IpOwnerId": ""
-                        "PublicIp": ""
-                    }
-                "PrivateIpAddress": "10.0.0.1"
-                "AutoAssign": "false"
-                "Primary": false
-            }
-            MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.push ip_detail
+			# Re-generate IP for ENI component
+			realIPAry = MC.aws.eni.generateIPList uid, @attributes.ips
+			MC.aws.eni.saveIPList uid, realIPAry
+			null
 
-        attachEIP : ( eni_uid, eip_index, attach ) ->
+		canAddIP : ()->
+			uid  = @get 'uid'
+			comp = MC.canvas_data.component[ uid ]
 
-            if attach
+			maxIPNum  = MC.aws.eni.getENIMaxIPNum(uid)
+			currIPNum = comp.resource.PrivateIpAddressSet.length
+			if currIPNum < maxIPNum
+				return true
 
-                eip_component = $.extend true, {}, MC.canvas.EIP_JSON.data
+			instanceUid = MC.extractID comp.resource.Attachment.InstanceId
+			if instanceUid
+				instanceType = MC.canvas_data.component[ instanceUid ].resource.InstanceType
+				error = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
+				return error
 
-                eip_uid = MC.guid()
+			return false
 
-                eip_component.uid = eip_uid
+		setIPList : (inputIPAry) ->
 
-                eip_component.resource.PrivateIpAddress = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
+			eniUID = this.get 'uid'
 
-                eip_component.resource.NetworkInterfaceId = '@' +  eni_uid + '.resource.NetworkInterfaceId'
+			# Update data in model
+			for ip, idx in inputIPAry
+				model_ip = @attributes.ips[ idx ]
 
-                eip_component.resource.Domain = 'vpc'
+				model_ip.ip     = ip.ip
+				model_ip.eip    = ip.eip
+				model_ip.suffix = ip.suffix
 
-                data = MC.canvas.data.get('component')
+			# Update data in component
+			realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
+			MC.aws.eni.saveIPList eniUID, realIPAry
 
-                data[eip_uid] = eip_component
+	}
 
-                MC.canvas.data.set('component', data)
-
-                MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
-
-            else
-
-                ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'
-
-                $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-                    if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
-
-                        delete MC.canvas_data.component[comp_uid]
-
-                        #determine whether all eip are detach
-
-                        existing = false
-
-                        $.each MC.canvas_data.component, ( k, v ) ->
-
-                            if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == '@' +  eni_uid + '.resource.NetworkInterfaceId'
-
-                                existing = true
-
-                                return false
-
-                        if not existing
-
-                            MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
-
-        removeIP : ( eni_uid, index ) ->
-
-            ip_ref = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + index + '.PrivateIpAddress'
-
-            eni_ref = '@' + eni_uid + '.resource.NetworkInterfaceId'
-
-            max_index = MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.length - 1
-
-            modify_index_refs = []
-
-            min_index = index + 1
-
-            $.each [min_index..max_index], ( i, index_value ) ->
-
-                modify_index_refs.push '@' + eni_uid + '.resource.PrivateIpAddressSet.' + index_value + '.PrivateIpAddress'
-
-            MC.canvas_data.component[eni_uid].resource.PrivateIpAddressSet.splice index, 1
-
-            remove_uid = null
-
-            $.each MC.canvas_data.component, ( k, v ) ->
-
-                if v.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and v.resource.NetworkInterfaceId == eni_ref
-
-                    if v.resource.PrivateIpAddress in modify_index_refs
-
-                        v.resource.PrivateIpAddress = '@' + eni_uid + '.resource.PrivateIpAddressSet.' + (parseInt(v.resource.PrivateIpAddress.split('.')[3],10)-1) + '.PrivateIpAddress'
-
-                    if v.resource.PrivateIpAddress == ip_ref
-
-                        remove_uid = v.uid
-
-                    null
-
-            delete MC.canvas_data.component[remove_uid]
-
-        setIPList : (inputIPAry) ->
-
-            # get all other ip in cidr
-            eniUID = this.get 'uid'
-
-            realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
-
-            MC.aws.eni.saveIPList eniUID, realIPAry
-
-    }
-
-    new ENIModel()
+	new ENIModel()

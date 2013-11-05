@@ -1,42 +1,72 @@
 <article id="property_app_asg" class="property-app">
-  {{#unless asg}}
-  <div class="property-control-group">Auto Scaling Group {{asg_name}} is deleted in stopped app.</div>
-  {{else}}
-  <div class="option-group-head expand">{{i18n "PROP_ASG_DETAILS"}}</div>
+  {{#if hasData}}
+  <div class="option-group-head expand">{{i18n "PROP_ASG_SUMMARY"}}</div>
   <div class="option-group">
     <dl class="dl-vertical">
       <dt>{{i18n "PROP_ASG_NAME"}}</dt>
-      <dd>{{asg.AutoScalingGroupName}}</dd>
+      <dd>{{awsResName}}</dd>
       <dt>Auto Scaling Group ARN</dt>
       <dd>
-        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{asg.AutoScalingGroupARN}}">{{asg.AutoScalingGroupARN}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{asg.AutoScalingGroupARN}}"></i></div>
+        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{arn}}">{{arn}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{arn}}"></i></div>
       </dd>
       <dt>{{i18n "PROP_ASG_CREATE_TIME"}}</dt>
-      <dd>{{timeStr asg.CreatedTime}}</dd>
+      <dd>{{timeStr createTime}}</dd>
+
+    {{#if isEditable}}
+    </dl>
+    {{else}}
       <dt>{{i18n "PROP_LC_TITLE"}}</dt>
-      <dd>{{asg.LaunchConfigurationName}}</dd>
+      <dd>{{lcName}}</dd>
     </dl>
     <dl class="dl-vertical">
       <dt>{{i18n "PROP_ASG_MIN_SIZE"}}</dt>
-      <dd>{{asg.MinSize}}</dd>
+      <dd>{{minSize}}</dd>
       <dt>{{i18n "PROP_ASG_MAX_SIZE"}}</dt>
-      <dd>{{asg.MaxSize}}</dd>
+      <dd>{{maxSize}}</dd>
       <dt>{{i18n "PROP_ASG_DESIRE_CAPACITY"}}</dt>
-      <dd>{{asg.DesiredCapacity}}</dd>
+      <dd>{{capacity}}</dd>
       <dt>{{i18n "PROP_ASG_COOL_DOWN"}}</dt>
-      <dd>{{asg.DefaultCooldown}}</dd>
+      <dd>{{cooldown}}</dd>
     </dl>
     <dl class="dl-vertical">
       <dt>{{i18n "PROP_ASG_HEALTH_CHECK_TYPE"}}</dt>
-      <dd>{{asg.HealthCheckType}}</dd>
+      <dd>{{healCheckType}}</dd>
       <dt>{{i18n "PROP_ASG_HEALTH_CHECK_CRACE_PERIOD"}}</dt>
-      <dd>{{asg.HealthCheckGracePeriod}}</dd>
+      <dd>{{healthCheckGracePeriod}}</dd>
     </dl>
+    {{/if}}
   </div>
+  {{else}}
+  <div class="property-control-group">
+    <p class="property-info tac">Auto Scaling Group {{name}} is deleted in stopped app.</p>
+  </div>
+  {{/if}}
 
+  {{#if isEditable}}
+  <div class="option-group-head expand">{{ i18n "PROP_ASG_DETAILS"}}</div>
+  <div class="option-group" data-bind="true">
+    <section class="property-control-group clearfix">
+      <div class="left property-asg-size">
+        <label class="left" for="property-asg-min">{{ i18n "PROP_ASG_MIN_SIZE" }}</label>
+        <input class="input" type="text" id="property-asg-min" value="{{minSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
+      </div>
+      <div class="right property-asg-size">
+        <label class="left" for="property-asg-max">{{ i18n "PROP_ASG_MAX_SIZE" }}</label>
+        <input class="input" type="text" id="property-asg-max" value="{{maxSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
+      </div>
+    </section>
+
+    <section class="property-control-group property-asg-size">
+      <label class="left" for="property-asg-capacity">{{ i18n "PROP_ASG_DESIRE_CAPACITY" }}</label>
+      <input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
+    </section>
+  </div>
+  {{/if}}
+
+  {{#if hasData}}
   <div class="option-group-head">{{i18n "PROP_ASG_INSTANCE"}} <span class="property-head-num-wrap">({{instance_count}})</span></div>
   <div class="option-group">
-    {{#each subnets}}
+    {{#each instance_groups}}
     <div class="property-group-head">{{name}}</div>
     <ul class="property-list">
       {{#each instances}}
@@ -50,8 +80,7 @@
   <div class="option-group">
     <section class="property-control-group pos-r">
       <h5>{{i18n "PROP_ASG_TERMINATION_POLICY"}}</h5>
-      <p class="termination-policy-brief">{{term_policy_brief}}</p>
-      <!-- <i class="icon-detail" id="property-asg-term-edit"></i> -->
+      <p class="termination-policy-brief">{{emptyStr term_policy_brief}}</p>
     </section>
 
     <ul id="property-asg-policies" class="property-list">
@@ -63,7 +92,6 @@
         <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{second}}s</span>
         <span class="asg-p-trigger asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjusttype}}</span>
-        <!-- <i class="icon-detail"></i> -->
       </li>
       {{/each}}
     </ul>
@@ -71,9 +99,9 @@
 
   <div class="option-group-head">{{i18n "PROP_ASG_LBL_NOTIFICATION"}}</div>
   <div class="option-group">
-    {{#if sendNotify}}
     <div class="property-asg-notification-wrap property-control-group">
-      <label class="left">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION"}}:</label>
+      {{#if sendNotify}}
+      <label>{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION"}}</label>
       <section>
         {{#if notifies.[0]}}<p>{{i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH"}}</p>{{/if}}
         {{#if notifies.[1]}}<p>{{i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH"}}</p>{{/if}}
@@ -86,6 +114,6 @@
       {{/if}}
     </div>
   </div>
-  {{/unless}}
+  {{/if}}
 
 </article>

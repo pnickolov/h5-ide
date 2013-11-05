@@ -43,36 +43,38 @@ define [ '../base/model' ], ( PropertyModel ) ->
               return
 
           # get vpn
-          vpn = _.extend {}, appData[ vpn_id ]
+          if appData[ vpn_id ]
 
-          # JSON detail
-          config =
-            name : "Download"
-            type : "download_configuration"
+            vpn = _.extend {}, appData[ vpn_id ]
 
-          vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
+            # JSON detail
+            config =
+              name : "Download"
+              type : "download_configuration"
 
-          #set vpn available
-          if vpn.state is 'available'
-            vpn.available = true
+            vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
 
-          #set vpn routing
-          if vpn.options.staticRoutesOnly is "true"
-            vpn.routing = "Static"
-          else
-            vpn.routing = "Dynamic"
+            #set vpn available
+            if vpn.state is 'available'
+              vpn.available = true
+
+            #set vpn routing
+            if vpn.options.staticRoutesOnly is "true"
+              vpn.routing = "Static"
+            else
+              vpn.routing = "Dynamic"
 
 
-          if vpn.vgwTelemetry and vpn.vgwTelemetry.item
-            vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
-              item.index = idx + 1
-              item.stateColor = twoStateColorMap[item.status]
-              item
+            if vpn.vgwTelemetry and vpn.vgwTelemetry.item
+              vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
+                item.index = idx + 1
+                item.stateColor = twoStateColorMap[item.status]
+                item
 
-          if vpn.routes and vpn.routes.item
-            vpn.routes.item = _.map vpn.routes.item, ( item ) ->
-              item.stateColor = multiStateColorMap[item.state]
-              item
+            if vpn.routes and vpn.routes.item
+              vpn.routes.item = _.map vpn.routes.item, ( item ) ->
+                item.stateColor = multiStateColorMap[item.state]
+                item
 
           this.set {
             name : cgw.name

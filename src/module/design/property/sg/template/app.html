@@ -1,23 +1,22 @@
 <article>
   <dl class="dl-vertical">
+    <dt>{{ i18n "PROP_SG_APP_SG_NAME" }}</dt>
+    <dd>{{groupName}}</dd>
+
     <dt>{{ i18n "PROP_SG_APP_SG_ID" }}</dt>
-    <dd>{{sg_app_detail.groupId}}</dd>
+    <dd>{{groupId}}</dd>
 
     <dt>{{ i18n "PROP_SG_DETAIL_LBL_DESCRIPTION" }}</dt>
-    <dd>{{sg_app_detail.groupDescription}}</dd>
+    <dd>{{description}}</dd>
 
     <dt>{{ i18n "PROP_SG_APP_VPC_ID" }}</dt>
-    <dd>{{sg_app_detail.vpcId}}</dd>
+    <dd>{{vpcId}}</dd>
   </dl>
 
   <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
-    <span class="property-head-num-wrap">(<span id="rule-count">{{sg_app_detail.rules.length}}</span>)</span>
+    <span class="property-head-num-wrap">(<span id="rule-count">{{rules.length}}</span>)</span>
   </div>
   <div class="option-group">
-<!--     <div id="sg-rule-empty">
-      <p>To create rule referencing IP Range, click plus button here.</p>
-      <p>To create rul referencing specific IP or Security Group, connect the blue port of instance/ELB/ENI.</p>
-    </div> -->
 
     <div class="rule-list-sort property-control-group">
       <h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
@@ -32,7 +31,7 @@
     </div>
 
     <ul class="sg-rule-list property-list" id="sg-rule-list">
-      {{#each sg_app_detail.rules}}
+      {{#each rules}}
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
       <div class="rule-list-row">
           <div class="icon-{{direction}}" data-tooltip="{{direction}}"></div>
@@ -50,15 +49,12 @@
   </div>
 
   <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_MEMBER" }}
-    <span class="property-head-num-wrap">(<span>{{sg_app_detail.members.length}}</span>)</span>
+    <span class="property-head-num-wrap">(<span>{{members.length}}</span>)</span>
   </div>
   <div class="option-group">
     <ul class="sg-member-list property-list">
-      {{#each sg_app_detail.members}}
-      <li>
-        <div class="sg-member-icon"></div>
-        <div class="sg-member-name">{{name}}</div>
-      </li>
+      {{#each members}}
+      <li class="sg-member-name">{{name}}</li>
       {{/each}}
     </ul>
   </div>

@@ -678,8 +678,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
                 resourceId = compRes.VpnGatewayId
 
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                resourceId = compRes.AutoScalingGroupARN
+            # In stopped app, ASG doesn't have AWS Resource
+            # when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                # resourceId = compRes.AutoScalingGroupARN
 
             when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                 resourceId = compRes.LaunchConfigurationARN
@@ -709,6 +710,43 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         else
             return false
 
+    getChanges = (data, ori_data) ->
+        me = this
+
+        isChanged = false
+        instance_list = []
+
+        # first check change
+        new_str = JSON.stringify(data)
+        ori_str = JSON.stringify(ori_data)
+        if new_str != ori_str
+            isChanged = true
+
+            for uid of data.component
+                item = data.component[uid]
+
+                # only instance
+                if item.type is 'AWS.EC2.Instance' and uid of ori_data.component
+                    # check instance size
+                    if item.resource.InstanceType is ori_data.component[uid].resource.InstanceType
+                        continue
+
+                    # server group
+                    if item.number > 1 and uid of data.layout.component.node
+                        for inst_uid in data.layout.component.node[uid].instanceList
+                            inst_item = data.component[inst_uid]
+                            instance_list.push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
+                    else
+                        # filter server group instance
+                        inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                        if inst in instance_list
+                            continue
+
+                        instance_list.push inst
+
+        {'isChanged':isChanged, 'changes':instance_list}
+
     #public
     getNewName                  : getNewName
     cacheResource               : cacheResource
@@ -722,3 +760,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     checkResource               : checkResource
     getRegionName               : getRegionName
     isExistResourceInApp        : isExistResourceInApp
+    getChanges                  : getChanges

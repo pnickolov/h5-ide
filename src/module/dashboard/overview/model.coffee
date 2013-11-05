@@ -1098,7 +1098,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 setTimeout () ->
                     me.describeAWSResourcesService()
                 , 2000
-                
+
 
                 null
 
@@ -1364,24 +1364,40 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
-        updateAppList : (flag, app_id) ->
+        # updateAppList : (flag, app_id) ->
+        #     me = this
+
+        #     cur_app_list = me.get 'cur_app_list'
+
+        #     if flag is 'pending'
+        #         for item in cur_app_list
+        #             if item.id == app_id
+        #                 idx = cur_app_list.indexOf item
+        #                 if idx>=0
+        #                     cur_app_list[idx].status = "pending"
+        #                     cur_app_list[idx].ispending = true
+
+        #                     me.set 'cur_app_list', cur_app_list
+        #                     me.trigger 'UPDATE_REGION_APP_LIST'
+
+        #     null
+
+        updateAppState : (state, tab_name) ->
             me = this
 
-            cur_app_list = me.get 'cur_app_list'
+            cur_app_list = $.extend true, [],  me.get 'cur_app_list'
 
-            if flag is 'pending'
+            if (state is constant.APP_STATE.APP_STATE_STARTING or state is constant.APP_STATE.APP_STATE_STOPPING or state is constant.APP_STATE.APP_STATE_TERMINATING or state is constant.APP_STATE.APP_STATE_UPDATING) and tab_name of MC.process
                 for item in cur_app_list
-                    if item.id == app_id
+                    if item.id == MC.process[tab_name].id
                         idx = cur_app_list.indexOf item
-                        if idx>=0
-                            cur_app_list[idx].status = "pending"
+                        if idx >= 0 and cur_app_list[idx].status isnt 'pending' and not cur_app_list[idx].ispending
+                            cur_app_list[idx].status = 'pending'
                             cur_app_list[idx].ispending = true
 
-                            me.set 'cur_app_list', cur_app_list
-                            me.trigger 'UPDATE_REGION_APP_LIST'
+                        me.set 'cur_app_list', cur_app_list
 
             null
-
 
     }
 

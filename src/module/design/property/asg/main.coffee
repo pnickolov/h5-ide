@@ -5,12 +5,27 @@
 define [ '../base/main',
          './model',
          './view',
-         'constant'
-], ( PropertyModule, model, view, constant ) ->
+         'constant',
+         './app_model',
+         './app_view'
+], ( PropertyModule, model, view, constant, app_model, app_view ) ->
 
     AsgModule = PropertyModule.extend {
 
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+        setupAppEdit : () ->
+
+            me = this
+
+            @view.on 'SET_ASG_MIN', ( value ) ->
+                me.model.setASGMin value
+
+            @view.on 'SET_ASG_MAX', ( value ) ->
+                me.model.setASGMax value
+
+            @view.on 'SET_DESIRE_CAPACITY', ( value ) ->
+                me.model.setASGDesireCapacity value
 
         setupStack : () ->
             me = this
@@ -52,14 +67,20 @@ define [ '../base/main',
 
         initStack : ()->
             @model = model
-            @model.isApp = false
             @view  = view
             null
 
         initApp : ()->
-            @model = model
-            @model.isApp = false
-            @view = view
+            @model = app_model
+            @model.isAppEdit = false
+            @view = app_view
+            null
+
+
+        initAppEdit : ()->
+            @model = app_model
+            @model.isAppEdit = true
+            @view = app_view
             null
     }
     null

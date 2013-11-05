@@ -126,7 +126,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     ++ Class Method ++
 
     # loadSubPanel( subPanelID, componentUid ) :
-        description : calling this method will should the property. It does nothing if the property module is main module, not sub module.
+        description : calling this method will show the property. It does nothing if the property module is main module, not sub module.
 
     # activeModule :
         description : Returns the currently showing property.
@@ -139,7 +139,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     ++ Static Method ++
 
     # extend :
-         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend. It's basically the same as triggering `ide_event.OPEN_PROPERTY`
+         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend.
 
     ###
 
@@ -243,11 +243,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
-        tab_type_prefix = tab_type + ":"
         if not property
             # If we cannot find the property
             # then try using `App:XXXXX` and `Stack:XXXXX` to match
-            property = propertyTypeMap[ tab_type_prefix + componentType ]
+            property = propertyTypeMap[ tab_type + ":" + componentType ]
 
         if not property and componentType.indexOf ">" > -1
             # This is a line, we try to match the line using regexp

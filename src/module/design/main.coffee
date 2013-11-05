@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
+define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lang, constant ) ->
 
     #private
     loadModule = () ->
@@ -63,6 +63,8 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
 
                 console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                 #
+                MC.open_failed_list[ MC.data.current_tab_id ] = { 'tab_id' : MC.data.current_tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type not in [ 'OLD_STACK', 'OLD_APP' ]
+                #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
@@ -89,6 +91,58 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
 
                     # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
                     ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+                #
+                if type in [ 'OPEN_APP', 'OLD_APP' ]
+
+                    console.log 'when open_app or old_app restore the scene'
+
+                    # update design-overlay when app changed
+                    if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
+
+                        # changed success
+                        if MC.data.process[ tab_id ].flag_list.is_updated
+
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+                            else
+                                # don't do anything
+
+                        # changed done
+                        else if MC.data.process[ tab_id ].flag_list.is_done
+                            ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+
+                        # changed fail
+                        else if MC.data.process[ tab_id ].flag_list.is_failed
+
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                            else
+                                # don't do anything
+
+                        # upading
+                        else if MC.data.process[ tab_id ].flag_list.flag is 'SAVE_APP'
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
+
+                        # staring stopping terminating
+                        else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
+
+                            if type is 'OPEN_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state
+                            else
+                                # hold on current overlay
+                                console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag
+
+                        #if MC.data.process[ tab_id ].appedit2app
+                        #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
+                        #    MC.data.process[ tab_id ].appedit2app = null
+
+                #
+                ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
+                #
+                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
+                #test123
+                #ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OPEN_APP' ] and not MC.open_failed_list[ MC.data.current_tab_id ].is_fail
+                #
                 null
 
             #listen
@@ -113,8 +167,43 @@ define [ 'i18n!nls/lang.js', 'jquery', 'MC.canvas.constant' ], (lang) ->
                 #is_manual = true
                 model.getAppResourcesService region_name, app_id, is_manual
 
-                # update app data from mongo
-                model.updateAppTab region_name, app_id
+                setTimeout ->
+                    #app update fail
+                    if MC.data.process[app_id] and MC.data.process[ app_id ].flag_list.is_failed
+                        return
+
+                    # update app data from mongo
+                    model.updateAppTab region_name, app_id
+                , 200
+
+                null
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
+                console.log 'design:UPDATE_APP_STATE', type, id
+
+                #
+                MC.data.process             = {}
+                MC.data.process             = $.extend true, {}, MC.process
+                MC.data.process[ id ].state = type
+
+                return if MC.data.current_tab_id isnt id
+
+                # changed fail
+                if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+
+                # update success
+                else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+
+                # changing
+                else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type
+
+                # changed
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
+                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                 null
 

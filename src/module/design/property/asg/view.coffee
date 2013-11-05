@@ -4,15 +4,12 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'text!./template/app.html',
          'text!./template/policy.html',
          'text!./template/term.html',
-         'UI.zeroclipboard',
          'i18n!nls/lang.js'
-], ( PropertyView, template, app_template, policy_template, term_template, zeroclipboard, lang ) ->
+], ( PropertyView, template, policy_template, term_template, lang ) ->
 
     template        = Handlebars.compile template
-    app_template    = Handlebars.compile app_template
     policy_template = Handlebars.compile policy_template
     term_template   = Handlebars.compile term_template
 
@@ -87,17 +84,9 @@ define [ '../base/view',
 
                 data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
 
-            template = if @model.isApp then app_template else template
-
             @$el.html template data
 
-            if @model.isApp
-                zeroclipboard.copy $( "#property_app_asg .icon-copy" )
-
-            if @model.attributes.asg
-                return @model.attributes.asg.AutoScalingGroupName
-            else
-                return @model.attributes.asg_name
+            @model.attributes.asg.AutoScalingGroupName
 
         setASGCoolDown : ( event ) ->
 

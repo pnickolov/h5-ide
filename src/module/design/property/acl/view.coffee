@@ -5,7 +5,7 @@
 define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/rule_item.html',
-         'text!acl_template',
+         'text!./template/dialog.html',
          'i18n!nls/lang.js'
 ], ( PropertyView, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
 
@@ -15,32 +15,24 @@ define [ '../base/view',
 
     ACLView = PropertyView.extend {
 
-        initialize : ->
-            $('#sg-protocol-udp').hide()
-            $('#sg-protocol-icmp').hide()
-            $('#sg-protocol-custom').hide()
-            $('#sg-protocol-all').hide()
-            $('.protocol-icmp-sub-select').hide()
-
-            null
-
         events   :
-            'click #acl-add-rule-icon'                   : 'showCreateRuleModal'
-            'click #acl-modal-rule-save-btn'             : 'saveRule'
-            'OPTION_CHANGE #acl-add-model-source-select' : 'modalRuleSourceSelected'
-            'OPTION_CHANGE #modal-protocol-select'       : 'modalRuleProtocolSelected'
-            'OPTION_CHANGE #protocol-icmp-main-select'   : 'modalRuleICMPSelected'
-            'click .property-rule-delete-btn'            : 'removeRuleClicked'
-            'change #property-acl-name'                  : 'aclNameChanged'
-
+            'change #property-acl-name'           : 'aclNameChanged'
+            'click #acl-add-rule-icon'            : 'showCreateRuleModal'
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
-
-            'change #acl-add-model-direction-outbound'   : 'changeBoundInModal'
-            'change #acl-add-model-direction-inbound'    : 'changeBoundInModal'
+            'click .property-rule-delete-btn'     : 'removeRuleClicked'
 
         render : () ->
             @$el.html htmlTpl @model.attributes
             @model.attributes.component.name
+
+        bindModalEvent : ()->
+            $("#acl-modal-rule-save-btn").on("click", _.bind( @saveRule, @ ))
+            $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )
+            $("#modal-protocol-select").on("OPTION_CHANGE", @modalRuleProtocolSelected )
+            $("#protocol-icmp-main-select").on("OPTION_CHANGE", @modalRuleICMPSelected )
+            $("#acl-add-model-direction-outbound").on("change", @changeBoundInModal )
+            $("#acl-add-model-direction-inbound").on("change", @changeBoundInModal )
+            null
 
         showCreateRuleModal : () ->
             modal rulePopupTpl({}, true)
@@ -68,7 +60,7 @@ define [ '../base/view',
 
             selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">' + lang.ide.POP_ACLRULE_PROTOCOL_CUSTOM + '</div></li>')
 
-            # scrollbar.init()
+            @bindModalEvent()
             return false
 
         saveRule : () ->
@@ -279,7 +271,7 @@ define [ '../base/view',
                 $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
-                $('#acl-add-model-source-select .selection').width(296)
+                $('#acl-add-model-source-select .selection').width(302)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')

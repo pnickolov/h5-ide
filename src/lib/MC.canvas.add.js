@@ -1071,6 +1071,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_instance-number'
 					})
 				).attr({
+					'class': 'instance-number-group',
 					'id': group.id + '_instance-number-group',
 					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
@@ -2064,6 +2065,7 @@ MC.canvas.add = function (flag, option, coordinate)
 						'id': group.id + '_eni-number'
 					})
 				).attr({
+					'class': 'eni-number-group',
 					'id': group.id + '_eni-number-group',
 					'display': (option.number <= 1) ? 'none' : 'block'
 				}),
@@ -2248,21 +2250,23 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					var asg_comp = MC.canvas_data.component[ layout.node[group.id].groupUId ];
 
+					option.number = '?';
+
 					if ( MC.data && MC.data.resource_list && MC.data.resource_list[MC.canvas_data.region] )
 					{
 						var asg_comp_data = MC.data.resource_list[MC.canvas_data.region][ asg_comp.resource.AutoScalingGroupARN ];
 						if (asg_comp_data)
 						{
-							option.name = asg_comp_data.Instances.member.length + " in service";
+							option.number = asg_comp_data.Instances.member.length;
 						}
 						else
 						{
-							option.name = "0 in service";
+							option.number = 0;
 						}
 					}
 					else
 					{
-						option.name = asg_comp.resource.MinSize + " - " + asg_comp.resource.MaxSize + " in service";
+						//option.number = asg_comp.resource.MinSize + " - " + asg_comp.resource.MaxSize;
 					}
 				}
 
@@ -2395,8 +2399,27 @@ MC.canvas.add = function (flag, option, coordinate)
 					'class': 'node-sg-color-group',
 					'id': group.id + '_node-sg-color-group',
 					'transform': 'translate(8, 63)'
-				})
+				}),
 
+
+				////child number
+				Canvon.group().append(
+					////child number in group bg
+					Canvon.rectangle(36, 1, 20, 16).attr({
+						'class': 'instance-number-bg',
+						'rx': 4,
+						'ry': 4
+					}),
+					////child number in group
+					Canvon.text(46, 13, option.number).attr({
+						'class': 'node-label instance-number',
+						'id': group.id + '_instance-number'
+					})
+				).attr({
+					'class': 'instance-number-group',
+					'id': group.id + '_instance-number-group',
+					'display': ( MC.canvas.getState() === 'stack' ) ? 'none' : 'block'
+				})
 
 
 			).attr({

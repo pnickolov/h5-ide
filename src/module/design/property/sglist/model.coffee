@@ -49,7 +49,20 @@ define [ 'constant','backbone' ], (constant) ->
 
 			isELBParent   = parent_model.get 'is_elb'
 			isStackParent = parent_model.get 'is_stack'
-			isAppView     = MC.canvas.getState() is 'app'
+
+			current_tab_type = MC.canvas.getState()
+			if current_tab_type is 'app'
+				readonly = true
+			else if current_tab_type is 'appedit'
+				if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+					readonly = true
+				else
+					if parent_model.isSGListReadOnly
+						readonly = parent_model.isSGListReadOnly()
+					else
+						readonly = false
+			else
+				readonly = false
 
 			parentSGList  = parent_model.getSGList()
 			allElbSGAry   = MC.aws.elb.getAllElbSGUID()
@@ -82,7 +95,7 @@ define [ 'constant','backbone' ], (constant) ->
 				if sgChecked
 					++enabledSGCount
 
-				needShow = isStackParent or ( not isAppView ) or sgChecked
+				needShow = isStackParent or ( not readonly ) or sgChecked
 
 				if not needShow
 					continue
@@ -90,16 +103,16 @@ define [ 'constant','backbone' ], (constant) ->
 				# need to display
 				sgDisplayObj =
 					sgUID       : uid
-					sgName      : sgCompRes.GroupName
+					sgName      : sgComp.name
 					sgDesc      : sgCompRes.GroupDescription
 					sgRuleNum   : sgIpPermissionsLength + sgIpPermissionsEgressLength
 					sgMemberNum : @_getSGRefNum uid
 					sgChecked   : sgChecked
-					sgHideCheck : isAppView or isStackParent
+					sgHideCheck : readonly or isStackParent
 					sgIsDefault : sgComp.name is 'DefaultSG'
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
-					appView     : isAppView
+					readonly    : readonly
 
 				if sgDisplayObj.sgIsDefault
 					defaultSG = sgDisplayObj
@@ -118,7 +131,7 @@ define [ 'constant','backbone' ], (constant) ->
 			@set 'only_one_sg', enabledSGCount is 1
 			@set 'sg_list',     displaySGAry
 			@set 'sg_length',   if isStackParent then displaySGAry.length else enabledSGCount
-			@set 'app_view',    isAppView
+			@set 'readonly',    readonly
 			null
 
 

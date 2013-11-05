@@ -7,7 +7,6 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
     template = Handlebars.compile template
 
     InstanceAppView = PropertyView.extend {
-
         events   :
             "click #property-app-keypair" : "downloadKeypair"
             "click #property-app-ami" : "openAmiPanel"
@@ -80,6 +79,31 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.target ).data("uid")
             false
+
+        changeIPAddBtnState : () ->
+
+            disabledBtn = false
+            instanceUID = this.model.get 'get_uid'
+
+            maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
+            currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)
+            if !currentENIComp
+                disabledBtn = true
+                return
+
+            currentIPNum = currentENIComp.resource.PrivateIpAddressSet.length
+            if maxIPNum is currentIPNum
+                disabledBtn = true
+
+            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
+            if disabledBtn
+                tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
+                $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)
+            else
+                $('#instance-ip-add').removeClass('disabled').attr('data-tooltip', 'Add IP Address').data('tooltip', 'Add IP Address')
+
+            null
+
 
     }
 

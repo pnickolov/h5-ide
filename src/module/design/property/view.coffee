@@ -38,6 +38,13 @@ define [ 'event',
                 d = new Date( v1 )
                 d.toLocaleDateString() + " " + d.toTimeString()
 
+            Handlebars.registerHelper "plusone", ( v1 ) ->
+                v1 = parseInt( v1, 10 )
+                if isNaN( v1 )
+                    return v1
+                else
+                    return '' + (v1 + 1)
+
             #listen
             $( document.body )
                 .on( 'click', '#hide-property-panel', this.togglePropertyPanel )

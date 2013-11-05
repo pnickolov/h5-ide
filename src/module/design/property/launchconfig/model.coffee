@@ -99,9 +99,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       null
 
     setCloudWatch : ( value ) ->
-
       uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = if value then 'enabled' else 'disabled'
+      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = value
       null
 
     setUserData : ( value ) ->
@@ -258,6 +257,9 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       instance_type
 
+    isSGListReadOnly : ()->
+      true
+
     getSGList : () ->
 
       uid = this.get 'uid'
@@ -270,25 +272,6 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         null
 
       return sgUIDAry
-
-    setIPList : (inputIPAry) ->
-
-      # find eni0
-      eniUID = ''
-      currentInstanceUID = this.get 'uid'
-      currentInstanceUIDRef = '@' + currentInstanceUID + '.resource.InstanceId'
-      allComp = MC.canvas_data.component
-      _.each allComp, (compObj) ->
-        if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-          instanceUIDRef = compObj.resource.Attachment.InstanceId
-          deviceIndex = compObj.resource.Attachment.DeviceIndex
-          if (currentInstanceUIDRef is instanceUIDRef) and (deviceIndex is '0')
-            eniUID = compObj.uid
-        null
-
-      if eniUID
-        realIPAry = MC.aws.eni.generateIPList eniUID, inputIPAry
-        MC.aws.eni.saveIPList eniUID, realIPAry
 
     getAppLaunch : ( uid ) ->
 

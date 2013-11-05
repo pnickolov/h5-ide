@@ -51,5 +51,10 @@ define [ "../base/main",
             @model = app_model
             @view  = app_view
             null
+
+        initAppEdit : ()->
+            @model = app_model
+            @view  = app_view
+            null
     }
     null

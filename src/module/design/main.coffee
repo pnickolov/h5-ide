@@ -96,31 +96,45 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
 
                         #switch tab and changed fail
-                        if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                        #if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
+                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
 
                         #switch tab and changed success
-                        else if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_updated
+                        #else if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_updated
+                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+
+                        #changed done
+                        if MC.data.process[ tab_id ].flag_list.is_done
+                            ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+
+                        #changed fail
+                        else if MC.data.process[ tab_id ].flag_list.is_failed
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+
+                        #changed success
+                        else if MC.data.process[ tab_id ].flag_list.is_updated
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
 
-                        #switch tab
-                        else if type is 'OLD_APP'
+                        #upading
+                        else if MC.data.process[ tab_id ].flag_list.flag is 'SAVE_APP'
+                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
 
-                            #done
-                            if MC.data.process[ tab_id ].flag_list.is_done
-                                ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+                        #staring stoping terminating
+                        else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
-                            #if MC.data.process[ tab_id ].appedit2app
-                            #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
-                            #    MC.data.process[ tab_id ].appedit2app = null
+                            if type is 'OPEN_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state
+                            else
+                                # hold on current overlay
+                                console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag
 
-                            #upading(pending)
-                            if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
+                        #if MC.data.process[ tab_id ].appedit2app
+                        #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
+                        #    MC.data.process[ tab_id ].appedit2app = null
 
                         #re open
-                        else if type is 'OPEN_APP'
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
+                        #else if type is 'OPEN_APP'
+                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                 #
                 ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
                 #

@@ -648,6 +648,10 @@
 	cursor: pointer;
 }
 
+.canvas-view-normal .eip-status {
+	cursor: default;
+}
+
 #instance_volume_list {
 	padding: 10px;
 	width: 265px;

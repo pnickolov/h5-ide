@@ -2,50 +2,45 @@
 #  View Mode for design/property/stack
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _, MC, constant) ->
+define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
-    StackModel = Backbone.Model.extend {
+    StackModel = PropertyModel.extend {
 
         defaults :
             'property_detail'   : null
-            'is_stack'          : null
-            #'sg_display'        : null
             'network_acl'       : null
             'cost_list'         : null
-            'type'              : 'stack'
             'total_fee'         : null
-            'stack_state'       : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        init : ( componentUid ) ->
+            @getCost( true )
+
+            if @isApp
+                @getAppSubscription()
+            else
+                @getSubscription()
+
+            @getProperty()
+
+            # Use by sglist_main to determine this is Stack Property Model
+            @set 'is_stack', true
+            @set 'isApp', @isApp
+            null
 
         getProperty : ->
-            me = this
 
-            is_stack = true
-
-            if MC.canvas.getState() is 'stack'
-                me.set 'stack_state', true
-            else
-                me.set 'stack_state', false
-
-            # if MC.canvas_data.id.indexOf('app-') == 0
-            #     is_stack = false
-
-            property_detail = $.extend true, {}, MC.canvas_data
-            property_detail.name = MC.canvas_data.name
+            property_detail        = $.extend true, {}, MC.canvas_data
+            property_detail.name   = MC.canvas_data.name
             property_detail.region = constant.REGION_SHORT_LABEL[MC.canvas_data.region]
-            property_detail.type = me.getStackType()
+            property_detail.type   = @getStackType()
             property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
 
             if property_detail.is_vpc
-                property_detail.acl_list = me.getNetworkACL()
+                property_detail.acl_list = @getNetworkACL()
 
-            me.set 'property_detail', property_detail
-            me.set 'is_stack', is_stack
+            @set 'property_detail', property_detail
 
-            me.getNetworkACL()
+            @getNetworkACL()
 
         getStackType : ->
 
@@ -66,12 +61,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
 
         getSGList : ->
-
-            allComp = MC.canvas_data.component
-
-            sgUIDAry = []
-
-            return sgUIDAry
+            []
 
         addSubscription : ( data ) ->
 
@@ -435,6 +425,4 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], (Backbone, $, _
 
     }
 
-    model = new StackModel()
-
-    return model
+    new StackModel()

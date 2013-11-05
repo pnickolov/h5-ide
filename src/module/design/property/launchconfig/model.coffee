@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( keypair_model, constant, ide_event) ->
+define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypair_model, constant ) ->
 
   EbsMap =
     "m1.large"   : true
@@ -13,40 +13,9 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
     "m3.2xlarge" : true
     "c1.xlarge"  : true
 
-  LaunchConfigModel = Backbone.Model.extend {
+  LaunchConfigModel = PropertyModel.extend {
 
-    defaults :
-      'uid'         : null
-      'name'        : null
-      'update_instance_title' : null
-      'instance_type' : null
-      'instance_ami' : null
-      'instance_ami_property' : null
-      'keypair' : null
-      'component' : null
-      'sg_display' : null
-      'checkbox_display' : null
-      'eni_display'   : null
-      'ebs_optimized' : null
-      'cloudwatch' : null
-      'user_data' : null
-      'base64'    :  null
-      'eni_description' : null
-      'source_check' : null
-      'add_sg'   : null
-      'remove_sg' : null
-
-    listen : ->
-      #listen
-      this.listenTo this, 'change:name', this.setName
-      this.listenTo this, 'change:ebs_optimized', this.setEbsOptimized
-      this.listenTo this, 'change:cloudwatch', this.setCloudWatch
-      this.listenTo this, 'change:user_data', this.setUserData
-      this.listenTo this, 'change:eni_description' , this.setEniDescription
-      this.listenTo this, 'change:source_check', this.setSourceCheck
-      this.listenTo this, 'change:add_sg', this.addSGtoInstance
-      this.listenTo this, 'change:remove_sg', this.removeSG
-
+    setup : ->
       me = this
       this.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
@@ -78,22 +47,30 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
         null
 
 
-    getUID  : ( uid ) ->
-      console.log 'getUID'
-      lsgUID = MC.canvas_data.component[ uid ].uid
-      this.set 'get_uid', lsgUID
-      this.set 'uid', lsgUID
+    init  : ( uid ) ->
+
+      if @isApp
+        @getAppLaunch( uid )
+      else
+        component = MC.canvas_data.component[ uid ]
+        data = {
+          uid      : uid
+          userData : component.resource.UserData
+          name     : component.name
+          imageId  : component.resource.ImageId
+        }
+        @getCheckBox( uid, data )
+        @getKeyPair( uid, data )
+        @getInstanceType( uid, data )
+        @getAmi( uid, data )
+
+        this.set data
+
       null
 
-    setName  : () ->
-      console.log 'setName'
-
-      uid = this.get 'get_uid'
-
-      name = this.get 'name'
-
+    setName  : ( name ) ->
+      uid = this.get 'uid'
       MC.canvas_data.component[ uid ].name = name
-
       MC.canvas.update(uid,'text','lc_name', name)
 
       # update lc in extended asg
@@ -104,14 +81,8 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
           MC.canvas.update id, 'text', 'node-label', name
       null
 
-
-    getName  : () ->
-      console.log 'getName'
-      this.set 'name', MC.canvas_data.component[ this.get( 'get_uid' )].name
-      null
-
     setInstanceType  : ( value ) ->
-      uid = this.get 'get_uid'
+      uid = this.get 'uid'
       component = MC.canvas_data.component[ uid ]
 
       component.resource.InstanceType = value
@@ -123,79 +94,25 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       has_ebs
 
     setEbsOptimized : ( value )->
-
-      uid = this.get 'get_uid'
-
-      #console.log 'setEbsOptimized = ' + value
-
-      MC.canvas_data.component[ uid ].resource.EbsOptimized = this.get 'ebs_optimized'
-
+      uid = this.get 'uid'
+      MC.canvas_data.component[ uid ].resource.EbsOptimized = value
       null
 
-    setCloudWatch : () ->
+    setCloudWatch : ( value ) ->
 
-      #console.log 'setCloudWatch = ' + value
-
-      uid = this.get 'get_uid'
-
-      if this.get 'cloudwatch'
-
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = true
-
-      else
-        MC.canvas_data.component[ uid ].resource.InstanceMonitoring = false
-
-
+      uid = this.get 'uid'
+      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = if value then 'enabled' else 'disabled'
       null
 
-    setUserData : () ->
+    setUserData : ( value ) ->
 
-      #console.log 'setUserData = ' + value
-
-      uid = this.get 'get_uid'
-
-      MC.canvas_data.component[ uid ].resource.UserData = this.get 'user_data'
-
-      null
-
-    setEniDescription: () ->
-
-      #console.log 'setEniDescription = ' + value
-
-      uid = this.get 'get_uid'
-
-      that = this
-
-      _.map MC.canvas_data.component, ( val, key ) ->
-
-        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-          val.resource.Description = that.get 'eni_description'
-
-        null
-
-      null
-
-    setSourceCheck : () ->
-
-      #console.log 'setSourceCheck = ' + value
-      me = this
-
-      uid = this.get 'get_uid'
-
-      _.map MC.canvas_data.component, ( val, key ) ->
-
-        if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-          val.resource.SourceDestCheck = me.get 'source_check'
-
-        null
-
+      uid = this.get 'uid'
+      MC.canvas_data.component[ uid ].resource.UserData = value
       null
 
     unAssignSGToComp : (sg_uid) ->
 
-      lcUID = this.get 'get_uid'
+      lcUID = this.get 'uid'
 
       originSGIdAry = MC.canvas_data.component[lcUID].resource.SecurityGroups
 
@@ -211,7 +128,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
     assignSGToComp : (sg_uid) ->
 
-      instanceUID = this.get 'get_uid'
+      instanceUID = this.get 'uid'
 
       originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroups
 
@@ -225,11 +142,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       null
 
-    getCheckBox : () ->
-
-      uid = this.get 'get_uid'
-
-      checkbox = {}
+    getCheckBox : ( uid, checkbox ) ->
 
       resource = MC.canvas_data.component[ uid ].resource
 
@@ -258,42 +171,23 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       checkbox.monitorEnabled = monitorEnabled
 
-      this.set 'checkbox_display', checkbox
+      null
 
-    getComponent : () ->
-
-      this.set 'component', MC.canvas_data.component[ this.get( 'get_uid') ]
-
-    getAmi : () ->
-
-      uid = this.get 'get_uid'
+    getAmi : ( uid, data ) ->
 
       ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+      ami    = MC.data.dict_ami[ami_id]
 
-      this.set 'instance_ami_property', JSON.stringify(MC.data.dict_ami[ami_id])
+      data.instance_ami = {
+        name : ami.name
+        icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+      }
+      null
 
-    getAmiDisp : () ->
+    getKeyPair : ( uid, data )->
 
-      uid = this.get 'get_uid'
-
-      disp = {}
-
-      ami_id = MC.canvas_data.component[ uid ].resource.ImageId
-
-      disp.name = MC.data.dict_ami[ami_id].name
-
-      disp.icon = MC.data.dict_ami[ami_id].osType + '.' + MC.data.dict_ami[ami_id].architecture + '.' + MC.data.dict_ami[ami_id].rootDeviceType + ".png"
-
-      this.set 'instance_ami', disp
-
-    getKeyPair : ()->
-
-      uid = this.get 'get_uid'
       keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
-
-      kp_list = MC.aws.kp.getList( keypair_id )
-
-      this.set 'keypair', kp_list
+      data.keypair = MC.aws.kp.getList( keypair_id )
 
       null
 
@@ -304,7 +198,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
       if not result
         return result
 
-      uid = @get 'get_uid'
+      uid = @get 'uid'
       MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
       true
 
@@ -322,14 +216,12 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
     setKP : ( key_name ) ->
 
-      uid = this.get 'get_uid'
+      uid = this.get 'uid'
       MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
 
       null
 
-    getInstanceType : () ->
-
-      uid = this.get 'get_uid'
+    getInstanceType : ( uid, data ) ->
 
       ami_info = MC.canvas_data.layout.component.node[ uid ]
 
@@ -344,8 +236,9 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
         name     : value
         selected : current_instance_type is value
 
-      this.set 'instance_type', view_instance_type
-      this.set 'can_set_ebs',   EbsMap.hasOwnProperty current_instance_type
+      data.instance_type = view_instance_type
+      data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
+      null
 
     _getInstanceType : ( ami ) ->
       instance_type = MC.data.instance_type[MC.canvas_data.region]
@@ -365,110 +258,9 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       instance_type
 
-    removeSG : () ->
-
-      uid = this.get 'get_uid'
-
-      sg_uid = this.get 'remove_sg'
-
-      sg_id_ref = "@"+sg_uid+'.resource.GroupId'
-
-      if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-
-        sg_ids = MC.canvas_data.component[ uid ].resource.SecurityGroupId
-
-        if sg_ids.length != 1
-
-          sg_ids.splice sg_ids.indexOf sg_id_ref, 1
-
-          $.each MC.canvas_property.sg_list, ( key, value ) ->
-
-            if value.uid == sg_uid
-
-              index = value.member.indexOf uid
-
-              value.member.splice index, 1
-
-              # delete member 0 sg
-
-              if value.member.length == 0 and value.name != 'DefaultSG'
-
-                MC.canvas_property.sg_list.splice key, 1
-
-                delete MC.canvas_data.component[sg_uid]
-
-                $.each MC.canvas_data.component, ( key, comp ) ->
-
-                  if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-
-                    $.each comp.resource.IpPermissions, ( i, rule ) ->
-
-                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                        MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
-
-                    $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
-
-                      if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                        MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
-
-              return false
-
-      else
-
-        $.each MC.canvas_data.component, ( key, comp ) ->
-
-          if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and comp.resource.Attachment.InstanceId.split('.')[0][1...] == uid and comp.resource.Attachment.DeviceIndex == '0'
-
-            if comp.GroupId.length != 1
-
-              $.each comp.GroupId, ( index, group) ->
-
-                if group.GroupId == sg_id_ref
-
-                  comp.GroupId.splice index, 1
-
-                  return false
-
-              $.each MC.canvas_property.sg_list, ( idx, value ) ->
-
-                if value.uid == sg_uid
-
-                  index = value.member.indexOf uid
-
-                  value.member.splice index, 1
-
-                  # delete member 0 sg
-
-                  if value.member.length == 0 and value.name != 'DefaultSG'
-
-                    MC.canvas_property.sg_list.splice idx, 1
-
-                    delete MC.canvas_data.component[sg_uid]
-
-                    $.each MC.canvas_data.component, ( key, comp ) ->
-
-                      if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-
-                        $.each comp.resource.IpPermissions, ( i, rule ) ->
-
-                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                            MC.canvas_data.component[key].resource.IpPermissions.splice i, 1
-
-                        $.each comp.resource.IpPermissionsEgress, ( i, rule ) ->
-
-                          if '@' in rule.IpRanges and rule.IpRanges.split('.')[0][1...] == sg_uid
-
-                            MC.canvas_data.component[key].resource.IpPermissionsEgress.splice i, 1
-            return false
-
-      null
-
     getSGList : () ->
 
-      uid = this.get 'get_uid'
+      uid = this.get 'uid'
       sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
 
       sgUIDAry = []
@@ -483,7 +275,7 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       # find eni0
       eniUID = ''
-      currentInstanceUID = this.get 'get_uid'
+      currentInstanceUID = this.get 'uid'
       currentInstanceUIDRef = '@' + currentInstanceUID + '.resource.InstanceId'
       allComp = MC.canvas_data.component
       _.each allComp, (compObj) ->
@@ -505,10 +297,8 @@ define [ 'keypair_model', 'constant', 'event', 'backbone', 'jquery', 'underscore
 
       this.set 'name', component.name
       this.set 'lc',   lc_data
-      this.set 'get_uid',  uid
+      this.set 'uid',  uid
 
   }
 
-  model = new LaunchConfigModel()
-
-  return model
+  new LaunchConfigModel()

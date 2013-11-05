@@ -437,6 +437,11 @@ use redirection server name:i:0\n"
 
 	DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
 
+	TA =
+		ERROR: 'ERROR',
+		WARNING: 'WARNING',
+		NOTICE: 'NOTICE'
+
 	LINUX 	= ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
 	WINDOWS = ['windows', 'win']
 
@@ -461,7 +466,8 @@ use redirection server name:i:0\n"
 	RECENT_DAYS				: RECENT_DAYS
 	AWS_RESOURCE			: AWS_RESOURCE
 	SERVICE_REGION			: SERVICE_REGION
-	RDP_TMPL				: RDP_TMPL
-	COOKIE_OPTION			: COOKIE_OPTION
-	LOCAL_COOKIE_OPTION		: LOCAL_COOKIE_OPTION
-	DEMO_STACK_NAME_LIST	: DEMO_STACK_NAME_LIST
+	RDP_TMPL                : RDP_TMPL
+	COOKIE_OPTION           : COOKIE_OPTION
+	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
+	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
+	TA                      : TA

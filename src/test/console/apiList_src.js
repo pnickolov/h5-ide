@@ -828,7 +828,24 @@ var API_DATA_LIST = {
                   "value"  : "null"
               }
           }
-       }
+       },
+      "verify" : {
+        "method"  : "/stack:verify",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "spec" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      }
     }
   },
   "AutoScaling" : {

@@ -8,8 +8,8 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'forge_handle', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
+		 'forge_handle', 'validation', 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle, validation ) ->
 
 	console.info canvas_layout
 
@@ -120,6 +120,12 @@ define [ 'MC', 'event', 'handlebars'
 
 		#
 		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
+
+		#trusted advisor
+		MC.ta            = {}
+		MC.ta            = validation
+		MC.ta.list       = []
+		MC.ta.state_list = {}
 
 		#############################
 		#  WebSocket

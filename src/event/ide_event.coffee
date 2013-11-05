@@ -37,10 +37,6 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
-        UPDATE_PROPERTY        : 'UPDATE_PROPERTY'
-        OPEN_SG                : 'OPEN_SG'
-        OPEN_ACL               : 'OPEN_ACL'
-        RELOAD_PROPERTY        : 'RELOAD_PROPERTY'
         RELOAD_AZ              : 'RELOAD_AZ'
 
         #tab
@@ -68,6 +64,13 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
 
+        #status bar & ta
+        UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
+        UPDATE_TA_MODAL        : 'UPDATE_TA_MODAL'
+        UNLOAD_TA_MODAL        : 'UNLOAD_TA_MODAL'
+        TA_SYNC_START          : 'TA_SYNC_START'
+        TA_SYNC_FINISH          : 'TA_SYNC_FINISH'
+
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
@@ -85,10 +88,6 @@ define [ 'underscore', 'backbone' ], () ->
 
         DELETE_COMPONENT       : 'DELETE_COMPONENT'
 
-        PROPERTY_TITLE_CHANGE  : 'PROPERTY_TITLE_CHANGE'
-        PROPERTY_OPEN_SUBPANEL : 'PROPERTY_OPEN_SUBPANEL'
-        PROPERTY_HIDE_SUBPANEL : 'PROPERTY_HIDE_SUBPANEL'
-        PROPERTY_RENDER_COMPLETE : 'PROPERTY_RENDER_COMPLETE'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
 
         CANVAS_CREATE_LINE     : 'CANVAS_CREATE_LINE'
@@ -112,6 +111,7 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_STACK             : 'SAVE_STACK'
         UPDATE_APP_LIST        : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST      : 'UPDATE_STACK_LIST'
+        UPDATE_STATUS_BAR_SAVE_TIME : 'UPDATE_STATUS_BAR_SAVE_TIME'
 
         #app/stack state
         STARTED_APP            : 'STARTED_APP'

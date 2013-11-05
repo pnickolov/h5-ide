@@ -91,6 +91,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		result
 
+	isConnectELB = ( uid ) ->
+		MC.canvas_data.component[ uid ].resource.LoadBalancerNames.length > 0
+
 	updateAttachedELBAZ = (targetAsgUID, azAry) ->
 
 		asgComp = MC.canvas_data.component[targetAsgUID]
@@ -112,3 +115,4 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	getASGInAZ          : getASGInAZ
 	updateASGCount      : updateASGCount
 	updateAttachedELBAZ : updateAttachedELBAZ
+	isConnectELB	    : isConnectELB

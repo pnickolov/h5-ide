@@ -2,9 +2,9 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    SubnetModel = Backbone.Model.extend {
+    SubnetModel = PropertyModel.extend {
 
         defaults :
             uid  : null
@@ -12,37 +12,12 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             CIDR : null
             networkACL : null # Array
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        setId : ( uid ) ->
-
-            # The uid can be a line
-            if MC.canvas_data.layout.connection[ uid ]
-                this.set "name", "Load Balancer-Subnet Association"
-                connection = MC.canvas_data.layout.connection[ uid ]
-                elb_id     = null
-                subnet_id  = null
-                for uid, value of connection.target
-                    if value is "elb-assoc"
-                        elb_id = uid
-                    else
-                        subnet_id = uid
-
-                this.set "association", {
-                    elb : MC.canvas_data.component[elb_id].name
-                    subnet : MC.canvas_data.component[subnet_id].name
-                }
-                return
-            else
-                this.set "association", null
-
+        init : ( uid ) ->
 
             subnet_component = MC.canvas_data.component[ uid ]
 
-            if !subnet_component then return
-            
+            if !subnet_component then return false
+
             networkACLs = []
 
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
@@ -144,6 +119,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             null
     }
 
-    model = new SubnetModel()
-
-    return model
+    new SubnetModel()

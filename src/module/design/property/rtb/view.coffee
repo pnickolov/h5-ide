@@ -2,14 +2,11 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
-    RTBView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-rtb-tmpl' ).html()
+    RTBView = PropertyView.extend {
 
         events   :
 
@@ -27,16 +24,19 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
         render     : () ->
             console.log 'property:rtb render'
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             # find empty inputbox and focus
+            me = this
             inputElemAry = $('.ip-main-input')
             _.each inputElemAry, (inputElem) ->
                 inputValue = $(inputElem).val()
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
-                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    me.forceShow()
                     $(inputElem).focus()
+
+            @model.attributes.title
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -87,7 +87,8 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             MC.validate.preventDupname target, id, name, 'Instance'
 
             if target.parsley 'validate'
-                this.trigger 'SET_NAME', id, name
+                @trigger 'SET_NAME', id, name
+                @setTitle name
 
         setMainRT : () ->
 
@@ -152,12 +153,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                     MC.aws.aws.disabledAllOperabilityArea(false)
                     return
 
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Route',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         inputElem.focus()
@@ -184,6 +185,4 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
     }
 
-    view = new RTBView()
-
-    return view
+    new RTBView()

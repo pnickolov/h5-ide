@@ -2,10 +2,9 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-  ASGConfigModel = Backbone.Model.extend {
-
+  ASGConfigModel = PropertyModel.extend {
 
     defaults :
       uid               : null
@@ -17,12 +16,13 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       has_elb           : false
       detail_monitor    : false
 
-    initialize : ->
-      null
+    init : ( uid ) ->
+      @set 'uid', uid
 
-    setUID : ( uid ) ->
-      this.attributes = {}
-      this.set { 'uid' : uid }
+      if @isApp
+        @getASGDetailApp uid
+      else
+        @getASGDetail uid
       null
 
     getASGDetailApp : ( uid ) ->
@@ -284,13 +284,17 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       @set 'asg', component.resource
       @set 'uid', uid
 
-    setHealthCheckType : ( uid, type ) ->
+    setHealthCheckType : ( type ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.HealthCheckType = type
 
       null
 
-    setASGName : ( uid, name ) ->
+    setASGName : ( name ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].name = name
       MC.canvas_data.component[uid].resource.AutoScalingGroupName = name
@@ -304,38 +308,49 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
       null
 
-    setASGMin : ( uid, value ) ->
+    setASGMin : ( value ) ->
 
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.MinSize = value
 
       null
 
-    setASGMax : ( uid, value ) ->
+    setASGMax : ( value ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.MaxSize = value
 
       null
 
-    setASGDesireCapacity : ( uid, value ) ->
+    setASGDesireCapacity : ( value ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.DesiredCapacity = value
 
       null
 
-    setASGCoolDown : ( uid, value ) ->
+    setASGCoolDown : ( value ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.DefaultCooldown = value
 
       null
 
-    setHealthCheckGrace : ( uid, value ) ->
+    setHealthCheckGrace : ( value ) ->
+
+      uid = @get 'uid'
 
       MC.canvas_data.component[uid].resource.HealthCheckGracePeriod = value
 
       null
 
-    setSNSOption : ( uid, check_array ) ->
+    setSNSOption : ( check_array ) ->
+
+      uid = @get 'uid'
 
       if true in check_array
 
@@ -475,7 +490,9 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
       false
 
 
-    setPolicy : ( uid, policy_detail ) ->
+    setPolicy : ( policy_detail ) ->
+
+      uid = @get 'uid'
 
       policy_uid = null
 
@@ -726,6 +743,4 @@ define [ 'constant', 'jquery', 'MC' ], ( constant ) ->
 
   }
 
-  model = new ASGConfigModel()
-
-  return model
+  new ASGConfigModel()

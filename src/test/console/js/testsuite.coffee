@@ -63,8 +63,11 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             $( "#label_request_result" ).text data.method + " succeed!"
 
             #request
-            result.param.splice(0,1)
-            $("#resquest_data").removeClass("prettyprinted").text JSON.stringify( result.param, null, 4 )
+            request_method = result.param.splice(0,1)
+            if (request_method and  request_method[0].method == "verify")
+                $("#resquest_data").removeClass("prettyprinted").text()
+            else
+                $("#resquest_data").removeClass("prettyprinted").text JSON.stringify( result.param, null, 4 )
 
             #Object to JSON, pretty print
             $( "#response_data" ).removeClass("prettyprinted").text JSON.stringify( result.resolved_data, null, 4 )
@@ -536,6 +539,14 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             #stack.export_cloudformation
             stack_model.export_cloudformation {sender: stack_model}, username, session_id, region_name, stack_id
             stack_model.once "STACK_EXPORT__CLOUDFORMATION_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "stack" && current_api == "verify"
+            spec = if $("#spec").val() != "null" then $("#spec").val() else null
+            spec = if spec != null and MC.isJSON(spec)==true then JSON.parse spec else spec
+            #stack.verify
+            stack_model.verify {sender: stack_model}, username, session_id, spec
+            stack_model.once "STACK_VERIFY_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
 

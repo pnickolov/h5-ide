@@ -2,27 +2,24 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    SgModel = Backbone.Model.extend {
+    SgModel = PropertyModel.extend {
 
         defaults :
-            'sg_detail'    : null
+            'sg_detail'     : null
             'sg_app_detail' : null
-            'get_xxx'    : null
-            'is_elb_sg'  : false
+            'is_elb_sg'     : false
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        init : ( uid ) ->
 
-        getSG : ( uid, parent ) ->
+            if @isApp
+                @appInit uid
+                return
 
             me = this
 
             sg_detail = {}
-
-            # sg_detail.parent = parent
 
             sg_detail.component = $.extend true, {}, MC.canvas_data.component[uid]
 
@@ -80,15 +77,13 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
                     null
 
+            @set( 'sg_detail', sg_detail )
+            @set( 'isDefault', sg_detail.component.name is 'DefaultSG' )
+            @set( 'is_elb_sg', MC.aws.elb.isELBDefaultSG(uid) )
+            @set( 'uid', uid )
+            null
 
-            me.set 'sg_detail', sg_detail
-
-            if MC.aws.elb.isELBDefaultSG(uid)
-                me.set 'is_elb_sg', true
-            else
-                me.set 'is_elb_sg', false
-
-        getAppSG : ( sg_uid ) ->
+        appInit : ( sg_uid ) ->
 
             # get sg obj
             currentRegion = MC.canvas_data.region
@@ -110,71 +105,12 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
                 members : members
                 rules : rules
 
-            this.set 'sg_app_detail', sg_app_detail
+            @set 'sg_app_detail', sg_app_detail
+            @set 'uid', sg_uid
 
-        # addSG : ( parent )->
+        setSGName : ( value ) ->
 
-        #     me = this
-
-        #     uid = MC.guid()
-
-        #     component_data = $.extend(true, {}, MC.canvas.SG_JSON.data)
-
-        #     component_data.uid = uid
-
-        #     gen_num = [0...500]
-
-        #     $.each gen_num, ( num ) ->
-
-        #         sg_name = 'custom-sg' + num
-
-        #         existing = false
-
-        #         _.map MC.canvas_data.component, ( value, key ) ->
-
-        #             if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup and value.name == sg_name
-
-        #                 existing = true
-
-        #                 null
-
-        #         if not existing
-
-        #             component_data.name = sg_name
-
-        #             component_data.resource.GroupName = sg_name
-
-        #             tmp = {}
-        #             tmp.uid = uid
-        #             tmp.name = sg_name
-
-        #             # if parent
-        #             #     tmp.member = [ parent ]
-
-        #             MC.canvas_property.sg_list.push tmp
-
-        #             return false
-
-
-
-
-        #     data = MC.canvas.data.get('component')
-
-        #     data[uid] = component_data
-
-        #     MC.canvas.data.set('component', data)
-
-        #     sg_detail = {}
-
-        #     sg_detail.component = MC.canvas_data.component[uid]
-
-        #     sg_detail.members = 1
-
-        #     sg_detail.rules = 1
-
-        #     me.set 'sg_detail', sg_detail
-
-        setSGName : ( uid, value ) ->
+            uid = @get 'uid'
 
             old_name = MC.canvas_data.component[uid].resource.GroupName
 
@@ -200,14 +136,18 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
             null
 
-        setSGDescription : ( uid, value ) ->
+        setSGDescription : ( value ) ->
+
+            uid = @get 'uid'
 
             MC.canvas_data.component[uid].resource.GroupDescription = value
 
             null
 
 
-        setSGRule : ( uid, rule ) ->
+        setSGRule : ( rule ) ->
+
+            uid = @get 'uid'
 
             rules = null
             existing = false
@@ -243,7 +183,9 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
             null
 
 
-        removeSGRule : ( uid, rule ) ->
+        removeSGRule : ( rule ) ->
+
+            uid = @get 'uid'
 
             sg = MC.canvas_data.component[uid].resource
 
@@ -279,6 +221,4 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], (constant) ->
 
     }
 
-    model = new SgModel()
-
-    return model
+    new SgModel()

@@ -581,32 +581,17 @@ Additional Notes and Questions
 			<label class="label modal-text-major" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
-		<!-- <div class="stack-validation">
-			<details open>
+		<div class="stack-validation">
+			<details open style="display:none;">
 				<summary>Stack Validation</summary>
-				<div class="validation-content">
-					<ul class="tab">
-						<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error (1)</li>
-						<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning (2)</li>
-						<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice (2)</li>
-					</ul>
-					<div class="content_wrap">
-						<div id="item-error" class="content active">
-							<div class="title">
-								subnet-1 is attached with a load balancer. It must be smaller than /27.
-							</div>
-							<div class="description">
-								some blabla
-							</div>
-						</div>
-						<div id="item-warning" class="content">&nbsp;</div>
-						<div id="item-notice" class="content">&nbsp;</div>
-					</div>
-
-				</div>
+				<div id="stack-run-validation-container"></div>
 			</details>
-		</div> -->
-
+			<div class="validating">
+				<p>
+					Validating your stack...
+				</p>
+			</div>
+		</div>
 		<div class="estimate clearfix">
 			<span class="title">Estimated Cost</span>
 			<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
@@ -907,48 +892,6 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<!-- aimSecondaryPanel -->
-<article>
-	<dl class="dl-vertical">
-		<dt>{{ i18n "PROP_INSTANCE_AMI_ID" }}</dt>
-		<dd>{{imageId}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_NAME" }}</dt>
-		<dd>{{name}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_DESC" }}</dt>
-		<dd>{{emptyStr description}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_ROOT_DEVICE_TYPE" }}</dt>
-		<dd>{{emptyStr rootDeviceType}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_ARCHITECH" }}</dt>
-		<dd>{{architecture}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_VIRTUALIZATION" }}</dt>
-		<dd>{{emptyStr virtualizationType}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_KERNEL_ID" }}</dt>
-		<dd>{{emptyStr kernelId}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_OS_TYPE" }}</dt>
-		<dd>{{emptyStr osType}}</dd>
-		<dt>{{ i18n "PROP_INSTANCE_AMI_SUPPORT_INSTANCE_TYPE" }}</dt>
-		<dd>{{emptyStr instance_type}}</dd>
-	</dl>
-</article>
-
-<!-- snapshotSecondaryPanel -->
-<article>
-	<dl class="dl-vertical">
-		<dt>Snapshot ID</dt>
-		<dd>{{snapshotId}}</dd>
-		<dt>Volume ID</dt>
-		<dd>{{volumeId}}</dd>
-		<dt>Description</dt>
-		<dd>{{emptyStr description}}</dd>
-		<dt>Capacity</dt>
-		<dd>{{emptyStr volumeSize}}GB</dd>
-		<dt>Owner</dt>
-		<dd>{{emptyStr ownerId}}</dd>
-		<dt>Started</dt>
-		<dd>{{emptyStr startTime}}</dd>
-	</dl>
-</article>
-
 <!-- elbPropertyListenerItem -->
 <div class="elb-property-listener-main">
 	{{#if Canremove}}<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listner"></div>{{/if}}
@@ -1177,4 +1120,10 @@ Additional Notes and Questions
 		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
 		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
 	</div>
+</div>
+
+<!-- statusbar -->
+<div>
+	<div class="info">Last saved: <span class="stack-save-time">-<span></div>
+	<div class="btn-blue btn-ta-valid">Verify stack</div>
 </div>

@@ -2,9 +2,9 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ 'backbone', 'MC' ], () ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    CGWAppModel = Backbone.Model.extend {
+    CGWAppModel = PropertyModel.extend {
 
         defaults :
             cgw: null

@@ -698,7 +698,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
 						delete MC.canvas_data.component[ key ]
-
 			null
 
 		deleteR_RouteTable : ( component ) ->
@@ -1236,6 +1235,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# ELB <==> Subnet
 			else if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUid       = portMap['elb-assoc']
+				subnetUid    = portMap['subnet-assoc-in']
+
+				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid)
+				console.debug ta
+				if ta
+					notification 'warning', ta.info
+					this.deleteObject null, { type : "line", id : line_id }
+					return
+
 				deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
 
 				# Connecting Elb to Subnet might need to disconnect Elb from another Subnet

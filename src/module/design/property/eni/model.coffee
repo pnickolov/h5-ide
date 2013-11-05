@@ -2,40 +2,18 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ENIModel = Backbone.Model.extend {
+    ENIModel = PropertyModel.extend {
 
         defaults :
             'sg_display'     : null
             'eni_display'    : null
             'uid'            : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+        init : ( uid ) ->
 
-        getENIDisplay : ( uid ) ->
-
-            # The uid can be a line
-            if MC.canvas_data.layout.connection[ uid ]
-                this.set "eni_display", { name : "Instance-ENI Attachment" }
-                connection = MC.canvas_data.layout.connection[ uid ]
-                instance_id = null
-                eni_id = null
-                for uid, value of connection.target
-                    if value is "eni-attach"
-                        eni_id = uid
-                    else
-                        instance_id = uid
-
-                this.set "association", {
-                    eni : MC.canvas_data.component[eni_id].name
-                    instance : MC.canvas_data.component[instance_id].name
-                }
-                return
-            else
-                this.set "association", null
+            @set 'uid', uid
 
             me = this
 
@@ -359,6 +337,4 @@ define [ 'constant','backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     }
 
-    model = new ENIModel()
-
-    return model
+    new ENIModel()

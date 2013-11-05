@@ -44,16 +44,21 @@ define [ 'event',
                     ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
                     notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
             , 1000 * 30
+            #
             null
 
         toggleWaiting : () ->
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
+            #
+            @_hideStatubar()
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
             if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
+            #
+            @_hideStatubar()
 
         showOverviewTab : () ->
             console.log 'showOverviewTab'
@@ -81,6 +86,9 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
+            @_hideStatubar()
+            #
+            null
 
         showProcessTab : () ->
             console.log 'showProcessTab'
@@ -90,6 +98,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
+            @_hideStatubar()
 
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
@@ -112,6 +121,12 @@ define [ 'event',
                 return undefined
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
+
+        _hideStatubar : ->
+            console.log '_hideStatubar'
+            if $.trim( $( '#status-bar-modal' ).html() )
+                $( '#status-bar-modal' ).empty()
+                ide_event.trigger ide_event.UNLOAD_TA_MODAL
     }
 
     view = new MainView()

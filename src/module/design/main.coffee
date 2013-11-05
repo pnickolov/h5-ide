@@ -93,23 +93,31 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # update design-overlay when app changed
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
 
-                        #changed done
+                        # changed done
                         if MC.data.process[ tab_id ].flag_list.is_done
                             ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
-                        #changed fail
+                        # changed fail
                         else if MC.data.process[ tab_id ].flag_list.is_failed
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
 
-                        #changed success
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                            else
+                                # don't do anything
+
+                        # changed success
                         else if MC.data.process[ tab_id ].flag_list.is_updated
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
 
-                        #upading
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+                            else
+                                # don't do anything
+
+                        # upading
                         else if MC.data.process[ tab_id ].flag_list.flag is 'SAVE_APP'
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
 
-                        #staring stoping terminating
+                        # staring stopping terminating
                         else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
                             if type is 'OPEN_APP'
@@ -178,12 +186,15 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 # changed fail
                 if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+
                 # update success
                 else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type
+
                 # changed
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY

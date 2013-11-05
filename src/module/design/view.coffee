@@ -77,10 +77,11 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
                 when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
                 when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
-                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.process[ MC.data.current_tab_id ].flag_list.dones }
-                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.process[ MC.data.current_tab_id ].flag_list.err_detail }
+                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
+                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail }
                 when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
 
+            # open tab fail( includ app and stack )
             if state is 'OPEN_TAB_FAIL'
                 $( '#btn-fail-reload' ).one 'click', ( event ) ->
                     if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
@@ -90,31 +91,39 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                     #
                     null
 
+            # app changed fail
             else if state is 'CHANGED_FAIL'
                 $( '#btn-changedfail' ).one 'click', ( event ) ->
-                    ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
+
+                    # hide overlay
+                    # ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
+                    # delete MC.process and MC.data.process
+                    delete MC.process[ MC.data.current_tab_id ]
+                    delete MC.data.process[ MC.data.current_tab_id ]
+
+                    null
+
+            # app update success
             else if state is 'UPDATING_SUCCESS'
                 $( '#btn-updated-success' ).one 'click', ( event ) ->
                     ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
 
-            else if state is constant.APP_STATE.APP_STATE_UPDATING and MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
-                $( '.overlay-content-wrap' ).find( '.progress' ).hide()
-                $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
+            # app updating( pending and processing )
+            else if state is constant.APP_STATE.APP_STATE_UPDATING
 
-            else if state is constant.APP_STATE.APP_STATE_UPDATING and MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
-                $( '.overlay-content-wrap' ).find( '.progress' ).show()
-                $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+                if MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
 
-            if state is 'OPEN_TAB_FAIL'
-                $( '#btn-fail-reload' ).one 'click', ( event ) ->
-                    if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
-                    ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
-                    #test123
-                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
-                    #
-                    null
+                    $( '.overlay-content-wrap' ).find( '.progress' ).hide()
+                    $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
+
+                else if MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
+
+                    $( '.overlay-content-wrap' ).find( '.progress' ).show()
+                    $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+
+            null
 
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'

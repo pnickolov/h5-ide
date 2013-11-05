@@ -18,6 +18,7 @@ define({
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
+        stack: [ 'verify' ]
 
 
 })

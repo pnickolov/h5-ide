@@ -629,7 +629,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             if !result.is_error
 
-                me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
+                #me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
                 req_id = result.resolved_data.id
                 console.log 'request id:' + req_id
@@ -646,7 +646,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             else
 
-                me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
+                #me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'STOPPED_APP', region

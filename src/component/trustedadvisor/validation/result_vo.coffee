@@ -30,9 +30,9 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 			if obj.key is key
 				delete_obj = obj
 
-		MC.ta.list = _.without( MC.ta.list, delete_obj )
-
-		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
+		if delete_obj
+			MC.ta.list = _.without( MC.ta.list, delete_obj )
+			ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
 
 		null
 

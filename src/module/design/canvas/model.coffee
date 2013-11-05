@@ -810,17 +810,17 @@ define [ 'constant',
 
 			resource_type = constant.AWS_RESOURCE_TYPE
 
-			if not force
-				# Deleting IGW when ELB/EIP in VPC, need to be confirmed by user.
-				for key, value of MC.canvas_data.component
-					if value.type == resource_type.AWS_EC2_EIP
-						confirm = true
-						break
-					else if value.type == resource_type.AWS_ELB and value.resource.Scheme == "internet-facing"
-						confirm = true
-						break
-				if confirm
-					return lang.ide.CVS_CFM_DEL_IGW
+			# Deleting IGW when ELB/EIP in VPC, need to be confirmed by user.
+			for key, value of MC.canvas_data.component
+				if value.type == resource_type.AWS_EC2_EIP
+					cannotDel = true
+					break
+				else if value.type == resource_type.AWS_ELB and value.resource.Scheme == "internet-facing"
+					cannotDel = true
+					break
+			if cannotDel
+				notification "error", lang.ide.CVS_CFM_DEL_IGW
+				return false
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
@@ -2127,17 +2127,14 @@ define [ 'constant',
 
 				if !defaultVPC
 					# Ask the user the add IGW
-					this.askToAddIGW 'Elastic IP'
+					this.askToAddIGW()
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 				MC.canvas.update uid,'eip','eip_status', 'off'
 
-		askToAddIGW : ( component ) ->
-
-			if MC.canvas.getState() is "appedit"
-				return
-
+		askToAddIGW : () ->
+			# modify by song
 			resource_type = constant.AWS_RESOURCE_TYPE
 
 			for uid, comp of MC.canvas_data.component
@@ -2148,28 +2145,26 @@ define [ 'constant',
 			if hasIGW
 				return
 
-			if component.type == resource_type.AWS_ELB
-				res = "internet-facing Load Balancer"
-			else if component.type == resource_type.AWS_EC2_EIP
-				res = "Elastic IP"
-			else if _.isString component
-				res = component
+			notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG
+			resource_type = constant.AWS_RESOURCE_TYPE
 
-			# Confimation
-			self = this
-			template = MC.template.canvasOpConfirm {
-				operation : lang.ide.CVS_CFM_ADD_IGW
-				content   : sprintf lang.ide.CVS_CFM_ADD_IGW_MSG, res
-				color     : "blue"
-				proceed   : lang.ide.CFM_BTN_ADD
-				cancel    : lang.ide.CFM_BTN_DONT_ADD
-			}
-			modal template, true
-			$("#canvas-op-confirm").one "click", ()->
-				modal.close()
+			vpc_id   = $('.AWS-VPC-VPC').attr 'id'
+			vpc_data = MC.canvas.data.get "layout.component.group.#{vpc_id}"
+			vpc_coor = vpc_data.coordinate
 
-				# modify by song
-				MC.aws.igw.addIGWToCanvas()
+			component_size = MC.canvas.COMPONENT_SIZE[ resource_type.AWS_VPC_InternetGateway ]
+
+			node_option =
+				groupUId : vpc_id
+				name     : "IGW"
+
+			coordinate =
+				x : vpc_coor[0] - component_size[1] / 2
+				y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
+
+			MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
+			null
+
 
 		zoomedDropError : () ->
 

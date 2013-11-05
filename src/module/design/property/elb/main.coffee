@@ -35,7 +35,7 @@ define [ '../base/main',
 
                 # Trigger an event to tell canvas that we want an IGW
                 if value isnt 'internal' and !defaultVPC
-                    ide_event.trigger ide_event.NEED_IGW, elbComponent
+                    ide_event.trigger ide_event.NEED_IGW
 
                 return true
 

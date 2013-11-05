@@ -500,14 +500,10 @@ define [ 'MC', 'event',
 
                     ## modal init
                     obj = { 'state':state, 'platform':platform, 'instance_list':diff_data.changes }
-                    #obj.platform = 'vpc'
-                    #obj.instance_list = []
-                    #obj.state = constant.APP_STATE.APP_STATE_STOPPED
-                    #
                     if obj.state is constant.APP_STATE.APP_STATE_STOPPED
 
                         modal MC.template.updateApp()
-                        $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+                        #$( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
 
                     else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
 
@@ -515,7 +511,7 @@ define [ 'MC', 'event',
 
                             modal MC.template.updateApp()
                             $( '.update-app-notice' ).empty()
-                            $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+                            #$( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
 
                         else
 
@@ -524,7 +520,12 @@ define [ 'MC', 'event',
                                 $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
                             else if obj.platform is 'vpc'
                                 $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
-                            $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
+                            #$( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
+
+                    # push event
+                    $('#confirm-update-app').on 'click', { target : this }, (event) ->
+                        ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+                        modal.close()
 
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
@@ -598,16 +599,6 @@ define [ 'MC', 'event',
             console.log '_updateAndRun'
             # 1. event.data.trigger 'xxxxx'
             ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
-
-            # 2. TO-DO
-
-            # 3. close modal
-            modal.close()
-            null
-
-        _restartInstance : ( event ) ->
-            console.log '_restartInstance'
-            # 1. event.data.trigger 'xxxxx'
 
             # 2. TO-DO
 

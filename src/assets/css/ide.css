@@ -5784,8 +5784,9 @@ a.action-link:hover {
 }
 
 .toggle-details {
-	padding   : 10px;
+	padding   : 5px 10px;
 	font-size : 14px;
+	display   : inline-block;
 }
 
 .property-app a {

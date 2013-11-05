@@ -4344,30 +4344,6 @@ a.sidebar-hider {
 }
 
 /* Secondary Panel */
-#secondary-panel-wrap {
-	background-color: #fff;
-}
-#secondary-panel-wrap .context-wrap {
-	padding: 10px;
-	font-size: 13px;
-}
-#secondary-panel-wrap .title {
-	width: 105px;
-	color: #999;
-	display: inline-block;
-}
-
-#secondary-panel-wrap .context {
-	width: 115px;
-	color: #666;
-	display: inline-block;
-}
-
-#secondary-panel-wrap .context-wrap a {
-	color: #00F;
-	word-wrap: break-word;
-}
-
 .add-rule {
 	display : inline-block;
 	width   : 30px;

@@ -65,12 +65,6 @@ define [ '../base/view',
 
 
         openCreateAclPanel : ( event ) ->
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
@@ -81,18 +75,11 @@ define [ '../base/view',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            this.trigger 'SET_NEW_ACL', aclUID
-
+            @trigger 'SET_NEW_ACL', aclUID
             @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
-            @trigger "OPEN_ACL", source.attr('acl-uid')
+            @trigger "OPEN_ACL", $(event.currentTarget).attr('acl-uid')
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget

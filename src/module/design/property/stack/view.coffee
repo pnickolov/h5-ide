@@ -93,12 +93,6 @@ define [ '../base/view',
                 $('.stack-property-acl-list').html acl_template this.model.attributes
 
         openCreateAclPanel : ( event ) ->
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
             aclObj.name = MC.aws.acl.getNewName()
@@ -112,15 +106,7 @@ define [ '../base/view',
             @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
-            source = $(event.currentTarget)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
-            aclUID = source.attr('acl-uid')
-
-            @trigger "OPEN_ACL", aclUID
+            @trigger "OPEN_ACL", $( event.currentTarget ).attr('acl-uid')
 
         updateSNSList : ( snslist_data, hasASG, textOnly ) ->
 

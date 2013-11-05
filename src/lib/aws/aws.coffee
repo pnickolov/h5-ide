@@ -726,10 +726,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 item = data.component[uid]
 
                 # only instance
-                if item.type is 'AWS.EC2.Instance'
+                if item.type is 'AWS.EC2.Instance' and uid of ori_data.component
                     # check instance size
-                    size = item.resource.InstanceType
-                    if uid of ori_data.component and ori_data.component[uid].resource.InstanceType == size
+                    if item.resource.InstanceType is ori_data.component[uid].resource.InstanceType
                         continue
 
                     # server group
@@ -745,8 +744,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                             continue
 
                         instance_list.push inst
-
-                ## asg
 
         {'isChanged':isChanged, 'changes':instance_list}
 

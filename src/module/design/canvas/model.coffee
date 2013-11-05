@@ -756,7 +756,7 @@ define [ 'constant',
 
 				# Related Eni
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					instance_uid = MC.extractID comp.reseource.Attachment.InstanceId
+					instance_uid = MC.extractID comp.resource.Attachment.InstanceId
 					if groupMap[ instance_uid ]
 						eniMap[ comp_uid ] = true
 						rtbResArr.push comp_uid

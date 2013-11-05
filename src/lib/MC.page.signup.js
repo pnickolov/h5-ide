@@ -90,7 +90,7 @@ var signup = {
 
 			status.removeClass('error-status');
 
-			if (value !== '' && /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value))
+			if (value !== '' && /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(value))
 			{
 				status.show().text('This email is available.');
 				

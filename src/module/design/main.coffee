@@ -57,6 +57,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                 #
+                MC.open_failed_list[ MC.data.current_tab_id ] = { 'tab_id' : MC.data.current_tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type not in [ 'OLD_STACK', 'OLD_APP' ]
+                #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
@@ -137,6 +139,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                         #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                 #
                 ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
+                #
+                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
+                #test123
+                #ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OPEN_APP' ] and not MC.open_failed_list[ MC.data.current_tab_id ].is_fail
                 #
                 null
 

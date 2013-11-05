@@ -83,8 +83,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
             if state is 'OPEN_TAB_FAIL'
                 $( '#btn-fail-reload' ).one 'click', ( event ) ->
-                    #if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
-                    #ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                    if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
+                    ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
                     #test123
                     #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
                     #
@@ -106,6 +106,15 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             else if state is constant.APP_STATE.APP_STATE_UPDATING and MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
                 $( '.overlay-content-wrap' ).find( '.progress' ).show()
                 $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+
+            if state is 'OPEN_TAB_FAIL'
+                $( '#btn-fail-reload' ).one 'click', ( event ) ->
+                    if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
+                    ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                    #test123
+                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
+                    #
+                    null
 
         hideDesignOverlay : ->
             console.log 'hideDesignOverlay'

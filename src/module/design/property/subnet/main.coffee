@@ -15,7 +15,7 @@ define [ '../base/main',
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 
         onUnloadSubPanel : ( id )->
-            if id is "ACL"
+            if id is "ACL" and @view.refreshACLList
                 @view.refreshACLList()
 
         setupStack : () ->

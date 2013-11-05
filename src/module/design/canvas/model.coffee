@@ -480,17 +480,14 @@ define [ 'constant',
 
 			# In AppEdit mode, we use a different method collection to deal with deleting object.
 			# See if we need to hackjack the deleteResMap / beforeDeleteResMap here
-			isAppEdit = MC.canvas.getState() is "appedit"
-			hijack = isAppEdit and forge_app.existing_app_resource( option.id ) is true
-
+			hijack = MC.canvas.getState() is "appedit"
 			if hijack
 				deleteMapBU       = this.deleteResMap
 				beforeDeleteMapBU = this.beforeDeleteMap
 				this.deleteResMap       = this.deleteResAppEditMap
 				this.beforeDeleteResMap = this.beforeDeleteAppEditMap
 
-			# Default to not allow delete things in app
-			if isAppEdit
+				# Default to not allow delete things in app
 				result = false
 
 			option = $.extend {}, option
@@ -557,7 +554,7 @@ define [ 'constant',
 				event.preventDefault()
 
 
-			# Restore hijacked Maps
+			# Restore hijack Maps
 			if hijack
 				this.deleteResMap    = deleteMapBU
 				this.beforeDeleteMap = beforeDeleteMapBU
@@ -741,10 +738,10 @@ define [ 'constant',
 
 		deleteR_AE_Instance : ( component ) ->
 
+			# if not forge_app.existing_app_resource( option.id ) is true
+
 			groupUID = component.uid
 			groupMap = {}
-
-			rtbResArr = []
 
 			deleteUID = []
 
@@ -753,7 +750,6 @@ define [ 'constant',
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 					if comp.serverGroupUid is groupUID
 						groupMap[ comp_uid ] = true
-						rtbResArr.push comp_uid
 						deleteUID.push comp_uid
 
 			eniMap = {}
@@ -764,14 +760,13 @@ define [ 'constant',
 					instance_uid = MC.extractID comp.resource.Attachment.InstanceId
 					if groupMap[ instance_uid ]
 						eniMap[ comp_uid ] = true
-						rtbResArr.push comp_uid
 						deleteUID.push comp_uid
 
 				# Related Volume
 				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 					instance_uid = MC.extractID comp.resource.AttachmentSet.InstanceId
 					if groupMap[ instance_uid ]
-						deleteUID.push comp_uid
+						delete MC.canvas_data.component[ comp_uid ]
 
 			# EIP, RTB
 			for comp_uid, comp of MC.canvas_data.component
@@ -780,12 +775,14 @@ define [ 'constant',
 					deleteUID.push comp_uid
 
 				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					for rmID in rtbResArr
+					for rmID in deleteUID
 						this._removeFromRTB comp_uid, rmID
 
 			# Remove resource
 			for comp_uid in deleteUID
-				MC.canvas.remove $("#" + comp_uid)[0]
+				el = $("#" + comp_uid)
+				if el.length
+					MC.canvas.remove el[0]
 				delete MC.canvas_data.component[ comp_uid ]
 
 

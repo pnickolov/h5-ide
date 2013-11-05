@@ -81,9 +81,10 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
                 when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
 
-            if state is 'OPEN_TAB_FAIL' and MC.data.current_tab_id.split('-')[0] is 'app'
+            if state is 'OPEN_TAB_FAIL'
                 $( '#btn-fail-reload' ).one 'click', ( event ) ->
-                    #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                    #if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
+                    #ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
                     #test123
                     #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
                     #

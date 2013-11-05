@@ -546,6 +546,11 @@ define [ 'constant',
 
 				MC.canvas.remove $("#" + option.id)[0]
 				delete MC.canvas_data.component[option.id]
+
+				#check stoppable after delete AMI
+				if component.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					MC.forge.stack.checkStoppable MC.canvas_data
+
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
 			else if event && event.preventDefault
@@ -1627,6 +1632,9 @@ define [ 'constant',
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
 						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
+
+					#check stoppable when add AMI
+					MC.forge.stack.checkStoppable MC.canvas_data
 
 				when resource_type.AWS_VPC_NetworkInterface
 

@@ -850,7 +850,46 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		null
 
 
+	getAllImageId = ( json_data ) ->
+
+		ami_list = {}
+
+		_.each json_data.component, (compObj) ->
+
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				imageId = compObj.resource.ImageId
+				if imageId
+					ami_list[imageId] = MC.data.dict_ami[imageId]
+				else
+					console.log '[getAllImageId]ImageId of ' + compObj.type + '(' + compObj.uid + ') is empty'
+		
+		#return
+		ami_list
+
+
+	checkStoppable = ( json_data ) ->
+		#if has any instance-store ami, then stoppable is true
+
+		stoppable = true
+
+		ami_list = getAllImageId json_data
+
+		_.each ami_list, (data, imageId) ->
+
+			if data and data.rootDeviceType == 'instance-store'
+				stoppable = false
+				return
+
+			null
+
+		#set stoppable
+		json_data.property.stoppable = stoppable
+
+		null
+		
 
 	#public
 	expandServerGroup  : expandServerGroup
 	compactServerGroup : compactServerGroup
+	getAllImageId      : getAllImageId
+	checkStoppable     : checkStoppable

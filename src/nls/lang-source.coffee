@@ -620,11 +620,11 @@ module.exports =
       zh: "导出图片"
 
     TOOL_TIP_STOP_APP:
-      en: "Stop this app's resources."
+      en: "Stop This App's Resources."
       zh: "暂停应用"
 
     TOOL_POP_TIT_STOP_APP:
-      en: "Confirm to stop app"
+      en: "Confirm to Stop App"
       zh: "确认暂停"
 
     TOOL_POP_BODY_STOP_APP_LEFT:
@@ -640,11 +640,11 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start this app's resources."
+      en: "Start This App's Resources."
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:
-      en: "Confirm to start app"
+      en: "Confirm to Start App"
       zh: "确认恢复"
 
     TOOL_POP_BODY_START_APP_LEFT:
@@ -660,23 +660,23 @@ module.exports =
       zh: "恢复"
 
     TOOL_TIP_UPDATE_APP:
-      en: "Update App"
+      en: "Edit App"
       zh: "更新应用"
 
     TOOL_TIP_SAVE_UPDATE_APP:
-      en: "Save App updates"
+      en: "Apply Updates"
       zh: "保存应用更新"
 
     TOOL_TIP_CANCEL_UPDATE_APP:
-      en: "Cancel App updates"
+      en: "Discard Updates"
       zh: "取消应用更新"
 
     TOOL_TIP_TERMINATE_APP:
-      en: "Permanently terminate this app's resources"
+      en: "Permanently Terminate This App's Resources"
       zh: "销毁应用"
 
     TOOL_POP_TIT_TERMINATE_APP:
-      en: "Confirm to terminate app"
+      en: "Confirm to Terminate App"
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:

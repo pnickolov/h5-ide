@@ -3356,7 +3356,13 @@ td.table-action a.btn {
 }
 
 #toolbar-cancel-edit-app {
-	color: #E03C3C;
+	/*color: #E03C3C;*/
+	color: #fff;
+	background: #FF9090;
+}
+
+#toolbar-cancel-edit-app:hover {
+	background-color: #FF4444;
 }
 
 #toolbar-run,
@@ -3367,6 +3373,10 @@ td.table-action a.btn {
 	box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
 	background: #00B600;
 	border-right: 1px solid #0C8D0C;
+}
+
+#toolbar-save-edit-app {
+	border-right: 1px solid #8A8A8A;
 }
 
 #toolbar-run:hover,

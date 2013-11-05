@@ -114,7 +114,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.ide_available_count = 0
 
 		#temp
-		MC.data.IDEView = view
+		#MC.data.IDEView = view
 
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS

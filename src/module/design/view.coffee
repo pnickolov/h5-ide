@@ -144,11 +144,10 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             # open tab fail( includ app and stack )
             if state is 'OPEN_TAB_FAIL'
                 $( '#btn-fail-reload' ).one 'click', ( event ) ->
+
                     if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
                     ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
-                    #test123
-                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
-                    #
+
                     null
 
             # app changed fail

@@ -32,7 +32,7 @@ define [ 'event',
             target.fadeOut 'normal', () ->
                 target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
-            #test123
+            #
             delete MC.open_failed_list[ MC.data.current_tab_id ] if MC.open_failed_list[ MC.data.current_tab_id ]
             #
             null

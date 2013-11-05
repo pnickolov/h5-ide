@@ -86,6 +86,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			if not comp_data[layout_data.component.node[uid].eipList[0]]
 
+				for k_eip in layout_data.component.node[uid].eipList
+
+					delete comp_data[k_eip]
+
 				layout_data.component.node[uid].eipList = []
 
 		else
@@ -99,6 +103,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					delete_index.push eip_uid
 
 			for k in delete_index
+
+				for k_eip in layout_data.component.node[uid].eipList[k]
+
+					delete comp_data[k_eip]
 
 				delete layout_data.component.node[uid].eipList[k]
 
@@ -280,6 +288,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					delete_index.push eip_uid
 
 			for k in delete_index
+
+				for k_eip in layout_data.component.node[uid].eipList[k]
+
+					delete comp_data[k_eip]
 
 				delete layout_data.component.node[uid].eipList[k]
 

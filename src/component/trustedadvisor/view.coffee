@@ -33,9 +33,6 @@ define [ 'event',
             #
             null
 
-        disableRun: ->
-            $( '#btn-confirm' ).attr( 'disabled', 'disabled' )
-
         restoreRun: ->
             $( '#btn-confirm' ).removeAttr( 'disabled' )
 

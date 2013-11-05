@@ -38,7 +38,6 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
                     console.log 'UNLOAD_TA_MODAL'
                     unLoadModule view, model
-                view.disableRun()
 
             if type is 'stack'
                 processRun()

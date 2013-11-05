@@ -141,10 +141,6 @@ define [ 'MC', 'event',
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
                     console.log 'clickRunIcon'
 
-                    # disable button
-                    $('#btn-confirm').attr 'disabled', true
-                    $('.modal-close').attr 'disabled', true
-
                     app_name = $('.modal-input-value').val()
 
                     #check app name
@@ -162,21 +158,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
 
-                    #modal.close()
+                    # disable button
+                    $('#btn-confirm').attr 'disabled', true
+                    $('.modal-close').attr 'disabled', true
 
-                    # # check change and save stack
-                    # ori_data = MC.canvas_property.original_json
-                    # new_data = JSON.stringify( MC.canvas_data )
-                    # id = MC.canvas_data.id
-                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                    # hold on 0.5 second for data update
-                    # setTimeout () ->
-                    #     me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
-                    #     MC.data.app_list[MC.canvas_data.region].push app_name
-                    # , 500
 
             true
 

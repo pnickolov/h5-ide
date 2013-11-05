@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sg
 #############################
 
-define [ '../base/view', 'constant',
+define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/app.html',
          'text!./template/rule_item.html',

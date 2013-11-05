@@ -606,7 +606,8 @@ define [ 'MC', 'event',
             # 1. event.data.trigger 'xxxxx'
             ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
-            # 2. TO-DO
+            # 2. off confirm-update-app event
+            $( document.body ).off 'click', '#confirm-update-app', @_updateAndRun
 
             # 3. close modal
             modal.close()

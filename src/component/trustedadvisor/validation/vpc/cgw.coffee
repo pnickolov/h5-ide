@@ -34,7 +34,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 								cgwId = cgwObj.customerGatewayId
 								cgwIP = cgwObj.ipAddress
 								cgwState = cgwObj.state
-								if stackCGWIP isnt cgwIP and cgwState is 'available'
+								if stackCGWIP is cgwIP and cgwState is 'available'
 									conflictInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_IP_CONFLICT, stackCGWName, stackCGWIP, cgwId, cgwIP
 									checkResult = false
 								null

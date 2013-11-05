@@ -48,7 +48,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 						else
 							callback(null)
 					else
-						return null
+						callback(null)
 
 					if checkResult
 						callback(null)
@@ -67,6 +67,6 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 				info: tipInfo
 			}
 		catch err
-			return null
+			callback(null)
 
 	verify : verify

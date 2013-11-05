@@ -61,8 +61,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 				}
 
 			else
-				return null
+				callback(null)
 		catch err
-			return null
+			callback(null)
 
 	isCGWHaveIPConflict : isCGWHaveIPConflict

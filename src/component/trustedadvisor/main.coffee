@@ -33,6 +33,11 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                     view.render type, status
                     if model.get('error_list').length is 0
                         view.restoreRun()
+
+
+
+
+
                 MC.ta.validRun()
 
                 ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
@@ -41,6 +46,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
             if type is 'stack'
                 processRun()
+                view.closedPopup()
             else
                 processBar()
 

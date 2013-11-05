@@ -65,7 +65,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
         _.each components, ( component , uid ) ->
             filename = _getFilename component.type
             _.each validation_main[ filename ], ( func, method ) ->
-                if not _isGlobal filename, method and not _isAsync filename, method
+                if not _isGlobal(filename, method) and not _isAsync(filename, method)
                     result = validation_main[ filename ][ method ]( uid )
                     _pushResult result, method, filename, uid
 

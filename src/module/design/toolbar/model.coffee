@@ -790,7 +790,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     # update process state
                     if flag_list
 
+                        flag_list.flag = flag
                         item.flag_list = flag_list
+
                         me.updateAppState(req.state, flag, item)
 
                     # update app list, region aws resource and notification
@@ -874,7 +876,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
                 else
-                    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+                    ide_event.trigger ide_event.UPDATE_APP_STATE, req_state, tab_name
 
                     if flag is 'SAVE_APP'
                         if req_state is constant.OPS_STATE.OPS_STATE_DONE

@@ -138,7 +138,7 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
 
             #listen open_stack
-            model.on 'OPEN_STACK', ( tab_id ) ->
+            openStack = ( tab_id ) ->
                 console.log 'OPEN_STACK'
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
@@ -152,6 +152,7 @@ define [ 'jquery', 'event', 'base_main',
                 model.getStackInfo tab_id
                 #
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+            model.on 'OPEN_STACK', openStack
 
             #listen open_app
             openApp = ( tab_id ) ->
@@ -245,7 +246,6 @@ define [ 'jquery', 'event', 'base_main',
                 Tabbar.open app_id.toLowerCase(), tab_name + ' - app'
                 null
 
-
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
                 console.log 'tabbar:UPDATE_APP_STATE', type, tab_id
@@ -338,6 +338,14 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'app_region_name', region_name
                 #
                 openApp tab_id
+
+            #listen
+            ide_event.onLongListen ide_event.RELOAD_STACK_TAB, ( tab_id, region_name ) ->
+                console.log 'RELOAD_STACK_TAB', tab_id, region_name
+                #set vo
+                model.set 'stack_region_name', region_name
+                #
+                openStack tab_id
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->

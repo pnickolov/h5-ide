@@ -505,7 +505,7 @@ define [ 'MC', 'event',
                     if obj.state is constant.APP_STATE.APP_STATE_STOPPED
 
                         modal MC.template.updateApp()
-                        #$( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+                        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                     else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
 
@@ -513,21 +513,25 @@ define [ 'MC', 'event',
 
                             modal MC.template.updateApp()
                             $( '.update-app-notice' ).empty()
-                            #$( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
+                            #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                         else
 
                             modal MC.template.restartInstance obj
+
                             if obj.platform is 'ec2'
                                 $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
                             else if obj.platform is 'vpc'
                                 $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
-                            #$( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
+
+                            #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                     # push event
-                    $('#confirm-update-app').on 'click', { target : this }, (event) ->
-                        ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
-                        modal.close()
+                    #$('#confirm-update-app').one 'click', { target : this }, (event) ->
+                    #    ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+                    #    modal.close()
+
+                    $( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES

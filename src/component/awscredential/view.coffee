@@ -178,7 +178,7 @@ define [ 'event',
             else if email
 
                 # check email format
-                if email isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(email)  # not email
+                if email isnt '' and /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(email)  # not email
                     if email is MC.base64Decode($.cookie('email')) # repeat
                         #status.show().text 'This email is repeat.'
                         me.showSetting('account')
@@ -221,7 +221,7 @@ define [ 'event',
                 $('#account-passowrd-info').show()
                 $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_NULL_PASSWORD
 
-            else if new_password is $.cookie('username') or new_password.length <= 6
+            else if new_password is $.cookie('username') or new_password.length < 6
 
                 $('#account-passowrd-info').show()
                 $('#account-passowrd-info').text lang.ide.HEAD_MSG_ERR_INVALID_PASSWORD

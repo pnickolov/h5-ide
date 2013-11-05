@@ -57,6 +57,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                 #
+                MC.open_failed_list[ MC.data.current_tab_id ] = { 'tab_id' : MC.data.current_tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type not in [ 'OLD_STACK', 'OLD_APP' ]
+                #
                 if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                 #
                 if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
@@ -88,38 +90,34 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                     console.log 'when open_app or old_app restore the scene'
 
-                    # 1. update Tabbar.current( app and appedit)
-
-                    # 2. update toolbar
-
-                    # 3. update design-overlay when app changed
+                    # update design-overlay when app changed
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
 
-                        #switch tab and changed fail
-                        #if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
-                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
-
-                        #switch tab and changed success
-                        #else if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_updated
-                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
-
-                        #changed done
+                        # changed done
                         if MC.data.process[ tab_id ].flag_list.is_done
                             ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
-                        #changed fail
+                        # changed fail
                         else if MC.data.process[ tab_id ].flag_list.is_failed
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
 
-                        #changed success
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+                            else
+                                # don't do anything
+
+                        # changed success
                         else if MC.data.process[ tab_id ].flag_list.is_updated
-                            ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
 
-                        #upading
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+                            else
+                                # don't do anything
+
+                        # upading
                         else if MC.data.process[ tab_id ].flag_list.flag is 'SAVE_APP'
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
 
-                        #staring stoping terminating
+                        # staring stopping terminating
                         else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
                             if type is 'OPEN_APP'
@@ -132,11 +130,12 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                         #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
                         #    MC.data.process[ tab_id ].appedit2app = null
 
-                        #re open
-                        #else if type is 'OPEN_APP'
-                        #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                 #
                 ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
+                #
+                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
+                #test123
+                #ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OPEN_APP' ] and not MC.open_failed_list[ MC.data.current_tab_id ].is_fail
                 #
                 null
 
@@ -187,12 +186,15 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 # changed fail
                 if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+
                 # update success
                 else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, type
+
                 # changed
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY

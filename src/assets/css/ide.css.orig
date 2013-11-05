@@ -681,7 +681,11 @@ a {
 	position : absolute;
 	top      : 49px;
 	bottom: 0;
+<<<<<<< HEAD
 	z-index  : 60;
+=======
+	z-index  : 10;
+>>>>>>> feature/new-app-state-change-process
 	width    : 45px;
 }
 
@@ -4173,6 +4177,10 @@ a.sidebar-hider {
 	width: 120px;
 }
 
+.secondary-panel {
+/*	cursor: pointer;*/
+}
+
 .sg-info-list-tab {
 	color         : #999;
 	background    : #3A3A3A;
@@ -4344,6 +4352,30 @@ a.sidebar-hider {
 }
 
 /* Secondary Panel */
+#secondary-panel-wrap {
+	background-color: #fff;
+}
+#secondary-panel-wrap .context-wrap {
+	padding: 10px;
+	font-size: 13px;
+}
+#secondary-panel-wrap .title {
+	width: 105px;
+	color: #999;
+	display: inline-block;
+}
+
+#secondary-panel-wrap .context {
+	width: 115px;
+	color: #666;
+	display: inline-block;
+}
+
+#secondary-panel-wrap .context-wrap a {
+	color: #00F;
+	word-wrap: break-word;
+}
+
 .add-rule {
 	display : inline-block;
 	width   : 30px;
@@ -6904,9 +6936,14 @@ a.action-link:hover {
 	bottom: 0;
 	left: 0;
 	z-index: 5;
+<<<<<<< HEAD
 	background-color: rgba(0, 0, 0, 0.8);
 	border-top: 1px solid #181818;
 	opacity: 1;
+=======
+	background-color: rgba(243, 243, 243, 0.7);
+	/*box-shadow: inset 0 2px 0 #f0f0f0;*/
+>>>>>>> feature/new-app-state-change-process
 }
 
 .overlay-content-wrap {

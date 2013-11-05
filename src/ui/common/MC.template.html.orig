@@ -1172,6 +1172,7 @@ Additional Notes and Questions
 	</div>
 </div>
 
+<<<<<<< HEAD
 <!-- restartInstance -->
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
@@ -1207,6 +1208,8 @@ Additional Notes and Questions
 	</div>
 </div>
 
+=======
+>>>>>>> feature/new-app-state-change-process
 <!-- openTabFail -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Oops! There has been some issue loading the app.</div>
@@ -1251,11 +1254,20 @@ Additional Notes and Questions
 
 <!-- appChangedfail -->
 <div class="overlay-content-wrap">
+<<<<<<< HEAD
 	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
 	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
 	<div class="result-error-info">
 		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
 		<p class="detail">{{ detail }}</p>
+=======
+	<div class="overlay-text">Oops! The app failed to start/stop/terminate.</div>
+	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+	<div class="result-error-info">
+		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+		<p class="detail">error details</p>
+>>>>>>> feature/new-app-state-change-process
 	</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>
+

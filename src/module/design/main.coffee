@@ -94,17 +94,31 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                     # 3. update design-overlay when app changed
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
+
+                        #switch tab and changed fail
                         if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_failed
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
+
+                        #switch tab and changed success
                         else if type is 'OLD_APP' and MC.data.process[ tab_id ].flag_list.is_updated
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+
+                        #switch tab
                         else if type is 'OLD_APP'
-                            ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY                                  if MC.data.process[ tab_id ].flag_list.is_done
+
+                            #done
+                            if MC.data.process[ tab_id ].flag_list.is_done
+                                ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+
                             #if MC.data.process[ tab_id ].appedit2app
                             #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
                             #    MC.data.process[ tab_id ].appedit2app = null
+
+                            #upading(pending)
                             if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING
+
+                        #re open
                         else if type is 'OPEN_APP'
                             ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state if MC.data.process[ tab_id ].flag_list.is_pending or MC.data.process[ tab_id ].flag_list.is_inprocess
                 #

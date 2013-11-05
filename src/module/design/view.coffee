@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant ) ->
+define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant, lang ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -78,7 +78,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'backbone', 
                 when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
                 when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
                 when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.process[ MC.data.current_tab_id ].flag_list.dones }
-                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail()
+                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.process[ MC.data.current_tab_id ].flag_list.err_detail }
                 when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
 
             if state is 'OPEN_TAB_FAIL'

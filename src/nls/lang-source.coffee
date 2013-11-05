@@ -3323,6 +3323,21 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    RUN_STACK:
+      en: "run stack"
+      zh: "运行"
+
+    START_APP:
+      en: "start app"
+      zh: "启动APP"
+
+    STOP_APP:
+      en: "stop app"
+      zh: "停止APP"
+
+    TERMINATE_APP:
+      en: "terminate app"
+      zh: "删除APP"
 
     ##### Trust Advisor
     TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:

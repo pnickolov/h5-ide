@@ -1251,11 +1251,11 @@ Additional Notes and Questions
 
 <!-- appChangedfail -->
 <div class="overlay-content-wrap">
-	<div class="overlay-text">Oops! The app failed to start/stop/terminate.</div>
+	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
 	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
 	<div class="result-error-info">
 		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-		<p class="detail">error details</p>
+		<p class="detail">{{ detail }}</p>
 	</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>

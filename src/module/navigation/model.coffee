@@ -151,7 +151,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             #     me.set 'app_list', new_app_list
 
             # else
-            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
+            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
 
         #stack list

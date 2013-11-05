@@ -137,8 +137,10 @@ define [ 'MC', 'event',
 
                 #
                 #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
-                MC.ta.validRun()
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'stack'
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule 'stack'
+
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->

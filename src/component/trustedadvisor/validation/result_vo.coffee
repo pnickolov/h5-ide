@@ -42,7 +42,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'add', result.level
 
 	_replace = ( result ) ->
-		_.map MC.ta.list, ( item ) ->
+		MC.ta.list = _.map MC.ta.list, ( item ) ->
 			if item.key is result.key
 				return result
 			item
@@ -60,7 +60,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 			if not _exist k
 				_add res
 			else
-				_replace result
+				_replace res
 		else
 			_del k
 

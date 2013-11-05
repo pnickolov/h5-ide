@@ -126,7 +126,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     ++ Class Method ++
 
     # loadSubPanel( subPanelID, componentUid ) :
-        description : calling this method will should the property. It does nothing if the property module is main module, not sub module.
+        description : calling this method will show the property. It does nothing if the property module is main module, not sub module.
 
     # activeModule :
         description : Returns the currently showing property.
@@ -139,7 +139,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     ++ Static Method ++
 
     # extend :
-         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend. It's basically the same as triggering `ide_event.OPEN_PROPERTY`
+         description : User must use this method to inherit from PropertyModule. The usage is the same as Backbone's extend.
 
     ###
 

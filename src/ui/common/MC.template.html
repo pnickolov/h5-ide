@@ -582,10 +582,15 @@ Additional Notes and Questions
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
 		<div class="stack-validation">
-			<details open>
+			<details open style="display:none;">
 				<summary>Stack Validation</summary>
 				<div id="stack-run-validation-container"></div>
 			</details>
+			<div class="validating">
+				<p>
+					Validating your stack...
+				</p>
+			</div>
 		</div>
 		<div class="estimate clearfix">
 			<span class="title">Estimated Cost</span>

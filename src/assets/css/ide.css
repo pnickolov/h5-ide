@@ -6175,6 +6175,16 @@ a.action-link:hover {
 	outline: none;
 }
 
+#modal-run-stack .validating {
+	height: 116px;
+	background-color: #eef2f4;
+	border-radius: 5px;
+}
+
+#modal-run-stack .validating p {
+	padding: 49px 0 0 30px;
+}
+
 #modal-run-stack .validation-content {
 	margin-top: 10px;
 }

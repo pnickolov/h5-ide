@@ -29,13 +29,7 @@ define [ '../base/view',
                 $('.stack-property-acl-list').html acl_template this.model.attributes
 
         openEditAclPanel : ( event ) ->
-            source = $(event.target)
-            if(source.hasClass('secondary-panel'))
-                target = source
-            else
-                target = source.parents('.secondary-panel').first()
-
-            @trigger "OPEN_ACL", source.attr('acl-uid')
+            @trigger "OPEN_ACL", $( event.currentTarget ).attr('acl-uid')
     }
 
     new InstanceAppView()

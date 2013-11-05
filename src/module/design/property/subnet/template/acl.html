@@ -6,7 +6,7 @@
         <label for="property-acl-{{@index}}"></label>
       </div>
     </div>
-    <div class="col3 secondary-panel networkacl-edit tooltip icon-btn-details" acl-uid="{{uid}}" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
+    <div class="col3 networkacl-edit tooltip icon-btn-details" acl-uid="{{uid}}" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
     <div class="col2" for="property-acl-{{@index}}">
       <div class="col2-1 truncate">{{name}}</div>
       <div class="col2-2 truncate">{{rule}} {{ i18n "PROP_SUBNET_ACL_LBL_RULE" }}, {{association}} {{ i18n "PROP_SUBNET_ACL_LBL_ASSOC" }}{{#unless isDefault}} | <a class="sg-list-delete-btn" acl-uid="{{uid}}" acl-name="{{name}}" acl-association="{{association}}">{{ i18n "PROP_SUBNET_ACL_BTN_DELETE" }}</a>{{/unless}}</div>

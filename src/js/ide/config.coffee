@@ -80,7 +80,6 @@ require.config {
 		'UI.filter'          : 'ui/common/UI.filter'
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
-		'UI.secondarypanel'  : 'ui/common/UI.secondarypanel'
 		'UI.slider'          : 'ui/common/UI.slider'
 		'UI.editablelabel'   : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
@@ -322,9 +321,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.secondarypanel' :
 			deps       : [ 'jquery' ]
 
 		'UI.slider'    :

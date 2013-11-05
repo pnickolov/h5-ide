@@ -1868,14 +1868,6 @@ textarea {
 	top: 8px;
 }
 
-#secondary-panel-wrap {
-	display: none;
-	position: absolute;
-	width: 0;
-	top: 0;
-	right: 0;
-}
-
 /* added by song */
 
 /* Slider */

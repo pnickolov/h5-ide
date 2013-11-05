@@ -6,12 +6,21 @@ define [ "../base/main",
          "./app_model",
          "./app_view",
          "../sglist/main",
-         "constant"
+         "constant",
+         "event"
 ], ( PropertyModule,
      app_model, app_view,
-     sglist_main, constant ) ->
+     sglist_main, constant, ide_event ) ->
+
+    ideEvents = {}
+    ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
+        @model.getEni()
+        @view.refreshIPList()
+        null
 
     ServerGroupModule = PropertyModule.extend {
+
+        ideEvents : ideEvents
 
         handleTypes : [ 'component_server_group' ]
 

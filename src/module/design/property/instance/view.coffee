@@ -4,8 +4,7 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'event',
-         'i18n!nls/lang.js' ], ( PropertyView, template, ide_event, lang ) ->
+         'i18n!nls/lang.js' ], ( PropertyView, template, lang ) ->
 
     template =  Handlebars.compile template
 

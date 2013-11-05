@@ -597,7 +597,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
             item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
-            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "START_APP", item)
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "STOP_APP", item)
 
         terminateApp : (region, id, name, flag) ->
             me = this

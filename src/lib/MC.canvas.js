@@ -3158,6 +3158,18 @@ MC.canvas.event.dragable = {
 
 			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
 
+			// Caching the SVGtranslate object at first for fastest value manipulating.
+			if (shadow[0].transform.numberOfItems === 0)
+			{
+				SVGtranslate = shadow[0].transform.baseVal.appendItem(
+					shadow[0].ownerSVGElement.createSVGTransform()
+				);
+			}
+			else
+			{
+				SVGtranslate = shadow[0].transform.baseVal.getItem(0);
+			}
+
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
 				Canvon(shadow).addClass('shadow');
@@ -3175,23 +3187,13 @@ MC.canvas.event.dragable = {
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'originalPageX': event.pageX,
-					'originalPageY': event.pageY
+					'originalPageY': event.pageY,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'SVGtranslate': SVGtranslate
 				});
 			}
 			else
 			{
-				// Caching the SVGtranslate object at first for fastest value manipulating.
-				if (shadow[0].transform.numberOfItems === 0)
-				{
-					SVGtranslate = shadow[0].transform.baseVal.appendItem(
-						shadow[0].ownerSVGElement.createSVGTransform()
-					);
-				}
-				else
-				{
-					SVGtranslate = shadow[0].transform.baseVal.getItem(0);
-				}
-
 				$(document).on({
 					'mousemove': MC.canvas.event.dragable.mousemove,
 					'mouseup': Canvon(event.target).hasClass('asg-resource-dragger') ?
@@ -3690,9 +3692,11 @@ MC.canvas.event.dragable = {
 	},
 	gatewaymove: function (event)
 	{
-		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)),
-			vpc_coordinate = event.data.vpc_data.coordinate,
-			vpc_size = event.data.vpc_data.size;
+		var event_data = event.data,
+			gateway_top = Math.round((event.pageY - event_data.offsetY) / (MC.canvas.GRID_HEIGHT / event_data.scale_ratio)),
+			vpc_coordinate = event_data.vpc_data.coordinate,
+			vpc_size = event_data.vpc_data.size,
+			node_type = event_data.node_type;
 
 		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 8
 		if (gateway_top > vpc_coordinate[1] + vpc_size[1] - 8)
@@ -3705,26 +3709,36 @@ MC.canvas.event.dragable = {
 			gateway_top = vpc_coordinate[1];
 		}
 
-		if (event.data.node_type === 'AWS.VPC.InternetGateway')
+		if (node_type === 'AWS.VPC.InternetGateway')
 		{
-			event.data.shadow.attr('transform',
-				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-					gateway_top * MC.canvas.GRID_HEIGHT +
-				')'
+			// Cached SVGtranslate (fast)
+			event_data.SVGtranslate.setTranslate(
+				(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH,
+				gateway_top * MC.canvas.GRID_HEIGHT
 			);
+			// event_data.shadow.attr('transform',
+			// 	'translate(' +
+			// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+			// 		(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
+			// 		gateway_top * MC.canvas.GRID_HEIGHT +
+			// 	')'
+			// );
 		}
 
-		if (event.data.node_type === 'AWS.VPC.VPNGateway')
+		if (node_type === 'AWS.VPC.VPNGateway')
 		{
-			event.data.shadow.attr('transform',
-				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-					gateway_top * MC.canvas.GRID_HEIGHT +
-				')'
+			// Cached SVGtranslate (fast)
+			event_data.SVGtranslate.setTranslate(
+				(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH,
+				gateway_top * MC.canvas.GRID_HEIGHT
 			);
+			// event_data.shadow.attr('transform',
+			// 	'translate(' +
+			// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
+			// 		(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
+			// 		gateway_top * MC.canvas.GRID_HEIGHT +
+			// 	')'
+			// );
 		}
 
 		return false;
@@ -4577,6 +4591,8 @@ MC.canvas.event.groupResize = {
 				group_offset = group[0].getBoundingClientRect(),
 				canvas_offset = $('#svg_canvas').offset(),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				grid_width = MC.canvas.GRID_WIDTH,
+				grid_height = MC.canvas.GRID_HEIGHT,
 				group_left = (group_offset.left - canvas_offset.left) * scale_ratio,
 				group_top = (group_offset.top - canvas_offset.top) * scale_ratio,
 				type = parent.data('class'),
@@ -4626,15 +4642,15 @@ MC.canvas.event.groupResize = {
 					'direction': $(target).data('direction'),
 					//'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'scale_ratio': scale_ratio,
 					'group_min_padding': MC.canvas.GROUP_MIN_PADDING,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
 						parent.data('class'),
-						Math.ceil(group_left / MC.canvas.GRID_WIDTH),
-						Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
-						Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
-						Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+						Math.ceil(group_left / grid_width),
+						Math.ceil(group_top / grid_height),
+						Math.ceil((group_offset.left + group_offset.width) / grid_width),
+						Math.ceil((group_offset.top + group_offset.height) / grid_height)
 					),
 					'group_port': type === 'AWS.VPC.Subnet' ? [
 						parent.find('.port-subnet-assoc-in').first(),
@@ -5187,8 +5203,8 @@ MC.canvas.event.ctrlMove = {
 MC.canvas.event.EIPstatus = function ()
 {
 	$("#svg_canvas").trigger("CANVAS_EIP_STATE_CHANGE", {
-		id: this.parentNode.id,
-		eip_state: this.getAttribute('data-eip-state')
+		'id': this.parentNode.id,
+		'eip_state': this.getAttribute('data-eip-state')
 	});
 
 	return false;
@@ -5223,6 +5239,8 @@ MC.canvas.event.clearList = function ()
 	MC.canvas.eniList.close();
 	MC.canvas.asgList.close();
 	MC.canvas.event.clearSelected();
+
+	return true;
 };
 
 MC.canvas.event.nodeHover = function (event)

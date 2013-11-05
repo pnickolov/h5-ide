@@ -7,10 +7,10 @@
 # **********************************************************
 */
 
-//json data for current tab
+// JSON data for current tab
 MC.canvas_data = {};
 
-//variable for current tab
+// Variable for current tab
 MC.canvas_property = {};
 
 MC.canvas = {
@@ -309,10 +309,6 @@ MC.canvas = {
 		{
 			$('#canvas_body')
 				.removeClass('canvas_zoomed');
-				// .off('mousedown', '.dragable', MC.canvas.event.selectNode)
-				// .on('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-				// .on('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-				// .on('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 		}
 
 		return true;
@@ -346,10 +342,6 @@ MC.canvas = {
 
 		$('#canvas_body')
 			.addClass('canvas_zoomed');
-			// .on('mousedown', '.dragable', MC.canvas.event.selectNode)
-			// .off('mousedown', '.port', MC.canvas.event.drawConnection.mousedown)
-			// .off('mousedown', '.dragable', MC.canvas.event.dragable.mousedown)
-			// .off('mousedown', '.group-resizer', MC.canvas.event.groupResize.mousedown);
 
 		return true;
 	},
@@ -1271,14 +1263,19 @@ MC.canvas = {
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;
 
-					layout_connection_data = {
+					// layout_connection_data = {
+					// 	'target': connection_target_data,
+					// 	'auto': true,
+					// 	'point': [],
+					// 	'type': connection_option.type
+					// };
+
+					MC.canvas_data.layout.connection[ svg_line.id ] = {
 						'target': connection_target_data,
 						'auto': true,
 						'point': [],
 						'type': connection_option.type
 					};
-
-					MC.canvas_data.layout.connection[ svg_line.id ] = layout_connection_data;
 				}
 
 				return svg_line.id;
@@ -1373,8 +1370,27 @@ MC.canvas = {
 		x = x > 0 ? x : 0;
 		y = y > 0 ? y : 0;
 
+		var transformVal = node.transform.baseVal,
+			translateVal;
+
 		MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
-		node.setAttribute('transform', 'translate(' + (x * MC.canvas.GRID_WIDTH) + ',' + (y * MC.canvas.GRID_HEIGHT) + ')');
+
+		if (transformVal.numberOfItems === 1)
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			transformVal.getItem(0).setTranslate(x * 10, y * 10);
+		}
+		else
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			translateVal = node.ownerSVGElement.createSVGTransform();
+
+			translateVal.setTranslate(x * 10, y * 10);
+
+			transformVal.appendItem(translateVal);
+		}
 
 		return true;
 	},
@@ -3086,7 +3102,8 @@ MC.canvas.event.dragable = {
 				platform = MC.canvas_data.platform,
 				currentTarget = $(event.target),
 				shadow,
-				target_group_type;
+				target_group_type,
+				SVGtranslate;
 
 			if (node_type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
@@ -3141,6 +3158,18 @@ MC.canvas.event.dragable = {
 
 			$(document.body).append('<div id="overlayer" class="grabbing"></div>');
 
+			// Caching the SVGtranslate object at first for fastest value manipulating.
+			if (shadow[0].transform.numberOfItems === 0)
+			{
+				SVGtranslate = shadow[0].transform.baseVal.appendItem(
+					shadow[0].ownerSVGElement.createSVGTransform()
+				);
+			}
+			else
+			{
+				SVGtranslate = shadow[0].transform.baseVal.getItem(0);
+			}
+
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
 				Canvon(shadow).addClass('shadow');
@@ -3158,7 +3187,9 @@ MC.canvas.event.dragable = {
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'originalPageX': event.pageX,
-					'originalPageY': event.pageY
+					'originalPageY': event.pageY,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'SVGtranslate': SVGtranslate
 				});
 			}
 			else
@@ -3181,7 +3212,12 @@ MC.canvas.event.dragable = {
 					'groupChild': target_type === 'group' ? MC.canvas.groupChild(this) : null,
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
-					'originalTarget': event.target
+					'originalTarget': event.target,
+					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target[0].id + '.size'),
+					'grid_width': MC.canvas.GRID_WIDTH,
+					'grid_height': MC.canvas.GRID_HEIGHT,
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'SVGtranslate': SVGtranslate
 				});
 			}
 
@@ -3197,10 +3233,10 @@ MC.canvas.event.dragable = {
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
-			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target_id + '.size'),
-			grid_width = MC.canvas.GRID_WIDTH,
-			grid_height = MC.canvas.GRID_HEIGHT,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			component_size = event_data.component_size,
+			grid_width = event_data.grid_width,
+			grid_height = event_data.grid_height,
+			scale_ratio = event_data.scale_ratio,
 			coordinate = {
 				'x': Math.round((event.pageX - event_data.offsetX) / (grid_width / scale_ratio)),
 				'y': Math.round((event.pageY - event_data.offsetY) / (grid_height / scale_ratio))
@@ -3232,12 +3268,8 @@ MC.canvas.event.dragable = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
-		event_data.shadow[0].setAttribute('transform',
-			'translate(' +
-				coordinate.x * grid_width + ',' +
-				coordinate.y * grid_height +
-			')'
-		);
+		// Cached SVGtranslate (fast)
+		event_data.SVGtranslate.setTranslate(coordinate.x * grid_width, coordinate.y * grid_height);
 
 		return false;
 	},
@@ -3660,9 +3692,11 @@ MC.canvas.event.dragable = {
 	},
 	gatewaymove: function (event)
 	{
-		var gateway_top = Math.round((event.pageY - event.data.offsetY) / (MC.canvas.GRID_HEIGHT / MC.canvas_property.SCALE_RATIO)),
-			vpc_coordinate = event.data.vpc_data.coordinate,
-			vpc_size = event.data.vpc_data.size;
+		var event_data = event.data,
+			gateway_top = Math.round((event.pageY - event_data.offsetY) / (MC.canvas.GRID_HEIGHT / event_data.scale_ratio)),
+			vpc_coordinate = event_data.vpc_data.coordinate,
+			vpc_size = event_data.vpc_data.size,
+			node_type = event_data.node_type;
 
 		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 8
 		if (gateway_top > vpc_coordinate[1] + vpc_size[1] - 8)
@@ -3675,25 +3709,21 @@ MC.canvas.event.dragable = {
 			gateway_top = vpc_coordinate[1];
 		}
 
-		if (event.data.node_type === 'AWS.VPC.InternetGateway')
+		if (node_type === 'AWS.VPC.InternetGateway')
 		{
-			event.data.shadow.attr('transform',
-				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-					gateway_top * MC.canvas.GRID_HEIGHT +
-				')'
+			// Cached SVGtranslate (fast)
+			event_data.SVGtranslate.setTranslate(
+				(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH,
+				gateway_top * MC.canvas.GRID_HEIGHT
 			);
 		}
 
-		if (event.data.node_type === 'AWS.VPC.VPNGateway')
+		if (node_type === 'AWS.VPC.VPNGateway')
 		{
-			event.data.shadow.attr('transform',
-				'translate(' +
-					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-					gateway_top * MC.canvas.GRID_HEIGHT +
-				')'
+			// Cached SVGtranslate (fast)
+			event_data.SVGtranslate.setTranslate(
+				(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH,
+				gateway_top * MC.canvas.GRID_HEIGHT
 			);
 		}
 
@@ -3877,7 +3907,8 @@ MC.canvas.event.drawConnection = {
 				'option': connection_option,
 				'draw_line': $('#draw-line-connection'),
 				'port_name': port_name,
-				'canvas_offset': canvas_offset
+				'canvas_offset': canvas_offset,
+				'scale_ratio': scale_ratio
 			});
 
 			MC.canvas.event.clearSelected();
@@ -4032,7 +4063,7 @@ MC.canvas.event.drawConnection = {
 	{
 		var event_data = event.data,
 			canvas_offset = event_data.canvas_offset,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = event_data.scale_ratio,
 			endX = (event.pageX - canvas_offset.left) * scale_ratio,
 			endY = (event.pageY - canvas_offset.top) * scale_ratio,
 			startX = event_data.originalX,
@@ -4195,7 +4226,7 @@ MC.canvas.event.siderbarDrag = {
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = svg_canvas.offset(),
 				node_type = target.data('type'),
-				target_component_type = target.data('component-type'),
+				target_type = target.data('component-type'),
 				platform = MC.canvas_data.platform,
 				shadow,
 				clone_node,
@@ -4213,7 +4244,7 @@ MC.canvas.event.siderbarDrag = {
 			$(document.body).append('<div id="drag_shadow"></div><div id="overlayer" class="grabbing"></div>');
 			shadow = $('#drag_shadow');
 
-			if (target_component_type === 'group')
+			if (target_type === 'group')
 			{
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 
@@ -4279,11 +4310,12 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
 				}, {
 					'target': target,
-					'target_type': target_component_type,
+					'target_type': target_type,
 					'canvas_offset': svg_canvas.offset(),
 					'node_type': node_type,
 					'shadow': shadow,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO
+					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ]
 				});
 			}
 
@@ -4299,11 +4331,12 @@ MC.canvas.event.siderbarDrag = {
 	mousemove: function (event)
 	{
 		var event_data = event.data,
+			shadow = event_data.shadow[0],
 			canvas_offset = event_data.canvas_offset,
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
-			component_size = target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
+			component_size = event_data.component_size,
 
 			// MC.canvas.GRID_WIDTH
 			grid_width = 10,
@@ -4333,10 +4366,8 @@ MC.canvas.event.siderbarDrag = {
 			Canvon('#' + match_place.target).addClass('match-dropable-group');
 		}
 
-		event.data.shadow.css({
-			'top': event.pageY - 50,
-			'left': event.pageX - 50
-		});
+		shadow.style.top = (event.pageY - 50) + 'px';
+		shadow.style.left = (event.pageX - 50) + 'px';
 
 		return false;
 	},
@@ -4546,6 +4577,8 @@ MC.canvas.event.groupResize = {
 				group_offset = group[0].getBoundingClientRect(),
 				canvas_offset = $('#svg_canvas').offset(),
 				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				grid_width = MC.canvas.GRID_WIDTH,
+				grid_height = MC.canvas.GRID_HEIGHT,
 				group_left = (group_offset.left - canvas_offset.left) * scale_ratio,
 				group_top = (group_offset.top - canvas_offset.top) * scale_ratio,
 				type = parent.data('class'),
@@ -4579,6 +4612,7 @@ MC.canvas.event.groupResize = {
 					'resizer': target,
 					'group_title': parent.find('.group-label'),
 					'target': group,
+					'originalTarget': group[0],
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
 					'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
@@ -4592,15 +4626,17 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					'group_border': parseInt(group.css('stroke-width'), 10) * 2,
+					//'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
+					'scale_ratio': scale_ratio,
+					'group_min_padding': MC.canvas.GROUP_MIN_PADDING,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
 						parent.data('class'),
-						Math.ceil(group_left / MC.canvas.GRID_WIDTH),
-						Math.ceil(group_top / MC.canvas.GRID_HEIGHT),
-						Math.ceil((group_offset.left + group_offset.width) / MC.canvas.GRID_WIDTH),
-						Math.ceil((group_offset.top + group_offset.height) / MC.canvas.GRID_HEIGHT)
+						Math.ceil(group_left / grid_width),
+						Math.ceil(group_top / grid_height),
+						Math.ceil((group_offset.left + group_offset.width) / grid_width),
+						Math.ceil((group_offset.top + group_offset.height) / grid_height)
 					),
 					'group_port': type === 'AWS.VPC.Subnet' ? [
 						parent.find('.port-subnet-assoc-in').first(),
@@ -4614,17 +4650,19 @@ MC.canvas.event.groupResize = {
 	mousemove: function (event)
 	{
 		var event_data = event.data,
+			target = event_data.originalTarget,
 			direction = event_data.direction,
 			type = event_data.group_type,
-			group_border = event_data.group_border,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			group_min_padding = MC.canvas.GROUP_MIN_PADDING,
+			//group_border = event_data.group_border,
+			scale_ratio = event_data.scale_ratio,
+			group_min_padding = event_data.group_min_padding,
 			left = Math.ceil((event.pageX - event_data.originalLeft) / 10) * 10 * scale_ratio,
 			max_left = event_data.originalWidth * scale_ratio - group_min_padding,
 			top = Math.ceil((event.pageY - event_data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event_data.originalHeight * scale_ratio - group_min_padding,
 			label_offset = event_data.label_offset,
-			prop;
+			prop,
+			key;
 
 		switch (direction)
 		{
@@ -4697,19 +4735,24 @@ MC.canvas.event.groupResize = {
 			prop.height = group_min_padding;
 		}
 
-		event_data.target.attr(prop);
+		// Using baseVal for best performance
+		for (key in prop)
+		{
+			target[ key ].baseVal.value = prop[ key ];
+		}
 
 		return false;
 	},
 	mouseup: function (event)
 	{
-		var parent = event.data.parent,
-			target = event.data.target,
-			type = event.data.group_type,
-			group_title = event.data.group_title,
-			direction = event.data.direction,
+		var event_data = event.data,
+			parent = event_data.parent,
+			target = event_data.target,
+			type = event_data.group_type,
+			group_title = event_data.group_title,
+			direction = event_data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
-			canvas_offset = event.data.canvas_offset,
+			canvas_offset = event_data.canvas_offset,
 			scale_ratio = MC.canvas_property.SCALE_RATIO,
 			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
@@ -4731,7 +4774,7 @@ MC.canvas.event.groupResize = {
 			node_maxY = [],
 			component_size = MC.canvas.COMPONENT_SIZE,
 			group_padding = MC.canvas.GROUP_PADDING,
-			parentGroup = event.data.parentGroup,
+			parentGroup = event_data.parentGroup,
 			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			layout_connection_data,
 			parent_data,
@@ -4779,7 +4822,7 @@ MC.canvas.event.groupResize = {
 			}
 		}
 
-		$.each(event.data.group_child, function (index, item)
+		$.each(event_data.group_child, function (index, item)
 		{
 			if (layout_node_data[ item.id ])
 			{
@@ -4921,8 +4964,7 @@ MC.canvas.event.groupResize = {
 				group_left = 5;
 			}
 		}
-
-		if (type !== 'AWS.VPC.VPC')
+		else
 		{
 			if (group_top <= 2)
 			{
@@ -4941,7 +4983,7 @@ MC.canvas.event.groupResize = {
 			group_width > group_padding &&
 			group_height > group_padding &&
 
-			event.data.group_child.length === MC.canvas.areaChild(
+			event_data.group_child.length === MC.canvas.areaChild(
 				group_id,
 				type,
 				group_left,
@@ -4964,7 +5006,7 @@ MC.canvas.event.groupResize = {
 
 				if (igw_gateway[0])
 				{
-					igw_gateway_id = igw_gateway.attr('id');
+					igw_gateway_id = igw_gateway[0].id;
 					igw_gateway_data = layout_node_data[ igw_gateway_id ];
 					igw_top = igw_gateway_data.coordinate[1];
 
@@ -4986,7 +5028,7 @@ MC.canvas.event.groupResize = {
 
 				if (vgw_gateway[0])
 				{
-					vgw_gateway_id = vgw_gateway.attr('id');
+					vgw_gateway_id = vgw_gateway[0].id;
 					vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
 					vgw_top = vgw_gateway_data.coordinate[1];
 
@@ -5026,15 +5068,6 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-			if (type === 'AWS.VPC.Subnet')
-			{
-				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-				event.data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
-
-				event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
-			}
-
 			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
 			MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
 
@@ -5042,36 +5075,33 @@ MC.canvas.event.groupResize = {
 		}
 		else
 		{
-			group_width = Math.round(event.data.originalWidth * scale_ratio / 10);
-			group_height = Math.round(event.data.originalHeight * scale_ratio / 10);
+			group_width = Math.round(event_data.originalWidth * scale_ratio / 10);
+			group_height = Math.round(event_data.originalHeight * scale_ratio / 10);
 
-			parent.attr('transform', event.data.originalTranslate);
+			parent.attr('transform', event_data.originalTranslate);
 
 			target.attr({
 				'x': 0,
 				'y': 0,
-				'width': event.data.originalWidth * scale_ratio,
-				'height': event.data.originalHeight * scale_ratio
+				'width': event_data.originalWidth * scale_ratio,
+				'height': event_data.originalHeight * scale_ratio
 			});
 
 			group_title.attr({
 				'x': label_coordinate[0],
 				'y': label_coordinate[1]
 			});
-
-			if (type === 'AWS.VPC.Subnet')
-			{
-				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-				event.data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
-
-				event.data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
-			}
 		}
 
 		if (type === 'AWS.VPC.Subnet')
 		{
-			// Re-draw group connection
+			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
+
+			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
+
+			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');
 			node_connections = layout_group_data[ group_id ].connection || {};
 
@@ -5088,7 +5118,7 @@ MC.canvas.event.groupResize = {
 		}
 
 		// Show label
-		parent.find('.group-label').show();
+		group_title.show();
 
 		$('#overlayer').remove();
 
@@ -5159,8 +5189,8 @@ MC.canvas.event.ctrlMove = {
 MC.canvas.event.EIPstatus = function ()
 {
 	$("#svg_canvas").trigger("CANVAS_EIP_STATE_CHANGE", {
-		id: this.parentNode.id,
-		eip_state: this.getAttribute('data-eip-state')
+		'id': this.parentNode.id,
+		'eip_state': this.getAttribute('data-eip-state')
 	});
 
 	return false;
@@ -5195,6 +5225,8 @@ MC.canvas.event.clearList = function ()
 	MC.canvas.eniList.close();
 	MC.canvas.asgList.close();
 	MC.canvas.event.clearSelected();
+
+	return true;
 };
 
 MC.canvas.event.nodeHover = function (event)

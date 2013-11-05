@@ -141,6 +141,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 #
                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
                 #
+                view.hideStatusbar type if type in [ 'OPEN_APP', 'OLD_APP', 'NEW_STACK', 'OPEN_STACK', 'OLD_STACK' ]
+                #
                 null
 
             #listen

@@ -33,11 +33,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 resource : $( '#resource-panel' ).html()
                 property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
-<<<<<<< HEAD
                 statusbar: $( '#statusbar-panel' ).html()
-=======
                 overlay  : $( '#overlay-panel'  ).html()
->>>>>>> feature/app-update
             data
 
         writeOldDesignHtml : ( event ) ->
@@ -46,15 +43,12 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             $( '#canvas-panel' ).one( 'DOMNodeInserted', '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, true ))
             #
-            $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
-            $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
-<<<<<<< HEAD
+            $( '#resource-panel' ).html  this.model.get( 'snapshot' ).resource
+            $( '#canvas-panel'   ).html  this.model.get( 'snapshot' ).canvas
             $( '#statusbar-panel' ).html this.model.get( 'snapshot' ).statusbar
-=======
-            $( '#overlay-panel'  ).html this.model.get( 'snapshot' ).overlay
+            $( '#overlay-panel'  ).html  this.model.get( 'snapshot' ).overlay
             #
             if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
->>>>>>> feature/app-update
             ###
             this.$el.empty().html this.model.get 'snapshot'
             $( '#property-panel' ).html this.model.get( 'snapshot' ).property
@@ -70,7 +64,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 MC.data.current_tab_type = null
             null
 
-<<<<<<< HEAD
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
@@ -125,7 +118,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             ), 500
             #
             null
-=======
+
         showDesignOverlay : ( state ) ->
             console.log 'showDesignOverlay, state = ' + state
 
@@ -212,7 +205,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
             null
 
->>>>>>> feature/app-update
     }
 
     return DesignView

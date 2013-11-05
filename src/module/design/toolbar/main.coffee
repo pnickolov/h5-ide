@@ -15,6 +15,7 @@ define [ 'jquery',
             #view
             view       = new View()
             view.model = model
+            view.listen()
             view.render()
 
             #listen OPEN_DESIGN

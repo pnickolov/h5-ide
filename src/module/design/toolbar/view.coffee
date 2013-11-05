@@ -107,6 +107,10 @@ define [ 'MC', 'event',
             if !$('#phantom-frame')[0]
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
+        listen     : ->
+            #app update event
+            $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
+
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
@@ -526,13 +530,6 @@ define [ 'MC', 'event',
 
                             #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
-                    # push event
-                    #$('#confirm-update-app').one 'click', { target : this }, (event) ->
-                    #    ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
-                    #    modal.close()
-
-                    $( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal
@@ -606,10 +603,7 @@ define [ 'MC', 'event',
             # 1. event.data.trigger 'xxxxx'
             ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
-            # 2. off confirm-update-app event
-            $( document.body ).off 'click', '#confirm-update-app', @_updateAndRun
-
-            # 3. close modal
+            # 2. close modal
             modal.close()
             null
 

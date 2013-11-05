@@ -876,7 +876,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
                 else
-                    ide_event.trigger ide_event.UPDATE_APP_STATE, req_state, tab_name
+                    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
 
                     if flag is 'SAVE_APP'
                         if req_state is constant.OPS_STATE.OPS_STATE_DONE

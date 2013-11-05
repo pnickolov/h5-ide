@@ -3716,13 +3716,6 @@ MC.canvas.event.dragable = {
 				(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH,
 				gateway_top * MC.canvas.GRID_HEIGHT
 			);
-			// event_data.shadow.attr('transform',
-			// 	'translate(' +
-			// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-			// 		(vpc_coordinate[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-			// 		gateway_top * MC.canvas.GRID_HEIGHT +
-			// 	')'
-			// );
 		}
 
 		if (node_type === 'AWS.VPC.VPNGateway')
@@ -3732,13 +3725,6 @@ MC.canvas.event.dragable = {
 				(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH,
 				gateway_top * MC.canvas.GRID_HEIGHT
 			);
-			// event_data.shadow.attr('transform',
-			// 	'translate(' +
-			// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-			// 		(vpc_coordinate[0] + vpc_size[0] - 4) * MC.canvas.GRID_WIDTH + ',' +
-			// 		gateway_top * MC.canvas.GRID_HEIGHT +
-			// 	')'
-			// );
 		}
 
 		return false;

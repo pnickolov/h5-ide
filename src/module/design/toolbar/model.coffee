@@ -791,7 +791,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     # update process state
                     if flag_list
-
                         item.flag_list = flag_list
                         me.updateAppState(req.state, flag, item)
 
@@ -810,6 +809,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         # update region resource
                         ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
+                        # update notification
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE
                             me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
                         else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
@@ -817,6 +817,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         # remove request from req_map
                         delete req_map[req_id]
+
+            # update header
+            ide_event.trigger ide_event.UPDATE_HEADER, req
+
 
         updateAppState : (req_state, flag, data) ->
             me = this

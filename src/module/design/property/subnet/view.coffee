@@ -180,8 +180,8 @@ define [ '../base/view',
                 mainContent = subnetCIDR + ' conflicts with other subnet.'
                 descContent = 'Please choose a CIDR block not conflicting with existing subnet.'
             else if MC.aws.subnet.isConnectToELB subnetUID
-                isAbleConn = MC.aws.subnet.isAbleConnectToELB subnetUID
-                if isAbleConn
+                cidrNum = Number(cidrSuffix.split('/')[1])
+                if cidrNum > 27
                     mainContent = 'The subnet is attached with a load balancer. The CIDR must be smaller than /27.'
                     descContent = ''
                     noRemove = true

@@ -340,6 +340,7 @@ define [ 'MC' ], ( MC ) ->
 		return result
 
 	isAbleConnectToELB = ( subnetUid ) ->
+		
 		subnet = MC.canvas_data.component[ subnetUid ]
 		cidr = + subnet.resource.CidrBlock.split('/')[1]
 		console.debug subnet.resource.CidrBlock

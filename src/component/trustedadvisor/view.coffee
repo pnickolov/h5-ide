@@ -18,7 +18,7 @@ define [ 'event',
             console.log 'pop-up:trusted advisor run render', status
             #
             if type is 'stack'
-                $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
+                $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).html Handlebars.compile( template )( @model.attributes )
                 @closedPopup() if $.trim( @$el.html() )
             else if type is 'statusbar'
                 @$el.html modal_template

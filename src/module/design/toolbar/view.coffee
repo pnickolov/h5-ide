@@ -127,6 +127,9 @@ define [ 'MC', 'event',
                 require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
 
             else
+                # set app name
+                $('.modal-input-value').val MC.canvas_data.name
+
                 # set total fee
                 copy_data = $.extend( true, {}, MC.canvas_data )
                 cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)

@@ -462,6 +462,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 						MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 
+						ide_event.trigger ide_event.NEED_IGW
+
 					else
 
 						ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + eip_index + '.PrivateIpAddress'

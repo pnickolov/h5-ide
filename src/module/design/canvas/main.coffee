@@ -85,7 +85,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 model.reDrawSgLine()
 
             ide_event.onLongListen ide_event.NEED_IGW, ( component )->
-                model.askToAddIGW component
+                model.askToAddIGW()
 
 
             #listen CANVAS_ZOOMED_DROP_ERROR

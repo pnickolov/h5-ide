@@ -14,6 +14,7 @@ define [ "../base/main",
 
     ideEvents = {}
     ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
+        @model.getIPList()
         @view.refreshIPList()
         null
 

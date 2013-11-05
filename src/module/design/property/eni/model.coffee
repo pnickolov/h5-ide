@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, constant, lang ) ->
+define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, ide_event, lang ) ->
 
 	ENIModel = PropertyModel.extend {
 
@@ -17,7 +17,6 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 			data = {
 				uid  : uid
 				name : component.name
-				ips  : []
 				desc : component.resource.Description
 				sourceDestCheck : "" + component.resource.SourceDestCheck is "true"
 				isAppEdit : @isAppEdit
@@ -26,23 +25,35 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 			if component.resource.Attachment and component.resource.Attachment.InstanceId.length
 				data.attached = true
 
-				instance_component = MC.canvas_data.component[ MC.extractID component.resource.Attachment.InstanceId ]
+			@set data
+
+			@getIPList()
+			null
+
+		getIPList : () ->
+
+			uid = @get 'uid'
+
+			components = MC.canvas_data.component
+			comp_res   = components[ uid ].resource
+
+			if comp_res.Attachment and comp_res.Attachment.InstanceId.length
+
+				instance_component = components[ MC.extractID comp_res.Attachment.InstanceId ]
 
 				ip_customizable = parseInt(instance_component.number, 10) is 1
 
 			# Get Ip List
-			defaultVPCId = MC.aws.aws.checkDefaultVPC()
-			if defaultVPCId
-				subnetObj  = MC.aws.vpc.getSubnetForDefaultVPC(uid)
-				subnetCIDR = subnetObj.cidrBlock
+			if MC.aws.aws.checkDefaultVPC()
+				subnetCIDR = MC.aws.vpc.getSubnetForDefaultVPC(uid).cidrBlock
 			else
-				subnetUID  = MC.extractID component.resource.SubnetId
-				subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+				subnetCIDR = components[ MC.extractID comp_res.SubnetId ].resource.CidrBlock
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
 
 			checkEIPMap = {}
-			for ip, idx in component.resource.PrivateIpAddressSet
+			ips = []
+			for ip, idx in comp_res.PrivateIpAddressSet
 
 				primary = "" + ip.Primary is "true"
 
@@ -62,15 +73,16 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 				ip_view.ip = ip_view.prefix + ip_view.suffix
 
 				checkEIPMap[ "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" ] = ip_view
-				data.ips.push ip_view
+				ips.push ip_view
 
-			for comp_uid, comp of MC.canvas_data.component
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress
+			TYPE_EIP = constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+			for comp_uid, comp of components
+				if comp.type is TYPE_EIP and comp.resource.PrivateIpAddress
 						ip = checkEIPMap[ comp.resource.PrivateIpAddress ]
 						if ip
 							ip.eip = true
 
-			@set data
+			@set "ips", ips
 			null
 
 		setEniDesc : ( value ) ->
@@ -210,6 +222,8 @@ define [ '../base/model', 'constant', 'i18n!nls/lang.js'  ], ( PropertyModel, co
 				MC.canvas.data.set('component', data)
 
 				MC.canvas.update eni_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+
+				ide_event.trigger ide_event.NEED_IGW
 
 			else
 

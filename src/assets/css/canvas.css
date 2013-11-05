@@ -256,6 +256,8 @@
 	cursor  : pointer;
 }
 
+
+
 /* highlight connnectable*/
 .connectable-port {
 	display: inline;
@@ -741,7 +743,7 @@
 	font-size: 12px;
 }
 
-/*special style for app state and zoomed state*/
+/*special style for app update state and zoomed state*/
 .canvas_state_app .resizer-wrap {
 	display: none;
 }
@@ -750,9 +752,22 @@
 	display: none;
 }
 
+.canvas_state_app .instance-number-bg {
+	cursor: pointer;
+}
+
+.canvas_state_appedit .instance-number-bg {
+	fill: #C4C4C4;
+}
+
+.canvas_state_appedit .instance-number {
+	font-weight: normal;
+}
+
 .canvas_state_app .instance-number,
 .canvas_state_app .eni-number {
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 .canvas_zoomed .resizer-wrap {

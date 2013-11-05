@@ -93,8 +93,16 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # update design-overlay when app changed
                     if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
 
+                        # changed success
+                        if MC.data.process[ tab_id ].flag_list.is_updated
+
+                            if type is 'OLD_APP'
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
+                            else
+                                # don't do anything
+
                         # changed done
-                        if MC.data.process[ tab_id ].flag_list.is_done
+                        else if MC.data.process[ tab_id ].flag_list.is_done
                             ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                         # changed fail
@@ -102,14 +110,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                             if type is 'OLD_APP'
                                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL'
-                            else
-                                # don't do anything
-
-                        # changed success
-                        else if MC.data.process[ tab_id ].flag_list.is_updated
-
-                            if type is 'OLD_APP'
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS'
                             else
                                 # don't do anything
 

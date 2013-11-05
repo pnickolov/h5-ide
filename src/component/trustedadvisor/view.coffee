@@ -19,6 +19,8 @@ define [ 'event',
             #
             if type is 'stack'
                 $('#stack-run-validation-container').html Handlebars.compile( template )( @model.attributes )
+                $('.validating').hide()
+                $('.stack-validation details').show()
                 # $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
                 @closedPopup() if $.trim( @$el.html() )
             else if type is 'statusbar'
@@ -27,9 +29,16 @@ define [ 'event',
             #
             # @_clickCurrentTab status
             #
-            $( '#btn-confirm' ).attr( 'disabled', true ) if MC.ta.state_list.error_list.length isnt 0
+
             #
             null
+
+        disableRun: ->
+            $( '#btn-confirm' ).attr( 'disabled', 'disabled' )
+
+        restoreRun: ->
+            $( '#btn-confirm' ).removeAttr( 'disabled' )
+
 
         _clickCurrentTab : ( status ) ->
             console.log '_clickCurrentTab, status = ' + status

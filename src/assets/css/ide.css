@@ -6233,6 +6233,10 @@ a.action-link:hover {
 	border-bottom: 1px solid #cfcfcf;
 }
 
+#modal-run-stack .content_wrap .content div:last-child{
+	border-bottom: 0px;
+}
+
 #modal-run-stack .content_wrap .description {
 	padding: 8px 2px;
 	min-height: 80px;

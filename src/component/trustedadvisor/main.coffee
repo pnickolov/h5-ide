@@ -19,21 +19,30 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             #
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
-            #
-            render = ->
-                console.log 'ta render'
+
+            renderBar = ->
+                ide_event.onLongListen ide_event.UPDATE_TA_MODAL, () ->
+                    console.log 'UPDATE_TA_MODAL'
                 model.createList()
                 view.render type, status
-            #
-            render()
-            #
-            ide_event.onLongListen ide_event.UPDATE_TA_MODAL, () ->
-                console.log 'UPDATE_TA_MODAL'
-                render()
-            #
-            ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
-                console.log 'UNLOAD_TA_MODAL'
-                unLoadModule view, model
+
+            renderRun = ->
+                ide_event.onListen ide_event.TA_SYNC_FINISH, () ->
+                    console.log 'UPDATE_TA_MODAL'
+                    model.createList()
+                    view.render type, status
+                    if model.get('error_list').length is 0
+                        view.restoreRun()
+
+                ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
+                    console.log 'UNLOAD_TA_MODAL'
+                    unLoadModule view, model
+                view.disableRun()
+
+            if type is 'stack'
+                renderRun()
+            else
+                renderBar()
 
     unLoadModule = ( view, model ) ->
         console.log 'trusted advisor run unLoadModule'

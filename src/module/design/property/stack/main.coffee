@@ -116,6 +116,10 @@ define [ '../base/main',
             @view  = app_view
             null
 
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
+            null
+
 
         renderPropertyPanel : () ->
             @model.getProperty()

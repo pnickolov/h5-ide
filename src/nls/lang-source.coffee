@@ -488,8 +488,8 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?"
-      zh: "如果没有互联网网关，面向互联网的负载均衡器和弹性IP将失去作用。确定要删除它吗？"
+      en: "Internet-facing load balancers and elastic IPs require an internet gateway to function."
+      zh: "面向互联网的负载均衡器和弹性IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
@@ -504,8 +504,8 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway to allow this %s to be publicly addressable?"
-      zh: "自动添加一个互联网网关允许这个 %s 被公开寻址?"
+      en: "Automatically add an internet gateway for using EIP"
+      zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."

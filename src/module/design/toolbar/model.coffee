@@ -898,7 +898,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             is_instance_store = false
 
-            if 'property' of data and 'stoppable' of data.property and data.property.stoppable is 'false'
+            if 'property' of data and 'stoppable' of data.property and data.property.stoppable == false
                 is_instance_store = true
 
             is_instance_store

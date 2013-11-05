@@ -1259,7 +1259,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 start_time = null
                 stop_time = null
 
-                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
+                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable == false
                     has_instance_store_ami = true
 
                 if item.last_start

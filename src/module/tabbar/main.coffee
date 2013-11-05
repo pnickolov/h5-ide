@@ -294,7 +294,7 @@ define [ 'jquery', 'event', 'base_main',
                 #
                 view.closeTab stack_id
                 #push event
-                ide_event.trigger ide_event.UPDATE_STACK_LIST, null
+                #ide_event.trigger ide_event.UPDATE_STACK_LIST, null
                 null
 
             #listen

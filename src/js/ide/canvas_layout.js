@@ -38,19 +38,13 @@ var listen = function ()
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.appDrawConnection)
-
-			//.on('mousedown' + name_space, '.dragable', MC.canvas.event.appMove)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
-			
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
 			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
 			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)
 			.on('selectstart' + name_space, returnFalse)
-			// .on('mousedown' + name_space, '.node-launchconfiguration-label', MC.canvas.asgList.show)
-			// .on('mousedown' + name_space, '.AWS-EC2-Instance', MC.canvas.instanceList.show)
-			// .on('mousedown' + name_space, '.AWS-VPC-NetworkInterface', MC.canvas.eniList.show)
 			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown);
 	}
 

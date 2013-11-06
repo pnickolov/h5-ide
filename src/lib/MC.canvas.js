@@ -3136,11 +3136,42 @@ MC.canvas.eniList = {
 };
 
 MC.canvas.event = {};
+
+// Double click event simulation
+MC.canvas.event.dblclick = function (callback)
+{
+	if (MC.canvas.event.dblclick.timer)
+	{
+		// Double click event call
+		callback.call(this, event);
+
+		return true;
+	}
+
+	MC.canvas.event.dblclick.timer = setTimeout(function ()
+	{
+		MC.canvas.event.dblclick.timer = null;
+	}, 500);
+
+	return false;
+};
+
+MC.canvas.event.dblclick.timer = null;
+
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
 		if (event.which === 1)
 		{
+			// Double click event
+			if (MC.canvas.event.dblclick(function ()
+			{
+				$('#svg_canvas').trigger('SHOW_PROPERTY_PANEL');
+			}))
+			{
+				return false;
+			}
+
 			var target = $(this),
 				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
@@ -5275,6 +5306,15 @@ MC.canvas.event.selectNode = function (event)
 {
 	if (event.which === 1)
 	{
+		// Double click event
+		if (MC.canvas.event.dblclick(function ()
+		{
+			$('#svg_canvas').trigger('SHOW_PROPERTY_PANEL');
+		}))
+		{
+			return false;
+		}
+
 		MC.canvas.event.clearSelected();
 		MC.canvas.select(this.id);
 	}

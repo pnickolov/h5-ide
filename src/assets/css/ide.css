@@ -6347,6 +6347,27 @@ a.action-link:hover {
 	font-size: 28px;
 }
 
+.validation-tag {
+	font-size     : 12px;
+	padding       : 1px 3px;
+	margin        : 0 3px;
+	background    : #DF6DB7;
+	color         : #fff;
+	border-radius : 2px;
+	border        : 1px solid #b25291;
+	line-height   : 24px;
+}
+
+.tag-ip {
+	background : #1BB446;
+	border     : 1px solid #178836;
+}
+
+.tag-port {
+	background : #F09611;
+	border     : 1px solid #C06D13;
+}
+
 .validation-counter {
 	padding       : 1px 4px;
 	border-radius : 4px;

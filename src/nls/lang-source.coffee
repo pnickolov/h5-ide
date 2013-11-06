@@ -3356,61 +3356,61 @@ module.exports =
 
     # Subnet
     TA_MSG_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
-      en: "Subnet <span class='tag-subnet'>%s</span> is attached with a Load Balancer. It must be smaller than /27."
+      en: "Subnet <span class='validation-tag tag-subnet'>%s</span> is attached with a Load Balancer. Its mask must be smaller than /27."
       zh: ""
 
     # Instance
     TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
-      en: "Instance <span class='tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
       zh: ""
     TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
-      en: "Instance <span class='tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
       zh: ""
 
     # ELB
     TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
-      en: "Load Balancer <span class='tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
       zh: ""
 
     TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
-      en: "Load Balancer <span class='tag-elb'>%s</span> has no attached instance or auto scaling group."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no attached instance or auto scaling group."
       zh: ""
 
     TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
-      en: "Load Balancer <span class='tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
       zh: ""
 
     TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
-      en: "Load Balancer <span class='tag-elb'>%s</span> redirects 443 to 443. Suggest to use load balancer to decrypt and redirect to port 80."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> redirects <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-port'>443</span>. Suggest to use load balancer to decrypt and redirect to port <span class='validation-tag tag-port'>80</span>."
       zh: ""
 
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
-      en: "Security Group <span class='tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
       zh: ""
     TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG:
       en: "This stack is only using 1 security group."
       zh: ""
     TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
-      en: "Security Group <span class='tag-sg'>%s</span> is using 'ALL' protocol traffic."
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> is using 'ALL' protocol traffic."
       zh: ""
     TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
-      en: "Security Group <span class='tag-sg'>%s</span> has inbound rule which traffic from 0.0.0.0 is not targeting port 80 or 443."
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has inbound rule which traffic from <span class='validation-tag tag-ip'>0.0.0.0</span> is not targeting port <span class='validation-tag tag-port'>80</span> or <span class='validation-tag tag-port'>443</span>."
       zh: ""
     TA_MSG_NOTICE_SG_RULE_USING_PORT_22:
-      en: "Security Group <span class='tag-sg'>%s</span> has rule which using port 22. To enhance security, suggest to use other port than 22."
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has rule which using port <span class='validation-tag tag-port'>22</span>. To enhance security, suggest to use other port than <span class='validation-tag tag-port'>22</span>."
       zh: ""
     TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
-      en: "Security Group <span class='tag-sg'>%s</span> has outbound rule towards 0.0.0.0/0. Suggest to change to more specific range."
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
       zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
-      en:"Auto Scaling Group <span class='tag-asg'>%s</span> has no launch configuration."
+      en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
       zh:""
 
     TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK:
-      en: "Auto Scaling Group <span class='tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
       zh: ""
 
     TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW:
@@ -3419,7 +3419,7 @@ module.exports =
 
     # RT
     TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
-      en: "Route Table <span class='tag-rtb'>%s</span> has route to Instance <span class='tag-instance'>%s</span>. If <span class='tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
+      en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
       zh: ""
 
     TA_MSG_WARNING_NO_RTB_CONNECT_IGW:
@@ -3431,7 +3431,7 @@ module.exports =
       zh: ""
 
     TA_MSG_NOTICE_RT_HAS_NO_ALLOW_ACL:
-      en: "Network ACL <span class='tag-acl'>%s</span> has no allow rule. But Route Table <span class='tag-rtb'>%s</span> has route to Subnet <span class='tag-subnet'>%s</span> associated %s."
+      en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no allow rule. But Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Subnet <span class='validation-tag tag-subnet'>%s</span> associated %s."
       zh: ""
 
     # AZ
@@ -3444,7 +3444,7 @@ module.exports =
       en:"Checking Customer Gateway IP Address confliction with existing resource..."
       zh:""
     TA_MSG_ERROR_CGW_IP_CONFLICT:
-      en:"Customer Gateway <span class='tag-cgw'>%s</span>'s IP(%s) conflicts with existing <span class='tag-cgw'>%s</span>'s IP(%s)."
+      en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
       zh:""
 
     # Stack
@@ -3457,7 +3457,7 @@ module.exports =
 
     # ENI
     TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
-      en:"Network Interface <span class='tag-acl'>%s</span> not attach to any Instance."
+      en:"Network Interface <span class='validation-tag tag-acl'>%s</span> not attach to any Instance."
       zh:""
 
     ##### Trust Advisor
@@ -3465,11 +3465,11 @@ module.exports =
   service:
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
-      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again"
+      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
       zh: "对不起,AWS有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
 
     "ERROR_CODE_-1_MESSAGE":
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_0_MESSAGE:
@@ -3477,11 +3477,11 @@ module.exports =
       zh: ""
 
     ERROR_CODE_1_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_2_MESSAGE:
-      en: "Sorry, we are suffering from some technical issues, please try again later"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
       zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_3_MESSAGE:
@@ -3493,7 +3493,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_5_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_6_MESSAGE:
@@ -3509,7 +3509,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_9_MESSAGE:
-      en: "Sorry, your AWS credentials have not sufficient permissions"
+      en: "Sorry, your AWS credentials have not sufficient permissions."
       zh: "对不起,您的AWS凭证没有足够的权限"
 
     ERROR_CODE_10_MESSAGE:
@@ -3521,7 +3521,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_12_MESSAGE:
-      en: "Sorry, we are suffering from some technical issues, please try again later"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
       zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_13_MESSAGE:
@@ -3533,11 +3533,11 @@ module.exports =
       zh: ""
 
     ERROR_CODE_15_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_16_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_17_MESSAGE:
@@ -3545,17 +3545,17 @@ module.exports =
       zh: ""
 
     ERROR_CODE_18_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_19_MESSAGE:
-      en: "Sorry, your session has expired, please login again"
+      en: "Sorry, your session has expired, please login again."
       zh: "对不起，你的会话已过期，请重新登录"
 
     ERROR_CODE_20_MESSAGE:
-      en: "Sorry, this invitation has finished"
+      en: "Sorry, this invitation has finished."
       zh: "对不起，邀请已经结束"
 
     ERROR_CODE_21_MESSAGE:
-      en: "User has been blocked"
+      en: "User has been blocked."
       zh: "对不起，此账号已被锁住"

@@ -750,6 +750,7 @@ define [ 'constant',
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 					if comp.serverGroupUid is groupUID
 						groupMap[ comp_uid ] = true
+						MC.aws.elb.removeAllELBForInstance(comp_uid)
 						deleteUID.push comp_uid
 
 			eniMap = {}
@@ -772,7 +773,8 @@ define [ 'constant',
 			for comp_uid, comp of MC.canvas_data.component
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					eni_uid = MC.extractID comp.resource.NetworkInterfaceId
-					deleteUID.push comp_uid
+					if eniMap[eni_uid]
+						deleteUID.push comp_uid
 
 				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 					for rmID in deleteUID

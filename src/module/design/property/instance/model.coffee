@@ -614,6 +614,12 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				delete MC.canvas_data.component[remove_uid]
 				break
 
+			stillHasEIP = _.some @attributes.eni_ips, ( ip )->
+				ip.eip
+
+			if not stillHasEIP
+				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
+
 			# Re-generate IP for ENI component
 			realIPAry = MC.aws.eni.generateIPList eniUID, @attributes.eni_ips
 			MC.aws.eni.saveIPList eniUID, realIPAry

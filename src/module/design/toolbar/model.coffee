@@ -72,6 +72,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
 
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
+
                     id
                 else
                     me.trigger 'TOOLBAR_HANDLE_FAILED', 'SAVE_STACK', name
@@ -876,7 +878,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 tab_name = data.id
                 if flag is 'RUN_STACK'
                     tab_name = 'process-' + data.region + '-' + data.name
-                MC.process[tab_name] = data
+                MC.process[tab_name.toLowerCase()] = data
 
                 # push event
                 if flag is 'RUN_STACK'

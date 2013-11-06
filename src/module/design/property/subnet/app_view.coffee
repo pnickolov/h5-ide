@@ -9,15 +9,15 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
     SubnetAppView = PropertyView.extend {
 
         events    :
-            "click #property-app-subnet-acl" : 'showACLDetail'
+            "click .acl-sg-info-list .icon-btn-details" : 'showACLDetail'
 
         render     : () ->
             @$el.html template @model.attributes
             @setTitle @model.attributes.name
             null
 
-        showACLDetail : () ->
-            @trigger 'OPEN_ACL', $("#property-app-subnet-acl").attr("data-uid")
+        showACLDetail : ( event ) ->
+            @trigger 'OPEN_ACL', $( event.currentTarget ).attr("data-uid")
             null
     }
 

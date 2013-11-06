@@ -332,9 +332,10 @@ define [ 'jquery', 'event', 'base_main',
                 #model.set 'app_region_name', region_name
                 #
                 process_name = 'process-' + region + '-' + tab_name
+                process_name =  process_name.toLowerCase()
                 MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
                 #tabbar api
-                Tabbar.add process_name.toLowerCase(), tab_name + ' - app'
+                Tabbar.add process_name, tab_name + ' - app'
 
             #listen
             ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->

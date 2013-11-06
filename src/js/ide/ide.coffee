@@ -324,7 +324,8 @@ define [ 'MC', 'event', 'handlebars'
 
 				#
 				if error.error_message
-					notification 'warning', error.error_message
+					if error.error_message != "0"
+						notification 'warning', error.error_message
 				else
 					notification 'error', lang.service[ label ], false if lang.service[ label ] and MC.forge.cookie.getCookieByName('has_cred') is 'true'
 

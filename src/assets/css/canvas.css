@@ -756,7 +756,8 @@
 	cursor: pointer;
 }
 
-.canvas_state_appedit .instance-number-bg {
+.canvas_state_appedit .instance-number-bg,
+.canvas_state_appedit .eni-number-bg {
 	fill: #C4C4C4;
 }
 

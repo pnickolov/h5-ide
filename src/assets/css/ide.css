@@ -1039,7 +1039,6 @@ a {
 
 #tab-bar-dashboard {
 	width: 117px !important;
-	border-left: none !important;
 	/*margin-right: 4px !important;*/
 }
 
@@ -6297,7 +6296,7 @@ a.action-link:hover {
 	position: relative;
 }
 
-.stack-validation ::selection {
+.stack-validation .content ::selection {
 	background-color: #0F7EEB;
 	color: #fff;
 }
@@ -6351,10 +6350,10 @@ a.action-link:hover {
 	font-size     : 12px;
 	padding       : 1px 3px;
 	margin        : 0 3px;
-	background    : #DF6DB7;
+	background    : #5C9CE2;
+	border        : 1px solid #6980B3;
 	color         : #fff;
 	border-radius : 2px;
-	border        : 1px solid #b25291;
 	line-height   : 24px;
 }
 

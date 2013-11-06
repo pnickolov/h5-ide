@@ -5865,6 +5865,8 @@ a.action-link:hover {
 .icon-app-terminating,
 .icon-app-Starting,
 .icon-app-Stopping,
+.icon-app-updating,
+.icon-app-Updating,
 .icon-app-Terminating  {
 	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
 }

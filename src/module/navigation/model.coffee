@@ -238,6 +238,20 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             #get service(model)
             ec2_model.DescribeRegions { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, null
 
+        updateApplistState : ( type, id ) ->
+            console.log 'updateApplistState', type, id
+            console.log this.get('app_list')
+
+            temp = $.extend true, [], this.get( 'app_list' )
+            _.each temp[0].region_name_group, ( item ) ->
+                item.state = type if item.id is id
+                null
+
+            console.log temp
+            this.set 'app_list', temp
+
+            null
+
     }
 
     model = new NavigationModel()

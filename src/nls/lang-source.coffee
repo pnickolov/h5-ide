@@ -3441,10 +3441,10 @@ module.exports =
 
     # CGW
     TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT:
-      en:"Checking Customer Gateway IP Address conflict with exist resource..."
+      en:"Checking Customer Gateway IP Address confliction with existing resource..."
       zh:""
     TA_MSG_ERROR_CGW_IP_CONFLICT:
-      en:"Customer Gateway <span class='tag-cgw'>%s</span>'s IP(%s) conflict with exist <span class='tag-cgw'>%s</span>'s IP(%s)."
+      en:"Customer Gateway <span class='tag-cgw'>%s</span>'s IP(%s) conflicts with existing <span class='tag-cgw'>%s</span>'s IP(%s)."
       zh:""
 
     # Stack

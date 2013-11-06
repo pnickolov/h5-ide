@@ -127,7 +127,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                         else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
                             if type is 'OPEN_APP'
-                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, MC.data.process[ tab_id ].state
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state )
                             else
                                 # hold on current overlay
                                 console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag

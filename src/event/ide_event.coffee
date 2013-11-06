@@ -102,7 +102,11 @@ define [ 'underscore', 'backbone' ], () ->
 
         DELETE_COMPONENT       : 'DELETE_COMPONENT'
 
+        # property
+        SHOW_PROPERTY_PANEL    : 'SHOW_PROPERTY_PANEL'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
+        #trigger property view's undelegateEvents
+        UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 
         CANVAS_CREATE_LINE     : 'CANVAS_CREATE_LINE'
         CANVAS_DELETE_OBJECT   : 'CANVAS_DELETE_OBJECT'
@@ -147,9 +151,6 @@ define [ 'underscore', 'backbone' ], () ->
 
         #quickstart data ready
         RESOURCE_QUICKSTART_READY      : 'RESOURCE_QUICKSTART_READY'
-
-        #trigger property view's undelegateEvents
-        UNDELEGATE_PROPERTY_DOM_EVENTS : 'UNDELEGATE_PROPERTY_DOM_EVENTS'
 
         #app ready and generate thumbnail
         SAVE_APP_THUMBNAIL     : 'SAVE_APP_THUMBNAIL'

@@ -505,6 +505,7 @@ define [ 'event', 'i18n!nls/lang.js',
                     new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
                     console.log 'new_url = ' + new_url
                     $item.attr 'src', new_url
+                    $item.removeAttr 'style'
 
             null
 

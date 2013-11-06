@@ -306,7 +306,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 idx = 'process-' + region + '-' + app_name
                 idx = idx.toLowerCase()
                 data = $.extend(true, {}, process_data_map[idx])
-                delete process_data_map[region][app_id]
+                delete process_data_map[idx]
 
                 if !result.is_error
                     # trigger toolbar save png event
@@ -805,12 +805,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         # save png
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE
                             if flag is 'RUN_STACK' or flag is 'SAVE_APP'
-                                me.saveAppThumbnail flag, region, name, id
+                                me.saveAppThumbnail flag, region, name, item.id
 
                         # update app list
                         app_list = []
-                        if id.indexOf('app-') == 0
-                            app_list.push id
+                        if item.id.indexOf('app-') == 0
+                            app_list.push item.id
 
                         if app_list
                             ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list

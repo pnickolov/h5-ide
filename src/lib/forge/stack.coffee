@@ -199,6 +199,23 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 							comp_data[ instance_id ].resource[k] = v
 
+					if elbs.length > 0
+
+						ins_ref = "@#{instance_id}.resource.InstanceId"
+
+						for elb in elbs
+
+							existing = false
+
+							for ins in json_data.component[elb].resource.Instances
+
+								if ins.InstanceId is ins_ref
+
+									existing = true
+
+							if not existing
+
+								json_data.component[elb].resource.Instances.push {"InstanceId": "@#{instance_id}.resource.InstanceId"}
 
 				else
 
@@ -862,7 +879,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					ami_list[imageId] = MC.data.dict_ami[imageId]
 				else
 					console.log '[getAllImageId]ImageId of ' + compObj.type + '(' + compObj.uid + ') is empty'
-		
+
 		#return
 		ami_list
 
@@ -886,7 +903,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		json_data.property.stoppable = stoppable
 
 		null
-		
+
 
 	#public
 	expandServerGroup  : expandServerGroup

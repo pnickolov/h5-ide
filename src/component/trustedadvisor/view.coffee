@@ -63,8 +63,11 @@ define [ 'event',
                     else
                         nutshell.hide()
 
-            processNutshell = () ->
+            processNutshell = ( notShow ) ->
                 content = ''
+                if error.length
+                    content += "#{error.length} error, "
+
                 if warning.length
                     content += "#{warning.length} warning, "
                 if notice.length
@@ -79,10 +82,13 @@ define [ 'event',
                 nutshell.click () ->
                     summary.click()
 
-                nutshell.show()
+                if not notShow
+                    nutshell.show()
 
 
             if error.length
+                bindSummary()
+                processNutshell true
 
             else if warning.length
                 tabs.eq( 1 ).click()

@@ -65,6 +65,10 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                                 if item     # update item
                                     rv.region_name_group.splice rv.region_name_group.indexOf(item), 1, ni
 
+                                    # remove the id from ids
+                                    if item.id in ids
+                                        ids.splice ids.indexOf(item.id), 1
+
                                 else        # add item
                                     rv.region_name_group.push ni
 
@@ -73,6 +77,21 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                         else    # add region
                             app_list.push nrv
+
+                    # remove the rest item(in params but not in return, terminated)
+                    if ids.length > 0
+                        for rv in app_list
+                            nrv = {'region_group':rv.region_group}
+                            for item in rv.region_name_group
+                                if item.id in ids
+                                    continue
+                                nrv.region_name_group.push item
+
+                            nrv.region_count = nrv.region_name_group.length
+                            if nrv.region_count >0
+                                app_list.splice app_list.indexOf(rv), 1, nrv
+                            else
+                                app_list.splice app_list.indexOf(rv), 1
 
                 else
                     app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
@@ -107,6 +126,10 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                                 if item # update item
                                     rv.region_name_group.splice rv.region_name_group.indexOf(item), 1, ni
 
+                                    # remove the id from ids
+                                    if item.id in ids
+                                        ids.splice ids.indexOf(item.id), 1
+
                                 else    # add item
                                     rv.region_name_group.push ni
 
@@ -115,6 +138,21 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                         else    # add region
                             stack_list.push nrv
+
+                    # remove the rest item(in params but not in return, removed)
+                    if ids.length > 0
+                        for rv in stack_list
+                            nrv = {'region_group':rv.region_group}
+                            for item in rv.region_name_group
+                                if item.id in ids
+                                    continue
+                                nrv.region_name_group.push item
+
+                            nrv.region_count = nrv.region_name_group.length
+                            if nrv.region_count > 0
+                                stack_list.splice stack_list.indexOf(rv), 1, nrv
+                            else
+                                stack_list.splice stack_list.indexOf(rv), 1
 
                 else
                     stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
@@ -169,25 +207,25 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             me = this
 
-            #get service(model)
-            if flag and ids and flag is 'TERMINATE_APP'     # delete item from list when terminated app
-                new_app_list = []
-                app_list = me.get 'app_list'
+            # #get service(model)
+            # if flag and ids and flag is 'TERMINATE_APP'     # delete item from list when terminated app
+            #     new_app_list = []
+            #     app_list = me.get 'app_list'
 
-                for rv in app_list
-                    region_list = []
-                    for item in rv.region_name_group
-                        if item.id in ids
-                            continue
+            #     for rv in app_list
+            #         region_list = []
+            #         for item in rv.region_name_group
+            #             if item.id in ids
+            #                 continue
 
-                        region_list.push item
+            #             region_list.push item
 
-                    new_app_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
+            #         new_app_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
 
-                me.set 'app_list', new_app_list
+            #     me.set 'app_list', new_app_list
 
-            else
-                app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
+            # else
+            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
 
         #stack list
         stackListService : (flag, ids) ->
@@ -195,24 +233,24 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             me = this
 
             #get service(model)
-            if flag and ids and flag is 'REMOVE_STACK'
-                new_stack_list = []
-                stack_list = me.get 'stack_list'
+            # if flag and ids and flag is 'REMOVE_STACK'
+            #     new_stack_list = []
+            #     stack_list = me.get 'stack_list'
 
-                for rv in stack_list
-                    region_list = []
-                    for item in rv.region_name_group
-                        if item.id in ids
-                            continue
+            #     for rv in stack_list
+            #         region_list = []
+            #         for item in rv.region_name_group
+            #             if item.id in ids
+            #                 continue
 
-                        region_list.push item
+            #             region_list.push item
 
-                    new_stack_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
+            #         new_stack_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
 
-                me.set 'stack_list', new_stack_list
+            #     me.set 'stack_list', new_stack_list
 
-            else
-                stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
+            # else
+            stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
 
 
         #region empty list

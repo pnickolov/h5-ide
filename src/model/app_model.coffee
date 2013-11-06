@@ -272,7 +272,7 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
 
 
         #getKey api (define function)
-        getKey : ( src, username, session_id, region_name, app_id ) ->
+        getKey : ( src, username, session_id, region_name, app_id, app_name ) ->
 
             me = this
 

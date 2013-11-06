@@ -22,7 +22,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
 				return {
 					level: constant.TA.WARNING,
-					info: tipInfo
+					info: tipInfo,
+					uid: sgUID
 				}
 		else
 			# no vpc

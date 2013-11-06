@@ -65,18 +65,22 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                                 if item     # update item
                                     rv.region_name_group.splice rv.region_name_group.indexOf(item), 1, ni
 
-                                    # remove the id from ids
-                                    if item.id in ids
-                                        ids.splice ids.indexOf(item.id), 1
-
                                 else        # add item
                                     rv.region_name_group.push ni
+
+                                # remove the id from ids
+                                if ni.id in ids
+                                    ids.splice ids.indexOf(ni.id), 1
 
                             rv.region_count = rv.region_name_group.length
                             app_list.splice idx, 1, rv
 
                         else    # add region
                             app_list.push nrv
+
+                            for item in nrv.region_name_group
+                                if item.id in ids
+                                    ids.splice ids.indexOf(item.id), 1
 
                     # remove the rest item(in params but not in return, terminated)
                     if ids.length > 0
@@ -126,18 +130,22 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                                 if item # update item
                                     rv.region_name_group.splice rv.region_name_group.indexOf(item), 1, ni
 
-                                    # remove the id from ids
-                                    if item.id in ids
-                                        ids.splice ids.indexOf(item.id), 1
-
                                 else    # add item
                                     rv.region_name_group.push ni
+
+                                # remove the id from ids
+                                if ni.id in ids
+                                    ids.splice ids.indexOf(ni.id), 1
 
                             rv.region_count = rv.region_name_group.length
                             stack_list.splice idx, 1, rv
 
                         else    # add region
                             stack_list.push nrv
+
+                            for item in nrv.region_name_group
+                                if item.id in ids
+                                    ids.splice ids.indexOf(item.id), 1
 
                     # remove the rest item(in params but not in return, removed)
                     if ids.length > 0

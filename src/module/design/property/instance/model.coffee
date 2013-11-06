@@ -591,27 +591,26 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				max_index = comp.resource.PrivateIpAddressSet.length - 1
 				min_index = index + 1
 
-				modify_index_refs = {}
+				if min_index < max_index
+					modify_index_refs = {}
 
-				for index_value in [min_index..max_index]
-					modify_index_refs["@#{comp.uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
+					for index_value in [min_index..max_index]
+						modify_index_refs["@#{comp.uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
+
+					for u, c of MC.canvas_data.component
+						if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+							continue
+						if c.resource.NetworkInterfaceId isnt eni_ref
+							continue
+
+						if modify_index_refs[ c.resource.PrivateIpAddress ]
+							idx = parseInt( c.resource.PrivateIpAddress.split('.')[3],10 )-1
+							c.resource.PrivateIpAddress = "@#{comp_uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+						else if c.resource.PrivateIpAddress is ip_ref
+							delete MC.canvas_data.component[ u ]
+
 
 				comp.resource.PrivateIpAddressSet.splice index, 1
-				remove_uid = null
-
-				for u, c of MC.canvas_data.component
-					if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-						continue
-					if c.resource.NetworkInterfaceId isnt eni_ref
-						continue
-
-					if modify_index_refs[ c.resource.PrivateIpAddress ]
-						idx = parseInt( c.resource.PrivateIpAddress.split('.')[3],10 )-1
-						c.resource.PrivateIpAddress = "@#{comp_uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
-					else if c.resource.PrivateIpAddress is ip_ref
-						remove_uid = u
-
-				delete MC.canvas_data.component[remove_uid]
 				break
 
 			stillHasEIP = _.some @attributes.eni_ips, ( ip )->

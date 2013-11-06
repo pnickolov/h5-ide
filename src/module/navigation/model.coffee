@@ -84,6 +84,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                     # remove the rest item(in params but not in return, terminated)
                     if ids.length > 0
+                        new_app_list = []
                         for rv in app_list
                             nrv = {'region_group':rv.region_group, 'region_name_group':[]}
                             for item in rv.region_name_group
@@ -93,9 +94,9 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                             nrv.region_count = nrv.region_name_group.length
                             if nrv.region_count >0
-                                app_list.splice app_list.indexOf(rv), 1, nrv
-                            else
-                                app_list.splice app_list.indexOf(rv), 1
+                                new_app_list.splice app_list.indexOf(rv), 1, nrv
+
+                        app_list = new_app_list
 
                 else
                     app_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }
@@ -149,6 +150,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                     # remove the rest item(in params but not in return, removed)
                     if ids.length > 0
+                        new_stack_list = []
                         for rv in stack_list
                             nrv = {'region_group':rv.region_group, 'region_name_group':[]}
                             for item in rv.region_name_group
@@ -158,9 +160,9 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                             nrv.region_count = nrv.region_name_group.length
                             if nrv.region_count > 0
-                                stack_list.splice stack_list.indexOf(rv), 1, nrv
-                            else
-                                stack_list.splice stack_list.indexOf(rv), 1
+                                new_stack_list.push nrv
+
+                        stack_list = new_stack_list
 
                 else
                     stack_list = _.map result.resolved_data, ( value, key ) -> return { 'region_group' : constant.REGION_SHORT_LABEL[ key ], 'region_count' : value.length, 'region_name_group' : value }

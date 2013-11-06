@@ -278,7 +278,7 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
 
             src.model = me
 
-            app_service.getKey src, username, session_id, region_name, app_id, ( forge_result ) ->
+            app_service.getKey src, username, session_id, region_name, app_id, app_name, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #getKey succeed

@@ -2319,7 +2319,7 @@ a {
 
 	text-align  : center;
 	line-height : 16px;
-	color       : #aaa;
+	color       : #999;
 }
 
 .close-tab:hover, .close-restriction:hover {
@@ -2338,13 +2338,9 @@ a {
 }
 
 #tab-bar li.active a.close-tab, #tab-bar li.active a.close-restriction {
-	color   : #999;
+	color   : #2F2E36;
 	display : block;
 	font-weight: normal;
-}
-
-#tab-bar li a.close-tab:hover {
-	color: #6C99D4;
 }
 
 /* Main Content */
@@ -3976,7 +3972,7 @@ a.sidebar-hider {
 	top          : 0;
 	left         : 0;
 	right        : 0;
-	bottom       : 30px;
+	bottom       : 0;
 	margin-left  : 246px;
 	margin-right : 280px;
 
@@ -6895,12 +6891,11 @@ a.action-link:hover {
 	right: 0;
 	left: 0;
 	z-index: 2;
-	margin-left: 246px;
-	margin-right: 280px;
 	background-color: #5d5d5d;
 	height: 30px;
+	width: 100%;
 	line-height: 30px;
-	color: #fff;
+	color: #ccc;
 }
 
 #statusbar-panel .info {

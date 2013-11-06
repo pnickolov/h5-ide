@@ -26,8 +26,25 @@ define [ 'event',
             else if type is 'statusbar'
                 @$el.html modal_template
                 @$el.find( '#modal-run-stack' ).html Handlebars.compile( template )( @model.attributes )
+                @processStatusBarDetails()
 
             null
+
+        processStatusBarDetails: ()->
+            error = @model.get 'error_list'
+            warning = @model.get 'warning_list'
+            notice = @model.get 'notice_list'
+            tabs = @$el.find '.tab li'
+
+            if error.length
+
+            else if warning.length
+                tabs.eq( 1 ).click()
+
+            else if notice.length
+                tabs.eq( 2 ).click()
+            else
+                @$el.find( '.validation-content' ).text 'No error, warning or notice.'
 
         processDetails: () ->
             error = @model.get 'error_list'

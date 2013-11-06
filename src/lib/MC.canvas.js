@@ -2755,6 +2755,8 @@ MC.canvas.volume = {
 						MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 						document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
+						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
+
 						MC.canvas.data.set('component.' + volume_id + '.name', new_volume_name);
 						MC.canvas.data.set('component.' + volume_id + '.serverGroupName', new_volume_name);
 						MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.Device', new_volume_name);
@@ -2762,8 +2764,6 @@ MC.canvas.volume = {
 						MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
 
 						MC.canvas.volume.select.call( document.getElementById( volume_id ) );
-
-						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
 
 						// Update original data
 						original_node_id = data_option.instance_id;
@@ -5424,7 +5424,6 @@ MC.canvas.event.keyEvent = function (event)
 		Tabbar.current === 'new' ||
 		Tabbar.current === 'app' ||
 		Tabbar.current === 'stack' ||
-		Tabbar.current === 'new' ||
 		Tabbar.current === 'appedit'
 	)
 	{

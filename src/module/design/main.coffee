@@ -141,7 +141,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 #
                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL' if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
                 #
-                view.hideStatusbar type if type in [ 'OPEN_APP', 'OLD_APP', 'NEW_STACK', 'OPEN_STACK', 'OLD_STACK' ]
+                view.hideStatusbar()
                 #
                 null
 
@@ -213,6 +213,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
             ide_event.onLongListen ide_event.UPDATE_STATUS_BAR_SAVE_TIME, ( ) ->
                 view.updateStatusBarSaveTime()
+
+            ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, () ->
+                view.hideStatusbar()
 
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
                 property_main.restore property_panel

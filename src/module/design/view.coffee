@@ -117,10 +117,10 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             null
 
-        hideStatusbar : ( type ) ->
-            console.log 'hideStatusbar', type
+        hideStatusbar :  ->
+            console.log 'hideStatusbar'
 
-            if type in [ 'OPEN_APP', 'OLD_APP' ]
+            if Tabbar.current in [ 'app' ]
                 $( '#main-statusbar' ).hide()
                 $( '#canvas' ).css 'bottom', 0
             else

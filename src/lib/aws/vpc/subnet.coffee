@@ -79,7 +79,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		if ipCidr1Suffix > ipCidr2Suffix
 			minIpCidrSuffix = ipCidr2Suffix
 
-		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix) and minIpCidrSuffix isnt 0
+		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix)# and minIpCidrSuffix isnt 0
 			return true
 		else
 			return false

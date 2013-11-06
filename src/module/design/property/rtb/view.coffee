@@ -31,7 +31,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             inputElemAry = $('.ip-main-input')
             _.each inputElemAry, (inputElem) ->
                 inputValue = $(inputElem).val()
-                if !inputValue
+                if !inputValue or inputValue is '0.0.0.0/0'
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     me.forceShow()
                     $(inputElem).focus()
@@ -126,12 +126,13 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             repeatFlag = false
             allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
             _.each allCidrInputElemAry, (inputElem) ->
-                cidrValue = $(inputElem).val()
-                if cidrValue isnt inputValue
-                    allCidrAry.push(cidrValue)
-                else
-                    if repeatFlag then allCidrAry.push(cidrValue)
-                    if !repeatFlag then repeatFlag = true
+                if !((inputValue is '0.0.0.0/0') and ($(inputElem).parent('.ipt-wrapper').index() is 0))
+                    cidrValue = $(inputElem).val()
+                    if cidrValue isnt inputValue
+                        allCidrAry.push(cidrValue)
+                    else
+                        if repeatFlag then allCidrAry.push(cidrValue)
+                        if !repeatFlag then repeatFlag = true
                 null
 
             haveError = true

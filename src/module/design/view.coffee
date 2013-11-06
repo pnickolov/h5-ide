@@ -18,7 +18,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
             #
-            $( '#statusbar-panel' ).html MC.template.statusbar()
+            $( '#main-statusbar' ).html MC.template.statusbar()
 
         listen   : ( model ) ->
             #set this.model
@@ -33,7 +33,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 resource : $( '#resource-panel' ).html()
                 property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
-                statusbar: $( '#statusbar-panel' ).html()
                 overlay  : $( '#overlay-panel'  ).html()
             data
 
@@ -45,7 +44,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             $( '#resource-panel' ).html  this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html  this.model.get( 'snapshot' ).canvas
-            $( '#statusbar-panel' ).html this.model.get( 'snapshot' ).statusbar
             $( '#overlay-panel'  ).html  this.model.get( 'snapshot' ).overlay
             #
             if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
@@ -73,8 +71,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             setTimeout () ->
                 MC.ta.validAll()
                 btnDom.text(currentText)
-                status = _.last $(event.currentTarget).attr( 'class' ).split '-'
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
+                #status = _.last $(event.currentTarget).attr( 'class' ).split '-'
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
             , 50
 
         updateStatusbar : ( type, level ) ->
@@ -123,10 +121,10 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             console.log 'hideStatusbar', type
 
             if type in [ 'OPEN_APP', 'OLD_APP' ]
-                $( '#statusbar-panel' ).hide()
+                $( '#main-statusbar' ).hide()
                 $( '#canvas' ).css 'bottom', 0
             else
-                $( '#statusbar-panel' ).show()
+                $( '#main-statusbar' ).show()
 
             null
 

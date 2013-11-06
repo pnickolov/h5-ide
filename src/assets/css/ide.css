@@ -6885,7 +6885,7 @@ a.action-link:hover {
 }
 
 /* status bar */
-#statusbar-panel {
+#main-statusbar {
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -6898,19 +6898,19 @@ a.action-link:hover {
 	color: #ccc;
 }
 
-#statusbar-panel .info {
+#main-statusbar .info {
 	float: left;
 	padding-left: 10px;
 }
 
-#statusbar-panel .btn-ta-valid {
+#main-statusbar .btn-ta-valid {
 	text-align: center;
 	float: right;
 	cursor: pointer;
 	width: 100px;
 }
 
-#statusbar-panel .btns a {
+#main-statusbar .btns a {
 	cursor: pointer;
 	color: #fff;
 }

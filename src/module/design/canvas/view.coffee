@@ -23,6 +23,7 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
                 .on( 'CANVAS_INSTANCE_SELECTED',    '#svg_canvas', this.showInstanceProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
+                .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
                 .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
 
         render   : ( template ) ->
@@ -68,6 +69,11 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
         save : () ->
             #save by ctrl+s
             ide_event.trigger ide_event.CANVAS_SAVE
+
+        showPropertyPanel : ->
+            console.log 'showPropertyPanel'
+            ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+            null
 
     }
 

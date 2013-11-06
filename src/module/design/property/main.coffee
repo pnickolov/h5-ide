@@ -58,6 +58,10 @@ define [ 'event',
 			event.uid = if activeModule then activeModule.uid else ""
 			null
 
+		#listen OPEN_PROPERTY
+		ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, () ->
+			console.log 'SHOW_PROPERTY_PANEL'
+			view.showPropertyPanel()
 
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid ) ->

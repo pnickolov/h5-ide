@@ -117,9 +117,7 @@ a {
 	opacity: 1;
 }
 
-
 .header-menu {
-	float: right;
 	margin: 0;
 }
 
@@ -138,23 +136,24 @@ a {
 	transition         : background-color 0.2s;
 }
 
-#header .header-menu .dropdown a {
-	display: block;
-	padding: 0 20px;
-	color: #ddd;
+.header-menu > .dropdown > .js-toggle-dropdown,
+#user-dropdown-wrapper a {
+	display : block;
+	padding : 0 20px;
+	color   : #ddd;
+	cursor  : pointer;
 }
 
-#header .header-menu .dropdown a:hover {
+.header-menu > .dropdown > .js-toggle-dropdown:hover {
 	color: #B25B91;
 }
 
-#header .dropdown:hover,
-#header .dropdown.open {
+.header-menu .dropdown:hover,
+.header-menu .dropdown.open {
 	background-color: #171517;
-/*	color: #fff;*/
 }
 
-.notification-counter {
+#notification-counter {
 	line-height: 14px;
 	top: 5px;
 	right: 5px;
@@ -175,7 +174,7 @@ a {
 	text-align: center;
 }
 
-.notification-counter:empty {
+#notification-counter:empty {
 	display : none;
 }
 
@@ -215,7 +214,8 @@ a {
 }
 
 .dropdown-menu {
-	display: none;
+	display     : none;
+	line-height : normal;
 }
 
 .open > .dropdown-menu {
@@ -231,12 +231,32 @@ a {
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-#header .dropdown-menu ul {
+#user-dropdown-wrapper {
 	width: 167px;
 }
 
 #header .dropdown-menu li:hover {
 	background-color: #171517;
+}
+
+.notification-empty {
+	padding    : 10px 15px;
+	text-align : center;
+	background : #f1f0f1;
+	display    : none;
+	border     : 1px solid #ccc;
+	border-bottom : none;
+	width      : 370px;
+}
+
+.notification-empty .title {
+	font-size: 16px;
+	color: #666;
+	padding-bottom: 10px;
+}
+
+.notification-empty .description {
+	color: rgb(153, 153, 153);
 }
 
 #notification-panel-wrapper {
@@ -245,6 +265,10 @@ a {
 
 #notification-panel-wrapper tbody tr td:first-child {
 	text-align: center;
+}
+
+#notification-panel-wrapper .scroll-content:empty ~ .notification-empty {
+	display : block;
 }
 
 #alert-panel-wrapper {
@@ -5583,45 +5607,40 @@ a.action-link:hover {
 }
 
 /* Notification Dropdown */
-.notification-list {
+#notification-panel-wrapper {
 	line-height: normal;
 	background-color: #fcfcfc;
-	border: 1px solid #ccc;
 }
 
-.notification-list .notification-item {
+#notification-panel-wrapper .notification-item {
 	border-bottom: 1px solid #eee;
 	padding: 13px 15px 10px;
 }
 
-.notification-list .notification-item:hover {
-	background: #fff;
+#notification-panel-wrapper .notification-item:hover {
+	background: #fff !important;
 }
 
-.notification-list > div:last-child {
+#notification-panel-wrapper > div:last-child {
 	border-bottom: none;
 }
 
-.notification-list .notification-item.unread {
+#notification-panel-wrapper .notification-item.unread {
 	background-color: rgb(234, 239, 246);
 }
 
-.notification-list .notification-message {
-
-}
-
-.notification-list .notification-message .content {
+#notification-panel-wrapper .notification-message .content {
 	padding-left: 24px;
 	font-size: 13px;
 }
 
-#header .notification-list .notification-message .content a {
+#header #notification-panel-wrapper .notification-message .content a {
 	color: #3781C9;
 	display: inline;
 	padding: 0;
 }
 
-.notification-list .notification-details {
+#notification-panel-wrapper .notification-details {
 	/*border         : 1px solid rgb(190, 188, 189);*/
 	margin-top: 15px;
 	margin-left: 20px;
@@ -5633,38 +5652,34 @@ a.action-link:hover {
 	border: 1px solid #DB4E47;
 }
 
-.notification-list .notification-details p {
-	margin: 2px 0;
-}
-
-.notification-list .notification-duration {
+#notification-panel-wrapper .notification-duration {
 	margin-top: 6px;
 	color: #aaa;
 	margin-left: 23px;
 }
 
-.notification-list .notification-stamp {
+#notification-panel-wrapper .notification-stamp {
 	text-align: right;
 	color: #AAA;
 	padding-top: 5px;
 }
 
-.notification-list [class^="icon-"], .notification-list [class*=" icon-"] {
+#notification-panel-wrapper [class^="icon-"], #notification-panel-wrapper [class*=" icon-"] {
 	width: 16px;
 	height: 16px;
 	display: block;
 	float: left;
 }
 
-.notification-list .icon-pending {
+#notification-panel-wrapper .icon-pending {
 	color: #ccc;
 }
 
-.notification-list .icon-error {
+#notification-panel-wrapper .icon-error {
 	color: #F74A48;
 }
 
-.notification-list .icon-success {
+#notification-panel-wrapper .icon-success {
 	color: #12D07B;
 }
 
@@ -5684,21 +5699,6 @@ a.action-link:hover {
 	background-image: url(../images/ide/icon/icon-sending.png);
 }*/
 
-.notification-empty {
-	padding: 10px 15px;
-	text-align: center;
-	background: #f1f0f1;
-}
-
-.notification-empty .title {
-	font-size: 16px;
-	color: #666;
-	padding-bottom: 10px;
-}
-
-.notification-empty .description {
-	color: rgb(153, 153, 153);
-}
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */

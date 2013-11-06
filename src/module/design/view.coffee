@@ -195,6 +195,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
                 else if MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
 
+                    $( '.overlay-content-wrap' ).find( '.loading-spinner' ).hide()
                     $( '.overlay-content-wrap' ).find( '.progress' ).show()
                     $( '.overlay-content-wrap' ).find( '.process-info' ).show()
 

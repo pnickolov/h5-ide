@@ -504,7 +504,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 if $item.attr('data-id') is id
                     new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
                     console.log 'new_url = ' + new_url
-                    $item.attr 'src',     new_url
+                    $item.attr 'src', new_url
 
             null
 

@@ -61,7 +61,6 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
         #
         ide_event.offListen ide_event.UPDATE_TA_MODAL
         ide_event.offListen ide_event.UNLOAD_TA_MODAL
-        ide_event.offListen ide_event.TA_SYNC_FINISH
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     #public

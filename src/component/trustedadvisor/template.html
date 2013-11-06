@@ -1,8 +1,8 @@
 <div class="validation-content">
 	<ul class="tab">
-		<li class="active" data-tab-target="#item-error"><i class="icon-close"></i> Error ({{ error_list.length }})</li>
-		<li data-tab-target="#item-warning" class=""><i class="icon-flag"></i> Warning ({{ warning_list.length }})</li>
-		<li data-tab-target="#item-notice"><i class="icon-info-sign"></i> Notice ({{ notice_list.length }})</li>
+		<li class="active" data-tab-target="#item-error">Error<span class="validation-counter validation-counter-error">{{ error_list.length }}</span></li>
+		<li data-tab-target="#item-warning" class="">Warning<span class="validation-counter validation-counter-warning">{{ warning_list.length }}</span></li>
+		<li data-tab-target="#item-notice">Notice<span class="validation-counter validation-counter-notice">{{ notice_list.length }}</span></li>
 	</ul>
 	<div class="content_wrap">
 		<div id="item-error" class="content active">

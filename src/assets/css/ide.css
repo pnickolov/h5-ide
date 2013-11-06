@@ -2312,7 +2312,7 @@ a {
 	position    : absolute;
 	top         : 50%;
 	right       : 5px;
-	margin-top  : -7px;
+	margin-top  : -6px;
 
 	width       : 16px;
 	height      : 16px;
@@ -6193,22 +6193,34 @@ a.action-link:hover {
 }
 
 #modal-run-stack .tab {
-	position: relative;
-	height: 30px;
+	position      : relative;
+	height        : 30px;
+	border        : 1px solid #ccc;
+	border-bottom : none;
+	width         : 100%;
 }
 
 #modal-run-stack .tab li {
-	color: #333;
-	width: 120px;
-	line-height: 30px;
-	text-align: center;
-	display: block;
-	float: left;
-	background: #eee;
+	color        : #666;
+	width        : 102px;
+	line-height  : 30px;
+	display      : block;
+	float        : left;
+	background   : #d4d8dc;
+	padding      : 0 10px;
+	border-right : 1px solid #ccc;
+	text-align   : left;
+}
+
+#modal-run-stack .tab li:last-child {
+	width        : 104px;
+	border-right : none;
 }
 
 #modal-run-stack .tab .active {
-	background: #aaa;
+	background  : #f2f3f4;
+	/*color       : #333;*/
+	font-weight : bold;
 }
 
 #modal-run-stack .content_wrap {
@@ -6221,6 +6233,8 @@ a.action-link:hover {
 	height: 100%;
 	min-height: 50px;
 	border: 1px solid #cfcfcf;
+	border-top:none;
+	background: #f2f3f4;
 }
 
 #modal-run-stack .content_wrap .active {
@@ -6232,7 +6246,7 @@ a.action-link:hover {
 }
 
 #modal-run-stack .content_wrap .title {
-	padding: 8px 2px;
+	padding: 10px;
 	border-bottom: 1px solid #cfcfcf;
 }
 
@@ -6251,7 +6265,7 @@ a.action-link:hover {
 	position: relative;
 	padding: 5px 15px;
 	height: 58px;
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 #modal-run-stack .estimate .title {
@@ -6272,6 +6286,32 @@ a.action-link:hover {
 	font-size: 28px;
 }
 
+.validation-counter {
+	padding       : 1px 4px;
+	border-radius : 4px;
+	font-size     : 12px;
+	color         : #fff;
+	float: right;
+	display: inline-block;
+	height: 16px;
+	line-height: 16px;
+	margin-top: 5px;
+	box-shadow: inset 0 1px 1px rgba(255,255,255,.3);
+	border: #666;
+}
+
+
+.validation-counter-error {
+	background-color: #D64442;
+}
+
+.validation-counter-warning {
+	background-color: #ffad00;
+}
+
+.validation-counter-notice {
+	background-color: #3781C9;
+}
 
 /* run stack into app process panel*/
 #process-panel #process-container {
@@ -6944,7 +6984,6 @@ a.action-link:hover {
 	left: 0;
 	z-index: 5;
 	background-color: rgba(0, 0, 0, 0.8);
-	border-top: 1px solid #181818;
 	opacity: 1;
 }
 

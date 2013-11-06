@@ -41,7 +41,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 									errMessage = returnInfoObj.message
 									errCompName = _getCompName(errCompUID)
 
-									errInfoStr = "Resource #{errCompName} has format problem, #{errMessage}"
+									errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
 
 								catch err
 									errInfoStr = "Stack format validation error"

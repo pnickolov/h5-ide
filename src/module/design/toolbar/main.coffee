@@ -211,8 +211,9 @@ define [ 'jquery',
 
                     # run stack
                     if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
-                        app_name = $('.modal-input-value').val()
-                        modal.close()
+                        # disable button
+                        $('#btn-confirm').attr 'disabled', true
+                        $('.modal-close').attr 'disabled', false
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

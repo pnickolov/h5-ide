@@ -802,11 +802,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     # update app list, region aws resource and notification
                     if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
-                        # save png
-                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
-                            if flag is 'RUN_STACK' or flag is 'SAVE_APP'
-                                me.saveAppThumbnail flag, region, name, item.id
-
                         # update app list
                         app_list = []
                         if item.id.indexOf('app-') == 0
@@ -826,6 +821,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                             me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
+                        # save png
+                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                            if flag is 'RUN_STACK' or flag is 'SAVE_APP'
+                                me.saveAppThumbnail flag, region, name, item.id
+                                
                         # remove request from req_map
                         delete req_map[req_id]
 

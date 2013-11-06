@@ -91,7 +91,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             if compObj.type is compType
 
-                name_list.push compObj.name
+                if compObj.serverGroupName
+                    name_list.push compObj.serverGroupName
+                else
+                    name_list.push compObj.name
 
             null
 

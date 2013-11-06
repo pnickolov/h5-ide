@@ -706,7 +706,7 @@ a {
 	z-index  : -1;
 	position : fixed;
 	left     : -300px;
-	top      : 48px;
+	top      : 50px;
 	bottom   : 0;
 
 	-webkit-transition: left .1s;
@@ -955,7 +955,7 @@ a {
 
 	position     : relative;
 	float        : left;
-	margin-right : 4px;
+	margin-right : 2px;
 
 	-webkit-transition : width .2s;
 	-moz-transition    : width .2s;
@@ -6212,6 +6212,8 @@ a.action-link:hover {
 	border        : 1px solid #ccc;
 	border-bottom : none;
 	width         : 100%;
+	border-radius : 4px 4px 0 0;
+	overflow      : hidden;
 }
 
 #modal-run-stack .tab li {
@@ -6223,7 +6225,13 @@ a.action-link:hover {
 	background   : #d4d8dc;
 	padding      : 0 10px;
 	border-right : 1px solid #ccc;
+	box-shadow   : inset 0 -1px 0 #ccc, inset 0 1px 0 rgba(255,255,255,.3);
 	text-align   : left;
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
 }
 
 #modal-run-stack .tab li:last-child {
@@ -6231,10 +6239,16 @@ a.action-link:hover {
 	border-right : none;
 }
 
-#modal-run-stack .tab .active {
+#modal-run-stack .tab li:hover {
+	background: #E3E4E6;
+}
+
+#modal-run-stack .tab li.active,
+#modal-runs-stack .tab li.active:hover {
 	background  : #f2f3f4;
-	/*color       : #333;*/
+	/*color     : #333;*/
 	font-weight : bold;
+	box-shadow  : inset 0 1px 0 rgba(255,255,255,.5);
 }
 
 #modal-run-stack .content_wrap {
@@ -6242,13 +6256,15 @@ a.action-link:hover {
 }
 
 #modal-run-stack .content_wrap .content {
-	display: none;
-	width: 100%;
-	height: 100%;
-	min-height: 50px;
-	border: 1px solid #cfcfcf;
-	border-top:none;
-	background: #f2f3f4;
+	display       : none;
+	width         : 100%;
+	height        : 100%;
+	min-height    : 50px;
+	border        : 1px solid #cfcfcf;
+	border-top    : none;
+	background    : #f2f3f4;
+	border-radius : 0 0 2px 2px;
+	overflow      : hidden;
 }
 
 #modal-run-stack .content_wrap .active {
@@ -6260,9 +6276,19 @@ a.action-link:hover {
 	position: relative;
 }
 
+.stack-validation ::selection {
+	background-color: #0F7EEB;
+	color: #fff;
+}
+
 #modal-run-stack .content_wrap .title {
 	padding: 10px;
-	border-bottom: 1px solid #cfcfcf;
+	border-bottom: 1px solid #e6e6e6;
+	color: #666;
+}
+
+#modal-run-stack .content_wrap .title:nth-child(2n) {
+	background-color: rgba(255,255,255,.6);
 }
 
 #modal-run-stack .content_wrap .content div:last-child{
@@ -6275,12 +6301,11 @@ a.action-link:hover {
 }
 
 #modal-run-stack .modal-body div.estimate {
-	border-top: 1px solid #CCC;
-	background-color: #F8F8F8;
-	position: relative;
-	padding: 5px 15px;
-	height: 58px;
-	margin-top: 15px;
+	border-top       : 1px solid #CCC;
+	background-color : #F8F8F8;
+	position         : relative;
+	padding          : 5px 15px;
+	height           : 58px;
 }
 
 #modal-run-stack .estimate .title {
@@ -6317,15 +6342,18 @@ a.action-link:hover {
 
 
 .validation-counter-error {
-	background-color: #D64442;
+	background-color: #FA5041;
+	border: 1px solid #D64442;
 }
 
 .validation-counter-warning {
 	background-color: #ffad00;
+	border: 1px solid #CE8221;
 }
 
 .validation-counter-notice {
-	background-color: #3781C9;
+	background-color: #49A3FA;
+	border: 1px solid #3A82EC;
 }
 
 /* run stack into app process panel*/

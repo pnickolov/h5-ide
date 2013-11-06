@@ -1,8 +1,8 @@
 <div class="validation-content">
 	<ul class="tab">
-		<li class="active" data-tab-target="#item-error">Error<span class="validation-counter validation-counter-error">{{ error_list.length }}</span></li>
-		<li data-tab-target="#item-warning" class="">Warning<span class="validation-counter validation-counter-warning">{{ warning_list.length }}</span></li>
-		<li data-tab-target="#item-notice">Notice<span class="validation-counter validation-counter-notice">{{ notice_list.length }}</span></li>
+		<li class="active {{#unless error_list.length}}no-item{{/unless}}" data-tab-target="#item-error">Error<span class="validation-counter validation-counter-error">{{ error_list.length }}</span></li>
+		<li data-tab-target="#item-warning" class="{{#unless warning_list.length}}no-item{{/unless}}">Warning<span class="validation-counter validation-counter-warning">{{ warning_list.length }}</span></li>
+		<li data-tab-target="#item-notice">Notice<span class="validation-counter validation-counter-notice {{#unless notice_list.length}}no-item{{/unless}}">{{ notice_list.length }}</span></li>
 	</ul>
 	<div class="content_wrap">
 		<div id="item-error" class="content active">
@@ -11,17 +11,6 @@
 					{{ info }}
 				</div>
 			{{/each}}
-			<!--
-			<div class="title">
-				subnet-1 is attached with a load balancer. It must be smaller than /27.
-			</div>
-			<div class="title">
-				subnet-2 is attached with a load balancer. It must be smaller than /27.
-			</div>
-			<div class="title">
-				subnet-3 is attached with a load balancer. It must be smaller than /27.
-			</div>
-			-->
 		</div>
 		<div id="item-warning" class="content">
 			{{#each warning_list }}

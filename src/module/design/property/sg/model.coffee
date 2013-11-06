@@ -211,10 +211,10 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
                         if rule.protocol.toString() isnt '-1'
                             if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
                                 sg.IpPermissions.splice idx, 1
+                                return false
                         else
                             sg.IpPermissions.splice idx, 1
-
-                        return false
+                            return false
 
             else
 
@@ -226,12 +226,10 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
                             if rule.protocol.toString() isnt '-1'
                                 if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
                                     sg.IpPermissionsEgress.splice idx, 1
+                                    return false
                             else
                                 sg.IpPermissionsEgress.splice idx, 1
-
-                            return false
-
-
+                                return false
     }
 
     new SgModel()

@@ -292,7 +292,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                     when 'STOP_APP'      then temp = constant.APP_STATE.APP_STATE_STOPPING
                     when 'TERMINATE_APP' then temp = constant.APP_STATE.APP_STATE_TERMINATING
                     else
-                        console.log 'current type = ' + state + ', state is =' + type
+                        console.log 'current type = ' + type + ', state is =' + state
                         console.log MC.data.process[ MC.data.current_tab_id ]
             temp
 

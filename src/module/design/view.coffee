@@ -149,6 +149,9 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
                 when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail }
                 when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
+                else
+                    console.log 'current state = ' + state
+                    console.log MC.data.process[ MC.data.current_tab_id ]
 
             # open tab fail( includ app and stack )
             if state is 'OPEN_TAB_FAIL'

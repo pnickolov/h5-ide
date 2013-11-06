@@ -3343,6 +3343,10 @@ module.exports =
       en: "terminate app"
       zh: "删除APP"
 
+    SAVE_APP:
+      en: "update error"
+      zh: "更新错误"
+
     ##### Trust Advisor
 
     # VPC

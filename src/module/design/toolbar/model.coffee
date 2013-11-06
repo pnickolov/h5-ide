@@ -546,7 +546,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result
+                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result, result.data.res.id
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback

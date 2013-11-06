@@ -75,6 +75,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 MC.canvas.layout.init()
                 model.initLine()
                 model.reDrawSgLine()
+                MC.aws.instance.updateStateIcon MC.canvas_data.id
                 #
                 MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
                 #

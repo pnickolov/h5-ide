@@ -76,6 +76,9 @@ define [ 'event',
                     content = content.slice 0, -2
 
                 nutshell.find( 'label' ).text content
+                nutshell.click () ->
+                    summary.click()
+
                 nutshell.show()
 
 

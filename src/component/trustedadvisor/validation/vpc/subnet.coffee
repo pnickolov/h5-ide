@@ -1,6 +1,11 @@
 define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
 	isAbleConnectToELB = ( uid ) ->
+
+		# check platform
+		if !(MC.canvas_data.platform in
+			[MC.canvas.PLATFORM_TYPE.CUSTOM_VPC, MC.canvas.PLATFORM_TYPE.EC2_VPC])
+				return null
 		
 		if MC.aws.subnet.isAbleConnectToELB uid
 			return null

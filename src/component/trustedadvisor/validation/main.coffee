@@ -11,8 +11,9 @@ define ['MC',
         './vpn/vpn',
         './vpc/igw',
         './vpc/rtb',
-        './vpc/cgw'
-], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, rtb, cgw) ->
+        './vpc/cgw',
+        './vpc/eni'
+], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vpn, igw, rtb, cgw, eni) ->
 
         stack : stack
         instance : instance
@@ -27,3 +28,4 @@ define ['MC',
         igw : igw
         rtb : rtb
         cgw : cgw
+        eni : eni

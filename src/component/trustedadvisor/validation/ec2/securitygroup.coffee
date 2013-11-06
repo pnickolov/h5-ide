@@ -58,6 +58,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveUsingAllProtocolRule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
@@ -89,6 +98,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveFullZeroSourceToHTTPRule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 
@@ -115,6 +133,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveUsingPort22Rule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
@@ -138,6 +165,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 		return null
 
 	isHaveFullZeroOutboundRule = (sgUID) ->
+
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
 
 		sgComp = MC.canvas_data.component[sgUID]
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress

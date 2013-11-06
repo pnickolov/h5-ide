@@ -3446,6 +3446,11 @@ module.exports =
       en:"Checking Stack data format validity..."
       zh:""
 
+    # ENI
+    TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
+      en:"Network Interface %s not attach to any Instance."
+      zh:""
+
     ##### Trust Advisor
 
   service:

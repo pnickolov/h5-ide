@@ -623,6 +623,10 @@ module.exports =
       en: "Stop This App's Resources."
       zh: "暂停应用"
 
+    TOOL_TIP_CONTAINS_INSTANCE_STORED:
+      en: "This app cannot be stopped since it contains instance-stored AMI."
+      zh: "不能暂停这个应用，因为它包含实例存储映像"
+
     TOOL_POP_TIT_STOP_APP:
       en: "Confirm to Stop App"
       zh: "确认暂停"

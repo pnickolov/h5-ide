@@ -20,6 +20,7 @@ define [ 'event',
             if type is 'stack'
                 $('#stack-run-validation-container').html Handlebars.compile( template )( @model.attributes )
                 $('.validating').hide()
+                @processDetails()
                 $('.stack-validation details').show()
                 # $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
             else if type is 'statusbar'
@@ -27,6 +28,58 @@ define [ 'event',
                 @$el.find( '#modal-run-stack' ).html Handlebars.compile( template )( @model.attributes )
 
             null
+
+        processDetails: () ->
+            error = @model.get 'error_list'
+            warning = @model.get 'warning_list'
+            notice = @model.get 'notice_list'
+
+            tabs = $ '#stack-run-validation-container .tab li'
+            details = $ '#modal-run-stack details'
+            nutshell = $ '#modal-run-stack .nutshell'
+            summary = details.find 'summary'
+
+            bindSummary = () ->
+                summary.click ()->
+                    if details.attr( 'open' ) is 'open'
+                        nutshell.show()
+                    else
+                        nutshell.hide()
+
+            processNutshell = () ->
+                content = ''
+                if warning.length
+                    content += "#{warning.length} warning, "
+                if notice.length
+                    content += "#{notice.length} notice, "
+
+                if not content
+                    content = 'No error, warning or notice.'
+                else
+                    content = content.slice 0, -2
+
+                nutshell.find( 'label' ).text content
+                nutshell.show()
+
+
+            if error.length
+
+            else if warning.length
+                tabs.eq( 1 ).click()
+                details.removeAttr 'open'
+                processNutshell()
+                bindSummary()
+
+            else if notice.length
+                tabs.eq( 2 ).click()
+                details.removeAttr 'open'
+                processNutshell()
+                bindSummary()
+            else
+                details.removeAttr 'open'
+                processNutshell()
+                bindSummary()
+                $( '.validation-content' ).text 'No error, warning or notice.'
 
 
 

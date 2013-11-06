@@ -6178,6 +6178,20 @@ a.action-link:hover {
 	outline: none;
 }
 
+#modal-run-stack summary {
+	display: inline-block;
+}
+
+#modal-run-stack .nutshell {
+	position: absolute;
+	top: 15px;
+	left: 138px;
+}
+
+#modal-run-stack .nutshell label {
+	padding-left: 12px;
+}
+
 #modal-run-stack .validating {
 	height: 116px;
 	background-color: #eef2f4;
@@ -6243,6 +6257,7 @@ a.action-link:hover {
 
 #modal-run-stack .stack-validation {
 	border-top: 1px solid #cfcfcf;
+	position: relative;
 }
 
 #modal-run-stack .content_wrap .title {

@@ -81,7 +81,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                     # remove the rest item(in params but not in return, terminated)
                     if ids.length > 0
                         for rv in app_list
-                            nrv = {'region_group':rv.region_group}
+                            nrv = {'region_group':rv.region_group, 'region_name_group':[]}
                             for item in rv.region_name_group
                                 if item.id in ids
                                     continue
@@ -142,7 +142,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                     # remove the rest item(in params but not in return, removed)
                     if ids.length > 0
                         for rv in stack_list
-                            nrv = {'region_group':rv.region_group}
+                            nrv = {'region_group':rv.region_group, 'region_name_group':[]}
                             for item in rv.region_name_group
                                 if item.id in ids
                                     continue

@@ -32,7 +32,7 @@ define [ '../base/main',
 
 		initAppEdit : ()->
 			@model = model
-			@model.isApp = true
+			@model.isApp = false
 			@view  = view
 			null
 	}

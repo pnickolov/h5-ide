@@ -49,9 +49,12 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		refCompAry = []
 		defaultSGComp = MC.aws.sg.getDefaultSG()
 		defaultSGUID = defaultSGComp.uid
+
+		# remove all ref in all comp
 		_.each MC.canvas_data.component, (comp) ->
 			compType = comp.type
 			compUID = comp.uid
+
 			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 				sgAry = comp.resource.SecurityGroups
 				sgAry = _.filter sgAry, (value) ->
@@ -132,7 +135,31 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				#update sg color label
 				MC.aws.sg.updateSGColorLabel compUID
 
+			# remove all ref rule in all sg
+			if compType is 'AWS.EC2.SecurityGroup'
+
+				sgRuleRef = '@' + sgUID + '.resource.GroupId'
+
+				sgInboundRuleAry = comp.resource.IpPermissions
+				sgOutboundRuleAry = comp.resource.IpPermissionsEgress
+
+				if sgInboundRuleAry
+					newSgInboundRuleAry = _.filter sgInboundRuleAry, (ruleObj) ->
+						if ruleObj.IpRanges is sgRuleRef
+							return false
+						return true
+					MC.canvas_data.component[compUID].resource.IpPermissions = newSgInboundRuleAry
+
+				if sgOutboundRuleAry
+					newSgOutboundRuleAry = _.filter sgOutboundRuleAry, (ruleObj) ->
+						if ruleObj.IpRanges is sgRuleRef
+							return false
+						return true
+					MC.canvas_data.component[compUID].resource.IpPermissionsEgress = newSgOutboundRuleAry
+
 			null
+
+		
 
 		return refCompAry
 

@@ -125,6 +125,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             if type in [ 'OPEN_APP', 'OLD_APP' ]
                 $( '#statusbar-panel' ).hide()
                 # $( '#canvas-panel'    ).css( 'bottom', 0 )
+                $( '#canvas' ).css('bottom', 0)
             else
                 $( '#statusbar-panel' ).show()
                 # $( '#canvas-panel'    ).css( 'bottom', $( '#statusbar-panel' ).height() )

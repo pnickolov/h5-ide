@@ -1,8 +1,8 @@
 require [ 'jquery', 'domReady', 'MC',
     'text!./test/madeira_console/overview/template.html',
     'text!./test/madeira_console/overview/template_data.html',
-    'event', 'constant', 'session_model', 'base_main', 'MC.ide.template', 'UI.scrollbar'
-], ( $, domReady, MC, overview_tmpl, overview_tmpl_data, ide_event, constant, session_model, base_main ) ->
+    'event', 'constant', 'session_model', 'base_main', 'handlebars', 'i18n!/nls/lang.js', 'MC.ide.template', 'UI.scrollbar'
+], ( $, domReady, MC, overview_tmpl, overview_tmpl_data, ide_event, constant, session_model, base_main, Handlebars, lang ) ->
 
 
     #private
@@ -34,6 +34,11 @@ require [ 'jquery', 'domReady', 'MC',
         MC.data.region_keys = {}
 
         _.extend this, base_main
+
+        #i18n
+        Handlebars.registerHelper 'i18n', ( text ) ->
+            new Handlebars.SafeString lang.ide[ text ]
+
 
 
     #private

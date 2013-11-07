@@ -234,8 +234,21 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				_.each comp.resource.GroupSet, (sgObj) ->
 					sgAry.push sgObj.GroupId
 					null
+
 				resTypeName = 'Network Interface'
 				tagName = 'eni'
+
+				# if is instance default eni
+				if comp.resource.Attachment.DeviceIndex in [0, '0']
+					instanceUIDRef = comp.resource.Attachment.InstanceId
+					if instanceUIDRef
+						instanceUID = instanceUIDRef.split('.')[0].slice(1)
+						instanceComp = MC.canvas_data.component[instanceUID]
+						if instanceComp
+							instanceName = instanceComp.name
+							resTypeName = 'Instance'
+							tagName = 'instance'
+							compName = instanceName
 
 			if sgAry.length > maxSGNumLimit
 

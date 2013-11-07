@@ -120,9 +120,9 @@ define [ 'constant','backbone' ], (constant) ->
 			if defaultSG
 				displaySGAry.unshift defaultSG
 
-			if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
+			# if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
 				# In VPC, user can only select 5 SG
-				sg_full.full = true
+				# sg_full.full = true
 
 			@set 'is_stack_sg', isStackParent
 			@set 'only_one_sg', enabledSGCount is 1

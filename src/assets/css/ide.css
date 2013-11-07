@@ -4343,7 +4343,7 @@ a.sidebar-hider {
 
 .acl-sg-info-list .sg-list-association-check {
 	float: left;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	margin-right: 10px;
 }
 

@@ -51,14 +51,20 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 _pushResult result, method, filename
                 done()
 
+    _handleException = ( err ) ->
+        console.info 'ta exception:'
+        console.info err
 
     ########## Sub Validation Method ##########
 
     _validGlobal = () ->
         _.each config.globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]()
-                _pushResult result, method, filename
+                try
+                    result = validation_main[ filename ][ method ]()
+                    _pushResult result, method, filename
+                catch err
+                    _handleException(err)
 
     _validComponents = () ->
         components = MC.canvas_data.component
@@ -66,9 +72,11 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             filename = _getFilename component.type
             _.each validation_main[ filename ], ( func, method ) ->
                 if not _isGlobal(filename, method) and not _isAsync(filename, method)
-                    result = validation_main[ filename ][ method ]( uid )
-                    _pushResult result, method, filename, uid
-
+                    try
+                        result = validation_main[ filename ][ method ]( uid )
+                        _pushResult result, method, filename, uid
+                    catch err
+                        _handleException(err)
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
             console.debug memo, arr
@@ -80,8 +88,11 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
-                result = validation_main[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
-                _pushResult result, method, filename
+                try
+                    result = validation_main[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
+                    _pushResult result, method, filename
+                catch err
+                    _handleException(err)
 
     ########## Public Method ##########
 
@@ -106,10 +117,8 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
             else
                 console.log 'func not found'
 
-        catch error
-            console.log "validComp error #{ error }"
-
-
+        catch err
+            _handleException(err)
 
     validRun = ->
 

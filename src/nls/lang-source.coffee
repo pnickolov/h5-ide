@@ -3407,6 +3407,9 @@ module.exports =
     TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
       zh: ""
+    TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT:
+      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated sg count exceed max %s limit."
+      zh: ""
 
     # ASG
     TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:

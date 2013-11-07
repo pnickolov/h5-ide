@@ -196,9 +196,68 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			}
 		return null
 
+	isAssociatedSGNumExceedLimit = () ->
+
+		maxSGNumLimit = 5
+		platformType = MC.canvas_data.platform
+		if platformType is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			maxSGNumLimit = 500
+
+		taResultAry = []
+
+		_.each MC.canvas_data.component, (comp) ->
+
+			compType = comp.type
+			compName = comp.name
+			compUID = comp.uid
+			isExceedLimit = false
+			
+			sgAry = []
+			resTypeName = ''
+			tagName = ''
+			if compType is constant.AWS_RESOURCE_TYPE.AWS_ELB
+				sgAry = comp.resource.SecurityGroups
+				resTypeName = 'Load Balancer'
+				tagName = 'elb'
+
+			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				sgAry = comp.resource.SecurityGroups
+				resTypeName = 'Launch Configuration'
+				tagName = 'lc'
+
+			else if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				sgAry = comp.resource.SecurityGroupId
+				resTypeName = 'Instance'
+				tagName = 'instance'
+
+			else if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+				_.each comp.resource.GroupSet, (sgObj) ->
+					sgAry.push sgObj.GroupId
+					null
+				resTypeName = 'Network Interface'
+				tagName = 'eni'
+
+			if sgAry.length > maxSGNumLimit
+
+				tipInfo = sprintf lang.ide.TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT, resTypeName, tagName, compName, maxSGNumLimit
+				taObj =
+					level: constant.TA.ERROR
+					info: tipInfo
+					uid: compUID
+
+				taResultAry.push taObj
+
+			null
+
+		if taResultAry.length > 0
+			return taResultAry
+
+		null
+
 	isSGRuleExceedFitNum : isSGRuleExceedFitNum
 	isStackUsingOnlyOneSG : isStackUsingOnlyOneSG
 	isHaveUsingAllProtocolRule : isHaveUsingAllProtocolRule
 	isHaveFullZeroSourceToHTTPRule : isHaveFullZeroSourceToHTTPRule
 	isHaveUsingPort22Rule : isHaveUsingPort22Rule
 	isHaveFullZeroOutboundRule : isHaveFullZeroOutboundRule
+	isAssociatedSGNumExceedLimit : isAssociatedSGNumExceedLimit

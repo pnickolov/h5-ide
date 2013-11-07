@@ -2,25 +2,19 @@
 #  View(UI logic) for design/property/elb(app)
 #############################
 
-define [ 'event', 'MC', 'UI.zeroclipboard', 'UI.notification'
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC, zeroclipboard ) ->
+define [ '../base/view',
+         'text!./template/app.html',
+         'UI.zeroclipboard' ], ( PropertyView, template, zeroclipboard ) ->
 
-    ElbAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    ElbAppView = PropertyView.extend {
 
-        template  : Handlebars.compile $( '#property-elb-app-tmpl' ).html()
-
-        render     : () ->
-            console.log 'property:elb app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
-
-            # Init Clipbard
+        render : () ->
+            @$el.html template @model.attributes
             zeroclipboard.copy $("#property-app-elb-dnss .icon-copy")
-            null
+
+            @model.attributes.name
     }
 
-    view = new ElbAppView()
-
-    return view
+    new ElbAppView()

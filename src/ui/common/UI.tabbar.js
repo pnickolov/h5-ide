@@ -109,10 +109,13 @@ var Tabbar = {
 
 	add: function (tab_id, tab_name)
 	{
+		var tab_type = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
+
 		$('#tab-bar ul').append(
 			MC.template.tab.item({
 				'tab_id': tab_id,
-				'tab_name': tab_name
+				'tab_name': tab_name,
+				'tab_type': tab_type
 			})
 		);
 
@@ -153,20 +156,33 @@ var Tabbar = {
 		$('#tab-bar li').removeClass('active');
 		tab_item.addClass('active');
 
+		if (tab_id === 'dashboard')
+		{
+			Tabbar.current = 'dashboard';
+		}
+		else
+		{
+			Tabbar.current = tab_item.data('tab-type');
+		}
+
 		tab_bar.trigger('OPEN_TAB', [original_tab_id, tab_id]);
 
 		if (tab_id === 'dashboard')
 		{
 			scrollbar.scrollTo($('#global-region-wrap'), {'top': 1});
-
-			Tabbar.current = 'dashboard';
-		}
-		else
-		{
-			Tabbar.current = tab_id.match(/([A-Za-z0-9])*/ig)[0];
 		}
 
 		return tab_id;
+	},
+
+	updateState : function( tab_id, tab_type )
+	{
+		var $tab = $( "#tab-bar-" + tab_id );
+		if ( $tab.hasClass("active") ) {
+			Tabbar.current = tab_type;
+		}
+		$tab.data("tab-type", tab_type);
+		return true;
 	},
 
 	closeTabRestriction : function(event)
@@ -207,9 +223,9 @@ var Tabbar = {
 			tabs_link = $('#tab-bar li a.tab-bar-truncate'),
 			tab_item_width = (tabbar_width - (tabs.length * 5)) / tabs.length;
 
-		tab_item_width = tab_item_width > 180 ? 180 : tab_item_width;
+		tab_item_width = tab_item_width > 220 ? 220 : tab_item_width;
 		tabs.css('width', tab_item_width);
-		tabs_link.css('width', tab_item_width - 20);
+		tabs_link.css('width', tab_item_width - 30);
 
 		return true;
 	}

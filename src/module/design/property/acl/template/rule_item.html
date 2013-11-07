@@ -1,0 +1,17 @@
+{{#each content}}
+  <li rule-num="{{ruleNumber}}" rule-engress="{{egress}}">
+    <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
+    <div class="acl-rule-details">
+      <div class="rule-list-row">
+        <div href="#" class="acl-rule-allow-cb tooltip icon-{{ruleAction}} acl-rule-action" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
+        <div class="{{#ifCond egress "false"}}icon-inbound{{else}}icon-outbound{{/ifCond}} tooltip acl-rule-direction" data-id="{{egress}}" data-tooltip='{{#ifCond egress "false"}}{{{ i18n "PROP_ACL_TIP_INBOUND" }}}{{else}}{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}{{/ifCond}}'></div>
+        <div class="acl-rule-reference tooltip" data-id="{{cidrBlock}}" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}'>{{cidrBlock}}</div>
+      </div>
+      <div class="rule-list-row">
+        <span class="rule-protocol acl-rule-protocol tooltip" data-id="{{protocol}}" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}'>{{protocol}}</span>
+        <div class="acl-rule-port tooltip" data-id="{{port}}" data-tooltip='{{ i18n "PROP_ACL_TIP_PORT" }}'>{{port}}</div>
+      </div>
+      {{#unless isStarRule}}<a class="icon-remove rule-remove-icon property-rule-delete-btn tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_REMOVE_RULE" }}'></a>{{/unless}}
+    </div>
+  </li>
+{{/each}}

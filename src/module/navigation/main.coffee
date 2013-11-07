@@ -66,15 +66,15 @@ define [ 'jquery',
             #model
             model.appListService()
 
-            ide_event.onLongListen ide_event.UPDATE_APP_LIST, () ->
+            ide_event.onLongListen ide_event.UPDATE_APP_LIST, (flag, ids) ->
                 console.log 'UPDATE_APP_LIST'
                 #call
-                model.appListService()
+                model.appListService(flag, ids)
 
-            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, () ->
+            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, (flag, ids) ->
                 console.log 'UPDATE_STACK_LIST'
                 #call
-                model.stackListService()
+                model.stackListService(flag, ids)
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'navigation:UPDATE_AWS_CREDENTIAL'

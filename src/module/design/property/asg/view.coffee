@@ -2,7 +2,16 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.sortable' ], ( ide_event, MC, zeroclipboard, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/policy.html',
+         'text!./template/term.html',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, policy_template, term_template, lang ) ->
+
+    template        = Handlebars.compile template
+    policy_template = Handlebars.compile policy_template
+    term_template   = Handlebars.compile term_template
 
     metricMap =
         "CPUUtilization"             : "CPU Utilization"
@@ -38,15 +47,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
         NetworkIn      : "B"
         NetworkOut     : "B"
 
-    InstanceView = Backbone.View.extend {
-
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template        : Handlebars.compile $( '#property-asg-tmpl' ).html()
-        term_template   : Handlebars.compile $( '#property-asg-term-tmpl' ).html()
-        policy_template : Handlebars.compile $( '#property-asg-policy-tmpl' ).html()
-        app_template    : Handlebars.compile $( '#property-asg-app-tmpl' ).html()
+    InstanceView = PropertyView.extend {
 
         events   :
             "click #property-asg-term-edit"                : "showTermPolicy"
@@ -66,7 +67,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
 
 
-        render     : ( isApp ) ->
+        render     : () ->
             console.log 'property:asg render'
             data = this.model.attributes
 
@@ -83,13 +84,9 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
 
                 data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
 
-            template = if isApp then this.app_template else this.template
+            @$el.html template data
 
-            $( '.property-details' ).html template data
-
-            if isApp
-                zeroclipboard.copy $( "#property_app_asg .icon-copy" )
-            null
+            @model.attributes.asg.AutoScalingGroupName
 
         setASGCoolDown : ( event ) ->
 
@@ -154,7 +151,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
                 if not checked[ p ]
                     data.push { name : p, checked : false }
 
-            modal this.term_template(data), true
+            modal term_template(data), true
 
             self = this
 
@@ -289,7 +286,7 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
             data.noSNS = not this.model.attributes.has_sns_topic
             data.detail_monitor = this.model.attributes.detail_monitor
 
-            modal this.policy_template(data), true
+            modal policy_template(data), true
 
             self = this
             $("#property-asg-policy-done").on "click", ()->
@@ -439,6 +436,4 @@ define [ 'event', 'MC', 'UI.zeroclipboard', 'i18n!nls/lang.js', 'backbone', 'jqu
 
     }
 
-    view = new InstanceView()
-
-    return view
+    new InstanceView()

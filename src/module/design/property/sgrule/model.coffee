@@ -2,32 +2,24 @@
 #  View Mode for design/property/sgrule
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
+define [ '../base/model' ], ( PropertyModel ) ->
 
-    SGRuleModel = Backbone.Model.extend {
+    SGRuleModel = PropertyModel.extend {
 
         defaults :
-            sg_group : [
-                    {
-                        name  : "DefaultSG"
-                        rules : [ {
-                            egress     : true
-                            protocol   : "TCP"
-                            connection : "eni"
-                            port       : "1234"
-                        } ]
-                    }
-                ]
+            sg_group   : []
             sg_app_ary : null
-            line_id : null
+            line_id    : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        setLineId : ( line_id ) ->
-
+        init : ( line_id ) ->
             this.set 'line_id', line_id
+
+            if @isApp
+                @getAppDispSGList line_id
+            else
+                @getDispSGList line_id
+
+            null
 
         getDispSGList : (line_uid) ->
 
@@ -220,18 +212,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'constant' ], ( constant ) ->
 
             #get sg name
             sg_app_detail =
-                groupName : currentAppSG.groupName
+                groupName        : currentSGComp.name
                 groupDescription : currentAppSG.groupDescription
-                groupId : currentAppSG.groupId
-                ownerId : currentAppSG.ownerId
-                vpcId : currentAppSG.vpcId
-                members : members
-                rules : rules
+                groupId          : currentAppSG.groupId
+                ownerId          : currentAppSG.ownerId
+                vpcId            : currentAppSG.vpcId
+                members          : members
+                rules            : rules
 
             return sg_app_detail
 
     }
 
-    model = new SGRuleModel()
-
-    return model
+    new SGRuleModel()

@@ -3,8 +3,9 @@
 ####################################
 
 define [ 'jquery', 'event', 'base_main',
+         'constant'
          'UI.tabbar', 'UI.modal'
-], ( $, ide_event, base_main ) ->
+], ( $, ide_event, base_main, constant ) ->
 
     #private
     initialize = ->
@@ -137,7 +138,7 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
 
             #listen open_stack
-            model.on 'OPEN_STACK', ( tab_id ) ->
+            openStack = ( tab_id ) ->
                 console.log 'OPEN_STACK'
                 #call getStackInfo
                 model.once 'GET_STACK_COMPLETE', ( result ) ->
@@ -151,6 +152,7 @@ define [ 'jquery', 'event', 'base_main',
                 model.getStackInfo tab_id
                 #
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+            model.on 'OPEN_STACK', openStack
 
             #listen open_app
             openApp = ( tab_id ) ->
@@ -245,33 +247,46 @@ define [ 'jquery', 'event', 'base_main',
                 null
 
             #listen
-            ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
-                console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
+                console.log 'tabbar:UPDATE_APP_STATE', type, tab_id
                 #
-                view.changeIcon app_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                if type is constant.APP_STATE.APP_STATE_TERMINATED
+                    view.trueCloseTab null, tab_id
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
+                    view.changeIcon tab_id
+                #
+                #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+                #
                 null
 
             #listen
-            ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
-                console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-                #
-                view.changeIcon app_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                null
+            #ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
+            #    console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            #    #
+            #    view.changeIcon app_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
 
             #listen
-            ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
-                console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
-                #
-                view.trueCloseTab null, tab_id
-                #
-                #view.closeTab tab_id
-                #push event
-                ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                null
+            #ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
+            #    console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
+            #    #
+            #    view.changeIcon app_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
+
+            #listen
+            #ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
+            #    console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
+            #    #
+            #    view.trueCloseTab null, tab_id
+            #    #
+            #    #view.closeTab tab_id
+            #    #push event
+            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
+            #    null
 
             #listen
             ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
@@ -279,7 +294,7 @@ define [ 'jquery', 'event', 'base_main',
                 #
                 view.closeTab stack_id
                 #push event
-                ide_event.trigger ide_event.UPDATE_STACK_LIST, null
+                #ide_event.trigger ide_event.UPDATE_STACK_LIST, null
                 null
 
             #listen
@@ -306,6 +321,11 @@ define [ 'jquery', 'event', 'base_main',
                     if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             #listen
+            ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
+                console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+                Tabbar.updateState tab_id, tab_type
+
+            #listen
             ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region, result ) ->
                 console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
                 #set vo
@@ -318,11 +338,19 @@ define [ 'jquery', 'event', 'base_main',
 
             #listen
             ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->
-                console.log 'PROCESS_RUN_SUCCESS'
+                console.log 'PROCESS_RUN_SUCCESS, tab_id = ' + tab_id + ', region_name = ' + region_name
                 #set vo
                 model.set 'app_region_name', region_name
                 #
                 openApp tab_id
+
+            #listen
+            ide_event.onLongListen ide_event.RELOAD_STACK_TAB, ( tab_id, region_name ) ->
+                console.log 'RELOAD_STACK_TAB', tab_id, region_name
+                #set vo
+                model.set 'stack_region_name', region_name
+                #
+                openStack tab_id
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->

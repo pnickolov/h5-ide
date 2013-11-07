@@ -37,11 +37,14 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
         SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
-        UPDATE_PROPERTY        : 'UPDATE_PROPERTY'
-        OPEN_SG                : 'OPEN_SG'
-        OPEN_ACL               : 'OPEN_ACL'
-        RELOAD_PROPERTY        : 'RELOAD_PROPERTY'
         RELOAD_AZ              : 'RELOAD_AZ'
+
+        #design overlay
+        SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
+        HIDE_DESIGN_OVERLAY    : 'HIDE_DESIGN_OVERLAY'
+
+        #resource panel
+        UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
 
         #tab
         ADD_STACK_TAB          : 'ADD_STACK_TAB'
@@ -49,6 +52,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_APP_TAB           : 'OPEN_APP_TAB'
         OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
+        RELOAD_STACK_TAB       : 'RELOAD_STACK_TAB'
         CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
@@ -67,6 +71,14 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
+        UPDATE_TABBAR_TYPE    : 'UPDATE_TABBAR_TYPE'
+
+        #status bar & ta
+        UPDATE_STATUS_BAR      : 'UPDATE_STATUS_BAR'
+        UPDATE_TA_MODAL        : 'UPDATE_TA_MODAL'
+        UNLOAD_TA_MODAL        : 'UNLOAD_TA_MODAL'
+        TA_SYNC_START          : 'TA_SYNC_START'
+        TA_SYNC_FINISH          : 'TA_SYNC_FINISH'
 
         #result app stack region empty_region list
         RESULT_APP_LIST        : 'RESULT_APP_LIST'
@@ -78,6 +90,11 @@ define [ 'underscore', 'backbone' ], () ->
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB      : 'RETURN_REGION_TAB'
 
+        #appedit
+        RESTORE_CANVAS         : 'RESTORE_CANVAS'
+        APPEDIT_2_APP          : 'APPEDIT_2_APP'
+        APPEDIT_UPDATE_ERROR   : 'APPEDIT_UPDATE_ERROR'
+
         # User Input Change Event
         NEED_IGW               : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM   : 'ENABLE_RESOURCE_ITEM'
@@ -85,10 +102,6 @@ define [ 'underscore', 'backbone' ], () ->
 
         DELETE_COMPONENT       : 'DELETE_COMPONENT'
 
-        PROPERTY_TITLE_CHANGE  : 'PROPERTY_TITLE_CHANGE'
-        PROPERTY_OPEN_SUBPANEL : 'PROPERTY_OPEN_SUBPANEL'
-        PROPERTY_HIDE_SUBPANEL : 'PROPERTY_HIDE_SUBPANEL'
-        PROPERTY_RENDER_COMPLETE : 'PROPERTY_RENDER_COMPLETE'
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
 
         CANVAS_CREATE_LINE     : 'CANVAS_CREATE_LINE'
@@ -112,12 +125,14 @@ define [ 'underscore', 'backbone' ], () ->
         SAVE_STACK             : 'SAVE_STACK'
         UPDATE_APP_LIST        : 'UPDATE_APP_LIST'
         UPDATE_STACK_LIST      : 'UPDATE_STACK_LIST'
+        UPDATE_STATUS_BAR_SAVE_TIME : 'UPDATE_STATUS_BAR_SAVE_TIME'
 
         #app/stack state
-        STARTED_APP            : 'STARTED_APP'
-        STOPPED_APP            : 'STOPPED_APP'
-        TERMINATED_APP         : 'TERMINATED_APP'
+        #STARTED_APP           : 'STARTED_APP'
+        #STOPPED_APP           : 'STOPPED_APP'
+        #TERMINATED_APP        : 'TERMINATED_APP'
         #STACK_DELETE          : 'STACK_DELETE'
+        UPDATE_APP_STATE       : 'UPDATE_APP_STATE'
 
         #canvas event save stack/app by ctrl+s
         CANVAS_SAVE            : 'CANVAS_SAVE'

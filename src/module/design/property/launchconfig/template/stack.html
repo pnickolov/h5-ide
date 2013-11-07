@@ -1,0 +1,91 @@
+<article>
+
+	<div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
+	<div class="option-group">
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-instance-name" >{{i18n "PROP_LC_NAME"}}</label>
+			<span class="required-input right">{{i18n "PROP_INSTANCE_REQUIRE"}}</span>
+			<input class="input launch-configuration-name"  type="text" value="{{name}}" name="property-instance-name" id="property-instance-name" maxlength="255" data-required-rollback="true" data-ignore="true"/>
+		</section>
+		<section class="property-control-group">
+			<label>{{i18n "PROP_INSTANCE_AMI"}}</label>
+			<div id="property-ami" class="property-block-wrap clearfix" data-uid="{{imageId}}">
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<div class="property-ami-label">{{instance_ami.name}}</div>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<label class="left">{{i18n "PROP_INSTANCE_TYPE"}}</label>
+			<div class="selectbox selectbox-mega" id="instance-type-select">
+				<div class="selection"></div>
+				<ul class="dropdown">
+					{{#each instance_type}}
+					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}">
+						<div class="main  truncate">{{main}}</div>
+						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</section>
+		<section class="property-control-group {{#unless can_set_ebs}}hide{{/unless}}">
+			<div class="checkbox">
+				{{#if ebsOptimized}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" checked="true" name="ebs-optimized" />
+				{{else}}
+				<input id="property-instance-ebs-optimized" type="checkbox" value="None" name="ebs-optimized" />
+				{{/if}}
+				<label for="property-instance-ebs-optimized"></label>
+			</div>
+			<label for="property-instance-ebs-optimized" >EBS Optimized</label>
+		</section>
+		<section class="property-control-group">
+			<label class="left">{{i18n "PROP_INSTANCE_KEY_PAIR"}}</label>
+			<div class="selectbox" id="keypair-select">
+				<div class="selection"></div>
+				<div style="height: 120px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
+					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+					<div class="scroll-content">
+						<ul tabindex="-1">
+							{{#each keypair}}
+							<li class="item{{#if selected}} selected{{/if}}" data-id="{{name}}" data-using="{{using}}">{{name}}
+							{{#if @index}}<span class="icon-remove"></span>{{/if}}
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+
+				<div class="editor">
+					<a href="#" class="editbtn">{{i18n "PROP_INSTANCE_NEW_KP"}}</a>
+					<div class="edit">
+						<button class="btn btn-blue">OK</button>
+						<span class="fitfloat">
+							<input class="input" type="text" placeholder="Key Pair Name" />
+						</span>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
+	<div class="option-group">
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if monitorEnabled}}{{#if monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
+				<label for="property-instance-enable-cloudwatch"></label>
+			</div>
+			<label for="property-instance-enable-cloudwatch">{{i18n "PROP_INSTANCE_CW_ENABLED"}}</label>
+
+			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+		</section>
+		<section class="property-control-group">
+			<label class="left" for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
+			<textarea id="property-instance-user-data">{{userData}}</textarea>
+		</section>
+	</div>
+
+	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group">Loading...</div>
+</article>

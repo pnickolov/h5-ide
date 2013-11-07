@@ -1,14 +1,15 @@
 #############################
 #  View Mode for canvas
 #############################
-define [ 'constant', 'event', 'i18n!nls/lang.js',
-		'backbone', 'jquery', 'underscore', 'UI.modal' ], ( constant, ide_event, lang ) ->
+define [ 'constant',
+         'event',
+         'lib/forge/app',
+         'i18n!nls/lang.js',
+'backbone', 'UI.modal' ], ( constant, ide_event, forge_app, lang ) ->
 
 	CanvasModel = Backbone.Model.extend {
 
 		initialize : ->
-			#listen
-
 			resource_type = constant.AWS_RESOURCE_TYPE
 
 			resource_map = {
@@ -30,12 +31,18 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			this.deleteResMap    = {}
 			this.beforeDeleteMap = {}
 
+			# Delete handlers for App Edit
+			this.deleteResAppEditMap = {}
+			this.beforeDeleteAppEditMap = {}
+
 			for key, value of resource_map
 				this.changeParentMap[ resource_type[key] ] = this['changeP_'   + value]
 				this.validateDropMap[ resource_type[key] ] = this['beforeD_'   + value]
 				this.deleteResMap[    resource_type[key] ] = this['deleteR_'   + value]
 				this.beforeDeleteMap[ resource_type[key] ] = this['beforeDel_' + value]
 
+				this.deleteResAppEditMap[ resource_type[key] ]    = this['deleteR_AE_'   + value]
+				this.beforeDeleteAppEditMap[ resource_type[key] ] = this['beforeDel_AE_' + value]
 			null
 
 		#show notification when place is blank
@@ -100,6 +107,19 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 		# An object is about to be dropped. Test if the object can be dropped
 		beforeDrop : ( event, src_node, tgt_parent ) ->
+
+			# We don't support change parent in App Edit Mode yet.
+			if MC.canvas.getState() is "appedit"
+
+				node = MC.canvas_data.layout.component.group[src_node]
+				if !node
+					node = MC.canvas_data.layout.component.node[src_node]
+				if !node || !node.groupUId || node.groupUId == tgt_parent
+					return
+
+				event.preventDefault()
+				return
+
 			node = MC.canvas_data.layout.component.group[src_node]
 			if !node
 				node = MC.canvas_data.layout.component.node[src_node]
@@ -458,6 +478,21 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 		deleteObject : ( event, option ) ->
 
+			# In AppEdit mode, we use a different method collection to deal with deleting object.
+			# See if we need to hackjack the deleteResMap / beforeDeleteResMap here
+			isAppEdit = MC.canvas.getState() is "appedit"
+			hijack = isAppEdit and forge_app.existing_app_resource( option.id ) is true
+
+			if hijack
+				deleteMapBU       = this.deleteResMap
+				beforeDeleteMapBU = this.beforeDeleteMap
+				this.deleteResMap       = this.deleteResAppEditMap
+				this.beforeDeleteResMap = this.beforeDeleteAppEditMap
+
+			# Default to not allow delete things in app
+			if isAppEdit
+				result = false
+
 			option = $.extend {}, option
 
 			component = MC.canvas_data.component[ option.id ] ||
@@ -515,6 +550,12 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			else if event && event.preventDefault
 				event.preventDefault()
+
+
+			# Restore hijacked Maps
+			if hijack
+				this.deleteResMap    = deleteMapBU
+				this.beforeDeleteMap = beforeDeleteMapBU
 
 			result
 
@@ -650,13 +691,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			for key, value of MC.canvas_data.component
 
-				# remove instance relate sg rule or sg
-				if value.type == resource_type.AWS_EC2_SecurityGroup
-					this._removeInstanceFromSG key, component.uid
+				# # remove instance relate sg rule or sg ( Disabled because we do not support sg rule associated to instance )
+				# ###
+				# if value.type == resource_type.AWS_EC2_SecurityGroup
+				# 	this._removeInstanceFromSG key, component.uid
+				# ###
 
 				# remove instance relate eni
 
-				else if value.type == resource_type.AWS_VPC_NetworkInterface
+				if value.type == resource_type.AWS_VPC_NetworkInterface
 					if MC.extractID( value.resource.Attachment.InstanceId ) == component.uid
 
 						# reset eni after disconnect instance
@@ -691,6 +734,60 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			null
 
+		deleteR_AE_Instance : ( component ) ->
+
+			groupUID = component.uid
+			groupMap = {}
+
+			rtbResArr = []
+
+			deleteUID = []
+
+			# Find out instance in server group
+			for comp_uid, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+					if comp.serverGroupUid is groupUID
+						groupMap[ comp_uid ] = true
+						rtbResArr.push comp_uid
+						deleteUID.push comp_uid
+
+			eniMap = {}
+			for comp_uid, comp of MC.canvas_data.component
+
+				# Related Eni
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+					instance_uid = MC.extractID comp.reseource.Attachment.InstanceId
+					if groupMap[ instance_uid ]
+						eniMap[ comp_uid ] = true
+						rtbResArr.push comp_uid
+						deleteUID.push comp_uid
+
+				# Related Volume
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+					instance_uid = MC.extractID comp.resource.AttachmentSet.InstanceId
+					if groupMap[ instance_uid ]
+						deleteUID.push comp_uid
+
+			# EIP, RTB
+			for comp_uid, comp of MC.canvas_data.component
+				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+					eni_uid = MC.extractID comp.resource.NetworkInterfaceId
+					deleteUID.push comp_uid
+
+				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+					for rmID in rtbResArr
+						this._removeFromRTB comp_uid, rmID
+
+			# Remove resource
+			for comp_uid in deleteUID
+				MC.canvas.remove $("#" + comp_uid)[0]
+				delete MC.canvas_data.component[ comp_uid ]
+
+
+			this.trigger "DELETE_OBJECT_COMPLETE"
+			# Return false to do nothing, since we have done them already
+			false
+
 		deleteR_Eni : ( component ) ->
 			for key, value of MC.canvas_data.component
 				if value.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -698,7 +795,6 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 				else if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					if MC.extractID( value.resource.NetworkInterfaceId ) == component.uid
 						delete MC.canvas_data.component[ key ]
-
 			null
 
 		deleteR_RouteTable : ( component ) ->
@@ -713,17 +809,17 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 			resource_type = constant.AWS_RESOURCE_TYPE
 
-			if not force
-				# Deleting IGW when ELB/EIP in VPC, need to be confirmed by user.
-				for key, value of MC.canvas_data.component
-					if value.type == resource_type.AWS_EC2_EIP
-						confirm = true
-						break
-					else if value.type == resource_type.AWS_ELB and value.resource.Scheme == "internet-facing"
-						confirm = true
-						break
-				if confirm
-					return lang.ide.CVS_CFM_DEL_IGW
+			# Deleting IGW when ELB/EIP in VPC, need to be confirmed by user.
+			for key, value of MC.canvas_data.component
+				if value.type == resource_type.AWS_EC2_EIP
+					cannotDel = true
+					break
+				else if value.type == resource_type.AWS_ELB and value.resource.Scheme == "internet-facing"
+					cannotDel = true
+					break
+			if cannotDel
+				notification "error", lang.ide.CVS_CFM_DEL_IGW
+				return false
 
 			for key, value of MC.canvas_data.component
 				if value.type == resource_type.AWS_VPC_RouteTable
@@ -1236,6 +1332,15 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			# ELB <==> Subnet
 			else if portMap['elb-assoc'] and portMap['subnet-assoc-in']
 				elbUid       = portMap['elb-assoc']
+				subnetUid    = portMap['subnet-assoc-in']
+
+				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid)
+				console.debug ta
+				if ta
+					notification 'warning', ta.info
+					this.deleteObject null, { type : "line", id : line_id }
+					return
+
 				deleteE_SLen = MC.aws.elb.addSubnetToELB elbUid, portMap['subnet-assoc-in']
 
 				# Connecting Elb to Subnet might need to disconnect Elb from another Subnet
@@ -1477,7 +1582,7 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 				# Prevent SG Rule create from AMI to attached ENI
 				eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
-				if eni_comp and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
+				if eni_comp and eni_comp.resource.Attachment and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
 					return "The Network Interface is attached to the instance. No need to connect them by security group rule."
 
 				for key, value of portMap
@@ -2030,14 +2135,14 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 
 				if !defaultVPC
 					# Ask the user the add IGW
-					this.askToAddIGW 'Elastic IP'
+					this.askToAddIGW()
 
 			else
 				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 				MC.canvas.update uid,'eip','eip_status', 'off'
 
-		askToAddIGW : ( component ) ->
-
+		askToAddIGW : () ->
+			# modify by song
 			resource_type = constant.AWS_RESOURCE_TYPE
 
 			for uid, comp of MC.canvas_data.component
@@ -2048,28 +2153,26 @@ define [ 'constant', 'event', 'i18n!nls/lang.js',
 			if hasIGW
 				return
 
-			if component.type == resource_type.AWS_ELB
-				res = "internet-facing Load Balancer"
-			else if component.type == resource_type.AWS_EC2_EIP
-				res = "Elastic IP"
-			else if _.isString component
-				res = component
+			notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG
+			resource_type = constant.AWS_RESOURCE_TYPE
 
-			# Confimation
-			self = this
-			template = MC.template.canvasOpConfirm {
-				operation : lang.ide.CVS_CFM_ADD_IGW
-				content   : sprintf lang.ide.CVS_CFM_ADD_IGW_MSG, res
-				color     : "blue"
-				proceed   : lang.ide.CFM_BTN_ADD
-				cancel    : lang.ide.CFM_BTN_DONT_ADD
-			}
-			modal template, true
-			$("#canvas-op-confirm").one "click", ()->
-				modal.close()
+			vpc_id   = $('.AWS-VPC-VPC').attr 'id'
+			vpc_data = MC.canvas.data.get "layout.component.group.#{vpc_id}"
+			vpc_coor = vpc_data.coordinate
 
-				# modify by song
-				MC.aws.igw.addIGWToCanvas()
+			component_size = MC.canvas.COMPONENT_SIZE[ resource_type.AWS_VPC_InternetGateway ]
+
+			node_option =
+				groupUId : vpc_id
+				name     : "IGW"
+
+			coordinate =
+				x : vpc_coor[0] - component_size[1] / 2
+				y : vpc_coor[1] + (vpc_data.size[1] - component_size[1]) / 2
+
+			MC.canvas.add resource_type.AWS_VPC_InternetGateway, node_option, coordinate
+			null
+
 
 		zoomedDropError : () ->
 

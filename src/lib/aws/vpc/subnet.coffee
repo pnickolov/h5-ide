@@ -283,6 +283,13 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 		return true
 
+	isConnectToELB = (subnetUID) ->
+		subnetInELB =  "@#{subnetUID}.resource.SubnetId"
+		_.some MC.canvas_data.component, ( component, id ) ->
+			component.type is 'AWS.ELB' and _.contains component.resource.Subnets, subnetInELB
+
+
+
 	generateCIDRPossibile = () ->
 
 		currentVPCUID = MC.aws.vpc.getVPCUID()
@@ -329,6 +336,16 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 		return result
 
+	isAbleConnectToELB = ( subnetUid ) ->
+		
+		subnet = MC.canvas_data.component[ subnetUid ]
+		cidr = + subnet.resource.CidrBlock.split('/')[1]
+		console.debug subnet.resource.CidrBlock
+		console.debug cidr
+		if cidr <= 27
+			return true
+		false
+		
 	isIPInSubnet = (ipAddr, subnetCIDR) ->
 
 		subnetIPAry = subnetCIDR.split('/')
@@ -383,4 +400,10 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 	autoAssignSimpleCIDR           : autoAssignSimpleCIDR
 	canDeleteSubnetToELBConnection : canDeleteSubnetToELBConnection
 	generateCIDRPossibile          : generateCIDRPossibile
+	isConnectToELB		       : isConnectToELB
+	isAbleConnectToELB	       : isAbleConnectToELB
 	isIPInSubnet                   : isIPInSubnet
+
+
+
+

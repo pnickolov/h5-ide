@@ -488,8 +488,8 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?"
-      zh: "如果没有互联网网关，面向互联网的负载均衡器和弹性IP将失去作用。确定要删除它吗？"
+      en: "Internet-facing load balancers and elastic IPs require an internet gateway to function."
+      zh: "面向互联网的负载均衡器和弹性IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
@@ -504,8 +504,8 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway to allow this %s to be publicly addressable?"
-      zh: "自动添加一个互联网网关允许这个 %s 被公开寻址?"
+      en: "Automatically add an internet gateway for using EIP"
+      zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -620,11 +620,11 @@ module.exports =
       zh: "导出图片"
 
     TOOL_TIP_STOP_APP:
-      en: "Stop this app's resources."
+      en: "Stop This App's Resources."
       zh: "暂停应用"
 
     TOOL_POP_TIT_STOP_APP:
-      en: "Confirm to stop app"
+      en: "Confirm to Stop App"
       zh: "确认暂停"
 
     TOOL_POP_BODY_STOP_APP_LEFT:
@@ -640,11 +640,11 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start this app's resources."
+      en: "Start This App's Resources."
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:
-      en: "Confirm to start app"
+      en: "Confirm to Start App"
       zh: "确认恢复"
 
     TOOL_POP_BODY_START_APP_LEFT:
@@ -659,12 +659,24 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
+    TOOL_TIP_UPDATE_APP:
+      en: "Edit App"
+      zh: "更新应用"
+
+    TOOL_TIP_SAVE_UPDATE_APP:
+      en: "Apply Updates"
+      zh: "保存应用更新"
+
+    TOOL_TIP_CANCEL_UPDATE_APP:
+      en: "Discard Updates"
+      zh: "取消应用更新"
+
     TOOL_TIP_TERMINATE_APP:
-      en: "Permanently terminate this app's resources"
+      en: "Permanently Terminate This App's Resources"
       zh: "销毁应用"
 
     TOOL_POP_TIT_TERMINATE_APP:
-      en: "Confirm to terminate app"
+      en: "Confirm to Terminate App"
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:
@@ -742,6 +754,18 @@ module.exports =
     TOOL_MSG_INFO_APP_REFRESH_START:
       en: "Refresh resources for app( %s ) start ..."
       zh: "开始刷新应用( %s )的资源 ..."
+
+    TOOL_POP_BODY_APP_UPDATE_EC2:
+      en: "The public and private addresses will be reassigned after the restart.",
+      zh: "重启后，公有/私有的IP地址将会被重新分配。"
+
+    TOOL_POP_BODY_APP_UPDATE_VPC:
+      en: "If any of the instance has been automatically assigned public IP, the IP will change after restart.",
+      zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
+
+    TOOL_MSG_INFO_NO_CHANGES:
+      en: "This app is't any change."
+      zh: "当前App没有任何改变。"
 
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
@@ -1286,6 +1310,10 @@ module.exports =
     PROP_SG_APP_SG_ID:
       en: "Security Group ID"
       zh: "安全组标识"
+
+    PROP_SG_APP_SG_NAME:
+      en: "Security Group Name"
+      zh: "安全组名字"
 
     PROP_SG_APP_VPC_ID:
       en: "VPC ID"
@@ -2023,6 +2051,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ASG_SUMMARY:
+      en: "Auto Scaling Group Summary"
+      zh: "自动伸缩组摘要"
+
     PROP_ASG_DETAILS:
       en: "Auto Scaling Group Details"
       zh: "自动伸缩组配置"
@@ -2126,6 +2158,10 @@ module.exports =
     PROP_ASG_LBL_NOTIFICATION:
       en: "Notification"
       zh: "通知"
+
+    PROP_ASG_LBL_SEND_NOTIFICATION_D:
+      en: "Send notification via SNS topic"
+      zh: "通过SNS发送通知"
 
     PROP_ASG_LBL_SEND_NOTIFICATION:
       en: "Send notification via SNS topic for:"
@@ -3287,19 +3323,126 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    RUN_STACK:
+      en: "run stack"
+      zh: "运行"
+
+    START_APP:
+      en: "start app"
+      zh: "启动APP"
+
+    STOP_APP:
+      en: "stop app"
+      zh: "停止APP"
+
+    TERMINATE_APP:
+      en: "terminate app"
+      zh: "删除APP"
 
     ##### Trust Advisor
-    TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
+
+    # VPC
+    TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
       en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN"
       zh: ""
 
-
-    # TA Developer write code below plz.
-
-    # TA Developer write code above plz.
-    TA_TAKE_POSITION:
-      en: ""
+    # Subnet
+    TA_MSG_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
+      en: '%s is attached with a load balancer. It must be smaller than /27'
       zh: ""
+
+    # Instance
+    TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
+      en: "Instance %s has an attached Provisioned IOPS volume but is not EBS-Optimized"
+      zh: ""
+    TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
+      en: "Instance %s has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded"
+      zh: ""
+
+    # ELB
+    TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
+      en: "Load Balancer %s is internet-facing but VPC no have an Internet Gateway"
+      zh: ""
+
+    TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
+      en: "Load Balancer %s has no attached instance or auto scaling group"
+      zh: ""
+
+    TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
+      en: "Load Balancer %s is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance"
+      zh: ""
+
+    TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
+      en: "Load Balancer %s redirects 443 to 443. Suggest to use load balancer to decrypt and redirect to port 80"
+      zh: ""
+
+    # SG
+    TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
+      en: "Security Group %s has more than %s rules, If a security group has a large number of rules, performance can be degraded"
+      zh: ""
+    TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG:
+      en: "This stack is only using 1 security group"
+      zh: ""
+    TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
+      en: "Security Group %s is using 'ALL' protocol traffic"
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
+      en: "Security Group %s has inbound rule which traffic from 0.0.0.0 is not targeting port 80 or 443"
+      zh: ""
+    TA_MSG_NOTICE_SG_RULE_USING_PORT_22:
+      en: "Security Group %s has rule which using port 22. To enhance security, suggest to use other port than 22"
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
+      en: "Security Group %s has outbound rule towards 0.0.0.0/0. Suggest to change to more specific range"
+      zh: ""
+
+    # ASG
+    TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
+      en:"%s has no launch configuration."
+      zh:""
+
+    TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK:
+      en: "%s has connected to Elastic Load Balancing but the Elastic Load Balancing health check is not enabled."
+      zh: ""
+
+    TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW:
+      en: "VPC has instance with Elastic IP must have an Internet Gateway."
+      zh: ""
+
+    TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
+      en: "%s has route to %s. If %s is working as NAT instance, it should be assigned with an Elastic IP."
+      zh: ""
+
+    TA_MSG_WARNING_SINGLE_AZ:
+      en: "Only 1 availability zone is used. Multiple availability zone can improve fault tolerance."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_IGW:
+      en: "No route table is connected to Internet-gateway."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_VGW:
+      en: "No route table is connected to VPN-gateway."
+      zh: ""
+
+    TA_MSG_NOTICE_RT_HAS_NO_ALLOW_ACL:
+      en: "%s has no allow rule. But %s has route to %s associated %s."
+      zh: ""
+
+    # CGW
+    TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT:
+      en:"Checking Customer Gateway IP Address conflict with exist resource..."
+      zh:""
+    TA_MSG_ERROR_CGW_IP_CONFLICT:
+      en:"Customer Gateway %s(%s) conflict with exist %s(%s)"
+      zh:""
+
+    # Stack
+    TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID:
+      en:"Checking Stack data format validity..."
+      zh:""
+
+    ##### Trust Advisor
 
   service:
 

@@ -2,127 +2,65 @@
 #  Controller for design/property/launchconfig module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'text!./app_template.html',
-         'event'
-], ( $, template, app_template, ide_event ) ->
 
-    #
-    current_view     = null
-    current_model    = null
-    current_sub_main = null
+define [ "../base/main",
+         "./model",
+         "./view",
+         "./app_view",
+         "../sglist/main",
+         "constant",
+         "event"
+], ( PropertyModule, model, view, app_view, sglist_main, constant, ide_event ) ->
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-launchconfig-tmpl">' + template + '</script>'
-    app_template = "<script type='text/x-handlebars-template' id='property-launchconfig-app-tmpl'>#{app_template}</script>"
-    #load remote html template
-    $( 'head' ).append( template ).append( app_template )
+    LCModule = PropertyModule.extend {
 
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-        #
-        MC.data.current_sub_main = current_main
+        onUnloadSubPanel : ( id )->
+            sglist_main.onUnloadSubPanel id
+            null
 
-        if tab_type is 'OPEN_APP'
-            loadAppModule uid, current_main
-            return
+        initStack : () ->
+            @model = model
+            @model.isApp = false
+            @view  = view
+            null
 
-        require [ './module/design/property/launchconfig/view',
-                  './module/design/property/launchconfig/model',
-                  './module/design/property/sglist/main'
-        ], ( view, model, sglist_main ) ->
+        afterLoadStack : () ->
+            sglist_main.loadModule @model
+            null
 
-            # added by song
-            model.clear({silent: true})
+        setupStack : () ->
+            me = this
+            @model.setup()
+            @model.on "KP_DOWNLOADED", (data, option)->
+                me.view.updateKPModal(data, option)
 
-            #
-            if current_view then view.delegateEvents view.events
+            @view.on "REQUEST_KEYPAIR", (name)->
+                me.model.downloadKP(name)
 
-            #
-            current_sub_main = sglist_main
+            @view.on "OPEN_AMI", (id)->
+                PropertyModule.loadSubPanel "STATIC", id
+            null
 
-            #
-            current_view  = view
-            current_model = model
-            #
-            model.getUID  uid
-            model.getName()
-            model.getInstanceType()
-            model.getAmiDisp()
-            model.getAmi()
-            model.getComponent()
-            model.getKeyPair()
-            # model.getSgDisp()
-            model.getCheckBox()
+        initApp : () ->
+            @model = model
+            @model.isApp = true
+            @view  = app_view
+            null
 
-            model.set 'type', 'stack'
+        initAppEdit : () ->
+            @model = model
+            @model.isApp = true
+            @view  = app_view
+            null
 
-            #view
-            view.model    = model
-            view.render()
+        afterLoadApp : () ->
+            sglist_main.loadModule @model
+            null
 
-            ide_event.trigger ide_event.RELOAD_PROPERTY
-            # Update property title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
-
-            model.listen()
-
-            sglist_main.loadModule model
-
-            view.on "NAME_CHANGE", ( value ) ->
-                model.set 'name', value
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
-
-    loadAppModule = ( uid ) ->
-        require [ './module/design/property/launchconfig/app_view',
-                  './module/design/property/launchconfig/model',
-                  './module/design/property/sglist/main'
-        ], ( view, model, sglist_main ) ->
-
-            # added by song
-            model.clear({silent: true})
-
-             #
-            if current_view then view.delegateEvents view.events
-
-            #
-            current_sub_main = sglist_main
-
-            #
-            current_view  = view
-            current_model = model
-
-            model.set 'type', 'app'
-
-            model.getAppLaunch uid
-
-            model.on "KP_DOWNLOADED", (data, option)-> view.updateKPModal(data, option)
-            view.on "REQUEST_KEYPAIR", (name)-> model.downloadKP(name)
-
-            #view
-            view.model    = model
-            view.render()
-
-            # Update property title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
-
-            model.listen()
-
-            sglist_main.loadModule model
-
-
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        #
-        current_sub_main.unLoadModule()
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule
+        afterLoadAppEdit : () ->
+            sglist_main.loadModule @model
+            null
+    }
+    null

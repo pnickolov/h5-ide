@@ -2,30 +2,23 @@
 #  View(UI logic) for design/property/az
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
-    AZView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-az-tmpl' ).html()
+    AZView = PropertyView.extend {
 
         events   :
             'OPTION_CHANGE #az-quick-select' : "azSelect"
 
         render     : () ->
             console.log 'property:az render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
+
+            @$el.html template @model.attributes
+            "Availability Zone"
 
         azSelect   : ( event, newAZName ) ->
             this.trigger "SELECT_AZ", $("#az-quick-select").attr("component"), newAZName
-
-        isPanelVisible : ( uid ) ->
-            $("#az-quick-select").attr("component") == uid
-
     }
 
-    view = new AZView()
-
-    return view
+    new AZView()

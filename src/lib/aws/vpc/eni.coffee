@@ -359,6 +359,17 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					MC.aws.eni.reduceIPNumByInstanceType(compObj.uid)
 			null
 
+	markAutoAssginFalse = () ->
+
+		_.each MC.canvas_data.component, (compObj) ->
+
+			if compObj.type is 'AWS.VPC.NetworkInterface'
+
+				_.each compObj.resource.PrivateIpAddressSet, (compIp) ->
+
+					compIp.AutoAssign = false
+			null
+
 	haveIPConflictWithOtherENI = (ipAddr, eniUID) ->
 
 		conflict = false
@@ -389,6 +400,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 			null
 
 	#public
+	markAutoAssginFalse	:	markAutoAssginFalse
 	getAvailableIPInCIDR : getAvailableIPInCIDR
 	getAllOtherIPInCIDR : getAllOtherIPInCIDR
 	saveIPList : saveIPList

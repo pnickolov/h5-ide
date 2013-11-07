@@ -32,6 +32,10 @@ define [ 'event',
             target.fadeOut 'normal', () ->
                 target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
+            #test123
+            delete MC.open_failed_list[ MC.data.current_tab_id ] if MC.open_failed_list[ MC.data.current_tab_id ]
+            #
+            null
 
         showLoading : ( tab_id, is_transparent ) ->
             console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
@@ -41,19 +45,25 @@ define [ 'event',
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
-                    notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
+                    #ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
+                    #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
+                    ide_event.tigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL'
             , 1000 * 30
+            #
             null
 
         toggleWaiting : () ->
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
+            #
+            @_hideStatubar()
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
             if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
+            #
+            @_hideStatubar()
 
         showOverviewTab : () ->
             console.log 'showOverviewTab'
@@ -81,6 +91,9 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
+            @_hideStatubar()
+            #
+            null
 
         showProcessTab : () ->
             console.log 'showProcessTab'
@@ -90,6 +103,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
+            @_hideStatubar()
 
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
@@ -106,12 +120,18 @@ define [ 'event',
 
             return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             return if !forge_handle.cookie.getCookieByName( 'userid' )
-            return if MC.data.current_tab_id.split( '-' )[0] in [ 'app', 'process' ]
+            return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
 
             if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
                 return undefined
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
+
+        _hideStatubar : ->
+            console.log '_hideStatubar'
+            if $.trim( $( '#status-bar-modal' ).html() )
+                $( '#status-bar-modal' ).empty()
+                ide_event.trigger ide_event.UNLOAD_TA_MODAL
     }
 
     view = new MainView()

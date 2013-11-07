@@ -2,12 +2,12 @@
 #  View Mode for design/property/elb
 #############################
 
-define [ 'constant', 'backbone', 'MC' ], (constant) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ElbAppModel = Backbone.Model.extend {
+    ElbAppModel = PropertyModel.extend {
 
         defaults :
-            'id'    : null
+            'id'  : null
 
         init : ( elb_uid )->
 
@@ -121,7 +121,8 @@ define [ 'constant', 'backbone', 'MC' ], (constant) ->
 
             elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
 
-            this.set elb
+            @set elb
+            @set "componentUid", myElbComponent.uid
 
         getSGList : () ->
 

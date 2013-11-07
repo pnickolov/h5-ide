@@ -1,13 +1,29 @@
-<section class="toolbar-btn-group">
-  {{#if item_flags.has_instance_store_ami}}
-  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  class="modal tooltip btn-toolbar icon-stop disabled" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" data-tooltip='{{ i18n "TOOL_TIP_STOP_APP" }}'></a>
-  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar icon-play disabled"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_START_APP_RIGHT" }}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app" data-tooltip='{{ i18n "TOOL_TIP_START_APP" }}'></a>
-  {{else}}
-  <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip='{{ i18n "TOOL_TIP_STOP_APP" }}'></a>
-  <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_START_APP_RIGHT" }}}?", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="Start this app's resources."></a>
-  {{/if}}
+<section class="toolbar-btn-group toolbar-btn-primary">
 
-  <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT" }}}?", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip='{{{ i18n "TOOL_TIP_TERMINATE_APP" }}}'></a> <!--'"-->
+  {{#unless item_flags.is_app_updating}}
+  <a href="#" class="modal tooltip btn-toolbar icon-update-app" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}" id="toolbar-edit-app"><span>Edit App</span></a>
+  {{else}}
+  <a href="#" class="modal tooltip btn-toolbar icon-apply-app" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}" id="toolbar-save-edit-app"><span>Apply</span></a>
+  <a href="#" class="modal tooltip btn-toolbar icon-cancel-update-app" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}" id="toolbar-cancel-edit-app"></a>
+  {{/unless}}
+
+</section>
+
+<section class="toolbar-btn-group">
+  {{#unless item_flags.is_app_updating}}
+  <span class="app_model" id="toolbar_appmodel">
+
+    {{#if item_flags.has_instance_store_ami}}
+    <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  class="modal tooltip btn-toolbar icon-stop disabled" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></a>
+    <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" class="modal tooltip btn-toolbar icon-play disabled"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_START_APP_RIGHT" }}}?", "confirm":"Start", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app" data-tooltip='{{ i18n "TOOL_TIP_START_APP" }}'></a>
+    {{else}}
+    <a {{#unless item_flags.is_running}}style="display:none;"{{/unless}} href="#"  {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-stop disabled"{{else}} class="modal tooltip btn-toolbar icon-stop" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_STOP_APP" }}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{item_flags.name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{ i18n "TOOL_POP_BTN_STOP_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-stop-app"{{/if}} data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></a>
+    <a {{#if item_flags.is_running}}style="display:none;"{{/if}} href="#" {{#if item_flags.is_pending}}class="tooltip btn-toolbar icon-play disabled" {{else}}class="modal tooltip btn-toolbar icon-play"  data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_START_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_START_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_START_APP_RIGHT" }}}?", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true" id="toolbar-start-app"{{/if}} data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></a>
+    {{/if}}
+
+    <a href="#" class="btn-toolbar tooltip icon-terminate {{#if item_flags.is_pending}}disabled"{{else}}modal" data-modal-template="modalApp" data-modal-data='{"title":"{{{ i18n "TOOL_POP_TIT_TERMINATE_APP" }}}", "body":"{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT" }}} {{item_flags.name}}{{{ i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT" }}}", "confirm":"{{{ i18n "TOOL_POP_BTN_TERMINATE_APP" }}}", "color":"red" }' data-modal-dismiss="true" id="toolbar-terminate-app"{{/if}} data-tooltip="{{{ i18n 'TOOL_TIP_TERMINATE_APP' }}}"></a> <!--'"-->
+  </span>
+  {{/unless}}
 </section>
 
 <section class="toolbar-btn-group">

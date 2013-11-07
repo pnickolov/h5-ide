@@ -2,26 +2,23 @@
 #  View(UI logic) for design/property/vpc(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template ) ->
 
-    SubnetAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    SubnetAppView = PropertyView.extend {
 
-        template  : Handlebars.compile $( '#property-subnet-app-tmpl' ).html()
         events    :
             "click #property-app-subnet-acl" : 'showACLDetail'
 
         render     : () ->
-            console.log 'property:subnet app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
+            @setTitle @model.attributes.name
+            null
 
         showACLDetail : () ->
-            this.trigger 'OPEN_ACL', $("#property-app-subnet-acl").attr("data-uid")
+            @trigger 'OPEN_ACL', $("#property-app-subnet-acl").attr("data-uid")
+            null
     }
 
-    view = new SubnetAppView()
-
-    return view
+    new SubnetAppView()

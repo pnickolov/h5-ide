@@ -2,24 +2,20 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template ) ->
 
-    LCAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    LCAppView = PropertyView.extend {
 
         events   :
             "click #property-app-keypair" : "downloadKeypair"
 
-        template  : Handlebars.compile $( '#property-launchconfig-app-tmpl' ).html()
-
         kpModalClosed : false
 
-        render     : () ->
-            console.log 'property:instance app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
+        render : () ->
+            @$el.html template @model.attributes
+            @model.attributes.name
 
         downloadKeypair : ( event ) ->
             keypair = $( event.currentTarget ).html()
@@ -60,6 +56,4 @@ define [ 'event', 'MC',
 
     }
 
-    view = new LCAppView()
-
-    return view
+    new LCAppView()

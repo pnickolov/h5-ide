@@ -2,124 +2,58 @@
 #  Controller for design/property/rtb module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'text!./app_template.html',
-         'event'
-], ( $, template, app_template, ide_event ) ->
+define [ '../base/main',
+         './model',
+         './view',
+         './app_model',
+         './app_view',
+         'event',
+         'constant'
+], ( PropertyModule, model, view, app_model, app_view, ide_event, constant ) ->
 
-    #
-    current_view  = null
-    current_model = null
+    ideEvents = {}
+    ideEvents[ ide_event.CANVAS_DELETE_OBJECT ] = () ->
+        this.model.reInit()
+        this.view.render()
 
-    #add handlebars script
-    template = '<script type="text/x-handlebars-template" id="property-rtb-tmpl">' + template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-rtb-app-tmpl">' + app_template + '</script>'
-    #load remote html template
-    $( 'head' ).append( template ).append( app_template )
+    ideEvents[ ide_event.CANVAS_CREATE_LINE ] = () ->
+        this.model.reInit()
+        this.view.render()
 
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
+    RTBModule = PropertyModule.extend {
 
-        MC.data.current_sub_main = current_main
+        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, /rtb-tgt/, /rtb-src/ ]
 
-        #set view_type
-        if tab_type is 'OPEN_APP'
-            loadAppModule uid
-            return
+        setupStack : () ->
 
-        #
-        require [ './module/design/property/rtb/view',
-                  './module/design/property/rtb/model'
-        ], ( view, model ) ->
+            me = this
+            @view.on 'SET_ROUTE', ( uid, data, routes ) ->
+                me.model.setRoutes uid, data, routes
 
-            # added by song
-            model.clear({silent: true})
+            @view.on 'SET_NAME', ( uid, name ) ->
+                me.model.setName uid, name
 
-            #
-            if current_view then view.delegateEvents view.events
+            @view.on 'SET_MAIN_RT', ( uid ) ->
+                me.model.setMainRT uid
+                me.model.reInit()
 
-            #
-            current_view  = view
-            current_model = model
+            @view.on 'SET_PROPAGATION', ( uid, value ) ->
+                me.model.setPropagation uid, value
 
-            #view
-            view.model    = model
-            #model
-            model.getRoute( uid )
+        initStack : () ->
+            @model = model
+            @view  = view
+            null
 
-            #render
-            view.render()
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.title
+        initApp  : () ->
+            @model = app_model
+            @view  = app_view
+            null
 
-            view.on 'SET_ROUTE', ( uid, data, routes ) ->
+        initAppEdit  : () ->
+            @model = app_model
+            @view  = app_view
+            null
 
-                model.setRoutes uid, data, routes
-
-            view.on 'SET_NAME', ( uid, name ) ->
-
-                model.setName uid, name
-                # Set title
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, name
-
-            view.on 'SET_MAIN_RT', ( uid ) ->
-
-                model.setMainRT uid
-
-                model.getRoute( uid )
-
-                view.render()
-
-            view.on 'SET_PROPAGATION', ( uid, value ) ->
-
-                model.setPropagation uid, value
-
-            ide_event.on ide_event.CANVAS_DELETE_OBJECT, () ->
-
-                model.getRoute( uid )
-
-                view.render()
-
-            ide_event.on ide_event.CANVAS_CREATE_LINE, () ->
-
-                model.getRoute( uid )
-
-                view.render()
-
-
-    loadAppModule = ( uid ) ->
-        require [ './module/design/property/rtb/app_view',
-                  './module/design/property/rtb/app_model'
-        ], ( view, model ) ->
-
-            # added by song
-            model.clear({silent: true})
-
-            #
-            if current_view then view.delegateEvents view.events
-
-            current_view  = view
-            current_model = model
-
-            #view
-            view.model    = model
-
-            model.init uid
-            view.render()
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
-
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-        ide_event.offListen ide_event.CANVAS_DELETE_OBJECT
-        ide_event.offListen ide_event.CANVAS_CREATE_LINE
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule
+    }
+    null

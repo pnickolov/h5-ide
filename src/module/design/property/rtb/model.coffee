@@ -2,18 +2,14 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    RTBModel = Backbone.Model.extend {
+    RTBModel = PropertyModel.extend {
 
         defaults :
             'route_table' : null
             'association' : null
             'title'       : null
-
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
 
         setName : ( uid, name ) ->
 
@@ -92,11 +88,15 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             this.set 'route_table', rt
 
+        reInit : () ->
+            @init( @get( "uid" ) )
+            null
 
+        init : ( uid ) ->
 
-        getRoute : ( uid ) ->
+            @set "uid", uid
 
-            # uid might be a line connecting RTB and Subnet
+            # uid might be a line connecting RTB and other resource
             connection = MC.canvas_data.layout.connection[ uid ]
             if connection
                 data = {}
@@ -104,12 +104,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     component = MC.canvas_data.component[ uid ]
                     if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
                         data.subnet = component.name
-                    else
-                        data.rtb    = component.name
+                        has_subnet = true
+                    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                        data.rtb  = component.name
+                        route_uid = uid
 
-                this.set 'association', data
-                this.set 'title', 'Subnet-RT Association'
-                return
+                if has_subnet
+                    this.set 'association', data
+                    this.set 'title', 'Subnet-RT Association'
+                    return
+                else
+                    uid = route_uid
 
 
             # This is a route table component
@@ -307,6 +312,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
     }
 
-    model = new RTBModel()
-
-    return model
+    new RTBModel()

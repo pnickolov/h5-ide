@@ -340,6 +340,42 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     # end of parserExportCloudformationReturn
 
 
+    #///////////////// Parser for verify return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveVerifyResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser verify return)
+    parserVerifyReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+        resolved_data = { result: false, cause: 'internal error' }
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+            resolved_data = { result: true }
+
+        else if return_code == constant.RETURN_CODE.E_INVALID
+            resolved_data = { result: false, cause:result }
+            forge_result.is_error = false
+
+        else
+            forge_result.is_error = true
+
+        forge_result.resolved_data = resolved_data
+
+        #3.return vo
+        forge_result
+        
+
+
+    # end of parserVerifyReturn
+
 
     #############################################################
 
@@ -388,6 +424,11 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         send_request "export_cloudformation", src, [ username, session_id, region_name, stack_id ], parserExportCloudformationReturn, callback
         true
 
+    #def verify(self, username, session_id, spec):
+    verify = ( src, username, session_id, spec, callback ) ->
+        send_request "verify", src, [ username, session_id, spec ], parserVerifyReturn, callback
+        true
+
 
     #############################################################
     #public
@@ -400,3 +441,4 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     info                         : info
     list                         : list
     export_cloudformation        : export_cloudformation
+    verify                       : verify

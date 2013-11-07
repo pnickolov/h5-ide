@@ -2975,7 +2975,10 @@ td.table-action a.btn {
 	border: 1px solid transparent;
 }
 
-.ami-option-wrap button:hover,
+.ami-option-wrap button:hover {
+	background-color: #999;
+}
+
 .ami-option-wrap button.active {
 	background-color: #50A1F6;
 }

@@ -1338,10 +1338,9 @@ define [ 'constant',
 				elbUid       = portMap['elb-assoc']
 				subnetUid    = portMap['subnet-assoc-in']
 
-				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid)
-				console.debug ta
-				if ta
-					notification 'warning', ta.info
+				canConnectToELB = MC.aws.subnet.isAbleConnectToELB(subnetUid)
+				if !canConnectToELB
+					notification 'warning', lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
 					this.deleteObject null, { type : "line", id : line_id }
 					return
 

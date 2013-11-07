@@ -263,9 +263,11 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 		todeleteAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
 
+		# Comment by song, valid in TA
+
 		# Keep connection to one subnet at least
-		if elbComp.resource.Subnets.length <= 1
-			return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1
+		# if elbComp.resource.Subnets.length <= 1
+		# 	return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1
 
 		# If we have resources connected to the elb, connection to the resources' subnet is
 		# not deletable

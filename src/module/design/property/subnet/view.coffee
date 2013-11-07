@@ -169,7 +169,7 @@ define [ '../base/view',
             else if MC.aws.subnet.isConnectToELB subnetUID
                 cidrNum = Number(cidrSuffix.split('/')[1])
                 if cidrNum > 27
-                    mainContent = 'The subnet is attached with a load balancer. The CIDR must be smaller than /27.'
+                    mainContent = 'The subnet is attached with a load balancer. The CIDR mask must be smaller than /27.'
                     descContent = ''
                     noRemove = true
                 else

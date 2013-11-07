@@ -443,6 +443,10 @@ module.exports =
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
       zh: "%s 的 %s 最多支持%s个网络接口 (包括主要的)。"
 
+    CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
+      en: "This subnet cannot be attached with a Load Balancer. Its CIDR mask must be smaller than /27"
+      zh: ""
+
     CVS_MSG_ERR_CONNECT_ENI_AMI:
       en: "Network interfaces can only be attached to an instance in the same availability zone."
       zh: "网络接口只能连接到同一个可用区域的实例。"

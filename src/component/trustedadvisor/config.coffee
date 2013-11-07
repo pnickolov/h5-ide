@@ -17,8 +17,8 @@ define({
     globalList:
         eip: [ 'isHasIGW' ]
         az: [ 'isAZAlone' ]
-        sg: ['isStackUsingOnlyOneSG']
-        vpc: ['isVPCAbleConnectToOutside']
+        sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
+        vpc: [ 'isVPCAbleConnectToOutside' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]

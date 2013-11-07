@@ -53,8 +53,13 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 	########## Public Method ##########
 
 	set = ( key, result, uid ) ->
+
 		res = _genRes key, result, uid
 		k = res.key
+
+		if _.isArray result
+			_.each result, ( r ) ->
+				set key, r, r.uid
 
 		if result
 			if not _exist k

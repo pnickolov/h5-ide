@@ -2444,16 +2444,15 @@ MC.canvas.volume = {
 			bubble_target_id = bubble_box.data('target-id');
 
 			MC.canvas.volume.close();
+			MC.canvas.event.clearSelected();
+
+			MC.canvas.select( target_uid );
 
 			if (target_uid !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
 					document.getElementById( target_id )
 				);
-			}
-			else
-			{
-				MC.canvas.select( target_uid );
 			}
 		}
 

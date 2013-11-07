@@ -94,7 +94,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                             nrv.region_count = nrv.region_name_group.length
                             if nrv.region_count >0
-                                new_app_list.splice app_list.indexOf(rv), 1, nrv
+                                new_app_list.push nrv
 
                         app_list = new_app_list
 

@@ -313,6 +313,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'app key:' + result.resolved_data
 
                     data.key = result.resolved_data
+                    data.id  = app_id
 
                     me.savePNG true, data
 
@@ -825,7 +826,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE
                             if flag is 'RUN_STACK' or flag is 'SAVE_APP'
                                 me.saveAppThumbnail flag, region, name, item.id
-                                
+
                         # remove request from req_map
                         delete req_map[req_id]
 
@@ -887,7 +888,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 tab_name = data.id
                 if flag is 'RUN_STACK'
                     tab_name = 'process-' + data.region + '-' + data.name
-                MC.process[tab_name.toLowerCase()] = data
+                tab_name = tab_name.toLowerCase()
+                MC.process[tab_name] = data
 
                 # push event
                 if flag is 'RUN_STACK'

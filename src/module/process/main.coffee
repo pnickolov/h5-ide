@@ -35,7 +35,7 @@ define [ 'event' ], ( ide_event ) ->
                 console.log 'UPDATE_PROCESS'
 
                 if MC.data.current_tab_id.toLowerCase() is tab_name.toLowerCase()
-                    model.getProcess tab_name
+                    model.getProcess tab_name.toLowerCase()
 
             model.on 'change:flag_list', () ->
                 console.log 'change:flag_list'

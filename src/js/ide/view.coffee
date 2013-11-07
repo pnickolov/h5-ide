@@ -14,6 +14,8 @@ define [ 'event',
 
         delay    : null
 
+        open_fail: false
+
         initialize : ->
             $( window ).on 'beforeunload', @_beforeunloadEvent
 
@@ -33,7 +35,8 @@ define [ 'event',
                 target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
             #
-            delete MC.open_failed_list[ MC.data.current_tab_id ] if MC.open_failed_list[ MC.data.current_tab_id ]
+            delete MC.open_failed_list[ MC.data.current_tab_id ] if not @open_fail
+            @open_fail = false
             #
             null
 
@@ -41,9 +44,12 @@ define [ 'event',
             console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
             $( '#loading-bar-wrapper' ).html if !is_transparent then MC.data.loading_wrapper_html else MC.template.loadingTransparent()
             #
+            me = this
+            #
             @delay = setTimeout () ->
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
+                    me.open_fail = true
                     ide_event.trigger ide_event.SWITCH_MAIN
                     #ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
                     #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true

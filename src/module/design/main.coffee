@@ -71,6 +71,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     #
                     if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
 
+                        #test open_fail
+                        #return if tab_id is 'app-df3be529'
+
                         #
                         #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                         #
@@ -171,6 +174,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 console.log 'UPDATE_APP_RESOURCE, is_manual = ' + is_manual
                 if not app_id
                     return
+
+                #test open_fail
+                #return if app_id is 'app-df3be529'
 
                 console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
                 #is_manual = true

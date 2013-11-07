@@ -896,6 +896,17 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
 
                 else
+
+                    #test open_fail
+                    #if state in [ constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_RUNNING ]
+                    #    console.log 'sdfdffffffffffffffffffffffffffffffffff'
+                    #    ide_event.trigger ide_event.OPEN_APP_TAB, 'untitled-1', 'us-east-1', 'app-df3be529'
+                    #    setTimeout () ->
+                    #        ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+                    #    , 1000 * 0.5
+                    #else
+                    #    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+
                     ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
 
                     if flag is 'SAVE_APP'

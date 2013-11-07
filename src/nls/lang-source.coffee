@@ -99,38 +99,42 @@ module.exports =
 
     username_available:
       en: "This username is available."
-      zh: "用户名可用。"
+      zh: "此用户名可用。"
 
     username_not_matched:
-      en: "Username not matched."
-      zh: "用户名不匹配。"
+      en: "Username can only include alpha-number."
+      zh: "用户名只能包含字母。"
 
     username_required:
       en: "Username is required."
       zh: "用户名不能为空。"
 
     username_taken:
-      en: "Username has been taken. Please choose another."
+      en: "Username is already taken, Please choose another."
       zh: "此用户名已经被注册，请选择其它用户名。"
 
     email_available:
       en: "This email address is available."
-      zh: "邮件地址可用。"
+      zh: "此邮件地址可用。"
 
     email_not_valid:
-      en: "This is not a valid email address."
-      zh: "邮件地址非法。"
+      en: "Enter a valid email address."
+      zh: "请输入有效的邮件地址。"
 
     email_used:
-      en: "This email address has been used."
-      zh: "此邮件地址已经被注册。"
+      en: "This email has already been used."
+      zh: "此邮件地址已经被使用。"
+
+    email_required:
+      en: "Email address is required."
+      zh: "邮件地址不能为空。"
 
     password_ok:
       en: "This password is OK."
       zh: "密码可用。"
 
     password_shorter:
-      en: "Password must contain at least 6 letters."
+      en: "Password should at least contain 6 characters."
       zh: "密码至少包含6个字符、数字或者特殊字符。"
 
     password_required:

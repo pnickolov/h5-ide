@@ -7043,15 +7043,15 @@ a.action-link:hover {
 	left             : 0;
 	z-index          : 2;
 
-	background-color : #313131;
+	background-color : #505050;
 	height           : 24px;
 	line-height      : 24px;
 	width            : 100%;
 
-	color            : #ccc;
+	color            : #999;
 	font-size        : 12px;
 
-	box-shadow       : inset 0 1px 0 rgba(255,255,255,.1);
+	box-shadow       : inset 0 1px 0 rgba(255,255,255,.1),inset -1px 0 0 rgba(255,255,255,.1),inset 1px 0 0 rgba(255,255,255,.1);
 	box-sizing       : border-box;
 	border           : 1px solid #212121;
 }
@@ -7061,11 +7061,22 @@ a.action-link:hover {
 	padding-left: 10px;
 }
 
-#main-statusbar .btn-ta-valid {
+.btn-ta-valid {
 	text-align: center;
 	float: right;
 	cursor: pointer;
-	width: 100px;
+	width: 80px;
+	color: #eee;
+	border: none;
+	border-radius: 0;
+	box-shadow: inset 1px 0 rgba(255,255,255,.1);
+	border-left: 1px solid #212121;
+	text-decoration: underline;
+}
+
+.btn-ta-valid:hover {
+	background-color: rgba(0,0,0,.2);
+	color: #fff;
 }
 
 #main-statusbar .btns a {

@@ -65,7 +65,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
-            currentText = 'Verify stack'
+            currentText = 'Verify'
             btnDom.text('Verifying...')
 
             setTimeout () ->

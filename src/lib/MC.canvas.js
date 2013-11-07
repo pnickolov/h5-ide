@@ -2399,9 +2399,20 @@ MC.canvas.volume = {
 		{
 			if (MC.canvas.getState() === 'app')
 			{
-				if ($('#' + target_id + '_instance-number').text() * 1 > 1)
+				if (
+					$('#' + target_id + '_instance-number').text() * 1 === 1 ||
+					$(this).hasClass('instanceList-item-volume')
+				)
 				{
-					MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+					MC.canvas.volume.bubble(
+						document.getElementById( target_id )
+					);
+
+					return false;
+				}
+				else
+				{
+					MC.canvas.select( target_uid );
 
 					return false;
 				}
@@ -2434,10 +2445,10 @@ MC.canvas.volume = {
 
 			MC.canvas.volume.close();
 
-			if (target_id !== bubble_target_id)
+			if (target_uid !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_uid )
+					document.getElementById( target_id )
 				);
 			}
 			else

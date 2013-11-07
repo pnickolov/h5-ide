@@ -52,8 +52,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 done()
 
     _handleException = ( err ) ->
-        console.info 'ta exception:'
-        console.info err
+        console.info 'TA Exception: ', err
 
     ########## Sub Validation Method ##########
 
@@ -64,7 +63,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     result = validation_main[ filename ][ method ]()
                     _pushResult result, method, filename
                 catch err
-                    _handleException(err)
+                    _handleException( err )
 
     _validComponents = () ->
         components = MC.canvas_data.component
@@ -76,7 +75,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                         result = validation_main[ filename ][ method ]( uid )
                         _pushResult result, method, filename, uid
                     catch err
-                        _handleException(err)
+                        _handleException( err )
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
             console.debug memo, arr
@@ -92,7 +91,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     result = validation_main[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
                     _pushResult result, method, filename
                 catch err
-                    _handleException(err)
+                    _handleException( err )
 
     ########## Public Method ##########
 
@@ -118,7 +117,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 console.log 'func not found'
 
         catch err
-            _handleException(err)
+            _handleException( err )
 
     validRun = ->
 

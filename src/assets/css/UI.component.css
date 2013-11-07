@@ -859,6 +859,10 @@ textarea {
 	overflow: hidden;
 }
 
+.scroll-content {
+	-webkit-font-smoothing: subpixel-antialiased;
+}
+
 /* webkit scrollbar */
 /*.webkit .scroll-wrap {
 	overflow: auto;

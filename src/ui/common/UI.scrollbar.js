@@ -80,7 +80,7 @@ var scrollbar = {
 
 							if (isTransform)
 							{
-								scroll_content.style[ cssTransform ] = 'translate(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + ', 0)';
+								scroll_content.style[ cssTransform ] = 'translate3d(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + ', 0, 0)';
 							}
 							else
 							{
@@ -119,7 +119,7 @@ var scrollbar = {
 							horizontal_thumb.parent().hide();
 							if (isTransform)
 							{
-								scroll_content.style[ cssTransform ] = 'translate(0, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px)';
+								scroll_content.style[ cssTransform ] = 'translate3d(0, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px, 0)';
 							}
 							else
 							{
@@ -305,7 +305,7 @@ var scrollbar = {
 
 		if (isTransform)
 		{
-			scroll_content.style[ cssTransform ] = 'translate(' + scroll_value + 'px, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px)';
+			scroll_content.style[ cssTransform ] = 'translate3d(' + scroll_value + 'px, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px, 0)';
 		}
 		else
 		{
@@ -350,7 +350,7 @@ var scrollbar = {
 
 		if (isTransform)
 		{
-			scroll_content.style[ cssTransform ] = 'translate(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + 'px, ' + scroll_value + 'px)';
+			scroll_content.style[ cssTransform ] = 'translate3d(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + 'px, ' + scroll_value + 'px, 0)';
 		}
 		else
 		{

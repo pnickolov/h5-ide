@@ -553,7 +553,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
-            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup(  MC.canvas_data )) else JSON.stringify(data)
+            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
             #
             phantom_data =
                 'origin_host': window.location.origin,
@@ -565,6 +565,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 'url'        : data.key
                 'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
             #
+            console.log 'phantom_data'
+            console.log phantom_data
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined

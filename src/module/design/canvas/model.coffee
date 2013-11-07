@@ -114,7 +114,7 @@ define [ 'constant',
 				node = MC.canvas_data.layout.component.group[src_node]
 				if !node
 					node = MC.canvas_data.layout.component.node[src_node]
-				if !node || !node.groupUId || node.groupUId == tgt_parent
+				if !node || !tgt_parent || !node.groupUId || node.groupUId == tgt_parent
 					return
 
 				event.preventDefault()

@@ -45,7 +45,7 @@ define [ 'event',
 
             $("#notification-panel-wrapper").find(".scroll-content").html html
 
-            $("#notification-panel-wrapper").css( "max-height", parseInt( $("body").height() * 0.8, 10) )
+            $("#notification-panel-wrapper").css( "max-height", Math.ceil( window.innerHeight * 0.8 ) )
             null
 
         clickLogout : () ->

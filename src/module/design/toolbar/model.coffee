@@ -304,7 +304,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 app_name = result.param[5]
 
                 idx = 'process-' + region + '-' + app_name
-                idx = idx.toLowerCase()
                 data = $.extend(true, {}, process_data_map[idx])
                 delete process_data_map[idx]
 
@@ -499,7 +498,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             # save stack data for generating png
             idx = 'process-' + region + '-' + app_name
-            process_data_map[idx.toLowerCase()] = data
+            process_data_map[idx] = data
 
             null
 
@@ -623,7 +622,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             # save app data for generating png
             idx = 'process-' + region + '-' + name
-            process_data_map[idx.toLowerCase()] = data
+            process_data_map[idx] = data
 
             item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
             me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "SAVE_APP", item)
@@ -888,7 +887,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 tab_name = data.id
                 if flag is 'RUN_STACK'
                     tab_name = 'process-' + data.region + '-' + data.name
-                tab_name = tab_name.toLowerCase()
                 MC.process[tab_name] = data
 
                 # push event
@@ -920,7 +918,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             me = this
 
             idx = 'process-' + region + '-' + app_name
-            idx = idx.toLowerCase()
             if idx of process_data_map
                 data = $.extend(true, {}, process_data_map[idx])
 

@@ -78,7 +78,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             target = $ event.currentTarget
             name = target.val()
 
-            MC.validate.preventDupname target, @model.get('uid'), name, 'Instance'
+            MC.validate.preventDupname target, @model.get('uid'), name, 'Route Table'
 
             if target.parsley 'validate'
                 @model.setName name

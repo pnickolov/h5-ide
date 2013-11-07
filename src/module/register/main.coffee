@@ -25,13 +25,13 @@ define [ 'jquery', 'event', 'base_main' ], ( $, ide_event, base_main ) ->
                 model.checkRepeatService username, email, password
             view.on 'AUTO_LOGIN',       () -> model.loginService()
 
-            model.on 'USERNAME_REPEAT', () -> view.showUsernameError()
-            model.on 'EMAIL_REPEAT',    () -> view.showEmailError()
-            model.on 'USERNAME_EMAIL_REPEAT', () -> view.showUsernameEmailError()
-            model.on 'USERNAME_EMAIL_VALID', () -> view.showUsernameEmailValid()
-            model.on 'USERNAME_VALID', () -> view.showUsernameValid()
-            model.on 'EMAIL_VALID', () -> view.showEmailValid()
-            model.on 'RESET_CREATE_ACCOUNT', () -> view.resetCreateAccount()
+            model.on 'USERNAME_REPEAT',         () -> view.showStatusInValid('username')
+            model.on 'EMAIL_REPEAT',            () -> view.showStatusInValid('email')
+            model.on 'USERNAME_EMAIL_REPEAT',   () -> view.showUsernameEmailError()
+            model.on 'USERNAME_VALID',          () -> view.showStatusValid('username')
+            model.on 'EMAIL_VALID',             () -> view.showStatusValid('email')
+            model.on 'USERNAME_EMAIL_VALID',    () -> view.showUsernameEmailValid()
+            model.on 'RESET_CREATE_ACCOUNT',    () -> view.resetCreateAccount()
 
             #render
             view.render type

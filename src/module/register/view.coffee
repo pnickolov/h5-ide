@@ -266,8 +266,12 @@ define [ 'event',
             this.trigger 'AUTO_LOGIN'
             null
 
-        _checkButtonDisabled : ->
+        _checkButtonDisabled : (event) ->
             console.log '_checkButtonDisabled'
+
+            if event and event.target and event.target.id == "register-password"
+                @verificationPassword()
+
             #
             right_count = 0
             #

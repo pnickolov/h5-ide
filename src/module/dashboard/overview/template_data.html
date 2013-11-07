@@ -216,7 +216,7 @@
                         <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail app-thumbnail">
-                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                    <img width="220" data-id="{{id}}" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
@@ -255,7 +255,7 @@
                         <li>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail">
-                                    <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                    <img width="220" data-id="{{id}}" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>

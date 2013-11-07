@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20131101
+#* Date: 20131107
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -16,15 +16,13 @@ var style = document.documentElement.style,
 	cssTransform;
 
 $.each([
-	'webkit',
-	'Moz',
-	'O',
-	'ms',
-	''
-], function (i, prefix)
+	'webkitTransform',
+	'MozTransform',
+	'OTransform',
+	'msTransform',
+	'transform'
+], function (i, cssName)
 {
-	cssName = prefix + 'Transform';
-
 	if (cssName in style)
 	{
 		isTransform = true;

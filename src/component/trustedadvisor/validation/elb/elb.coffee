@@ -30,8 +30,6 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveInstanceAttached = (elbUID) ->
 
-		a = b.c.d
-
 		elbComp = MC.canvas_data.component[elbUID]
 
 		# instance attached number

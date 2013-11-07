@@ -54,13 +54,10 @@ define [ 'constant','backbone' ], (constant) ->
 			if current_tab_type is 'app'
 				readonly = true
 			else if current_tab_type is 'appedit'
-				if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-					readonly = true
+				if parent_model.isSGListReadOnly
+					readonly = parent_model.isSGListReadOnly()
 				else
-					if parent_model.isSGListReadOnly
-						readonly = parent_model.isSGListReadOnly()
-					else
-						readonly = false
+					readonly = false
 			else
 				readonly = false
 

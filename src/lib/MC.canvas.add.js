@@ -1028,7 +1028,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 
 				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
+				Canvon.group().append(
 					//sg label
 					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border tooltip',
@@ -1442,7 +1442,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
+				Canvon.group().append(
 					//sg label
 					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border tooltip',
@@ -2083,7 +2083,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
+				Canvon.group().append(
 					//sg label
 					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border tooltip',
@@ -2369,7 +2369,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				//g for sg color label
-				Canvon.group( 0, 0, 100, 9, {} ).append(
+				Canvon.group().append(
 					//sg label
 					Canvon.rectangle(10, 6, 7 , 5).attr({
 						'class': 'node-sg-color-border tooltip',

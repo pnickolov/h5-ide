@@ -48,17 +48,17 @@ define [ 'event',
             console.log 'verificationUser'
             value  = $('#register-username').val()
             status = $('#username-verification-status')
-            status.removeClass 'error-status'
+            status.text('')
+            status.removeClass( 'error-status' ).removeClass( 'verification-status' )
             status.show()
             #
             #@_checkButtonDisabled()
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
-                    status.show().text lang.register.username_available
+                    #status.show().text lang.register.username_available
                     #check vaild
-                    if event and event.type is "blur"
-                        this.trigger 'CHECK_REPEAT', value, null
+                    this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
                     true
                 else
                     status.addClass('error-status').show().text lang.register.username_not_matched
@@ -67,30 +67,32 @@ define [ 'event',
                 status.addClass('error-status').show().text lang.register.username_required
                 false
 
-        verificationEmail : (event)->
+        verificationEmail : (event) ->
             console.log 'verificationEmail'
             value  = $('#register-email').val().trim()
             status = $('#email-verification-status')
-            status.removeClass 'error-status'
+            status.text('')
+            status.removeClass( 'error-status' ).removeClass( 'verification-status' )
             status.show()
             #
             #@_checkButtonDisabled()
             #
-            if value isnt '' and /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test(value)
-                status.show().text lang.register.email_available
+            if value isnt '' and /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(value)
+                #status.show().text lang.register.email_available
                 #check vaild
-                if event and event.type is "blur"
-                    this.trigger 'CHECK_REPEAT', null, value
+                this.trigger 'CHECK_REPEAT', null, value #if event and event.type is 'blur'
                 true
             else
                 status.addClass('error-status').show().text lang.register.email_not_valid
                 false
 
-        verificationPassword : ()->
+        verificationPassword : ->
             console.log 'verificationPassword'
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')
-            status.removeClass 'error-status'
+            status.text('')
+            $( '#register-btn' ).attr( 'disabled', true )
+            status.removeClass( 'error-status' ).removeClass( 'verification-status' )
             status.show()
             #
             #@_checkButtonDisabled()
@@ -100,13 +102,25 @@ define [ 'event',
                     #/[A-Z]{1}/.test(value) &&
                     #/[0-9]{1}/.test(value)
                     status.show().text lang.register.password_ok
+                    status.addClass( 'verification-status' )
+                    status.show()
+                    @_checkButtonDisabled()
                     true
                 else
                     status.addClass('error-status').show().text lang.register.password_shorter
+                    status.show()
+                    $( '#register-btn' ).attr( 'disabled', true )
+                    @_checkButtonDisabled()
                     false
             else
                 status.addClass('error-status').show().text lang.register.password_required
+                status.show()
+                $( '#register-btn' ).attr( 'disabled', true )
+                @_checkButtonDisabled()
                 false
+
+
+
 
         submit : ->
             console.log 'submit'
@@ -136,16 +150,114 @@ define [ 'event',
 
         showUsernameError : ->
             console.log 'showUsernameError'
+
+            #username invalid
             status = $('#username-verification-status')
-            status.addClass( 'error-status' ).show().text lang.ide.username_taken
+            status.addClass( 'error-status' ).show().text lang.register.username_taken
+
             @is_submit = false
+
+            $( '#register-btn' ).attr( 'disabled', true )
+
             null
 
         showEmailError : ->
             console.log 'showEmailError'
+
+            #email invalid
             status = $('#email-verification-status')
-            status.addClass( 'error-status' ).show().text lang.ide.email_used
+            status.addClass( 'error-status' ).show().text lang.register.email_used
+
             @is_submit = false
+
+            $( '#register-btn' ).attr( 'disabled', true )
+
+            null
+
+        showUsernameEmailError : ->
+            console.log 'showUsernameError'
+            #username invalid
+            status = $('#username-verification-status')
+            status.removeClass( 'verification-status' )
+            status.addClass( 'error-status' ).show().text lang.register.username_taken
+
+            #email invalid
+            console.log 'showEmailError'
+            status = $('#email-verification-status')
+            status.removeClass( 'verification-status' )
+            status.addClass( 'error-status' ).show().text lang.register.email_used
+            @is_submit = false
+
+            $( '#register-btn' ).attr( 'disabled', true )
+
+            null
+
+        showUsernameEmailValid : ->
+            console.log 'showUsernameValid'
+            #username valid
+            status = $('#username-verification-status')
+            status.text('')
+            if $('#register-username').val()
+                status.removeClass( 'error-status' )
+                status.addClass( 'verification-status' )
+                status.text lang.register.username_available
+            else
+                #username is empty
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' )
+            status.show()
+            
+            #email valid
+            status = $('#email-verification-status')
+            status.text('')
+            if $('#register-email').val()
+                status.removeClass( 'error-status' )
+                status.addClass( 'verification-status' )
+                status.show().text lang.register.email_available
+            else
+                #email is empty
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' )
+            status.show()
+
+            @_checkButtonDisabled()
+
+
+            null
+
+        showUsernameValid : ->
+            console.log 'showUsername'
+            #username valid
+            status = $('#username-verification-status')
+            status.text('')
+            if $('#register-username').val()
+                status.removeClass( 'error-status' )
+                status.addClass( 'verification-status' )
+                status.text lang.register.username_available
+            else
+                #username is empty
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' )
+            status.show()
+            
+            @_checkButtonDisabled()
+
+            null
+
+        showEmailValid : ->
+            console.log 'showEmailValid'
+            
+            #email valid
+            status = $('#email-verification-status')
+            status.text('')
+            if $('#register-email').val()
+                status.removeClass( 'error-status' )
+                status.addClass( 'verification-status' )
+                status.show().text lang.register.email_available
+            else
+                #email is empty
+                status.removeClass( 'error-status' ).removeClass( 'verification-status' )
+            status.show()
+
+            @_checkButtonDisabled()
+
             null
 
         loginEvent : ->
@@ -159,14 +271,27 @@ define [ 'event',
             #
             right_count = 0
             #
-            right_count = right_count + 1 if $('#register-username').val().trim()
-            right_count = right_count + 1 if $('#register-email').val().trim()
-            right_count = right_count + 1 if $('#register-password').val().trim()
+            right_count = right_count + 1 if $('#register-username').val().trim() and $("#username-verification-status").hasClass('verification-status')
+            right_count = right_count + 1 if $('#register-email').val().trim() and $("#email-verification-status").hasClass('verification-status')
+            right_count = right_count + 1 if $('#register-password').val().trim() and $('#password-verification-status').hasClass('verification-status')
 
             if right_count is 3
-                $( '#register-btn' ).attr( 'disabled', false ) if !@is_submit
+                if $( '#register-btn' ).val() != lang.register.reginster_waiting
+                    console.log 'enable create account button'
+                    $( '#register-btn' ).attr( 'disabled', false )
             else
                 $( '#register-btn' ).attr( 'disabled', true )
+            null
+
+        resetCreateAccount : ->
+            console.log 'reset account button'
+
+            #reset create account button if login failed
+            $( '#register-btn' ).attr( 'value', lang.register['register-btn'] )
+            $( '#register-btn' ).attr( 'disabled', false )
+
+            @_checkButtonDisabled()
+
             null
 
     }

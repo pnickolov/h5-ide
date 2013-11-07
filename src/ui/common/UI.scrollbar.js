@@ -3,25 +3,39 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20131010
+#* Date: 20131101
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 
+(function (document) {
+
+var style = document.documentElement.style,
+	isTransform = false,
+	cssTransform;
+
+$.each([
+	'webkit',
+	'Moz',
+	'O',
+	'ms',
+	''
+], function (i, prefix)
+{
+	cssName = prefix + 'Transform';
+
+	if (cssName in style)
+	{
+		isTransform = true;
+		cssTransform = cssName;
+	}
+});
+
 var scrollbar = {
 	init: function ()
 	{
-		var style = document.documentElement.style,
-			doc_scroll_wrap = document.getElementsByClassName('scroll-wrap');
-
-		scrollbar.isTransform = (
-			style.webkitTransform !== undefined ||
-			style.MozTransform !== undefined ||
-			style.OTransform !== undefined ||
-			style.msTransform !== undefined ||
-			style.Transform !== undefined
-		);
+		var doc_scroll_wrap = document.getElementsByClassName('scroll-wrap');
 
 		$(document)
 			.on('mousewheel', '.scroll-wrap', scrollbar.wheel)
@@ -40,8 +54,8 @@ var scrollbar = {
 					children = wrap.children(),
 					veritical_thumb = children[0] ? $(children[0].firstChild) : undefined,
 					horizontal_thumb = children[1] ? $(children[1].firstChild) : undefined,
-					scroll_content = wrap.find('.scroll-content').first(),
-					scroll_content_elem = scroll_content[0],
+					scroll_content = wrap.find('.scroll-content').first()[0],
+					//scroll_content_elem = scroll_content[0],
 					offsetHeight = target.offsetHeight,
 					offsetWidth = target.offsetWidth,
 					scrollbar_height,
@@ -50,32 +64,32 @@ var scrollbar = {
 					wrap_width;
 
 				if (
-					scroll_content_elem &&
+					scroll_content &&
 					wrap.css('display') === 'block' &&
 					!wrap.hasClass('scrolling')
 				)
 				{
-					scrollbar_height = offsetHeight * offsetHeight / scroll_content_elem.scrollHeight;
-					scrollbar_width = offsetWidth * offsetWidth / scroll_content_elem.scrollWidth;
+					scrollbar_height = offsetHeight * offsetHeight / scroll_content.scrollHeight;
+					scrollbar_width = offsetWidth * offsetWidth / scroll_content.scrollWidth;
 
 					if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 					{
 						wrap_height = wrap.height();
 
-						if (scrollbar_height <= offsetHeight * 2 - scroll_content_elem.scrollHeight || scrollbar_height > wrap_height)
+						if (scrollbar_height <= offsetHeight * 2 - scroll_content.scrollHeight || scrollbar_height > wrap_height)
 						{
 							veritical_thumb.parent().hide();
 
-							if (scrollbar.isTransform)
+							if (isTransform)
 							{
-								scroll_content.css('transform', 'translate(' + (scroll_content_elem.realScrollLeft ? scroll_content_elem.realScrollLeft : 0) + ', 0)');
+								scroll_content.style[ cssTransform ] = 'translate(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + ', 0)';
 							}
 							else
 							{
-								scroll_content.css('top', 0);
+								scroll_content.style.top = '0px';
 							}
 
-							scroll_content_elem.realScrollTop = 0;
+							scroll_content.realScrollTop = 0;
 							veritical_thumb.css('top', 0);
 						}
 						else
@@ -84,16 +98,16 @@ var scrollbar = {
 							veritical_thumb.css('height', scrollbar_height);
 
 							if (
-								scroll_content_elem.realScrollTop !== 0 &&
-								wrap_height - scroll_content_elem.realScrollTop > scroll_content[0].scrollHeight
+								scroll_content.realScrollTop !== 0 &&
+								wrap_height - scroll_content.realScrollTop > scroll_content.scrollHeight
 							)
 							{
 								scrollbar.scrollTop({
 									'scroll_content': scroll_content,
 									'scrollbar_wrap': children[0],
-									'thumb': veritical_thumb,
+									'thumb': veritical_thumb[0],
 									'scroll_target': wrap
-								}, scroll_content[0].scrollHeight);
+								}, scroll_content.scrollHeight);
 							}
 						}
 					}
@@ -102,19 +116,19 @@ var scrollbar = {
 					{
 						wrap_width = wrap.width();
 
-						if (scrollbar_width <= offsetWidth * 2 - scroll_content_elem.scrollWidth || scrollbar_width > wrap_width)
+						if (scrollbar_width <= offsetWidth * 2 - scroll_content.scrollWidth || scrollbar_width > wrap_width)
 						{
 							horizontal_thumb.parent().hide();
-							if (scrollbar.isTransform)
+							if (isTransform)
 							{
-								scroll_content.css('transform', 'translate(0, ' + (scroll_content_elem.realScrollTop ? scroll_content_elem.realScrollTop : 0) + 'px)');
+								scroll_content.style[ cssTransform ] = 'translate(0, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px)';
 							}
 							else
 							{
-								scroll_content.css('left', 0);
+								scroll_content.style.left = '0px';
 							}
 
-							scroll_content_elem.realScrollLeft = 0;
+							scroll_content.realScrollLeft = 0;
 							horizontal_thumb.css('left', 0);
 						}
 						else
@@ -123,16 +137,16 @@ var scrollbar = {
 							horizontal_thumb.css('width', scrollbar_width);
 
 							if (
-								scroll_content_elem.realScrollLeft !== 0 &&
-								wrap_width - scroll_content_elem.realScrollLeft > scroll_content[0].scrollWidth
+								scroll_content.realScrollLeft !== 0 &&
+								wrap_width - scroll_content.realScrollLeft > scroll_content.scrollWidth
 							)
 							{
 								scrollbar.scrollLeft({
 									'scroll_content': scroll_content,
 									'scrollbar_wrap': children[1],
-									'thumb': horizontal_thumb,
+									'thumb': horizontal_thumb[0],
 									'scroll_target': wrap
-								}, scroll_content[0].scrollWidth);
+								}, scroll_content.scrollWidth);
 							}
 						}
 					}
@@ -171,8 +185,8 @@ var scrollbar = {
 				'scroll_target': target,
 				'direction': direction,
 				'scrollbar_wrap': target.find('.scrollbar-' + direction + '-wrap').first(),
-				'scroll_content': target.find('.scroll-content').first(),
-				'thumb': thumb,
+				'scroll_content': target.find('.scroll-content').first()[0],
+				'thumb': thumb[0],
 				'thumbPos': direction === 'veritical' ? event.clientY - thumb.offset().top : event.clientX - thumb.offset().left
 			});
 
@@ -181,20 +195,21 @@ var scrollbar = {
 
 	mousemove: function (event)
 	{
-		var target = event.data.scroll_target,
-			direction = event.data.direction,
-			thumbPos = event.data.thumbPos;
+		var event_data = event.data,
+			target = event_data.scroll_target,
+			direction = event_data.direction,
+			thumbPos = event_data.thumbPos;
 
-		event_data = scrollbar.isTouch ? event.touches.originalEvent[0] : event;
+		originalEvent = scrollbar.isTouch ? event.touches.originalEvent[0] : event;
 
 		if (direction === 'veritical')
 		{
-			scrollbar.scrollTop(event.data, scrollbar.isTouch ? thumbPos - event_data.clientY : event_data.clientY - event.data.scrollbar_wrap.offset().top - thumbPos);
+			scrollbar.scrollTop(event_data, scrollbar.isTouch ? thumbPos - originalEvent.clientY : originalEvent.clientY - event_data.scrollbar_wrap.offset().top - thumbPos);
 		}
 
 		if (direction === 'horizontal')
 		{
-			scrollbar.scrollLeft(event.data, scrollbar.isTouch ? thumbPos - event_data.clientX : event_data.clientX - event.data.scrollbar_wrap.offset().left - thumbPos);
+			scrollbar.scrollLeft(event_data, scrollbar.isTouch ? thumbPos - originalEvent.clientX : originalEvent.clientX - event_data.scrollbar_wrap.offset().left - thumbPos);
 		}
 
 		return false;
@@ -232,9 +247,9 @@ var scrollbar = {
 			if (thumb[0] && scrollbar_wrap[0])
 			{
 				scrollbar.scrollLeft({
-					'scroll_content': scroll_content,
+					'scroll_content': scroll_content[0],
 					'scrollbar_wrap': scrollbar_wrap,
-					'thumb': thumb,
+					'thumb': thumb[0],
 					'scroll_target': target
 				}, direction.left / (scroll_content[0].scrollWidth / scrollbar_wrap.width()));
 			}
@@ -248,9 +263,9 @@ var scrollbar = {
 			if (thumb[0] && scrollbar_wrap[0])
 			{
 				scrollbar.scrollTop({
-					'scroll_content': scroll_content,
+					'scroll_content': scroll_content[0],
 					'scrollbar_wrap': scrollbar_wrap,
-					'thumb': thumb,
+					'thumb': thumb[0],
 					'scroll_target': target
 				}, direction.top / (scroll_content[0].scrollHeight / scrollbar_wrap.height()));
 			}
@@ -264,42 +279,42 @@ var scrollbar = {
 		var scroll_content = data.scroll_content,
 			horizontal_thumb = data.thumb,
 			scroll_wrap_width = data.scroll_target.width(),
-			max_scroll = scroll_content[0].scrollWidth - scroll_wrap_width,
-			scale = scroll_content[0].scrollWidth / scroll_wrap_width,
+			max_scroll = scroll_content.scrollWidth - scroll_wrap_width,
+			scale = scroll_content.scrollWidth / scroll_wrap_width,
 			thumb_max = max_scroll / scale,
 			scroll_value;
 
 		if (scroll_left > 0 && scroll_left < thumb_max)
 		{
-			horizontal_thumb.css('left', scroll_left);
+			horizontal_thumb.style.left = scroll_left + 'px';
 			scroll_value = -(scroll_left * scale);
 		}
 		else
 		{
 			if (scroll_left <= 0)
 			{
-				horizontal_thumb.css('left', 0);
+				horizontal_thumb.style.left = '0px';
 				scroll_value = 0;
 			}
 			if (scroll_left >= thumb_max)
 			{
-				horizontal_thumb.css('left', thumb_max);
+				horizontal_thumb.style.left = thumb_max + 'px';
 				scroll_value = -max_scroll;
 			}
 		}
 
 		scroll_value = Math.round(scroll_value);
 
-		if (scrollbar.isTransform)
+		if (isTransform)
 		{
-			scroll_content.css('transform', 'translate(' + scroll_value + 'px, ' + (scroll_content[0].realScrollTop ? scroll_content[0].realScrollTop : 0) + 'px)');
+			scroll_content.style[ cssTransform ] = 'translate(' + scroll_value + 'px, ' + (scroll_content.realScrollTop ? scroll_content.realScrollTop : 0) + 'px)';
 		}
 		else
 		{
-			scroll_content.css('left', scroll_value);
+			scroll_content.style.left = scroll_value + 'px';
 		}
 
-		scroll_content[0].realScrollLeft = scroll_value;
+		scroll_content.realScrollLeft = scroll_value;
 
 		return true;
 	},
@@ -307,44 +322,44 @@ var scrollbar = {
 	scrollTop: function (data, scroll_top)
 	{
 		var scroll_content = data.scroll_content,
-			thumb = data.thumb,
+			veritical_thumb = data.thumb,
 			scroll_wrap_height = data.scroll_target.height(),
-			max_scroll = scroll_content[0].scrollHeight - scroll_wrap_height,
-			scale = scroll_content[0].scrollHeight / scroll_wrap_height,
+			max_scroll = scroll_content.scrollHeight - scroll_wrap_height,
+			scale = scroll_content.scrollHeight / scroll_wrap_height,
 			thumb_max = max_scroll / scale,
 			scroll_value;
 
 		if (scroll_top > 0 && scroll_top < thumb_max)
 		{
-			thumb.css('top', scroll_top);
+			veritical_thumb.style.top = scroll_top + 'px';
 			scroll_value = -(scroll_top * scale);
 		}
 		else
 		{
 			if (scroll_top <= 0)
 			{
-				thumb.css('top', 0);
+				veritical_thumb.style.top = '0px';
 				scroll_value = 0;
 			}
 			if (scroll_top >= thumb_max)
 			{
-				thumb.css('top', thumb_max);
+				veritical_thumb.style.top = thumb_max + 'px';
 				scroll_value = -max_scroll;
 			}
 		}
 
 		scroll_value = Math.round(scroll_value);
 
-		if (scrollbar.isTransform)
+		if (isTransform)
 		{
-			scroll_content.css('transform', 'translate(' + (scroll_content[0].realScrollLeft ? scroll_content[0].realScrollLeft : 0) + 'px, ' + scroll_value + 'px)');
+			scroll_content.style[ cssTransform ] = 'translate(' + (scroll_content.realScrollLeft ? scroll_content.realScrollLeft : 0) + 'px, ' + scroll_value + 'px)';
 		}
 		else
 		{
-			scroll_content.css('top', scroll_value);
+			scroll_content.style.top = scroll_value + 'px';
 		}
 
-		scroll_content[0].realScrollTop = scroll_value;
+		scroll_content.realScrollTop = scroll_value;
 
 		return true;
 	},
@@ -382,9 +397,9 @@ var scrollbar = {
 				if (scrollbar_wrap.css('display') === 'block')
 				{
 					scrollbar.scrollLeft({
-						'scroll_content': scroll_content,
+						'scroll_content': scroll_content[0],
 						'scrollbar_wrap': scrollbar_wrap,
-						'thumb': thumb,
+						'thumb': thumb[0],
 						'scroll_target': target
 					}, scrollLeft);
 
@@ -425,9 +440,9 @@ var scrollbar = {
 				if (scrollbar_wrap.css('display') === 'block')
 				{
 					scrollbar.scrollTop({
-						'scroll_content': scroll_content,
+						'scroll_content': scroll_content[0],
 						'scrollbar_wrap': scrollbar_wrap,
-						'thumb': thumb,
+						'thumb': thumb[0],
 						'scroll_target': target
 					}, scrollTop);
 
@@ -449,7 +464,11 @@ var scrollbar = {
 	}
 };
 
+window.scrollbar = scrollbar;
+
 $(document).ready(function ()
 {
 	scrollbar.init();
 });
+
+})(document);

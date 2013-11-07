@@ -23,7 +23,7 @@ define [ 'MC', 'event', 'account_model' ], ( MC, ide_event, account_model ) ->
 
         checkRepeatService : ( value ) ->
             console.log 'checkRepeatService, value = ' + value
-            if /\w+@[0-9a-zA-Z_]+?\.[a-zA-Z]{2,6}/.test( value )
+            if /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test( value )
                 username = null
                 email    = value
             else

@@ -584,6 +584,7 @@
         // hack
         // Ignore disallowed input
         var that = this;
+
         if ( this.$element.data( 'ignore' ) === true ) {
           var regExp, regMap, vlidateType;
           regMap = {
@@ -632,36 +633,32 @@
           // Handle drag
           this.$element.on('dragenter', function( e ) {
             var origin = $( this ).val();
-            $(this).one( 'change mouseup mousedown keydown keyup', delayHandler( origin, this ) );
+            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler( origin, this, 1 ) );
           });
-
 
 
           // Handle keydown
           this.$element.on( 'keydown', function( e ) {
-
-            var inputChar, isControl, isLegal;
-
-            inputChar = Util.getCharFromKeyEvent( e );
-
-            isControl = inputChar && inputChar.length > 1;
-
-            if ( !isControl ) {
-              var valueArray = this.value.split( '' );
-              var pos = Util.getCaretPosition( this );
-              valueArray.splice( pos, 0, inputChar );
-
-              var newValue = valueArray.join( '' );
-              isLegal = new RegExp( regExp, "i" ).test(newValue);
-            }
-
-            // paste validate on keyup
             var origin = $( this ).val();
-            $(this).one( 'keyup blur', delayHandler( origin, this ) );
+            $(this).one( 'keyup blur', delayHandler( origin, this, 1 ) );
+          });
 
-            if ( !isControl && !isLegal ) return false;
+          // Handle keypress( main )
+          this.$element.on( 'keypress', function( e ) {
+            var inputChar, isLegal;
+
+            inputChar = String.fromCharCode( e.which );
+            var valueArray = this.value.split( '' );
+            var pos = Util.getCaretPosition( this );
+            valueArray.splice( pos, 0, inputChar );
+
+            var newValue = valueArray.join( '' );
+            isLegal = new RegExp( regExp, "i" ).test(newValue);
+
+            if ( !isLegal ) return false;
 
           });
+
 
 
         }

@@ -748,7 +748,8 @@
 	display: none;
 }
 
-.canvas_state_app .asg-resource-dragger {
+.canvas_state_app .asg-resource-dragger,
+.canvas_state_appedit .asg-resource-dragger {
 	display: none;
 }
 

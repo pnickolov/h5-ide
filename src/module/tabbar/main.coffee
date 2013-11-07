@@ -218,7 +218,7 @@ define [ 'jquery', 'event', 'base_main',
                 #set vo
                 model.set 'stack_region_name', region_name
                 #tabbar api
-                Tabbar.open stack_id, tab_name + ' - stack'
+                Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
                 #
                 if _.contains( MC.data.demo_stack_list, tab_name ) and MC.forge.cookie.getCookieByName( 'state' ) is '3'
                     require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
@@ -243,7 +243,7 @@ define [ 'jquery', 'event', 'base_main',
                 #set vo
                 model.set 'app_region_name', region_name
                 #tabbar api
-                Tabbar.open app_id, tab_name + ' - app'
+                Tabbar.open app_id.toLowerCase(), tab_name + ' - app'
                 null
 
             #listen

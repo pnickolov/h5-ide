@@ -128,11 +128,13 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                             # staring stopping terminating
                             else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
-                                if type is 'OPEN_APP'
-                                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state )
-                                else
-                                    # hold on current overlay
-                                    console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag
+                                #if type is 'OPEN_APP'
+                                #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state )
+                                #else
+                                #    # hold on current overlay
+                                #    console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag
+
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state )
 
                             #if MC.data.process[ tab_id ].appedit2app
                             #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region

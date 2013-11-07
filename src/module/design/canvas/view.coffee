@@ -47,11 +47,16 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
             state = MC.canvas.getState()
 
             component = MC.canvas_data.component[uid]
-            if component and component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                # In AppEdit, newly created instance will make forge_app.existing_app_resource return false.
-                # In app mode, component's number that is not 1 is servergroup.
-                if ( state is "appedit" and forge_app.existing_app_resource( uid ) is true ) or (state is "app" and  "" + component.number isnt "1")
-                    type = "component_server_group"
+            if component
+                if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                    # In AppEdit, newly created instance will make forge_app.existing_app_resource return false.
+                    # In app mode, component's number that is not 1 is servergroup.
+                    if ( state is "appedit" and forge_app.existing_app_resource( uid ) is true ) or (state is "app" and  "" + component.number isnt "1")
+                        type = "component_server_group"
+            else
+                layout_data = MC.canvas_data.layout.component.group[uid]
+                if layout_data and layout_data.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and layout_data.originalId
+                        uid = layout_data.originalId
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
 

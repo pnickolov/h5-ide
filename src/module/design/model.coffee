@@ -97,7 +97,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         saveProcessTab : ( tab_id ) ->
             console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
+            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
             #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
@@ -153,7 +153,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             console.log MC.tab
             #
-            if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            # if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->

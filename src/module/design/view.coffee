@@ -128,11 +128,13 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
             null
 
-        showDesignOverlay : ( state ) ->
+        showDesignOverlay : ( state, id ) ->
 
             try
 
-                console.log 'showDesignOverlay, state = ' + state
+                console.log 'showDesignOverlay', state, id
+
+                return if MC.data.current_tab_id isnt id
 
                 # state include:
                 # 1. open fail

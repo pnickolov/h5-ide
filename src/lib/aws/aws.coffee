@@ -716,8 +716,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getChanges = (data, ori_data) ->
         me = this
 
-        isChanged = false
-        instance_list = []
+        changes = {'remain':[], 'remove':[]}
 
         # first check change
         new_str = JSON.stringify(data)
@@ -725,30 +724,41 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         if new_str != ori_str
             isChanged = true
 
-            for uid of data.component
-                item = data.component[uid]
+            for uid of ori_data.component
+                item = ori_data.component[uid]
 
                 # only instance
-                if item.type is 'AWS.EC2.Instance' and uid of ori_data.component
+                if item.type is 'AWS.EC2.Instance'
+                    is_remain = false
+                    if uid of data.component    # remain
+                        is_remain = true
+
                     # check instance size
                     if item.resource.InstanceType is ori_data.component[uid].resource.InstanceType
                         continue
 
                     # server group
-                    if item.number > 1 and uid of data.layout.component.node
-                        for inst_uid in data.layout.component.node[uid].instanceList
-                            inst_item = data.component[inst_uid]
-                            instance_list.push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+                    if item.number > 1 and uid of ori_data.layout.component.node
+                        for inst_uid in ori_data.layout.component.node[uid].instanceList
+                            inst_item = ori_data.component[inst_uid]
+                            if is_remain
+                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+                            else
+                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
 
                     else
                         # filter server group instance
                         inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
-                        if inst in instance_list
+                        if inst in changes['remain']
                             continue
 
-                        instance_list.push inst
+                        if is_remain
+                            changes['remain'].push inst
+                        else
+                            changes['remove'].push inst
 
-        {'isChanged':isChanged, 'changes':instance_list}
+
+        {'isChanged':isChanged, 'changes':changes}
 
     #public
     getNewName                  : getNewName

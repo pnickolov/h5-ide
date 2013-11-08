@@ -52,7 +52,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                 done()
 
     _handleException = ( err ) ->
-        console.info 'TA Exception: ', err
+        console.error 'TA Exception: ', err
 
     ########## Sub Validation Method ##########
 

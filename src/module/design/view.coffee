@@ -65,8 +65,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
-            currentText = 'Verify'
-            btnDom.text('Verifying...')
+            currentText = 'Validate'
+            btnDom.text('Validating...')
 
             setTimeout () ->
                 MC.ta.validAll()

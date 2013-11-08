@@ -223,12 +223,14 @@ a {
 }
 
 #header .dropdown-menu {
-	font-size: 12px;
-	position: absolute;
-	top: 50px;
-	right: 0;
-	z-index: 3;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	font-size  : 12px;
+	position   : absolute;
+	top        : 46px;
+	right      : 0;
+	z-index    : 3;
+	box-shadow : 0 2px 5px rgba(0, 0, 0, 0.2);
+	border     : 1px solid #202020;
+	border-top : none;
 }
 
 #user-dropdown-wrapper {
@@ -6220,7 +6222,7 @@ a.action-link:hover {
 	margin-top: 10px;
 }
 
-#modal-run-stack .tab {
+.validation-content .tab {
 	position      : relative;
 	height        : 30px;
 	border        : 1px solid #ccc;
@@ -6230,7 +6232,13 @@ a.action-link:hover {
 	overflow      : hidden;
 }
 
-#modal-run-stack .tab li {
+#modal-validation-statusbar .validation-content .tab {
+	width         : 420px;
+	border        : 1px solid #272727;
+	border-bottom : none;
+}
+
+.validation-content .tab li {
 	color        : #666;
 	width        : 119px;
 	line-height  : 30px;
@@ -6248,37 +6256,46 @@ a.action-link:hover {
 	transition: background .2s;
 }
 
-#modal-run-stack .tab li:last-child {
+.validation-content .tab li:last-child {
 	width        : 120px;
 	border-right : none;
 }
 
-#modal-run-stack .tab li:hover {
+.validation-content .tab li:hover {
 	background: #E3E4E6;
 }
 
-#modal-run-stack .tab li.active,
-#modal-runs-stack .tab li.active:hover {
+.validation-content .tab li.active,
+.validation-content .tab li.active:hover {
 	background  : #f2f3f4;
 	/*color     : #333;*/
 	font-weight : bold;
 	box-shadow  : inset 0 1px 0 rgba(255,255,255,.5);
 }
 
-#modal-run-stack .content_wrap {
+.validation-content .content_wrap {
 	position: relative;
 }
 
-#modal-run-stack .scroll-wrap-validation {
+.validation-content .scroll-wrap-validation {
 	width         : 420px;
-	max-height    : 150px;
+	max-height    : 300px;
 	border        : 1px solid #cfcfcf;
 	border-top    : none;
 	border-radius : 0 0 2px 2px;
 	overflow      : hidden;
 }
 
-#modal-run-stack .content_wrap .content {
+#modal-validation-statusbar .validation-content .scroll-wrap-validation {
+	border     : 1px solid #272727;
+	border-top : none;
+}
+
+#modal-run-stack .validation-content .scroll-wrap-validation {
+	max-height    : 150px;
+}
+
+.validation-content .content_wrap .content {
 	display       : none;
 	width         : 100%;
 	height        : 100%;
@@ -6287,35 +6304,35 @@ a.action-link:hover {
 	background    : #f2f3f4;
 }
 
-#modal-run-stack .content_wrap .active {
+.validation-content .content_wrap .active {
 	display: block;
 }
 
-#modal-run-stack .stack-validation {
+.stack-validation {
 	border-top: 1px solid #cfcfcf;
 	position: relative;
 }
 
-.stack-validation .content ::selection {
+.validation-content .content ::selection {
 	background-color: #0F7EEB;
 	color: #fff;
 }
 
-#modal-run-stack .content_wrap .title {
+.validation-content .content_wrap .title {
 	padding: 10px;
 	border-bottom: 1px solid #e6e6e6;
 	color: #666;
 }
 
-#modal-run-stack .content_wrap .title:nth-child(2n) {
+.validation-content .content_wrap .title:nth-child(2n) {
 	background-color: rgba(255,255,255,.6);
 }
 
-#modal-run-stack .content_wrap .content div:last-child{
+.validation-content .content_wrap .content div:last-child{
 	border-bottom: 0px;
 }
 
-#modal-run-stack .content_wrap .description {
+.validation-content .content_wrap .description {
 	padding: 8px 2px;
 	min-height: 80px;
 }
@@ -7085,11 +7102,33 @@ a.action-link:hover {
 }
 
 #status-bar-modal {
-	width: 500px;
-	position: absolute;
-	bottom: 50px;
-	right: 100px;
-	z-index: 9999;
+	width            : 434px;
+	position         : absolute;
+	bottom           : 23px;
+	right            : 280px;
+	z-index          : 9999;
+	box-shadow       : inset 0 1px rgba(255,255,255,.2), 0 -2px 5px rgba(0,0,0,.2);
+	border           : solid 1px #181a1c;
+	background-color : #32393F;
+	border-radius    : 4px 4px 0 0;
+}
+
+#status-bar-modal .modal-header {
+	background    : none;
+	box-shadow    : none;
+	border-bottom : none;
+	color         : #ccc;
+	text-shadow   : none;	
+}
+
+#status-bar-modal .modal-header h3 {
+	color: #eee;
+}
+
+#status-bar-modal .modal-body {
+	padding: 0 5px 5px 5px;
+	background: none;
+	border-bottom: none;
 }
 
 /** Design Module Overlay **/

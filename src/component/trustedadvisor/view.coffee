@@ -25,7 +25,7 @@ define [ 'event',
                 # $( '#modal-wrap' ).find( '#modal-run-stack' ).find( 'summary' ).after Handlebars.compile( template )( @model.attributes )
             else if type is 'statusbar'
                 @$el.html modal_template
-                @$el.find( '#modal-run-stack' ).html Handlebars.compile( template )( @model.attributes )
+                @$el.find( '#modal-validation-statusbar' ).html Handlebars.compile( template )( @model.attributes )
                 @processStatusBarDetails()
 
             null

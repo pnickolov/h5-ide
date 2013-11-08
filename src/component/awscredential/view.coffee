@@ -469,6 +469,7 @@ define [ 'event',
                     $('#AWSCredentials-loading-text').text lang.ide.HEAD_INFO_LOADING_RESOURCE
 
                     $('#AWSCredential-info-wrap').hide()
+                    
 
                 else if flag is 'on_remove'
 

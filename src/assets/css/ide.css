@@ -6176,48 +6176,48 @@ a.action-link:hover {
 	width: 100px;
 }
 
-#modal-run-stack summary:hover {
+.stack-validation summary:hover {
 	cursor: pointer;
 }
 
-#modal-run-stack summary:focus {
+.stack-validation summary:focus {
 	outline: none;
 }
 
-#modal-run-stack summary {
+.stack-validation summary {
 	display: inline-block;
 	color: #666;
 }
 
-#modal-run-stack .nutshell {
+.stack-validation .nutshell {
 	position: absolute;
 	top: 15px;
 	left: 138px;
 }
 
-#modal-run-stack .nutshell label {
+.stack-validation .nutshell label {
 	padding-left: 12px;
 	cursor: pointer;
 }
 
-#modal-run-stack .validating {
+.stack-validation .validating {
 	height: 116px;
 	background-color: #eef2f4;
 	border-radius: 5px;
 	position: relative;
 }
 
-#modal-run-stack .validating .loading-spinner {
+.stack-validation .validating .loading-spinner {
 	position: absolute;
 	left: 20px;
 }
 
-#modal-run-stack .validating p {
+.stack-validation .validating p {
 	padding: 50px 0 0 50px;
 	color: #888;
 }
 
-#modal-run-stack .validation-content {
+.stack-validation .validation-content {
 	margin-top: 10px;
 }
 
@@ -6418,6 +6418,14 @@ a.action-link:hover {
 .validation-counter-notice {
 	background-color: #49A3FA;
 	border: 1px solid #3A82EC;
+}
+
+#app-apply-update .modal-text-wraper {
+	position: relative;
+}
+
+#app-apply-update .stack-validation {
+	border-top: none;
 }
 
 /* run stack into app process panel*/

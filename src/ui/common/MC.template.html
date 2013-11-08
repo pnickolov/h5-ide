@@ -1187,13 +1187,25 @@ Additional Notes and Questions
 <div style="width:420px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">Do you conﬁrm to update the changes?</div>
-			<div class="update-app-notice">The app is currently stopped. To apply updates, the app will be started automatically.</div>
-		</div> </div>
+		<div class="modal-text-wraper">
+			<div class="modal-center-align-helper">
+				<div class="modal-text-major">Do you conﬁrm to update the changes?</div>
+			</div>
+		</div>
+		<div class="stack-validation">
+			<details open style="display:none;">
+				<summary>App Validation</summary>
+				<div id="stack-run-validation-container"></div>
+			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
+			<div class="validating">
+				<div class="loading-spinner loading-spinner-small"></div>
+				<p>Validating your App...</p>
+			</div>
+		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue">Update</button>
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">Continue to Update</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>

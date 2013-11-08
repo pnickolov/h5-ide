@@ -532,6 +532,9 @@ define [ 'MC', 'event',
 
                             #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
+                    #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    #    trustedadvisor_main.loadModule 'stack'
+
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal

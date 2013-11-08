@@ -9,10 +9,10 @@ define({
         'AWS.EC2.SecurityGroup'     : 'sg'
         'AWS.VPC.VPNGateway'        : 'vpn'
         'AWS.VPC.InternetGateway'   : 'igw'
-        'AWS.VPC.RouteTable'        : 'rtb'
         'AWS.EC2.Instance'          : 'instance'
         'AWS.ELB'                   : 'elb'
         'AWS.VPC.NetworkInterface'  : 'eni'
+        'AWS.VPC.NetworkAcl'        : 'acl'
 
     globalList:
         eip: [ 'isHasIGW' ]

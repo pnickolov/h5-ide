@@ -3437,8 +3437,8 @@ module.exports =
       en: "No Route Table is connected to VPN Gateway."
       zh: ""
 
-    TA_MSG_NOTICE_RT_HAS_NO_ALLOW_ACL:
-      en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no allow rule. But Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Subnet <span class='validation-tag tag-subnet'>%s</span> associated %s."
+    TA_MSG_NOTICE_ACL_HAS_NO_ALLOW_RULE:
+      en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
       zh: ""
 
     # AZ

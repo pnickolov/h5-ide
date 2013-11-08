@@ -7113,6 +7113,10 @@ a.action-link:hover {
 	border-radius    : 4px 4px 0 0;
 }
 
+#status-bar-modal.toggle {
+	right: 0;
+}
+
 #status-bar-modal .modal-header {
 	background    : none;
 	box-shadow    : none;

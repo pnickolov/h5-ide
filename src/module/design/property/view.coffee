@@ -71,6 +71,7 @@ define [ 'event',
             $( '#canvas-panel' ).toggleClass 'right-hiden'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
+            $( '#status-bar-modal' ).toggleClass 'toggle'
             false
 
         toggleOption : ( event ) ->

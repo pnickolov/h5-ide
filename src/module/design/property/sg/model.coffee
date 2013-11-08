@@ -101,7 +101,7 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
 
             members = MC.aws.sg.getAllRefComp sg_uid
 
-            rules = MC.aws.sg.getAllRule currentAppSG
+            rules = MC.aws.sg.getAllRule currentAppSG, true
 
             #get sg name
             sg_app_detail =

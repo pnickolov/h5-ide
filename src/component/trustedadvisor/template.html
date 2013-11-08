@@ -12,6 +12,10 @@
 					<div class="title" data-key="{{ key }}" data-type="{{ type }}">
 						{{{ info }}}
 					</div>
+				{{else}}
+					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
+						No error.
+					</div>
 				{{/each}}
 			</div>
 			<div id="item-warning" class="content">
@@ -19,12 +23,20 @@
 					<div class="title" data-key="{{ key }}" data-type="{{ type }}">
 						{{{ info }}}
 					</div>
+				{{else}}
+					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
+						No warning.
+					</div>
 				{{/each}}
 			</div>
 			<div id="item-notice" class="content">
 				{{#each notice_list }}
 					<div class="title" data-key="{{ key }}" data-type="{{ type }}">
 						{{{ info }}}
+					</div>
+				{{else}}
+					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
+						No notice.
 					</div>
 				{{/each}}
 			</div>

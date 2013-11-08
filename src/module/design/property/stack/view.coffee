@@ -95,6 +95,15 @@ define [ '../base/view',
         openCreateAclPanel : ( event ) ->
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+
+            # remove 100's acl rule
+            entrySet = aclObj.resource.EntrySet
+            newEntrySet = _.filter entrySet, (aclRuleObj) ->
+                if aclRuleObj.RuleNumber in ['100', 100]
+                    return false
+                return true
+            aclObj.resource.EntrySet = newEntrySet
+            
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 

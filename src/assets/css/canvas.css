@@ -418,6 +418,29 @@
 	fill-opacity: 0;
 }
 
+.deleted .node-background {
+	fill-opacity: 0.2;
+	fill: red;
+}
+
+.deleted:hover .node-background {
+	fill-opacity: 0.3;
+	fill: red;
+}
+
+.deleted.selected .node-background {
+	stroke: rgb(243, 98, 98);
+}
+
+.deleted.selected .node-label-name-bg {
+	fill: rgb(243, 98, 98);
+}
+
+.deleted .eni-number-bg,
+.deleted .instance-number-bg {
+	fill: red;
+}
+
 /* group */
 .group-label {
 	font-size: 12px;
@@ -453,6 +476,7 @@
 .AWS-VPC-VPC.selected .group-vpc {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
+	stroke-width: 5;
 }
 
 .AWS-VPC-VPC .group-label {
@@ -480,6 +504,7 @@
 .AWS-EC2-AvailabilityZone.selected .group-az {
 	stroke: #f7941d;
 	/*fill: rgba(255, 255, 255, 0);*/
+	stroke-width: 3;
 }
 
 .AWS-EC2-AvailabilityZone .group-label {
@@ -507,6 +532,7 @@
 .AWS-VPC-Subnet.selected .group-subnet {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
+	stroke-width: 3;
 }
 
 .AWS-VPC-Subnet .group-label {
@@ -650,7 +676,7 @@
 	cursor: pointer;
 }
 
-.canvas-view-normal .eip-status {
+.canvas_state_app .canvas-view-normal .eip-status {
 	cursor: default;
 }
 

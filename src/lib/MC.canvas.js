@@ -179,29 +179,42 @@ MC.canvas = {
 			if (comp.type === "AWS.EC2.Instance")
 			{
 				instance_id = comp.resource.InstanceId;
-				instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
-				if ( $('#' + uid + '_instance-state').length  === 1)
-				{
-					if ( instance_data )
-					{//instance data exist
-						$('#' + uid + '_instance-state').attr({
-							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
-							'data-tooltip' : instance_data.instanceState.name
-						});
 
+				if (instance_id){
+				//instance in app
+					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
+					if ( $('#' + uid + '_instance-state').length  === 1)
+					{
+						if ( instance_data )
+						{//instance data exist
+							$('#' + uid + '_instance-state').attr({
+								'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+								'data-tooltip' : instance_data.instanceState.name
+							});
+
+							//add delete class to terminated instance
+							if (instance_data.instanceState.name === 'terminated' ){
+								Canvon( $('#' + uid ) ).addClass('deleted');
+							}
+
+						}
+						else
+						{//instance data not found, or instance terminated
+							$('#' + uid + '_instance-state').attr({
+								'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+								'data-tooltip': 'unknown'
+							});
+							Canvon( $('#' + uid ) ).addClass('deleted');
+						}
 					}
 					else
-					{//instance data not exist, unknown state
-						$('#' + uid + '_instance-state').attr({
-							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
-							'data-tooltip': ''
-						});
-						Canvon( $('#' + uid ) ).addClass('deleted');
+					{
+						//no instance svg node found
 					}
 				}
 				else
-				{
-					//no instance svg node found
+				{//instance in stack
+
 				}
 			}
 

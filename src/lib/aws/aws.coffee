@@ -729,32 +729,37 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 # only instance
                 if item.type is 'AWS.EC2.Instance'
-                    is_remain = false
                     if uid of data.component    # remain
-                        is_remain = true
-
-                    # check instance size
-                    if item.resource.InstanceType is data.component[uid].resource.InstanceType
-                        continue
-
-                    # server group
-                    if item.number > 1 and uid of ori_data.layout.component.node
-                        for inst_uid in ori_data.layout.component.node[uid].instanceList
-                            inst_item = ori_data.component[inst_uid]
-                            if is_remain
-                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
-                            else
-                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
-
-                    else
-                        # filter server group instance
-                        inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
-                        if inst in changes['remain']
+                        # check instance size
+                        if item.resource.InstanceType is data.component[uid].resource.InstanceType
                             continue
 
-                        if is_remain
-                            changes['remain'].push inst
+                        # server group
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
                         else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
+                            changes['remain'].push inst
+
+                    else
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
+                        else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
                             changes['remove'].push inst
 
 

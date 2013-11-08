@@ -10,7 +10,6 @@ define [ '../base/main',
 
 	view.on "EDIT_RULE", ( line_id ) ->
 		sgrule_main.loadModule( line_id )
-	null
 
 	SgRuleModule = PropertyModule.extend {
 

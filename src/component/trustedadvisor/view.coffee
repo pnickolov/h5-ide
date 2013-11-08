@@ -53,9 +53,9 @@ define [ 'event',
             warning = @model.get 'warning_list'
             notice = @model.get 'notice_list'
 
-            tabs = $ '#stack-run-validation-container .tab li'
-            details = $ '#modal-run-stack details'
-            nutshell = $ '#modal-run-stack .nutshell'
+            tabs = $ '#modal-box .tab li'
+            details = $ '#modal-box details'
+            nutshell = $ '#modal-box .nutshell'
             summary = details.find 'summary'
 
             bindSummary = () ->
@@ -114,7 +114,7 @@ define [ 'event',
 
 
         restoreRun: ->
-            $( '#btn-confirm' ).removeAttr( 'disabled' )
+            $( '#btn-confirm, #confirm-update-app' ).removeAttr( 'disabled' )
 
 
         _clickCurrentTab : ( status ) ->

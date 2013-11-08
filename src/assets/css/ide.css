@@ -6426,6 +6426,15 @@ a.action-link:hover {
 
 #app-apply-update .stack-validation {
 	border-top: none;
+	padding: 15px 0;
+}
+
+#app-apply-update .modal-text-major {
+	margin: 0;
+}
+
+#app-apply-update .nutshell {
+	left: 114px;
 }
 
 /* run stack into app process panel*/
@@ -7129,7 +7138,7 @@ a.action-link:hover {
 	box-shadow    : none;
 	border-bottom : none;
 	color         : #ccc;
-	text-shadow   : none;	
+	text-shadow   : none;
 }
 
 #status-bar-modal .modal-header h3 {

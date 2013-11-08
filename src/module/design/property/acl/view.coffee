@@ -202,6 +202,7 @@ define [ '../base/view',
         refreshRuleList : () ->
             value = @model.attributes.component
             entrySet = value.resource.EntrySet
+            aclName = value.name
 
             newEntrySet = []
             _.each entrySet, (value, key) ->
@@ -218,7 +219,7 @@ define [ '../base/view',
                     newRuleObj.ruleNumber = value.RuleNumber
                     newRuleObj.isStarRule = false
 
-                if value.RuleNumber in ['100', 100]
+                if value.RuleNumber in ['100', 100] and aclName is 'DefaultACL'
                     newRuleObj.isStarRule = true
 
                 # if value.Protocol is '-1'

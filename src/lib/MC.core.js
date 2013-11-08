@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system
-#* Date: 20130918
+#* Date: 20131108
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -675,7 +675,9 @@ $(document).ready(function ()
 
 	if (language === undefined)
 	{
-		language = navigator.language.replace(/-[\w]*/ig, '');
+		language = navigator.language ? navigator.language : navigator.browserLanguage;
+
+		language = language.replace(/-[\w]*/ig, '');
 
 		if ( language === 'zh' ) {
 			language = 'zh-cn';

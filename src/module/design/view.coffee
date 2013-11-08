@@ -188,8 +188,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                         ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
 
                         # delete MC.process and MC.data.process
-                        delete MC.process[ MC.data.current_tab_id ]
-                        delete MC.data.process[ MC.data.current_tab_id ]
+                        # delete MC.process[ MC.data.current_tab_id ]
+                        # delete MC.data.process[ MC.data.current_tab_id ]
 
                         null
 

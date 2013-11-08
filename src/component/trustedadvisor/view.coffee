@@ -126,6 +126,7 @@ define [ 'event',
                 console.log 'closedPopup'
                 @$el.empty()
                 this.trigger 'CLOSE_POPUP'
+                $( '#status-bar-modal' ).hide()
 
     }
 

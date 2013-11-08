@@ -196,6 +196,7 @@ MC.canvas = {
 							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
 							'data-tooltip': ''
 						});
+						Canvon( $('#' + uid ) ).addClass('deleted');
 					}
 				}
 				else
@@ -2986,12 +2987,13 @@ MC.canvas.instanceList = {
 				, name      : "Server Group List"
 			};
 			var statusMap = {
-					 "pending"       : "orange"
-				 , "stopping"      : "orange"
-				 , "shutting-down" : "orange"
+					 "pending"       : "yellow"
+				 , "stopping"      : "yellow"
+				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
-				 , "stopped"       : "red"
+				 , "stopped"       : "orange"
 				 , "terminated"    : "red"
+				 , "unknown"       : "grey"
 			};
 
 			if ( layout ) {
@@ -3000,13 +3002,25 @@ MC.canvas.instanceList = {
 
 			for ( var i = 0; i < layout.instanceList.length; ++i ) {
 
-				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
+					instance_data = null;
 				temp_data.name = inst_comp.serverGroupName;
+
+				//get instance state
+				if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+					inst_comp.state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
+				}
+
+				if (!inst_comp.state){
+					inst_comp.state = 'unknown';
+				}
+
 				temp_data.instances.push( {
-					  status : statusMap[ inst_comp.state ]
+					  color : statusMap[ inst_comp.state ]
 					, id     : inst_comp.uid
 					, volume : inst_comp.resource.BlockDeviceMapping.length
 					, name   : inst_comp.name
+					, state  : inst_comp.state
 				} );
 			}
 

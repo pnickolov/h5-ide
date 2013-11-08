@@ -60,7 +60,21 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		null
 
+	#return instance state
+	getInstanceState = ( instance_id ) ->
+
+		if MC.data.resource_list
+
+			instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id]
+
+			if instance_data
+
+				state = instance_data.instanceState.name
+		#return
+		state
+
 	#public
 	updateCount        : updateCount
 	updateStateIcon    : updateStateIcon
 	canSetEbsOptimized : canSetEbsOptimized
+	getInstanceState   : getInstanceState

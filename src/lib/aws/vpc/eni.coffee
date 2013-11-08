@@ -399,6 +399,38 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
 			null
 
+	getAvailableIPCountInCIDR = (ipCidr, filter) ->
+
+		_addZeroToLeftStr = (str, n) ->
+			count = n - str.length + 1
+			strAry = _.map [1...count], () ->
+				return '0'
+			str = strAry.join('') + str
+
+		cutAry = ipCidr.split('/')
+		ipAddr = cutAry[0]
+		suffix = Number cutAry[1]
+		prefix = 32 - suffix
+
+		ipAddrAry = ipAddr.split '.'
+		ipAddrBinAry = _.map ipAddrAry, (value) ->
+			return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+
+		ipAddrBinStr = ipAddrBinAry.join ''
+		ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
+
+		ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
+		ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
+
+		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
+		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
+
+		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		if availableIPCount < 0
+			availableIPCount = 0
+
+		return availableIPCount
+
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
 	getAvailableIPInCIDR : getAvailableIPInCIDR
@@ -416,3 +448,4 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 	getAllNoAutoAssignIPInCIDR : getAllNoAutoAssignIPInCIDR
 	haveIPConflictWithOtherENI : haveIPConflictWithOtherENI
 	updateAllInstanceENIIPToAutoAssign : updateAllInstanceENIIPToAutoAssign
+	getAvailableIPCountInCIDR : getAvailableIPCountInCIDR

@@ -411,18 +411,39 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		MC.canvas_data.component = comp_data
 
 		# generate eni ip
+
+		# filter app edit ip array
+		filterAry = []
+
+		try
+			currentState = MC.canvas.getState()
+			if currentState is 'appedit'
+				currentVPCUID = MC.aws.vpc.getVPCUID()
+				currentVPCComp = MC.canvas_data.component[currentVPCUID]
+				currentVPCId = currentVPCComp.resource.VpcId
+				currentRegion = MC.canvas_data.region
+				currentResource = MC.data.resource_list[currentRegion]
+				_.each currentResource, (resObj, resId) ->
+					if resId.indexOf('eni-') is 0
+						if resObj.vpcId is currentVPCId
+							_.each resObj.privateIpAddressesSet.item, (ipObj) ->
+								filterAry.push(ipObj.privateIpAddress)
+					null
+		catch err
+			console.log(err)
+
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			azName = MC.canvas_data.layout.component.group[azUID].name
 			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(azName, true)
+				MC.aws.subnet.updateAllENIIPList(azName, true, filterAry)
 			else
-				MC.aws.subnet.updateAllENIIPList(azName, false)
+				MC.aws.subnet.updateAllENIIPList(azName, false, filterAry)
 		else
 			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true)
+				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true, filterAry)
 			else
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false)
+				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false, filterAry)
 
 
 		# restore canvas comps

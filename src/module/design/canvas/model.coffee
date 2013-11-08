@@ -334,9 +334,9 @@ define [ 'constant',
 
 				# update IP List
 				if defaultVPC
-					MC.aws.subnet.updateAllENIIPList(newAZ)
+					MC.aws.subnet.updateAllENIIPList(newAZ, false)
 				else
-					MC.aws.subnet.updateAllENIIPList(subnetUID)
+					MC.aws.subnet.updateAllENIIPList(subnetUID, false)
 			else
 
 				# Nothing is changed
@@ -432,11 +432,11 @@ define [ 'constant',
 			# Update IP List
 			if defaultVPC
 				eniNewAZ = component.resource.AvailabilityZone
-				MC.aws.subnet.updateAllENIIPList(eniNewAZ)
+				MC.aws.subnet.updateAllENIIPList(eniNewAZ, false)
 			else
 				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 				subnetUID = tgt_parent
-				MC.aws.subnet.updateAllENIIPList(subnetUID)
+				MC.aws.subnet.updateAllENIIPList(subnetUID, false)
 
 			null
 

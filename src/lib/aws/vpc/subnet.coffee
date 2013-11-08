@@ -196,7 +196,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 			return null
 
 	#for default vpc, subnetuid is az name
-	updateAllENIIPList = (subnetUidOrAZ, notForce) ->
+	updateAllENIIPList = (subnetUidOrAZ, notForce, outFilterAry) ->
 
 		defaultVPC = false
 		if MC.aws.aws.checkDefaultVPC()
@@ -208,6 +208,9 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		subnetRef = ''
 
 		filterAry = []
+		if outFilterAry and _.isArray(outFilterAry)
+			filterAry = outFilterAry
+
 		if defaultVPC
 			azName = subnetUidOrAZ
 			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)

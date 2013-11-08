@@ -1188,6 +1188,41 @@ Additional Notes and Questions
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<p class="modal-text-major">Do you conﬁrm to update the changes?</p>
+
+		{{# if state }}
+			{{# if instance_list.remain }}
+			<div class="stack-validation">
+				<details open>
+					<summary>{{ instance_list.remain.length }} instance(s) will be restated.</summary>
+					<div class="modal-text-wraper">
+						<ul class="clearfix">
+							{{#each instance_list.remain }}
+							<li>{{ name }}({{ instance_id }})</li>
+							{{/each}}
+						</ul>
+					</div>
+				</details>
+				<div class="nutshell" style="display: none;">:<label></label></div>
+			</div>
+			{{/if}}
+		{{/if}}
+
+		{{# if instance_list.remove }}
+		<div class="stack-validation">
+			<details open>
+				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
+				<div class="modal-text-wraper">
+					<ul class="clearfix">
+						{{#each instance_list.remove }}
+						<li>{{ name }}({{ instance_id }})</li>
+						{{/each}}
+					</ul>
+					<div id="instance-type" class="modal-text-major">Caution: Termination cannot be rolled back.</div>
+				</div>
+			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
+		</div>
+		{{/if}}
 		<div class="stack-validation">
 			<details open style="display:none;">
 				<summary>App Validation</summary>

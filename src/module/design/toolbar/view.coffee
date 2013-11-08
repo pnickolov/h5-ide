@@ -497,43 +497,50 @@ define [ 'MC', 'event',
 
                 if diff_data.isChanged
 
-                    state = constant.APP_STATE.APP_STATE_STOPPED
+                    #state   = constant.APP_STATE.APP_STATE_STOPPED
+                    state    = null
                     platform = 'vpc'
 
                     # check app state
                     if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
+
                     if MC.canvas_data.platform is "ec2-classic"
                         platform = 'ec2'
 
                     ## modal init
-                    obj = { 'state':state, 'platform':platform, 'instance_list':diff_data.changes }
-                    if obj.state is constant.APP_STATE.APP_STATE_STOPPED
+                    obj = { 'state' : state, 'platform' : platform, 'instance_list' : diff_data.changes }
+                    console.log 'app update object'
+                    console.log obj
 
-                        modal MC.template.updateApp()
-                        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    modal MC.template.updateApp obj
 
-                    else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
+                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                        trustedadvisor_main.loadModule 'stack'
 
-                        if obj.instance_list.length is 0
-
-                            modal MC.template.updateApp()
-                            $( '.update-app-notice' ).empty()
-                            #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-
-                        else
-
-                            modal MC.template.restartInstance obj
-
-                            if obj.platform is 'ec2'
-                                $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
-                            else if obj.platform is 'vpc'
-                                $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
-
-                            #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-
-                    #require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
-                    #    trustedadvisor_main.loadModule 'stack'
+                    #if obj.state is constant.APP_STATE.APP_STATE_STOPPED
+                    #
+                    #    modal MC.template.updateApp obj
+                    #    #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
+                    #
+                    #    if obj.instance_list.length is 0
+                    #
+                    #        modal MC.template.updateApp()
+                    #        $( '.update-app-notice' ).empty()
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #    else
+                    #
+                    #        modal MC.template.restartInstance obj
+                    #
+                    #        if obj.platform is 'ec2'
+                    #            $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
+                    #        else if obj.platform is 'vpc'
+                    #            $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
+                    #
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES

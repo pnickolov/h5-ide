@@ -111,6 +111,7 @@ define [ 'event',
                 if @state is 'welcome'
                     $( '#awscredentials-submit' ).text 'Loading...'
                     $( '#awscredentials-skip' ).hide()
+                    $( '#AWSCredential-welcome-img' ).hide()
 
         onAWSCredentialCancel : () ->
             console.log 'account_setting_tab onAWSCredentialCancel'

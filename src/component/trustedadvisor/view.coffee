@@ -69,6 +69,8 @@ define [ 'event',
                 content = ''
                 if error.length
                     content += "#{error.length} error, "
+                    _.defer () ->
+                        modal.position()
 
                 if warning.length
                     content += "#{warning.length} warning, "

@@ -123,12 +123,34 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
-
-            return if MC.data.current_tab_id in [ 'dashboard', undefined ]
+            #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             return if !forge_handle.cookie.getCookieByName( 'userid' )
-            return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
+            #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
 
-            if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+            #if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+            #    return undefined
+            #else
+            #    return lang.ide.BEFOREUNLOAD_MESSAGE
+
+            has_refresh = true
+
+            if Tabbar.current is 'dashboard'
+                _.each MC.tab, ( item ) ->
+                    if not _.isEqual( item.data, item.origin_data )
+                        has_refresh = false
+                        null
+            else
+
+                if not MC.tab[ MC.data.current_tab_id ]
+                    if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+                        has_refresh = false
+
+                _.each MC.tab, ( item ) ->
+                    if not _.isEqual( item.data, item.origin_data )
+                        has_refresh = false
+                        null
+
+            if has_refresh
                 return undefined
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE

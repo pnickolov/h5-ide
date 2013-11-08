@@ -431,6 +431,49 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 		return availableIPCount
 
+	# getUsingIPCountInSubnet = (subnetUIDRefOrAZ) ->
+
+	# 	defaultVPCId = MC.aws.aws.checkDefaultVPC()
+	# 	allCompAry = MC.canvas_data.component
+
+	# 	totalIPCount = 0
+
+	# 	_.each allCompAry, (compObj) ->
+
+	# 		# count eni ip
+	# 		if compObj.type is 'AWS.VPC.NetworkInterface'
+				
+	# 			currentSubnetUIDRef = compObj.resource.SubnetId
+	# 			currentAZName = compObj.resource.AvailabilityZone
+	# 			if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or
+	# 				(defaultVPCId and currentAZName is subnetUIDRefOrAZ)
+	# 					privateIpAddressSet = compObj.resource.PrivateIpAddressSet
+	# 					totalIPCount += privateIpAddressSet.length
+
+	# 		# count asg ip
+	# 		if compObj.type is 'AWS.AutoScaling.Group'
+
+	# 			desiredCount = Number(compObj.resource.DesiredCapacity)
+
+	# 			currentAZAry = compObj.resource.AvailabilityZones
+	# 			subnetRefAryStr = compObj.resource.VPCZoneIdentifier
+	# 			subnetRefAry = subnetRefAryStr.split(',')
+	# 			subnetRefAry = _.map subnetRefAry, (subnetRef) ->
+	# 				return $.trim(subnetRef)
+
+	# 			if (!defaultVPCId and subnetUIDRefOrAZ in subnetRefAry) or
+	# 				(defaultVPCId and subnetUIDRefOrAZ in currentAZAry)
+	# 				totalIPCount += desiredCount
+
+	# 		# count elb ip
+	# 		if compObj.type is 'AWS.ELB'
+	# 			subnetRefAry = compObj.resource.Subnets
+	# 			if subnetUIDRefOrAZ in subnetRefAry
+
+	# 		null
+
+	# 	return allOtherIPAry
+
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
 	getAvailableIPInCIDR : getAvailableIPInCIDR

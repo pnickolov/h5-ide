@@ -62,14 +62,14 @@ define [ 'event',
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
             if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         showOverviewTab : () ->
             console.log 'showOverviewTab'
@@ -97,7 +97,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            @_hideStatubar()
+            @hideStatubar()
             #
             null
 
@@ -109,7 +109,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
@@ -155,8 +155,8 @@ define [ 'event',
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
 
-        _hideStatubar : ->
-            console.log '_hideStatubar'
+        hideStatubar : ->
+            console.log 'hideStatubar'
             if $.trim( $( '#status-bar-modal' ).html() )
                 $( '#status-bar-modal' ).empty()
                 $( '#status-bar-modal' ).hide()

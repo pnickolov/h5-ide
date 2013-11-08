@@ -110,6 +110,8 @@ define [ 'MC', 'event',
         listen     : ->
             #app update event
             $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
+            #cancel to app model
+            $( document.body ).on 'click', '#return-app-confirm', this, @_return2App
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -548,7 +550,6 @@ define [ 'MC', 'event',
                 @_return2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
-                $( document.body ).one 'click', '#return-app-confirm', this, @_return2App
             null
 
         _return2App : ( target ) ->
@@ -576,6 +577,9 @@ define [ 'MC', 'event',
 
             # 7. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
+
+            # 8. Hide status bar validation
+            ide_event.trigger ide_event.HIDE_STATUS_BAR
 
             null
 

@@ -36,9 +36,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
                 MC.ta.validRun()
 
-                ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
-                    console.log 'UNLOAD_TA_MODAL'
-                    unLoadModule view, model
+            ide_event.onLongListen ide_event.UNLOAD_TA_MODAL, () ->
+                console.log 'UNLOAD_TA_MODAL'
+                unLoadModule view, model
 
             if type is 'stack'
                 processRun()

@@ -159,6 +159,7 @@ define [ 'event',
             console.log '_hideStatubar'
             if $.trim( $( '#status-bar-modal' ).html() )
                 $( '#status-bar-modal' ).empty()
+                $( '#status-bar-modal' ).hide()
                 ide_event.trigger ide_event.UNLOAD_TA_MODAL
     }
 

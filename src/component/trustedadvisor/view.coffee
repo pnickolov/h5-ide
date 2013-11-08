@@ -27,6 +27,8 @@ define [ 'event',
                 @$el.html modal_template
                 @$el.find( '#modal-validation-statusbar' ).html Handlebars.compile( template )( @model.attributes )
                 @processStatusBarDetails()
+                #
+                $('#status-bar-modal').show()
 
             null
 

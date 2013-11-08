@@ -7,9 +7,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
     SGRuleModel = PropertyModel.extend {
 
         defaults :
-            sg_group   : []
-            sg_app_ary : null
-            line_id    : null
+            sg_group : []
 
         init : ( line_id ) ->
             this.set 'line_id', line_id

@@ -16,8 +16,6 @@ define [ '../base/view',
 
 
         render : () ->
-            console.log 'property:sgrule render'
-
             tpl = if @model.isApp then app_template else template
 
             @$el.html tpl @model.attributes

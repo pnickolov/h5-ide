@@ -170,55 +170,39 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
             #get sg name
             sg_app_detail =
-                name : MC.canvas_data.component[sgUID].resource.GroupName
+                name : MC.canvas_data.component[sgUID].name
                 rules : rules
 
             return sg_app_detail
 
         getAppDispSGList : (line_uid) ->
-
-            that = this
-
-            bothSGAry = MC.aws.sg.getSgRuleDetail line_uid
-
             sgUIDAry = []
-            _.each bothSGAry, (sgObj) ->
-                innerSGAry = sgObj.sg
-                _.each innerSGAry, (innerSGObj) ->
-                    sgUID = innerSGObj.uid
-                    sgUIDAry.push sgUID
-                    null
-                null
-
-            sgUIDAry = _.uniq(sgUIDAry)
+            sgUIDMap = {}
+            for sgObj in MC.aws.sg.getSgRuleDetail( line_uid )
+                for sg in sgObj.sg
+                    if not sgUIDMap[ sg.uid ]
+                        sgUIDMap[ sg.uid ] = true
+                        sgUIDAry.push sg.uid
 
             sg_app_ary = []
-            _.each sgUIDAry, (sgUID) ->
-                sg_app_ary.push that._getAppSGInfo(sgUID)
-                null
+            for sg in sgUIDAry
+                sg_app_ary.push @_getAppSGInfo sg
 
-            that.set 'sg_group', sg_app_ary
+            @set 'sg_group', sg_app_ary
+            null
 
         _getAppSGInfo : (sgUID) ->
 
             # get app sg obj
             currentRegion = MC.canvas_data.region
             currentSGComp = MC.canvas_data.component[sgUID]
-            currentSGID = currentSGComp.resource.GroupId
-            currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
-
-            members = MC.aws.sg.getAllRefComp sgUID
-            rules = MC.aws.sg.getAllRule currentAppSG
+            currentSGID   = currentSGComp.resource.GroupId
+            currentAppSG  = MC.data.resource_list[currentRegion][currentSGID]
 
             #get sg name
             sg_app_detail =
-                groupName        : currentSGComp.name
-                groupDescription : currentAppSG.groupDescription
-                groupId          : currentAppSG.groupId
-                ownerId          : currentAppSG.ownerId
-                vpcId            : currentAppSG.vpcId
-                members          : members
-                rules            : rules
+                groupName : currentSGComp.name
+                rules     : MC.aws.sg.getAllRule currentAppSG
 
             return sg_app_detail
 

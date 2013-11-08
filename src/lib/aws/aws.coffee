@@ -734,7 +734,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                         is_remain = true
 
                     # check instance size
-                    if item.resource.InstanceType is ori_data.component[uid].resource.InstanceType
+                    if item.resource.InstanceType is data.component[uid].resource.InstanceType
                         continue
 
                     # server group

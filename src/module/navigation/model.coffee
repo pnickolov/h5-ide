@@ -291,9 +291,10 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
             console.log this.get('app_list')
 
             temp = $.extend true, [], this.get( 'app_list' )
-            _.each temp[0].region_name_group, ( item ) ->
-                item.state = type if item.id is id
-                null
+            _.each temp, ( obj ) ->
+                _.each obj.region_name_group, ( item ) ->
+                    item.state = type if item.id is id
+                    null
 
             console.log temp
             this.set 'app_list', temp

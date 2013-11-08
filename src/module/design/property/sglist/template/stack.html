@@ -43,7 +43,7 @@
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{sgColor}}" ></div>{{sgName}}</div>
 					<div class="col2-2 truncate">{{sgDesc}}</div>
-					<div class="col2-3 truncate">{{sgRuleNum}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{sgMemberNum}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#unless sgIsDefault}}{{#unless readonly}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/unless}}{{/unless}}</div>
+					<div class="col2-3 truncate">{{sgRuleNum}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{sgMemberNum}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>
 			</li>
 			{{/each}}

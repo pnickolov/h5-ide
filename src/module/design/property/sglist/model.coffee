@@ -2,16 +2,12 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant','backbone' ], (constant) ->
+define [ 'lib/forge/app' ], ( forge_app ) ->
 
 	SGListModel = Backbone.Model.extend {
 
 		defaults :
 			'show_sg_check' : true
-			'sg_list' : null
-			'is_stack_sg' : null
-			'sg_rule_list' : null
-			'only_one_sg' : null
 
 		_getSGRefNum : (sgUID) ->
 			refNum = 0
@@ -97,6 +93,9 @@ define [ 'constant','backbone' ], (constant) ->
 				if not needShow
 					continue
 
+				isDefault = sgComp.name is 'DefaultSG'
+				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
+
 				# need to display
 				sgDisplayObj =
 					sgUID       : uid
@@ -106,10 +105,11 @@ define [ 'constant','backbone' ], (constant) ->
 					sgMemberNum : @_getSGRefNum uid
 					sgChecked   : sgChecked
 					sgHideCheck : readonly or isStackParent
-					sgIsDefault : sgComp.name is 'DefaultSG'
+					sgIsDefault : isDefault
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
 					readonly    : readonly
+					deletable   : deletable
 
 				if sgDisplayObj.sgIsDefault
 					defaultSG = sgDisplayObj

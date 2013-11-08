@@ -218,6 +218,9 @@ define [ '../base/view',
                     newRuleObj.ruleNumber = value.RuleNumber
                     newRuleObj.isStarRule = false
 
+                if value.RuleNumber in ['100', 100]
+                    newRuleObj.isStarRule = true
+
                 # if value.Protocol is '-1'
                 #     newRuleObj.protocol = 'All'
                 # else

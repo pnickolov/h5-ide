@@ -3348,7 +3348,7 @@ module.exports =
       zh: "删除APP"
 
     SAVE_APP:
-      en: "update error"
+      en: "update"
       zh: "更新错误"
 
     ##### Trust Advisor

@@ -28,7 +28,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         resource_source = result.resolved_data
 
                         if resource_source
-                            MC.aws.aws.cacheResource resource_source, region
+                            MC.aws.aws.cacheResource resource_source, region, false
                             me.describeInstancesOfASG region
 
                         #update instance icon of app

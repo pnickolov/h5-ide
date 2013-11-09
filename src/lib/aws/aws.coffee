@@ -113,13 +113,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         name_prefix + idx
 
 
-    cacheResource = (resources, region) ->
+    cacheResource = (resources, region, need_reset) ->
 
         #cache aws resource data to MC.data.reosurce_list
 
         if !resources or !region or !MC.data.resource_list
             console.log 'cacheResource failed'
             return null
+
+        if need_reset
+            MC.data.resource_list[region] = {}
 
 
         try

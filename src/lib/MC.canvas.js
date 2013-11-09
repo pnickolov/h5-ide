@@ -3210,7 +3210,7 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_ENI_SELECTED', target.data('id'));
 
 		return false;
 	}

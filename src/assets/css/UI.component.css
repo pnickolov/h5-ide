@@ -1880,20 +1880,23 @@ textarea {
 /* Slider */
 
 .slider {
-	background-color: #fff;
-	border-radius: 0px;
-	height: 6px;
-	width: 240px;
-	border: 1px #292929 solid;
-	border-left: 0;
-	border-right: 0;
+	position         : relative;
+	background-color : #fff;
+	height           : 6px;
+	width            : 250px;
+	border           : 1px #292929 solid;
+	border-left      : 0;
+	border-right     : 0;
+	cursor           : default;
+	border-radius    : 3px;
+	margin           : 15px 0 35px 5px;
+
 	-webkit-user-select: none;
-	-moz-user-select: none;
-	cursor: default;
-	border-radius: 0 3px 3px 0;
+	   -moz-user-select: none;
+	   			user-select: none;
 }
 
-.slider .slider-controll {
+.slider .thumb {
 	border-radius    : 50%;
 	height           : 16px;
 	width            : 16px;
@@ -1902,54 +1905,33 @@ textarea {
 	position         : absolute;
 	z-index          : 99;
 	margin-top       : -6px;
-	margin-left      : -14px;
+	margin-left      : -9px;
 
 	background-color : #B25b91;
 	box-shadow       : inset 0 1px 1px rgba(255,255,255,.1), 0 1px 4px rgba(0,0,0,.3);
 }
 
-.slider-line {
-	list-style: none;
-	position: absolute;
-	margin: 0;
-	padding: 0;
-	margin-top: -8px;
-	margin-left: -5px;
-	width: 500px;
+.marker {
+	list-style : none;
+	margin     : 0 0 0 -15px;
+	padding    : 12px 0 0 0;
+	width      : 300px;
 }
 
-.slider-line li span {
-	cursor: pointer;
+.marker li {
+	float      : left;
+	width      : 31px;
+	color      : #888;
+	cursor     : pointer;
+	text-align : center;
 }
 
-.slider-line li span:hover {
+.marker li:hover {
 	color: #ccc;
 }
 
-.slider-line li {
-	float: left;
-	width: 30px;
-	height: 20px;
-	/*border-left: 1px #ccc solid;*/
-	color: #888;
-	line-height: 60px;
-}
-
-.slider-line li span {
+.marker li span {
 	margin-left: -5px;
-}
-
-.slider-wrap {
-	width: 10px;
-	height: 6px;
-	border: 1px #292929 solid;
-	position: absolute;
-	border-left: 0;
-	border-right: 0;
-	margin-top: -1px;
-	margin-left: -7px;
-	background-color: #fff;
-	border-radius: 3px 0 0 3px;
 }
 
 .property-control-group-sub {

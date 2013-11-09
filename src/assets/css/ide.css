@@ -49,6 +49,7 @@ a {
 .mgl80 { margin-left  : 80px; }
 .mgr10 { margin-right : 10px; }
 .mgt10 { margin-top   : 10px; }
+.mgt5  { margin-top   : 5px; }
 .mgl5  { margin-left  : 5px;  }
 
 .lh30  { line-height : 30px; }
@@ -4928,76 +4929,6 @@ a.action-link:hover {
 
 /* elb property panel */
 /* written by song */
-
-.elb-scheme-type-radio {
-	margin-top: 20px;
-}
-
-.elb-scheme-radio-group {
-	margin-top: 5px;
-}
-
-/*#accordion-group-property-elb-zones .checkbox-label-main {
-	margin-top: -8px;
-	position: absolute;
-	left: 38px;
-}
-
-#accordion-group-property-elb-zones .checkbox-label-minor {
-	margin-top: 10px;
-	font-size: 10px;
-	color: #09f;
-	position: absolute;
-	left: 38px;
-}
-
-#accordion-group-property-elb-zones .property-control-group {
-	border-bottom: 2px #ddd solid;
-	width: 100%;
-}
-
-#accordion-group-property-elb-detail .elb-volume-type-radio {
-	margin-top: 10px;
-	margin-left: 0px;
-}
-
-#accordion-group-property-elb-detail .elb-volume-type-radio-text {
-	margin-top: 10px;
-	position: absolute;
-	left: 38px;
-}*/
-
-/*#elb-property-group-interval .left {
-	float: none;
-	display: block;
-}
-
-#elb-property-group-interval .input {
-	float: left;
-	width: 160px;
-}
-
-#elb-property-group-interval .elb-property-right-text {
-	margin-top: 17px;
-	margin-left: 200px;
-	text-align: right;
-}*/
-
-.elb-property-right-text {
-	margin-left: 5px;
-	text-align: right;
-}
-
-.slider-container {
-	height: 35px;
-	margin-top: 40px;
-}
-
-.slider {
-	margin: 10px;
-	margin-top: 15px;
-}
-
 
 /* elb listener set */
 #accordion-group-elb-property-listener-main .accordion-body {

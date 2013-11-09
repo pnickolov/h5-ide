@@ -41,8 +41,8 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
                 unLoadModule view, model
 
             if type is 'stack'
-                processRun()
                 view.closedPopup()
+                processRun()
             else
                 processBar()
 

@@ -22,6 +22,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 			MC.canvas.display( uid, 'instance-number-group', true )
 			MC.canvas.display( uid, 'port-instance-rtb', false )
 			MC.canvas.update( uid, 'text', 'instance-number', count )
+			MC.canvas.display( uid, 'instance-state', false)
 
 			if eni
 				MC.canvas.display( eni, 'eni-number-group', true )
@@ -30,6 +31,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		else
 			MC.canvas.display( uid, 'instance-number-group', false )
+			MC.canvas.display( uid, 'instance-state', true)
 			MC.canvas.display( uid, 'port-instance-rtb', true )
 			if eni
 				MC.canvas.display( eni, 'eni-number-group', false )

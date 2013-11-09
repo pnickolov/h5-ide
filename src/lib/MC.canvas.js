@@ -49,10 +49,14 @@ MC.canvas = {
 		else if (is_visible === true)
 		{
 			target.attr('display', 'inline');
+			target.attr('style', '');
+			Canvon(target).addClass('tooltip')
 		}
 		else
 		{
 			target.attr('display', 'none');
+			target.attr('style', 'opacity:0');
+			Canvon(target).removeClass('tooltip')
 		}
 	},
 
@@ -2888,13 +2892,23 @@ MC.canvas.asgList = {
 				return true;
 			}
 
+			// var statusMap = {
+			// 	"Pending"     : "orange",
+			// 	"Quarantined" : "orange",
+			// 	"InService"   : "green",
+			// 	"Terminating" : "red",
+			// 	"Terminated"  : "red"
+			// };
 			var statusMap = {
-				"Pending"     : "orange",
-				"Quarantined" : "orange",
-				"InService"   : "green",
-				"Terminating" : "red",
-				"Terminated"  : "red"
+				   "pending"       : "yellow"
+				 , "stopping"      : "yellow"
+				 , "shutting-down" : "yellow"
+				 , "running"       : "green"
+				 , "stopped"       : "orange"
+				 , "terminated"    : "red"
+				 , "unknown"       : "grey"
 			};
+
 
 			var temp_data = {
 				name      : lc_comp.name,
@@ -2908,13 +2922,25 @@ MC.canvas.asgList = {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = asgData.Instances.member;
+			var instances = asgData.Instances.member,
+				state = null;
 			if ( instances )
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {
+					//get instance state
+					if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+						state = MC.aws.instance.getInstanceState( instances[i].InstanceId );
+					}
+					if (!state){
+						state = 'unknown';
+					}
+
 					temp_data.instances.push({
 							id     : instances[i].InstanceId
-						, status : statusMap[ instances[i].LifecycleState ]
+						//, color : statusMap[ instances[i].LifecycleState ]
+						//, state : instances[i].LifecycleState
+						, color : statusMap[state]
+						, state : state
 					});
 				}
 			}
@@ -3016,24 +3042,25 @@ MC.canvas.instanceList = {
 			for ( var i = 0; i < layout.instanceList.length; ++i ) {
 
 				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
+					state = null,
 					instance_data = null;
 				temp_data.name = inst_comp.serverGroupName;
 
 				//get instance state
 				if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
-					inst_comp.state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
+					state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
 				}
 
-				if (!inst_comp.state){
-					inst_comp.state = 'unknown';
+				if (!state){
+					state = 'unknown';
 				}
 
 				temp_data.instances.push( {
-					  color : statusMap[ inst_comp.state ]
+					  color : statusMap[ state ]
 					, id     : inst_comp.uid
 					, volume : inst_comp.resource.BlockDeviceMapping.length
 					, name   : inst_comp.name
-					, state  : inst_comp.state
+					, state  : state
 				} );
 			}
 

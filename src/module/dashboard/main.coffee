@@ -207,20 +207,27 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 view.renderRegionResourceBody type, true
 
             # update region thumbnail
-            ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url ) ->
+            ide_event.onLongListen ide_event.UPDATE_REGION_THUMBNAIL, ( url, id ) ->
                 console.log 'UPDATE_REGION_THUMBNAIL'
 
-                view.updateThumbnail url
+                view.updateThumbnail url, id
 
                 null
 
             #update region app state when pending
-            ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
-                console.log 'UPDATE_TAB_ICON'
+            # ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
+            #     console.log 'UPDATE_TAB_ICON'
 
-                model.updateAppList flag, app_id
+            #     model.updateAppList flag, app_id
 
-                null
+            #     null
+
+            # ide_event.onLongListen ide_event.UPDATE_APP_STATE, (state, tab_name) ->
+            #     console.log 'UPDATE_APP_STATE, state:' + state + ', tab_name:' + tab_name
+
+            #     model.updateAppState(state, tab_name)
+
+            #     null
 
     unLoadModule = () ->
 

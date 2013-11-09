@@ -64,7 +64,10 @@
 .icon-elbow,
 .icon-bezier-q,
 .icon-bezier-qt,
-.icon-toolbar-cloudformation
+.icon-toolbar-cloudformation,
+.icon-update-app,
+.icon-cancel-update-app,
+.icon-apply-app
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -114,11 +117,11 @@
 .icon-pending:before { content : "\F137"; }
 .icon-warning:before {content: "\F138";}
 .icon-error:before { content : "\F139"; }
-.icon-success:before {content: "\F13A";}
+.icon-success:before, .icon-apply-app:before {content: "\F13A";}
 .icon-time:before { content : "\F13B"; }
 .icon-sort:before {content: "\F13C";}
 .ipt-controls > .icon-add:before {content: "\F13D";}
-.ipt-controls > .icon-del:before {content: "\F13E";}
+.ipt-controls > .icon-del:before, .icon-cancel-update-app:before {content: "\F13E";}
 .icon-detail:before {content: "\F140";}
 .icon-line-shape:before {content: "\F141";}
 .icon-copy:before {content: "\F142";}
@@ -127,3 +130,4 @@
 .icon-bezier-qt:before {content:"\F145";}
 .icon-bezier-q:before {content:"\F146";}
 .icon-toolbar-cloudformation:before {content:"\F147";}
+.icon-update-app:before {content:"\F148";}

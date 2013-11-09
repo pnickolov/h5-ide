@@ -343,7 +343,7 @@ a.table-link {
 	overflow: hidden;
 	width: 350px;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-	margin: 10px 0;
+	margin: 10px auto;
 }
 
 .progress .bar {
@@ -634,6 +634,7 @@ textarea {
 	top      : 2px;
 	left     : 2px;
 
+
 	background : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAAcklEQVQY02NgwA/YoJgoEA/Es4DYgJBCJSBeD8SboRinBiYg7kZS2IosyQ/Eakh8LySFq4FYHFlxGRBvBOJYqMRqJMU+yApNkSRAeC0Sux3dfSCTetE0wKyXxOWhMKhTYIr9CAUXyJMzgLgBagBBgDPGAI2LGdNt0T1AAAAAAElFTkSuQmCC');
 	background-size: 100% 100%;
 }
@@ -685,28 +686,6 @@ textarea {
 .property-content .checkbox input[disabled] + label {
 	opacity : 0.3;
 }
-
-/*.property-content .radio input:disabled + label,
-.property-content .radio input[disabled] + label  {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .radio input:disabled + label:after,
-.property-content .radio input[disabled] + label:after {
-	background: #484343;
-}
-
-.property-content .checkbox input:disabled + label,
-.property-content .checkbox input[disabled] + label {
-	background: #616161;
-	border: 1px solid transparent;
-}
-
-.property-content .checkbox input:disabled + label:after,
-.property-content .checkbox input[disabled] + label:after {
-	background: #484343;
-}*/
 
 .property-content .checkbox label,
 .property-content .radio label {
@@ -880,6 +859,10 @@ textarea {
 	overflow: hidden;
 }
 
+.scroll-content {
+	-webkit-font-smoothing: subpixel-antialiased;
+}
+
 /* webkit scrollbar */
 /*.webkit .scroll-wrap {
 	overflow: auto;
@@ -1001,6 +984,7 @@ textarea {
 
 .status-green,
 .status-running,
+.status-Running,
 .status-in-use,
 .status-attached {
 	background-color: #78d248;
@@ -1013,6 +997,8 @@ textarea {
 
 .status-red,
 .status-stopped,
+.status-Stopped,
+.status-Terminated,
 .status-terminated {
 	background-color: #f34c39;
 	background-image: -webkit-linear-gradient(bottom, #e72222, #ff8d6f);
@@ -1024,6 +1010,7 @@ textarea {
 
 .status-blue,
 .status-available,
+.status-Available,
 .status-not-attached {
 	background-color: #2eafef;
 	background-image: -webkit-linear-gradient(bottom, #008dde, #58cdfe);
@@ -1035,7 +1022,9 @@ textarea {
 
 .status-yellow,
 .status-pending,
+.status-Pending,
 .status-shutting-down,
+.status-Stopping,
 .status-stopping {
 	background-color: #d2c748;
 	background-image: -webkit-linear-gradient(bottom, #d3be5c, #fbf819);
@@ -1046,6 +1035,7 @@ textarea {
 }
 
 .status-grey,
+.status-Unknown,
 .status-unknown {
 	background-color: #a0a0a0;
 	background-image: -webkit-linear-gradient(bottom, #808080, #bababa);
@@ -1140,6 +1130,10 @@ textarea {
 	color     : #999;
 }
 
+.modal-text-warning {
+	color: #D64442;
+}
+
 .modal-body .dl-horizontal dt,
 .modal-body .dl-horizontal dd {
 	margin-top: 10px;
@@ -1194,7 +1188,8 @@ textarea {
 }
 
 .modal-control-group .input {
-	width: 190px;
+	width   : 210px;
+	padding : 7px 6px;
 }
 
 .resource-name-label {
@@ -1231,23 +1226,7 @@ textarea {
 	display: block;
 }
 
-.accordion-head {
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-}
-
 /* Accordion default style */
-.accordion-default .accordion-head {
-	border: 1px solid #ccc;
-	padding: 10px;
-	font-weight: 700;
-	color: #333;
-}
-
 .accordion-default .accordion-body {
 	padding: 10px;
 	/*color: #e0e0e0;*/
@@ -1436,8 +1415,7 @@ textarea {
 }
 
 .dl-vertical:nth-of-type(2n+1) {
-	/*background : #f6f5f5;*/
-	background: rgba(255,255,255,.05);
+	background: #3F3E3F;
 }
 
 .property-app .dl-vertical .truncate {
@@ -1897,33 +1875,28 @@ textarea {
 	top: 8px;
 }
 
-#secondary-panel-wrap {
-	display: none;
-	position: absolute;
-	width: 0;
-	top: 0;
-	right: 0;
-}
-
 /* added by song */
 
 /* Slider */
 
 .slider {
-	background-color: #fff;
-	border-radius: 0px;
-	height: 6px;
-	width: 240px;
-	border: 1px #292929 solid;
-	border-left: 0;
-	border-right: 0;
+	position         : relative;
+	background-color : #fff;
+	height           : 6px;
+	width            : 250px;
+	border           : 1px #292929 solid;
+	border-left      : 0;
+	border-right     : 0;
+	cursor           : default;
+	border-radius    : 3px;
+	margin           : 15px 0 35px 5px;
+
 	-webkit-user-select: none;
-	-moz-user-select: none;
-	cursor: default;
-	border-radius: 0 3px 3px 0;
+	   -moz-user-select: none;
+	   			user-select: none;
 }
 
-.slider .slider-controll {
+.slider .thumb {
 	border-radius    : 50%;
 	height           : 16px;
 	width            : 16px;
@@ -1932,54 +1905,34 @@ textarea {
 	position         : absolute;
 	z-index          : 99;
 	margin-top       : -6px;
-	margin-left      : -14px;
+	margin-left      : -9px;
 
 	background-color : #B25b91;
 	box-shadow       : inset 0 1px 1px rgba(255,255,255,.1), 0 1px 4px rgba(0,0,0,.3);
 }
 
-.slider-line {
-	list-style: none;
-	position: absolute;
-	margin: 0;
-	padding: 0;
-	margin-top: -8px;
-	margin-left: -5px;
-	width: 500px;
+.marker {
+	list-style : none;
+	margin     : 0 0 0 -15px;
+	padding    : 0;
+	width      : 300px;
 }
 
-.slider-line li span {
-	cursor: pointer;
+.marker li {
+	float       : left;
+	width       : 31px;
+	color       : #888;
+	cursor      : pointer;
+	text-align  : center;
+	padding-top : 12px;
 }
 
-.slider-line li span:hover {
+.marker li:hover {
 	color: #ccc;
 }
 
-.slider-line li {
-	float: left;
-	width: 30px;
-	height: 20px;
-	/*border-left: 1px #ccc solid;*/
-	color: #888;
-	line-height: 60px;
-}
-
-.slider-line li span {
+.marker li span {
 	margin-left: -5px;
-}
-
-.slider-wrap {
-	width: 10px;
-	height: 6px;
-	border: 1px #292929 solid;
-	position: absolute;
-	border-left: 0;
-	border-right: 0;
-	margin-top: -1px;
-	margin-left: -7px;
-	background-color: #fff;
-	border-radius: 3px 0 0 3px;
 }
 
 .property-control-group-sub {
@@ -2215,7 +2168,7 @@ input.parsley-error {
 	/*background-color: rgba(247,74,72,.2);*/
 	padding          : 5px;
 	color            : #fff;
-	z-index          : 60;
+	z-index          : 99;
 	border-radius    : 4px;
 	min-width        : 150px !important;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 1px 1px 5px rgba(0,0,0,.4);

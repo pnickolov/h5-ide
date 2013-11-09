@@ -447,6 +447,10 @@ module.exports =
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
       zh: "%s 的 %s 最多支持%s个网络接口 (包括主要的)。"
 
+    CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
+      en: "This subnet cannot be attached with a Load Balancer. Its CIDR mask must be smaller than /27"
+      zh: ""
+
     CVS_MSG_ERR_CONNECT_ENI_AMI:
       en: "Network interfaces can only be attached to an instance in the same availability zone."
       zh: "网络接口只能连接到同一个可用区域的实例。"
@@ -492,8 +496,8 @@ module.exports =
       zh: "删除 %s"
 
     CVS_CFM_DEL_IGW:
-      en: "Internet-facing load balancers and elastic IPs will not function without an internet gateway. Are you sure you want to delete it?"
-      zh: "如果没有互联网网关，面向互联网的负载均衡器和弹性IP将失去作用。确定要删除它吗？"
+      en: "Internet-facing load balancers and elastic IPs require an internet gateway to function."
+      zh: "面向互联网的负载均衡器和弹性IP需要一个互联网网关才能工作。"
 
     CVS_CFM_DEL_GROUP:
       en: "Deleting %s will also remove all resources inside it. Are you sure you want to delete it?"
@@ -508,8 +512,8 @@ module.exports =
       zh: "必须要有一个互联网网关"
 
     CVS_CFM_ADD_IGW_MSG:
-      en: "Automatically add an internet gateway to allow this %s to be publicly addressable?"
-      zh: "自动添加一个互联网网关允许这个 %s 被公开寻址?"
+      en: "Automatically add an internet gateway for using EIP"
+      zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -624,11 +628,15 @@ module.exports =
       zh: "导出图片"
 
     TOOL_TIP_STOP_APP:
-      en: "Stop this app's resources."
+      en: "Stop This App's Resources."
       zh: "暂停应用"
 
+    TOOL_TIP_CONTAINS_INSTANCE_STORED:
+      en: "This app cannot be stopped since it contains instance-stored AMI."
+      zh: "不能暂停这个应用，因为它包含实例存储映像"
+
     TOOL_POP_TIT_STOP_APP:
-      en: "Confirm to stop app"
+      en: "Confirm to Stop App"
       zh: "确认暂停"
 
     TOOL_POP_BODY_STOP_APP_LEFT:
@@ -644,11 +652,11 @@ module.exports =
       zh: "暂停"
 
     TOOL_TIP_START_APP:
-      en: "Start this app's resources."
+      en: "Start This App's Resources."
       zh: "恢复应用"
 
     TOOL_POP_TIT_START_APP:
-      en: "Confirm to start app"
+      en: "Confirm to Start App"
       zh: "确认恢复"
 
     TOOL_POP_BODY_START_APP_LEFT:
@@ -663,12 +671,24 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
+    TOOL_TIP_UPDATE_APP:
+      en: "Edit App"
+      zh: "更新应用"
+
+    TOOL_TIP_SAVE_UPDATE_APP:
+      en: "Apply Updates"
+      zh: "保存应用更新"
+
+    TOOL_TIP_CANCEL_UPDATE_APP:
+      en: "Discard Updates"
+      zh: "取消应用更新"
+
     TOOL_TIP_TERMINATE_APP:
-      en: "Permanently terminate this app's resources"
+      en: "Permanently Terminate This App's Resources"
       zh: "销毁应用"
 
     TOOL_POP_TIT_TERMINATE_APP:
-      en: "Confirm to terminate app"
+      en: "Confirm to Terminate App"
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:
@@ -746,6 +766,18 @@ module.exports =
     TOOL_MSG_INFO_APP_REFRESH_START:
       en: "Refresh resources for app( %s ) start ..."
       zh: "开始刷新应用( %s )的资源 ..."
+
+    TOOL_POP_BODY_APP_UPDATE_EC2:
+      en: "The public and private addresses will be reassigned after the restart.",
+      zh: "重启后，公有/私有的IP地址将会被重新分配。"
+
+    TOOL_POP_BODY_APP_UPDATE_VPC:
+      en: "If any of the instance(s) has been automatically assigned public IP, the IP will change after restart.",
+      zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
+
+    TOOL_MSG_INFO_NO_CHANGES:
+      en: "This app is't any change."
+      zh: "当前App没有任何改变。"
 
     TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"
@@ -1290,6 +1322,10 @@ module.exports =
     PROP_SG_APP_SG_ID:
       en: "Security Group ID"
       zh: "安全组标识"
+
+    PROP_SG_APP_SG_NAME:
+      en: "Security Group Name"
+      zh: "安全组名字"
 
     PROP_SG_APP_VPC_ID:
       en: "VPC ID"
@@ -2027,6 +2063,10 @@ module.exports =
       en: "Distribution"
       zh: "分布"
 
+    PROP_ASG_SUMMARY:
+      en: "Auto Scaling Group Summary"
+      zh: "自动伸缩组摘要"
+
     PROP_ASG_DETAILS:
       en: "Auto Scaling Group Details"
       zh: "自动伸缩组配置"
@@ -2130,6 +2170,10 @@ module.exports =
     PROP_ASG_LBL_NOTIFICATION:
       en: "Notification"
       zh: "通知"
+
+    PROP_ASG_LBL_SEND_NOTIFICATION_D:
+      en: "Send notification via SNS topic"
+      zh: "通过SNS发送通知"
 
     PROP_ASG_LBL_SEND_NOTIFICATION:
       en: "Send notification via SNS topic for:"
@@ -3111,6 +3155,18 @@ module.exports =
       en: "Create this stack in"
       zh: "将模板创建为"
 
+    DASH_POP_CREATE_STACK_CREATE_STACK_ERROR:
+      en: "Create stack error"
+      zh: "创建模板出错"
+
+    DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
+      en: "Failed to load region information. Please try agian."
+      zh: "加载地区资源失败。请重试。"
+
+    DASH_POP_BTN_RETRY:
+      en: "Retry"
+      zh: "重试"
+
     DASH_POP_CREATE_STACK_CLASSIC:
       en: "Classic"
       zh: "传统模式"
@@ -3291,28 +3347,152 @@ module.exports =
       en: "Close"
       zh: "关闭"
 
+    RUN_STACK:
+      en: "run stack"
+      zh: "运行"
+
+    START_APP:
+      en: "start app"
+      zh: "启动APP"
+
+    STOP_APP:
+      en: "stop app"
+      zh: "停止APP"
+
+    TERMINATE_APP:
+      en: "terminate app"
+      zh: "删除APP"
+
+    UPDATE_APP:
+      en: "update"
+      zh: "更新错误"
 
     ##### Trust Advisor
-    TA_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
-      en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN"
+
+    # VPC
+    TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
+      en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
       zh: ""
 
-
-    # TA Developer write code below plz.
-
-    # TA Developer write code above plz.
-    TA_TAKE_POSITION:
-      en: ""
+    # Subnet
+    TA_MSG_ERROR_CIDR_ERROR_CONNECT_TO_ELB:
+      en: "Subnet <span class='validation-tag tag-subnet'>%s</span> is attached with a Load Balancer. Its mask must be smaller than /27."
       zh: ""
+
+    # Instance
+    TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
+      zh: ""
+    TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
+      zh: ""
+
+    # ELB
+    TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
+      zh: ""
+
+    TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no attached instance or auto scaling group."
+      zh: ""
+
+    TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
+      zh: ""
+
+    TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> redirects <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-port'>443</span>. Suggest to use load balancer to decrypt and redirect to port <span class='validation-tag tag-port'>80</span>."
+      zh: ""
+
+    # SG
+    TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
+      zh: ""
+    TA_MSG_NOTICE_STACK_USING_ONLY_ONE_SG:
+      en: "This stack is only using 1 security group."
+      zh: ""
+    TA_MSG_WARNING_SG_USING_ALL_PROTOCOL_RULE:
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> is using 'ALL' protocol traffic."
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has inbound rule which traffic from <span class='validation-tag tag-ip'>0.0.0.0/0</span> is not targeting port <span class='validation-tag tag-port'>80</span> or <span class='validation-tag tag-port'>443</span>."
+      zh: ""
+    TA_MSG_NOTICE_SG_RULE_USING_PORT_22:
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has rule which using port <span class='validation-tag tag-port'>22</span>. To enhance security, suggest to use other port than <span class='validation-tag tag-port'>22</span>."
+      zh: ""
+    TA_MSG_WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
+      en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
+      zh: ""
+    TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT:
+      en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group count exceed max %s limit."
+      zh: ""
+
+    # ASG
+    TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
+      en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
+      zh:""
+
+    TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK:
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
+      zh: ""
+
+    TA_MSG_ERROR_HAS_EIP_NOT_HAS_IGW:
+      en: "VPC has instance with Elastic IP must have an Internet Gateway."
+      zh: ""
+
+    # RT
+    TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB:
+      en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_IGW:
+      en: "No Route Table is connected to Internet Gateway."
+      zh: ""
+
+    TA_MSG_WARNING_NO_RTB_CONNECT_VGW:
+      en: "No Route Table is connected to VPN Gateway."
+      zh: ""
+
+    TA_MSG_NOTICE_ACL_HAS_NO_ALLOW_RULE:
+      en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
+      zh: ""
+
+    # AZ
+    TA_MSG_WARNING_SINGLE_AZ:
+      en: "Only 1 Availability Zone is used. Multiple Availability Zone can improve fault tolerance."
+      zh: ""
+
+    # CGW
+    TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT:
+      en:"Checking Customer Gateway IP Address confliction with existing resource..."
+      zh:""
+    TA_MSG_ERROR_CGW_IP_CONFLICT:
+      en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
+      zh:""
+
+    # Stack
+    TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID:
+      en:"Checking Stack data format validity..."
+      zh:""
+    TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED:
+      en:"Resource %s has format problem, %s."
+      zh:""
+
+    # ENI
+    TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
+      en:"Network Interface <span class='validation-tag tag-acl'>%s</span> not attach to any Instance."
+      zh:""
+
+    ##### Trust Advisor
 
   service:
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
-      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again"
+      en: "Sorry, AWS is suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."
       zh: "对不起,AWS有一些技术问题,请点击'我的资源'页上右上角的刷新图标"
 
     "ERROR_CODE_-1_MESSAGE":
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_0_MESSAGE:
@@ -3320,11 +3500,11 @@ module.exports =
       zh: ""
 
     ERROR_CODE_1_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_2_MESSAGE:
-      en: "Sorry, we are suffering from some technical issues, please try again later"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
       zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_3_MESSAGE:
@@ -3336,7 +3516,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_5_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_6_MESSAGE:
@@ -3352,7 +3532,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_9_MESSAGE:
-      en: "Sorry, your AWS credentials have not sufficient permissions"
+      en: "Sorry, your AWS credentials have not sufficient permissions."
       zh: "对不起,您的AWS凭证没有足够的权限"
 
     ERROR_CODE_10_MESSAGE:
@@ -3364,7 +3544,7 @@ module.exports =
       zh: ""
 
     ERROR_CODE_12_MESSAGE:
-      en: "Sorry, we are suffering from some technical issues, please try again later"
+      en: "Sorry, we are suffering from some technical issues, please try again later."
       zh: "对不起,我们有一些技术问题,请稍后再试"
 
     ERROR_CODE_13_MESSAGE:
@@ -3376,11 +3556,11 @@ module.exports =
       zh: ""
 
     ERROR_CODE_15_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_16_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_17_MESSAGE:
@@ -3388,17 +3568,17 @@ module.exports =
       zh: ""
 
     ERROR_CODE_18_MESSAGE:
-      en: "Sorry, AWS is suffering from some technical issues, please try again later"
+      en: "Sorry, AWS is suffering from some technical issues, please try again later."
       zh: "对不起,AWS有一些技术问题,请稍后再试"
 
     ERROR_CODE_19_MESSAGE:
-      en: "Sorry, your session has expired, please login again"
+      en: "Sorry, your session has expired, please login again."
       zh: "对不起，你的会话已过期，请重新登录"
 
     ERROR_CODE_20_MESSAGE:
-      en: "Sorry, this invitation has finished"
+      en: "Sorry, this invitation has finished."
       zh: "对不起，邀请已经结束"
 
     ERROR_CODE_21_MESSAGE:
-      en: "User has been blocked"
+      en: "User has been blocked."
       zh: "对不起，此账号已被锁住"

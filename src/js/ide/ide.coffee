@@ -8,8 +8,8 @@ define [ 'MC', 'event', 'handlebars'
 		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
 		 'WS', 'constant',
 		 'base_model',
-		 'forge_handle', 'aws_handle'
-], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle ) ->
+		 'forge_handle', 'validation', 'aws_handle'
+], ( MC, ide_event, Handlebars, lang, view, canvas_layout, header, navigation, tabbar, dashboard, design, process, WS, constant, base_model, forge_handle, validation ) ->
 
 	console.info canvas_layout
 
@@ -101,6 +101,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.tab  = {}
 		#set process tab
 		MC.process = {}
+		MC.data.process = {}
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 		#
@@ -113,13 +114,21 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.ide_available_count = 0
 
 		#temp
-		MC.data.IDEView = view
+		#MC.data.IDEView = view
 
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
 
 		#
 		MC.data.demo_stack_list = constant.DEMO_STACK_NAME_LIST
+		#
+		MC.open_failed_list = {}
+
+		#trusted advisor
+		MC.ta            = {}
+		MC.ta            = validation
+		MC.ta.list       = []
+		MC.ta.state_list = {}
 
 		#############################
 		#  WebSocket
@@ -193,6 +202,7 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
+		ide_event.onLongListen ide_event.HIDE_STATUS_BAR,     () -> view.hideStatubar()
 
 		#listen IDE_AVAILABLE
 		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->

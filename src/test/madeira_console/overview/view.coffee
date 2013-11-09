@@ -2,7 +2,7 @@
 #  View(UI logic) for dashboard
 #############################
 
-define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.selectbox', 'UI.bubble', 'UI.modal' ], ( ide_event, lang ) ->
+define [ 'event', 'i18n!/nls/lang.js', 'backbone', 'jquery', 'handlebars', 'UI.selectbox', 'UI.bubble', 'UI.modal', 'UI.scrollbar' ], ( ide_event, lang ) ->
 
     current_region = null
 

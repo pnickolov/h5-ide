@@ -184,14 +184,6 @@ header {
 	border: 1px solid #ea9696 !important;
 }
 
-#login-user {
-	/*background-image: url('../images/login_user.png');*/
-}
-
-#login-password {
-	/*background-image: url('../images/login_password.png');*/
-}
-
 .icon-user.login-label,
 .icon-password.login-label {
 	color: #9B9B9B;

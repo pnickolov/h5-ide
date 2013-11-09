@@ -3,28 +3,19 @@
 ####################################
 
 define [ 'jquery',
-         'text!./module/design/toolbar/stack_template.html',
-         'text!./module/design/toolbar/app_template.html',
          'event',
          'i18n!nls/lang.js'
-], ( $, stack_template, app_template, ide_event, lang ) ->
+], ( $, ide_event, lang ) ->
 
     #private
     loadModule = () ->
 
-        #add handlebars script
-        stack_template = '<script type="text/x-handlebars-template" id="toolbar-stack-tmpl">' + stack_template + '</script>'
-        app_template   = '<script type="text/x-handlebars-template" id="toolbar-app-tmpl">'   + app_template   + '</script>'
-        #load remote html template
-        $( 'head' ).append stack_template
-        $( 'head' ).append app_template
-
-        #
         require [ './module/design/toolbar/view', './module/design/toolbar/model' ], ( View, model ) ->
 
             #view
             view       = new View()
             view.model = model
+            view.listen()
             view.render()
 
             #listen OPEN_DESIGN
@@ -33,6 +24,8 @@ define [ 'jquery',
                 console.log MC.canvas_data
                 #
                 model.setFlag tab_id, type
+                #
+                # MC.ta.validAll() if type is 'OPEN_STACK'
 
             ###
             #listen OPEN_TOOLBAR
@@ -98,6 +91,10 @@ define [ 'jquery',
                 console.log 'TOOLBAR_ZOOM_OUT'
                 model.zoomOut()
 
+            view.on 'UPDATE_APP', ( is_update ) ->
+                model.updateApp is_update
+                null
+
             #run
             view.on 'TOOLBAR_RUN_CLICK', (app_name, data) ->
                 console.log 'design_toolbar_click:runStack'
@@ -118,9 +115,9 @@ define [ 'jquery',
             model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
                 view.saveCloudFormation cf_json
 
-            ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
-                console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name
-                model.saveAppThumbnail(region, app_name, app_id)
+            # ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
+            #     console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name
+            #     model.saveAppThumbnail(region, app_name, app_id)
 
             # app operation
             ide_event.onLongListen 'STOP_APP', (region, app_id, app_name) ->
@@ -138,13 +135,24 @@ define [ 'jquery',
                 console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
                 model.terminateApp(region, app_id, app_name, flag)
 
+            ide_event.onLongListen ide_event.SAVE_APP, (data) ->
+                console.log 'design_toolbar SAVE_APP'
+
+                data = MC.forge.stack.expandServerGroup data
+
+                model.saveApp(data)
+
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'
                 model.saveStack()
 
             ide_event.onLongListen ide_event.UPDATE_REQUEST_ITEM, (idx, dag) ->
                 console.log 'toolbar listen UPDATE_REQUEST_ITEM index:' + idx
-                model.reqHanle idx, dag
+                model.reqHandle idx, dag
+
+            ide_event.onLongListen ide_event.APPEDIT_2_APP, ( tab_id, region ) ->
+                console.log 'APPEDIT_2_APP, tab_id = ' + tab_id + ', region = ' + region
+                view.saveSuccess2App tab_id, region
 
             model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
 
@@ -203,8 +211,9 @@ define [ 'jquery',
 
                     # run stack
                     if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
-                        app_name = $('.modal-input-value').val()
-                        modal.close()
+                        # disable button
+                        $('#btn-confirm').attr 'disabled', true
+                        $('.modal-close').attr 'disabled', false
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

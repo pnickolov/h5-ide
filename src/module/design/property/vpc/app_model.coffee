@@ -2,14 +2,9 @@
 #  View Mode for design/property/vpc (app)
 #############################
 
-define ['constant', 'backbone', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    VPCAppModel = Backbone.Model.extend {
-
-        ###
-            defaults :
-
-        ###
+    VPCAppModel = PropertyModel.extend {
 
         init : ( vpc_uid ) ->
 

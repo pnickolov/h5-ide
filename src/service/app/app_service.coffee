@@ -581,8 +581,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
         true
 
     #def getKey(self, username, session_id, region_name, app_id):
-    getKey = ( src, username, session_id, region_name, app_id, callback) ->
-        send_request "getKey", src, [ username, session_id, region_name, app_id ], parseGetKeyReturn, callback
+    getKey = ( src, username, session_id, region_name, app_id, app_name, callback) ->
+        send_request "getKey", src, [ username, session_id, region_name, app_id, app_name ], parseGetKeyReturn, callback
 
 
     #############################################################

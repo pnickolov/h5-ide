@@ -55,7 +55,10 @@ define [ 'MC' ], ( MC) ->
 			instance_type = instance_type["64"]
 		else
 			instance_type = instance_type["32"]
-		instance_type = instance_type[ami.virtualizationType]
+
+		# According to property/instance/model, if ami.virtualizationType is undefined.
+		# It defaults to "paravirtual"
+		instance_type = instance_type[ami.virtualizationType || "paravirtual"]
 
 		return instance_type
 

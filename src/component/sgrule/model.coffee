@@ -240,7 +240,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
             #get sg name
             sg_app_detail =
-                name : MC.canvas_data.component[sgUID].resource.GroupName
+                name  : MC.canvas_data.component[sgUID].name
                 rules : rules
 
             return sg_app_detail

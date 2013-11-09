@@ -4,17 +4,21 @@
 
 define [ 'MC', 'event',
          'i18n!nls/lang.js',
+         'text!./stack_template.html',
+         'text!./app_template.html',
          'UI.zeroclipboard',
+         'constant'
          'backbone', 'jquery', 'handlebars',
-         'UI.selectbox', 'UI.notification'
-], ( MC, ide_event, lang, zeroclipboard ) ->
+         'UI.selectbox', 'UI.notification',
+         "UI.tabbar"
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard, constant ) ->
+
+    stack_tmpl = Handlebars.compile stack_tmpl
+    app_tmpl   = Handlebars.compile app_tmpl
 
     ToolbarView = Backbone.View.extend {
 
         el         : document
-
-        stack_tmpl : Handlebars.compile $( '#toolbar-stack-tmpl' ).html()
-        app_tmpl   : Handlebars.compile $( '#toolbar-app-tmpl' ).html()
 
         events     :
             ### env:dev ###
@@ -46,14 +50,20 @@ define [ 'MC', 'event',
             'click .icon-refresh'           : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
+            #app edit
+            'click #toolbar-edit-app'        : 'clickEditApp'
+            'click #toolbar-save-edit-app'   : 'clickSaveEditApp'
+            'click #toolbar-cancel-edit-app' : 'clickCancelEditApp'
+
+
         render   : ( type ) ->
             console.log 'toolbar render'
 
             #
             if type is 'app'
-                $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+                $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
-                $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
             #set line style
             lines =
@@ -97,16 +107,25 @@ define [ 'MC', 'event',
             if !$('#phantom-frame')[0]
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
+        listen     : ->
+            # app update event
+            $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
+            # cancel to app model
+            $( document.body ).on 'click', '#return-app-confirm', this, @_return2App
+            # export to png download button click
+            $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
+
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
                 #
                 if type is 'stack'
-                    $( '#main-toolbar' ).html this.stack_tmpl this.model.attributes
+                    $( '#main-toolbar' ).html stack_tmpl this.model.attributes
                 else
-                    $( '#main-toolbar' ).html this.app_tmpl this.model.attributes
+                    $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
         clickRunIcon : ->
+            console.log 'clickRunIcon'
             me = this
 
             # check credential
@@ -118,11 +137,18 @@ define [ 'MC', 'event',
             else
                 # set app name
                 $('.modal-input-value').val MC.canvas_data.name
-                
+
                 # set total fee
                 copy_data = $.extend( true, {}, MC.canvas_data )
                 cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
+
+                #
+                #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule 'stack'
+
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
@@ -145,21 +171,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
 
-                    #modal.close()
+                    # disable button
+                    $('#btn-confirm').attr 'disabled', true
+                    $('.modal-close').attr 'disabled', true
 
-                    # # check change and save stack
-                    # ori_data = MC.canvas_property.original_json
-                    # new_data = JSON.stringify( MC.canvas_data )
-                    # id = MC.canvas_data.id
-                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                    # hold on 0.5 second for data update
-                    # setTimeout () ->
-                    #     me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
-                    #     MC.data.app_list[MC.canvas_data.region].push app_name
-                    # , 500
 
             true
 
@@ -321,14 +337,20 @@ define [ 'MC', 'event',
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
             #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
-            modal MC.template.exportpng {"title":"Export PNG", "confirm":"Download", "color":"blue" }, false
+
+            modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
+            $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', true
+
             if base64_image
                 $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+                $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+
             $( '#btn-confirm' ).attr {
                 'href'      : "data:image/png;base64, " + base64_image,
                 'download'  : MC.canvas_data.name + '.png',
             }
-            $('#btn-confirm').one 'click', { target : this }, () -> modal.close()
+
+            null
 
         #for debug
         clickOpenJSONDiff : ->
@@ -444,7 +466,168 @@ define [ 'MC', 'event',
             console.log 'toolbar clickRefreshApp'
             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
 
+        clickEditApp : ->
+            console.log 'clickEditApp'
+
+            # 1. Update MC.canvas.getState() to return 'appedit'
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+
+            # 2. Show Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
+
+            # 3. Toggle Toolbar Button
+            @trigger "UPDATE_APP", true
+
+            MC.aws.eni.markAutoAssginFalse()
+            MC.canvas.event.clearList()
+
+            # 4. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
+
+            # 5. Create backup point
+            MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+            null
+
+        clickSaveEditApp : (event)->
+            me = this
+            console.log 'click save app'
+
+            # 1. Send save request
+            # check credential
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                modal.close()
+                console.log 'show credential setting dialog'
+                require [ 'component/awscredential/main' ], ( awscredential_main ) -> awscredential_main.loadModule()
+
+            else
+                # check changes
+                diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
+
+                if diff_data.isChanged
+
+                    #state   = constant.APP_STATE.APP_STATE_STOPPED
+                    state    = null
+                    platform = 'vpc'
+                    info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
+
+                    # set state
+                    if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    # set platform and info
+                    if MC.canvas_data.platform is "ec2-classic"
+                        platform = 'ec2'
+                        info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
+
+                    ## modal init
+                    obj = { 'state' : state, 'platform' : platform, 'info' : info, 'instance_list' : diff_data.changes }
+                    console.log 'app update object'
+                    console.log obj
+
+                    modal MC.template.updateApp obj
+
+                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                        trustedadvisor_main.loadModule 'stack'
+
+                    #if obj.state is constant.APP_STATE.APP_STATE_STOPPED
+                    #
+                    #    modal MC.template.updateApp obj
+                    #    #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
+                    #
+                    #    if obj.instance_list.length is 0
+                    #
+                    #        modal MC.template.updateApp()
+                    #        $( '.update-app-notice' ).empty()
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #    else
+                    #
+                    #        modal MC.template.restartInstance obj
+                    #
+                    #
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+
+                else
+                    #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
+                    # no changes and return to app modal
+                    @_return2App()
+
+            # After success then do the clickCancelEditApp routine.
+            null
+
+        clickCancelEditApp : ->
+            console.log 'clickCancelEditApp'
+
+            data        = $.extend true, {}, MC.canvas_data
+            origin_data = $.extend true, {}, MC.data.origin_canvas_data
+
+            if _.isEqual( data, origin_data )
+                @_return2App()
+            else
+                modal MC.template.cancelAppEdit2App(), true
+            null
+
+        _return2App : ( target ) ->
+            console.log '_return2App'
+
+            # 1. Update MC.canvas.getState() to return 'app'
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+
+            # 2. Toggle Toolbar Button
+            if target then me = target.data else me = this
+            me.trigger "UPDATE_APP", false
+
+            # 3. restore canvas to app model
+            ide_event.trigger ide_event.RESTORE_CANVAS if target
+
+            # 4. Trigger OPEN_PROPERTY
+            ide_event.trigger ide_event.OPEN_PROPERTY
+
+            # 5. Close modal
+            modal.close()
+
+            # 6. delete MC.process and MC.data.process
+            delete MC.process[ MC.data.current_tab_id ]
+            delete MC.data.process[ MC.data.current_tab_id ]
+
+            # 7. Hide Resource Panel and call canvas_layout.listen()
+            ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
+
+            # 8. Hide status bar validation
+            ide_event.trigger ide_event.HIDE_STATUS_BAR
+
+            null
+
+        saveSuccess2App : ( tab_id, region ) ->
+            console.log 'saveSuccess2App, tab_id = ' + tab_id + ', region = ' + region
+
+            #if tab_id isnt MC.data.current_tab_id
+            #    MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
+            #    return
+
+            # 1. Update MC.canvas.getState() to return 'app'
+            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+
+            # 2. push PROCESS_RUN_SUCCESS refresh current tab
+            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
+
+            # 3. delete MC.process and MC.data.process
+            delete MC.process[ MC.data.current_tab_id ]
+            delete MC.data.process[ MC.data.current_tab_id ]
+
+            null
+
+        _updateAndRun : ( event ) ->
+            console.log '_updateAndRun'
+            # 1. event.data.trigger 'xxxxx'
+            ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+
+            # 2. close modal
+            modal.close()
+            null
+
     }
 
     return ToolbarView
-

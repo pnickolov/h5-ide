@@ -1,0 +1,152 @@
+<article id="elb-property-detail" component="{{component.uid}}">
+
+	<div class="option-group-head expand">{{ i18n "PROP_ELB_DETAILS" }}</div>
+	<div class="option-group" data-bind="true" >
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >{{ i18n "PROP_ELB_NAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP_ELB_REQUIRED" }}</span>
+			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{ component.name }}" name="property-elb-name" id="property-elb-name"/>
+		</section>
+
+		{{# if have_vpc}}
+		<section class="property-control-group" id="property-control-group-elb-scheme">
+      <label>{{ i18n "PROP_ELB_SCHEME" }}</label>
+      <div class="mgt5">
+        <div class="radio">
+            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} value="internet" id="elb-scheme-select1"/>
+            <label for="elb-scheme-select1"></label>
+        </div>
+        <label for="elb-scheme-select1">Internet-facing</label>
+      </div>
+      <div class="mgt5">
+        <div class="radio">
+            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} value="internal" id="elb-scheme-select2"/>
+            <label for="elb-scheme-select2"></label>
+        </div>
+        <label for="elb-scheme-select2">Internal</label>
+    	</div>
+		</section>
+		{{/if}}
+	</div>
+
+	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
+	<div class="option-group" data-bind="true">
+		<div id="accordion-group-elb-property-listener"></div>
+		<a href="javascript:void(0)" id="elb-property-listener-content-add" class="add-to-list action-link">
+			+ {{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}
+		</a>
+		<div id="elb-property-listener-cert-main">
+			<div class="property-control-group clearfix">
+				<h5 >{{ i18n "PROP_ELB_BTN_ADD_SERVER_CERTIFICATE"}}</h5>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+				<input class="input" value="{{server_cert.name}}" type="text" id="elb-property-cert-name-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.prikey}}" id="elb-property-cert-privatekey-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.pubkey}}" id="elb-property-cert-publickey-input"/>
+			</div>
+			<div class="property-control-group clearfix">
+				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.chain}}" id="elb-property-cert-chain-input"/>
+			</div>
+		</div>
+	</div>
+
+	<div class="option-group-head"> {{ i18n "PROP_ELB_HEALTH_CHECK_DETAILS" }} </div>
+	<div class="option-group pos-r" data-bind="true" data-validate="parsley" >
+		<section class="property-control-group">
+			<label>{{ i18n "PROP_ELB_PING_PROTOCOL" }}</label>
+			<div class="selectbox selectbox-mega mgt5" id="elb-property-health-protocol-select">
+				<div class="selection">{{health_detail.protocol}}</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="item{{#ifCond health_detail.protocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>
+					<li class="item{{#ifCond health_detail.protocol 'HTTP'}} selected{{/ifCond}}" data-id="HTTP">HTTP</li>
+					<li class="item{{#ifCond health_detail.protocol 'HTTPS'}} selected{{/ifCond}}" data-id="HTTPS">HTTPS</li>
+					<li class="item{{#ifCond health_detail.protocol 'SSL'}} selected{{/ifCond}}" data-id="SSL">SSL</li>
+				</ul>
+			</div>
+		</section>
+		<section class="property-control-group" data-bind="true">
+			<label for="property-elb-health-port" >{{ i18n "PROP_ELB_PING_PORT"}}</label>
+			<input class="input mgt5" tooltip="1-65535" type="text" value="{{ health_detail.port }}" name="property-elb-health-port" id="property-elb-health-port" data-required="true" data-type="digits" data-ignore="true" maxlength="5"/>
+		</section>
+		<section class="property-control-group">
+			<label for="property-elb-health-path" >{{ i18n "PROP_ELB_PING_PATH"}}</label>
+			<span class="required-input right">({{ i18n "PROP_ELB_REQUIRED" }})</span>
+			<input class="input mgt5" {{#if health_detail.disabled_path}}disabled="disabled"{{/if}}  type="text" value="{{ health_detail.path }}" name="property-elb-health-path" id="property-elb-health-path" data-required="true" />
+		</section>
+		<section class="property-control-group">
+			<label for="property-elb-health-interval" >{{ i18n "PROP_ELB_HEALTH_CHECK_INTERVAL" }}</label>
+			<input class="input input-short mgt5"  type="text" value="{{ health_detail.interval }}" name="property-elb-health-interval" id="property-elb-health-interval" data-required="true" data-type="digits" data-ignore="true"/>
+			<label class="elb-property-right-text" for="property-elb-health-interval" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+		</section>
+		<section class="property-control-group">
+			<label for="property-elb-health-timout" >{{ i18n "PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT" }}</label>
+			<input class="input input-short mgt5"  type="text" value="{{ health_detail.timeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout" data-required="true" data-type="digits" data-ignore="true"/>
+			<label class="elb-property-right-text" for="property-elb-health-timeout" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+		</section>
+
+		<section class="property-control-group">
+			<label>{{ i18n "PROP_ELB_UNHEALTH_THRESHOLD" }}</label>
+			<div class="slider" id="elb-property-slider-unhealthy">
+				<a class="thumb"></a>
+				<ul class="marker">
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+					<li>6</li>
+					<li>7</li>
+					<li>8</li>
+					<li>9</li>
+					<li>10</li>
+				</ul>
+			</div>
+		</section>
+		<section class="property-control-group">
+			<label>{{ i18n "PROP_ELB_HEALTH_THRESHOLD" }}</label>
+			<div class="slider" id="elb-property-slider-healthy">
+				<a class="thumb"></a>
+				<ul class="marker">
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+					<li>6</li>
+					<li>7</li>
+					<li>8</li>
+					<li>9</li>
+					<li>10</li>
+				</ul>
+			</div>
+		</section>
+	</div>
+
+	{{#if az_detail}}
+	<div class="option-group-head"> {{ i18n "PROP_ELB_AVAILABILITY_ZONE" }} </div>
+	<div class="option-group">
+		{{#each az_detail}}
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input class="property-elb-az-checkbox property-elb-az-{{az_inner_name}}" type="checkbox" {{#if disable_selected}}disabled="disabled"{{/if}} {{#if selected}}checked="checked"{{/if}} name="{{az_inner_name}}" id="property-elb-az-{{az_inner_name}}"/>
+				<label for="property-elb-az-{{az_inner_name}}"></label>
+			</div>
+			<label for="property-elb-az-{{az_inner_name}}" class="checkbox-label-main">{{az_name}}</label>
+			<label for="property-elb-az-{{az_inner_name}}" class="checkbox-label-minor">{{instance_num}} instances</label>
+		</section>
+		{{/each}}
+	</div>
+	{{/if}}
+
+	{{# if have_vpc}}
+	<div class="option-group-head">{{ i18n "PROP_ELB_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group sg-group"></div>
+	{{/if}}
+
+</article>

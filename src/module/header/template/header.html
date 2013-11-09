@@ -1,0 +1,43 @@
+<nav class="header-menu">
+  <section class="dropdown">
+    <div id="header--notification" class="js-toggle-dropdown">
+      <i class="icon-notification"></i>
+      <span id="notification-counter"></span>
+    </div>
+
+    <div class="dropdown-menu">
+      <div id="notification-panel-wrapper" class="scroll-wrap">
+        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+        <ul class="scroll-content"></ul>
+
+        <div class="notification-empty">
+          <div class="title">No news is good news.</div>
+          <div class="description">Results of running, stopping or terminating apps will show up here</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="dropdown">
+    <div id="header--user" class="js-toggle-dropdown tooltip" data-tooltip="{{user_email}}">
+      <span class="truncate" style="max-width:100px;">{{user_name}}</span>
+      <span class="no-credential" style="display:none;"></span>
+      <i class="icon-caret-down"></i>
+    </div>
+
+    <ul id="user-dropdown-wrapper" class="dropdown-menu" role="menu">
+      <li><a id="guide-tutorial" href="#">{{ i18n "HEAD_LABEL_MENUITEM_USER_TOUR" }}</a></li>
+
+      <li><a href="http://madeiracloud-document.readthedocs.org/" target="_blank" >{{ i18n "HEAD_LABEL_MENUITEM_DOC" }}</a></li>
+
+      <li>
+        <span class="no-credential" style="display:none;"></span>
+        <a href="#" id="awscredential-modal">{{ i18n "HEAD_LABEL_MENUITEM_SETTING" }}</a>
+      </li>
+
+      <li><a id="btn-logout" href="#">{{ i18n "HEAD_LABEL_MENUITEM_LOGOUT" }}</a></li>
+
+    </ul>
+  </section>
+</nav>

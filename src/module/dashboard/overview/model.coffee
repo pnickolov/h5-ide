@@ -1098,7 +1098,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 setTimeout () ->
                     me.describeAWSResourcesService()
                 , 2000
-                
+
 
                 null
 
@@ -1259,7 +1259,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 start_time = null
                 stop_time = null
 
-                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
+                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable == false
                     has_instance_store_ami = true
 
                 if item.last_start
@@ -1309,8 +1309,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 return if a.interval <= b.interval then 1 else -1
 
             # time filter
-            now = Date.now()/1000
-            recent_list = (i for i in recent_list when Math.ceil((now-i.interval)/86400) <= constant.RECENT_DAYS)
+            # now = Date.now()/1000
+            # recent_list = (i for i in recent_list when Math.ceil((now-i.interval)/86400) <= constant.RECENT_DAYS)
             # number filter
             if recent_list.length > constant.RECENT_NUM
                 recent_list = recent_list[0..(constant.RECENT_NUM-1)]
@@ -1364,24 +1364,40 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
             aws_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  resources
 
-        updateAppList : (flag, app_id) ->
+        # updateAppList : (flag, app_id) ->
+        #     me = this
+
+        #     cur_app_list = me.get 'cur_app_list'
+
+        #     if flag is 'pending'
+        #         for item in cur_app_list
+        #             if item.id == app_id
+        #                 idx = cur_app_list.indexOf item
+        #                 if idx>=0
+        #                     cur_app_list[idx].status = "pending"
+        #                     cur_app_list[idx].ispending = true
+
+        #                     me.set 'cur_app_list', cur_app_list
+        #                     me.trigger 'UPDATE_REGION_APP_LIST'
+
+        #     null
+
+        updateAppState : (state, tab_name) ->
             me = this
 
-            cur_app_list = me.get 'cur_app_list'
+            cur_app_list = $.extend true, [],  me.get 'cur_app_list'
 
-            if flag is 'pending'
+            if (state is constant.APP_STATE.APP_STATE_STARTING or state is constant.APP_STATE.APP_STATE_STOPPING or state is constant.APP_STATE.APP_STATE_TERMINATING or state is constant.APP_STATE.APP_STATE_UPDATING) and tab_name of MC.process
                 for item in cur_app_list
-                    if item.id == app_id
+                    if item.id == MC.process[tab_name].id
                         idx = cur_app_list.indexOf item
-                        if idx>=0
-                            cur_app_list[idx].status = "pending"
+                        if idx >= 0 and cur_app_list[idx].status isnt 'pending' and not cur_app_list[idx].ispending
+                            cur_app_list[idx].status = 'pending'
                             cur_app_list[idx].ispending = true
 
-                            me.set 'cur_app_list', cur_app_list
-                            me.trigger 'UPDATE_REGION_APP_LIST'
+                        me.set 'cur_app_list', cur_app_list
 
             null
-
 
     }
 

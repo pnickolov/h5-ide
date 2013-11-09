@@ -2,23 +2,15 @@
 #  View(UI logic) for design/property/volume(app)
 #############################
 
-define [ 'event', 'MC',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, MC ) ->
+define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template ) ->
 
-    ElbAppView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
+    VolumeView = PropertyView.extend {
 
-        template  : Handlebars.compile $( '#property-volume-app-tmpl' ).html()
-
-        render     : () ->
-            console.log 'property:volume app render', this.model.attributes
-            $( '.property-details' ).html this.template this.model.attributes
-
-
+        render : () ->
+            @$el.html template @model.attributes
+            @model.attributes.name
     }
 
-    view = new ElbAppView()
-
-    return view
+    new VolumeView()

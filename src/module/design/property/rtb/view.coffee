@@ -2,18 +2,14 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, template ) ->
 
-    RTBView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-rtb-tmpl' ).html()
+    RTBView = PropertyView.extend {
 
         events   :
 
-            'change .ipt-wrapper'             : 'addIp'
             'REMOVE_ROW  .multi-input'        : 'removeIp'
             'ADD_ROW     .multi-input'        : 'processParsley'
             'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
@@ -26,17 +22,23 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             "blur .ip-main-input"       : 'onBlurCIDR'
 
         render     : () ->
-            console.log 'property:rtb render'
-            $( '.property-details' ).html this.template this.model.attributes
+            @$el.html template @model.attributes
 
             # find empty inputbox and focus
+            me = this
             inputElemAry = $('.ip-main-input')
-            _.each inputElemAry, (inputElem) ->
+            _.each inputElemAry, (inputElem, inputIdx) ->
                 inputValue = $(inputElem).val()
+                if (inputValue is '0.0.0.0/0' and inputIdx > 1)
+                    $(inputElem).val('')
+                    inputValue = ''
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
-                    ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+                    me.forceShow()
                     $(inputElem).focus()
+                null
+
+            @model.attributes.title
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -47,12 +49,6 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             .next( '.parsley-error-list' )
             .remove()
 
-        addIp : ( event ) ->
-
-            # data = event.target.parentNode.parentNode.parentNode.dataset
-            # children = event.target.parentNode.parentNode.parentNode.children
-            # uid = $("#rt-name").data 'uid'
-            # this.trigger 'SET_ROUTE', uid, data, children
 
         beforeRemoveIp : ( event ) ->
             vals = 0
@@ -74,32 +70,28 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
 
             children = event.target.children
 
-            uid = $("#rt-name").data 'uid'
-
-            this.trigger 'SET_ROUTE', uid, data, children
+            @model.setRoutes data, children
+            null
 
         changeName : ( event ) ->
 
             target = $ event.currentTarget
             name = target.val()
-            id = $("#rt-name").data 'uid'
 
-            MC.validate.preventDupname target, id, name, 'Instance'
+            MC.validate.preventDupname target, @model.get('uid'), name, 'Route Table'
 
             if target.parsley 'validate'
-                this.trigger 'SET_NAME', id, name
+                @model.setName name
+                @setTitle name
 
         setMainRT : () ->
-
-            uid = $("#rt-name").data 'uid'
-
-            this.trigger 'SET_MAIN_RT', uid
+            $("#set-main-rt").hide().parent().find("p").show()
+            @model.setMainRT()
+            null
 
         changePropagation : ( event ) ->
-
-            console.log event
-            uid = $("#rt-name").data 'uid'
-            this.trigger 'SET_PROPAGATION', uid, event.target.dataset.uid
+            @model.setPropagation event.target.dataset.uid
+            null
 
         onPressCIDR : ( event ) ->
 
@@ -126,11 +118,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
             _.each allCidrInputElemAry, (inputElem) ->
                 cidrValue = $(inputElem).val()
-                if cidrValue isnt inputValue
-                    allCidrAry.push(cidrValue)
-                else
-                    if repeatFlag then allCidrAry.push(cidrValue)
-                    if !repeatFlag then repeatFlag = true
+                if !((inputValue is '0.0.0.0/0') and ($(inputElem).parent('.ipt-wrapper').index() is 0))
+                    if cidrValue isnt inputValue
+                        allCidrAry.push(cidrValue)
+                    else
+                        if repeatFlag then allCidrAry.push(cidrValue)
+                        if !repeatFlag then repeatFlag = true
                 null
 
             haveError = true
@@ -152,12 +145,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
                     MC.aws.aws.disabledAllOperabilityArea(false)
                     return
 
-                template = MC.template.setupCIDRConfirm {
+                dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Route',
                     main_content : mainContent,
                     desc_content : descContent
                 }
-                modal template, false, () ->
+                modal dialog_template, false, () ->
 
                     $('.modal-close').click () ->
                         inputElem.focus()
@@ -176,14 +169,12 @@ define [ 'event', 'backbone', 'jquery', 'handlebars', 'UI.multiinputbox' ], ( id
             else
                 data = event.target.parentNode.parentNode.parentNode.dataset
                 children = event.target.parentNode.parentNode.parentNode.children
-                uid = $("#rt-name").data 'uid'
-                this.trigger 'SET_ROUTE', uid, data, children
+
+                @model.setRoutes data, children
                 MC.aws.aws.disabledAllOperabilityArea(false)
 
             null
 
     }
 
-    view = new RTBView()
-
-    return view
+    new RTBView()

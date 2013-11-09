@@ -2,9 +2,9 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ 'constant' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    CGWModel = Backbone.Model.extend {
+    CGWModel = PropertyModel.extend {
 
         defaults :
             uid  : null
@@ -12,7 +12,7 @@ define [ 'constant' ], ( constant ) ->
             BGP  : null
             ip   : null
 
-        setId : ( uid ) ->
+        init : ( uid ) ->
             cgw_component = MC.canvas_data.component[ uid ]
 
             obj =
@@ -50,6 +50,4 @@ define [ 'constant' ], ( constant ) ->
             null
     }
 
-    model = new CGWModel()
-
-    return model
+    new CGWModel()

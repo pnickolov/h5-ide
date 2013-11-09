@@ -16,7 +16,16 @@ MC.canvas_property = {};
 MC.canvas = {
 	getState: function ()
 	{
-		return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		//return Tabbar.current;
+		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
+		var state = '';
+		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
+			state = 'stack';
+		}
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+			state = Tabbar.current;
+		}
+		return state;
 	},
 
 	display: function (id, key, is_visible)
@@ -40,10 +49,14 @@ MC.canvas = {
 		else if (is_visible === true)
 		{
 			target.attr('display', 'inline');
+			target.attr('style', '');
+			Canvon(target).addClass('tooltip')
 		}
 		else
 		{
 			target.attr('display', 'none');
+			target.attr('style', 'opacity:0');
+			Canvon(target).removeClass('tooltip')
 		}
 	},
 
@@ -169,34 +182,55 @@ MC.canvas = {
 		{
 			if (comp.type === "AWS.EC2.Instance")
 			{
-				instance_id = comp.resource.InstanceId;
-				instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
-				if ( $('#' + uid + '_instance-state').length  === 1)
-				{
-					if ( instance_data )
-					{//instance data exist
-						$('#' + uid + '_instance-state').attr({
-							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
-							'data-tooltip' : instance_data.instanceState.name
-						});
 
+				if (comp.number>1 && comp.index===0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
+				{//update state of ServerGroup
+					MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
+				}
+
+				instance_id = comp.resource.InstanceId;
+
+				if (instance_id){
+				//instance in app
+					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
+					if ( $('#' + uid + '_instance-state').length  === 1)
+					{
+						if ( instance_data )
+						{//instance data exist
+							$('#' + uid + '_instance-state').attr({
+								'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+								'data-tooltip' : instance_data.instanceState.name
+							});
+
+							//add delete class to terminated instance
+							if (instance_data.instanceState.name === 'terminated' ){
+								Canvon( $('#' + uid ) ).addClass('deleted');
+							}
+
+						}
+						else
+						{//instance data not found, or instance terminated
+							$('#' + uid + '_instance-state').attr({
+								'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+								'data-tooltip': 'unknown'
+							});
+							Canvon( $('#' + uid ) ).addClass('deleted');
+						}
 					}
 					else
-					{//instance data not exist, unknown state
-						$('#' + uid + '_instance-state').attr({
-							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
-							'data-tooltip': ''
-						});
+					{
+						//no instance svg node found
 					}
 				}
 				else
-				{
-					//no instance svg node found
+				{//instance in stack
+
 				}
 			}
 
 		});
 	},
+
 
 	resize: function (target, type)
 	{
@@ -2381,8 +2415,9 @@ MC.canvas.volume = {
 
 	show: function ()
 	{
-		var bubble_box = $('#volume-bubble-box'),
-			target_id = $(this).data('target-id'),
+		var target = $(this),
+			bubble_box = $('#volume-bubble-box'),
+			target_id = target.data('target-id'),
 			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
 			bubble_target_id;
 
@@ -2390,9 +2425,20 @@ MC.canvas.volume = {
 		{
 			if (MC.canvas.getState() === 'app')
 			{
-				if ($('#' + target_id + '_instance-number').text() * 1 > 1)
+				if (
+					$('#' + target_id + '_instance-number').text() * 1 === 1 ||
+					target.hasClass('instanceList-item-volume')
+				)
 				{
-					MC.canvas.instanceList.show.call( $('#' + target_id)[0], event );
+					MC.canvas.volume.bubble(
+						document.getElementById( target_id )
+					);
+
+					return false;
+				}
+				else
+				{
+					MC.canvas.select( target_uid );
 
 					return false;
 				}
@@ -2424,16 +2470,15 @@ MC.canvas.volume = {
 			bubble_target_id = bubble_box.data('target-id');
 
 			MC.canvas.volume.close();
+			MC.canvas.event.clearSelected();
 
-			if (target_id !== bubble_target_id)
+			MC.canvas.select( target_uid );
+
+			if (target_uid !== bubble_target_id)
 			{
 				MC.canvas.volume.bubble(
-					document.getElementById( target_uid )
+					document.getElementById( target_id )
 				);
-			}
-			else
-			{
-				MC.canvas.select( target_uid );
 			}
 		}
 
@@ -2508,6 +2553,7 @@ MC.canvas.volume = {
 				event.which === 8
 			)
 			&&
+			MC.canvas.getState() !== 'app' &&
 			event.target === document.body
 		)
 		{
@@ -2516,11 +2562,12 @@ MC.canvas.volume = {
 				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
-				volume_id = $('#instance_volume_list').find('.selected').attr('id');
+				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
+				volumeList;
 
 			target_volume_data.splice(
 				target_volume_data.indexOf(
-					volume_id
+					'#' + volume_id
 				), 1
 			);
 
@@ -2532,6 +2579,18 @@ MC.canvas.volume = {
 
 			if (target_node.data('class') === 'AWS.EC2.Instance')
 			{
+				volumeList = MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+
+				if (volumeList)
+				{
+					$.each(volumeList, function (index, value)
+					{
+						MC.canvas.data.delete('component.' + value);
+					});
+
+					delete MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+				}
+
 				MC.canvas.data.delete('component.' + volume_id);
 			}
 
@@ -2606,7 +2665,8 @@ MC.canvas.volume = {
 				event.pageY - event.data.canvas_offset.top
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
-			event_data = event.data;
+			event_data = event.data,
+			target_type = MC.canvas.getState() === 'appedit' ? ['AWS.EC2.Instance'] : ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration'];
 
 		if (
 			event_data.originalX !== event.pageX ||
@@ -2625,7 +2685,7 @@ MC.canvas.volume = {
 
 		if (
 			match_node &&
-			$.inArray(node_type, ['AWS.EC2.Instance', 'AWS.AutoScaling.LaunchConfiguration']) > -1
+			$.inArray(node_type, target_type) > -1
 		)
 		{
 			if (
@@ -2731,6 +2791,8 @@ MC.canvas.volume = {
 						MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 						document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
+						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
+
 						MC.canvas.data.set('component.' + volume_id + '.name', new_volume_name);
 						MC.canvas.data.set('component.' + volume_id + '.serverGroupName', new_volume_name);
 						MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.Device', new_volume_name);
@@ -2738,8 +2800,6 @@ MC.canvas.volume = {
 						MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
 
 						MC.canvas.volume.select.call( document.getElementById( volume_id ) );
-
-						target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
 
 						// Update original data
 						original_node_id = data_option.instance_id;
@@ -2822,11 +2882,12 @@ MC.canvas.asgList = {
 			MC.canvas.event.clearList();
 
 			var target = this.parentNode,
+				target_id = target.id,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $('#svg_canvas').offset();
 
 			// Prepare data
-			var uid     = MC.extractID( this.id );
+			var uid     = MC.extractID( target_id );
 			var layout  = MC.canvas_data.layout.component.node[ uid ];
 			if (!layout) {
 				return;
@@ -2839,13 +2900,23 @@ MC.canvas.asgList = {
 				return true;
 			}
 
+			// var statusMap = {
+			// 	"Pending"     : "orange",
+			// 	"Quarantined" : "orange",
+			// 	"InService"   : "green",
+			// 	"Terminating" : "red",
+			// 	"Terminated"  : "red"
+			// };
 			var statusMap = {
-				"Pending"     : "orange",
-				"Quarantined" : "orange",
-				"InService"   : "green",
-				"Terminating" : "red",
-				"Terminated"  : "red"
+				   "pending"       : "yellow"
+				 , "stopping"      : "yellow"
+				 , "shutting-down" : "yellow"
+				 , "running"       : "green"
+				 , "stopped"       : "orange"
+				 , "terminated"    : "red"
+				 , "unknown"       : "grey"
 			};
+
 
 			var temp_data = {
 				name      : lc_comp.name,
@@ -2859,13 +2930,25 @@ MC.canvas.asgList = {
 				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
 			}
 
-			var instances = asgData.Instances.member;
+			var instances = asgData.Instances.member,
+				state = null;
 			if ( instances )
 			{
 				for ( var i = 0, l = instances.length; i < l; ++i ) {
+					//get instance state
+					if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+						state = MC.aws.instance.getInstanceState( instances[i].InstanceId );
+					}
+					if (!state){
+						state = 'unknown';
+					}
+
 					temp_data.instances.push({
 							id     : instances[i].InstanceId
-						, status : statusMap[ instances[i].LifecycleState ]
+						//, color : statusMap[ instances[i].LifecycleState ]
+						//, state : instances[i].LifecycleState
+						, color : statusMap[state]
+						, state : state
 					});
 				}
 			}
@@ -2907,6 +2990,22 @@ MC.canvas.asgList = {
 };
 
 MC.canvas.instanceList = {
+	add: function (data)
+	{
+		$('#instanceList').append(
+			MC.template.instanceListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -2915,17 +3014,19 @@ MC.canvas.instanceList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_instance-number').text() * 1 === 1)
+			var target = this.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+			   	canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_instance-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-			   	canvas_offset = $('#svg_canvas').offset();
-
-			var uid     = MC.extractID( this.id ),
+			var uid     = MC.extractID( target_id ),
 			    layout  = MC.canvas_data.layout.component.node[ uid ];
 
 			var temp_data = {
@@ -2933,12 +3034,13 @@ MC.canvas.instanceList = {
 				, name      : "Server Group List"
 			};
 			var statusMap = {
-					 "pending"       : "orange"
-				 , "stopping"      : "orange"
-				 , "shutting-down" : "orange"
+					 "pending"       : "yellow"
+				 , "stopping"      : "yellow"
+				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
-				 , "stopped"       : "red"
+				 , "stopped"       : "orange"
 				 , "terminated"    : "red"
+				 , "unknown"       : "grey"
 			};
 
 			if ( layout ) {
@@ -2947,13 +3049,27 @@ MC.canvas.instanceList = {
 
 			for ( var i = 0; i < layout.instanceList.length; ++i ) {
 
-				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ]
+				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
+					state = null,
+					instance_data = null;
 				temp_data.name = inst_comp.serverGroupName;
+
+				//get instance state
+				if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+					state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
+				}
+
+				if (!state){
+					state = 'unknown';
+				}
+
 				temp_data.instances.push( {
-					  status : statusMap[ inst_comp.state ]
+					  color : statusMap[ state ]
 					, id     : inst_comp.uid
 					, volume : inst_comp.resource.BlockDeviceMapping.length
 					, name   : inst_comp.name
+					, state  : state
+					, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''
 				} );
 			}
 
@@ -2981,19 +3097,44 @@ MC.canvas.instanceList = {
 
 	select: function (event)
 	{
-		var target = $(this);
+		var target = $(this),
+			bubble_box = $('#volume-bubble-box');
+
+		if (
+			bubble_box[0] &&
+			bubble_box.data('target-id') !== target.data('id')
+		)
+		{
+			MC.canvas.volume.close();
+		}
 
 		$('#instanceList-wrap .selected').removeClass('selected');
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
 	}
 };
 
 MC.canvas.eniList = {
+	add: function (data)
+	{
+		$('#eniList').append(
+			MC.template.eniListItem(data)
+		);
+
+		return true;
+	},
+
+	remove: function (id)
+	{
+		$('#' + id).parent().remove();
+
+		return true;
+	},
+
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -3002,18 +3143,19 @@ MC.canvas.eniList = {
 		{
 			MC.canvas.event.clearList();
 
-			if ($('#' + this.id + '_eni-number').text() * 1 === 1)
+			var target = this.parentNode,
+				target_id = target.id,
+				target_offset = Canvon('#' + target_id).offset(),
+				canvas_offset = $('#svg_canvas').offset();
+
+			if ($('#' + target_id + '_eni-number').text() * 1 === 1)
 			{
-				MC.canvas.select( this.id );
+				MC.canvas.select( target_id );
 
 				return false;
 			}
 
-			var target_offset = Canvon('#' + this.id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
-
-
-			var uid      = MC.extractID( this.id ),
+			var uid      = MC.extractID( target_id ),
 			    layout   = MC.canvas_data.layout.component.node[ uid ],
 			    eni_comp = MC.canvas_data.component[ uid ];
 
@@ -3032,10 +3174,23 @@ MC.canvas.eniList = {
 
 			for ( var i = 0, l = layout.eniList.length; i < l; ++i )
 			{
+				var is_deleted = '',
+					found_eni = null;
+								
 				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
+				
+				//get eni
+				if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
+					found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
+				}
+				if (found_eni === undefined){
+					is_deleted = " deleted";
+				}
+
 				temp_data.enis.push({
 					'id'   : eni_comp.uid,
-					'name' : eni_comp.resource.NetworkInterfaceId
+					'name' : eni_comp.resource.NetworkInterfaceId,
+					'is_deleted' : is_deleted
 				});
 			}
 
@@ -3069,29 +3224,49 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_NODE_SELECTED', target.data('id'));
+		$('#svg_canvas').trigger('CANVAS_ENI_SELECTED', target.data('id'));
 
 		return false;
 	}
 };
 
 MC.canvas.event = {};
+
+// Double click event simulation
+MC.canvas.event.dblclick = function (callback)
+{
+	if (MC.canvas.event.dblclick.timer)
+	{
+		// Double click event call
+		callback.call(this, event);
+
+		return true;
+	}
+
+	MC.canvas.event.dblclick.timer = setTimeout(function ()
+	{
+		MC.canvas.event.dblclick.timer = null;
+	}, 500);
+
+	return false;
+};
+
+MC.canvas.event.dblclick.timer = null;
+
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
-		// Ctrl Move event
-		if (
-			event.which === 1 &&
-			event.ctrlKey
-		)
-		{
-			MC.canvas.event.ctrlMove.mousedown.call(this, event);
-
-			return false;
-		}
-
 		if (event.which === 1)
 		{
+			// Double click event
+			if (MC.canvas.event.dblclick(function ()
+			{
+				$('#svg_canvas').trigger('SHOW_PROPERTY_PANEL');
+			}))
+			{
+				return false;
+			}
+
 			var target = $(this),
 				target_offset = Canvon(this).offset(),
 				target_type = target.data('type'),
@@ -3291,12 +3466,19 @@ MC.canvas.event.dragable = {
 			event.pageY === event.data.originalPageY
 		)
 		{
-			var originalTarget = event.data.originalTarget,
-				originalTargetNode = $(originalTarget),
-				component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
+			if (MC.canvas.getState() === 'app')
+			{
+				MC.canvas.instanceList.show.call( target[0], event);
+			}
+			else
+			{
+				var originalTarget = event.data.originalTarget,
+					originalTargetNode = $(originalTarget),
+					component_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id);
 
-			MC.canvas.select( target_id );
-			MC.canvas.volume.close();
+				MC.canvas.select( target_id );
+				MC.canvas.volume.close();
+			}
 		}
 		else
 		{
@@ -3358,7 +3540,7 @@ MC.canvas.event.dragable = {
 					)
 				)
 				{
-					MC.canvas.position(target[0], coordinate.x, coordinate.y);
+					MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
 
 					MC.canvas.reConnect(target_id);
 
@@ -4276,7 +4458,14 @@ MC.canvas.event.siderbarDrag = {
 
 			if (node_type === 'AWS.EC2.EBS.Volume')
 			{
-				Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				if (MC.canvas.getState() === 'appedit')
+				{
+					Canvon('.AWS-EC2-Instance').addClass('attachable');
+				}
+				else
+				{
+					Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable');
+				}
 
 				shadow.addClass('AWS-EC2-EBS-Volume');
 
@@ -5212,8 +5401,59 @@ MC.canvas.event.selectNode = function (event)
 {
 	if (event.which === 1)
 	{
+		// Double click event
+		if (MC.canvas.event.dblclick(function ()
+		{
+			$('#svg_canvas').trigger('SHOW_PROPERTY_PANEL');
+		}))
+		{
+			return false;
+		}
+
 		MC.canvas.event.clearSelected();
 		MC.canvas.select(this.id);
+	}
+
+	return false;
+};
+
+MC.canvas.event.appMove = function (event)
+{
+	if (event.which === 1)
+	{
+		MC.canvas.event.clearSelected();
+
+		var target = $(this),
+			target_type = target.data('class'),
+			node_type = target.data('type');
+
+		if (
+			target_type === 'AWS.EC2.Instance' ||
+			node_type === 'group'
+		)
+		{
+			MC.canvas.event.dragable.mousedown.call( this, event );
+		}
+		else
+		{
+			MC.canvas.select( this.id );
+		}
+	}
+
+	return false;
+};
+
+MC.canvas.event.appDrawConnection = function ()
+{
+	if ($(this).is([
+		'.port-instance-sg',
+		'.port-eni-sg',
+		'.port-launchconfig-sg',
+		'.port-elb-sg'
+		].join(', ')
+	))
+	{
+		MC.canvas.event.drawConnection.mousedown.call( this, event );
 	}
 
 	return false;
@@ -5278,7 +5518,8 @@ MC.canvas.event.keyEvent = function (event)
 	if (
 		Tabbar.current === 'new' ||
 		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack'
+		Tabbar.current === 'stack' ||
+		Tabbar.current === 'appedit'
 	)
 	{
 		var keyCode = event.which,
@@ -5305,7 +5546,10 @@ MC.canvas.event.keyEvent = function (event)
 				// For Mac
 				keyCode === 8
 			) &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length > 0 &&
 			event.target === document.body
 		)
@@ -5434,7 +5678,10 @@ MC.canvas.event.keyEvent = function (event)
 		// Move node - [up, down, left, right]
 		if (
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
-			canvas_status === 'stack' &&
+			(
+				canvas_status === 'stack' ||
+				canvas_status === 'appedit'
+			) &&
 			MC.canvas_property.selected_node.length === 1
 		)
 		{

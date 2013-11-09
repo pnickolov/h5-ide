@@ -2,14 +2,11 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( ide_event ) ->
+define [ 'text!./template/stack.html' ], ( template ) ->
+
+	template = Handlebars.compile template
 
 	SGListView = Backbone.View.extend {
-
-		el       : $ document
-		tagName  : $ '#sg-secondary-panel-wrap'
-
-		template : Handlebars.compile $( '#property-sg-list-tmpl' ).html()
 
 		events   :
 			'click #sg-info-list .sg-edit-icon'    : 'openSgPanel'
@@ -19,11 +16,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
 		render     : () ->
-			console.log 'property:sg list render'
-			this.model.getSGInfoList()
-			this.model.getRuleInfoList()
-			$( '.sg-group' ).html this.template this.model.attributes
-			$('#property-head-sg-num').text(this.model.attributes.sg_length)
+			@model.getSGInfoList()
+			@model.getRuleInfoList()
+
+			@setElement $('.sg-group')
+			@$el.html template @model.attributes
+			$('#property-head-sg-num').text( @model.attributes.sg_length )
 
 		openSgPanel : ( event ) ->
 			sgUID = $(event.target).parents('li').attr('sg-uid')
@@ -55,7 +53,7 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 
 			$target = $(event.currentTarget)
 			sgUID = $target.parents('li').attr('sg-uid')
-			
+
 			memberNum = Number($target.attr('members'))
 			sgName = $target.attr('sg-name')
 
@@ -63,12 +61,12 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 			if memberNum
 				mainContent = 'Are you sure you want to delete ' + sgName + '?'
 				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
-				template = MC.template.modalDeleteSGOrACL {
+				tpl = MC.template.modalDeleteSGOrACL {
 					title : 'Delete Security Group',
 					main_content : mainContent,
 					desc_content : descContent
 				}
-				modal template, false, () ->
+				modal tpl, false, () ->
 					$('#modal-confirm-delete').click () ->
 						that.trigger 'DELETE_SG_FROM_COMP', sgUID
 						that.render()
@@ -106,6 +104,4 @@ define [ 'event', 'MC', 'backbone', 'jquery', 'handlebars', 'UI.tablist' ], ( id
 				$(b).attr('data-iprange')
 	}
 
-	view = new SGListView()
-
-	return view
+	new SGListView()

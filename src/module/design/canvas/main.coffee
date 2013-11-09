@@ -54,11 +54,32 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                         model.reDrawSgLine()
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                    #
+                    MC.ta.list = []
 
                 catch error
+                    console.error error
 
                 #
                 #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
+                null
+
+            #listen RESTORE_CANVAS
+            ide_event.onLongListen ide_event.RESTORE_CANVAS, () ->
+                console.log 'RESTORE_CANVAS'
+                #
+                view.render template
+                #
+                MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
+                #
+                MC.canvas.layout.init()
+                model.initLine()
+                model.reDrawSgLine()
+                MC.aws.instance.updateStateIcon MC.canvas_data.id
+                MC.aws.asg.updateASGCount MC.canvas_data.id
+                #
+                MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
+                #
                 null
 
             ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->
@@ -71,7 +92,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 model.reDrawSgLine()
 
             ide_event.onLongListen ide_event.NEED_IGW, ( component )->
-                model.askToAddIGW component
+                model.askToAddIGW()
 
 
             #listen CANVAS_ZOOMED_DROP_ERROR

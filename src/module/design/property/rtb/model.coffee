@@ -2,27 +2,22 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    RTBModel = Backbone.Model.extend {
+    RTBModel = PropertyModel.extend {
 
-        defaults :
-            'route_table' : null
-            'association' : null
-            'title'       : null
+        setName : ( name ) ->
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        setName : ( uid, name ) ->
+            uid = @get 'uid'
 
             MC.canvas_data.component[uid].name = name
 
             MC.canvas.update uid, 'text', 'rt_name', name
             null
 
-        setMainRT : ( uid ) ->
+        setMainRT : () ->
+
+            uid = @get 'uid'
 
 
             for id, comp of MC.canvas_data.component
@@ -46,57 +41,18 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             MC.aws.rtb.updateRT_SubnetLines()
 
+            @init( uid )
             null
 
-        getAppRoute : ( uid ) ->
+        reInit : () ->
+            @init( @get( "uid" ) )
+            null
 
-            rt = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.RouteTableId]
+        init : ( uid ) ->
 
-            $.each MC.canvas_data.component, (comp_uid, comp) ->
+            @set "uid", uid
 
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable and comp.resource.RouteTableId == rt.routeTableId
-
-                    rt.name = comp.name
-
-                    return false
-
-            if rt.associationSet.item.length != 0 and rt.associationSet.item[0].main == 'true'
-
-                rt.isMain = true
-
-            $.each rt.routeSet.item, ( idx, route ) ->
-
-                existing = false
-
-                tmp_r = {}
-
-                if route.state == 'active'
-
-                    route.isActive = true
-
-                else
-                    route.isActive = false
-
-
-                if route.gatewayId
-
-                    if rt.propagatingVgwSet.item
-
-                        $.each rt.propagatingVgwSet.item, ( i, prop ) ->
-
-                            if prop.gatewayId == route.gatewayId
-
-                                route.isProp = true
-
-                                return false
-
-            this.set 'route_table', rt
-
-
-
-        getRoute : ( uid ) ->
-
-            # uid might be a line connecting RTB and Subnet
+            # uid might be a line connecting RTB and other resource
             connection = MC.canvas_data.layout.connection[ uid ]
             if connection
                 data = {}
@@ -104,12 +60,17 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                     component = MC.canvas_data.component[ uid ]
                     if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
                         data.subnet = component.name
-                    else
-                        data.rtb    = component.name
+                        has_subnet = true
+                    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                        data.rtb  = component.name
+                        route_uid = uid
 
-                this.set 'association', data
-                this.set 'title', 'Subnet-RT Association'
-                return
+                if has_subnet
+                    this.set 'association', data
+                    this.set 'title', 'Subnet-RT Association'
+                    return
+                else
+                    uid = route_uid
 
 
             # This is a route table component
@@ -209,7 +170,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             this.set 'association', null
             this.set 'title', rt.name
 
-        setPropagation : ( uid, value ) ->
+        setPropagation : ( value ) ->
+
+            uid = @get 'uid'
 
             vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
 
@@ -224,7 +187,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             null
 
-        setRoutes : ( uid, data, routes ) ->
+        setRoutes : ( data, routes ) ->
+
+            uid = @get 'uid'
 
             # remove all routes
             delete_idx = []
@@ -299,14 +264,6 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
 
                     MC.canvas_data.component[uid].resource.RouteSet.push route_tmpl
-
-
-
-
-
-
     }
 
-    model = new RTBModel()
-
-    return model
+    new RTBModel()

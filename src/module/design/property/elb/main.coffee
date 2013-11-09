@@ -2,157 +2,114 @@
 #  Controller for design/property/elb module
 ####################################
 
-define [ 'jquery',
-         'text!./template.html',
-         'text!./app_template.html',
+define [ '../base/main',
+         './model',
+         './view',
+         './app_model',
+         './app_view',
+         "../sglist/main",
+         'constant',
          'event'
-], ( $, template, app_template, ide_event ) ->
+], ( PropertyModule, model, view, app_model, app_view, sglist_main, constant, ide_event ) ->
 
-    #
-    current_view  = null
-    current_model = null
+    ElbModule = PropertyModule.extend {
 
-    #add handlebars script
-    template     = '<script type="text/x-handlebars-template" id="property-elb-tmpl">' + template + '</script>'
-    app_template = '<script type="text/x-handlebars-template" id="property-elb-app-tmpl">' + app_template + '</script>'
-    #load remote html template
-    $( 'head' ).append template
-    $( 'head' ).append app_template
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
-    #private
-    loadModule = ( uid, current_main, tab_type ) ->
-        console.log 'elb main, tab_type = ' + tab_type
+        onUnloadSubPanel : ( id )->
+            sglist_main.onUnloadSubPanel id
+            null
 
-        MC.data.current_sub_main = current_main
+        setupStack : () ->
+            me = this
+            @view.on 'ELB_NAME_CHANGED', ( value ) ->
+                me.model.setELBName value
+                null
 
-
-        if tab_type is 'OPEN_APP'
-            loadAppModule uid
-            return
-
-        require [ './module/design/property/elb/view',
-                  './module/design/property/elb/model',
-                  './module/design/property/sglist/main'
-                  ], ( view, model, sglist_main ) ->
-
-            # added by song
-            model.clear({silent: true})
-
-            #
-            if current_view then view.delegateEvents view.events
-
-            #
-            current_view  = view
-            current_model = model
-
-            view.model    = model
-
-            # model.set 'type', 'stack'
-
-            view.on 'ELB_NAME_CHANGED', ( value ) ->
-                model.setELBName uid, value
-                # Set title
-                ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, value
-
-            view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                elbComponent = model.setScheme uid, value
+            @view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
+                elbComponent = model.setScheme value
 
                 defaultVPC = false
                 if MC.aws.aws.checkDefaultVPC()
                     defaultVPC = true
-                
+
                 # Trigger an event to tell canvas that we want an IGW
                 if value isnt 'internal' and !defaultVPC
-                    ide_event.trigger ide_event.NEED_IGW, elbComponent
+                    ide_event.trigger ide_event.NEED_IGW
 
                 return true
 
-            view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
-                model.setHealthProtocol uid, value
+            @view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
+                me.model.setHealthProtocol value
 
-            view.on 'HEALTH_PORT_CHANGED', ( value ) ->
-                model.setHealthPort uid, value
+            @view.on 'HEALTH_PORT_CHANGED', ( value ) ->
+                me.model.setHealthPort value
 
-            view.on 'HEALTH_PATH_CHANGED', ( value ) ->
-                model.setHealthPath uid, value
+            @view.on 'HEALTH_PATH_CHANGED', ( value ) ->
+                me.model.setHealthPath value
 
-            view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
-                model.setHealthInterval uid, value
+            @view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
+                me.model.setHealthInterval value
 
-            view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
-                model.setHealthTimeout uid, value
+            @view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
+                me.model.setHealthTimeout value
 
-            view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
-                model.setHealthUnhealth uid, value
+            @view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
+                me.model.setHealthUnhealth value
 
-            view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
-                model.setHealthHealth uid, value
+            @view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
+                me.model.setHealthHealth value
 
-            view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
-                model.setListenerAry uid, value
+            @view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
+                me.model.setListenerAry value
 
-            view.on 'LISTENER_CERT_CHANGED', ( value ) ->
-                model.setListenerCert uid, value
+            @view.on 'LISTENER_CERT_CHANGED', ( value ) ->
+                me.model.setListenerCert value
 
-            view.on 'REFRESH_CERT_PANEL_DATA', ( value ) ->
-                currentCert = model.getCurrentCert uid
-                currentCert && view.refreshCertPanel currentCert
+            @view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
+                me.model.removeAZFromELB value
 
-            view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
-                model.removeAZFromELB uid, value
+            @view.on 'ADD_AZ_TO_ELB', ( value ) ->
+                me.model.addAZToELB value
 
-            view.on 'ADD_AZ_TO_ELB', ( value ) ->
-                model.addAZToELB uid, value
-
-            view.on 'REFRESH_SG_LIST', () ->
+            @view.on 'REFRESH_SG_LIST', () ->
                 sglist_main.refresh()
+            null
 
-            #model
-            model.init uid
+        initStack : ()->
+            @model = model
+            @view  = view
+            null
 
-            #render
-            view.render model.attributes
+        afterLoadStack : ()->
+            currentCert = @model.getCurrentCert()
+            if currentCert
+                @view.refreshCertPanel currentCert
 
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.component.name
+            sglist_main.loadModule @model
+            null
 
+        initApp : ()->
+            @model = app_model
+            @view  = app_view
+            null
+
+        afterLoadApp : () ->
+            sglist_main.loadModule @model
+            null
+
+        initAppEdit : ()->
+            @model = app_model
+            @view  = app_view
+            null
+
+        afterLoadAppEdit : ()->
+            # Use Stack model to handle sglist interaction
+            model.init( @model.get "componentUid" )
             sglist_main.loadModule model
+            null
 
-    loadAppModule = ( uid ) ->
 
-        require [ './module/design/property/elb/app_view',
-                  './module/design/property/elb/app_model',
-                  './module/design/property/sglist/main'
-        ], ( view, model, sglist_main ) ->
 
-            # added by song
-            model.clear({silent: true})
-
-            #
-            if current_view then view.delegateEvents view.events
-
-            current_view  = view
-            current_model = model
-
-            #view
-            view.model    = model
-
-            # model.set 'type', 'app'
-
-            model.init uid
-            view.render()
-
-            # Set title
-            ide_event.trigger ide_event.PROPERTY_TITLE_CHANGE, model.attributes.name
-
-            sglist_main.loadModule model, true
-
-    unLoadModule = () ->
-        if !current_view then return
-        current_view.off()
-        current_model.off()
-        current_view.undelegateEvents()
-
-    #public
-    loadModule   : loadModule
-    unLoadModule : unLoadModule
+    }
+    null

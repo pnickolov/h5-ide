@@ -2,9 +2,9 @@
 #  View Mode for design/property/vpc
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    VPCModel = Backbone.Model.extend {
+    VPCModel = PropertyModel.extend {
 
         ###
         defaults :
@@ -16,11 +16,7 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             noneDhcp       : null
         ###
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
-        setId : ( uid ) ->
+        init : ( uid ) ->
             component = MC.canvas_data.component[ uid ]
 
             data = {
@@ -198,6 +194,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             data
     }
 
-    model = new VPCModel()
-
-    return model
+    new VPCModel()

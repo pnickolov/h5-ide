@@ -1,0 +1,23 @@
+{{#if inbound}}
+<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="inbound">
+	<div class="rule-list-row">
+		<div class='rule-direction-icon tooltip icon-inbound' data-tooltip='{{ i18n "PROP_SG_TIP_INBOUND" }}'></div>
+
+{{else}}
+
+<li data-inbound="false" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-toport="{{ToPort}}" data-iprange="{{IpRanges}}" data-direction="outbound">
+	<div class="rule-list-row">
+		<div class='rule-direction-icon tooltip icon-outbound' data-tooltip='{{ i18n "PROP_SG_TIP_OUTBOUND" }}'></div>
+
+{{/if}}
+
+		<div class='rule-reference tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_SRC" }}'>{{ip_display}}</div>
+	</div>
+
+	<div class="rule-list-row">
+		<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{protocol_display}}</span></div>
+		<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}' >{{DispPort}}</div>
+	</div>
+
+	{{#if ruleEditable}}<div class='rule-remove-icon icon-remove tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}' ></div>{{/if}}
+</li>

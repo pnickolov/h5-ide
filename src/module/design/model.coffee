@@ -36,6 +36,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                         MC.aws.asg.updateASGCount app_id
 
+                        MC.aws.eni.updateServerGroupState app_id
+
                         #update canvas when get instance info
                         ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
@@ -71,10 +73,12 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 if app_id == MC.canvas_data.id
                     #MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
                     @setCanvasData result.resolved_data[ 0 ]
+                    @setOriginData result.resolved_data[ 0 ]
                 # update MC.Tab[app_id]
                 else
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
-                    @updateAppTabDate result.resolved_data[ 0 ], app_id
+                    @updateAppTabDate       result.resolved_data[ 0 ], app_id
+                    @updateAppTabOriginDate result.resolved_data[ 0 ], app_id
                 null
 
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
@@ -88,14 +92,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         null
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, last_open_property, origin_data ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'last_open_property' : last_open_property, 'origin_data' : origin_data }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid }
             null
 
         saveProcessTab : ( tab_id ) ->
             console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
+            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
             #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
@@ -116,7 +120,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             this.setPropertyPanel     MC.tab[ tab_id ].property_panel
             #
-            this.setLastOpenProperty  MC.tab[ tab_id ].last_open_property, tab_id
+            this.setTAValidation      MC.tab[ tab_id ].origin_ta_valid
+            #
             null
 
         updateTab : ( old_tab_id, tab_id ) ->
@@ -136,6 +141,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
             null
 
+        updateAppTabOriginDate : ( data, tab_id ) ->
+            console.log 'updateAppTabOriginDate'
+            MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+            null
+
         deleteTab    : ( tab_id ) ->
             console.log 'deleteTab'
             delete MC.tab[ tab_id ]
@@ -145,7 +155,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             console.log MC.tab
             #
-            if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            # if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->
@@ -169,33 +179,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
-            MC.data.current_sub_main = property_panel
+            this.trigger "SET_PROPERTY_PANEL", property_panel
             null
-
-        getPropertyPanel : () ->
-            console.log 'getPropertyPanel'
-            #temp
-            MC.data.current_sub_main.unLoadModule()
-            #
-            MC.data.current_sub_main
-
-        setLastOpenProperty : ( last_open_property, tab_id ) ->
-            console.log 'setLastOpenProperty, tab_id = ' + tab_id
-            console.log tab_id.indexOf( 'app' )
-            if tab_id.indexOf( 'app' ) isnt -1 then tab_type = 'OPEN_APP' else tab_type = 'OPEN_STACK'
-            #
-            MC.data.last_open_property = last_open_property
-            #temp
-            if !MC.data.last_open_property
-                MC.data.last_open_property = { 'event_type' : ide_event.OPEN_PROPERTY, 'type' : 'component', 'uid' : '', 'instance_expended_id' : '', 'tab_type' : tab_type }
-            #
-            if MC.data.last_open_property.event_type is 'OPEN_PROPERTY'
-                ide_event.trigger MC.data.last_open_property.event_type, MC.data.last_open_property.type, MC.data.last_open_property.uid, MC.data.last_open_property.instance_expended_id, this.get( 'snapshot' ).property, tab_type
-            null
-
-        getLastOpenProperty : () ->
-            console.log 'getLastOpenProperty'
-            MC.data.last_open_property
 
         setOriginData : ( data ) ->
             console.log 'setOriginData'
@@ -205,6 +190,16 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         getOriginData :  ->
             console.log 'getOriginData'
             $.extend true, {}, MC.data.origin_canvas_data
+
+        setTAValidation : ( data ) ->
+            console.log 'setTAValidation'
+            MC.ta.list = $.extend true, [], data
+            null
+
+        getTAValidation : () ->
+            console.log 'getTAValidation'
+            #MC.ta.list
+            $.extend true, [], MC.ta.list
 
         describeInstancesOfASG : (region) ->
 
@@ -272,11 +267,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         getAllNotExistAmiInStack : ( region, tab_id )->
 
             ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
-            
+
             me = this
 
             ami_list = []
-            
+
             _.each MC.canvas_data.component, (compObj) ->
 
                 if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
@@ -287,6 +282,22 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 null
             if ami_list.length
                 stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_list
+
+        returnAppState : ( type, state ) ->
+            console.log 'returnAppState', type, state
+
+            if state
+                temp = state
+            else
+                switch type
+                    when 'START_APP'     then temp = constant.APP_STATE.APP_STATE_STARTING
+                    when 'STOP_APP'      then temp = constant.APP_STATE.APP_STATE_STOPPING
+                    when 'TERMINATE_APP' then temp = constant.APP_STATE.APP_STATE_TERMINATING
+                    else
+                        console.log 'current type = ' + type + ', state is =' + state
+                        console.log MC.data.process[ MC.data.current_tab_id ]
+            temp
+
     }
 
     model = new DesignModel()

@@ -345,7 +345,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     v = value[ type ] || {}
                     if type is 'DescribeInstances'
                         v = _.filter v, ( vv ) ->
-                            return vv.instanceState.name is 'running'
+                            #return vv.instanceState.name is 'running'
+                            return vv.instanceState.name isnt 'terminated'
                     midData[ type ] = {} if not midData[ type ]
                     midData[ type ][ region ] = v
                     null

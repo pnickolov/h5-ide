@@ -116,18 +116,19 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             me = this
             app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
+        # return: true|false|null
         checkPlatform : ( region_name ) ->
             console.log 'checkPlatform'
             #
-            if !MC.data.supported_platforms then return
+            #if !MC.data.supported_platforms then return null
             #
-            support_vpc = false
+            support_vpc = null
             #
             _.each MC.data.supported_platforms, ( item ) ->
                 if region_name is item.region
                     if item.classic then support_vpc = true else support_vpc = false
                 null
-            #
+
             support_vpc
 
     }

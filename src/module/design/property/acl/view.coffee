@@ -2,53 +2,40 @@
 #  View(UI logic) for design/property/acl
 #############################
 
-define [ 'event', 'i18n!nls/lang.js',
-         'backbone', 'jquery', 'handlebars' ], ( ide_event, lang ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'text!./template/rule_item.html',
+         'text!./template/dialog.html',
+         'i18n!nls/lang.js'
+], ( PropertyView, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
 
-   ACLView = Backbone.View.extend {
+    htmlTpl  = Handlebars.compile htmlTpl
+    ruleTpl  = Handlebars.compile ruleTpl
+    rulePopupTpl = Handlebars.compile rulePopupTpl
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        htmlTpl  : Handlebars.compile $('#property-acl-tmpl').html()
-        ruleTpl  : Handlebars.compile $('#property-acl-rule-tmpl').html()
-        rulePopupTpl : Handlebars.compile $('#property-acl-rule-popup-tmpl').html()
-
-        initialize : ->
-            $('#sg-protocol-udp').hide()
-            $('#sg-protocol-icmp').hide()
-            $('#sg-protocol-custom').hide()
-            $('#sg-protocol-all').hide()
-            $('.protocol-icmp-sub-select').hide()
-
-            null
+    ACLView = PropertyView.extend {
 
         events   :
-            'click #acl-add-rule-icon'                   : 'showCreateRuleModal'
-            'click #acl-modal-rule-save-btn'             : 'saveRule'
-            'OPTION_CHANGE #acl-add-model-source-select' : 'modalRuleSourceSelected'
-            'OPTION_CHANGE #modal-protocol-select'       : 'modalRuleProtocolSelected'
-            'OPTION_CHANGE #protocol-icmp-main-select'   : 'modalRuleICMPSelected'
-            'click .property-rule-delete-btn'            : 'removeRuleClicked'
-            'change #property-acl-name'                  : 'aclNameChanged'
-
+            'change #property-acl-name'           : 'aclNameChanged'
+            'click #acl-add-rule-icon'            : 'showCreateRuleModal'
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
+            'click .property-rule-delete-btn'     : 'removeRuleClicked'
 
-            'change #acl-add-model-direction-outbound'   : 'changeBoundInModal'
-            'change #acl-add-model-direction-inbound'    : 'changeBoundInModal'
+        render : () ->
+            @$el.html htmlTpl @model.attributes
+            @model.attributes.component.name
 
-        render     : () ->
-            console.log 'property:acl render'
-
-            $dom = this.htmlTpl this.model.attributes
-
-            self = this
-            self.refreshRuleList self.model.attributes.component
-
-            $dom
+        bindModalEvent : ()->
+            $("#acl-modal-rule-save-btn").on("click", _.bind( @saveRule, @ ))
+            $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )
+            $("#modal-protocol-select").on("OPTION_CHANGE", @modalRuleProtocolSelected )
+            $("#protocol-icmp-main-select").on("OPTION_CHANGE", @modalRuleICMPSelected )
+            $("#acl-add-model-direction-outbound").on("change", @changeBoundInModal )
+            $("#acl-add-model-direction-inbound").on("change", @changeBoundInModal )
+            null
 
         showCreateRuleModal : () ->
-            modal this.rulePopupTpl({}, true)
+            modal rulePopupTpl({}, true)
 
             subnetMap = {}
 
@@ -73,7 +60,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
             selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">' + lang.ide.POP_ACLRULE_PROTOCOL_CUSTOM + '</div></li>')
 
-            # scrollbar.init()
+            @bindModalEvent()
             return false
 
         saveRule : () ->
@@ -212,8 +199,10 @@ define [ 'event', 'i18n!nls/lang.js',
 
             null
 
-        refreshRuleList : (value) ->
+        refreshRuleList : () ->
+            value = @model.attributes.component
             entrySet = value.resource.EntrySet
+            aclName = value.name
 
             newEntrySet = []
             _.each entrySet, (value, key) ->
@@ -229,6 +218,9 @@ define [ 'event', 'i18n!nls/lang.js',
                 else
                     newRuleObj.ruleNumber = value.RuleNumber
                     newRuleObj.isStarRule = false
+
+                if value.RuleNumber in ['100', 100] and aclName is 'DefaultACL'
+                    newRuleObj.isStarRule = true
 
                 # if value.Protocol is '-1'
                 #     newRuleObj.protocol = 'All'
@@ -263,7 +255,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
                 null
 
-            $('#acl-rule-list').html this.ruleTpl({
+            $('#acl-rule-list').html ruleTpl({
                 content: newEntrySet
             })
 
@@ -283,7 +275,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
-                $('#acl-add-model-source-select .selection').width(296)
+                $('#acl-add-model-source-select .selection').width(302)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')
@@ -292,7 +284,7 @@ define [ 'event', 'i18n!nls/lang.js',
                 currentRuleNumber = '32767'
             currentRuleEngress = parentElem.attr('rule-engress')
             this.trigger 'REMOVE_RULE_FROM_ACL', currentRuleNumber, currentRuleEngress
-            this.refreshRuleList this.model.attributes.component
+            this.refreshRuleList()
 
         aclNameChanged : (event) ->
             target = $ event.currentTarget
@@ -378,6 +370,4 @@ define [ 'event', 'i18n!nls/lang.js',
                 $(b).find('.acl-rule-reference').attr('data-id')
     }
 
-    view = new ACLView()
-
-    return view
+    new ACLView()

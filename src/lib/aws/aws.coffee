@@ -91,7 +91,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             if compObj.type is compType
 
-                name_list.push compObj.name
+                if compObj.serverGroupName
+                    name_list.push compObj.serverGroupName
+                else
+                    name_list.push compObj.name
 
             null
 
@@ -220,12 +223,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             #ami
             if resources.DescribeImages
                 _.map resources.DescribeImages, ( res, i ) ->
-                    if !res.osType
-                      res = $.extend true, {}, res
-                      res.osType = MC.aws.ami.getOSType res
+                    try
+                        if !res.osType
+                            res = $.extend true, {}, res
+                            res.osType = MC.aws.ami.getOSType res
 
-                    MC.data.dict_ami[res.imageId] = res
-                    MC.data.resource_list[region][res.imageId] = res
+                        MC.data.dict_ami[res.imageId] = res
+                        MC.data.resource_list[region][res.imageId] = res
+
+                    catch e
+                        console.log "[cacheResource:DescribeImages]error: " + res.imageId
 
                     null
 
@@ -678,8 +685,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
                 resourceId = compRes.VpnGatewayId
 
-            when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                resourceId = compRes.AutoScalingGroupARN
+            # In stopped app, ASG doesn't have AWS Resource
+            # when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                # resourceId = compRes.AutoScalingGroupARN
 
             when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                 resourceId = compRes.LaunchConfigurationARN
@@ -709,6 +717,58 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         else
             return false
 
+    getChanges = (data, ori_data) ->
+        me = this
+
+        changes = {'remain':[], 'remove':[]}
+
+        # first check change
+        new_str = JSON.stringify(data)
+        ori_str = JSON.stringify(ori_data)
+        if new_str != ori_str
+            isChanged = true
+
+            for uid of ori_data.component
+                item = ori_data.component[uid]
+
+                # only instance
+                if item.type is 'AWS.EC2.Instance'
+                    if uid of data.component    # remain
+                        # check instance size
+                        if item.resource.InstanceType is data.component[uid].resource.InstanceType
+                            continue
+
+                        # server group
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
+                        else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
+                            changes['remain'].push inst
+
+                    else
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
+                        else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
+                            changes['remove'].push inst
+
+
+        {'isChanged':isChanged, 'changes':changes}
+
     #public
     getNewName                  : getNewName
     cacheResource               : cacheResource
@@ -722,3 +782,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     checkResource               : checkResource
     getRegionName               : getRegionName
     isExistResourceInApp        : isExistResourceInApp
+    getChanges                  : getChanges

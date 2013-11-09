@@ -3,7 +3,7 @@
 #* Filename: UI.scrollbar
 #* Creator: Angel
 #* Description: UI.scrollbar
-#* Date: 20131101
+#* Date: 20131108
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -16,15 +16,13 @@ var style = document.documentElement.style,
 	cssTransform;
 
 $.each([
-	'webkit',
-	'Moz',
-	'O',
-	'ms',
-	''
-], function (i, prefix)
+	'webkitTransform',
+	'MozTransform',
+	'OTransform',
+	'msTransform',
+	'transform'
+], function (i, cssName)
 {
-	cssName = prefix + 'Transform';
-
 	if (cssName in style)
 	{
 		isTransform = true;
@@ -69,13 +67,14 @@ var scrollbar = {
 					!wrap.hasClass('scrolling')
 				)
 				{
-					scrollbar_height = offsetHeight * offsetHeight / scroll_content.scrollHeight;
-					scrollbar_width = offsetWidth * offsetWidth / scroll_content.scrollWidth;
+					scrollbar_height = scroll_content.scrollHeight > 0 ? offsetHeight * offsetHeight / scroll_content.scrollHeight : 0;
+					scrollbar_width = scroll_content.scrollWidth > 0 ? offsetWidth * offsetWidth / scroll_content.scrollWidth : 0;
 
 					if (veritical_thumb && veritical_thumb.hasClass('scrollbar-veritical-thumb'))
 					{
 						wrap_height = wrap.height();
 
+						//console.info(target.id, target.offsetHeight, scroll_content.scrollHeight, scrollbar_height, offsetHeight * 2 - scroll_content.scrollHeight, wrap_height);
 						if (scrollbar_height <= offsetHeight * 2 - scroll_content.scrollHeight || scrollbar_height > wrap_height)
 						{
 							veritical_thumb.parent().hide();

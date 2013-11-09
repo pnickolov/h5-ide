@@ -2,14 +2,10 @@
 #  View(UI logic) for design/property/elb
 #############################
 
-define ['event', 'MC',
-        'backbone', 'jquery', 'handlebars',
-        'UI.secondarypanel',
-        'UI.selectbox',
-        'UI.tooltip',
-        'UI.notification',
-        'UI.toggleicon',
-        'UI.slider'], ( ide_event, MC ) ->
+define [ '../base/view',
+         'text!./template/stack.html',
+         'event'
+], ( PropertyView, template, ide_event ) ->
 
     Helper =
         makeInRange: ( value, range , $target, deflt ) ->
@@ -28,23 +24,9 @@ define ['event', 'MC',
             $target.val( value )
             value
 
-    ElbView = Backbone.View.extend {
+    template = Handlebars.compile template
 
-        el       : $ document
-        tagName  : $ '.property-details'
-
-        template : Handlebars.compile $( '#property-elb-tmpl' ).html()
-
-        ###
-        initialize : ->
-            #handlebars equal logic
-            Handlebars.registerHelper 'ifCond', (v1, v2, options) ->
-                if v1 is v2
-                    return options.fn this
-                options.inverse this
-
-            null
-        ###
+    ElbView = PropertyView.extend {
 
         events   :
             'change #property-elb-name' : 'elbNameChange'
@@ -56,7 +38,6 @@ define ['event', 'MC',
             'change #property-elb-health-path' : 'healthPathChanged'
             'change #property-elb-health-interval' : 'healthIntervalChanged'
             'change #property-elb-health-timeout' : 'healthTimeoutChanged'
-            'SLIDER_CHANGE .slider' : 'sliderChanged'
 
             'click #elb-property-listener-content-add' : 'listenerItemAddClicked'
             'OPTION_CHANGE .elb-property-listener-elb-protocol-select' : 'listenerItemChanged'
@@ -72,19 +53,23 @@ define ['event', 'MC',
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
 
-        render     : ( attributes ) ->
 
-            console.log 'property:elb render'
-            $( '.property-details' ).html this.template(attributes)
+            'mousedown .slider .thumb' : "sliderMouseDown"
+            'mousedown .slider li'     : "sliderSelect"
+            'SLIDER_CHANGE .slider'    : 'sliderChanged'
 
-            health_detail = this.model.get('health_detail')
-            $('#elb-property-slider-unhealthy').setSliderValue(health_detail.unhealthy_threshold)
-            $('#elb-property-slider-healthy').setSliderValue(health_detail.healthy_threshold)
+        render     : () ->
+
+            @$el.html template @model.attributes
+
+            health_detail = @model.get('health_detail')
+
+            @updateSlider( $('#elb-property-slider-unhealthy'), health_detail.unhealthy_threshold - 2)
+            @updateSlider( $('#elb-property-slider-healthy'), health_detail.healthy_threshold - 2)
 
             #Init Listener List
 
-            listenerDetail = this.model.get 'listener_detail'
-            listenerAry = listenerDetail.listenerAry
+            listenerAry = @model.get('listener_detail').listenerAry
 
             Canremove = false
             _.each listenerAry, (obj) ->
@@ -95,9 +80,7 @@ define ['event', 'MC',
                 if !Canremove then Canremove = true
                 null
 
-            this.trigger 'REFRESH_CERT_PANEL_DATA'
-
-            ide_event.trigger 'PROPERTY_RENDER_COMPLETE'
+            @model.attributes.component.name
 
         elbNameChange : ( event ) ->
             console.log 'elbNameChange'
@@ -111,6 +94,7 @@ define ['event', 'MC',
                 return
 
             @trigger 'ELB_NAME_CHANGED', value
+            @setTitle value
             MC.canvas.update cid, 'text', 'elb_name', value
             @trigger 'REFRESH_SG_LIST'
 
@@ -161,10 +145,10 @@ define ['event', 'MC',
 
             this.trigger 'HEALTH_TIMEOUT_CHANGED', value
 
-        sliderChanged : ( event ) ->
+        sliderChanged : ( event, value ) ->
             target = $(event.target)
-            id = event.target.id
-            value = target.data('value')
+            id     = event.target.id
+            value += 2
 
             if id is 'elb-property-slider-unhealthy'
                 this.trigger 'UNHEALTHY_SLIDER_CHANGE', value
@@ -182,14 +166,6 @@ define ['event', 'MC',
             })
             $('#accordion-group-elb-property-listener').append itemTpl
             null
-
-        # listenerElbProtocolSelected : ( event ) ->
-
-        # listenerElbPortChanged : ( event ) ->
-
-        # listenerInstanceProtocolSelected : ( event ) ->
-
-        # listenerInstancePortChanged : ( event ) ->
 
         listenerItemChanged : ( event ) ->
 
@@ -364,8 +340,74 @@ define ['event', 'MC',
                 this.trigger 'REMOVE_AZ_FROM_ELB', azName
 
             null
+
+
+        updateSlider : ( $target, value ) ->
+            step  = $target.children(".marker").children().length - 1
+            width = $target.width()
+            left  = value * Math.floor( width / step )
+            $target.data("value", value).children(".thumb").css("left", left)
+            null
+
+        sliderSelect : ( event ) ->
+            $target = $( event.currentTarget )
+            $slider = $target.closest(".slider")
+            value   = $target.index()
+            @updateSlider( $slider, value )
+
+            $slider.trigger "SLIDER_CHANGE", value
+            null
+
+        sliderMouseDown : ( event ) ->
+            $body      = $("body")
+            $thumb     = $( event.currentTarget )
+            $slider    = $thumb.closest(".slider")
+            step       = $slider.children(".marker").children().length - 1
+            width      = $slider.width()
+            stepWidth  = Math.floor( width / step )
+            originalX  = event.clientX
+            thumbPos   = $thumb.position().left
+            value      = $slider.data("value")
+            offsetStep = 0
+
+            onMouseMove = ( event )->
+
+                offset        = event.clientX - originalX
+                absOffset     = Math.abs( offset )
+                halfStepWidth = stepWidth / 2
+
+                if absOffset >= halfStepWidth
+                    absOffset += halfStepWidth
+                    delta      = if offset > 0 then 1 else -1
+
+                    offsetStep = Math.floor( absOffset / stepWidth ) * delta
+                    newPos     = thumbPos + offsetStep * stepWidth
+
+                    if newPos < 0
+                        newPos = 0
+                        offsetStep = -value
+                    else if newPos > width
+                        newPos = width
+                        offsetStep = sttep - value
+                else
+                    newPos     = thumbPos
+                    offsetStep = 0
+
+                $thumb.css("left", newPos)
+                false
+
+            onMouseUp = ()->
+                $body.off "mousemove", onMouseMove
+
+                newValue = value + offsetStep
+                $slider.data("value", newValue).trigger("SLIDER_CHANGE", newValue)
+                null
+
+            $body.on "mousemove", onMouseMove
+            $body.one "mouseup", onMouseUp
+
+            false
+
     }
 
-    view = new ElbView()
-
-    return view
+    new ElbView()

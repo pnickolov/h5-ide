@@ -6,7 +6,7 @@
 	left     : 0;
 	right    : 0;
 	top      : 44px;
-	bottom   : 0;
+	bottom   : 24px;
 }
 
 #canvas_content {
@@ -246,11 +246,17 @@
 	stroke-width: 0;
 }
 
-.canvas_state_stack .port:hover {
+.canvas_state_stack .port:hover,
+.canvas_state_appedit .port-instance-sg:hover,
+.canvas_state_appedit .port-eni-sg:hover,
+.canvas_state_appedit .port-launchconfig-sg:hover,
+.canvas_state_appedit .port-elb-sg:hover {
 	fill: #F2F8FF;
 	stroke-width: 2;
 	cursor  : pointer;
 }
+
+
 
 /* highlight connnectable*/
 .connectable-port {
@@ -287,6 +293,14 @@
 	stroke: #659FFF;
 	/*filter: url(#dropshadow_selected);*/
 }
+
+/*.deleted.selected .node-background {
+	fill-opacity: 0.6;
+	fill: #FF0000;
+	stroke-width: 1;
+	stroke: #FF0000;
+	filter: url(#dropshadow_selected);
+}*/
 
 .node:hover .node-background {
 	fill-opacity: 0.5;
@@ -397,7 +411,6 @@
 	text-anchor: middle;
 	fill: #368bf5;
 	cursor: default;
-	text-decoration: underline;
 }
 
 .volume-number {
@@ -411,6 +424,30 @@
 
 .node-background {
 	fill-opacity: 0;
+}
+
+.deleted .node-background {
+	fill-opacity: 0.2;
+	fill: red;
+}
+
+.deleted:hover .node-background {
+	fill-opacity: 0.3;
+	fill: red;
+}
+
+.deleted.selected .node-background {
+	stroke: rgb(243, 98, 98);
+}
+
+.deleted.selected .node-label-name-bg {
+	fill: rgb(243, 98, 98);
+		fill-opacity: 0.3;
+}
+
+.deleted .eni-number-bg,
+.deleted .instance-number-bg {
+	fill: red;
 }
 
 /* group */
@@ -427,12 +464,22 @@
 	fill: #F19812;
 }
 
+
+.group {
+	shape-rendering:crispEdges;
+}
+
 .group-vpc {
 	fill: rgba(250, 250, 250, 0.05);
 	stroke: #dcdcdc;
 	stroke-linejoin: round;
 	stroke-dasharray: none;
 	stroke-width: 4;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-VPC-VPC:hover .group-vpc,
@@ -448,6 +495,11 @@
 .AWS-VPC-VPC.selected .group-vpc {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
+	stroke-width: 5;
+	-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-VPC-VPC .group-label {
@@ -460,6 +512,11 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 16, 6;
 	stroke-width: 2;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-EC2-AvailabilityZone:hover .group-az,
@@ -475,6 +532,11 @@
 .AWS-EC2-AvailabilityZone.selected .group-az {
 	stroke: #f7941d;
 	/*fill: rgba(255, 255, 255, 0);*/
+	stroke-width: 3;
+		-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-EC2-AvailabilityZone .group-label {
@@ -487,6 +549,10 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 16, 6;
 	stroke-width: 2;
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-VPC-Subnet:hover .group-subnet,
@@ -502,6 +568,12 @@
 .AWS-VPC-Subnet.selected .group-subnet {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
+	stroke-width: 3;
+
+	-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-VPC-Subnet .group-label {
@@ -514,6 +586,11 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 6, 4;
 	stroke-width: 2;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .asg-title {
@@ -645,6 +722,10 @@
 	cursor: pointer;
 }
 
+.canvas_state_app .canvas-view-normal .eip-status {
+	cursor: default;
+}
+
 #instance_volume_list {
 	padding: 10px;
 	width: 265px;
@@ -668,16 +749,29 @@
 }
 
 .volume_item {
-	background-image: url('../images/ide/icon/volume-resource.png');
+	background-image: url('../images/ide/icon/volume-volume-bubble.png');
+}
+
+.volume_item.deleted {
+	background-image: url('../images/ide/icon/volume-volume-bubble-deleted.png');
 }
 
 .snapshot_item {
-	background-image: url('../images/ide/icon/ebs-snapshot-resource.png');
+	background-image: url('../images/ide/icon/ebs-snapshot-volume-bubble.png');
+}
+
+.snapshot_item.deleted {
+	background-image: url('../images/ide/icon/ebs-snapshot-volume-bubble-deleted.png');
 }
 
 .volume_item:hover,
 .snapshot_item:hover {
 	background-color: #F3F9FF;
+}
+
+.volume_item.deleted:hover,
+.snapshot_item.deleted:hover {
+	background-color: rgba(255, 0, 0, 0.05);
 }
 
 #drag_shadow .volume_item,
@@ -690,14 +784,20 @@
 }
 
 #instance_volume_list .selected {
-	border: 2px solid #0096FF;
+	border: 2px solid rgba(101, 159, 255, 0.6);
+	background-color: rgba(242, 248, 255, 0.6);
+}
+
+#instance_volume_list .selected.deleted {
+	border: 2px solid rgb(243, 98, 98);
+	background-color: rgba(255, 0, 0, 0.2);
 }
 
 .volume_name {
 	position: absolute;
 	font-size: 9px;
 	display: block;
-	top: 14px;
+	top: 11px;
 	color: #333;
 	text-align: center;
 	width: 100%;
@@ -734,13 +834,33 @@
 	font-size: 12px;
 }
 
-/*special style for app state and zoomed state*/
+/*special style for app update state and zoomed state*/
 .canvas_state_app .resizer-wrap {
 	display: none;
 }
 
-.canvas_state_app .asg-resource-dragger {
+.canvas_state_app .asg-resource-dragger,
+.canvas_state_appedit .asg-resource-dragger {
 	display: none;
+}
+
+.canvas_state_app .instance-number-bg {
+	cursor: pointer;
+}
+
+.canvas_state_appedit .instance-number-bg,
+.canvas_state_appedit .eni-number-bg {
+	fill: #C4C4C4;
+}
+
+.canvas_state_appedit .instance-number {
+	font-weight: normal;
+}
+
+.canvas_state_app .instance-number,
+.canvas_state_app .eni-number {
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .canvas_zoomed .resizer-wrap {
@@ -814,6 +934,10 @@
 	background: url('../images/ide/icon/instance-canvas.png') 18px 10px no-repeat;
 }
 
+.deleted.instanceList-item {
+	background: url('../images/ide/icon/instance-canvas-deleted.png') 18px 10px no-repeat;
+}
+
 .eniList-item {
 	border-radius: 5px;
 	display: block;
@@ -821,6 +945,10 @@
 	width: 98px;
 	height: 98px;
 	background: url('../images/ide/icon/eni-canvas-attached.png') 20px 20px no-repeat;
+}
+
+.deleted.eniList-item {
+	background: url('../images/ide/icon/eni-canvas-deleted.png') 20px 20px no-repeat;
 }
 
 .eniList-item-eip-status {
@@ -842,6 +970,13 @@
 .instanceList-item.selected {
 	border: 2px solid rgba(101, 159, 255, 0.6);
 	background-color: rgba(242, 248, 255, 0.6);
+}
+
+.asgList-item.selected.deleted,
+.eniList-item.selected.deleted,
+.instanceList-item.selected.deleted {
+	border: 2px solid rgb(243, 98, 98);
+	background-color: rgba(255, 0, 0, 0.2);
 }
 
 .asgList-item-icon,
@@ -965,13 +1100,13 @@
 	fill: green;
 }
 .instance-state-pending {
-	fill: orange;
+	fill: yellow;
 }
 .instance-state-shuttingdown {
-	fill: orange;
+	fill: yellow;
 }
 .instance-state-stopping {
-	fill: orange;
+	fill: yellow;
 }
 .instance-state-stopped {
 	fill: red;

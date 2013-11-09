@@ -173,7 +173,7 @@
                     <i class="region-resource-tab-icon region-resource-icon-stack"></i>
                     <span class="region-resource-tab-number">{{#if cur_stack_list}}{{ cur_stack_list.length }}{{else}}0{{/if}}</span>
                     <span class="region-resource-tab-type">{{i18n "DASH_LBL_STACK"}}</span>
-                    <button id="btn-create-stack" href="javascript:void(0)" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"></button>
+                    <button id="btn-create-stack" class="icon-new-stack" {{#unless supported_platforms}}disabled="disabled"{{/unless}} title="Create New Stack"></button>
                 </a>
             </li>
         </ul>
@@ -222,12 +222,16 @@
                                     <span class="region-resource-item-name truncate">{{name}}</span>
                                     <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
                                     <div class="region-resource-action clearfix">
-                                        {{#if isrunning}}
-                                            <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                        {{#if has_instance_store_ami}}
+                                            <i {{#unless item_flags.is_running}}style="display:none;"{{/unless}} class="icon-stop modal stop-app disabled" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
                                         {{else}}
-                                            <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_START_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_START_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            {{#if isrunning}}
+                                                <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            {{else}}
+                                                <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_START_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_START_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            {{/if}}
                                         {{/if}}
-                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}?", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>

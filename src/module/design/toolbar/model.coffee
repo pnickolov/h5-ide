@@ -9,8 +9,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
     #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
     item_state_map  = {}
 
-    # save launched stack data for thumbnail
-    run_stack_map   = {}  # {<region>:{<app_name>:{<data>}}}
+    # save data for thumbnail
+    process_data_map   = {}  # {<'process-' + region + '-' + name'->:<data>}}
 
     # mapping request id with tab id
     req_map         = {}  # {req_id : {'flag':flag, 'id':id, 'name':name}}
@@ -54,7 +54,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #update initial data
                     MC.canvas_property.original_json = JSON.stringify( data )
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK'
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
                     #update key
                     key = result.resolved_data.key
@@ -71,6 +71,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     me.setFlag id, 'SAVE_STACK', name
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
+
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     id
                 else
@@ -111,9 +113,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK'
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
 
                     ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+
+                    ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
 
@@ -150,11 +154,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #save png
                     key = result.resolved_data.key
-                    ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key
+                    ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, key, new_id
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'DUPLICATE_STACK', name
-                    ide_event.trigger ide_event.UPDATE_STACK_LIST
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'DUPLICATE_STACK', [new_id]
 
                     # open the duplicated stack when using toolbar
                     # if is_tab
@@ -183,6 +187,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
+                    ide_event.trigger ide_event.UPDATE_STACK_LIST, 'REMOVE_STACK', [id]
                     ide_event.trigger ide_event.CLOSE_TAB, name, id
 
                     me.setFlag id, 'DELETE_STACK'
@@ -197,8 +202,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 region      = result.param[3]
                 id          = result.param[4]
                 app_name    = result.param[5]
-
-                data = run_stack_map[region][app_name]
 
                 ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
 
@@ -276,21 +279,40 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #     app_region: region,
                 #     app_name: name
 
+            #####listen APP_UPDATE_RETURN
+            me.on 'APP_UPDATE_RETURN', (result) ->
+                console.log 'APP_UPDATE_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[5]
+
+                name    = item_state_map[id].name
+
+                me.handleRequest result, 'UPDATE_APP', region, id, name
+
+                #
+                #MC.canvas_data             = $.extend true, {}, result.param[4]
+                #MC.data.origin_canvas_data = $.extend true, {}, result.param[4]
+                null
+
             #####listen APP_GETKEY_RETURN
             me.on 'APP_GET_KEY_RETURN', (result) ->
                 console.log 'APP_GET_KEY_RETURN'
 
                 region = result.param[3]
                 app_id = result.param[4]
+                app_name = result.param[5]
 
-                data = $.extend(true, {}, run_stack_map[region][app_id])
-                delete run_stack_map[region][app_id]
+                idx = 'process-' + region + '-' + app_name
+                data = $.extend(true, {}, process_data_map[idx])
+                delete process_data_map[idx]
 
                 if !result.is_error
                     # trigger toolbar save png event
                     console.log 'app key:' + result.resolved_data
 
                     data.key = result.resolved_data
+                    data.id  = app_id
 
                     me.savePNG true, data
 
@@ -344,7 +366,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
 
                 is_tab = true
 
@@ -392,6 +414,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 # update app resource
                 #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
+            else if flag is 'UPDATE_APP'
+                if id of item_state_map
+                    item_state_map[id].is_app_updating = value
+
             if id == MC.canvas_data.id and is_tab
                 me.set 'item_flags', item_state_map[id]
 
@@ -424,9 +450,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         saveStack : (data) ->
             me = this
 
-            region = data.region
-            id = data.id
-            name = data.name
+            region  = data.region
+            id      = data.id
+            name    = data.name
 
             #instance store ami check
             #data.has_instance_store_ami = me.isInstanceStore data
@@ -470,11 +496,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             else
                 stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
 
-            # save stack data
-            if not (region of run_stack_map) then run_stack_map[region] = {}
+            # save stack data for generating png
+            idx = 'process-' + region + '-' + app_name
+            process_data_map[idx] = data
 
-            run_stack_map[region][app_name] = data
+            null
 
+        updateApp : ( is_update )->
+            @setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
             null
 
         #zoomin
@@ -517,14 +546,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         window.removeEventListener 'message', callback
 
                         #push event
-                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result
+                        ide_event.trigger ide_event.UPDATE_REGION_THUMBNAIL, result.data.res.result, result.data.res.id
                     else
                         me.trigger 'SAVE_PNG_COMPLETE', result.data.res.result
                         window.removeEventListener 'message', callback
                 else
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
-            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup(  MC.canvas_data )) else JSON.stringify(data)
+            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
             #
             phantom_data =
                 'origin_host': window.location.origin,
@@ -536,6 +565,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 'url'        : data.key
                 'create_date': MC.dateFormat new Date(), 'hh:mm MM-dd-yyyy'
             #
+            console.log 'phantom_data'
+            console.log phantom_data
             sendMessage = ->
                 $( '#phantom-frame' )[0].contentWindow.postMessage phantom_data, MC.SAVEPNG_URL
             if $( '#phantom-frame' )[0] is undefined
@@ -563,16 +594,40 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             app_model.start { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "START_APP", item)
+
         stopApp : (region, id, name) ->
             me = this
 
             app_model.stop { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "STOP_APP", item)
+
         terminateApp : (region, id, name, flag) ->
             me = this
 
-            #terminate : ( src, username, session_id, region_name, app_id, app_name=null )
             app_model.terminate { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name, flag
+
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "TERMINATE_APP", item)
+
+        saveApp : (data) ->
+            me = this
+
+            region  = data.region
+            id      = data.id
+            name    = data.name
+
+            app_model.update { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data, id
+
+            # save app data for generating png
+            idx = 'process-' + region + '-' + name
+            process_data_map[idx] = data
+
+            item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "UPDATE_APP", item)
 
         handleRequest : (result, flag, region, id, name) ->
             me = this
@@ -582,7 +637,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             if !result.is_error
 
-                me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
+                #me.trigger 'TOOLBAR_REQUEST_SUCCESS', flag, name
 
                 req_id = result.resolved_data.id
                 console.log 'request id:' + req_id
@@ -592,39 +647,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     id      : id
                     name    : name
 
-                # if ws
-                #     req_id = result.resolved_data.id
-                #     console.log 'request id:' + req_id
-
-                #     query = ws.collection.request.find({id:req_id})
-                #     handle = query.observeChanges {
-                #         added   : (idx, dag) ->
-                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                #             req = req_list[0]
-
-                #             console.log 'added request ' + req.data + "," + req.state
-
-                #             me.reqHanle flag, id, name, req, dag
-
-                #         changed : (idx, dag) ->
-                #             req_list = MC.data.websocket.collection.request.find({'_id' : idx}).fetch()
-                #             req = req_list[0]
-
-                #             console.log 'changed request ' + req.data + "," + req.state
-
-                #             me.reqHanle flag, id, name, req, dag
-
-                #             if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
-                #                 handle.stop()
-                #                 ide_event.trigger ide_event.UPDATE_TAB_CLOSE_STATE, 'process-' + req.region + '-' + name
-
-                #     }
+                # item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
+                # me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
 
                 null
 
             else
 
-                me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
+                #me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
                 if flag isnt 'RUN_STACK'
                     me.setFlag id, 'STOPPED_APP', region
@@ -634,8 +664,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     if name in MC.data.app_list[region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-        #reqHanle : (flag, id, name, req, dag) ->
-        reqHanle : (idx, dag) ->
+        #reqHandle : (flag, id, name, req, dag) ->
+        reqHandle : (idx, dag) ->
             me = this
 
             # fetch request
@@ -644,6 +674,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if req_list.length > 0
                 req = req_list[0]
                 req_id = req.id
+                time_update = if 'time_end' of req and req.time_end then req.time_end else req.time_begin
 
                 # filter request
                 if req_id of req_map
@@ -651,52 +682,51 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     flag    = req_map[req_id].flag
                     id      = req_map[req_id].id
                     name    = req_map[req_id].name
+                    region  = req.region
 
-                    # update header
-                    #ide_event.trigger ide_event.UPDATE_HEADER, req
+                    # check
+                    if not flag or not region or not id or not name
+                        return
+                    if not time_update
+                        time_update = Date.now()/1000
 
+                    # for app update
+                    item = {'region':region, 'id':id, 'name':name, 'time_update':time_update}
                     flag_list = {}
-
-                    region = req.region
 
                     switch req.state
                         when constant.OPS_STATE.OPS_STATE_INPROCESS
-                            if flag is 'RUN_STACK'
+                            flag_list.is_inprocess = true
 
-                                flag_list.is_inprocess = true
+                            dones = 0
+                            steps = 0
 
-                                dones = 0
-                                steps = 0
+                            if 'dag' of dag # changed request
 
-                                if 'dag' of dag # changed request
+                                steps = dag.dag.step.length
+                                # check rollback
+                                dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
+                                console.log 'done steps:' + dones
 
-                                    steps = dag.dag.step.length
+                            # rollback
+                            tab_name = 'process-' + region + '-' + name
+                            if tab_name of MC.process and dones>0
+                                dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
 
-                                    # check rollback
-                                    dones++ for step in dag.dag.step when step[1].toLowerCase() is 'done'
-                                    console.log 'done steps:' + dones
+                            flag_list.dones = dones
+                            flag_list.steps = steps
 
-                                # rollback
-                                tab_name = 'process-' + region + '-' + name
-                                if tab_name of MC.process and dones>0
-                                    dones = if !('dones' of MC.process[tab_name].flag_list) or (MC.process[tab_name].flag_list.dones < dones) then dones else MC.process[tab_name].flag_list.dones
-
-                                flag_list.dones = dones
-                                flag_list.steps = steps
-
-                                if dones > 0 and steps > 0
-                                    flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
-                                else
-                                    flag_list.rate = 0
+                            if dones > 0 and steps > 0
+                                flag_list.rate = Math.round(flag_list.dones*100/flag_list.steps)
+                            else
+                                flag_list.rate = 0
 
                         when constant.OPS_STATE.OPS_STATE_FAILED
 
-                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
+                            flag_list.is_failed = true
+                            flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
 
                             if flag is 'RUN_STACK'
-                                flag_list.is_failed = true
-                                flag_list.err_detail = req.data.replace(/\\n/g, '<br />')
-
                                 # remove the app name from app_list
                                 if name in MC.data.app_list[region]
                                     MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
@@ -722,97 +752,195 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             else
                                 me.setFlag id, 'STOPPED_APP', region
 
-                            # update region aws resource
-                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
                         when constant.OPS_STATE.OPS_STATE_DONE
-
-                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
 
                             lst = req.data.split(' ')
                             app_id = lst[lst.length-1]
 
+                            flag_list.app_id = app_id
+                            flag_list.is_done = true
+
+                            item.id = app_id
+
                             switch flag
                                 when 'RUN_STACK'
-                                    flag_list.app_id = app_id
-                                    flag_list.is_done = true
-
                                     me.setFlag app_id, 'RUNNING_APP', region
+
+                                    item.id = app_id
+                                    #item.has_instance_store_ami = me.isInstanceStore(process_data_map[region][name])
 
                                 when 'START_APP'
                                     me.setFlag id, 'RUNNING_APP', region
-                                    ide_event.trigger ide_event.STARTED_APP, name, id
 
                                 when 'STOP_APP'
                                     me.setFlag id, 'STOPPED_APP', region
-                                    ide_event.trigger ide_event.STOPPED_APP, name, id
 
                                 when 'TERMINATE_APP'
                                     me.setFlag id, 'TERMINATED_APP', region
-                                    ide_event.trigger ide_event.TERMINATED_APP, name, id
 
                                     # remove the app name from app_list
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
+                                when 'UPDATE_APP'
+                                    flag_list.is_updated = true
+                                    if id of item_state_map
+                                        if item_state_map[id].is_running
+                                            me.setFlag id, 'RUNNING_APP', region
+                                        else
+                                            me.setFlag id, 'STOPPED_APP', region
+
                                 else
                                     console.log 'not support toolbar operation:' + flag
                                     return
 
-                            # update region aws resource
-                            ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
-
                         else
                             console.log 'not support request state:' + req.state
 
-                    # send process data
-                    if flag_list and flag is 'RUN_STACK'
+                    # update process state
+                    if flag_list
+                        item.flag_list = flag_list
+                        me.updateAppState(req.state, flag, item)
 
-                        tab_name = 'process-' + region + '-' + name
+                    # update app list, region aws resource and notification
+                    if req.state is constant.OPS_STATE.OPS_STATE_DONE or req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                        # update app list
+                        app_list = []
+                        if item.id.indexOf('app-') == 0
+                            app_list.push item.id
 
-                        # filter closed process tab
-                        if tab_name of MC.process
+                        if app_list
+                            ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
+                        else
+                            ide_event.trigger ide_event.UPDATE_APP_LIST
 
-                            MC.process[tab_name].flag_list = flag_list
+                        # update region resource
+                        ide_event.trigger ide_event.UPDATE_REGION_RESOURCE, region
 
-                            ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+                        # update notification
+                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                            me.trigger 'TOOLBAR_HANDLE_SUCCESS', flag, name
+                        else if req.state is constant.OPS_STATE.OPS_STATE_FAILED
+                            me.trigger 'TOOLBAR_HANDLE_FAILED', flag, name
 
-                    # remove request from req_map
-                    if req.state is constant.OPS_STATE.OPS_STATE_FAILED or req.state is constant.OPS_STATE.OPS_STATE_DONE
+                        # save png
+                        if req.state is constant.OPS_STATE.OPS_STATE_DONE
+                            if flag is 'RUN_STACK' or flag is 'UPDATE_APP'
+                                me.saveAppThumbnail flag, region, name, item.id
+
+                        # remove request from req_map
                         delete req_map[req_id]
+
+            # update header
+            ide_event.trigger ide_event.UPDATE_HEADER, req
+
+
+        updateAppState : (req_state, flag, data) ->
+            me = this
+
+            state = null
+
+            switch req_state
+                when constant.OPS_STATE.OPS_STATE_DONE
+                    if flag is 'RUN_STACK'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    else if flag is 'START_APP'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    else if flag is 'STOP_APP'
+                        state = constant.APP_STATE.APP_STATE_STOPPED
+
+                    else if flag is 'TERMINATE_APP'
+                        state = constant.APP_STATE.APP_STATE_TERMINATED
+
+                    else if flag is 'UPDATE_APP'
+                        state = constant.APP_STATE.APP_STATE_RUNNING
+
+                when constant.OPS_STATE.OPS_STATE_FAILED
+                    state = constant.APP_STATE.APP_STATE_STOPPED
+
+                when constant.OPS_STATE.OPS_STATE_INPROCESS
+                    if flag is 'RUN_STACK'
+                        state = constant.APP_STATE.APP_STATE_INITIALIZING
+
+                    else if flag is 'START_APP'
+                        state = constant.APP_STATE.APP_STATE_STARTING
+
+                    else if flag is 'STOP_APP'
+                        state = constant.APP_STATE.APP_STATE_STOPPING
+
+                    else if flag is 'TERMINATE_APP'
+                        state = constant.APP_STATE.APP_STATE_TERMINATING
+
+                    else if flag is 'UPDATE_APP'
+                        state = constant.APP_STATE.APP_STATE_UPDATING
+
+                else
+                    console.log 'not support request state:' + req_state
+
+            if state
+                console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
+
+                # set flag
+                data.flag_list.flag = flag
+
+                # update MC.process[id]
+                tab_name = data.id
+                if flag is 'RUN_STACK'
+                    tab_name = 'process-' + data.region + '-' + data.name
+                MC.process[tab_name] = data
+
+                # push event
+                if flag is 'RUN_STACK'
+                    ide_event.trigger ide_event.UPDATE_PROCESS, tab_name
+
+                else
+
+                    #test open_fail
+                    #if state in [ constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_RUNNING ]
+                    #    console.log 'sdfdffffffffffffffffffffffffffffffffff'
+                    #    ide_event.trigger ide_event.OPEN_APP_TAB, 'untitled-1', 'us-east-1', 'app-df3be529'
+                    #    setTimeout () ->
+                    #        ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+                    #    , 1000 * 0.5
+                    #else
+                    #    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+
+                    ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
+
+                    if flag is 'UPDATE_APP'
+                        if req_state is constant.OPS_STATE.OPS_STATE_DONE
+                            #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name, data.region
+                            console.log 'app update success'
+
+                        else if req_state is constant.OPS_STATE.OPS_STATE_FAILED
+                            #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
+                            console.log 'app update failed'
 
         isInstanceStore : (data) ->
 
             is_instance_store = false
 
-            if 'property' of data and 'stoppable' of data.property and data.property.stoppable is 'false'
+            if 'property' of data and 'stoppable' of data.property and data.property.stoppable == false
                 is_instance_store = true
 
             is_instance_store
 
-        saveAppThumbnail  :   (region, app_name, app_id) ->
+        saveAppThumbnail  :   (flag, region, app_name, app_id) ->
             me = this
 
-            data = $.extend(true, {}, run_stack_map[region][app_name])
-            data.id = app_id
-            #update data
-            run_stack_map[region][app_id] = data
-            delete run_stack_map[region][app_name]
+            idx = 'process-' + region + '-' + app_name
+            if idx of process_data_map
+                data = $.extend(true, {}, process_data_map[idx])
 
-            if data
-                # generate s3 key
-                app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
-                # app_model.once 'APP_GET_KEY_RETURN', (result) ->
-                #     console.log 'APP_GET_KEY_RETURN'
-                #     console.log result
+                if data
+                    if flag is 'RUN_STACK'
+                        # generate s3 key
+                        app_model.getKey { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id, app_name
 
-                #     if !result.is_error
-                #         # trigger toolbar save png event
-                #         console.log 'app key:' + result.resolved_data
-
-                #         data.key = result.resolved_data
-
-                #         me.savePNG true, data
+                    else
+                        me.savePNG true, data
 
             null
 

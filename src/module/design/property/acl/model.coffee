@@ -2,20 +2,20 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
+define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
-    ACLModel = Backbone.Model.extend {
+    ACLModel = PropertyModel.extend {
 
         defaults :
             'component'    : null
             'associations' : null
             'is_default'   : null
 
-        initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
-
         init : (uid) ->
+
+            if @isApp
+                @appInit( uid )
+                return
 
             allComp = MC.canvas_data.component
             aclObj = MC.canvas_data.component[uid]
@@ -37,12 +37,16 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 null
 
             this.set 'associations', associationsAry
+            this.set 'uid', uid
 
             null
 
         appInit : ( uid ) ->
 
-            aclObj = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.NetworkAclId]
+            component = MC.canvas_data.component[uid]
+
+            aclObj = MC.data.resource_list[MC.canvas_data.region][ component.resource.NetworkAclId ]
+            aclObj.name = component.name
 
             #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
 
@@ -131,7 +135,9 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
                 subnet_cidr: subnetComp.resource.CidrBlock
             }
 
-        addRuleToACL : (uid, ruleObj) ->
+        addRuleToACL : (ruleObj) ->
+            uid = @get 'uid'
+
             newEntrySet = []
 
             originEntrySet = MC.canvas_data.component[uid].resource.EntrySet
@@ -169,7 +175,8 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
 
             null
 
-        removeRuleFromACL : (uid, ruleNum, ruleEngress) ->
+        removeRuleFromACL : (ruleNum, ruleEngress) ->
+            uid = @get 'uid'
             currentEntrySet = MC.canvas_data.component[uid].resource.EntrySet
             newEntrySet = _.filter currentEntrySet, (ruleObj) ->
                 if ruleObj.RuleNumber is ruleNum and ruleEngress is ruleObj.Egress
@@ -179,11 +186,13 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             MC.canvas_data.component[uid].resource.EntrySet = newEntrySet
             null
 
-        setACLName : (uid, aclName) ->
+        setACLName : (aclName) ->
+            uid = @get 'uid'
             MC.canvas_data.component[uid].name = aclName
             null
 
-        haveRepeatRuleNumber : (uid, newRuleNumber) ->
+        haveRepeatRuleNumber : (newRuleNumber) ->
+            uid = @get 'uid'
             result = false
             entrySet = MC.canvas_data.component[uid].resource.EntrySet
             _.each entrySet, (entryObj) ->
@@ -193,6 +202,4 @@ define [ 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( constant ) ->
             return result
     }
 
-    model = new ACLModel()
-
-    return model
+    new ACLModel()

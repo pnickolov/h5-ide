@@ -853,7 +853,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				if ( MC.canvas.getState() === 'app' && component_data.number>1 && component_data.index===0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
 				{//update state of ServerGroup
-					MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
+					MC.aws.instance.updateServerGroupState(MC.canvas_data.id, component_data.serverGroupUid);
 				}
 
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){

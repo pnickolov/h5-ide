@@ -75,7 +75,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		#return
 		state
 
-	updateServerGroupState = ( app_id ) ->
+	updateServerGroupState = ( app_id, server_group_uid ) ->
 
 		if MC.canvas.getState() == 'stack'
 
@@ -89,15 +89,20 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 			$.each comp_data, (uid, comp) ->
 				if comp.type is "AWS.EC2.Instance" and comp.number > 1 and comp.index is 0
 					#ServerGroup node
-					instance_list = getInstanceInServerGroup comp_data, comp.serverGroupUid
-					if instance_list.length isnt comp.number
-						#lack of instance
-						Canvon('#' + uid + '_instance-number-group').addClass 'deleted'
-						Canvon('#' + uid).addClass 'deleted'
-					else
-						#instances are all in readiness
-						Canvon('#' + uid + '_instance-number-group').removeClass 'deleted'
-						Canvon('#' + uid).removeClass 'deleted'
+					if server_group_uid is comp.serverGroupUid || !server_group_uid
+					# no server_group_uid specified or current component is server_group_uid
+						instance_list = getInstanceInServerGroup comp_data, comp.serverGroupUid
+						if instance_list.length isnt comp.number
+							#lack of instance
+							Canvon('#' + uid + '_instance-number-group').addClass 'deleted'
+							Canvon('#' + uid).addClass 'deleted'
+						else
+							#instances are all in readiness
+							Canvon('#' + uid + '_instance-number-group').removeClass 'deleted'
+							Canvon('#' + uid).removeClass 'deleted'
+
+					if server_group_uid is comp.serverGroupUid
+						return false;#break
 
 
 		null
@@ -111,7 +116,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 			$.each comp_data, (uid, comp) ->
 
-				if comp.type is "AWS.EC2.Instance" and comp.serverGroupUid = server_group_uid
+				if comp.type is "AWS.EC2.Instance" and comp.serverGroupUid is server_group_uid
 					instance_id = comp.resource.InstanceId
 					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id]
 					if instance_id and instance_data and instance_data.instanceState.name isnt 'terminated' and instance_data.instanceState.name isnt 'shutting-down'

@@ -417,10 +417,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		try
 			currentState = MC.canvas.getState()
-			if currentState is 'appedit'
-				currentVPCUID = MC.aws.vpc.getVPCUID()
-				currentVPCComp = MC.canvas_data.component[currentVPCUID]
-				currentVPCId = currentVPCComp.resource.VpcId
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			if currentState is 'appedit' or defaultVPCId
+				if defaultVPCId
+					currentVPCId = defaultVPCId
+				else
+					currentVPCUID = MC.aws.vpc.getVPCUID()
+					currentVPCComp = MC.canvas_data.component[currentVPCUID]
+					currentVPCId = currentVPCComp.resource.VpcId
 				currentRegion = MC.canvas_data.region
 				currentResource = MC.data.resource_list[currentRegion]
 				_.each currentResource, (resObj, resId) ->

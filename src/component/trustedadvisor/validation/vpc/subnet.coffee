@@ -1,25 +1,29 @@
 define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'eni_service' , '../result_vo' ], ( constant, $, MC, lang, eniService ) ->
 
-	getAllAWSENIForAppEdit = (callback) ->
+	getAllAWSENIForAppEditAndDefaultVPC = (callback) ->
 
 		try
 			if !callback
 				callback = () ->
 
 			currentState = MC.canvas.getState()
-			if currentState isnt 'appedit'
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			if (currentState isnt 'appedit' and not MC.aws.aws.checkDefaultVPC())
 				callback(null)
 				return null
 
-			currentVPCUID = MC.aws.vpc.getVPCUID()
-			currentVPCComp = MC.canvas_data.component[currentVPCUID]
-			currentVPCId = currentVPCComp.resource.VpcId
+			if defaultVPCId
+				currentVPCId = defaultVPCId
+			else
+				currentVPCUID = MC.aws.vpc.getVPCUID()
+				currentVPCComp = MC.canvas_data.component[currentVPCUID]
+				currentVPCId = currentVPCComp.resource.VpcId
 
 			currentRegion = MC.canvas_data.region
 			eniService.DescribeNetworkInterfaces {sender: this},
 				$.cookie( 'usercode' ),
 				$.cookie( 'session_id' ),
-				currentRegion,  [], null, (result) ->
+				currentRegion,  null, [{"Name": "vpc-id", "Value": [currentVPCId]}], (result) ->
 
 					checkResult = true
 					conflictInfo = null
@@ -39,4 +43,4 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'eni_service' , '../resu
 		catch err
 			callback(null)
 
-	getAllAWSENIForAppEdit : getAllAWSENIForAppEdit
+	getAllAWSENIForAppEditAndDefaultVPC : getAllAWSENIForAppEditAndDefaultVPC

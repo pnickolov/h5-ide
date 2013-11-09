@@ -1109,7 +1109,7 @@
 	fill: yellow;
 }
 .instance-state-stopped {
-	fill: orange;
+	fill: red;
 }
 .instance-state-terminated {
 	fill: red;

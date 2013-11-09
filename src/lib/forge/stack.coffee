@@ -435,15 +435,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			azName = MC.canvas_data.layout.component.group[azUID].name
-			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(azName, true, filterAry)
-			else
-				MC.aws.subnet.updateAllENIIPList(azName, false, filterAry)
+			MC.aws.subnet.updateAllENIIPList(azName, true, filterAry)
 		else
-			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true, filterAry)
-			else
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false, filterAry)
+			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true, filterAry)
 
 
 		# restore canvas comps

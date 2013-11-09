@@ -1295,7 +1295,9 @@ Additional Notes and Questions
 			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
 			<p class="detail">{{ detail }}</p>
 		</div>
+		{{#if update_detail}}
 		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+		{{/if}}
 	</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>

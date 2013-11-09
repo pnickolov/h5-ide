@@ -1207,7 +1207,9 @@ Additional Notes and Questions
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<p class="modal-text-major">Do you confirm to apply the changes?</p>
-
+		{{#unless state }}
+		<div class="modal-text-minor">The app is currently stopped. To apply updates, the app will be started automatically.</div>
+		{{/unless }}
 		{{# if state }}
 			{{# if instance_list.remain }}
 			<div class="summary-block">
@@ -1253,10 +1255,6 @@ Additional Notes and Questions
 				<p>Validating your App...</p>
 			</div>
 		</div>
-
-		{{#unless state }}
-		<div class="modal-text-minor">The app is currently stopped. To apply updates, the app will be started automatically.</div>
-		{{/unless }}
 
 	</div>
 	<div class="modal-footer">

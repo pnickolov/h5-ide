@@ -75,8 +75,57 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 		#return
 		state
 
+	updateServerGroupState = ( app_id ) ->
+
+		if MC.canvas.getState() == 'stack'
+
+			return null
+
+		if app_id and MC.canvas.data.get('id') == app_id
+
+			comp_data = MC.canvas.data.get("component")
+			instance_id = undefined
+			instance_data = undefined
+			$.each comp_data, (uid, comp) ->
+				if comp.type is "AWS.EC2.Instance" and comp.number > 1 and comp.index is 0
+					#ServerGroup node
+					instance_list = getInstanceInServerGroup comp_data, comp.serverGroupUid
+					if instance_list.length isnt comp.number
+						#lack of instance
+						Canvon('#' + uid + '_instance-number-group').addClass 'deleted'
+						Canvon('#' + uid).addClass 'deleted'
+					else
+						#instances are all in readiness
+						Canvon('#' + uid + '_instance-number-group').removeClass 'deleted'
+						Canvon('#' + uid).removeClass 'deleted'
+
+
+		null
+
+
+	getInstanceInServerGroup = ( comp_data, server_group_uid ) ->
+
+		instance_list = []
+
+		if comp_data and server_group_uid
+
+			$.each comp_data, (uid, comp) ->
+
+				if comp.type is "AWS.EC2.Instance" and comp.serverGroupUid = server_group_uid
+					instance_id = comp.resource.InstanceId
+					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id]
+					if instance_id and instance_data and instance_data.instanceState.name isnt 'terminated' and instance_data.instanceState.name isnt 'shutting-down'
+						#instance existed
+						instance_list.push comp.resource.InstanceId
+
+		#return
+		instance_list
+
+
 	#public
 	updateCount        : updateCount
 	updateStateIcon    : updateStateIcon
 	canSetEbsOptimized : canSetEbsOptimized
 	getInstanceState   : getInstanceState
+	updateServerGroupState : updateServerGroupState
+	getInstanceInServerGroup : getInstanceInServerGroup

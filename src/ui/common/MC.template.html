@@ -983,7 +983,7 @@ Additional Notes and Questions
 	<ul id="instanceList" class="clearfix">
 		{{#each instances}}
 		<li>
-			<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+			<a href="#" class='instanceList-item{{ is_deleted }}' id="{{id}}_{{@index}}" data-id="{{id}}">
 				<i class="instanceList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}"></i>
 				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">

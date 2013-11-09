@@ -182,6 +182,12 @@ MC.canvas = {
 		{
 			if (comp.type === "AWS.EC2.Instance")
 			{
+
+				if (comp.number>1 && comp.index===0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
+				{//update state of ServerGroup
+					MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
+				}
+
 				instance_id = comp.resource.InstanceId;
 
 				if (instance_id){
@@ -224,6 +230,7 @@ MC.canvas = {
 
 		});
 	},
+
 
 	resize: function (target, type)
 	{
@@ -3061,6 +3068,7 @@ MC.canvas.instanceList = {
 					, volume : inst_comp.resource.BlockDeviceMapping.length
 					, name   : inst_comp.name
 					, state  : state
+					, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''
 				} );
 			}
 

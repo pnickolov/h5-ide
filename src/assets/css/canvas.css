@@ -877,6 +877,10 @@
 	background: url('../images/ide/icon/instance-canvas.png') 18px 10px no-repeat;
 }
 
+.deleted.instanceList-item {
+	background: url('../images/ide/icon/instance-canvas-deleted.png') 18px 10px no-repeat;
+}
+
 .eniList-item {
 	border-radius: 5px;
 	display: block;
@@ -884,6 +888,10 @@
 	width: 98px;
 	height: 98px;
 	background: url('../images/ide/icon/eni-canvas-attached.png') 20px 20px no-repeat;
+}
+
+.deleted.eniList-item {
+	background: url('../images/ide/icon/eni-canvas-deleted.png') 20px 20px no-repeat;
 }
 
 .eniList-item-eip-status {

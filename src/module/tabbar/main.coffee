@@ -232,10 +232,14 @@ define [ 'jquery', 'event', 'base_main',
                 #
                 view.temp_region_name = region_name
                 #
-                if model.checkPlatform( region_name )
+                platformSupport = model.checkPlatform( region_name )
+                if platformSupport is true
                     modal MC.template.createNewStackClassic(), true
-                else
+                else if  platformSupport is false
                     modal MC.template.createNewStackVPC(), true
+                else
+                    modal MC.template.createNewStackErrorAndReload(), true
+
                 null
 
             #listen add app tab

@@ -3151,6 +3151,18 @@ module.exports =
       en: "Create this stack in"
       zh: "将模板创建为"
 
+    DASH_POP_CREATE_STACK_CREATE_STACK_ERROR:
+      en: "Create stack error"
+      zh: "创建模板出错"
+
+    DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
+      en: "Failed to load region information. Please try agian."
+      zh: "加载地区资源失败。请重试。"
+
+    DASH_POP_BTN_RETRY:
+      en: "Retry"
+      zh: "重试"
+
     DASH_POP_CREATE_STACK_CLASSIC:
       en: "Classic"
       zh: "传统模式"

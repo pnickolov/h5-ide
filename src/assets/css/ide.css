@@ -4835,6 +4835,14 @@ a.action-link:hover {
 	font-size: 18px;
 }
 
+.load-account-attr-error {
+	text-align: center;
+}
+
+.load-account-attr-error p {
+	margin-bottom: 30px;
+}
+
 .new-stack-dialog p {
 	color: #aaa;
 	padding: 2px 0;

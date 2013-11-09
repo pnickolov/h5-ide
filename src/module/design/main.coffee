@@ -65,7 +65,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                     console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                     #
-                    MC.open_failed_list[ MC.data.current_tab_id ] = { 'tab_id' : MC.data.current_tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type not in [ 'OLD_STACK', 'OLD_APP' ]
+                    #MC.open_failed_list[ MC.data.current_tab_id ] = { 'tab_id' : MC.data.current_tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type not in [ 'OLD_STACK', 'OLD_APP' ]
                     #
                     if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
                     #

@@ -163,15 +163,20 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
                 # open tab fail( includ app and stack )
                 if state is 'OPEN_TAB_FAIL'
-                    $( '#btn-fail-reload' ).one 'click', ( event ) ->
 
-                        if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
-                        obj = MC.forge.stack.searchStackAppById MC.data.current_tab_id
-                        # ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
-                        if obj
-                            ide_event.trigger event_type, obj.id, obj.region
+                    obj = MC.forge.stack.searchStackAppById MC.data.current_tab_id
+                    #
+                    if obj
+                        event_type = if MC.data.current_tab_id.split('-')[0] is 'app' then ide_event.PROCESS_RUN_SUCCESS else ide_event.RELOAD_STACK_TAB
+                        MC.open_failed_list[ MC.data.current_tab_id ] = $.extend true, {}, obj
+                    else
+                        console.error 'app or stack not find, current id is ' + MC.data.current_tab_id
+                    #
+                    $( '#btn-fail-reload' ).one 'click', ( event ) ->
+                        if MC.open_failed_list[ MC.data.current_tab_id ]
+                            ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region
                         else
-                            console.log 'app or stack not find, current id is ' + MC.data.current_tab_id
+                            console.error 'not click, current not id'
                         #
                         null
 

@@ -208,8 +208,6 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		subnetRef = ''
 
 		filterAry = []
-		if outFilterAry and _.isArray(outFilterAry)
-			filterAry = outFilterAry
 
 		if defaultVPC
 			azName = subnetUidOrAZ
@@ -226,6 +224,9 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(subnetRef)
 			subnetCIDR = subnetComp.resource.CidrBlock
 			needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
+
+		if outFilterAry and _.isArray(outFilterAry)
+			filterAry = _.union(filterAry, outFilterAry)
 
 		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, filterAry, needIPCount)
 

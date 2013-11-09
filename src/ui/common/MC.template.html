@@ -1197,7 +1197,7 @@ Additional Notes and Questions
 		{{# if state }}
 			{{# if instance_list.remain }}
 			<div class="stack-validation">
-				<details open>
+				<details>
 					<summary>{{ instance_list.remain.length }} instance(s) will be restated.</summary>
 					<div class="modal-text-wraper">
 						<ul class="clearfix">
@@ -1208,14 +1208,13 @@ Additional Notes and Questions
 					</div>
 					<div id="instance-type" class="modal-text-major">{{ info }}</div>
 				</details>
-				<div class="nutshell" style="display: none;">:<label></label></div>
 			</div>
 			{{/if}}
 		{{/if}}
 
 		{{# if instance_list.remove }}
 		<div class="stack-validation">
-			<details open>
+			<details>
 				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
 				<div class="modal-text-wraper">
 					<ul class="clearfix">
@@ -1226,9 +1225,9 @@ Additional Notes and Questions
 					<div id="instance-type" class="modal-text-major">Caution: Termination cannot be rolled back.</div>
 				</div>
 			</details>
-			<div class="nutshell" style="display: none;">:<label></label></div>
 		</div>
 		{{/if}}
+
 		<div class="stack-validation">
 			<details open style="display:none;">
 				<summary>App Validation</summary>
@@ -1240,6 +1239,7 @@ Additional Notes and Questions
 				<p>Validating your App...</p>
 			</div>
 		</div>
+
 	</div>
 	<div class="modal-footer">
 		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>Continue to Update</button>

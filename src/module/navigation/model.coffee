@@ -105,7 +105,9 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #set vo
                 me.set 'app_list', app_list
-
+                #
+                MC.data.nav_app_list = app_list
+                #
                 null
 
             #####listen STACK_LST_RETURN
@@ -175,6 +177,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #set vo
                 me.set 'stack_list', stack_list
+                #
+                MC.data.nav_stack_list = stack_list
 
                 null
 
@@ -206,6 +210,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #set vo
                 me.set 'region_list', region_list
+                #
+                MC.data.nav_region_list = region_list
 
                 null
 

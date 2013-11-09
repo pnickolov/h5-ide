@@ -22,7 +22,7 @@ define [ "../base/main",
 
         ideEvents : ideEvents
 
-        handleTypes : [ 'component_server_group' ]
+        handleTypes : 'component_server_group'
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

@@ -16,7 +16,7 @@ define [ 'event',
 
         render     : ( type, status ) ->
             console.log 'pop-up:trusted advisor run render', status
-            #
+
             if type is 'stack'
                 $('#stack-run-validation-container').html Handlebars.compile( template )( @model.attributes )
                 $('.validating').hide()
@@ -36,15 +36,15 @@ define [ 'event',
             error = @model.get 'error_list'
             warning = @model.get 'warning_list'
             notice = @model.get 'notice_list'
-            tabs = @$el.find '.tab li'
+            $tabs = @$el.find '.tab li'
 
             if error.length
 
             else if warning.length
-                tabs.eq( 1 ).click()
+                $tabs.eq( 1 ).click()
 
             else if notice.length
-                tabs.eq( 2 ).click()
+                $tabs.eq( 2 ).click()
             else
                 @$el.find( '.validation-content' ).text 'No error, warning or notice.'
 
@@ -53,17 +53,17 @@ define [ 'event',
             warning = @model.get 'warning_list'
             notice = @model.get 'notice_list'
 
-            tabs = $ '#modal-box .tab li'
-            details = $ '#modal-box details'
-            nutshell = $ '#modal-box .nutshell'
-            summary = details.find 'summary'
+            $tabs = $ '#modal-box .tab li'
+            $nutshell = $ '#modal-box .nutshell'
+            $details = $nutshell.prev 'details'
+            $summary = $details.find 'summary'
 
             bindSummary = () ->
-                summary.click ()->
-                    if details.attr( 'open' ) is 'open'
-                        nutshell.show()
+                $summary.click ()->
+                    if $details.attr( 'open' ) is 'open'
+                        $nutshell.show()
                     else
-                        nutshell.hide()
+                        $nutshell.hide()
 
             processNutshell = ( notShow ) ->
                 content = ''
@@ -82,12 +82,12 @@ define [ 'event',
                 else
                     content = content.slice 0, -2
 
-                nutshell.find( 'label' ).text content
-                nutshell.click () ->
-                    summary.click()
+                $nutshell.find( 'label' ).text content
+                $nutshell.click () ->
+                    $summary.click()
 
                 if not notShow
-                    nutshell.show()
+                    $nutshell.show()
 
 
             if error.length
@@ -95,18 +95,18 @@ define [ 'event',
                 processNutshell true
 
             else if warning.length
-                tabs.eq( 1 ).click()
-                details.removeAttr 'open'
+                $tabs.eq( 1 ).click()
+                $details.removeAttr 'open'
                 processNutshell()
                 bindSummary()
 
             else if notice.length
-                tabs.eq( 2 ).click()
-                details.removeAttr 'open'
+                $tabs.eq( 2 ).click()
+                $details.removeAttr 'open'
                 processNutshell()
                 bindSummary()
             else
-                details.removeAttr 'open'
+                $details.removeAttr 'open'
                 processNutshell()
                 bindSummary()
                 $( '.validation-content' ).text 'No error, warning or notice.'

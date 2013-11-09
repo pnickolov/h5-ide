@@ -3347,7 +3347,7 @@ module.exports =
       en: "terminate app"
       zh: "删除APP"
 
-    SAVE_APP:
+    UPDATE_APP:
       en: "update"
       zh: "更新错误"
 

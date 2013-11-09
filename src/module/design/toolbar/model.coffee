@@ -288,7 +288,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 name    = item_state_map[id].name
 
-                me.handleRequest result, 'SAVE_APP', region, id, name
+                me.handleRequest result, 'UPDATE_APP', region, id, name
 
                 #
                 #MC.canvas_data             = $.extend true, {}, result.param[4]
@@ -627,7 +627,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             process_data_map[idx] = data
 
             item = {'region':region, 'name':name, 'id':id, 'flag_list':{'is_pending':true}}
-            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "SAVE_APP", item)
+            me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, "UPDATE_APP", item)
 
         handleRequest : (result, flag, region, id, name) ->
             me = this
@@ -782,7 +782,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     if name in MC.data.app_list[region]
                                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
 
-                                when 'SAVE_APP'
+                                when 'UPDATE_APP'
                                     flag_list.is_updated = true
                                     if id of item_state_map
                                         if item_state_map[id].is_running
@@ -825,7 +825,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         # save png
                         if req.state is constant.OPS_STATE.OPS_STATE_DONE
-                            if flag is 'RUN_STACK' or flag is 'SAVE_APP'
+                            if flag is 'RUN_STACK' or flag is 'UPDATE_APP'
                                 me.saveAppThumbnail flag, region, name, item.id
 
                         # remove request from req_map
@@ -854,7 +854,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     else if flag is 'TERMINATE_APP'
                         state = constant.APP_STATE.APP_STATE_TERMINATED
 
-                    else if flag is 'SAVE_APP'
+                    else if flag is 'UPDATE_APP'
                         state = constant.APP_STATE.APP_STATE_RUNNING
 
                 when constant.OPS_STATE.OPS_STATE_FAILED
@@ -873,7 +873,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     else if flag is 'TERMINATE_APP'
                         state = constant.APP_STATE.APP_STATE_TERMINATING
 
-                    else if flag is 'SAVE_APP'
+                    else if flag is 'UPDATE_APP'
                         state = constant.APP_STATE.APP_STATE_UPDATING
 
                 else
@@ -909,7 +909,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_APP_STATE, state, tab_name
 
-                    if flag is 'SAVE_APP'
+                    if flag is 'UPDATE_APP'
                         if req_state is constant.OPS_STATE.OPS_STATE_DONE
                             #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name, data.region
                             console.log 'app update success'

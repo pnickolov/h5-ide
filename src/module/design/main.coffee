@@ -125,7 +125,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                                     # don't do anything
 
                             # upading
-                            else if MC.data.process[ tab_id ].flag_list.flag is 'SAVE_APP'
+                            else if MC.data.process[ tab_id ].flag_list.flag is 'UPDATE_APP'
                                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, constant.APP_STATE.APP_STATE_UPDATING, tab_id
 
                             # staring stopping terminating

@@ -3174,10 +3174,23 @@ MC.canvas.eniList = {
 
 			for ( var i = 0, l = layout.eniList.length; i < l; ++i )
 			{
+				var is_deleted = '',
+					found_eni = null;
+								
 				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
+				
+				//get eni
+				if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
+					found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
+				}
+				if (found_eni === undefined){
+					is_deleted = " deleted";
+				}
+
 				temp_data.enis.push({
 					'id'   : eni_comp.uid,
-					'name' : eni_comp.resource.NetworkInterfaceId
+					'name' : eni_comp.resource.NetworkInterfaceId,
+					'is_deleted' : is_deleted
 				});
 			}
 

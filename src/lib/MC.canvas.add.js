@@ -1965,6 +1965,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
 				component_data.index = component_data.index ? component_data.index : 0;
 
+				if ( MC.canvas.getState() === 'app' && component_data.number>1 && component_data.index===0 && MC.aws && MC.aws.eni && MC.aws.eni.updateServerGroupState )
+				{//update state of ServerGroup
+					MC.aws.eni.updateServerGroupState(MC.canvas_data.id, component_data.serverGroupUid);
+				}
+
+
 				if (component_data.resource.Attachment.InstanceId)
 				{
 					attached = 'attached'

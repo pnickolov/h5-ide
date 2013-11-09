@@ -474,6 +474,82 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	# 	return allOtherIPAry
 
+
+	getInstanceIdOfENI = ( comp_eni ) ->
+
+		instanceId = ''
+		tmpAry = comp_eni.resource.Attachment.InstanceId.split('.')
+
+		if tmpAry.length>0
+			instanceId = tmpAry[0].substr(1)
+
+		#return
+		instanceId
+
+
+	updateServerGroupState = ( app_id, server_group_uid ) ->
+
+		if MC.canvas.getState() == 'stack'
+
+			return null
+
+		if app_id and MC.canvas.data.get('id') == app_id
+
+			comp_data = MC.canvas.data.get("component")
+			eni_id = undefined
+			eni_data = undefined
+			$.each comp_data, (uid, comp) ->
+				if comp.type is "AWS.VPC.NetworkInterface" and comp.index is 0 and comp.serverGroupUid
+
+
+					instanceId = getInstanceIdOfENI comp
+					comp_ins = comp_data[instanceId]
+					if instanceId and comp_ins and comp_ins.number>1
+						#ServerGroup node
+
+						if server_group_uid is comp.serverGroupUid || !server_group_uid
+
+							eni_list = getENIInServerGroup comp_data, comp.serverGroupUid
+							if eni_list.length isnt comp_ins.number
+								#lack of eni
+								Canvon('#' + uid + '_eni-number-group').addClass 'deleted'
+								Canvon('#' + uid).addClass 'deleted'
+							else
+								#enis are all in readiness
+								Canvon('#' + uid + '_eni-number-group').removeClass 'deleted'
+								Canvon('#' + uid).removeClass 'deleted'
+
+
+		null
+
+
+	getENIInServerGroup = ( comp_data, server_group_uid ) ->
+
+		eni_list = []
+
+		if comp_data and server_group_uid
+
+			$.each comp_data, (uid, comp) ->
+
+				if comp.type is "AWS.VPC.NetworkInterface" and comp.serverGroupUid is server_group_uid
+					eni_id = comp.resource.NetworkInterfaceId
+					eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+					if eni_id and eni_data
+						#eni existed
+						eni_list.push comp.resource.NetworkInterfaceId
+
+		#return
+		eni_list
+
+
+	getENIById = ( eni_id ) ->
+
+		eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+
+		#return
+		eni_data
+
+
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
 	getAvailableIPInCIDR : getAvailableIPInCIDR
@@ -492,3 +568,8 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 	haveIPConflictWithOtherENI : haveIPConflictWithOtherENI
 	updateAllInstanceENIIPToAutoAssign : updateAllInstanceENIIPToAutoAssign
 	getAvailableIPCountInCIDR : getAvailableIPCountInCIDR
+	updateServerGroupState : updateServerGroupState
+	getENIInServerGroup : getENIInServerGroup
+	getInstanceIdOfENI : getInstanceIdOfENI
+	getENIById : getENIById
+

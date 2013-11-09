@@ -1031,7 +1031,7 @@ Additional Notes and Questions
 	<ul id="eniList" class="clearfix">
 		{{#each enis}}
 		<li>
-			<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+			<a href="#" class="eniList-item{{ is_deleted }}" id="{{id}}_{{@index}}" data-id="{{id}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
 				<span class="eniList-item-label">{{name}}</span>
 			</a>

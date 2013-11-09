@@ -36,6 +36,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                         MC.aws.asg.updateASGCount app_id
 
+                        MC.aws.eni.updateServerGroupState app_id
+
                         #update canvas when get instance info
                         ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 

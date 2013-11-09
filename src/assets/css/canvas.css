@@ -464,16 +464,17 @@
 	fill: #F19812;
 }
 
-.group {
-	shape-rendering: crispEdges;
-}
-
 .group-vpc {
 	fill: rgba(250, 250, 250, 0.05);
 	stroke: #dcdcdc;
 	stroke-linejoin: round;
 	stroke-dasharray: none;
 	stroke-width: 4;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-VPC-VPC:hover .group-vpc,
@@ -490,6 +491,10 @@
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 5;
+	-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-VPC-VPC .group-label {
@@ -502,6 +507,11 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 16, 6;
 	stroke-width: 2;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-EC2-AvailabilityZone:hover .group-az,
@@ -518,6 +528,10 @@
 	stroke: #f7941d;
 	/*fill: rgba(255, 255, 255, 0);*/
 	stroke-width: 3;
+		-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-EC2-AvailabilityZone .group-label {
@@ -530,6 +544,10 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 16, 6;
 	stroke-width: 2;
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .AWS-VPC-Subnet:hover .group-subnet,
@@ -546,6 +564,11 @@
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 3;
+
+	-webkit-transform: translate(0.5px, 0.5px);
+	   -moz-transform: translate(0.5px, 0.5px);
+	     -o-transform: translate(0.5px, 0.5px);
+	        transform: translate(0.5px, 0.5px);
 }
 
 .AWS-VPC-Subnet .group-label {
@@ -558,6 +581,11 @@
 	stroke-linejoin: round;
 	stroke-dasharray: 6, 4;
 	stroke-width: 2;
+
+	-webkit-transform: translate(0,0);
+	   -moz-transform: translate(0,0);
+	     -o-transform: translate(0,0);
+	        transform: translate(0,0);
 }
 
 .asg-title {

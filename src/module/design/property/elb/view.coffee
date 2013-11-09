@@ -385,8 +385,10 @@ define [ '../base/view',
 
                     if newPos < 0
                         newPos = 0
+                        offsetStep = -value
                     else if newPos > width
                         newPos = width
+                        offsetStep = sttep - value
                 else
                     newPos     = thumbPos
                     offsetStep = 0
@@ -396,8 +398,10 @@ define [ '../base/view',
 
             onMouseUp = ()->
                 $body.off "mousemove", onMouseMove
-                value = value + offsetStep
-                $slider.data("value", value).trigger("SLIDER_CHANGE", value)
+
+                newValue = value + offsetStep
+                $slider.data("value", newValue).trigger("SLIDER_CHANGE", newValue)
+                null
 
             $body.on "mousemove", onMouseMove
             $body.one "mouseup", onMouseUp

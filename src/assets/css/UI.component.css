@@ -1914,16 +1914,17 @@ textarea {
 .marker {
 	list-style : none;
 	margin     : 0 0 0 -15px;
-	padding    : 12px 0 0 0;
+	padding    : 0;
 	width      : 300px;
 }
 
 .marker li {
-	float      : left;
-	width      : 31px;
-	color      : #888;
-	cursor     : pointer;
-	text-align : center;
+	float       : left;
+	width       : 31px;
+	color       : #888;
+	cursor      : pointer;
+	text-align  : center;
+	padding-top : 12px;
 }
 
 .marker li:hover {

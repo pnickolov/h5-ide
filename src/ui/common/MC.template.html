@@ -1213,11 +1213,13 @@ Additional Notes and Questions
 			<div class="summary-block">
 				<details>
 					<summary>{{ instance_list.remain.length }} instance(s) will be restarted.</summary>
-					<ul class="summary-content">
-						{{#each instance_list.remain }}
-						<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
-						{{/each}}
-					</ul>
+					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul class="summary-content scroll-content">
+							{{#each instance_list.remain }}
+							<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+							{{/each}}
+						</ul>
+					</div>
 				</details>
 				<div class="modal-text-minor">{{ info }}</div>
 			</div>
@@ -1228,11 +1230,13 @@ Additional Notes and Questions
 		<div class="summary-block">
 			<details>
 				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
-				<ul class="summary-content">
-					{{#each instance_list.remove }}
-					<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
-					{{/each}}
-				</ul>
+					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+					<ul class="summary-content scroll-content">
+						{{#each instance_list.remove }}
+						<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+						{{/each}}
+					</ul>
+				</div>
 			</details>
 			<div class="modal-text-warning"><b>Caution:</b> Termination cannot be rolled back.</div>
 		</div>

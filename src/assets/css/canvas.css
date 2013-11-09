@@ -464,6 +464,11 @@
 	fill: #F19812;
 }
 
+
+.group {
+	shape-rendering:crispEdges;
+}
+
 .group-vpc {
 	fill: rgba(250, 250, 250, 0.05);
 	stroke: #dcdcdc;

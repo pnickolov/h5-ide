@@ -53,6 +53,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
         RELOAD_STACK_TAB       : 'RELOAD_STACK_TAB'
+        RELOAD_NEW_STACK_TAB   : 'RELOAD_NEW_STACK_TAB'
         CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 

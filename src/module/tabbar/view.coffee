@@ -22,7 +22,8 @@ define [ 'event',
 
         initialize : ->
             #listen
-            $( document ).on 'click', '.new-stack-dialog', this, this.openNewStackDialog
+            $( document.body ).on 'click', '.new-stack-dialog',  this, @openNewStackDialog
+            $( document.body ).on 'click', '#close-tab-confirm', this, @_closeTabConfirm
             #
             this.listenTo ide_event, 'UPDATE_TAB_ICON', this.updateTabIcon
 
@@ -183,7 +184,6 @@ define [ 'event',
                 @trueCloseTab @current_tab, tab_id
             else
                 modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
-                $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
             null
 
         _closeTabConfirm : ( event ) ->

@@ -108,10 +108,12 @@ define [ 'MC', 'event',
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
         listen     : ->
-            #app update event
+            # app update event
             $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
-            #cancel to app model
+            # cancel to app model
             $( document.body ).on 'click', '#return-app-confirm', this, @_return2App
+            # export to png download button click
+            $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
 
         reRender   : ( type ) ->
             console.log 're-toolbar render'
@@ -335,14 +337,20 @@ define [ 'MC', 'event',
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
             #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
-            modal MC.template.exportpng {"title":"Export PNG", "confirm":"Download", "color":"blue" }, false
+
+            modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
+            $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', true
+
             if base64_image
                 $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+                $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+
             $( '#btn-confirm' ).attr {
                 'href'      : "data:image/png;base64, " + base64_image,
                 'download'  : MC.canvas_data.name + '.png',
             }
-            $('#btn-confirm').one 'click', { target : this }, () -> modal.close()
+
+            null
 
         #for debug
         clickOpenJSONDiff : ->

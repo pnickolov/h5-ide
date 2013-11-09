@@ -15,6 +15,9 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 				callback = () ->
 
 			validData = $.extend true, {}, MC.canvas_data
+			if MC.aws.aws.checkDefaultVPC()
+				validData.component = MC.aws.vpc.generateComponentForDefaultVPC()
+
 			stackService.verify {sender: this},
 				$.cookie( 'usercode' ),
 				$.cookie( 'session_id' ),

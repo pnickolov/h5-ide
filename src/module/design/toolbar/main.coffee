@@ -25,7 +25,7 @@ define [ 'jquery',
                 #
                 model.setFlag tab_id, type
                 #
-                MC.ta.validAll() if type is 'OPEN_STACK'
+                # MC.ta.validAll() if type is 'OPEN_STACK'
 
             ###
             #listen OPEN_TOOLBAR

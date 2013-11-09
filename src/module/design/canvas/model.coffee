@@ -117,6 +117,7 @@ define [ 'constant',
 				if !node || !tgt_parent || !node.groupUId || node.groupUId == tgt_parent
 					return
 
+				notification "error", "This operation is not supported yet."
 				event.preventDefault()
 				return
 
@@ -487,9 +488,6 @@ define [ 'constant',
 				this.deleteResMap       = this.deleteResAppEditMap
 				this.beforeDeleteResMap = this.beforeDeleteAppEditMap
 
-				# Default to not allow delete things in app
-				result = false
-
 			option = $.extend {}, option
 
 			component = MC.canvas_data.component[ option.id ] ||
@@ -499,6 +497,13 @@ define [ 'constant',
 			# Treat ASG as a node, not a group
 			if component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 				option.type = 'node'
+
+			# Default to not allow delete things in app
+			# In hijack mode, if we don't have a handler to
+			# delete resource. Then we show error
+			if hijack and not @deleteResMap[ component.type ]
+				notification 'error', "This operation is not supported yet."
+				return
 
 			# Find Handler to delete the resource
 			switch option.type

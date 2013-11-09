@@ -2105,6 +2105,9 @@ define [ 'constant',
 
 			_.map [0...ip_number], ( index ) ->
 
+				if index isnt 0
+					return
+
 				eip_ref = "@#{eni.uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
 
 				if state == 'off' and (eip_ref not in existing_eip_ref)

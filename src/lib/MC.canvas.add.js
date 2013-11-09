@@ -863,8 +863,13 @@ MC.canvas.add = function (flag, option, coordinate)
 
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
-									eip_icon = MC.canvas.IMAGE.EIP_ON;
-									data_eip_state = 'on'
+									if (v.resource.PrivateIpAddress && v.resource.PrivateIpAddress.indexOf('@') == 0) {
+										ipRefSplitAry = v.resource.PrivateIpAddress.split('.')
+										if (ipRefSplitAry[3] && ipRefSplitAry[3] == '0') {
+											eip_icon = MC.canvas.IMAGE.EIP_ON;
+											data_eip_state = 'on';
+										}
+									}
 								}
 							});
 						}

@@ -461,7 +461,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 						MC.canvas.data.set('component', data)
 
-						MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+						if eip_index is 0
+							MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 
 						ide_event.trigger ide_event.NEED_IGW
 
@@ -487,8 +488,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 										return false
 
-								if not existing
-
+								# if not existing
+								if eip_index is 0
 									MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
 

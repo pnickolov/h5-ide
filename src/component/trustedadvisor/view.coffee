@@ -68,14 +68,14 @@ define [ 'event',
             processNutshell = ( notShow ) ->
                 content = ''
                 if error.length
-                    content += "#{error.length} error, "
+                    content += "#{error.length} error(s), "
                     _.defer () ->
                         modal.position()
 
                 if warning.length
-                    content += "#{warning.length} warning, "
+                    content += "#{warning.length} warning(s), "
                 if notice.length
-                    content += "#{notice.length} notice, "
+                    content += "#{notice.length} notice(s), "
 
                 if not content
                     content = 'No error, warning or notice.'

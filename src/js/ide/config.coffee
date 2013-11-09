@@ -28,7 +28,7 @@ require.config {
 		#############################################
 		# vender
 		#############################################
-		'jquery'             : [ '//code.jquery.com/jquery-2.0.3.min', 'vender/jquery/jquery' ]
+		'jquery'          : [ (if /msie (9|8|7|6)/ig.test navigator.userAgent.toLowerCase() then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min' ) , 'vender/jquery/jquery' ]
 		'canvon'             : 'vender/canvon/canvon'
 
 		'underscore'         : 'vender/underscore/underscore'
@@ -83,7 +83,6 @@ require.config {
 		'UI.filter'          : 'ui/common/UI.filter'
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
-		'UI.slider'          : 'ui/common/UI.slider'
 		'UI.editablelabel'   : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'   : 'ui/common/UI.zeroclipboard'
@@ -324,9 +323,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.slider'    :
 			deps       : [ 'jquery' ]
 
 		'UI.editablelabel' :

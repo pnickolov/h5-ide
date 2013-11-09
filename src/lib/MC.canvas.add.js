@@ -851,6 +851,11 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
 				component_data.index = component_data.index ? component_data.index : 0;
 
+				if ( MC.canvas.getState() === 'app' && component_data.number>1 && component_data.index===0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
+				{//update state of ServerGroup
+					MC.aws.instance.updateServerGroupState(MC.canvas_data.id, component_data.serverGroupUid);
+				}
+
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
 
@@ -858,8 +863,13 @@ MC.canvas.add = function (flag, option, coordinate)
 
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
-									eip_icon = MC.canvas.IMAGE.EIP_ON;
-									data_eip_state = 'on'
+									if (v.resource.PrivateIpAddress && v.resource.PrivateIpAddress.indexOf('@') == 0) {
+										ipRefSplitAry = v.resource.PrivateIpAddress.split('.')
+										if (ipRefSplitAry[3] && ipRefSplitAry[3] == '0') {
+											eip_icon = MC.canvas.IMAGE.EIP_ON;
+											data_eip_state = 'on';
+										}
+									}
 								}
 							});
 						}
@@ -1079,8 +1089,9 @@ MC.canvas.add = function (flag, option, coordinate)
 
 				////instance-state
 				Canvon.circle(68, 15, 5,{}).attr({
-					'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
-					'id' : group.id + '_instance-state'
+					'class': 'instance-state instance-state-unknown instance-state-' + MC.canvas.getState() + (option.number==1 ? ' tooltip' : ''),
+					'id' : group.id + '_instance-state',
+					'style' : (option.number==1 ? '' : 'opacity:0'),
 				})
 
 			).attr({
@@ -1953,6 +1964,12 @@ MC.canvas.add = function (flag, option, coordinate)
 				component_data.number = component_data.number ? component_data.number : 1;
 				component_data.serverGroupUid = component_data.serverGroupUid ? component_data.serverGroupUid : group.id;
 				component_data.index = component_data.index ? component_data.index : 0;
+
+				if ( MC.canvas.getState() === 'app' && component_data.number>1 && component_data.index===0 && MC.aws && MC.aws.eni && MC.aws.eni.updateServerGroupState )
+				{//update state of ServerGroup
+					MC.aws.eni.updateServerGroupState(MC.canvas_data.id, component_data.serverGroupUid);
+				}
+
 
 				if (component_data.resource.Attachment.InstanceId)
 				{

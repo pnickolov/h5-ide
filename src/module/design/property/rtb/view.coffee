@@ -10,7 +10,6 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
         events   :
 
-            'change .ipt-wrapper'             : 'addIp'
             'REMOVE_ROW  .multi-input'        : 'removeIp'
             'ADD_ROW     .multi-input'        : 'processParsley'
             'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
@@ -23,18 +22,21 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             "blur .ip-main-input"       : 'onBlurCIDR'
 
         render     : () ->
-            console.log 'property:rtb render'
             @$el.html template @model.attributes
 
             # find empty inputbox and focus
             me = this
             inputElemAry = $('.ip-main-input')
-            _.each inputElemAry, (inputElem) ->
+            _.each inputElemAry, (inputElem, inputIdx) ->
                 inputValue = $(inputElem).val()
+                if (inputValue is '0.0.0.0/0' and inputIdx > 1)
+                    $(inputElem).val('')
+                    inputValue = ''
                 if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     me.forceShow()
                     $(inputElem).focus()
+                null
 
             @model.attributes.title
 
@@ -47,12 +49,6 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             .next( '.parsley-error-list' )
             .remove()
 
-        addIp : ( event ) ->
-
-            # data = event.target.parentNode.parentNode.parentNode.dataset
-            # children = event.target.parentNode.parentNode.parentNode.children
-            # uid = $("#rt-name").data 'uid'
-            # this.trigger 'SET_ROUTE', uid, data, children
 
         beforeRemoveIp : ( event ) ->
             vals = 0
@@ -74,33 +70,28 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
             children = event.target.children
 
-            uid = $("#rt-name").data 'uid'
-
-            this.trigger 'SET_ROUTE', uid, data, children
+            @model.setRoutes data, children
+            null
 
         changeName : ( event ) ->
 
             target = $ event.currentTarget
             name = target.val()
-            id = $("#rt-name").data 'uid'
 
-            MC.validate.preventDupname target, id, name, 'Instance'
+            MC.validate.preventDupname target, @model.get('uid'), name, 'Route Table'
 
             if target.parsley 'validate'
-                @trigger 'SET_NAME', id, name
+                @model.setName name
                 @setTitle name
 
         setMainRT : () ->
-
-            uid = $("#rt-name").data 'uid'
-
-            this.trigger 'SET_MAIN_RT', uid
+            $("#set-main-rt").hide().parent().find("p").show()
+            @model.setMainRT()
+            null
 
         changePropagation : ( event ) ->
-
-            console.log event
-            uid = $("#rt-name").data 'uid'
-            this.trigger 'SET_PROPAGATION', uid, event.target.dataset.uid
+            @model.setPropagation event.target.dataset.uid
+            null
 
         onPressCIDR : ( event ) ->
 
@@ -127,11 +118,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
             _.each allCidrInputElemAry, (inputElem) ->
                 cidrValue = $(inputElem).val()
-                if cidrValue isnt inputValue
-                    allCidrAry.push(cidrValue)
-                else
-                    if repeatFlag then allCidrAry.push(cidrValue)
-                    if !repeatFlag then repeatFlag = true
+                if !((inputValue is '0.0.0.0/0') and ($(inputElem).parent('.ipt-wrapper').index() is 0))
+                    if cidrValue isnt inputValue
+                        allCidrAry.push(cidrValue)
+                    else
+                        if repeatFlag then allCidrAry.push(cidrValue)
+                        if !repeatFlag then repeatFlag = true
                 null
 
             haveError = true
@@ -177,8 +169,8 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             else
                 data = event.target.parentNode.parentNode.parentNode.dataset
                 children = event.target.parentNode.parentNode.parentNode.children
-                uid = $("#rt-name").data 'uid'
-                this.trigger 'SET_ROUTE', uid, data, children
+
+                @model.setRoutes data, children
                 MC.aws.aws.disabledAllOperabilityArea(false)
 
             null

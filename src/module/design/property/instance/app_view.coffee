@@ -83,7 +83,7 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
         changeIPAddBtnState : () ->
 
             disabledBtn = false
-            instanceUID = this.model.get 'get_uid'
+            instanceUID = @model.get 'id'
 
             maxIPNum = MC.aws.eni.getENIMaxIPNum(instanceUID)
             currentENIComp = MC.aws.eni.getInstanceDefaultENI(instanceUID)

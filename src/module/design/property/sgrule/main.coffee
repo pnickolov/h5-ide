@@ -8,15 +8,12 @@ define [ '../base/main',
          'component/sgrule/main'
 ], ( PropertyModule, model, view, sgrule_main ) ->
 
+	view.on "EDIT_RULE", ( line_id ) ->
+		sgrule_main.loadModule( line_id )
 
 	SgRuleModule = PropertyModule.extend {
 
 		handleTypes : /.+-sg/
-
-		setupStack : ()->
-			view.on "EDIT_RULE", ( line_id ) ->
-				sgrule_main.loadModule( line_id )
-			null
 
 		initStack : ()->
 			@model = model
@@ -32,7 +29,7 @@ define [ '../base/main',
 
 		initAppEdit : ()->
 			@model = model
-			@model.isApp = true
+			@model.isApp = false
 			@view  = view
 			null
 	}

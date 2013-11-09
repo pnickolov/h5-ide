@@ -15,6 +15,9 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 				callback = () ->
 
 			validData = $.extend true, {}, MC.canvas_data
+			if MC.aws.aws.checkDefaultVPC()
+				validData.component = MC.aws.vpc.generateComponentForDefaultVPC()
+
 			stackService.verify {sender: this},
 				$.cookie( 'usercode' ),
 				$.cookie( 'session_id' ),
@@ -41,14 +44,14 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 									errMessage = returnInfoObj.message
 									errCompName = _getCompName(errCompUID)
 
-									errInfoStr = "Resource #{errCompName} has format problem, #{errMessage}"
+									errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
 
 								catch err
 									errInfoStr = "Stack format validation error"
 						else
 							callback(null)
 					else
-						return null
+						callback(null)
 
 					if checkResult
 						callback(null)
@@ -67,6 +70,6 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 				info: tipInfo
 			}
 		catch err
-			return null
+			callback(null)
 
 	verify : verify

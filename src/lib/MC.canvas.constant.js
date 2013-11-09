@@ -1421,23 +1421,23 @@ var constant_data = {
 				"VpcId": "", //eg: @3EE0DED4-4D29-12C4-4A98-14C0BBC81A6A.resource.VpcId
 				"Default": "false",
 				"EntrySet": [
-				// {
-				// 	"RuleAction": "allow",
-				// 	"Protocol": "-1",
-				// 	"CidrBlock": "0.0.0.0/0",
-				// 	"Egress": "true",
-				// 	"IcmpTypeCode":
-				// 	{
-				// 		"Type": "",
-				// 		"Code": ""
-				// 	},
-				// 	"PortRange":
-				// 	{
-				// 		"To": "",
-				// 		"From": ""
-				// 	},
-				// 	"RuleNumber": "100"
-				// },
+				{
+					"RuleAction": "allow",
+					"Protocol": "-1",
+					"CidrBlock": "0.0.0.0/0",
+					"Egress": "true",
+					"IcmpTypeCode":
+					{
+						"Type": "",
+						"Code": ""
+					},
+					"PortRange":
+					{
+						"To": "",
+						"From": ""
+					},
+					"RuleNumber": "100"
+				},
 				{
 					"RuleAction": "deny",
 					"Protocol": "-1",
@@ -1455,23 +1455,23 @@ var constant_data = {
 					},
 					"RuleNumber": "32767"
 				},
-				// {
-				// 	"RuleAction": "allow",
-				// 	"Protocol": "-1",
-				// 	"CidrBlock": "0.0.0.0/0",
-				// 	"Egress": "false",
-				// 	"IcmpTypeCode":
-				// 	{
-				// 		"Type": "",
-				// 		"Code": ""
-				// 	},
-				// 	"PortRange":
-				// 	{
-				// 		"To": "",
-				// 		"From": ""
-				// 	},
-				// 	"RuleNumber": "100"
-				// },
+				{
+					"RuleAction": "allow",
+					"Protocol": "-1",
+					"CidrBlock": "0.0.0.0/0",
+					"Egress": "false",
+					"IcmpTypeCode":
+					{
+						"Type": "",
+						"Code": ""
+					},
+					"PortRange":
+					{
+						"To": "",
+						"From": ""
+					},
+					"RuleNumber": "100"
+				},
 				{
 					"RuleAction": "deny",
 					"Protocol": "-1",

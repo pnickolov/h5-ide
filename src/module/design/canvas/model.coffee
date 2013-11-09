@@ -114,9 +114,10 @@ define [ 'constant',
 				node = MC.canvas_data.layout.component.group[src_node]
 				if !node
 					node = MC.canvas_data.layout.component.node[src_node]
-				if !node || !node.groupUId || node.groupUId == tgt_parent
+				if !node || !tgt_parent || !node.groupUId || node.groupUId == tgt_parent
 					return
 
+				notification "error", "This operation is not supported yet."
 				event.preventDefault()
 				return
 
@@ -334,9 +335,9 @@ define [ 'constant',
 
 				# update IP List
 				if defaultVPC
-					MC.aws.subnet.updateAllENIIPList(newAZ)
+					MC.aws.subnet.updateAllENIIPList(newAZ, false)
 				else
-					MC.aws.subnet.updateAllENIIPList(subnetUID)
+					MC.aws.subnet.updateAllENIIPList(subnetUID, false)
 			else
 
 				# Nothing is changed
@@ -432,11 +433,11 @@ define [ 'constant',
 			# Update IP List
 			if defaultVPC
 				eniNewAZ = component.resource.AvailabilityZone
-				MC.aws.subnet.updateAllENIIPList(eniNewAZ)
+				MC.aws.subnet.updateAllENIIPList(eniNewAZ, false)
 			else
 				component.resource.SubnetId = "@" + tgt_parent + ".resource.SubnetId"
 				subnetUID = tgt_parent
-				MC.aws.subnet.updateAllENIIPList(subnetUID)
+				MC.aws.subnet.updateAllENIIPList(subnetUID, false)
 
 			null
 
@@ -480,18 +481,12 @@ define [ 'constant',
 
 			# In AppEdit mode, we use a different method collection to deal with deleting object.
 			# See if we need to hackjack the deleteResMap / beforeDeleteResMap here
-			isAppEdit = MC.canvas.getState() is "appedit"
-			hijack = isAppEdit and forge_app.existing_app_resource( option.id ) is true
-
+			hijack = MC.canvas.getState() is "appedit"
 			if hijack
 				deleteMapBU       = this.deleteResMap
 				beforeDeleteMapBU = this.beforeDeleteMap
 				this.deleteResMap       = this.deleteResAppEditMap
 				this.beforeDeleteResMap = this.beforeDeleteAppEditMap
-
-			# Default to not allow delete things in app
-			if isAppEdit
-				result = false
 
 			option = $.extend {}, option
 
@@ -502,6 +497,13 @@ define [ 'constant',
 			# Treat ASG as a node, not a group
 			if component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 				option.type = 'node'
+
+			# Default to not allow delete things in app
+			# In hijack mode, if we don't have a handler to
+			# delete resource. Then we show error
+			if hijack and not @deleteResMap[ component.type ]
+				notification 'error', "This operation is not supported yet."
+				return
 
 			# Find Handler to delete the resource
 			switch option.type
@@ -546,13 +548,18 @@ define [ 'constant',
 
 				MC.canvas.remove $("#" + option.id)[0]
 				delete MC.canvas_data.component[option.id]
+
+				#check stoppable after delete AMI
+				if component.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					MC.forge.stack.checkStoppable MC.canvas_data
+
 				this.trigger 'DELETE_OBJECT_COMPLETE'
 
 			else if event && event.preventDefault
 				event.preventDefault()
 
 
-			# Restore hijacked Maps
+			# Restore hijack Maps
 			if hijack
 				this.deleteResMap    = deleteMapBU
 				this.beforeDeleteMap = beforeDeleteMapBU
@@ -736,10 +743,10 @@ define [ 'constant',
 
 		deleteR_AE_Instance : ( component ) ->
 
+			# if not forge_app.existing_app_resource( option.id ) is true
+
 			groupUID = component.uid
 			groupMap = {}
-
-			rtbResArr = []
 
 			deleteUID = []
 
@@ -748,7 +755,7 @@ define [ 'constant',
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 					if comp.serverGroupUid is groupUID
 						groupMap[ comp_uid ] = true
-						rtbResArr.push comp_uid
+						MC.aws.elb.removeAllELBForInstance(comp_uid)
 						deleteUID.push comp_uid
 
 			eniMap = {}
@@ -756,31 +763,33 @@ define [ 'constant',
 
 				# Related Eni
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-					instance_uid = MC.extractID comp.reseource.Attachment.InstanceId
+					instance_uid = MC.extractID comp.resource.Attachment.InstanceId
 					if groupMap[ instance_uid ]
 						eniMap[ comp_uid ] = true
-						rtbResArr.push comp_uid
 						deleteUID.push comp_uid
 
 				# Related Volume
 				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 					instance_uid = MC.extractID comp.resource.AttachmentSet.InstanceId
 					if groupMap[ instance_uid ]
-						deleteUID.push comp_uid
+						delete MC.canvas_data.component[ comp_uid ]
 
 			# EIP, RTB
 			for comp_uid, comp of MC.canvas_data.component
 				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
 					eni_uid = MC.extractID comp.resource.NetworkInterfaceId
-					deleteUID.push comp_uid
+					if eniMap[eni_uid]
+						deleteUID.push comp_uid
 
 				else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					for rmID in rtbResArr
+					for rmID in deleteUID
 						this._removeFromRTB comp_uid, rmID
 
 			# Remove resource
 			for comp_uid in deleteUID
-				MC.canvas.remove $("#" + comp_uid)[0]
+				el = $("#" + comp_uid)
+				if el.length
+					MC.canvas.remove el[0]
 				delete MC.canvas_data.component[ comp_uid ]
 
 
@@ -1334,10 +1343,9 @@ define [ 'constant',
 				elbUid       = portMap['elb-assoc']
 				subnetUid    = portMap['subnet-assoc-in']
 
-				ta = MC.ta.validComp('subnet.isAbleConnectToELB',subnetUid)
-				console.debug ta
-				if ta
-					notification 'warning', ta.info
+				canConnectToELB = MC.aws.subnet.isAbleConnectToELB(subnetUid)
+				if !canConnectToELB
+					notification 'warning', lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
 					this.deleteObject null, { type : "line", id : line_id }
 					return
 
@@ -1627,6 +1635,9 @@ define [ 'constant',
 						subnetUIDRef = MC.canvas_data.component[uid].resource.SubnetId
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
 						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
+
+					#check stoppable when add AMI
+					MC.forge.stack.checkStoppable MC.canvas_data
 
 				when resource_type.AWS_VPC_NetworkInterface
 
@@ -2098,6 +2109,9 @@ define [ 'constant',
 			ip_number = eni.resource.PrivateIpAddressSet.length
 
 			_.map [0...ip_number], ( index ) ->
+
+				if index isnt 0
+					return
 
 				eip_ref = "@#{eni.uid}.resource.PrivateIpAddressSet.#{index}.PrivateIpAddress"
 

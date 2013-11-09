@@ -6,19 +6,18 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
     RTBModel = PropertyModel.extend {
 
-        defaults :
-            'route_table' : null
-            'association' : null
-            'title'       : null
+        setName : ( name ) ->
 
-        setName : ( uid, name ) ->
+            uid = @get 'uid'
 
             MC.canvas_data.component[uid].name = name
 
             MC.canvas.update uid, 'text', 'rt_name', name
             null
 
-        setMainRT : ( uid ) ->
+        setMainRT : () ->
+
+            uid = @get 'uid'
 
 
             for id, comp of MC.canvas_data.component
@@ -42,51 +41,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             MC.aws.rtb.updateRT_SubnetLines()
 
+            @init( uid )
             null
-
-        getAppRoute : ( uid ) ->
-
-            rt = MC.data.resource_list[MC.canvas_data.region][MC.canvas_data.component[uid].resource.RouteTableId]
-
-            $.each MC.canvas_data.component, (comp_uid, comp) ->
-
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable and comp.resource.RouteTableId == rt.routeTableId
-
-                    rt.name = comp.name
-
-                    return false
-
-            if rt.associationSet.item.length != 0 and rt.associationSet.item[0].main == 'true'
-
-                rt.isMain = true
-
-            $.each rt.routeSet.item, ( idx, route ) ->
-
-                existing = false
-
-                tmp_r = {}
-
-                if route.state == 'active'
-
-                    route.isActive = true
-
-                else
-                    route.isActive = false
-
-
-                if route.gatewayId
-
-                    if rt.propagatingVgwSet.item
-
-                        $.each rt.propagatingVgwSet.item, ( i, prop ) ->
-
-                            if prop.gatewayId == route.gatewayId
-
-                                route.isProp = true
-
-                                return false
-
-            this.set 'route_table', rt
 
         reInit : () ->
             @init( @get( "uid" ) )
@@ -214,7 +170,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             this.set 'association', null
             this.set 'title', rt.name
 
-        setPropagation : ( uid, value ) ->
+        setPropagation : ( value ) ->
+
+            uid = @get 'uid'
 
             vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
 
@@ -229,7 +187,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             null
 
-        setRoutes : ( uid, data, routes ) ->
+        setRoutes : ( data, routes ) ->
+
+            uid = @get 'uid'
 
             # remove all routes
             delete_idx = []
@@ -304,12 +264,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
 
                     MC.canvas_data.component[uid].resource.RouteSet.push route_tmpl
-
-
-
-
-
-
     }
 
     new RTBModel()

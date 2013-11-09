@@ -67,6 +67,15 @@ define [ '../base/view',
         openCreateAclPanel : ( event ) ->
             aclUID = MC.guid()
             aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+
+            # remove 100's acl rule
+            entrySet = aclObj.resource.EntrySet
+            newEntrySet = _.filter entrySet, (aclRuleObj) ->
+                if aclRuleObj.RuleNumber in ['100', 100]
+                    return false
+                return true
+            aclObj.resource.EntrySet = newEntrySet
+            
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 
@@ -169,7 +178,7 @@ define [ '../base/view',
             else if MC.aws.subnet.isConnectToELB subnetUID
                 cidrNum = Number(cidrSuffix.split('/')[1])
                 if cidrNum > 27
-                    mainContent = 'The subnet is attached with a load balancer. The CIDR must be smaller than /27.'
+                    mainContent = 'The subnet is attached with a load balancer. The CIDR mask must be smaller than /27.'
                     descContent = ''
                     noRemove = true
                 else

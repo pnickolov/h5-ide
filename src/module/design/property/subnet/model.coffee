@@ -89,7 +89,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             subnetName = MC.canvas_data.component[ this.attributes.uid ].name
             MC.canvas.update this.attributes.uid, "text", "label", subnetName + ' (' + cidr + ')'
 
-            MC.aws.subnet.updateAllENIIPList(this.attributes.uid)
+            MC.aws.subnet.updateAllENIIPList(this.attributes.uid, false)
 
             null
 

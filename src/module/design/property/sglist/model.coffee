@@ -2,16 +2,12 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'constant','backbone' ], (constant) ->
+define [ 'lib/forge/app' ], ( forge_app ) ->
 
 	SGListModel = Backbone.Model.extend {
 
 		defaults :
 			'show_sg_check' : true
-			'sg_list' : null
-			'is_stack_sg' : null
-			'sg_rule_list' : null
-			'only_one_sg' : null
 
 		_getSGRefNum : (sgUID) ->
 			refNum = 0
@@ -54,13 +50,10 @@ define [ 'constant','backbone' ], (constant) ->
 			if current_tab_type is 'app'
 				readonly = true
 			else if current_tab_type is 'appedit'
-				if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
-					readonly = true
+				if parent_model.isSGListReadOnly
+					readonly = parent_model.isSGListReadOnly()
 				else
-					if parent_model.isSGListReadOnly
-						readonly = parent_model.isSGListReadOnly()
-					else
-						readonly = false
+					readonly = false
 			else
 				readonly = false
 
@@ -100,6 +93,9 @@ define [ 'constant','backbone' ], (constant) ->
 				if not needShow
 					continue
 
+				isDefault = sgComp.name is 'DefaultSG'
+				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
+
 				# need to display
 				sgDisplayObj =
 					sgUID       : uid
@@ -109,10 +105,11 @@ define [ 'constant','backbone' ], (constant) ->
 					sgMemberNum : @_getSGRefNum uid
 					sgChecked   : sgChecked
 					sgHideCheck : readonly or isStackParent
-					sgIsDefault : sgComp.name is 'DefaultSG'
+					sgIsDefault : isDefault
 					sgFull      : sg_full
 					sgColor     : MC.aws.sg.getSGColor uid
 					readonly    : readonly
+					deletable   : deletable
 
 				if sgDisplayObj.sgIsDefault
 					defaultSG = sgDisplayObj
@@ -123,9 +120,9 @@ define [ 'constant','backbone' ], (constant) ->
 			if defaultSG
 				displaySGAry.unshift defaultSG
 
-			if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
+			# if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
 				# In VPC, user can only select 5 SG
-				sg_full.full = true
+				# sg_full.full = true
 
 			@set 'is_stack_sg', isStackParent
 			@set 'only_one_sg', enabledSGCount is 1

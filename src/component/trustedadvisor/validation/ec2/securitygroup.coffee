@@ -22,7 +22,8 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 				tipInfo = sprintf lang.ide.TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM, sgName, 50
 				return {
 					level: constant.TA.WARNING,
-					info: tipInfo
+					info: tipInfo,
+					uid: sgUID
 				}
 		else
 			# no vpc
@@ -58,6 +59,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveUsingAllProtocolRule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
@@ -89,6 +99,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveFullZeroSourceToHTTPRule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 
@@ -115,6 +134,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveUsingPort22Rule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgInboundRuleAry = sgComp.resource.IpPermissions
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
@@ -139,6 +167,15 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 
 	isHaveFullZeroOutboundRule = (sgUID) ->
 
+		# only valid when use
+		allRefComp = MC.aws.sg.getAllRefComp(sgUID)
+		if allRefComp.length is 0
+			return null
+
+		# not elb's default sg
+		if MC.aws.elb.isELBDefaultSG(sgUID)
+			return null
+
 		sgComp = MC.canvas_data.component[sgUID]
 		sgOutboundRuleAry = sgComp.resource.IpPermissionsEgress
 
@@ -159,9 +196,81 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 			}
 		return null
 
+	isAssociatedSGNumExceedLimit = () ->
+
+		maxSGNumLimit = 5
+		platformType = MC.canvas_data.platform
+		if platformType is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC
+			maxSGNumLimit = 500
+
+		taResultAry = []
+
+		_.each MC.canvas_data.component, (comp) ->
+
+			compType = comp.type
+			compName = comp.name
+			compUID = comp.uid
+			isExceedLimit = false
+			
+			sgAry = []
+			resTypeName = ''
+			tagName = ''
+			if compType is constant.AWS_RESOURCE_TYPE.AWS_ELB
+				sgAry = comp.resource.SecurityGroups
+				resTypeName = 'Load Balancer'
+				tagName = 'elb'
+
+			if compType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				sgAry = comp.resource.SecurityGroups
+				resTypeName = 'Launch Configuration'
+				tagName = 'lc'
+
+			else if compType is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+				sgAry = comp.resource.SecurityGroupId
+				resTypeName = 'Instance'
+				tagName = 'instance'
+
+			else if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+				_.each comp.resource.GroupSet, (sgObj) ->
+					sgAry.push sgObj.GroupId
+					null
+
+				resTypeName = 'Network Interface'
+				tagName = 'eni'
+
+				# if is instance default eni
+				if comp.resource.Attachment.DeviceIndex in [0, '0']
+					instanceUIDRef = comp.resource.Attachment.InstanceId
+					if instanceUIDRef
+						instanceUID = instanceUIDRef.split('.')[0].slice(1)
+						instanceComp = MC.canvas_data.component[instanceUID]
+						if instanceComp
+							instanceName = instanceComp.name
+							resTypeName = 'Instance'
+							tagName = 'instance'
+							compName = instanceName
+
+			if sgAry.length > maxSGNumLimit
+
+				tipInfo = sprintf lang.ide.TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT, resTypeName, tagName, compName, maxSGNumLimit
+				taObj =
+					level: constant.TA.ERROR
+					info: tipInfo
+					uid: compUID
+
+				taResultAry.push taObj
+
+			null
+
+		if taResultAry.length > 0
+			return taResultAry
+
+		null
+
 	isSGRuleExceedFitNum : isSGRuleExceedFitNum
 	isStackUsingOnlyOneSG : isStackUsingOnlyOneSG
 	isHaveUsingAllProtocolRule : isHaveUsingAllProtocolRule
 	isHaveFullZeroSourceToHTTPRule : isHaveFullZeroSourceToHTTPRule
 	isHaveUsingPort22Rule : isHaveUsingPort22Rule
 	isHaveFullZeroOutboundRule : isHaveFullZeroOutboundRule
+	isAssociatedSGNumExceedLimit : isAssociatedSGNumExceedLimit

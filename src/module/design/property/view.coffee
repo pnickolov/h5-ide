@@ -71,6 +71,7 @@ define [ 'event',
             $( '#canvas-panel' ).toggleClass 'right-hiden'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-left'
             $( '#hide-property-panel' ).toggleClass 'icon-caret-right'
+            $( '#status-bar-modal' ).toggleClass 'toggle'
             false
 
         toggleOption : ( event ) ->
@@ -209,6 +210,10 @@ define [ 'event',
                         delete stateMap[ compUID ]
                 # added by song ######################################
             null
+
+        showPropertyPanel : ->
+            console.log 'showPropertyPanel'
+            $( '#hide-property-panel' ).trigger 'click' if $( '#hide-property-panel' ).hasClass 'icon-caret-left'
     }
 
     return PropertyView

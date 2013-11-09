@@ -2,6 +2,10 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
 	isVPCAbleConnectToOutside = () ->
 
+		if (MC.canvas_data.platform in
+			[MC.canvas.PLATFORM_TYPE.EC2_CLASSIC])
+				return null
+
 		# check if have vpn and eip
 		isHaveVPN = false
 		isHaveEIP = false

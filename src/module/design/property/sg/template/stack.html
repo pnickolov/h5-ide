@@ -13,15 +13,10 @@
 	</div>
 
 	<div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
-<!-- <<<<<<< HEAD:src/module/design/property/sg/template/stack.html
-			<span class="property-head-num-wrap">(<span id="rule-count">{{ruleCount}}</span>)</span>
-			{{#if ruleEditable}}
-			<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>
-			{{/if}}
-=======
-			<span class="property-head-num-wrap">(<span id="rule-count">{{sg_detail.rules}}</span>)</span>
-			{{#unless is_elb_sg}}<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>{{/unless}}
->>>>>>> origin/develop:src/module/design/property/sg/template.html -->
+		<span class="property-head-num-wrap">(<span id="rule-count">{{ruleCount}}</span>)</span>
+		{{#if ruleEditable}}
+		<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>
+		{{/if}}
 	</div>
 	<div class="option-group">
 		<div class="rule-list-sort property-control-group">

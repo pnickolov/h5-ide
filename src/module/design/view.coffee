@@ -18,7 +18,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #push DESIGN_COMPLETE
             this.trigger 'DESIGN_COMPLETE'
             #
-            $( '#statusbar-panel' ).html MC.template.statusbar()
+            $( '#main-statusbar' ).html MC.template.statusbar()
 
         listen   : ( model ) ->
             #set this.model
@@ -33,7 +33,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 resource : $( '#resource-panel' ).html()
                 property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
-                statusbar: $( '#statusbar-panel' ).html()
                 overlay  : $( '#overlay-panel'  ).html()
             data
 
@@ -45,7 +44,6 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             $( '#resource-panel' ).html  this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html  this.model.get( 'snapshot' ).canvas
-            $( '#statusbar-panel' ).html this.model.get( 'snapshot' ).statusbar
             $( '#overlay-panel'  ).html  this.model.get( 'snapshot' ).overlay
             #
             if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
@@ -67,14 +65,14 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         statusbarClick : ( event ) ->
             console.log 'statusbarClick'
             btnDom = $(event.currentTarget)
-            currentText = 'Verify stack'
-            btnDom.text('Verifying...')
+            currentText = 'Validate'
+            btnDom.text('Validating...')
 
             setTimeout () ->
                 MC.ta.validAll()
                 btnDom.text(currentText)
-                status = _.last $(event.currentTarget).attr( 'class' ).split '-'
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', status
+                #status = _.last $(event.currentTarget).attr( 'class' ).split '-'
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
             , 50
 
         updateStatusbar : ( type, level ) ->
@@ -119,76 +117,117 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             null
 
-        showDesignOverlay : ( state ) ->
-            console.log 'showDesignOverlay, state = ' + state
+        hideStatusbar :  ->
+            console.log 'hideStatusbar'
 
-            # state include:
-            # 1. open fail
-            # 2. process( starting, stopping, terminating, updating, changed fail )
+            if Tabbar.current in [ 'app' ]
+                $( '#main-statusbar' ).hide()
+                $( '#canvas' ).css 'bottom', 0
+            else
+                $( '#main-statusbar' ).show()
 
-            $item = $( '#overlay-panel' )
+            if Tabbar.current is 'appedit'
+                $( '#canvas' ).css 'bottom', 24
 
-            # 1. add class
-            $item.addClass 'design-overlay'
+            null
 
-            # 2. switch state
-            switch state
-                when 'OPEN_TAB_FAIL'                          then $item.html MC.template.openTabFail()
-                when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
-                when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
-                when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
-                when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
-                when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail }
-                when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
+        showDesignOverlay : ( state, id ) ->
 
-            # open tab fail( includ app and stack )
-            if state is 'OPEN_TAB_FAIL'
-                $( '#btn-fail-reload' ).one 'click', ( event ) ->
-                    if MC.data.current_tab_id.split('-')[0] is 'app' then event_type = ide_event.PROCESS_RUN_SUCCESS else event_type = ide_event.RELOAD_STACK_TAB
-                    ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].tab_id, MC.open_failed_list[ MC.data.current_tab_id ].region
-                    #test123
-                    #MC.open_failed_list[ MC.data.current_tab_id ].is_fail = false
+            try
+
+                console.log 'showDesignOverlay', state, id
+
+                return if MC.data.current_tab_id isnt id
+
+                # state include:
+                # 1. open fail
+                # 2. process( starting, stopping, terminating, updating, changed fail )
+
+                $item = $( '#overlay-panel' )
+
+                # 1. add class
+                $item.addClass 'design-overlay'
+
+                # 2. switch state
+                switch state
+                    when 'OPEN_TAB_FAIL'                          then $item.html MC.template.openTabFail()
+                    when constant.APP_STATE.APP_STATE_STARTING    then $item.html MC.template.appStarting()
+                    when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
+                    when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
+                    when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
+                    when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail, 'update_detail' : if MC.data.process[ MC.data.current_tab_id ].flag_list.flag is 'UPDATE_APP' then true else false  }
+                    when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
+                    else
+                        console.log 'current state = ' + state
+                        console.log MC.data.process[ MC.data.current_tab_id ]
+
+                # open tab fail( includ app and stack )
+                if state is 'OPEN_TAB_FAIL'
+
+                    obj = MC.forge.stack.searchStackAppById MC.data.current_tab_id
                     #
-                    null
+                    if Tabbar.current is 'new'
+                        event_type = ide_event.RELOAD_NEW_STACK_TAB
+                    else if obj
+                        event_type = if MC.data.current_tab_id.split('-')[0] is 'app' then ide_event.PROCESS_RUN_SUCCESS else ide_event.RELOAD_STACK_TAB
+                        MC.open_failed_list[ MC.data.current_tab_id ] = $.extend true, {}, obj
+                    else
+                        console.error 'app or stack not find, current id is ' + MC.data.current_tab_id
+                    #
+                    $( '#btn-fail-reload' ).one 'click', ( event ) ->
+                        if Tabbar.current is 'new'
+                            ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region, MC.open_failed_list[ MC.data.current_tab_id ].platform
+                        else if MC.open_failed_list[ MC.data.current_tab_id ]
+                            ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                        else
+                            console.error 'not click, current not id'
+                        #
+                        null
 
-            # app changed fail
-            else if state is 'CHANGED_FAIL'
-                $( '#btn-changedfail' ).one 'click', ( event ) ->
+                # app changed fail
+                else if state is 'CHANGED_FAIL'
+                    $( '#btn-changedfail' ).one 'click', ( event ) ->
 
-                    # hide overlay
-                    # ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
-                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
+                        # hide overlay
+                        # ide_event.trigger ide_event.APPEDIT_UPDATE_ERROR
+                        ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
-                    # delete MC.process and MC.data.process
-                    delete MC.process[ MC.data.current_tab_id ]
-                    delete MC.data.process[ MC.data.current_tab_id ]
+                        # delete MC.process and MC.data.process
+                        delete MC.process[ MC.data.current_tab_id ]
+                        delete MC.data.process[ MC.data.current_tab_id ]
 
-                    null
+                        null
 
-            # app update success
-            else if state is 'UPDATING_SUCCESS'
-                $( '#btn-updated-success' ).one 'click', ( event ) ->
+                # app update success
+                else if state is 'UPDATING_SUCCESS'
+                    $( '#btn-updated-success' ).one 'click', ( event ) ->
 
-                    ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
+                        ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
 
-                    # delete MC.process and MC.data.process
-                    delete MC.process[ MC.data.current_tab_id ]
-                    delete MC.data.process[ MC.data.current_tab_id ]
+                        # delete MC.process and MC.data.process
+                        # delete MC.process[ MC.data.current_tab_id ]
+                        # delete MC.data.process[ MC.data.current_tab_id ]
 
-                    null
+                        null
 
-            # app updating( pending and processing )
-            else if state is constant.APP_STATE.APP_STATE_UPDATING
+                # app updating( pending and processing )
+                else if state is constant.APP_STATE.APP_STATE_UPDATING
 
-                if MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
+                    if MC.data.process[ MC.data.current_tab_id ].flag_list.is_pending
 
-                    $( '.overlay-content-wrap' ).find( '.progress' ).hide()
-                    $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
+                        $( '.overlay-content-wrap' ).find( '.progress' ).hide()
+                        $( '.overlay-content-wrap' ).find( '.process-info' ).hide()
 
-                else if MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
+                    else if MC.data.process[ MC.data.current_tab_id ].flag_list.is_inprocess
 
-                    $( '.overlay-content-wrap' ).find( '.progress' ).show()
-                    $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+                        $( '.overlay-content-wrap' ).find( '.loading-spinner' ).hide()
+                        $( '.overlay-content-wrap' ).find( '.progress' ).show()
+                        $( '.overlay-content-wrap' ).find( '.process-info' ).show()
+
+            catch error
+                  console.log 'design:view:showDesignOverlay error'
+                  console.log 'showDesignOverlay, state = ' + state
+                  console.log "error message: #{ error }"
 
             null
 

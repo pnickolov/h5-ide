@@ -32,9 +32,9 @@ define [ 'event',
             'click #account-email-cancel'           : 'clickCancelEmail'
             'click #account-password-update'        : 'clickUpdatePassword'
             'click #account-password-cancel'        : 'clickCancelPassword'
-            'keyup #aws-credential-account-id'       : 'verificationKey'
-            'keyup #aws-credential-access-key'       : 'verificationKey'
-            'keyup #aws-credential-secret-key'       : 'verificationKey'
+            'keyup #aws-credential-account-id'      : 'verificationKey'
+            'keyup #aws-credential-access-key'      : 'verificationKey'
+            'keyup #aws-credential-secret-key'      : 'verificationKey'
 
             #welcome
             'click #awscredentials-skip'            : 'onSkinButton'
@@ -48,8 +48,10 @@ define [ 'event',
             #
             $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
             $( '#AWSCredentials-submiting' ).html Handlebars.compile( loading_tmpl )
+            $( '#modal-box' ).hide()
             #
             setTimeout () ->
+                $( '#modal-box' ).show()
                 modal.position()
             , 500
 
@@ -470,6 +472,7 @@ define [ 'event',
                     $('#AWSCredentials-loading-text').text lang.ide.HEAD_INFO_LOADING_RESOURCE
 
                     $('#AWSCredential-info-wrap').hide()
+
 
                 else if flag is 'on_remove'
 

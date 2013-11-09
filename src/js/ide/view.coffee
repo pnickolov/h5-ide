@@ -14,6 +14,8 @@ define [ 'event',
 
         delay    : null
 
+        open_fail: false
+
         initialize : ->
             $( window ).on 'beforeunload', @_beforeunloadEvent
 
@@ -32,8 +34,9 @@ define [ 'event',
             target.fadeOut 'normal', () ->
                 target.remove()
                 $( '#wrapper' ).removeClass 'main-content'
-            #test123
-            delete MC.open_failed_list[ MC.data.current_tab_id ] if MC.open_failed_list[ MC.data.current_tab_id ]
+            #
+            delete MC.open_failed_list[ MC.data.current_tab_id ] if not @open_fail
+            @open_fail = false
             #
             null
 
@@ -41,13 +44,16 @@ define [ 'event',
             console.log 'showLoading, tab_id = ' + tab_id + ' , is_transparent = ' + is_transparent
             $( '#loading-bar-wrapper' ).html if !is_transparent then MC.data.loading_wrapper_html else MC.template.loadingTransparent()
             #
+            me = this
+            #
             @delay = setTimeout () ->
                 console.log 'setTimeout close loading'
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
+                    me.open_fail = true
                     ide_event.trigger ide_event.SWITCH_MAIN
                     #ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
                     #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
-                    ide_event.tigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL'
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', MC.data.current_tab_id
             , 1000 * 30
             #
             null
@@ -56,14 +62,14 @@ define [ 'event',
             console.log 'toggleWaiting'
             $( '#waiting-bar-wrapper' ).toggleClass 'waiting-bar'
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         showDashbaordTab : () ->
             console.log 'showDashbaordTab'
             console.log 'MC.data.dashboard_type = ' + MC.data.dashboard_type
             if MC.data.dashboard_type is 'OVERVIEW_TAB' then this.showOverviewTab() else this.showRegionTab()
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         showOverviewTab : () ->
             console.log 'showOverviewTab'
@@ -91,7 +97,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-process' ).removeClass   'active'
             #
-            @_hideStatubar()
+            @hideStatubar()
             #
             null
 
@@ -103,7 +109,7 @@ define [ 'event',
             $( '#tab-content-region' ).removeClass    'active'
             $( '#tab-content-design' ).removeClass    'active'
             #
-            @_hideStatubar()
+            @hideStatubar()
 
         disconnectedMessage : ( type ) ->
             console.log 'disconnectedMessage'
@@ -117,20 +123,43 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
-
-            return if MC.data.current_tab_id in [ 'dashboard', undefined ]
+            #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             return if !forge_handle.cookie.getCookieByName( 'userid' )
-            return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
+            #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
 
-            if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+            #if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+            #    return undefined
+            #else
+            #    return lang.ide.BEFOREUNLOAD_MESSAGE
+
+            has_refresh = true
+
+            if Tabbar.current is 'dashboard'
+                _.each MC.tab, ( item ) ->
+                    if not _.isEqual( item.data, item.origin_data )
+                        has_refresh = false
+                        null
+            else
+
+                if not MC.tab[ MC.data.current_tab_id ]
+                    if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+                        has_refresh = false
+
+                _.each MC.tab, ( item ) ->
+                    if not _.isEqual( item.data, item.origin_data )
+                        has_refresh = false
+                        null
+
+            if has_refresh
                 return undefined
             else
                 return lang.ide.BEFOREUNLOAD_MESSAGE
 
-        _hideStatubar : ->
-            console.log '_hideStatubar'
+        hideStatubar : ->
+            console.log 'hideStatubar'
             if $.trim( $( '#status-bar-modal' ).html() )
                 $( '#status-bar-modal' ).empty()
+                $( '#status-bar-modal' ).hide()
                 ide_event.trigger ide_event.UNLOAD_TA_MODAL
     }
 

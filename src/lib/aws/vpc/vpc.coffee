@@ -41,7 +41,7 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 				newCIDR = newSubnetCIDRAry[subnetNum]
 				MC.canvas_data.component[compObj.uid].resource.CidrBlock = newCIDR
-				MC.aws.subnet.updateAllENIIPList(compObj.uid)
+				MC.aws.subnet.updateAllENIIPList(compObj.uid, false)
 				MC.canvas.update compObj.uid, 'text', 'label', compObj.name + ' (' + newCIDR + ')'
 				subnetNum++
 

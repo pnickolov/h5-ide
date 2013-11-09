@@ -36,6 +36,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                         MC.aws.asg.updateASGCount app_id
 
+                        MC.aws.eni.updateServerGroupState app_id
+
                         #update canvas when get instance info
                         ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
 
@@ -97,7 +99,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         saveProcessTab : ( tab_id ) ->
             console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = MC.process[ tab_id ]
+            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
             #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
@@ -153,7 +155,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             console.log MC.tab
             #
-            if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            # if MC.process[ tab_id ] then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->
@@ -280,6 +282,22 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 null
             if ami_list.length
                 stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_list
+
+        returnAppState : ( type, state ) ->
+            console.log 'returnAppState', type, state
+
+            if state
+                temp = state
+            else
+                switch type
+                    when 'START_APP'     then temp = constant.APP_STATE.APP_STATE_STARTING
+                    when 'STOP_APP'      then temp = constant.APP_STATE.APP_STATE_STOPPING
+                    when 'TERMINATE_APP' then temp = constant.APP_STATE.APP_STATE_TERMINATING
+                    else
+                        console.log 'current type = ' + type + ', state is =' + state
+                        console.log MC.data.process[ MC.data.current_tab_id ]
+            temp
+
     }
 
     model = new DesignModel()

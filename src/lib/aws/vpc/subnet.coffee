@@ -79,7 +79,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		if ipCidr1Suffix > ipCidr2Suffix
 			minIpCidrSuffix = ipCidr2Suffix
 
-		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix) and minIpCidrSuffix isnt 0
+		if ipCidr1BinStr.slice(0, minIpCidrSuffix) is ipCidr2BinStr.slice(0, minIpCidrSuffix)# and minIpCidrSuffix isnt 0
 			return true
 		else
 			return false
@@ -196,7 +196,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 			return null
 
 	#for default vpc, subnetuid is az name
-	updateAllENIIPList = (subnetUidOrAZ, notForce) ->
+	updateAllENIIPList = (subnetUidOrAZ, notForce, outFilterAry) ->
 
 		defaultVPC = false
 		if MC.aws.aws.checkDefaultVPC()
@@ -208,6 +208,7 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		subnetRef = ''
 
 		filterAry = []
+
 		if defaultVPC
 			azName = subnetUidOrAZ
 			subnetObj = MC.aws.vpc.getAZSubnetForDefaultVPC(azName)
@@ -223,6 +224,9 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 				filterAry = MC.aws.eni.getAllNoAutoAssignIPInCIDR(subnetRef)
 			subnetCIDR = subnetComp.resource.CidrBlock
 			needIPCount = MC.aws.eni.getSubnetNeedIPCount(subnetComp.uid)
+
+		if outFilterAry and _.isArray(outFilterAry)
+			filterAry = _.union(filterAry, outFilterAry)
 
 		currentAvailableIPAry = MC.aws.eni.getAvailableIPInCIDR(subnetCIDR, filterAry, needIPCount)
 
@@ -263,9 +267,11 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 
 		todeleteAZ = MC.canvas_data.component[subnetUID].resource.AvailabilityZone
 
+		# Comment by song, valid in TA
+
 		# Keep connection to one subnet at least
-		if elbComp.resource.Subnets.length <= 1
-			return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1
+		# if elbComp.resource.Subnets.length <= 1
+		# 	return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_1
 
 		# If we have resources connected to the elb, connection to the resources' subnet is
 		# not deletable

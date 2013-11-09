@@ -86,6 +86,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 			if not comp_data[layout_data.component.node[uid].eipList[0]]
 
+				for k_eip in layout_data.component.node[uid].eipList
+
+					delete comp_data[k_eip]
+
 				layout_data.component.node[uid].eipList = []
 
 		else
@@ -99,6 +103,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					delete_index.push eip_uid
 
 			for k in delete_index
+
+				for k_eip in layout_data.component.node[uid].eipList[k]
+
+					delete comp_data[k_eip]
 
 				delete layout_data.component.node[uid].eipList[k]
 
@@ -191,6 +199,23 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 							comp_data[ instance_id ].resource[k] = v
 
+					if elbs.length > 0
+
+						ins_ref = "@#{instance_id}.resource.InstanceId"
+
+						for elb in elbs
+
+							existing = false
+
+							for ins in json_data.component[elb].resource.Instances
+
+								if ins.InstanceId is ins_ref
+
+									existing = true
+
+							if not existing
+
+								json_data.component[elb].resource.Instances.push {"InstanceId": "@#{instance_id}.resource.InstanceId"}
 
 				else
 
@@ -280,6 +305,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 					delete_index.push eip_uid
 
 			for k in delete_index
+
+				for k_eip in layout_data.component.node[uid].eipList[k]
+
+					delete comp_data[k_eip]
 
 				delete layout_data.component.node[uid].eipList[k]
 
@@ -382,18 +411,37 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		MC.canvas_data.component = comp_data
 
 		# generate eni ip
+
+		# filter app edit ip array
+		filterAry = []
+
+		try
+			currentState = MC.canvas.getState()
+			defaultVPCId = MC.aws.aws.checkDefaultVPC()
+			if currentState is 'appedit' or defaultVPCId
+				if defaultVPCId
+					currentVPCId = defaultVPCId
+				else
+					currentVPCUID = MC.aws.vpc.getVPCUID()
+					currentVPCComp = MC.canvas_data.component[currentVPCUID]
+					currentVPCId = currentVPCComp.resource.VpcId
+				currentRegion = MC.canvas_data.region
+				currentResource = MC.data.resource_list[currentRegion]
+				_.each currentResource, (resObj, resId) ->
+					if resId.indexOf('eni-') is 0
+						if resObj.vpcId is currentVPCId
+							_.each resObj.privateIpAddressesSet.item, (ipObj) ->
+								filterAry.push(ipObj.privateIpAddress)
+					null
+		catch err
+			console.log(err)
+
 		if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
 			azUID = if layout_data.component.node[ uid ] then layout_data.component.node[ uid ].groupUId else layout_data.component.node[ MC.canvas_data.component[ uid ].resource.Attachment.InstanceId.split('.')[0].slice(1) ].groupUId
 			azName = MC.canvas_data.layout.component.group[azUID].name
-			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(azName, true)
-			else
-				MC.aws.subnet.updateAllENIIPList(azName, false)
+			MC.aws.subnet.updateAllENIIPList(azName, true, filterAry)
 		else
-			if MC.canvas.getState() is 'appedit'
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true)
-			else
-				MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), false)
+			MC.aws.subnet.updateAllENIIPList(comp_data[uid].resource.SubnetId.split('.')[0].slice(1), true, filterAry)
 
 
 		# restore canvas comps
@@ -838,7 +886,64 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		null
 
 
+	getAllImageId = ( json_data ) ->
+
+		ami_list = {}
+
+		_.each json_data.component, (compObj) ->
+
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+				imageId = compObj.resource.ImageId
+				if imageId
+					ami_list[imageId] = MC.data.dict_ami[imageId]
+				else
+					console.log '[getAllImageId]ImageId of ' + compObj.type + '(' + compObj.uid + ') is empty'
+
+		#return
+		ami_list
+
+
+	checkStoppable = ( json_data ) ->
+		#if has any instance-store ami, then stoppable is true
+
+		stoppable = true
+
+		ami_list = getAllImageId json_data
+
+		_.each ami_list, (data, imageId) ->
+
+			if data and data.rootDeviceType == 'instance-store'
+				stoppable = false
+				return
+
+			null
+
+		#set stoppable
+		json_data.property.stoppable = stoppable
+
+		null
+
+	searchStackAppById = ( id ) ->
+
+		value = null
+
+		try
+
+			temp  = if id.split('-')[0] is 'stack' then MC.data.nav_stack_list else MC.data.nav_app_list
+			_.each temp, ( obj ) ->
+				_.each obj.region_name_group, ( item ) ->
+					value = item if item.id is id
+					return true
+
+		catch error
+			console.log 'searchStackAppById error, id is ' + id
+			console.log error
+
+		value
 
 	#public
 	expandServerGroup  : expandServerGroup
 	compactServerGroup : compactServerGroup
+	getAllImageId      : getAllImageId
+	checkStoppable     : checkStoppable
+	searchStackAppById : searchStackAppById

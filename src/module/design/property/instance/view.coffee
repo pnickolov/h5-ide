@@ -73,8 +73,7 @@ define [ '../base/view',
 
             if target.parsley 'validate'
 
-                instanceUID = that.model.get 'get_uid'
-                MC.aws.eni.updateAllInstanceENIIPToAutoAssign(instanceUID)
+                MC.aws.eni.updateAllInstanceENIIPToAutoAssign( @model.get 'uid' )
                 this.refreshIPList()
 
                 val = +target.val()

@@ -22,13 +22,18 @@ define [ 'event',
 
         initialize : ->
             #listen
-            $( document ).on 'click', '.new-stack-dialog', this, this.openNewStackDialog
+            $( document.body ).on 'click', '.new-stack-dialog',  this, @openNewStackDialog
+            $( document.body ).on 'click', '#reload-account-attributes',  this, @reloadAccountAttributes
+            $( document.body ).on 'click', '#close-tab-confirm', this, @_closeTabConfirm
             #
             this.listenTo ide_event, 'UPDATE_TAB_ICON', this.updateTabIcon
 
         render   : () ->
             console.log 'tabbar render'
             $( this.el ).html this.template()
+
+        reloadAccountAttributes: () ->
+             window.location.reload()
 
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTabEvent'
@@ -183,7 +188,6 @@ define [ 'event',
                 @trueCloseTab @current_tab, tab_id
             else
                 modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
-                $( document.body ).one 'click', '#close-tab-confirm', this, @_closeTabConfirm
             null
 
         _closeTabConfirm : ( event ) ->

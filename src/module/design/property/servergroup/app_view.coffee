@@ -76,6 +76,7 @@ define [ '../base/view',
         refreshIPList       : instance_view.refreshIPList
         updateIPAddBtnState : instance_view.updateIPAddBtnState
         setEditableIP       : instance_view.setEditableIP
+        validateIPList      : instance_view.validateIPList
 
 
     }

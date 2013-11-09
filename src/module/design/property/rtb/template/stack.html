@@ -4,7 +4,7 @@
 	{{else}}
 	<div class="property-control-group" data-bind="true">
 		<label class="left" for="rt-name">{{i18n "PROP_RT_NAME"}}</label>
-		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"  value="{{route_table.name}}" name="rt-name" id="rt-name" data-uid="{{route_table.uid}}" data-type="awsName">
+		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"  value="{{route_table.name}}" name="rt-name" id="rt-name" data-type="awsName">
 	</div>
 
 	<div class="tac property-control-group">
@@ -12,6 +12,7 @@
 		<p>{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
 		{{else}}
 		<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
+		<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
 		{{/if}}
 	</div>
 

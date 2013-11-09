@@ -91,7 +91,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             if compObj.type is compType
 
-                name_list.push compObj.name
+                if compObj.serverGroupName
+                    name_list.push compObj.serverGroupName
+                else
+                    name_list.push compObj.name
 
             null
 
@@ -220,12 +223,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
             #ami
             if resources.DescribeImages
                 _.map resources.DescribeImages, ( res, i ) ->
-                    if !res.osType
-                      res = $.extend true, {}, res
-                      res.osType = MC.aws.ami.getOSType res
+                    try
+                        if !res.osType
+                            res = $.extend true, {}, res
+                            res.osType = MC.aws.ami.getOSType res
 
-                    MC.data.dict_ami[res.imageId] = res
-                    MC.data.resource_list[region][res.imageId] = res
+                        MC.data.dict_ami[res.imageId] = res
+                        MC.data.resource_list[region][res.imageId] = res
+
+                    catch e
+                        console.log "[cacheResource:DescribeImages]error: " + res.imageId
 
                     null
 
@@ -713,8 +720,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getChanges = (data, ori_data) ->
         me = this
 
-        isChanged = false
-        instance_list = []
+        changes = {'remain':[], 'remove':[]}
 
         # first check change
         new_str = JSON.stringify(data)
@@ -722,30 +728,46 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         if new_str != ori_str
             isChanged = true
 
-            for uid of data.component
-                item = data.component[uid]
+            for uid of ori_data.component
+                item = ori_data.component[uid]
 
                 # only instance
-                if item.type is 'AWS.EC2.Instance' and uid of ori_data.component
-                    # check instance size
-                    if item.resource.InstanceType is ori_data.component[uid].resource.InstanceType
-                        continue
-
-                    # server group
-                    if item.number > 1 and uid of data.layout.component.node
-                        for inst_uid in data.layout.component.node[uid].instanceList
-                            inst_item = data.component[inst_uid]
-                            instance_list.push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
-
-                    else
-                        # filter server group instance
-                        inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
-                        if inst in instance_list
+                if item.type is 'AWS.EC2.Instance'
+                    if uid of data.component    # remain
+                        # check instance size
+                        if item.resource.InstanceType is data.component[uid].resource.InstanceType
                             continue
 
-                        instance_list.push inst
+                        # server group
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
 
-        {'isChanged':isChanged, 'changes':instance_list}
+                        else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
+                            changes['remain'].push inst
+
+                    else
+                        if item.number > 1 and uid of ori_data.layout.component.node
+                            for inst_uid in ori_data.layout.component.node[uid].instanceList
+                                inst_item = ori_data.component[inst_uid]
+                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+
+                        else
+                            # filter server group instance
+                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
+                            if inst in changes['remain']
+                                continue
+
+                            changes['remove'].push inst
+
+
+        {'isChanged':isChanged, 'changes':changes}
 
     #public
     getNewName                  : getNewName

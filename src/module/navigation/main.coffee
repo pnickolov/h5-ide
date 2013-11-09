@@ -4,8 +4,9 @@
 
 define [ 'jquery',
          'event',
-         'base_main'
-], ( $, ide_event, base_main ) ->
+         'base_main',
+         'constant'
+], ( $, ide_event, base_main, constant ) ->
 
     #private
     initialize = ->
@@ -37,8 +38,6 @@ define [ 'jquery',
                 ide_event.trigger ide_event.RESULT_APP_LIST, model.get 'app_list'
                 #refresh view
                 view.appListRender()
-                #call
-                model.stackListService()
 
             model.on 'change:stack_list', () ->
                 console.log 'change:stack_list'
@@ -65,6 +64,7 @@ define [ 'jquery',
 
             #model
             model.appListService()
+            model.stackListService()
 
             ide_event.onLongListen ide_event.UPDATE_APP_LIST, (flag, ids) ->
                 console.log 'UPDATE_APP_LIST'
@@ -80,6 +80,10 @@ define [ 'jquery',
                 console.log 'navigation:UPDATE_AWS_CREDENTIAL'
                 #call
                 model.describeRegionsService() if MC.forge.cookie.getCookieByName('has_cred') is 'true'
+
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
+                console.log 'navigation:UPDATE_APP_STATE', type, id
+                model.updateApplistState type, id if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
 
     unLoadModule = () ->
         #view.remove()

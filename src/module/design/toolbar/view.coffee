@@ -107,6 +107,14 @@ define [ 'MC', 'event',
             if !$('#phantom-frame')[0]
                 $( document.body ).append '<iframe id="phantom-frame" src="' + MC.SAVEPNG_URL + 'proxy.html" style="display:none;"></iframe>'
 
+        listen     : ->
+            # app update event
+            $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
+            # cancel to app model
+            $( document.body ).on 'click', '#return-app-confirm', this, @_return2App
+            # export to png download button click
+            $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
+
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'
@@ -129,7 +137,7 @@ define [ 'MC', 'event',
             else
                 # set app name
                 $('.modal-input-value').val MC.canvas_data.name
-                
+
                 # set total fee
                 copy_data = $.extend( true, {}, MC.canvas_data )
                 cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
@@ -137,16 +145,14 @@ define [ 'MC', 'event',
 
                 #
                 #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()
-                MC.ta.validRun()
-                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'stack'
+
+                require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                    trustedadvisor_main.loadModule 'stack'
+
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
                     console.log 'clickRunIcon'
-
-                    # disable button
-                    $('#btn-confirm').attr 'disabled', true
-                    $('.modal-close').attr 'disabled', true
 
                     app_name = $('.modal-input-value').val()
 
@@ -165,21 +171,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
                         return
 
-                    #modal.close()
+                    # disable button
+                    $('#btn-confirm').attr 'disabled', true
+                    $('.modal-close').attr 'disabled', true
 
-                    # # check change and save stack
-                    # ori_data = MC.canvas_property.original_json
-                    # new_data = JSON.stringify( MC.canvas_data )
-                    # id = MC.canvas_data.id
-                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
-                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
-
-                    # hold on 0.5 second for data update
-                    # setTimeout () ->
-                    #     me.trigger 'TOOLBAR_RUN_CLICK', app_name, MC.canvas_data
-                    #     MC.data.app_list[MC.canvas_data.region].push app_name
-                    # , 500
 
             true
 
@@ -341,14 +337,20 @@ define [ 'MC', 'event',
         exportPNG : ( base64_image ) ->
             console.log 'exportPNG'
             #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
-            modal MC.template.exportpng {"title":"Export PNG", "confirm":"Download", "color":"blue" }, false
+
+            modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
+            $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', true
+
             if base64_image
                 $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+                $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+
             $( '#btn-confirm' ).attr {
                 'href'      : "data:image/png;base64, " + base64_image,
                 'download'  : MC.canvas_data.name + '.png',
             }
-            $('#btn-confirm').one 'click', { target : this }, () -> modal.close()
+
+            null
 
         #for debug
         clickOpenJSONDiff : ->
@@ -503,42 +505,49 @@ define [ 'MC', 'event',
 
                 if diff_data.isChanged
 
-                    state = constant.APP_STATE.APP_STATE_STOPPED
+                    #state   = constant.APP_STATE.APP_STATE_STOPPED
+                    state    = null
                     platform = 'vpc'
+                    info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
 
-                    # check app state
+                    # set state
                     if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
+
+                    # set platform and info
                     if MC.canvas_data.platform is "ec2-classic"
                         platform = 'ec2'
+                        info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
 
                     ## modal init
-                    obj = { 'state':state, 'platform':platform, 'instance_list':diff_data.changes }
-                    #obj.platform = 'vpc'
-                    #obj.instance_list = []
-                    #obj.state = constant.APP_STATE.APP_STATE_STOPPED
+                    obj = { 'state' : state, 'platform' : platform, 'info' : info, 'instance_list' : diff_data.changes }
+                    console.log 'app update object'
+                    console.log obj
+
+                    modal MC.template.updateApp obj
+
+                    require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
+                        trustedadvisor_main.loadModule 'stack'
+
+                    #if obj.state is constant.APP_STATE.APP_STATE_STOPPED
                     #
-                    if obj.state is constant.APP_STATE.APP_STATE_STOPPED
-
-                        modal MC.template.updateApp()
-                        $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
-
-                    else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
-
-                        if obj.instance_list.length is 0
-
-                            modal MC.template.updateApp()
-                            $( '.update-app-notice' ).empty()
-                            $( document.body ).one 'click', '#close-update-app', this, @_updateAndRun
-
-                        else
-
-                            modal MC.template.restartInstance obj
-                            if obj.platform is 'ec2'
-                                $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
-                            else if obj.platform is 'vpc'
-                                $( '#instance-type' ).html lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
-                            $( document.body ).one 'click', '#close-restart-instance', this, @_updateAndRun
+                    #    modal MC.template.updateApp obj
+                    #    #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
+                    #
+                    #    if obj.instance_list.length is 0
+                    #
+                    #        modal MC.template.updateApp()
+                    #        $( '.update-app-notice' ).empty()
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
+                    #
+                    #    else
+                    #
+                    #        modal MC.template.restartInstance obj
+                    #
+                    #
+                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
 
                 else
                     #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
@@ -558,7 +567,6 @@ define [ 'MC', 'event',
                 @_return2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
-                $( document.body ).one 'click', '#return-app-confirm', this, @_return2App
             null
 
         _return2App : ( target ) ->
@@ -587,6 +595,9 @@ define [ 'MC', 'event',
             # 7. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
 
+            # 8. Hide status bar validation
+            ide_event.trigger ide_event.HIDE_STATUS_BAR
+
             null
 
         saveSuccess2App : ( tab_id, region ) ->
@@ -613,19 +624,7 @@ define [ 'MC', 'event',
             # 1. event.data.trigger 'xxxxx'
             ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
 
-            # 2. TO-DO
-
-            # 3. close modal
-            modal.close()
-            null
-
-        _restartInstance : ( event ) ->
-            console.log '_restartInstance'
-            # 1. event.data.trigger 'xxxxx'
-
-            # 2. TO-DO
-
-            # 3. close modal
+            # 2. close modal
             modal.close()
             null
 

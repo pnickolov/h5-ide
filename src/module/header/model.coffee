@@ -10,9 +10,8 @@ define [ 'backbone', 'jquery', 'underscore',
     HeaderModel = Backbone.Model.extend {
 
         defaults:
-            'info_list'     : []      # [{id, rid, name, operation, error, time, is_readed(true|false), is_error, is_request, is_process, is_complete, is_terminated}]
+            'info_list'     : []      # [{id, rid, name, operation, error, time, is_readed(true|false), is_request, is_process, is_complete, is_terminated}]
             'unread_num'    : null
-            'is_unread'     : null
             'in_dashboard'  : true
             'has_cred'      : true      # default has credential
             'user_name'     : null
@@ -20,10 +19,8 @@ define [ 'backbone', 'jquery', 'underscore',
 
         initialize : ->
 
-            me = this
-
             #logout return handler (dispatch from service/session/session_model)
-            me.on 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
+            @on 'SESSION_LOGOUT_RETURN', ( forge_result ) ->
 
                 if !forge_result.is_error
                     #logout succeed
@@ -37,96 +34,61 @@ define [ 'backbone', 'jquery', 'underscore',
 
                 window.location.href = "login.html"
 
-
                 return false
 
-        getUserName : ->
-            console.log 'getUserName'
-            this.set 'user_name', MC.base64Decode $.cookie( 'usercode' )
-
-        getUserEmail : ->
-            this.set 'user_email', MC.base64Decode $.cookie( 'email' )
-
+        init : ()->
+            @set {
+                'user_name'  : MC.base64Decode $.cookie( 'usercode' )
+                'user_email' : MC.base64Decode $.cookie( 'email' )
+            }
             null
 
-        # getInfoList : () ->
-        #     me = this
-
-        #     info_list = me.get 'info_list'
-        #     unread_num = me.get 'unread_num'
-
-        #     if not info_list
-        #         #get from ws
-        #         info_list = me.queryRequest()
-
-        #     if not unread_num
-        #         unread_num = 0
-
-        #     me.set 'info_list', info_list
-
-        #     is_unread = false
-        #     if unread_num>0
-        #         is_unread = true
-        #     me.set 'is_unread', is_unread
-        #     me.set 'unread_num', unread_num
-
-        #     null
-
         updateHeader : (req) ->
-            me = this
 
-            item = me.parseInfo req
+            item = @parseInfo req
+            if not item
+                return
 
-            if item
-                info_list = me.get 'info_list'
-                unread_num = me.get 'unread_num'
-                in_dashboard = me.get 'in_dashboard'
+            info_list    = @attributes.info_list
+            unread_num   = @attributes.unread_num
+            in_dashboard = @attributes.in_dashboard
 
-                # check whether same operation
-                same_req = 0
-                same_req++ for i in info_list when i.id == item.id
+            # check whether same operation
+            same_req = 0
+            same_req++ for i in info_list when i.id == item.id
 
-                # check whether on current tab
-                if in_dashboard or item.rid != MC.canvas_data.id
-                    item.is_readed = false
-                    if same_req == 0 or unread_num == 0
-                        unread_num += 1
+            # check whether on current tab
+            if in_dashboard or item.rid != MC.canvas_data.id
+                item.is_readed = false
+                if same_req == 0 or unread_num == 0
+                    @set 'unread_num', unread_num + 1
 
-                        me.set 'unread_num', unread_num
-                        me.set 'is_unread', true
+            # remove the old request and new to the header
+            for i, idx in info_list
+                if i.id is item.id
+                    info_list.splice idx, 1
+                    break
 
-                # remove the old request and new to the header
-                info_list.splice(info_list.indexOf(i), 1) for i in info_list when i and i.id == item.id
-
-                info_list.splice 0, 0, item
-
-                # filter done and terminated app
-                terminated_list = []
-                terminated_list.push i.rid for i in info_list when i.is_complete and i.operation is 'terminate'
-                info_list[info_list.indexOf i].is_terminated = true for i in info_list when i.rid in terminated_list
-
-                me.set 'info_list', info_list
+            info_list.splice 0, 0, item
+            null
 
         parseInfo : (req) ->
             if not req.brief
                 return
 
             lst = req.brief.split ' '
-            item_def =
+            item =
                 is_readed     : true
-                is_error      : req.state is constant.OPS_STATE.OPS_STATE_FAILED
                 is_request    : req.state is constant.OPS_STATE.OPS_STATE_PENDING
                 is_process    : req.state is constant.OPS_STATE.OPS_STATE_INPROCESS
                 is_complete   : req.state is constant.OPS_STATE.OPS_STATE_DONE
-                is_terminated : false
                 operation     : lst[0].toLowerCase()
                 name          : lst[lst.length-1]
                 region_label  : constant.REGION_SHORT_LABEL[req.region]
                 time          : req.time_end
 
-            # req.time_begin | req.time_end
+            item = $.extend {}, req, item
 
-            item = $.extend {}, req, item_def
 
             if req.state is constant.OPS_STATE.OPS_STATE_FAILED
                 item.error = req.data
@@ -155,6 +117,8 @@ define [ 'backbone', 'jquery', 'underscore',
                 if item.is_complete     # run stack success
                     item.rid = req.data.split(' ')[lst.length-1]
 
+            item.is_terminated = item.is_complete and item.operation is 'terminate'
+
             item
 
         # queryRequest : () ->
@@ -180,55 +144,30 @@ define [ 'backbone', 'jquery', 'underscore',
         #     info_list
 
         setFlag : (flag) ->
-            me = this
+            @set 'in_dashboard', flag
 
-            me.set 'in_dashboard', flag
-
-            unread_num = me.get 'unread_num'
-            info_list = me.get 'info_list'
+            unread_num = @attributes.unread_num
+            info_list  = @attributes.info_list
 
             if not flag and unread_num > 0 # in tab and update unread number when on the updating tab
                 for info in info_list
                     if info.rid == MC.canvas_data.id and not info.is_readed
-                        info_list[info_list.indexOf(info)].is_readed = true
-                        unread_num = unread_num - 1
+                        info.is_readed = true
 
-                        me.set 'unread_num', unread_num
-                        if unread_num>0
-                            me.set 'is_unread', true
-                        else
-                            me.set 'is_unread', false
-
-                        me.set 'info_list', info_list
-
-                        #me.trigger 'HEADER_UPDATE'
-
+                        @set 'unread_num', unread_num - 1
                         break
+
             null
 
         resetInfoList : () ->
-            me = this
+            for i in @attributes.info_list
+                i.is_readed = true
 
-            info_list = me.get 'info_list'
-
-            $.each info_list, (id, req) ->
-                if not req.is_readed
-                    info_list[id].is_readed = true
-
-                null
-
-            me.set 'info_list', info_list
-            me.set 'unread_num', 0
-            me.set 'is_unread', false
-
-            #me.trigger 'HEADER_UPDATE'
-
+            @set 'unread_num', 0
             null
 
         openApp : (req_id) ->
-            me = this
-
-            info_list = me.get 'info_list'
+            info_list = @attributes.info_list
 
             req = i for i in info_list when i.id == req_id
 
@@ -246,6 +185,4 @@ define [ 'backbone', 'jquery', 'underscore',
 
     }
 
-    model = new HeaderModel()
-
-    return model
+    return new HeaderModel()

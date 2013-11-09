@@ -30,9 +30,9 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 			if obj.key is key
 				delete_obj = obj
 
-		MC.ta.list = _.without( MC.ta.list, delete_obj )
-
-		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
+		if delete_obj
+			MC.ta.list = _.without( MC.ta.list, delete_obj )
+			ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'delete', delete_obj.level if delete_obj.level
 
 		null
 
@@ -42,7 +42,7 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 		ide_event.trigger ide_event.UPDATE_STATUS_BAR, 'add', result.level
 
 	_replace = ( result ) ->
-		_.map MC.ta.list, ( item ) ->
+		MC.ta.list = _.map MC.ta.list, ( item ) ->
 			if item.key is result.key
 				return result
 			item
@@ -53,14 +53,19 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 	########## Public Method ##########
 
 	set = ( key, result, uid ) ->
+
 		res = _genRes key, result, uid
 		k = res.key
+
+		if _.isArray result
+			_.each result, ( r ) ->
+				set key, r, r.uid
 
 		if result
 			if not _exist k
 				_add res
 			else
-				_replace result
+				_replace res
 		else
 			_del k
 

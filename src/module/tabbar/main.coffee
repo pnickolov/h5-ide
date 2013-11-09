@@ -124,7 +124,7 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.SWITCH_DASHBOARD, null
 
             #listen new_stack
-            model.on 'NEW_STACK', ( tab_id ) ->
+            newStack = ( tab_id ) ->
                 console.log 'NEW_STACK'
                 console.log model.get 'stack_region_name'
                 console.log model.get 'current_platform'
@@ -136,6 +136,7 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
+            model.on 'NEW_STACK', newStack
 
             #listen open_stack
             openStack = ( tab_id ) ->
@@ -231,10 +232,14 @@ define [ 'jquery', 'event', 'base_main',
                 #
                 view.temp_region_name = region_name
                 #
-                if model.checkPlatform( region_name )
+                platformSupport = model.checkPlatform( region_name )
+                if platformSupport is true
                     modal MC.template.createNewStackClassic(), true
-                else
+                else if  platformSupport is false
                     modal MC.template.createNewStackVPC(), true
+                else
+                    modal MC.template.createNewStackErrorAndReload(), true
+
                 null
 
             #listen add app tab
@@ -351,6 +356,17 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'stack_region_name', region_name
                 #
                 openStack tab_id
+
+            #listen
+            ide_event.onLongListen ide_event.RELOAD_NEW_STACK_TAB, ( tab_id, region_name, platform ) ->
+                console.log 'RELOAD_NEW_STACK_TAB', tab_id, region_name, platform
+                #set vo
+                model.set 'tab_name',          tab_id
+                model.set 'stack_region_name', region_name
+                model.set 'current_platform',  platform
+                #ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
+                #
+                newStack tab_id
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->

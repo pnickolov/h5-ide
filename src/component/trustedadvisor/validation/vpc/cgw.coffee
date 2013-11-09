@@ -6,6 +6,11 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 			if !callback
 				callback = () ->
 
+			currentState = MC.canvas.getState()
+			if currentState is 'appedit'
+				callback(null)
+				return null
+
 			# get current stack all cgw
 			stackCGWIP = stackCGWName = stackCGWUID = null
 			_.each MC.canvas_data.component, (compObj) ->
@@ -34,7 +39,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 								cgwId = cgwObj.customerGatewayId
 								cgwIP = cgwObj.ipAddress
 								cgwState = cgwObj.state
-								if stackCGWIP isnt cgwIP and cgwState is 'available'
+								if stackCGWIP is cgwIP and cgwState is 'available'
 									conflictInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_IP_CONFLICT, stackCGWName, stackCGWIP, cgwId, cgwIP
 									checkResult = false
 								null
@@ -44,11 +49,10 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 						if checkResult
 							callback(null)
 						else
-							validResultObj = {
-								level: constant.TA.ERROR,
-								info: conflictInfo,
-								uid: stackCGWUID
-							}
+							validResultObj =
+								level: constant.TA.ERROR
+								info: conflictInfo
+
 							callback(validResultObj)
 							console.log(validResultObj)
 
@@ -58,13 +62,12 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'customergateway_service
 				tipInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT
 				return {
 					level: constant.TA.ERROR,
-					info: tipInfo,
-					uid: stackCGWUID
+					info: tipInfo
 				}
 
 			else
-				return null
+				callback(null)
 		catch err
-			return null
+			callback(null)
 
 	isCGWHaveIPConflict : isCGWHaveIPConflict

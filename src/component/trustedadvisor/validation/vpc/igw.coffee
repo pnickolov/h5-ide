@@ -22,7 +22,5 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         info    : tipInfo
         uid     : uid
 
-
-
     # public
     isConnectToRTB : isConnectToRTB

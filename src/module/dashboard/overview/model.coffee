@@ -1259,7 +1259,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 start_time = null
                 stop_time = null
 
-                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable is 'false'
+                if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable == false
                     has_instance_store_ami = true
 
                 if item.last_start
@@ -1309,8 +1309,8 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 return if a.interval <= b.interval then 1 else -1
 
             # time filter
-            now = Date.now()/1000
-            recent_list = (i for i in recent_list when Math.ceil((now-i.interval)/86400) <= constant.RECENT_DAYS)
+            # now = Date.now()/1000
+            # recent_list = (i for i in recent_list when Math.ceil((now-i.interval)/86400) <= constant.RECENT_DAYS)
             # number filter
             if recent_list.length > constant.RECENT_NUM
                 recent_list = recent_list[0..(constant.RECENT_NUM-1)]

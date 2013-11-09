@@ -461,7 +461,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 						MC.canvas.data.set('component', data)
 
-						MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
+						if eip_index is 0
+							MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_ON
 
 						ide_event.trigger ide_event.NEED_IGW
 
@@ -487,8 +488,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 										return false
 
-								if not existing
-
+								# if not existing
+								if eip_index is 0
 									MC.canvas.update instance_uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
 
@@ -590,14 +591,11 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 				max_index = comp.resource.PrivateIpAddressSet.length - 1
 				min_index = index + 1
-
 				modify_index_refs = {}
 
-				for index_value in [min_index..max_index]
-					modify_index_refs["@#{comp.uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
-
-				comp.resource.PrivateIpAddressSet.splice index, 1
-				remove_uid = null
+				if min_index <= max_index
+					for index_value in [min_index..max_index]
+						modify_index_refs["@#{comp.uid}.resource.PrivateIpAddressSet.#{index_value}.PrivateIpAddress"] = true
 
 				for u, c of MC.canvas_data.component
 					if c.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
@@ -609,10 +607,16 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 						idx = parseInt( c.resource.PrivateIpAddress.split('.')[3],10 )-1
 						c.resource.PrivateIpAddress = "@#{comp_uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
 					else if c.resource.PrivateIpAddress is ip_ref
-						remove_uid = u
+						delete MC.canvas_data.component[ u ]
 
-				delete MC.canvas_data.component[remove_uid]
+				comp.resource.PrivateIpAddressSet.splice index, 1
 				break
+
+			stillHasEIP = _.some @attributes.eni_ips, ( ip )->
+				ip.eip
+
+			if not stillHasEIP
+				MC.canvas.update uid,'image','eip_status', MC.canvas.IMAGE.EIP_OFF
 
 			# Re-generate IP for ENI component
 			realIPAry = MC.aws.eni.generateIPList eniUID, @attributes.eni_ips

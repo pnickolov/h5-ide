@@ -129,11 +129,12 @@ define [ '../base/view',
                 if inputValue.indexOf('x') is -1
                     ipInSubnet = false
                     if MC.aws.aws.checkDefaultVPC()
-                        subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
+                        subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(eniUID)
                         subnetCIDR = subnetObj.cidrBlock
                     else
-                        subnetUID = MC.extractID MC.canvas_data.component[instanceUID].resource.SubnetId
-                        subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+                        subnetUID = MC.extractID MC.canvas_data.component[eniUID].resource.SubnetId
+                        subnetObj = MC.canvas_data.component[subnetUID]
+                        subnetCIDR = subnetObj.resource.CidrBlock
 
                     ipInSubnet = MC.aws.subnet.isIPInSubnet(currentInputIP, subnetCIDR)
 

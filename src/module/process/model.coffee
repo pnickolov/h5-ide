@@ -49,7 +49,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                         # save png
                         app_name = MC.process[tab_name].name
-                        ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
+                        #ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
 
                         return if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
 
@@ -59,7 +59,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                             ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                             ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                        , 2000
+                        , 800
                     , 1000
 
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress

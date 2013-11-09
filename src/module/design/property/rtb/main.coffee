@@ -13,32 +13,16 @@ define [ '../base/main',
 
     ideEvents = {}
     ideEvents[ ide_event.CANVAS_DELETE_OBJECT ] = () ->
-        this.model.reInit()
-        this.view.render()
+        @model.reInit()
+        @view.render()
 
     ideEvents[ ide_event.CANVAS_CREATE_LINE ] = () ->
-        this.model.reInit()
-        this.view.render()
+        @model.reInit()
+        @view.render()
 
     RTBModule = PropertyModule.extend {
 
         handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, /rtb-tgt/, /rtb-src/ ]
-
-        setupStack : () ->
-
-            me = this
-            @view.on 'SET_ROUTE', ( uid, data, routes ) ->
-                me.model.setRoutes uid, data, routes
-
-            @view.on 'SET_NAME', ( uid, name ) ->
-                me.model.setName uid, name
-
-            @view.on 'SET_MAIN_RT', ( uid ) ->
-                me.model.setMainRT uid
-                me.model.reInit()
-
-            @view.on 'SET_PROPAGATION', ( uid, value ) ->
-                me.model.setPropagation uid, value
 
         initStack : () ->
             @model = model

@@ -399,6 +399,157 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
 			null
 
+	getAvailableIPCountInCIDR = (ipCidr, filter) ->
+
+		_addZeroToLeftStr = (str, n) ->
+			count = n - str.length + 1
+			strAry = _.map [1...count], () ->
+				return '0'
+			str = strAry.join('') + str
+
+		cutAry = ipCidr.split('/')
+		ipAddr = cutAry[0]
+		suffix = Number cutAry[1]
+		prefix = 32 - suffix
+
+		ipAddrAry = ipAddr.split '.'
+		ipAddrBinAry = _.map ipAddrAry, (value) ->
+			return _addZeroToLeftStr(parseInt(value).toString(2), 8)
+
+		ipAddrBinStr = ipAddrBinAry.join ''
+		ipAddrBinPrefixStr = ipAddrBinStr.slice(0, suffix)
+
+		ipAddrBinStrSuffixMin = ipAddrBinStr.slice(suffix).replace(/1/g, '0')
+		ipAddrBinStrSuffixMax = ipAddrBinStrSuffixMin.replace(/0/g, '1')
+
+		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
+		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
+
+		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		if availableIPCount < 0
+			availableIPCount = 0
+
+		return availableIPCount
+
+	# getUsingIPCountInSubnet = (subnetUIDRefOrAZ) ->
+
+	# 	defaultVPCId = MC.aws.aws.checkDefaultVPC()
+	# 	allCompAry = MC.canvas_data.component
+
+	# 	totalIPCount = 0
+
+	# 	_.each allCompAry, (compObj) ->
+
+	# 		# count eni ip
+	# 		if compObj.type is 'AWS.VPC.NetworkInterface'
+				
+	# 			currentSubnetUIDRef = compObj.resource.SubnetId
+	# 			currentAZName = compObj.resource.AvailabilityZone
+	# 			if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or
+	# 				(defaultVPCId and currentAZName is subnetUIDRefOrAZ)
+	# 					privateIpAddressSet = compObj.resource.PrivateIpAddressSet
+	# 					totalIPCount += privateIpAddressSet.length
+
+	# 		# count asg ip
+	# 		if compObj.type is 'AWS.AutoScaling.Group'
+
+	# 			desiredCount = Number(compObj.resource.DesiredCapacity)
+
+	# 			currentAZAry = compObj.resource.AvailabilityZones
+	# 			subnetRefAryStr = compObj.resource.VPCZoneIdentifier
+	# 			subnetRefAry = subnetRefAryStr.split(',')
+	# 			subnetRefAry = _.map subnetRefAry, (subnetRef) ->
+	# 				return $.trim(subnetRef)
+
+	# 			if (!defaultVPCId and subnetUIDRefOrAZ in subnetRefAry) or
+	# 				(defaultVPCId and subnetUIDRefOrAZ in currentAZAry)
+	# 				totalIPCount += desiredCount
+
+	# 		# count elb ip
+	# 		if compObj.type is 'AWS.ELB'
+	# 			subnetRefAry = compObj.resource.Subnets
+	# 			if subnetUIDRefOrAZ in subnetRefAry
+
+	# 		null
+
+	# 	return allOtherIPAry
+
+
+	getInstanceIdOfENI = ( comp_eni ) ->
+
+		instanceId = ''
+		tmpAry = comp_eni.resource.Attachment.InstanceId.split('.')
+
+		if tmpAry.length>0
+			instanceId = tmpAry[0].substr(1)
+
+		#return
+		instanceId
+
+
+	updateServerGroupState = ( app_id, server_group_uid ) ->
+
+		if MC.canvas.getState() == 'stack'
+
+			return null
+
+		if app_id and MC.canvas.data.get('id') == app_id
+
+			comp_data = MC.canvas.data.get("component")
+			eni_id = undefined
+			eni_data = undefined
+			$.each comp_data, (uid, comp) ->
+				if comp.type is "AWS.VPC.NetworkInterface" and comp.index is 0 and comp.serverGroupUid
+
+
+					instanceId = getInstanceIdOfENI comp
+					comp_ins = comp_data[instanceId]
+					if instanceId and comp_ins and comp_ins.number>1
+						#ServerGroup node
+
+						if server_group_uid is comp.serverGroupUid || !server_group_uid
+
+							eni_list = getENIInServerGroup comp_data, comp.serverGroupUid
+							if eni_list.length isnt comp_ins.number
+								#lack of eni
+								Canvon('#' + uid + '_eni-number-group').addClass 'deleted'
+								Canvon('#' + uid).addClass 'deleted'
+							else
+								#enis are all in readiness
+								Canvon('#' + uid + '_eni-number-group').removeClass 'deleted'
+								Canvon('#' + uid).removeClass 'deleted'
+
+
+		null
+
+
+	getENIInServerGroup = ( comp_data, server_group_uid ) ->
+
+		eni_list = []
+
+		if comp_data and server_group_uid
+
+			$.each comp_data, (uid, comp) ->
+
+				if comp.type is "AWS.VPC.NetworkInterface" and comp.serverGroupUid is server_group_uid
+					eni_id = comp.resource.NetworkInterfaceId
+					eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+					if eni_id and eni_data
+						#eni existed
+						eni_list.push comp.resource.NetworkInterfaceId
+
+		#return
+		eni_list
+
+
+	getENIById = ( eni_id ) ->
+
+		eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+
+		#return
+		eni_data
+
+
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
 	getAvailableIPInCIDR : getAvailableIPInCIDR
@@ -416,3 +567,9 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 	getAllNoAutoAssignIPInCIDR : getAllNoAutoAssignIPInCIDR
 	haveIPConflictWithOtherENI : haveIPConflictWithOtherENI
 	updateAllInstanceENIIPToAutoAssign : updateAllInstanceENIIPToAutoAssign
+	getAvailableIPCountInCIDR : getAvailableIPCountInCIDR
+	updateServerGroupState : updateServerGroupState
+	getENIInServerGroup : getENIInServerGroup
+	getInstanceIdOfENI : getInstanceIdOfENI
+	getENIById : getENIById
+

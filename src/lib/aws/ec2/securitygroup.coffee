@@ -49,9 +49,12 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 		refCompAry = []
 		defaultSGComp = MC.aws.sg.getDefaultSG()
 		defaultSGUID = defaultSGComp.uid
+
+		# remove all ref in all comp
 		_.each MC.canvas_data.component, (comp) ->
 			compType = comp.type
 			compUID = comp.uid
+
 			if compType is 'AWS.ELB' or compType is 'AWS.AutoScaling.LaunchConfiguration'
 				sgAry = comp.resource.SecurityGroups
 				sgAry = _.filter sgAry, (value) ->
@@ -132,11 +135,35 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				#update sg color label
 				MC.aws.sg.updateSGColorLabel compUID
 
+			# remove all ref rule in all sg
+			if compType is 'AWS.EC2.SecurityGroup'
+
+				sgRuleRef = '@' + sgUID + '.resource.GroupId'
+
+				sgInboundRuleAry = comp.resource.IpPermissions
+				sgOutboundRuleAry = comp.resource.IpPermissionsEgress
+
+				if sgInboundRuleAry
+					newSgInboundRuleAry = _.filter sgInboundRuleAry, (ruleObj) ->
+						if ruleObj.IpRanges is sgRuleRef
+							return false
+						return true
+					MC.canvas_data.component[compUID].resource.IpPermissions = newSgInboundRuleAry
+
+				if sgOutboundRuleAry
+					newSgOutboundRuleAry = _.filter sgOutboundRuleAry, (ruleObj) ->
+						if ruleObj.IpRanges is sgRuleRef
+							return false
+						return true
+					MC.canvas_data.component[compUID].resource.IpPermissionsEgress = newSgOutboundRuleAry
+
 			null
+
+		
 
 		return refCompAry
 
-	getAllRule = (sgRes) ->
+	getAllRule = (sgRes, isAppEdit) ->
 
 		outboundRule = []
 		if sgRes.ipPermissionsEgress
@@ -166,7 +193,11 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if ruleObj.ipRanges
 				ipRanges = ruleObj.ipRanges['item'][0]['cidrIp']
 			else
-				ipRanges = ruleObj.groups.item[0].groupId
+				sgId = ruleObj.groups.item[0].groupId
+				if isAppEdit
+					ipRanges = MC.aws.sg.getSGNameInStackForApp(sgId)
+				else
+					ipRanges = sgId
 
 			if ruleObj.ipProtocol in [-1, '-1']
 				ruleObj.ipProtocol = 'all'
@@ -452,6 +483,19 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 		return newMemberAry
 
+	getSGNameInStackForApp = (sgId) ->
+
+		sgName = ''
+		_.each MC.canvas_data.component, (comp) ->
+
+			if comp.type is 'AWS.EC2.SecurityGroup'
+				currentSgId = comp.resource.GroupId
+				if currentSgId is sgId
+					sgName = comp.name
+			null
+
+		return sgName
+
 	#public
 	getAllRefComp      : getAllRefComp
 	getAllRule         : getAllRule
@@ -463,3 +507,4 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	deleteRefInAllComp : deleteRefInAllComp
 	getDefaultSG       : getDefaultSG
 	convertMemberNameToReal : convertMemberNameToReal
+	getSGNameInStackForApp : getSGNameInStackForApp

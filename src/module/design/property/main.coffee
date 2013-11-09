@@ -15,6 +15,7 @@ define [ 'event',
 				'./module/design/property/servergroup/main',
 				'./module/design/property/connection/main',
 				'./module/design/property/staticsub/main',
+				'./module/design/property/missing/main',
 				'./module/design/property/sg/main',
 				'./module/design/property/sgrule/main',
 				'./module/design/property/volume/main',
@@ -58,15 +59,13 @@ define [ 'event',
 			event.uid = if activeModule then activeModule.uid else ""
 			null
 
+		#listen OPEN_PROPERTY
+		ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, () ->
+			console.log 'SHOW_PROPERTY_PANEL'
+			view.showPropertyPanel()
 
 		#listen OPEN_PROPERTY
 		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid ) ->
-
-			# if resource not exist in app state
-			currentState = MC.canvas.getState()
-			if uid and currentState is 'app' and !MC.aws.aws.isExistResourceInApp(uid)
-				notification 'error', lang.ide.PROP_MSG_ERR_RESOURCE_NOT_EXIST
-				return
 
 			view.load()
 
@@ -102,6 +101,9 @@ define [ 'event',
 
 		### Helper Functions Start ###
 		getComponentType = ( type, uid )->
+			if uid and MC.canvas.getState() is 'app' and !MC.aws.aws.isExistResourceInApp(uid)
+				return 'missing_resource'
+
 			if type is "component"
 				type = null # Reset type.
 

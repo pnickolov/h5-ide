@@ -98,7 +98,7 @@
 	</div>
 </div>
 
-<!-- exportpng -->
+<!-- exportPNG -->
 <div style="width:420px">
 	<div class="modal-header">
 		<h3>{{title}}</h3>
@@ -377,6 +377,20 @@
 	</div>
 </div>
 
+<!-- createNewStackErrorAndReload -->
+<div style="width:400px">
+	<div class="modal-header">
+		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR"}}</h3>
+		<i class="modal-close">×</i>
+	</div>
+	<div class="modal-body">
+		<div id="createNewStack_wrap" class="load-account-attr-error">
+			<p>{{i18n "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY"}}</p>
+			<button class="btn btn-blue" id="reload-account-attributes">{{i18n "DASH_POP_BTN_RETRY"}}</button>
+		</div>
+	</div>
+</div>
+
 <!-- createNewStackVPC -->
 <div style="width:660px">
 	<div class="modal-header">
@@ -586,10 +600,10 @@ Additional Notes and Questions
 				<summary>Stack Validation</summary>
 				<div id="stack-run-validation-container"></div>
 			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
 			<div class="validating">
-				<p>
-					Validating your stack...
-				</p>
+				<div class="loading-spinner loading-spinner-small"></div>
+				<p>Validating your stack...</p>
 			</div>
 		</div>
 		<div class="estimate clearfix">
@@ -599,7 +613,7 @@ Additional Notes and Questions
 
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-blue" id="btn-confirm">Run Stack</button>
+		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
 		<!--  If there is error of this stack, disable this button.
 			<button disabled class="btn btn-blue tooltip" data-tooltip="Please fix error first and try to run the stack again.">Run Stack</button>
 		-->
@@ -874,6 +888,11 @@ Additional Notes and Questions
 	</div>
 </div>
 
+<!-- missingPropertyPanel -->
+<article>
+	<div class="property-control-group">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>
+</article>
+
 <!-- instanceVolume -->
 <div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
 <div id="instance_volume_wrap" class="scroll-wrap">
@@ -957,7 +976,7 @@ Additional Notes and Questions
 		{{#each instances}}
 		<li>
 			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
-				<i class="asgList-item-status status status-{{status}}"></i>
+				<i class="asgList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}" ></i>
 				<span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 				<div class="asgList-item-volume" data-target-id={{id}}>
 					<span class="asgList-item-number">{{../volume}}</span>
@@ -978,8 +997,8 @@ Additional Notes and Questions
 	<ul id="instanceList" class="clearfix">
 		{{#each instances}}
 		<li>
-			<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
-				<i class="instanceList-item-status status status-{{status}}"></i>
+			<a href="#" class='instanceList-item{{ is_deleted }}' id="{{id}}_{{@index}}" data-id="{{id}}">
+				<i class="instanceList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}"></i>
 				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
 					<span class="instanceList-item-number">{{volume}}</span>
@@ -994,7 +1013,7 @@ Additional Notes and Questions
 <!-- instanceListItem -->
 <li>
 	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
-		<i class="instanceList-item-status status status-{{status}}"></i>
+		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
 		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
 			<span class="instanceList-item-number">{{volume}}</span>
@@ -1012,7 +1031,7 @@ Additional Notes and Questions
 	<ul id="eniList" class="clearfix">
 		{{#each enis}}
 		<li>
-			<a href="#" class="eniList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+			<a href="#" class="eniList-item{{ is_deleted }}" id="{{id}}_{{@index}}" data-id="{{id}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
 				<span class="eniList-item-label">{{name}}</span>
 			</a>
@@ -1160,7 +1179,7 @@ Additional Notes and Questions
 <!-- statusbar -->
 <div>
 	<div class="info">Last saved: <span class="stack-save-time">-<span></div>
-	<div class="btn-blue btn-ta-valid">Verify stack</div>
+	<div class="btn-ta-valid">Validate</div>
 </div>
 
 <!-- restartInstance -->
@@ -1178,22 +1197,68 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="close-restart-instance" class="btn btn-blue" style="width:160px;">Continue to Update</button>
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">Continue to Update</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
 
 <!-- updateApp -->
-<div style="width:420px">
+<div id="app-apply-update" style="width:460px">
 	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Conﬁrm to Update App</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">Do you conﬁrm to update the changes?</div>
-			<div class="update-app-notice">The app is currently stopped. To apply updates, the app will be started automatically.</div>
-		</div> </div>
+		<p class="modal-text-major">Do you confirm to apply the changes?</p>
+		{{#unless state }}
+		<div class="modal-text-minor">The app is currently stopped. To apply updates, the app will be started automatically.</div>
+		{{/unless }}
+		{{# if state }}
+			{{# if instance_list.remain }}
+			<div class="summary-block">
+				<details>
+					<summary>{{ instance_list.remain.length }} instance(s) will be restarted.</summary>
+					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+						<ul class="summary-content scroll-content">
+							{{#each instance_list.remain }}
+							<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+							{{/each}}
+						</ul>
+					</div>
+				</details>
+				<div class="modal-text-minor">{{ info }}</div>
+			</div>
+			{{/if}}
+		{{/if}}
+
+		{{# if instance_list.remove }}
+		<div class="summary-block">
+			<details>
+				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
+					<div class="scroll-wrap scroll-summary-block" style="max-height: 60px;"><div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+					<ul class="summary-content scroll-content">
+						{{#each instance_list.remove }}
+						<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+						{{/each}}
+					</ul>
+				</div>
+			</details>
+			<div class="modal-text-warning"><b>Caution:</b> Termination cannot be rolled back.</div>
+		</div>
+		{{/if}}
+
+		<div class="stack-validation">
+			<details open style="display:none;">
+				<summary>Validation</summary>
+				<div id="stack-run-validation-container"></div>
+			</details>
+			<div class="nutshell" style="display: none;">:<label></label></div>
+			<div class="validating">
+				<div class="loading-spinner loading-spinner-small"></div>
+				<p>Validating your App...</p>
+			</div>
+		</div>
+
 	</div>
 	<div class="modal-footer">
-		<button id="close-update-app" class="btn btn-blue">Update</button>
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;" disabled>Continue to Update</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
@@ -1225,6 +1290,7 @@ Additional Notes and Questions
 <!-- appUpdating -->
 <div class="overlay-content-wrap">
 	<div class="overlay-text">Updating app...</div>
+	<div class="loading-spinner"></div>
 	<div class="progress">
 		<div class="bar" id="progress_bar" style="width: {{ rate }}%;"></div>
 	</div>
@@ -1241,12 +1307,17 @@ Additional Notes and Questions
 </div>
 
 <!-- appChangedfail -->
-<div class="overlay-content-wrap">
+<div class="overlay-content-wrap app-change-fail">
 	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
-	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
-	<div class="result-error-info">
-		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-		<p class="detail">{{ detail }}</p>
+	<div class="error-info-block">
+		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
+		<div class="result-error-info">
+			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+			<p class="detail">{{ detail }}</p>
+		</div>
+		{{#if update_detail}}
+		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+		{{/if}}
 	</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>

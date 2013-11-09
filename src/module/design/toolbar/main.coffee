@@ -15,6 +15,7 @@ define [ 'jquery',
             #view
             view       = new View()
             view.model = model
+            view.listen()
             view.render()
 
             #listen OPEN_DESIGN
@@ -24,7 +25,7 @@ define [ 'jquery',
                 #
                 model.setFlag tab_id, type
                 #
-                MC.ta.validAll() if type is 'OPEN_STACK'
+                # MC.ta.validAll() if type is 'OPEN_STACK'
 
             ###
             #listen OPEN_TOOLBAR
@@ -114,9 +115,9 @@ define [ 'jquery',
             model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
                 view.saveCloudFormation cf_json
 
-            ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
-                console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name
-                model.saveAppThumbnail(region, app_name, app_id)
+            # ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
+            #     console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name
+            #     model.saveAppThumbnail(region, app_name, app_id)
 
             # app operation
             ide_event.onLongListen 'STOP_APP', (region, app_id, app_name) ->
@@ -210,8 +211,9 @@ define [ 'jquery',
 
                     # run stack
                     if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
-                        app_name = $('.modal-input-value').val()
-                        modal.close()
+                        # disable button
+                        $('#btn-confirm').attr 'disabled', true
+                        $('.modal-close').attr 'disabled', false
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide

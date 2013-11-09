@@ -114,7 +114,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.ide_available_count = 0
 
 		#temp
-		MC.data.IDEView = view
+		#MC.data.IDEView = view
 
 		MC.data.account_attribute = {}
 		MC.data.account_attribute[r] = { 'support_platform':'', 'default_vpc':'', 'default_subnet':{} } for r in constant.REGION_KEYS
@@ -202,6 +202,7 @@ define [ 'MC', 'event', 'handlebars'
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
 		ide_event.onLongListen ide_event.SWITCH_WAITING_BAR,  () -> view.toggleWaiting()
+		ide_event.onLongListen ide_event.HIDE_STATUS_BAR,     () -> view.hideStatubar()
 
 		#listen IDE_AVAILABLE
 		ide_event.onLongListen ide_event.IDE_AVAILABLE, () ->

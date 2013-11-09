@@ -126,6 +126,9 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             else
                 $( '#main-statusbar' ).show()
 
+            if Tabbar.current is 'appedit'
+                $( '#canvas' ).css 'bottom', 24
+
             null
 
         showDesignOverlay : ( state, id ) ->

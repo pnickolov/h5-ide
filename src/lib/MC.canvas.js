@@ -2415,8 +2415,9 @@ MC.canvas.volume = {
 
 	show: function ()
 	{
-		var bubble_box = $('#volume-bubble-box'),
-			target_id = $(this).data('target-id'),
+		var target = $(this),
+			bubble_box = $('#volume-bubble-box'),
+			target_id = target.data('target-id'),
 			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
 			bubble_target_id;
 
@@ -2426,7 +2427,7 @@ MC.canvas.volume = {
 			{
 				if (
 					$('#' + target_id + '_instance-number').text() * 1 === 1 ||
-					$(this).hasClass('instanceList-item-volume')
+					target.hasClass('instanceList-item-volume')
 				)
 				{
 					MC.canvas.volume.bubble(

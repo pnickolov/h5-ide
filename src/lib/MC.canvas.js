@@ -3061,7 +3061,16 @@ MC.canvas.instanceList = {
 
 	select: function (event)
 	{
-		var target = $(this);
+		var target = $(this),
+			bubble_box = $('#volume-bubble-box');
+
+		if (
+			bubble_box[0] &&
+			bubble_box.data('target-id') !== target.data('id')
+		)
+		{
+			MC.canvas.volume.close();
+		}
 
 		$('#instanceList-wrap .selected').removeClass('selected');
 

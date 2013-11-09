@@ -1130,6 +1130,10 @@ textarea {
 	color     : #999;
 }
 
+.modal-text-warning {
+	color: #D64442;
+}
+
 .modal-body .dl-horizontal dt,
 .modal-body .dl-horizontal dd {
 	margin-top: 10px;

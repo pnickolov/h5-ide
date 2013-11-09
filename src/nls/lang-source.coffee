@@ -768,7 +768,7 @@ module.exports =
       zh: "重启后，公有/私有的IP地址将会被重新分配。"
 
     TOOL_POP_BODY_APP_UPDATE_VPC:
-      en: "If any of the instance has been automatically assigned public IP, the IP will change after restart.",
+      en: "If any of the instance(s) has been automatically assigned public IP, the IP will change after restart.",
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
     TOOL_MSG_INFO_NO_CHANGES:

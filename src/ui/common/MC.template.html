@@ -1196,35 +1196,31 @@ Additional Notes and Questions
 
 		{{# if state }}
 			{{# if instance_list.remain }}
-			<div class="stack-validation">
+			<div class="summary-block">
 				<details>
 					<summary>{{ instance_list.remain.length }} instance(s) will be restarted.</summary>
-					<div class="modal-text-wraper">
-						<ul class="clearfix">
-							{{#each instance_list.remain }}
-							<li>{{ name }}({{ instance_id }})</li>
-							{{/each}}
-						</ul>
-					</div>
+					<ul class="summary-content">
+						{{#each instance_list.remain }}
+						<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+						{{/each}}
+					</ul>
 				</details>
-				<div class="modal-text-major">{{ info }}</div>
+				<div class="modal-text-minor">{{ info }}</div>
 			</div>
 			{{/if}}
 		{{/if}}
 
 		{{# if instance_list.remove }}
-		<div class="stack-validation">
+		<div class="summary-block">
 			<details>
 				<summary>{{ instance_list.remove.length }} instance(s) will be terminated.</summary>
-				<div class="modal-text-wraper">
-					<ul class="clearfix">
-						{{#each instance_list.remove }}
-						<li>{{ name }}({{ instance_id }})</li>
-						{{/each}}
-					</ul>
-				</div>
+				<ul class="summary-content">
+					{{#each instance_list.remove }}
+					<li>{{ name }}<span class="meta">({{ instance_id }})</span></li>
+					{{/each}}
+				</ul>
 			</details>
-			<div class="modal-text-major">Caution: Termination cannot be rolled back.</div>
+			<div class="modal-text-warning"><b>Caution:</b> Termination cannot be rolled back.</div>
 		</div>
 		{{/if}}
 
@@ -1293,10 +1289,13 @@ Additional Notes and Questions
 <!-- appChangedfail -->
 <div class="overlay-content-wrap app-change-fail">
 	<div class="overlay-text">Oops! The app failed to {{ state }}.</div>
-	<p class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
-	<div class="result-error-info">
-		<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
-		<p class="detail">{{ detail }}</p>
+	<div class="error-info-block">
+		<div class="result-sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</div>
+		<div class="result-error-info">
+			<p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+			<p class="detail">{{ detail }}</p>
+		</div>
+		<div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
 	</div>
 	<button class="btn btn-silver" id="btn-changedfail">Done</button>
 </div>

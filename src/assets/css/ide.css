@@ -6290,7 +6290,8 @@ a.action-link:hover {
 	border-top : none;
 }
 
-#modal-run-stack .validation-content .scroll-wrap-validation {
+#modal-run-stack .validation-content .scroll-wrap-validation,
+#app-apply-update .validation-content .scroll-wrap-validation {
 	max-height    : 150px;
 }
 
@@ -7185,6 +7186,53 @@ a.action-link:hover {
 	margin-bottom: 50px;
 }
 
+#overlay-panel .progress {
+	border: 1px solid #333;
+}
+
+#overlay-panel .process-info {
+	color       : #999;
+	font-weight : normal;
+}
+
+#overlay-panel .process-info .num {
+	color: #eee;
+}
+
+/** App Update Fail **/
+
+.error-info-block {
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+.error-info-block .result-sub-title {
+	font-size: 16px;
+	color: #eee;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 10px;
+}
+
+.error-info-block .result-error-info {
+	padding: 10px;
+	color: #ccc;
+	background-color: rgba(40,40,40,.5);
+	margin-bottom: 5px;
+}
+
+.error-info-block .title {
+	font-weight: bold;
+}
+
+.error-info-block .detail {
+	color: rgb(187, 40, 40);
+}
+
+.error-info-block .result-error-notice {
+	padding: 5px;
+	color: #aaa;
+}
+
 /** Server Group Member **/
 
 .subtitle {
@@ -7207,4 +7255,33 @@ a.action-link:hover {
 	height: 14px;
 	line-height: 14px;
 	border-radius: 2px;*/
+}
+
+
+/* App Apply Update */
+.summary-block {
+	margin-top: 5px;
+}
+
+.summary-block summary {
+	color  : #666;
+	cursor : pointer;
+}
+
+.summary-block .modal-text-minor,
+.summary-block .modal-text-warning {
+	margin-left: 12px;
+}
+
+.summary-content {
+	margin           : 5px 7px;
+	background-color : #f3f3f3;
+	color            : #666;
+	padding          : 5px 10px;
+	border-radius    : 2px;
+}
+.summary-content .meta {
+	color: #999;
+	font-size: 12px;
+	margin-left: 5px;
 }

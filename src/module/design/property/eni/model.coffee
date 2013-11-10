@@ -30,7 +30,8 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 
 			@getIPList()
 
-			@getEniGroup( uid )
+			if @isAppEdit
+				@getEniGroup( uid )
 			null
 
 		getEniGroup : ( eni_uid ) ->

@@ -518,6 +518,14 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 								#enis are all in readiness
 								Canvon('#' + uid + '_eni-number-group').removeClass 'deleted'
 								Canvon('#' + uid).removeClass 'deleted'
+					else
+						#single ENI node
+						eni_id = comp.resource.NetworkInterfaceId
+						eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+						if eni_data
+							Canvon('#' + uid).removeClass 'deleted'
+						else
+							Canvon('#' + uid).addClass 'deleted'
 
 
 		null

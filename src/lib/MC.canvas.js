@@ -2329,6 +2329,7 @@ MC.canvas.volume = {
 				node_volume_data = target_data.resource.BlockDeviceMapping,
 				data = {'list': []},
 				coordinate = {},
+				is_deleted = '',
 				volume_id,
 				width,
 				height,
@@ -2367,7 +2368,14 @@ MC.canvas.volume = {
 					volume_id = item.replace('#', '');
 					volume_data = component_data[ volume_id ];
 
+					if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
+					{
+						comp_vol = MC.forge.app.getResourceById(volume_id);
+						is_deleted = (comp_vol === null ? ' deleted' : '');
+					}
+
 					data.list.push({
+						'is_deleted' : is_deleted,
 						'volume_id': volume_id,
 						'name': volume_data.name,
 						'size': volume_data.resource.Size,

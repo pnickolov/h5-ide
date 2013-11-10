@@ -117,8 +117,21 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		if res_data then return true else return false
 
 
+	getResourceById = ( id ) ->
+
+		resource_list = MC.data.resource_list[MC.canvas.data.get('region')]
+		comp = MC.canvas.data.get('component')[id]
+
+		res_key = constant.AWS_RESOURCE_KEY[comp.type]
+		res_data = if res_key and resource_list and resource_list[comp.resource[res_key]] then resource_list[comp.resource[res_key]] else null
+
+		#return
+		res_data
+
+
 	#public
 	existing_app_resource : existing_app_resource
 	getNameById : getNameById
 	updateDeletedResourceState : updateDeletedResourceState
 	clearResourceInCache : clearResourceInCache
+	getResourceById : getResourceById

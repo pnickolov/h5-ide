@@ -100,7 +100,13 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 				if !isExisted
 					Canvon('#' + uid).addClass 'deleted'
 				else
-					Canvon('#' + uid).removeClass 'deleted'
+					if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway and MC.data.resource_list[canvas_data.region][comp.resource.CustomerGatewayId].state is 'deleted'
+					#special process CGW
+						Canvon('#' + uid).addClass 'deleted'
+					else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway and MC.data.resource_list[canvas_data.region][comp.resource.VpnGatewayId].state is 'deleted'
+						Canvon('#' + uid).addClass 'deleted'
+					else
+						Canvon('#' + uid).removeClass 'deleted'
 
 				null
 

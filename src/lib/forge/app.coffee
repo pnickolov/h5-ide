@@ -56,6 +56,42 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		return result
 
 
+	#add delete class to deleted resource
+	updateDeletedResourceState = ( canvas_data ) ->
+
+		if canvas_data and canvas_data.component and MC.data.resource_list
+			
+			resource_list = MC.data.resource_list[MC.canvas.data.get('region')]
+			$.each canvas_data.component, (uid, comp) ->
+
+				isExisted = true
+				switch
+					when comp.type is "AWS.ELB" then isExisted = _isExistedELB comp, resource_list
+
+					else
+						return true
+
+				if !isExisted
+					Canvon('#' + uid).addClass 'deleted'
+				else
+					Canvon('#' + uid).removeClass 'deleted'
+
+				null
+
+		null
+
+
+	#private
+	_isExistedELB = ( comp, resource_list ) ->
+
+		elb_key = comp.resource.LoadBalancerName
+		elb_data = resource_list[elb_key]
+		
+		#return
+		if elb_data then return true else return false
+
+
 	#public
 	existing_app_resource : existing_app_resource
 	getNameById : getNameById
+	updateDeletedResourceState : updateDeletedResourceState

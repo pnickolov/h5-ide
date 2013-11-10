@@ -35,7 +35,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           rtb = $.extend true, {}, appData[ myRTBComponent.resource.RouteTableId ]
           rtb.name = myRTBComponent.name
 
-          if rtb.associationSet.item && rtb.associationSet.item[0] && rtb.associationSet.item[0].main == "true"
+          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main == "true"
             rtb.main = "Yes"
           else
             rtb.main = "No"

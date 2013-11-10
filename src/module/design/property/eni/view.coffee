@@ -4,10 +4,12 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
+         'text!./template/eni_list.html',
          'i18n!nls/lang.js'
-], ( PropertyView, template, lang ) ->
+], ( PropertyView, template, list_template, lang ) ->
 
     template = Handlebars.compile template
+    list_template = Handlebars.compile list_template
 
     ENIView = PropertyView.extend {
 
@@ -24,6 +26,8 @@ define [ '../base/view',
             @$el.html( template( @model.attributes ) )
 
             @refreshIPList()
+
+            $("#prop-appedit-eni-list").html list_template @model.attributes
 
             @model.attributes.name
 

@@ -1,4 +1,7 @@
 <article class="property-app">
+  <div id="prop-appedit-eni-list" class="expand"></div>
+
+  {{#unless isGroupMode}}
   <div class="option-group-head expand">Network Interface Details</div>
   <div class="option-group">
     <dl class="dl-vertical">
@@ -7,7 +10,7 @@
       <dt>{{i18n "PROP_ENI_ID"}}</dt>
       <dd>{{networkInterfaceId}}</dd>
       <dt>{{i18n "PROP_ENI_STATE"}}</dt>
-      <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+      <dd><i class="status status-{{status}}"></i>{{status}}</dd>
       {{#if description}}
       <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
       <dd>{{description}}</dd>
@@ -63,5 +66,7 @@
 
 
   <div class="option-group-head">{{i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group">Loading...</div>
+  <div class="option-group sg-group"></div>
+
+  {{/unless}}
 </article>

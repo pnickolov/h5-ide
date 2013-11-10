@@ -567,6 +567,7 @@ define [ 'MC', 'event',
                 @_return2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
+
             null
 
         _return2App : ( target ) ->

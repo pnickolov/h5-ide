@@ -16,6 +16,16 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
             this.listenTo ide_event, 'UPDATE_RESOURCE_STATE', ()->
                 canvas_layout.listen()
 
+                app_id = MC.canvas_data.id
+
+                #update resource state
+                MC.aws.instance.updateStateIcon app_id
+                MC.aws.asg.updateASGCount app_id
+                MC.aws.eni.updateServerGroupState app_id
+                MC.forge.app.updateDeletedResourceState MC.canvas_data
+
+                null
+
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )

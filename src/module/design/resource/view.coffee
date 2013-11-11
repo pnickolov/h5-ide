@@ -5,9 +5,8 @@
 define [ 'event',
          'constant'
          'backbone', 'jquery','i18n!nls/lang.js' , 'handlebars',
-         'UI.selectbox', 'UI.toggleicon',
-         # 'UI.searchbar',
-         'UI.filter', 'UI.radiobuttons', 'UI.modal', 'UI.table'
+         'UI.selectbox',
+         'UI.radiobuttons', 'UI.modal', 'UI.table'
 ], ( ide_event, constant, Backbone, $, lang ) ->
 
     ResourceView = Backbone.View.extend {

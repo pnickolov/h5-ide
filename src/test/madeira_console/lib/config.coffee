@@ -53,7 +53,6 @@ require.config {
 		'UI.table'          : 'ui/common/UI.table'
 		'UI.tablist'        : 'ui/common/UI.tablist'
 		'UI.selectbox'      : 'ui/common/UI.selectbox'
-		'UI.toggleicon'     : 'ui/common/UI.toggleicon'
 		'UI.searchbar'      : 'ui/common/UI.searchbar'
 		'UI.filter'         : 'ui/common/UI.filter'
 		'UI.radiobuttons'   : 'ui/common/UI.radiobuttons'

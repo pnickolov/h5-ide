@@ -80,8 +80,11 @@ require.config {
 			deps          : [ 'jquery','constant' ]
 			exports       : 'MC'
 
-		'register'          :
+		'register'        :
 			deps          : [ 'reg_view', 'reg_model', 'MC' ]
+
+		'main'            :
+			deps          : [ 'jquery' ]
 }
 
 #requirejs.onError = ( err ) ->

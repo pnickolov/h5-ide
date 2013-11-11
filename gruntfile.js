@@ -277,8 +277,10 @@ module.exports = function( grunt ) {
 									'copy:special_ui_del',
 									//publish
 									'regex-replace:static_lang',
+									'regex-replace:static_jquery',
 									'requirejs',
 									'regex-replace:dynamic_lang',
+									'regex-replace:dynamic_jquery',
 									'copy:publish_files',
 									'clean:temp'
 	]);

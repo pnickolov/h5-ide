@@ -67,8 +67,11 @@ require.config {
 			exports       : 'Handlebars'
 
 		'MC'              :
-			deps          : [ 'jquery','constant' ]
+			deps          : [ 'jquery', 'constant' ]
 			exports       : 'MC'
+
+		'main'            :
+			deps          : [ 'jquery' ]
 
 }
 

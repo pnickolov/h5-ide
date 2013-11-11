@@ -205,7 +205,7 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             if topic_arn and subs
                 for sub in subs
                     # Ignore Subscription that has `topic` attribute
-                    if not sub.topic and sub.TopicArn is topic_arn
+                    if sub.TopicArn is topic_arn
                         subscription.push {
                             protocol : sub.Protocol
                             endpoint : sub.Endpoint

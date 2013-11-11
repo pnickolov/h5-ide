@@ -82,7 +82,6 @@ require.config {
 		'UI.filter'          : 'ui/common/UI.filter'
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
-		'UI.editablelabel'   : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'   : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'        : 'ui/common/jquery.sortable'
@@ -319,9 +318,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.editablelabel' :
 			deps       : [ 'jquery' ]
 
 		'UI.multiinputbox' :

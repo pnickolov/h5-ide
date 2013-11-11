@@ -465,9 +465,9 @@
 }
 
 
-.group {
+/*.group {
 	shape-rendering:crispEdges;
-}
+}*/
 
 .group-vpc {
 	fill: rgba(250, 250, 250, 0.05);

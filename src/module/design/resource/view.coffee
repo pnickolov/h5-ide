@@ -223,6 +223,10 @@ define [ 'event',
                 # hide hide-resource-panel
                 $item.hide()
 
+                # remove left and add right
+                $item.removeClass 'icon-caret-left'
+                $item.addClass    'icon-caret-right'
+
                 # hide
                 $panel.addClass  'hiden'
                 $canvas.addClass 'left-hiden'

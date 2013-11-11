@@ -289,8 +289,8 @@ define [ 'event',
                 $( '#awscredentials-submit' ).attr 'disabled', true
                 $( '#awscredentials-submit' ).text lang.ide.HEAD_BTN_SUBMIT
                 #
-                $( '#AWSCredential-form' ).find( 'ul' ).html form_tmpl
-                $( '#AWSCredential-welcome').text lang.ide.HEAD_INFO_WELCOME + MC.forge.cookie.getCookieByName( 'username' ) + '.'
+                $( '#AWSCredential-form' ).find( 'ul' ).html Handlebars.compile( form_tmpl )
+                $( '#AWSCredential-welcome').text sprintf lang.ide.HEAD_INFO_WELCOME, MC.forge.cookie.getCookieByName( 'username' )
                 $( '#AWSCredential-info').find('p').text lang.ide.HEAD_INFO_PROVIDE_CREDENTIAL2
                 $( '#AWSCredential-welcome-img').show()
                 $( '#AWSCredential-form').find('h4').show()

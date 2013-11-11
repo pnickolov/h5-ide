@@ -156,7 +156,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             console.log MC.tab
             #
-            # if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+            if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process' then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->

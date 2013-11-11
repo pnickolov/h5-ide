@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, constant, forge_app ) ->
+define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyModel, constant, ide_event, forge_app ) ->
 
     SgModel = PropertyModel.extend {
 
@@ -120,38 +120,18 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
 
         setSGName : ( value ) ->
 
-            uid = @get 'uid'
+            component = MC.canvas_data.component[ @get 'uid' ]
+            comp_res  = component.resource
 
-            old_name = MC.canvas_data.component[uid].resource.GroupName
-
-            MC.canvas_data.component[uid].resource.GroupName = value
-
-            MC.canvas_data.component[uid].name = value
-
-            new_sg_detail = this.get 'sg_detail'
-
-            new_sg_detail.component.name = value
-
-            new_sg_detail.component.resource.GroupName = value
-
-            this.set 'sg_detail', new_sg_detail
-
-            _.map MC.canvas_property.sg_list, ( sg ) ->
-
-                if sg.name == old_name
-
+            for sg in MC.canvas_property.sg_list
+                if sg.name is comp_res.GroupName
                     sg.name = value
 
-                null
-
+            component.name = comp_res.GroupName = value
             null
 
         setSGDescription : ( value ) ->
-
-            uid = @get 'uid'
-
-            MC.canvas_data.component[uid].resource.GroupDescription = value
-
+            MC.canvas_data.component[@get 'uid'].resource.GroupDescription = value
             null
 
 
@@ -230,6 +210,8 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
                             else
                                 sg.IpPermissionsEgress.splice idx, 1
                                 return false
+
+            ide_event.trigger ide_event.REDRAW_SG_LINE
     }
 
     new SgModel()

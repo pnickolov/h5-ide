@@ -376,6 +376,8 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
+		'main'         :
+			deps       : [ 'jquery' ]
 
 
 }

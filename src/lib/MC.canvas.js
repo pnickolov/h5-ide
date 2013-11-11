@@ -2326,10 +2326,10 @@ MC.canvas.volume = {
 				component_data = MC.canvas.data.get('component'),
 				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
 				target_data = component_data[ node_uid ],
-				node_volume_data = target_data.resource.BlockDeviceMapping,
 				data = {'list': []},
 				coordinate = {},
 				is_deleted = '',
+				node_volume_data,
 				volume_id,
 				width,
 				height,
@@ -2342,6 +2342,8 @@ MC.canvas.volume = {
 
 			if (target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
 			{
+				node_volume_data = target_data.resource.BlockDeviceMapping;
+
 				$.each(node_volume_data, function (index, item)
 				{
 					volume_id = node_uid + '_volume_' + item.DeviceName.replace('/dev/', '');
@@ -2363,6 +2365,10 @@ MC.canvas.volume = {
 			}
 			else
 			{
+				node_volume_data = MC.canvas.getState() === 'app' ?
+					MC.forge.stack.getVolumeList(node_uid) :
+					target_data.resource.BlockDeviceMapping;
+
 				$.each(node_volume_data, function (index, item)
 				{
 					volume_id = item.replace('#', '');

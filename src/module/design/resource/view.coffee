@@ -190,7 +190,7 @@ define [ 'event',
             null
 
         hideResourcePanel : ( type ) ->
-            console.log 'hideResourcePanel = ' + type
+            console.log 'hideResourcePanel', type, Tabbar.current
 
             @recalcAccordion()
 
@@ -226,6 +226,10 @@ define [ 'event',
                 # hide
                 $panel.addClass  'hiden'
                 $canvas.addClass 'left-hiden'
+
+            console.log '$item.attr("class")   = ' + $item.attr   'class'
+            console.log '$panel.attr("class")  = ' + $panel.attr  'class'
+            console.log '$canvas.attr("class") = ' + $canvas.attr 'class'
 
             #
             ###if type is 'OPEN_APP'

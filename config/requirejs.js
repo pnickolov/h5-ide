@@ -12,7 +12,7 @@ module.exports = {
 				name       : 'main'
 			}],
 			paths          : {
-				jquery     : 'vender/jquery/jquery'
+				jquery     : 'empty:'
 			}
 		}
 	},
@@ -28,7 +28,7 @@ module.exports = {
 				name       : 'main'
 			}],
 			paths          : {
-				jquery     : 'vender/jquery/jquery'
+				jquery     : 'empty:'
 			}
 		}
 	},
@@ -44,7 +44,7 @@ module.exports = {
 				name       : 'main'
 			}],
 			paths          : {
-				jquery     : 'vender/jquery/jquery'
+				jquery     : 'empty:'
 			}
 		}
 	},
@@ -60,7 +60,7 @@ module.exports = {
 				name       : 'main'
 			}],
 			paths          : {
-				jquery     : 'vender/jquery/jquery'
+				jquery     : 'empty:'
 			}
 		}
 	}

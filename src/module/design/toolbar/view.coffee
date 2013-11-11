@@ -344,6 +344,7 @@ define [ 'MC', 'event',
             if base64_image
                 $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
                 $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+                modal.position()
 
             $( '#btn-confirm' ).attr {
                 'href'      : "data:image/png;base64, " + base64_image,

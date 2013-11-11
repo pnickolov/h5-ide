@@ -233,10 +233,8 @@ define [ 'event',
 
                 $('#account-passowrd-info').show()
 
-                #html_str = sprintf lang.ide.HEAD_MSG_ERR_ERROR_PASSWORD, '<a href=\"javascript:void(0)\">', lang.ide.HEAD_MSG_ERR_RESET_PASSWORD, '</a>'
-                #$('#account-passowrd-info').html html_str
-                $('#account-passowrd-info').html '{{ i18n "HEAD_MSG_ERR_WRONG_PASSWORD" }} <a href="reset.html" target="_blank">{{ i18n "HEAD_MSG_INFO_FORGET_PASSWORD" }}</a>'
-
+                #$('#account-passowrd-info').html '{{ i18n "HEAD_MSG_ERR_WRONG_PASSWORD" }} <a href="reset.html" target="_blank">{{ i18n "HEAD_MSG_INFO_FORGET_PASSWORD" }}</a>'
+                $('#account-passowrd-info').html lang.ide.HEAD_MSG_ERR_WRONG_PASSWORD + ' <a href="reset.html" target="_blank">' + lang.ide.HEAD_MSG_INFO_FORGET_PASSWORD + '</a>'
             else
 
                 $('#account-passowrd-info').hide()

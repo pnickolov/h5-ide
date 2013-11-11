@@ -872,6 +872,7 @@ define [ 'constant',
 			delete MC.canvas_data.component[ component.uid ]
 			# fix, when del in classic mode
 			if elbSGObj
+				MC.aws.sg.deleteRefInAllComp( elbSGObj.uid )
 				delete MC.canvas_data.component[ elbSGObj.uid ]
 			null
 

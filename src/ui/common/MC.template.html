@@ -641,11 +641,7 @@ Additional Notes and Questions
     </label>
   </div>
 
-  {{#if eip}}
-  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
-  {{else}}
-  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
-  {{/if}}
+  <div class="input-ip-eip-btn tooltip toggle-eip {{#if eip}} associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}"{{else}}" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}"{{/if}}></div><!--"-->
 
   {{#if deletable}}<div class="icon-remove"></div>{{/if}}
 </li>

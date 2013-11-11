@@ -53,6 +53,12 @@ define [ '../base/view',
             index   = $target.closest("li").index()
             attach  = not $target.hasClass("associated")
 
+            if attach
+                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_4
+            else
+                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_3
+            $target.toggleClass("associated", attach).data("tooltip", tooltip)
+
             @model.attachEIP index, attach
             null
 

@@ -6,6 +6,30 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
     RTBAppModel = PropertyModel.extend {
 
+        targetMap :
+          gatewayId: [ 'InternetGatewayId', 'VpnGatewayId' ]
+          instanceId: [ 'InstanceId' ]
+
+        processTarget : ( rtb )->
+          console.debug rtb
+          rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) =>
+            if item.gatewayId is 'local'
+              item.target = item.gatewayId
+            else
+              for mapKey, map of @targetMap
+                if item[ mapKey ]
+                  item.target = @findComonentNameByAWSId( item[ mapKey ], map )
+                  break
+            item
+          null
+
+        findComonentNameByAWSId: ( awsId, awsIdKey )->
+          for id, component of MC.canvas_data.component
+            for key in awsIdKey
+              if component.resource and component.resource[ key ] is awsId
+                return component.name
+
+
         init : ( rtb_uid )->
 
           # uid might be a line connecting RTB and other resource
@@ -55,7 +79,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if propagate[ value.gatewayId ]
               value.propagate = true
 
+          @processTarget(rtb)
+
           this.set rtb
+
     }
 
     new RTBAppModel()

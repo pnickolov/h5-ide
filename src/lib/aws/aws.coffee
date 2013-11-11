@@ -262,8 +262,19 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     MC.data.resource_list[region].NotificationConfigurations = []
 
                 _.map resources.DescribeNotificationConfigurations, ( res, i ) ->
-                    MC.data.resource_list[region].NotificationConfigurations.push res
+
+                    #found by protocol + endpoint + topicarn
+                    found = null
+                    _.each MC.data.resource_list[region].NotificationConfigurations, ( item ) ->
+                        if item.AutoScalingGroupName is res.AutoScalingGroupName and item.NotificationType is res.NotificationType and item.TopicARN is res.TopicARN
+                            found = item
+                            return false
+                        null
+
+                    if !found
+                        MC.data.resource_list[region].NotificationConfigurations.push res
                     null
+
 
             #asl sp
             if resources.DescribePolicies

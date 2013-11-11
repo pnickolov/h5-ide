@@ -5842,6 +5842,8 @@ a.action-link:hover {
 	display: block;
 	width: 220px;
 	margin: 10px auto;
+	color: #fff;
+	text-decoration: none;
 }
 
 #app-cgw-vpn-accordion .accordion-sub-head {

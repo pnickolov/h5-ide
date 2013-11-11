@@ -78,6 +78,9 @@ require.config {
 		'reset'           :
 			deps          : [ 'reset_view', 'reset_model', 'MC' ]
 
+		'main'            :
+			deps          : [ 'jquery' ]
+
 }
 
 #requirejs.onError = ( err ) ->

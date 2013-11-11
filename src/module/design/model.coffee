@@ -36,11 +36,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                         #update instance icon of app
                         MC.aws.instance.updateStateIcon app_id
-
                         MC.aws.asg.updateASGCount app_id
-
                         MC.aws.eni.updateServerGroupState app_id
-
                         #update deleted resource style
                         MC.forge.app.updateDeletedResourceState MC.canvas_data
 
@@ -51,7 +48,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         uid = MC.canvas_property.selected_node[0]
                         if uid
                             MC.canvas.select uid
-
 
                         #app_name = MC.forge.app.getNameById app_id
                         #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FINISH, if app_name then app_name else app_id + '(closed)'
@@ -85,6 +81,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                     #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
                     @updateAppTabDate       result.resolved_data[ 0 ], app_id
                     @updateAppTabOriginDate result.resolved_data[ 0 ], app_id
+                #
+                @getAppResourcesService result.param[3], app_id
+                #
                 null
 
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
@@ -137,10 +136,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property, 'origin_data' : MC.tab[ old_tab_id ].origin_data }
             #
             this.deleteTab old_tab_id
-
-        updateAppTab : ( region_name, app_id ) ->
-            console.log 'updateAppTab'
-            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, [ app_id ]
 
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
@@ -258,17 +253,19 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
             null
 
-        getAppResourcesService : ( region, app_id, is_manual )->
-            console.log 'getAppResourcesService, is_manual = ' + is_manual
+        appInfoService : ( region_name, app_id ) ->
+            console.log 'appInfoService'
+            app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, [ app_id ]
+
+        getAppResourcesService : ( region, app_id )->
+            console.log 'getAppResourcesService', region, app_id
             me = this
-            current_tab = ''
+            #current_tab = ''
 
-            if is_manual
-                app_name = MC.forge.app.getNameById app_id
-                #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
+            #app_name = MC.forge.app.getNameById app_id
+            #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
 
-            app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  app_id
+            app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
 

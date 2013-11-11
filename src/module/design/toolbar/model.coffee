@@ -380,7 +380,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
 
                 # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, id
+                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
                 #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'STOPPED_APP'
@@ -393,14 +393,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
 
                 # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, region, id
+                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
                 #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
 
                 # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_RESOURCE, value
+                ide_event.trigger ide_event.UPDATE_APP_INFO, value
 
                 return
 

@@ -60,11 +60,12 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id ) ->
                 console.log 'resource:SWITCH_TAB', type, tab_id
-                region_name = MC.forge.stack.searchStackAppById( tab_id ).region
-                if region_name
-                    model.favoriteAmiService region_name if type.split('_')[0] is 'OLD'
-                else
-                    console.error 'resource:SWITCH_TAB, not find region by tab_id, current tab_id is ' + tab_id
+                if type.split('_')[0] is 'OLD'
+                    region_name = MC.forge.stack.searchStackAppById( tab_id ).region
+                    if region_name
+                        model.favoriteAmiService region_name
+                    else
+                        console.error 'resource:SWITCH_TAB, not find region by tab_id, current tab_id is ' + tab_id
 
             view.on 'LOADING_COMMUNITY_AMI', ( region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum ) ->
                 # name = $('#community-ami-input').val()

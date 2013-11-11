@@ -117,8 +117,14 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 	_isExistedResource = ( resource_list, comp ) ->
 
 		res_key = constant.AWS_RESOURCE_KEY[comp.type]
+
+		#1.resource id not empty, and resource data is in resource_list then true
 		res_data = if res_key and resource_list and resource_list[comp.resource[res_key]] then resource_list[comp.resource[res_key]] else null
-		
+
+		#2.resource id is empty then true
+		if !comp.resource[res_key]
+			res_data = true
+
 		#return
 		if res_data then return true else return false
 
@@ -129,7 +135,13 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		comp = MC.canvas.data.get('component')[id]
 
 		res_key = constant.AWS_RESOURCE_KEY[comp.type]
+
+		#1.resource id not empty, and resource data is in resource_list then true
 		res_data = if res_key and resource_list and resource_list[comp.resource[res_key]] then resource_list[comp.resource[res_key]] else null
+
+		#2.resource id is empty then true
+		if !comp.resource[res_key]
+			res_data = true
 
 		#return
 		res_data

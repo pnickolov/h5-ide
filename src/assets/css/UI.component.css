@@ -1553,20 +1553,6 @@ textarea {
 	border-right-width: 0;
 }
 
-/* Editable Label */
-.editable-label {
-	height: 20px;
-	width: 200px;
-	/*margin-top: 15px;*/
-	cursor: pointer
-}
-
-.editable-label input {
-	padding: 0;
-	width: 100%;
-	height: 100%;
-}
-
 /* Selectbox V2 */
 .selectbox {
 	position       : relative;

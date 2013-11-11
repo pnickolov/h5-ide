@@ -241,8 +241,10 @@ module.exports = function( grunt ) {
 
 	/* run at r.js as publish */
 	grunt.registerTask( 'publish', ['regex-replace:static_lang',
+									'regex-replace:static_jquery',
 									'requirejs',
 									'regex-replace:dynamic_lang',
+									'regex-replace:dynamic_jquery',
 									'copy:publish_files',
 									'clean:temp',
 									'open:publish',

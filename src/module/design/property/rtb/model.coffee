@@ -50,7 +50,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         init : ( uid ) ->
 
-            @set "uid", uid
 
             # uid might be a line connecting RTB and other resource
             connection = MC.canvas_data.layout.connection[ uid ]
@@ -72,6 +71,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 else
                     uid = route_uid
 
+
+            @set "uid", uid
 
             # This is a route table component
 

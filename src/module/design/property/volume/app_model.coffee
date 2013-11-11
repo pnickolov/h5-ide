@@ -47,8 +47,6 @@ define [ '../base/model' ], ( PropertyModel ) ->
             volume.name = myVolumeComponent.name
             volume.IOPS = myVolumeComponent.resource.Iops
             volume.isLC = false
-            if volume.status == "in-use"
-              volume.isInUse = true
 
           this.set volume
 

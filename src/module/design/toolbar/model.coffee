@@ -400,7 +400,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 (delete item_state_map[id]) if id of item_state_map
 
                 # update app resource
-                ide_event.trigger ide_event.UPDATE_APP_INFO, value
+                region = value
+                ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
 
                 return
 

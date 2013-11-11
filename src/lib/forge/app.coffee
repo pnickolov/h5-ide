@@ -77,6 +77,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 	#add delete class to deleted resource
 	updateDeletedResourceState = ( canvas_data ) ->
 
+		if MC.canvas.getState() is 'stack'
+			return null
+
 		if canvas_data and canvas_data.component and MC.data.resource_list
 			
 			resource_list = MC.data.resource_list[MC.canvas.data.get('region')]

@@ -34,15 +34,19 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                             MC.aws.aws.cacheResource resource_source, region, false
                             me.describeInstancesOfASG region
 
-                        #update instance icon of app
-                        MC.aws.instance.updateStateIcon app_id
-                        MC.aws.asg.updateASGCount app_id
-                        MC.aws.eni.updateServerGroupState app_id
-                        #update deleted resource style
-                        MC.forge.app.updateDeletedResourceState MC.canvas_data
+                        if MC.canvas.getState() isnt 'stack'
+                            #update instance icon of app
+                            MC.aws.instance.updateStateIcon app_id
+                            MC.aws.asg.updateASGCount app_id
+                            MC.aws.eni.updateServerGroupState app_id
+                            #update deleted resource style
+                            MC.forge.app.updateDeletedResourceState MC.canvas_data
 
-                        #update canvas when get instance info
-                        ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+                            #update canvas when get instance info
+                            ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
+
+                        else
+                            console.log "current is stack, skip update state"
 
                         #update property panel
                         uid = MC.canvas_property.selected_node[0]

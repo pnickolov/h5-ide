@@ -172,8 +172,9 @@ define [ 'underscore', 'backbone' ], () ->
         #demo account
         ACCOUNT_DEMONSTRATE    : 'ACCOUNT_DEMONSTRATE'
 
-        #update app resource
+        #update app resource and info
         UPDATE_APP_RESOURCE    : 'UPDATE_APP_RESOURCE'
+        UPDATE_APP_INFO        : 'UPDATE_APP_INFO'
 
         constructor : ->
             _.extend this, Backbone.Events

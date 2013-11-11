@@ -172,10 +172,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             ide_event.onLongListen ide_event.UPDATE_APP_INFO, ( region_name, app_id ) ->
                 console.log 'UPDATE_APP_INFO', region_name, app_id
 
-                # not app return
-                if not app_id
-                    return
-
                 setTimeout ->
                     # app update fail
                     if MC.data.process[app_id] and MC.data.process[ app_id ].flag_list.is_failed
@@ -188,18 +184,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 null
 
             #listen
-            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id, is_manual ) ->
-                console.log 'UPDATE_APP_RESOURCE', region_name, app_id, is_manual
-
-                # not app return
-                if not app_id
-                    return
-
-                # invoke app resource
-                if is_manual
-                    ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
-                    model.getAppResourcesService region_name, app_id
-
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                console.log 'UPDATE_APP_RESOURCE', region_name, app_id
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
+                model.getAppResourcesService region_name, app_id
                 null
 
             #listen

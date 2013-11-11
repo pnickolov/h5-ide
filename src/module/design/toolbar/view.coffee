@@ -464,7 +464,7 @@ define [ 'MC', 'event',
 
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
         clickEditApp : ->
             console.log 'clickEditApp'

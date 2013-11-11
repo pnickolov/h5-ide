@@ -254,18 +254,18 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             null
 
         appInfoService : ( region_name, app_id ) ->
-            console.log 'appInfoService'
+            console.log 'appInfoService', region_name, app_id
             app_model.info { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, [ app_id ]
 
         getAppResourcesService : ( region, app_id )->
             console.log 'getAppResourcesService', region, app_id
-            me = this
+            #me = this
             #current_tab = ''
 
             #app_name = MC.forge.app.getNameById app_id
             #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
 
-            app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
+            app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
 

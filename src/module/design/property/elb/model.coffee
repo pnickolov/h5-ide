@@ -226,7 +226,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if value is 'TCP' or value is 'SSL'
                 new_target = new_target.split('/')[0]
             else
-                new_target += '/index.html'
+                path = new_target.split('/')[1]
+                if !path
+                    new_target += '/index.html'
 
             MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
 

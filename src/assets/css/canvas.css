@@ -958,11 +958,11 @@
 	width: 12px;
 	height: 14px;
 	display: block;
-	background: url('../images/ide/icon/eip-off.png') 0px 0px no-repeat;
+	/*background: url('../images/ide/icon/eip-off.png') 0px 0px no-repeat;*/
 }
 
 .eniList-item-eip-status.on {
-	background: url('../images/ide/icon/eip-on.png') 0px 0px no-repeat;
+	/*background: url('../images/ide/icon/eip-on.png') 0px 0px no-repeat;*/
 }
 
 .asgList-item.selected,

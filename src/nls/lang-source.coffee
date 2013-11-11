@@ -3216,8 +3216,8 @@ module.exports =
       zh: "架构"
 
     AMI_LBL_SIZE:
-      en: "Size"
-      zh: "大小"
+      en: "Size(GB)"
+      zh: "大小（GB）"
 
     AMI_LBL_ROOT_DEVICE_TYPE:
       en: "Root Device Type"

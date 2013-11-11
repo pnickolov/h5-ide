@@ -14,10 +14,10 @@ define [ '../base/model',
         defaults :
             'id' : null
 
-        setup : () ->
+        initialize : () ->
             me = this
 
-            me.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
+            @on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 
                 region_name = result.param[3]
                 keypairname = result.param[4]
@@ -85,7 +85,7 @@ define [ '../base/model',
 
                 null
 
-            me.on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
+            @on 'EC2_INS_GET_PWD_DATA_RETURN', ( result ) ->
 
                 region_name    = result.param[3]
                 instance_id    = result.param[4]

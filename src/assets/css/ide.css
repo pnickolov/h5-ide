@@ -6632,6 +6632,10 @@ summary:focus {
 	z-index: 9999;
 }
 
+.disconnected-notification:hover {
+	opacity : 0.05;
+}
+
 .disconnected-notification p {
 	margin: 0;
 }

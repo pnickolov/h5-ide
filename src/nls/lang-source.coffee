@@ -3215,6 +3215,10 @@ module.exports =
       en: "Architecture"
       zh: "架构"
 
+    AMI_LBL_SIZE:
+      en: "Size"
+      zh: "大小"
+
     AMI_LBL_ROOT_DEVICE_TYPE:
       en: "Root Device Type"
       zh: "根设备类型"

@@ -3138,7 +3138,8 @@ td.table-action a.btn {
 
 #ami-table-wrap .ami-table-fav,
 #ami-table-wrap .ami-table-id,
-#ami-table-wrap .ami-table-arch {
+#ami-table-wrap .ami-table-arch,
+#ami-table-wrap .ami-table-size {
 	text-align: center;
 }
 

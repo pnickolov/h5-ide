@@ -415,7 +415,8 @@ define [ 'event',
                     this_tr += '<td class="ami-table-fav"><div class="toggle-fav tooltip ' + fav_class + '" data-tooltip="Add to Favorite" data-id="'+key+'"></div></td>'
                     this_tr += '<td class="ami-table-id">'+key+'</td>'
                     this_tr += '<td class="ami-table-info"><span class="ami-table-name">' + value.name + '</span><div class="ami-meta"><i class="icon-' + value.osType + ' icon-ami-os"></i><span>' + visibility + ' | ' + value.architecture + ' | ' + value.rootDeviceType + '</span></div></td>'
-                    this_tr += "<td class='ami-table-arch'>#{bit}</td></tr>"
+                    this_tr += "<td class='ami-table-arch'>#{bit}</td>"
+                    this_tr += "<td class='ami-table-size'>#{value.imageSize}</td></tr>"
 
                 currentPageNum = this.model.attributes.community_ami.curPageNum
                 page = "<div>page #{currentPageNum}</div>"

@@ -291,7 +291,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     MC.data.resource_list[region].Subscriptions = []
 
                 _.map resources.ListSubscriptions, ( res, i ) ->
-                    MC.data.resource_list[region].Subscriptions.push res
+
+                    #found by protocol + endpoint + topicarn
+                    found = null
+                    _.each MC.data.resource_list[region].Subscriptions, ( item ) ->
+                        if item.Protocol is res.Protocol and item.Endpoint is res.Endpoint and item.TopicArn is res.TopicArn
+                            found = item
+                            return false
+                        null
+
+                    if found
+                        #only update SubscriptionArn
+                        found.SubscriptionArn = res.SubscriptionArn
+                    else
+                        MC.data.resource_list[region].Subscriptions.push res
                     null
 
             #sns topic

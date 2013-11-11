@@ -242,6 +242,7 @@ module.exports = function( grunt ) {
 	/* run at r.js as publish */
 	grunt.registerTask( 'publish', ['regex-replace:static_lang',
 									'regex-replace:static_jquery',
+									'regex-replace:s3_url',
 									'requirejs',
 									'regex-replace:dynamic_lang',
 									'regex-replace:dynamic_jquery',
@@ -278,6 +279,7 @@ module.exports = function( grunt ) {
 									//publish
 									'regex-replace:static_lang',
 									'regex-replace:static_jquery',
+									'regex-replace:s3_url',
 									'requirejs',
 									'regex-replace:dynamic_lang',
 									'regex-replace:dynamic_jquery',

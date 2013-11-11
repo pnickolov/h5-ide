@@ -48,6 +48,18 @@ module.exports = {
         ]
     },
 
+    s3_url: {
+        src: [ '<%= release %>/module/dashboard/overview/view.js', '<%= release %>/module/dashboard/overview/template_data.html' ],
+        actions: [
+            {
+                name: 's3 url',
+                search: '/madeiracloudthumbnail/',
+                replace: '/madeiracloudthumbnails/',
+                flags: 'g'
+            }
+        ]
+    },
+
     intercome: {
         src: [ '<%= release %>/ide.html' ],
         actions: [

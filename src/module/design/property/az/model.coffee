@@ -21,6 +21,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 component : MC.canvas_data.layout.component.group[uid]
                 az_list   : MC.data.config[ MC.canvas_data.region ]
 
+            if not data.component or not az_list
+                return false
+
             if data.az_list && data.az_list.zone
                 data.az_list = this.possibleAZList( data.az_list.zone.item, data.component.name )
                 data.needRefresh = false

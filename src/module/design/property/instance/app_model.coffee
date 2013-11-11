@@ -55,7 +55,7 @@ define [ '../base/model',
                     os_type = MC.data.dict_ami[ instance_data.imageId ].osType
 
                 #get password for windows AMI
-                if os_type == 'win' and key_data
+                if 'win|windows'.indexOf(os_type) > 0 and key_data
                     #me.getPasswordData instance_id, key_data.replace(/\n/g,'')
                     me.getPasswordData instance_id, key_data
 

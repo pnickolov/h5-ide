@@ -50,7 +50,7 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
                 # Meaning it is a newly created SG. So the input should be editable
                 inputReadOnly = forge_app.existing_app_resource( uid )
 
-            if inputReadOnly or comp_res.name is 'DefaultSG'
+            if inputReadOnly or component.name is 'DefaultSG'
                 @set 'nameReadOnly', true
             if inputReadOnly
                 @set 'descReadOnly', true

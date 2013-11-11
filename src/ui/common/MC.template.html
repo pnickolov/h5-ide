@@ -916,10 +916,10 @@ Additional Notes and Questions
 			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
 				<div class="selection">{{Protocol}}</div>
 				<ul class="dropdown">
-					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip"><div class="main truncate">SSL</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>
@@ -934,10 +934,10 @@ Additional Notes and Questions
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
 				<div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
-					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip"><div class="main truncate">SSL</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>

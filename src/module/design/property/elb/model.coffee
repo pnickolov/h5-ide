@@ -371,6 +371,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 currentCert.resource.PrivateKey = value.resource.PrivateKey
                 currentCert.resource.CertificateBody = value.resource.CertificateBody
                 currentCert.resource.CertificateChain = value.resource.CertificateChain
+                currentCert.resource.ServerCertificateMetadata.ServerCertificateName = value.name
 
                 MC.canvas_data.component[currentCertUID] = currentCert
 

@@ -48,17 +48,22 @@ define [ 'event',
             console.log 'verificationUser'
             value  = $('#register-username').val()
             status = $('#username-verification-status')
-            
+
             #
             #@_checkButtonDisabled()
             #
             if value.trim() isnt ''
                 if /[^A-Za-z0-9\_]{1}/.test(value) isnt true
-                    #status.show().text lang.register.username_available
-                    #check vaild
-                    this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
-                    #status.text('')
-                    true
+
+                    if value.trim().length > 40
+                        status.addClass('error-status').removeClass( 'verification-status' ).show().text lang.register.username_maxlength
+                        false
+                    else
+                        #status.show().text lang.register.username_available
+                        #check vaild
+                        this.trigger 'CHECK_REPEAT', value, null #if event and event.type is 'blur'
+                        #status.text('')
+                        true
                 else
                     status.addClass('error-status').removeClass( 'verification-status' ).show().text lang.register.username_not_matched
                     false
@@ -68,10 +73,11 @@ define [ 'event',
 
         verificationEmail : (event) ->
             console.log 'verificationEmail'
-            value  = $('#register-email').val().trim()
-            status = $('#email-verification-status')
-            
-            if value isnt '' and /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/.test(value)
+            value   = $('#register-email').val().trim()
+            status  = $('#email-verification-status')
+            reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+            if value isnt '' and reg_str.test(value)
                 #check vaild
                 this.trigger 'CHECK_REPEAT', null, value #if event and event.type is 'blur'
                 true
@@ -85,7 +91,7 @@ define [ 'event',
             console.log 'verificationPassword'
             value = $('#register-password').val().trim()
             status = $('#password-verification-status')
-            
+
             if value isnt ''
                 if value.length > 5 # &&
                     #/[A-Z]{1}/.test(value) &&
@@ -127,8 +133,8 @@ define [ 'event',
                 @is_submit = true
                 #
                 this.trigger 'CHECK_REPEAT', username, email, password
-                
-                
+
+
                 #$('#username-verification-status').hide()
                 #$('#email-verification-status').hide()
                 #$('#password-verification-status').hide()
@@ -138,7 +144,7 @@ define [ 'event',
 
         showUsernameEmailError : ->
             console.log 'showUsernameError'
-            
+
             @showStatusInValid 'username'
             @showStatusInValid 'email'
 
@@ -150,7 +156,7 @@ define [ 'event',
 
             #type must be username or email
             if type == 'username' or type == 'email'
-                
+
                 switch type
                     when 'username'
                         status = $('#username-verification-status')
@@ -177,7 +183,7 @@ define [ 'event',
 
         showUsernameEmailValid : ->
             console.log 'showUsernameValid'
-            
+
             @showStatusValid 'username'
             @showStatusValid 'email'
 
@@ -185,7 +191,7 @@ define [ 'event',
 
         showStatusValid : ( type ) ->
             console.log 'showStatusValid ' + type
-            
+
             #type must be username or email
             if type == 'username' or type == 'email'
 
@@ -206,7 +212,7 @@ define [ 'event',
                 else
                     #username/email is empty
                     status.removeClass( 'error-status' ).removeClass( 'verification-status' ).show().text('')
-                
+
                 @_checkButtonDisabled()
 
             null

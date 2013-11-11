@@ -105,6 +105,10 @@ module.exports =
       en: "Username can only include alpha-number."
       zh: "用户名只能包含字母。"
 
+    username_maxlength:
+      en: "User name cannot be more than 40 characters."
+      zh: "用户名不能超过40个字符。"
+
     username_required:
       en: "Username is required."
       zh: "用户名不能为空。"

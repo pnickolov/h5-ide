@@ -22,17 +22,20 @@ define [ '../base/main',
         initStack : () ->
             @view  = view
             @model = model
+            @model.isApp = false
             null
 
 
         initApp : () ->
             @view = view
             @model = model
+            @model.isApp = true
             null
 
         initAppEdit : () ->
             @view = view
             @model = model
+            @model.isApp = true
             null
 
 

@@ -240,9 +240,11 @@ a.table-link {
 }
 
 .btn-primary {
-	background : #B25B91;
-	border   : 1px solid #7E1958;
-	box-shadow        : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);
+	background      : #B25B91;
+	border          : 1px solid #7E1958;
+	box-shadow      : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);
+	color           : #fff !important;
+	text-decoration : none !important;
 }
 
 .btn-primary:hover {

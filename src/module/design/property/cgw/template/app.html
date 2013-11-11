@@ -26,7 +26,7 @@
       <dd>{{vpnConnectionId}}</dd>
 
       <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
-      <dd class="capitalize"><i class="status status-green"></i>{{state}}</dd>
+      <dd class="capitalize"><i class="status status-{{state}}"></i>{{state}}</dd>
 
       <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
       <dd>{{type}}</dd>
@@ -72,7 +72,7 @@
         <tbody>
           {{#each routes.item}}
           <tr>
-            <td><i class="status status-{{stateColor}} tooltip icon-label" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+            <td><i class="status status-{{state}} tooltip icon-label" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
             <td>{{source}}</td>
           </tr>
           {{/each}}

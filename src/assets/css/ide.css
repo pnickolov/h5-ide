@@ -5836,13 +5836,13 @@ a.action-link:hover {
 	text-decoration: none;
 }
 
-#app-cgw-vpn-accordion .accordion-sub-head {
+.accordion-sub-head {
 	padding: 10px;
-	background-color: #ECECEC;
+	background-color: #333;
 	color: #A5A5A5;
 }
 
-#app-cgw-vpn-accordion .accordion-sub-head h5 {
+.accordion-sub-head h5 {
 	font-size: 13px;
 }
 

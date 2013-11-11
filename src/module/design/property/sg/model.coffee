@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, constant, forge_app ) ->
+define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyModel, constant, ide_event, forge_app ) ->
 
     SgModel = PropertyModel.extend {
 
@@ -230,6 +230,8 @@ define [ '../base/model', 'constant', 'lib/forge/app' ], ( PropertyModel, consta
                             else
                                 sg.IpPermissionsEgress.splice idx, 1
                                 return false
+
+            ide_event.trigger ide_event.REDRAW_SG_LINE
     }
 
     new SgModel()

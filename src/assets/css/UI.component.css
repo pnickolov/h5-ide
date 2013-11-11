@@ -1308,7 +1308,11 @@ textarea {
 .fixedaccordion .accordion-body {
 	background-color : #383738;
 	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
-    border-bottom    : 1px solid #313131;
+  border-bottom    : 1px solid #313131;
+}
+
+.option-group:last-child {
+	box-shadow       : none;
 }
 
 .option-group:last-child {

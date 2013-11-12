@@ -13,14 +13,14 @@
       <label>{{ i18n "PROP_ELB_SCHEME" }}</label>
       <div class="mgt5">
         <div class="radio">
-            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} value="internet" id="elb-scheme-select1"/>
+            <input type="radio" {{#unless elb_detail.isInternal}}checked="checked"{{/unless}} value="internet" id="elb-scheme-select1" name="elb-schema-select"/>
             <label for="elb-scheme-select1"></label>
         </div>
         <label for="elb-scheme-select1">Internet-facing</label>
       </div>
       <div class="mgt5">
         <div class="radio">
-            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} value="internal" id="elb-scheme-select2"/>
+            <input type="radio" {{#if elb_detail.isInternal}}checked="checked"{{/if}} value="internal" id="elb-scheme-select2" name="elb-schema-select"/>
             <label for="elb-scheme-select2"></label>
         </div>
         <label for="elb-scheme-select2">Internal</label>

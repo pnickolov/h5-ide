@@ -57,6 +57,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, ( type ) ->
                 view.updateResourceState type
+                view.hideResourcePanel type
 
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id ) ->
                 console.log 'resource:SWITCH_TAB', type, tab_id

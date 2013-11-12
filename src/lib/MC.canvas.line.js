@@ -15,6 +15,18 @@ MC.canvas.initLine = function() {
   var lines, main_rt, subnet_ids;
   subnet_ids = [];
   lines = [];
+
+  //reset line data
+  $('#line_layer').empty();
+  MC.canvas_data.layout.connection = {};
+  $.each(MC.canvas_data.layout.component.node, function(comp_uid,comp) {
+    comp.connection = [];
+  });
+  $.each(MC.canvas_data.layout.component.group, function(comp_uid,comp) {
+    comp.connection = [];
+  });
+
+
   main_rt = null;
   $.each(MC.canvas_data.component, function(comp_uid, comp) {
     if (comp.type === 'AWS.VPC.RouteTable') {

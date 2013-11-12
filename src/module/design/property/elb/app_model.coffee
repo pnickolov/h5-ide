@@ -16,8 +16,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             myElbComponent = MC.canvas_data.component[ elb_uid ]
 
             appData = MC.data.resource_list[ MC.canvas_data.region ]
+            elb     = appData[ myElbComponent.resource.LoadBalancerName ]
 
-            elb = $.extend true, {}, appData[ myElbComponent.resource.LoadBalancerName ]
+            if not elb
+                return false
+
+            elb = $.extend true, {}, elb
             elb.name = myElbComponent.name
 
 

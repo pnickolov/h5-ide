@@ -11,16 +11,15 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             mySubnetComponent = MC.canvas_data.component[ subnet_uid ]
 
             appData = MC.data.resource_list[ MC.canvas_data.region ]
+            subnet  = appData[ mySubnetComponent.resource.SubnetId ]
 
-            subnet = $.extend true, {}, appData[ mySubnetComponent.resource.SubnetId ]
+            if not subnet
+                return false
+
+            subnet      = $.extend true, {}, subnet
             subnet.name = mySubnetComponent.name
-
-            if subnet.state == "available"
-                subnet.available = true
-
-            subnet.acl = this.getACL subnet_uid
-
-            subnet.uid = subnet_uid
+            subnet.acl  = this.getACL subnet_uid
+            subnet.uid  = subnet_uid
 
             # Get RouteTable ID
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -36,6 +35,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             subnet.routeTable = if linkedRT then linkedRT else defaultRT
 
             this.set subnet
+            null
 
         getACL : ( uid ) ->
 

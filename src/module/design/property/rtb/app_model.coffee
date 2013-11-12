@@ -55,8 +55,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           myRTBComponent = components[ rtb_uid ]
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
+          rtb     = appData[ myRTBComponent.resource.RouteTableId ]
 
-          rtb = $.extend true, {}, appData[ myRTBComponent.resource.RouteTableId ]
+          if not rtb
+            return false
+
+          rtb = $.extend true, {}, rtb
           rtb.name = myRTBComponent.name
 
           if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main == "true"

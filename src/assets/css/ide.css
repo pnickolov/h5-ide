@@ -6228,17 +6228,17 @@ summary:focus {
 	border-top    : none;
 	border-radius : 0 0 2px 2px;
 	overflow      : hidden;
+	background : #f2f3f4;
 }
 
 #modal-validation-statusbar .validation-content .scroll-wrap-validation {
 	border     : 1px solid #272727;
 	border-top : none;
-	background : #f2f3f4;
 }
 
 #modal-run-stack .validation-content .scroll-wrap-validation,
 #app-apply-update .validation-content .scroll-wrap-validation {
-	max-height    : 150px;
+	max-height    : 150px; 
 }
 
 .validation-content .content_wrap .content {
@@ -6273,6 +6273,7 @@ summary:focus {
 .validation-content .content_wrap .title.empty {
 	color      : #999;
 	text-align : center;
+	margin-top : 40px
 }
 
 .validation-content .content_wrap .title:nth-child(2n) {

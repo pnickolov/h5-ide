@@ -16,90 +16,51 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
             #listen APP_RESOURCE_RETURN
             me.on 'APP_RESOURCE_RETURN', ( result ) ->
-
                 app_id = result.param[4]
-                console.log 'APP_RESOURCE_RETURN:' + app_id
+                console.log 'APP_RESOURCE_RETURN', app_id
 
                 if !result.is_error
 
                     try
 
-                        region = result.param[3]
-                        resource_source = result.resolved_data
-
-                        if resource_source
-                            #clear old app data in MC.data.resource_list
-                            MC.forge.app.clearResourceInCache MC.canvas_data
-                            #cache new app data
-                            MC.aws.aws.cacheResource resource_source, region, false
-                            me.describeInstancesOfASG region
-
-                        if MC.canvas.getState() isnt 'stack'
-                            #update instance icon of app
-                            MC.aws.instance.updateStateIcon app_id
-                            MC.aws.asg.updateASGCount app_id
-                            MC.aws.eni.updateServerGroupState app_id
-                            #update deleted resource style
-                            MC.forge.app.updateDeletedResourceState MC.canvas_data
-
-                            #re-draw connection
-                            MC.canvas_data.layout.connection = {}
-                            MC.canvas.initLine()
-                            MC.canvas.reDrawSgLine()
-
-                            #update canvas when get instance info
-                            ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
-
+                        if app_id is MC.data.current_tab_id
+                            @setCurrentResource result
                         else
-                            console.log "current is stack, skip update state"
-
-                        #update property panel
-                        uid = MC.canvas_property.selected_node[0]
-                        if uid
-                            MC.canvas.select uid
-
-                        # re-set origin_data
-                        if app_id == MC.data.current_tab_id
-                            @setOriginData MC.canvas_data
-                        else
-                            @updateAppTabOriginDate MC.canvas_data, app_id
-                        #
-
-                        #app_name = MC.forge.app.getNameById app_id
-                        #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FINISH, if app_name then app_name else app_id + '(closed)'
+                            @setOriginResource result, app_id
 
                     catch error
 
                         app_name = MC.forge.app.getNameById app_id
-                        notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FAILED, if app_name then app_name else app_id + '(closed)'
+                        notification 'error', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FAILED, if app_name then app_name else app_id + '(closed)'
 
-                        console.error '[error]APP_RESOURCE_RETURN'
+                        console.error '[error]APP_RESOURCE_RETURN' + error
 
                 else
                     #TO-DO
                 #
-                ide_event.trigger ide_event.SWITCH_MAIN
+                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
 
                 null
 
             #listen APP_INFO_RETURN
             me.on 'APP_INFO_RETURN', ( result ) ->
                 console.log 'APP_INFO_RETURN'
-                #
+
                 app_id = result.param[4][0]
+
                 # update canvas_data when on current tab
                 if app_id == MC.canvas_data.id
-                    #MC.canvas_data =  $.extend(true, {}, result.resolved_data[0])
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
+
                 # update MC.Tab[app_id]
                 else
-                    #MC.tab[app_id].data = $.extend(true, {}, result.resolved_data[0]) if MC.tab[ app_id ]
                     @updateAppTabDate       result.resolved_data[ 0 ], app_id
                     @updateAppTabOriginDate result.resolved_data[ 0 ], app_id
-                #
+
+                # get app.resource
                 @getAppResourcesService result.param[3], app_id
-                #
+
                 null
 
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
@@ -127,21 +88,17 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         readTab : ( type, tab_id ) ->
             console.log 'readTab'
             #set random number
-            this.set 'snapshot', Math.round(+new Date())
+            @set 'snapshot', Math.round(+new Date())
             #
             ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
-            this.set 'snapshot',      MC.tab[ tab_id ].snapshot
-            #
-            this.setCanvasData        MC.tab[ tab_id ].data
-            #
-            this.setOriginData        MC.tab[ tab_id ].origin_data
-            #
-            this.setCanvasProperty    MC.tab[ tab_id ].property
-            #
-            this.setPropertyPanel     MC.tab[ tab_id ].property_panel
-            #
-            this.setTAValidation      MC.tab[ tab_id ].origin_ta_valid
+            @set 'snapshot',      MC.tab[ tab_id ].snapshot
+            @setCanvasData        MC.tab[ tab_id ].data
+            @setOriginData        MC.tab[ tab_id ].origin_data
+            @setCanvasProperty    MC.tab[ tab_id ].property
+            @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
+            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
+            @setPropertyPanel     MC.tab[ tab_id ].property_panel
             #
             null
 
@@ -151,7 +108,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property, 'origin_data' : MC.tab[ old_tab_id ].origin_data }
             #
-            this.deleteTab old_tab_id
+            @deleteTab old_tab_id
 
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
@@ -196,7 +153,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
-            this.trigger "SET_PROPERTY_PANEL", property_panel
+            @trigger "SET_PROPERTY_PANEL", property_panel
             null
 
         setOriginData : ( data ) ->
@@ -217,6 +174,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log 'getTAValidation'
             #MC.ta.list
             $.extend true, [], MC.ta.list
+
+        setOriginResource : ( data, tab_id ) ->
+            console.log 'setOriginResource', data, tab_id
+            MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
+            null
 
         describeInstancesOfASG : (region) ->
 
@@ -316,6 +278,46 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         console.log 'current type = ' + type + ', state is =' + state
                         console.log MC.data.process[ MC.data.current_tab_id ]
             temp
+
+        setCurrentResource : ( data ) ->
+            console.log 'setCurrentResource', data
+            result          = $.extend true, {}, data
+            app_id          = result.param[4]
+            region          = result.param[3]
+            resource_source = result.resolved_data
+
+            if resource_source
+                #clear old app data in MC.data.resource_list
+                MC.forge.app.clearResourceInCache MC.canvas_data
+                #cache new app data
+                MC.aws.aws.cacheResource resource_source, region, false
+                #
+                @describeInstancesOfASG region
+
+            #update instance icon of app
+            MC.aws.instance.updateStateIcon app_id
+            MC.aws.asg.updateASGCount app_id
+            MC.aws.eni.updateServerGroupState app_id
+            #update deleted resource style
+            MC.forge.app.updateDeletedResourceState MC.canvas_data
+
+            #re-draw connection
+            MC.canvas_data.layout.connection = {}
+            MC.canvas.initLine()
+            MC.canvas.reDrawSgLine()
+
+            #update property panel
+            uid = MC.canvas_property.selected_node[0]
+            if uid
+                MC.canvas.select uid
+
+            # re-set origin_data
+            @setOriginData MC.canvas_data
+
+            # delete current origin_resource
+            MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource
+            #
+            console.log 'set app.resource end'
 
     }
 

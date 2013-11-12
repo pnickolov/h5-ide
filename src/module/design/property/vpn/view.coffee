@@ -85,7 +85,7 @@ define [ '../base/view',
                 brotherElemAry = inputElem.parents('.multi-ipt-row').prev('.multi-ipt-row')
                 if brotherElemAry.length isnt 0
                     MC.aws.aws.disabledAllOperabilityArea(false)
-                    return
+                    # return
 
                 dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Connection',

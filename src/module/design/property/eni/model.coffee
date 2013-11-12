@@ -238,12 +238,13 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 
 				ip_customizable = parseInt(instance.number, 10) is 1
 
+			ipStr = prefixSuffixAry.join('')
 			newIP =
 				customizable : ip_customizable
 				prefix       : prefixSuffixAry[0]
-				suffix       : "x"
+				suffix       : prefixSuffixAry[1]
 				deletable    : true
-				ip           : prefixSuffixAry[0] + "x"
+				ip           : ipStr
 				eip          : false
 
 			@attributes.ips.push newIP

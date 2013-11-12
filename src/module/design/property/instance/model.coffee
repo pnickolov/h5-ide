@@ -551,12 +551,13 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( subnetCIDR )
 
+			ipStr = prefixSuffixAry.join('')
 			newIP =
 				customizable : parseInt( MC.canvas_data.component[ uid ].number, 10) == 1
 				prefix       : prefixSuffixAry[0]
-				suffix       : "x"
+				suffix       : prefixSuffixAry[1]
 				deletable    : true
-				ip           : prefixSuffixAry[0] + "x"
+				ip           : ipStr
 				eip          : false
 
 			@attributes.eni_ips.push newIP

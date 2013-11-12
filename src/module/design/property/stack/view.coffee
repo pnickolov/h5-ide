@@ -88,9 +88,8 @@ define [ '../base/view',
                 that.refreshACLList()
 
         refreshACLList : () ->
-            if MC.aws.vpc.getVPCUID()
-                this.model.getNetworkACL()
-                $('.stack-property-acl-list').html acl_template this.model.attributes
+            this.model.getNetworkACL()
+            $('.stack-property-acl-list').html acl_template this.model.attributes
 
         openCreateAclPanel : ( event ) ->
             aclUID = MC.guid()

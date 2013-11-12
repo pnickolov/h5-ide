@@ -218,6 +218,10 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
             networkACLs = []
 
+            if !MC.aws.vpc.getVPCUID()
+                this.set 'network_acl', networkACLs
+                return
+
             ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
             linkToDefault = true
@@ -249,10 +253,13 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
             if defaultACLIdx != 0
                 defaultACL = networkACLs.splice defaultACLIdx, 1
-                networkACLs.splice 0, 0, defaultACL[0]
+                if defaultACL[0]
+                    networkACLs.splice 0, 0, defaultACL[0]
             else
                 defaultACL = networkACLs[ 0 ]
 
+            if !networkACLs
+                networkACLs = []
             this.set 'network_acl', networkACLs
 
             null

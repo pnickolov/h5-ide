@@ -29,10 +29,10 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             inputElemAry = $('.ip-main-input')
             _.each inputElemAry, (inputElem, inputIdx) ->
                 inputValue = $(inputElem).val()
-                if (inputValue is '0.0.0.0/0' and inputIdx > 1)
-                    $(inputElem).val('')
-                    inputValue = ''
-                if !inputValue
+                # if (inputValue is '0.0.0.0/0' and inputIdx > 1)
+                #     $(inputElem).val('')
+                #     inputValue = ''
+                if !inputValue or inputValue is '0.0.0.0/0'
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     me.forceShow()
                     $(inputElem).focus()
@@ -115,9 +115,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
             allCidrAry = []
             repeatFlag = false
+            allZeroCidrCount = 0
             allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
             _.each allCidrInputElemAry, (inputElem) ->
                 cidrValue = $(inputElem).val()
+                if cidrValue is '0.0.0.0/0'
+                    allZeroCidrCount++
                 if !((inputValue is '0.0.0.0/0') and ($(inputElem).parent('.ipt-wrapper').index() is 0))
                     if cidrValue isnt inputValue
                         allCidrAry.push(cidrValue)
@@ -133,7 +136,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             else if !MC.validate 'cidr', inputValue
                 mainContent = inputValue + ' is not a valid form of CIDR block.'
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
-            else if !MC.aws.rtb.isNotCIDRConflict(inputValue, allCidrAry)
+            else if (!MC.aws.rtb.isNotCIDRConflict(inputValue, allCidrAry) or allZeroCidrCount > 1)
                 mainContent = inputValue + ' conflicts with other route.'
                 descContent = 'Please choose a CIDR block not conflicting with existing route.'
             else
@@ -143,7 +146,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                 brotherElemAry = inputElem.parents('.multi-ipt-row').prev('.multi-ipt-row')
                 if brotherElemAry.length isnt 0
                     MC.aws.aws.disabledAllOperabilityArea(false)
-                    return
+                    # return
 
                 dialog_template = MC.template.setupCIDRConfirm {
                     remove_content : 'Remove Route',

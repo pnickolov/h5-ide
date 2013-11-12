@@ -12,7 +12,7 @@
 	<div class="option-group sg-group"></div>
 
 	{{#if property_detail.is_vpc}}
-	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{network_acl.length}})</span></div>
+	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{#if network_acl}}{{network_acl.length}}{{else}}0{{/if}})</span></div>
 	<div class="option-group stack-property-acl-list"></div>
 	{{/if}}
 

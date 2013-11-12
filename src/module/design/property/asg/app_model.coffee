@@ -21,7 +21,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         @set data
 
         @getASGData( asg_comp.resource.AutoScalingGroupARN )
-        null
 
     getASGData : ( arn )->
 
@@ -29,7 +28,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         asg_data = resource_list[ arn ]
 
         if not asg_data
-            return
+            return false
 
         @set 'hasData', true
         @set 'awsResName', asg_data.AutoScalingGroupName

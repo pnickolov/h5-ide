@@ -21,5 +21,10 @@ define [ '../base/main', '../base/model', '../base/view' ], ( PropertyModule, Pr
             @model = model
             @view  = view
             null
+
+        initAppEdit : ()->
+            @model = model
+            @view  = view
+            null
     }
     null

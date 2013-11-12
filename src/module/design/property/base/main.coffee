@@ -237,9 +237,17 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
     PropertyModule.load  = ( componentType, componentUid, tab_type ) ->
         if not componentType
             this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
-        else if not this._doLoad componentType, componentUid, tab_type
-            console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"
-            this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
+        else
+            result = this._doLoad componentType, componentUid, tab_type
+            if result is true
+                return
+            else if result is false
+                # Cannot load the property due to data issue. Display the missing property
+                this._doLoad "missing_resource", "", tab_type
+            else
+                # The property doesn't handle current tab_type. Display the stack property
+                console.warn "Cannot open component for type: #{ componentType }, data : #{componentUid }"
+                this._doLoad propertyTypeMap.DEFAULT_TYPE, "", tab_type
         null
 
 
@@ -264,7 +272,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
                     break
 
         if not property
-            return false
+            return
 
         property.handle = handle
 
@@ -283,7 +291,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
             property[ procName ].call property, componentUid
         else
             # The property cannot init. Default to use Stack property.
-            return false
+            return
 
         # 3. Setup ( Only run once )
         procName = "setup#{property.type}"
@@ -304,7 +312,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
         property.model.clear( { silent : true } )
-        # If the model cannot init. Default to use Stack property.
+        # If the model cannot init. Default to use Missing Property.
         if property.model.init( componentUid ) is false
             return false
 

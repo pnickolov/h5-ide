@@ -43,9 +43,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                             MC.forge.app.updateDeletedResourceState MC.canvas_data
 
                             #re-draw connection
-                            #MC.canvas_data.layout.connection = {}
-                            #MC.canvas.initLine()
-                            #MC.canvas.reDrawSgLine()
+                            MC.canvas_data.layout.connection = {}
+                            MC.canvas.initLine()
+                            MC.canvas.reDrawSgLine()
 
                             #update canvas when get instance info
                             ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE

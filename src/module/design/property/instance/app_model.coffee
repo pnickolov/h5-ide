@@ -164,8 +164,7 @@ define [ '../base/model',
                 this.set instance
 
             else
-
-                console.log 'Can not found data for this instance: ' + instance_id
+                return false
 
             null
 

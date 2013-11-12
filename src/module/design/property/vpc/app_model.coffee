@@ -11,12 +11,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           myVPCComponent = MC.canvas_data.component[ vpc_uid ]
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
+          vpc     = appData[ myVPCComponent.resource.VpcId ]
 
-          vpc = $.extend true, {}, appData[ myVPCComponent.resource.VpcId ]
+          if not vpc
+            return false
+
+          vpc = $.extend true, {}, vpc
           vpc.name = myVPCComponent.name
-
-          if vpc.state == "available"
-            vpc.available = true
 
           TYPE_RTB = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
           TYPE_ACL = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
@@ -48,6 +49,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
               vpc.dhcp = dhcp
 
           this.set vpc
+          null
     }
 
     new VPCAppModel()

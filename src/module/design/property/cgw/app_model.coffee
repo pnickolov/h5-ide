@@ -6,10 +6,6 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
     CGWAppModel = PropertyModel.extend {
 
-        defaults :
-            cgw: null
-            vpn: null
-
         init : ( cgw_uid )->
 
           # cgw assignment
@@ -17,7 +13,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-          cgw = $.extend true, {}, appData[ myCGWComponent.resource.CustomerGatewayId ]
+          cgw = appData[ myCGWComponent.resource.CustomerGatewayId ]
+          if not cgw
+            return false
+
+          cgw = $.extend true, {}, cgw
           cgw.name = myCGWComponent.name
 
           # vpn assignment
@@ -66,6 +66,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
             cgw  : cgw
             vpn  : vpn
           }
+          null
     }
 
     new CGWAppModel()

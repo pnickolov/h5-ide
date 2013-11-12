@@ -21,7 +21,6 @@ define [ "../base/main",
     view.on "OPEN_AMI", (id)->
         PropertyModule.loadSubPanel "STATIC", id
 
-    null
 
     LCModule = PropertyModule.extend {
 

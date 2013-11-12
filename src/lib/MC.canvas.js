@@ -1084,16 +1084,19 @@ MC.canvas = {
 
 			$.each(from_node_connection_data, function (key, value)
 			{
-				line_data_target = layout_connection_data[ value[ 'line' ] ].target;
-
-				if (
-					line_data_target[ from_uid ] === from_target_port &&
-					line_data_target[ to_uid ] === to_target_port
-				)
+				var line_data = layout_connection_data[ value[ 'line' ] ];
+				if (line_data)
 				{
-					is_connected = true;
+					line_data_target = line_data.target;
+					if (
+						line_data_target[ from_uid ] === from_target_port &&
+						line_data_target[ to_uid ] === to_target_port
+					)
+					{
+						is_connected = true;
 
-					return false;
+						return false;
+					}
 				}
 			});
 

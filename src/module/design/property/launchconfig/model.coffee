@@ -281,6 +281,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       this.set 'name', component.name
       this.set 'lc',   lc_data
       this.set 'uid',  uid
+      null
 
   }
 

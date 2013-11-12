@@ -3360,6 +3360,8 @@ td.table-action a.btn {
 
 .btn-toolbar.selectbox {
 	width : auto;
+	padding: 0;
+	height: 44px;
 }
 
 .btn-toolbar.selectbox .selection {
@@ -3367,7 +3369,15 @@ td.table-action a.btn {
 	color       : #616061;
 	padding     : 0 18px 0 10px;
 	border      : none;
-	line-height : 26px;
+	line-height: 44px;
+	display: inline-block;
+	width: 24px;
+	height: 44px;
+	margin: 0;
+}
+
+.btn-toolbar.selectbox .dropdown {
+	margin-top: 1px;
 }
 
 .toolbar-btn-group .dropdown li:last-child {

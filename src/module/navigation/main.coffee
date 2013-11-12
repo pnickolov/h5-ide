@@ -46,7 +46,7 @@ define [ 'jquery',
                 #refresh view
                 view.stackListRender()
                 #call
-                model.regionEmptyList()
+                #model.regionEmptyList()
 
             model.on 'change:region_empty_list', () ->
                 console.log 'change:region_empty_list'

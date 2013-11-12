@@ -1,0 +1,22 @@
+<article class="property-control-group">
+{{#if readOnly}}
+  <dl class="dl-vertical">
+    <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
+    <dd>{{emptyStr device_id}}</dd>
+    <dt>State</dt>
+    <dd><i class="status status-{{state}}"></i>{{state}}</dd>
+    {{#if type}}
+    <dt>type</dt>
+    <dd>{{type}}</dd>
+    {{/if}}
+    <dt>VPC</dt>
+    <dd>{{emptyStr vpc}}</dd>
+  </dl>
+{{else}}
+{{#if isIGW}}
+  {{ i18n "PROP_IGW_TXT_DESCRIPTION" }}
+{{else}}
+  {{ i18n "PROP_VGW_TXT_DESCRIPTION" }}
+{{/if}}
+{{/if}}
+</article>

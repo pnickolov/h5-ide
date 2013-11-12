@@ -79,8 +79,10 @@
 	<a id="Intercom" href="mailto:3rp02j1w@incoming.intercom.io"><div class="icon-feedback"></div>Feedback</a>
 	<!-- env:prod:end -->
 
-	<!-- Disconnected notification Message -->
-	<div id="disconnected-notification-wrapper"></div>
+	<div class="disconnected-notification" style="display:none;">
+		<p>Connection lost. Attempting to reconnect…</p>
+		<p>Changes made now may not be saved.</p>
+	</div>
 
 	<!-- status bar modal -->
 	<div id="status-bar-modal" style="display: none;"></div>
@@ -110,7 +112,7 @@
 	-->
 
 	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/ide/config.js?" + 'v=' + version + "'></scr"+"ipt>" );
+		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/ide/config.js?v=" + version + "'></scr"+"ipt>" );
 	</script>
 </body>
 </html>

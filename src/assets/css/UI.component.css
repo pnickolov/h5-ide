@@ -240,9 +240,11 @@ a.table-link {
 }
 
 .btn-primary {
-	background : #B25B91;
-	border   : 1px solid #7E1958;
-	box-shadow        : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);
+	background      : #B25B91;
+	border          : 1px solid #7E1958;
+	box-shadow      : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);
+	color           : #fff !important;
+	text-decoration : none !important;
 }
 
 .btn-primary:hover {
@@ -1308,7 +1310,11 @@ textarea {
 .fixedaccordion .accordion-body {
 	background-color : #383738;
 	box-shadow       : inset 0 0 6px rgba(0,0,0,.2);
-    border-bottom    : 1px solid #313131;
+  border-bottom    : 1px solid #313131;
+}
+
+.option-group:last-child {
+	box-shadow       : none;
 }
 
 .option-group:last-child {
@@ -1419,7 +1425,7 @@ textarea {
 }
 
 .property-app .dl-vertical .truncate {
-	width: 230px;
+	width: 210px;
 }
 
 .dl-vertical .truncate {
@@ -1551,20 +1557,6 @@ textarea {
 	right: 1px;
 	border-left-color: #fff;
 	border-right-width: 0;
-}
-
-/* Editable Label */
-.editable-label {
-	height: 20px;
-	width: 200px;
-	/*margin-top: 15px;*/
-	cursor: pointer
-}
-
-.editable-label input {
-	padding: 0;
-	width: 100%;
-	height: 100%;
 }
 
 /* Selectbox V2 */

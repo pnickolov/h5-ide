@@ -90,7 +90,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                             #get all not exist ami data for stack
                             model.getAllNotExistAmiInStack region_name, tab_id
 
-                        #temp
                         #when NEW_STACK result is tab_id
                         ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
 
@@ -170,27 +169,25 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 null
 
             #listen
-            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id, is_manual ) ->
-                console.log 'UPDATE_APP_RESOURCE, is_manual = ' + is_manual
-                if not app_id
-                    return
-
-                #test open_fail
-                #return if app_id is 'app-df3be529'
-
-                console.log 'UPDATE_APP_RESOURCE:' + region_name + ',' + app_id
-                #is_manual = true
-                model.getAppResourcesService region_name, app_id, is_manual
+            ide_event.onLongListen ide_event.UPDATE_APP_INFO, ( region_name, app_id ) ->
+                console.log 'UPDATE_APP_INFO', region_name, app_id
 
                 setTimeout ->
-                    #app update fail
+                    # app update fail
                     if MC.data.process[app_id] and MC.data.process[ app_id ].flag_list.is_failed
                         return
 
-                    # update app data from mongo
-                    model.updateAppTab region_name, app_id
+                    # invoke app info
+                    model.appInfoService region_name, app_id
                 , 200
 
+                null
+
+            #listen
+            ide_event.onLongListen ide_event.UPDATE_APP_RESOURCE, ( region_name, app_id ) ->
+                console.log 'UPDATE_APP_RESOURCE', region_name, app_id
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, null, true
+                model.getAppResourcesService region_name, app_id
                 null
 
             #listen

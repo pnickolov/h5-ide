@@ -2,6 +2,35 @@
 
 define ['i18n!/nls/lang.js'], ( lang ) ->
 
+	AWS_RESOURCE_KEY = {
+		"AWS.EC2.Instance"								: "InstanceId"
+		"AWS.EC2.KeyPair"								: "KeyFingerprint"
+		"AWS.EC2.SecurityGroup"							: "GroupId"
+		"AWS.EC2.EIP"									: "PublicIp"
+		"AWS.EC2.AMI"									: "ImageId"
+		"AWS.EC2.EBS.Volume"							: "VolumeId"
+		"AWS.ELB"										: "LoadBalancerName"
+		"AWS.VPC.VPC"									: "VpcId"
+		"AWS.VPC.Subnet"								: "SubnetId"
+		"AWS.VPC.InternetGateway"						: "InternetGatewayId"
+		"AWS.VPC.RouteTable"							: "RouteTableId"
+		"AWS.VPC.VPNGateway"							: "VpnGatewayId"
+		"AWS.VPC.CustomerGateway"						: "CustomerGatewayId"
+		"AWS.VPC.NetworkInterface"						: "NetworkInterfaceId"
+		"AWS.VPC.DhcpOptions"							: "DhcpOptionsId"
+		"AWS.VPC.VPNConnection"							: "VpnConnectionId"
+		"AWS.VPC.NetworkAcl"							: "NetworkAclId"
+		"AWS.IAM.ServerCertificate"						: ""
+		"AWS.AutoScaling.Group"							: "AutoScalingGroupARN"
+		"AWS.AutoScaling.LaunchConfiguration"			: "LaunchConfigurationARN"
+		"AWS.AutoScaling.NotificationConfiguration"		: ""
+		"AWS.AutoScaling.ScalingPolicy"					: "PolicyARN"
+		"AWS.AutoScaling.ScheduledActions"				: "ScheduledActionARN"
+		"AWS.CloudWatch.CloudWatch"						: "AlarmArn"
+		"AWS.SNS.Subscription"							: ""
+		"AWS.SNS.Topic"									: ""
+	}
+
 	#private
 	AWS_RESOURCE_TYPE = {
 		AWS_EC2_AvailabilityZone  					: "AWS.EC2.AvailabilityZone"
@@ -446,6 +475,7 @@ use redirection server name:i:0\n"
 	WINDOWS = ['windows', 'win']
 
 	#public
+	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
 	INSTANCE_TYPE			: INSTANCE_TYPE
 	INSTANCE_STATES			: INSTANCE_STATES
 	AWS_RESOURCE_TYPE		: AWS_RESOURCE_TYPE

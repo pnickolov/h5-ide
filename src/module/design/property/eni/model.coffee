@@ -15,11 +15,12 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 			component = MC.canvas_data.component[ uid ]
 
 			data = {
-				uid  : uid
-				name : component.name
-				desc : component.resource.Description
+				uid             : uid
+				name            : component.name
+				desc            : component.resource.Description
 				sourceDestCheck : "" + component.resource.SourceDestCheck is "true"
-				isAppEdit : @isAppEdit
+				isAppEdit       : @isAppEdit
+				isGroupMode     : @isGroupMode
 			}
 
 			if component.resource.Attachment and component.resource.Attachment.InstanceId.length
@@ -28,6 +29,68 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 			@set data
 
 			@getIPList()
+
+			if @isAppEdit
+				@getEniGroup( uid )
+			null
+
+		getEniGroup : ( eni_uid ) ->
+
+			group          = []
+			myEniComponent = MC.canvas_data.component[ eni_uid ]
+			appData        = MC.data.resource_list[ MC.canvas_data.region ]
+
+			for uid, component of MC.canvas_data.component
+				if component.serverGroupUid is myEniComponent.serverGroupUid
+					group.push component
+
+
+			formated_group = []
+			for eni_comp in group
+				eni = $.extend true, {}, appData[ eni_comp.resource.NetworkInterfaceId ]
+
+				for i in eni.privateIpAddressesSet.item
+					i.primary = i.primary is true
+
+				eni.id              = eni_comp.resource.NetworkInterfaceId
+				eni.name            = eni_comp.name
+				eni.idx             = parseInt( eni_comp.name.split("-")[1], 10 )
+				eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
+
+				formated_group.push eni
+
+			if formated_group.length > 1
+				formated_group = _.sortBy formated_group, 'idx'
+
+				if myEniComponent.resource.Attachment and myEniComponent.resource.Attachment.InstanceId
+					instance_comp = MC.canvas_data.component[ MC.extractID( myEniComponent.resource.Attachment.InstanceId ) ]
+
+					if instance_comp and instance_comp.number isnt formated_group.length
+						formated_group.increment = instance_comp.number - formated_group.length
+						if formated_group.increment > 0
+							formated_group.increment = "+" + formated_group.increment
+
+							name_template = myEniComponent.name.split("-")
+
+							for idx in [formated_group.length..instance_comp.number-1]
+								name_template[1] = idx
+								formated_group.push {
+									name  : name_template.join("-")
+									isNew : true
+									state : "Unknown"
+								}
+
+						else
+							for idx in [instance_comp.number..formated_group.length-1]
+								formated_group[ idx ].isOld = true
+
+				@set 'group', formated_group
+			else
+				@set 'group', formated_group[0]
+
+			@set 'readOnly', false
+
+
 			null
 
 		getIPList : () ->

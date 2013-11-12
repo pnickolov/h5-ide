@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView, template, ide_event ) ->
+define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( PropertyView, template, ide_event, constant ) ->
 
     template = Handlebars.compile template
 
@@ -114,6 +114,15 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
                         ide_event.trigger ide_event.DELETE_COMPONENT, cgwUID, 'node'
+
+                        # remove vpn connection
+                        for key, value of MC.canvas_data.component
+                            if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
+                                continue
+                            if value.resource.CustomerGatewayId and MC.extractID( value.resource.CustomerGatewayId ) is cgwUID
+                                delete MC.canvas_data.component[ key ]
+                                break
+
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else

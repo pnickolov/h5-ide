@@ -22,7 +22,7 @@ define [ "../base/main",
 
         ideEvents : ideEvents
 
-        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, "component_eni_group" ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id
@@ -30,7 +30,8 @@ define [ "../base/main",
 
         initStack : () ->
             @model = model
-            @model.isAppEdit = false
+            @model.isAppEdit   = false
+            @model.isGroupMode = false
             @view  = view
             null
 
@@ -40,11 +41,13 @@ define [ "../base/main",
 
         initApp : () ->
             @model = app_model
+            @model.isGroupMode = @handle is "component_eni_group"
             @view  = app_view
             null
 
         afterLoadApp : () ->
-            sglist_main.loadModule @model
+            if not @model.isGroupMode
+                sglist_main.loadModule @model
             null
 
         initAppEdit : () ->

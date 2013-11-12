@@ -173,12 +173,18 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #
                 #me.regionEmptyList _.keys result.resolved_data
-                stack_region_list = _.keys result.resolved_data
+                #stack_region_list = _.keys result.resolved_data
 
                 #set vo
                 me.set 'stack_list', stack_list
                 #
+                stack_region_list = []
+                _.each stack_list, ( item ) ->
+                    stack_region_list.push item.region_name_group[0].region
+                #
                 MC.data.nav_stack_list = stack_list
+                #
+                @regionEmptyList()
 
                 null
 

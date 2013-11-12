@@ -28,7 +28,7 @@ require.config {
 		#############################################
 		# vender
 		#############################################
-		'jquery'          : [ (if /msie (9|8|7|6)/ig.test navigator.userAgent.toLowerCase() then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min' ) , 'vender/jquery/jquery' ]
+		'jquery'             : [ current_jquery , 'vender/jquery/jquery' ]
 		'canvon'             : 'vender/canvon/canvon'
 
 		'underscore'         : 'vender/underscore/underscore'
@@ -78,12 +78,10 @@ require.config {
 		'UI.table'           : 'ui/common/UI.table'
 		'UI.tablist'         : 'ui/common/UI.tablist'
 		'UI.selectbox'       : 'ui/common/UI.selectbox'
-		'UI.toggleicon'      : 'ui/common/UI.toggleicon'
 		'UI.searchbar'       : 'ui/common/UI.searchbar'
 		'UI.filter'          : 'ui/common/UI.filter'
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
-		'UI.editablelabel'   : 'ui/common/UI.editablelabel'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
 		'UI.zeroclipboard'   : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'        : 'ui/common/jquery.sortable'
@@ -310,9 +308,6 @@ require.config {
 		'UI.selectbox' :
 			deps       : [ 'jquery' ]
 
-		'UI.toggleicon' :
-			deps       : [ 'jquery' ]
-
 		'UI.searchbar' :
 			deps       : [ 'jquery' ]
 
@@ -323,9 +318,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.notification' :
-			deps       : [ 'jquery' ]
-
-		'UI.editablelabel' :
 			deps       : [ 'jquery' ]
 
 		'UI.multiinputbox' :
@@ -384,6 +376,8 @@ require.config {
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
+		'main'         :
+			deps       : [ 'jquery' ]
 
 
 }

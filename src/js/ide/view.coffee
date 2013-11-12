@@ -112,14 +112,8 @@ define [ 'event',
             @hideStatubar()
 
         disconnectedMessage : ( type ) ->
-            console.log 'disconnectedMessage'
-            #
-            return if $( '#disconnected-notification-wrapper' ).html() and type is 'show'
-            #
-            if type is 'show'
-                $( '#disconnected-notification-wrapper' ).html MC.template.disconnectedNotification()
-            else
-                $( '#disconnected-notification-wrapper' ).empty()
+            $(".disconnected-notification").toggle( type is 'show' )
+            null
 
         _beforeunloadEvent : ->
 

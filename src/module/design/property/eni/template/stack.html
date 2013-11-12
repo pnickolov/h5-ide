@@ -1,11 +1,13 @@
-<article class="property-control-group {{#if attached}}hide{{/if}}" id="property-eni-attach-info">
-  {{ i18n "PROP_ENI_LBL_ATTACH_WARN" }}
-</article>
+{{#unless attached}}
+<article class="property-control-group">{{ i18n "PROP_ENI_LBL_ATTACH_WARN" }}</article>
+{{else}}
 
-<article id="property-eni-wrapper" {{#unless attached}}style="display:none;"{{/unless}}>
-{{#unless isAppEdit}}
+<article>
+  <div id="prop-appedit-eni-list" class="expand"></div>
+
   <div class="option-group-head expand">{{ i18n "PROP_ENI_LBL_DETAIL" }}</div>
   <div class="option-group">
+{{#unless isAppEdit}}
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-eni-desc">{{ i18n "PROP_ENI_LBL_DESC" }}</label>
       <textarea id="property-eni-desc" data-type="ascii" data-ignore="true">{{desc}}</textarea>
@@ -33,5 +35,7 @@
   </div>
 
   <div class="option-group-head">{{ i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group">Loading...</div>
+  <div class="option-group sg-group"></div>
 </article>
+
+{{/unless}}

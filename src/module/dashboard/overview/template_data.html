@@ -159,8 +159,8 @@
 <!--{{ .region-app-stack }}-->
 <!-- Region App & Stack -->
     <!-- Resource tab -->
-    <div id="region-resource-tab">
-        <ul class="clearfix">
+    <div id="region-resource-tab" class="clearfix">
+        <ul>
             <li>
                 <a href="javascript:void(0)" {{#if app}}class="on"{{/if}}>
                     <i class="region-resource-tab-icon region-resource-icon-app"></i>
@@ -182,7 +182,7 @@
 
     <!-- Resource App -->
     <div id="region-resource-app-wrap" class="region-resource-list" {{#if stack}} style="display: none;"{{/if}}>
-        <div class="scroll-wrap" style="max-height:335px">
+        <div class="scroll-wrap">
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content">
                 <ul class="clearfix">
@@ -192,7 +192,6 @@
                         <li>
                             <a href="javascript:void(0)" class="region-resource-list-item disabled">
                                 <div class="region-resource-thumbnail app-thumbnail">
-                                    <!-- <img width="220" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/> -->
                                     <div class="app-thumbnail-pending"><!-- <i class="icon-pending"></i> -->
                                         <img width="30" height="23" class="app-pending-animation" src="./assets/images/ide/loading-bar-dark.gif"/>
                                         <p>Processing...</p>
@@ -251,7 +250,7 @@
 
     <!-- Resource Stack -->
     <div id="region-resource-stack-wrap" class="region-resource-list" {{#if app}} style="display: none;"{{/if}}>
-        <div class="scroll-wrap" style="max-height:335px">
+        <div class="scroll-wrap">
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content">
                 <ul class="clearfix">
@@ -274,7 +273,7 @@
                     {{else}}
                         <div class="blank-widget">
                             {{i18n "DASH_LBL_NO_STACK"}}
-                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:10px;position:absolute">
+                            <img src="assets/images/ide/action-guide.png" style="right:10px;top:21px;position:absolute">
                         </div>
                     {{/each}}
 

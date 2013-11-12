@@ -43,6 +43,7 @@ define [ '../base/view',
             @model.attributes.volume_detail.name
 
         volumeTypeChecked : ( event ) ->
+            @processIops()
             if($('#volume-type-radios input:checked').val() is 'radio-standard')
                 $( '#iops-group' ).hide()
                 this.trigger 'VOLUME_TYPE_STANDARD'
@@ -74,7 +75,7 @@ define [ '../base/view',
                 @setTitle name
 
         processIops: ( event ) ->
-            size = parseInt event.currentTarget.value, 10
+            size = parseInt $( '#volume-size-ranged' ).val(), 10
             opsCheck = $( '#radio-iops' ).is ':checked'
             if size >= 10
                 @enableIops()

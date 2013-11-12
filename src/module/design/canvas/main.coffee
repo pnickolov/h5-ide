@@ -71,12 +71,17 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 view.render template
                 #
                 MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
-                #
+                #redraw
                 MC.canvas.layout.init()
                 model.initLine()
                 model.reDrawSgLine()
+                #re set
+                #update instance icon of app
                 MC.aws.instance.updateStateIcon MC.canvas_data.id
                 MC.aws.asg.updateASGCount MC.canvas_data.id
+                MC.aws.eni.updateServerGroupState MC.canvas_data.id
+                #update deleted resource style
+                MC.forge.app.updateDeletedResourceState MC.canvas_data
                 #
                 MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
                 #

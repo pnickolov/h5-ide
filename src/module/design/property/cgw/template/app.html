@@ -26,7 +26,7 @@
       <dd>{{vpnConnectionId}}</dd>
 
       <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
-      <dd class="capitalize"><i class="status status-green"></i>{{state}}</dd>
+      <dd class="capitalize"><i class="status status-{{state}}"></i>{{state}}</dd>
 
       <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
       <dd>{{type}}</dd>
@@ -36,7 +36,7 @@
     </dl>
 
     {{#if vgwTelemetry.item}}
-      <div class="accordion-sub-head">
+      <div class="property-group-head">
         <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</h5>
       </div>
       <table class="table">
@@ -49,7 +49,7 @@
         <tbody>
           {{#each vgwTelemetry.item}}
             <tr>
-              <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
+              <td><i class="status status-{{stateColor}} tooltip icon-label" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
               <td>{{outsideIpAddress}}</td>
             </tr>
           {{/each}}
@@ -58,7 +58,7 @@
     {{/if}}
 
     {{#if routes.item}}
-      <div class="accordion-sub-head">
+      <div class="property-group-head">
         <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</h5>
       </div>
 
@@ -72,7 +72,7 @@
         <tbody>
           {{#each routes.item}}
           <tr>
-            <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+            <td><i class="status status-{{state}} tooltip icon-label" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
             <td>{{source}}</td>
           </tr>
           {{/each}}

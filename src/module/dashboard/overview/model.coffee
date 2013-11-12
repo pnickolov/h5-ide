@@ -316,7 +316,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 #cache aws resource data
                 $.each data, (key, resources) ->
                     try
-                        MC.aws.aws.cacheResource resources, key
+                        MC.aws.aws.cacheResource resources, key, true
                     catch error
                         console.error '[awsReturnHandler]catchResource error:' + key
                         console.info resources

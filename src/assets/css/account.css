@@ -285,19 +285,17 @@ header {
 }
 
 /* Unsupported Browser Notice */
-
 #unsupported-browser {
-	position: fixed;
+	position: relative;
 	top: 60px;
-	padding: 10px 0;
+	padding: 15px 0 5px;
 	text-align: center;
-	background: rgb(166, 209, 255);
+	background: #fff9d7;
 	width: 100%;
-	color: #333;
-	font-size: 16px;
-	border-bottom: 2px solid #A2BEDB;
+	color: #666;
+	font-size: 14px;
+	border-bottom: 1px solid #999;
 }
-
 
 /* Selection */
 

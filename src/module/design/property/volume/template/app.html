@@ -13,7 +13,7 @@
     <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
     <dd>{{emptyStr name}}</dd>
     <dt>{{i18n "PROP_VOLUME_STATE"}}</dt>
-    <dd><i class="status status-{{#if isInUse}}green{{else}}orange{{/if}}"></i>{{status}}</dd>
+    <dd><i class="status status-{{status}}"></i>{{status}}</dd>
     <dt>{{i18n "PROP_VOLUME_CREATE_TIME"}}</dt>
     <dd>{{timeStr createTime}}</dd>
   </dl>

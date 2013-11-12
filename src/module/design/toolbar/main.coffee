@@ -138,9 +138,11 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.SAVE_APP, (data) ->
                 console.log 'design_toolbar SAVE_APP'
 
-                data = MC.forge.stack.expandServerGroup data
-
-                model.saveApp(data)
+                if _.isObject data
+                    data = MC.forge.stack.expandServerGroup data
+                    model.saveApp(data)
+                else
+                    console.log 'current is not object, data is ' + data
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'

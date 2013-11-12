@@ -16,11 +16,22 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
             this.listenTo ide_event, 'UPDATE_RESOURCE_STATE', ()->
                 canvas_layout.listen()
 
+                app_id = MC.canvas_data.id
+
+                #update resource state
+                MC.aws.instance.updateStateIcon app_id
+                MC.aws.asg.updateASGCount app_id
+                MC.aws.eni.updateServerGroupState app_id
+                MC.forge.app.updateDeletedResourceState MC.canvas_data
+
+                null
+
             #bind event
             $( document )
                 .on( 'CANVAS_NODE_SELECTED',        '#svg_canvas', this.showProperty )
                 .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
                 .on( 'CANVAS_INSTANCE_SELECTED',    '#svg_canvas', this.showInstanceProperty )
+                .on( 'CANVAS_ENI_SELECTED',         '#svg_canvas', this.showEniProperty )
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
                 .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
@@ -39,6 +50,11 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
         showInstanceProperty : ( event, uid ) ->
             # Directly open the instance property
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+            null
+
+        showEniProperty : ( event, uid ) ->
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'component', uid
+            null
 
         showProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid
@@ -48,11 +64,14 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
 
             component = MC.canvas_data.component[uid]
             if component
-                if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                    # In AppEdit, newly created instance will make forge_app.existing_app_resource return false.
+                if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+                    # In AppEdit, newly created instance/eni will make forge_app.existing_app_resource return false.
                     # In app mode, component's number that is not 1 is servergroup.
                     if ( state is "appedit" and forge_app.existing_app_resource( uid ) is true ) or (state is "app" and  "" + component.number isnt "1")
-                        type = "component_server_group"
+                        if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                            type = "component_server_group"
+                        else
+                            type = "component_eni_group"
             else
                 layout_data = MC.canvas_data.layout.component.group[uid]
                 if layout_data and layout_data.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and layout_data.originalId

@@ -17,24 +17,16 @@ define [ '../base/view',
             "blur #property-vpn-ips input"       : 'onBlurCIDR'
 
         render : ()->
-            console.log 'property:vpn render'
-
             @$el.html template @model.attributes
 
-            me = this
-
             # find empty inputbox and focus
-            vpn_detail = this.model.get('vpn_detail')
-            if !vpn_detail.is_dynamic
-                inputElemAry = $('#property-vpn-ips input')
-                _.each inputElemAry, (inputElem) ->
-                    inputValue = $(inputElem).val()
-                    if !inputValue
-                        MC.aws.aws.disabledAllOperabilityArea(true)
-                        me.forceShow()
-                        $(inputElem).focus()
+            $inputs = $('#property-vpn-ips input')
+            if $inputs.length is 1 and not $inputs.val()
+                MC.aws.aws.disabledAllOperabilityArea(true)
+                @forceShow()
+                $inputs.focus()
 
-            "vpn:#{@model.attributes.vpn_detail.cgw_name}"
+            "vpn:#{@model.attributes.cgw_name}"
 
         removeIP : (event, ip) ->
             if not ip

@@ -16,7 +16,7 @@ require.config {
 		'main'            : 'js/login/main'
 
 		#vender
-		'jquery'          : [ (if /msie (9|8|7|6)/ig.test navigator.userAgent.toLowerCase() then '//code.jquery.com/jquery-1.10.2.min' else '//code.jquery.com/jquery-2.0.3.min' ) , 'vender/jquery/jquery' ]
+		'jquery'          : [ current_jquery , 'vender/jquery/jquery' ]
 		'underscore'      : 'vender/underscore/underscore'
 		'backbone'        : 'vender/backbone/backbone'
 		'handlebars'      : 'vender/handlebars/handlebars'
@@ -67,8 +67,11 @@ require.config {
 			exports       : 'Handlebars'
 
 		'MC'              :
-			deps          : [ 'jquery','constant' ]
+			deps          : [ 'jquery', 'constant' ]
 			exports       : 'MC'
+
+		'main'            :
+			deps          : [ 'jquery' ]
 
 }
 

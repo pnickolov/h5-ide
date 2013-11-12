@@ -1043,6 +1043,7 @@ MC.canvas = {
 			controlPoints = [],
 			direction,
 			layout_connection_data,
+			line_data_target,
 			from_port,
 			to_port,
 			from_port_offset,
@@ -1083,9 +1084,11 @@ MC.canvas = {
 
 			$.each(from_node_connection_data, function (key, value)
 			{
+				line_data_target = layout_connection_data[ value[ 'line' ] ].target;
+
 				if (
-					value[ 'target' ] === to_uid &&
-					value[ 'port' ] === to_target_port
+					line_data_target[ from_uid ] === from_target_port &&
+					line_data_target[ to_uid ] === to_target_port
 				)
 				{
 					is_connected = true;

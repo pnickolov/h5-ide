@@ -36,7 +36,7 @@ define [ '../base/view',
             $("#property-vpn-ips input").each ()->
                 ips.push $(this).val()
 
-            this.trigger 'VPN_IP_UPDATE', ips
+            @model.updateIps ips
             null
 
         onPressCIDR : ( event ) ->
@@ -114,7 +114,8 @@ define [ '../base/view',
                     value = $(this).val()
                     if value
                         ips.push value
-                this.trigger 'VPN_IP_UPDATE', ips
+
+                @model.updateIps ips
                 MC.aws.aws.disabledAllOperabilityArea(false)
 
             null

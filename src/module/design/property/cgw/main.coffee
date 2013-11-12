@@ -22,19 +22,10 @@ define [ '../base/main',
                 MC.canvas.update uid, "text", "name", value
                 null
 
-            @view.on "CHANGE_IP", ( value ) ->
-                me.model.setIP value
-                null
-
-            @view.on "CHANGE_BGP", ( value ) ->
-                me.model.setBGP value
-                null
-
         initStack : ()->
             @model = model
             @view  = view
             null
-
 
         initApp : () ->
             @model = app_model

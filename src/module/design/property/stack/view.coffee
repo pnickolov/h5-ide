@@ -102,7 +102,7 @@ define [ '../base/view',
                     return false
                 return true
             aclObj.resource.EntrySet = newEntrySet
-            
+
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 
@@ -159,7 +159,7 @@ define [ '../base/view',
 
             this.updateSNSList $("#property-sub-list").children(":not(.hide)"), this.model.attributes.has_asg, true
 
-            this.trigger 'DELETE_SUBSCRIPTION', uid
+            @model.deleteSNS uid
 
 
         editSNS : ( event ) ->
@@ -182,7 +182,7 @@ define [ '../base/view',
                 $dom.find(".protocol").html( data.protocol )
                 $dom.find(".endpoint").html( data.endpoint )
 
-            this.trigger  "SAVE_SUBSCRIPTION", data
+            @model.addSubscription data
 
             if !data.uid
                 # Update the list

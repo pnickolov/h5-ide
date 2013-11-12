@@ -22,10 +22,6 @@ define [ '../base/main',
 
         setupStack : () ->
             me = this
-            @view.on 'ELB_NAME_CHANGED', ( value ) ->
-                me.model.setELBName value
-                null
-
             @view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
                 elbComponent = model.setScheme value
 
@@ -38,39 +34,6 @@ define [ '../base/main',
                     ide_event.trigger ide_event.NEED_IGW
 
                 return true
-
-            @view.on 'HEALTH_PROTOCOL_SELECTED', ( value ) ->
-                me.model.setHealthProtocol value
-
-            @view.on 'HEALTH_PORT_CHANGED', ( value ) ->
-                me.model.setHealthPort value
-
-            @view.on 'HEALTH_PATH_CHANGED', ( value ) ->
-                me.model.setHealthPath value
-
-            @view.on 'HEALTH_INTERVAL_CHANGED', ( value ) ->
-                me.model.setHealthInterval value
-
-            @view.on 'HEALTH_TIMEOUT_CHANGED', ( value ) ->
-                me.model.setHealthTimeout value
-
-            @view.on 'UNHEALTHY_SLIDER_CHANGE', ( value ) ->
-                me.model.setHealthUnhealth value
-
-            @view.on 'HEALTHY_SLIDER_CHANGE', ( value ) ->
-                me.model.setHealthHealth value
-
-            @view.on 'LISTENER_ITEM_CHANGE', ( value ) ->
-                me.model.setListenerAry value
-
-            @view.on 'LISTENER_CERT_CHANGED', ( value ) ->
-                me.model.setListenerCert value
-
-            @view.on 'REMOVE_AZ_FROM_ELB', ( value ) ->
-                me.model.removeAZFromELB value
-
-            @view.on 'ADD_AZ_TO_ELB', ( value ) ->
-                me.model.addAZToELB value
 
             @view.on 'REFRESH_SG_LIST', () ->
                 sglist_main.refresh()

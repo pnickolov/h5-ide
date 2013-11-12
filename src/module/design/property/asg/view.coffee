@@ -89,8 +89,7 @@ define [ '../base/view',
             @model.attributes.asg.AutoScalingGroupName
 
         setASGCoolDown : ( event ) ->
-
-            this.trigger 'SET_COOL_DOWN', event.target.value
+            @model.setASGCoolDown event.target.value
 
         setASGName : ( event ) ->
             target = $ event.currentTarget
@@ -100,7 +99,7 @@ define [ '../base/view',
             MC.validate.preventDupname target, id, name, 'ASG'
 
             if target.parsley 'validate'
-                this.trigger 'SET_ASG_NAME', event.target.value
+                @model.setASGName event.target.value
 
         setSizeGroup: ( event ) ->
             $min        = @$el.find '#property-asg-min'
@@ -126,13 +125,12 @@ define [ '../base/view',
                     return 'Desired Capacity must be >= Minimal Size and <= Maximum Size'
 
             if $( event.currentTarget ).parsley 'validateForm'
-                @trigger 'SET_ASG_MIN', $min.val()
-                @trigger 'SET_ASG_MAX', $max.val()
-                @trigger 'SET_DESIRE_CAPACITY', $capacity.val()
+                @model.setASGMin $min.val()
+                @model.setASGMax $max.val()
+                @model.setASGDesireCapacity $capacity.val()
 
         setHealthCheckGrace : ( event ) ->
-
-            this.trigger 'SET_HEALTH_CHECK_GRACE', event.target.value
+            @model.setHealthCheckGrace event.target.value
 
         showTermPolicy : () ->
             policies = this.model.attributes.asg.TerminationPolicies
@@ -193,7 +191,7 @@ define [ '../base/view',
 
             console.log "Finish editing termination policy", data
 
-            this.trigger 'SET_TERMINATE_POLICY', data
+            @model.setTerminatePolicy data
 
         delScalingPolicy  : ( event ) ->
             $li = $( event.currentTarget ).closest("li")
@@ -202,7 +200,7 @@ define [ '../base/view',
 
             $("#property-asg-policy-add").removeClass("tooltip disabled")
 
-            this.trigger 'DELETE_POLICY', uid
+            @model.delPolicy uid
 
         updateScalingPolicy : ( data ) ->
             # Add or update the policy
@@ -401,7 +399,7 @@ define [ '../base/view',
 
             console.log "Finish Editing Policy : ", data
 
-            this.trigger 'SET_POLICY', data
+            @model.setPolicy data
 
             this.updateScalingPolicy data
             null
@@ -424,15 +422,13 @@ define [ '../base/view',
             else
                 $("#property-asg-sns-info").hide()
 
-            this.trigger 'SET_SNS_OPTION', checkArray
+            @model.setSNSOption checkArray
 
         setHealthyCheckELBType :( event ) ->
-
-            this.trigger 'SET_HEALTH_TYPE', 'ELB'
+            @model.setHealthCheckType 'ELB'
 
         setHealthyCheckEC2Type :( event ) ->
-
-            this.trigger 'SET_HEALTH_TYPE', 'EC2'
+            @model.setHealthCheckType 'EC2'
 
     }
 

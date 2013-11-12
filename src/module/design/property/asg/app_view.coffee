@@ -50,9 +50,9 @@ define [ '../base/view',
                     return 'Desired Capacity must be >= Minimal Size and <= Maximum Size'
 
             if $( event.currentTarget ).parsley 'validateForm'
-                @trigger 'SET_ASG_MIN', $min.val()
-                @trigger 'SET_ASG_MAX', $max.val()
-                @trigger 'SET_DESIRE_CAPACITY', $capacity.val()
+                @model.setASGMin $min.val()
+                @model.setASGMax $max.val()
+                @model.setASGDesireCapacity $capacity.val()
     }
 
     new ASGAppEditView()

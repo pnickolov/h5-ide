@@ -93,7 +93,7 @@ define [ '../base/view',
             if not $target.parsley('validate')
                 return
 
-            @trigger 'ELB_NAME_CHANGED', value
+            @model.setELBName value
             @setTitle value
             MC.canvas.update cid, 'text', 'elb_name', value
             @trigger 'REFRESH_SG_LIST'
@@ -115,35 +115,35 @@ define [ '../base/view',
             else
                 @$el.find('#property-elb-health-path').removeAttr 'disabled'
 
-            @trigger 'HEALTH_PROTOCOL_SELECTED', value
+            @model.setHealthProtocol value
 
         healthPortChanged : ( event ) ->
             $target = $ event.currentTarget
             value = $target.val()
             value = Helper.makeInRange value, [1, 65535], $target, 1
 
-            @trigger 'HEALTH_PORT_CHANGED', value
+            @model.setHealthPort value
 
         healthPathChanged : ( event ) ->
             console.log 'healthPathChanged'
             $target = $ event.currentTarget
 
             if $target.parsley 'validate'
-                @trigger 'HEALTH_PATH_CHANGED', $target.val()
+                @model.setHealthPath $target.val()
 
         healthIntervalChanged : ( event ) ->
             $target = $ event.currentTarget
             value = $target.val()
             value = Helper.makeInRange value, [6, 300], $target, 30
 
-            this.trigger 'HEALTH_INTERVAL_CHANGED', value
+            @model.setHealthInterval value
 
         healthTimeoutChanged : ( event ) ->
             $target = $ event.currentTarget
             value = $target.val()
             value = Helper.makeInRange value, [2, 60 ], $target, 5
 
-            this.trigger 'HEALTH_TIMEOUT_CHANGED', value
+            @model.setHealthTimeout value
 
         sliderChanged : ( event, value ) ->
             target = $(event.target)
@@ -151,9 +151,9 @@ define [ '../base/view',
             value += 2
 
             if id is 'elb-property-slider-unhealthy'
-                this.trigger 'UNHEALTHY_SLIDER_CHANGE', value
+                @model.setHealthUnhealth value
             else
-                this.trigger 'HEALTHY_SLIDER_CHANGE', value
+                @model.setHealthHealth value
 
         listenerItemAddClicked : ( event ) ->
             itemTpl = MC.template.elbPropertyListenerItem({
@@ -287,7 +287,7 @@ define [ '../base/view',
                 me.listenerCertChanged()
             else certPanelElem.hide()
 
-            me.trigger 'LISTENER_ITEM_CHANGE', listenerAry
+            @model.setListenerAry listenerAry
 
             null
 
@@ -313,7 +313,7 @@ define [ '../base/view',
             }
 
             # if certNameValue and certPrikeyValue and certPubkeyValue
-            this.trigger 'LISTENER_CERT_CHANGED', newCertObj
+            @model.setListenerCert newCertObj
 
             null
 
@@ -335,9 +335,9 @@ define [ '../base/view',
             checkStat = checkboxElem.prop('checked')
 
             if checkStat
-                this.trigger 'ADD_AZ_TO_ELB', azName
+                @model.addAZToELB azName
             else
-                this.trigger 'REMOVE_AZ_FROM_ELB', azName
+                @model.removeAZFromELB azName
 
             null
 

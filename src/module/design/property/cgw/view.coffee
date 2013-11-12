@@ -32,7 +32,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')
-            this.trigger "CHANGE_BGP", ""
+            @model.setBGP ""
 
         onChangeBGP : ( event ) ->
             $target = $ event.currentTarget
@@ -47,7 +47,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
                     return 'ASN number 9059 is reserved in Ireland'
 
             if $target.parsley 'validate'
-                this.trigger "CHANGE_BGP", $target.val()
+                @model.setBGP $target.val()
 
         onChangeName : ( event ) ->
             $target = $ event.currentTarget
@@ -58,9 +58,6 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
                 name = $target.val()
                 @trigger "CHANGE_NAME", name
                 @setTitle name
-
-        onChangeIP   : ( event ) ->
-            this.trigger "CHANGE_IP", event.currentTarget.value
 
         setBGP : ( bgp ) ->
             dynamic = false
@@ -126,7 +123,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else
-                this.trigger "CHANGE_IP", event.target.value
+                @model.setIP event.target.value
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
                 # $('#property-cidr-block').blur()

@@ -155,7 +155,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                     when constant.APP_STATE.APP_STATE_STOPPING    then $item.html MC.template.appStopping()
                     when constant.APP_STATE.APP_STATE_TERMINATING then $item.html MC.template.appTerminating()
                     when constant.APP_STATE.APP_STATE_UPDATING    then $item.html MC.template.appUpdating { 'rate' : MC.data.process[ MC.data.current_tab_id ].flag_list.rate, 'steps' : MC.data.process[ MC.data.current_tab_id ].flag_list.steps, 'dones' : MC.data.process[ MC.data.current_tab_id ].flag_list.dones }
-                    when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail, 'update_detail' : if MC.data.process[ MC.data.current_tab_id ].flag_list.flag is 'UPDATE_APP' then true else false  }
+                    when 'CHANGED_FAIL'                           then $item.html MC.template.appChangedfail { 'state' : lang.ide[ MC.data.process[ MC.data.current_tab_id ].flag_list.flag ] , 'detail' : MC.data.process[ MC.data.current_tab_id ].flag_list.err_detail.replace( /\n/g, '</br>' ), 'update_detail' : if MC.data.process[ MC.data.current_tab_id ].flag_list.flag is 'UPDATE_APP' then true else false  }
                     when 'UPDATING_SUCCESS'                       then $item.html MC.template.appUpdatedSuccess()
                     else
                         console.log 'current state = ' + state

@@ -641,11 +641,7 @@ Additional Notes and Questions
     </label>
   </div>
 
-  {{#if eip}}
-  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
-  {{else}}
-  <div class="input-ip-eip-btn toggle-icon tooltip toggle-eip" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggletext="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}" data-toggleactive="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}" data-toggleclass="associated"></div>
-  {{/if}}
+  <div class="input-ip-eip-btn tooltip toggle-eip {{#if eip}} associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}"{{else}}" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}"{{/if}}></div><!--"-->
 
   {{#if deletable}}<div class="icon-remove"></div>{{/if}}
 </li>
@@ -901,7 +897,7 @@ Additional Notes and Questions
 		<ul id="instance_volume_list" class="clearfix">
 			{{#each list}}
 			<li>
-				<a href="#" id="{{volume_id}}" class="{{#if snapshotId}}snapshot_item{{else}}volume_item{{/if}}" data-json="{{json}}">
+				<a href="#" id="{{volume_id}}" class="{{#if snapshotId}}snapshot_item{{else}}volume_item{{/if}}{{ is_deleted }}" data-json="{{json}}">
 					<span class="volume_name">{{name}}</span>
 					<span class="volume_size">{{size}}GB</span>
 				</a>
@@ -920,10 +916,10 @@ Additional Notes and Questions
 			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
 				<div class="selection">{{Protocol}}</div>
 				<ul class="dropdown">
-					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip"><div class="main truncate">SSL</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip {{#ifCond Protocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>
@@ -938,10 +934,10 @@ Additional Notes and Questions
 			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
 				<div class="selection">{{InstanceProtocol}}</div>
 				<ul class="dropdown">
-					<li class="item tooltip"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip"><div class="main truncate">SSL</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
+					<li class="item tooltip {{#ifCond InstanceProtocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
 				</ul>
 			</div>
 		</div>
@@ -1061,12 +1057,6 @@ Additional Notes and Questions
 		<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
 		<button id="cidr-return" class="btn modal-close btn-blue">OK</button>
 	</div>
-</div>
-
-<!-- disconnectedNotification -->
-<div class="disconnected-notification">
-	<p>Connection lost. Attempting to reconnect…</p>
-	<p>Changes made now may not be saved.</p>
 </div>
 
 <!-- modalAttachingEni -->

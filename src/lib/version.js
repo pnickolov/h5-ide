@@ -10,7 +10,8 @@
 */
 
 var version  = version || {},
-    language = 'en-us';
+    language = 'en-us',
+    current_jquery = (/msie (9|8|7|6)/ig.test(navigator.userAgent.toLowerCase()) ? '//code.jquery.com/jquery-1.10.2.min' : '//code.jquery.com/jquery-2.0.3.min');
 
 (function() {
   'use strict';

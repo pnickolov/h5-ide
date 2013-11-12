@@ -105,6 +105,10 @@ module.exports =
       en: "Username can only include alpha-number."
       zh: "用户名只能包含字母。"
 
+    username_maxlength:
+      en: "User name cannot be more than 40 characters."
+      zh: "用户名不能超过40个字符。"
+
     username_required:
       en: "Username is required."
       zh: "用户名不能为空。"
@@ -3214,6 +3218,10 @@ module.exports =
     AMI_LBL_ARCHITECTURE:
       en: "Architecture"
       zh: "架构"
+
+    AMI_LBL_SIZE:
+      en: "Size(GB)"
+      zh: "大小（GB）"
 
     AMI_LBL_ROOT_DEVICE_TYPE:
       en: "Root Device Type"

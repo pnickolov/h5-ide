@@ -5,7 +5,7 @@ define [ 'MC' ], ( MC) ->
 
 		#return osType by ami.name | ami.description | ami.imageLocation
 
-		osTypeList = ['centos', 'redhat', 'redhat', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensus', 'suse','amazon', 'amazon']
+		osTypeList = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse','amazon', 'amzn']
 
 		osType = 'linux-other'
 
@@ -32,6 +32,10 @@ define [ 'MC' ], ( MC) ->
 			osType = 'unknown'
 		else
 			osType = found[0]
+
+		switch osType
+			when 'rhel' then osType = 'redhat'
+			when 'amzn' then osType = 'amazon'
 
 		osType
 

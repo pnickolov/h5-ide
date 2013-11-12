@@ -84,7 +84,11 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
                   ( Defined by library when property is loaded)
         description : User can use this attribute to determine what mode ( stack or app ) it is right now.
 
-    # handleTypes : String | StringArray
+    # handle    : String | Regex
+                  ( Defined by library when property is loaded)
+        description : User can use this attribute to determine what type of the component ( This will be one of the value in this.handleTypes )
+
+    # handleTypes : String | Array(of string, regex)
                   ( Defined by user )
         description : This attribute is used to determine which Property should be shown. The String can be one of constant.AWS_RESOURCE_TYPE.
         Examples :
@@ -241,22 +245,28 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     PropertyModule._doLoad = ( componentType, componentUid, tab_type, noRender ) ->
 
+        handle = componentType
+
         # 1. Find the corresponding property
         property = propertyTypeMap[ componentType ]
         if not property
             # If we cannot find the property
             # then try using `App:XXXXX` and `Stack:XXXXX` to match
-            property = propertyTypeMap[ tab_type + ":" + componentType ]
+            handle = tab_type + ":" + componentType
+            property = propertyTypeMap[ handle ]
 
         if not property and componentType.indexOf ">" > -1
             # This is a line, we try to match the line using regexp
             for r in propertyTypeRegExpArr
                 if componentType.match r.regexp
+                    handle   = r.regexp
                     property = r.prop
                     break
 
         if not property
             return false
+
+        property.handle = handle
 
         # Return _doLoadProperty's return value.
         PropertyModule._doLoadProperty componentType, property, componentUid, tab_type, noRender

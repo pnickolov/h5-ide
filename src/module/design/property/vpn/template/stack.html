@@ -1,8 +1,74 @@
-<article class="property-control-group" id="property-vpn-dynamic-info" {{#if vpn_detail.is_dynamic}}{{else}}style="display:none;"{{/if}}>
+{{#if isApp}}
+<article>
+  <dl class="dl-vertical">
+    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_ID" }}</dt>
+    <dd>{{vpnConnectionId}}</dd>
+
+    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
+    <dd class="capitalize"><i class="status status-{{state}}"></i>{{state}}</dd>
+
+    <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
+    <dd>{{type}}</dd>
+
+    <dt>{{ i18n "PROP_CGW_LBL_ROUTING" }}</dt>
+    <dd>{{routing}}</dd>
+  </dl>
+
+  {{#if vgwTelemetry.item}}
+    <div class="accordion-sub-head">
+      <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</h5>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+        <th style="width:20px">{{ i18n "PROP_CGW_APP_VPN_COL_TUNNEL" }}</th>
+        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP" }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each vgwTelemetry.item}}
+          <tr>
+            <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
+            <td>{{outsideIpAddress}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
+
+  {{#if routes.item}}
+    <div class="accordion-sub-head">
+      <h5>{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</h5>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP_PREFIX" }}</th>
+        <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_SOURCE" }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each routes.item}}
+        <tr>
+          <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+          <td>{{source}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
+</article>
+{{else}}
+
+{{#if vpn_detail.is_dynamic}}
+
+<article class="property-control-group">
   Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary.
 </article>
 
-<article class="property-control-group" id="property-vpn-ips-wrapper" {{#if vpn_detail.is_dynamic}}style="display:none;"{{/if}}>
+{{else}}
+<article class="property-control-group">
 
   <div class="clearfix">
     <label class="left" for="property-vpc-ips">{{ i18n "PROP_VPN_LBL_IP_PREFIX" }}</label>
@@ -23,5 +89,6 @@
     {{/each}}
   </div>
 </article>
-
+{{/if}}
+{{/if}}
 

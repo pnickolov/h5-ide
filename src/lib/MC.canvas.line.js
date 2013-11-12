@@ -258,7 +258,11 @@ MC.canvas.reDrawSgLine = function() {
           if ((from_port === to_port && to_port === 'launchconfig-sg')) {
             existing = false;
             $.each(MC.canvas_data.layout.component.group, function(comp_uid, comp) {
-              if (comp.type === "AWS.AutoScaling.Group" && comp.originalId && ((comp.originalId === from_comp_uid && comp_uid === to_comp_uid) || (comp.originalId === to_comp_uid && comp_uid === from_comp_uid))) {
+              // if (comp.type === "AWS.AutoScaling.Group" && comp.originalId && ((comp.originalId === from_comp_uid && comp_uid === to_comp_uid) || (comp.originalId === to_comp_uid && comp_uid === from_comp_uid))) {
+              //   existing = true;
+              //   return false;
+              // }
+              if (comp.type === "AWS.AutoScaling.Group" && comp.originalId && ((MC.canvas_data.component[comp.originalId].resource.LaunchConfigurationName.split('.')[0].slice(1) === from_comp_uid && comp_uid === to_comp_uid) || (MC.canvas_data.component[comp.originalId].resource.LaunchConfigurationName.split('.')[0].slice(1) === to_comp_uid && comp_uid === from_comp_uid))) {
                 existing = true;
                 return false;
               }

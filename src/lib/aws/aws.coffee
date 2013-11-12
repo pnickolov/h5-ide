@@ -113,13 +113,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         name_prefix + idx
 
 
-    cacheResource = (resources, region) ->
+    cacheResource = (resources, region, need_reset) ->
 
         #cache aws resource data to MC.data.reosurce_list
 
         if !resources or !region or !MC.data.resource_list
             console.log 'cacheResource failed'
             return null
+
+        if need_reset
+            MC.data.resource_list[region] = {}
 
 
         try
@@ -259,8 +262,19 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     MC.data.resource_list[region].NotificationConfigurations = []
 
                 _.map resources.DescribeNotificationConfigurations, ( res, i ) ->
-                    MC.data.resource_list[region].NotificationConfigurations.push res
+
+                    #found by protocol + endpoint + topicarn
+                    found = null
+                    _.each MC.data.resource_list[region].NotificationConfigurations, ( item ) ->
+                        if item.AutoScalingGroupName is res.AutoScalingGroupName and item.NotificationType is res.NotificationType and item.TopicARN is res.TopicARN
+                            found = item
+                            return false
+                        null
+
+                    if !found
+                        MC.data.resource_list[region].NotificationConfigurations.push res
                     null
+
 
             #asl sp
             if resources.DescribePolicies
@@ -288,7 +302,20 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     MC.data.resource_list[region].Subscriptions = []
 
                 _.map resources.ListSubscriptions, ( res, i ) ->
-                    MC.data.resource_list[region].Subscriptions.push res
+
+                    #found by protocol + endpoint + topicarn
+                    found = null
+                    _.each MC.data.resource_list[region].Subscriptions, ( item ) ->
+                        if item.Protocol is res.Protocol and item.Endpoint is res.Endpoint and item.TopicArn is res.TopicArn
+                            found = item
+                            return false
+                        null
+
+                    if found
+                        #only update SubscriptionArn
+                        found.SubscriptionArn = res.SubscriptionArn
+                    else
+                        MC.data.resource_list[region].Subscriptions.push res
                     null
 
             #sns topic
@@ -730,42 +757,33 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             for uid of ori_data.component
                 item = ori_data.component[uid]
+                if item.index != 0
+                    continue
 
                 # only instance
                 if item.type is 'AWS.EC2.Instance'
                     if uid of data.component    # remain
-                        # check instance size
-                        if item.resource.InstanceType is data.component[uid].resource.InstanceType
-                            continue
-
-                        # server group
-                        if item.number > 1 and uid of ori_data.layout.component.node
+                        n_item = data.component[uid]
+                        if item.number > 1
+                            index = 0
                             for inst_uid in ori_data.layout.component.node[uid].instanceList
-                                inst_item = ori_data.component[inst_uid]
-                                changes['remain'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
+                                index = index + 1
+                                if item.resource.InstanceType isnt n_item.resource.InstanceType and index <= n_item.number
+                                    changes['remain'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
 
+                                if index > n_item.number
+                                    changes['remove'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
+                            
                         else
-                            # filter server group instance
-                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
-                            if inst in changes['remain']
-                                continue
-
-                            changes['remain'].push inst
+                            if item.resource.InstanceType isnt n_item.resource.InstanceType
+                                changes['remain'].push {'name':ori_data.component[uid].name, 'instance_id':ori_data.component[uid].resource.InstanceId}
 
                     else
-                        if item.number > 1 and uid of ori_data.layout.component.node
+                        if item.number > 1
                             for inst_uid in ori_data.layout.component.node[uid].instanceList
-                                inst_item = ori_data.component[inst_uid]
-                                changes['remove'].push {'name':inst_item.name, 'instance_id':inst_item.resource.InstanceId}
-
+                                changes['remove'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
                         else
-                            # filter server group instance
-                            inst = {'name':item.name, 'instance_id':item.resource.InstanceId}
-                            if inst in changes['remain']
-                                continue
-
-                            changes['remove'].push inst
-
+                            changes['remove'].push {'name':item.name, 'instance_id':item.resource.InstanceId}
 
         {'isChanged':isChanged, 'changes':changes}
 

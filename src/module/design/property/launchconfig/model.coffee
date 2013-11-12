@@ -15,7 +15,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
   LaunchConfigModel = PropertyModel.extend {
 
-    setup : ->
+    initialize : ->
       me = this
       this.on 'EC2_KPDOWNLOAD_RETURN', ( result )->
 

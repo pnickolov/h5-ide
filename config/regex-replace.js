@@ -24,6 +24,42 @@ module.exports = {
         ]
     },
 
+    static_jquery: {
+        src: [ '<%= src %>/js/login/config.js', '<%= src %>/js/ide/config.js', '<%= src %>/js/register/config.js', '<%= src %>/js/reset/config.js' ],
+        actions: [
+            {
+                name: 'current jquery',
+                search: 'current_jquery',
+                replace: '"//code.jquery.com/jquery-2.0.3.min"',
+                flags: 'g'
+            }
+        ]
+    },
+
+    dynamic_jquery: {
+        src: [ '<%= src %>/js/login/config.js', '<%= src %>/js/ide/config.js', '<%= src %>/js/register/config.js', '<%= src %>/js/reset/config.js' ],
+        actions: [
+            {
+                name: 'current jquery',
+                search: '"//code.jquery.com/jquery-2.0.3.min"',
+                replace: 'current_jquery',
+                flags: 'g'
+            }
+        ]
+    },
+
+    s3_url: {
+        src: [ '<%= release %>/module/dashboard/overview/view.js', '<%= release %>/module/dashboard/overview/template_data.html' ],
+        actions: [
+            {
+                name: 's3 url',
+                search: '/madeiracloudthumbnail/',
+                replace: '/madeiracloudthumbnails/',
+                flags: 'g'
+            }
+        ]
+    },
+
     intercome: {
         src: [ '<%= release %>/ide.html' ],
         actions: [

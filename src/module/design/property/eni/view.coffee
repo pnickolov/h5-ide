@@ -4,10 +4,12 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
+         'text!./template/eni_list.html',
          'i18n!nls/lang.js'
-], ( PropertyView, template, lang ) ->
+], ( PropertyView, template, list_template, lang ) ->
 
     template = Handlebars.compile template
+    list_template = Handlebars.compile list_template
 
     ENIView = PropertyView.extend {
 
@@ -24,6 +26,8 @@ define [ '../base/view',
             @$el.html( template( @model.attributes ) )
 
             @refreshIPList()
+
+            $("#prop-appedit-eni-list").html list_template @model.attributes
 
             @model.attributes.name
 
@@ -48,6 +52,12 @@ define [ '../base/view',
             $target = $(event.currentTarget)
             index   = $target.closest("li").index()
             attach  = not $target.hasClass("associated")
+
+            if attach
+                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_4
+            else
+                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_3
+            $target.toggleClass("associated", attach).data("tooltip", tooltip)
 
             @model.attachEIP index, attach
             null

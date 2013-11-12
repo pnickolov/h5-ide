@@ -95,6 +95,9 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 
 				isDefault = sgComp.name is 'DefaultSG'
 				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
+				isElbSG = MC.aws.elb.isELBDefaultSG(uid)
+				if isElbSG
+					deletable = false
 
 				# need to display
 				sgDisplayObj =

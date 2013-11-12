@@ -344,6 +344,7 @@ define [ 'MC', 'event',
             if base64_image
                 $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
                 $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+                modal.position()
 
             $( '#btn-confirm' ).attr {
                 'href'      : "data:image/png;base64, " + base64_image,
@@ -464,7 +465,7 @@ define [ 'MC', 'event',
 
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id, true
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
         clickEditApp : ->
             console.log 'clickEditApp'
@@ -567,6 +568,7 @@ define [ 'MC', 'event',
                 @_return2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
+
             null
 
         _return2App : ( target ) ->

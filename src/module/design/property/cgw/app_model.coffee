@@ -20,20 +20,6 @@ define [ '../base/model' ], ( PropertyModel ) ->
           cgw = $.extend true, {}, appData[ myCGWComponent.resource.CustomerGatewayId ]
           cgw.name = myCGWComponent.name
 
-          # cgw state color
-          multiStateColorMap =
-            pending   : 'yellow'
-            available : 'green'
-            deleting  : 'red'
-            deleted   : 'red'
-
-          # cgw state color
-          twoStateColorMap =
-            DOWN : 'red'
-            UP   : 'green'
-
-          cgw.stateColor = multiStateColorMap[cgw.state]
-
           # vpn assignment
           vpn_id = null
           # get vpn id
@@ -55,8 +41,8 @@ define [ '../base/model' ], ( PropertyModel ) ->
             vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
 
             #set vpn available
-            if vpn.state is 'available'
-              vpn.available = true
+            # if vpn.state is 'available'
+            #   vpn.available = true
 
             #set vpn routing
             if vpn.options.staticRoutesOnly is "true"
@@ -64,16 +50,15 @@ define [ '../base/model' ], ( PropertyModel ) ->
             else
               vpn.routing = "Dynamic"
 
+            # cgw state color
+            twoStateColorMap =
+              DOWN : 'red'
+              UP   : 'green'
 
             if vpn.vgwTelemetry and vpn.vgwTelemetry.item
               vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
                 item.index = idx + 1
                 item.stateColor = twoStateColorMap[item.status]
-                item
-
-            if vpn.routes and vpn.routes.item
-              vpn.routes.item = _.map vpn.routes.item, ( item ) ->
-                item.stateColor = multiStateColorMap[item.state]
                 item
 
           this.set {

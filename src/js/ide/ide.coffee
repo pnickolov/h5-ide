@@ -91,6 +91,9 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.app_list = {}
 		MC.data.app_list[r] = [] for r in constant.REGION_KEYS
 
+		#
+		MC.data.nav_new_stack_list = {}
+
 		#global resource data (Describe* return)
 		MC.data.resource_list = {}
 		MC.data.resource_list[r] = {} for r in constant.REGION_KEYS

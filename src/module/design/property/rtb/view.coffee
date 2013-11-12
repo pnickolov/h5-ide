@@ -156,7 +156,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                         inputElem.focus()
 
                     $('#cidr-remove').click () ->
-                        connectionObj = MC.canvas_data.layout.component.node[gwUID].connection[0]
+                        connectionAry = MC.canvas_data.layout.component.node[gwUID].connection
+                        connectionObj = null
+                        _.each connectionAry, (conObj) ->
+                            if conObj.port in ['eni-rtb', 'igw-tgt', 'vgw-tgt', 'instance-rtb']
+                                connectionObj = conObj
+                            null
                         if connectionObj
                             lineUID = connectionObj.line
                             rtUID = connectionObj.target

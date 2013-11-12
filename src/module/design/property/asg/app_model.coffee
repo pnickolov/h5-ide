@@ -62,6 +62,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 arn        : comp.resource.PolicyARN
 
             cloudWatchPolicyMap[ comp.name + '-alarm' ] = policy
+            policies.push policy
 
 
         for comp_uid, comp of MC.canvas_data.component
@@ -79,7 +80,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             for actions, idx in actions_arr
                 if not actions
                     continue
-                for action in actions
+                for action in actions.member
                     if action isnt policy.arn
                         continue
 
@@ -92,7 +93,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     policy.threshold  = alarm_data.Threshold
                     policy.trigger    = trigger_arr[ idx ]
 
-        @set 'policies', policies
+        @set 'policies', _.sortBy(policies, "name")
 
 
         # Get notifications

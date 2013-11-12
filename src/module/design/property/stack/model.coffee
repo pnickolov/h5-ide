@@ -187,47 +187,32 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
 
         getAppSubscription : () ->
 
-            me = this
-            topic_uid = null
-            topic_arn = null
-            snstopic = {}
-            subscription = []
-            $.each MC.canvas_data.component, ( comp_uid, comp ) ->
+            for comp_uid, comp of MC.canvas_data.component
 
                 if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
 
-                    topic_uid = comp_uid
-
                     topic_arn = comp.resource.TopicArn
 
-                    topic_data = MC.data.resource_list[MC.canvas_data.region][topic_arn]
+                    @set 'snstopic', {
+                        name : comp.resource.DisplayName
+                        arn  : topic_arn
+                    }
+                    break
 
-                    # The data is not prepared
-                    if not topic_data
-                        return false
+            subs = MC.data.resource_list[MC.canvas_data.region].Subscriptions
+            subscription = []
 
-                    snstopic.name = topic_data.Name
-                    snstopic.arn  = topic_arn
-                    me.set 'snstopic', snstopic
+            if topic_arn and subs
+                for sub in subs
+                    # Ignore Subscription that has `topic` attribute
+                    if sub.TopicArn is topic_arn
+                        subscription.push {
+                            protocol : sub.Protocol
+                            endpoint : sub.Endpoint
+                            arn      : sub.SubscriptionArn
+                        }
 
-                    return false
-
-            if topic_arn
-
-                subs = MC.data.resource_list[MC.canvas_data.region].Subscriptions
-                if subs
-                    $.each subs, ( idx, sub )->
-
-                        if sub.TopicArn is topic_arn
-
-                            tmp = {}
-                            tmp.protocol = sub.Protocol
-                            tmp.endpoint = sub.Endpoint
-                            tmp.arn = sub.SubscriptionArn
-
-                            subscription.push tmp
-
-            this.set 'subscription', subscription
+            @set 'subscription', subscription
 
         getNetworkACL : ->
 

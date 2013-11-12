@@ -32,7 +32,6 @@ define [ "../base/main",
 
         setupStack : () ->
             me = this
-            @model.setup()
             @model.on "KP_DOWNLOADED", (data, option)->
                 me.view.updateKPModal(data, option)
 

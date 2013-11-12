@@ -523,6 +523,7 @@ define [ 'i18n!nls/lang.js',
 
         #call service
         favoriteAmiService : ( region_name ) ->
+            console.log 'favoriteAmiService', region_name
 
             me = this
 

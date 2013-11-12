@@ -6,10 +6,6 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
     VPNModel = PropertyModel.extend {
 
-        defaults :
-            'vpn_detail'    : null
-            'cgw_uid'       : null
-
         init : ( uid ) ->
 
             vpn_detail  = {}
@@ -22,9 +18,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
             cgw_uid = line_option_map[ 'cgw-vpn' ]
             vgw_uid = line_option_map[ 'vgw-vpn' ]
 
-            if cgw_uid and vgw_uid
+            if @isApp
+                @getAppData cgw_uid, vgw_uid
+
+            else if cgw_uid and vgw_uid
                 vpn_detail.is_dynamic = if !!MC.canvas_data.component[cgw_uid].resource.BgpAsn then true else false
-                vpn_detail.cgw_name = MC.canvas_data.component[ cgw_uid ].name
 
                 vgw_ref = '@' + vgw_uid + '.resource.VpnGatewayId'
                 cgw_ref = '@' + cgw_uid + '.resource.CustomerGatewayId'
@@ -47,6 +45,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
             @set 'vpn_detail', vpn_detail
             @set 'cgw_uid', cgw_uid
+            @set 'cgw_name', MC.canvas_data.component[ cgw_uid ].name
 
         delIP : (ip) ->
 
@@ -80,6 +79,46 @@ define [ '../base/model' ], ( PropertyModel ) ->
             MC.canvas_data.component[ vpn_detail.uid ].resource.Routes = routes
             null
 
+        getAppData : ( cgw_uid, vgw_uid )->
+            # vpn assignment
+            vpn_id = null
+            # get vpn id
+            for uid, comp of MC.canvas_data.component
+                if comp.type is 'AWS.VPC.VPNConnection' and comp.resource.CustomerGatewayId is "@#{cgw_uid}.resource.CustomerGatewayId"
+                    vpn_id = comp.resource.VpnConnectionId
+                    break
+
+            # get vpn
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
+
+            vpn = _.extend {}, appData[ vpn_id ]
+
+            # # JSON detail
+            # config =
+            #     name : "Download"
+            #     type : "download_configuration"
+
+            # vpn.detail = JSON.parse MC.aws.vpn.generateDownload( [ config ], vpn )
+
+            #set vpn routing
+            if vpn.options.staticRoutesOnly is "true"
+                vpn.routing = "Static"
+            else
+                vpn.routing = "Dynamic"
+
+            # cgw state color
+            twoStateColorMap =
+                DOWN : 'red'
+                UP   : 'green'
+
+            if vpn.vgwTelemetry and vpn.vgwTelemetry.item
+              vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
+                item.index = idx + 1
+                item.stateColor = twoStateColorMap[item.status]
+                item
+
+            vpn.isApp = @isApp
+            @set vpn
     }
 
     new VPNModel()

@@ -1,5 +1,29 @@
 define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
+	getVolumeList = ( instance_id ) ->
+
+		instance_layout_volume_list = null
+
+		index = 0
+
+		if MC.canvas_data.layout.component.node[instance_id]
+
+			instance_layout_volume_list = MC.canvas_data.layout.component.node[instance_id].volumeList
+
+		else
+			instance_layout_volume_list = MC.canvas_data.layout.component.node[MC.canvas_data.component[instance_id].serverGroupUid].volumeList
+
+			index = MC.canvas_data.component[instance_id].index
+
+		volume_list = []
+
+		for main_vol, vol_list of instance_layout_volume_list
+
+			volume_list.push vol_list[index]
+
+		volume_list
+
+
 	#expand instance,eni and volume in server group before save
 	expandServerGroup = ( canvas_data ) ->
 
@@ -942,6 +966,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		value
 
 	#public
+	getVolumeList	   : getVolumeList
 	expandServerGroup  : expandServerGroup
 	compactServerGroup : compactServerGroup
 	getAllImageId      : getAllImageId

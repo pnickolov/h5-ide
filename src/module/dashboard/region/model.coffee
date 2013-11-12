@@ -883,7 +883,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'app_model', 'stack_
         setResource : ( resources, region ) ->
 
             #cache aws resource data
-            MC.aws.aws.cacheResource resources, region
+            MC.aws.aws.cacheResource resources, region, true
 
             if region != current_region
 

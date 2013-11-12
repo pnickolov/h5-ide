@@ -764,6 +764,7 @@ a {
 	position : absolute !important;
 	top      : 48px;
 	bottom   : 0;
+	width    : 100%;
 }
 
 #firs-level-nav {

@@ -75,7 +75,7 @@ define [ 'event',
             $visibleAccordion = $accordionWrap.children().filter ()->
                 $(this).css('display') isnt 'none'
 
-            height = $accordionParent.outerHeight() - $accordionWrap.position().top - $visibleAccordion.length * $target.outerHeight()
+            height = $accordionParent.outerHeight() - 45 - $visibleAccordion.length * $target.outerHeight()
 
             $body.outerHeight height
 

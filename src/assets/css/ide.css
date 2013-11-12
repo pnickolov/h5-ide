@@ -6223,7 +6223,7 @@ summary:focus {
 
 .validation-content .scroll-wrap-validation {
 	width         : 420px;
-	max-height    : 300px;
+	height        : 250px;
 	border        : 1px solid #cfcfcf;
 	border-top    : none;
 	border-radius : 0 0 2px 2px;
@@ -6233,6 +6233,7 @@ summary:focus {
 #modal-validation-statusbar .validation-content .scroll-wrap-validation {
 	border     : 1px solid #272727;
 	border-top : none;
+	background : #f2f3f4;
 }
 
 #modal-run-stack .validation-content .scroll-wrap-validation,
@@ -6267,6 +6268,11 @@ summary:focus {
 	padding: 10px;
 	border-bottom: 1px solid #e6e6e6;
 	color: #666;
+}
+
+.validation-content .content_wrap .title.empty {
+	color      : #999;
+	text-align : center;
 }
 
 .validation-content .content_wrap .title:nth-child(2n) {
@@ -7045,16 +7051,16 @@ summary:focus {
 }
 
 .btn-ta-valid {
-	text-align: center;
-	float: right;
-	cursor: pointer;
-	width: 80px;
-	color: #eee;
-	border: none;
-	border-radius: 0;
-	box-shadow: inset 1px 0 rgba(255,255,255,.1);
-	border-left: 1px solid #212121;
-	text-decoration: underline;
+	text-align        : center;
+	float             : right;
+	cursor            : pointer;
+	width             : 80px;
+	color             : #eee;
+	border            : none;
+	border-radius     : 0;
+	box-shadow        : inset 1px 0 rgba(255,255,255,.1);
+	border-left       : 1px solid #212121;
+	/*text-decoration : underline;*/
 }
 
 .btn-ta-valid:hover {

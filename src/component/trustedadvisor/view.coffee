@@ -46,8 +46,8 @@ define [ 'event',
             else if notice.length
                 $tabs.eq( 2 ).click()
             else
-                @$el.find( '.validation-content' ).text 'No error, warning or notice.'
-
+                @$el.find( '.validation-content' ).text 'Great job! No error, warning or notice here.'
+                @$el.find( '.validation-content' ).addClass 'empty'
         processDetails: () ->
             error = @model.get 'error_list'
             warning = @model.get 'warning_list'
@@ -109,7 +109,7 @@ define [ 'event',
                 $details.removeAttr 'open'
                 processNutshell()
                 bindSummary()
-                $( '.validation-content' ).text 'No error, warning or notice.'
+                $( '.validation-content' ).text 'Great job! No error, warning or notice here.'
 
 
 

@@ -96,9 +96,9 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
             @setCanvasProperty    MC.tab[ tab_id ].property
-            @setPropertyPanel     MC.tab[ tab_id ].property_panel
-            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
+            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
+            @setPropertyPanel     MC.tab[ tab_id ].property_panel
             #
             null
 

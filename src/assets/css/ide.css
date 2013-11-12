@@ -4069,7 +4069,7 @@ a.sidebar-hider {
 	padding    : 5px;
 
 	box-sizing    : border-box;
-	/*border      : 1px solid rgba(0, 0, 0, 0.2);*/
+	border        : 1px solid #1a1a1a;
 	border-radius : 4px;
 	border        : 1px solid #363536;
 	background    : #464546;
@@ -6164,6 +6164,14 @@ summary:focus {
 
 .stack-validation .validation-content {
 	margin-top: 10px;
+}
+
+.validation-content.empty {
+	background    : #f2f3f4;
+	padding       : 40px 0;
+	text-align    : center;
+	border-radius : 2px;
+	color         : #999;
 }
 
 .validation-content .tab {

@@ -52,6 +52,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 continue
 
             policy_data = resource_list[ comp.resource.PolicyARN ]
+            if not policy_data
+                continue
+
             policy =
                 adjusttype : policy_data.AdjustmentType
                 adjustment : policy_data.ScalingAdjustment

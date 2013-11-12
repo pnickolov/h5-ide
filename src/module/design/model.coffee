@@ -16,57 +16,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
             #listen APP_RESOURCE_RETURN
             me.on 'APP_RESOURCE_RETURN', ( result ) ->
-
                 app_id = result.param[4]
-                console.log 'APP_RESOURCE_RETURN:' + app_id
+                console.log 'APP_RESOURCE_RETURN', app_id
 
                 if !result.is_error
 
                     try
 
-                        region = result.param[3]
-                        resource_source = result.resolved_data
-
-                        if resource_source
-                            #clear old app data in MC.data.resource_list
-                            MC.forge.app.clearResourceInCache MC.canvas_data
-                            #cache new app data
-                            MC.aws.aws.cacheResource resource_source, region, false
-                            me.describeInstancesOfASG region
-
-                        if MC.canvas.getState() isnt 'stack'
-                            #update instance icon of app
-                            MC.aws.instance.updateStateIcon app_id
-                            MC.aws.asg.updateASGCount app_id
-                            MC.aws.eni.updateServerGroupState app_id
-                            #update deleted resource style
-                            MC.forge.app.updateDeletedResourceState MC.canvas_data
-
-                            #re-draw connection
-                            MC.canvas_data.layout.connection = {}
-                            MC.canvas.initLine()
-                            MC.canvas.reDrawSgLine()
-
-                            #update canvas when get instance info
-                            ide_event.trigger ide_event.CANVAS_UPDATE_APP_RESOURCE
-
-                        else
-                            console.log "current is stack, skip update state"
-
-                        #update property panel
-                        uid = MC.canvas_property.selected_node[0]
-                        if uid
-                            MC.canvas.select uid
-
-                        # re-set origin_data
-                        if app_id == MC.data.current_tab_id
-                            @setOriginData MC.canvas_data
-                        else
-                            @updateAppTabOriginDate MC.canvas_data, app_id
-                        #
-
-                        #app_name = MC.forge.app.getNameById app_id
-                        #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FINISH, if app_name then app_name else app_id + '(closed)'
+                        @setResource result
 
                     catch error
 
@@ -316,6 +273,45 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                         console.log 'current type = ' + type + ', state is =' + state
                         console.log MC.data.process[ MC.data.current_tab_id ]
             temp
+
+        setResource : ( result ) ->
+            console.log 'setResource', result
+            app_id          = result.param[4]
+            region          = result.param[3]
+            resource_source = result.resolved_data
+
+            if resource_source
+                #clear old app data in MC.data.resource_list
+                MC.forge.app.clearResourceInCache MC.canvas_data
+                #cache new app data
+                MC.aws.aws.cacheResource resource_source, region, false
+                #
+                @describeInstancesOfASG region
+
+            #update instance icon of app
+            MC.aws.instance.updateStateIcon app_id
+            MC.aws.asg.updateASGCount app_id
+            MC.aws.eni.updateServerGroupState app_id
+            #update deleted resource style
+            MC.forge.app.updateDeletedResourceState MC.canvas_data
+
+            #re-draw connection
+            MC.canvas_data.layout.connection = {}
+            MC.canvas.initLine()
+            MC.canvas.reDrawSgLine()
+
+            #update property panel
+            uid = MC.canvas_property.selected_node[0]
+            if uid
+                MC.canvas.select uid
+
+            # re-set origin_data
+            if app_id == MC.data.current_tab_id
+                @setOriginData MC.canvas_data
+            else
+                @updateAppTabOriginDate MC.canvas_data, app_id
+            #
+            console.log 'set app.resource end'
 
     }
 

@@ -2419,13 +2419,13 @@ module.exports =
       en: "Your app will automatically open soon."
       zh: "您的应用将被自动打开。"
 
-    # PROC_STEP_PREPARE:
-    #   en: "Preparing to start app..."
-    #   zh: "准备启动应用..."
+    PROC_STEP_PREPARE:
+      en: "Preparing to start app..."
+      zh: "准备启动应用..."
 
-    # PROC_RLT_FAILED_TITLE:
-    #   en: "Error Starting App."
-    #   zh: "启动应用错误。"
+    PROC_RLT_FAILED_TITLE:
+      en: "Error Starting App."
+      zh: "启动应用错误。"
 
     PROC_RLT_FAILED_SUB_TITLE:
       en: "Please fix the following issues and try again:"
@@ -2439,9 +2439,9 @@ module.exports =
       en: "Close"
       zh: "关闭标签"
 
-    # PROC_STEP_REQUEST:
-    #   en: "Processing"
-    #   zh: "处理中"
+    PROC_STEP_REQUEST:
+      en: "Processing"
+      zh: "处理中"
 
     PROC_FAILED_TITLE:
       en: "Oops! Starting app failed"

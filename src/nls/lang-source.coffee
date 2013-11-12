@@ -2436,7 +2436,7 @@ module.exports =
       zh: "错误详情"
 
     PROC_CLOSE_TAB:
-      en: "Close Tab"
+      en: "Close"
       zh: "关闭标签"
 
     PROC_STEP_REQUEST:
@@ -2444,7 +2444,7 @@ module.exports =
       zh: "处理中"
 
     PROC_FAILED_TITLE:
-      en: "Starting App Failed"
+      en: "Oops! Starting app failed"
       zh: "启动应用错误"
 
     REG_MSG_WARN_APP_PENDING:

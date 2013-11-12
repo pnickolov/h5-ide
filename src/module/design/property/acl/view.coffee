@@ -183,7 +183,7 @@ define [ '../base/view',
                 portTo = '65535'
                 protocol = '-1'
 
-            this.trigger 'ADD_RULE_TO_ACL', {
+            @model.addRuleToACL {
                 rule: ruleNumber,
                 action: ruleAction,
                 egress: egress,
@@ -283,7 +283,7 @@ define [ '../base/view',
             if currentRuleNumber is '*'
                 currentRuleNumber = '32767'
             currentRuleEngress = parentElem.attr('rule-engress')
-            this.trigger 'REMOVE_RULE_FROM_ACL', currentRuleNumber, currentRuleEngress
+            @model.removeRuleFromACL currentRuleNumber, currentRuleEngress
             this.refreshRuleList()
 
         aclNameChanged : (event) ->
@@ -295,7 +295,7 @@ define [ '../base/view',
             MC.validate.preventDupname target, id, name, 'ACL'
 
             if target.parsley 'validate'
-                this.trigger 'ACL_NAME_CHANGED', name
+                @model.setACLName name
 
         modalRuleProtocolSelected : (event) ->
             protocolSelectElem = $(event.target)

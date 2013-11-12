@@ -13,12 +13,6 @@ define [ '../base/main',
 
         handleTypes : "vgw-vpn>cgw-vpn"
 
-        setupStack : () ->
-            me = this
-            @view.on 'VPN_IP_UPDATE', (ipset) ->
-                me.model.updateIps ipset
-            null
-
         initStack : () ->
             @view  = view
             @model = model

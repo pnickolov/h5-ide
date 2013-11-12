@@ -16,22 +16,9 @@ define [ "../base/main",
 
         setupStack : () ->
             me = this
-            @view.on "DEVICE_NAME_CHANGED", ( name )->
-                @model.setDeviceName name
-                null
-
             @view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
                 me.model.setVolumeSize value
                 MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
-
-            @view.on 'VOLUME_TYPE_STANDARD', ()->
-                me.model.setVolumeTypeStandard()
-
-            @view.on 'VOLUME_TYPE_IOPS', ( value )->
-                me.model.setVolumeTypeIops value
-
-            @view.on 'IOPS_CHANGED' , ( value ) ->
-                me.model.setVolumeIops value
 
             @model.once 'REFRESH_PANEL', ()->
                 me.view.render()

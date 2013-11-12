@@ -19,7 +19,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
 
         downloadKeypair : ( event ) ->
             keypair = $( event.currentTarget ).html()
-            this.trigger "REQUEST_KEYPAIR", keypair
+            @model.downloadKP(keypair)
 
             modal MC.template.modalDownloadKP { name  : keypair }
 

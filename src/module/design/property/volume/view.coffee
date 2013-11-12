@@ -46,10 +46,10 @@ define [ '../base/view',
             @processIops()
             if($('#volume-type-radios input:checked').val() is 'radio-standard')
                 $( '#iops-group' ).hide()
-                this.trigger 'VOLUME_TYPE_STANDARD'
+                @model.setVolumeTypeStandard()
             else
                 $( '#iops-group' ).show()
-                this.trigger 'VOLUME_TYPE_IOPS', $( '#iops-ranged' ).val()
+                @model.setVolumeTypeIops $( '#iops-ranged' ).val()
             @sizeChanged()
 
         deviceNameChanged : ( event ) ->
@@ -71,7 +71,7 @@ define [ '../base/view',
                     "Volume name '#{val}' is already in using. Please use another one."
 
             if target.parsley 'validate'
-                this.trigger 'DEVICE_NAME_CHANGED', name
+                @model.setDeviceName name
                 @setTitle name
 
         processIops: ( event ) ->
@@ -109,7 +109,7 @@ define [ '../base/view',
             if volumeValidate and iopsValidate
                 this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
                 if iopsEnabled
-                    this.trigger 'IOPS_CHANGED', $( '#iops-ranged' ).val()
+                    @model.setVolumeIops $( '#iops-ranged' ).val()
             null
 
 

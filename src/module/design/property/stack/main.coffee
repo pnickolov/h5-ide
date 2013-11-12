@@ -51,30 +51,11 @@ define [ '../base/main',
         # model / view. It is called only once.
         setupStack : () ->
             me = @
-            @view.on 'SAVE_SUBSCRIPTION', ( data ) ->
-                me.model.addSubscription data
-                null
-
-            @view.on 'DELETE_SUBSCRIPTION', ( uid ) ->
-                me.model.deleteSNS uid
-                null
 
             @view.on 'STACK_NAME_CHANGED', ( name ) ->
                 MC.canvas_data.name = name
                 ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name
                 null
-
-            @view.on 'DELETE_STACK_SG', ( uid ) ->
-                me.model.deleteSecurityGroup uid
-
-            @view.on 'RESET_STACK_SG', ( uid ) ->
-                me.model.resetSecurityGroup uid
-                me.renderPropertyPanel()
-
-            @model.on 'UPDATE_SNS_LIST', ( sns_list, has_asg ) ->
-                # The view might be app view, because app_model is the same as stack_model.
-                if me.view.updateSNSList
-                    me.view.updateSNSList sns_list, has_asg
 
             @view.on 'OPEN_ACL', ( uid ) ->
                 PropertyModule.loadSubPanel( "ACL", uid )

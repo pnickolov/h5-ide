@@ -16,17 +16,8 @@ define [ "../base/main",
 
         setupStack : () ->
             me = this
-            @view.on 'ADD_RULE_TO_ACL', (value) ->
-                me.model.addRuleToACL value
-
             @model.on 'REFRESH_RULE_LIST', (value) ->
                 me.view.refreshRuleList value
-
-            @view.on 'REMOVE_RULE_FROM_ACL', (ruleNum, ruleEngress) ->
-                me.model.removeRuleFromACL ruleNum, ruleEngress
-
-            @view.on 'ACL_NAME_CHANGED', (aclName) ->
-                me.model.setACLName aclName
             null
 
         initStack : () ->
@@ -37,9 +28,6 @@ define [ "../base/main",
 
         afterLoadStack : () ->
             @view.refreshRuleList()
-            null
-
-        setupApp : () ->
             null
 
         initApp : () ->

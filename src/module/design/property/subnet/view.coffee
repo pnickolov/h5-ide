@@ -75,7 +75,7 @@ define [ '../base/view',
                     return false
                 return true
             aclObj.resource.EntrySet = newEntrySet
-            
+
             aclObj.name = MC.aws.acl.getNewName()
             aclObj.uid = aclUID
 
@@ -84,7 +84,7 @@ define [ '../base/view',
 
             MC.canvas_data.component[aclUID] = aclObj
 
-            @trigger 'SET_NEW_ACL', aclUID
+            @model.setACL aclUID
             @trigger "OPEN_ACL", aclUID
 
         openEditAclPanel : ( event ) ->
@@ -100,7 +100,7 @@ define [ '../base/view',
             # Notify changes
 
             if target.parsley 'validate'
-                this.trigger "CHANGE_NAME", name
+                @model.setName name
                 @setTitle name
 
         onPressCIDR : ( event ) ->
@@ -205,16 +205,13 @@ define [ '../base/view',
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else
-                this.trigger "CHANGE_CIDR", subnetCIDR
+                @model.setCIDR subnetCIDR
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
-                # $('#property-cidr-block').blur()
 
         onChangeACL : () ->
-
-            this.trigger "CHANGE_ACL", $( "#networkacl-list :checked" ).attr "data-uid"
-
-            this.refreshACLList()
+            @model.setACL $( "#networkacl-list :checked" ).attr "data-uid"
+            @refreshACLList()
 
         onClickACL : (event) ->
 

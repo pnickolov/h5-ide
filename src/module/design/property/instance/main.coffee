@@ -52,9 +52,6 @@ define [ "../base/main",
             @model.on "KP_DOWNLOADED", (data, option)->
                 me.view.updateKPModal(data, option)
 
-            @view.on "REQUEST_KEYPAIR", (name)->
-                me.model.downloadKP(name)
-
             @view.on "OPEN_AMI", (id) ->
                 PropertyModule.loadSubPanel "STATIC", id
             null

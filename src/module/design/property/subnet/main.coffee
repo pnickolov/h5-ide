@@ -10,6 +10,13 @@ define [ '../base/main',
          'constant'
 ], ( PropertyModule, model, view, app_model, app_view, constant ) ->
 
+    app_view.on 'OPEN_ACL', ( acl_uid ) ->
+        PropertyModule.loadSubPanel "ACL", acl_uid
+
+    view.on 'OPEN_ACL', ( acl_uid ) ->
+        PropertyModule.loadSubPanel "ACL", acl_uid
+        null
+
     SubnetModule = PropertyModule.extend {
 
         handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
@@ -18,39 +25,10 @@ define [ '../base/main',
             if id is "ACL" and @view.refreshACLList
                 @view.refreshACLList()
 
-        setupStack : () ->
-            me = this
-
-            @view.on "CHANGE_NAME", ( change ) ->
-                @model.setName change
-                null
-
-            @view.on "CHANGE_CIDR", ( change ) ->
-                @model.setCIDR change
-                null
-
-            @view.on "CHANGE_ACL", ( change ) ->
-                @model.setACL change
-                null
-
-            @view.on "SET_NEW_ACL", ( acl_uid ) ->
-                @model.setACL acl_uid
-                null
-
-            @view.on 'OPEN_ACL', ( acl_uid ) ->
-                PropertyModule.loadSubPanel "ACL", acl_uid
-                null
-            null
-
         initStack : () ->
             @view  = view
             @model = model
             null
-
-        setupApp : () ->
-            @view.on 'OPEN_ACL', ( acl_uid ) ->
-                PropertyModule.loadSubPanel "ACL", acl_uid
-                null
 
         initApp : () ->
             @view  = app_view

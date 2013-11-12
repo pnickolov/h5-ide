@@ -31,7 +31,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                     catch error
 
                         app_name = MC.forge.app.getNameById app_id
-                        notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FAILED, if app_name then app_name else app_id + '(closed)'
+                        notification 'error', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_FAILED, if app_name then app_name else app_id + '(closed)'
 
                         console.error '[error]APP_RESOURCE_RETURN' + error
 

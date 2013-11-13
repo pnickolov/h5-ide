@@ -124,10 +124,10 @@ define [ 'MC', 'event',
                 else
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
-        clickRunIcon : ->
+        clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
             me = this
-
+            event.preventDefault()
             # check credential
             if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
@@ -154,7 +154,6 @@ define [ 'MC', 'event',
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
 
                     console.log 'clickRunIcon'
-                    event.preventDefault()
 
                     app_name = $('.modal-input-value').val()
 

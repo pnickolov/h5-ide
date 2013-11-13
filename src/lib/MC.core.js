@@ -462,44 +462,6 @@ var MC = {
 		{
 			return (letter + '').toUpperCase();
 		});
-	},
-
-	exportImage: function ( svg_canvas_element, onFinish )
-	{
-		require( [ 'text!/assets/css/canvas_trim.css', 'http://canvg.googlecode.com/svn/trunk/rgbcolor.js', 'http://canvg.googlecode.com/svn/trunk/StackBlur.js', 'http://canvg.googlecode.com/svn/trunk/canvg.js' ], function( css ){
-
-			css = '<![CDATA[' + css + ']]>';
-
-			/* Trim SVG */
-			var clone = $( svg_canvas_element ).clone()
-			clone.attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-
-			var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
-			styleElement.setAttribute("type", "text/css");
-			styleElement.textContent = "CSS_PLACEHOLDER";
-			clone[0].insertBefore( styleElement, clone[0].getElementById("svg_padding_line") );
-
-			clone.find(".resizer-wrap").remove();
-			clone.find(".group-resizer").remove();
-			clone.find("g:empty").remove();
-
-			var svg  = (new XMLSerializer()).serializeToString( clone[0] );
-
-			svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
-
-			var canvas = $("<canvas/>").appendTo("body").css({position:"absolute",width:"100%",height:"100%",top:"0",left:"0",background:"#fff","z-index":"10000000"});
-			canvg( canvas[0], svg );
-
-			setTimeout(function(){
-				$("<img>").appendTo("body").attr("src", canvas[0]. toDataURL()).css({position:"absolute",width:"100%",height:"100%",top:"0",left:"0",background:"#fff","z-index":"100000001"});
-			}, 100);
-
-			$("#wrap").hide();
-		});
-	},
-
-	tryExport : function(){
-		MC.exportImage( $("#svg_canvas") );
 	}
 };
 

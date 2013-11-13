@@ -5690,12 +5690,6 @@ a.action-link:hover {
 	padding : 9px 0;
 }
 
-#keypair-loading {
-	/*padding: 40px 0;*/
-	width: 30px;
-	height: 30px;
-}
-
 #keypair-cmd {
 	width: 240px;
 }
@@ -6249,7 +6243,7 @@ summary:focus {
 
 #modal-run-stack .validation-content .scroll-wrap-validation,
 #app-apply-update .validation-content .scroll-wrap-validation {
-	max-height    : 150px; 
+	max-height    : 150px;
 }
 
 .validation-content .content_wrap .content {

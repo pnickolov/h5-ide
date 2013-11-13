@@ -152,7 +152,9 @@ define [ 'MC', 'event',
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
+
                     console.log 'clickRunIcon'
+                    event.preventDefault()
 
                     app_name = $('.modal-input-value').val()
 

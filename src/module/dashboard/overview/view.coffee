@@ -143,7 +143,7 @@ define [ 'event', 'i18n!nls/lang.js',
         switchRegion: ( event ) ->
             target = $ event.currentTarget
             region = target.data 'region'
-            current_region = region
+            current_region = region if region isnt 'global'
             regionName = target.find('a').text()
 
             if regionName is @$el.find( '#region-switch span' ).text()

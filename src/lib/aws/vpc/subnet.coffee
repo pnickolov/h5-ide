@@ -75,6 +75,9 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		ipCidr1Suffix = Number(ipCidr1.split('/')[1])
 		ipCidr2Suffix = Number(ipCidr2.split('/')[1])
 
+		if ipCidr1Suffix is 0 and (ipCidr1Suffix is ipCidr2Suffix)
+			return true
+
 		minIpCidrSuffix = ipCidr1Suffix
 		if ipCidr1Suffix > ipCidr2Suffix
 			minIpCidrSuffix = ipCidr2Suffix

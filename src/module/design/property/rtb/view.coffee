@@ -27,15 +27,19 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             # find empty inputbox and focus
             me = this
             inputElemAry = $('.ip-main-input')
+            haveZeroItem = false
             _.each inputElemAry, (inputElem, inputIdx) ->
                 inputValue = $(inputElem).val()
-                # if (inputValue is '0.0.0.0/0' and inputIdx > 1)
-                #     $(inputElem).val('')
-                #     inputValue = ''
-                if !inputValue or inputValue is '0.0.0.0/0'
+                # if (inputValue.indexOf('/0') isnt -1 and inputIdx > 1)
+                if haveZeroItem and inputValue.indexOf('/0') isnt -1
+                    $(inputElem).val('')
+                    inputValue = ''
+                if !inputValue
                     MC.aws.aws.disabledAllOperabilityArea(true)
                     me.forceShow()
                     $(inputElem).focus()
+                if inputValue.indexOf('/0') isnt -1
+                    haveZeroItem = true
                 null
 
             @model.attributes.title
@@ -119,9 +123,9 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
             _.each allCidrInputElemAry, (inputElem) ->
                 cidrValue = $(inputElem).val()
-                if cidrValue is '0.0.0.0/0'
+                if cidrValue.indexOf('/0') isnt -1
                     allZeroCidrCount++
-                if !((inputValue is '0.0.0.0/0') and ($(inputElem).parent('.ipt-wrapper').index() is 0))
+                if !((inputValue.indexOf('/0') isnt -1) and ($(inputElem).parent('.ipt-wrapper').index() is 0))
                     if cidrValue isnt inputValue
                         allCidrAry.push(cidrValue)
                     else

@@ -47,7 +47,7 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
-            'click .icon-refresh'           : 'clickRefreshApp'
+            'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
             #app edit

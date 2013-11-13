@@ -5019,6 +5019,11 @@ a.action-link:hover {
 	background: rgba(0,0,0,.1);
 }
 
+#elb-property-detail .elb-info-icon {
+	margin-top: 3px;
+	float: right;
+}
+
 .elb-property-cert-input {
 	height: 50px;
 }

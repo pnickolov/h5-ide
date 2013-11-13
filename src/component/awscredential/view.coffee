@@ -383,7 +383,7 @@ define [ 'event',
                     $('#AWSCredentials-update').hide()
 
                     #$('#AWSCredential-failed').show()
-                    # $('#AWSCredential-info').addClass('error')
+                    $('#AWSCredential-info').addClass('error')
                     $('#AWSCredential-info').find('p').text lang.ide.HEAD_ERR_AUTHENTICATION
 
                     right_count = 0

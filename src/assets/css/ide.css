@@ -381,6 +381,11 @@ a {
 	padding: 10px 15px;
 }
 
+.modal-welcome #AWSCredential-info.error {
+	background-color : #E0EBF3;
+	border           : none;
+}
+
 #AWSCredential-welcome {
 	color: #666;
 	font-weight: bold;
@@ -575,7 +580,9 @@ a {
 }
 
 #AWSCredentials-loading {
-	margin-right: 10px;
+    margin-right: 90px;
+    margin-top: -10px;
+    float: right;
 }
 
 .AWSCredentials-body-info {
@@ -1942,7 +1949,7 @@ a {
 }
 
 .disabled .app-thumbnail {
-	background : #55626e;
+	background : #071624;
 	text-align : center;
 }
 
@@ -1953,9 +1960,8 @@ a {
 	left: 0;
 }
 
-.region-resource-thumbnail img.app-pending-animation {
-	width: 30px;
-	height: 23px;
+.region-resource-thumbnail .loading-spinner {
+	margin: 0 auto;
 }
 
 
@@ -1984,6 +1990,7 @@ a {
 	color         : #f3f3f3;
 	border-radius : 0 0 5px 5px;
 	position      : relative;
+	height        : 17px;
 }
 
 .region-resource-action {
@@ -4072,7 +4079,6 @@ a.sidebar-hider {
 	box-sizing    : border-box;
 	border        : 1px solid #1a1a1a;
 	border-radius : 4px;
-	border        : 1px solid #363536;
 	background    : #464546;
 	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.1);
 

@@ -2444,7 +2444,7 @@ module.exports =
       zh: "处理中"
 
     PROC_FAILED_TITLE:
-      en: "Oops! Starting app failed"
+      en: "Oops! Starting app failed."
       zh: "启动应用错误"
 
     REG_MSG_WARN_APP_PENDING:
@@ -2820,7 +2820,7 @@ module.exports =
       zh: "最近启动的实例"
 
     DASH_LBL_NO_APP:
-      en: "There is no app in this region.<br />You can run app from a stack."
+      en: "There is no app launched yet.<br />You can launch an app from a stack."
       zh: "该地区没有应用<br />你可以通过模板创建应用"
 
     DASH_LBL_NO_STACK:

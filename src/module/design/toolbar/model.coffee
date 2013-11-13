@@ -749,6 +749,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                         # force to delete app
                                         me.terminateApp(region, appId, appName, 1)
                                         modal.close()
+                                    $('#modal-cancel').click () ->
+                                        me.setFlag id, 'STOPPED_APP', region
 
                             else
                                 me.setFlag id, 'STOPPED_APP', region

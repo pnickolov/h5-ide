@@ -30,6 +30,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
             elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
 
+            # Cross Zone
+            crossZone = myElbComponent.resource.CrossZoneLoadBalancing
+            if crossZone is 'true'
+                elb.CrossZone = 'Enabled'
+            else
+                elb.CrossZone = 'Disabled'
+
             # DNS
             elb.AAAADNSName = "ipv6." + elb.DNSName
             elb.ADNSName    = "dualstack." + elb.DNSName

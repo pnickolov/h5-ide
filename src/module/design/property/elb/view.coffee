@@ -58,6 +58,8 @@ define [ '../base/view',
             'mousedown .slider li'     : "sliderSelect"
             'SLIDER_CHANGE .slider'    : 'sliderChanged'
 
+            'change #elb-cross-az-select' : 'elbCrossAZSelect'
+
         render     : () ->
 
             @$el.html template @model.attributes
@@ -407,6 +409,10 @@ define [ '../base/view',
             $body.one "mouseup", onMouseUp
 
             false
+
+        elbCrossAZSelect : ( event ) ->
+            @model.setElbCrossAZ event.target.checked
+            null
 
     }
 

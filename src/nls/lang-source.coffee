@@ -2051,6 +2051,10 @@ module.exports =
       en: "Hosted Zone ID"
       zh: "Hosted Zone ID"
 
+    PROP_ELB_CROSS_ZONE:
+      en: "Cross-zone Load Balancing"
+      zh: "Cross-zone Load Balancing"
+
     PROP_ELB_ELB_PROTOCOL:
       en: "Load Balancer Protocol"
       zh: "负载均衡器协议"

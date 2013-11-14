@@ -579,6 +579,18 @@ module.exports =
       en: "Cancel"
       zh: "取消"
 
+    TOOL_POP_EXPORT_CF:
+      en: "Export to AWS CloudFormation Template"
+      zh: "导出为亚马逊云编排模板"
+
+    TOOL_POP_EXPORT_CF_INFO:
+      en: "This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack."
+      zh: "这个模块已经被转换成为亚马逊云编排模板格式。请下载这个云编排模板文件并把它上传到亚马逊管理控制台来创建云编排模块。"
+
+    TOOL_POP_BTN_EXPORT_CF:
+      en: "Download Template File"
+      zh: "下载模板文件"
+
     TOOL_TIP_DUPLICATE_STACK:
       en: "Duplicate Stack"
       zh: "复制模版"
@@ -758,6 +770,10 @@ module.exports =
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
       zh: "销毁应用"
+
+    TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
+      en: "Export cloud formation template"
+      zh: "导出云编排模板"
 
     TOOL_MSG_INFO_APP_REFRESH_FINISH:
       en: "Refresh resources for app( %s ) complete."

@@ -370,13 +370,23 @@ define [ 'MC', 'event',
 
         #request cloudformation
         clickConvertCloudFormation : ->
-            this.trigger 'CONVERT_CLOUDFORMATION'
+            console.log 'clickConvertCloudFormation'
+            me = this
+
+            ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+            #this.trigger 'CONVERT_CLOUDFORMATION'
+            #disable download button first
+            $('#tpl-download').attr 'disabled', true
+
             null
 
         #save cloudformation
-        saveCloudFormation : ( cf_json ) ->
+        saveCloudFormation : ( name ) ->
+            me = this
 
             try
+                cf_json = me.model.attributes.cf_data[name]
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {
                     'href'      : "data://application/json;," + file_content,

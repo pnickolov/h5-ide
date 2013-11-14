@@ -1072,7 +1072,8 @@ var constant_data = {
 				"Subnets": [],
 				"VpcId": "",
 				"LoadBalancerName": "",
-				"AvailabilityZones": []
+				"AvailabilityZones": [],
+				"CrossZoneLoadBalancing": "false"
 			}
 		}
 	},

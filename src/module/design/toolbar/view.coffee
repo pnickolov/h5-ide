@@ -375,10 +375,6 @@ define [ 'MC', 'event',
 
             ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
-            #this.trigger 'CONVERT_CLOUDFORMATION'
-            #disable download button first
-            $('#tpl-download').attr 'disabled', true
-
             null
 
         #save cloudformation
@@ -386,6 +382,9 @@ define [ 'MC', 'event',
             me = this
 
             try
+                # able
+                $('#tpl-download').removeAttr 'disabled'
+
                 cf_json = me.model.attributes.cf_data[name]
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {

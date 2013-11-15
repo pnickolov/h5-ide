@@ -11,7 +11,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           instanceId: [ 'InstanceId' ]
 
         processTarget : ( rtb )->
-          console.debug rtb
+          console.log rtb
           rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) =>
             if item.gatewayId is 'local'
               item.target = item.gatewayId

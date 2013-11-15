@@ -34,7 +34,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     _genSyncFinish = ( times ) ->
         _.after times, () ->
             ide_event.trigger ide_event.TA_SYNC_FINISH
-            console.debug resultVO.result()
+            console.log resultVO.result()
 
     _asyncCallback = ( method, filename, done ) ->
         hasRun = false
@@ -78,7 +78,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                         _handleException( err )
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
-            console.debug memo, arr
+            console.log memo, arr
             return memo + arr.length
         ,0
 

@@ -349,8 +349,8 @@ define [ 'MC', 'constant', 'i18n!nls/lang.js' ], ( MC, constant, lang ) ->
 		
 		subnet = MC.canvas_data.component[ subnetUid ]
 		cidr = + subnet.resource.CidrBlock.split('/')[1]
-		console.debug subnet.resource.CidrBlock
-		console.debug cidr
+		console.log subnet.resource.CidrBlock
+		console.log cidr
 		if cidr <= 27
 			return true
 		false

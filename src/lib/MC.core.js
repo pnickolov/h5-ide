@@ -472,7 +472,7 @@ var MC = {
 			css = '<![CDATA[' + css + ']]>';
 
 			/* Trim SVG */
-			var clone = $( svg_canvas_element ).clone().removeAttr("xmlns");
+			var clone = $( svg_canvas_element ).clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
 			var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
 			styleElement.setAttribute("type", "text/css");

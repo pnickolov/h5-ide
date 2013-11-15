@@ -282,26 +282,12 @@ function RGBColor(color_string)
     // on i.e. 8 for flash canvas, we can't assign the property so check for it
     if (!(target.childNodes.length == 1 && target.childNodes[0].nodeName == 'OBJECT')) target.svg = svg;
     svg.opts = opts;
-
-    var ctx = target.getContext('2d');
-    if (typeof(s.documentElement) != 'undefined') {
-      // load from xml doc
-      svg.loadXmlDoc(ctx, s);
-    }
-    else if (s.substr(0,1) == '<') {
-      // load from xml string
-      svg.loadXml(ctx, s);
-    }
-    else {
-      // load from url
-      svg.load(ctx, s);
-    }
+    svg.loadXml(target.getContext('2d'), s);
   }
 
   function build() {
     var svg = { };
 
-    svg.FRAMERATE = 30;
     svg.MAX_VIRTUAL_PIXELS = 30000;
 
     // globals
@@ -359,20 +345,41 @@ function RGBColor(color_string)
     }
 
     // parse xml
-    svg.parseXml = function(xml) {
-      if (window.DOMParser)
-      {
-        var parser = new DOMParser();
-        return parser.parseFromString(xml, 'text/xml');
-      }
-      else
-      {
-        xml = xml.replace(/<!DOCTYPE svg[^>]*>/, '');
-        var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
-        xmlDoc.async = 'false';
-        xmlDoc.loadXML(xml);
-        return xmlDoc;
-      }
+    svg.parseXml = function(xml, secondTime) {
+        doc = null;
+
+        try {
+          if (window.DOMParser)
+          {
+            var parser = new DOMParser();
+            doc = parser.parseFromString(xml, 'text/xml');
+          }
+          else
+          {
+            xml = xml.replace(/<!DOCTYPE svg[^>]*>/, '');
+            doc = new ActiveXObject('Microsoft.XMLDOM');
+            doc.async = 'false';
+            doc.loadXML(xml);
+          }
+        } catch ( e ) {
+          if (secondTime) {
+            console.warn("We still cannot parse the SVG.");
+            return svg.parseXml("<svg></svg>");
+          }
+          // our xml has xmlns namespace which will cause IE to throw error
+          // so once we catch it, we remove the namespace
+          console.warn("Retry to parse the svg, this should only happen in IE.");
+          var svgTag = xml.match(/<svg[^>]+>/);
+          if ( !svgTag ) return null;
+          svgTag = svgTag[0];
+
+          newSvgTag = svgTag.replace(/xmlns=[^\s>]+/,"").replace(/[^\s]+:[^=]+=[^\s>]+/g, "");
+          xml = xml.replace( svgTag, newSvgTag );
+
+          return svg.parseXml(xml, true);
+        }
+
+        return doc;
     }
 
     svg.Property = function(name, value) {
@@ -2694,7 +2701,6 @@ function RGBColor(color_string)
     svg.Element.desc.prototype = new svg.Element.ElementBase;
 
     svg.Element.MISSING = function(node) {}
-    }
     svg.Element.MISSING.prototype = new svg.Element.ElementBase;
 
     // element factory

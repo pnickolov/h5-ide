@@ -497,7 +497,7 @@ var MC = {
 			svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
 
 			var canvas = $("<canvas/>");
-			canvg( canvas[0], svg, { callback : function(){
+			canvg( canvas[0], svg, { renderCallback : function(){
 				if ( onFinish ) {
 					onFinish();
 				}

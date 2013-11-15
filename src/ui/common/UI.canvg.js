@@ -2073,7 +2073,11 @@ function RGBColor(color_string)
         this.y = this.attribute('y').toPixels('y');
         this.x += this.getAnchorDelta(ctx, this, 0);
         for (var i=0; i<this.children.length; i++) {
-          this.renderChild(ctx, this, i);
+          try{
+            this.renderChild(ctx, this, i);
+          } catch(e) {
+            console.warn("Error occur when rendering svg in canvas", e);
+          }
         }
       }
 
@@ -2803,9 +2807,6 @@ function RGBColor(color_string)
 
           if ( svg.imageLoadedCount >= svg.Images.length ) {
               draw();
-              if ( svg.opts['callback'] ) {
-                svg.opts['callback']();
-              }
           } else {
               svg.checkImageID = setTimeout(draw, 800);
           }

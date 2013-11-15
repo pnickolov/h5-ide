@@ -465,14 +465,34 @@ var MC = {
 		});
 	},
 
-	exportImage: function ( svg_canvas_element, onFinish )
+	exportImage: function ( $svg_canvas_element, forExport, onFinish )
 	{
 		require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
 
 			css = '<![CDATA[' + css + ']]>';
 
 			/* Trim SVG */
-			var clone = $( svg_canvas_element ).clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
+			var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+			var size = $svg_canvas_element[0].getBBox();
+			size.width  += 50;
+			size.height += 30;
+
+			var ratio = 1;
+
+			// Calc the perfect size for the thumbnail
+			if ( forExport ) {
+
+			} else {
+				var ratio1 = 220 / size.width;
+				var ratio2 = 145 / size.height;
+
+				ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
+				size.width  = 220;
+				size.height = 145;
+			}
+
+			clone.attr("width", size.width).attr("height", size.height);
 
 			var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
 			styleElement.setAttribute("type", "text/css");
@@ -493,22 +513,43 @@ var MC = {
 			})
 
 			var svg = (new XMLSerializer()).serializeToString( clone[0] );
-
 			svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
 
-			var canvas = $("<canvas/>");
-			canvg( canvas[0], svg, { renderCallback : function(){
-				if ( onFinish ) {
-					onFinish();
-				}
-			}} );
+			var img = new Image();
+			img.onerror = img.onload = function() {
+				var canvas = document.createElement('canvas');
+				canvg( canvas, svg, {
+					beforeRender : function( ctx ){
 
-			$("#wrap").hide();
-			canvas.appendTo("body").css({position:"absolute",top:"0",left:"0",background:"#fff","z-index":"10000000"});
-			setTimeout(function(){
-				$("<img>").appendTo("body").attr("src", canvas[0]. toDataURL()).css({position:"absolute",width:"2048",top:"0",left:"0",background:"#fff","z-index":"100000001"});
-			}, 100);
+						var pattern = document.createElement('canvas');
+						pattern.width  = canvas.width / ratio;
+						pattern.height = canvas.height / ratio;
 
+						patternctx = pattern.getContext("2d");
+
+						patternctx.fillStyle = patternctx.createPattern( img, 'repeat' );
+						patternctx.fillRect(0, 0, pattern.width, pattern.height);
+
+						ctx.scale( ratio, ratio );
+						ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
+						img = null;
+					},
+
+					afterRender : function(){
+						if ( onFinish ) {
+							onFinish( canvas.toDataURL() );
+						}
+					}
+
+				} );
+
+					$("#wrap").hide();
+					setTimeout(function(){
+						$("<img>").appendTo("body").attr("src", canvas.toDataURL()).css({position:"absolute",top:"0",left:"0",background:"#fff","z-index":"100000001"});
+					}, 100);
+			}
+
+			img.src = "/assets/images/ide/grid_x1.png";
 		});
 	},
 

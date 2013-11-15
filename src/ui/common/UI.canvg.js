@@ -2784,13 +2784,16 @@ function RGBColor(color_string)
         }
 
         // clear and render
-        if (svg.opts['ignoreClear'] != true) {
-          ctx.clearRect(0, 0, cWidth, cHeight);
+        // ctx.clearRect(0, 0, cWidth, cHeight);
+
+        if ( svg.opts.beforeRender ) {
+          svg.opts.beforeRender( ctx );
         }
+
         e.render(ctx);
-        if (isFirstRender) {
-          isFirstRender = false;
-          if (typeof(svg.opts['renderCallback']) == 'function') svg.opts['renderCallback'](dom);
+
+        if ( svg.opts.afterRender ) {
+          svg.opts.afterRender();
         }
       }
 

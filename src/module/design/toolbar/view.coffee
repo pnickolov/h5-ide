@@ -47,7 +47,7 @@ define [ 'MC', 'event',
             'click #toolbar-stop-app'       : 'clickStopApp'
             'click #toolbar-start-app'      : 'clickStartApp'
             'click #toolbar-terminate-app'  : 'clickTerminateApp'
-            'click .icon-refresh'           : 'clickRefreshApp'
+            'click #btn-app-refresh'        : 'clickRefreshApp'
             'click #toolbar-convert-cf'     : 'clickConvertCloudFormation'
 
             #app edit
@@ -124,10 +124,10 @@ define [ 'MC', 'event',
                 else
                     $( '#main-toolbar' ).html app_tmpl this.model.attributes
 
-        clickRunIcon : ->
+        clickRunIcon : ( event ) ->
             console.log 'clickRunIcon'
             me = this
-
+            event.preventDefault()
             # check credential
             if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 modal.close()
@@ -152,6 +152,7 @@ define [ 'MC', 'event',
 
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
+
                     console.log 'clickRunIcon'
 
                     app_name = $('.modal-input-value').val()
@@ -369,13 +370,22 @@ define [ 'MC', 'event',
 
         #request cloudformation
         clickConvertCloudFormation : ->
-            this.trigger 'CONVERT_CLOUDFORMATION'
+            console.log 'clickConvertCloudFormation'
+            me = this
+
+            ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
             null
 
         #save cloudformation
-        saveCloudFormation : ( cf_json ) ->
+        saveCloudFormation : ( name ) ->
+            me = this
 
             try
+                # able
+                $('#tpl-download').removeAttr 'disabled'
+
+                cf_json = me.model.attributes.cf_data[name]
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {
                     'href'      : "data://application/json;," + file_content,

@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system
-#* Date: 20131108
+#* Date: 20131113
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -13,7 +13,7 @@ var VER = '',
 	MC_HOST = 'https://api.madeiracloud.com/';
 
 var MC = {
-	version: '0.2.8',
+	version: '0.3',
 
 	// Global Variable
 	API_URL: MC_HOST,
@@ -187,11 +187,6 @@ var MC = {
 			version = /firefox\/([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
-		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
-		{
-			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
-		}
-
 		version = version * 1;
 
 		MC.browser = name;
@@ -224,6 +219,10 @@ var MC = {
 			) ||
 			(
 				browser === 'opera' && version >= 10
+			) ||
+			(
+				// For IE 11
+				/trident\/7\.0/ig.test( navigator.userAgent.toLowerCase() )
 			)
 		)
 		{

@@ -16,6 +16,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             'is_elb'          : true
             'server_cert'     : null
             'have_vpc'        : null
+            'cross_zone'      : null
 
         init : ( uid ) ->
 
@@ -28,6 +29,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb_data = MC.canvas_data.component[ uid ]
 
             this.set 'component', elb_data
+
+            # cross zone
+            crossZone = elb_data.resource.CrossZoneLoadBalancing
+            if crossZone and crossZone is 'true'
+                this.set 'cross_zone', true
+            else
+                this.set 'cross_zone', false
 
             scheme = elb_data.resource.Scheme
 
@@ -462,6 +470,14 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 originSGAry.push currentSGId
 
             MC.canvas_data.component[elbUID].resource.SecurityGroups = originSGAry
+
+            null
+
+        setElbCrossAZ : ( value )->
+
+            elbUID = this.get 'uid'
+
+            MC.canvas_data.component[ elbUID ].resource.CrossZoneLoadBalancing = String(value)
 
             null
     }

@@ -381,6 +381,11 @@ a {
 	padding: 10px 15px;
 }
 
+.modal-welcome #AWSCredential-info.error {
+	background-color : #E0EBF3;
+	border           : none;
+}
+
 #AWSCredential-welcome {
 	color: #666;
 	font-weight: bold;
@@ -575,7 +580,9 @@ a {
 }
 
 #AWSCredentials-loading {
-	margin-right: 10px;
+    margin-right: 90px;
+    margin-top: -10px;
+    float: right;
 }
 
 .AWSCredentials-body-info {
@@ -764,6 +771,7 @@ a {
 	position : absolute !important;
 	top      : 48px;
 	bottom   : 0;
+	width    : 100%;
 }
 
 #firs-level-nav {
@@ -1941,7 +1949,7 @@ a {
 }
 
 .disabled .app-thumbnail {
-	background : #55626e;
+	background : #071624;
 	text-align : center;
 }
 
@@ -1952,9 +1960,8 @@ a {
 	left: 0;
 }
 
-.region-resource-thumbnail img.app-pending-animation {
-	width: 30px;
-	height: 23px;
+.region-resource-thumbnail .loading-spinner {
+	margin: 0 auto;
 }
 
 
@@ -1983,6 +1990,7 @@ a {
 	color         : #f3f3f3;
 	border-radius : 0 0 5px 5px;
 	position      : relative;
+	height        : 17px;
 }
 
 .region-resource-action {
@@ -2951,12 +2959,12 @@ td.table-action a.btn {
 	height: 100%;
 }
 
-#modal-browse-community-ami .show-loading .loading-bar {
+#modal-browse-community-ami .show-loading .loading-spinner {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -12px;
-	margin-top: -16px;
+	margin-left: -15px;
+	margin-top: -15px;
 }
 
 #ami-search-option {
@@ -4069,9 +4077,8 @@ a.sidebar-hider {
 	padding    : 5px;
 
 	box-sizing    : border-box;
-	/*border      : 1px solid rgba(0, 0, 0, 0.2);*/
+	border        : 1px solid #1a1a1a;
 	border-radius : 4px;
-	border        : 1px solid #363536;
 	background    : #464546;
 	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.1);
 
@@ -5012,6 +5019,11 @@ a.action-link:hover {
 	background: rgba(0,0,0,.1);
 }
 
+#elb-property-detail .elb-info-icon {
+	margin-top: 3px;
+	float: right;
+}
+
 .elb-property-cert-input {
 	height: 50px;
 }
@@ -5689,10 +5701,6 @@ a.action-link:hover {
 	padding : 9px 0;
 }
 
-#keypair-loading {
-	padding: 40px 0;
-}
-
 #keypair-cmd {
 	width: 240px;
 }
@@ -6166,6 +6174,14 @@ summary:focus {
 	margin-top: 10px;
 }
 
+.validation-content.empty {
+	background    : #f2f3f4;
+	padding       : 40px 0;
+	text-align    : center;
+	border-radius : 2px;
+	color         : #999;
+}
+
 .validation-content .tab {
 	position      : relative;
 	height        : 30px;
@@ -6223,11 +6239,12 @@ summary:focus {
 
 .validation-content .scroll-wrap-validation {
 	width         : 420px;
-	max-height    : 300px;
+	height        : 250px;
 	border        : 1px solid #cfcfcf;
 	border-top    : none;
 	border-radius : 0 0 2px 2px;
 	overflow      : hidden;
+	background : #f2f3f4;
 }
 
 #modal-validation-statusbar .validation-content .scroll-wrap-validation {
@@ -6267,6 +6284,12 @@ summary:focus {
 	padding: 10px;
 	border-bottom: 1px solid #e6e6e6;
 	color: #666;
+}
+
+.validation-content .content_wrap .title.empty {
+	color      : #999;
+	text-align : center;
+	margin-top : 40px
 }
 
 .validation-content .content_wrap .title:nth-child(2n) {
@@ -6384,17 +6407,41 @@ summary:focus {
 }
 
 /* run stack into app process panel*/
+#process-panel {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
 #process-panel #process-container {
-	width: 600px;
+/*	width: 100%;
+	height: 100%;
 	margin: 0 auto;
-	padding-top: 100px;
+	padding-top: 100px;*/
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 5;
+	background-color: rgba(0, 0, 0, 0.8);
+	opacity: 1;
+	width: 100%;
+	height: 100%;
+}
+
+#process-title {
+	text-align: center;
+	margin-top: 10%;
 }
 
 #process-panel #process-body {
-	min-height: 350px;
-	border: 1px solid #c7c7c7;
-	border-radius: 3px;
-	background-color: #fff;
+	max-width: 580px;
+	margin: 0 auto;
+	/*min-height: 350px;*/
+	/*border: 1px solid #c7c7c7;*/
+	/*border-radius: 3px;*/
+	/*background-color: #fff;*/
 }
 
 #process-panel h1.title {
@@ -6403,16 +6450,17 @@ summary:focus {
 	color: #666;
 }
 
-#process-panel .loading-bar {
-	vertical-align: middle;
+#process-panel .loading-spinner {
+/*	vertical-align: middle;
 	float: right;
-	margin-right: 50px;
-	margin-top: 20px;
+	margin-right: 60px;
+	margin-top: 9px;*/
 }
 
 #process-panel .step-prepare {
 	padding: 140px 0 0 50px;
 	line-height: 45px;
+	position: relative;
 }
 
 #process-panel #process-body h2 {
@@ -6427,7 +6475,7 @@ summary:focus {
 
 #process-panel #process-body .step-request {
 	text-align: center;
-	padding-top: 110px;
+	/*padding-top: 110px;*/
 }
 
 #process-panel #process-body .step-request .progress {
@@ -6449,13 +6497,10 @@ summary:focus {
 }
 
 #process-panel .result-sub-title {
-	font-size: 14px;
-	color: #999;
-	text-align: center;
-}
-
-#process-panel .result-success {
-	padding-top: 130px;
+	font-size  : 14px;
+	color      : #999;
+	text-align : center;
+	margin     : 0;
 }
 
 #process-panel .result-fail {
@@ -6463,11 +6508,11 @@ summary:focus {
 }
 
 #process-panel .result-error-info {
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+/*	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 	background-color: #FCFCFC;
 	border: 1px solid #CCC;
 	padding: 10px;
-	border-radius: 3px;
+	border-radius: 3px;*/
 }
 
 #process-panel .result-error-info .title {
@@ -6483,11 +6528,11 @@ summary:focus {
 	padding: 15px 0;
 }
 
-.export-loading-bar {
+/*.export-loading-bar {
 	text-align: center;
 	padding-top: 30px;
 	padding-bottom: 1px;
-}
+}*/
 
 /* added by song */
 
@@ -6524,11 +6569,15 @@ summary:focus {
 .loading-modal {
 	width: 200px;
 	text-align: center;
-	padding: 30px 0;
+	padding: 20px 0;
 	position: absolute;
 	top: 45%;
 	left: 50%;
 	margin-left: -100px;
+}
+
+.loading-modal .loading-spinner {
+	margin: 10px auto;
 }
 
 .loading {
@@ -6537,70 +6586,6 @@ summary:focus {
 	left: 50%;
 	margin-left: -13px;
 	height: 80px;
-}
-
-.loading-spinner {
-	height:30px;
-	width:30px;
-	margin:0 auto;
-	position:relative;
-	margin: 50px auto;
-	-webkit-animation: rotation .6s infinite linear;
-	-moz-animation: rotation .6s infinite linear;
-	-o-animation: rotation .6s infinite linear;
-	animation: rotation .6s infinite linear;
-	border:6px solid rgba(26,133,237,.15);
-	border-radius:100%;
-}
-
-.loading-spinner:before {
-	content       : "";
-	display       : block;
-	position      : absolute;
-	left          : -6px;
-	top           : -6px;
-	height        : 100%;
-	width         : 100%;
-	border-top    : 6px solid rgba(26,133,237,.8);
-	border-left   : 6px solid transparent;
-	border-bottom : 6px solid transparent;
-	border-right  : 6px solid transparent;
-	border-radius : 100%;
-}
-
-.loading-spinner-small {
-	height : 16px;
-	width  : 16px;
-	border : 2px solid rgba(26,133,237,.15);
-}
-
-.loading-spinner-small:before {
-	left:-2px;
-	top:-2px;
-	height:100%;
-	width:100%;
-	border-top:2px solid rgba(26,133,237,.8);
-	border-left:2px solid transparent;
-	border-bottom:2px solid transparent;
-	border-right:2px solid transparent;
-	border-radius:100%;
-}
-
-@-webkit-keyframes rotation {
-	from {-webkit-transform: rotate(0deg);}
-	to {-webkit-transform: rotate(359deg);}
-}
-@-moz-keyframes rotation {
-	from {-moz-transform: rotate(0deg);}
-	to {-moz-transform: rotate(359deg);}
-}
-@-o-keyframes rotation {
-	from {-o-transform: rotate(0deg);}
-	to {-o-transform: rotate(359deg);}
-}
-@keyframes rotation {
-	from {transform: rotate(0deg);}
-	to {transform: rotate(359deg);}
 }
 
 /* Client & Service Error */
@@ -7045,16 +7030,16 @@ summary:focus {
 }
 
 .btn-ta-valid {
-	text-align: center;
-	float: right;
-	cursor: pointer;
-	width: 80px;
-	color: #eee;
-	border: none;
-	border-radius: 0;
-	box-shadow: inset 1px 0 rgba(255,255,255,.1);
-	border-left: 1px solid #212121;
-	text-decoration: underline;
+	text-align        : center;
+	float             : right;
+	cursor            : pointer;
+	width             : 80px;
+	color             : #eee;
+	border            : none;
+	border-radius     : 0;
+	box-shadow        : inset 1px 0 rgba(255,255,255,.1);
+	border-left       : 1px solid #212121;
+	/*text-decoration : underline;*/
 }
 
 .btn-ta-valid:hover {
@@ -7135,16 +7120,12 @@ summary:focus {
 	margin-bottom: 50px;
 }
 
-#overlay-panel .progress {
-	border: 1px solid #333;
-}
-
-#overlay-panel .process-info {
+.process-info {
 	color       : #999;
 	font-weight : normal;
 }
 
-#overlay-panel .process-info .num {
+.process-info .num {
 	color: #eee;
 }
 

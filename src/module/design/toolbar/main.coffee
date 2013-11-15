@@ -112,26 +112,19 @@ define [ 'jquery',
                 console.log 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image
 
-            model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
-                view.saveCloudFormation cf_json
-
-            # ide_event.onLongListen 'SAVE_APP_THUMBNAIL', ( region, app_name, app_id ) ->
-            #     console.log 'SAVE_APP_THUMBNAIL region:' + region + ' app_name:' + app_name
-            #     model.saveAppThumbnail(region, app_name, app_id)
+            # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
+            #     view.saveCloudFormation cf_json
 
             # app operation
             ide_event.onLongListen 'STOP_APP', (region, app_id, app_name) ->
-            #view.on 'TOOLBAR_STOP_CLICK', (data) ->
                 console.log 'design_toolbar STOP_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
                 model.stopApp(region, app_id, app_name)
 
             ide_event.onLongListen 'START_APP', (region, app_id, app_name) ->
-            #view.on 'TOOLBAR_START_CLICK', (data) ->
                 console.log 'design_toolbar START_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name
                 model.startApp(region, app_id, app_name)
 
             ide_event.onLongListen 'TERMINATE_APP', (region, app_id, app_name, flag) ->
-            #view.on 'TOOLBAR_TERMINATE_CLICK', (data) ->
                 console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
                 model.terminateApp(region, app_id, app_name, flag)
 
@@ -156,79 +149,63 @@ define [ 'jquery',
                 console.log 'APPEDIT_2_APP, tab_id = ' + tab_id + ', region = ' + region
                 view.saveSuccess2App tab_id, region
 
-            model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, name) ->
+            model.on 'TOOLBAR_REQUEST_SUCCESS', (flag, value) ->
 
                 if flag
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, lang.ide[str_idx], name
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, lang.ide[str_idx], value
+                        view.notify 'info', msg
 
-                    else
-                        info = flag.replace /_/g, ' '
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_REQ_SUCCESS, info.toLowerCase(), name
-
-                    #view.notify 'info', 'Sending request to ' + info.toLowerCase() + ' ' + name + '...'
-                    view.notify 'info', msg
-
-            model.on 'TOOLBAR_REQUEST_FAILED', (flag, name) ->
+            model.on 'TOOLBAR_REQUEST_FAILED', (flag, value) ->
 
                 if flag
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, lang.ide[str_idx], name
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, lang.ide[str_idx], value
+                        view.notify 'error', msg
 
-                    else
-                        info = flag.replace /_/g, ' '
-                        msg = sprintf lang.ide.TOOL_MSG_ERR_REQ_FAILED, info.toLowerCase(), name
-                    #view.notify 'error', 'Sending request to ' + info.toLowerCase() + ' ' + name + ' failed.'
-                    view.notify 'error', msg
-
-            model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, name) ->
-
+            model.on 'TOOLBAR_HANDLE_SUCCESS', (flag, value) ->
                 if flag
-                    # run stack
-                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
-                        app_name = $('.modal-input-value').val()
-                        modal.close()
+                    if modal and modal.isPopup()
+                        if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
+                            # run stack
+                            if $('#modal-run-stack')[0] isnt undefined
+                                app_name = $('.modal-input-value').val()
+                                modal.close()
 
-                        model.runStack app_name, MC.canvas_data
-                        MC.data.app_list[MC.canvas_data.region].push app_name
+                                model.runStack app_name, MC.canvas_data
+                                MC.data.app_list[MC.canvas_data.region].push app_name
+
+                            # start to export cf
+                            else if $('#modal-export-cf')[0] isnt undefined
+                                # convert cf
+                                model.convertCloudformation()
+
+                        else if flag is "EXPORT_CLOUDFORMATION"
+                            #download
+                            view.saveCloudFormation value
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], name
+                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide[str_idx], value
 
-                    else
-                        info = flag.replace /_/g, ' '
-                        info = info.toLowerCase()
-                        info = info[0].toUpperCase() + info.substr(1)
+                        view.notify 'info', msg
 
-                        msg = sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, info, name
-                    #view.notify 'info', info.toLowerCase() + ' ' + name + ' successfully.'
-                    view.notify 'info', msg
-
-            model.on 'TOOLBAR_HANDLE_FAILED', (flag, name) ->
+            model.on 'TOOLBAR_HANDLE_FAILED', (flag, value) ->
 
                 if flag
-
-                    # run stack
-                    if (flag == "SAVE_STACK" or flag == "CREATE_STACK") and modal and modal.isPopup()
-                        # disable button
-                        $('#btn-confirm').attr 'disabled', true
-                        $('.modal-close').attr 'disabled', false
+                    if modal and modal.isPopup()
+                        # run stack
+                        if (flag == "SAVE_STACK" or flag == "CREATE_STACK")
+                            # disable button
+                            $('#btn-confirm').attr 'disabled', true
+                            $('.modal-close').attr 'disabled', false
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag
                     if str_idx of lang.ide
-                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, lang.ide[str_idx], name
-
-                    else
-                        info = flag.replace /_/g, ' '
-                        info = info.toLowerCase()
-                        info = info[0].toUpperCase() + info.substr(1)
-
-                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, info, name
-                    #view.notify 'error', info.toLowerCase() + ' ' + name + ' failed.'
-                    view.notify 'error', msg
+                        msg = sprintf lang.ide.TOOL_MSG_ERR_HDL_FAILED, lang.ide[str_idx], value
+                        view.notify 'error', msg
 
     unLoadModule = () ->
         #view.remove()

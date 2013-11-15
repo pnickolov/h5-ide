@@ -26,6 +26,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
         defaults :
             'item_flags'    : null
+            # {<stack_name>:<data>}
+            'cf_data'       : null
 
         initialize : ->
 
@@ -213,6 +215,37 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 #     stack_id: id,
                 #     stack_region: region,
                 #     stack_app_name: app_name
+
+            #####listen STACK_EXPORT__CLOUDFORMATION_RETURN
+            me.on 'STACK_EXPORT__CLOUDFORMATION_RETURN', (result) ->
+                console.log 'STACK_EXPORT__CLOUDFORMATION_RETURN'
+
+                region  = result.param[3]
+                id      = result.param[4]
+                name    = MC.canvas_data.name
+
+                cf_data = me.get 'cf_data'
+                if not cf_data
+                    cf_data = {}
+
+                flag = false
+                if !result.is_error
+                    console.log 'export cloudformation successfully'
+
+                    cf_data[name] = result.resolved_data
+                    flag = true
+
+                else
+                    console.log 'export cloudformation failed'
+
+                    if name of cf_data
+                        delete cf_data[name]
+
+                me.set 'cf_data', cf_data
+                if flag is true
+                    me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'EXPORT_CLOUDFORMATION', name
+                else
+                    me.trigger 'TOOLBAR_HANDLE_FAILED', 'EXPORT_CLOUDFORMATION', name
 
             #####listen APP_START_RETURN
             me.on 'APP_START_RETURN', (result) ->
@@ -454,9 +487,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             region  = data.region
             id      = data.id
             name    = data.name
-
-            #instance store ami check
-            #data.has_instance_store_ami = me.isInstanceStore data
 
             #check whether data change
             ori_data = MC.canvas_property.original_json
@@ -749,6 +779,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                         # force to delete app
                                         me.terminateApp(region, appId, appName, 1)
                                         modal.close()
+                                    $('#modal-cancel').click () ->
+                                        me.setFlag id, 'STOPPED_APP', region
 
                             else
                                 me.setFlag id, 'STOPPED_APP', region
@@ -834,7 +866,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             # update header
             ide_event.trigger ide_event.UPDATE_HEADER, req
-
 
         updateAppState : (req_state, flag, data) ->
             me = this
@@ -946,21 +977,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         convertCloudformation : () ->
-
             me = this
 
-            stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
+            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
+            # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
-                if !forge_result.is_error
-                #export_cloudformation succeed
+            #     if !forge_result.is_error
+            #     #export_cloudformation succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    me.trigger 'CONVERT_CLOUDFORMATION_COMPLETE', forge_result.resolved_data
+            #         #dispatch event (dispatch event whenever login succeed or failed)
+            #         me.trigger 'CONVERT_CLOUDFORMATION_COMPLETE', forge_result.resolved_data
 
-                else
-                #export_cloudformation failed
+            #     else
+            #     #export_cloudformation failed
 
-                    console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
+            #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
 
 
 

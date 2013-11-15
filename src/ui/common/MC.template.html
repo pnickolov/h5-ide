@@ -84,17 +84,17 @@
 </div>
 
 <!-- modalDownloadCloudFormationTpl -->
-<div style="width:468px">
-	<div class="modal-header"> <h3>Export to AWS CloudFormation Template</h3><i class="modal-close">&times;</i> </div>
+<div id="modal-export-cf" style="width:468px">
+	<div class="modal-header"> <h3>{{i18n "TOOL_POP_EXPORT_CF"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
 			<div class="modal-text-major"></div>
-			<div class="modal-text-minor">This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack.</div>
+			<div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 		</div> </div>
 	</div>
 	<div class="modal-footer">
-		<a id="tpl-download" class="btn btn-blue" href="data://text/plain;, {{{this.filecontent}}}" download="{{this.download}}">Download Template File</a>
-		<button id="tpl-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<a id="tpl-download" class="btn btn-blue" disabled download="{{this.download}}">{{i18n "TOOL_POP_BTN_EXPORT_CF"}}</a>
+		<button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -106,9 +106,7 @@
 	</div>
 
 	<div class="modal-body">
-		<div class="export-loading-bar clearfix">
-			<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
-		</div>
+		<div class="loading-spinner"></div>
 	</div>
 
 	<div class="modal-footer">
@@ -836,9 +834,7 @@ Additional Notes and Questions
 		<i class="modal-close">&times;</i>
 	</div>
 	<div class="modal-body">
-		<section id='keypair-loading' class="tac">
-			<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif"/>
-		</section>
+		<section id='keypair-loading' class="loading-spinner"></section>
 
 		<section id="keypair-body-linux" class="hide">
 			<div class="keypair-download clearfix modal-control-group">
@@ -1144,8 +1140,8 @@ Additional Notes and Questions
 <!-- loadingTransparent -->
 <div id="loading-modal-wrap">
 	<div class="loading-modal" id="modal-box">
-		<img width="32" height="25" class="loading-bar" src="./assets/images/ide/loading-bar-w.gif">
-		<div>Refreshing resources...</div></div>
+		<div class="loading-spinner loading-spinner-mid"></div>
+		<div>Refreshing resources...</div>
 	</div>
 </div>
 

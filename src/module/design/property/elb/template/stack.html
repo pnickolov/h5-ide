@@ -27,6 +27,14 @@
     	</div>
 		</section>
 		{{/if}}
+		<section class="property-control-group">
+			<div class="checkbox">
+				<input id="elb-cross-az-select" type="checkbox" value="None" {{#if cross_zone}}checked="checked"{{/if}} name="elb-cross-az" />
+				<label for="elb-cross-az-select"></label>
+			</div>
+			<label for="elb-cross-az-select" >Enable cross-zone load balancing</label>
+			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="Click to read related AWS document" target="_blank"></a>
+		</section>
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>

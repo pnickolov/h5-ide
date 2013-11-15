@@ -874,6 +874,19 @@ define [ 'constant',
 			if elbSGObj
 				MC.aws.sg.deleteRefInAllComp( elbSGObj.uid )
 				delete MC.canvas_data.component[ elbSGObj.uid ]
+			# remove all asg's ref
+			currentELBRef = '@' + component.uid + '.resource.LoadBalancerName'
+			_.each MC.canvas_data.component, (compObj) ->
+				compUID = compObj.uid
+				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+					elbRefAry = compObj.resource.LoadBalancerNames
+					newElbRefAry = _.filter elbRefAry, (elbRef) ->
+						if elbRef is currentELBRef
+							return false
+						else
+							return true
+					MC.canvas_data.component[compUID].resource.LoadBalancerNames = newElbRefAry
+				null
 			null
 
 		deleteGroup : ( component, force ) ->

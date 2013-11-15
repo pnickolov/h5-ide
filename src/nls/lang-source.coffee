@@ -579,6 +579,18 @@ module.exports =
       en: "Cancel"
       zh: "取消"
 
+    TOOL_POP_EXPORT_CF:
+      en: "Export to AWS CloudFormation Template"
+      zh: "导出为亚马逊云编排模板"
+
+    TOOL_POP_EXPORT_CF_INFO:
+      en: "This stack has been converted to AWS CloudFormation Template format. Download the template file and upload it in AWS console to create CloudFormation Stack."
+      zh: "这个模块已经被转换成为亚马逊云编排模板格式。请下载这个云编排模板文件并把它上传到亚马逊管理控制台来创建云编排模块。"
+
+    TOOL_POP_BTN_EXPORT_CF:
+      en: "Download Template File"
+      zh: "下载模板文件"
+
     TOOL_TIP_DUPLICATE_STACK:
       en: "Duplicate Stack"
       zh: "复制模版"
@@ -758,6 +770,10 @@ module.exports =
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
       zh: "销毁应用"
+
+    TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
+      en: "Export cloud formation template"
+      zh: "导出云编排模板"
 
     TOOL_MSG_INFO_APP_REFRESH_FINISH:
       en: "Refresh resources for app( %s ) complete."
@@ -2051,6 +2067,10 @@ module.exports =
       en: "Hosted Zone ID"
       zh: "Hosted Zone ID"
 
+    PROP_ELB_CROSS_ZONE:
+      en: "Cross-zone Load Balancing"
+      zh: "Cross-zone Load Balancing"
+
     PROP_ELB_ELB_PROTOCOL:
       en: "Load Balancer Protocol"
       zh: "负载均衡器协议"
@@ -2436,7 +2456,7 @@ module.exports =
       zh: "错误详情"
 
     PROC_CLOSE_TAB:
-      en: "Close Tab"
+      en: "Close"
       zh: "关闭标签"
 
     PROC_STEP_REQUEST:
@@ -2444,7 +2464,7 @@ module.exports =
       zh: "处理中"
 
     PROC_FAILED_TITLE:
-      en: "Starting App Failed"
+      en: "Oops! Starting app failed."
       zh: "启动应用错误"
 
     REG_MSG_WARN_APP_PENDING:
@@ -2820,7 +2840,7 @@ module.exports =
       zh: "最近启动的实例"
 
     DASH_LBL_NO_APP:
-      en: "There is no app in this region.<br />You can run app from a stack."
+      en: "There is no app launched yet.<br />You can launch an app from a stack."
       zh: "该地区没有应用<br />你可以通过模板创建应用"
 
     DASH_LBL_NO_STACK:

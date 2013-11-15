@@ -2,7 +2,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 	updateStackTooltip = (parentCompUID, isAssociate) ->
 
-		tootipStr = 'Remove Elastic IP from primary IP'
+		tootipStr = 'Detach Elastic IP from primary IP'
 		if isAssociate then tootipStr = 'Associate Elastic IP to primary IP'
 		MC.canvas.update(parentCompUID, 'tooltip', 'eip_status', tootipStr)
 

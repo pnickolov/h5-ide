@@ -6294,7 +6294,8 @@ summary:focus {
 	left: 20px;
 }
 
-#modal-run-stack .item-error-tip {
+#modal-run-stack .item-error-tip,
+#app-apply-update .item-error-tip {
 	display: none;
 }
 
@@ -6307,7 +6308,7 @@ summary:focus {
 .validation-content .content_wrap .title.empty {
 	color      : #999;
 	text-align : center;
-	padding    : 40px 0;
+	padding    : 40px 0 20px 0;
 	border     : none;
 }
 

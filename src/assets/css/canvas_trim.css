@@ -167,6 +167,7 @@
 	font-size: 12px;
 	text-anchor: middle;
 	fill: #333;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* launchconfiguration label of node in app */
@@ -174,6 +175,7 @@
 	font-size: 12px;
 	text-anchor: middle;
 	fill: #368bf5;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .volume-number {
@@ -202,6 +204,7 @@
 /* group */
 .group-label {
 	font-size: 12px;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .az-name {
@@ -297,10 +300,12 @@
 
 .node-label-rtb-name {
 	fill: white;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .node-label-name {
 	fill: black;
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .node-label-name-bg {

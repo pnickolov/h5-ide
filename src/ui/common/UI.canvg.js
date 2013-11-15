@@ -4,9 +4,9 @@
  * Gabe Lerner (gabelerner@gmail.com)
  * http://code.google.com/p/canvg/
  *
- * Requires: rgbcolor.js - http://www.phpied.com/rgb-color-parser-in-javascript/
  */
 
+(function(){
 /**
  * A class to parse color values
  * @author Stoyan Stefanov <sstoo@gmail.com>
@@ -295,7 +295,6 @@ function RGBColor(color_string)
 
 }
 
-(function(){
 	// canvg(target, s)
 	// empty parameters: replace all 'svg' elements on page with 'canvas' elements
 	// target: canvas element or the id of a canvas element
@@ -920,7 +919,7 @@ function RGBColor(color_string)
 						return this.attributes[a];
 					}
 				}
-				return svg.EmptyProperty;
+                return this.attributes.href || svg.EmptyProperty();
 			}
 
 			// get or create style, crawls up node tree

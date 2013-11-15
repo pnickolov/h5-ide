@@ -165,6 +165,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 						ipRangeUid = MC.extractID( value.IpRanges )
 						if components[ ipRangeUid ]
 							value.IpRanges = components[ ipRangeUid ].name
+							value.sgColor = MC.aws.sg.getSGColor(ipRangeUid)
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
@@ -189,7 +190,9 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 
 						if value.IpRanges.slice(0,1) is '@'
 
-							value.IpRanges = components[MC.extractID( value.IpRanges )].name
+							sgUID = MC.extractID(value.IpRanges)
+							value.sgColor = MC.aws.sg.getSGColor(sgUID)
+							value.IpRanges = components[sgUID].name
 
 						if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 

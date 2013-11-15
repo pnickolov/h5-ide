@@ -687,7 +687,7 @@ Additional Notes and Questions
 				<ul class="dropdown">
 					<li class="item selected" data-id="custom">IP...</li>
 					{{#each sgList}}
-					<li class="item" data-id="sg" data-sg-uid="{{sgUID}}">{{sgName}}</li>
+					<li class="item" data-id="sg" data-sg-uid="{{sgUID}}">{{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}{{sgName}}</li>
 					{{/each}}
 				</ul>
 			</div>

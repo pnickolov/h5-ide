@@ -69,7 +69,9 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
 
                 rule.ip_display = rule.IpRanges
                 if rule.IpRanges.indexOf('@') >= 0
-                    rule.ip_display = components[ MC.extractID( rule.IpRanges) ].name
+                    sgUID = MC.extractID( rule.IpRanges)
+                    rule.ip_display = components[ sgUID ].name
+                    rule.sg_color = MC.aws.sg.getSGColor(sgUID)
 
                 # Protocol
                 protocol = "" + rule.IpProtocol

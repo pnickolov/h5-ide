@@ -4424,6 +4424,18 @@ a.sidebar-hider {
 	display: table-cell;
 }
 
+.rule-list-row .rule-source {
+	float: left;
+}
+
+.rule-list-row .sg-rule-connnection {
+	float: left;
+}
+
+.rule-list-row .rule-reference {
+	float: left;
+}
+
 .rule-list-row div:first-child {
 	width: 65px;
 }

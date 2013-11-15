@@ -341,7 +341,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         render : () ->
             console.log 'dashboard overview render'
-            console.debug constant.REGION_LABEL
+            console.log constant.REGION_LABEL
             region_names = _.map constant.REGION_LABEL, ( name, id ) ->
                 long:
                     id: id, name: name
@@ -351,7 +351,7 @@ define [ 'event', 'i18n!nls/lang.js',
             data =
                 region_names: region_names
 
-            console.debug data
+            console.log data
 
             $( this.el ).html @overview data
             #hack

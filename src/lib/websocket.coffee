@@ -16,7 +16,7 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 		Meteor._debug = ( message ) ->
 
-			console.debug.call console, message
+			console.log.call console, message
 
 		if Meteor.isClient
 

@@ -3,7 +3,7 @@
 #* Filename: MC.core.js
 #* Creator: Angel
 #* Description: The core of the whole system
-#* Date: 20131113
+#* Date: 20131115
 # **********************************************************
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
@@ -174,7 +174,6 @@ var MC = {
 
 		if (name === 'opera' && /version\/([0-9]{1,2})/ig.exec(ua) !== null)
 		{
-
 			doc.addClass('opera');
 
 			name = 'opera';
@@ -185,6 +184,11 @@ var MC = {
 		if (name === 'firefox' && /firefox\/([0-9]{1,2})/ig.exec(ua))
 		{
 			version = /firefox\/([0-9]{1,2})/ig.exec(ua)[1];
+		}
+
+		if (name === 'msie' && /msie ([0-9]{1,2})/ig.exec(ua))
+		{
+			version = /msie ([0-9]{1,2})/ig.exec(ua)[1];
 		}
 
 		version = version * 1;

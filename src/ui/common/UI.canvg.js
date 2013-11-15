@@ -559,7 +559,9 @@ function RGBColor(color_string)
     svg.ToNumberArray = function(s) {
       var a = svg.trim(svg.compressSpaces((s || '').replace(/,/g, ' '))).split(' ');
       for (var i=0; i<a.length; i++) {
-        a[i] = parseFloat(a[i]);
+        var b = parseFloat(a[i]);
+        if ( isNaN(b) ) b = 0;
+        a[i] = b;
       }
       return a;
     }
@@ -1067,14 +1069,16 @@ function RGBColor(color_string)
         if (this.style('stroke-miterlimit').hasValue()) ctx.miterLimit = this.style('stroke-miterlimit').value;
         if (this.style('stroke-dasharray').hasValue()) {
           var gaps = svg.ToNumberArray(this.style('stroke-dasharray').value);
-          if (typeof(ctx.setLineDash) != 'undefined') { ctx.setLineDash(gaps); }
-          else if (typeof(ctx.webkitLineDash) != 'undefined') { ctx.webkitLineDash = gaps; }
-          else if (typeof(ctx.mozDash ) != 'undefined') { ctx.mozDash  = gaps; }
+          if ( gaps.length > 1 || gaps[0] != 0 ) {
+            if (typeof(ctx.setLineDash) != 'undefined') { ctx.setLineDash(gaps); }
+            else if (typeof(ctx.webkitLineDash) != 'undefined') { ctx.webkitLineDash = gaps; }
+            else if (typeof(ctx.mozDash ) != 'undefined') { ctx.mozDash  = gaps; }
 
-          var offset = this.style('stroke-dashoffset').numValueOrDefault(1);
-          if (typeof(ctx.lineDashOffset) != 'undefined') { ctx.lineDashOffset = offset; }
-          else if (typeof(ctx.webkitLineDashOffset) != 'undefined') { ctx.webkitLineDashOffset = offset; }
-          else if (typeof(ctx.mozDashOffset) != 'undefined') { ctx.mozDashOffset = offset; }
+            var offset = this.style('stroke-dashoffset').numValueOrDefault(1);
+            if (typeof(ctx.lineDashOffset) != 'undefined') { ctx.lineDashOffset = offset; }
+            else if (typeof(ctx.webkitLineDashOffset) != 'undefined') { ctx.webkitLineDashOffset = offset; }
+            else if (typeof(ctx.mozDashOffset) != 'undefined') { ctx.mozDashOffset = offset; }
+          }
         }
 
         // font

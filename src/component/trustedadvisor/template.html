@@ -7,16 +7,22 @@
 	<div class="scroll-wrap scroll-wrap-validation">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
+
 			<div id="item-error" class="content active">
+
 				{{#each error_list }}
 					<div class="title" data-key="{{ key }}" data-type="{{ type }}">
 						{{{ info }}}
 					</div>
+
 				{{else}}
 					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
 						Good job! No error here.
 					</div>
 				{{/each}}
+				
+				<div class="item-error-tip"><i class="icon-info"></i>Some error validation only happens at the time to run stack.</div>
+
 			</div>
 			<div id="item-warning" class="content">
 				{{#each warning_list }}

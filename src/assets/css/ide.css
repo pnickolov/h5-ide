@@ -6280,6 +6280,24 @@ summary:focus {
 	color: #fff;
 }
 
+.item-error-tip {
+	padding: 10px;
+	font-size: 13px;
+	color: #999;
+	border: none;
+	text-align: center;
+}
+
+.item-error-tip .icon-info {
+	color: #6C99D5;
+	position: absolute;
+	left: 20px;
+}
+
+#modal-run-stack .item-error-tip {
+	display: none;
+}
+
 .validation-content .content_wrap .title {
 	padding: 10px;
 	border-bottom: 1px solid #e6e6e6;
@@ -6289,7 +6307,8 @@ summary:focus {
 .validation-content .content_wrap .title.empty {
 	color      : #999;
 	text-align : center;
-	margin-top : 40px
+	padding    : 40px 0;
+	border     : none;
 }
 
 .validation-content .content_wrap .title:nth-child(2n) {
@@ -7057,7 +7076,7 @@ summary:focus {
 	position         : absolute;
 	bottom           : 23px;
 	right            : 280px;
-	z-index          : 9999;
+	z-index          : 65;
 	box-shadow       : inset 0 1px rgba(255,255,255,.2), 0 -2px 5px rgba(0,0,0,.2);
 	border           : solid 1px #181a1c;
 	background-color : #464646;

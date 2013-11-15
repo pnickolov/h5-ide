@@ -13,6 +13,7 @@ bower_components/**
 components/**
 
 #ignore release publish
+debug/**
 release/**
 publish/**
 

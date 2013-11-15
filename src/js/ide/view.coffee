@@ -117,6 +117,8 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
+            return if MC.browser is 'msie' and MC.browserVersion is 10
+
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
             return if !forge_handle.cookie.getCookieByName( 'userid' )
             #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]

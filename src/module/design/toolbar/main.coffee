@@ -183,8 +183,7 @@ define [ 'jquery',
                                 model.convertCloudformation()
 
                         else if flag is "EXPORT_CLOUDFORMATION"
-                            # able button and download
-                            $('#tpl-download').attr 'disabled', false
+                            #download
                             view.saveCloudFormation value
 
                     str_idx = 'TOOLBAR_HANDLE_' + flag

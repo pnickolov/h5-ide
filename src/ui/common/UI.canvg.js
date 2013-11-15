@@ -2803,6 +2803,9 @@ function RGBColor(color_string)
 
           if ( svg.imageLoadedCount >= svg.Images.length ) {
               draw();
+              if ( svg.opts['callback'] ) {
+                svg.opts['callback']();
+              }
           } else {
               svg.checkImageID = setTimeout(draw, 800);
           }

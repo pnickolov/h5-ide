@@ -479,22 +479,36 @@ var MC = {
 			styleElement.textContent = "CSS_PLACEHOLDER";
 			clone[0].insertBefore( styleElement, clone[0].getElementById("svg_padding_line") );
 
+			// remove useless elements
 			clone.find(".resizer-wrap").remove();
 			clone.find(".group-resizer").remove();
 			clone.find("g:empty").remove();
 
-			var svg  = (new XMLSerializer()).serializeToString( clone[0] );
+			// fix group label color
+			clone.find(".group-label").each(function(){
+				var $t = $(this);
+				var newClass = $t.parent().data("class").replace(/\./g, "-") + "-group-label";
+				var oldClass = $t.attr("class");
+				$t.attr("class", oldClass + " " + newClass);
+			})
+
+			var svg = (new XMLSerializer()).serializeToString( clone[0] );
 
 			svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
 
-			var canvas = $("<canvas/>").appendTo("body").css({position:"absolute",width:"100%",height:"100%",top:"0",left:"0",background:"#fff","z-index":"10000000"});
-			canvg( canvas[0], svg );
+			var canvas = $("<canvas/>");
+			canvg( canvas[0], svg, { callback : function(){
+				if ( onFinish ) {
+					onFinish();
+				}
+			}} );
 
+			$("#wrap").hide();
+			canvas.appendTo("body").css({position:"absolute",top:"0",left:"0",background:"#fff","z-index":"10000000"});
 			setTimeout(function(){
 				$("<img>").appendTo("body").attr("src", canvas[0]. toDataURL()).css({position:"absolute",width:"2048",top:"0",left:"0",background:"#fff","z-index":"100000001"});
 			}, 100);
 
-			$("#wrap").hide();
 		});
 	},
 

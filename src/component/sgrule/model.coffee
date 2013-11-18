@@ -229,9 +229,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     if rule.IpRanges.slice(0,1) is '@'
 
-                        sgUID = rule.IpRanges.split('.')[0][1...]
-                        tmp_rule.connection = MC.canvas_data.component[sgUID].name
-                        tmp_rule.ref_sg_color = MC.aws.sg.getSGColor(sgUID)
+                        currentSgUID = rule.IpRanges.split('.')[0][1...]
+                        tmp_rule.connection = MC.canvas_data.component[currentSgUID].name
+                        tmp_rule.ref_sg_color = MC.aws.sg.getSGColor(currentSgUID)
 
                     else
                         tmp_rule.connection = rule.IpRanges

@@ -559,7 +559,8 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	isPublicIPAddress = (ipAddr) ->
 
-		isPublicIP = false
+		# notice!!!!!!!!!!!!!!
+		isPublicIP = true
 
 		ipAry = ipAddr.split('.')
 
@@ -583,39 +584,41 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		publicIPAry6Min = [192, 168, 0, 0]
 		publicIPAry6Max = [192, 168, 255, 255]
 
-		if ipAry[0] >= publicIPAry1Min[0] and
-			ipAry[1] >= publicIPAry1Min[1] and
-			ipAry[2] >= publicIPAry1Min[2] and
-			ipAry[3] >= publicIPAry1Min[3] and
+		# public ip
+		# if ipAry[0] >= publicIPAry1Min[0] and
+		# 	ipAry[1] >= publicIPAry1Min[1] and
+		# 	ipAry[2] >= publicIPAry1Min[2] and
+		# 	ipAry[3] >= publicIPAry1Min[3] and
 
-			ipAry[0] <= publicIPAry1Max[0] and
-			ipAry[1] <= publicIPAry1Max[1] and
-			ipAry[2] <= publicIPAry1Max[2] and
-			ipAry[3] <= publicIPAry1Max[3]
-				isPublicIP = true
+		# 	ipAry[0] <= publicIPAry1Max[0] and
+		# 	ipAry[1] <= publicIPAry1Max[1] and
+		# 	ipAry[2] <= publicIPAry1Max[2] and
+		# 	ipAry[3] <= publicIPAry1Max[3]
+		# 		isPublicIP = true
 
-		if ipAry[0] >= publicIPAry2Min[0] and
-			ipAry[1] >= publicIPAry2Min[1] and
-			ipAry[2] >= publicIPAry2Min[2] and
-			ipAry[3] >= publicIPAry2Min[3] and
+		# if ipAry[0] >= publicIPAry2Min[0] and
+		# 	ipAry[1] >= publicIPAry2Min[1] and
+		# 	ipAry[2] >= publicIPAry2Min[2] and
+		# 	ipAry[3] >= publicIPAry2Min[3] and
 
-			ipAry[0] <= publicIPAry2Max[0] and
-			ipAry[1] <= publicIPAry2Max[1] and
-			ipAry[2] <= publicIPAry2Max[2] and
-			ipAry[3] <= publicIPAry2Max[3]
-				isPublicIP = true
+		# 	ipAry[0] <= publicIPAry2Max[0] and
+		# 	ipAry[1] <= publicIPAry2Max[1] and
+		# 	ipAry[2] <= publicIPAry2Max[2] and
+		# 	ipAry[3] <= publicIPAry2Max[3]
+		# 		isPublicIP = true
 
-		if ipAry[0] >= publicIPAry3Min[0] and
-			ipAry[1] >= publicIPAry3Min[1] and
-			ipAry[2] >= publicIPAry3Min[2] and
-			ipAry[3] >= publicIPAry3Min[3] and
+		# if ipAry[0] >= publicIPAry3Min[0] and
+		# 	ipAry[1] >= publicIPAry3Min[1] and
+		# 	ipAry[2] >= publicIPAry3Min[2] and
+		# 	ipAry[3] >= publicIPAry3Min[3] and
 
-			ipAry[0] <= publicIPAry3Max[0] and
-			ipAry[1] <= publicIPAry3Max[1] and
-			ipAry[2] <= publicIPAry3Max[2] and
-			ipAry[3] <= publicIPAry3Max[3]
-				isPublicIP = true
+		# 	ipAry[0] <= publicIPAry3Max[0] and
+		# 	ipAry[1] <= publicIPAry3Max[1] and
+		# 	ipAry[2] <= publicIPAry3Max[2] and
+		# 	ipAry[3] <= publicIPAry3Max[3]
+		# 		isPublicIP = true
 
+		# private ip
 		if ipAry[0] >= publicIPAry4Min[0] and
 			ipAry[1] >= publicIPAry4Min[1] and
 			ipAry[2] >= publicIPAry4Min[2] and

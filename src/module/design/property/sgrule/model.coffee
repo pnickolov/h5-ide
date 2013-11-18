@@ -162,9 +162,9 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 
-                        sgUID = rule.IpRanges.split('.')[0][1...]
-                        sgColor = MC.aws.sg.getSGColor(sgUID)
-                        tmp_rule.connection = MC.canvas_data.component[sgUID].name
+                        currentSgUID = rule.IpRanges.split('.')[0][1...]
+                        sgColor = MC.aws.sg.getSGColor(currentSgUID)
+                        tmp_rule.connection = MC.canvas_data.component[currentSgUID].name
                         tmp_rule.ref_sg_color = sgColor
 
                         rules.push tmp_rule

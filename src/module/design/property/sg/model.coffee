@@ -31,9 +31,8 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
             @set 'ruleCount', ruleCount
 
             # Get Rules
-            extendCompRes = $.extend(true, {}, comp_res)
-            ipPermissions       = extendCompRes.IpPermissions
-            ipPermissionsEgress = extendCompRes.IpPermissionsEgress
+            ipPermissions       = $.extend(true, [], comp_res.IpPermissions)
+            ipPermissionsEgress = $.extend(true, [], comp_res.IpPermissionsEgress)
 
             @formatRule ipPermissions
             @formatRule ipPermissionsEgress
@@ -172,7 +171,8 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     comp_res.IpPermissionsEgress.push tmp
 
                 # If not existing, return new data to let view to render
-                tmpArr = [ tmp ]
+                dispTmp = $.extend(true, {}, tmp)
+                tmpArr = [ dispTmp ]
                 @formatRule tmpArr
 
                 return tmpArr[0]

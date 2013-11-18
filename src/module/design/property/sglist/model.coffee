@@ -159,7 +159,8 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 					if value.ToPort is value.FromPort
 						value.display_port = value.ToPort
 					else
-						value.display_port = value.FromPort + '-' + value.ToPort
+						partType = if value.IpProtocol is 'icmp' then '/' else '-'
+						value.display_port = value.FromPort + partType + value.ToPort
 
 					if value.IpRanges[0] is '@'
 						ipRangeUid = MC.extractID( value.IpRanges )
@@ -172,6 +173,9 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 						if value.IpProtocol in [-1, '-1']
 
 							value.IpProtocol = "all"
+							value.FromPort = 0
+							value.ToPort = 65535
+							value.display_port = '0-65535'
 
 						else
 							value.IpProtocol = "custom(#{value.IpProtocol})"
@@ -186,7 +190,8 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 						if value.ToPort is value.FromPort
 							value.display_port = value.ToPort
 						else
-							value.display_port = value.FromPort + '-' + value.ToPort
+							partType = if value.IpProtocol is 'icmp' then '/' else '-'
+							value.display_port = value.FromPort + partType + value.ToPort
 
 						if value.IpRanges.slice(0,1) is '@'
 
@@ -199,6 +204,9 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 							if value.IpProtocol in [-1, '-1']
 
 								value.IpProtocol = "all"
+								value.FromPort = 0
+								value.ToPort = 65535
+								value.display_port = '0-65535'
 
 							else
 								value.IpProtocol = "custom(#{value.IpProtocol})"

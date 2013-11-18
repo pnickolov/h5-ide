@@ -5910,16 +5910,15 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		})
 
 		var svg = (new XMLSerializer()).serializeToString( clone[0] );
-		svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
-
 		if ( data.isExport ) {
 			// Insert header
 			var time = new Date()
-			var header='</defs><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)">';
-			var footer='</g></svg>';
-			svg = svg.replace("</svg>", footer).replace("</defs>", header);
-			console.log(svg);
+			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
+
+			svg = svg.replace("</svg>", '</g></svg>');
 		}
+
+		svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
 
 		var canvas = document.createElement('canvas');
 		canvas.width  = size.width;

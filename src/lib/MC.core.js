@@ -477,13 +477,15 @@ var MC = {
 		*/
 		if ( !MC.exportImage.bg )
 		{
-			var bg_img = new Image();
-			bg_img.onload = bg_img.onerror = function() {
-				MC.exportImage.bg = bg_img;
-				MC.exportImage( $svg_canvas_element, data );
-			}
-			bg_img.src = "/assets/images/ide/grid_solid.png";
-			return;
+			var bg_img = document.createElement("img");
+			bg_img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
+			MC.exportImage.bg = bg_img
+			// bg_img.onload = bg_img.onerror = function() {
+			// 	MC.exportImage.bg = bg_img;
+			// 	MC.exportImage( $svg_canvas_element, data );
+			// }
+			// bg_img.src = "/assets/images/ide/grid_solid.png";
+			// return;
 		}
 
 		require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){

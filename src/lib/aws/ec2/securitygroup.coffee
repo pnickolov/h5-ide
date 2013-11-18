@@ -165,6 +165,8 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 	getAllRule = (sgRes, isAppEdit) ->
 
+		currentState = MC.canvas.getState()
+
 		outboundRule = []
 		if sgRes.ipPermissionsEgress
 			outboundRule = sgRes.ipPermissionsEgress.item
@@ -190,14 +192,19 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			ruleObj = _.clone originRuleObj
 
 			ipRanges = ''
+			sgColor = ''
 			if ruleObj.ipRanges
 				ipRanges = ruleObj.ipRanges['item'][0]['cidrIp']
 			else
 				sgId = ruleObj.groups.item[0].groupId
-				if isAppEdit
+				
+				if isAppEdit or currentState is 'app'
 					ipRanges = MC.aws.sg.getSGNameInStackForApp(sgId)
 				else
 					ipRanges = sgId
+
+				sgUID = MC.aws.sg.getSGUIDInStackForApp(sgId)
+				sgColor = MC.aws.sg.getSGColor(sgUID)
 
 			if ruleObj.ipProtocol in [-1, '-1']
 				ruleObj.ipProtocol = 'all'
@@ -216,7 +223,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if Number(ruleObj.fromPort) is Number(ruleObj.toPort) and ruleObj.ipProtocol isnt 'icmp'
 				dispPort = ruleObj.toPort
 
-			if !ruleObj.fromPort or !ruleObj.toPort
+			if ((!ruleObj.fromPort or !ruleObj.toPort) and ruleObj.ipProtocol not in ['all', -1, '-1'])
 				dispPort = '-'
 
 			dispSGObj =
@@ -227,6 +234,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				direction : ruleObj.direction
 				partType : partType
 				dispPort : dispPort
+				sgColor: sgColor
 
 			allDispRuleAry.push dispSGObj
 
@@ -496,6 +504,19 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 
 		return sgName
 
+	getSGUIDInStackForApp = (sgId) ->
+
+		sgUID = ''
+		_.each MC.canvas_data.component, (comp, uid) ->
+
+			if comp.type is 'AWS.EC2.SecurityGroup'
+				currentSgId = comp.resource.GroupId
+				if currentSgId is sgId
+					sgUID = uid
+			null
+
+		return sgUID
+
 	#public
 	getAllRefComp      : getAllRefComp
 	getAllRule         : getAllRule
@@ -508,3 +529,4 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 	getDefaultSG       : getDefaultSG
 	convertMemberNameToReal : convertMemberNameToReal
 	getSGNameInStackForApp : getSGNameInStackForApp
+	getSGUIDInStackForApp : getSGUIDInStackForApp

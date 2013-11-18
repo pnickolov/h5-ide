@@ -84,6 +84,9 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                 if sg_info.rules.length > 0
 
+                    sgColor = MC.aws.sg.getSGColor(sg_uid)
+                    sg_info.header_sg_color = sgColor
+
                     sg_app_ary.push sg_info
 
             $.each to_sg_ids, (i, sg_uid) ->
@@ -91,6 +94,9 @@ define [ '../base/model' ], ( PropertyModel ) ->
                 sg_info = that._getSGInfo sg_uid, from_sg_ids
 
                 if sg_info.rules.length > 0
+
+                    sgColor = MC.aws.sg.getSGColor(sg_uid)
+                    sg_info.header_sg_color = sgColor
 
                     sg_existing = false
 
@@ -156,7 +162,10 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 
-                        tmp_rule.connection = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
+                        currentSgUID = rule.IpRanges.split('.')[0][1...]
+                        sgColor = MC.aws.sg.getSGColor(currentSgUID)
+                        tmp_rule.connection = MC.canvas_data.component[currentSgUID].name
+                        tmp_rule.ref_sg_color = sgColor
 
                         rules.push tmp_rule
 
@@ -167,9 +176,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
                         rules.push tmp_rule
 
             #get sg name
+            sgColor = MC.aws.sg.getSGColor(sgUID)
             sg_app_detail =
                 name : MC.canvas_data.component[sgUID].name
                 rules : rules
+                sgColor : sgColor
 
             return sg_app_detail
 
@@ -198,8 +209,10 @@ define [ '../base/model' ], ( PropertyModel ) ->
             currentAppSG  = MC.data.resource_list[currentRegion][currentSGID]
 
             #get sg name
+            sgColor = MC.aws.sg.getSGColor(sgUID)
             sg_app_detail =
                 groupName : currentSGComp.name
+                sgColor   : sgColor
                 rules     : MC.aws.sg.getAllRule currentAppSG
 
             return sg_app_detail

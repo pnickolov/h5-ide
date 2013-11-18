@@ -35,6 +35,12 @@ define [ '../base/view',
 
             @$el.html tpl @model.attributes
 
+            # change sg color for header
+            sgUID = @model.get 'uid'
+            sgName = @model.get 'name'
+            sgColor = MC.aws.sg.getSGColor(sgUID)
+            $('#property-second-title').html('<div class="sg-color sg-color-header" style="background-color:' + sgColor + '" ></div>' + sgName)
+
             @forceShow()
 
             # The secondary property will slide out.
@@ -67,9 +73,11 @@ define [ '../base/view',
             _.each MC.canvas_data.component, (compObj) ->
                 if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
                     if !MC.aws.elb.isELBDefaultSG(compObj.uid)
+                        sgColor = MC.aws.sg.getSGColor(compObj.uid)
                         sgList.push({
                             sgName: compObj.name
                             sgUID: compObj.uid
+                            sgColor: sgColor
                         })
                 null
 

@@ -159,21 +159,26 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 					if value.ToPort is value.FromPort
 						value.display_port = value.ToPort
 					else
-						value.display_port = value.FromPort + '-' + value.ToPort
+						partType = if value.IpProtocol is 'icmp' then '/' else '-'
+						value.display_port = value.FromPort + partType + value.ToPort
 
 					if value.IpRanges[0] is '@'
 						ipRangeUid = MC.extractID( value.IpRanges )
 						if components[ ipRangeUid ]
 							value.IpRanges = components[ ipRangeUid ].name
+							value.sgColor = MC.aws.sg.getSGColor(ipRangeUid)
 
 					if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
 						if value.IpProtocol in [-1, '-1']
 
 							value.IpProtocol = "all"
+							value.FromPort = 0
+							value.ToPort = 65535
+							value.display_port = '0-65535'
 
 						else
-							value.IpProtocol = "custom(#{value.Protocol})"
+							value.IpProtocol = "custom(#{value.IpProtocol})"
 
 
 				if sgCompRes.IpPermissionsEgress
@@ -185,20 +190,26 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 						if value.ToPort is value.FromPort
 							value.display_port = value.ToPort
 						else
-							value.display_port = value.FromPort + '-' + value.ToPort
+							partType = if value.IpProtocol is 'icmp' then '/' else '-'
+							value.display_port = value.FromPort + partType + value.ToPort
 
 						if value.IpRanges.slice(0,1) is '@'
 
-							value.IpRanges = components[MC.extractID( value.IpRanges )].name
+							sgUID = MC.extractID(value.IpRanges)
+							value.sgColor = MC.aws.sg.getSGColor(sgUID)
+							value.IpRanges = components[sgUID].name
 
 						if value.IpProtocol not in ['tcp', 'udp', 'icmp']
 
 							if value.IpProtocol in [-1, '-1']
 
 								value.IpProtocol = "all"
+								value.FromPort = 0
+								value.ToPort = 65535
+								value.display_port = '0-65535'
 
 							else
-								value.IpProtocol = "custom(#{value.Protocol})"
+								value.IpProtocol = "custom(#{value.IpProtocol})"
 
 					sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
 

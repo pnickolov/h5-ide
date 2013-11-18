@@ -174,7 +174,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 							value.IpProtocol = "all"
 
 						else
-							value.IpProtocol = "custom(#{value.Protocol})"
+							value.IpProtocol = "custom(#{value.IpProtocol})"
 
 
 				if sgCompRes.IpPermissionsEgress
@@ -201,7 +201,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 								value.IpProtocol = "all"
 
 							else
-								value.IpProtocol = "custom(#{value.Protocol})"
+								value.IpProtocol = "custom(#{value.IpProtocol})"
 
 					sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
 

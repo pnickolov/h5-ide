@@ -223,7 +223,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			if Number(ruleObj.fromPort) is Number(ruleObj.toPort) and ruleObj.ipProtocol isnt 'icmp'
 				dispPort = ruleObj.toPort
 
-			if !ruleObj.fromPort or !ruleObj.toPort
+			if ((!ruleObj.fromPort or !ruleObj.toPort) and ruleObj.ipProtocol not in ['all', -1, '-1'])
 				dispPort = '-'
 
 			dispSGObj =

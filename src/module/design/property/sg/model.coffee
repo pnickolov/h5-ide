@@ -31,8 +31,9 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
             @set 'ruleCount', ruleCount
 
             # Get Rules
-            ipPermissions       = $.extend true, [], comp_res.IpPermissions
-            ipPermissionsEgress = $.extend true, [], comp_res.IpPermissionsEgress
+            extendCompRes = $.extend(true, {}, comp_res)
+            ipPermissions       = extendCompRes.IpPermissions
+            ipPermissionsEgress = extendCompRes.IpPermissionsEgress
 
             @formatRule ipPermissions
             @formatRule ipPermissionsEgress

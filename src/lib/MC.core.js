@@ -508,7 +508,8 @@ var MC = {
 				beforeRender = function( ctx ){
 					ctx.save();
 					ctx.translate(0, 54);
-					ctx.fillStyle = ctx.createPattern( MC.exportImage.bg, 'repeat' );
+					var pat = ctx.createPattern( MC.exportImage.bg, 'repeat' );
+					ctx.fillStyle = pat;
 					ctx.fillRect(0, 0, size.width, size.height);
 					ctx.restore();
 				}

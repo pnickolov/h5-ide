@@ -320,9 +320,7 @@ define [ 'MC', 'event',
         clickExportPngIcon : ->
             modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
 
-            $("#modal-wrap")
-                .data("uid", MC.canvas_data.id)
-                .find("#btn-confirm").hide();
+            $("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
             null

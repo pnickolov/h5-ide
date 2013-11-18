@@ -337,7 +337,11 @@ define [ 'event',
             resourceView = @
             pageSize = if total > 50 then 50 else total
 
-            $( '.page-tip' ).text sprintf lang.ide.AMI_LBL_PAGEINFO, pageSize, total
+            itemBegin = ( current_page - 1 ) * 50 + 1
+            itemEnd = itemBegin + pageSize - 1
+            itemEnd = total if itemEnd > total
+
+            $( '.page-tip' ).text sprintf lang.ide.AMI_LBL_PAGEINFO, itemBegin, itemEnd, total
 
             pagination = $ '.pagination'
 

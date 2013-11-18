@@ -3292,8 +3292,8 @@ module.exports =
       zh: "架构"
 
     AMI_LBL_PAGEINFO:
-      en: "Showing %s of %s results"
-      zh: "当前显示 %s 条，共有 %s 条"
+      en: "Showing %s-%s items of %s results"
+      zh: "当前显示 %s-%s 条，共有 %s 条"
 
     IDE_COM_CREATE_NEW_STACK:
       en: "Create new stack"

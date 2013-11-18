@@ -351,7 +351,10 @@ define [ 'MC', 'event',
             })
 
             $( '.modal-body' ).html '<img src="' + base64_image + '" />'
-            modal.position()
+
+            _.delay ()->
+                modal.position()
+            , 50
             null
 
         #for debug

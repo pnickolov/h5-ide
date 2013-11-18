@@ -5891,12 +5891,15 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
 		styleElement.setAttribute("type", "text/css");
 		styleElement.textContent = "CSS_PLACEHOLDER";
-		clone[0].insertBefore( styleElement, clone[0].getElementById("svg_padding_line") );
+
+		var line = clone[0].getElementById("svg_padding_line")
+		clone[0].insertBefore( styleElement, line );
 
 		// remove useless elements
 		clone.find(".resizer-wrap").remove();
 		clone.find(".group-resizer").remove();
 		clone.find("g:empty").remove();
+		clone[0].removeChild( line );
 
 		// fix group label color
 		clone.find(".group-label").each(function(){
@@ -5912,9 +5915,10 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		if ( data.isExport ) {
 			// Insert header
 			var time = new Date()
-			var header='</line><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)">';
+			var header='</defs><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)">';
 			var footer='</g></svg>';
-			svg = svg.replace("</svg>", footer).replace("</line>", header);
+			svg = svg.replace("</svg>", footer).replace("</defs>", header);
+			console.log(svg);
 		}
 
 		var canvas = document.createElement('canvas');

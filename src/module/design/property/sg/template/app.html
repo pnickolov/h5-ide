@@ -34,9 +34,9 @@
       {{#each rules}}
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
       <div class="rule-list-row">
-          <div class="icon-{{direction}}" data-tooltip="{{direction}}"></div>
+          <div class="icon-{{direction}} tooltip" data-tooltip="{{direction}}"></div>
           {{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}
-          <div class='rule-source'>{{ipRanges}}</div>
+          <div class='rule-source tooltip' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
       </div>
       <div class="rule-list-row">
           <span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{ipProtocol}}</span>

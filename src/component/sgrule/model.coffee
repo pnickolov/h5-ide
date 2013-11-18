@@ -236,7 +236,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     else
                         tmp_rule.connection = rule.IpRanges
 
-                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + '-' + rule.ToPort
+                    portRangeType = '-'
+                    if tmp_rule.protocol is 'icmp'
+                        portRangeType = '/'
+                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + portRangeType + rule.ToPort
+
+                    if tmp_rule.protocol is 'all'
+                        tmp_rule.port = '0-65535'
 
                     rules.push tmp_rule
 

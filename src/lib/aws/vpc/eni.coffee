@@ -557,6 +557,102 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		#return
 		eni_data
 
+	isPublicIPAddress = (ipAddr) ->
+
+		# notice!!!!!!!!!!!!!!
+		isPublicIP = true
+
+		ipAry = ipAddr.split('.')
+
+		# public ip
+		publicIPAry1Min = [1, 0, 0, 1]
+		publicIPAry1Max = [126, 255, 255, 254]
+
+		publicIPAry2Min = [128, 1, 0, 1]
+		publicIPAry2Max = [191, 254, 255, 254]
+
+		publicIPAry3Min = [192, 0, 1, 1]
+		publicIPAry3Max = [223, 255, 254, 254]
+
+		# private ip
+		publicIPAry4Min = [10, 0, 0, 0]
+		publicIPAry4Max = [10, 255, 255, 255]
+
+		publicIPAry5Min = [172, 16, 0, 0]
+		publicIPAry5Max = [172, 31, 255, 255]
+
+		publicIPAry6Min = [192, 168, 0, 0]
+		publicIPAry6Max = [192, 168, 255, 255]
+
+		# public ip
+		# if ipAry[0] >= publicIPAry1Min[0] and
+		# 	ipAry[1] >= publicIPAry1Min[1] and
+		# 	ipAry[2] >= publicIPAry1Min[2] and
+		# 	ipAry[3] >= publicIPAry1Min[3] and
+
+		# 	ipAry[0] <= publicIPAry1Max[0] and
+		# 	ipAry[1] <= publicIPAry1Max[1] and
+		# 	ipAry[2] <= publicIPAry1Max[2] and
+		# 	ipAry[3] <= publicIPAry1Max[3]
+		# 		isPublicIP = true
+
+		# if ipAry[0] >= publicIPAry2Min[0] and
+		# 	ipAry[1] >= publicIPAry2Min[1] and
+		# 	ipAry[2] >= publicIPAry2Min[2] and
+		# 	ipAry[3] >= publicIPAry2Min[3] and
+
+		# 	ipAry[0] <= publicIPAry2Max[0] and
+		# 	ipAry[1] <= publicIPAry2Max[1] and
+		# 	ipAry[2] <= publicIPAry2Max[2] and
+		# 	ipAry[3] <= publicIPAry2Max[3]
+		# 		isPublicIP = true
+
+		# if ipAry[0] >= publicIPAry3Min[0] and
+		# 	ipAry[1] >= publicIPAry3Min[1] and
+		# 	ipAry[2] >= publicIPAry3Min[2] and
+		# 	ipAry[3] >= publicIPAry3Min[3] and
+
+		# 	ipAry[0] <= publicIPAry3Max[0] and
+		# 	ipAry[1] <= publicIPAry3Max[1] and
+		# 	ipAry[2] <= publicIPAry3Max[2] and
+		# 	ipAry[3] <= publicIPAry3Max[3]
+		# 		isPublicIP = true
+
+		# private ip
+		if ipAry[0] >= publicIPAry4Min[0] and
+			ipAry[1] >= publicIPAry4Min[1] and
+			ipAry[2] >= publicIPAry4Min[2] and
+			ipAry[3] >= publicIPAry4Min[3] and
+
+			ipAry[0] <= publicIPAry4Max[0] and
+			ipAry[1] <= publicIPAry4Max[1] and
+			ipAry[2] <= publicIPAry4Max[2] and
+			ipAry[3] <= publicIPAry4Max[3]
+				isPublicIP = false
+
+		if ipAry[0] >= publicIPAry5Min[0] and
+			ipAry[1] >= publicIPAry5Min[1] and
+			ipAry[2] >= publicIPAry5Min[2] and
+			ipAry[3] >= publicIPAry5Min[3] and
+
+			ipAry[0] <= publicIPAry5Max[0] and
+			ipAry[1] <= publicIPAry5Max[1] and
+			ipAry[2] <= publicIPAry5Max[2] and
+			ipAry[3] <= publicIPAry5Max[3]
+				isPublicIP = false
+
+		if ipAry[0] >= publicIPAry6Min[0] and
+			ipAry[1] >= publicIPAry6Min[1] and
+			ipAry[2] >= publicIPAry6Min[2] and
+			ipAry[3] >= publicIPAry6Min[3] and
+
+			ipAry[0] <= publicIPAry6Max[0] and
+			ipAry[1] <= publicIPAry6Max[1] and
+			ipAry[2] <= publicIPAry6Max[2] and
+			ipAry[3] <= publicIPAry6Max[3]
+				isPublicIP = false
+
+		return isPublicIP
 
 	#public
 	markAutoAssginFalse	:	markAutoAssginFalse
@@ -580,4 +676,4 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 	getENIInServerGroup : getENIInServerGroup
 	getInstanceIdOfENI : getInstanceIdOfENI
 	getENIById : getENIById
-
+	isPublicIPAddress : isPublicIPAddress

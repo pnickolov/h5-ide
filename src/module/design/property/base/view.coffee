@@ -3,7 +3,8 @@
 #  Base Class for View of Property Module
 ####################################
 
-define [ 'backbone',
+define [ 'constant',
+         'backbone',
          'jquery',
          'handlebars',
          'UI.selectbox',
@@ -16,7 +17,7 @@ define [ 'backbone',
          'UI.tooltip',
          'UI.sortable',
          'UI.tablist'
-], ()->
+], (constant)->
 
     ###
 
@@ -104,7 +105,17 @@ define [ 'backbone',
             # If render() returns a string.
             # Assume it is the title of the property panel
             if _.isString result
+                
+                # if is sg property, do not set title
+                resUID = @model.get 'uid'
+                if resUID
+                    resComp = MC.canvas_data.component[resUID]
+                    if resComp and resComp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+                        return null
+
+                # all other property
                 @setTitle result
+
             else
                 return result
 

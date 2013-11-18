@@ -31,8 +31,8 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
             @set 'ruleCount', ruleCount
 
             # Get Rules
-            ipPermissions       = $.extend true, [], comp_res.IpPermissions
-            ipPermissionsEgress = $.extend true, [], comp_res.IpPermissionsEgress
+            ipPermissions       = $.extend(true, [], comp_res.IpPermissions)
+            ipPermissionsEgress = $.extend(true, [], comp_res.IpPermissionsEgress)
 
             @formatRule ipPermissions
             @formatRule ipPermissionsEgress
@@ -69,7 +69,9 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
 
                 rule.ip_display = rule.IpRanges
                 if rule.IpRanges.indexOf('@') >= 0
-                    rule.ip_display = components[ MC.extractID( rule.IpRanges) ].name
+                    sgUID = MC.extractID( rule.IpRanges)
+                    rule.ip_display = components[ sgUID ].name
+                    rule.sg_color = MC.aws.sg.getSGColor(sgUID)
 
                 # Protocol
                 protocol = "" + rule.IpProtocol
@@ -169,7 +171,8 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     comp_res.IpPermissionsEgress.push tmp
 
                 # If not existing, return new data to let view to render
-                tmpArr = [ tmp ]
+                dispTmp = $.extend(true, {}, tmp)
+                tmpArr = [ dispTmp ]
                 @formatRule tmpArr
 
                 return tmpArr[0]

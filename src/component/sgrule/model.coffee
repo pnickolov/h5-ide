@@ -229,7 +229,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     if rule.IpRanges.slice(0,1) is '@'
 
-                        tmp_rule.connection = MC.canvas_data.component[rule.IpRanges.split('.')[0][1...]].name
+                        currentSgUID = rule.IpRanges.split('.')[0][1...]
+                        tmp_rule.connection = MC.canvas_data.component[currentSgUID].name
+                        tmp_rule.ref_sg_color = MC.aws.sg.getSGColor(currentSgUID)
 
                     else
                         tmp_rule.connection = rule.IpRanges
@@ -239,9 +241,11 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     rules.push tmp_rule
 
             #get sg name
+            sgColor = MC.aws.sg.getSGColor(sgUID)
             sg_app_detail =
                 name  : MC.canvas_data.component[sgUID].name
                 rules : rules
+                header_sg_color : sgColor
 
             return sg_app_detail
 
@@ -492,6 +496,8 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                             existing = false
 
+                            ruleSGUID = from_rule.IpRanges.split('.')[0][1...]
+
                             to_rule_name = MC.canvas_data.component[from_rule.IpRanges.split('.')[0][1...]].name
 
                             $.each me.display_rule, ( k, v ) ->
@@ -512,7 +518,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                     if not rule_exist
 
-                                        v.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, i, from_rule.IpRanges]
+                                        sgColor = ''
+                                        sgColor = MC.aws.sg.getSGColor(ruleSGUID)
+                                        v.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, i, from_rule.IpRanges, sgColor]
 
 
                             if not existing
@@ -523,7 +531,12 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                                 tmp.rule = []
 
-                                tmp.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, i, from_rule.IpRanges]
+                                sgColor = MC.aws.sg.getSGColor(from_sg_uid)
+                                sgRuleColor = MC.aws.sg.getSGColor(ruleSGUID)
+
+                                tmp.rule.push [to_rule_name, from_rule.FromPort, from_rule.ToPort, from_rule.IpProtocol, i, from_rule.IpRanges, sgRuleColor]
+
+                                tmp.header_sg_color = sgColor
 
                                 me.display_rule.push tmp
 

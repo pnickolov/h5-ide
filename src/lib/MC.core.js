@@ -465,11 +465,28 @@ var MC = {
 		});
 	},
 
-	exportImage: function ( $svg_canvas_element, forExport, onFinish )
+	exportImage: function ( $svg_canvas_element, data )
 	{
-		require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
 
-			css = '<![CDATA[' + css + ']]>';
+		/*
+		data = {
+			isExport : boolean
+			onFinish : function
+			name     : string
+		}
+		*/
+		if ( !MC.exportImage.bg )
+		{
+			var bg_img = new Image();
+			bg_img.onload = bg_img.onerror = function() {
+				MC.exportImage.bg = bg_img;
+				MC.exportImage( $svg_canvas_element, data );
+			}
+			bg_img.src = "/assets/images/ide/grid_solid.png";
+			return;
+		}
+
+		require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
 
 			/* Trim SVG */
 			var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -479,17 +496,43 @@ var MC = {
 			size.height += 30;
 
 			var ratio = 1;
+			var beforeRender = null;
 
 			// Calc the perfect size for the thumbnail
-			if ( forExport ) {
+			if ( data.isExport ) {
+				size.height += 54;
 
+				if ( size.width  < 360 ) { size.width  = 360; }
+				if ( size.height < 380 ) { size.height = 380; }
+
+				beforeRender = function( ctx ){
+					ctx.save();
+					ctx.translate(0, 54);
+					ctx.fillStyle = ctx.createPattern( MC.exportImage.bg, 'repeat' );
+					ctx.fillRect(0, 0, size.width, size.height);
+					ctx.restore();
+				}
 			} else {
-				var ratio1 = 220 / size.width;
-				var ratio2 = 145 / size.height;
+				beforeRender = function( ctx ){
+					var ratio1 = 220 / size.width;
+					var ratio2 = 145 / size.height;
+					ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
 
-				ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
-				size.width  = 220;
-				size.height = 145;
+					var pattern = document.createElement('canvas');
+					pattern.width  = size.width;
+					pattern.height = size.height;
+
+					size.width  = 220;
+					size.height = 145;
+
+					patternctx = pattern.getContext("2d");
+
+					patternctx.fillStyle = patternctx.createPattern( MC.exportImage.bg, 'repeat' );
+					patternctx.fillRect(0, 0, pattern.width, pattern.height);
+
+					ctx.scale( ratio, ratio );
+					ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
+				}
 			}
 
 			clone.attr("width", size.width).attr("height", size.height);
@@ -515,46 +558,33 @@ var MC = {
 			var svg = (new XMLSerializer()).serializeToString( clone[0] );
 			svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
 
-			var img = new Image();
-			img.onerror = img.onload = function() {
-				var canvas = document.createElement('canvas');
-				canvg( canvas, svg, {
-					beforeRender : function( ctx ){
-
-						var pattern = document.createElement('canvas');
-						pattern.width  = canvas.width / ratio;
-						pattern.height = canvas.height / ratio;
-
-						patternctx = pattern.getContext("2d");
-
-						patternctx.fillStyle = patternctx.createPattern( img, 'repeat' );
-						patternctx.fillRect(0, 0, pattern.width, pattern.height);
-
-						ctx.scale( ratio, ratio );
-						ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
-						img = null;
-					},
-
-					afterRender : function(){
-						if ( onFinish ) {
-							onFinish( canvas.toDataURL() );
-						}
-					}
-
-				} );
-
-					$("#wrap").hide();
-					setTimeout(function(){
-						$("<img>").appendTo("body").attr("src", canvas.toDataURL()).css({position:"absolute",top:"0",left:"0",background:"#fff","z-index":"100000001"});
-					}, 100);
+			if ( data.isExport ) {
+				// Insert header
+				var time = new Date()
+				var header='</line><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="26">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="40">' + data.name + '</text></g><g transform="translate(0 54)">';
+  			var footer='</g></svg>';
+  			svg = svg.replace("</svg>", footer).replace("</line>", header);
 			}
 
-			img.src = "/assets/images/ide/grid_x1.png";
+			var canvas = document.createElement('canvas');
+			canvas.width  = size.width;
+			canvas.height = size.height;
+			canvg( canvas, svg, {
+				ignoreDimensions : true,
+				beforeRender : beforeRender,
+				afterRender  : data.onFinish ? function(){ data.onFinish( canvas.toDataURL() ); } : null
+			} );
 		});
 	},
 
 	tryExport : function(){
-		MC.exportImage( $("#svg_canvas") );
+		MC.exportImage( $("#svg_canvas"), {
+			isExport : true,
+			name     : "test",
+			onFinish : function(d){ console.log(d); } } );
+		MC.exportImage( $("#svg_canvas"), {
+			isExport : false,
+			onFinish : function(d){ console.log(d); } } );
 	}
 };
 

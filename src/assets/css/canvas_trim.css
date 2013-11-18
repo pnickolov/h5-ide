@@ -1,3 +1,12 @@
+<![CDATA[
+
+.title_label {
+	font-size   : 12px;
+	text-anchor : end;
+	fill        : #fff;
+	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
 #canvas_body {
 	border: 1px solid #ccc;
 	background: #fff url('../images/ide/grid_x1.png');
@@ -394,3 +403,5 @@
 .volume-status-error{
 	fill:red;
 }
+
+]]>

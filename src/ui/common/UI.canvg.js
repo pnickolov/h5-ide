@@ -256,10 +256,7 @@ function RGBColor(color_string)
   // target: canvas element or the id of a canvas element
   // s: svg string, url to svg file, or xml document
   // opts: optional hash of options
-  //     ignoreMouse: true => ignore mouse events
-  //     ignoreAnimation: true => ignore animations
   //     ignoreDimensions: true => does not try to resize canvas
-  //     ignoreClear: true => does not clear canvas
   //     offsetX: int => draws at a x offset
   //     offsetY: int => draws at a y offset
   //     scaleWidth: int => scales horizontally to width

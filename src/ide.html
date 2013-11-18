@@ -6,12 +6,33 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="description" content="MadeiraCloud - Visual Cloud Computing IDE"/>
 	<link rel="shortcut icon" href="./assets/images/ide/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./assets/css/icon-font.css" />
-	<link rel="stylesheet" href="./assets/css/core.css" />
-	<link rel="stylesheet" href="./assets/css/ide.css" />
-	<link rel="stylesheet" href="./assets/css/grid.css" />
-	<link rel="stylesheet" href="./assets/css/UI.component.css" />
-	<link rel="stylesheet" href="./assets/css/canvas.css" />
+
+	<script type="text/javascript">
+		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
+	</script>
+
+
+	<script type="text/javascript">
+
+		function loadCSS(css_file){
+			var head = document.getElementsByTagName('HEAD').item(0);
+			var style = document.createElement('link');
+			style.href = './assets/css/' + css_file + '?v=' + version;
+			style.rel = 'stylesheet';
+			style.type = 'text/css';
+			head.appendChild(style);
+		}
+
+		loadCSS("icon-font.css");
+		loadCSS("core.css");
+		loadCSS("ide.css");
+		loadCSS("grid.css");
+		loadCSS("UI.component.css");
+		loadCSS("canvas.css");
+
+	</script>
+
+
 	<!-- env:prod --#>
 	<script type="text/javascript" src="./lib/analytics.js"></script>
 	<!-- env:prod -->
@@ -86,10 +107,6 @@
 
 	<!-- status bar modal -->
 	<div id="status-bar-modal" style="display: none;"></div>
-
-	<script type="text/javascript">
-		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
-	</script>
 
 	<!-- <script type="text/javascript" src="./lib/version.js"></script>
 	<script type="text/javascript" src="./lib/analytics.js"></script> -->

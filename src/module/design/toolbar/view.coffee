@@ -59,12 +59,6 @@ define [ 'MC', 'event',
         render   : ( type ) ->
             console.log 'toolbar render'
 
-            #
-            if type is 'app'
-                $( '#main-toolbar' ).html app_tmpl this.model.attributes
-            else
-                $( '#main-toolbar' ).html stack_tmpl this.model.attributes
-
             #set line style
             lines =
                 icon : ''
@@ -93,6 +87,12 @@ define [ 'MC', 'event',
                     lines.icon = 'icon-bezier-qt'
 
             this.model.attributes.lines = lines
+
+            #
+            if type is 'app'
+                $( '#main-toolbar' ).html app_tmpl this.model.attributes
+            else
+                $( '#main-toolbar' ).html stack_tmpl this.model.attributes
 
 
 

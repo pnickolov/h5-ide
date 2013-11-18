@@ -582,7 +582,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
         generatePNG : () ->
             me = this
-            MC.exportImage $("#svg_canvas"), {
+            MC.canvas.exportPNG $("#svg_canvas"), {
                 isExport : true
                 name     : MC.canvas_data.name
                 id       : MC.canvas_data.id

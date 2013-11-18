@@ -5842,6 +5842,11 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
 		var size = $svg_canvas_element[0].getBBox();
+		// In IE, getBBox returns SvgRect which is not allowed to modified.
+		size = {
+			width  : size.width,
+			height : size.height
+		};
 		size.width  += 50;
 		size.height += 30;
 
@@ -5911,9 +5916,16 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 
 		var svg = (new XMLSerializer()).serializeToString( clone[0] );
 		if ( data.isExport ) {
+
+			if ( MC.canvas.exportPNG.isIE === undefined ) {
+				// In IE, XMLSerializer will change xlink:href to href
+				MC.canvas.exportPNG.isIE = svg.indexOf("xlink:href") == -1;
+			}
+
 			// Insert header
-			var time = new Date()
-			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image xlink:href="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
+			var time = new Date();
+			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
+			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
 
 			svg = svg.replace("</svg>", '</g></svg>');
 		}

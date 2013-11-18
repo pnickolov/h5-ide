@@ -4719,6 +4719,15 @@ a.action-link:hover {
 	width: 200px;
 }*/
 
+#modal-sg-rule .selectbox .sg-color {
+	box-shadow : none;
+	margin-top : 5px;
+}
+
+#modal-sg-rule .selection .sg-color {
+	margin-top: 3px;
+}
+
 .modal-body .modal-protocol-select {
 	width: 90px;
 	display: inline-block;
@@ -5334,6 +5343,10 @@ a.action-link:hover {
 	width  : 500px;
 }
 
+#sg-rule-create-modal .selectbox .selection {
+	font-size: 14px;
+}
+
 .sg-rule-create-h, #sg-rule-create-modal {
 	position : relative;
 	left : 0;
@@ -5375,7 +5388,7 @@ a.action-link:hover {
 #sg-create-direction {
 	float       : left;
 	margin-left : 20px;
-	width       : 150px;
+	width       : 180px;
 	/*height      : 40px;*/
 }
 
@@ -5396,7 +5409,7 @@ a.action-link:hover {
 	width         : 14px;
 	height        : 14px;
 	float         : left;
-	/*margin-top    : 2px;*/
+	margin-top    : 2px;
 	margin-right  : 4px;
 	border-radius : 2px;
 }
@@ -5531,6 +5544,19 @@ a.action-link:hover {
 	background    : #414141;
 }
 
+.sidebar-wrap .sg-create-rule-item {
+	font-size : 12px;
+}
+
+.sidebar-wrap .rule-list-row .sg-color {
+	margin-top: 2px;
+}
+
+.sidebar-wrap .sg-color.sg-color-rule-header,
+#delete-rule-dialog .sg-color.sg-color-rule-header {
+	margin: 7px;
+}
+
 .sg-create-rule-item .sg-rule-connection {
 	width: 113px;
 }
@@ -5571,6 +5597,29 @@ a.action-link:hover {
 
 #sg-rule-self-ref .icon-info {
 	color: #3781C9;
+}
+
+
+/* Delete SG Rule Modal */
+
+.sg-list-wrap {
+	max-height: 300px;
+	border-radius: 4px;
+}
+
+#delete-rule-dialog .sg-create-rule-item {
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+}
+
+#delete-rule-dialog .sg-create-group {
+	background: #ccc;
+	border: none;
+	color: #666;
+}
+
+#delete-rule-dialog .sg-color {
+	box-shadow: none;
 }
 
 /* Notification Dropdown */

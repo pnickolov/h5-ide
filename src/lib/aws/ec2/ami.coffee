@@ -4,6 +4,8 @@ define [ 'MC' ], ( MC) ->
 	getOSType = ( ami ) ->
 
 		#return osType by ami.name | ami.description | ami.imageLocation
+		if !ami
+			return 'unknown'
 
 		osTypeList = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse','amazon', 'amzn']
 
@@ -18,14 +20,15 @@ define [ 'MC' ], ( MC) ->
 		else
 
 			#check ami.name
-			found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
+			if ami.name
+				found = osTypeList.filter (word) -> ~ami.name.toLowerCase().indexOf word
 
 			#check ami.description
-			if found.length == 0 and 'description' of ami
+			if found.length == 0 and 'description' of ami and ami.description
 				found = osTypeList.filter (word) -> ~ami.description.toLowerCase().indexOf word
 
 			#check ami.imageLocation
-			if found.length == 0 and 'imageLocation' of ami
+			if found.length == 0 and 'imageLocation' of ami and ami.imageLocation
 				found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
 
 		if found.length == 0

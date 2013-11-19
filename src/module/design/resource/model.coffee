@@ -155,9 +155,13 @@ define [ 'i18n!nls/lang.js',
 
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
-                            value.instanceType = me._getInstanceType value
-                            value.osType = MC.aws.ami.getOSType value
-                            MC.data.dict_ami[value.imageId] = value
+                            try
+                                value.instanceType = me._getInstanceType value
+                                value.osType = MC.aws.ami.getOSType value
+                                MC.data.dict_ami[value.imageId] = value
+                            catch err
+                                console.info 'Resolve My AMI error'
+                                return true
                             null
 
                         my_ami_list = result.resolved_data

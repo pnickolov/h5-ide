@@ -516,18 +516,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
         #run
-        runStack : (app_name, data) ->
+        runStack : (data) ->
             me = this
 
-            id      = data.id
-            region  = data.region
+            id          = data.id
+            region      = data.region
+            app_name    = data.name
+            usage       = data.usage
 
-            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
+            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null
             if MC.aws.aws.checkDefaultVPC()
-                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC()
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC(), null, null, null, usage
 
             else
-                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, usage
 
             # save stack data for generating png
             idx = 'process-' + region + '-' + app_name

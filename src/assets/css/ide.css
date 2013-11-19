@@ -6793,3 +6793,94 @@ summary:focus {
 	font-size: 12px;
 	margin-left: 5px;
 }
+
+/* App Useage */
+#modal-run-stack .app-usage {
+	padding: 15px;
+	color: #666;
+	border-top: 1px solid #cfcfcf;
+}
+
+#modal-run-stack .app-usage .title {
+	padding-bottom: 26px;
+}
+
+#modal-run-stack .app-usage .title span {
+	font-size: 16px;
+	padding-right: 3px;
+
+}
+
+.app-usage .icon-info {
+ 	vertical-align: middle;
+}
+
+#modal-run-stack .app-usage .checklist {
+	display: inline-block;
+	padding-bottom: 5px;
+	font-size: 14px;
+}
+
+#modal-run-stack .app-type-group {
+	display: inline-block;
+}
+
+/* App Type Icon */
+[class^="icon-app-type-"], [class*=" icon-app-type-"] {
+	background-image: url(../images/ide/icon/icon-app-type-sprites.png);
+	display: block;
+	height: 13px;
+	width: 34px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.icon-app-type-dev {
+	background-position: 0 -20px;
+}
+
+.icon-app-type-prod {
+	background-position: 0 -40px;
+}
+
+.icon-app-type-test {
+	background-position: 0 -60px;
+}
+
+.icon-app-type-other {
+	background-position: 0 0;
+}
+
+/* App Useage */
+#modal-run-stack .app-usage {
+	padding: 15px;
+	color: #666;
+	border-top: 1px solid #cfcfcf;
+}
+
+#modal-run-stack .app-usage .title {
+	padding-bottom: 26px;
+}
+
+#modal-run-stack .app-usage .title span {
+	font-size: 16px;
+	padding-right: 3px;
+
+}
+
+.app-usage .icon-info {
+ 	vertical-align: middle;
+}
+
+#modal-run-stack .app-usage .checklist {
+	display: inline-block;
+	padding-bottom: 5px;
+	font-size: 14px;
+}
+
+#modal-run-stack .app-type-group {
+	display: inline-block;
+}
+
+

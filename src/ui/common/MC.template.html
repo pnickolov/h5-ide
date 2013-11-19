@@ -593,6 +593,36 @@ Additional Notes and Questions
 			<label class="label modal-text-major" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
+		<div class="app-usage">
+			<div class="title">
+				<span>App Usage</span><i class="icon-info tooltip" data-tooltip='Mark your app usage for better organisation and optimisation.If no usage is speciﬁed, the app usage will be marked as "Others".'></i>
+			</div>
+			<div class="checklist">
+				<div class="app-type-group">
+					<div class="radio">
+						<input id="app-test" type="radio" name="app-usage" value="testing">
+						<label for="app-test"></label>
+					</div>
+					<label for="app-test"><i class="icon-app-type-test"></i> <span>Testing</span></label>
+				</div>
+				<div class="app-type-group">
+					<div class="radio">
+						<input id="app-dev" type="radio" name="app-usage" value="development">
+						<label for="app-dev"></label>
+					</div>
+					<label for="app-dev"><i class="icon-app-type-dev"></i> <span>Development</span></label>
+				</div>
+				<div class="app-type-group">
+					<div class="radio">
+						<input id="app-prod" type="radio" name="app-usage" value="production">
+						<label for="app-prod"></label>
+					</div>
+					<label for="app-prod"><i class="icon-app-type-prod"></i> <span>Production</span></label>
+				</div>
+
+
+			</div>
+		</div>
 		<div class="stack-validation">
 			<details open style="display:none;">
 				<summary>Stack Validation</summary>

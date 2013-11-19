@@ -6,12 +6,11 @@ define [ 'MC', 'event',
          'i18n!nls/lang.js',
          'text!./stack_template.html',
          'text!./app_template.html',
-         'UI.zeroclipboard',
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, lang, stack_tmpl, app_tmpl, zeroclipboard, constant ) ->
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, constant ) ->
 
     stack_tmpl = Handlebars.compile stack_tmpl
     app_tmpl   = Handlebars.compile app_tmpl
@@ -22,7 +21,6 @@ define [ 'MC', 'event',
 
         events     :
             ### env:dev ###
-            #json
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
             'click #toolbar-jsonview'       : 'clickOpenJSONView'
             ### env:dev:end ###
@@ -99,9 +97,6 @@ define [ 'MC', 'event',
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
             #
-            ### env:dev ###
-            zeroclipboard.copy $( '#toolbar-jsoncopy' )
-            ### env:dev:end ###
 
             # add by song
             if !$('#phantom-frame')[0]

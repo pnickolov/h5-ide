@@ -57,6 +57,13 @@ define [ 'event',
             this.$el.html( template )
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
+
+            ###
+                Since the ridiculous process of opening tab will erase any event that is bound to the #property-panel.
+                And I don't want to mess up with the process, because I know there will be
+                a lot of unkown bugs if I do so. This handler is bound to body.
+            ###
+            $( "body" ).on("click", ".click-select", this.selectText )
             null
 
         getCurrentCompUid : () ->
@@ -214,6 +221,23 @@ define [ 'event',
         showPropertyPanel : ->
             console.log 'showPropertyPanel'
             $( '#hide-property-panel' ).trigger 'click' if $( '#hide-property-panel' ).hasClass 'icon-caret-left'
+
+
+        # This is use to select text when clicking on the text.
+        selectText : ( event )->
+            try
+                range = document.body.createTextRange()
+                range.moveToElementText event.currentTarget
+                range.select()
+                console.warn "Select text by document.body.createTextRange"
+            catch e
+                if window.getSelection
+                    range = document.createRange()
+                    range.selectNode event.currentTarget
+                    window.getSelection().addRange range
+                    console.warn "Select text by document.createRange"
+
+            return false
     }
 
     return PropertyView

@@ -8,7 +8,6 @@
 	<link id="css_style" rel="stylesheet" href="./css/MC.page.console.css" media="all"/>
 	<link href="./prettify/prettify.css" type="text/css" rel="stylesheet" />
 
-	<script type="text/javascript" src="./lib/ZeroClipboard.min.js"></script>
 	<script type="text/javascript" src="./prettify/prettify.js"></script>
 	<script type="text/javascript" src="./apiList.js"></script>
 
@@ -93,29 +92,7 @@
 
 			prettyPrint();
 			//MC.realtimeCSS();
-
-			zeroClipboardInit('request');
-			zeroClipboardInit('response');
 		}
-
-		function zeroClipboardInit(el){
-
-			var clip = new ZeroClipboard( document.getElementById("copy-button-"+el), {
-			  moviePath: "./lib/ZeroClipboard.swf"
-			} );
-
-			clip.on( 'complete', function(client, args) {
-				id = clip.htmlBridge.title
-			  	alert("Copied " + id + " data to clipboard: " + args.text.length + "bytes" );
-			} );
-
-			clip.on( 'mouseup', function(client) {
-				id = clip.htmlBridge.title;
-			   	clip.setText($('#' + id + '_data').text());
-			} );
-
-		}
-
 
 		//add log to table
 		function add_request_log( data ){

@@ -6,10 +6,10 @@
         <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
         <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
         <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
-        <dd id="property-app-elb-dnss">
-          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{DNSName}}">(A){{DNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{DNSName}}"></i></div>
-          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{AAAADNSName}}">(AAAA){{AAAADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{AAAADNSName}}"></i></div>
-          <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{ADNSName}}">(A/AAAA){{ADNSName}}</span><i title="DNS" class="icon-copy" data-clipboard-text="{{ADNSName}}"></i></div>
+        <dd>
+          <div class="click-select tooltip" data-tooltip="Click to select">(A){{DNSName}}</div>
+          <div class="click-select tooltip" data-tooltip="Click to select">(AAAA){{AAAADNSName}}</div>
+          <div class="click-select tooltip" data-tooltip="Click to select">(A/AAAA){{ADNSName}}</div>
         </dd>
         <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
         <dd>{{CanonicalHostedZoneNameID}}<dd>

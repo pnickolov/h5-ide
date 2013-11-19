@@ -1,5 +1,5 @@
-<article>
 {{#if readOnly}}
+  <article class="property-app">
   <dl class="dl-vertical">
     <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
     <dd>{{emptyStr id}}</dd>
@@ -13,12 +13,13 @@
     <dd>{{emptyStr vpc}}</dd>
   </dl>
 {{else}}
-<div  class="property-control-group">
-{{#if isIGW}}
-  {{ i18n "PROP_IGW_TXT_DESCRIPTION" }}
-{{else}}
-  {{ i18n "PROP_VGW_TXT_DESCRIPTION" }}
-{{/if}}
-</div>
+  <article>
+  <div  class="property-control-group">
+  {{#if isIGW}}
+    {{ i18n "PROP_IGW_TXT_DESCRIPTION" }}
+  {{else}}
+    {{ i18n "PROP_VGW_TXT_DESCRIPTION" }}
+  {{/if}}
+  </div>
 {{/if}}
 </article>

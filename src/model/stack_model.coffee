@@ -111,13 +111,13 @@ define [ 'backbone', 'underscore', 'stack_service', 'ami_service', 'base_model' 
 
 
         #run api (define function)
-        run : ( src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null ) ->
+        run : ( src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null ) ->
 
             me = this
 
             src.model = me
 
-            stack_service.run src, username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name, ( forge_result ) ->
+            stack_service.run src, username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name, usage, ( forge_result ) ->
 
                 if !forge_result.is_error
                 #run succeed
@@ -231,7 +231,7 @@ define [ 'backbone', 'underscore', 'stack_service', 'ami_service', 'base_model' 
             src.model = me
 
             ami_service.DescribeImages src, username, session_id, region_name, ami_list, null, null, null, ( result ) ->
-                
+
                 if !result.is_error
                     if src.sender and src.sender.trigger then src.sender.trigger 'GET_NOT_EXIST_AMI_RETURN', result
                 else

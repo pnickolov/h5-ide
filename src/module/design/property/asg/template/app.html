@@ -1,4 +1,4 @@
-<article id="property_app_asg" class="property-app">
+<article class="property-app">
   {{#if hasData}}
   <div class="option-group-head expand">{{i18n "PROP_ASG_SUMMARY"}}</div>
   <div class="option-group">
@@ -6,9 +6,7 @@
       <dt>{{i18n "PROP_ASG_NAME"}}</dt>
       <dd>{{awsResName}}</dd>
       <dt>Auto Scaling Group ARN</dt>
-      <dd>
-        <div class="pos-r"><span class="truncate tooltip" data-tooltip="{{arn}}">{{arn}}</span><i title="ARN" class="icon-clip icon-copy" data-clipboard-text="{{arn}}"></i></div>
-      </dd>
+      <dd class="click-select tooltip" data-tooltip="Click to select">{{arn}}</dd>
       <dt>{{i18n "PROP_ASG_CREATE_TIME"}}</dt>
       <dd>{{timeStr createTime}}</dd>
 

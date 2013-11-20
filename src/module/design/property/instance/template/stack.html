@@ -24,8 +24,8 @@
 		<section class="property-control-group">
 			<label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
 			<div id="property-ami" class="property-block-wrap clearfix" data-uid='{{ami_uid}}'>
-				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
-				<div class="property-ami-label">{{instance_ami.name}}</div>
+				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}">
+				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
 			</div>
 		</section>
 		<section class="property-control-group">

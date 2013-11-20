@@ -44,6 +44,13 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
               dhcp = {}
 
               for i in dhcpData
+                if i.key is 'domain-name-servers'
+                  for j, idx in i.valueSet
+                    if j is 'AmazonProvidedDNS'
+                      tmp = i.valueSet[0]
+                      i.valueSet[0]   = j
+                      i.valueSet[idx] = tmp
+                      break
                 dhcp[ MC.camelCase( i.key ) ] = i.valueSet
 
               vpc.dhcp = dhcp

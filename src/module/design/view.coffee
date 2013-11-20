@@ -42,14 +42,14 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             $( '#canvas-panel' ).one( 'DOMNodeInserted', '.canvas-svg-group', this, _.debounce( this.canvasChange, 200, true ))
             #
-            $( '#resource-panel' ).html  this.model.get( 'snapshot' ).resource
-            $( '#canvas-panel'   ).html  this.model.get( 'snapshot' ).canvas
-            $( '#overlay-panel'  ).html  this.model.get( 'snapshot' ).overlay
+            $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
+            $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
+            $( '#overlay-panel'  ).html this.model.get( 'snapshot' ).overlay
+            $( '#property-panel' ).html this.model.get( 'snapshot' ).property
             #
             if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
             ###
             this.$el.empty().html this.model.get 'snapshot'
-            $( '#property-panel' ).html this.model.get( 'snapshot' ).property
             $( '#property-panel' ).empty()
             ###
             null

@@ -1490,6 +1490,7 @@ a {
 .global-region-status-list h5 {
 	font-size: 14px;
 	color: #4495d3;
+	position: relative;
 }
 
 .global-region-status-info {
@@ -6898,3 +6899,10 @@ summary:focus {
 	top: 16px;
 	right: 3px;
 }
+
+.global-region-status-list h5 [class^="icon-app-type-"],
+.global-region-status-list h5 [class*=" icon-app-type-"]  {
+	position: absolute;
+	right: 12px;
+}
+

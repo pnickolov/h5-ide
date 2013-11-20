@@ -158,12 +158,12 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         AppEdit : "AppEdit"
 
 
-    PropertyModule.prototype.loadSubPanel = ( subPanelID, componentUid, noRender ) ->
+    PropertyModule.prototype.loadSubPanel = ( subPanelID, componentUid ) ->
         subPanel = propertySubTypeMap[ subPanelID ]
         if not subPanel
             return
 
-        PropertyModule._doLoadProperty subPanelID, subPanel, componentUid, activeModule.type, noRender
+        PropertyModule._doLoadProperty subPanelID, subPanel, componentUid, activeModule.type
         null
 
     PropertyModule.extend = ( protoProps, staticProps ) ->
@@ -251,7 +251,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         null
 
 
-    PropertyModule._doLoad = ( componentType, componentUid, tab_type, noRender ) ->
+    PropertyModule._doLoad = ( componentType, componentUid, tab_type ) ->
 
         handle = componentType
 
@@ -277,9 +277,9 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         property.handle = handle
 
         # Return _doLoadProperty's return value.
-        PropertyModule._doLoadProperty componentType, property, componentUid, tab_type, noRender
+        PropertyModule._doLoadProperty componentType, property, componentUid, tab_type
 
-    PropertyModule._doLoadProperty = ( componentType, property, componentUid, tab_type, noRender ) ->
+    PropertyModule._doLoadProperty = ( componentType, property, componentUid, tab_type ) ->
 
         # 1. Set the property type to "App" or "Stack"
         property.type = tab_type
@@ -320,7 +320,8 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         # to the model. Thus they're decoupled.
         property.view.model     = property.model
         property.view._isSub    = !!property.subPanelID
-        property.view._noRender = noRender # If we are restore state of a tab, no need to render the property panel
+        property.view._noRender = PropertyModule.__noRender # If we are restore state of a tab, no need to render the property panel
+        PropertyModule.__noRender = false # Reset __noRender here. So that even _load() throws error, we still reset it.
 
         # 6. Tell view to Render
         if property.subPanelID
@@ -357,11 +358,15 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         data
 
     PropertyModule.restore  = ( snapshot )->
-        PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type, true
+
+        PropertyModule.__noRender = true
+        PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 
         if snapshot.activeSubModuleType
+            PropertyModule.__noRender = true
             PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
 
+        PropertyModule.__noRender = false
         null
 
     # The event object is used to communicate with design/property/view

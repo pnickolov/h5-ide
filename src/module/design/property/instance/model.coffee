@@ -322,14 +322,18 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			ami    = MC.data.dict_ami[ami_id]
 
 			if not ami
-				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
-				return
+				data = {
+					name        : ami_id + " is not available."
+					icon        : "ami-not-available.png"
+					unavailable : true
+				}
+			else
+				data = {
+					name : ami.name
+					icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+				}
 
-			this.set 'instance_ami', {
-				name : ami.name
-				icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
-			}
-
+			this.set 'instance_ami', data
 			this.set 'ami_uid', ami_id
 			null
 

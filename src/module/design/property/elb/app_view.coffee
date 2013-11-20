@@ -3,8 +3,7 @@
 #############################
 
 define [ '../base/view',
-         'text!./template/app.html',
-         'UI.zeroclipboard' ], ( PropertyView, template, zeroclipboard ) ->
+         'text!./template/app.html'], ( PropertyView, template ) ->
 
     template = Handlebars.compile template
 
@@ -12,8 +11,6 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
-            zeroclipboard.copy $("#property-app-elb-dnss .icon-copy")
-
             @model.attributes.name
     }
 

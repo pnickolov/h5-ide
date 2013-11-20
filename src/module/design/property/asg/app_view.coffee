@@ -4,9 +4,8 @@
 
 define [ '../base/view',
          'text!./template/app.html',
-         'i18n!nls/lang.js',
-         'UI.zeroclipboard'
-], ( PropertyView, template, lang, zeroclipboard )->
+         'i18n!nls/lang.js'
+], ( PropertyView, template, lang )->
 
     template = Handlebars.compile template
 
@@ -18,11 +17,6 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
-
-            $name = $( "#property_app_asg .icon-copy" )
-            if $name.length
-                zeroclipboard.copy $name
-
             @model.attributes.name
 
 

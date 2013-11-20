@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zeroclipboard' ], ( PropertyView, template, lang, zeroclipboard )->
+define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( PropertyView, template, lang )->
 
     template = Handlebars.compile template
 
@@ -28,6 +28,17 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
                 me.kpModalClosed = true
                 null
 
+            $(".modal-body").on "click", ".click-select", ( event )->
+                if event.currentTarget.select
+                    event.currentTarget.select()
+                event.stopPropagation()
+
+
+            $("#keypair-show").on "click", ()->
+                $("#keypair-pwd").attr("type", "string")
+                null
+
+
             this.kpModalClosed = false
 
             false
@@ -41,21 +52,18 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
                 return
 
             if option.passwd
-                copybtn = $("#keypair-pwd").val( option.passwd ).siblings("a").attr("data-clipboard-text", option.passwd )
-                zeroclipboard.copy copybtn
+                $("#keypair-pwd").val( option.passwd )
             else
                 $("#keypair-login").hide()
                 $("#keypair-no-pwd").text lang.ide.POP_DOWNLOAD_KP_NOT_AVAILABLE
 
             if option.cmd_line
-                copybtn = $("#keypair-cmd").val( option.cmd_line ).siblings("a").attr("data-clipboard-text", option.cmd_line )
-                zeroclipboard.copy copybtn
+                $("#keypair-cmd").val( option.cmd_line )
             else
                 $("#keypair-remote").hide()
 
             if option.public_dns
-                copybtn = $("#keypair-dns").val( option.public_dns ).siblings("a").attr("data-clipboard-text", option.public_dns )
-                zeroclipboard.copy copybtn
+                $("#keypair-dns").val( option.public_dns )
             else
                 $("#keypair-public").hide()
 
@@ -75,6 +83,9 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js', 'UI.zer
 
             $("#keypair-loading").hide()
             $("#keypair-body-" + option.type ).show()
+
+            modal.position()
+            null
 
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.target ).data("uid")

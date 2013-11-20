@@ -5742,9 +5742,21 @@ a.action-link:hover {
 	background: #3781C9;
 	color: #fcfcfc;
 }
-
 .property-app ::-moz-selection {
-	background: #999;
+	background: #3781C9;
+	color: #fcfcfc;
+}
+
+.property-app .click-select {
+	cursor        : pointer;
+	height        : 1.5em;
+	overflow      : hidden;
+	text-overflow : ellipsis;
+	white-space   : nowrap;
+}
+
+.click-select::selection {
+	background: #3781C9;
 	color: #fcfcfc;
 }
 
@@ -5758,17 +5770,21 @@ a.action-link:hover {
 }
 
 .btn.kp-copy-btn {
-	width   : 80px;
-	padding : 9px 0;
+	width   : 120px;
+	padding : 7px 0;
+	float   : right;
 }
 
 #keypair-cmd {
-	width: 240px;
+	width: 346px;
 }
 
 #keypair-private-key {
-	width: 340px;
-	font-size: 12px;
+	width       : 340px;
+	font-size   : 12px;
+	line-height : 1.2em;
+	padding     : 5px;
+	height      : 4em;
 }
 
 #keypair-rdp {

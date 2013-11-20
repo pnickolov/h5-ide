@@ -1043,6 +1043,10 @@ module.exports =
       en: "Type"
       zh: "类型"
 
+    PROP_STACK_LBL_USAGE:
+      en: "Usage"
+      zh: "用途"
+
     PROP_STACK_TIT_SG:
       en: "Security Groups"
       zh: "安全组"

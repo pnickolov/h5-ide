@@ -6,6 +6,10 @@
 		<dd>{{property_detail.region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
 		<dd>{{property_detail.type}}</dd>
+        {{#if property_detail.usage}}
+            <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
+            <dd style="text-transform: capitalize">{{property_detail.usage}}</dd>
+        {{/if}}
 	</dl>
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>

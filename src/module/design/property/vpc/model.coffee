@@ -56,6 +56,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             for uid, comp of MC.canvas_data.component
                 if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                     comp.resource.Placement.Tenancy = "dedicated"
+                    if comp.resource.InstanceType is 't1.micro'
+                        MC.canvas_data.component[uid].resource.InstanceType = 'm1.small'
             null
 
         setDnsSupport : ( enable ) ->

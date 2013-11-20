@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../result_vo' ], ( constant, $, MC, lang, stackService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_service', '../result_vo' ], ( constant, $, MC, lang, stackService, amiService ) ->
 
 	_getCompName = (compUID) ->
 
@@ -72,4 +72,91 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service' , '../re
 		catch err
 			callback(null)
 
+	isHaveNotExistAMI = (callback) ->
+
+		try
+			if !callback
+				callback = () ->
+
+			currentState = MC.canvas.getState()
+
+			# get current all using ami
+			amiAry = []
+			instanceAMIMap = {}
+			_.each MC.canvas_data.component, (compObj) ->
+				if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
+					compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+						imageId = compObj.resource.ImageId
+						if imageId
+							if not instanceAMIMap[imageId]
+								instanceAMIMap[imageId] = []
+								amiAry.push imageId
+							instanceAMIMap[imageId].push(compObj.uid)
+				null
+
+			# get ami info from aws
+			if amiAry.length
+
+				currentRegion = MC.canvas_data.region
+				amiService.DescribeImages {sender: this},
+					$.cookie( 'usercode' ),
+					$.cookie( 'session_id' ),
+					currentRegion, amiAry, null, null, null, (result) ->
+						
+						tipInfoAry = []
+
+						if result.is_error and result.aws_error_code is 'InvalidAMIID.NotFound'
+							# get current stack all aws ami
+							awsAMIIdAryStr = result.error_message
+							awsAMIIdAryStr = awsAMIIdAryStr.replace("The image ids '[", "").replace("]' do not exist", "")
+
+							awsAMIIdAry = awsAMIIdAryStr.split(',')
+							awsAMIIdAry = _.map awsAMIIdAry, (awsAMIId) ->
+								return $.trim(awsAMIId)
+
+							if not awsAMIIdAry.length
+								callback(null)
+								return null
+
+							_.each amiAry, (amiId) ->
+								if amiId in awsAMIIdAry
+									# not exist in stack
+									instanceUIDAry = instanceAMIMap[amiId]
+									_.each instanceUIDAry, (instanceUID) ->
+										instanceObj = MC.canvas_data.component[instanceUID]
+										instanceType = instanceObj.type
+										instanceName = instanceObj.name
+
+										infoObjType = 'Instance'
+										infoTagType = 'instance'
+										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+											infoObjType = 'Launch Configuration'
+											infoTagType = 'lc'
+										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
+										tipInfoAry.push({
+											level: constant.TA.ERROR,
+											info: tipInfo,
+											uid: instanceUID
+										})
+										null
+								null
+
+							# return error valid result
+							if tipInfoAry.length
+								callback(tipInfoAry)
+								console.log(tipInfoAry)
+							else
+								callback(null)
+
+						else
+							callback(null)
+
+				return null
+
+			else
+				callback(null)
+		catch err
+			callback(null)
+
+	isHaveNotExistAMI : isHaveNotExistAMI
 	verify : verify

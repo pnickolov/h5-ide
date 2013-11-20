@@ -45,29 +45,43 @@ define [ 'MC' ], ( MC) ->
 	getInstanceType = ( ami ) ->
 
 		region = MC.canvas_data.region
-		instance_type = MC.data.config[region].ami_instance_type
+		instance_type = MC.data.instance_type[region]
+		region_instance_type = MC.data.region_instance_type
+		current_region_instance_type = null
 
-		if !instance_type
+		if region_instance_type
+			current_region_instance_type = region_instance_type[region]
+
+		currentTypeData = instance_type
+
+		if current_region_instance_type and ami.osFamily
+			currentTypeData = current_region_instance_type
+
+		if !currentTypeData
 			return []
 
-		if ami.virtualizationType == 'hvm'
-			instance_type = instance_type.windows
+		if current_region_instance_type
+			currentTypeData = currentTypeData[ami.osFamily]
 		else
-			instance_type = instance_type.linux
+			if ami.virtualizationType == 'hvm'
+				currentTypeData = currentTypeData.windows
+			else
+				currentTypeData = currentTypeData.linux
+
 		if ami.rootDeviceType == 'ebs'
-			instance_type = instance_type.ebs
+			currentTypeData = currentTypeData.ebs
 		else
-			instance_type = instance_type['instance store']
+			currentTypeData = currentTypeData['instance store']
 		if ami.architecture == 'x86_64'
-			instance_type = instance_type["64"]
+			currentTypeData = currentTypeData["64"]
 		else
-			instance_type = instance_type["32"]
+			currentTypeData = currentTypeData["32"]
 
 		# According to property/instance/model, if ami.virtualizationType is undefined.
 		# It defaults to "paravirtual"
-		instance_type = instance_type[ami.virtualizationType || "paravirtual"]
+		currentTypeData = currentTypeData[ami.virtualizationType || "paravirtual"]
 
-		return instance_type
+		return currentTypeData
 
 	getOSType : getOSType
 	getInstanceType : getInstanceType

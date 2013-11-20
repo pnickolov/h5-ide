@@ -233,7 +233,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
 
-      view_instance_type = _.map this._getInstanceType( ami_info ), ( value )->
+      instanceTypeAry = MC.aws.ami.getInstanceType(ami_info)
+      view_instance_type = _.map instanceTypeAry, ( value )->
 
         main     : constant.INSTANCE_TYPE[value][0]
         ecu      : constant.INSTANCE_TYPE[value][1]
@@ -245,24 +246,6 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       data.instance_type = view_instance_type
       data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
       null
-
-    _getInstanceType : ( ami ) ->
-      instance_type = MC.data.instance_type[MC.canvas_data.region]
-      if ami.virtualizationType == 'hvm'
-        instance_type = instance_type.windows
-      else
-        instance_type = instance_type.linux
-      if ami.rootDeviceType == 'ebs'
-        instance_type = instance_type.ebs
-      else
-        instance_type = instance_type['instance store']
-      if ami.architecture == 'x86_64'
-        instance_type = instance_type["64"]
-      else
-        instance_type = instance_type["32"]
-      instance_type = instance_type[ami.virtualizationType]
-
-      instance_type
 
     isSGListReadOnly : ()->
       true

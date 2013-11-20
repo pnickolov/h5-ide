@@ -22,6 +22,6 @@ define({
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
-        stack: [ 'verify' ]
+        stack: [ 'verify', 'isHaveNotExistAMI' ]
         subnet: ['getAllAWSENIForAppEditAndDefaultVPC']
 })

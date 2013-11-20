@@ -39,7 +39,6 @@ require.config {
 		'text'               : 'vender/requirejs/text'
 		'i18n'               : 'vender/requirejs/i18n'
 
-		'zeroclipboard'      : 'vender/zeroclipboard/ZeroClipboard'
 		'jqpagination'       : 'vender/jqpagination/jqpagination'
 		'sprintf'            : 'vender/sprintf/sprintf'
 
@@ -83,7 +82,6 @@ require.config {
 		'UI.radiobuttons'    : 'ui/common/UI.radiobuttons'
 		'UI.notification'    : 'ui/common/UI.notification'
 		'UI.multiinputbox'   : 'ui/common/UI.multiinputbox'
-		'UI.zeroclipboard'   : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'        : 'ui/common/jquery.sortable'
 		'UI.parsley' 	     : 'ui/common/UI.parsley'
 
@@ -321,9 +319,6 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.multiinputbox' :
-			deps       : [ 'jquery' ]
-
-		'UI.zeroclipboard' :
 			deps       : [ 'jquery' ]
 
 		'UI.sortable'  :

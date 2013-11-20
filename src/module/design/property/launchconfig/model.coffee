@@ -177,10 +177,17 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       ami_id = MC.canvas_data.component[ uid ].resource.ImageId
       ami    = MC.data.dict_ami[ami_id]
 
-      data.instance_ami = {
-        name : ami.name
-        icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
-      }
+      if not ami
+        data.instance_ami = {
+          name        : ami_id + " is not available."
+          icon        : "ami-not-available.png"
+          unavailable : true
+        }
+      else
+        data.instance_ami = {
+          name : ami.name
+          icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+        }
       null
 
     getKeyPair : ( uid, data )->

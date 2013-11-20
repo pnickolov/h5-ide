@@ -1924,6 +1924,7 @@ a {
 	display : block;
 	width   : 220px;
 	opacity : .95;
+	position: relative;
 }
 
 .region-resource-list-item:hover {
@@ -2313,7 +2314,6 @@ a {
 
 	.region-resource-list-item {
 		width: 195px;
-		position: relative;
 	}
 
 	.region-resource-thumbnail {

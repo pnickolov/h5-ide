@@ -401,7 +401,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data), 'is_asg':me.isAutoScaling(MC.canvas_data) }
 
                 is_tab = true
 
@@ -416,7 +416,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -429,7 +428,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
@@ -446,9 +444,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 region = value
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
-
-                # update app resource
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'UPDATE_APP'
                 if id of item_state_map
@@ -1011,7 +1006,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
 
+        isAutoScaling : (data) ->
 
+            is_asg = false
+
+            for uid of data.component
+                item = data.component[uid]
+                if item.type is 'AWS.AutoScaling.Group'
+                    is_asg = true
+
+            is_asg
 
     }
 

@@ -85,7 +85,10 @@ define [ 'constant'] , ( constant ) ->
                 when constant.RETURN_CODE.E_INVALID then error_message = result.toString() #"Invalid username or password"
                 when constant.RETURN_CODE.E_EXPIRED then error_message = result.toString() #"Your subscription expired"
                 when constant.RETURN_CODE.E_UNKNOWN then error_message = constant.MESSAGE_E.E_UNKNOWN #"Invalid username or password"
-                when constant.RETURN_CODE.E_PARAM   then error_message = parseAWSError result
+                when constant.RETURN_CODE.E_PARAM
+                    errObj = parseAWSError result
+                    error_message = errObj.errMessage
+                    aws_error_code = errObj.errCode
                 else
                     error_message  =  result.toString()
 
@@ -116,17 +119,23 @@ define [ 'constant'] , ( constant ) ->
     parseAWSError = ( result ) ->
 
         error_message = ''
+        errCodeStr = ''
 
         if _.isArray(result) and result.length == 2
 
             err_code = result[0]
             err_xml  = result[1]
 
-            if err_code == 400 and $($.parseXML(err_xml)).find('Error').find('Code').length == 1 and $($.parseXML(err_xml)).find('Error').find('Message').length == 1
+            errCodeXML = $($.parseXML(err_xml)).find('Error').find('Code')
+            errMessageXML = $($.parseXML(err_xml)).find('Error').find('Message')
 
-                switch $($.parseXML(err_xml)).find('Error').find('Code').text()
+            if err_code == 400 and errCodeXML.length == 1 and errMessageXML.length == 1
 
-                    when 'InvalidAMIID.NotFound' then error_message = $($.parseXML(err_xml)).find('Error').find('Message').text()
+                errCodeStr = errCodeXML.text()
+
+                switch errCodeStr
+
+                    when 'InvalidAMIID.NotFound' then error_message = errMessageXML.text()
 
                     else
 
@@ -137,11 +146,8 @@ define [ 'constant'] , ( constant ) ->
             error_message = result
 
         #return
-        error_message
-
-
-
-
+        errCode: errCodeStr
+        errMessage: error_message
 
     #public
     processForgeReturnHandler : processForgeReturnHandler

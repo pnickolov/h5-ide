@@ -54,11 +54,17 @@ define [ 'i18n!nls/lang.js',
 
                     ami_list = []
                     ami_instance_type = result.resolved_data.ami_instance_type
-                    if MC.data.instance_type
-                        MC.data.instance_type[result.param[3]] = ami_instance_type
-                    else
+                    region_ami_instance_type = result.resolved_data.region_ami_instance_type
+                    
+                    if not MC.data.instance_type
                         MC.data.instance_type = {}
-                        MC.data.instance_type[result.param[3]] = ami_instance_type
+                    MC.data.instance_type[result.param[3]] = ami_instance_type
+
+                    # new ami <=> instance type info data
+                    if region_ami_instance_type
+                        if not MC.data.region_instance_type
+                            MC.data.region_instance_type = {}
+                        MC.data.region_instance_type[result.param[3]] = region_ami_instance_type
 
                     _.map result.resolved_data.ami, ( value, key ) ->
 
@@ -73,7 +79,8 @@ define [ 'i18n!nls/lang.js',
                             value.kernelId = "None"
 
                         #cache quickstart ami item to MC.data.dict_ami
-                        value.instance_type = me._getInstanceType value
+                        instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                        value.instance_type = instanceTypeAry.join ', '
                         MC.data.dict_ami[key] = value
 
                         ami_list.push value
@@ -102,6 +109,8 @@ define [ 'i18n!nls/lang.js',
                     #cache config data for current region
                     MC.data.config[region_name].ami                 = result.resolved_data.ami
                     MC.data.config[region_name].ami_instance_type   = result.resolved_data.ami_instance_type
+                    if result.resolved_data.region_ami_instance_type
+                        MC.data.config[region_name].region_ami_instance_type   = result.resolved_data.region_ami_instance_type
                     MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
                     MC.data.config[region_name].price               = result.resolved_data.price
                     MC.data.config[region_name].vpc_limit           = result.resolved_data.vpc_limit
@@ -156,7 +165,8 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
-                                value.instanceType = me._getInstanceType value
+                            	instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                            	value.instanceType = instanceTypeAry.join ', '
                                 value.osType = MC.aws.ami.getOSType value
                                 MC.data.dict_ami[value.imageId] = value
                             catch err
@@ -182,7 +192,8 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data.item, (value)->
 
                             #cache ami item in stack to MC.data.dict_ami
-                            value.instanceType = me._getInstanceType value
+                            instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                            value.instanceType = instanceTypeAry.join ', '
                             MC.data.dict_ami[value.imageId] = value
 
                             null
@@ -240,8 +251,8 @@ define [ 'i18n!nls/lang.js',
 
                     #cache favorite ami item to MC.data.dict_ami
 
-
-                    value.resource_info.instanceType    = me._getInstanceType value.resource_info
+                    instanceTypeAry = MC.aws.ami.getInstanceType(value.resource_info)
+                    value.resource_info.instanceType    = instanceTypeAry.join ', '
                     value.resource_info.imageId         = value.resource_id
                     MC.data.dict_ami[value.resource_id] = value.resource_info
 
@@ -605,24 +616,6 @@ define [ 'i18n!nls/lang.js',
                     return false
 
             isUsed
-
-        _getInstanceType : ( ami ) ->
-            instance_type = ami_instance_type
-            if ami.virtualizationType == 'hvm'
-                instance_type = instance_type.windows
-            else
-                instance_type = instance_type.linux
-            if ami.rootDeviceType == 'ebs'
-                instance_type = instance_type.ebs
-            else
-                instance_type = instance_type['instance store']
-            if ami.architecture == 'x86_64'
-                instance_type = instance_type["64"]
-            else
-                instance_type = instance_type["32"]
-            instance_type = instance_type[ami.virtualizationType]
-
-            instance_type.join ', '
 
         _checkRequireServiceCount : ( name ) ->
             console.log '_checkRequireServiceCount, name = ' + name

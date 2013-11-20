@@ -254,6 +254,84 @@ Canvon.fn = Canvon.prototype = {
 		return this.draw(this, 'g').css(style || {});
 	},
 
+	animate: function (properties, duration, callback)
+	{
+		var elem = this[0],
+			step = 0,
+			i = 0,
+			j = 0,
+			length = 0,
+			p = 30,
+			prop_to_value = [],
+			prop_from_value = [],
+			prop_name = [],
+			prop_data = [],
+			property_value,
+			prop,
+			offset,
+			timer;
+
+		duration = duration || 300;
+
+		for (prop in properties)
+		{
+			prop_name.push( prop );
+
+			if (properties[ prop ].from !== undefined)
+			{
+				property_value = properties[ prop ].to;
+				prop_from_value.push( properties[ prop ].from );
+			}
+			else
+			{
+				property_value = properties[ prop ];
+				prop_from_value.push( elem[ prop ].baseVal.value );
+			}
+
+			prop_to_value.push( property_value );
+			i++;
+			length++;
+		}
+
+		// Pre-calculation
+		for (j = 0; j < p; j++)
+		{
+			prop_data[ j ] = {};
+
+			for (i = 0; i < length; i++)
+			{
+				prop_data[ j ][ prop_name[ i ] ] = prop_from_value[ i ] + ( prop_to_value[ i ] - prop_from_value[ i ] ) / p * j;
+			}
+		}
+
+		for (; i < p; i++)
+		{
+			timer = setTimeout(function ()
+			{
+				for (i = 0; i < length; i++)
+				{
+					elem[ prop_name[ i ] ].baseVal.value = prop_data[ step ][ prop_name[ i ] ];
+				}
+				step++;
+			}, (duration / p) * i);
+		}
+
+		setTimeout(function ()
+		{
+			for (i = 0; i < length; i++)
+			{
+				elem[ prop_name[ i ] ].baseVal.value = prop_to_value[ i ];
+			}
+			
+			if (callback)
+			{
+				callback.call(elem);
+			}
+		}, duration);
+
+		return elem;
+	},
+
 	addClass: function (name)
 	{
 		var target,

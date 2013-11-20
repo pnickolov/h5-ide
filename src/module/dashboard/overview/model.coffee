@@ -1233,11 +1233,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             me = this
 
             id          = item.id
-            name        = item.name
-            create_time = item.time_create
-            id_code     = item.key
-
-            update_time =  Math.round(+new Date())
 
             status      = "play"
             isrunning   = true
@@ -1255,13 +1250,23 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 status = "pending"
                 ispending = true
 
-            has_instance_store_ami = false
+            result = {
+                'id'            : id,
+                'code'          : item.key,
+                'update_time'   : Math.round(+new Date()),
+                'name'          : item.name,
+                'isrunning'     : isrunning,
+                'ispending'     : ispending,
+                'status'        : status,
+                'create_time'   : item.time_create
+            }
 
             if flag == 'app'
                 date = new Date()
                 start_time = null
                 stop_time = null
 
+                has_instance_store_ami = false
                 if 'property' of item and item and 'stoppable' of item.property and item.property.stoppable == false
                     has_instance_store_ami = true
 
@@ -1272,7 +1277,12 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                     date.setTime(item.last_stop*1000)
                     stop_time = "GMT " + MC.dateFormat(date, "hh:mm yyyy-MM-dd")
 
-            return { 'id' : id, 'code' : id_code, 'update_time' : update_time , 'name' : name, 'create_time':create_time, 'start_time' : start_time, 'stop_time' : stop_time, 'isrunning' : isrunning, 'ispending' : ispending, 'status' : status, 'cost' : "$0/month", 'has_instance_store_ami' : has_instance_store_ami }
+                result.start_time = start_time
+                result.stop_time = stop_time
+                result.has_instance_store_ami = has_instance_store_ami
+                result.usage = item.usage
+
+            result
 
         #region list
         describeAccountAttributesService : ()->
@@ -1305,8 +1315,6 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                         null
 
-                #item_list.push { 'region_name' : region_name, 'items' : items }
-
             # sort
             recent_list.sort (a, b) ->
                 return if a.interval <= b.interval then 1 else -1
@@ -1321,10 +1329,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             # set value
             if flag == 'recent_edited_stacks'
                 me.set 'recent_edited_stacks', recent_list
-                #me.set 'stack_list', item_list
+
             else if flag == 'recent_launched_apps'
                 me.set 'recent_launched_apps', recent_list
-                #me.set 'app_list', item_list
+
             # else if flag == 'recent_stoped_apps'
             #     me.set 'recent_stoped_apps', recent_list
 
@@ -1341,7 +1349,19 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             #     interval = value.time_update
 
             if interval
-                return { 'id' : value.id, 'region' : value.region, 'region_label' : constant.REGION_SHORT_LABEL[value.region], 'name' : value.name, 'interval_date': MC.intervalDate(interval), 'interval' : interval }
+                result = {
+                    'id' : value.id,
+                    'region' : value.region,
+                    'region_label' : constant.REGION_SHORT_LABEL[value.region],
+                    'name' : value.name,
+                    'interval' : interval,
+                    'interval_date': MC.intervalDate(interval)
+                }
+
+                if flag is 'recent_launched_apps'
+                    result.usage = if value.usage then value.usage else 'others'
+
+                return result
                 #app list
 
 

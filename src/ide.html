@@ -11,27 +11,19 @@
 		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
 	</script>
 
-
 	<script type="text/javascript">
-
-		function loadCSS(css_file){
-			var head = document.getElementsByTagName('HEAD').item(0);
-			var style = document.createElement('link');
-			style.href = './assets/css/' + css_file + '?v=' + version;
-			style.rel = 'stylesheet';
-			style.type = 'text/css';
-			head.appendChild(style);
-		}
-
-		loadCSS("icon-font.css");
-		loadCSS("core.css");
-		loadCSS("ide.css");
-		loadCSS("grid.css");
-		loadCSS("UI.component.css");
-		loadCSS("canvas.css");
-
-	</script>
-
+    (function(){
+      var head = document.getElementsByTagName('HEAD').item(0), s,
+          ss = ["icon-font","core","ide","grid","UI.component","canvas"];
+      for ( var i = 0; i < ss.length; ++i ) {
+        s = document.createElement('link');
+        s.href = './assets/css/' + ss[i] + '.css?v=' + version;
+        s.rel = 'stylesheet';
+        s.type = 'text/css';
+        head.appendChild(s);
+      }
+    })();
+  </script>
 
 	<!-- env:prod --#>
 	<script type="text/javascript" src="./lib/analytics.js"></script>
@@ -41,9 +33,7 @@
 	<!-- Loading bar -->
 	<div id="loading-bar-wrapper">
 		<div class="loading-wrapper">
-			<div class="loading clearfix">
-				<img src="./assets/images/ide/loading-logo-dark.gif" alt="">
-			</div>
+			<img class="loading" src="./assets/images/ide/loading-logo-dark.gif">
 		</div>
 	</div>
 
@@ -53,25 +43,18 @@
 	<div id="wrapper">
 
 		<!-- Navigation -->
-		<nav id="navigation">
-			loading...
-		</nav>
+		<nav id="navigation">loading...</nav>
+
 		<!-- Header Wrapper -->
 		<div id="header-wrapper" class="clearfix">
 			<a href="http://www.madeiracloud.com/" class="logo">MadeiraCloud</a>
 
 			<!-- Header -->
-			<nav id="header">
-				loading...
-			</nav>
+			<nav id="header">loading...</nav>
 
 			<!-- Tab Bar -->
 			<div id="tabbar-wrapper">
-
-				<div id="tab-bar">
-					loading...
-				</div>
-
+				<div id="tab-bar">loading...</div>
 			</div>
 		</div>
 
@@ -79,26 +62,16 @@
 		<div id="main">
 
 			<!-- Dasboard overview Tab -->
-			<div id="tab-content-dashboard" class="main-content active">
-				loading...
-			</div>
+			<div id="tab-content-dashboard" class="main-content active">loading...</div>
 
 			<!-- Stack/App Tab -->
-			<div id="tab-content-design" class="main-content">
-				loading...
-			</div>
+			<div id="tab-content-design" class="main-content">loading...</div>
 
 			<!-- Process Tab -->
-			<div id="tab-content-process" class="main-content">
-				loading...
-			</div>
+			<div id="tab-content-process" class="main-content">loading...</div>
 
 		</div>
 	</div>
-
-	<!-- env:prod --#>
-	<a id="Intercom" href="mailto:3rp02j1w@incoming.intercom.io"><div class="icon-feedback"></div>Feedback</a>
-	<!-- env:prod:end -->
 
 	<div class="disconnected-notification" style="display:none;">
 		<p>Connection lost. Attempting to reconnect…</p>
@@ -108,25 +81,10 @@
 	<!-- status bar modal -->
 	<div id="status-bar-modal" style="display: none;"></div>
 
-	<!-- <script type="text/javascript" src="./lib/version.js"></script>
-	<script type="text/javascript" src="./lib/analytics.js"></script> -->
-
 	<!-- env:prod --#>
+	<a id="Intercom" href="mailto:3rp02j1w@incoming.intercom.io"><span class="icon-feedback"></span>Feedback</a>
 	<script type="text/javascript" src="./lib/intercom.js"></script>
 	<!-- env:prod:end -->
-
-	<!-- Intercom Plugin -->
-	<!--
-	<script id="IntercomSettingsScriptTag">
-	window.intercomSettings = {
-		widget: {
-		"activator": "#Intercom"
-		},
-		app_id: "3rp02j1w"
-	};
-	</script>
-	<script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://static.intercomcdn.com/intercom.v1.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}};})()</script>
-	-->
 
 	<script type="text/javascript">
 		document.write( "<s"+"cript type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/ide/config.js?v=" + version + "'></scr"+"ipt>" );

@@ -2311,6 +2311,7 @@ a {
 
 	.region-resource-list-item {
 		width: 195px;
+		position: relative;
 	}
 
 	.region-resource-thumbnail {
@@ -7390,4 +7391,9 @@ summary:focus {
 	display: inline-block;
 }
 
-
+.region-resource-list-item [class^="icon-app-type-"],
+.region-resource-list-item [class*=" icon-app-type-"] {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}

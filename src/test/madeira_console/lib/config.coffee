@@ -24,7 +24,6 @@ require.config {
 		'text'         : 'vender/requirejs/text'
 		'i18n'         : 'vender/requirejs/i18n'
 
-		'zeroclipboard': 'vender/zeroclipboard/ZeroClipboard'
 		'jqpagination' : 'vender/jqpagination/jquery.jqpagination'
 
 		#core lib
@@ -58,7 +57,6 @@ require.config {
 		'UI.radiobuttons'   : 'ui/common/UI.radiobuttons'
 		'UI.notification'   : 'ui/common/UI.notification'
 		'UI.multiinputbox'  : 'ui/common/UI.multiinputbox'
-		'UI.zeroclipboard'  : 'ui/common/UI.zeroclipboard'
 		'UI.sortable'       : 'ui/common/jquery.sortable'
 		'UI.parsley' 	    : 'ui/common/UI.parsley'
 

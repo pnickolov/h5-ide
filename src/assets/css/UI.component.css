@@ -448,7 +448,8 @@ textarea:focus {
 }
 
 .input.disabled,
-.input[disabled]
+.input[disabled],
+.input[readonly]
  {
 	box-shadow: none;
 	border: 1px solid #ccc;

@@ -15,28 +15,31 @@ define [ "../base/model", "constant" ], ( PropertyModel, constant ) ->
         @set "isIGW", isIGW
         @set "id", id
 
-        @set "readOnly", @isApp
+        if @isApp
 
-        appData = MC.data.resource_list[ MC.canvas_data.region ]
+          @set "readOnly", true
 
-        if isIGW
-          data = appData[ component.resource.InternetGatewayId ]
-          @set "id", component.resource.InternetGatewayId
-          if data and data.attachmentSet and data.attachmentSet.item.length
-            @set "state", data.attachmentSet.item[0].state
-            vpcId = data.attachmentSet.item[0].vpcId
+          appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-        else
-          data = appData[ component.resource.VpnGatewayId ]
-          @set "type", data.type
-          @set "id", component.resource.VpnGatewayId
-          if data and data.attachments and data.attachments.item.length
-            @set "state", data.attachments.item[0].state
-            vpcId = data.attachments.item[0].vpcId
+          if isIGW
+            data = appData[ component.resource.InternetGatewayId ]
+            @set "id", component.resource.InternetGatewayId
+            if data and data.attachmentSet and data.attachmentSet.item.length
+              @set "state", data.attachmentSet.item[0].state
+              vpcId = data.attachmentSet.item[0].vpcId
 
-        vpc = appData[ vpcId ]
-        if vpc
-          vpcId += "(#{vpc.cidrBlock})"
+          else
+            data = appData[ component.resource.VpnGatewayId ]
+            @set "id", component.resource.VpnGatewayId
+            if data
+              @set "type", data.type
+              if data.attachments and data.attachments.item.length
+                @set "state", data.attachments.item[0].state
+                vpcId = data.attachments.item[0].vpcId
+
+          vpc = appData[ vpcId ]
+          if vpc
+            vpcId += " (#{vpc.cidrBlock})"
           @set "vpc", vpcId
 
         null

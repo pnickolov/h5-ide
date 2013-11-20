@@ -214,6 +214,7 @@
                         {{else}}
                         <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
+                                <i class="icon-app-type-{{#if usage}}{{usage}}{{else}}others{{/if}}"></i>
                                 <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" data-id="{{id}}" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
                                 </div>

@@ -6836,19 +6836,19 @@ summary:focus {
 	vertical-align: middle;
 }
 
-.icon-app-type-dev {
+.icon-app-type-development {
 	background-position: 0 -20px;
 }
 
-.icon-app-type-prod {
+.icon-app-type-production {
 	background-position: 0 -40px;
 }
 
-.icon-app-type-test {
+.icon-app-type-testing {
 	background-position: 0 -60px;
 }
 
-.icon-app-type-other {
+.icon-app-type-others {
 	background-position: 0 0;
 }
 

@@ -66,6 +66,33 @@ define [ 'i18n!nls/lang.js',
                             MC.data.region_instance_type = {}
                         MC.data.region_instance_type[result.param[3]] = region_ami_instance_type
 
+                    # get instance type info for constant.INSTANCE_TYPE
+                    instanceTypeMap = {}
+                    instanceTypeData = result.resolved_data.instance_type
+                    _.each instanceTypeData, (value1, key1) ->
+                        _.each value1, (value2, key2) ->
+                            try
+                                descStr = value2.description
+                                nameStr = value2.name
+                                descAry = descStr.split(',')
+                                newDescAry = ['', '', '', '']
+
+                                _.each descAry, (str, idx) ->
+                                    newStr = $.trim(str)
+                                    if idx < 3
+                                        newDescAry[idx + 1] = newStr
+                                    else
+                                        newDescAry[0] = nameStr
+                                    null
+
+                                typeStr = key1 + '.' + key2
+                                instanceTypeMap[typeStr] = newDescAry
+                            catch err
+                                console.log(err)
+                            null
+                        null
+                    constant.INSTANCE_TYPE = instanceTypeMap
+
                     _.map result.resolved_data.ami, ( value, key ) ->
 
                         value.imageId = key

@@ -857,6 +857,7 @@ a {
 
 	width       : 210px;
 	cursor      : pointer;
+	position    : relative;
 }
 
 #nav-dashboard-region li a:hover,
@@ -7396,4 +7397,11 @@ summary:focus {
 	position: absolute;
 	top: 5px;
 	right: 5px;
+}
+
+.nav-region-list-items [class^="icon-app-type-"],
+.nav-region-list-items [class*=" icon-app-type-"] {
+	position: absolute;
+	top: 16px;
+	right: 3px;
 }

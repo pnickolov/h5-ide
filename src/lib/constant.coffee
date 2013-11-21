@@ -200,6 +200,13 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		'hs1.8xlarge' : ["High Storage Eight Extra Large", "ECU 35","Core 16","Memory 117GB"]
 	}
 
+	OS_TYPE_MAPPING = {
+		'linux-other': 'linux'
+		'redhat': 'rhel'
+		'suse': 'sles'
+		'windows': 'mswin'
+	}
+
 	INSTANCE_STATES = {
 		'pending'      : 0
 		'running'      : 16

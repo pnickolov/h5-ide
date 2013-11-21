@@ -1,4 +1,4 @@
-define [ 'MC' ], ( MC) ->
+define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 
 	getOSType = ( ami ) ->
@@ -61,7 +61,12 @@ define [ 'MC' ], ( MC) ->
 			return []
 
 		if current_region_instance_type
-			currentTypeData = currentTypeData[ami.osFamily]
+			key = ami.osFamily
+			if not key
+				osType = ami.osType
+				key = constant.OS_TYPE_MAPPING[osType]
+			
+			currentTypeData = currentTypeData[key]
 		else
 			if ami.virtualizationType == 'hvm'
 				currentTypeData = currentTypeData.windows

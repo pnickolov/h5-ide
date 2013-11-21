@@ -231,6 +231,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                             res = $.extend true, {}, res
                             res.osType = MC.aws.ami.getOSType res
 
+                        res.osFamily = MC.aws.aws.getOSFamily(res.osType)
+
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 

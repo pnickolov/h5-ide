@@ -108,6 +108,8 @@ define [ 'i18n!nls/lang.js',
                         #cache quickstart ami item to MC.data.dict_ami
                         instanceTypeAry = MC.aws.ami.getInstanceType(value)
                         value.instance_type = instanceTypeAry.join ', '
+                        value.osType = MC.aws.ami.getOSType(value)
+                        value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                         MC.data.dict_ami[key] = value
 
                         ami_list.push value
@@ -195,6 +197,7 @@ define [ 'i18n!nls/lang.js',
                                 instanceTypeAry = MC.aws.ami.getInstanceType(value)
                                 value.instanceType = instanceTypeAry.join ', '
                                 value.osType = MC.aws.ami.getOSType value
+                                value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                                 MC.data.dict_ami[value.imageId] = value
                             catch err
                                 console.info 'Resolve My AMI error'
@@ -221,6 +224,8 @@ define [ 'i18n!nls/lang.js',
                             #cache ami item in stack to MC.data.dict_ami
                             instanceTypeAry = MC.aws.ami.getInstanceType(value)
                             value.instanceType = instanceTypeAry.join ', '
+                            value.osType = MC.aws.ami.getOSType value
+                            value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                             MC.data.dict_ami[value.imageId] = value
 
                             null
@@ -281,6 +286,8 @@ define [ 'i18n!nls/lang.js',
                     instanceTypeAry = MC.aws.ami.getInstanceType(value.resource_info)
                     value.resource_info.instanceType    = instanceTypeAry.join ', '
                     value.resource_info.imageId         = value.resource_id
+                    value.resource_info.osType = MC.aws.ami.getOSType value
+                    value.resource_info.osFamily = MC.aws.aws.getOSFamily(value.resource_info.osType)
                     MC.data.dict_ami[value.resource_id] = value.resource_info
 
                     null

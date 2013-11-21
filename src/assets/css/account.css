@@ -6,7 +6,7 @@ body {
 
 #body {
 	background: #C8CFD5;
-	color: #212021;
+	color: #222;
 /*	background-image: -webkit-linear-gradient(102deg, #6799ca, #dda8d2);
 	background-image: -moz-linear-gradient(102deg, #6799ca, #dda8d2);
 	background-image: -o-linear-gradient(102deg, #6799ca, #dda8d2);
@@ -32,7 +32,7 @@ header {
 	z-index: 100;
 	width: 100%;
 	top: 0;
-	border-top: 4px solid #b25b91;
+	border-top: 4px solid #c16aa2;
 	border-bottom: 1px solid #181818;
 	padding: 5px 0 9px 0;
 }
@@ -126,9 +126,9 @@ header {
  	font-size: 14px;
  	border-radius: 4px;
 
-	color: #DB4E47;
-	background-color: #FCE8E7;
-	border: 1px solid #ea9696;
+	color: #ec3c38;
+	background-color: #fad6cf;
+	border: 1px solid #ec3c38;
 }
 
 .error-msg {

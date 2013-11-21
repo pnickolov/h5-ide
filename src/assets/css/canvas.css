@@ -94,7 +94,7 @@
 }
 
 #screenshot_canvas_header {
-	border-top: 4px solid #B25B91;
+	border-top: 4px solid #c16aa2;
 	background-color: #272127;
 	height: 50px;
 	padding: 0 10px;
@@ -459,11 +459,6 @@
 	cursor: -webkit-grab;
 	cursor: grab;
 }
-
-.az-name {
-	fill: #F19812;
-}
-
 
 /*.group {
 	shape-rendering:crispEdges;

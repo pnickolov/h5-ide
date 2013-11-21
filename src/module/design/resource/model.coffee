@@ -195,11 +195,6 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
-<<<<<<< HEAD
-                                instanceTypeAry = MC.aws.ami.getInstanceType(value)
-                                value.instanceType = instanceTypeAry.join ', '
-=======
->>>>>>> hotfix/add-os-type-map
                                 value.osType = MC.aws.ami.getOSType value
                                 if not value.osFamily
                                     value.osFamily = MC.aws.aws.getOSFamily(value.osType)

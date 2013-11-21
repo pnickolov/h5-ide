@@ -44,47 +44,50 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	getInstanceType = ( ami ) ->
 
-		region = MC.canvas_data.region
-		instance_type = MC.data.instance_type[region]
-		region_instance_type = MC.data.region_instance_type
-		current_region_instance_type = null
+		try
+			region = MC.canvas_data.region
+			instance_type = MC.data.instance_type[region]
+			region_instance_type = MC.data.region_instance_type
+			current_region_instance_type = null
 
-		if region_instance_type
-			current_region_instance_type = region_instance_type[region]
+			if region_instance_type
+				current_region_instance_type = region_instance_type[region]
 
-		currentTypeData = instance_type
+			currentTypeData = instance_type
 
-		if current_region_instance_type and ami.osFamily
-			currentTypeData = current_region_instance_type
+			if current_region_instance_type and ami.osFamily
+				currentTypeData = current_region_instance_type
 
-		if !currentTypeData
-			return []
+			if !currentTypeData
+				return []
 
-		if current_region_instance_type
-			key = ami.osFamily
-			if not key
-				osType = ami.osType
-				key = constant.OS_TYPE_MAPPING[osType]
-			
-			currentTypeData = currentTypeData[key]
-		else
-			if ami.virtualizationType == 'hvm'
-				currentTypeData = currentTypeData.windows
+			if current_region_instance_type
+				key = ami.osFamily
+				if not key
+					osType = ami.osType
+					key = constant.OS_TYPE_MAPPING[osType]
+
+				currentTypeData = currentTypeData[key]
 			else
-				currentTypeData = currentTypeData.linux
+				if ami.virtualizationType == 'hvm'
+					currentTypeData = currentTypeData.windows
+				else
+					currentTypeData = currentTypeData.linux
 
-		if ami.rootDeviceType == 'ebs'
-			currentTypeData = currentTypeData.ebs
-		else
-			currentTypeData = currentTypeData['instance store']
-		if ami.architecture == 'x86_64'
-			currentTypeData = currentTypeData["64"]
-		else
-			currentTypeData = currentTypeData["32"]
+			if ami.rootDeviceType == 'ebs'
+				currentTypeData = currentTypeData.ebs
+			else
+				currentTypeData = currentTypeData['instance store']
+			if ami.architecture == 'x86_64'
+				currentTypeData = currentTypeData["64"]
+			else
+				currentTypeData = currentTypeData["32"]
 
-		# According to property/instance/model, if ami.virtualizationType is undefined.
-		# It defaults to "paravirtual"
-		currentTypeData = currentTypeData[ami.virtualizationType || "paravirtual"]
+			# According to property/instance/model, if ami.virtualizationType is undefined.
+			# It defaults to "paravirtual"
+			currentTypeData = currentTypeData[ami.virtualizationType || "paravirtual"]
+		catch err
+			currentTypeData = []
 
 		return currentTypeData
 

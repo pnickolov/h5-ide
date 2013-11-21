@@ -7,6 +7,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		if !ami
 			return 'unknown'
 
+		if ami.osType
+			return ami.osType
+
 		osTypeList = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse','amazon', 'amzn']
 
 		osType = 'linux-other'

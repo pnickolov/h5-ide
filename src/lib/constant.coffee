@@ -200,13 +200,6 @@ define ['i18n!/nls/lang.js'], ( lang ) ->
 		'hs1.8xlarge' : ["High Storage Eight Extra Large", "ECU 35","Core 16","Memory 117GB"]
 	}
 
-	OS_TYPE_MAPPING = {
-		'linux-other': 'linux'
-		'redhat': 'rhel'
-		'suse': 'sles'
-		'windows': 'mswin'
-	}
-
 	INSTANCE_STATES = {
 		'pending'      : 0
 		'running'      : 16
@@ -480,6 +473,13 @@ use redirection server name:i:0\n"
 
 	LINUX 	= ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
 	WINDOWS = ['windows', 'win']
+
+	OS_TYPE_MAPPING = {
+		'linux-other': 'linux'
+		'redhat': 'rhel'
+		'suse': 'sles'
+		'windows': 'mswin'
+	}
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY

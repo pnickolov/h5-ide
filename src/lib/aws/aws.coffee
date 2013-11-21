@@ -437,13 +437,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 osType = osFamily = ''
                 try
                     osType = data.layout.component.node[item.uid].osType
-                catch e
-                    if not osType
-                        continue
-
-                osFamily = data.layout.component.node[item.uid].osFamily
-                if not osFamily
                     osFamily = me.getOSFamily(osType)
+                catch e
+                    continue
+
+                if not osType or not osFamily
+                    continue
 
                 if size and osFamily and 'instance' of feeMap.price
                     size_list = size.split('.')
@@ -495,13 +494,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     osType = osFamily = ''
                     try
                         osType = data.layout.component.node[config_uid].osType
-                    catch e
-                        if not osType
-                            continue
-
-                    osFamily = data.layout.component.node[config_uid].osFamily
-                    if not osFamily
                         osFamily = me.getOSFamily(osType)
+                    catch e
+                        continue
+
+                    if not osType or not osFamily
+                        continue
 
                     if size and osFamily and 'instance' of feeMap.price
                         size_list = size.split('.')

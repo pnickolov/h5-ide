@@ -508,3 +508,4 @@ use redirection server name:i:0\n"
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
+	OS_TYPE_MAPPING			: OS_TYPE_MAPPING

@@ -224,12 +224,9 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data.item, (value)->
 
                             #cache ami item in stack to MC.data.dict_ami
-<<<<<<< HEAD
-=======
                             value.osType = MC.aws.ami.getOSType value
                             if not value.osFamily
                                 value.osFamily = MC.aws.aws.getOSFamily(value.osType)
->>>>>>> hotfix/add-os-type-map
                             instanceTypeAry = MC.aws.ami.getInstanceType(value)
                             value.instanceType = instanceTypeAry.join ', '
                             MC.data.dict_ami[value.imageId] = value
@@ -289,11 +286,6 @@ define [ 'i18n!nls/lang.js',
 
                     #cache favorite ami item to MC.data.dict_ami
 
-<<<<<<< HEAD
-                    instanceTypeAry = MC.aws.ami.getInstanceType(value.resource_info)
-                    value.resource_info.instanceType    = instanceTypeAry.join ', '
-=======
->>>>>>> hotfix/add-os-type-map
                     value.resource_info.imageId         = value.resource_id
                     value.resource_info.osType = MC.aws.ami.getOSType value
                     if not value.resource_info.osFamily

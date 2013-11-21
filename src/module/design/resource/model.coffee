@@ -192,8 +192,8 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
-                            	instanceTypeAry = MC.aws.ami.getInstanceType(value)
-                            	value.instanceType = instanceTypeAry.join ', '
+                                instanceTypeAry = MC.aws.ami.getInstanceType(value)
+                                value.instanceType = instanceTypeAry.join ', '
                                 value.osType = MC.aws.ami.getOSType value
                                 MC.data.dict_ami[value.imageId] = value
                             catch err

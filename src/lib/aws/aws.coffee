@@ -231,6 +231,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                             res = $.extend true, {}, res
                             res.osType = MC.aws.ami.getOSType res
 
+                        if not res.osFamily
+                            res.osFamily = MC.aws.aws.getOSFamily(res.osType)
+
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
 
@@ -435,20 +438,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 osType = osFamily = ''
                 try
                     osType = data.layout.component.node[item.uid].osType
-                    osFamily = data.layout.component.node[item.uid].osFamily
+                    osFamily = me.getOSFamily(osType)
                 catch e
-                    if not osType
-                        continue
-
-                if not osType
                     continue
-                if not osFamily
-                    if osType in constant.LINUX
-                        osFamily = 'linux'
-                    else if osType in constant.WINDOWS
-                        osFamily = 'mswin'
-                    else
-                        continue
+
+                if not osType or not osFamily
+                    continue
 
                 if size and osFamily and 'instance' of feeMap.price
                     size_list = size.split('.')
@@ -500,20 +495,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     osType = osFamily = ''
                     try
                         osType = data.layout.component.node[config_uid].osType
-                        osFamily = data.layout.component.node[config_uid].osFamily
+                        osFamily = me.getOSFamily(osType)
                     catch e
-                        if not osType
-                            continue
-
-                    if not osType
                         continue
-                    if not osFamily
-                        if osType in constant.LINUX
-                            osFamily = 'linux'
-                        else if osType in constant.WINDOWS
-                            osFamily = 'mswin'
-                        else
-                            continue
+
+                    if not osType or not osFamily
+                        continue
 
                     if size and osFamily and 'instance' of feeMap.price
                         size_list = size.split('.')
@@ -773,7 +760,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                                 if index > n_item.number
                                     changes['remove'].push {'name':ori_data.component[inst_uid].name, 'instance_id':ori_data.component[inst_uid].resource.InstanceId}
-                            
+
                         else
                             if item.resource.InstanceType isnt n_item.resource.InstanceType
                                 changes['remain'].push {'name':ori_data.component[uid].name, 'instance_id':ori_data.component[uid].resource.InstanceId}
@@ -786,6 +773,21 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                             changes['remove'].push {'name':item.name, 'instance_id':item.resource.InstanceId}
 
         {'isChanged':isChanged, 'changes':changes}
+
+    getOSFamily = (osType) ->
+        me = this
+
+        osFamily = ''
+
+        if osType
+            if constant.OS_TYPE_MAPPING[osType]
+                osFamily = constant.OS_TYPE_MAPPING[osType]
+            else if osType in constant.LINUX
+                osFamily = 'linux'
+            else if osType in constant.WINDOWS
+                osFamily = 'mswin'
+
+        osFamily
 
     #public
     getNewName                  : getNewName
@@ -801,3 +803,4 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getRegionName               : getRegionName
     isExistResourceInApp        : isExistResourceInApp
     getChanges                  : getChanges
+    getOSFamily                 : getOSFamily

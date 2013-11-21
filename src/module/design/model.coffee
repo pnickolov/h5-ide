@@ -66,12 +66,14 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
 
                 if $.type(result.resolved_data) == 'array'
-                    _.map result.resolved_data, ( ami ) ->
-                        ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
+                    _.each result.resolved_data, ( ami ) ->
                         ami.osType = MC.aws.ami.getOSType ami
+                        if not ami.osFamily
+                            ami.osFamily = MC.aws.aws.getOSFamily(ami.osType)
+                        ami.instanceType = MC.aws.ami.getInstanceType(ami).join(', ')
                         MC.data.dict_ami[ami.imageId] = ami
-                        ide_event.trigger ide_event.SWITCH_MAIN
                         null
+                ide_event.trigger ide_event.SWITCH_MAIN
                 null
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->

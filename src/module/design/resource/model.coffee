@@ -106,6 +106,9 @@ define [ 'i18n!nls/lang.js',
                             value.kernelId = "None"
 
                         #cache quickstart ami item to MC.data.dict_ami
+                        value.osType = MC.aws.ami.getOSType(value)
+                        if not value.osFamily
+                            value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                         instanceTypeAry = MC.aws.ami.getInstanceType(value)
                         value.instance_type = instanceTypeAry.join ', '
                         MC.data.dict_ami[key] = value
@@ -192,9 +195,11 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data, (value)->
                             #cache my ami item to MC.data.dict_ami
                             try
+                                value.osType = MC.aws.ami.getOSType value
+                                if not value.osFamily
+                                    value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                                 instanceTypeAry = MC.aws.ami.getInstanceType(value)
                                 value.instanceType = instanceTypeAry.join ', '
-                                value.osType = MC.aws.ami.getOSType value
                                 MC.data.dict_ami[value.imageId] = value
                             catch err
                                 console.info 'Resolve My AMI error'
@@ -219,6 +224,9 @@ define [ 'i18n!nls/lang.js',
                         _.map result.resolved_data.item, (value)->
 
                             #cache ami item in stack to MC.data.dict_ami
+                            value.osType = MC.aws.ami.getOSType value
+                            if not value.osFamily
+                                value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                             instanceTypeAry = MC.aws.ami.getInstanceType(value)
                             value.instanceType = instanceTypeAry.join ', '
                             MC.data.dict_ami[value.imageId] = value
@@ -278,9 +286,12 @@ define [ 'i18n!nls/lang.js',
 
                     #cache favorite ami item to MC.data.dict_ami
 
+                    value.resource_info.imageId         = value.resource_id
+                    value.resource_info.osType = MC.aws.ami.getOSType value
+                    if not value.resource_info.osFamily
+                        value.resource_info.osFamily = MC.aws.aws.getOSFamily(value.resource_info.osType)
                     instanceTypeAry = MC.aws.ami.getInstanceType(value.resource_info)
                     value.resource_info.instanceType    = instanceTypeAry.join ', '
-                    value.resource_info.imageId         = value.resource_id
                     MC.data.dict_ami[value.resource_id] = value.resource_info
 
                     null

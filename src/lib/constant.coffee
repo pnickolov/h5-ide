@@ -474,6 +474,13 @@ use redirection server name:i:0\n"
 	LINUX 	= ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz', 'linux-other']
 	WINDOWS = ['windows', 'win']
 
+	OS_TYPE_MAPPING = {
+		'linux-other': 'linux'
+		'redhat': 'rhel'
+		'suse': 'sles'
+		'windows': 'mswin'
+	}
+
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
 	INSTANCE_TYPE			: INSTANCE_TYPE
@@ -501,3 +508,4 @@ use redirection server name:i:0\n"
 	LOCAL_COOKIE_OPTION     : LOCAL_COOKIE_OPTION
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
+	OS_TYPE_MAPPING			: OS_TYPE_MAPPING

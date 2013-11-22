@@ -110,6 +110,7 @@ define [ 'i18n!nls/lang.js',
                         if not value.osFamily
                             value.osFamily = MC.aws.aws.getOSFamily(value.osType)
                         instanceTypeAry = MC.aws.ami.getInstanceType(value)
+
                         value.instance_type = instanceTypeAry.join ', '
                         MC.data.dict_ami[key] = value
 
@@ -139,6 +140,7 @@ define [ 'i18n!nls/lang.js',
                     #cache config data for current region
                     MC.data.config[region_name].ami                 = result.resolved_data.ami
                     MC.data.config[region_name].ami_instance_type   = result.resolved_data.ami_instance_type
+                    MC.data.config[region_name].region_instance_type = result.resolved_data.region_instance_type
                     if result.resolved_data.region_ami_instance_type
                         MC.data.config[region_name].region_ami_instance_type   = result.resolved_data.region_ami_instance_type
                     MC.data.config[region_name].instance_type       = result.resolved_data.instance_type
@@ -287,7 +289,7 @@ define [ 'i18n!nls/lang.js',
                     #cache favorite ami item to MC.data.dict_ami
 
                     value.resource_info.imageId         = value.resource_id
-                    value.resource_info.osType = MC.aws.ami.getOSType value
+                    value.resource_info.osType = MC.aws.ami.getOSType value.resource_info
                     if not value.resource_info.osFamily
                         value.resource_info.osFamily = MC.aws.aws.getOSFamily(value.resource_info.osType)
                     instanceTypeAry = MC.aws.ami.getInstanceType(value.resource_info)

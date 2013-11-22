@@ -34,9 +34,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			if found.length == 0 and 'imageLocation' of ami and ami.imageLocation
 				found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
 
-		if found.length == 0
-			osType = 'unknown'
-		else
+		if found.length > 0
 			osType = found[0]
 
 		switch osType
@@ -91,6 +89,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			currentTypeData = currentTypeData[ami.virtualizationType || "paravirtual"]
 		catch err
 			currentTypeData = []
+
+		if not currentTypeData or currentTypeData.length <= 0
+			currentTypeData = MC.data.config[region].region_instance_type
 
 		return currentTypeData
 

@@ -780,7 +780,28 @@ MC.canvas.add = function (flag, option, coordinate)
 				resource = component_data.resource
 
 				resource.ImageId = option.imageId;
-				resource.InstanceType = 'm1.small';
+
+				try {
+					var amiObj = MC.data.dict_ami[resource.ImageId];
+					var instanceAry = MC.aws.ami.getInstanceType(amiObj);
+					var haveSmallType = false;
+					_.each(instanceAry, function(instanceTypeStr){
+						if (instanceTypeStr === 'm1.small') {
+							haveSmallType = true;
+						}
+					});
+					if (!haveSmallType) {
+						resource.InstanceType = instanceAry[0]
+						if (!instanceAry[0]) {
+							resource.InstanceType = 'm1.small';
+						}
+					} else {
+						resource.InstanceType = 'm1.small';
+					}
+				} catch (err) {
+					resource.InstanceType = 'm1.small';
+				}
+
 				resource.Placement.AvailabilityZone = option.group.availableZoneName;
 				resource.KeyName = "@"+MC.canvas_property.kp_list["DefaultKP"] + ".resource.KeyName";
 
@@ -2220,7 +2241,26 @@ MC.canvas.add = function (flag, option, coordinate)
 					component_data.resource.ImageId = option.imageId;
 
 					//instanceType
-					component_data.resource.InstanceType = 'm1.small';
+					try {
+						var amiObj = MC.data.dict_ami[option.imageId];
+						var instanceAry = MC.aws.ami.getInstanceType(amiObj);
+						var haveSmallType = false;
+						_.each(instanceAry, function(instanceTypeStr){
+							if (instanceTypeStr === 'm1.small') {
+								haveSmallType = true;
+							}
+						});
+						if (!haveSmallType) {
+							component_data.resource.InstanceType = instanceAry[0]
+							if (!instanceAry[0]) {
+								component_data.resource.InstanceType = 'm1.small';
+							}
+						} else {
+							component_data.resource.InstanceType = 'm1.small';
+						}
+					} catch (err) {
+						component_data.resource.InstanceType = 'm1.small';
+					}
 
 					component_data.resource.KeyName = "@"+MC.canvas_property.kp_list["DefaultKP"] + ".resource.KeyName";
 					component_data.resource.SecurityGroups.push("@"+MC.canvas_property.sg_list[0].uid + ".resource.GroupId");

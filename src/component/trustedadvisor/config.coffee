@@ -19,9 +19,10 @@ define({
         az: [ 'isAZAlone' ]
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
         vpc: [ 'isVPCAbleConnectToOutside' ]
+        stack: [ 'isHaveNotExistAMI' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]
-        stack: [ 'verify', 'isHaveNotExistAMI' ]
+        stack: [ 'verify', 'isHaveNotExistAMIAsync' ]
         subnet: ['getAllAWSENIForAppEditAndDefaultVPC']
 })

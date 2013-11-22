@@ -72,7 +72,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		catch err
 			callback(null)
 
-	isHaveNotExistAMI = (callback) ->
+	isHaveNotExistAMIAsync = (callback) ->
 
 		try
 			if !callback
@@ -109,6 +109,7 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 							# get current stack all aws ami
 							awsAMIIdAryStr = result.error_message
 							awsAMIIdAryStr = awsAMIIdAryStr.replace("The image ids '[", "").replace("]' do not exist", "")
+							.replace("The image id '[", "").replace("]' does not exist", "")
 
 							awsAMIIdAry = awsAMIIdAryStr.split(',')
 							awsAMIIdAry = _.map awsAMIIdAry, (awsAMIId) ->
@@ -158,5 +159,55 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 		catch err
 			callback(null)
 
+	isHaveNotExistAMI = () ->
+
+		# get current all using ami
+		amiAry = []
+		instanceAMIMap = {}
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or
+				compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+					imageId = compObj.resource.ImageId
+					if imageId
+						if not instanceAMIMap[imageId]
+							instanceAMIMap[imageId] = []
+							amiAry.push imageId
+						instanceAMIMap[imageId].push(compObj.uid)
+			null
+
+		awsAMIIdAry = []
+		_.each MC.data.dict_ami, (amiObj) ->
+			amiId = amiObj.imageId
+			awsAMIIdAry.push(amiId)
+			null
+
+		tipInfoAry = []
+
+		_.each amiAry, (amiId) ->
+			if amiId not in awsAMIIdAry
+				# not exist in stack
+				instanceUIDAry = instanceAMIMap[amiId]
+				_.each instanceUIDAry, (instanceUID) ->
+					instanceObj = MC.canvas_data.component[instanceUID]
+					instanceType = instanceObj.type
+					instanceName = instanceObj.name
+
+					infoObjType = 'Instance'
+					infoTagType = 'instance'
+					if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+						infoObjType = 'Launch Configuration'
+						infoTagType = 'lc'
+					tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
+					tipInfoAry.push({
+						level: constant.TA.ERROR,
+						info: tipInfo,
+						uid: instanceUID
+					})
+					null
+			null
+
+		return tipInfoAry
+
+	isHaveNotExistAMIAsync : isHaveNotExistAMIAsync
 	isHaveNotExistAMI : isHaveNotExistAMI
 	verify : verify

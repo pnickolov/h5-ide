@@ -1359,7 +1359,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 }
 
                 if flag is 'recent_launched_apps'
-                    result.usage = if value.usage then value.usage else 'others'
+                    result.usage = if 'usage' of value then value.usage else 'others'
 
                 return result
                 #app list

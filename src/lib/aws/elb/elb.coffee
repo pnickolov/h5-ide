@@ -338,7 +338,11 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		elbComp = MC.canvas_data.component[elbUID]
 		if !elbComp then return null
-		elbName = elbComp.resource.LoadBalancerName
+		currentState = MC.canvas.getState()
+		if currentState is 'stack'
+			elbName = elbComp.resource.LoadBalancerName
+		else
+			elbName = elbComp.name
 		elbSGName = elbName + '-sg'
 
 		elbSGUID = ''

@@ -240,15 +240,6 @@ Canvon.fn = Canvon.prototype = {
 		return target;
 	},
 
-	// use: function (href, attr, style)
-	// {
-	// 	var use = this.draw(this, 'use').attr(attr || {}).css(style || {});
-
-	// 	use[ 0 ].setAttributeNS("http://www.w3.org/1999/xlink", 'href', href);
-
-	// 	return use;
-	// },
-
 	group: function (style)
 	{
 		return this.draw(this, 'g').css(style || {});
@@ -267,9 +258,7 @@ Canvon.fn = Canvon.prototype = {
 			prop_name = [],
 			prop_data = [],
 			property_value,
-			prop,
-			offset,
-			timer;
+			prop;
 
 		duration = duration || 300;
 
@@ -306,7 +295,7 @@ Canvon.fn = Canvon.prototype = {
 
 		for (; i < p; i++)
 		{
-			timer = setTimeout(function ()
+			setTimeout(function ()
 			{
 				for (i = 0; i < length; i++)
 				{

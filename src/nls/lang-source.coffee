@@ -3415,6 +3415,11 @@ module.exports =
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
       zh: ""
 
+    # ENI
+    TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
+      en: "Network Interface <span class='validation-tag tag-eni'>%s</span> is not attached to any Instance."
+      zh: ""
+
     # ELB
     TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."

@@ -55,7 +55,7 @@ define [ 'i18n!nls/lang.js',
                     ami_list = []
                     ami_instance_type = result.resolved_data.ami_instance_type
                     region_ami_instance_type = result.resolved_data.region_ami_instance_type
-                    
+
                     if not MC.data.instance_type
                         MC.data.instance_type = {}
                     MC.data.instance_type[result.param[3]] = ami_instance_type

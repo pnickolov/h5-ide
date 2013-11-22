@@ -314,8 +314,14 @@ define [ 'MC', 'event',
             ###
 
         clickExportPngIcon : ->
-            console.log 'clickExportPngIcon'
-            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK', MC.canvas_data
+            modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
+
+            $("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
+            $("#modal-wrap").find(".modal-body").css({padding:"0", margin:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
+
+            this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
+            null
+
 
         clickExportJSONIcon : ->
             file_content = JSON.stringify MC.canvas.layout.save()
@@ -330,23 +336,21 @@ define [ 'MC', 'event',
                     console.log 'clickExportJSONIcon'
                     modal.close()
 
-        exportPNG : ( base64_image ) ->
-            console.log 'exportPNG'
-            #$( 'body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
+        exportPNG : ( base64_image, uid ) ->
 
-            modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
-            $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', true
+            if $("#modal-wrap").data("uid") isnt uid
+                return
 
-            if base64_image
-                $( '.modal-body' ).html '<img src="data:image/png;base64,' + base64_image + '" />'
-                $( '.modal-footer' ).find( '#btn-confirm' ).attr 'disabled', false
+            $("#modal-wrap").find("#btn-confirm").show().attr({
+                'href'     : base64_image
+                'download' : MC.canvas_data.name + '.png'
+            })
+
+            $( '.modal-body' ).html '<img src="' + base64_image + '" />'
+
+            _.delay ()->
                 modal.position()
-
-            $( '#btn-confirm' ).attr {
-                'href'      : "data:image/png;base64, " + base64_image,
-                'download'  : MC.canvas_data.name + '.png',
-            }
-
+            , 50
             null
 
         #for debug

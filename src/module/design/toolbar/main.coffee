@@ -101,16 +101,16 @@ define [ 'jquery',
                 model.runStack(app_name, data)
 
             #export to png
-            view.on 'TOOLBAR_EXPORT_PNG_CLICK', (data) ->
+            view.on 'TOOLBAR_EXPORT_PNG_CLICK', () ->
                 console.log 'design_toolbar_click:exportPngIcon'
-                model.savePNG false, data
+                model.generatePNG()
 
             view.on 'CONVERT_CLOUDFORMATION', () ->
                 model.convertCloudformation()
 
-            model.on 'SAVE_PNG_COMPLETE', ( base64_image ) ->
-                console.log 'SAVE_PNG_COMPLETE'
-                view.exportPNG base64_image
+            model.on 'SAVE_PNG_COMPLETE', ( base64_image, uid ) ->
+                console.warn 'SAVE_PNG_COMPLETE'
+                view.exportPNG base64_image, uid
 
             # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
             #     view.saveCloudFormation cf_json

@@ -229,7 +229,11 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     getInstanceType : ( uid, data ) ->
 
-      ami_info = MC.canvas_data.layout.component.node[ uid ]
+      amiId = MC.canvas_data.component[uid].resource.ImageId
+
+      ami_info = MC.data.dict_ami[amiId]
+
+      #MC.canvas_data.layout.component.node[ uid ]
 
       current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
 

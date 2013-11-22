@@ -443,7 +443,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     continue
 
                 if not osType or not osFamily
-                    continue
+                    osType = 'linux-other'
+                    osFamily = 'linux'
 
                 if size and osFamily and 'instance' of feeMap.price
                     size_list = size.split('.')
@@ -500,7 +501,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                         continue
 
                     if not osType or not osFamily
-                        continue
+                        osType = 'linux-other'
+                        osFamily = 'linux'
 
                     if size and osFamily and 'instance' of feeMap.price
                         size_list = size.split('.')

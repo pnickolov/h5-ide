@@ -34,9 +34,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			if found.length == 0 and 'imageLocation' of ami and ami.imageLocation
 				found = osTypeList.filter (word) -> ~ami.imageLocation.toLowerCase().indexOf word
 
-		if found.length == 0
-			osType = 'unknown'
-		else
+		if found.length > 0
 			osType = found[0]
 
 		switch osType

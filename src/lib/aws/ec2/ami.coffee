@@ -92,6 +92,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		catch err
 			currentTypeData = []
 
+		if not currentTypeData or currentTypeData.length <= 0
+			currentTypeData = MC.data.config[region].region_instance_type
+
 		return currentTypeData
 
 	getOSType : getOSType

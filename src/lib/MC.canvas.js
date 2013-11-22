@@ -3196,9 +3196,9 @@ MC.canvas.eniList = {
 			{
 				var is_deleted = '',
 					found_eni = null;
-								
+
 				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
-				
+
 				//get eni
 				if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
 					found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
@@ -5817,4 +5817,131 @@ MC.canvas.event.keyEvent = function (event)
 			return false;
 		}
 	}
+};
+
+MC.canvas.exportPNG = function ( $svg_canvas_element, data )
+{
+
+	/*
+	data = {
+		isExport : boolean
+		onFinish : function
+		name     : string
+	}
+	*/
+	if ( !MC.canvas.exportPNG.bg )
+	{
+		var img = document.createElement("img");
+		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
+		MC.canvas.exportPNG.bg = img;
+	}
+
+	require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
+
+		/* Trim SVG */
+		var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+		var size = $svg_canvas_element[0].getBBox();
+		// In IE, getBBox returns SvgRect which is not allowed to modified.
+		size = {
+			width  : size.width,
+			height : size.height
+		};
+		size.width  += 50;
+		size.height += 30;
+
+		var ratio = 1;
+		var beforeRender = null;
+
+		// Calc the perfect size for the thumbnail
+		if ( data.isExport ) {
+			size.height += 54;
+
+			if ( size.width  < 360 ) { size.width  = 360; }
+			if ( size.height < 380 ) { size.height = 380; }
+
+			beforeRender = function( ctx ){
+				ctx.save();
+				ctx.translate(0, 54);
+				var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+				ctx.fillStyle = pat;
+				ctx.fillRect(0, 0, size.width, size.height);
+				ctx.restore();
+			}
+		} else {
+			beforeRender = function( ctx ){
+				var ratio1 = 220 / size.width;
+				var ratio2 = 145 / size.height;
+				ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
+
+				var pattern = document.createElement('canvas');
+				pattern.width  = size.width;
+				pattern.height = size.height;
+
+				size.width  = 220;
+				size.height = 145;
+
+				patternctx = pattern.getContext("2d");
+
+				patternctx.fillStyle = patternctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+				patternctx.fillRect(0, 0, pattern.width, pattern.height);
+
+				ctx.scale( ratio, ratio );
+				ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
+			}
+		}
+
+		clone.attr("width", size.width).attr("height", size.height);
+
+		var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
+		styleElement.setAttribute("type", "text/css");
+		styleElement.textContent = "CSS_PLACEHOLDER";
+
+		var line = clone[0].getElementById("svg_padding_line")
+		clone[0].insertBefore( styleElement, line );
+
+		// remove useless elements
+		clone.find(".resizer-wrap").remove();
+		clone.find(".group-resizer").remove();
+		clone.find("g:empty").remove();
+		clone[0].removeChild( line );
+
+		// fix group label color
+		clone.find(".group-label").each(function(){
+			var $t = $(this);
+			var newClass = $t.parent().data("class").replace(/\./g, "-") + "-group-label";
+			var oldClass = $t.attr("class");
+			$t.attr("class", oldClass + " " + newClass);
+		})
+
+		var svg = (new XMLSerializer()).serializeToString( clone[0] );
+		if ( data.isExport ) {
+
+			if ( MC.canvas.exportPNG.isIE === undefined ) {
+				// In IE, XMLSerializer will change xlink:href to href
+				MC.canvas.exportPNG.isIE = svg.indexOf("xlink:href") == -1;
+			}
+
+			// Insert header
+			var time = new Date();
+			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
+			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
+
+			svg = svg.replace("</svg>", '</g></svg>');
+		}
+
+		svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
+
+		var canvas = document.createElement('canvas');
+		canvas.width  = size.width;
+		canvas.height = size.height;
+		canvg( canvas, svg, {
+			ignoreDimensions : true,
+			beforeRender : beforeRender,
+			afterRender  : data.onFinish ? function(){
+				data.image = canvas.toDataURL()
+				data.onFinish( data );
+			} : null
+		} );
+	});
 };

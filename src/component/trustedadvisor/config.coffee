@@ -19,7 +19,7 @@ define({
         az: [ 'isAZAlone' ]
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
         vpc: [ 'isVPCAbleConnectToOutside' ]
-        stack: [ 'isHaveNotExistAMI' ]
+        stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]

@@ -56,10 +56,15 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
     ########## Sub Validation Method ##########
 
-    _validGlobal = () ->
+    _validGlobal = ( env ) ->
         _.each config.globalList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
+                    if method.indexOf( '~' ) is 0
+                        if env is 'all'
+                            method = method.slice( 1 )
+                        else
+                            return
                     result = validation_main[ filename ][ method ]()
                     _pushResult result, method, filename
                 catch err
@@ -125,7 +130,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _validComponents()
 
-        _validGlobal()
+        _validGlobal 'run'
 
         _validAsync()
 
@@ -138,7 +143,7 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
         _validComponents()
 
-        _validGlobal()
+        _validGlobal 'all'
 
         resultVO.result()
 

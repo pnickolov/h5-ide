@@ -19,7 +19,7 @@ define [ 'event',
         state    : 'credential'
 
         events   :
-            'closed'                                : 'onClose'
+            'click #close-awscredential'            : 'onClose'
             'click #awscredentials-submit'          : 'onSubmit'
             'click #awscredentials-update-done'     : 'onDone'
             'click .AWSCredentials-account-update'  : 'onUpdate'
@@ -57,7 +57,14 @@ define [ 'event',
 
         onClose : ->
             console.log 'account_setting_tab onClose'
-            this.trigger 'CLOSE_POPUP'
+            if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                # reset key
+                @trigger 'CANCAL_CREDENTIAL'
+            else
+                # close modal
+                modal.close()
+                @trigger 'CLOSE_POPUP'
+            null
 
         onDone : ->
             console.log 'account_setting_tab onDone'
@@ -75,12 +82,16 @@ define [ 'event',
             console.log 'account_setting_tab onSubmit'
 
             if $( '#awscredentials-skip' ).attr( 'data-type' ) in [ 'back', 'done' ]
-                #ide_event.trigger ide_event.SKIP_WELCOME if $( '#awscredentials-skip' ).attr( 'data-type' ) is 'back'
-                @onDone()
+                if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
+                    # reset key
+                    @trigger 'CANCAL_CREDENTIAL'
+                else
+                    # close modal
+                    @onDone()
+                # return
                 return
 
             me = this
-
             right_count = 0
             # input check
             account_id = $('#aws-credential-account-id').val().trim()

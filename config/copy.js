@@ -40,7 +40,7 @@ module.exports = {
 		files: [{
 			expand : true,
 			cwd    : '<%= src %>/',
-			src    : [ '**', '!lib/**', '!ui/common/*.js' ] ,
+			src    : [ '**', '!lib/**', '!ui/common/*.js', '!**/_readme.txt', '!**/readme.txt' ] ,
 			dest   : '<%= release %>/',
 			filter : function( filepath ) {
 				if ( filepath.indexOf( 'src\\test' ) == -1 ) {
@@ -57,7 +57,7 @@ module.exports = {
 		files: [{
 			expand : true,
 			cwd    : '<%= src %>/',
-			src    : [ '**'] ,
+			src    : [ '**', '!**/_readme.txt', '!**/readme.txt'] ,
 			dest   : '<%= debug %>/',
 		}]
 	},

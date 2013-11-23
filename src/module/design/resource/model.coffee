@@ -449,6 +449,10 @@ define [ 'i18n!nls/lang.js',
             #init
             me.set 'resource_snapshot', null
 
+            #if demo account, not request api
+            if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                return
+
             #check cached data
             if (MC.data.config[region_name] and MC.data.config[region_name].snapshot_list )
 
@@ -506,7 +510,11 @@ define [ 'i18n!nls/lang.js',
             me = this
 
             #init
-            me.set 'my_ami', null
+            me.set 'my_ami', {}
+
+            #if demo account, not request api
+            if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'
+                return
 
             #check cached data
             if MC.data.config[region_name] and MC.data.config[region_name].my_ami

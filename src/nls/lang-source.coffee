@@ -2696,7 +2696,7 @@ module.exports =
       zh: "无效的密钥"
 
     HEAD_MSG_ERR_INVALID_SAME_ID:
-      en: "Please chang other account id"
+      en: "Please use a correct account number"
       zh: "账号相同，请输入不同的账号"
 
     HEAD_MSG_ERR_KEY_UPDATE:

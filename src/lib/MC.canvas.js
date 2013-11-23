@@ -2618,7 +2618,11 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
+
 			$(document).off('keyup', MC.canvas.volume.remove);
+
+			return true;
 		}
 	},
 
@@ -3054,7 +3058,7 @@ MC.canvas.instanceList = {
 				, name      : "Server Group List"
 			};
 			var statusMap = {
-					 "pending"       : "yellow"
+				"pending"       : "yellow"
 				 , "stopping"      : "yellow"
 				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
@@ -3276,6 +3280,18 @@ MC.canvas.event.dblclick.timer = null;
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
+		if (
+			event.which === 1 &&
+			event.ctrlKey
+		)
+		{
+			event.stopImmediatePropagation();
+
+			MC.canvas.event.ctrlMove.mousedown.call( this, event );
+
+			return false;
+		}
+
 		if (event.which === 1)
 		{
 			// Double click event
@@ -5702,7 +5718,8 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			MC.canvas_property.selected_node.length === 1
+			MC.canvas_property.selected_node.length === 1 &&
+			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
 		)
 		{
 			var target = $('#' + MC.canvas_property.selected_node[ 0 ]),

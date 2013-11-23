@@ -72,7 +72,7 @@ define [ '../base/view',
 
             if target.parsley 'validate'
                 @model.setDeviceName name
-                @setTitle name
+                @setTitle @model.attributes.volume_detail.name
 
         processIops: ( event ) ->
             size = parseInt $( '#volume-size-ranged' ).val(), 10

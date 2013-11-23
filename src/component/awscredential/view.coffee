@@ -133,7 +133,13 @@ define [ 'event',
             # reset key
             if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
 
-                me.trigger 'CANCAL_CREDENTIAL'
+                if $('#AWSCredentials-remove-wrap').attr('data-type') is 'remove'
+
+                    me.showSetting('credential', 'in_update')
+
+                else
+
+                    me.trigger 'CANCAL_CREDENTIAL'
 
             else
 
@@ -142,6 +148,8 @@ define [ 'event',
         onAWSCredentialRemove : (event) ->
             console.log 'account_setting_tab onAWSCredentialRemove'
             me = this
+
+            $('#AWSCredentials-remove-wrap').attr('data-type', 'remove')
 
             if $('#awscredentials-remove').hasClass('btn btn-silver')
                 #remove credential

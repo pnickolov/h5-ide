@@ -4,7 +4,7 @@
 
 {{#each sg_group}}
 <span class="sg-color sg-color-rule-header" style="background-color:{{sgColor}}"></span>
-<div class="property-group-head">{{groupName}}</div>
+<div class="property-group-head truncate">{{groupName}}</div>
 <div class="property-group">
   <ul class="sg-rule-list property-list" id="sg-info-list">
     {{#each rules}}
@@ -12,7 +12,7 @@
       <div class="rule-list-row">
         <div class="rule-direction-icon icon-{{direction}} tooltip" data-tooltip="{{direction}}"></div>
         {{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}
-        <div class="rule-reference tooltip" data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
+        <div class="rule-reference truncate tooltip" data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
       </div>
       <div class="rule-list-row">
         <div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{ipProtocol}}</span></div>

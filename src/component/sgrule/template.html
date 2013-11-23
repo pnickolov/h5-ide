@@ -42,10 +42,10 @@
       {{/if}}
 
       <div class="selectbox" id="sg-create-sg-in">
-        <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>
+        <div class="selection truncate"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>
         <ul class="dropdown">
           {{#each sg_detail.[1].sg}}
-            <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
+            <li class="item truncate {{#unless @index}}selected{{/unless}}" data-id="{{uid}}" title="{{name}}">
               <span class="sg-create-sg-color" style="background:{{color}}"></span>
               {{name}}
             </li>

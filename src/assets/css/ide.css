@@ -4053,6 +4053,7 @@ a.sidebar-hider {
 
 .rule-list-row .rule-source {
 	float: left;
+	width: 180px;
 }
 
 .rule-list-row .sg-rule-connnection {
@@ -5895,7 +5896,8 @@ summary:focus {
 	border     : 1px solid #17a03a;
 }
 
-.tag-port {
+.tag-port,
+.tag-ami {
 	background : #bbb;
 	border     : 1px solid #999;
 }

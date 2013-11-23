@@ -3514,7 +3514,7 @@ module.exports =
       en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
-      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI %s is not available any more. Please use another AMI by creating new instance."
+      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."
       zh:""
 
     ##### Trust Advisor

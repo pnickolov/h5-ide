@@ -4710,6 +4710,23 @@ a.action-link:hover {
 	display: none;
 }
 
+#modal-acl-rule .simple-protocol-select {
+	list-style: none;
+	margin-left: 80px;
+}
+
+#modal-acl-rule .simple-protocol-select li {
+	float: left;
+	cursor: pointer;
+	color: #55F;
+	font-size: 12px;
+	margin-left: 12px;
+}
+
+#modal-acl-rule .simple-protocol-select li:hover {
+	text-decoration: underline;
+}
+
 /* property-stack */
 
 .dl-horizontal.dl-region-type {

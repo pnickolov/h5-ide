@@ -3276,6 +3276,18 @@ MC.canvas.event.dblclick.timer = null;
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
+		if (
+			event.which === 1 &&
+			event.ctrlKey
+		)
+		{
+			event.stopImmediatePropagation();
+
+			MC.canvas.event.ctrlMove.mousedown.call( this, event );
+
+			return false;
+		}
+		
 		if (event.which === 1)
 		{
 			// Double click event

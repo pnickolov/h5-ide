@@ -2618,6 +2618,8 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
+
 			$(document).off('keyup', MC.canvas.volume.remove);
 		}
 	},
@@ -3287,7 +3289,7 @@ MC.canvas.event.dragable = {
 
 			return false;
 		}
-		
+
 		if (event.which === 1)
 		{
 			// Double click event

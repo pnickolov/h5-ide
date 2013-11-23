@@ -5940,9 +5940,9 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 			}
 
 			// Insert header
-			var time = new Date();
+			var datetime = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
 			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
-			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
+			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + datetime + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
 
 			svg = svg.replace("</svg>", '</g></svg>');
 		}

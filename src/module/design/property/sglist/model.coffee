@@ -215,7 +215,17 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 
 				sgRuleAry = sgRuleAry.concat sgIpPermissionsAry
 
-			@set 'sg_rule_list', sgRuleAry
+			# reduce repeat
+			ruleExistMap = {}
+			newSGRuleAry = _.filter sgRuleAry, (sgRuleObj) ->
+				key = sgRuleObj.Direction + sgRuleObj.FromPort + sgRuleObj.ToPort + sgRuleObj.IpProtocol + sgRuleObj.IpRanges + sgRuleObj.Groups
+				if ruleExistMap[key]
+					return false
+				else
+					ruleExistMap[key] = true
+					return true
+
+			@set 'sg_rule_list', newSGRuleAry
 
 			null
 

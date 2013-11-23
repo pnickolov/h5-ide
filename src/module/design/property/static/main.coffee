@@ -23,7 +23,7 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
         initAppEdit : ()->
             @model = model
             @view  = view
-            @model.isApp = false
+            @model.isApp = true
             null
     }
 

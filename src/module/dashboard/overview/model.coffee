@@ -514,6 +514,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                             if tag.Key == 'Created by' and tag.Value == owner
                                 asl.owner = tag.Value
                             null
+
+                    asl.Instances = _.pluck asl.Instances.member, 'InstanceId'
+
                     asl.detail = me.parseSourceValue 'DescribeAutoScalingGroups', asl, "detail", null
                     if resources.DescribeScalingActivities
                         $.each resources.DescribeScalingActivities, ( idx, activity ) ->

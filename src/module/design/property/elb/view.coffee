@@ -390,7 +390,7 @@ define [ '../base/view',
                         offsetStep = -value
                     else if newPos > width
                         newPos = width
-                        offsetStep = sttep - value
+                        offsetStep = step - value
                 else
                     newPos     = thumbPos
                     offsetStep = 0

@@ -41,7 +41,7 @@
 				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP_SGLIST_TIP_VIEW_DETAIL" }}' data-sgid="{{sgUID}}"></div>
 
 				<div class="col2">
-					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{sgColor}}" ></div>{{sgName}}</div>
+					<div class="col2-1 truncate" title="{{sgName}}"><div class="sg-color" style="background-color:{{sgColor}}" ></div>{{sgName}}</div>
 					<div class="col2-2 truncate">{{sgDesc}}</div>
 					<div class="col2-3 truncate">{{sgRuleNum}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{sgMemberNum}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" members="{{sgMemberNum}}" sg-name="{{sgName}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>
@@ -68,7 +68,7 @@
 				<div class="rule-list-row">
 					<div data-id="{{Direction}}" class='rule-direction-icon tooltip icon-{{Direction}}' data-tooltip='{{#ifCond Direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
 					<span {{#if sgColor}}class="sg-color"{{/if}} style="background-color:{{sgColor}}"></span>
-					<div data-id="{{IpRanges}}" class='rule-reference tooltip' data-tooltip='{{#ifCond Direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{IpRanges}}</div>
+					<div data-id="{{IpRanges}}" class='rule-reference tooltip truncate' data-tooltip='{{#ifCond Direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{IpRanges}}</div>
 				</div>
 				<div class="rule-list-row">
 					<div data-id="{{IpProtocol}}"><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{IpProtocol}}</span></div>

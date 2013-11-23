@@ -2618,7 +2618,11 @@ MC.canvas.volume = {
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
+			$("#svg_canvas").trigger("CANVAS_NODE_SELECTED", "");
+
 			$(document).off('keyup', MC.canvas.volume.remove);
+
+			return true;
 		}
 	},
 
@@ -3054,7 +3058,7 @@ MC.canvas.instanceList = {
 				, name      : "Server Group List"
 			};
 			var statusMap = {
-					 "pending"       : "yellow"
+				"pending"       : "yellow"
 				 , "stopping"      : "yellow"
 				 , "shutting-down" : "yellow"
 				 , "running"       : "green"
@@ -3276,6 +3280,18 @@ MC.canvas.event.dblclick.timer = null;
 MC.canvas.event.dragable = {
 	mousedown: function (event)
 	{
+		if (
+			event.which === 1 &&
+			event.ctrlKey
+		)
+		{
+			event.stopImmediatePropagation();
+
+			MC.canvas.event.ctrlMove.mousedown.call( this, event );
+
+			return false;
+		}
+
 		if (event.which === 1)
 		{
 			// Double click event
@@ -5702,7 +5718,8 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			MC.canvas_property.selected_node.length === 1
+			MC.canvas_property.selected_node.length === 1 &&
+			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
 		)
 		{
 			var target = $('#' + MC.canvas_property.selected_node[ 0 ]),
@@ -5923,9 +5940,9 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 			}
 
 			// Insert header
-			var time = new Date();
+			var datetime = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
 			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
-			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + time.toLocaleString() + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
+			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + datetime + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
 
 			svg = svg.replace("</svg>", '</g></svg>');
 		}

@@ -37,7 +37,7 @@
 				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip icon-inbound' data-tooltip='{{ i18n "PROP_SG_TIP_INBOUND" }}'></div>
 					<span {{#if sg_color}}class="sg-color"{{/if}} style="background-color:{{sg_color}}"></span>
-					<div class='rule-reference tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_SRC" }}'>{{ip_display}}</div>
+					<div class='rule-reference tooltip truncate' data-tooltip='{{ i18n "PROP_SG_TIP_SRC" }}'>{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
 					<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{protocol_display}}</span></div>
@@ -53,7 +53,7 @@
 				<div class="rule-list-row">
 					<div class='rule-direction-icon tooltip icon-outbound' data-tooltip='{{ i18n "PROP_SG_TIP_OUTBOUND" }}'></div>
 					<span {{#if sg_color}}class="sg-color"{{/if}} style="background-color:{{sg_color}}"></span>
-					<div class='rule-reference tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_DEST" }}'>{{ip_display}}</div>
+					<div class='rule-reference tooltip truncate' data-tooltip='{{ i18n "PROP_SG_TIP_DEST" }}'>{{ip_display}}</div>
 				</div>
 				<div class="rule-list-row">
 					<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{protocol_display}}</span></div>

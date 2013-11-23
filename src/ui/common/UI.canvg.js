@@ -1207,27 +1207,27 @@ function RGBColor(color_string)
         svg.ViewPort.SetCurrent(width, height);
 
         // viewbox
-        if (this.attribute('viewBox').hasValue()) {
-          var viewBox = svg.ToNumberArray(this.attribute('viewBox').value);
-          var minX = viewBox[0];
-          var minY = viewBox[1];
-          width = viewBox[2];
-          height = viewBox[3];
+        // if (this.attribute('viewBox').hasValue()) {
+        //   var viewBox = svg.ToNumberArray(this.attribute('viewBox').value);
+        //   var minX = viewBox[0];
+        //   var minY = viewBox[1];
+        //   width = viewBox[2];
+        //   height = viewBox[3];
 
-          svg.AspectRatio(ctx,
-                  this.attribute('preserveAspectRatio').value,
-                  svg.ViewPort.width(),
-                  width,
-                  svg.ViewPort.height(),
-                  height,
-                  minX,
-                  minY,
-                  this.attribute('refX').value,
-                  this.attribute('refY').value);
+        //   svg.AspectRatio(ctx,
+        //           this.attribute('preserveAspectRatio').value,
+        //           svg.ViewPort.width(),
+        //           width,
+        //           svg.ViewPort.height(),
+        //           height,
+        //           minX,
+        //           minY,
+        //           this.attribute('refX').value,
+        //           this.attribute('refY').value);
 
-          svg.ViewPort.RemoveCurrent();
-          svg.ViewPort.SetCurrent(viewBox[2], viewBox[3]);
-        }
+        //   svg.ViewPort.RemoveCurrent();
+        //   svg.ViewPort.SetCurrent(viewBox[2], viewBox[3]);
+        // }
       }
     }
     svg.Element.svg.prototype = new svg.Element.RenderedElementBase;

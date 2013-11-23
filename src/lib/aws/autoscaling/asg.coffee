@@ -40,6 +40,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 				if asg_data
 					MC.canvas.update uid, 'text', 'instance-number', asg_data.Instances.member.length
+				else
+					MC.canvas.update uid, 'text', 'instance-number', 0
+
 		null
 
 

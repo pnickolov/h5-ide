@@ -20,14 +20,8 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 				subnetCount++
 				subnetCIDR = compObj.resource.CidrBlock
 				oldSubnetAry.push(subnetCIDR)
-				if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
-					needUpdateAllSubnetCIDR = true
-
-			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-				compObj.resource.RouteSet[0].DestinationCidrBlock = vpcCIDR
 			null
-
-		if !needUpdateAllSubnetCIDR then return
+		###############
 
 		newSubnetCIDRAry = []
 		newSimpleSubnetCIDRAry = MC.aws.subnet.autoAssignSimpleCIDR(vpcCIDR, oldSubnetAry, oldVPCCIDR)
@@ -35,6 +29,33 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 			newSubnetCIDRAry = newSimpleSubnetCIDRAry
 		else
 			newSubnetCIDRAry = MC.aws.subnet.autoAssignAllCIDR(vpcCIDR, subnetCount)
+
+		# if subnet error, return
+		haveError = false
+		_.each newSubnetCIDRAry, (subnetCIDR) ->
+			if !MC.validate 'cidr', subnetCIDR
+				haveError = true
+			null
+
+		if haveError
+			return false
+
+		###############
+
+		_.each MC.canvas_data.component, (compObj) ->
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+				subnetCIDR = compObj.resource.CidrBlock
+				if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
+					needUpdateAllSubnetCIDR = true
+
+			if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+				compObj.resource.RouteSet[0].DestinationCidrBlock = vpcCIDR
+			null
+
+		if !needUpdateAllSubnetCIDR
+			return true
+
+		# assign new CIDR
 
 		subnetNum = 0
 		_.each MC.canvas_data.component, (compObj) ->
@@ -45,7 +66,7 @@ define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
 				MC.canvas.update compObj.uid, 'text', 'label', compObj.name + ' (' + newCIDR + ')'
 				subnetNum++
 
-		null
+		return true
 
 	checkFullDefaultVPC = () ->
 

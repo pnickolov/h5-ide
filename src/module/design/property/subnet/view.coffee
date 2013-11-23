@@ -162,6 +162,7 @@ define [ '../base/view',
             cidrSuffix = $("#property-cidr-block").val()
             subnetCIDR = cidrPrefix + cidrSuffix
 
+            removeInfo = 'Remove Subnet'
             haveError = true
             if !cidrSuffix
                 mainContent = 'CIDR block is required.'
@@ -180,7 +181,7 @@ define [ '../base/view',
                 if cidrNum > 27
                     mainContent = 'The subnet is attached with a load balancer. The CIDR mask must be smaller than /27.'
                     descContent = ''
-                    noRemove = true
+                    removeInfo = ''
                 else
                     haveError = false
             else
@@ -190,9 +191,8 @@ define [ '../base/view',
                 dialog_template = MC.template.setupCIDRConfirm {
                     main_content : mainContent,
                     desc_content : descContent
+                    remove_content : removeInfo
                 }
-                if not noRemove
-                    dialog_template.remove_content = 'Remove Subnet'
 
                 modal dialog_template, false, () ->
 

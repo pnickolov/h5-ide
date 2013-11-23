@@ -14,7 +14,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 @set ami
                 @set "instance_type", MC.aws.ami.getInstanceType( ami ).join(", ")
                 @set "ami", true
-                @set "name", uid
+                @set "name", ami.name
                 return
             else if uid.indexOf("ami-") is 0
                 @set "ami", { unavailable : true }

@@ -28,7 +28,7 @@
       <tbody>
         {{#each vgwTelemetry.item}}
           <tr>
-            <td><i class="status status-{{stateColor}} tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
+            <td><i class="status status-{{stateColor}} icon-label tooltip" data-tooltip="{{status}} since {{lastStatusChange}} because {{statusMessage}}"></i>{{index}}</td>
             <td>{{outsideIpAddress}}</td>
           </tr>
         {{/each}}
@@ -51,7 +51,7 @@
       <tbody>
         {{#each routes.item}}
         <tr>
-          <td><i class="status status-{{state}} tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
+          <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
           <td>{{source}}</td>
         </tr>
         {{/each}}

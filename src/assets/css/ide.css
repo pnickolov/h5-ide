@@ -96,7 +96,7 @@ a {
 }
 
 #header {
-	/*background: #312d31;*/
+	background: #303030;
 	height: 45px;
 	z-index: 10;
 	position: absolute;
@@ -1641,7 +1641,7 @@ a {
 
 #region-view #region-resource-wrap .dashboard-loading {
 	height: 492px;
-	margin-top: 80px;
+	margin-top: 30px;
 }
 
 #global-region-resource-list {
@@ -3525,6 +3525,7 @@ a.sidebar-hider {
 	font-size  : 13px;
 	background : #323232;
 	box-shadow : 0 2px 0 0 rgba(0,0,0,.2);
+	display    : block;
 }
 
 .back {
@@ -4052,14 +4053,17 @@ a.sidebar-hider {
 
 .rule-list-row .rule-source {
 	float: left;
+	width: 180px;
 }
 
 .rule-list-row .sg-rule-connnection {
 	float: left;
+	width: 98px;
 }
 
 .rule-list-row .rule-reference {
 	float: left;
+	width: 180px;
 }
 
 .rule-list-row div:first-child {
@@ -4823,15 +4827,6 @@ a.action-link:hover {
 	line-height : 32px;
 }
 
-/*.sg-node-wrap > .selectbox {
-	height : 40px;
-}
-
-.sg-node-wrap > .selectbox > .selection {
-	height : 20px;
-	line-height : 20px;
-}*/
-
 #sg-create-sg-out, #sg-create-sg-in {
 	float  : left;
 	width  : 200px;
@@ -4842,11 +4837,15 @@ a.action-link:hover {
 	float       : left;
 	margin-left : 20px;
 	width       : 180px;
-	/*height      : 40px;*/
 }
 
 #sg-create-sg-in {
 	margin-left : 50px;
+}
+
+#sg-create-sg-in .selection {
+	width: 180px;
+	padding-right: 13px;
 }
 
 .sg-create-selection {
@@ -4981,10 +4980,12 @@ a.action-link:hover {
 }
 
 .sg-create-group {
+	display     : block;
+	line-height : 16px;
+	height      : 16px;
+	padding     : 2px;
 	background    : #272727;
 	font-size     : 12px;
-	padding       : 5px;
-	line-height   : 1em;
 	border-top    : 1px solid #202020;
 	border-bottom : 1px solid #202020;
 	box-shadow    : inset 0 1px 0 rgba(255,255,255,.04);
@@ -5001,13 +5002,17 @@ a.action-link:hover {
 	font-size : 12px;
 }
 
+.sidebar-wrap .sg-create-group {
+	width       : 194px;
+}
+
 .sidebar-wrap .rule-list-row .sg-color {
 	margin-top: 2px;
 }
 
 .sidebar-wrap .sg-color.sg-color-rule-header,
 #delete-rule-dialog .sg-color.sg-color-rule-header {
-	margin: 7px;
+	margin: 3px 5px;
 }
 
 .sg-create-rule-item .sg-rule-connection {
@@ -5066,9 +5071,13 @@ a.action-link:hover {
 }
 
 #delete-rule-dialog .sg-create-group {
-	background: #ccc;
-	border: none;
-	color: #666;
+	background  : #ccc;
+	border      : none;
+	color       : #666;
+}
+
+#delete-rule-dialog .sg-rule-connnection {
+	width: 280px;
 }
 
 #delete-rule-dialog .sg-color {
@@ -5887,7 +5896,8 @@ summary:focus {
 	border     : 1px solid #17a03a;
 }
 
-.tag-port {
+.tag-port,
+.tag-ami {
 	background : #bbb;
 	border     : 1px solid #999;
 }

@@ -2696,7 +2696,7 @@ module.exports =
       zh: "无效的密钥"
 
     HEAD_MSG_ERR_INVALID_SAME_ID:
-      en: "Please chang other account id"
+      en: "Please use a correct account number"
       zh: "账号相同，请输入不同的账号"
 
     HEAD_MSG_ERR_KEY_UPDATE:
@@ -3514,7 +3514,7 @@ module.exports =
       en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
-      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI %s is not available any more. Please use another AMI by creating new instance."
+      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."
       zh:""
 
     ##### Trust Advisor

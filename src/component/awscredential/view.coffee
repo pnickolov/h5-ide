@@ -267,6 +267,7 @@ define [ 'event',
         onSkinButton : () ->
             console.log 'onSkinButton'
             $target = $( '#awscredentials-skip' )
+            $( '#AWSCredential-info').removeClass 'error'
             if $target.attr( 'data-type' ) is 'skip'
                 #
                 $target.attr( 'data-type', 'back' )

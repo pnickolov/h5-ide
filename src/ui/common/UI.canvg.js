@@ -963,7 +963,11 @@ function RGBColor(color_string)
         // }
         // else {
           this.setContext(ctx);
-          this.renderChildren(ctx);
+          try{
+            this.renderChildren(ctx);
+          } catch(e) {
+            console.warn("Error occur when rendering svg in canvas", e);
+          }
           this.clearContext(ctx);
         // }
         ctx.restore();
@@ -1051,16 +1055,6 @@ function RGBColor(color_string)
             else if (typeof(ctx.webkitLineDashOffset) != 'undefined') { ctx.webkitLineDashOffset = offset; }
             else if (typeof(ctx.mozDashOffset) != 'undefined') { ctx.mozDashOffset = offset; }
           }
-        }
-
-        // font
-        if (this.isText && typeof(ctx.font) != 'undefined') {
-          ctx.font = svg.Font.CreateFont(
-            this.style('font-style').value,
-            this.style('font-variant').value,
-            this.style('font-weight').value,
-            this.style('font-size').hasValue() ? this.style('font-size').toPixels() + 'px' : '12px',
-            this.style('font-family').value)
         }
 
         // transform
@@ -2031,6 +2025,20 @@ function RGBColor(color_string)
         this.baseSetContext(ctx);
         if (this.style('dominant-baseline').hasValue()) ctx.textBaseline = this.style('dominant-baseline').value;
         if (this.style('alignment-baseline').hasValue()) ctx.textBaseline = this.style('alignment-baseline').value;
+
+        if ( !this.style('fill').hasValue() ) {
+          ctx.fillStyle = "#000000";
+        }
+
+        // font
+        if ( typeof(ctx.font) != 'undefined' ) {
+          ctx.font = svg.Font.CreateFont(
+            this.style('font-style').value,
+            this.style('font-variant').value,
+            this.style('font-weight').value,
+            this.style('font-size').hasValue() ? this.style('font-size').toPixels() + 'px' : '12px',
+            this.style('font-family').value)
+        }
       }
 
       this.getBoundingBox = function () {
@@ -2043,11 +2051,7 @@ function RGBColor(color_string)
         this.y = this.attribute('y').toPixels('y');
         this.x += this.getAnchorDelta(ctx, this, 0);
         for (var i=0; i<this.children.length; i++) {
-          try{
-            this.renderChild(ctx, this, i);
-          } catch(e) {
-            console.warn("Error occur when rendering svg in canvas", e);
-          }
+          this.renderChild(ctx, this, i);
         }
       }
 
@@ -2100,7 +2104,6 @@ function RGBColor(color_string)
     svg.Element.TextElementBase = function(node) {
       this.base = svg.Element.RenderedElementBase;
       this.base(node);
-      this.isText = true;
 
       this.getGlyph = function(font, text, i) {
         var c = text[i];

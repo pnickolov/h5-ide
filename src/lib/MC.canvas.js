@@ -5827,6 +5827,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 
 	// cloneNode won't clone the xmlns:xlink attribute
 	clone.setAttribute( "xmlns:xlink", "http://www.w3.org/1999/xlink" );
+	clone.removeAttribute( "id" );
 
 	// Insert the document so that we can calculate the style.
 	$("#export-png-wrap")
@@ -5834,7 +5835,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		.attr("class", $("#canvas_container").attr("class"));
 
 	// Inline styles
-	var removeArray = [ clone ]; /// Detach the clone from document.
+	var removeArray = [ ]; /// Detach the clone from document.
 	var children = clone.children || clone.childNodes;
 	for ( var i = 0; i < children.length; ++i ) {
 		if ( !children[i].tagName ) { continue; }
@@ -5996,7 +5997,10 @@ MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
 		}
 	}
 
-	if ( s.length ) { element.setAttribute("stylez", s.join(";")); }
+	if ( s.length ) {
+		element.setAttribute("stylez", s.join(";"));
+		element.setAttribute("style", s.join(";"));
+	}
 
 	for ( var i = 0; i < children.length; ++i ) {
 		var c = children[i];

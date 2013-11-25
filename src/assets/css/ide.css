@@ -4320,7 +4320,6 @@ a.action-link:hover {
 
 #sg-add-model-source-select .selection {
 	width: 69px;
-
 }
 
 #modal-sg-rule .modal-body{
@@ -4367,7 +4366,7 @@ a.action-link:hover {
 	margin: 0;
 }
 #modal-sg-rule #sg-protocol-select-result input {
-	width: 150px;
+	width: 230px;
 	display: inline-block;
 }
 #modal-sg-rule .sg-protocol-option-input {
@@ -4380,8 +4379,12 @@ a.action-link:hover {
 }
 #modal-sg-rule .protocol-icmp-sub-select {
 	display: none;
-	width: 240px;
+	width: 244px;
 	margin: 0;
+}
+
+#modal-sg-rule .protocol-icmp-sub-select .selection {
+	width: 232px;
 }
 
 #sg-protocol-all {
@@ -4393,7 +4396,7 @@ a.action-link:hover {
 }
 
 #protocol-icmp-main-select {
-	width: 240px;
+	width: 244px;
 	margin: 0 0 10px 0;
 }
 #sg-protocol-select-result {
@@ -4405,7 +4408,7 @@ a.action-link:hover {
 }
 #securitygroup-modal-description {
 	display: inline-block;
-	width: 149px;
+	width: 229px;
 	margin-left: 7px;
 }
 
@@ -4793,6 +4796,14 @@ a.action-link:hover {
 #acl-add-model-source-select .selection {
 	width: 68px;
 	margin-right: 7px;
+}
+
+#acl-add-model-source-select .selection {
+	margin: 0;
+}
+
+.acl-source-dest .input {
+	width: 220px;
 }
 
 /* SG Rule Create Dialog */
@@ -5447,7 +5458,16 @@ a.action-link:hover {
 }
 
 .modal-sns-protocol .selectbox .selection {
-	width: 205px;
+	width: 227px;
+}
+
+#property-asg-endpoint {
+	width: 225px;
+}
+
+.property-asg-ep.https #property-asg-endpoint,
+.property-asg-ep.http #property-asg-endpoint {
+	width: 180px;
 }
 
 .property-asg-size {

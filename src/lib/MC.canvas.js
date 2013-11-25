@@ -5812,7 +5812,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 	if ( !MC.canvas.exportPNG.bg )
 	{
 		var img = document.createElement("img");
-		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
+		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAHUlEQVQYV2P48ePHf9yAgabSHz9+/I4bENI9gNIA0iYpJd74eOIAAAAASUVORK5CYII=";
 		MC.canvas.exportPNG.bg = img;
 
 		$("<div id='export-png-wrap'></div>").appendTo("body").hide();
@@ -5827,6 +5827,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 
 	// cloneNode won't clone the xmlns:xlink attribute
 	clone.setAttribute( "xmlns:xlink", "http://www.w3.org/1999/xlink" );
+	clone.removeAttribute( "id" );
 
 	// Insert the document so that we can calculate the style.
 	$("#export-png-wrap")
@@ -5834,7 +5835,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		.attr("class", $("#canvas_container").attr("class"));
 
 	// Inline styles
-	var removeArray = [ clone ]; /// Detach the clone from document.
+	var removeArray = [ ]; /// Detach the clone from document.
 	var children = clone.children || clone.childNodes;
 	for ( var i = 0; i < children.length; ++i ) {
 		if ( !children[i].tagName ) { continue; }
@@ -5892,10 +5893,9 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		if ( size.height < 380 ) { size.height = 380; }
 
 		beforeRender = function( ctx ){
-			// ctx.translate(0, 54);
 			var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
 			ctx.fillStyle = pat;
-			ctx.fillRect(0, 0, size.width, size.height);
+			ctx.fillRect(0, 54, size.width, size.height-54);
 		}
 	} else {
 		beforeRender = function( ctx ){
@@ -5996,7 +5996,10 @@ MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
 		}
 	}
 
-	if ( s.length ) { element.setAttribute("stylez", s.join(";")); }
+	if ( s.length ) {
+		element.setAttribute("stylez", s.join(";"));
+		element.setAttribute("style", s.join(";"));
+	}
 
 	for ( var i = 0; i < children.length; ++i ) {
 		var c = children[i];

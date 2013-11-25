@@ -5812,7 +5812,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 	if ( !MC.canvas.exportPNG.bg )
 	{
 		var img = document.createElement("img");
-		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
+		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAHUlEQVQYV2P48ePHf9yAgabSHz9+/I4bENI9gNIA0iYpJd74eOIAAAAASUVORK5CYII=";
 		MC.canvas.exportPNG.bg = img;
 
 		$("<div id='export-png-wrap'></div>").appendTo("body").hide();
@@ -5893,10 +5893,9 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		if ( size.height < 380 ) { size.height = 380; }
 
 		beforeRender = function( ctx ){
-			// ctx.translate(0, 54);
 			var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
 			ctx.fillStyle = pat;
-			ctx.fillRect(0, 0, size.width, size.height);
+			ctx.fillRect(0, 54, size.width, size.height-54);
 		}
 	} else {
 		beforeRender = function( ctx ){

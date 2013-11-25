@@ -164,7 +164,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 # open tab fail( includ app and stack )
                 if state is 'OPEN_TAB_FAIL'
 
-                    obj = MC.forge.stack.searchStackAppById MC.data.current_tab_id
+                    obj = MC.forge.other.searchStackAppById MC.data.current_tab_id
                     #
                     if Tabbar.current is 'new'
                         event_type = ide_event.RELOAD_NEW_STACK_TAB
@@ -193,8 +193,9 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                         ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                         # delete MC.process and MC.data.process
-                        delete MC.process[ MC.data.current_tab_id ]
-                        delete MC.data.process[ MC.data.current_tab_id ]
+                        # delete MC.process[ MC.data.current_tab_id ]
+                        # delete MC.data.process[ MC.data.current_tab_id ]
+                        MC.forge.other.deleteProcess MC.data.current_tab_id
 
                         null
 
@@ -204,9 +205,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
                         ide_event.trigger ide_event.APPEDIT_2_APP, MC.data.process[ MC.data.current_tab_id ].id, MC.data.process[ MC.data.current_tab_id ].region
 
-                        # delete MC.process and MC.data.process
-                        # delete MC.process[ MC.data.current_tab_id ]
-                        # delete MC.data.process[ MC.data.current_tab_id ]
+                        # delete MC.process and MC.data.process by toolbar/view.coffee
 
                         null
 
@@ -241,6 +240,11 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
             # 2. remove html
             $item.empty() if $.trim( $item.html() ) isnt ''
+
+            # 3. delete MC.process and MC.data.process
+            # delete MC.process[ MC.data.current_tab_id ]
+            # delete MC.data.process[ MC.data.current_tab_id ]
+            MC.forge.other.deleteProcess MC.data.current_tab_id
 
             null
 

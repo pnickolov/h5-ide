@@ -109,6 +109,7 @@ define [ 'MC', 'event', 'handlebars'
 		MC.data.process = {}
 		if MC.storage.get( 'process' )
 			MC.data.process = $.extend true, {}, MC.storage.get 'process'
+			MC.process      = $.extend true, {}, MC.storage.get 'process'
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 		#

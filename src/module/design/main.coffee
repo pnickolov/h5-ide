@@ -101,7 +101,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                         console.log 'when open_app or old_app restore the scene'
 
                         # filter changed state and delete this
-                        MC.forge.other.filterProcess tab_id
+                        MC.forge.other.filterProcess tab_id if type is 'OPEN_APP'
 
                         # update design-overlay when app changed
                         if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list

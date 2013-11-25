@@ -380,46 +380,6 @@ MC.canvas = {
 		return true;
 	},
 
-	screenshotInit: function ()
-	{
-		var layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_group_data = MC.canvas.data.get('layout.component.group'),
-			node_minX = [],
-			node_minY = [],
-			node_maxX = [],
-			node_maxY = [],
-			node_data,
-			group_node_data,
-			screen_maxX,
-			screen_maxY,
-			group_minX,
-			group_minY;
-
-		$.each(layout_node_data, function (index, data)
-		{
-			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
-			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
-		});
-
-		$.each(layout_group_data, function (index, data)
-		{
-			node_maxX.push(data.coordinate[0] + data.size[0]);
-			node_maxY.push(data.coordinate[1] + data.size[1]);
-		});
-
-		screen_maxX = Math.max.apply(Math, node_maxX) * MC.canvas.GRID_WIDTH;
-		screen_maxY = Math.max.apply(Math, node_maxY) * MC.canvas.GRID_HEIGHT;
-
-		$('#svg_canvas, #screenshot_canvas_body').css({
-			'width': screen_maxX,
-			'height': screen_maxY
-		});
-
-		$('#screenshot_canvas_header').css('width', screen_maxX);
-
-		return true;
-	},
-
 	_addPad: function (point, adjust)
 	{
 		//add by xjimmy, adjust point
@@ -5842,123 +5802,207 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 	/*
 	data = {
 		isExport : boolean
-		onFinish : function
+		onFinish : function (required)
 		name     : string
 	}
 	*/
+
+	if ( !data.onFinish ) { return; }
+	// Prepare grid background
 	if ( !MC.canvas.exportPNG.bg )
 	{
 		var img = document.createElement("img");
 		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
 		MC.canvas.exportPNG.bg = img;
+
+		$("<div id='export-png-wrap'></div>").appendTo("body").hide();
 	}
 
-	require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
 
-		/* Trim SVG */
-		var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
+	var svg_canvas_element = $svg_canvas_element[0];
+	var size               = svg_canvas_element.getBBox();
+	var clone              = svg_canvas_element.cloneNode( true );
+	var beforeRender       = null;
+	var line               = clone.getElementById("svg_padding_line");
 
-		var size = $svg_canvas_element[0].getBBox();
-		// In IE, getBBox returns SvgRect which is not allowed to modified.
-		size = {
-			width  : size.width,
-			height : size.height
-		};
-		size.width  += 50;
-		size.height += 30;
+	// cloneNode won't clone the xmlns:xlink attribute
+	clone.setAttribute( "xmlns:xlink", "http://www.w3.org/1999/xlink" );
 
-		var ratio = 1;
-		var beforeRender = null;
+	// Insert the document so that we can calculate the style.
+	$("#export-png-wrap")
+		.append( clone )
+		.attr("class", $("#canvas_container").attr("class"));
 
-		// Calc the perfect size for the thumbnail
-		if ( data.isExport ) {
-			size.height += 54;
+	// Inline styles
+	var removeArray = [ clone ]; /// Detach the clone from document.
+	var children = clone.children || clone.childNodes;
+	for ( var i = 0; i < children.length; ++i ) {
+		if ( !children[i].tagName ) { continue; }
+		MC.canvas.exportPNG.fixSVG( children[i], removeArray );
+	}
+	// Remove unnecessary elements
+	if ( removeArray[i].remove ) {
+		for ( i = 0; i < removeArray.length; ++i ) {
+			removeArray[i].remove();
+		}
+	} else {
+		for ( i = 0; i < removeArray.length; ++i ) {
+			removeArray[i].parentNode.removeChild( removeArray[i] );
+		}
+	}
 
-			if ( size.width  < 360 ) { size.width  = 360; }
-			if ( size.height < 380 ) { size.height = 380; }
+	// Prepare to insert header for Exporting Image
+	if ( data.isExport ) {
+		var replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+		replaceEl.textContent = "PLACEHOLDER";
+		// We use canvg's translate instead of calling context.translate()
+		// because context.translate seems a little bit slow.
+		replaceEl.setAttribute("transform","translate(0 54)");
+		clone.insertBefore( replaceEl, line );
+	}
 
-			beforeRender = function( ctx ){
-				ctx.save();
-				ctx.translate(0, 54);
-				var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
-				ctx.fillStyle = pat;
-				ctx.fillRect(0, 0, size.width, size.height);
-				ctx.restore();
-			}
-		} else {
-			beforeRender = function( ctx ){
-				var ratio1 = 220 / size.width;
-				var ratio2 = 145 / size.height;
-				ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
+	// Remove a line that is useless
+	clone.removeChild(line);
 
-				var pattern = document.createElement('canvas');
-				pattern.width  = size.width;
-				pattern.height = size.height;
+	// Generate svg text, and remove data attributes
+	var svg = (new XMLSerializer()).serializeToString( clone )
+							.replace(/data-[^=]+="[^"]*?"/g, "");
 
-				size.width  = 220;
-				size.height = 145;
-
-				patternctx = pattern.getContext("2d");
-
-				patternctx.fillStyle = patternctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
-				patternctx.fillRect(0, 0, pattern.width, pattern.height);
-
-				ctx.scale( ratio, ratio );
-				ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
-			}
+	// Insert header
+	if ( data.isExport ) {
+		if ( MC.canvas.exportPNG.href === undefined ) {
+			// In IE, XMLSerializer will change xlink:href to href
+			MC.canvas.exportPNG.href = svg.indexOf("xlink:href") == -1 ? "href" : "xlink:href";
 		}
 
-		clone.attr("width", size.width).attr("height", size.height);
+		var head = '<rect fill="#ad5992" width="100%" height="4" y="-54"></rect><rect fill="#252526" width="100%" height="50" y="-50"></rect><image ' + MC.canvas.exportPNG.href + '="./assets/images/ide/logo-t.png" x="10" y="-42" width="160" height="34"></image><text x="100%" y="-27" fill="#fff" text-anchor="end" transform="translate(-10 0)">' + MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' ) + '</text><text fill="#fff" x="100%" y="-13" text-anchor="end" transform="translate(-10 0)">' + data.name + '</text>';
 
-		var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
-		styleElement.setAttribute("type", "text/css");
-		styleElement.textContent = "CSS_PLACEHOLDER";
+		svg = svg.replace("PLACEHOLDER</g>", head).replace("</svg>", "</g></svg>");
+	}
 
-		var line = clone[0].getElementById("svg_padding_line")
-		clone[0].insertBefore( styleElement, line );
+	// Calc the size for the canvas
+	// In IE, getBBox returns SvgRect which is not allowed to modified.
+	size = { width : size.width + 50, height : size.height + 30 };
 
-		// remove useless elements
-		clone.find(".resizer-wrap").remove();
-		clone.find(".group-resizer").remove();
-		clone.find("g:empty").remove();
-		clone[0].removeChild( line );
+	// Calc the perfect size
+	if ( data.isExport ) {
+		size.height += 54;
 
-		// fix group label color
-		clone.find(".group-label").each(function(){
-			var $t = $(this);
-			var newClass = $t.parent().data("class").replace(/\./g, "-") + "-group-label";
-			var oldClass = $t.attr("class");
-			$t.attr("class", oldClass + " " + newClass);
-		})
+		if ( size.width  < 360 ) { size.width  = 360; }
+		if ( size.height < 380 ) { size.height = 380; }
 
-		var svg = (new XMLSerializer()).serializeToString( clone[0] );
-		if ( data.isExport ) {
-
-			if ( MC.canvas.exportPNG.isIE === undefined ) {
-				// In IE, XMLSerializer will change xlink:href to href
-				MC.canvas.exportPNG.isIE = svg.indexOf("xlink:href") == -1;
-			}
-
-			// Insert header
-			var datetime = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
-			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
-			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + datetime + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
-
-			svg = svg.replace("</svg>", '</g></svg>');
+		beforeRender = function( ctx ){
+			// ctx.translate(0, 54);
+			var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+			ctx.fillStyle = pat;
+			ctx.fillRect(0, 0, size.width, size.height);
 		}
+	} else {
+		beforeRender = function( ctx ){
+			var ratio1 = 220 / size.width;
+			var ratio2 = 145 / size.height;
+			var ratio  = ratio1 <= ratio2 ? ratio2 : ratio1;
 
-		svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
+			var pattern = document.createElement('canvas');
+			pattern.width  = size.width;
+			pattern.height = size.height;
 
-		var canvas = document.createElement('canvas');
-		canvas.width  = size.width;
-		canvas.height = size.height;
-		canvg( canvas, svg, {
-			ignoreDimensions : true,
-			beforeRender : beforeRender,
-			afterRender  : data.onFinish ? function(){
-				data.image = canvas.toDataURL()
-				data.onFinish( data );
-			} : null
-		} );
+			size.width  = 220;
+			size.height = 145;
+
+			patternctx = pattern.getContext("2d");
+
+			patternctx.fillStyle = patternctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+			patternctx.fillRect(0, 0, pattern.width, pattern.height);
+
+			ctx.scale( ratio, ratio );
+			ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
+		}
+	}
+
+	// Draw
+	var canvas = document.createElement('canvas');
+	canvas.width  = size.width;
+	canvas.height = size.height;
+	canvg( canvas, svg, {
+		beforeRender : beforeRender,
+		afterRender  : function() {
+			data.image = canvas.toDataURL()
+			data.onFinish( data );
+		}
 	});
 };
+
+MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
+
+	var tagName = element.tagName.toLowerCase();
+
+	// Remove <defs/>, empty <g/> and g.resizer-wrap
+	if ( tagName === "defs" ) { return removeArray.push( element ); }
+
+	var children = element.children || element.childNodes;
+
+	if ( tagName === "g" ) {
+		var remove = false;
+		if ( children.length == 0 ) {
+			remove = true;
+		} else if ( !element.classList ) {
+			var k = element.getAttribute("class");
+			if ( k && k.indexOf("resizer-wrap") != -1 ) {
+				remove = true;
+			}
+		} else if ( element.classList.contains("resizer-wrap") ) {
+				remove = true;
+		}
+		if ( remove ) { return removeArray.push(element); }
+	}
+
+	var ss = window.getComputedStyle( element );
+	// Remove non-visual element
+	if ( ss.visibility == "hidden" || ss.display == "none" || ss.opacity == "0" ) {
+		return removeArray.push( element );
+	}
+
+	// Store the inline stylesheet in stylez
+	var s = [];
+
+	if ( ss.opacity != 1 ) { s.push( "opacity:" + ss.opacity ); }
+
+	if ( tagName !== "g" && tagName !== "image" ) {
+		// Fill
+		if ( ss.fillOpacity == 0 ) {
+			s.push( "fill:none" );
+		} else {
+			if ( ss.fill != "#000000" ) { s.push( "fill:" + ss.fill ); }
+			if ( ss.fillOpacity != 1 )  { s.push( "fill-opacity:" + ss.fillOpacity ); }
+		}
+
+		// Stroke
+		var t1 = (ss.strokeWidth + "").replace("px", "");
+		if ( ss.strokeWidth == 0 || ss.strokeOpacity == 0 ) {
+			s.push( "stroke:none" );
+		} else {
+			s.push( "stroke:" + ss.stroke );
+			if ( t1 != 1 )               { s.push( "stroke-width:" + ss.strokeWidth ); }
+			if ( ss.strokeOpacity != 1 ) { s.push( "stroke-opacity:" + ss.strokeOpacity ); }
+		}
+		if ( ss.strokeLinejoin !="miter" ) { s.push("stroke-linejoin:"+ss.strokeLinejoin); }
+		if ( ss.strokeDasharray!="none"  ) { s.push("stroke-dasharray:"+ss.strokeDasharray); }
+
+		// Text ( Font-family is hard coded in UI.canvg )
+		if ( tagName === "text" ) {
+			s.push( "font-size:"+ ss.fontSize );
+			if ( ss.textAnchor != "start" ) { s.push( "text-anchor:" + ss.textAnchor ); }
+		}
+	}
+
+	if ( s.length ) { element.setAttribute("stylez", s.join(";")); }
+
+	for ( var i = 0; i < children.length; ++i ) {
+		var c = children[i];
+		if ( !c.tagName ) { continue; }
+		MC.canvas.exportPNG.fixSVG( c, removeArray );
+		c.removeAttribute("id");
+		c.removeAttribute("class");
+	}
+}

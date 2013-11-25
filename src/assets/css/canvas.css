@@ -379,7 +379,8 @@
 }
 
 .fill-line {
-	stroke: rgba(255, 255, 255, 0);
+	stroke: #fff;
+	stroke-opacity : 0;
 	stroke-width: 10px;
 }
 

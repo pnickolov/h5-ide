@@ -263,7 +263,7 @@ function RGBColor(color_string)
   //     scaleHeight: int => scales vertically to height
   //     renderCallback: function => will call the function after the first render is completed
   //     forceRedraw: function => will call the function on every frame, if it returns true, will redraw
-  this.canvg = function (target, s, opts) {
+  window.canvg = function (target, s, opts) {
 
     // no parameters
     if ( !target ) { return; }
@@ -314,32 +314,11 @@ function RGBColor(color_string)
     }
     svg.init();
 
-    // images loaded
-    svg.ImagesLoaded = function() {
-      for (var i=0; i<svg.Images.length; i++) {
-        if (!svg.Images[i].loaded) return false;
-      }
-      return true;
-    }
-
     // trim
     svg.trim = function(s) { return s.replace(/^\s+|\s+$/g, ''); }
 
     // compress spaces
     svg.compressSpaces = function(s) { return s.replace(/[\s\r\t\n]+/gm,' '); }
-
-    // ajax
-    svg.ajax = function(url) {
-      var AJAX;
-      if(window.XMLHttpRequest){AJAX=new XMLHttpRequest();}
-      else{AJAX=new ActiveXObject('Microsoft.XMLHTTP');}
-      if(AJAX){
-         AJAX.open('GET',url,false);
-         AJAX.send(null);
-         return AJAX.responseText;
-      }
-      return null;
-    }
 
     // parse xml
     svg.parseXml = function(xml, secondTime) {
@@ -523,16 +502,12 @@ function RGBColor(color_string)
       this.Variants = 'normal|small-caps|inherit';
       this.Weights = 'normal|bold|bolder|lighter|100|200|300|400|500|600|700|800|900|inherit';
 
-      this.CreateFont = function(fontStyle, fontVariant, fontWeight, fontSize, fontFamily, inherit) {
-        var f = inherit != null ? this.Parse(inherit) : this.CreateFont('', '', '', '', '', svg.ctx.font);
-        return {
-          fontFamily: fontFamily || f.fontFamily,
-          fontSize: fontSize || f.fontSize,
-          fontStyle: fontStyle || f.fontStyle,
-          fontWeight: fontWeight || f.fontWeight,
-          fontVariant: fontVariant || f.fontVariant,
-          toString: function () { return [this.fontStyle, this.fontVariant, this.fontWeight, this.fontSize, this.fontFamily].join(' ') }
-        }
+      this.CreateFont = function(fontStyle, fontWeight, fontSize, inherit) {
+        var f = this.Parse( inherit ? inherit : svg.ctx.font );
+        if ( !fontStyle   ) { fontStyle   = f.fontStyle || ""; }
+        if ( !fontWeight  ) { fontWeight  = f.fontWeight || ""; }
+        if ( !fontSize    ) { fontSize    = f.fontSize || ""; }
+        return [ fontStyle, "normal", fontWeight, fontSize, '"Lato", "Helvetica Neue", Arial, sans-serif' ].join(" ");
       }
 
       var that = this;
@@ -853,96 +828,6 @@ function RGBColor(color_string)
       this.styles = {};
       this.children = [];
 
-      // get or create attribute
-      this.attribute = function(name, createIfNotExists) {
-        var a = this.attributes[name];
-        if (a != null) return a;
-
-        if (createIfNotExists == true) { a = new svg.Property(name, ''); this.attributes[name] = a; }
-        return a || svg.EmptyProperty;
-      }
-
-      this.getHrefAttribute = function() {
-        for (var a in this.attributes) {
-          if (a.match(/:href$/)) {
-            return this.attributes[a];
-          }
-        }
-                return this.attributes.href || svg.EmptyProperty();
-      }
-
-      // get or create style, crawls up node tree
-      this.style = function(name, createIfNotExists) {
-        var s = this.styles[name];
-        if (s != null) return s;
-
-        var a = this.attribute(name);
-        if (a != null && a.hasValue()) {
-          this.styles[name] = a; // move up to me to cache
-          return a;
-        }
-
-        var p = this.parent;
-        if (p != null) {
-          var ps = p.style(name);
-          if (ps != null && ps.hasValue()) {
-            return ps;
-          }
-        }
-
-        if (createIfNotExists == true) { s = new svg.Property(name, ''); this.styles[name] = s; }
-        return s || svg.EmptyProperty;
-      }
-
-      // base render
-      this.render = function(ctx) {
-        // don't render display=none
-        if (this.style('display').value == 'none') return;
-
-        // don't render visibility=hidden
-        if (this.attribute('visibility').value == 'hidden') return;
-
-        ctx.save();
-        if (this.attribute('mask').hasValue()) { // mask
-          var mask = this.attribute('mask').getDefinition();
-          if (mask != null) mask.apply(ctx, this);
-        }
-        else if (this.style('filter').hasValue()) { // filter
-          var filter = this.style('filter').getDefinition();
-          if (filter != null) filter.apply(ctx, this);
-        }
-        else {
-          this.setContext(ctx);
-          this.renderChildren(ctx);
-          this.clearContext(ctx);
-        }
-        ctx.restore();
-      }
-
-      // base set context
-      this.setContext = function(ctx) {
-        // OVERRIDE ME!
-      }
-
-      // base clear context
-      this.clearContext = function(ctx) {
-        // OVERRIDE ME!
-      }
-
-      // base render children
-      this.renderChildren = function(ctx) {
-        for (var i=0; i<this.children.length; i++) {
-          this.children[i].render(ctx);
-        }
-      }
-
-      this.addChild = function(childNode, create) {
-        var child = childNode;
-        if (create) child = svg.CreateElement(childNode);
-        child.parent = this;
-        this.children.push(child);
-      }
-
       if (node != null && node.nodeType == 1) { //ELEMENT_NODE
         // add children
         for (var i=0; i<node.childNodes.length; i++) {
@@ -963,69 +848,159 @@ function RGBColor(color_string)
         }
 
         // add tag styles
-        var styles = svg.Styles[node.nodeName];
-        if (styles != null) {
-          for (var name in styles) {
-            this.styles[name] = styles[name];
-          }
-        }
+        // var styles = svg.Styles[node.nodeName];
+        // if (styles != null) {
+        //   for (var name in styles) {
+        //     this.styles[name] = styles[name];
+        //   }
+        // }
 
         // add class styles
-        if (this.attribute('class').hasValue()) {
-          var classes = svg.compressSpaces(this.attribute('class').value).split(' ');
-          for (var j=0; j<classes.length; j++) {
-            styles = svg.Styles['.'+classes[j]];
-            if (styles != null) {
-              for (var name in styles) {
-                this.styles[name] = styles[name];
-              }
-            }
-            styles = svg.Styles[node.nodeName+'.'+classes[j]];
-            if (styles != null) {
-              for (var name in styles) {
-                this.styles[name] = styles[name];
-              }
-            }
-          }
-        }
+        // if (this.attribute('class').hasValue()) {
+        //   var classes = svg.compressSpaces(this.attribute('class').value).split(' ');
+        //   for (var j=0; j<classes.length; j++) {
+        //     styles = svg.Styles['.'+classes[j]];
+        //     if (styles != null) {
+        //       for (var name in styles) {
+        //         this.styles[name] = styles[name];
+        //       }
+        //     }
+        //     styles = svg.Styles[node.nodeName+'.'+classes[j]];
+        //     if (styles != null) {
+        //       for (var name in styles) {
+        //         this.styles[name] = styles[name];
+        //       }
+        //     }
+        //   }
+        // }
 
-        // add id styles
-        if (this.attribute('id').hasValue()) {
-          var styles = svg.Styles['#' + this.attribute('id').value];
-          if (styles != null) {
-            for (var name in styles) {
-              this.styles[name] = styles[name];
-            }
-          }
-        }
+        // // add id styles
+        // if (this.attribute('id').hasValue()) {
+        //   var styles = svg.Styles['#' + this.attribute('id').value];
+        //   if (styles != null) {
+        //     for (var name in styles) {
+        //       this.styles[name] = styles[name];
+        //     }
+        //   }
+        // }
 
-        // add inline styles
-        if (this.attribute('style').hasValue()) {
-          var styles = this.attribute('style').value.split(';');
-          for (var i=0; i<styles.length; i++) {
-            if (svg.trim(styles[i]) != '') {
-              var style = styles[i].split(':');
-              var name = svg.trim(style[0]);
-              var value = svg.trim(style[1]);
-              this.styles[name] = new svg.Property(name, value);
-            }
+        // add inline styles // hacked version
+        var styles = this.attribute('stylez').value.split(";");
+        for (var i=0; i<styles.length; i++) {
+          if ( styles[i].indexOf(':') != -1 ) {
+            var s = styles[i].split(':');
+            var name = svg.trim(s[0]);
+            this.styles[name] = new svg.Property(name, svg.trim(s[1]));
           }
         }
 
         // add id
-        if (this.attribute('id').hasValue()) {
-          if (svg.Definitions[this.attribute('id').value] == null) {
-            svg.Definitions[this.attribute('id').value] = this;
-          }
-        }
+        // if (this.attribute('id').hasValue()) {
+        //   if (svg.Definitions[this.attribute('id').value] == null) {
+        //     svg.Definitions[this.attribute('id').value] = this;
+        //   }
+        // }
       }
     }
+
+      // get or create attribute
+      svg.Element.ElementBase.prototype.attribute = function(name, createIfNotExists) {
+        var a = this.attributes[name];
+        if (a != null) return a;
+
+        if (createIfNotExists == true) { a = new svg.Property(name, ''); this.attributes[name] = a; }
+        return a || svg.EmptyProperty;
+      }
+
+      svg.Element.ElementBase.prototype.getHrefAttribute = function() {
+        for (var a in this.attributes) {
+          if (a.match(/:href$/)) {
+            return this.attributes[a];
+          }
+        }
+        return this.attributes.href || svg.EmptyProperty();
+      }
+
+      // get or create style, crawls up node tree
+      svg.Element.ElementBase.prototype.style = function(name, createIfNotExists) {
+        var s = this.styles[name];
+        if (s != null) return s;
+
+        var a = this.attribute(name);
+        if (a != null && a.hasValue()) {
+          this.styles[name] = a; // move up to me to cache
+          return a;
+        }
+
+        // var p = this.parent;
+        // if (p != null) {
+        //   var ps = p.style(name);
+        //   if (ps != null && ps.hasValue()) {
+        //     return ps;
+        //   }
+        // }
+
+        if (createIfNotExists == true) { s = new svg.Property(name, ''); this.styles[name] = s; }
+        return s || svg.EmptyProperty;
+      }
+
+      // base render
+      svg.Element.ElementBase.prototype.render = function(ctx) {
+        // // don't render display=none
+        // if (this.style('display').value == 'none') return;
+
+        // // don't render visibility=hidden
+        // if (this.attribute('visibility').value == 'hidden') return;
+
+        ctx.save();
+        // if (this.attribute('mask').hasValue()) { // mask
+        //   var mask = this.attribute('mask').getDefinition();
+        //   if (mask != null) mask.apply(ctx, this);
+        // }
+        // else if (this.style('filter').hasValue()) { // filter
+        //   var filter = this.style('filter').getDefinition();
+        //   if (filter != null) filter.apply(ctx, this);
+        // }
+        // else {
+          this.setContext(ctx);
+          this.renderChildren(ctx);
+          this.clearContext(ctx);
+        // }
+        ctx.restore();
+      }
+
+      // base set context
+      svg.Element.ElementBase.prototype.setContext = function(ctx) {
+        // OVERRIDE ME!
+      }
+
+      // base clear context
+      svg.Element.ElementBase.prototype.clearContext = function(ctx) {
+        // OVERRIDE ME!
+      }
+
+      // base render children
+      svg.Element.ElementBase.prototype.renderChildren = function(ctx) {
+        for (var i=0; i<this.children.length; i++) {
+          this.children[i].render(ctx);
+        }
+      }
+
+      svg.Element.ElementBase.prototype.addChild = function(childNode, create) {
+        var child = childNode;
+        if (create) child = svg.CreateElement(childNode);
+        child.parent = this;
+        this.children.push(child);
+      }
+
 
     svg.Element.RenderedElementBase = function(node) {
       this.base = svg.Element.ElementBase;
       this.base(node);
+    }
+      svg.Element.RenderedElementBase.prototype = new svg.Element.ElementBase;
 
-      this.setContext = function(ctx) {
+      svg.Element.RenderedElementBase.prototype.setContext = function(ctx) {
         // fill
         if (this.style('fill').isUrlDefinition()) {
           var fs = this.style('fill').getFillStyleDefinition(this, this.style('fill-opacity'));
@@ -1079,13 +1054,13 @@ function RGBColor(color_string)
         }
 
         // font
-        if (typeof(ctx.font) != 'undefined') {
+        if (this.isText && typeof(ctx.font) != 'undefined') {
           ctx.font = svg.Font.CreateFont(
             this.style('font-style').value,
             this.style('font-variant').value,
             this.style('font-weight').value,
-            this.style('font-size').hasValue() ? this.style('font-size').toPixels() + 'px' : '',
-            this.style('font-family').value).toString();
+            this.style('font-size').hasValue() ? this.style('font-size').toPixels() + 'px' : '12px',
+            this.style('font-family').value)
         }
 
         // transform
@@ -1105,8 +1080,6 @@ function RGBColor(color_string)
           ctx.globalAlpha = this.style('opacity').numValue();
         }
       }
-    }
-    svg.Element.RenderedElementBase.prototype = new svg.Element.ElementBase;
 
     svg.Element.PathElementBase = function(node) {
       this.base = svg.Element.RenderedElementBase;
@@ -2127,6 +2100,7 @@ function RGBColor(color_string)
     svg.Element.TextElementBase = function(node) {
       this.base = svg.Element.RenderedElementBase;
       this.base(node);
+      this.isText = true;
 
       this.getGlyph = function(font, text, i) {
         var c = text[i];
@@ -2297,23 +2271,16 @@ function RGBColor(color_string)
       this.base(node);
 
       var href = this.getHrefAttribute().value;
-      var isSvg = href.match(/\.svg$/)
 
       svg.Images.push(this);
       this.loaded = false;
-      if (!isSvg) {
-        this.img = document.createElement('img');
-        var self = this;
-        this.img.onerror = this.img.onload = function() {
-            self.loaded = true;
-            svg.onImageLoaded();
-        }
-        this.img.src = href;
+      this.img = document.createElement('img');
+      var self = this;
+      this.img.onerror = this.img.onload = function() {
+        self.loaded = true;
+        svg.onImageLoaded();
       }
-      else {
-        this.img = svg.ajax(href);
-        this.loaded = true;
-      }
+      this.img.src = href;
 
       this.renderChildren = function(ctx) {
         var x = this.attribute('x').toPixels('x');
@@ -2324,21 +2291,16 @@ function RGBColor(color_string)
         if (width == 0 || height == 0) return;
 
         ctx.save();
-        if (isSvg) {
-          ctx.drawSvg(this.img, x, y, width, height);
-        }
-        else {
-          ctx.translate(x, y);
-          svg.AspectRatio(ctx,
-                  this.attribute('preserveAspectRatio').value,
-                  width,
-                  this.img.width,
-                  height,
-                  this.img.height,
-                  0,
-                  0);
-          ctx.drawImage(this.img, 0, 0);
-        }
+        ctx.translate(x, y);
+        svg.AspectRatio(ctx,
+                this.attribute('preserveAspectRatio').value,
+                width,
+                this.img.width,
+                height,
+                this.img.height,
+                0,
+                0);
+        ctx.drawImage(this.img, 0, 0);
         ctx.restore();
       }
 
@@ -2430,23 +2392,23 @@ function RGBColor(color_string)
                 }
               }
               svg.Styles[cssClass] = props;
-              if (cssClass == '@font-face') {
-                var fontFamily = props['font-family'].value.replace(/"/g,'');
-                var srcs = props['src'].value.split(',');
-                for (var s=0; s<srcs.length; s++) {
-                  if (srcs[s].indexOf('format("svg")') > 0) {
-                    var urlStart = srcs[s].indexOf('url');
-                    var urlEnd = srcs[s].indexOf(')', urlStart);
-                    var url = srcs[s].substr(urlStart + 5, urlEnd - urlStart - 6);
-                    var doc = svg.parseXml(svg.ajax(url));
-                    var fonts = doc.getElementsByTagName('font');
-                    for (var f=0; f<fonts.length; f++) {
-                      var font = svg.CreateElement(fonts[f]);
-                      svg.Definitions[fontFamily] = font;
-                    }
-                  }
-                }
-              }
+              // if (cssClass == '@font-face') {
+              //   var fontFamily = props['font-family'].value.replace(/"/g,'');
+              //   var srcs = props['src'].value.split(',');
+              //   for (var s=0; s<srcs.length; s++) {
+              //     if (srcs[s].indexOf('format("svg")') > 0) {
+              //       var urlStart = srcs[s].indexOf('url');
+              //       var urlEnd = srcs[s].indexOf(')', urlStart);
+              //       var url = srcs[s].substr(urlStart + 5, urlEnd - urlStart - 6);
+              //       var doc = svg.parseXml(svg.ajax(url));
+              //       var fonts = doc.getElementsByTagName('font');
+              //       for (var f=0; f<fonts.length; f++) {
+              //         var font = svg.CreateElement(fonts[f]);
+              //         svg.Definitions[fontFamily] = font;
+              //       }
+              //     }
+              //   }
+              // }
             }
           }
         }
@@ -2724,11 +2686,6 @@ function RGBColor(color_string)
       return e;
     }
 
-    // load from url
-    svg.load = function(ctx, url) {
-      svg.loadXml(ctx, svg.ajax(url));
-    }
-
     // load from xml
     svg.loadXml = function(ctx, xml) {
       svg.loadXmlDoc(ctx, svg.parseXml(xml));
@@ -2744,29 +2701,29 @@ function RGBColor(color_string)
       var isFirstRender = true;
       var draw = function() {
         svg.ViewPort.Clear();
-        if (ctx.canvas.parentNode) svg.ViewPort.SetCurrent(ctx.canvas.parentNode.clientWidth, ctx.canvas.parentNode.clientHeight);
+        // if (ctx.canvas.parentNode) svg.ViewPort.SetCurrent(ctx.canvas.parentNode.clientWidth, ctx.canvas.parentNode.clientHeight);
 
-        if (svg.opts['ignoreDimensions'] != true) {
-          // set canvas size
-          if (e.style('width').hasValue()) {
-            ctx.canvas.width = e.style('width').toPixels('x');
-            ctx.canvas.style.width = ctx.canvas.width + 'px';
-          }
-          if (e.style('height').hasValue()) {
-            ctx.canvas.height = e.style('height').toPixels('y');
-            ctx.canvas.style.height = ctx.canvas.height + 'px';
-          }
-        }
-        var cWidth = ctx.canvas.clientWidth || ctx.canvas.width;
+        // if (svg.opts['ignoreDimensions'] != true) {
+        //   // set canvas size
+        //   if (e.style('width').hasValue()) {
+        //     ctx.canvas.width = e.style('width').toPixels('x');
+        //     ctx.canvas.style.width = ctx.canvas.width + 'px';
+        //   }
+        //   if (e.style('height').hasValue()) {
+        //     ctx.canvas.height = e.style('height').toPixels('y');
+        //     ctx.canvas.style.height = ctx.canvas.height + 'px';
+        //   }
+        // }
+        var cWidth  = ctx.canvas.clientWidth  || ctx.canvas.width;
         var cHeight = ctx.canvas.clientHeight || ctx.canvas.height;
-        if (svg.opts['ignoreDimensions'] == true && e.style('width').hasValue() && e.style('height').hasValue()) {
-          cWidth = e.style('width').toPixels('x');
-          cHeight = e.style('height').toPixels('y');
-        }
+        // if (svg.opts['ignoreDimensions'] == true && e.style('width').hasValue() && e.style('height').hasValue()) {
+        //   cWidth = e.style('width').toPixels('x');
+        //   cHeight = e.style('height').toPixels('y');
+        // }
         svg.ViewPort.SetCurrent(cWidth, cHeight);
 
-        if (svg.opts['offsetX'] != null) e.attribute('x', true).value = svg.opts['offsetX'];
-        if (svg.opts['offsetY'] != null) e.attribute('y', true).value = svg.opts['offsetY'];
+        // if (svg.opts['offsetX'] != null) e.attribute('x', true).value = svg.opts['offsetX'];
+        // if (svg.opts['offsetY'] != null) e.attribute('y', true).value = svg.opts['offsetY'];
         if (svg.opts['scaleWidth'] != null && svg.opts['scaleHeight'] != null) {
           var xRatio = 1, yRatio = 1, viewBox = svg.ToNumberArray(e.attribute('viewBox').value);
           if (e.attribute('width').hasValue()) xRatio = e.attribute('width').toPixels('x') / svg.opts['scaleWidth'];

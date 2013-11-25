@@ -3426,7 +3426,7 @@ module.exports =
       zh: ""
 
     TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
-      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no attached instance or auto scaling group."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
       zh: ""
 
     TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:

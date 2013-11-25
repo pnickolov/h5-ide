@@ -275,7 +275,7 @@ define [ '../base/view',
                 $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
-                $('#acl-add-model-source-select .selection').width(302)
+                $('#acl-add-model-source-select .selection').width(322)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')

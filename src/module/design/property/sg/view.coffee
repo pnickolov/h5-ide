@@ -261,7 +261,7 @@ define [ '../base/view',
             value = $.trim($(event.target).find('.selected').attr('data-id'))
             isCustom = value is 'custom'
             $('#securitygroup-modal-description').toggle( isCustom )
-            $('#sg-add-model-source-select .selection').width( if isCustom then 69 else 255 )
+            $('#sg-add-model-source-select .selection').width( if isCustom then 69 else 322 )
             null
 
         sortSgRule : ( event ) ->

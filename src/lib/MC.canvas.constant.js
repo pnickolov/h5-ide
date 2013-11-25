@@ -550,7 +550,7 @@ var constant_data = {
 					"to": "horizontal"
 				},
 				"dash_line": true,
-				"relation": "unique"
+				"relation": "multiple"
 			}
 		},
 		"AWS.VPC.VPNGateway": {
@@ -562,7 +562,7 @@ var constant_data = {
 					"to": "horizontal"
 				},
 				"dash_line": true,
-				"relation": "unique"
+				"relation": "multiple"
 			},
 			"AWS.VPC.CustomerGateway": {
 				"type": "vpn",

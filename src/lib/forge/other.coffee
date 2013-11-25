@@ -23,8 +23,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'deleteProcess', id
 		delete MC.process[ id ]
 		delete MC.data.process[ id ]
+		MC.storage.set 'process', $.extend true, {}, MC.data.process
+		null
+
+	filterProcess = ( id ) ->
+		console.log 'filterProcess', id
+
+		obj = @searchStackAppById id
+
+		if obj and obj.state in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
+			@deleteProcess id
+
 		null
 
 	#public
 	searchStackAppById : searchStackAppById
 	deleteProcess      : deleteProcess
+	filterProcess      : filterProcess

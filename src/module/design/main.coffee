@@ -100,6 +100,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                         console.log 'when open_app or old_app restore the scene'
 
+                        # filter changed state and delete this
+                        MC.forge.other.filterProcess tab_id
+
                         # update design-overlay when app changed
                         if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
 
@@ -198,7 +201,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 MC.data.process             = {}
                 MC.data.process             = $.extend true, {}, MC.process
                 MC.data.process[ id ].state = type
-                #MC.storage.set 'process', MC.data.process
+                MC.storage.set 'process', MC.data.process
 
                 return if MC.data.current_tab_id isnt id
 

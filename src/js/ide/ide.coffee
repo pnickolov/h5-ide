@@ -93,6 +93,8 @@ define [ 'MC', 'event', 'handlebars'
 
 		#
 		MC.data.nav_new_stack_list = {}
+		MC.data.nav_app_list       = {}
+		MC.data.nav_stack_list     = {}
 
 		#global resource data (Describe* return)
 		MC.data.resource_list = {}
@@ -105,6 +107,8 @@ define [ 'MC', 'event', 'handlebars'
 		#set process tab
 		MC.process = {}
 		MC.data.process = {}
+		if MC.storage.get( 'process' )
+			MC.data.process = $.extend true, {}, MC.storage.get 'process'
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
 		#

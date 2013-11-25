@@ -110,12 +110,11 @@ define [ 'MC', 'event', 'handlebars'
 		if MC.storage.get( 'process' )
 			MC.data.process = $.extend true, {}, MC.storage.get 'process'
 			MC.process      = $.extend true, {}, MC.storage.get 'process'
+
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
-		#
-		MC.data.is_reset_session = false
-		#
 		MC.data.is_loading_complete = false
+
 		#save resouce service name
 		MC.data.resouceapi = []
 		#dependency MC.data.is_loading_complete and MC.data.design_submodule_count = -1
@@ -148,11 +147,7 @@ define [ 'MC', 'event', 'handlebars'
 
 		relogin = () ->
 			console.log 'relogin'
-			#
-			MC.data.is_reset_session = true
-			#
 			ide_event.trigger ide_event.SWITCH_MAIN
-			#
 			require [ 'component/session/main' ], ( session_main ) -> session_main.loadModule()
 
 		status = () ->
@@ -169,13 +164,7 @@ define [ 'MC', 'event', 'handlebars'
 		subScriptionError = ( error ) ->
 			console.log '---------- session invalid ----------'
 			console.log error
-			#redirect to page ide.html
-			if MC.data.is_reset_session
-				MC.data.is_reset_session = false
-			else
-				#window.location.href = "login.html"
-				#
-				relogin()
+			relogin()
 			null
 
 		subRequestReady = () ->

@@ -113,7 +113,18 @@ define [ 'event', 'i18n!nls/lang.js',
             isDemo          : false
 
         initialize: ->
+            $( document.body ).off 'keyup', '#confirm-app-name'
+
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+            $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
+
+        confirmAppName: ( event ) ->
+            confirm = $( @ ).data 'confirm'
+            if $( @ ).val() is confirm
+                $( '#btn-confirm' ).removeAttr 'disabled'
+            else
+                $( '#btn-confirm' ).attr 'disabled', 'disabled'
+
 
         setDemo: ->
             @status.isDemo = true

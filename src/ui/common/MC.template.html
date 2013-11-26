@@ -594,34 +594,18 @@ Additional Notes and Questions
 			<label class="label modal-text-major" for="app-name">App Name</label>
 			<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		</div>
-<!-- 		<div class="app-usage">
-			<div class="title">
-				<span>App Usage</span><i class="icon-info tooltip" data-tooltip='Mark your app usage for better organisation and optimisation.If no usage is speciﬁed, the app usage will be marked as "Others".'></i>
+		<div class="modal-control-group app-usage-group clearfix">
+			<label for="">App Usage</label>
+			<div id="app-usage-selectbox" class="selectbox">
+				<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+				<ul class="dropdown" tabindex="-1">
+					<li class="selected item"><i class="icon-app-type-testing"></i>Testing</li>
+					<li class="item"><i class="icon-app-type-development"></i>Development</li>
+					<li class="item"><i class="icon-app-type-production"></i>Production</li>
+					<li class="item"><i class="icon-app-type-others"></i>Others</li>
+				<ul>
 			</div>
-			<div class="checklist">
-				<div class="app-type-group">
-					<div class="radio">
-						<input id="app-test" type="radio" name="app-usage" value="testing">
-						<label for="app-test"></label>
-					</div>
-					<label for="app-test"><i class="icon-app-type-testing"></i> <span>Testing</span></label>
-				</div>
-				<div class="app-type-group">
-					<div class="radio">
-						<input id="app-dev" type="radio" name="app-usage" value="development">
-						<label for="app-dev"></label>
-					</div>
-					<label for="app-dev"><i class="icon-app-type-development"></i> <span>Development</span></label>
-				</div>
-				<div class="app-type-group">
-					<div class="radio">
-						<input id="app-prod" type="radio" name="app-usage" value="production">
-						<label for="app-prod"></label>
-					</div>
-					<label for="app-prod"><i class="icon-app-type-production"></i> <span>Production</span></label>
-				</div>
-			</div>
-		</div> -->
+		</div>
 		<div class="stack-validation">
 			<details open style="display:none;">
 				<summary>Stack Validation</summary>
@@ -640,15 +624,7 @@ Additional Notes and Questions
 
 	</div>
 	<div class="modal-footer">
-		<div id="app-usage-selection" class="selectbox">
-			<div class="selection"><i class="icon-app-type-testing"></i></div>
-			<ul class="dropdown" tabindex="-1">
-				<li class="selected item"><i class="icon-app-type-testing"></i></li>
-				<li class="item"><i class="icon-app-type-development"></i></li>
-				<li class="item"><i class="icon-app-type-production"></i></li>
-				<li class="item"><i class="icon-app-type-others"></i></li>
-			<ul>
-		</div>
+		
 		<button class="btn btn-blue" id="btn-confirm" disabled>Run Stack</button>
 		<!--  If there is error of this stack, disable this button.
 			<button disabled class="btn btn-blue tooltip" data-tooltip="Please fix error first and try to run the stack again.">Run Stack</button>

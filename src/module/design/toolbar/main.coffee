@@ -178,7 +178,7 @@ define [ 'jquery',
                                 data.name = app_name
                                 # set usage
                                 data.usage = 'others'
-                                usage = $('.app-type-group input:checked').val()
+                                usage = $('#app-usage-selectbox .selected').data 'value'
                                 if usage
                                     data.usage = usage
 

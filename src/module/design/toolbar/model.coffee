@@ -399,7 +399,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data), 'is_asg':me.isAutoScaling(MC.canvas_data) }
+                item_state_map[id] = {
+                    'name'                  : MC.canvas_data.name,
+                    'state'                 : MC.canvas_data.state,
+                    'is_running'            : is_running,
+                    'is_pending'            : is_pending,
+                    'is_zoomin'             : false,
+                    'is_zoomout'            : true,
+                    'is_app_updating'       : false,
+                    'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
+                    'is_asg'                : me.isAutoScaling(MC.canvas_data),
+                    'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+                }
 
                 is_tab = true
 

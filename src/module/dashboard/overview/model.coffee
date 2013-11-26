@@ -1278,6 +1278,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 result.stop_time = stop_time
                 result.has_instance_store_ami = has_instance_store_ami
                 result.usage = item.usage
+                result.is_production = if item.usage isnt 'production' then false else true
 
             result
 

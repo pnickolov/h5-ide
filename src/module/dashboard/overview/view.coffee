@@ -113,9 +113,8 @@ define [ 'event', 'i18n!nls/lang.js',
             isDemo          : false
 
         initialize: ->
-            $( document.body ).off 'keyup', '#confirm-app-name'
-
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+            # work for dashboard and toolbar
             $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
 
         confirmAppName: ( event ) ->

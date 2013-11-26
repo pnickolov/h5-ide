@@ -5837,7 +5837,7 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		.attr("class", $("#canvas_container").attr("class"));
 
 	// Inline styles
-	var removeArray = [ ]; /// Detach the clone from document.
+	var removeArray = [ clone ]; /// Detach the clone from document.
 	var children = clone.children || clone.childNodes;
 	for ( var i = 0; i < children.length; ++i ) {
 		if ( !children[i].tagName ) { continue; }
@@ -5943,9 +5943,9 @@ MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
 	if ( tagName === "defs" ) { return removeArray.push( element ); }
 
 	var children = element.children || element.childNodes;
+	var remove   = false;
 
 	if ( tagName === "g" ) {
-		var remove = false;
 		if ( children.length == 0 ) {
 			remove = true;
 		} else if ( !element.classList ) {
@@ -5956,8 +5956,19 @@ MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
 		} else if ( element.classList.contains("resizer-wrap") ) {
 				remove = true;
 		}
-		if ( remove ) { return removeArray.push(element); }
 	}
+
+	if ( !remove ) {
+		if ( !element.classList ) {
+			k = element.getAttribute("class");
+			if ( k && k.indexOf("fill-line") != -1 ) {
+				remove = true;
+			}
+		} else if ( element.classList.contains("fill-line") ) {
+			remove = true;
+		}
+	}
+	if ( remove ) { return removeArray.push(element); }
 
 	var ss = window.getComputedStyle( element );
 	// Remove non-visual element
@@ -6000,7 +6011,6 @@ MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
 
 	if ( s.length ) {
 		element.setAttribute("stylez", s.join(";"));
-		element.setAttribute("style", s.join(";"));
 	}
 
 	for ( var i = 0; i < children.length; ++i ) {

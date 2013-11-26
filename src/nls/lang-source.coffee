@@ -663,6 +663,10 @@ module.exports =
       en: "?"
       zh: " 吗"
 
+    TOOL_POP_TIT_STOP_PRD_APP:
+      en: "Confirm to Stop App for Production"
+      zh: "确认暂停产品应用"
+
     TOOL_POP_BTN_STOP_APP:
       en: "Stop"
       zh: "暂停"
@@ -718,6 +722,10 @@ module.exports =
     TOOL_POP_BTN_TERMINATE_APP:
       en: "Terminate"
       zh: "销毁"
+
+    TOOL_POP_TIT_TERMINATE_PRD_APP:
+      en: "Confirm to Terminate App for Production"
+      zh: "确认销毁产品应用"
 
     TOOL_MSG_INFO_REQ_SUCCESS:
       en: "Sending request to %s %s..."

@@ -62,7 +62,7 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id ) ->
                 console.log 'resource:SWITCH_TAB', type, tab_id
                 if type.split('_')[0] is 'OLD'
-                    obj = MC.forge.stack.searchStackAppById( tab_id )
+                    obj = MC.forge.other.searchStackAppById( tab_id )
                     if obj
                         region_name = obj.region
                     else

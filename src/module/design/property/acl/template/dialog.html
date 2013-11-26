@@ -42,7 +42,7 @@
 			<label class="radio-label" for="acl-add-model-direction-outbound">{{ i18n "POP_ACLRULE_LBL_OUTBOUND" }}</label>
 		</div>
 	</div>
-	<div class="modal-control-group acl-sourece-dest clearfix">
+	<div class="modal-control-group acl-source-dest clearfix">
 	  <label class="label-short" id="acl-add-model-bound-label">{{ i18n "POP_ACLRULE_LBL_SOURCE" }}</label>
 		<div class="selectbox" id="acl-add-model-source-select">
 			<div class="selection">{{ i18n "POP_ACLRULE_PROTOCOL_CUSTOM" }}</div>
@@ -171,8 +171,23 @@
 			{{ i18n "POP_ACLRULE_LBL_PORT_RANGE_ALL" }}
 		  </div>
 	  </div>
+	  <ul class="simple-protocol-select">
+			<li>SSH</li>
+			<li>SMTP</li>
+			<li>DNS</li>
+			<li>HTTP</li>
+			<li>POP3</li>
+			<li>IMAP</li>
+			<li>LDAP</li>
+			<li>HTTPS</li>
+			<li>SMTPS</li>
+			<li>IMAPS</li>
+			<li>POP3S</li>
+			<li>MS SQL</li>
+			<li>MYSQL</li>
+			<li>RDP</li>
+		</ul>
 	</div>
-
 
   </div>
   <div class="modal-footer">

@@ -7,13 +7,15 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
     #item state map
     # {app_id:{'name':name, 'state':state, 'is_running':true|false, 'is_pending':true|false, 'is_use_ami':true|false},
     #  stack_id:{'name':name, 'is_run':true|false, 'is_duplicate':true|false, 'is_delete':true|false}}
-    item_state_map  = {}
+    item_state_map   = {}
 
     # save data for thumbnail
-    process_data_map   = {}  # {<'process-' + region + '-' + name'->:<data>}}
+    process_data_map = {}  # {<'process-' + region + '-' + name'->:<data>}}
 
     # mapping request id with tab id
-    req_map         = {}  # {req_id : {'flag':flag, 'id':id, 'name':name}}
+    req_map          = {}  # {req_id : {'flag':flag, 'id':id, 'name':name}}
+    if MC.storage.get 'req_map'
+        req_map      = $.extend true, {}, MC.storage.get 'req_map'
 
     # flag of on tab or dashboard
     is_tab = true
@@ -689,6 +691,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     flag    : flag
                     id      : id
                     name    : name
+                MC.storage.set 'req_map', $.extend true, {}, req_map
 
                 # item = {'region':region, 'name':name, 'id':id, 'time_update':result.resolved_data.time_submit, 'flag_list':{'is_pending':true}}
                 # me.updateAppState(constant.OPS_STATE.OPS_STATE_INPROCESS, flag, item)
@@ -875,6 +878,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                         # remove request from req_map
                         delete req_map[req_id]
+                        MC.storage.set 'req_map', $.extend true, {}, req_map
 
             # update header
             ide_event.trigger ide_event.UPDATE_HEADER, req

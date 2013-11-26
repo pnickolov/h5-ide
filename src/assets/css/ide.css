@@ -4320,7 +4320,6 @@ a.action-link:hover {
 
 #sg-add-model-source-select .selection {
 	width: 69px;
-
 }
 
 #modal-sg-rule .modal-body{
@@ -4367,7 +4366,7 @@ a.action-link:hover {
 	margin: 0;
 }
 #modal-sg-rule #sg-protocol-select-result input {
-	width: 150px;
+	width: 230px;
 	display: inline-block;
 }
 #modal-sg-rule .sg-protocol-option-input {
@@ -4380,8 +4379,12 @@ a.action-link:hover {
 }
 #modal-sg-rule .protocol-icmp-sub-select {
 	display: none;
-	width: 240px;
+	width: 244px;
 	margin: 0;
+}
+
+#modal-sg-rule .protocol-icmp-sub-select .selection {
+	width: 232px;
 }
 
 #sg-protocol-all {
@@ -4393,9 +4396,10 @@ a.action-link:hover {
 }
 
 #protocol-icmp-main-select {
-	width: 240px;
+	width: 244px;
 	margin: 0 0 10px 0;
 }
+
 #sg-protocol-select-result {
 	display: inline-block;
 	width: 240px;
@@ -4403,9 +4407,10 @@ a.action-link:hover {
 #modal-sg-rule .protocol-icmp-sub-select.shown {
 	display: block;
 }
+
 #securitygroup-modal-description {
 	display: inline-block;
-	width: 149px;
+	width: 229px;
 	margin-left: 7px;
 }
 
@@ -4705,6 +4710,23 @@ a.action-link:hover {
 	display: none;
 }
 
+#modal-acl-rule .simple-protocol-select {
+	list-style: none;
+	margin-left: 80px;
+}
+
+#modal-acl-rule .simple-protocol-select li {
+	float: left;
+	cursor: pointer;
+	color: #4495d3;
+	font-size: 12px;
+	margin-left: 12px;
+}
+
+#modal-acl-rule .simple-protocol-select li:hover {
+	text-decoration: underline;
+}
+
 /* property-stack */
 
 .dl-horizontal.dl-region-type {
@@ -4793,6 +4815,23 @@ a.action-link:hover {
 #acl-add-model-source-select .selection {
 	width: 68px;
 	margin-right: 7px;
+}
+
+#acl-add-model-source-select .selection {
+	margin: 0;
+}
+
+#modal-acl-source-input {
+	margin-left: 7px;
+	width: 230px !important;
+}
+
+#modal-acl-rule .sg-protocol-option-input .input {
+	width: 230px;
+}
+
+#modal-acl-rule .protocol-icmp-sub-select .selection {
+	width: 232px;
 }
 
 /* SG Rule Create Dialog */
@@ -5447,7 +5486,16 @@ a.action-link:hover {
 }
 
 .modal-sns-protocol .selectbox .selection {
-	width: 205px;
+	width: 227px;
+}
+
+#property-asg-endpoint {
+	width: 225px;
+}
+
+.property-asg-ep.https #property-asg-endpoint,
+.property-asg-ep.http #property-asg-endpoint {
+	width: 180px;
 }
 
 .property-asg-size {

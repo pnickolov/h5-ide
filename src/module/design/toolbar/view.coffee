@@ -600,8 +600,9 @@ define [ 'MC', 'event',
             modal.close()
 
             # 6. delete MC.process and MC.data.process
-            delete MC.process[ MC.data.current_tab_id ]
-            delete MC.data.process[ MC.data.current_tab_id ]
+            # delete MC.process[ MC.data.current_tab_id ]
+            # delete MC.data.process[ MC.data.current_tab_id ]
+            MC.forge.other.deleteProcess MC.data.current_tab_id
 
             # 7. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
@@ -625,8 +626,9 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
 
             # 3. delete MC.process and MC.data.process
-            delete MC.process[ MC.data.current_tab_id ]
-            delete MC.data.process[ MC.data.current_tab_id ]
+            # delete MC.process[ MC.data.current_tab_id ]
+            # delete MC.data.process[ MC.data.current_tab_id ]
+            MC.forge.other.deleteProcess MC.data.current_tab_id
 
             null
 

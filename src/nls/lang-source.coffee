@@ -1787,6 +1787,10 @@ module.exports =
       en: "Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type."
       zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。"
 
+    PROP_WARN_SG_RULE_EXIST:
+      en: "The adding rule already exist."
+      zh: ""
+
     PROP_TEXT_DEFAULT_SG_DESC:
       en: "Default Security Group"
       zh: "Default Security Group"
@@ -3426,7 +3430,7 @@ module.exports =
       zh: ""
 
     TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
-      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no attached instance or auto scaling group."
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
       zh: ""
 
     TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:

@@ -32,6 +32,7 @@ define [ '../base/view',
             $("#protocol-icmp-main-select").on("OPTION_CHANGE", @modalRuleICMPSelected )
             $("#acl-add-model-direction-outbound").on("change", @changeBoundInModal )
             $("#acl-add-model-direction-inbound").on("change", @changeBoundInModal )
+            $('.simple-protocol-select li').on('click', @clickSimpleProtocolSelect)
             null
 
         showCreateRuleModal : () ->
@@ -275,7 +276,7 @@ define [ '../base/view',
                 $('#acl-add-model-source-select .selection').width(68)
             else
                 $('#modal-acl-source-input').hide()
-                $('#acl-add-model-source-select .selection').width(302)
+                $('#acl-add-model-source-select .selection').width(322)
 
         removeRuleClicked : (event) ->
             parentElem = $(event.target).parents('li')
@@ -368,6 +369,44 @@ define [ '../base/view',
         _sortSource : ( a, b) ->
             return $(a).find('.acl-rule-reference').attr('data-id') >
                 $(b).find('.acl-rule-reference').attr('data-id')
+
+        clickSimpleProtocolSelect : (event) ->
+            protocolName = $(event.currentTarget).text()
+
+            toggleToProtocol = (protocolName) ->
+                # protocolName is TCP ot UDP
+                protocolNameLowerCase = protocolName.toLowerCase()
+                selectBox = $('#modal-protocol-select')
+                selectBox.find('li.item').removeClass('selected')
+                selectBox.find('li.item[data-id=' + protocolNameLowerCase + ']').addClass('selected')
+                selectBox.find('.selection').text(protocolName)
+                selectBox.trigger('OPTION_CHANGE')
+
+            protocolMap = {
+                'SSH': 22,
+                'SMTP': 25,
+                'DNS': 53,
+                'HTTP': 80,
+                'POP3': 110,
+                'IMAP': 143,
+                'LDAP': 289,
+                'HTTPS': 443,
+                'SMTPS': 465,
+                'IMAPS': 993,
+                'POP3S': 995,
+                'MS SQL': 1433,
+                'MYSQL': 3306,
+                'RDP': 3389
+            }
+
+            protocolPort = protocolMap[protocolName]
+
+            if protocolName is 'DNS'
+                toggleToProtocol('UDP')
+                $('#sg-protocol-udp input').val(protocolPort)
+            else
+                toggleToProtocol('TCP')
+                $('#sg-protocol-tcp input').val(protocolPort)
     }
 
     new ACLView()

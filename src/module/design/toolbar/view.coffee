@@ -115,6 +115,17 @@ define [ 'MC', 'event',
             # export to png download button click
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
 
+            # app terminate confirmation
+            $( document.body ).off 'keyup', '#confirm-app-name'
+            $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
+
+        confirmAppName: ( event ) ->
+            confirm = $( @ ).data 'confirm'
+            if $( @ ).val() is confirm
+                $( '#btn-confirm' ).removeAttr 'disabled'
+            else
+                $( '#btn-confirm' ).attr 'disabled', 'disabled'
+
         reRender   : ( type ) ->
             console.log 're-toolbar render'
             if $.trim( $( '#main-toolbar' ).html() ) is 'loading...'

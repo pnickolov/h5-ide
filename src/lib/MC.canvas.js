@@ -1623,8 +1623,8 @@ MC.canvas = {
 			ignore_stack = [],
 			match = [],
 			result = {},
+			is_matched = false,
 			match_status,
-			is_matched,
 			match_target,
 			group_data,
 			group_child,
@@ -3645,7 +3645,7 @@ MC.canvas.event.dragable = {
 				{
 					if (coordinate.y <= 2)
 					{
-						 coordinate.y = 2;
+						coordinate.y = 2;
 					}
 
 					if (coordinate.x <= 2)
@@ -3658,10 +3658,11 @@ MC.canvas.event.dragable = {
 					target_id,
 					target_type,
 					node_type,
-					coordinate.x,
-					coordinate.y,
-					group_size[0],
-					group_size[1]
+					// Make it larger for better place determination
+					coordinate.x - 1,
+					coordinate.y - 1,
+					group_size[0] + 2,
+					group_size[1] + 2
 				);
 
 				areaChild = MC.canvas.areaChild(
@@ -3759,6 +3760,7 @@ MC.canvas.event.dragable = {
 					(
 						(
 							coordinate_fixed &&
+							match_place.is_matched &&
 							event.data.groupChild.length === fixed_areaChild.length
 						)
 						||

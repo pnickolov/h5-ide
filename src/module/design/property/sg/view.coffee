@@ -6,8 +6,9 @@ define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/app.html',
          'text!./template/rule_item.html',
-         'constant'
-], ( PropertyView, template, app_template, rule_item_template, constant ) ->
+         'constant',
+         'i18n!nls/lang.js'
+], ( PropertyView, template, app_template, rule_item_template, constant, lang ) ->
 
     template           = Handlebars.compile template
     app_template       = Handlebars.compile app_template
@@ -115,12 +116,14 @@ define [ '../base/view',
             $('#sg-protocol-select-result').find('.show').removeClass('show')
             $('.sg-protocol-option-input').removeClass("show")
             $('#sg-protocol-' + id).addClass('show')
+            $('.protocol-icmp-sub-select').removeClass('shown')
             $('#modal-protocol-select').data('protocal-type', id)
             null
 
         icmpMainSelect : ( event, id ) ->
             $("#protocol-icmp-main-select").data('protocal-main', id)
             if id is "3" || id is "5" || id is "11" || id is "12"
+                $('.protocol-icmp-sub-select').removeClass('shown')
                 $( '#protocol-icmp-sub-select-' + id).addClass('shown')
             else
                 $('.protocol-icmp-sub-select').removeClass('shown')
@@ -145,6 +148,9 @@ define [ '../base/view',
             null
 
         saveSgModal : ( event ) ->
+
+            that = this
+
             sg_direction = $('#sg-modal-direction input:checked').val()
             descrition_dom = $('#securitygroup-modal-description')
             tcp_port_dom = $('#sg-protocol-tcp input')
@@ -251,11 +257,18 @@ define [ '../base/view',
             data = @model.addSGRule rule
 
             # Insert new rule
-            $("#sg-rule-list").append rule_item_template data
+            
+            # the rule is exist
+            if not data
+                notification 'warning', lang.ide.PROP_WARN_SG_RULE_EXIST
+            else
+                data.ruleEditable = that.model.get('ruleEditable')
 
-            MC.canvas.reDrawSgLine()
+                $("#sg-rule-list").append rule_item_template data
 
-            modal.close()
+                MC.canvas.reDrawSgLine()
+
+                modal.close()
 
         modalRuleSourceSelected : (event) ->
             value = $.trim($(event.target).find('.selected').attr('data-id'))

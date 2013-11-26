@@ -5706,9 +5706,9 @@ a.action-link:hover {
 	padding: 15px;
 }
 
-#modal-run-stack .selectbox {
+/*#modal-run-stack .selectbox {
 	width: 100px;
-}
+}*/
 
 .stack-validation summary:hover {
 	cursor: pointer;
@@ -6824,35 +6824,64 @@ summary:focus {
 	font-size: 14px;
 }
 
-#modal-run-stack .app-type-group {
-	display: inline-block;
+#modal-run-stack .app-usage-group {
+	padding-top: 0;
+}
+
+#app-usage-selectbox .selection {
+	padding-right: 25px;
+}
+
+#app-usage-selectbox [class^="icon-app-type-"] {
+	margin-right: 4px;
 }
 
 /* App Type Icon */
+
 [class^="icon-app-type-"], [class*=" icon-app-type-"] {
-	background-image: url(../images/ide/icon/icon-app-type-sprites.png);
-	display: block;
-	height: 13px;
-	width: 34px;
-	background-repeat: no-repeat;
+	border-radius: 2px;
 	display: inline-block;
-	vertical-align: middle;
+	height: 13px;
+	width: 40px;
+	font-size: 12px;
+	line-height: 13px;
+	font-variant: small-caps;
+	font-style: normal;
+	color: #fff;
+	text-align: center;
+	padding-bottom: 2px;
 }
 
 .icon-app-type-development {
-	background-position: 0 -20px;
+	background: #377bb0;
+}
+
+.icon-app-type-development:before {
+	content: "dev"
 }
 
 .icon-app-type-production {
-	background-position: 0 -40px;
+	background: #17c249;
+}
+
+.icon-app-type-production:before {
+	content: "prod";
 }
 
 .icon-app-type-testing {
-	background-position: 0 -60px;
+	background: #ffa740;
+}
+
+.icon-app-type-testing:before {
+	content: "test";
 }
 
 .icon-app-type-others {
-	background-position: 0 0;
+	background: #9C9FA2;
+}
+
+.icon-app-type-others:before {
+	content: "others";
 }
 
 /* App Useage */
@@ -6896,8 +6925,8 @@ summary:focus {
 .nav-region-list-items [class^="icon-app-type-"],
 .nav-region-list-items [class*=" icon-app-type-"] {
 	position: absolute;
-	top: 16px;
-	right: 3px;
+	top: 15px;
+	right: 8px;
 }
 
 .global-region-status-list h5 [class^="icon-app-type-"],

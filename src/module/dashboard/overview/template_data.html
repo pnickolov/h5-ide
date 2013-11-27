@@ -214,6 +214,7 @@
                         {{else}}
                         <li class="" data-bubble-template="bubbleAppInfo" data-bubble-data='{"status":"{{status}}","title":"{{name}}","start-time":"{{start_time}}","end-time":"{{stop_time}}","cost":"{{cost}}"}'>
                             <a href="javascript:void(0)" class="region-resource-list-item">
+                                {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
                                 <div class="region-resource-thumbnail app-thumbnail">
                                     <img width="220" data-id="{{id}}" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
                                 </div>
@@ -222,15 +223,19 @@
                                     <i class="region-resource-status region-resource-status-{{#if isrunning}}running{{else}}stopped{{/if}}"></i>
                                     <div class="region-resource-action clearfix">
                                         {{#if has_instance_store_ami}}
-                                            <i {{#unless item_flags.is_running}}style="display:none;"{{/unless}} class="icon-stop modal stop-app disabled" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                            <i {{#unless is_running}}style="display:none;"{{/unless}} class="icon-stop modal stop-app disabled" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
                                         {{else}}
                                             {{#if isrunning}}
-                                                <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
+                                                <i class="icon-stop modal stop-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":{{#if is_production}}"{{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}}"{{else}}"{{{i18n "TOOL_POP_TIT_STOP_APP"}}}"{{/if}}, "body":"{{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_STOP_APP"}}}", "color":"red", "is_production":{{#if is_production}}true{{else}}false{{/if}},
+                                                "app_name": "{{name}}", "is_stop": true
+                                            }' data-modal-dismiss="true"></i>
                                             {{else}}
                                                 <i class="icon-play modal start-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_START_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_START_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_START_APP"}}}", "color":"blue" }' data-modal-dismiss="true"></i>
                                             {{/if}}
                                         {{/if}}
-                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}", "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red" }' data-modal-dismiss="true"></i>
+                                        <i class="modal icon-terminate terminate-app" id="{{id}}" name="{{name}}" data-modal-template="modalApp" data-modal-data='{"title":{{#if is_production}}"{{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}}"{{else}}"{{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}}"{{/if}}, "body":"{{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}} {{name}}{{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}}", "confirm":"{{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}}", "color":"red", "is_production":{{#if is_production}}true{{else}}false{{/if}},
+                                        "app_name": "{{name}}"
+                                         }' data-modal-dismiss="true"></i>
                                     </div>
                                 </div>
                             </a>
@@ -913,7 +918,7 @@
                         {{#each recent_launched_apps }}
                             <li>
                                 <a href="javascript:void(0)" id={{id}} data-option='{"name": "{{name}}", "region": "{{region}}"}'>
-                                    <h5>{{name}}</h5>
+                                    <h5>{{name}} {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</h5>
                                     <div class="global-region-status-info">
                                         <span class="global-region-status-info-location">{{region_label}}</span>
                                         <time>{{interval_date}}</time>

@@ -114,6 +114,16 @@ define [ 'event', 'i18n!nls/lang.js',
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+            # work for dashboard and toolbar
+            $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
+
+        confirmAppName: ( event ) ->
+            confirm = $( @ ).data 'confirm'
+            if $( @ ).val() is confirm
+                $( '#btn-confirm' ).removeAttr 'disabled'
+            else
+                $( '#btn-confirm' ).attr 'disabled', 'disabled'
+
 
         setDemo: ->
             @status.isDemo = true

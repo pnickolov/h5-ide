@@ -248,7 +248,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
                 jsonString = jsonString.replace( new RegExp('"InstanceMonitoring":"enabled"',"gm"),'"InstanceMonitoring":true')
                 jsonString = jsonString.replace( new RegExp('"InstanceMonitoring":"disabled"',"gm"),'"InstanceMonitoring":false')
                 result[0] = JSON.parse(jsonString)
-        
+
         #return vo
         result
 
@@ -371,7 +371,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
         #3.return vo
         forge_result
-        
+
 
 
     # end of parserVerifyReturn
@@ -400,8 +400,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         true
 
     #def run(self, username, session_id, region_name, stack_id, app_name, app_desc=None, app_component=None, app_property=None, app_layout=None, stack_name=None):
-    run = ( src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, callback ) ->
-        send_request "run", src, [ username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name ], parserRunReturn, callback
+    run = ( src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null, callback ) ->
+        send_request "run", src, [ username, session_id, region_name, stack_id, app_name, app_desc, app_component, app_property, app_layout, stack_name, usage ], parserRunReturn, callback
         true
 
     #def save_as(self, username, session_id, region_name, stack_id, new_name, stack_name=None):

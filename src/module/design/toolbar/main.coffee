@@ -171,11 +171,21 @@ define [ 'jquery',
                         if (flag is "SAVE_STACK" or flag is "CREATE_STACK")
                             # run stack
                             if $('#modal-run-stack')[0] isnt undefined
-                                app_name = $('.modal-input-value').val()
-                                modal.close()
+                                data = $.extend true, {}, MC.canvas_data
 
-                                model.runStack app_name, MC.canvas_data
+                                app_name = $('.modal-input-value').val()
+                                # set app name
+                                data.name = app_name
+                                # set usage
+                                data.usage = 'others'
+                                usage = $('#app-usage-selectbox .selected').data 'value'
+                                if usage
+                                    data.usage = usage
+
+                                model.runStack data
                                 MC.data.app_list[MC.canvas_data.region].push app_name
+
+                                modal.close()
 
                             # start to export cf
                             else if $('#modal-export-cf')[0] isnt undefined

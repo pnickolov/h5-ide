@@ -65,7 +65,7 @@ define [ 'underscore', 'backbone' ], () ->
         CLOSE_DESIGN_TAB       : 'CLOSE_DESIGN_TAB'
         UPDATE_DESIGN_TAB      : 'UPDATE_DESIGN_TAB'
         UPDATE_DESIGN_TAB_ICON : 'UPDATE_DESIGN_TAB_ICON'
-        UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
+        UPDATE_DESIGN_TAB_TYPE : 'UPDATE_DESIGN_TAB_TYPE'
 
         #ADD_STACK_TAB         : 'ADD_STACK_TAB'
         #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'

@@ -481,7 +481,7 @@ define [ 'MC', 'event',
             console.log 'clickEditApp'
 
             # 1. Update MC.canvas.getState() to return 'appedit'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'appedit'
 
             # 2. Show Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
@@ -585,7 +585,7 @@ define [ 'MC', 'event',
             console.log '_return2App'
 
             # 1. Update MC.canvas.getState() to return 'app'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'app'
 
             # 2. Toggle Toolbar Button
             if target then me = target.data else me = this
@@ -621,7 +621,7 @@ define [ 'MC', 'event',
             #    return
 
             # 1. Update MC.canvas.getState() to return 'app'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'app'
 
             # 2. push  refresh current tab
             # ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region

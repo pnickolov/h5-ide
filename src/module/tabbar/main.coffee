@@ -311,8 +311,8 @@ define [ 'jquery', 'event', 'base_main',
                     if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
 
             # update Tabbar.current
-            ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
-                console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+            ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB_TYPE, ( tab_id, tab_type ) ->
+                console.log 'UPDATE_DESIGN_TAB_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
                 Tabbar.updateState tab_id, tab_type
 
             #############################

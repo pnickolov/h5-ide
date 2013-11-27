@@ -120,7 +120,7 @@ define [ 'event',
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
 
                     # set Tabbar.current
-                    ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, tab_id, tab_id.split( '-' )[0]
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
 
                     # get origin tab id
                     original_tab_id = temp.attr 'data-tab-id'

@@ -51,8 +51,13 @@
 			</div>
 		{{else}}
 			<div class="terminate-pro-app-confirm">
-				<p><b>{{app_name}} is for PRODUCTION.</b> Stopping it will make your service unavailable.</p>
-				<p>Please type in the name of this app to confirm stopping it.</p>
+				{{#if is_stop}}
+					<p><b>{{app_name}} is for PRODUCTION.</b> Stopping it will make your service unavailable.</p>
+					<p>Please type in the name of this app to confirm stopping it.</p>
+				{{else}}
+					<p><b>{{app_name}} is for PRODUCTION.</b> Terminating it will make your service unavailable.</p>
+					<p>Please type in the name of this app to confirm terminating it.</p>
+				{{/if}}
 				<p class="confirm-area"><input class="input" id="confirm-app-name" data-confirm="{{app_name}}"/></p>
 			</div>
 		{{/unless}}

@@ -47,13 +47,17 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
 
         #tab
-        ADD_STACK_TAB          : 'ADD_STACK_TAB'
-        OPEN_STACK_TAB         : 'OPEN_STACK_TAB'
-        OPEN_APP_TAB           : 'OPEN_APP_TAB'
-        OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
+        OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
+
+        #ADD_STACK_TAB         : 'ADD_STACK_TAB'
+        #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'
+        #OPEN_APP_TAB          : 'OPEN_APP_TAB'
+        #OPEN_APP_PROCESS_TAB  : 'OPEN_APP_PROCESS_TAB'
+
         PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
         RELOAD_STACK_TAB       : 'RELOAD_STACK_TAB'
         RELOAD_NEW_STACK_TAB   : 'RELOAD_NEW_STACK_TAB'
+
         CLOSE_TAB              : 'CLOSE_TAB'
         #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 

@@ -217,20 +217,12 @@ define [ 'jquery', 'event', 'base_main',
                 Tabbar.open 'dashboard'
                 null
 
-            #listen open stack tab
-            ide_event.onLongListen ide_event.OPEN_STACK_TAB, ( tab_name, region_name, stack_id ) ->
-                console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', stack_id = ' + stack_id
-                #set vo
-                model.set 'stack_region_name', region_name
-                #tabbar api
-                Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
-                #
-                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.forge.cookie.getCookieByName( 'state' ) is '3'
-                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
-                null
 
-            #listen add empty tab
-            ide_event.onLongListen ide_event.ADD_STACK_TAB, ( region_name ) ->
+
+
+
+            # new stack
+            newStackTab = ( region_name ) ->
                 console.log 'ADD_STACK_TAB'
                 console.log region_name
                 #
@@ -243,17 +235,58 @@ define [ 'jquery', 'event', 'base_main',
                     modal MC.template.createNewStackVPC(), true
                 else
                     modal MC.template.createNewStackErrorAndReload(), true
-
                 null
 
-            #listen add app tab
-            ide_event.onLongListen ide_event.OPEN_APP_TAB, ( tab_name, region_name, app_id ) ->
+            # open stack
+            openStackTab = ( tab_name, region_name, stack_id ) ->
+                console.log 'OPEN_STACK_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', stack_id = ' + stack_id
+                model.set 'stack_region_name', region_name
+                Tabbar.open stack_id.toLowerCase(), tab_name + ' - stack'
+                #
+                if _.contains( MC.data.demo_stack_list, tab_name ) and MC.forge.cookie.getCookieByName( 'state' ) is '3'
+                    require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
+                null
+
+            # open app
+            openAppTab = ( tab_name, region_name, app_id ) ->
                 console.log 'OPEN_APP_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', app_id = ' + app_id
-                #set vo
                 model.set 'app_region_name', region_name
-                #tabbar api
                 Tabbar.open app_id.toLowerCase(), tab_name + ' - app'
                 null
+
+            # new process
+            newProcessTab = ( tab_id, tab_name, region ) ->
+                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
+                process_name = 'process-' + region + '-' + tab_name
+                MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
+                Tabbar.add process_name, tab_name + ' - app'
+
+            # listen open stack tab
+            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS'
+            ide_event.onLongListen ide_event.OPEN_DESIGN_TAB, ( type, tab_name, region_name, tab_id ) ->
+                console.log 'OPEN_DESIGN_TAB', type, tab_name, region_name, tab_id
+                switch type
+                    when 'NEW_STACK'   then newStackTab   region_name
+                    when 'OPEN_STACK'  then openStackTab  tab_name, region_name, tab_id
+                    when 'OPEN_APP'    then openAppTab    tab_name, region_name, tab_id
+                    when 'NEW_PROCESS' then newProcessTab tab_id,   tab_name,    region_name
+                    else
+                        console.log 'open undefined tab'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
@@ -267,35 +300,6 @@ define [ 'jquery', 'event', 'base_main',
                 #ide_event.trigger ide_event.UPDATE_APP_LIST, null
                 #
                 null
-
-            #listen
-            #ide_event.onLongListen ide_event.STARTED_APP, ( tab_name, app_id ) ->
-            #    console.log 'START_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-            #    #
-            #    view.changeIcon app_id
-            #    #push event
-            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #    null
-
-            #listen
-            #ide_event.onLongListen ide_event.STOPPED_APP, ( tab_name, app_id ) ->
-            #    console.log 'STOP_APP ' + ' tab_name = ' + tab_name + ', app_id = ' + app_id
-            #    #
-            #    view.changeIcon app_id
-            #    #push event
-            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #    null
-
-            #listen
-            #ide_event.onLongListen ide_event.TERMINATED_APP, ( tab_name, tab_id ) ->
-            #    console.log 'APP_TERMINAL ' + ' tab_name = ' + tab_name + ', tab_id = ' + tab_id
-            #    #
-            #    view.trueCloseTab null, tab_id
-            #    #
-            #    #view.closeTab tab_id
-            #    #push event
-            #    ide_event.trigger ide_event.UPDATE_APP_LIST, null
-            #    null
 
             #listen
             ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
@@ -333,17 +337,6 @@ define [ 'jquery', 'event', 'base_main',
             ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
                 console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
                 Tabbar.updateState tab_id, tab_type
-
-            #listen
-            ide_event.onLongListen ide_event.OPEN_APP_PROCESS_TAB, ( tab_id, tab_name, region, result ) ->
-                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
-                #set vo
-                #model.set 'app_region_name', region_name
-                #
-                process_name = 'process-' + region + '-' + tab_name
-                MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
-                #tabbar api
-                Tabbar.add process_name, tab_name + ' - app'
 
             #listen
             ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->

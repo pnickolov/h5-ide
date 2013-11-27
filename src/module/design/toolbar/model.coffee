@@ -207,7 +207,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 id          = result.param[4]
                 app_name    = result.param[5]
 
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_PROCESS', app_name, region, id
 
                 # handle request
                 me.handleRequest result, 'RUN_STACK', region, id, app_name

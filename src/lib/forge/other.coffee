@@ -36,7 +36,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		null
 
+	setCurrentTabId = ( tab_id ) ->
+		console.log 'setCurrentTabId', tab_id
+		MC.data.current_tab_id = tab_id
+		null
+
 	#public
 	searchStackAppById : searchStackAppById
 	deleteProcess      : deleteProcess
 	filterProcess      : filterProcess
+
+	setCurrentTabId    : setCurrentTabId

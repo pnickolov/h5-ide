@@ -54,18 +54,18 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_WAITING_BAR     : 'SWITCH_WAITING_BAR'
         SWITCH_MAIN            : 'SWITCH_MAIN'
 
-        #tabbar
-        UPDATE_TABBAR          : 'UPDATE_TABBAR'
+        #tab
         UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
-        UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
-        UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
+        #UPDATE_TAB_CLOSE_STATE: 'UPDATE_TAB_CLOSE_STATE'
 
-        #tab
+        #tabbar
         OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
         CLOSE_DESIGN_TAB       : 'CLOSE_DESIGN_TAB'
+        UPDATE_DESIGN_TAB      : 'UPDATE_DESIGN_TAB'
+        UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
 
         #ADD_STACK_TAB         : 'ADD_STACK_TAB'
         #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'

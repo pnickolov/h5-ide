@@ -119,7 +119,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
 
-                    ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
 
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 

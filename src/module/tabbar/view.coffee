@@ -38,12 +38,14 @@ define [ 'event',
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTabEvent'
             console.log 'original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
-            #console.log $( '#tab-bar-' + tab_id ).children().attr 'title'
-            #
-            if original_tab_id is tab_id then return
-            #
-            MC.data.current_tab_id = tab_id
 
+            if original_tab_id is tab_id
+                return
+
+            # set current tab id
+            MC.forge.other.setCurrentTabId tab_id
+
+            # get tab_type
             tab_type = tab_id.split( '-' )[0]
 
             switch tab_type
@@ -60,24 +62,6 @@ define [ 'event',
                 else
                     console.log 'no find tab type'
 
-            ###
-            if tab_id is 'dashboard'
-                this.trigger 'SWITCH_DASHBOARD', original_tab_id, tab_id
-                return
-
-            if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[0] is 'untitled'
-                #NEW_STACK
-                this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
-            else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'stack'
-                #OPEN_STACK
-                this.trigger 'SWITCH_STACK_TAB', original_tab_id, tab_id
-            else if tab_id.split( '-' )[0] is 'process'
-                #PROCESS_APP
-                this.trigger 'SWTICH_PROCESS_TAB', original_tab_id, tab_id
-            else if $( '#tab-bar-' + tab_id ).children().attr( 'title' ).split( ' - ' )[1] is 'app'
-                #OPEN_APP
-                this.trigger 'SWITCH_APP_TAB', original_tab_id, tab_id
-            ###
             null
 
         closeTabEvent : ( event, tab_id ) ->
@@ -91,11 +75,11 @@ define [ 'event',
             console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
             null
 
-        updateTabCloseState : ( tab_id ) ->
-            console.log 'updateTabCloseState, tab_id = ' + tab_id
-            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
-            close_target.removeClass 'close-restriction'
-            close_target.addClass    'close-tab'
+        #updateTabCloseState : ( tab_id ) ->
+        #    console.log 'updateTabCloseState, tab_id = ' + tab_id
+        #    close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
+        #    close_target.removeClass 'close-restriction'
+        #    close_target.addClass    'close-tab'
 
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
@@ -121,26 +105,26 @@ define [ 'event',
             null
 
         updateCurrentTab : ( tab_id, tab_name ) ->
-            console.log 'updateCurrentTab'
+            console.log 'updateCurrentTab', tab_id, tab_name
             original_tab_id = null
             _.each $( '.tabbar-group' ).children(), ( item ) ->
                 if $( item ).attr( 'class' ) is 'active'
                     console.log $( item )
-                    #
+
+                    # update temp html tag property
                     $( item ).attr 'id', 'tab-bar-' + tab_id
-                    #
                     temp = $( $( item ).find( 'a' )[0] )
-                    #
-                    original_tab_id = temp.attr 'data-tab-id'
-                    #
                     temp.attr 'title',       tab_name
                     temp.attr 'data-tab-id', tab_id
                     temp.attr 'href',        '#tab-content-' + tab_id
                     temp.html temp.find( 'i' ).get( 0 ).outerHTML + tab_name
-                    #
-                    #Tabbar.updateState tab_id, tab_id.split( '-' )[0]
+
+                    # set Tabbar.current
                     ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, tab_id, tab_id.split( '-' )[0]
-                    #
+
+                    # get origin tab id
+                    original_tab_id = temp.attr 'data-tab-id'
+
                     null
             return original_tab_id
 

@@ -413,7 +413,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
@@ -426,7 +426,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stopped', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
@@ -446,7 +446,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = true
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
                 # update app resource
                 #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id

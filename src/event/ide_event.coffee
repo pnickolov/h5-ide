@@ -57,7 +57,6 @@ define [ 'underscore', 'backbone' ], () ->
         #tab
         UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
-        UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         #UPDATE_TAB_CLOSE_STATE: 'UPDATE_TAB_CLOSE_STATE'
 
@@ -65,6 +64,7 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
         CLOSE_DESIGN_TAB       : 'CLOSE_DESIGN_TAB'
         UPDATE_DESIGN_TAB      : 'UPDATE_DESIGN_TAB'
+        UPDATE_DESIGN_TAB_ICON : 'UPDATE_DESIGN_TAB_ICON'
         UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
 
         #ADD_STACK_TAB         : 'ADD_STACK_TAB'

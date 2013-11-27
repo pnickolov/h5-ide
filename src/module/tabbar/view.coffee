@@ -21,12 +21,12 @@ define [ 'event',
             'CLOSE_TAB_RESTRICTION' : 'closeTabRestriction'
 
         initialize : ->
-            #listen
-            $( document.body ).on 'click', '.new-stack-dialog',  this, @openNewStackDialog
-            $( document.body ).on 'click', '#reload-account-attributes',  this, @reloadAccountAttributes
-            $( document.body ).on 'click', '#close-tab-confirm', this, @_closeTabConfirm
-            #
-            this.listenTo ide_event, 'UPDATE_TAB_ICON', this.updateTabIcon
+
+            $( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
+            $( document.body ).on 'click', '#reload-account-attributes', this, @reloadAccountAttributes
+            $( document.body ).on 'click', '#close-tab-confirm',         this, @_closeTabConfirm
+
+            @listenTo ide_event, 'UPDATE_DESIGN_TAB_ICON', @updateTabIcon
 
         render   : () ->
             console.log 'tabbar render'
@@ -75,11 +75,11 @@ define [ 'event',
             console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
             null
 
-        #updateTabCloseState : ( tab_id ) ->
-        #    console.log 'updateTabCloseState, tab_id = ' + tab_id
-        #    close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
-        #    close_target.removeClass 'close-restriction'
-        #    close_target.addClass    'close-tab'
+        updateTabCloseState : ( tab_id ) ->
+            console.log 'updateTabCloseState, tab_id = ' + tab_id
+            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
+            close_target.removeClass 'close-restriction'
+            close_target.addClass    'close-tab'
 
         closeTab   : ( tab_id ) ->
             console.log 'closeTab'
@@ -181,16 +181,15 @@ define [ 'event',
 
         trueCloseTab : ( target, tab_id ) ->
             console.log 'trueCloseTab'
-            ###
-            close_target = $ target.find( 'a' )[1]
-            close_target.removeClass 'close-restriction'
-            close_target.addClass    'close-tab'
-            ###
+
+            # update tab close state
             @updateTabCloseState tab_id
-            #
+
+            # close design tab
             _.delay () ->
                 ide_event.trigger ide_event.CLOSE_DESIGN_TAB, null, tab_id
             , 150
+
             null
     }
 

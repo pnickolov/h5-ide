@@ -124,7 +124,7 @@ define [ 'jquery', 'event', 'base_main',
                 #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
                 ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
                 #
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', tab_id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', tab_id
 
             #listen old_stack
             model.on 'OLD_STACK', ( tab_id ) ->
@@ -167,7 +167,7 @@ define [ 'jquery', 'event', 'base_main',
 
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
 
                 MC.data.nav_new_stack_list[ tab_id ] = { region : model.get( 'stack_region_name' ) }
 
@@ -181,7 +181,7 @@ define [ 'jquery', 'event', 'base_main',
                     console.log 'GET_STACK_COMPLETE'
                     console.log result
                     ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
-                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
                 model.getStackInfo tab_id
 
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
@@ -196,7 +196,7 @@ define [ 'jquery', 'event', 'base_main',
                     console.log 'GET_APP_COMPLETE'
                     console.log result
                     ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
-                    ide_event.trigger ide_event.UPDATE_TAB_ICON, result.resolved_data[0].state, tab_id
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, result.resolved_data[0].state, tab_id
                 model.getAppInfo tab_id
 
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id

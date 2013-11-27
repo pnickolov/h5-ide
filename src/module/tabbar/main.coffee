@@ -292,9 +292,9 @@ define [ 'jquery', 'event', 'base_main',
                         console.log 'open undefined tab'
 
             #listen
-            ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
-                console.log 'CLOSE_TAB ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
-                view.closeTab stack_id
+            ide_event.onLongListen ide_event.CLOSE_DESIGN_TAB, ( tab_name, tab_id ) ->
+                console.log 'CLOSE_DESIGN_TAB', tab_name, tab_id
+                view.closeTab tab_id
                 null
 
             #listen open dashboard

@@ -205,7 +205,7 @@ define [ 'event',
             @updateTabCloseState tab_id
             #
             _.delay () ->
-                ide_event.trigger ide_event.CLOSE_TAB, null, tab_id
+                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, null, tab_id
             , 150
             null
     }

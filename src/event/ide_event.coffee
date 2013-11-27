@@ -46,20 +46,6 @@ define [ 'underscore', 'backbone' ], () ->
         #resource panel
         UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
 
-        #tab
-        OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
-        CLOSE_TAB              : 'CLOSE_TAB'
-
-        #ADD_STACK_TAB         : 'ADD_STACK_TAB'
-        #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'
-        #OPEN_APP_TAB          : 'OPEN_APP_TAB'
-        #OPEN_APP_PROCESS_TAB  : 'OPEN_APP_PROCESS_TAB'
-
-        #PROCESS_RUN_SUCCESS   : 'PROCESS_RUN_SUCCESS'
-        #RELOAD_STACK_TAB      : 'RELOAD_STACK_TAB'
-        #RELOAD_NEW_STACK_TAB  : 'RELOAD_NEW_STACK_TAB'
-        #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
-
         #switch ide.html
         SWITCH_TAB             : 'SWITCH_TAB'
         SWITCH_DASHBOARD       : 'SWITCH_DASHBOARD'
@@ -76,6 +62,20 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
         UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
+
+        #tab
+        OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
+        CLOSE_DESIGN_TAB       : 'CLOSE_DESIGN_TAB'
+
+        #ADD_STACK_TAB         : 'ADD_STACK_TAB'
+        #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'
+        #OPEN_APP_TAB          : 'OPEN_APP_TAB'
+        #OPEN_APP_PROCESS_TAB  : 'OPEN_APP_PROCESS_TAB'
+
+        #PROCESS_RUN_SUCCESS   : 'PROCESS_RUN_SUCCESS'
+        #RELOAD_STACK_TAB      : 'RELOAD_STACK_TAB'
+        #RELOAD_NEW_STACK_TAB  : 'RELOAD_NEW_STACK_TAB'
+        #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
         #status bar & ta
         HIDE_STATUS_BAR        : 'HIDE_STATUS_BAR'

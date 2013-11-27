@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'REMOVE_STACK', [id]
-                    ide_event.trigger ide_event.CLOSE_TAB, name, id
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, name, id
 
                     me.setFlag id, 'DELETE_STACK'
 

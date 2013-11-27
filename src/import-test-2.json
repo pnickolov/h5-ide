@@ -30,8 +30,8 @@
 			"node": {
 				"455D43B6-4797-4644-A7B4-A64E654EBFB6": {
 					"coordinate": [
-						0,
-						0
+						93,
+						36
 					],
 					"connection": [
 						{
@@ -46,8 +46,8 @@
 				},
 				"6B483D12-9673-486A-B637-1C79259D1065": {
 					"coordinate": [
-						0,
-						0
+						61,
+						18
 					],
 					"connection": [
 						{
@@ -72,8 +72,8 @@
 				},
 				"3821FE5D-7EC3-4EFD-900B-64AB9280AE94": {
 					"coordinate": [
-						0,
-						0
+						44,
+						27
 					],
 					"virtualizationType": "paravirtual",
 					"uid": "3821FE5D-7EC3-4EFD-900B-64AB9280AE94",
@@ -94,8 +94,8 @@
 				},
 				"3B75382B-313B-4F36-A18E-0C612570FBEC": {
 					"coordinate": [
-						0,
-						0
+						45,
+						61
 					],
 					"virtualizationType": "paravirtual",
 					"uid": "3B75382B-313B-4F36-A18E-0C612570FBEC",
@@ -116,8 +116,8 @@
 				},
 				"7A232B5C-3AAC-411F-A264-1E4637423BDD": {
 					"coordinate": [
-						0,
-						0
+						44,
+						48
 					],
 					"virtualizationType": "paravirtual",
 					"osFamily": "linux",
@@ -139,8 +139,8 @@
 				},
 				"9AD38C7A-67C8-46B5-9A7E-F7595E32B2A8": {
 					"coordinate": [
-						0,
-						0
+						13,
+						48
 					],
 					"connection": [],
 					"type": "AWS.VPC.InternetGateway",
@@ -151,8 +151,8 @@
 			"group": {
 				"4F9CE594-B39E-4DF3-89A6-F317B7320FF1": {
 					"coordinate": [
-						0,
-						0
+						17,
+						16
 					],
 					"connection": [],
 					"type": "AWS.VPC.VPC",
@@ -173,8 +173,8 @@
 						}
 					],
 					"coordinate": [
-						0,
-						0
+						40,
+						45
 					],
 					"type": "AWS.VPC.Subnet",
 					"size": [
@@ -187,8 +187,8 @@
 					"groupUId": "4F9CE594-B39E-4DF3-89A6-F317B7320FF1",
 					"connection": [],
 					"coordinate": [
-						0,
-						0
+						38,
+						43
 					],
 					"size": [
 						43,
@@ -208,8 +208,8 @@
 						}
 					],
 					"coordinate": [
-						0,
-						0
+						40,
+						22
 					],
 					"type": "AWS.VPC.Subnet",
 					"size": [
@@ -222,8 +222,8 @@
 					"groupUId": "4F9CE594-B39E-4DF3-89A6-F317B7320FF1",
 					"name": "eu-west-1c",
 					"coordinate": [
-						0,
-						0
+						38,
+						20
 					],
 					"type": "AWS.EC2.AvailabilityZone",
 					"size": [

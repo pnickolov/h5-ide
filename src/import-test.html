@@ -35,9 +35,61 @@
 			{
 				MC.canvas_data = data;
 
+				var resource_stack = {};
+
+				$.each(data.component, function (key, value)
+				{
+					stack = resource_stack[ value.type.replace(/\./ig, '-') ];
+
+					if (stack === undefined)
+					{
+						resource_stack[ value.type.replace(/\./ig, '-') ] = [];
+					}
+
+					resource_stack[ value.type.replace(/\./ig, '-') ].push(key);
+				});
+
+				layout = {
+					'A1': {
+						'coordinate': [3, 5],
+
+						'children': {
+							'B1': {
+								'coordinate': [5, 3],
+
+								'children': {
+									'C1': {
+										'coordinate': [5, 1]
+									}
+								}
+							},
+							'B2': {
+								'coordinate': [2, 4]
+							}
+						}
+					},
+
+					'A2': {
+						'coordinate': [3, 5],
+
+						'children': {
+							'B3': {
+								'coordinate': [5, 3]
+							},
+							'B4': {
+								'coordinate': [2, 4]
+							}
+						}
+					}
+				};
+
+				console.info(resource_stack);
+
 				MC.canvas.layout.init();
 				model.initLine();
 				model.reDrawSgLine();
+
+
 			});
 		});
 	});

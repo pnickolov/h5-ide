@@ -2956,7 +2956,7 @@ td.table-action a.btn {
 
 .toolbar-btn-group {
 	float         : left;
-	border-right: 1px solid #e0e0e0;
+	border-right: 1px solid #ddd;
 }
 
 .toolbar-btn-group .selectbox .dropdown {
@@ -3010,7 +3010,7 @@ td.table-action a.btn {
 
 .btn-toolbar:hover {
 	color: #c472a7;
-	background-color: rgba(0,0,0,.1);
+	background-color: rgba(0,0,0,.05);
 }
 
 .btn-toolbar.disabled {
@@ -6937,13 +6937,11 @@ summary:focus {
 
 /* App Useage: Confirm Terminate App for Production */
 .terminate-pro-app-confirm {
-	color: black;
-
+	color: #666;
 }
 
 .terminate-pro-app-confirm b {
-	color: #ad3f2c;
-
+	color: #ec3c38;
 }
 
 .terminate-pro-app-confirm .confirm-area {

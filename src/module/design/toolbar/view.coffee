@@ -623,8 +623,9 @@ define [ 'MC', 'event',
             # 1. Update MC.canvas.getState() to return 'app'
             ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
 
-            # 2. push PROCESS_RUN_SUCCESS refresh current tab
-            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
+            # 2. push  refresh current tab
+            # ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', null, region, tab_id
 
             # 3. delete MC.process and MC.data.process
             # delete MC.process[ MC.data.current_tab_id ]

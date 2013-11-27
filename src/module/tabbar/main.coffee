@@ -217,17 +217,11 @@ define [ 'jquery', 'event', 'base_main',
                 Tabbar.open 'dashboard'
                 null
 
-
-
-
-
             # new stack
             newStackTab = ( region_name ) ->
                 console.log 'ADD_STACK_TAB'
                 console.log region_name
-                #
                 view.temp_region_name = region_name
-                #
                 platformSupport = model.checkPlatform( region_name )
                 if platformSupport is true
                     modal MC.template.createNewStackClassic(), true
@@ -261,32 +255,46 @@ define [ 'jquery', 'event', 'base_main',
                 MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
                 Tabbar.add process_name, tab_name + ' - app'
 
+            #listen
+            reloadNewStack = ( tab_id, region_name, platform ) ->
+                console.log 'RELOAD_NEW_STACK_TAB', tab_id, region_name, platform
+                model.set 'tab_name',          tab_id
+                model.set 'stack_region_name', region_name
+                model.set 'current_platform',  platform
+                newStack tab_id
+
+            # reload stack
+            reloadStackTab = ( tab_id, region_name ) ->
+                console.log 'RELOAD_STACK_TAB', tab_id, region_name
+                model.set 'stack_region_name', region_name
+                openStack tab_id
+
+            # reload app
+            reloadAppTab = ( tab_id, region_name ) ->
+                console.log 'PROCESS_RUN_SUCCESS, tab_id = ' + tab_id + ', region_name = ' + region_name
+                model.set 'app_region_name', region_name
+                openApp tab_id
+
             # listen open stack tab
-            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS'
+            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP'
             ide_event.onLongListen ide_event.OPEN_DESIGN_TAB, ( type, tab_name, region_name, tab_id ) ->
                 console.log 'OPEN_DESIGN_TAB', type, tab_name, region_name, tab_id
                 switch type
-                    when 'NEW_STACK'   then newStackTab   region_name
-                    when 'OPEN_STACK'  then openStackTab  tab_name, region_name, tab_id
-                    when 'OPEN_APP'    then openAppTab    tab_name, region_name, tab_id
-                    when 'NEW_PROCESS' then newProcessTab tab_id,   tab_name,    region_name
+
+                    when 'NEW_STACK'        then newStackTab    region_name
+
+                    when 'OPEN_STACK'       then openStackTab   tab_name, region_name, tab_id
+                    when 'OPEN_APP'         then openAppTab     tab_name, region_name, tab_id
+
+                    when 'NEW_PROCESS'      then newProcessTab  tab_id,   tab_name,    region_name
+
+                    when 'RELOAD_STACK'     then reloadStackTab tab_id,   region_name
+                    when 'RELOAD_APP'       then reloadAppTab   tab_id,   region_name, tab_name
+
+                    # when RELOAD_NEW_STACK tab_name is platform
+                    when 'RELOAD_NEW_STACK' then reloadNewStack tab_id, region_name, tab_name
                     else
                         console.log 'open undefined tab'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
@@ -337,33 +345,6 @@ define [ 'jquery', 'event', 'base_main',
             ide_event.onLongListen ide_event.UPDATE_TABBAR_TYPE, ( tab_id, tab_type ) ->
                 console.log 'UPDATE_TABBAR_TYPE, tab_id = ' + tab_id + ', tab_type = ' + tab_type
                 Tabbar.updateState tab_id, tab_type
-
-            #listen
-            ide_event.onLongListen ide_event.PROCESS_RUN_SUCCESS, ( tab_id, region_name ) ->
-                console.log 'PROCESS_RUN_SUCCESS, tab_id = ' + tab_id + ', region_name = ' + region_name
-                #set vo
-                model.set 'app_region_name', region_name
-                #
-                openApp tab_id
-
-            #listen
-            ide_event.onLongListen ide_event.RELOAD_STACK_TAB, ( tab_id, region_name ) ->
-                console.log 'RELOAD_STACK_TAB', tab_id, region_name
-                #set vo
-                model.set 'stack_region_name', region_name
-                #
-                openStack tab_id
-
-            #listen
-            ide_event.onLongListen ide_event.RELOAD_NEW_STACK_TAB, ( tab_id, region_name, platform ) ->
-                console.log 'RELOAD_NEW_STACK_TAB', tab_id, region_name, platform
-                #set vo
-                model.set 'tab_name',          tab_id
-                model.set 'stack_region_name', region_name
-                model.set 'current_platform',  platform
-                #ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
-                #
-                newStack tab_id
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_TAB_CLOSE_STATE, ( state ) ->

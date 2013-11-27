@@ -2837,15 +2837,13 @@ td.table-action a.btn {
 }
 
 #ami-table-wrap .toggle-fav {
-	top: 50%;
-	left: 50%;
-	margin-left: -8px;
-	margin-top: -10px;
+	position: static;
+	margin: 0 2px;
 }
 
+
 #ami-table-wrap .toggle-fav:hover {
-	margin-left: -10px;
-	margin-top: -12px;
+	margin: 0;
 }
 
 #ami-table-wrap .table-head thead th {

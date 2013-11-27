@@ -33,8 +33,9 @@ define [ 'jquery', 'event', 'base_main',
             view = loadSuperModule loadModule, 'tabbar', View, null
             return if !view
 
-            #temp
-            #MC.data.event = ide_event
+            #############################
+            #  view
+            #############################
 
             #listen
             view.on 'SWITCH_DASHBOARD', ( original_tab_id, tab_id ) ->
@@ -84,7 +85,6 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'CLOSE_STACK_TAB'
                 console.log 'tab_id          = ' + tab_id
                 #model
-                #$model.delete tab_id
                 ide_event.trigger ide_event.DELETE_TAB_DATA, tab_id
 
             #listen
@@ -92,89 +92,30 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'SELECE_PLATFORM'
                 console.log 'platform          = ' + platform
                 console.log 'region_name       = ' + view.temp_region_name
-                #set vo
+
                 model.set 'stack_region_name', view.temp_region_name
-                #set current platform
                 model.set 'current_platform', platform
-                #
+
                 if MC.data.untitled is 0 and MC.forge.cookie.getCookieByName( 'state' ) is '3'
                     require [ 'component/tutorial/main' ], ( tutorial_main ) -> tutorial_main.loadModule()
-
-                # track
-                # analytics.track "Created Stack",
-                #     stack_type: platform,
-                #     stack_region: view.temp_region_name
 
                 # check repeat stack name
                 loop
                     MC.data.untitled = MC.data.untitled + 1
                     break if MC.aws.aws.checkStackName null, 'untitled-'+MC.data.untitled
 
-                #tabbar api
                 Tabbar.add 'new-' + MC.data.untitled + '-' + view.temp_region_name, 'untitled-' + MC.data.untitled + ' - stack'
-                #MC.data.untitled ++
-                #MC.data.untitled = MC.data.untitled + 1
-                #
                 modal.close()
+
+            #############################
+            #  model
+            #############################
 
             #listen dashboard
             model.on 'SWITCH_DASHBOARD', ( result ) ->
                 console.log 'SWITCH_DASHBOARD'
                 #push event
                 ide_event.trigger ide_event.SWITCH_DASHBOARD, null
-
-            #listen new_stack
-            newStack = ( tab_id ) ->
-                console.log 'NEW_STACK'
-                console.log model.get 'stack_region_name'
-                console.log model.get 'current_platform'
-                console.log model.get 'tab_name'
-                console.log tab_id
-                #
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
-                #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
-                #
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
-                #
-                MC.data.nav_new_stack_list[ tab_id ] = { region : model.get( 'stack_region_name' ) }
-                #
-                null
-            model.on 'NEW_STACK', newStack
-
-            #listen open_stack
-            openStack = ( tab_id ) ->
-                console.log 'OPEN_STACK'
-                #call getStackInfo
-                model.once 'GET_STACK_COMPLETE', ( result ) ->
-                    console.log 'GET_STACK_COMPLETE'
-                    console.log result
-                    #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
-                    #
-                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
-                #
-                model.getStackInfo tab_id
-                #
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
-            model.on 'OPEN_STACK', openStack
-
-            #listen open_app
-            openApp = ( tab_id ) ->
-                console.log 'OPEN_APP'
-                #call getAppInfo
-                model.once 'GET_APP_COMPLETE', ( result ) ->
-                    console.log 'GET_APP_COMPLETE'
-                    console.log result
-                    #push event
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
-                    #
-                    ide_event.trigger ide_event.UPDATE_TAB_ICON, result.resolved_data[0].state, tab_id
-                #
-                model.getAppInfo tab_id
-                #
-                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
-            model.on 'OPEN_APP', openApp
 
             #listen open_process
             model.on 'OPEN_PROCESS', ( tab_id ) ->
@@ -184,12 +125,6 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
                 #
                 ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', tab_id
-
-            #listen old_app
-            model.on 'OLD_APP', ( tab_id ) ->
-                console.log 'OLD_APP'
-                #push event
-                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', tab_id
 
             #listen old_stack
             model.on 'OLD_STACK', ( tab_id ) ->
@@ -204,6 +139,12 @@ define [ 'jquery', 'event', 'base_main',
                 #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OLD_PROCESS', tab_id
                 ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
 
+            #listen old_app
+            model.on 'OLD_APP', ( tab_id ) ->
+                console.log 'OLD_APP'
+                #push event
+                ide_event.trigger ide_event.SWITCH_TAB, 'OLD_APP', tab_id
+
             #listen
             model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
                 console.log 'SAVE_DESIGN_MODULE'
@@ -211,11 +152,60 @@ define [ 'jquery', 'event', 'base_main',
                 #push event
                 ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
 
-            #listen open dashboard
-            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, () ->
-                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
-                Tabbar.open 'dashboard'
+
+            #############################
+            #  private method
+            #############################
+
+            # new_stack
+            newStack = ( tab_id ) ->
+                console.log 'NEW_STACK'
+                console.log model.get 'stack_region_name'
+                console.log model.get 'current_platform'
+                console.log model.get 'tab_name'
+                console.log tab_id
+
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+                ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
+                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
+
+                MC.data.nav_new_stack_list[ tab_id ] = { region : model.get( 'stack_region_name' ) }
+
                 null
+
+            # open_stack
+            openStack = ( tab_id ) ->
+                console.log 'OPEN_STACK'
+
+                model.once 'GET_STACK_COMPLETE', ( result ) ->
+                    console.log 'GET_STACK_COMPLETE'
+                    console.log result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_STACK', tab_id, model.get( 'stack_region_name' ), result, result.resolved_data[0].platform
+                    ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stack', tab_id
+                model.getStackInfo tab_id
+
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+
+                null
+
+            # open_app
+            openApp = ( tab_id ) ->
+                console.log 'OPEN_APP'
+
+                model.once 'GET_APP_COMPLETE', ( result ) ->
+                    console.log 'GET_APP_COMPLETE'
+                    console.log result
+                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
+                    ide_event.trigger ide_event.UPDATE_TAB_ICON, result.resolved_data[0].state, tab_id
+                model.getAppInfo tab_id
+
+                ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id
+
+                null
+
+            model.on 'NEW_STACK',  newStack
+            model.on 'OPEN_STACK', openStack
+            model.on 'OPEN_APP',   openApp
 
             # new stack
             newStackTab = ( region_name ) ->
@@ -256,7 +246,7 @@ define [ 'jquery', 'event', 'base_main',
                 Tabbar.add process_name, tab_name + ' - app'
 
             #listen
-            reloadNewStack = ( tab_id, region_name, platform ) ->
+            reloadNewStackTab = ( tab_id, region_name, platform ) ->
                 console.log 'RELOAD_NEW_STACK_TAB', tab_id, region_name, platform
                 model.set 'tab_name',          tab_id
                 model.set 'stack_region_name', region_name
@@ -275,26 +265,43 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'app_region_name', region_name
                 openApp tab_id
 
+            #############################
+            #  listen
+            #############################
+
             # listen open stack tab
             # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP'
             ide_event.onLongListen ide_event.OPEN_DESIGN_TAB, ( type, tab_name, region_name, tab_id ) ->
                 console.log 'OPEN_DESIGN_TAB', type, tab_name, region_name, tab_id
                 switch type
 
-                    when 'NEW_STACK'        then newStackTab    region_name
+                    when 'NEW_STACK'        then newStackTab       region_name
 
-                    when 'OPEN_STACK'       then openStackTab   tab_name, region_name, tab_id
-                    when 'OPEN_APP'         then openAppTab     tab_name, region_name, tab_id
+                    when 'OPEN_STACK'       then openStackTab      tab_name, region_name, tab_id
+                    when 'OPEN_APP'         then openAppTab        tab_name, region_name, tab_id
 
-                    when 'NEW_PROCESS'      then newProcessTab  tab_id,   tab_name,    region_name
+                    when 'NEW_PROCESS'      then newProcessTab     tab_id,   tab_name,    region_name
 
-                    when 'RELOAD_STACK'     then reloadStackTab tab_id,   region_name
-                    when 'RELOAD_APP'       then reloadAppTab   tab_id,   region_name, tab_name
+                    when 'RELOAD_STACK'     then reloadStackTab    tab_id,   region_name
+                    when 'RELOAD_APP'       then reloadAppTab      tab_id,   region_name
 
                     # when RELOAD_NEW_STACK tab_name is platform
-                    when 'RELOAD_NEW_STACK' then reloadNewStack tab_id, region_name, tab_name
+                    when 'RELOAD_NEW_STACK' then reloadNewStackTab tab_id, region_name, tab_name
+
                     else
                         console.log 'open undefined tab'
+
+            #listen
+            ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
+                console.log 'CLOSE_TAB ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
+                view.closeTab stack_id
+                null
+
+            #listen open dashboard
+            ide_event.onLongListen ide_event.NAVIGATION_TO_DASHBOARD_REGION, () ->
+                console.log 'NAVIGATION_TO_DASHBOARD_REGION'
+                Tabbar.open 'dashboard'
+                null
 
             #listen
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, tab_id ) ->
@@ -304,18 +311,6 @@ define [ 'jquery', 'event', 'base_main',
                     view.trueCloseTab null, tab_id
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
                     view.changeIcon tab_id
-                #
-                #ide_event.trigger ide_event.UPDATE_APP_LIST, null
-                #
-                null
-
-            #listen
-            ide_event.onLongListen ide_event.CLOSE_TAB, ( tab_name, stack_id ) ->
-                console.log 'CLOSE_TAB ' + ' tab_name = ' + tab_name + ', stack_id = ' + stack_id
-                #
-                view.closeTab stack_id
-                #push event
-                #ide_event.trigger ide_event.UPDATE_STACK_LIST, null
                 null
 
             #listen

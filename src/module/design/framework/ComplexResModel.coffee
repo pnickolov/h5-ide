@@ -39,8 +39,10 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
       console.debug "ComplexResModel.remove, Removing Connections"
 
       # Remove connection
-      for connection in this.attributes.__connections
-        connection.disconnect()
+      connections = this.attributes.__connections
+      this.attributes.__connections = []
+      for c in connections
+        c.remove()
       null
 
     connect : ( connection )->

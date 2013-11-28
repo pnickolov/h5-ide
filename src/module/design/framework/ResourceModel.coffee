@@ -101,6 +101,9 @@ define [ "./Design", "backbone" ], ( Design )->
 
       console.assert protoProps.ctype, "Subclass of ResourceModel does not specifying a type"
 
+      if _.has(protoProps, 'constructor')
+        console.warn "Subclass of ResourceModel (type : #{protoProps.ctype}) is overriding Constructor, you'd better know what's going on!!!"
+
       if protoProps.handleTypes
         handleTypes = protoProps.handleTypes
         delete protoProps.handleTypes

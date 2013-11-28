@@ -158,8 +158,8 @@
 					"type": "AWS.VPC.VPC",
 					"uid": "4F9CE594-B39E-4DF3-89A6-F317B7320FF1",
 					"size": [
-						80,
-						61
+						0,
+						0
 					]
 				},
 				"58029E76-AF3C-439C-8C2F-6AF446B55FCE": {
@@ -178,8 +178,8 @@
 					],
 					"type": "AWS.VPC.Subnet",
 					"size": [
-						39,
-						28
+						0,
+						0
 					]
 				},
 				"6A632417-57F4-4C48-AC0D-41B7CCD2CB38": {
@@ -191,8 +191,8 @@
 						0
 					],
 					"size": [
-						43,
-						32
+						0,
+						0
 					],
 					"type": "AWS.EC2.AvailabilityZone",
 					"name": "eu-west-1a"
@@ -213,8 +213,8 @@
 					],
 					"type": "AWS.VPC.Subnet",
 					"size": [
-						17,
-						17
+						0,
+						0
 					]
 				},
 				"016D2490-BC9F-49EE-84A4-464B8B09BCD7": {
@@ -227,8 +227,8 @@
 					],
 					"type": "AWS.EC2.AvailabilityZone",
 					"size": [
-						21,
-						21
+						0,
+						0
 					],
 					"connection": []
 				}

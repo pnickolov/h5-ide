@@ -113,8 +113,8 @@ define [ "./Design", "backbone" ], ( Design )->
             childImpl  = protoProps[m]
             parentImpl = parentMethod
             ()->
-              ret = childImpl()
-              parentImpl()
+              ret = childImpl.apply( this, arguments )
+              parentImpl.apply( this, arguments )
               ret
           )()
 

@@ -103,8 +103,15 @@ define [ "constant" ], ( constant ) ->
 
 
   Design.prototype.getAZ = ( azName )->
-    # AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
+    AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
 
+    allAzs = AzModel.allObjects()
+    for az in allAzs
+      if az.get("name") is azName
+        return az
+
+    az = new AzModel({name:azName})
+    az
 
   Design.prototype.serialize = ()->
 

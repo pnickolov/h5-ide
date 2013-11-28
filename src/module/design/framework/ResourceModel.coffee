@@ -56,7 +56,8 @@ define [ "./Design", "backbone" ], ( Design )->
 
   ResourceModel = Backbone.Model.extend {
 
-    ctype : "Framework_R"
+    classId : _.uniqueId("dfc_")
+    ctype   : "Framework_R"
 
     initialize : ()->
       console.debug "ResourceModel.initialize, caching the object"
@@ -67,7 +68,7 @@ define [ "./Design", "backbone" ], ( Design )->
 
       # Cache the object inside the current design.
       design = Design.instance()
-      design.classCacheForCid( this.cid ).push( this )
+      design.classCacheForCid( this.classId ).push( this )
       design.cacheComponent( this.id, this )
       null
 
@@ -78,23 +79,24 @@ define [ "./Design", "backbone" ], ( Design )->
 
       # Clean up reference
       design = Design.instance()
-      cache = design.classCacheForCid( this.cid )
+      cache = design.classCacheForCid( this.classId )
       cache.splice( cache.indexOf( this ), 1 )
       design.cacheComponent( this.id )
 
       this.trigger "REMOVED"
       null
 
-    allObjects : ()->
-      design.classCacheForCid( this.cid ).slice(0)
-
     serialize : ()->
-      console.error "Class '#{this.cid}' doesn't implement serialize"
+      console.error "Class '#{this.ctype}' doesn't implement serialize"
       null
 
   }, {
+
+    allObjects : ()->
+      Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
+
     deserialize : ()->
-      console.error "Class '#{this.cid}' doesn't implement deserialize"
+      console.error "Class '#{this.ctype}' doesn't implement deserialize"
       null
 
     extend : ( protoProps, staticProps ) ->
@@ -121,6 +123,8 @@ define [ "./Design", "backbone" ], ( Design )->
               ret
           )()
 
+      protoProps.classId = _.uniqueId("dfc_")
+
       # Create subclass
       subClass = Backbone.Model.extend.call( this, protoProps, staticProps )
 
@@ -130,7 +134,7 @@ define [ "./Design", "backbone" ], ( Design )->
           handleTypes = [ handleTypes ]
 
         for type in handleTypes
-          Desin.registerModelClass type, subClass
+          Design.registerModelClass type, subClass
 
       subClass
   }

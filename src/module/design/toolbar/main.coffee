@@ -40,7 +40,7 @@ define [ 'jquery',
                 view.render type
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
-                console.log 'SWITCH_DASHBOARD'
+                console.log 'toolbar:SWITCH_DASHBOARD'
                 model.setTabFlag(false)
                 null
 

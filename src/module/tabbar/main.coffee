@@ -81,13 +81,6 @@ define [ 'jquery', 'event', 'base_main',
                 model.refresh original_tab_id, tab_id, 'process'
 
             #listen
-            view.on 'CLOSE_STACK_TAB', ( tab_id ) ->
-                console.log 'CLOSE_STACK_TAB'
-                console.log 'tab_id          = ' + tab_id
-                #model
-                ide_event.trigger ide_event.DELETE_TAB_DATA, tab_id
-
-            #listen
             view.on 'SELECE_PLATFORM', ( platform ) ->
                 console.log 'SELECE_PLATFORM'
                 console.log 'platform          = ' + platform
@@ -151,7 +144,6 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'tab_id          = ' + tab_id
                 #push event
                 ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
-
 
             #############################
             #  private method
@@ -293,7 +285,7 @@ define [ 'jquery', 'event', 'base_main',
 
             # close current tab
             ide_event.onLongListen ide_event.CLOSE_DESIGN_TAB, ( tab_name, tab_id ) ->
-                console.log 'CLOSE_DESIGN_TAB', tab_name, tab_id
+                console.log 'CLOSE_DESIGN_TAB', tab_id
                 view.closeTab tab_id
                 null
 

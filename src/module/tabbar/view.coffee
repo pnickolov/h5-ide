@@ -13,18 +13,16 @@ define [ 'event',
 
         template : Handlebars.compile tmpl
 
-        current_tab : null
-
         events   :
             'OPEN_TAB'              : 'openTabEvent'
             'CLOSE_TAB'             : 'closeTabEvent'
-            'CLOSE_TAB_RESTRICTION' : 'closeTabRestriction'
+            'CLOSE_TAB_RESTRICTION' : 'closeTabRestrictionEvent'
 
         initialize : ->
 
             $( document.body ).on 'click', '.new-stack-dialog',          this, @openNewStackDialog
             $( document.body ).on 'click', '#reload-account-attributes', this, @reloadAccountAttributes
-            $( document.body ).on 'click', '#close-tab-confirm',         this, @_closeTabConfirm
+            $( document.body ).on 'click', '#close-tab-confirm',         this, @closeTabConfirmEvent
 
             @listenTo ide_event, 'UPDATE_DESIGN_TAB_ICON', @updateTabIcon
 
@@ -34,6 +32,10 @@ define [ 'event',
 
         reloadAccountAttributes: () ->
              window.location.reload()
+
+        #############################
+        #  OPEN_TAB
+        #############################
 
         openTabEvent  : ( event, original_tab_id, tab_id ) ->
             console.log 'openTabEvent'
@@ -64,45 +66,9 @@ define [ 'event',
 
             null
 
-        closeTabEvent : ( event, tab_id ) ->
-            console.log 'closeTabEvent'
-            #push event
-            this.trigger 'CLOSE_STACK_TAB',  tab_id
-            null
-
-        changeIcon : ( tab_id ) ->
-            console.log 'changeIcon'
-            console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
-            null
-
-        updateTabCloseState : ( tab_id ) ->
-            console.log 'updateTabCloseState, tab_id = ' + tab_id
-            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
-            close_target.removeClass 'close-restriction'
-            close_target.addClass    'close-tab'
-
-        closeTab   : ( tab_id ) ->
-            console.log 'closeTab'
-            #$( '#tab-bar-' + tab_id ).children().last().trigger( 'mousedown' )
-            target = $( '#tab-bar-' + tab_id ).find( '.close-tab' )
-            return if $( '#tab-bar-' + tab_id ).length is 0
-            if target.length > 0
-                target.addClass 'auto-close'
-                target.trigger 'click'
-            else
-                @trueCloseTab null, tab_id
-            null
-
-        changeDashboardTabname   : ( tab_name ) ->
-            console.log 'changeDashboardTabname'
-            $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard icon-tabbar-label"></i>' + tab_name
-            null
-
-        openNewStackDialog : ( event ) ->
-            console.log 'openNewStackDialog'
-            console.log $( event.currentTarget ).attr 'data-supported-platform'
-            event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
-            null
+        #############################
+        #  update
+        #############################
 
         updateCurrentTab : ( tab_id, tab_name ) ->
             console.log 'updateCurrentTab', tab_id, tab_name
@@ -137,30 +103,37 @@ define [ 'event',
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
 
-        #updateTabType : ( tab_id, tab_type ) ->
-        #    console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
-        #    _.each $( '.tabbar-group' ).children(), ( item ) ->
-        #        $item = $( item )
-        #        if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-        #            #$item.attr( 'data-tab-type', tab_type )
-        #            $item.data( 'tab-type', tab_type )
-        #            Tabbar.current = tab_type
-        #            null
+        changeIcon : ( tab_id ) ->
+            console.log 'changeIcon'
+            console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
+            null
 
-        closeTabRestriction : ( event, target, tab_name, tab_id ) ->
-            console.log 'closeTabRestriction', target, tab_name, tab_id
+        updateTabCloseState : ( tab_id ) ->
+            console.log 'updateTabCloseState, tab_id = ' + tab_id
+            close_target = $( '#tab-bar-' + tab_id ).children( '.icon-close' )
+            close_target.removeClass 'close-restriction'
+            close_target.addClass    'close-tab'
+            close_target.addClass    'auto-close'
 
-            #if MC.canvas_property.original_json is JSON.stringify( MC.canvas_data )
-            #    @trueCloseTab target, tab_id
-            #else
-            #    console.log 'eeeeeeeeeeeeeeeeeeeeeeee'
+        #############################
+        #  close
+        #############################
 
-            @current_tab = target
+        closeTabEvent : ( event, tab_id ) ->
+            console.log 'closeTabEvent'
+            ide_event.trigger ide_event.DELETE_TAB_DATA, tab_id
+            null
 
+        # restriction close tab
+        closeTabRestrictionEvent : ( event, target, tab_name, tab_id ) ->
+            console.log 'closeTabRestrictionEvent', tab_name, tab_id
+
+            # process direct close
             if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
-                @trueCloseTab @current_tab, tab_id
+                @directCloseTab tab_id
                 return
 
+            # stack app check _.isEqual
             if MC.data.current_tab_id is tab_id
                 data        = $.extend true, {}, MC.canvas_data
                 origin_data = $.extend true, {}, MC.data.origin_canvas_data
@@ -169,18 +142,20 @@ define [ 'event',
                 origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
 
             if _.isEqual( data, origin_data )
-                @trueCloseTab @current_tab, tab_id
+                @directCloseTab tab_id
             else
                 modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+
             null
 
-        _closeTabConfirm : ( event ) ->
-            console.log 'closeTabConfirm, tab_id = ' + $( event.currentTarget ).attr 'data-tab-id'
-            event.data.trueCloseTab event.data.current_tab, $( event.currentTarget ).attr 'data-tab-id'
+        closeTabConfirmEvent : ( event ) ->
+            console.log 'closeTabConfirmEvent, tab_id = ' + $( event.currentTarget ).attr 'data-tab-id'
+            event.data.directCloseTab $( event.currentTarget ).attr 'data-tab-id'
             modal.close()
 
-        trueCloseTab : ( target, tab_id ) ->
-            console.log 'trueCloseTab'
+        # direct close tab
+        directCloseTab : ( tab_id ) ->
+            console.log 'directCloseTab', tab_id
 
             # update tab close state
             @updateTabCloseState tab_id
@@ -191,6 +166,52 @@ define [ 'event',
             , 150
 
             null
+
+        closeTab   : ( tab_id ) ->
+            console.log 'closeTab', tab_id
+
+            if $( '#tab-bar-' + tab_id ).length is 0
+                return
+
+            $target = $ $('#tab-bar-' + tab_id).find('a')[1]
+
+            # if class include 'close-restriction' call updateTabCloseState
+            if $target.attr( 'class' ).indexOf( 'close-restriction' ) isnt -1
+                # update tab close state
+                @updateTabCloseState tab_id
+
+            # close design tab
+            _.delay () ->
+                $target.trigger 'click'
+            , 150
+
+            null
+
+        #############################
+        #  other
+        #############################
+
+        changeDashboardTabname   : ( tab_name ) ->
+            console.log 'changeDashboardTabname'
+            $( '#tab-bar-dashboard' ).children().html '<i class="icon-dashboard icon-tabbar-label"></i>' + tab_name
+            null
+
+        openNewStackDialog : ( event ) ->
+            console.log 'openNewStackDialog'
+            console.log $( event.currentTarget ).attr 'data-supported-platform'
+            event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
+            null
+
+        #updateTabType : ( tab_id, tab_type ) ->
+        #    console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
+        #    _.each $( '.tabbar-group' ).children(), ( item ) ->
+        #        $item = $( item )
+        #        if $item.attr( 'id' ) is 'tab-bar-' + tab_id
+        #            #$item.attr( 'data-tab-type', tab_type )
+        #            $item.data( 'tab-type', tab_type )
+        #            Tabbar.current = tab_type
+        #            null
+
     }
 
     return TabBarView

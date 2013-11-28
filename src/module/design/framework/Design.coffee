@@ -63,8 +63,7 @@ define [ "constant" ], ( constant ) ->
     @__modelClassMap[ type ] = modelClass
     null
 
-  Design.modelClassForType = ( type )->
-    @__modelClassMap[ type ]
+  Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
   Design.prototype.classCacheForCid = ( cid )->
     if @__classCache[ cid ]

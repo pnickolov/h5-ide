@@ -3,6 +3,9 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
   GroupModel = ComplexResModel.extend {
 
+    defaults :
+      group : true
+
     ctype : "Framework_G"
 
     remove : ()->

@@ -284,7 +284,7 @@ define [ 'jquery', 'event', 'base_main',
                         console.log 'open undefined tab'
 
             # close current tab
-            ide_event.onLongListen ide_event.CLOSE_DESIGN_TAB, ( tab_name, tab_id ) ->
+            ide_event.onLongListen ide_event.CLOSE_DESIGN_TAB, ( tab_id ) ->
                 console.log 'CLOSE_DESIGN_TAB', tab_id
                 view.closeTab tab_id
                 null
@@ -338,7 +338,7 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'tabbar:UPDATE_APP_STATE', type, tab_id
                 #
                 if type is constant.APP_STATE.APP_STATE_TERMINATED
-                    view.trueCloseTab null, tab_id
+                    view.directCloseTab tab_id
                 else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED ]
                     view.changeIcon tab_id
                 null

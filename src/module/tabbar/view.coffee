@@ -129,7 +129,7 @@ define [ 'event',
             console.log 'closeTabRestrictionEvent', tab_name, tab_id
 
             # process direct close
-            if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
+            if tab_id.split( '-' )[0] in [ 'process' ]
                 @directCloseTab tab_id
                 return
 
@@ -162,7 +162,7 @@ define [ 'event',
 
             # close design tab
             _.delay () ->
-                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, null, tab_id
+                ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_id
             , 150
 
             null

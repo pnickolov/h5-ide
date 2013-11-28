@@ -304,7 +304,7 @@ define [ 'MC', 'event', 'handlebars'
 				relogin()
 				if error.param[0].method is 'info'
 					if error.param[0].url in [ '/stack/', '/app/' ]
-						ide_event.trigger ide_event.CLOSE_DESIGN_TAB, null, error.param[4][0]
+						ide_event.trigger ide_event.CLOSE_DESIGN_TAB, error.param[4][0]
 			else
 
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'

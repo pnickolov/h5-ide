@@ -310,6 +310,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             console.log temp
             this.set 'app_list', temp
+            MC.data.nav_app_list = @get 'app_list'
 
             null
 

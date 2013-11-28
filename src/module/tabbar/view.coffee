@@ -72,7 +72,9 @@ define [ 'event',
 
         updateCurrentTab : ( tab_id, tab_name ) ->
             console.log 'updateCurrentTab', tab_id, tab_name
+
             original_tab_id = null
+
             _.each $( '.tabbar-group' ).children(), ( item ) ->
                 if $( item ).attr( 'class' ) is 'active'
                     console.log $( item )
@@ -92,7 +94,8 @@ define [ 'event',
                     original_tab_id = temp.attr 'data-tab-id'
 
                     null
-            return original_tab_id
+
+            original_tab_id
 
         updateTabIcon : ( type, tab_id ) ->
             console.log 'updateTabIcon, type = ' + type + ', tab_id = ' + tab_id
@@ -102,11 +105,6 @@ define [ 'event',
                     if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
-
-        changeIcon : ( tab_id ) ->
-            console.log 'changeIcon'
-            console.log $( '#tab-bar-' + tab_id ).children().find( 'i' ).attr( 'class' )
-            null
 
         updateTabCloseState : ( tab_id ) ->
             console.log 'updateTabCloseState, tab_id = ' + tab_id
@@ -201,16 +199,6 @@ define [ 'event',
             console.log $( event.currentTarget ).attr 'data-supported-platform'
             event.data.trigger 'SELECE_PLATFORM', $( event.currentTarget ).attr 'data-supported-platform'
             null
-
-        #updateTabType : ( tab_id, tab_type ) ->
-        #    console.log 'updateTabIcon, tab_id = ' + tab_id + ', tab_type = ' + tab_type
-        #    _.each $( '.tabbar-group' ).children(), ( item ) ->
-        #        $item = $( item )
-        #        if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-        #            #$item.attr( 'data-tab-type', tab_type )
-        #            $item.data( 'tab-type', tab_type )
-        #            Tabbar.current = tab_type
-        #            null
 
     }
 

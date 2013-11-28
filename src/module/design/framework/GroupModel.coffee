@@ -3,27 +3,29 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
   GroupModel = ComplexResModel.extend {
 
-    defaults :
-      __children : []
-
     ctype : "Framework_G"
 
     remove : ()->
       console.debug "GroupModel.remove, Removing Children"
 
       # Remove children
-      for child in @.attributes.__children
-        child.off "REMOVED", @removeChild, @
-        child.remove()
+      if @.attributes.__children
+        for child in @.attributes.__children
+          child.off "REMOVED", @removeChild, @
+          child.remove()
       null
 
     addChild : ( child )->
       console.assert( child.remove, "This child is not a ResourceModel object" )
 
-      if @attributes.__children.indexOf( child ) != -1
+      children = @.attributes.__children
+
+      if not children
+        children = []
+
+      else if children.indexOf( child ) != -1
         return
 
-      children = @get("__children")
       children.push( child )
       @set("__children", children)
 
@@ -33,14 +35,24 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
     removeChild : ( child )->
       children = @get("__children")
-      children.splice( children.indexOf( child ), 1 )
+
+      if not children or children.length == 0
+        console.warn "Child not found when removing."
+        return
+
+      idx = children.indexOf( child )
+      if idx == -1
+        console.warn "Child not found when removing."
+        return
+
+      children.splice( idx, 1 )
 
       @set("__children", children)
 
       child.off "REMOVED", @removeChild, @
       null
 
-    children : ()-> this.get("__children")
+    children : ()-> this.get("__children") || []
   }
 
   GroupModel

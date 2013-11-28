@@ -32,7 +32,7 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
       console.debug "ComplexResModel.initialize, trying to draw the item"
 
       if @draw
-        @draw( true )
+        @draw true
       null
 
     remove : ()->
@@ -46,13 +46,19 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
     connect : ( connection )->
       console.debug "ComplexResModel.connet"
 
-      this.attributes.__connections.push connection
+      connections = @get "__connections"
+
+      if not connections
+        connections = []
+
+      connections.push connection
+      @set "__connections", connections
       null
 
     ###
      ReadOnly Infomation
     ###
-    connections : ()-> this.get("__connections")
+    connections : ()-> this.get("__connections") || []
     parent      : ()-> this.get("__parent")
     x           : ()-> this.get("__x")
     y           : ()-> this.get("__y")

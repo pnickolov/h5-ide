@@ -36,7 +36,6 @@ define [ 'underscore', 'backbone' ], () ->
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
         #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
-        SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         RELOAD_AZ              : 'RELOAD_AZ'
 
         #design overlay
@@ -55,6 +54,7 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_MAIN            : 'SWITCH_MAIN'
 
         #tab
+        SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'

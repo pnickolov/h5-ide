@@ -97,7 +97,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         deleteTab    : ( tab_id ) ->
             console.log 'deleteTab'
             delete MC.tab[ tab_id ]
-            delete MC.process[ tab_id ] if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
+            MC.forge.other.deleteProcess tab_id if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
             console.log MC.tab
             console.log MC.process
             null

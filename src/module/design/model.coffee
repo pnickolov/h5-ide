@@ -119,11 +119,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             null
 
-        saveProcessTab : ( tab_id ) ->
-            console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
-            null
-
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
             MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
@@ -181,6 +176,11 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log 'setOriginResource', data, tab_id
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
+
+        #saveProcessTab : ( tab_id ) ->
+        #    console.log 'saveProcessTab'
+        #    if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
+        #    null
 
         #############################
         #  api

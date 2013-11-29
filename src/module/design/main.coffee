@@ -45,10 +45,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             # ADD_TAB_DATA
             ide_event.onLongListen ide_event.ADD_TAB_DATA, ( tab_id ) ->
                 console.log 'ADD_TAB_DATA = ' + tab_id
-                #save tab
-                if tab_id.split( '-' )[0] is 'process'
-                    model.saveProcessTab tab_id
-                else
+
+                if tab_id.split( '-' )[0] isnt 'process'
                     model.addTab tab_id,
                                  view.html(),
                                  model.getCanvasData(),

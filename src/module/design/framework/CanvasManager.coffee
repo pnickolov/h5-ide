@@ -8,8 +8,6 @@ define [ "./Design" ], ( Design )->
       design = Design.instance()
       component = design.getComponent compUid
 
-      console.assert component.ctype != "Framework_CR", "CanvasManager can only move ComplexResModel"
-
       component.set "__x", x
       component.set "__y", y
 
@@ -20,8 +18,6 @@ define [ "./Design" ], ( Design )->
 
       design = Design.instance()
       component = design.getComponent compUid
-
-      console.assert component.ctype != "Framework_G", "CanvasManager can only resize GroupModel"
 
       component.set "__w", w
       component.set "__h", h

@@ -82,6 +82,11 @@ define [ 'event',
                     # update temp html tag property
                     $( item ).attr 'id', 'tab-bar-' + tab_id
                     temp = $( $( item ).find( 'a' )[0] )
+
+                    # get origin tab id
+                    original_tab_id = temp.attr 'data-tab-id'
+
+                    # reset
                     temp.attr 'title',       tab_name
                     temp.attr 'data-tab-id', tab_id
                     temp.attr 'href',        '#tab-content-' + tab_id
@@ -89,9 +94,6 @@ define [ 'event',
 
                     # set Tabbar.current
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, tab_id, tab_id.split( '-' )[0]
-
-                    # get origin tab id
-                    original_tab_id = temp.attr 'data-tab-id'
 
                     null
 

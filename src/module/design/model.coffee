@@ -79,12 +79,23 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
         saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid }
+
+            MC.tab[ tab_id ] =
+                'snapshot'        : snapshot
+                'data'            : data
+                'property'        : property
+                'property_panel'  : property_panel
+                'origin_data'     : origin_data
+                'origin_ta_valid' : origin_ta_valid
+
             null
 
-        saveProcessTab : ( tab_id ) ->
-            console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
+        deleteTab    : ( tab_id ) ->
+            console.log 'deleteTab'
+            delete MC.tab[ tab_id ]
+            delete MC.process[ tab_id ] if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
+            console.log MC.tab
+            console.log MC.process
             null
 
         readTab : ( type, tab_id ) ->
@@ -104,13 +115,10 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             null
 
-        updateTab : ( old_tab_id, tab_id ) ->
-            console.log 'updateTab'
-            if MC.tab[ old_tab_id ] is undefined then return
-            #
-            MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property, 'origin_data' : MC.tab[ old_tab_id ].origin_data }
-            #
-            @deleteTab old_tab_id
+        saveProcessTab : ( tab_id ) ->
+            console.log 'saveProcessTab'
+            if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
+            null
 
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
@@ -120,14 +128,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         updateAppTabOriginDate : ( data, tab_id ) ->
             console.log 'updateAppTabOriginDate'
             MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
-            null
-
-        deleteTab    : ( tab_id ) ->
-            console.log 'deleteTab'
-            delete MC.tab[ tab_id ]
-            delete MC.process[ tab_id ] if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
-            console.log MC.tab
-            console.log MC.process
             null
 
         setCanvasData : ( data ) ->

@@ -55,12 +55,17 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                         # hold on two seconds
                         setTimeout () ->
+
+                            # update tab
                             ide_event.trigger ide_event.UPDATE_DESIGN_TAB, app_id, app_name + ' - app'
-                            #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+
+                            # reload app
                             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', app_name, region, app_id
-                            # only delete MC.process[tab_name]
-                            ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+
+                            #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+                            #ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+
                         , 800
                     , 1000
 

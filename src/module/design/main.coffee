@@ -42,9 +42,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null
 
-            #listen ADD_TAB_DATA
+            # ADD_TAB_DATA
             ide_event.onLongListen ide_event.ADD_TAB_DATA, ( tab_id ) ->
-                console.log 'design:ADD_TAB_DATA = ' + tab_id
+                console.log 'ADD_TAB_DATA = ' + tab_id
                 #save tab
                 if tab_id.split( '-' )[0] is 'process'
                     model.saveProcessTab tab_id
@@ -58,7 +58,13 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                                   model.getTAValidation()
                 null
 
-            #listen SWITCH_TAB
+            # DELETE_TAB_DATA
+            ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
+                console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
+                model.deleteTab tab_id
+                null
+
+            # SWITCH_TAB
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id, region_name, result, current_platform ) ->
 
                 try
@@ -157,18 +163,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                   console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
                   console.log "error message: #{ error }"
 
-                null
-
-            #listen
-            ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
-                console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
-                model.deleteTab tab_id
-                null
-
-            #listen
-            ide_event.onLongListen ide_event.UPDATE_TAB_DATA, ( original_tab_id, tab_id ) ->
-                console.log 'UPDATE_TAB_DATA, original_tab_id = ' + original_tab_id + ', tab_id = ' + tab_id
-                model.updateTab original_tab_id, tab_id
                 null
 
             #listen

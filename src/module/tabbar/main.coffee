@@ -290,15 +290,20 @@ define [ 'jquery', 'event', 'base_main',
             # update current tab name id
             ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB, ( tab_id, tab_name ) ->
                 console.log 'UPDATE_DESIGN_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name
-                original_tab_id = view.updateCurrentTab tab_id, tab_name
-                console.log original_tab_id
 
                 # set current tab id
                 MC.forge.other.setCurrentTabId tab_id
 
-                # push UPDATE_TAB_DATA
-                if tab_id.split( '-' )[0] isnt 'app'
-                    if original_tab_id isnt tab_id then ide_event.trigger ide_event.UPDATE_TAB_DATA, original_tab_id, tab_id
+                # get origin tab id and reset tab_id and tab_name
+                original_tab_id = view.updateCurrentTab tab_id, tab_name
+                console.log original_tab_id
+
+                # update MC.tab include ADD_TAB_DATA and DELETE_TAB_DATA
+                if original_tab_id isnt tab_id
+                    ide_event.trigger ide_event.ADD_TAB_DATA,    tab_id
+                    ide_event.trigger ide_event.DELETE_TAB_DATA, original_tab_id
+
+                null
 
             # update Tabbar.current
             ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB_TYPE, ( tab_id, tab_type ) ->

@@ -87,7 +87,7 @@ define [ "./Design", "backbone" ], ( Design )->
       null
 
     serialize : ()->
-      console.error "Class '#{this.ctype}' doesn't implement serialize"
+      console.error "Class '#{@ctype}' doesn't implement serialize"
       null
 
   }, {
@@ -96,7 +96,7 @@ define [ "./Design", "backbone" ], ( Design )->
       Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->
-      console.error "Class '#{this.ctype}' doesn't implement deserialize"
+      console.error "Class '#{@.prototype.ctype}' doesn't implement deserialize"
       null
 
     extend : ( protoProps, staticProps ) ->

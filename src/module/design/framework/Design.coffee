@@ -40,6 +40,9 @@ define [ "constant" ], ( constant ) ->
 
     design = (new DesignImpl( options )).use()
 
+    # Temporarily set layout_data in design, so that getAZ
+    design.groupLayoutData = layout_data.component.group
+
     layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
 
     # Deserialize
@@ -72,6 +75,8 @@ define [ "constant" ], ( constant ) ->
     for uid, comp of json_data
       deserialize_uid = null
       resolveDeserialize uid
+
+    delete design.groupLayoutData
 
     design
 
@@ -149,8 +154,22 @@ define [ "constant" ], ( constant ) ->
       if az.get("name") is azName
         return az
 
-    az = new AzModel({name:azName})
-    az
+    # Retrieve AZ's layout info from layoutData
+    if @groupLayoutData
+      for uid, layout of @groupLayoutData
+        if layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and layout.name is azName
+          attr =
+            id   : uid
+            name : azName
+            __x  : layout.coordinate[0]
+            __y  : layout.coordinate[1]
+            __w  : layout.size[1]
+            __h  : layout.size[1]
+
+    if not attr
+      attr = { name : azName }
+
+    new AzModel( attr )
 
   DesignImpl.prototype.serialize = ()->
 

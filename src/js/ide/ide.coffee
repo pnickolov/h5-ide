@@ -103,13 +103,10 @@ define [ 'MC', 'event', 'handlebars'
 		#set untitled
 		MC.data.untitled = 0
 		#set tab
-		MC.tab  = {}
+		MC.tab          = {}
 		#set process tab
-		MC.process = {}
+		MC.process      = {}
 		MC.data.process = {}
-		#if MC.storage.get( 'process' )
-		#	MC.data.process = $.extend true, {}, MC.storage.get 'process'
-		#	MC.process      = $.extend true, {}, MC.storage.get 'process'
 		MC.storage.remove 'process'
 
 		#save <div class="loading-wrapper" class="main-content active">

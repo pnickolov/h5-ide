@@ -182,7 +182,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 MC.data.process             = {}
                 MC.data.process             = $.extend true, {}, MC.process
                 MC.data.process[ id ].state = type
-                #MC.storage.set 'process', MC.data.process
 
                 return if MC.data.current_tab_id isnt id
 

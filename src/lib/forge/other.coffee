@@ -28,7 +28,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'deleteProcess', id
 		delete MC.process[ id ]
 		delete MC.data.process[ id ]
-		#MC.storage.set 'process', $.extend true, {}, MC.data.process
 		null
 
 	filterProcess = ( id ) ->
@@ -38,7 +37,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		state = null
 
 		if obj and obj.state in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
-			#@deleteProcess id
 			state = obj.state
 
 		state

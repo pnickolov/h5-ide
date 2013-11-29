@@ -35,6 +35,7 @@ define [ "constant" ], ( constant ) ->
   design_instance = null
 
 
+
   Design = ( json_data, layout_data, options )->
 
     @__componentMap = {}
@@ -42,6 +43,49 @@ define [ "constant" ], ( constant ) ->
 
     this.__type = options.type
     this.__mode = options.mode
+
+    # Deserialize
+
+    # A helper function to let each resource to get its dependency
+    resolveDeserialize = ( uid )->
+
+      obj = design_instance.getComponent( uid )
+      if obj
+        return obj
+
+      # Check if we have recursive dependency
+      console.assert deserialize_uid isnt uid, "Recursive dependency found when deserializing JSON_DATA"
+
+      if not deserialize_uid then deserialize_uid = uid
+
+
+      component_data = json_data[ uid ]
+
+      ModelClass = Design.modelClassForType( component_data.type )
+      if not ModelClass
+        console.warn "We do not support deserializing resource of type : #{component_data.type}"
+        return
+
+      ModelClass.deserialize( component_data, resolveDeserialize )
+
+      obj = design_instance.getComponent( uid )
+
+      # If the ModelClass does deserialize, then we can write common attributes like "name" to the obj, and layout
+      if obj
+        if component_data.name
+          # Directly modify the object's name, so that Backbone.Model won't mark the obj changed.
+          obj.attributes.name = component_data.name
+          # obj.attributes.__x = x
+          # obj.attributes.__y = y
+          # obj.attributes.__w = w
+          # obj.attributes.__h = h
+
+      obj
+
+
+    for uid, comp of json_data
+      deserialize_uid = null
+      resolveDeserialize uid
 
     @use()
     @

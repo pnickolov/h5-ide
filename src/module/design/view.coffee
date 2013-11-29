@@ -197,7 +197,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                         # delete MC.process and MC.data.process
                         # delete MC.process[ MC.data.current_tab_id ]
                         # delete MC.data.process[ MC.data.current_tab_id ]
-                        MC.forge.other.deleteProcess MC.data.current_tab_id
+                        # MC.forge.other.deleteProcess MC.data.current_tab_id
 
                         null
 

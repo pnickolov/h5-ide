@@ -31,7 +31,7 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
     initialize : ()->
       console.debug "ComplexResModel.initialize, trying to draw the item"
 
-      if @draw
+      if @draw and Design.instance().shouldDraw()
         @draw true
       null
 

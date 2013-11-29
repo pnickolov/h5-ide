@@ -40,6 +40,8 @@ define [ "constant" ], ( constant ) ->
 
     design = (new DesignImpl( options )).use()
 
+    layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
+
     # Deserialize
 
     # A helper function to let each resource to get its dependency
@@ -62,21 +64,9 @@ define [ "constant" ], ( constant ) ->
         console.warn "We do not support deserializing resource of type : #{component_data.type}"
         return
 
-      ModelClass.deserialize( component_data, resolveDeserialize )
+      ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
 
-      obj = design_instance.getComponent( uid )
-
-      # If the ModelClass does deserialize, then we can write common attributes like "name" to the obj, and layout
-      if obj
-        if component_data.name
-          # Directly modify the object's name, so that Backbone.Model won't mark the obj changed.
-          obj.attributes.name = component_data.name
-          # obj.attributes.__x = x
-          # obj.attributes.__y = y
-          # obj.attributes.__w = w
-          # obj.attributes.__h = h
-
-      obj
+      design_instance.getComponent( uid )
 
 
     for uid, comp of json_data
@@ -139,6 +129,9 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
   DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
 
+
+  DesignImpl.prototype.shouldDraw = ()->
+    true
 
   DesignImpl.prototype.use = ()->
     design_instance = @

@@ -465,59 +465,58 @@
 	shape-rendering:crispEdges;
 }*/
 
-.group-vpc {
-	fill: rgba(250, 250, 250, 0.05);
-	stroke: #dcdcdc;
-	stroke-linejoin: round;
-	stroke-dasharray: none;
-	stroke-width: 4;
+.AWS-VPC-VPC .group {
+	fill:rgba(250, 250, 250, 0.05);
+	stroke:#dcdcdc;
+	stroke-linejoin:round;
+	stroke-dasharray:none;
+	stroke-width:4;
 }
 
-.webkit .group-vpc,
-.webkit .group-az,
-.webkit .group-subnet {
+.webkit .AWS-VPC-VPC .group,
+.webkit .AWS-EC2-AvailabilityZone .group,
+.webkit .AWS-VPC-Subnet .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
-#svg_canvas .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .AWS-VPC-Subnet.selected .group-subnet {
+#svg_canvas .AWS-VPC-VPC.selected .group,
+#svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+#svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:crispEdges;
 }
 
-.firefox .group-vpc,
-.firefox .group-az,
-.firefox .group-subnet {
+.firefox .AWS-VPC-VPC .group,
+.firefox .AWS-EC2-AvailabilityZone .group,
+.firefox .AWS-VPC-Subnet .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
-#svg_canvas .firefox .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .firefox .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .firefox .AWS-VPC-Subnet.selected .group-subnet {
+.firefox #svg_canvas .AWS-VPC-VPC.selected .group,
+.firefox #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+.firefox #svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:auto;
 }
 
-#svg_canvas .webkit .AWS-VPC-VPC.selected .group-vpc,
-#svg_canvas .webkit .AWS-EC2-AvailabilityZone.selected .group-az,
-#svg_canvas .webkit .AWS-VPC-Subnet.selected .group-subnet {
+.webkit #svg_canvas .AWS-VPC-VPC.selected .group,
+.webkit #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
+.webkit #svg_canvas .AWS-VPC-Subnet.selected .group {
 	shape-rendering:auto;
 	-webkit-transform: translate(0.5px, 0.5px);
 	        transform: translate(0.5px, 0.5px);
 }
 
-.AWS-VPC-VPC:hover .group-vpc,
-.node-dragging .dropable-group .group-vpc {
+.AWS-VPC-VPC:hover .group,
+.node-dragging .dropable-group .AWS-VPC-VPC .group {
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .group-vpc {
-	/*stroke: #659FFF;*/
+.node-dragging .match-dropable-group .AWS-VPC-VPC .group {
 	stroke-width: 6;
 }
 
-#svg_canvas .AWS-VPC-VPC.selected .group-vpc {
+#svg_canvas .AWS-VPC-VPC.selected .group {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 5;
@@ -527,7 +526,7 @@
 	fill: #aaa;
 }
 
-.group-az {
+.AWS-EC2-AvailabilityZone .group {
 	fill: rgba(252, 190, 23, 0.02);
 	stroke: #f9be76;
 	stroke-linejoin: round;
@@ -535,17 +534,17 @@
 	stroke-width: 2;
 }
 
-.AWS-EC2-AvailabilityZone:hover .group-az,
-.node-dragging .dropable-group .group-az {
+.AWS-EC2-AvailabilityZone:hover .group,
+.node-dragging .dropable-group .AWS-EC2-AvailabilityZone .group {
 	stroke: #F69722;
 }
 
-.node-dragging .match-dropable-group .group-az {
+.node-dragging .match-dropable-group .AWS-EC2-AvailabilityZone .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }
 
-#svg_canvas .AWS-EC2-AvailabilityZone.selected .group-az {
+#svg_canvas .AWS-EC2-AvailabilityZone.selected .group {
 	stroke: #f7941d;
 	/*fill: rgba(255, 255, 255, 0);*/
 	stroke-width: 3;
@@ -555,7 +554,7 @@
 	fill: #F69722;
 }
 
-.group-subnet {
+.AWS-VPC-Subnet .group {
 	fill: rgba(224, 224, 224, 0.05);
 	stroke: #dbd7d7;
 	stroke-linejoin: round;
@@ -563,17 +562,17 @@
 	stroke-width: 2;
 }
 
-.AWS-VPC-Subnet:hover .group-subnet,
-.node-dragging .dropable-group .group-subnet {
+.AWS-VPC-Subnet:hover .group,
+.node-dragging .dropable-group .AWS-VPC-Subnet .group {
 	stroke: #C6C4C4;
 }
 
-.node-dragging .match-dropable-group .group-subnet {
+.node-dragging .match-dropable-group .AWS-VPC-Subnet .group {
 	/*stroke: #659FFF;*/
 	stroke-width: 4;
 }
 
-#svg_canvas .AWS-VPC-Subnet.selected .group-subnet {
+#svg_canvas .AWS-VPC-Subnet.selected .group {
 	stroke: #C6C4C4;
 	fill: rgba(255, 255, 255, 0);
 	stroke-width: 3;

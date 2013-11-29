@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lang, constant ) ->
+define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant','./module/design/framework/test' ], ( lang, constant ) ->
 
     #private
     loadModule = () ->
@@ -153,9 +153,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     view.hideStatusbar()
 
                 catch error
-                  console.log 'design:SWITCH_TAB error'
-                  console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
-                  console.log "error message: #{ error }"
+                    ### env:dev ###
+                    throw error
+                    ### env:dev:end ###
 
                 null
 

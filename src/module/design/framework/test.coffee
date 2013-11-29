@@ -17,10 +17,10 @@ define [ './Design',
          './subclasses/VpcModel',
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel )->
 
-  # window.Design          = Design
-  # window.ResourceModel   = ResourceModel
-  # window.ComplexResModel = ComplexResModel
-  # window.GroupModel      = GroupModel
+  window.Design          = Design
+  window.ResourceModel   = ResourceModel
+  window.ComplexResModel = ComplexResModel
+  window.GroupModel      = GroupModel
 
   # window.testDesign = new Design( {}, {}, { type : Design.TYPE.Vpc, mode : Design.MODE.Stack } )
   # window.testRM     = new ResourceModel()

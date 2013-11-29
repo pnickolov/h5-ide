@@ -56,6 +56,33 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       null
 
     children : ()-> this.get("__children") || []
+
+    createNode : ( name )->
+      # A helper function to create a SVG Element to represent a group
+      x      = @x()
+      y      = @y()
+      width  = @width()  * MC.canvas.GRID_WIDTH
+      height = @height() * MC.canvas.GRID_HEIGHT
+
+      text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ @ctype ]
+
+      Canvon.group().append(
+        Canvon.rectangle( 0, 0, width, height ).attr({
+          'class':'group'
+          rx:5
+          ry:5
+        }),
+        MC.canvas.layout.createSizeWrap( width, height ),
+
+        Canvon.text(text_pos[0], text_pos[1], name).attr({
+          'class':'group-label name'
+          id:"#{@id}_label"
+        })
+      ).attr({
+        'class'      : 'dragable ' + @ctype.replace(/\./g, "-"),
+        'data-type'  : 'group',
+        'data-class' : @ctype
+      })
   }
 
   GroupModel

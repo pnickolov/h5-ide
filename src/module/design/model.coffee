@@ -137,6 +137,7 @@ define [ './module/design/framework/Design', 'MC', 'event', 'constant', 'app_mod
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
             MC.canvas_data = $.extend true, {}, data
+            new Design( data.component, data.layout, {})
             null
 
         getCanvasData : () ->

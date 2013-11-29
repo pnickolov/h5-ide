@@ -1864,6 +1864,46 @@ MC.canvas = {
 };
 
 MC.canvas.layout = {
+	createSizeWrap : function( width, height )
+	{
+		var pad = 10;
+		return Canvon.group().append(
+
+			Canvon.rectangle(
+				pad, 0, width - 2 * pad, pad
+			).attr({'class':'group-resizer resizer-top'}),
+
+			Canvon.rectangle(
+				0, pad, pad, height - 2 * pad
+			).attr({'class':'group-resizer resizer-left'}),
+
+			Canvon.rectangle(
+				width - pad, pad, pad, height - 2 * pad
+			).attr({'class':'group-resizer resizer-right'}),
+
+			Canvon.rectangle(
+				pad, height - pad, width - 2 * pad, pad
+			).attr({'class':'group-resizer resizer-bottom'}),
+
+			Canvon.rectangle(
+				0, 0, pad, pad
+			).attr({'class':'group-resizer resizer-topleft'}),
+
+			Canvon.rectangle(
+				width - pad, 0, pad, pad
+			).attr({'class':'group-resizer resizer-topright'}),
+
+			Canvon.rectangle(
+				0, height - pad, pad, pad
+			).attr({'class':'group-resizer resizer-bottomleft'}),
+
+			Canvon.rectangle(
+				width - pad, height - pad, pad, pad
+			).attr({'class':'group-resizer resizer-bottomright'})
+
+		).attr({'class':'resizer-wrap'});
+	},
+
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),

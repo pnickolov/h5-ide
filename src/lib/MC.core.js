@@ -466,6 +466,13 @@ var MC = {
 		{
 			return (letter + '').toUpperCase();
 		});
+	},
+
+	getBoolean: function (string)
+	{
+		if ( string === "true"  || string === "True" )  return true;
+		if ( string === "false" || string === "False" ) return false;
+		return !!string;
 	}
 };
 

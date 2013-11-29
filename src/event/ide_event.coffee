@@ -35,8 +35,8 @@ define [ 'underscore', 'backbone' ], () ->
         #
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
-        #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
         RELOAD_AZ              : 'RELOAD_AZ'
+        #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
 
         #design overlay
         SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
@@ -45,7 +45,7 @@ define [ 'underscore', 'backbone' ], () ->
         #resource panel
         UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
 
-        #switch ide.html
+        #switch
         SWITCH_TAB             : 'SWITCH_TAB'
         SWITCH_DASHBOARD       : 'SWITCH_DASHBOARD'
         SWITCH_APP_PROCESS     : 'SWITCH_APP_PROCESS'
@@ -57,7 +57,6 @@ define [ 'underscore', 'backbone' ], () ->
         ADD_TAB_DATA           : 'ADD_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         #UPDATE_TAB_DATA       : 'UPDATE_TAB_DATA'
-        UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
         #UPDATE_TAB_CLOSE_STATE: 'UPDATE_TAB_CLOSE_STATE'
 
         #tabbar
@@ -90,6 +89,7 @@ define [ 'underscore', 'backbone' ], () ->
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
         UPDATE_DASHBOARD       : 'UPDATE_DASHBOARD'
+        UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
 
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'

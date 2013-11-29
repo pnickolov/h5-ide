@@ -231,8 +231,12 @@ define [ 'jquery', 'event', 'base_main',
             # new process
             newProcessTab = ( tab_id, tab_name, region ) ->
                 console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
+
+                # set process name
                 process_name = 'process-' + region + '-' + tab_name
-                MC.process[ process_name ] = { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : {'is_pending':true} }
+                MC.forge.other.addProcess process_name, { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : { 'is_pending' : true } }
+
+                # add process tab
                 Tabbar.add process_name, tab_name + ' - app'
 
             #listen

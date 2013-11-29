@@ -49,13 +49,13 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 if tab_id.split( '-' )[0] is 'process'
                     model.saveProcessTab tab_id
                 else
-                    model.saveTab tab_id,
-                                  view.html(),
-                                  model.getCanvasData(),
-                                  model.getCanvasProperty(),
-                                  property_main.snapshot(),
-                                  model.getOriginData(),
-                                  model.getTAValidation()
+                    model.addTab tab_id,
+                                 view.html(),
+                                 model.getCanvasData(),
+                                 model.getCanvasProperty(),
+                                 property_main.snapshot(),
+                                 model.getOriginData(),
+                                 model.getTAValidation()
                 null
 
             # DELETE_TAB_DATA
@@ -73,7 +73,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     #
                     MC.open_failed_list[ MC.data.current_tab_id ] = { 'id' : tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type } if type in [ 'NEW_STACK' ]
                     #
-                    if type is 'OLD_STACK' or type is 'OLD_APP' then model.readTab type, tab_id else view.$el.html design_view_init
+                    if type is 'OLD_STACK' or type is 'OLD_APP' then model.getTab type, tab_id else view.$el.html design_view_init
                     #
                     if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
 

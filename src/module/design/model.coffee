@@ -77,8 +77,12 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 ide_event.trigger ide_event.SWITCH_MAIN
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
-            console.log 'saveTab'
+        #############################
+        #  tab
+        #############################
+
+        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
+            console.log 'add'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
@@ -98,8 +102,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log MC.process
             null
 
-        readTab : ( type, tab_id ) ->
-            console.log 'readTab'
+        getTab : ( type, tab_id ) ->
+            console.log 'getTab'
             #set random number
             @set 'snapshot', Math.round(+new Date())
             #
@@ -177,6 +181,10 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log 'setOriginResource', data, tab_id
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
+
+        #############################
+        #  api
+        #############################
 
         describeInstancesOfASG : (region) ->
 

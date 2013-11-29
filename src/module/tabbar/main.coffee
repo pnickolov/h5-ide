@@ -239,7 +239,7 @@ define [ 'jquery', 'event', 'base_main',
                 # add process tab
                 Tabbar.add process_name, tab_name + ' - app'
 
-            #listen
+            # reload new stack
             reloadNewStackTab = ( tab_id, region_name, platform ) ->
                 console.log 'RELOAD_NEW_STACK_TAB', tab_id, region_name, platform
                 model.set 'tab_name',          tab_id

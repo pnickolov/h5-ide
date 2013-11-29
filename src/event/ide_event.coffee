@@ -54,7 +54,7 @@ define [ 'underscore', 'backbone' ], () ->
         SWITCH_MAIN            : 'SWITCH_MAIN'
 
         #tab
-        SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
+        ADD_TAB_DATA           : 'ADD_TAB_DATA'
         UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
         UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'

@@ -140,10 +140,8 @@ define [ 'jquery', 'event', 'base_main',
 
             #listen
             model.on 'SAVE_DESIGN_MODULE', ( tab_id ) ->
-                console.log 'SAVE_DESIGN_MODULE'
-                console.log 'tab_id          = ' + tab_id
-                #push event
-                ide_event.trigger ide_event.SAVE_DESIGN_MODULE, tab_id
+                console.log 'SAVE_DESIGN_MODULE', tab_id
+                ide_event.trigger ide_event.ADD_TAB_DATA, tab_id
 
             #############################
             #  private method

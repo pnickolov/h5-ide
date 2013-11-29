@@ -42,9 +42,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null
 
-            #listen SAVE_DESIGN_MODULE
-            ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( tab_id ) ->
-                console.log 'design:SAVE_DESIGN_MODULE = ' + tab_id
+            #listen ADD_TAB_DATA
+            ide_event.onLongListen ide_event.ADD_TAB_DATA, ( tab_id ) ->
+                console.log 'design:ADD_TAB_DATA = ' + tab_id
                 #save tab
                 if tab_id.split( '-' )[0] is 'process'
                     model.saveProcessTab tab_id

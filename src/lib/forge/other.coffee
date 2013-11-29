@@ -28,6 +28,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'deleteProcess', id
 		delete MC.process[ id ]
 		delete MC.data.process[ id ]
+		console.log MC.process
 		null
 
 	filterProcess = ( id ) ->

@@ -1,7 +1,7 @@
 
 define [ "../GroupModel", "constant" ], ( GroupModel, constant )->
 
-  AzModel = GroupModel.extend {
+  Model = GroupModel.extend {
 
     ctype : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 
@@ -9,4 +9,4 @@ define [ "../GroupModel", "constant" ], ( GroupModel, constant )->
 
   }
 
-  AzModel
+  Model

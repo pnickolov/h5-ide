@@ -38,11 +38,7 @@ define [ "constant" ], ( constant ) ->
 
   Design = ( json_data, layout_data, options )->
 
-    @__componentMap = {}
-    @__classCache   = {}
-
-    this.__type = options.type
-    this.__mode = options.mode
+    design = (new DesignImpl( options )).use()
 
     # Deserialize
 
@@ -87,8 +83,14 @@ define [ "constant" ], ( constant ) ->
       deserialize_uid = null
       resolveDeserialize uid
 
-    @use()
-    @
+    design
+
+  DesignImpl = ( options )->
+    @__componentMap = {}
+    @__classCache   = {}
+    @.__type        = options.type
+    @.__mode        = options.mode
+
 
   Design.TYPE = {
     Classic    : "Classic"
@@ -109,14 +111,14 @@ define [ "constant" ], ( constant ) ->
 
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
-  Design.prototype.classCacheForCid = ( cid )->
+  DesignImpl.prototype.classCacheForCid = ( cid )->
     if @__classCache[ cid ]
       return @__classCache[ cid ]
 
     cache = @__classCache[ cid ] = []
     return cache
 
-  Design.prototype.cacheComponent = ( id, comp )->
+  DesignImpl.prototype.cacheComponent = ( id, comp )->
     if not comp
       delete @__componentMap[ id ]
     else
@@ -127,26 +129,26 @@ define [ "constant" ], ( constant ) ->
   Design.instance = ()-> design_instance
 
 
-  Design.prototype.mode          = ()-> this.__mode
-  Design.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
-  Design.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
-  Design.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
+  DesignImpl.prototype.mode          = ()-> this.__mode
+  DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
+  DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
+  DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
 
-  Design.prototype.type             = ()-> this.__type
-  Design.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
-  Design.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
-  Design.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
+  DesignImpl.prototype.type             = ()-> this.__type
+  DesignImpl.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
+  DesignImpl.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
+  DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
 
 
-  Design.prototype.use = ()->
-    design_instance = this
-    null
+  DesignImpl.prototype.use = ()->
+    design_instance = @
+    @
 
-  Design.prototype.getComponent = ( uid )->
+  DesignImpl.prototype.getComponent = ( uid )->
     @__componentMap[ uid ]
 
 
-  Design.prototype.getAZ = ( azName )->
+  DesignImpl.prototype.getAZ = ( azName )->
     AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
 
     allAzs = AzModel.allObjects()
@@ -157,12 +159,12 @@ define [ "constant" ], ( constant ) ->
     az = new AzModel({name:azName})
     az
 
-  Design.prototype.serialize = ()->
+  DesignImpl.prototype.serialize = ()->
 
 
-  Design.prototype.serializeLayout = ()->
+  DesignImpl.prototype.serializeLayout = ()->
 
 
-  Design.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
+  DesignImpl.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
 
   Design

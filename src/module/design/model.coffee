@@ -2,7 +2,7 @@
 #  View Mode for design
 #############################
 
-define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
+define [ './module/design/framework/Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_service', 'ami_service', 'i18n!nls/lang.js', 'underscore', 'backbone' ], ( Design, MC, ide_event, constant, app_model, stack_model, instance_service, ami_service, lang, _) ->
 
     #private
     DesignModel = Backbone.Model.extend {

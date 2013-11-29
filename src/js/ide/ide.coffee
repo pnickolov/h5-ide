@@ -110,6 +110,7 @@ define [ 'MC', 'event', 'handlebars'
 		#if MC.storage.get( 'process' )
 		#	MC.data.process = $.extend true, {}, MC.storage.get 'process'
 		#	MC.process      = $.extend true, {}, MC.storage.get 'process'
+		MC.storage.remove 'process'
 
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null

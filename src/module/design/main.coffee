@@ -77,11 +77,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     #
                     if type is 'NEW_STACK' or type is 'OPEN_STACK' or type is 'OPEN_APP'
 
-                        #test open_fail
-                        #return if tab_id is 'app-df3be529'
-
-                        #
-                        #ide_event.trigger ide_event.SWITCH_LOADING_BAR, if type is 'NEW_STACK' then result else tab_id
                         #
                         if type is 'OPEN_STACK' or type is 'OPEN_APP'
 
@@ -105,9 +100,6 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     if type in [ 'OPEN_APP', 'OLD_APP' ]
 
                         console.log 'when open_app or old_app restore the scene'
-
-                        # filter changed state and delete this
-                        MC.forge.other.filterProcess tab_id if type is 'OPEN_APP'
 
                         # update design-overlay when app changed
                         if MC.data.process[ tab_id ] and MC.data.process[ tab_id ].flag_list
@@ -139,20 +131,15 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                             # staring stopping terminating
                             else if MC.data.process[ tab_id ].flag_list.flag in [ 'START_APP', 'STOP_APP', 'TERMINATE_APP' ]
 
-                                #if type is 'OPEN_APP'
-                                #    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state )
-                                #else
-                                #    # hold on current overlay
-                                #    console.log 'current app flag is ' + MC.data.process[ tab_id ].flag_list.flag
-
                                 ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, model.returnAppState( MC.data.process[ tab_id ].flag_list.flag, MC.data.process[ tab_id ].state ), tab_id
 
-                            #if MC.data.process[ tab_id ].appedit2app
-                            #    ide_event.trigger ide_event.APPEDIT_2_APP, tab_id, MC.data.process[ tab_id ].region
-                            #    MC.data.process[ tab_id ].appedit2app = null
+                        else
 
-                    #
-                    #ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY if type in [ 'OLD_STACK', 'NEW_STACK', 'OPEN_STACK' ]
+                            # F5 ide restore overlay
+                            state = MC.forge.other.filterProcess tab_id
+                            if state
+                                ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, state, tab_id
+
                     #
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', tab_id if type in [ 'OLD_APP', 'OLD_STACK' ] and MC.open_failed_list[ tab_id ]
                     #
@@ -195,7 +182,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 MC.data.process             = {}
                 MC.data.process             = $.extend true, {}, MC.process
                 MC.data.process[ id ].state = type
-                MC.storage.set 'process', MC.data.process
+                #MC.storage.set 'process', MC.data.process
 
                 return if MC.data.current_tab_id isnt id
 

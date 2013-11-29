@@ -28,18 +28,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'deleteProcess', id
 		delete MC.process[ id ]
 		delete MC.data.process[ id ]
-		MC.storage.set 'process', $.extend true, {}, MC.data.process
+		#MC.storage.set 'process', $.extend true, {}, MC.data.process
 		null
 
 	filterProcess = ( id ) ->
 		console.log 'filterProcess', id
 
-		obj = @searchStackAppById id
+		obj   = @searchStackAppById id
+		state = null
 
-		if obj and obj.state in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
-			@deleteProcess id
+		if obj and obj.state in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
+			#@deleteProcess id
+			state = obj.state
 
-		null
+		state
 
 	setCurrentTabId = ( tab_id ) ->
 		console.log 'setCurrentTabId', tab_id

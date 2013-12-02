@@ -23,18 +23,22 @@ define [ 'event' ], ( ide_event ) ->
             MC.ide_event = ide_event
 
             #listen
-            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( tab_id ) ->
-                console.log 'process:SWITCH_PROCESS', tab_id
+            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( state, tab_id ) ->
+                console.log 'process:SWITCH_PROCESS', state, tab_id
 
-                type = tab_id.split '-'
+                # tab id sample process-cs6dbvrc
+                if MC.forge.other.getCacheMap( tab_id ) and MC.forge.other.getCacheMap( tab_id ).type is 'appview'
+                    type = 'appview'
 
-                if type is 'process'
+                # tab id sample process-us-west-1-untitled-112
+                else if tab_id.split('-')[0] is 'process' and tab_id.split('-').length > 2
                     model.getProcess tab_id
-                else if type is 'appview'
-                    # TO DO
+                    type = 'process'
+
                 else
                     console.log 'current tab id is ' + tab_id
 
+                # view type
                 view.render type
 
             ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->

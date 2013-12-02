@@ -77,8 +77,8 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'SWTICH_PROCESS_TAB'
                 console.log 'original_tab_id = ' + original_tab_id
                 console.log 'tab_id          = ' + tab_id
-                #call refresh
-                model.refresh original_tab_id, tab_id, 'process'
+                #call refresh, include process appview
+                model.refresh original_tab_id, tab_id, tab_id.split( '-' )[0]
 
             #listen
             view.on 'SELECE_PLATFORM', ( platform ) ->
@@ -114,7 +114,7 @@ define [ 'jquery', 'event', 'base_main',
             model.on 'OPEN_PROCESS', ( tab_id ) ->
                 console.log 'OPEN_PROCESS'
                 #push event
-                ide_event.trigger ide_event.SWITCH_PROCESS, tab_id
+                ide_event.trigger ide_event.SWITCH_PROCESS, 'OPEN_PROCESS', tab_id
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', tab_id
 
             #listen old_stack
@@ -127,7 +127,7 @@ define [ 'jquery', 'event', 'base_main',
             model.on 'OLD_PROCESS', ( tab_id ) ->
                 console.log 'OLD_PROCESS'
                 #push event
-                ide_event.trigger ide_event.SWITCH_PROCESS, tab_id
+                ide_event.trigger ide_event.SWITCH_PROCESS, 'OLD_PROCESS', tab_id
 
             #listen old_app
             model.on 'OLD_APP', ( tab_id ) ->
@@ -226,15 +226,28 @@ define [ 'jquery', 'event', 'base_main',
                 null
 
             # new process
-            newProcessTab = ( tab_id, tab_name, region ) ->
-                console.log 'OPEN_APP_PROCESS_TAB, tab_id = ' + tab_id + ', tab_name = ' + tab_name + ', region_name = ' + region
+            newProcessTab = ( tab_id, tab_name, region, type ) ->
+                console.log 'OPEN_APP_PROCESS_TAB', tab_id, tab_name, region, type
 
-                # set process name
-                process_name = 'process-' + region + '-' + tab_name
-                MC.forge.other.addProcess process_name, { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : { 'is_pending' : true } }
+                if type is 'process'
 
-                # add process tab
-                Tabbar.add process_name, tab_name + ' - app'
+                    # set process name
+                    process_name = 'process-' + region + '-' + tab_name
+                    MC.forge.other.addProcess process_name, { 'tab_id' : tab_id, 'app_name' : tab_name, 'region' : region, 'flag_list' : { 'is_pending' : true } }
+
+                    # add process tab
+                    Tabbar.add process_name, tab_name + ' - app'
+
+                else if type is 'appview'
+
+                    # create appview id
+                    appview_id = 'process-' + MC.forge.other.createUID()
+
+                    # add id to cache id map
+                    MC.forge.other.addCacheMap type, appview_id
+
+                    # add appview tab
+                    Tabbar.add appview_id, tab_name + ' - view'
 
             # reload new stack
             reloadNewStackTab = ( tab_id, region_name, platform ) ->
@@ -271,7 +284,8 @@ define [ 'jquery', 'event', 'base_main',
                     when 'OPEN_STACK'       then openStackTab      tab_name, region_name, tab_id
                     when 'OPEN_APP'         then openAppTab        tab_name, region_name, tab_id
 
-                    when 'NEW_PROCESS'      then newProcessTab     tab_id,   tab_name,    region_name
+                    when 'NEW_PROCESS'      then newProcessTab     tab_id,   tab_name,    region_name, 'process'
+                    when 'NEW_APPVIEW'      then newProcessTab     tab_id,   tab_name,    region_name, 'appview'
 
                     when 'RELOAD_STACK'     then reloadStackTab    tab_id,   region_name
                     when 'RELOAD_APP'       then reloadAppTab      tab_id,   region_name

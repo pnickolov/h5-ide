@@ -1,5 +1,10 @@
 define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
+	cacheIDMap = {}
+
+	#############################
+	#  get stack app by
+	#############################
 
 	searchStackAppById = ( id ) ->
 
@@ -18,6 +23,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			console.log error
 
 		value
+
+	#############################
+	#  process
+	#############################
 
 	addProcess = ( id, data ) ->
 		console.log 'addProcess', id, data
@@ -42,6 +51,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		state
 
+	#############################
+	#  cache id
+	#############################
+
 	createUID = ( length = 8 ) ->
 		chars  = undefined
 		str    = undefined
@@ -56,6 +69,22 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		str
 
+	addCacheMap = ( type, id ) ->
+		console.log 'addCacheMap', type, id
+		cacheIDMap[ id ] = { 'type' : type }
+
+	delCacheMap = ( id ) ->
+		console.log 'delCacheMap', id
+		delete cacheIDMap[ id ]
+
+	getCacheMap = ( id ) ->
+		console.log 'getCacheMap', id
+		cacheIDMap[ id ]
+
+	#############################
+	#  current tab id
+	#############################
+
 	setCurrentTabId = ( tab_id ) ->
 		console.log 'setCurrentTabId', tab_id
 		MC.data.current_tab_id = tab_id
@@ -69,4 +98,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	filterProcess      : filterProcess
 
 	createUID          : createUID
+	addCacheMap        : addCacheMap
+	delCacheMap        : delCacheMap
+	getCacheMap        : getCacheMap
+
 	setCurrentTabId    : setCurrentTabId

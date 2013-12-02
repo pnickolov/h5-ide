@@ -192,7 +192,7 @@ define [ 'MC', 'event', 'handlebars'
 		#listen SWITCH_TAB and SWITCH_DASHBOARD
 		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
-		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
+		ide_event.onLongListen ide_event.SWITCH_PROCESS,      () -> view.showProcessTab()
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent

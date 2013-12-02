@@ -23,8 +23,8 @@ define [ 'event' ], ( ide_event ) ->
             MC.ide_event = ide_event
 
             #listen
-            ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( tab_name ) ->
-                console.log 'process:SWITCH_APP_PROCESS tab_name = ' + tab_name
+            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( tab_name ) ->
+                console.log 'process:SWITCH_PROCESS tab_name = ' + tab_name
 
                 if tab_name.indexOf('process-') == 0
                     model.getProcess(tab_name)

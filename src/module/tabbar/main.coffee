@@ -114,9 +114,7 @@ define [ 'jquery', 'event', 'base_main',
             model.on 'OPEN_PROCESS', ( tab_id ) ->
                 console.log 'OPEN_PROCESS'
                 #push event
-                #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OPEN_PROCESS', tab_id
-                ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
-                #
+                ide_event.trigger ide_event.SWITCH_PROCESS, tab_id
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', tab_id
 
             #listen old_stack
@@ -129,8 +127,7 @@ define [ 'jquery', 'event', 'base_main',
             model.on 'OLD_PROCESS', ( tab_id ) ->
                 console.log 'OLD_PROCESS'
                 #push event
-                #ide_event.trigger ide_event.SWITCH_APP_PROCESS, 'OLD_PROCESS', tab_id
-                ide_event.trigger ide_event.SWITCH_APP_PROCESS, tab_id
+                ide_event.trigger ide_event.SWITCH_PROCESS, tab_id
 
             #listen old_app
             model.on 'OLD_APP', ( tab_id ) ->

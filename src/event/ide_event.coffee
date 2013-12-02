@@ -96,8 +96,8 @@ define [ 'underscore', 'backbone' ], () ->
         RETURN_REGION_TAB      : 'RETURN_REGION_TAB'
 
         #appedit
-        RESTORE_CANVAS         : 'RESTORE_CANVAS'
         APPEDIT_2_APP          : 'APPEDIT_2_APP'
+        RESTORE_CANVAS         : 'RESTORE_CANVAS'
         #APPEDIT_UPDATE_ERROR  : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event

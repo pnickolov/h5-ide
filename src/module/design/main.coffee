@@ -108,7 +108,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                                 if type is 'OLD_APP'
                                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', tab_id
                                 else
-                                    # don't do anything
+                                    MC.forge.other.deleteProcess tab_id
 
                             # changed done
                             else if MC.data.process[ tab_id ].flag_list.is_done
@@ -184,17 +184,17 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 return if MC.data.current_tab_id isnt id
 
+                # update success
+                if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
+                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', id
+
                 # changed
-                if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
                     ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                 # changed fail
                 else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL', id
-
-                # update success
-                else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
-                    ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', id
 
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]

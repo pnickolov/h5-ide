@@ -23,13 +23,19 @@ define [ 'event' ], ( ide_event ) ->
             MC.ide_event = ide_event
 
             #listen
-            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( tab_name ) ->
-                console.log 'process:SWITCH_PROCESS tab_name = ' + tab_name
+            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( tab_id ) ->
+                console.log 'process:SWITCH_PROCESS', tab_id
 
-                if tab_name.indexOf('process-') == 0
-                    model.getProcess(tab_name)
+                type = tab_id.split '-'
 
-                view.render()
+                if type is 'process'
+                    model.getProcess tab_id
+                else if type is 'appview'
+                    # TO DO
+                else
+                    console.log 'current tab id is ' + tab_id
+
+                view.render type
 
             ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
                 console.log 'UPDATE_PROCESS'

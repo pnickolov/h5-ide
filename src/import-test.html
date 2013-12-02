@@ -1,0 +1,521 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>MadeiraCloud - Visual Cloud Computing IDE</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="./assets/css/core.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/css/ide.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/css/grid.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/css/UI.component.css" />
+	<link rel="stylesheet" type="text/css" href="./assets/css/canvas.css" />
+
+	<style type="text/css">
+	html, body {
+		overflow: scroll;
+	}
+
+	#body {
+		position: static;
+	}
+	</style>
+
+	<script type="text/javascript">
+		document.write( "<s"+"cript type='text/javascript' src='./lib/version.js?" + Math.random() + "'></scr"+"ipt>" );
+	</script>
+
+	<script type='text/javascript' src='./vender/requirejs/require.js' data-main='./js/ide/config.js'></script>
+
+	<script type='text/javascript' src='./vender/jquery/jquery.js'></script>
+	<script type='text/javascript' src='./lib/MC.core.js'></script>
+	<script type='text/javascript' src='./lib/MC.canvas.js'></script>
+	<script type='text/javascript' src='./vender/canvon/canvon.js'></script>
+	<script type='text/javascript' src='./lib/MC.canvas.constant.js'></script>
+	<script type='text/javascript' src='./lib/MC.canvas.add.js'></script>
+	<script type='text/javascript' src='./lib/MC.canvas.line.js'></script>
+	<script type='text/javascript' src='./ui/common/UI.tabbar.js'></script>
+
+	<script type="text/javascript">
+	$(document).ready(function ()
+	{
+		Tabbar.current = 'stack';
+
+		require([
+			'./module/design/canvas/model.js',
+			'./lib/aws/aws.js',
+			'./lib/aws/ec2/eip.js'
+		], function (model, aws, eip)
+		{
+			MC.aws = aws;
+			MC.aws.eip = eip;
+			console.info(MC.aws);
+			$.getJSON( './import-test-2.json', function(data)
+			{
+				Tabbar.current = 'stack';
+
+				MC.canvas_data = data;
+
+				var resources = {},
+					layout = {};
+
+				$.each(data.layout.component.node, function (key, value)
+				{
+					resources[ key ] = value;
+				});
+
+				$.each(data.layout.component.group, function (key, value)
+				{
+					resources[ key ] = value;
+				});
+
+				var resource_stack = {};
+
+				$.each(resources, function (key, value)
+				{
+					stack = resource_stack[ value.type.replace(/\./ig, '-') ];
+
+					if (stack === undefined)
+					{
+						resource_stack[ value.type.replace(/\./ig, '-') ] = [];
+					}
+
+					resource_stack[ value.type.replace(/\./ig, '-') ].push(key);
+				});
+
+				console.info(resource_stack);
+
+				// Initialize group construction
+				var layout = {};
+
+				var SUBGROUP = {
+					'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+					'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
+					'AWS.VPC.Subnet': [
+						'AWS.EC2.Instance',
+						'AWS.AutoScaling.Group',
+						'AWS.VPC.NetworkInterface'
+					],
+					'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
+				};
+
+				var GROUP_DEFAULT_SIZE = {
+					'AWS.VPC.VPC': [60, 60],
+					'AWS.EC2.AvailabilityZone': [17, 17],
+					'AWS.VPC.Subnet': [15, 15],
+					'AWS.AutoScaling.Group' : [13, 13]
+				};
+
+				layout = {
+					'id': resource_stack[ 'AWS-VPC-VPC' ][0],
+					'coordinate': [5, 3],
+					'size': [0, 0],
+					'type': 'AWS.VPC.VPC'
+				};
+
+				function searchChild(id)
+				{
+					var children = [],
+						target_group = SUBGROUP[ resources[ id ].type ],
+						node_data,
+						node_child;
+
+					$.each(resources, function (key, value)
+					{
+						if (
+							$.inArray(resources[ key ].type, target_group) > -1 &&
+							value.groupUId === id
+						)
+						{
+							node_child = searchChild(key);
+
+							node_data = {
+								'id': key,
+								'coordinate': [0, 0],
+								'size': [0, 0],
+								'type': value.type
+							};
+
+							if (MC.canvas.COMPONENT_SIZE[ value.type ] !== undefined)
+							{
+								node_data.size = MC.canvas.COMPONENT_SIZE[ value.type ];
+							}
+
+							if (GROUP_DEFAULT_SIZE[ value.type ] !== undefined)
+							{
+								node_data.size = GROUP_DEFAULT_SIZE[ value.type ];
+							}
+
+							if (node_child)
+							{
+								node_data[ 'children' ] = node_child;
+							}
+
+							children.push(node_data);
+						}
+					});
+
+					return children.length < 1 ? false : children;
+				}
+
+				node_child = searchChild( resource_stack[ 'AWS-VPC-VPC' ][0] );
+
+				if (node_child)
+				{
+					layout[ 'children' ] = node_child;
+				}
+
+				function countChild(node)
+				{
+					if (node.children !== undefined)
+					{
+						var count = 0;
+
+						$.each(node.children, function (i, item)
+						{
+							count += countChild(item);
+						});
+
+						node[ 'totalChild' ] = count + node.children.length;
+
+						return node.children.length;
+					}
+					else
+					{
+						node[ 'totalChild' ] = 0;
+
+						return 0;
+					}
+				}
+
+				countChild( layout );
+
+				function sortChild(node)
+				{
+					if (node.children !== undefined)
+					{
+						node.children.sort(function (a, b)
+						{
+							return b.totalChild - a.totalChild;
+						});
+
+						$.each(node.children, function (i, item)
+						{
+							sortChild( item );
+						});
+					}
+				}
+
+				sortChild( layout );
+
+				function absPosition(node, x, y)
+				{
+					node.coordinate[0] += x;
+					node.coordinate[1] += y;
+
+					if (node.children !== undefined)
+					{
+						$.each(node.children, function (i, item)
+						{
+							absPosition(item, node.coordinate[0], node.coordinate[1]);
+						});
+					}
+				}
+
+				absPosition( layout, 0, 0 );
+
+				console.info(layout);
+
+				// For childeren node order
+				var POSITION_METHOD = {
+					'AWS.VPC.VPC': 'vertical',
+					'AWS.EC2.AvailabilityZone': 'horizontal',
+					'AWS.VPC.Subnet': 'matrix',
+					'AWS.AutoScaling.Group': 'center'
+				};
+
+				var GROUP_MARGIN = 2,
+					previous_node;
+
+				function positionChild(node)
+				{
+					var children = node.children;
+
+					var GROUP_INNER_PADDING = 2;
+
+					var length = children.length,
+						method = POSITION_METHOD[ node.type ],
+						max_width = 0,
+						max_height = 0;
+
+					var NODE_MARGIN_LEFT = 2,
+						NODE_MARGIN_TOP = 2;
+
+					if (method === 'matrix')
+					{
+						var max_column = Math.ceil( Math.sqrt( length ) ),
+							max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
+							column_index = 0,
+							row_index = 0;
+
+						$.each(children, function (current_index, item)
+						{
+							if (column_index >= max_column)
+							{
+								column_index = 0;
+								row_index++;
+							}
+
+							item.coordinate = [
+								column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+								row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+							];
+
+							if (item.children !== undefined)
+							{
+								positionChild( item );
+							}
+
+							column_index++;
+						});
+
+						node.size = [
+							max_column * 9 + ((max_column - 1) * NODE_MARGIN_LEFT) + (GROUP_INNER_PADDING * 2),
+							max_row * 9 + ((max_row - 1) * NODE_MARGIN_TOP) + (GROUP_INNER_PADDING * 2)
+						];
+					}
+
+					if (method === 'vertical')
+					{
+						$.each(children, function (current_index, item)
+						{
+							item.coordinate = [
+								0 + GROUP_INNER_PADDING,
+								current_index + GROUP_INNER_PADDING
+							];
+
+							if (item.children !== undefined)
+							{
+								positionChild( item );
+							}
+
+							if (item.size[0] > max_width)
+							{
+								max_width = item.size[0];
+							}
+
+							max_height += item.size[1];
+
+							if (current_index > 0)
+							{
+								previous_node = children[ current_index - 1 ];
+								item.coordinate = [
+									0 + GROUP_INNER_PADDING,
+									previous_node.size[1] + previous_node.coordinate[1] + GROUP_MARGIN
+								];
+
+								max_height += GROUP_MARGIN * 2;
+							}
+						});
+
+						node.size = [
+							max_width + (GROUP_INNER_PADDING * 2),
+							max_height + (GROUP_MARGIN * (length - 1)) + GROUP_INNER_PADDING
+						];
+					}
+
+					if (method === 'horizontal')
+					{
+						$.each(children, function (current_index, item)
+						{
+							item.coordinate = [
+								current_index + GROUP_INNER_PADDING,
+								0 + GROUP_INNER_PADDING
+							];
+
+							if (item.children !== undefined)
+							{
+								positionChild( item );
+							}
+
+							if (item.size[1] > max_height)
+							{
+								max_height = item.size[1];
+							}
+
+							max_width += item.size[0];
+
+							if (current_index > 0)
+							{
+								previous_node = children[ current_index - 1 ];
+								item.coordinate = [
+									previous_node.size[0] + previous_node.coordinate[0] + GROUP_MARGIN,
+									0 + GROUP_INNER_PADDING
+								];
+
+								max_width += GROUP_MARGIN * 2;
+							}
+						});
+
+						node.size = [
+							max_width - (GROUP_MARGIN * (length - 1)) + (GROUP_INNER_PADDING * 2),
+							max_height + (GROUP_INNER_PADDING * 2)
+						];
+					}
+
+					if (method === 'center')
+					{
+						$.each(children, function (current_index, item)
+						{
+							item.coordinate = [2, 2];
+						});
+
+						node.size = [13, 13];
+					}
+				}
+
+				positionChild( layout );
+
+				// VPC padding
+				var VPC_PADDING_LEFT = 20,
+					VPC_PADDING_TOP = 10,
+					VPC_PADDING_RIGHT = 8,
+					VPC_PADDING_BOTTOM = 5;
+
+				$.each(layout.children, function (i, item)
+				{
+					item.coordinate[0] += VPC_PADDING_LEFT;
+					item.coordinate[1] += VPC_PADDING_TOP;
+				});
+
+				layout.size[0] += VPC_PADDING_LEFT + VPC_PADDING_RIGHT;
+				layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
+
+				// ELB
+				var ELB_START_LEFT = 10,
+					ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
+
+				if (resource_stack[ 'AWS-ELB' ].length > 0)
+				{
+					$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
+					{
+						resources[ id ].coordinate = [
+							ELB_START_LEFT,
+							layout.coordinate[1] + (current_index * 10) + (layout.size[1] / 2) - 4
+						];
+					});
+				}
+
+				// IGW & VGW
+				if (resource_stack[ 'AWS-VPC-InternetGateway' ].length > 0)
+				{
+					resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] - 4,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				if (resource_stack[ 'AWS-VPC-VPNGateway' ].length > 0)
+				{
+					resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] + layout.size[0] - 4,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				// CGW
+				if (resource_stack[ 'AWS-VPC-CustomerGateway' ].length > 0)
+				{
+					resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] + layout.size[0] + 8,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				// RouteTable
+				var ROUTE_TABLE_START_LEFT = 15,
+					ROUTE_TABLE_START_TOP = 5,
+					ROUTE_TABLE_MARGIN = 4,
+					ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'];
+
+				if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
+				{
+					$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
+					{
+						resources[ id ].coordinate = [
+							(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
+							ROUTE_TABLE_START_TOP
+						];
+					});
+				}
+
+				function absPosition(node, x, y)
+				{
+					node.coordinate[0] += x;
+					node.coordinate[1] += y;
+
+					if (node.children !== undefined)
+					{
+						$.each(node.children, function (i, item)
+						{
+							absPosition(item, node.coordinate[0], node.coordinate[1]);
+						});
+					}
+				}
+
+				absPosition( layout, 0, 0 );
+
+				function updateLayoutData(node)
+				{
+					resources[ node.id ].coordinate = node.coordinate;
+
+					if (resources[ node.id ].size !== undefined)
+					{
+						resources[ node.id ].size = node.size;
+					}
+
+					if (node.children !== undefined)
+					{
+						$.each(node.children, function (i, item)
+						{
+							updateLayoutData( item );
+						});
+					}
+				}
+
+				updateLayoutData( layout );
+
+				MC.canvas.layout.init();
+				model.initLine();
+				model.reDrawSgLine();
+
+			});
+		});
+	});
+	</script>
+</head>
+<body id="body">
+<div id="canvas" class="canvas-svg-group">
+<div id="canvas_content">
+<div id="canvas_container" style="width: 2400px; height: 2400px;" class="canvas_state_stack">
+	<div id="canvas_body" class="canvas-view-normal">
+		<svg id="svg_canvas" xmlns="http://www.w3.org/2000/svg" version="1.2">
+			<defs>
+				<filter id="grayscale">
+					<feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/>
+				</filter>
+			</defs>
+			<line id="svg_padding_line" x1="0" y1="0" x2="1" y2="1"/>
+			<g id="group_layer">
+				<g id="vpc_layer"></g>
+				<g id="az_layer"></g>
+				<g id="subnet_layer"></g>
+				<g id="asg_layer"></g>
+			</g>
+			<g id="line_layer"></g>
+			<g id="node_layer"></g>
+		</svg>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -42,6 +42,20 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		state
 
+	createUID = ( length = 8 ) ->
+		chars  = undefined
+		str    = undefined
+		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
+		length = Math.floor(Math.random() * chars.length)  unless length
+		str = ""
+		i = 0
+
+		while i < length
+			str += chars[Math.floor(Math.random() * chars.length)]
+			i++
+
+		str
+
 	setCurrentTabId = ( tab_id ) ->
 		console.log 'setCurrentTabId', tab_id
 		MC.data.current_tab_id = tab_id
@@ -54,4 +68,5 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	deleteProcess      : deleteProcess
 	filterProcess      : filterProcess
 
+	createUID          : createUID
 	setCurrentTabId    : setCurrentTabId

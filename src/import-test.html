@@ -570,7 +570,7 @@
 				var ELB_START_LEFT = 10,
 					ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
 
-				if (resource_stack[ 'AWS-ELB' ].length > 0)
+				if (resource_stack[ 'AWS-ELB' ] !== undefined)
 				{
 					$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
 					{
@@ -582,7 +582,7 @@
 				}
 
 				// IGW & VGW
-				if (resource_stack[ 'AWS-VPC-InternetGateway' ].length > 0)
+				if (resource_stack[ 'AWS-VPC-InternetGateway' ] !== undefined)
 				{
 					resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
 						layout.coordinate[0] - 4,
@@ -590,7 +590,7 @@
 					];
 				}
 
-				if (resource_stack[ 'AWS-VPC-VPNGateway' ].length > 0)
+				if (resource_stack[ 'AWS-VPC-VPNGateway' ] !== undefined)
 				{
 					resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
 						layout.coordinate[0] + layout.size[0] - 4,
@@ -599,7 +599,7 @@
 				}
 
 				// CGW
-				if (resource_stack[ 'AWS-VPC-CustomerGateway' ].length > 0)
+				if (resource_stack[ 'AWS-VPC-CustomerGateway' ] !== undefined)
 				{
 					resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
 						layout.coordinate[0] + layout.size[0] + 8,
@@ -608,25 +608,28 @@
 				}
 
 				// RouteTable
-				var ROUTE_TABLE_START_LEFT = 15,
-					ROUTE_TABLE_START_TOP = 5,
-					ROUTE_TABLE_MARGIN = 4,
-					ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'];
-
-				resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
+				if (resource_stack[ 'AWS-VPC-RouteTable' ] !== undefined)
 				{
-					return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
-				});
+					var ROUTE_TABLE_START_LEFT = 15,
+						ROUTE_TABLE_START_TOP = 5,
+						ROUTE_TABLE_MARGIN = 4,
+						ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'];
 
-				if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
-				{
-					$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
+					resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
 					{
-						resources[ id ].coordinate = [
-							(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
-							ROUTE_TABLE_START_TOP
-						];
+						return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
 					});
+
+					if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
+					{
+						$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
+						{
+							resources[ id ].coordinate = [
+								(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
+								ROUTE_TABLE_START_TOP
+							];
+						});
+					}
 				}
 
 				function absPosition(node, x, y)

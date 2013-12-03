@@ -1279,6 +1279,48 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
+      },
+      "vpc_resource" : {
+        "method"  : "/aws:vpc_resource",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "region_name" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "vpc_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "stat_resource" : {
+        "method"  : "/aws:stat_resource",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "region_name" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "resources" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
       }
     }
   },

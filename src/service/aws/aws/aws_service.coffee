@@ -11,14 +11,14 @@
 # ************************************************************************************
 
 define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
-         'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
-         'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
-         'autoscaling_service', 'cloudwatch_service', 'sns_service',
-         'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
-         keypair_service, securitygroup_service, elb_service, iam_service, acl_service
-         customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
-         autoscaling_service, cloudwatch_service, sns_service,
-         subnet_service, vpc_service, vpn_service, vpngateway_service, ec2_service, ami_service) ->
+		 'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
+		 'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
+		 'autoscaling_service', 'cloudwatch_service', 'sns_service',
+		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
+		 keypair_service, securitygroup_service, elb_service, iam_service, acl_service
+		 customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
+		 autoscaling_service, cloudwatch_service, sns_service,
+		 subnet_service, vpc_service, vpn_service, vpngateway_service, ec2_service, ami_service) ->
 
 	URL = '/aws/'
 
@@ -291,6 +291,66 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	# end of parserStatusReturn
 
 
+
+
+	#///////////////// Parser for vpc_resource return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolveVpcResourceResult = ( result ) ->
+		#resolve result
+		#TO-DO
+
+		#return vo
+		#TO-DO
+
+	#private (parser vpc_resource return)
+	parserVpcResourceReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolveVpcResourceResult result
+
+			aws_result.resolved_data = resolved_data
+
+
+		#3.return vo
+		aws_result
+
+	# end of parserVpcResourceReturn
+
+
+	#///////////////// Parser for stat_resource return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolveStatResourceResult = ( result ) ->
+		#resolve result
+		#TO-DO
+
+		#return vo
+		#TO-DO
+
+	#private (parser stat_resource return)
+	parserStatResourceReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolveStatResourceResult result
+
+			aws_result.resolved_data = resolved_data
+
+
+		#3.return vo
+		aws_result
+
+	# end of parserStatResourceReturn
+
+
 	#############################################################
 
 	#def quickstart(self, username, session_id, region_name):
@@ -323,6 +383,15 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		send_request "status", src, [ username, session_id ], parserStatusReturn, callback
 		true
 
+	#def vpc_resource(self, username, session_id, region_name, vpc_id):
+	vpc_resource = ( src, username, session_id, region_name, vpc_id, callback ) ->
+		send_request "vpc_resource", src, [ username, session_id, region_name, vpc_id ], parserVpcResourceReturn, callback
+		true
+
+	#def stat_resource(self, username, session_id, region_name=None, resources=None):
+	stat_resource = ( src, username, session_id, region_name=null, resources=null, callback ) ->
+		send_request "stat_resource", src, [ username, session_id, region_name, resources ], parserStatResourceReturn, callback
+		true
 
 	#############################################################
 	#public
@@ -332,4 +401,6 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	resource                     : resource
 	price                        : price
 	status                       : status
+	vpc_resource                 : vpc_resource
+	stat_resource                : stat_resource
 

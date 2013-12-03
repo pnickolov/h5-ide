@@ -135,6 +135,9 @@ define [ 'MC', 'event', 'handlebars'
 		MC.ta.list       = []
 		MC.ta.state_list = {}
 
+		#test
+		MC.ide_event = ide_event
+
 		#############################
 		#  WebSocket
 		#############################

@@ -15,14 +15,17 @@ define [ 'event' ], ( ide_event ) ->
 
         #
         require [ 'process_view', 'process_model' ], ( view, model ) ->
-            #
+
+            # set current type
+            type = null
+
+            # set model
             view.model = model
-            view.render()
 
-            #test
-            MC.ide_event = ide_event
+            model.on 'change:flag_list', () ->
+                console.log 'change:flag_list'
+                view.render type
 
-            #listen
             ide_event.onLongListen ide_event.SWITCH_PROCESS, ( state, tab_id ) ->
                 console.log 'process:SWITCH_PROCESS', state, tab_id
 
@@ -46,10 +49,6 @@ define [ 'event' ], ( ide_event ) ->
 
                 if MC.data.current_tab_id is tab_name
                     model.getProcess tab_name
-
-            model.on 'change:flag_list', () ->
-                console.log 'change:flag_list'
-                view.render()
 
     unLoadModule = () ->
         #

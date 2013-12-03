@@ -3,20 +3,18 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
   Model = GroupModel.extend {
 
+    ctype    : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+
     defaults :
-      __x : 5
-      __y : 3
-      __w : 600
-      __h : 600
-
-    ctype       : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-
+      x      : 5
+      y      : 3
+      width  : 60
+      height : 60
 
     draw : ( isCreate )->
 
       if isCreate
-        node = @createNode( "vpc (#{@get('cidr')})" )
+        node = @createNode( "vpc (" + @get('cidr') + ")" )
         $('#vpc_layer').append node
 
         # Move the group to right place
@@ -24,6 +22,7 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
   }, {
 
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
     deserialize : ( data, layout_data )->
 
       new Model({
@@ -36,10 +35,10 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         dnsSupport   : MC.getBoolean( data.resource.InstanceTenancy )
         tenancy      : data.resource.InstanceTenancy
 
-        __x : layout_data.coordinate[0]
-        __y : layout_data.coordinate[1]
-        __w : layout_data.size[0]
-        __h : layout_data.size[1]
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
+        width  : layout_data.size[0]
+        height : layout_data.size[1]
       })
 
   }

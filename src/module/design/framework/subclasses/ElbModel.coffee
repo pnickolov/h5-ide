@@ -5,6 +5,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     ctype : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
+  }, {
+
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
   }

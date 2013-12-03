@@ -159,12 +159,12 @@ define [ "constant" ], ( constant ) ->
       for uid, layout of @groupLayoutData
         if layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and layout.name is azName
           attr =
-            id   : uid
-            name : azName
-            __x  : layout.coordinate[0]
-            __y  : layout.coordinate[1]
-            __w  : layout.size[1]
-            __h  : layout.size[1]
+            id     : uid
+            name   : azName
+            x      : layout.coordinate[0]
+            y      : layout.coordinate[1]
+            width  : layout.size[1]
+            height : layout.size[1]
 
     if not attr
       attr = { name : azName }

@@ -20,18 +20,18 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
   ComplexResModel = ResourceModel.extend {
 
     defaults :
-      __x      : 0
-      __y      : 0
-      __w      : 0
-      __h      : 0
+      x        : 0
+      y        : 0
+      width    : 0
+      height   : 0
       __parent : null
 
     ctype : "Framework_CR"
 
     initialize : ()->
-      console.debug "ComplexResModel.initialize, trying to draw the item"
 
       if @draw and Design.instance().shouldDraw()
+        console.debug "ComplexResModel.initialize, trying to draw the item"
         @draw true
       null
 
@@ -62,10 +62,10 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
     ###
     connections : ()-> this.get("__connections") || []
     parent      : ()-> this.get("__parent")
-    x           : ()-> this.get("__x")
-    y           : ()-> this.get("__y")
-    width       : ()-> this.get("__w")
-    height      : ()-> this.get("__h")
+    x           : ()-> this.get("x")
+    y           : ()-> this.get("y")
+    width       : ()-> this.get("width")
+    height      : ()-> this.get("height")
 
   }
 

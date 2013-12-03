@@ -10,7 +10,7 @@ define [ "./ResourceModel" ], ( ResourceModel )->
 
     port1()
     port2()
-      description : returns the name of the port, port1() is always than port2()
+      description : returns the name of the port, port1() is always smaller than port2()
 
     port1Comp()
     port2Comp()

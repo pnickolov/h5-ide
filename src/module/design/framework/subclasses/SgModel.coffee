@@ -5,6 +5,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     ctype : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
+  }, {
+
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
   }

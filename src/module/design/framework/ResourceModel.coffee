@@ -104,11 +104,11 @@ define [ "./Design", "backbone" ], ( Design )->
       console.assert protoProps.ctype, "Subclass of ResourceModel does not specifying a type"
 
       if _.has(protoProps, 'constructor')
-        console.warn "Subclass of ResourceModel (type : #{protoProps.ctype}) is overriding Constructor, you'd better know what's going on!!!"
+        console.warn "Subclass of ResourceModel (type : #{protoProps.ctype}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
 
-      if protoProps.handleTypes
-        handleTypes = protoProps.handleTypes
-        delete protoProps.handleTypes
+      if staticProps and staticProps.handleTypes
+        handleTypes = staticProps.handleTypes
+        delete staticProps.handleTypes
 
       for m in FORCE_MAP
         parentMethod = this.prototype[m]

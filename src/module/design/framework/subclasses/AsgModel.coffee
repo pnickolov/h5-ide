@@ -5,6 +5,8 @@ define [ "../GroupModel", "constant" ], ( GroupModel, constant )->
 
     ctype : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
+  }, {
+
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
   }

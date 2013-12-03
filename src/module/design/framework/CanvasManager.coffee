@@ -8,8 +8,8 @@ define [ "./Design" ], ( Design )->
       design = Design.instance()
       component = design.getComponent compUid
 
-      component.set "__x", x
-      component.set "__y", y
+      component.set "x", x
+      component.set "y", y
 
       @position document.getElementById( compUid ), x, y
       null
@@ -19,8 +19,8 @@ define [ "./Design" ], ( Design )->
       design = Design.instance()
       component = design.getComponent compUid
 
-      component.set "__w", w
-      component.set "__h", h
+      component.set "width", w
+      component.set "height", h
 
       # TODO : Update SVG
       null

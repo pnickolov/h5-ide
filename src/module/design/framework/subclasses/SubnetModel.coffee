@@ -3,8 +3,7 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
   Model = GroupModel.extend {
 
-    ctype       : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 
     draw : ( isCreate )->
 
@@ -17,6 +16,8 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
   }, {
 
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+
     deserialize : ( data, layout_data )->
 
       new Model({
@@ -24,10 +25,10 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         id           : data.uid
         name         : data.name
 
-        __x : layout_data.coordinate[0]
-        __y : layout_data.coordinate[1]
-        __w : layout_data.size[0]
-        __h : layout_data.size[1]
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
+        width  : layout_data.size[0]
+        height : layout_data.size[1]
       })
   }
 

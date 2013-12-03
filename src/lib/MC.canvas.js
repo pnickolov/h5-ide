@@ -952,7 +952,7 @@ MC.canvas = {
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{
-					if (to_type === 'AWS.EC2.Instance' || to_type === 'AWS.VPC.Subnet' )
+					if (to_type === 'AWS.EC2.Instance' || to_type === 'AWS.VPC.Subnet' || to_type === 'AWS.AutoScaling.Group' || to_type === 'AWS.AutoScaling.LaunchConfiguration' )
 					{
 						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
 					}

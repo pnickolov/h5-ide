@@ -39,6 +39,7 @@ define [ 'event' ], ( ide_event ) ->
                     type = 'process'
 
                 else
+                    type = null
                     console.log 'current tab id is ' + tab_id
 
                 # view type

@@ -54,7 +54,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                     event_type = suffix + 'STACK'
                 when 'app'
                     event_type = suffix + 'APP'
-                when 'process'
+                when 'process', 'appview'
                     event_type = suffix + 'PROCESS'
                 else
                     console.log 'no find tab type'

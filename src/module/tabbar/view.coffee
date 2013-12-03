@@ -59,7 +59,7 @@ define [ 'event',
                     this.trigger 'SWITCH_STACK_TAB',     original_tab_id, tab_id
                 when 'app'
                     this.trigger 'SWITCH_APP_TAB',       original_tab_id, tab_id
-                when 'process'
+                when 'process', 'appview'
                     this.trigger 'SWTICH_PROCESS_TAB',   original_tab_id, tab_id
                 else
                     console.log 'no find tab type'

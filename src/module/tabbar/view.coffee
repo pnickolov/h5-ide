@@ -57,9 +57,9 @@ define [ 'event',
                     this.trigger 'SWITCH_NEW_STACK_TAB', original_tab_id, tab_id, $( '#tab-bar-' + tab_id ).find('a').attr('title')
                 when 'stack'
                     this.trigger 'SWITCH_STACK_TAB',     original_tab_id, tab_id
-                when 'app'
+                when 'app', 'appview'
                     this.trigger 'SWITCH_APP_TAB',       original_tab_id, tab_id
-                when 'process', 'appview'
+                when 'process'
                     this.trigger 'SWTICH_PROCESS_TAB',   original_tab_id, tab_id
                 else
                     console.log 'no find tab type'

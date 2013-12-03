@@ -5818,6 +5818,11 @@ MC.canvas.event.keyEvent = function (event)
 	}
 };
 
+MC.canvas.analysis = function ( layout )
+{
+
+};
+
 MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 {
 

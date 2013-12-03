@@ -107,6 +107,8 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+            'click #global-region-visualize-VPC'        : 'unmanagedVPCClick'
+
         status:
             reloading       : false
             resourceType    : null
@@ -514,6 +516,10 @@ define [ 'event', 'i18n!nls/lang.js',
                     $item.removeAttr 'style'
 
             null
+
+        unmanagedVPCClick : ->
+            console.log 'unmanagedVPCClick'
+            require [ 'component/unmanagedvpc/main' ], ( unmanagedvpc_main ) -> unmanagedvpc_main.loadModule()
 
     }
 

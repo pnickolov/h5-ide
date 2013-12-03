@@ -16,10 +16,14 @@ define [ 'event',
 
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'
-            #
+
+            # popup
             modal template, true
-            #
+
+            # set element
             @setElement $( '#unmanaged-VPC-modal-body' ).closest '#modal-wrap'
+
+            null
 
         closedPopup : ->
             console.log 'closedPopup'

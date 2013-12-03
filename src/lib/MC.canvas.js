@@ -5818,7 +5818,7 @@ MC.canvas.event.keyEvent = function (event)
 	}
 };
 
-MC.canvas.analysis = function ( layout )
+MC.canvas.analysis = function ( data )
 {
 
 };

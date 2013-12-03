@@ -46,14 +46,22 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             ide_event.onLongListen ide_event.ADD_TAB_DATA, ( tab_id ) ->
                 console.log 'ADD_TAB_DATA = ' + tab_id
 
-                if tab_id.split( '-' )[0] not in [ 'process', 'appview' ]
-                    model.addTab tab_id,
-                                 view.html(),
-                                 model.getCanvasData(),
-                                 model.getCanvasProperty(),
-                                 property_main.snapshot(),
-                                 model.getOriginData(),
-                                 model.getTAValidation()
+                try
+
+                    # only include 'new-xxx' 'stack-xxx' 'app-xxx'
+                    if tab_id.split( '-' )[0] not in [ 'process', 'appview' ]
+                        model.addTab tab_id,
+                                     view.html(),
+                                     model.getCanvasData(),
+                                     model.getCanvasProperty(),
+                                     property_main.snapshot(),
+                                     model.getOriginData(),
+                                     model.getTAValidation()
+
+                catch error
+                  console.log 'ADD_TAB_DATA error, current tab id is ' + tab_id
+                  console.log "error message: #{ error }"
+
                 null
 
             # DELETE_TAB_DATA

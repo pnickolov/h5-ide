@@ -56,7 +56,7 @@ echo ""
 
 echo "- Step 6 ---------------------------------------------------"
 echo ">start transfer..."
-#scp ${FILENAME} root@211.98.26.7:${REMOTE_DIR}
+scp ${FILENAME} root@211.98.26.7:${REMOTE_DIR}
 echo ">transfer done."
 echo ""
 

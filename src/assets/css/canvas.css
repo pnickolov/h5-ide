@@ -24,6 +24,13 @@
 	background: #fff url('../images/ide/grid_x1.png');
 }
 
+@media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+	#canvas_body {
+		background-image : url('../images/ide/grid_x1@2x.png');
+		background-size  : 80px 80px;
+	}
+}
+
 /*.canvas-view-sg .line-sg,
 .canvas-view-sg .port-instance-sg {
 	visibility: visible;

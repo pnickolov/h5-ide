@@ -82,6 +82,8 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
         'class'      : 'dragable ' + @ctype.replace(/\./g, "-"),
         'data-type'  : 'group',
         'data-class' : @ctype
+      }).attr({
+        'id' : @id
       })
   }
 

@@ -520,7 +520,6 @@ define [ 'event', 'i18n!nls/lang.js',
 
         unmanagedVPCClick : ->
             console.log 'unmanagedVPCClick'
-            #require [ 'component/unmanagedvpc/main' ], ( unmanagedvpc_main ) -> unmanagedvpc_main.loadModule()
 
             # load unmanagedvpc
             unmanagedvpc.loadModule()

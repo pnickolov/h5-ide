@@ -68,6 +68,7 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null
 
                         , 800
+
                     , 1000
 
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress

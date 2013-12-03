@@ -14,13 +14,11 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view  = new View()
             model = new Model()
 
-            #view
             view.model    = model
-            #
+
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
-            #render
             view.render()
 
     unLoadModule = ( view, model ) ->

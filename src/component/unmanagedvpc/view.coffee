@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./template.html',
+         'text!./component/unmanagedvpc/template.html',
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
 ], ( ide_event, template ) ->

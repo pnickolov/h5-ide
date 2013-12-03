@@ -8,7 +8,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
     loadModule = () ->
 
         #
-        require [ './component/unmanagedvpc/view', './component/unmanagedvpc/model' ], ( View, Model ) ->
+        require [ 'unmanagedvpc_view', 'unmanagedvpc_model' ], ( View, Model ) ->
 
             # new view and model
             view  = new View()

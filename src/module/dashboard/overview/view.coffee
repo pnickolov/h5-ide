@@ -6,8 +6,9 @@ define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
          'constant',
+         'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant ) ->
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant, unmanagedvpc ) ->
 
     current_region = null
 
@@ -519,7 +520,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
         unmanagedVPCClick : ->
             console.log 'unmanagedVPCClick'
-            require [ 'component/unmanagedvpc/main' ], ( unmanagedvpc_main ) -> unmanagedvpc_main.loadModule()
+            #require [ 'component/unmanagedvpc/main' ], ( unmanagedvpc_main ) -> unmanagedvpc_main.loadModule()
+
+            # load unmanagedvpc
+            unmanagedvpc.loadModule()
+
+            null
 
     }
 

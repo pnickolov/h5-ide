@@ -771,6 +771,9 @@ MC.canvas = {
 				break;
 
 			case 'rtb-tgt':
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				mid_y = point.y + 40 * sign;
 				break;
 		}
@@ -782,6 +785,9 @@ MC.canvas = {
 		switch (port_id)
 		{
 			case 'rtb-tgt': //for start
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				if (point.connectionAngle === 0)
 				{//left port
 					mid_x = point.x + 4;
@@ -897,14 +903,14 @@ MC.canvas = {
 		{
 			//C
 			mid_y = (start.y + end.y) / 2;
-			if (to_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			if ( (to_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(mid_y - end.y) > 5)
 				{
 					mid_y = MC.canvas._adjustMidY(to_port_name, mid_y, end, 1);
 				}
 			}
-			else if (from_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			else if ( (from_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(start.y - mid_y) > 5)
 				{
@@ -921,7 +927,7 @@ MC.canvas = {
 		{
 			//D
 			mid_x = (start.x + end.x) / 2;
-			if (to_type === 'AWS.VPC.RouteTable' && to_type !== from_type)
+			if ( (to_type === 'AWS.VPC.RouteTable' || to_type === 'AWS.ELB' ) && to_type !== from_type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
@@ -933,6 +939,20 @@ MC.canvas = {
 				if (Math.abs(mid_x - end.x) > 5)
 				{
 					if (to_type === 'AWS.VPC.InternetGateway' || to_type === 'AWS.VPC.VPNGateway')
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
+					}
+				}
+			}
+			else if (from_type === 'AWS.ELB' && to_type !== from_type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					if (to_type === 'AWS.EC2.Instance' || to_type === 'AWS.VPC.Subnet' )
 					{
 						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
 					}

@@ -7,13 +7,6 @@ define [ 'event' ], ( ide_event ) ->
     #private
     loadModule = () ->
 
-        #add handlebars script
-        #template = '<script type="text/x-handlebars-template" id="process-tmpl">' + template + '</script>'
-
-        #load remote html template
-        #$( template ).appendTo '#header'
-
-        #
         require [ 'process_view', 'process_model' ], ( view, model ) ->
 
             # set current type, include 'process' and 'appview'

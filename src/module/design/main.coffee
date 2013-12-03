@@ -163,13 +163,16 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
                 console.log 'design:UPDATE_APP_STATE', type, id
 
-                # set MC.data.process
-                MC.data.process             = {}
-                MC.data.process             = $.extend true, {}, MC.process
-                MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
-                console.log 'current MC.data.process', MC.data.process
+                #MC.data.process             = {}
+                #MC.data.process             = $.extend true, {}, MC.process
+                #MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
 
-                return if MC.data.current_tab_id isnt id
+                # set MC.data.process
+                MC.forge.other.initDataProcess id, type, MC.process
+
+                # not current tab return
+                if MC.data.current_tab_id isnt id
+                    return
 
                 # update success
                 if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated

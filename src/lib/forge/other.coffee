@@ -51,6 +51,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		state
 
+	initDataProcess = ( id, type, data ) ->
+		console.log 'initDataProcess', id, type, data
+		MC.data.process             = {}
+		MC.data.process             = $.extend true, {}, data
+		MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
+		console.log 'current MC.data.process', MC.data.process
+		null
+
 	#############################
 	#  cache id
 	#############################
@@ -96,6 +104,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	addProcess         : addProcess
 	deleteProcess      : deleteProcess
 	filterProcess      : filterProcess
+	initDataProcess    : initDataProcess
 
 	createUID          : createUID
 	addCacheMap        : addCacheMap

@@ -1,11 +1,24 @@
 define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
-	cacheIDMap = {}
-
 	#############################
-	#  get stack app by
+	#  core
 	#############################
 
+	isCurrentTab = ( tab_id ) ->
+		console.log 'isCurrentTab', tab_id
+
+		if MC.data.current_tab_id is tab_id
+			true
+		else
+			false
+
+	# set current tab id
+	setCurrentTabId = ( tab_id ) ->
+		console.log 'setCurrentTabId', tab_id
+		MC.data.current_tab_id = tab_id
+		null
+
+	# get stack app by
 	searchStackAppById = ( id ) ->
 
 		value = null
@@ -63,6 +76,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	#  cache id
 	#############################
 
+	cacheIDMap = {}
+
 	createUID = ( length = 8 ) ->
 		chars  = undefined
 		str    = undefined
@@ -89,16 +104,9 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'getCacheMap', id
 		cacheIDMap[ id ]
 
-	#############################
-	#  current tab id
-	#############################
-
-	setCurrentTabId = ( tab_id ) ->
-		console.log 'setCurrentTabId', tab_id
-		MC.data.current_tab_id = tab_id
-		null
-
 	#public
+	isCurrentTab       : isCurrentTab
+
 	searchStackAppById : searchStackAppById
 
 	addProcess         : addProcess

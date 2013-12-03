@@ -77,6 +77,9 @@ define [ 'MC', 'event', 'handlebars'
 		#set MC.data
 		#MC.data = {}
 
+		# set default 'dashboard'
+		MC.data.current_tab_id = 'dashboard'
+
 		#global config data by region
 		MC.data.config = {}
 		MC.data.config[r] = {} for r in constant.REGION_KEYS

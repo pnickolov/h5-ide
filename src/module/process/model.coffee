@@ -7,12 +7,15 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
     ProcessModel = Backbone.Model.extend {
 
         defaults:
-            'flag_list'         : null  #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+
+            #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+            'flag_list'         : null
 
         initialize  : ->
             me = this
 
-            me.set 'flag_list', {'is_pending':true}
+            # set init flag_list
+            me.set 'flag_list', { 'is_pending' : true }
 
         getProcess  : (tab_name) ->
             me = this

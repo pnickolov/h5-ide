@@ -10,15 +10,18 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
         #
         require [ './component/unmanagedvpc/view', './component/unmanagedvpc/model' ], ( View, Model ) ->
 
-            #
+            # new view and model
             view  = new View()
             model = new Model()
 
+            # set model
             view.model    = model
 
+            # listen
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
+            # render
             view.render()
 
     unLoadModule = ( view, model ) ->

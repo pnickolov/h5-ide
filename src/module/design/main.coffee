@@ -87,7 +87,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # new stack open stack open app
                     if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
-                        #
+                        # set MC.canvas_data
                         if type is 'OPEN_STACK' or type is 'OPEN_APP'
 
                             #when OPEN_STACK or OPEN_APP result is resolved_data

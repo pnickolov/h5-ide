@@ -84,10 +84,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # restore old tab
                     if type in [ 'OLD_STACK', 'OLD_APP' ] then model.getTab type, tab_id else view.$el.html design_view_init
 
-                    # new stack open stack open app
+                    # new stack | open stack | open app
                     if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
-                        # set MC.canvas_data
                         if type is 'OPEN_STACK' or type is 'OPEN_APP'
 
                             #when OPEN_STACK or OPEN_APP result is resolved_data

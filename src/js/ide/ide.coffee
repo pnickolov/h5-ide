@@ -215,12 +215,13 @@ define [ 'MC', 'event', 'handlebars'
 		#  load module
 		#############################
 
-		#load header
-		header.loadModule()
-		#load tabbar
-		tabbar.loadModule()
-		#load dashboard
-		dashboard.loadModule()
+		if window.location.pathname isnt '/import-test.html'
+			#load header
+			header.loadModule()
+			#load tabbar
+			tabbar.loadModule()
+			#load dashboard
+			dashboard.loadModule()
 
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->

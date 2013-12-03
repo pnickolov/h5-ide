@@ -16,7 +16,7 @@ define [ 'event' ], ( ide_event ) ->
         #
         require [ 'process_view', 'process_model' ], ( view, model ) ->
 
-            # set current type
+            # set current type, include 'process' and 'appview'
             type = null
 
             # set model

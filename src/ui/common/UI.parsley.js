@@ -1260,10 +1260,13 @@
             this.Validator.messages[ constraintName ][ constraint.requirements ] : ( 'undefined' === typeof this.Validator.messages[ constraintName ] ?
               this.Validator.messages.defaultMessage : this.Validator.formatMesssage( this.Validator.messages[ constraintName ], constraint.requirements ) ) );
 
+
       // add liError if not shown. Do not add more than once custom errorMessage if exist
       if ( !$( this.ulError + ' .' + liClass ).length ) {
         liError[ liClass ] = message;
         this.addError( liError );
+      } else if ( liClass === 'custom' ) {
+        $( this.ulError + ' .' + liClass ).text( message );
       }
     }
 

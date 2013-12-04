@@ -7,19 +7,21 @@
 	<div class="scroll-wrap scrollbar-auto-hide" style="height:400px;">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 		<div id="unmanaged-VPC-modal-body" class="scroll-content">
-			<!--
+			{{#unless resource_list }}
 			<div class="loading-spinner"></div>
-			-->
+			{{/unless}}
 			<ul id="unmanaged-VPC-region-list">
-				<li class="unmanaged-VPC-region-item">
+				{{#each resource_list }}
+				<li class="unmanaged-VPC-region-item" data-region-name="{{ @key }}">
 					<div class="unmanaged-VPC-region-header">
-						<span class="unmanaged-VPC-location-name">Tokyo</span>
-						<span class="unmanaged-VPC-region-name">Asia Paciﬁc</span>
+						<span class="unmanaged-VPC-location-name">{{ city_code @key }}</span>
+						<span class="unmanaged-VPC-region-name">{{ city_area @key }}</span>
 					</div>
 					<ul class="unmanaged-VPC-resource-list clearfix">
-						<li class="unmanaged-VPC-resource-item">
+						{{#each this }}
+						<li class="unmanaged-VPC-resource-item" data-vpc-id="{{ @key }}">
 							<a href="javascript:void(0)">
-								<h5>vpc-1222232</h5>
+								<h5>{{ @key }}</h5>
 								<ol class="unmanaged-resource-data">
 									<li>
 										<span class="unmanaged-resource-number">3</span>
@@ -40,116 +42,10 @@
 								</ol>
 							</a>
 						</li>
-						<li class="unmanaged-VPC-resource-item">
-							<a href="javascript:void(0)">
-								<h5>vpc-1222232</h5>
-								<ol class="unmanaged-resource-data">
-									<li>
-										<span class="unmanaged-resource-number">3</span>
-										<span class="unmanaged-resource-name">subnets</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">23</span>
-										<span class="unmanaged-resource-name">running instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">10</span>
-										<span class="unmanaged-resource-name">stopped instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">1</span>
-										<span class="unmanaged-resource-name">load balancer</span>
-									</li>
-								</ol>
-							</a>
-						</li>
-						<li class="unmanaged-VPC-resource-item">
-							<a href="javascript:void(0)">
-								<h5>vpc-1222232</h5>
-								<ol class="unmanaged-resource-data">
-									<li>
-										<span class="unmanaged-resource-number">3</span>
-										<span class="unmanaged-resource-name">subnets</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">23</span>
-										<span class="unmanaged-resource-name">running instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">10</span>
-										<span class="unmanaged-resource-name">stopped instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">1</span>
-										<span class="unmanaged-resource-name">load balancer</span>
-									</li>
-								</ol>
-							</a>
-						</li>
+						{{/each}}
 					</ul>
 				</li>
-				<li class="unmanaged-VPC-region-item">
-					<div class="unmanaged-VPC-region-header">
-						<span class="unmanaged-VPC-location-name">San Paulo</span>
-						<span class="unmanaged-VPC-region-name">South America</span>
-					</div>
-					<ul class="unmanaged-VPC-resource-list clearfix">
-						<li class="unmanaged-VPC-resource-item">
-							<a href="javascript:void(0)">
-								<h5>vpc-1222232</h5>
-								<ol class="unmanaged-resource-data">
-									<li>
-										<span class="unmanaged-resource-number">3</span>
-										<span class="unmanaged-resource-name">subnets</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">23</span>
-										<span class="unmanaged-resource-name">running instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">10</span>
-										<span class="unmanaged-resource-name">stopped instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">1</span>
-										<span class="unmanaged-resource-name">load balancer</span>
-									</li>
-								</ol>
-							</a>
-						</li>
-					</ul>
-				</li>
-				<li class="unmanaged-VPC-region-item">
-					<div class="unmanaged-VPC-region-header">
-						<span class="unmanaged-VPC-location-name">Tokyo</span>
-						<span class="unmanaged-VPC-region-name">Asia Paciﬁc</span>
-					</div>
-					<ul class="unmanaged-VPC-resource-list clearfix">
-						<li class="unmanaged-VPC-resource-item">
-							<a href="javascript:void(0)">
-								<h5>vpc-1222232</h5>
-								<ol class="unmanaged-resource-data">
-									<li>
-										<span class="unmanaged-resource-number">3</span>
-										<span class="unmanaged-resource-name">subnets</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">23</span>
-										<span class="unmanaged-resource-name">running instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">10</span>
-										<span class="unmanaged-resource-name">stopped instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">1</span>
-										<span class="unmanaged-resource-name">load balancer</span>
-									</li>
-								</ol>
-							</a>
-						</li>
-					</ul>
-				</li>
+				{{/each}}
 			</ul>
 		</div>
 	</div>

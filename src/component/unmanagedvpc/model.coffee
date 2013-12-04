@@ -11,10 +11,14 @@ define [ 'aws_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( aws_model ) 
 
         initialize : ->
 
-            #me = this
+            me = this
 
             @on 'AWS_STAT__RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_STAT__RESOURCE_RETURN', result
+
+                if result and not result.is_error and result.resolved_data
+
+                	me.set 'resource_list', $.extend true, {}, result.resolved_data
 
         getStatResourceService : ->
             console.log 'getStatResourceService'

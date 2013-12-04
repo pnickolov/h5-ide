@@ -4,9 +4,10 @@
 
 define [ 'event',
          'text!./component/unmanagedvpc/template.html',
+         'constant',
          'backbone', 'jquery', 'handlebars',
          'UI.modal'
-], ( ide_event, template ) ->
+], ( ide_event, template, constant ) ->
 
     UnmanagedVPCView = Backbone.View.extend {
 
@@ -14,11 +15,21 @@ define [ 'event',
             'closed' : 'closedPopup'
             'click .unmanaged-VPC-resource-item' : 'resourceItemClickEvent'
 
+        initialize : ->
+
+            # city code
+            Handlebars.registerHelper 'city_code', ( text ) ->
+                new Handlebars.SafeString constant.REGION_SHORT_LABEL[ text ]
+
+            # city area
+            Handlebars.registerHelper 'city_area', ( text ) ->
+                new Handlebars.SafeString constant.REGION_LABEL[ text ]
+
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'
 
             # popup
-            modal template, true
+            modal Handlebars.compile( template )( @model.attributes ), true
 
             # set element
             @setElement $( '#unmanaged-VPC-modal-body' ).closest '#modal-wrap'
@@ -32,14 +43,24 @@ define [ 'event',
         resourceItemClickEvent : ( event ) ->
             console.log 'resourceItemClickEvent', event
 
-            # push OPEN_DESIGN_TAB
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_APPVIEW', 'vpc-1222232', 'ap-northeast-1', 'vpc-1222232'
+            try
 
-            # close
-            @closedPopup()
+                # get vpc_id and region
+                $item  = $ event.currentTarget
+                vpc_id = $item.attr 'data-vpc-id'
+                region = $item.parent( 'ul' ).parent( 'li' ).attr 'data-region-name'
 
-            # modal.close()
-            modal.close()
+                # push OPEN_DESIGN_TAB
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_APPVIEW', vpc_id, region, vpc_id
+
+                # close
+                @closedPopup()
+
+                # modal.close()
+                modal.close()
+
+            catch error
+              console.log 'current found error ' + error
 
             null
 

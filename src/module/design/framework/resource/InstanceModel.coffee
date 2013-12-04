@@ -79,8 +79,9 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
               'class' : 'node-label instance-number'
             })
           ).attr({
-            'id'    : @id + '_instance-number-group'
-            'class' : 'instance-number-group'
+            'id'      : @id + '_instance-number-group'
+            'class'   : 'instance-number-group'
+            "display" : "none"
           }),
 
 
@@ -115,7 +116,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
               'id'             : @id + '_port-instance-attach'
               'class'          : 'port port-green port-instance-attach'
-              'transform'      : 'translate(76, 45)' + MC.canvas.PORT_RIGHT_ROTATE
+              'transform'      : 'translate(78, 45)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-name'      : 'instance-attach'
               'data-position'  : 'right'
               'data-type'      : 'attachment'
@@ -126,7 +127,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
               'id'             : @id + '_port-instance-rtb'
               'class'          : 'port port-blue port-instance-rtb'
-              'transform'      : 'translate(45, -8)' + MC.canvas.PORT_UP_ROTATE
+              'transform'      : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
               'data-name'      : 'instance-rtb'
               'data-position'  : 'top'
               'data-type'      : 'sg'

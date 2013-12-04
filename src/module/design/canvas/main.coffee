@@ -49,6 +49,8 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                             return
                         #### added by song, if the stack/app too old, unable to open ###
 
+                        #MC.canvas.layout.init()
+                        #MC.canvas.initLine()
                         MC.canvas.layout.init()
                         model.initLine()
                         model.reDrawSgLine()

@@ -1834,8 +1834,16 @@ var errortip = function (event)
   {
     id = content.attr('id');
     tipId = 'errortip-' + id;
+    originTip = $('#' + tipId);
 
-    if ( $('#' + tipId).length ) return;
+    if ( originTip.length ) {
+      // if error message is changed, update the errortip and display it.
+      if ( originTip.html() != content.html() ) {
+        originTip.html( content.html() )
+        originTip.show();
+      }
+      return;
+    }
 
     errortip_box = content.clone();
     errortip_box

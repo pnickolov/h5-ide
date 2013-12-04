@@ -731,6 +731,23 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             aws_model.once "AWS_STATUS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
 
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "vpc_resource"
+            vpc_id = if $("#vpc_id").val() != "null" then $("#vpc_id").val() else null
+            vpc_id = if vpc_id != null and MC.isJSON(vpc_id)==true then JSON.parse vpc_id else vpc_id
+            #aws.vpc_resource
+            aws_model.vpc_resource {sender: aws_model}, username, session_id, region_name, vpc_id
+            aws_model.once "AWS_VPC__RESOURCE_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "stat_resource"
+            resources = if $("#resources").val() != "null" then $("#resources").val() else null
+            resources = if resources != null and MC.isJSON(resources)==true then JSON.parse resources else resources
+            #aws.stat_resource
+            aws_model.stat_resource {sender: aws_model}, username, session_id, region_name, resources
+            aws_model.once "AWS_STAT__RESOURCE_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+
         ########## CloudWatch ##########
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "GetMetricStatistics"
             metric_name = if $("#metric_name").val() != "null" then $("#metric_name").val() else null

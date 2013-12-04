@@ -1137,10 +1137,10 @@ MC.canvas = {
 					to_port_offset = to_port.getBoundingClientRect();
 				}
 
-				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
-				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
-				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
-				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
+				startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
+				startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
+				endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
+				endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
 
 				//add by xjimmy
 				start0 = {

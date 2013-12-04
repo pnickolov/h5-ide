@@ -133,8 +133,8 @@ var constant_data = {
 	//LINE_STROKE_WIDTH: 2,
 
 	//constant for MC.canvas.add
-	PATH_D_PORT: "M 8 5 l 0 1 l -6 -5 l -2 0 l 0 11 l 2 0 l 6 -5 z", //triangle
-	PATH_D_PORT2: "M 10 8 l -6 -6 l -6 6 l 6 6 l 6 -6 z", //diamond
+	PATH_D_PORT  : "M 8 5.5 l -6 -5.5 l -2 0 l 0 11 l 2 0 z", //triangle
+	PATH_D_PORT2 : "M 0 5.5 l 5.5 -5.5 l 5.5 5.5 l -5.5 5.5 z", //diamond
 
 	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
 

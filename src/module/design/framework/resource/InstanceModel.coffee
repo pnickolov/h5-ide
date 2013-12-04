@@ -87,7 +87,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
             'id'             : @id + '_port-instance-sg-left'
             'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
-            'transform'      : 'translate(8, 16)' + MC.canvas.PORT_RIGHT_ROTATE
+            'transform'      : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-name'      : 'instance-sg'
             'data-position'  : 'left'
             'data-type'      : 'sg'
@@ -99,7 +99,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
             'id'             : @id + '_port-instance-sg-right'
             'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
-            'transform'      : 'translate(76, 16)' + MC.canvas.PORT_RIGHT_ROTATE
+            'transform'      : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-name'      : 'instance-sg'
             'data-position'  : 'right'
             'data-type'      : 'sg'
@@ -114,7 +114,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
               'id'             : @id + '_port-instance-attach'
               'class'          : 'port port-green port-instance-attach'
-              'transform'      : 'translate(76, 44)' + MC.canvas.PORT_RIGHT_ROTATE
+              'transform'      : 'translate(76, 45)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-name'      : 'instance-attach'
               'data-position'  : 'right'
               'data-type'      : 'attachment'

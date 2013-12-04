@@ -297,10 +297,11 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	#private (resolve result to vo )
 	resolveVpcResourceResult = ( result ) ->
 		#resolve result
-		#TO-DO
-
 		#return vo
-		#TO-DO
+		res = {}
+		res[region] = resourceMap nodes for region, nodes of result
+
+		res
 
 	#private (parser vpc_resource return)
 	parserVpcResourceReturn = ( result, return_code, param ) ->

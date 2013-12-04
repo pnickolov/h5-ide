@@ -94,12 +94,14 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     deserialize : ( data, layout_data, resolve )->
 
+      asso_main = data.resource.AssociationSet and data.resource.AssociationSet[0] and data.resource.AssociationSet[0].Main
+
       new Model({
 
-        id           : data.uid
-        name         : data.name
+        id   : data.uid
+        name : data.name
 
-        main : data.resource.AssociationSet and data.resource.AssociationSet[0] and data.resource.AssociationSet[0].Main is "true"
+        main : MC.getBoolean( asso_main )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

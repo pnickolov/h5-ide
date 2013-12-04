@@ -13,7 +13,6 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             current_platform  : null
             tab_name          : null
 
-
         initialize : ->
 
             me = this
@@ -30,18 +29,27 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
         refresh      : ( older, newer, type ) ->
             console.log 'refresh, older = ' + older + ', newer = ' + newer + ', type = ' + type
+            console.log 'Tabbar.current = ' + Tabbar.current
 
             # save old tab
             if older isnt 'dashboard' and older isnt null
-                this.trigger 'SAVE_DESIGN_MODULE', older
+                @trigger 'SAVE_DESIGN_MODULE', older
 
+            # dashboard and return
             if newer is 'dashboard'
-                this.trigger 'SWITCH_DASHBOARD'
+                @trigger 'SWITCH_DASHBOARD'
                 return
 
-            if MC.tab[ newer ] is undefined
+            # process include 'process' and 'appview'
+            if Tabbar.current is 'process'
+                suffix = 'OPEN_'
+
+            # new tab
+            else if MC.tab[ newer ] is undefined
                 console.log 'write newer from MC.tab'
                 suffix = 'OPEN_'
+
+            # old tab
             else
                 console.log 'read older from MC.tab'
                 console.log MC.tab[ newer ]
@@ -61,10 +69,15 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
             console.log 'event_type = ' + event_type
 
+            # set current tab type
             MC.data.current_tab_type = event_type
-            this.trigger event_type, newer
+
+            # push event
+            @trigger event_type, newer
 
             console.log MC.tab
+
+            null
 
         getStackInfo : ( stack_id ) ->
             console.log 'getStackInfo'

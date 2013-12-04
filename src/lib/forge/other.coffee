@@ -53,6 +53,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log MC.process
 		null
 
+	getProcess = ( id ) ->
+		console.log 'getProcess', id
+		MC.process[ id ]
+
 	filterProcess = ( id ) ->
 		console.log 'filterProcess', id
 
@@ -110,6 +114,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	searchStackAppById : searchStackAppById
 
 	addProcess         : addProcess
+	getProcess         : getProcess
 	deleteProcess      : deleteProcess
 	filterProcess      : filterProcess
 	initDataProcess    : initDataProcess

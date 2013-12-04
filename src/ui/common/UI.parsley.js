@@ -576,6 +576,7 @@
 
               if (!result) {
                 $(this).val($(this).data('pre-value'));
+               $(this).parsley('validate');
               }
             });
 

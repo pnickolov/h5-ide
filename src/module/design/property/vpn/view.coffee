@@ -10,7 +10,8 @@ define [ '../base/view',
 
     VPNView = PropertyView.extend {
         events   :
-            "REMOVE_ROW #property-vpn-ips"       : 'removeIP'
+            "REMOVE_ROW #property-vpn-ips" : 'removeIP'
+            "ADD_ROW #property-vpn-ips"    : 'addIP'
 
             "focus #property-vpn-ips input"      : 'onFocusCIDR'
             "keypress #property-vpn-ips input"   : 'onPressCIDR'
@@ -27,6 +28,11 @@ define [ '../base/view',
                 $inputs.focus()
 
             "vpn:#{@model.attributes.cgw_name}"
+
+        addIP : ()->
+            $("#property-vpn-ips input").last().focus()
+            null
+
 
         removeIP : (event, ip) ->
             if not ip

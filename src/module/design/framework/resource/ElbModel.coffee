@@ -13,7 +13,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
     ctype : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
     iconUrl : ()->
-      "ide/icon/elb-" + if @get("internal") then "internal" else "internet" + "-canvas.png"
+      "ide/icon/elb-" + (if @get("internal") then "internal-canvas.png" else "internet-canvas.png")
 
     draw : ( isCreate )->
 

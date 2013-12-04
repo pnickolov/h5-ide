@@ -89,6 +89,8 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
             null
 
+        getVpcResourceService : ->
+            console.log 'getVpcResourceService'
 
     }
 

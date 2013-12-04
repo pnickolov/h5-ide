@@ -108,6 +108,21 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		console.log 'getCacheMap', id
 		cacheIDMap[ id ]
 
+	processType = ( id ) ->
+		console.log 'processType', id
+
+		# tab id sample process-cs6dbvrc
+		if getCacheMap( id ) and getCacheMap( id ).type is 'appview'
+			return 'appview'
+
+		# tab id sample process-us-west-1-untitled-112
+		else if id.split('-')[0] is 'process' and id.split( '-' ).length > 2
+			return 'process'
+
+		# undefined
+		else
+			return undefined
+
 	#public
 	isCurrentTab       : isCurrentTab
 
@@ -123,5 +138,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	addCacheMap        : addCacheMap
 	delCacheMap        : delCacheMap
 	getCacheMap        : getCacheMap
+	processType        : processType
 
 	setCurrentTabId    : setCurrentTabId

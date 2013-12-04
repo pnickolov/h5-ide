@@ -17,6 +17,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             # set model
             view.model    = model
 
+            # invoke api
+            model.getStatResourceService()
+
             # listen
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model

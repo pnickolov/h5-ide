@@ -2,17 +2,33 @@
 #  View Mode for component/unmanagedvpc
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'aws_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( aws_model ) ->
 
     UnmanagedVPCModel = Backbone.Model.extend {
 
         defaults :
-            'set_xxx'    : null
-            'get_xxx'    : null
+            'resource_list'    : null
 
         initialize : ->
-            #listen
-            #this.listenTo this, 'change:get_host', this.getHost
+
+            #me = this
+
+            @on 'AWS_STAT__RESOURCE_RETURN', ( result ) ->
+                console.log 'AWS_STAT__RESOURCE_RETURN', result
+
+        getStatResourceService : ->
+            console.log 'getStatResourceService'
+
+            # set resources
+            resources =
+                'AWS.EC2.Instance' : {}
+                'AWS.ELB'          : {}
+                'AWS.VPC.Subnet'   : {}
+                'AWS.VPC.VPC'      : {}
+
+            aws_model.stat_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources
+
+            null
 
     }
 

@@ -93,43 +93,6 @@
 	top: 45px;
 }
 
-#screenshot_canvas_body {
-	padding: 10px;
-	background: #FFF url('../images/ide/grid_x1.png');
-	min-width: 800px;
-	min-height: 600px;
-}
-
-#screenshot_canvas_header {
-	border-top: 4px solid #c16aa2;
-	background-color: #272127;
-	height: 50px;
-	padding: 0 10px;
-	position: relative;
-	min-width: 800px;
-}
-
-#screenshot_canvas_header img {
-	margin: 8px 10px 0 0;
-	height: 30px;
-	position: absolute;
-	left: 10px;
-}
-
-#screenshot_info {
-	position: absolute;
-	right: 10px;
-	top: 8px;
-	color: #f3f3f3;
-	font-size: 12px;
-	text-align: right;
-}
-
-#canvas_copy {
-	width: 100%;
-	height: 100%;
-}
-
 #svg_canvas {
 	position: relative;
 	z-index: 1;

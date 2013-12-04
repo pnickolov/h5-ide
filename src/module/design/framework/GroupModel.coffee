@@ -66,13 +66,42 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ @ctype ]
 
+      pad = 10
+
+
       Canvon.group().append(
         Canvon.rectangle( 0, 0, width, height ).attr({
           'class' : 'group'
           'rx'    : 5
           'ry'    : 5
         }),
-        MC.canvas.layout.createSizeWrap( width, height ),
+
+        Canvon.group().append(
+          Canvon.rectangle( pad, 0, width - 2 * pad, pad )
+                .attr({'class':'group-resizer resizer-top'}),
+
+          Canvon.rectangle( 0, pad, pad, height - 2 * pad )
+                .attr({'class':'group-resizer resizer-left'}),
+
+          Canvon.rectangle( width - pad, pad, pad, height - 2 * pad )
+                .attr({'class':'group-resizer resizer-right'}),
+
+          Canvon.rectangle( pad, height - pad, width - 2 * pad, pad )
+                .attr({'class':'group-resizer resizer-bottom'}),
+
+          Canvon.rectangle( 0, 0, pad, pad )
+                .attr({'class':'group-resizer resizer-topleft'}),
+
+          Canvon.rectangle( width - pad, 0, pad, pad )
+                .attr({'class':'group-resizer resizer-topright'}),
+
+          Canvon.rectangle( 0, height - pad, pad, pad )
+                .attr({'class':'group-resizer resizer-bottomleft'}),
+
+          Canvon.rectangle( width - pad, height - pad, pad, pad )
+                .attr({'class':'group-resizer resizer-bottomright'})
+
+        ).attr({'class':'resizer-wrap'}),
 
         Canvon.text(text_pos[0], text_pos[1], name).attr({
           'id'    : "#{@id}_label"

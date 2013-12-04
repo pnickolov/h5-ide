@@ -94,7 +94,8 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     deserialize : ( data, layout_data, resolve )->
 
-      asso_main = data.resource.AssociationSet and data.resource.AssociationSet[0] and data.resource.AssociationSet[0].Main
+      if data.resource.AssociationSet and data.resource.AssociationSet[0]
+        asso_main =  data.resource.AssociationSet[0].Main
 
       new Model({
 

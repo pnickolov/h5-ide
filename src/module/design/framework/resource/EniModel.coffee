@@ -4,6 +4,8 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
   Model = ComplexResModel.extend {
 
     defaults :
+      primary  : false
+
       x        : 0
       y        : 0
       width    : 9
@@ -15,6 +17,10 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       "ide/icon/eni-canvas-attached.png"
 
     draw : ( isCreate )->
+
+      if @get("primary")
+        # Do nothing if this is primary eni, a.k.a the internal eni of an Instance
+        return
 
       if isCreate
 
@@ -114,13 +120,19 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     deserialize : ( data, layout_data, resolve )->
 
+      primary = false
+      if data.resource.PrivateIpAddressSet and data.resource.PrivateIpAddressSet[0]
+        primary = MC.getBoolean( data.resource.PrivateIpAddressSet[0].Primary )
+
       new Model({
 
-        id           : data.uid
-        name         : data.name
+        id   : data.uid
+        name : data.name
 
-        x : if layout_data then layout_data.coordinate[0] else 0
-        y : if layout_data then layout_data.coordinate[1] else 0
+        primary : primary
+
+        x : if primary then 0 else layout_data.coordinate[0]
+        y : if primary then 0 else layout_data.coordinate[1]
       })
 
   }

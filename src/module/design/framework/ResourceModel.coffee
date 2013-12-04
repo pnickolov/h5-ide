@@ -110,6 +110,7 @@ define [ "./Design", "backbone" ], ( Design )->
         handleTypes = staticProps.handleTypes
         delete staticProps.handleTypes
 
+      ### jshint -W083 ###
       for m in FORCE_MAP
         parentMethod = this.prototype[m]
         if protoProps[ m ] and parentMethod
@@ -122,6 +123,7 @@ define [ "./Design", "backbone" ], ( Design )->
               parentImpl.apply( this, arguments )
               ret
           )()
+      ### jshint +W083 ###
 
       protoProps.classId = _.uniqueId("dfc_")
 

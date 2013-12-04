@@ -40,7 +40,7 @@ define [ "constant" ], ( constant ) ->
 
     design = (new DesignImpl( options )).use()
 
-    # Temporarily set layout_data in design, so that getAZ
+    # Temporarily set layout_data in design, so that getAZ can use it
     design.groupLayoutData = layout_data.component.group
 
     layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
@@ -55,9 +55,8 @@ define [ "constant" ], ( constant ) ->
         return obj
 
       # Check if we have recursive dependency
-      console.assert deserialize_uid isnt uid, "Recursive dependency found when deserializing JSON_DATA"
+      console.assert (not recursiveCheck[uid] && recursiveCheck[uid] = true ), "Recursive dependency found when deserializing JSON_DATA"
 
-      if not deserialize_uid then deserialize_uid = uid
 
 
       component_data = json_data[ uid ]
@@ -73,7 +72,7 @@ define [ "constant" ], ( constant ) ->
 
 
     for uid, comp of json_data
-      deserialize_uid = null
+      recursiveCheck = {}
       resolveDeserialize uid
 
     delete design.groupLayoutData
@@ -83,8 +82,9 @@ define [ "constant" ], ( constant ) ->
   DesignImpl = ( options )->
     @__componentMap = {}
     @__classCache   = {}
-    @.__type        = options.type
-    @.__mode        = options.mode
+    @__type         = options.type
+    @__mode         = options.mode
+    null
 
 
   Design.TYPE = {
@@ -118,6 +118,7 @@ define [ "constant" ], ( constant ) ->
       delete @__componentMap[ id ]
     else
       @__componentMap[ id ] = comp
+    null
   ### Private Interface End ###
 
 

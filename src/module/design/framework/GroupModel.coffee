@@ -68,22 +68,21 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       Canvon.group().append(
         Canvon.rectangle( 0, 0, width, height ).attr({
-          'class':'group'
-          rx:5
-          ry:5
+          'class' : 'group'
+          'rx'    : 5
+          'ry'    : 5
         }),
         MC.canvas.layout.createSizeWrap( width, height ),
 
         Canvon.text(text_pos[0], text_pos[1], name).attr({
-          'class':'group-label name'
-          id:"#{@id}_label"
+          'id'    : "#{@id}_label"
+          'class' : 'group-label name'
         })
       ).attr({
-        'class'      : 'dragable ' + @ctype.replace(/\./g, "-"),
-        'data-type'  : 'group',
+        'id'         : @id
+        'class'      : 'dragable ' + @ctype.replace(/\./g, "-")
+        'data-type'  : 'group'
         'data-class' : @ctype
-      }).attr({
-        'id' : @id
       })
   }
 

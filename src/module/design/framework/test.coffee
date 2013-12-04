@@ -3,18 +3,18 @@ define [ './Design',
          './ComplexResModel',
          './GroupModel',
          './ConnectionModel',
-         './subclasses/AclModel',
-         './subclasses/AsgModel',
-         './subclasses/AzModel',
-         './subclasses/CgwModel',
-         './subclasses/ElbModel',
-         './subclasses/EniModel',
-         './subclasses/InstanceModel',
-         './subclasses/LcModel',
-         './subclasses/RtbModel',
-         './subclasses/SgModel',
-         './subclasses/SubnetModel',
-         './subclasses/VpcModel',
+         './resource/AclModel',
+         './resource/AsgModel',
+         './resource/AzModel',
+         './resource/CgwModel',
+         './resource/ElbModel',
+         './resource/EniModel',
+         './resource/InstanceModel',
+         './resource/LcModel',
+         './resource/RtbModel',
+         './resource/SgModel',
+         './resource/SubnetModel',
+         './resource/VpcModel',
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel )->
 
   window.Design          = Design
@@ -35,5 +35,7 @@ define [ './Design',
   # Design.instance().getAZ("east-4")
 
   # console.log AzModel.allObjects()
+
+  null
 
 

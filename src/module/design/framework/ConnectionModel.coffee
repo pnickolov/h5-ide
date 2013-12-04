@@ -79,3 +79,5 @@ define [ "./ResourceModel" ], ( ResourceModel )->
       null
   }
 
+  ConnectionModel
+

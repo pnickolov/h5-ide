@@ -57,6 +57,76 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
       @set "__connections", connections
       null
 
+    createNode : ( option )->
+      # A helper function to create a SVG Element to represent a group
+      x      = @x()
+      y      = @y()
+      width  = @width()  * MC.canvas.GRID_WIDTH
+      height = @height() * MC.canvas.GRID_HEIGHT
+
+      node = Canvon.group().append(
+
+        Canvon.rectangle(0, 0, width, height).attr({
+          'class' : 'node-background'
+          'rx'    : 5
+          'ry'    : 5
+        }),
+
+        Canvon.image( MC.IMG_URL + option.image, option.imageX, option.imageY, option.imageW, option.imageH ).attr({ id : @id + '_elb_scheme'})
+
+      ).attr({
+        'id'         : @id
+        'class'      : 'dragable node ' + @ctype.replace(/\./g, "-")
+        'data-type'  : 'node'
+        'data-class' : @ctype
+      })
+
+      if option.label
+        node.append(
+          Canvon.rectangle(2, 76, 86, 13).attr({
+            'class' : 'node-label-name-bg'
+            'rx'    : 3
+            'ry'    : 3
+          }),
+
+          Canvon.text( 45, 86, MC.canvasName( option.label ) ).attr({
+            'class' : 'node-label node-label-name'
+            'id'    : @id + '_elb_name'
+          })
+        )
+
+      if option.sg
+        node.append(
+          Canvon.group().append(
+            Canvon.rectangle(10, 6, 7 , 5).attr({
+              'id'    : @id + '_sg-color-label1'
+              'class' : 'node-sg-color-border tooltip'
+            }),
+            Canvon.rectangle(20, 6, 7 , 5).attr({
+              'id'    : @id + '_sg-color-label2'
+              'class' : 'node-sg-color-border tooltip'
+            }),
+            Canvon.rectangle(30, 6, 7 , 5).attr({
+              'id'    : @id + '_sg-color-label3'
+              'class' : 'node-sg-color-border tooltip'
+            }),
+            Canvon.rectangle(40, 6, 7 , 5).attr({
+              'id'    : @id + '_sg-color-label4'
+              'class' : 'node-sg-color-border tooltip'
+            }),
+            Canvon.rectangle(50, 6, 7 , 5).attr({
+              'id'    : @id + '_sg-color-label5'
+              'class' : 'node-sg-color-border tooltip'
+            })
+          ).attr({
+            'id'        : @id + '_node-sg-color-group'
+            'class'     : 'node-sg-color-group'
+            'transform' : 'translate(8, 62)'
+          })
+        )
+
+      node
+
     ###
      ReadOnly Infomation
     ###

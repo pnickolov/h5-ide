@@ -41,6 +41,8 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         height : layout_data.size[1]
       })
 
+      null
+
   }
 
   Model

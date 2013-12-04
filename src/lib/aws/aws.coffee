@@ -791,7 +791,121 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         osFamily
 
+    reference_key = [
+
+        'InstanceId',
+        'VolumeId',
+        'NetworkInterfaceId',
+        'DhcpOptionsId',
+        'VpcId',
+        'SubnetId',
+        'GroupId',
+        'LoadBalancerName',
+        'NetworkAclId',
+        'RouteTableId',
+        'KeyName',
+        'AutoScalingGroupARN',
+        'AutoScalingGroupName',
+        'LaunchConfigurationARN',
+        'LaunchConfigurationName',
+        'CustomerGatewayId',
+        'VpnGatewayId',
+        'InternetGatewayId',
+        'PolicyARN'
+    ]
+
+    collectReference = ( canvas_component ) ->
+
+        key = {}
+
+        #collect reference
+        for uid, comp of canvas_component
+
+            if constant.AWS_RESOURCE_KEY[comp.type]
+
+                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = "@#{uid}.resource.#{"@#{uid}.resource.InstanceId"}"
+
+        #replace reference
+        for uid, comp of canvas_component
+
+            canvas_component[uid] = replaceReference comp, key, constant.AWS_RESOURCE_KEY[comp.type]
+
+        canvas_component
+
+
+    replaceReference = ( obj, reference, except_key ) ->
+
+        switch typeof(obj)
+
+            when 'object'
+
+                for k, v of obj
+
+                    if typeof(v) is 'string' and reference[k] and k isnt except_key
+
+                        obj[k] = reference[k]
+
+                    if typeof(v) is 'object'
+
+                        replaceReference obj[k], reference, except_key
+
+                    if typeof(v) is 'array'
+
+                        replaceReference obj[k], reference, except_key
+
+            when 'array'
+
+                for index, slot of obj
+
+                    if typeof(v) is 'string' and reference[slot]
+
+                        obj[index] = reference[slot]
+
+                    if typeof(v) is 'object'
+
+                        replaceReference obj[index], reference, except_key
+
+                    if typeof(v) is 'array'
+
+                        replaceReference obj[index], reference, except_key
+
+        obj
+
+            # switch comp.type
+
+            #     when 'AWS.EC2.Instance'
+
+            #         key[comp.resource.InstanceId] = "@#{uid}.resource.InstanceId"
+
+            #     when 'AWS.EC2.EBS.Volume'
+
+            #         key[comp.resource.VolumeId] = "@#{uid}.resource.VolumeId"
+
+            #     when 'AWS.VPC.NetworkInterface'
+
+            #         key[comp.resource.NetworkInterfaceId] = "@#{uid}.resource.NetworkInterfaceId"
+
+            #     when 'AWS.VPC.DhcpOptions'
+
+            #         key[comp.resource.DhcpOptionsId] = "@#{uid}.resource.DhcpOptionsId"
+
+            #     when 'AWS.VPC.VPC'
+
+            #         key[comp.resource.VpcId] = "@#{uid}.resource.VpcId"
+
+            #     when 'AWS.VPC.Subnet'
+
+            #         key[comp.resource.SubnetId] = "@#{uid}.resource.SubnetId"
+
+            #     when 'AWS.VPC.SecurityGroup'
+
+            #         key[comp.resource.GroupId] = "@#{uid}.resource.GroupId"
+
+
+
+
     #public
+    collectReference            : collectReference
     getNewName                  : getNewName
     cacheResource               : cacheResource
     checkIsRepeatName           : checkIsRepeatName

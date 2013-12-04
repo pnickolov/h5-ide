@@ -698,6 +698,75 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		vpn_json
 
 
+	convertNC = ( aws_nc ) ->
+
+		nc_json = {
+			'type': 'AWS.AutoScaling.NotificationConfiguration',
+			'name': '',
+			'uid': MC.guid(),
+			'resource': {
+				'AutoScalingGroupName': aws_nc.AutoScalingGroupName,
+				'NotificationType': aws_nc.NotificationType,
+				'TopicARN': aws_nc.TopicARN
+			}
+		}
+		nc_json
+
+	convertScalingPolicy = ( aws_sp ) ->
+
+		sp_json = {
+			'type': 'AWS.AutoScaling.ScalingPolicy',
+			'name': aws_sp.PolicyName,
+			'uid': MC.guid(),
+			'resource': {
+				'AdjustmentType': "",
+				'Alarms': [],
+				'AutoScalingGroupName': '',
+				'Cooldown': '',
+				'MinAdjustmentStep': '',
+				'PolicyARN': '',
+				'PolicyName': '',
+				'ScalingAdjustment': ''
+			}
+		}
+		sp_json.resource.Alarms = aws_sp.Alarms.member
+		sp_json = mapProperty aws_sp, sp_json
+
+		sp_json
+
+	convertDHCP = ( aws_dhcp ) ->
+		dhcp_json = {
+			"uid": MC.guid(),
+			"type": "AWS.VPC.DhcpOptions",
+			"name": "default",
+			"resource":	{
+				"VpcId": "",
+				"DhcpOptionsId": aws_dhcp.dhcpOptionsId,
+				"DhcpConfigurationSet": []
+			}
+		}
+
+
+		if aws_dhcp.dhcpConfigurationSet
+
+			for dhcp in aws_dhcp.dhcpConfigurationSet.item
+				value = []
+				for valueset in dhcp.valueSet
+					value.push {
+						"Value": valueset
+					}
+
+				dhcp_json.resource.DhcpConfigurationSet.push {
+					"Key": dhcp.key,
+					"ValueSet": value
+				}
+
+		dhcp_json
+
+
+	convertDHCP : convertDHCP
+	convertScalingPolicy : convertScalingPolicy
+	convertNC  : convertNC
 	convertVPN : convertVPN
 	convertVGW : convertVGW
 	convertIGW : convertIGW

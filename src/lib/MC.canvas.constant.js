@@ -136,7 +136,7 @@ var constant_data = {
 	PATH_D_PORT  : "M 8 5.5 l -6 -5.5 l -2 0 l 0 11 l 2 0 z", //triangle
 	PATH_D_PORT2 : "M 0 5.5 l 5.5 -5.5 l 5.5 5.5 l -5.5 5.5 z", //diamond
 
-	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
+	PATH_ASG_TITLE: "M 0 21 l 0 -16 a 5 5 0 0 1 5 -5 l 121 0 a 5 5 0 0 1 5 5 l 0 16 z",
 
 
 	PORT_PADDING: 4, //port padding (to point of junction)

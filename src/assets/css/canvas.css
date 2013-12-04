@@ -598,8 +598,8 @@
 }
 
 .asg-title {
-	fill: #83CBF9;
-	stroke: #83CBF9;
+	fill   : #83CBF9;
+	stroke : none;
 }
 
 /*.asg-title:hover {
@@ -625,7 +625,6 @@
 
 #svg_canvas .AWS-AutoScaling-Group.selected .asg-title {
 	fill: #049CDD;
-	stroke: #049CDD;
 }
 
 .AWS-AutoScaling-Group .group-label {

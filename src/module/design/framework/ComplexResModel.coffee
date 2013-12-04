@@ -72,7 +72,7 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
           'ry'    : 5
         }),
 
-        Canvon.image( MC.IMG_URL + option.image, option.imageX, option.imageY, option.imageW, option.imageH ).attr({ id : @id + '_elb_scheme'})
+        Canvon.image( MC.IMG_URL + option.image, option.imageX, option.imageY, option.imageW, option.imageH )
 
       ).attr({
         'id'         : @id

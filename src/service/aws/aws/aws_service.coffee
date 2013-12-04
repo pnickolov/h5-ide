@@ -340,7 +340,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		#2.resolve return_data when return_code is E_OK
 		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
-			resolved_data = resolveStatResourceResult result
+			resolved_data = result
 
 			aws_result.resolved_data = resolved_data
 

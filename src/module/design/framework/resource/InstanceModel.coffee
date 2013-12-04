@@ -24,29 +24,23 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
         # Call parent's createNode to do basic creation
         node = @createNode({
-          image   : @iconUrl()
-          imageX  : 30
-          imageY  : 15
-          imageW  : 39
-          imageH  : 27
+          image   : "ide/icon/instance-canvas.png"
+          imageX  : 15
+          imageY  : 9
+          imageW  : 61
+          imageH  : 62
           label   : @get "name"
           labelBg : true
           sg      : true
         })
 
-        # Insert Instance's background
-        children = node[0].children || node[0].childNodes
-
-        node[0].insertBefore(
-          Canvon.image( MC.IMG_URL + "ide/icon/instance-canvas.png", 15, 9, 61, 62 )[0],
-          children[1]
-        )
-
         # Insert Volume / Eip / Port
-        icon_volume_status = "attached-active"
         node.append(
+          # Ami Icon
+          Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
+
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-' + icon_volume_status + '.png' , 21, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
           # Volume Label
           Canvon.text( 35, 56, "0" ).attr({
             'id'    : @id + '_volume_number'

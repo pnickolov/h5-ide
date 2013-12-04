@@ -1055,6 +1055,7 @@ a {
 	background: #f0f0f0;
 	box-shadow: 1px 5px 5px rgba(22, 22, 23, 0.1);
 	width: 100%;
+	height: 42px;
 }
 
 #global-refresh {
@@ -1087,7 +1088,7 @@ a {
 }
 
 #global-create-stack {
-	position : relative;
+	position : absolute;
 	left     : 20px;
 
 	display     : block;
@@ -1106,6 +1107,22 @@ a {
 	border        : 1px solid #77446c;
 	box-shadow    : inset 0 1px 0 rgba(255, 255, 255, 0.1), 1px 1px 5px rgba(0, 0, 0, 0.1);
 
+}
+
+#global-region-visualize-VPC {
+	position: absolute;
+	left: 240px;
+	display: block;
+	width: 210px;
+	height: 20px;
+	padding: 10px 0;
+	text-align: center;
+	color: #FFF;
+	font-size: 15px;
+	background-color: #4495D3;
+	border-radius: 3px;
+	border: 1px solid #2A608D;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 1px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 #global-create-stack .icon-new-stack {
@@ -6792,4 +6809,57 @@ summary:focus {
 	color: #999;
 	font-size: 12px;
 	margin-left: 5px;
+}
+
+/*unmanaged-VPC-modal*/
+#unmanaged-VPC-modal-body {
+	background: #fff;
+}
+
+.unmanaged-VPC-region-header {
+	padding: 10px 15px;
+	border-bottom: 1px solid #ddd;
+}
+
+.unmanaged-VPC-location-name {
+	font-size: 20px;
+	font-weight: 700;
+	color: #333;
+	margin-right: 5px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.unmanaged-VPC-region-name {
+	color: #ccc;
+	font-size: 12px;
+}
+
+.unmanaged-VPC-resource-list {
+	padding: 20px;
+}
+
+.unmanaged-VPC-resource-item {
+	float: left;
+	margin: 0 20px 10px 0;
+}
+
+.unmanaged-VPC-resource-item a {
+	width: 125px;
+	border: 4px solid #ccc;
+	padding: 12px 20px;
+	border-radius: 5px;
+	font-size: 12px;
+	display: block;
+}
+
+.unmanaged-VPC-resource-item a:hover {
+	border-color: #7FBDE9;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.unmanaged-VPC-resource-item h5 {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 5px;
+	font-weight: 700;
 }

@@ -7,39 +7,39 @@ define [ 'event' ], ( ide_event ) ->
     #private
     loadModule = () ->
 
-        #add handlebars script
-        #template = '<script type="text/x-handlebars-template" id="process-tmpl">' + template + '</script>'
-
-        #load remote html template
-        #$( template ).appendTo '#header'
-
-        #
         require [ 'process_view', 'process_model' ], ( view, model ) ->
-            #
+
+            # set current type, include 'process' and 'appview'
+            type = null
+
+            # set model
             view.model = model
-            view.render()
 
-            #test
-            MC.ide_event = ide_event
+            model.on 'change:flag_list', () ->
+                console.log 'change:flag_list'
+                view.render type
 
-            #listen
-            ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( tab_name ) ->
-                console.log 'process:SWITCH_APP_PROCESS tab_name = ' + tab_name
+            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( state, tab_id ) ->
+                console.log 'process:SWITCH_PROCESS', state, tab_id
 
-                if tab_name.indexOf('process-') == 0
-                    model.getProcess(tab_name)
+                # get type
+                type = MC.forge.other.processType tab_id
 
-                view.render()
+                # call model method
+                switch type
+                    when 'appview'
+                        model.getVpcResourceService()
+                    when 'process'
+                        model.getProcess tab_id
+
+                # view type
+                view.render type
 
             ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
                 console.log 'UPDATE_PROCESS'
 
                 if MC.data.current_tab_id is tab_name
                     model.getProcess tab_name
-
-            model.on 'change:flag_list', () ->
-                console.log 'change:flag_list'
-                view.render()
 
     unLoadModule = () ->
         #

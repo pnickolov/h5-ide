@@ -45,7 +45,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                         if MC.canvas_data.bad
                             notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
                             ide_event.trigger ide_event.SWITCH_MAIN
-                            ide_event.trigger ide_event.CLOSE_TAB, null, tab_name if tab_name
+                            ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
                             return
                         #### added by song, if the stack/app too old, unable to open ###
 

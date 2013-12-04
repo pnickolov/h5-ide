@@ -104,9 +104,9 @@ define [ 'MC', 'event',
 
         listen     : ->
             # app update event
-            $( document.body ).on 'click', '#confirm-update-app', this, @_updateAndRun
+            $( document.body ).on 'click', '#confirm-update-app', this, @appUpdating
             # cancel to app model
-            $( document.body ).on 'click', '#return-app-confirm', this, @_return2App
+            $( document.body ).on 'click', '#return-app-confirm', this, @appedit2App
             # export to png download button click
             $( document.body ).on 'click', '.modal-footer #btn-confirm', this, () -> modal.close()
 
@@ -279,7 +279,8 @@ define [ 'MC', 'event',
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
-            ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
+            #ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
 
         clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
@@ -476,11 +477,15 @@ define [ 'MC', 'event',
             console.log 'toolbar clickRefreshApp'
             ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
 
+        #############################
+        #  app edit
+        #############################
+
         clickEditApp : ->
             console.log 'clickEditApp'
 
             # 1. Update MC.canvas.getState() to return 'appedit'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'appedit'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'appedit'
 
             # 2. Show Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'show'
@@ -515,7 +520,6 @@ define [ 'MC', 'event',
 
                 if diff_data.isChanged
 
-                    #state   = constant.APP_STATE.APP_STATE_STOPPED
                     state    = null
                     platform = 'vpc'
                     info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
@@ -539,32 +543,10 @@ define [ 'MC', 'event',
                     require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) ->
                         trustedadvisor_main.loadModule 'stack'
 
-                    #if obj.state is constant.APP_STATE.APP_STATE_STOPPED
-                    #
-                    #    modal MC.template.updateApp obj
-                    #    #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-                    #
-                    #else if obj.state is constant.APP_STATE.APP_STATE_RUNNING
-                    #
-                    #    if obj.instance_list.length is 0
-                    #
-                    #        modal MC.template.updateApp()
-                    #        $( '.update-app-notice' ).empty()
-                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-                    #
-                    #    else
-                    #
-                    #        modal MC.template.restartInstance obj
-                    #
-                    #
-                    #        #$( document.body ).one 'click', '#confirm-update-app', this, @_updateAndRun
-
                 else
-                    #notification 'info', lang.ide.TOOL_MSG_INFO_NO_CHANGES
                     # no changes and return to app modal
-                    @_return2App()
+                    @appedit2App()
 
-            # After success then do the clickCancelEditApp routine.
             null
 
         clickCancelEditApp : ->
@@ -574,17 +556,17 @@ define [ 'MC', 'event',
             origin_data = $.extend true, {}, MC.data.origin_canvas_data
 
             if _.isEqual( data, origin_data )
-                @_return2App()
+                @appedit2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
 
             null
 
-        _return2App : ( target ) ->
-            console.log '_return2App'
+        appedit2App : ( target ) ->
+            console.log 'appedit2App'
 
             # 1. Update MC.canvas.getState() to return 'app'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'app'
 
             # 2. Toggle Toolbar Button
             if target then me = target.data else me = this
@@ -602,7 +584,7 @@ define [ 'MC', 'event',
             # 6. delete MC.process and MC.data.process
             # delete MC.process[ MC.data.current_tab_id ]
             # delete MC.data.process[ MC.data.current_tab_id ]
-            MC.forge.other.deleteProcess MC.data.current_tab_id
+            # MC.forge.other.deleteProcess MC.data.current_tab_id
 
             # 7. Hide Resource Panel and call canvas_layout.listen()
             ide_event.trigger ide_event.UPDATE_RESOURCE_STATE, 'hide'
@@ -615,30 +597,26 @@ define [ 'MC', 'event',
         saveSuccess2App : ( tab_id, region ) ->
             console.log 'saveSuccess2App, tab_id = ' + tab_id + ', region = ' + region
 
-            #if tab_id isnt MC.data.current_tab_id
-            #    MC.data.process[ tab_id ].appedit2app = true if MC.data.process[ tab_id ]
-            #    return
-
             # 1. Update MC.canvas.getState() to return 'app'
-            ide_event.trigger ide_event.UPDATE_TABBAR_TYPE, MC.data.current_tab_id, 'app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB_TYPE, MC.data.current_tab_id, 'app'
 
-            # 2. push PROCESS_RUN_SUCCESS refresh current tab
-            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, tab_id, region
+            # 2. push refresh current tab
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', null, region, tab_id
 
             # 3. delete MC.process and MC.data.process
-            # delete MC.process[ MC.data.current_tab_id ]
-            # delete MC.data.process[ MC.data.current_tab_id ]
             MC.forge.other.deleteProcess MC.data.current_tab_id
 
             null
 
-        _updateAndRun : ( event ) ->
-            console.log '_updateAndRun'
+        appUpdating : ( event ) ->
+            console.log 'appUpdating'
+
             # 1. event.data.trigger 'xxxxx'
-            ide_event.trigger ide_event.SAVE_APP, MC.canvas_data
+            event.data.trigger 'APP_UPDATING', MC.canvas_data
 
             # 2. close modal
             modal.close()
+
             null
 
     }

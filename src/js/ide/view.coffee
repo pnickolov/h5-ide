@@ -51,7 +51,7 @@ define [ 'event',
                 if $( '#loading-bar-wrapper' ).html().trim() isnt ''
                     me.open_fail = true
                     ide_event.trigger ide_event.SWITCH_MAIN
-                    #ide_event.trigger ide_event.CLOSE_TAB, null, tab_id if tab_id
+                    #ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_id if tab_id
                     #notification 'error', lang.ide.IDE_MSG_ERR_OPEN_TAB, true
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'OPEN_TAB_FAIL', MC.data.current_tab_id
             , 1000 * 30

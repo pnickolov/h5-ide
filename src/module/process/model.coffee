@@ -4,23 +4,24 @@
 
 define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
 
-    #websocket
-    #ws = MC.data.websocket
-
     ProcessModel = Backbone.Model.extend {
 
         defaults:
-            'flag_list'         : null  #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+
+            #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+            'flag_list'         : null
 
         initialize  : ->
             me = this
 
-            me.set 'flag_list', {'is_pending':true}
+            # set init flag_list
+            me.set 'flag_list', { 'is_pending' : true }
 
         getProcess  : (tab_name) ->
             me = this
 
             if MC.process[tab_name]
+
                 # get the data
                 flag_list = MC.process[tab_name].flag_list
 
@@ -42,33 +43,35 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                     # hold on 1 second
                     setTimeout () ->
-                        #me.set 'flag_list', flag_list
 
                         app_id = flag_list.app_id
                         region = MC.process[tab_name].region
 
                         # save png
                         app_name = MC.process[tab_name].name
-                        #ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
 
-                        return if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
+                        # not current tab return
+                        if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
+                            return
 
                         # hold on two seconds
                         setTimeout () ->
-                            ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
-                            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
-                            ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+
+                            # update tab
+                            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, app_id, app_name + ' - app'
+
+                            # reload app
+                            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', app_name, region, app_id
+
+                            #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+                            #ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+
                         , 800
+
                     , 1000
 
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress
-
-                    # check rollback
-                    # if 'dones' of last_flag and last_flag.dones > flag_list.dones
-                    #     flag_list = last_flag
-
-                    #me.set 'flag_list', flag_list
 
                     if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
                         $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
@@ -84,10 +87,10 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                     me.set 'flag_list', flag_list
 
-                #console.log flag_list
-
             null
 
+        getVpcResourceService : ->
+            console.log 'getVpcResourceService'
 
     }
 

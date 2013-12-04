@@ -40,7 +40,7 @@ define [ 'jquery',
                 view.render type
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
-                console.log 'SWITCH_DASHBOARD'
+                console.log 'toolbar:SWITCH_DASHBOARD'
                 model.setTabFlag(false)
                 null
 
@@ -112,6 +112,15 @@ define [ 'jquery',
                 console.warn 'SAVE_PNG_COMPLETE'
                 view.exportPNG base64_image, uid
 
+            view.on 'APP_UPDATING', ( data ) ->
+                console.log 'design_toolbar APP_2_APPEDIT'
+
+                if _.isObject data
+                    data = MC.forge.stack.expandServerGroup data
+                    model.saveApp(data)
+                else
+                    console.log 'current is not object, data is ' + data
+
             # model.on 'CONVERT_CLOUDFORMATION_COMPLETE', ( cf_json ) ->
             #     view.saveCloudFormation cf_json
 
@@ -127,15 +136,6 @@ define [ 'jquery',
             ide_event.onLongListen 'TERMINATE_APP', (region, app_id, app_name, flag) ->
                 console.log 'design_toolbar TERMINATE_APP region:' + region + ', app_id:' + app_id + ', app_name:' + app_name + ', flag:' + flag
                 model.terminateApp(region, app_id, app_name, flag)
-
-            ide_event.onLongListen ide_event.SAVE_APP, (data) ->
-                console.log 'design_toolbar SAVE_APP'
-
-                if _.isObject data
-                    data = MC.forge.stack.expandServerGroup data
-                    model.saveApp(data)
-                else
-                    console.log 'current is not object, data is ' + data
 
             ide_event.onLongListen ide_event.CANVAS_SAVE, () ->
                 console.log 'design_toolbar_click:saveStack'

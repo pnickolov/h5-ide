@@ -146,6 +146,14 @@ require.config {
 		'toolbar'            : 'module/design/toolbar/main'
 
 		#############################################
+		# component
+		#############################################
+
+		'unmanagedvpc'       : 'component/unmanagedvpc/main'
+		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
+		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
+
+		#############################################
 		# events
 		#############################################
 		'event'              : 'event/ide_event'
@@ -351,7 +359,7 @@ require.config {
 			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
 
 		#############################################
-		# modules
+		# module
 		#############################################
 
 		'header'       :
@@ -375,6 +383,12 @@ require.config {
 		'main'         :
 			deps       : [ 'jquery' ]
 
+		#############################################
+		# component
+		#############################################
+
+		'unmanagedvpc' :
+			deps       : [ 'unmanagedvpc_view', 'unmanagedvpc_model', 'MC' ]
 
 }
 

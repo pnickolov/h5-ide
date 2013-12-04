@@ -215,8 +215,8 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 null
 
             #update region app state when pending
-            # ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
-            #     console.log 'UPDATE_TAB_ICON'
+            # ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB_ICON, ( flag, app_id ) ->
+            #     console.log 'UPDATE_DESIGN_TAB_ICON'
 
             #     model.updateAppList flag, app_id
 

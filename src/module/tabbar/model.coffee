@@ -13,7 +13,6 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
             current_platform  : null
             tab_name          : null
 
-
         initialize : ->
 
             me = this
@@ -30,19 +29,27 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
         refresh      : ( older, newer, type ) ->
             console.log 'refresh, older = ' + older + ', newer = ' + newer + ', type = ' + type
-            #save
-            #if older isnt 'dashboard' then MC.tab[ older ] = { snapshot : null, data : null }
-            #test
-            #if older isnt 'dashboard' and older isnt null then MC.tab[ older ] = { snapshot : older, data : older }
-            if older isnt 'dashboard' and older isnt null then this.trigger 'SAVE_DESIGN_MODULE', older
+            console.log 'Tabbar.current = ' + Tabbar.current
 
+            # save old tab
+            if older isnt 'dashboard' and older isnt null
+                @trigger 'SAVE_DESIGN_MODULE', older
+
+            # dashboard and return
             if newer is 'dashboard'
-                this.trigger 'SWITCH_DASHBOARD'
+                @trigger 'SWITCH_DASHBOARD'
                 return
 
-            if MC.tab[ newer ] is undefined
+            # process include 'process' and 'appview'
+            if Tabbar.current is 'process'
+                suffix = 'OPEN_'
+
+            # new tab
+            else if MC.tab[ newer ] is undefined
                 console.log 'write newer from MC.tab'
                 suffix = 'OPEN_'
+
+            # old tab
             else
                 console.log 'read older from MC.tab'
                 console.log MC.tab[ newer ]
@@ -53,7 +60,7 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                     if suffix is 'OLD_' then event_type = suffix + 'STACK' else event_type = 'NEW_STACK'
                 when 'stack'
                     event_type = suffix + 'STACK'
-                when 'app'
+                when 'app', 'appview'
                     event_type = suffix + 'APP'
                 when 'process'
                     event_type = suffix + 'PROCESS'
@@ -61,69 +68,33 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                     console.log 'no find tab type'
 
             console.log 'event_type = ' + event_type
-            #
+
+            # set current tab type
             MC.data.current_tab_type = event_type
-            #
-            this.trigger event_type, newer
-            #intercom
-            #if event_type is 'OPEN_STACK'
-            #    window.intercomSettings.stack_total = window.intercomSettings.stack_total + 1
 
-            ###
-            if MC.tab[ newer ] is undefined
-                console.log 'write newer from MC.tab'
-                #push event
-                if type is 'new'
-                    this.trigger 'NEW_STACK',    newer
-                else if type is 'stack'
-                    this.trigger 'OPEN_STACK',   newer
-                else if type is 'app'
-                    this.trigger 'OPEN_APP',     newer
-                else if type is 'process'
-                    this.trigger 'OPEN_PROCESS', newer
-            else
-                console.log 'read older from MC.tab'
-                console.log MC.tab[ newer ]
-                #push event
-                if type is 'new'
-                    this.trigger 'OLD_STACK',   newer
-                else if type is 'stack'
-                    this.trigger 'OLD_STACK',   newer
-                else if type is 'app'
-                    this.trigger 'OLD_APP',     newer
-                else if type is 'process'
-                    this.trigger 'OLD_PROCESS', newer
-            ###
+            # push event
+            @trigger event_type, newer
 
             console.log MC.tab
 
-        ###
-        delete       : ( newer ) ->
-            console.log 'delete'
-            delete MC.tab[ newer ]
-            console.log MC.tab
-        ###
+            null
 
         getStackInfo : ( stack_id ) ->
             console.log 'getStackInfo'
-            #get this
             me = this
             stack_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'stack_region_name' ), [ stack_id ]
 
         getAppInfo : ( app_id ) ->
             console.log 'getAppInfo'
-            #get this
             me = this
             app_model.info { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), this.get( 'app_region_name' ), [ app_id ]
 
         # return: true|false|null
         checkPlatform : ( region_name ) ->
-            console.log 'checkPlatform'
-            #
-            #if !MC.data.supported_platforms then return null
-            #
+            console.log 'checkPlatform', region_name
+
             support_vpc = null
-            #
+
             _.each MC.data.supported_platforms, ( item ) ->
                 if region_name is item.region
                     if item.classic then support_vpc = true else support_vpc = false

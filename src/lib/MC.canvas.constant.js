@@ -148,10 +148,10 @@ var constant_data = {
 	PORT_LEFT_ANGLE: 180, //left
 	PORT_DOWN_ANGLE: 270, //bottom
 
-	PORT_RIGHT_ROTATE: "", //port rotate
-	PORT_UP_ROTATE: ", rotate(90,0,9)",
-	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
-	PORT_DOWN_ROTATE: ", rotate(270,0,9)",
+	PORT_RIGHT_ROTATE : "", //port rotate
+	PORT_UP_ROTATE    : ", rotate(90,4,5)",
+	PORT_LEFT_ROTATE  : ", rotate(180,4,5.5)",
+	PORT_DOWN_ROTATE  : ", rotate(270,4,5)",
 
 	COLOR_BLUE: '#6DAEFE',
 	COLOR_GREEN: '#12CD4F',

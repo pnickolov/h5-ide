@@ -2,7 +2,7 @@
 #  View Mode for header module
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
+define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( aws_model, ide_event, Backbone, $, _, constant ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -11,11 +11,20 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
             #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
             'flag_list'         : null
 
+            'resource_data'     : null
+
         initialize  : ->
             me = this
 
             # set init flag_list
             me.set 'flag_list', { 'is_pending' : true }
+
+            @on 'AWS_VPC__RESOURCE_RETURN', ( result ) ->
+                console.log 'AWS_VPC__RESOURCE_RETURN', result
+
+                if result and not result.is_error and result.resolved_data
+
+                    me.set 'resource_data', $.extend true, {}, result.resolved_data
 
         getProcess  : (tab_name) ->
             me = this
@@ -89,8 +98,9 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
             null
 
-        getVpcResourceService : ->
-            console.log 'getVpcResourceService'
+        getVpcResourceService : ( region, vpc_id )  ->
+            console.log 'getVpcResourceService', region, vpc_id
+            aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
 
     }
 

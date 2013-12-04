@@ -24,13 +24,14 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
         # Call parent's createNode to do basic creation
         node = @createNode({
-          image  : @iconUrl()
-          imageX : 30
-          imageY : 15
-          imageW : 39
-          imageH : 27
-          label  : @get "name"
-          sg     : true
+          image   : @iconUrl()
+          imageX  : 30
+          imageY  : 15
+          imageW  : 39
+          imageH  : 27
+          label   : @get "name"
+          labelBg : true
+          sg      : true
         })
 
         # Insert Instance's background

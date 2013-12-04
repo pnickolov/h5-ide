@@ -16,7 +16,7 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         node = @createNode( @get("name") )
 
         portX = @width()  * MC.canvas.GRID_WIDTH + 4
-        portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 6
+        portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 5
 
         node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({
           'class'          : 'port port-gray port-subnet-assoc-in'

@@ -81,17 +81,19 @@ define [ "./Design", "./ResourceModel" ], ( Design, ResourceModel )->
         'data-class' : @ctype
       })
 
-      if option.label
+      if option.labelBg
         node.append(
           Canvon.rectangle(2, 76, 86, 13).attr({
             'class' : 'node-label-name-bg'
             'rx'    : 3
             'ry'    : 3
-          }),
+          })
+        )
 
-          Canvon.text( 45, 86, MC.canvasName( option.label ) ).attr({
-            'class' : 'node-label node-label-name'
-            'id'    : @id + '_elb_name'
+      if option.label
+        node.append(
+          Canvon.text( width / 2, height - 4, MC.canvasName( option.label ) ).attr({
+            'class' : 'node-label' + if option.labelBg then ' node-label-name' else ''
           })
         )
 

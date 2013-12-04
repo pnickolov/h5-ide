@@ -87,15 +87,17 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # new stack | open stack | open app
                     if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
-                        if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                        if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
-                            #set MC.canvas_data
-                            model.setCanvasData result.resolved_data[0]
+                            if Tabbar.current isnt 'appview'
+                                #set MC.canvas_data
+                                model.setCanvasData result.resolved_data[0]
 
                         if type is 'OPEN_APP'
 
-                            #get all resource data for app
-                            model.getAppResourcesService region_name, tab_id
+                            if Tabbar.current isnt 'appview'
+                                #get all resource data for app
+                                model.getAppResourcesService region_name, tab_id
 
                         if type is 'OPEN_STACK'
 

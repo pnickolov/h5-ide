@@ -22,7 +22,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
 
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'canvas:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type + ', current_platform = ' + current_platform + ', tab_name = ' + tab_name + ', tab_id = ' + tab_id
+                console.log 'canvas:OPEN_DESIGN', region_name, type, current_platform, tab_name, tab_id
 
                 try
                     #check re-render
@@ -48,6 +48,13 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                             ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
                             return
                         #### added by song, if the stack/app too old, unable to open ###
+
+                        if Tabbar.current is 'appview'
+
+                            # call MC.canvas.xxx parsing tab_id(result)
+
+                            # when OPEN_APP tab_id is result
+                            MC.canvas.analysis tab_id
 
                         MC.canvas.layout.init()
                         model.initLine()

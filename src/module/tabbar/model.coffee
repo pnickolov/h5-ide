@@ -50,6 +50,11 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
                 else
                     suffix = 'OPEN_'
 
+            # appview is old tab
+            else if Tabbar.current is 'appview'
+
+                suffix = 'OLD_'
+
             # new tab
             else if MC.tab[ newer ] is undefined
                 console.log 'write newer from MC.tab'

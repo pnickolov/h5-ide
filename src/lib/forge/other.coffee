@@ -1,4 +1,4 @@
-define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
+define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#############################
 	#  core
@@ -81,10 +81,12 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	#############################
 
 	# cacheIDMap[ tab_id ] =
-	#	type : <appview>
-	#	origin_tab_id : <origin_tab_id>
-	#	region : <region_name>
-	#	data : <vpc_resource result>
+	#	type          : <appview>
+	#	id            : <id>
+	#	origin_id     : <origin_id>
+	#	region        : <region_name>
+	#	data          : <vpc_resource result>
+	#	state         : <'OLD', 'OPEN'>
 
 	cacheIDMap = {}
 
@@ -93,8 +95,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		str    = undefined
 		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
 		length = Math.floor(Math.random() * chars.length)  unless length
-		str = ""
-		i = 0
+		str    = ""
+		i      = 0
 
 		while i < length
 			str += chars[Math.floor(Math.random() * chars.length)]
@@ -102,25 +104,46 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		str
 
-	addCacheMap = ( type, id, origin_tab_id, region ) ->
+	listCacheMap = ->
+		console.log 'listCacheMap'
+		cacheIDMap
+
+	addCacheMap = ( type, id, origin_id, region ) ->
 		console.log 'addCacheMap', type, id, region
-		cacheIDMap[ id ] = { 'type' : type, 'origin_tab_id' : origin_tab_id, 'region' : region }
+		cacheIDMap[ id ] = { 'type' : type, 'id' : id, 'origin_id' : origin_id, 'region' : region }
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id
 		delete cacheIDMap[ id ]
 
-	setCacheMap = ( id, data ) ->
-		console.log 'setCacheMap', id, data
+	setCacheMap = ( id, data, state = 'OPEN' ) ->
+		console.log 'setCacheMap', id, data, state
 
-		if getCacheMap id
-			cacheIDMap[ id ].data = data
-		else
-			null
+		obj = null
+
+		_.each cacheIDMap, ( item ) ->
+			if item.origin_id is id
+				item.data  = $.extend true, {}, data if data
+				item.state = state
+				obj = item
+
+		obj
 
 	getCacheMap = ( id ) ->
 		console.log 'getCacheMap', id
 		cacheIDMap[ id ]
+
+	# conditions = { key : 'xxx', value : 'xxx' }
+	searchCacheMap = ( conditions ) ->
+		console.log 'searchCacheMap', conditions
+
+		obj = null
+
+		_.each cacheIDMap, ( item ) ->
+			if item[ conditions.key ] is conditions.value
+				obj = item
+
+		obj
 
 	processType = ( id ) ->
 		console.log 'processType', id
@@ -153,6 +176,8 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	delCacheMap        : delCacheMap
 	setCacheMap        : setCacheMap
 	getCacheMap        : getCacheMap
+	searchCacheMap     : searchCacheMap
+	listCacheMap       : listCacheMap
 	processType        : processType
 
 	setCurrentTabId    : setCurrentTabId

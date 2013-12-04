@@ -29,7 +29,7 @@ define [ 'event' ], ( ide_event ) ->
                 switch type
                     when 'appview'
                         obj = MC.forge.other.getCacheMap tab_id
-                        model.getVpcResourceService obj.region, obj.origin_tab_id
+                        model.getVpcResourceService obj.region, obj.origin_id, state
                     when 'process'
                         model.getProcess tab_id
 

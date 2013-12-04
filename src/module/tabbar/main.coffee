@@ -269,6 +269,20 @@ define [ 'jquery', 'event', 'base_main',
                 model.set 'app_region_name', region_name
                 openApp tab_id
 
+            # open app view
+            reloadAppViewTab = ( tab_name, region_name, tab_id ) ->
+                console.log 'OPEN_APPVIEW_TAB ' + ' tab_name = ' + tab_name + ', region_name = ' + region_name + ', tab_id = ' + tab_id
+
+                # get obj
+                obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : tab_name }
+
+                console.log obj
+
+                ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, region_name, obj.data, null
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'Running', tab_id
+
+                null
+
             #############################
             #  listen tab
             #############################
@@ -289,6 +303,7 @@ define [ 'jquery', 'event', 'base_main',
 
                     when 'RELOAD_STACK'     then reloadStackTab    tab_id,   region_name
                     when 'RELOAD_APP'       then reloadAppTab      tab_id,   region_name
+                    when 'RELOAD_APPVIEW'   then reloadAppViewTab  tab_name, region_name, tab_id
 
                     # when RELOAD_NEW_STACK tab_name is platform
                     when 'RELOAD_NEW_STACK' then reloadNewStackTab tab_id, region_name, tab_name

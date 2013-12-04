@@ -11,8 +11,6 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
             #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
             'flag_list'         : null
 
-            'resource_data'     : null
-
         initialize  : ->
             me = this
 
@@ -24,7 +22,20 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
 
                 if result and not result.is_error and result.resolved_data
 
-                    me.set 'resource_data', $.extend true, {}, result.resolved_data
+                    # set cacheMap data
+                    obj = MC.forge.other.setCacheMap result.param[4], result.resolved_data
+
+                    if MC.forge.other.isCurrentTab obj.id
+
+                        # reload app view
+                        # @reloadAppView obj
+
+                    else
+
+                        # set state 'OLD'
+                        MC.forge.other.setCacheMap result.param[4], null, 'OLD'
+
+                    null
 
         getProcess  : (tab_name) ->
             me = this
@@ -98,10 +109,43 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
 
             null
 
-        getVpcResourceService : ( region, vpc_id )  ->
-            console.log 'getVpcResourceService', region, vpc_id
-            aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
+        getVpcResourceService : ( region, vpc_id, state )  ->
+            console.log 'getVpcResourceService', region, vpc_id, state
 
+            if state is 'OPEN_PROCESS'
+                aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
+            else if state is 'OLD_PROCESS'
+
+                # get obj
+                obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+
+                if obj
+
+                    # reload app view
+                    # @reloadAppView obj
+
+                else
+
+                    console.log 'not found process'
+
+            null
+
+        reloadAppView : ( obj ) ->
+            console.log 'reloadAppView', obj
+
+            # set state 'OPEN'
+            MC.forge.other.setCacheMap obj.origin_id, null, 'OPEN'
+
+            # set new id
+            appview_id = 'appview-' + obj.id.split('-')[1]
+
+            # update tab
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - app'
+
+            # reload app
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APPVIEW', obj.origin_id, obj.region, appview_id
+
+            null
     }
 
     model = new ProcessModel()

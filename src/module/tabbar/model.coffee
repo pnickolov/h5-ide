@@ -42,7 +42,13 @@ define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_mo
 
             # process include 'process' and 'appview'
             if Tabbar.current is 'process'
-                suffix = 'OPEN_'
+
+                # when MC.forge.other.getCacheMap( newer ).data explain this id is older
+                if MC.forge.other.processType( newer ) is 'appview' and MC.forge.other.getCacheMap( newer ).data
+                    suffix = 'OLD_'
+
+                else
+                    suffix = 'OPEN_'
 
             # new tab
             else if MC.tab[ newer ] is undefined

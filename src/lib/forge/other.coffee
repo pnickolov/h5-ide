@@ -80,6 +80,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	#  cache id
 	#############################
 
+	# cacheIDMap[ tab_id ] = { type : <appview>, data : <vpc_resource result> }
 	cacheIDMap = {}
 
 	createUID = ( length = 8 ) ->
@@ -103,6 +104,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id
 		delete cacheIDMap[ id ]
+
+	setCacheMap = ( id, data ) ->
+		console.log 'setCacheMap', id, data
+
+		if getCacheMap id
+			cacheIDMap[ id ].data = data
+		else
+			null
 
 	getCacheMap = ( id ) ->
 		console.log 'getCacheMap', id
@@ -137,6 +146,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 	createUID          : createUID
 	addCacheMap        : addCacheMap
 	delCacheMap        : delCacheMap
+	setCacheMap        : setCacheMap
 	getCacheMap        : getCacheMap
 	processType        : processType
 

@@ -6,10 +6,10 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
     defaults :
       x        : 0
       y        : 0
-      width    : 17
-      height   : 10
+      width    : 8
+      height   : 8
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
     draw : ( isCreate )->
 
@@ -19,27 +19,26 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
         # Call parent's createNode to do basic creation
         node = @createNode({
-          image   : "ide/icon/cgw-canvas.png"
-          imageX  : 13
-          imageY  : 8
-          imageW  : 151
-          imageH  : 76
+          image   : "ide/icon/igw-canvas.png"
+          imageX  : 10
+          imageY  : 16
+          imageW  : 60
+          imageH  : 46
+          label   : @get("name")
         })
 
         node.append(
           # Port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-cgw-vpn',
-            'class'          : 'port port-purple port-cgw-vpn',
-            'transform'      : 'translate(6, 35)' + MC.canvas.PORT_RIGHT_ROTATE,
-            'data-name'      : 'cgw-vpn',
-            'data-position'  : 'left',
-            'data-type'      : 'vpn',
-            'data-direction' : 'in',
-            'data-angle'     : MC.canvas.PORT_LEFT_ANGLE
-          }),
-
-          Canvon.text(100, 95, MC.canvasName( @get("name") ) ).attr({'class': 'node-label'})
+            'id'             : @id + '_port-igw-tgt'
+            'class'          : 'port port-blue port-igw-tgt'
+            'transform'      : 'translate(77, 23)' + MC.canvas.PORT_LEFT_ROTATE
+            'data-name'      : 'igw-tgt'
+            'data-position'  : 'right'
+            'data-type'      : 'sg'
+            'data-direction' : 'in'
+            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+          })
         )
 
         # Move the node to right place
@@ -48,7 +47,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
     deserialize : ( data, layout_data, resolve )->
 

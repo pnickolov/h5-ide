@@ -15,6 +15,8 @@ define [ './Design',
          './resource/SgModel',
          './resource/SubnetModel',
          './resource/VpcModel',
+         './resource/IgwModel',
+         './resource/VgwModel',
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel )->
 
   window.Design          = Design

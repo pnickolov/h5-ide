@@ -576,6 +576,7 @@
 
               if (!result) {
                 $(this).val($(this).data('pre-value'));
+               $(this).parsley('validate');
               }
             });
 
@@ -1260,10 +1261,13 @@
             this.Validator.messages[ constraintName ][ constraint.requirements ] : ( 'undefined' === typeof this.Validator.messages[ constraintName ] ?
               this.Validator.messages.defaultMessage : this.Validator.formatMesssage( this.Validator.messages[ constraintName ], constraint.requirements ) ) );
 
+
       // add liError if not shown. Do not add more than once custom errorMessage if exist
       if ( !$( this.ulError + ' .' + liClass ).length ) {
         liError[ liClass ] = message;
         this.addError( liError );
+      } else if ( liClass === 'custom' ) {
+        $( this.ulError + ' .' + liClass ).text( message );
       }
     }
 
@@ -1831,8 +1835,16 @@ var errortip = function (event)
   {
     id = content.attr('id');
     tipId = 'errortip-' + id;
+    originTip = $('#' + tipId);
 
-    if ( $('#' + tipId).length ) return;
+    if ( originTip.length ) {
+      // if error message is changed, update the errortip and display it.
+      if ( originTip.html() != content.html() ) {
+        originTip.html( content.html() )
+        originTip.show();
+      }
+      return;
+    }
 
     errortip_box = content.clone();
     errortip_box

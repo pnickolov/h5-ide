@@ -81,6 +81,8 @@ define [ "constant" ], ( constant ) ->
 
   DesignImpl = ( options )->
     @__componentMap = {}
+    @__canvasNodes  = {}
+    @__canvasGroups = {}
     @__classCache   = {}
     @__type         = options.type
     @__mode         = options.mode
@@ -116,8 +118,17 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.cacheComponent = ( id, comp )->
     if not comp
       delete @__componentMap[ id ]
+      delete @__canvasGroups[ id ]
+      delete @__canvasNodes[ id ]
     else
       @__componentMap[ id ] = comp
+
+      # Cache them into another cache if they are visual objects
+      if _.isFunction comp.draw
+        if comp.get("group")
+          @__canvasGroups[ id ] = comp
+        else
+          @__canvasNodes[ id ] = comp
     null
   ### Private Interface End ###
 
@@ -147,6 +158,8 @@ define [ "constant" ], ( constant ) ->
 
   DesignImpl.prototype.getComponent = ( uid )-> @__componentMap[ uid ]
 
+  DesignImpl.prototype.getCanvasNodes  = ()-> _.extend {},  @__canvasNodes
+  DesignImpl.prototype.getCanvasGroups = ()-> _.extend {},  @__canvasGroups
 
   DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
     AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )

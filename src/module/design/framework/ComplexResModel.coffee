@@ -14,6 +14,7 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
 
     draw : ( isNewlyCreated : Boolean ) ->
         description : if the user defines this method, it will be called after object is created. And the framework might call this method at an approprieate time.
+        If the method is defined, it means it's a visual resource
 
   ###
 

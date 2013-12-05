@@ -45,6 +45,9 @@ define [ "./Design" ], ( Design )->
         translateVal.setTranslate(x, y)
         transformVal.appendItem(translateVal)
 
+    drawLine : ()->
+      null
+
     updateSGLabel : ( uid, sgLabelGroup )->
       # TODO : Change this function to use the framework
 

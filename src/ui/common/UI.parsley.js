@@ -619,7 +619,7 @@
 
           vlidateType = this.options.type;
 
-          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^[0-9a-zA-Z]+[0-9a-zA-Z-]*$';
 
           var wholeReg = this.options.regexp;
           // delay handler function

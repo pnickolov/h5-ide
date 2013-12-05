@@ -113,13 +113,13 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	cacheIDMap = {}
 
-	createUID = ( length = 8 ) ->
+	createUID  = ( length = 8 ) ->
 		chars  = undefined
-		str	= undefined
+		str    = undefined
 		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
 		length = Math.floor(Math.random() * chars.length)  unless length
-		str	= ""
-		i	  = 0
+		str    = ""
+		i      = 0
 
 		while i < length
 			str += chars[Math.floor(Math.random() * chars.length)]
@@ -137,7 +137,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id
+
+		# if appview replace process
+		if id.split('-')[0] is 'appview'
+			id = id.replace 'appview', 'process'
+
 		delete cacheIDMap[ id ]
+
+		cacheIDMap
 
 	setCacheMap = ( id, data, state = 'OPEN' ) ->
 		console.log 'setCacheMap', id, data, state
@@ -184,23 +191,23 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			return undefined
 
 	#public
-	isCurrentTab	   : isCurrentTab
+	isCurrentTab       : isCurrentTab
 
 	searchStackAppById : searchStackAppById
 
-	addProcess		 : addProcess
-	getProcess		 : getProcess
-	deleteProcess	  : deleteProcess
-	filterProcess	  : filterProcess
-	initDataProcess	: initDataProcess
+	addProcess         : addProcess
+	getProcess         : getProcess
+	deleteProcess      : deleteProcess
+	filterProcess      : filterProcess
+	initDataProcess    : initDataProcess
 
-	createUID		  : createUID
-	addCacheMap		: addCacheMap
-	delCacheMap		: delCacheMap
-	setCacheMap		: setCacheMap
-	getCacheMap		: getCacheMap
-	searchCacheMap	 : searchCacheMap
-	listCacheMap	   : listCacheMap
-	processType		: processType
+	createUID          : createUID
+	addCacheMap        : addCacheMap
+	delCacheMap        : delCacheMap
+	setCacheMap        : setCacheMap
+	getCacheMap        : getCacheMap
+	searchCacheMap     : searchCacheMap
+	listCacheMap       : listCacheMap
+	processType        : processType
 
-	setCurrentTabId	: setCurrentTabId
+	setCurrentTabId	   : setCurrentTabId

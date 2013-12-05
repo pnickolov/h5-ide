@@ -1238,7 +1238,7 @@ MC.canvas = {
 					MC.paper.start();
 
 					MC.paper.path(path);
-					MC.paper.path(path).attr('class','fill-line');
+					//MC.paper.path(path).attr('class','fill-line');
 
 					if (connection_option.dash_line === true)
 					{
@@ -5820,7 +5820,705 @@ MC.canvas.event.keyEvent = function (event)
 
 MC.canvas.analysis = function ( data )
 {
+	var resources = {},
+		layout = {};
 
+	var component_data = data.component,
+		layout_data = data.layout;
+
+	$.each(data.layout.component.node, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	$.each(data.layout.component.group, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	var resource_stack = {};
+
+	$.each(resources, function (key, value)
+	{
+		stack = resource_stack[ value.type.replace(/\./ig, '-') ];
+
+		if (stack === undefined)
+		{
+			resource_stack[ value.type.replace(/\./ig, '-') ] = [];
+		}
+
+		resource_stack[ value.type.replace(/\./ig, '-') ].push(key);
+	});
+
+	// ELB connected children
+	var elb_child_stack = [],
+		elb_connection;
+
+	if (resource_stack[ 'AWS-ELB' ] !== undefined)
+	{
+		$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
+		{
+			elb_connection = layout_data.component.node[ id ].connection;
+
+			$.each(elb_connection, function (i, item)
+			{
+				if (item.port === 'elb-sg-out')
+				{
+					elb_child_stack.push( item.target );
+				}
+			});
+		});
+	}
+
+	// Initialize group construction
+	var layout = {};
+
+	var SUBGROUP = {
+		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
+		'AWS.VPC.Subnet': [
+			'AWS.EC2.Instance',
+			'AWS.AutoScaling.Group',
+			'AWS.VPC.NetworkInterface'
+		],
+		'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
+	};
+
+	var GROUP_DEFAULT_SIZE = {
+		'AWS.VPC.VPC': [60, 60],
+		'AWS.EC2.AvailabilityZone': [17, 17],
+		'AWS.VPC.Subnet': [15, 15],
+		'AWS.AutoScaling.Group' : [13, 13]
+	};
+
+	layout = {
+		'id': resource_stack[ 'AWS-VPC-VPC' ][0],
+		'coordinate': [5, 3],
+		'size': [0, 0],
+		'type': 'AWS.VPC.VPC'
+	};
+
+	function searchChild(id)
+	{
+		var children = [],
+			target_group = SUBGROUP[ resources[ id ].type ],
+			node_data,
+			node_child;
+
+		$.each(resources, function (key, value)
+		{
+			if (
+				$.inArray(resources[ key ].type, target_group) > -1 &&
+				value.groupUId === id
+			)
+			{
+				node_child = searchChild(key);
+
+				node_data = {
+					'id': key,
+					'coordinate': [0, 0],
+					'size': [0, 0],
+					'type': value.type
+				};
+
+				if (MC.canvas.COMPONENT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = MC.canvas.COMPONENT_SIZE[ value.type ];
+				}
+
+				if (GROUP_DEFAULT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = GROUP_DEFAULT_SIZE[ value.type ];
+				}
+
+				if (node_child)
+				{
+					node_data[ 'children' ] = node_child;
+				}
+
+				children.push(node_data);
+			}
+		});
+
+		return children.length < 1 ? false : children;
+	}
+
+	node_child = searchChild( resource_stack[ 'AWS-VPC-VPC' ][0] );
+
+	if (node_child)
+	{
+		layout[ 'children' ] = node_child;
+	}
+
+	function checkChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			var count = 0;
+
+			$.each(node.children, function (i, item)
+			{
+				count += checkChild(item);
+			});
+
+			node[ 'totalChild' ] = count + node.children.length;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node['hasELBConnected'] = false;
+
+				$.each(node.children, function (i, item)
+				{
+					if ($.inArray(item.id, elb_child_stack) > -1)
+					{
+						node['hasELBConnected'] = true;
+					}
+
+					if (item.type === 'AWS.AutoScaling.Group')
+					{
+						if (
+							item.children !== undefined &&
+							$.inArray(item.children[ 0 ].id, elb_child_stack) > -1
+						)
+						{
+							node['hasELBConnected'] = true;
+						}
+					}
+				});
+			}
+
+			return node.children.length;
+		}
+		else
+		{
+			node[ 'totalChild' ] = 0;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node['hasELBConnected'] = false;
+			}
+
+			return 0;
+		}
+	}
+
+	checkChild( layout );
+
+	function sortChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			if (node.type === 'AWS.EC2.AvailabilityZone')
+			{
+				node.children.sort(function (a, b)
+				{
+					if (
+						(
+							a.hasELBConnected === true &&
+							b.hasELBConnected === true
+						)
+						||
+						(
+							a.hasELBConnected === false &&
+							b.hasELBConnected === false
+						)
+					)
+					{
+						return b.totalChild - a.totalChild;
+					}
+					else
+					{
+						if (a.hasELBConnected === true && b.hasELBConnected === false)
+						{
+							return -1;
+						}
+
+						if (a.hasELBConnected === false && b.hasELBConnected === true)
+						{
+							return 1;
+						}
+					}
+				});
+			}
+			else
+			{
+				node.children.sort(function (a, b)
+				{
+					return b.totalChild - a.totalChild;
+				});
+			}
+
+			$.each(node.children, function (i, item)
+			{
+				sortChild( item );
+			});
+		}
+	}
+
+	sortChild( layout );
+
+	function absPosition(node, x, y)
+	{
+		node.coordinate[0] += x;
+		node.coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, node.coordinate[0], node.coordinate[1]);
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	// For childeren node order
+	var POSITION_METHOD = {
+		'AWS.VPC.VPC': 'vertical',
+		'AWS.EC2.AvailabilityZone': 'horizontal',
+		'AWS.VPC.Subnet': 'matrix',
+		'AWS.AutoScaling.Group': 'center'
+	};
+
+	var GROUP_MARGIN = 2,
+		previous_node;
+
+	function positionSubnetChild(node)
+	{
+		var GROUP_INNER_PADDING = 2;
+
+		var children = node.children;
+
+		var length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0;
+
+		var NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2;
+
+		var max_column = Math.ceil( Math.sqrt( length ) ),
+			max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
+			column_index = 0,
+			row_index = 0;
+
+		var SORT_ORDER = {
+			'AWS.AutoScaling.Group': 1,
+			'AWS.EC2.Instance': 2,
+			'AWS.VPC.NetworkInterface': 3
+		};
+
+		children.sort(function (a, b)
+		{
+			return SORT_ORDER[ a.type ] - SORT_ORDER[ b.type ];
+		});
+
+		var stack = {};
+
+		$.each(children, function (current_index, item)
+		{
+			if (stack[ item.type ] === undefined)
+			{
+				stack[ item.type ] = [];
+			}
+
+			stack[ item.type ].push( item );
+		});
+
+		if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
+		{
+			var childLength = stack[ 'AWS.AutoScaling.Group' ].length;
+
+			var row_index = 0;
+
+			$.each(stack[ 'AWS.AutoScaling.Group' ], function (i, item)
+			{
+				item.coordinate = [
+					GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				row_index++;
+			});
+		}
+
+		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+		{
+			var childLength = stack[ 'AWS.EC2.Instance' ].length;
+
+			var max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				column_index = 0,
+				row_index = 0;
+
+			$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			var childLength = stack[ 'AWS.VPC.NetworkInterface' ].length;
+
+			var max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				column_index = 0,
+				row_index = 0;
+
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+		}
+
+		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+		{
+			var offset_left = 0;
+
+			if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
+			{
+				offset_left += 13 + NODE_MARGIN_LEFT;
+			}
+
+			$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+			{
+				item.coordinate[0] += offset_left;
+			});
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			var offset_left = 0;
+
+			if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
+			{
+				offset_left += 13 + NODE_MARGIN_LEFT + 4;
+			}
+
+			if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+			{
+				offset_left += Math.ceil( Math.sqrt( stack[ 'AWS.EC2.Instance' ].length ) ) * 9;
+			}
+
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				item.coordinate[0] += offset_left;
+			});
+		}
+
+
+		var max_width = 0,
+			max_height = 0,
+			item_coordinate;
+
+		$.each(children, function (i, item)
+		{
+			item_coordinate = item.coordinate;
+
+			if (item_coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0] > max_width)
+			{
+				max_width = item_coordinate[0] + MC.canvas.COMPONENT_SIZE[ item.type ][0];
+			}
+
+			if (item_coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1] > max_height)
+			{
+				max_height = item_coordinate[1] + MC.canvas.COMPONENT_SIZE[ item.type ][1];
+			}
+		});
+
+		node.size = [
+			max_width + GROUP_INNER_PADDING,
+			max_height + GROUP_INNER_PADDING
+		];
+	}
+
+
+	function positionChild(node)
+	{
+		var children = node.children;
+
+		var GROUP_INNER_PADDING = 2;
+
+		var GROUP_MARGIN = 2;
+
+		var length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0;
+
+		var NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2;
+
+		if (node.type === 'AWS.EC2.AvailabilityZone')
+		{
+			GROUP_MARGIN = 4;
+		}
+
+		if (method === 'matrix')
+		{
+			positionSubnetChild(node);
+		}
+
+		if (method === 'vertical')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					0 + GROUP_INNER_PADDING,
+					current_index + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[0] > max_width)
+				{
+					max_width = item.size[0];
+				}
+
+				max_height += item.size[1];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						0 + GROUP_INNER_PADDING,
+						previous_node.size[1] + previous_node.coordinate[1] + GROUP_MARGIN
+					];
+
+					max_height += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_MARGIN * (length - 1)) + GROUP_INNER_PADDING
+			];
+		}
+
+		if (method === 'horizontal')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					current_index + GROUP_INNER_PADDING,
+					0 + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[1] > max_height)
+				{
+					max_height = item.size[1];
+				}
+
+				max_width += item.size[0];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						previous_node.size[0] + previous_node.coordinate[0] + GROUP_MARGIN,
+						0 + GROUP_INNER_PADDING
+					];
+
+					max_width += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width - (GROUP_MARGIN * (length - 1)) + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_INNER_PADDING * 2)
+			];
+		}
+
+		if (method === 'center')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [2, 2];
+			});
+
+			node.size = [13, 13];
+		}
+	}
+
+	positionChild( layout );
+
+	// VPC padding
+	var VPC_PADDING_LEFT = 20,
+		VPC_PADDING_TOP = 10,
+		VPC_PADDING_RIGHT = 8,
+		VPC_PADDING_BOTTOM = 5;
+
+	$.each(layout.children, function (i, item)
+	{
+		item.coordinate[0] += VPC_PADDING_LEFT;
+		item.coordinate[1] += VPC_PADDING_TOP;
+	});
+
+	layout.size[0] += VPC_PADDING_LEFT + VPC_PADDING_RIGHT;
+	layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
+
+	// ELB
+	var ELB_START_LEFT = 14,
+		ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
+
+	if (resource_stack[ 'AWS-ELB' ] !== undefined)
+	{
+		resource_stack[ 'AWS-ELB' ].sort(function (a, b)
+		{
+			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+		});
+
+		$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
+		{
+			resources[ id ].coordinate = [
+				ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+				layout.size[1] / 2
+			];
+		});
+	}
+
+	// IGW & VGW
+	if (resource_stack[ 'AWS-VPC-InternetGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	if (resource_stack[ 'AWS-VPC-VPNGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] + layout.size[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	// CGW
+	if (resource_stack[ 'AWS-VPC-CustomerGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] + layout.size[0] + 8,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	// RouteTable
+	if (resource_stack[ 'AWS-VPC-RouteTable' ] !== undefined)
+	{
+		var ROUTE_TABLE_START_LEFT = 15,
+			ROUTE_TABLE_START_TOP = 5,
+			ROUTE_TABLE_MARGIN = 4,
+			ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'];
+
+		resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
+		{
+			return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+		});
+
+		if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
+		{
+			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
+					ROUTE_TABLE_START_TOP
+				];
+			});
+		}
+	}
+
+	// Add AZ margin for ELB
+	if (
+		layout.children !== undefined &&
+		layout.children.length > 1 &&
+		resource_stack[ 'AWS-ELB' ] !== undefined &&
+		resource_stack[ 'AWS-ELB' ].length > 1
+	)
+	{
+		var i = 1,
+			l = layout.children.length;
+
+		for ( ; i < l ; i++ )
+		{
+			layout.children[ i ].coordinate[ 1 ] += 15;
+		}
+
+		layout.size[ 1 ] += 10;
+	}
+
+	function absPosition(node, x, y)
+	{
+		node.coordinate[0] += x;
+		node.coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, node.coordinate[0], node.coordinate[1]);
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	function updateLayoutData(node)
+	{
+		resources[ node.id ].coordinate = node.coordinate;
+
+		if (resources[ node.id ].size !== undefined)
+		{
+			resources[ node.id ].size = node.size;
+		}
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				updateLayoutData( item );
+			});
+		}
+	}
+
+	updateLayoutData( layout );
 };
 
 MC.canvas.exportPNG = function ( $svg_canvas_element, data )

@@ -2,6 +2,24 @@
 
   var Util = {
 
+    runOnceInSametime: function( func, context ) {
+      var runs = 0;
+      return function() {
+        runs ++;
+        console.log(runs);
+        context = context || this;
+        var args = arguments;
+        setTimeout( function() {
+          runs --;
+          if ( runs > 0 ) {
+            return;
+          }
+          func.apply( context, args );
+        }, 50);
+
+      }
+    },
+
     getCaretPosition: function( oField ) {
       // Initialize
       var iCaretPos = 0;
@@ -640,14 +658,16 @@
 
 
           // Handle keydown
-          this.$element.on( 'keydown', function( e ) {
+          var keydownHandler = Util.runOnceInSametime( function(e) {
             var origin = $( this ).val();
             $(this).one( 'keyup blur', delayHandler( origin, this, 1 ) );
           });
 
-          // Handle keypress( main )
 
-          this.$element.on( 'keypress', function( e ) {
+          this.$element.on( 'keydown', keydownHandler);
+
+          // Handle keypress( main )
+          var keypressHandler = function(e) {
             var inputChar, isLegal;
             // control key green light
             if (e.which in controlCodeList) return true;
@@ -661,10 +681,9 @@
             isLegal = new RegExp( regExp, "i" ).test(newValue);
 
             if ( !isLegal ) return false;
+          };
 
-          });
-
-
+          this.$element.on( 'keypress', keypressHandler);
 
         }
 

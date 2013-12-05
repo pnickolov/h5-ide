@@ -502,6 +502,8 @@
 
 					var GROUP_INNER_PADDING = 2;
 
+					var GROUP_MARGIN = 2;
+
 					var length = children.length,
 						method = POSITION_METHOD[ node.type ],
 						max_width = 0,
@@ -509,6 +511,11 @@
 
 					var NODE_MARGIN_LEFT = 2,
 						NODE_MARGIN_TOP = 2;
+
+					if (node.type === 'AWS.EC2.AvailabilityZone')
+					{
+						GROUP_MARGIN = 4;
+					}
 
 					if (method === 'matrix')
 					{
@@ -622,16 +629,21 @@
 				layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
 
 				// ELB
-				var ELB_START_LEFT = 10,
+				var ELB_START_LEFT = 14,
 					ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
 
 				if (resource_stack[ 'AWS-ELB' ] !== undefined)
 				{
+					resource_stack[ 'AWS-ELB' ].sort(function (a, b)
+					{
+						return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+					});
+
 					$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
 					{
 						resources[ id ].coordinate = [
-							ELB_START_LEFT,
-							layout.coordinate[1] + (current_index * 10) + (layout.size[1] / 2) - 4
+							ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+							layout.size[1] / 2
 						];
 					});
 				}
@@ -685,6 +697,23 @@
 							];
 						});
 					}
+				}
+
+				// Add AZ margin for ELB
+				if (
+					layout.children !== undefined &&
+					layout.children.length > 1
+				)
+				{
+					var i = 1,
+						l = layout.children.length;
+
+					for ( ; i < l ; i++ )
+					{
+						layout.children[ i ].coordinate[ 1 ] += 15;
+					}
+
+					layout.size[ 1 ] += 10;
 				}
 
 				function absPosition(node, x, y)

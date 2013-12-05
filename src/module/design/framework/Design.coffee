@@ -15,7 +15,7 @@ define [ "constant" ], ( constant ) ->
 
     ++ Object Method ++
 
-    # getComponent( uid ) : ResourceModel
+    # component( uid ) : ResourceModel
         description : returns a resource model of uid
 
     # getAZ( azName ) : AzModel
@@ -50,7 +50,7 @@ define [ "constant" ], ( constant ) ->
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
 
-      obj = design_instance.getComponent( uid )
+      obj = design_instance.component( uid )
       if obj
         return obj
 
@@ -68,7 +68,7 @@ define [ "constant" ], ( constant ) ->
 
       ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
 
-      design_instance.getComponent( uid )
+      design_instance.component( uid )
 
 
     for uid, comp of json_data
@@ -156,7 +156,7 @@ define [ "constant" ], ( constant ) ->
     window.DesignInst = design_instance = @
     @
 
-  DesignImpl.prototype.getComponent = ( uid )-> @__componentMap[ uid ]
+  DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
   # These two api are intent to be used by MC.canvas.js
   # And may be deprecated in the future

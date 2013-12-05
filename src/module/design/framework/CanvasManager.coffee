@@ -6,7 +6,7 @@ define [ "./Design" ], ( Design )->
     move : ( compUid, x, y ) ->
 
       design = Design.instance()
-      component = design.getComponent compUid
+      component = design.component compUid
 
       component.set "x", x
       component.set "y", y
@@ -17,7 +17,7 @@ define [ "./Design" ], ( Design )->
     resize : ( compUid, w, h ) ->
 
       design = Design.instance()
-      component = design.getComponent compUid
+      component = design.component compUid
 
       component.set "width", w
       component.set "height", h

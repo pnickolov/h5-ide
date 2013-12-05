@@ -17,8 +17,8 @@ define [ 'event',
 
         initialize : ->
 
-            # is empty
-            Handlebars.registerHelper 'is_empty', ( value, options ) ->
+            # is no unmanaged
+            Handlebars.registerHelper 'is_unmanaged', ( value, options ) ->
 
                 # is object
                 if _.isObject value

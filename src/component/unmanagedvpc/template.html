@@ -12,9 +12,9 @@
 			<div class="loading-spinner"></div>
 			{{/unless}}
 
-			{{#is_empty resource_list }}
+			{{#is_unmanaged resource_list }}
 			<div>There is no unmanaged VPC to visualse.</div>
-			{{/is_empty }}
+			{{/is_unmanaged }}
 
 			<ul id="unmanaged-VPC-region-list">
 				{{#each resource_list }}

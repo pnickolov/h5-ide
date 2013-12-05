@@ -6,7 +6,6 @@
       var runs = 0;
       return function() {
         runs ++;
-        console.log(runs);
         context = context || this;
         var args = arguments;
         setTimeout( function() {

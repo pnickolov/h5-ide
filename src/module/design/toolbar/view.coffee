@@ -6,14 +6,16 @@ define [ 'MC', 'event',
          'i18n!nls/lang.js',
          'text!./stack_template.html',
          'text!./app_template.html',
+         'text!./appview_template.html',
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, lang, stack_tmpl, app_tmpl, constant ) ->
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, appview_tmpl, constant ) ->
 
-    stack_tmpl = Handlebars.compile stack_tmpl
-    app_tmpl   = Handlebars.compile app_tmpl
+    stack_tmpl   = Handlebars.compile stack_tmpl
+    app_tmpl     = Handlebars.compile app_tmpl
+    appview_tmpl = Handlebars.compile appview_tmpl
 
     ToolbarView = Backbone.View.extend {
 
@@ -86,13 +88,15 @@ define [ 'MC', 'event',
 
             this.model.attributes.lines = lines
 
-            #
-            if type is 'app'
+            # appview
+            if Tabbar.current is 'appview'
+                $( '#main-toolbar' ).html appview_tmpl this.model.attributes
+
+            # type include 'app' | 'stack'
+            else if type is 'app'
                 $( '#main-toolbar' ).html app_tmpl this.model.attributes
             else
                 $( '#main-toolbar' ).html stack_tmpl this.model.attributes
-
-
 
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE

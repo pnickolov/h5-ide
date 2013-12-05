@@ -86,6 +86,16 @@ define [ "./Design", "backbone" ], ( Design )->
       this.trigger "REMOVED"
       null
 
+    isTypeof : ( type )->
+      c = this
+      while c
+        if c.ctype is type
+          return true
+        c = c.constructor.__super__
+
+      return false
+
+
     serialize : ()->
       console.error "Class '#{@ctype}' doesn't implement serialize"
       null

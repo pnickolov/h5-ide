@@ -129,6 +129,9 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
+  DesignImpl.prototype.setMode = (m)->
+    this.__mode = m
+    null
 
   DesignImpl.prototype.type             = ()-> this.__type
   DesignImpl.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
@@ -136,18 +139,16 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
 
 
-  DesignImpl.prototype.shouldDraw = ()->
-    true
+  DesignImpl.prototype.shouldDraw = ()-> true
 
   DesignImpl.prototype.use = ()->
     design_instance = @
     @
 
-  DesignImpl.prototype.getComponent = ( uid )->
-    @__componentMap[ uid ]
+  DesignImpl.prototype.getComponent = ( uid )-> @__componentMap[ uid ]
 
 
-  DesignImpl.prototype.getAZ = ( azName )->
+  DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
     AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
 
     allAzs = AzModel.allObjects()
@@ -168,15 +169,51 @@ define [ "constant" ], ( constant ) ->
             height : layout.size[1]
 
     if not attr
-      attr = { name : azName }
+      attr = {
+        name   : azName
+        x      : x
+        y      : y
+        width  : width
+        height : height
+      }
 
     new AzModel( attr )
 
   DesignImpl.prototype.serialize = ()->
 
+    json_data   = {}
+
+    connections = []
+    mockArray   = []
+
+    # ResourceModel can only add json component.
+    for uid, comp of @__componentMap
+      if comp.isConnection and comp.isConnection()
+        connections.push comp
+        continue
+
+      json = comp.serialize()
+      if not json
+        continue
+
+      # Make json to be an array
+      if not _.isArray( json )
+        mockArray[0] = json
+        json = mockArray
+
+      for j in json
+        console.assert( j.uid, "Serialized JSON data has no uid." )
+        console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
+        json_data[ j.uid ] = j
+
+    # Connection
+    for c in connections
+      c.serialize( json_data )
+
+    json_data
+
 
   DesignImpl.prototype.serializeLayout = ()->
-
 
   DesignImpl.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
 

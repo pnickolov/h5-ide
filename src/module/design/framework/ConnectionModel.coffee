@@ -25,6 +25,9 @@ define [ "./ResourceModel" ], ( ResourceModel )->
 
   ConnectionModel = ResourceModel.extend {
 
+    isConnection : ()->
+      true
+
     ctype : "Framework_CN"
 
     constructor : ( p1Comp, p1Name, p2Comp, p2Name ) ->

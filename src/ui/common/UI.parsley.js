@@ -623,23 +623,25 @@
 
           var wholeReg = this.options.regexp;
           // delay handler function
-          var delayHandler = function(origin, context, times) {
+          var delayHandlerFactory = function(origin, context, times) {
+            var getResult = function(val) {
+              return that.Validator.validators[ 'regexp' ]( val, regExp, that );
+            }
 
             return function( e ) {
                 // run specify times
                 if ( (times -= 1) < 0 ) {
                   return;
                 }
-                var getResult = function(val) {
-                  return that.Validator.validators[ 'regexp' ]( val, regExp, that );
+                var value = $( context ).val();
+                if ( value === '' ) {
+                  return;
                 }
 
-                var result = getResult($( context ).val());
+                var result = getResult( value );
 
                 if ( !result ) {
-                  if ( getResult( origin ) ) {
-                    $( context ).val( origin );
-                  }
+                  $( context ).val( origin );
                 }
               }
 
@@ -653,15 +655,17 @@
           // Handle drag
           this.$element.on('dragenter', function( e ) {
             var origin = $( this ).val();
-            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler( origin, this, 1 ) );
+            var delayHandler = delayHandlerFactory( origin, this, 1 )
+            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler );
           });
 
 
           // Handle keydown
-          var keydownHandler = Util.runOnceInSametime( function(e) {
+          var keydownHandler = function(e) {
             var origin = $( this ).val();
-            $(this).one( 'keyup blur', delayHandler( origin, this, 1 ) );
-          });
+            var delayHandler = Util.runOnceInSametime( delayHandlerFactory( origin, this, 1 ) );
+            $(this).one( 'keyup blur', delayHandler );
+          };
 
 
           this.$element.on( 'keydown', keydownHandler);

@@ -3,14 +3,15 @@ define [ './Design',
          './ComplexResModel',
          './GroupModel',
          './ConnectionModel',
+         './connection/EniAttachment',
+         './resource/InstanceModel',
+         './resource/EniModel',
          './resource/AclModel',
          './resource/AsgModel',
          './resource/AzModel',
          './resource/AzModel',
          './resource/CgwModel',
          './resource/ElbModel',
-         './resource/EniModel',
-         './resource/InstanceModel',
          './resource/LcModel',
          './resource/KeypairModel',
          './resource/RtbModel',
@@ -19,7 +20,7 @@ define [ './Design',
          './resource/VpcModel',
          './resource/IgwModel',
          './resource/VgwModel',
-], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel )->
+], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, InstanceModel, EniModel )->
 
   window.Design          = Design
   window.ResourceModel   = ResourceModel
@@ -39,6 +40,16 @@ define [ './Design',
   # Design.instance().getAZ("east-4")
 
   # console.log AzModel.allObjects()
+
+  # new Design( {}, { component : { group : {}, node : {} } }, {} )
+
+  # instance = new InstanceModel()
+  # eni      = new EniModel()
+  # attach   = new EniAttachment( eni, instance )
+
+  window.InstanceModel = InstanceModel
+  window.EniModel      = EniModel
+  window.EniAttachment = EniAttachment
 
   null
 

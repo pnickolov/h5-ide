@@ -16,9 +16,9 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
 
     for i in configSet
 
-      if key is "domain-name"
+      if i.Key is "domain-name"
         config.domainName = i.ValueSet[0].Value
-      else if key is "netbios-node-type"
+      else if i.Key is "netbios-node-type"
         config.netbiosType = i.ValueSet[0].Value
       else
 

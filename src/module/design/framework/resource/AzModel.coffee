@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "constant" ], ( GroupModel, constant )->
+define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, CanvasManager, constant )->
 
   # AzModel doesn't have deserialize() method, because it doesn't
 
@@ -22,6 +22,8 @@ define [ "../GroupModel", "constant" ], ( GroupModel, constant )->
         # Move the group to right place
         CanvasManager.position node, @x(), @y()
 
+  }, {
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
   }
 
   Model

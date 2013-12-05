@@ -165,7 +165,7 @@ define [ "constant" ], ( constant ) ->
             name   : azName
             x      : layout.coordinate[0]
             y      : layout.coordinate[1]
-            width  : layout.size[1]
+            width  : layout.size[0]
             height : layout.size[1]
 
     if not attr

@@ -1,5 +1,5 @@
 
-define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupModel, CanvasManager )->
+define [ "constant", "../Design", "../GroupModel", "../CanvasManager" ], ( constant, Design, GroupModel, CanvasManager )->
 
   Model = GroupModel.extend {
 
@@ -51,7 +51,9 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
     deserialize : ( data, layout_data )->
 
-      new Model({
+      az = Design.instance().getAZ( data.resource.AvailabilityZone )
+
+      subnet = new Model({
 
         id   : data.uid
         name : data.name
@@ -61,6 +63,8 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         width  : layout_data.size[0]
         height : layout_data.size[1]
       })
+
+      az.addChild( subnet )
 
       null
   }

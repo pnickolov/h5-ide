@@ -18,18 +18,41 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		MC.data.current_tab_id = tab_id
 		null
 
-	# get stack app by
+	# get new stack app appview by id
 	searchStackAppById = ( id ) ->
+		console.log 'searchStackAppById', id
 
 		value = null
 
 		try
 
-			temp  = if id.split('-')[0] is 'stack' then MC.data.nav_stack_list else MC.data.nav_app_list
-			_.each temp, ( obj ) ->
-				_.each obj.region_name_group, ( item ) ->
-					value = item if item.id is id
-					return true
+			prefix = id.split('-')[0]
+
+			# id is 'appview'
+			if prefix is 'appview'
+
+				# get obj
+				obj   = searchCacheMap { key : 'id', value : id.replace( 'appview', 'process' ) }
+
+				# set region
+				value = obj
+
+			# id is 'new'
+			else if prefix is 'new'
+
+				value = MC.data.nav_new_stack_list[ id ]
+
+			# id is 'stack' | 'app'
+			else if prefix in [ 'stack', 'app' ]
+
+				temp  = if id.split('-')[0] is 'stack' then MC.data.nav_stack_list else MC.data.nav_app_list
+				_.each temp, ( obj ) ->
+					_.each obj.region_name_group, ( item ) ->
+						value = item if item.id is id
+						return true
+
+			else
+				console.error 'unknown tab type ' + tab_id
 
 		catch error
 			console.log 'searchStackAppById error, id is ' + id
@@ -70,8 +93,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	initDataProcess = ( id, type, data ) ->
 		console.log 'initDataProcess', id, type, data
-		MC.data.process             = {}
-		MC.data.process             = $.extend true, {}, data
+		MC.data.process			 = {}
+		MC.data.process			 = $.extend true, {}, data
 		MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
 		console.log 'current MC.data.process', MC.data.process
 		null
@@ -81,22 +104,22 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#############################
 
 	# cacheIDMap[ tab_id ] =
-	#	type          : <appview>
-	#	id            : <id>
-	#	origin_id     : <origin_id>
-	#	region        : <region_name>
-	#	data          : <vpc_resource result>
-	#	state         : <'OLD', 'OPEN'>
+	#	type		  : <appview>
+	#	id			: <id>
+	#	origin_id	 : <origin_id>
+	#	region		: <region_name>
+	#	data		  : <vpc_resource result>
+	#	state		 : <'OLD', 'OPEN'>
 
 	cacheIDMap = {}
 
 	createUID = ( length = 8 ) ->
 		chars  = undefined
-		str    = undefined
+		str	= undefined
 		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
 		length = Math.floor(Math.random() * chars.length)  unless length
-		str    = ""
-		i      = 0
+		str	= ""
+		i	  = 0
 
 		while i < length
 			str += chars[Math.floor(Math.random() * chars.length)]
@@ -161,23 +184,23 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			return undefined
 
 	#public
-	isCurrentTab       : isCurrentTab
+	isCurrentTab	   : isCurrentTab
 
 	searchStackAppById : searchStackAppById
 
-	addProcess         : addProcess
-	getProcess         : getProcess
-	deleteProcess      : deleteProcess
-	filterProcess      : filterProcess
-	initDataProcess    : initDataProcess
+	addProcess		 : addProcess
+	getProcess		 : getProcess
+	deleteProcess	  : deleteProcess
+	filterProcess	  : filterProcess
+	initDataProcess	: initDataProcess
 
-	createUID          : createUID
-	addCacheMap        : addCacheMap
-	delCacheMap        : delCacheMap
-	setCacheMap        : setCacheMap
-	getCacheMap        : getCacheMap
-	searchCacheMap     : searchCacheMap
-	listCacheMap       : listCacheMap
-	processType        : processType
+	createUID		  : createUID
+	addCacheMap		: addCacheMap
+	delCacheMap		: delCacheMap
+	setCacheMap		: setCacheMap
+	getCacheMap		: getCacheMap
+	searchCacheMap	 : searchCacheMap
+	listCacheMap	   : listCacheMap
+	processType		: processType
 
-	setCurrentTabId    : setCurrentTabId
+	setCurrentTabId	: setCurrentTabId

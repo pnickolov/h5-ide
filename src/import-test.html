@@ -703,7 +703,8 @@
 				if (
 					layout.children !== undefined &&
 					layout.children.length > 1 &&
-					resource_stack[ 'AWS-ELB' ] !== undefined
+					resource_stack[ 'AWS-ELB' ] !== undefined &&
+					resource_stack[ 'AWS-ELB' ].length > 1
 				)
 				{
 					var i = 1,

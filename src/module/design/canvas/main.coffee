@@ -49,12 +49,12 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                             return
                         #### added by song, if the stack/app too old, unable to open ###
 
-                        if Tabbar.current is 'appview'
-
-                            # call MC.canvas.xxx parsing tab_id(result)
-
-                            # when OPEN_APP tab_id is result
-                            MC.canvas.analysis tab_id
+                        #if Tabbar.current is 'appview'
+                        #
+                        #    # call MC.canvas.xxx parsing tab_id(result)
+                        #
+                        #    # when OPEN_APP tab_id is result
+                        #    MC.canvas.analysis tab_id
 
                         MC.canvas.layout.init()
                         model.initLine()

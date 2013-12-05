@@ -266,10 +266,14 @@ define [ 'event', 'i18n!nls/lang.js',
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
-            $topButton = $( "#global-create-stack" )
+            $topButton    = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
-            $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+            $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
+
+            $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+
+            null
 
         enableSwitchRegion: ->
             $( '#region-switch' )

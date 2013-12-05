@@ -62,15 +62,17 @@ define [ 'jquery',
             ide_event.onLongListen ide_event.SWITCH_TAB, ( type, tab_id ) ->
                 console.log 'resource:SWITCH_TAB', type, tab_id
                 if type.split('_')[0] is 'OLD'
-                    obj = MC.forge.other.searchStackAppById( tab_id )
-                    if obj
-                        region_name = obj.region
-                    else
 
-                        if Tabbar.current isnt 'appview'
-                            region_name = MC.data.nav_new_stack_list[ tab_id ].region
+                    # get object
+                    obj = MC.forge.other.searchStackAppById tab_id
 
+                    # set region
+                    region_name = obj.region if obj
+
+                    # favoriate service
                     model.favoriteAmiService region_name
+
+                    null
 
             view.on 'LOADING_COMMUNITY_AMI', ( region, name, platform, isPublic, architecture, rootDeviceType, perPageNum, pageNum ) ->
                 # name = $('#community-ami-input').val()

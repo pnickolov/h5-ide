@@ -117,6 +117,10 @@ define [ 'event',
 
         _beforeunloadEvent : ->
 
+            # temp when proces tab return
+            if Tabbar.current is 'process'
+                return
+
             return if MC.browser is 'msie' and MC.browserVersion is 10
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]

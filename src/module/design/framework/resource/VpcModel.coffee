@@ -1,5 +1,5 @@
 
-define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupModel, CanvasManager )->
+define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( constant, GroupModel, CanvasManager, DhcpModel )->
 
   Model = GroupModel.extend {
 
@@ -16,6 +16,10 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
       width  : 60
       height : 60
 
+    initalize : ()->
+      if not @attributes.dhcp
+        @attributes.dhcp = new DhcpModel()
+
     draw : ( isCreate )->
 
       if isCreate
@@ -28,8 +32,20 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-    deserialize : ( data, layout_data )->
 
+    deserialize : ( data, layout_data, resolve )->
+
+      # Create/Get a DHCP object for VPC
+      dhcp = data.resource.DhcpOptionsId
+
+      if dhcp is ""
+        dhcp = new DhcpModel( { dhcpType : "default" } )
+      else if dhcp is "default"
+        dhcp = new DhcpModel( { dhcpType : "none" } )
+      else
+        dhcp = resolve( MC.extractID( dhcp ) )
+
+      # Create VPC
       new Model({
 
         id           : data.uid
@@ -39,6 +55,7 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
         dnsHostnames : MC.getBoolean( data.resource.EnableDnsHostnames )
         dnsSupport   : MC.getBoolean( data.resource.InstanceTenancy )
         tenancy      : data.resource.InstanceTenancy
+        dhcp         : dhcp
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

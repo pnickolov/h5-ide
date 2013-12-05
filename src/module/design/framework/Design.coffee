@@ -158,6 +158,8 @@ define [ "constant" ], ( constant ) ->
 
   DesignImpl.prototype.getComponent = ( uid )-> @__componentMap[ uid ]
 
+  # These two api are intent to be used by MC.canvas.js
+  # And may be deprecated in the future
   DesignImpl.prototype.node  = ()-> _.extend {},  @__canvasNodes
   DesignImpl.prototype.group = ()-> _.extend {},  @__canvasGroups
 

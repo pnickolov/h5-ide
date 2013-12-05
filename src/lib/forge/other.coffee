@@ -104,12 +104,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#############################
 
 	# cacheIDMap[ tab_id ] =
-	#	type		  : <appview>
-	#	id			: <id>
-	#	origin_id	 : <origin_id>
-	#	region		: <region_name>
-	#	data		  : <vpc_resource result>
-	#	state		 : <'OLD', 'OPEN'>
+	#	type      : <appview>
+	#	id        : <id>
+	#	origin_id : <origin_id>
+	#	region    : <region_name>
+	#	data      : <vpc_resource result>
+	#	state     : <'OLD', 'OPEN'>
 
 	cacheIDMap = {}
 

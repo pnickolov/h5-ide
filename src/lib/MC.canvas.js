@@ -1879,148 +1879,148 @@ MC.canvas.layout = {
 
 		components = MC.canvas.data.get("component");
 
-		$.each(components, function (key, value)
-		{
-			try
-			{
-				if (value.type === 'AWS.EC2.KeyPair')
-				{
+		// $.each(components, function (key, value)
+		// {
+		// 	try
+		// 	{
+		// 		if (value.type === 'AWS.EC2.KeyPair')
+		// 		{
 
-					if (value.name === "$key-default$" || value.name === "key-default" || value.name === "kp-default" || value.name === "default-kp" )
-					{
-						value.name = "DefaultKP";
-						value.resource.KeyName = value.name;
-					}
-					if (value.resource.KeyName === "")
-					{
-						value.resource.KeyName = value.name;
-					}
-					if (value.name === "DefaultKP")
-					{
-						has_default_kp=true;
-					}
-					MC.canvas_property.kp_list[ value.name ] = value.uid;
-				}
-				if (value.type === "AWS.EC2.SecurityGroup")
-				{
-					tmp = {};
+		// 			if (value.name === "$key-default$" || value.name === "key-default" || value.name === "kp-default" || value.name === "default-kp" )
+		// 			{
+		// 				value.name = "DefaultKP";
+		// 				value.resource.KeyName = value.name;
+		// 			}
+		// 			if (value.resource.KeyName === "")
+		// 			{
+		// 				value.resource.KeyName = value.name;
+		// 			}
+		// 			if (value.name === "DefaultKP")
+		// 			{
+		// 				has_default_kp=true;
+		// 			}
+		// 			MC.canvas_property.kp_list[ value.name ] = value.uid;
+		// 		}
+		// 		if (value.type === "AWS.EC2.SecurityGroup")
+		// 		{
+		// 			tmp = {};
 
-					if (value.name === "$sg-default$" || value.name === "sg-default" || value.name === "default-sg" )
-					{
-						value.name = "DefaultSG";
-						value.resource.GroupDescription = 'Stack Default Security Group';
-						value.resource.GroupName = value.name;
-					}
+		// 			if (value.name === "$sg-default$" || value.name === "sg-default" || value.name === "default-sg" )
+		// 			{
+		// 				value.name = "DefaultSG";
+		// 				value.resource.GroupDescription = 'Stack Default Security Group';
+		// 				value.resource.GroupName = value.name;
+		// 			}
 
-					tmp.name = value.name;
-					tmp.uid = value.uid;
-					tmp.member = [];
-					$.each(components, function (k, v)
-					{
-						if (v.type === "AWS.EC2.Instance")
-						{
-							sg_uids = v.resource.SecurityGroupId;
-							$.each(sg_uids, function (id, sg_ref)
-							{
-								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
-								{
-									tmp.member.push(v.uid);
-								}
-							});
-						}
-						if (v.type === "AWS.AutoScaling.LaunchConfiguration")
-						{
-							sg_uids = v.resource.SecurityGroups;
-							$.each(sg_uids, function (id, sg_ref)
-							{
-								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
-								{
-									tmp.member.push(v.uid);
-								}
-							});
-						}
-					});
-					MC.canvas_property.sg_list.push(tmp);
-				}
-				if (
-					value.type === "AWS.VPC.RouteTable" &&
-					value.resource.AssociationSet.length > 0 &&
-					value.resource.AssociationSet[0].Main === true
-				)
-				{
-					MC.canvas_property.main_route = value.uid;
-				}
-				if (
-					value.type === "AWS.VPC.NetworkAcl" &&
-					value.resource.Default === true
-				)
-				{
-					MC.canvas_property.default_acl = value.uid;
-				}
-			}
-			catch(error)
-			{
-				console.error('[MC.canvas.layout.init]init component error:');
+		// 			tmp.name = value.name;
+		// 			tmp.uid = value.uid;
+		// 			tmp.member = [];
+		// 			$.each(components, function (k, v)
+		// 			{
+		// 				if (v.type === "AWS.EC2.Instance")
+		// 				{
+		// 					sg_uids = v.resource.SecurityGroupId;
+		// 					$.each(sg_uids, function (id, sg_ref)
+		// 					{
+		// 						if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+		// 						{
+		// 							tmp.member.push(v.uid);
+		// 						}
+		// 					});
+		// 				}
+		// 				if (v.type === "AWS.AutoScaling.LaunchConfiguration")
+		// 				{
+		// 					sg_uids = v.resource.SecurityGroups;
+		// 					$.each(sg_uids, function (id, sg_ref)
+		// 					{
+		// 						if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+		// 						{
+		// 							tmp.member.push(v.uid);
+		// 						}
+		// 					});
+		// 				}
+		// 			});
+		// 			MC.canvas_property.sg_list.push(tmp);
+		// 		}
+		// 		if (
+		// 			value.type === "AWS.VPC.RouteTable" &&
+		// 			value.resource.AssociationSet.length > 0 &&
+		// 			value.resource.AssociationSet[0].Main === true
+		// 		)
+		// 		{
+		// 			MC.canvas_property.main_route = value.uid;
+		// 		}
+		// 		if (
+		// 			value.type === "AWS.VPC.NetworkAcl" &&
+		// 			value.resource.Default === true
+		// 		)
+		// 		{
+		// 			MC.canvas_property.default_acl = value.uid;
+		// 		}
+		// 	}
+		// 	catch(error)
+		// 	{
+		// 		console.error('[MC.canvas.layout.init]init component error:');
 
-				return true;//continue
-			}
-		});
+		// 		return true;//continue
+		// 	}
+		// });
 
-		if (!has_default_kp)
-		{//add DefaultKP
-			var kp = $.extend(true, {}, MC.canvas.KP_JSON.data),
-				uid = MC.guid();
-			kp.uid = uid;
-			MC.canvas_property.kp_list[kp.name] = kp.uid;
-			MC.canvas.data.get("component")[kp.uid] = kp;
-		}
+		// if (!has_default_kp)
+		// {//add DefaultKP
+		// 	var kp = $.extend(true, {}, MC.canvas.KP_JSON.data),
+		// 		uid = MC.guid();
+		// 	kp.uid = uid;
+		// 	MC.canvas_property.kp_list[kp.name] = kp.uid;
+		// 	MC.canvas.data.get("component")[kp.uid] = kp;
+		// }
 
-		$.each(MC.canvas_property.sg_list, function (key, value)
-		{
-			try
-			{
-				if (value.name === "DefaultSG" && key !== 0)
-				{
-					//move DefaultSG to the first one
-					default_sg = MC.canvas_property.sg_list.splice(key, 1);
-					MC.canvas_property.sg_list.unshift(default_sg[0]);
-					return false;
-				}
-			}
-			catch(error)
-			{
-				console.error('[MC.canvas.layout.init]init sg_list error:');
+		// $.each(MC.canvas_property.sg_list, function (key, value)
+		// {
+		// 	try
+		// 	{
+		// 		if (value.name === "DefaultSG" && key !== 0)
+		// 		{
+		// 			//move DefaultSG to the first one
+		// 			default_sg = MC.canvas_property.sg_list.splice(key, 1);
+		// 			MC.canvas_property.sg_list.unshift(default_sg[0]);
+		// 			return false;
+		// 		}
+		// 	}
+		// 	catch(error)
+		// 	{
+		// 		console.error('[MC.canvas.layout.init]init sg_list error:');
 
-				return true;//continue
-			}
-		});
+		// 		return true;//continue
+		// 	}
+		// });
 
-		//init sg color
-		$.each(MC.canvas_property.sg_list, function (key, value)
-		{
-			try
-			{
-				if (key < MC.canvas.SG_COLORS.length)
-				{//use color table
-					MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
-				}
-				else
-				{//random color
-					var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-					for (; rand.length < 6;)
-					{
-						rand = '0' + rand;
-					}
-					MC.canvas_property.sg_list[key].color = rand;
-				}
-			}
-			catch(error)
-			{
-				console.error('[MC.canvas.layout.init]init sg color error:');
+		// //init sg color
+		// $.each(MC.canvas_property.sg_list, function (key, value)
+		// {
+		// 	try
+		// 	{
+		// 		if (key < MC.canvas.SG_COLORS.length)
+		// 		{//use color table
+		// 			MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
+		// 		}
+		// 		else
+		// 		{//random color
+		// 			var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+		// 			for (; rand.length < 6;)
+		// 			{
+		// 				rand = '0' + rand;
+		// 			}
+		// 			MC.canvas_property.sg_list[key].color = rand;
+		// 		}
+		// 	}
+		// 	catch(error)
+		// 	{
+		// 		console.error('[MC.canvas.layout.init]init sg color error:');
 
-				return true;//continue
-			}
-		});
+		// 		return true;//continue
+		// 	}
+		// });
 
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
@@ -2032,54 +2032,55 @@ MC.canvas.layout = {
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
 
-		if (layout_data.component.node)
-		{
-			$.each(layout_data.component.node, function (id, data)
-			{
-				try
-				{
-					data.connection = [];
-					MC.canvas.add(id);
-				}
-				catch(error)
-				{
-					console.error('[MC.canvas.layout.init]add node error');
+		// if (layout_data.component.node)
+		// {
+		// 	$.each(layout_data.component.node, function (id, data)
+		// 	{
+		// 		try
+		// 		{
+		// 			data.connection = [];
+		// 			MC.canvas.add(id);
+		// 		}
+		// 		catch(error)
+		// 		{
+		// 			console.error('[MC.canvas.layout.init]add node error');
 
-					return true;//continue
-				}
-			});
-		}
-		else
-		{
-			layout_data.component.node = {};
-		}
+		// 			return true;//continue
+		// 		}
+		// 	});
+		// }
+		// else
+		// {
+		// 	layout_data.component.node = {};
+		// }
 
-		if (layout_data.component.group)
-		{
-			$.each(layout_data.component.group, function (id, data)
-			{
-				try
-				{
-					if(data.connection){
-						data.connection = [];
-					}
-					MC.canvas.add(id);
-				}
-				catch(error)
-				{
-					/* env:dev */
-					throw error
-					/* env:dev:end */
+		// if (layout_data.component.group)
+		// {
+		// 	$.each(layout_data.component.group, function (id, data)
+		// 	{
+		// 		try
+		// 		{
+		// 			if(data.connection){
+		// 				data.connection = [];
+		// 			}
+		// 			MC.canvas.add(id);
+		// 		}
+		// 		catch(error)
+		// 		{
+		// 			/* env:dev */
+		// 			throw error
+		// 			/* env:dev:end */
 
-					return true;//continue
-				}
-			});
-		}
-		else
-		{
-			layout_data.component.group = {};
-		}
-
+		// 			return true;//continue
+		// 		}
+		// 	});
+		// }
+		// else
+		// {
+		// 	layout_data.component.group = {};
+		// }
+		layout_data.component.node = {};
+		layout_data.component.group = {};
 		layout_data.connection = {};
 
 		//store json to original_json
@@ -2123,64 +2124,64 @@ MC.canvas.layout = {
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
-		kp.uid = uid;
-		MC.canvas_property.kp_list[kp.name] = kp.uid;
+		// kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
+		// kp.uid = uid;
+		// MC.canvas_property.kp_list[kp.name] = kp.uid;
 
-		sg_uid = MC.guid();
-		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
-		sg.uid = sg_uid;
-		tmp = {};
-		tmp.uid = sg.uid;
-		tmp.name = sg.name;
-		tmp.color = MC.canvas.SG_COLORS[0];
-		tmp.member = [];
-		MC.canvas_property.sg_list.push(tmp);
+		// sg_uid = MC.guid();
+		// sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+		// sg.uid = sg_uid;
+		// tmp = {};
+		// tmp.uid = sg.uid;
+		// tmp.name = sg.name;
+		// tmp.color = MC.canvas.SG_COLORS[0];
+		// tmp.member = [];
+		// MC.canvas_property.sg_list.push(tmp);
 
-		data[kp.uid] = kp;
-		data[sg.uid] = sg;
-		MC.canvas.data.set('component', data);
+		// data[kp.uid] = kp;
+		// data[sg.uid] = sg;
+		// MC.canvas.data.set('component', data);
 
-		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
-		{
-			//has vpc (create vpc, az, and subnet by default)
-			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-				'name': 'vpc'
-			}, {
-				'x': 5,
-				'y': 3
-			});
+		// if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		// {
+		// 	//has vpc (create vpc, az, and subnet by default)
+		// 	vpc_group = MC.canvas.add('AWS.VPC.VPC', {
+		// 		'name': 'vpc'
+		// 	}, {
+		// 		'x': 5,
+		// 		'y': 3
+		// 	});
 
-			node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
-				'name': 'RT-0',
-				'groupUId': vpc_group.id,
-				'main' : true
-			},{
-				'x': 50,
-				'y': 5
-			});
+		// 	node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
+		// 		'name': 'RT-0',
+		// 		'groupUId': vpc_group.id,
+		// 		'main' : true
+		// 	},{
+		// 		'x': 50,
+		// 		'y': 5
+		// 	});
 
-			//default sg
-			main_asso = {
-				"Main": "true",
-				"RouteTableId": "",
-				"SubnetId": "",
-				"RouteTableAssociationId": ""
-			};
-			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
-			MC.canvas_property.main_route = node_rt.id;
+		// 	//default sg
+		// 	main_asso = {
+		// 		"Main": "true",
+		// 		"RouteTableId": "",
+		// 		"SubnetId": "",
+		// 		"RouteTableAssociationId": ""
+		// 	};
+		// 	MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
+		// 	MC.canvas_property.main_route = node_rt.id;
 
-			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
-			acl.uid = MC.guid();
-			acl.resource.Default = 'true';
-			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-			data[acl.uid] = acl;
-			MC.canvas.data.set('component', data);
+		// 	acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
+		// 	acl.uid = MC.guid();
+		// 	acl.resource.Default = 'true';
+		// 	acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+		// 	data[acl.uid] = acl;
+		// 	MC.canvas.data.set('component', data);
 
-			MC.canvas_property.default_acl = acl.uid;
+		// 	MC.canvas_property.default_acl = acl.uid;
 
-			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-		}
+		// 	sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+		// }
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,

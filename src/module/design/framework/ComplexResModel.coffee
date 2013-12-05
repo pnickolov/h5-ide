@@ -31,7 +31,6 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
     initialize : ()->
 
       if @draw and Design.instance().shouldDraw()
-        console.debug "ComplexResModel.initialize, trying to draw the item"
         @draw true
       null
 

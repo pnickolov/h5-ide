@@ -60,7 +60,6 @@ define [ "./Design", "backbone" ], ( Design )->
     ctype   : "Framework_R"
 
     initialize : ()->
-      console.debug "ResourceModel.initialize, caching the object"
 
       # Assign a new GUID to this object, if it don't have an id.
       if not this.id

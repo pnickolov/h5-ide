@@ -1147,6 +1147,8 @@ a {
 
 #global-create-stack.disabled,
 #global-create-stack.disabled:hover,
+#global-region-visualize-VPC.disabled,
+#global-region-visualize-VPC.disabled:hover,
 #region-switch.disabled,
 #region-switch.disabled:hover
  {

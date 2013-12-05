@@ -1,7 +1,7 @@
 
-define [ "constant", "../Design", "../ResourceModel"  ], ( constant, Design, ResourceModel )->
+define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
 
-  Model = GroupModel.extend {
+  Model = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
 
   }, {

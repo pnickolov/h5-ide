@@ -1553,8 +1553,7 @@ MC.canvas = {
 
 	isMatchPlace: function (target_id, target_type, node_type, x, y, width, height)
 	{
-		var layout_group_data = MC.canvas_data.layout.component.group,
-			group_stack = [
+		var group_stack = [
 				document.getElementById('asg_layer').childNodes,
 				document.getElementById('subnet_layer').childNodes,
 				document.getElementById('az_layer').childNodes,
@@ -1628,9 +1627,10 @@ MC.canvas = {
 					while ( i-- )
 					{
 						id = group_stack[ layer ][ i ].id;
-						group_data = layout_group_data[ id ];
-						coordinate = group_data.coordinate;
-						size = group_data.size;
+
+						group_comp = Design.instance().getComponent( id )
+						coordinate = [ group_comp.x(), group_comp.y() ];
+						size       = [ group_comp.width(), group_comp.height() ];
 
 						if (
 							$.inArray(id, ignore_stack) === -1 &&
@@ -1640,7 +1640,7 @@ MC.canvas = {
 							points[ point ].y < coordinate[1] + size[1]
 						)
 						{
-							match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
+							match_status['is_matched'] = $.inArray(group_comp.ctype, match_option) > -1;
 							match_status['target'] = id;
 							match_target = id;
 						}
@@ -1769,11 +1769,11 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children = MC.canvas_data.layout.component.node,
-			groups = MC.canvas_data.layout.component.group,
-			group_data = groups[ node_id ],
+		var children   = MC.canvas_data.layout.component.node,
+			groups       = MC.canvas_data.layout.component.group,
+			group_data   = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
-			matched = [],
+			matched      = [],
 			coordinate,
 			size;
 
@@ -1833,16 +1833,15 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = MC.canvas_data.layout.component.group[ group_node.id ],
-			coordinate = group_data.coordinate;
+		var group_data = Design.instance().getComponent( group_node.id );
 
 		return MC.canvas.areaChild(
-			group_node.id,
-			group_data.type,
-			coordinate[0],
-			coordinate[1],
-			coordinate[0] + group_data.size[0],
-			coordinate[1] + group_data.size[1]
+			group_data.id,
+			group_data.ctype,
+			group_data.x(),
+			group_data.y(),
+			group_data.x() + group_data.width(),
+			group_data.y() + group_data.height()
 		);
 	},
 
@@ -4567,14 +4566,14 @@ MC.canvas.event.siderbarDrag = {
 	{
 		if (!$('#canvas_body').hasClass('canvas_zoomed'))
 		{
-			var target = $(event.data.target),
-				target_id = target.attr('id') || '',
-				target_type = target.data('component-type'),
-				node_type = target.data('type'),
+			var target      = $(event.data.target),
+				target_id     = target.attr('id') || '',
+				target_type   = target.data('component-type'),
+				node_type     = target.data('type'),
 				canvas_offset = $('#svg_canvas').offset(),
 				shadow_offset = event.data.shadow.position(),
-				node_option = target.data('option'),
-				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+				node_option   = target.data('option'),
+				coordinate    = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 				component_size,
 				match_place,
 				default_group_size,
@@ -4654,12 +4653,6 @@ MC.canvas.event.siderbarDrag = {
 				{
 					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 
-					// Move a little bit offset for Subnet because its port
-					if (node_type === 'AWS.VPC.Subnet')
-					{
-						//coordinate.x -= 1;
-					}
-
 					match_place = MC.canvas.isMatchPlace(
 						null,
 						target_type,
@@ -4722,13 +4715,10 @@ MC.canvas.event.siderbarDrag = {
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
 				event.data.shadow.animate({
-					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
-					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
-					'opacity': 0
-				}, function ()
-				{
-					event.data.shadow.remove();
-				});
+					'left'    : coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+					'top'     : coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+					'opacity' : 0
+				}, function() { event.data.shadow.remove(); });
 			}
 			else
 			{

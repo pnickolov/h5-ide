@@ -3,7 +3,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
 
   Model = ResourceModel.extend {
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
   }, {
 

@@ -11,7 +11,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 9
       height   : 9
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
     iconUrl : ()->
       "ide/icon/eni-canvas-attached.png"

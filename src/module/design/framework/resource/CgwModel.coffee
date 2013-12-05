@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 17
       height   : 10
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
     draw : ( isCreate )->
 

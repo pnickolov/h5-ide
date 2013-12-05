@@ -1640,7 +1640,7 @@ MC.canvas = {
 							points[ point ].y < coordinate[1] + size[1]
 						)
 						{
-							match_status['is_matched'] = $.inArray(group_comp.ctype, match_option) > -1;
+							match_status['is_matched'] = $.inArray(group_comp.type, match_option) > -1;
 							match_status['target'] = id;
 							match_target = id;
 						}
@@ -1837,7 +1837,7 @@ MC.canvas = {
 
 		return MC.canvas.areaChild(
 			group_data.id,
-			group_data.ctype,
+			group_data.type,
 			group_data.x(),
 			group_data.y(),
 			group_data.x() + group_data.width(),

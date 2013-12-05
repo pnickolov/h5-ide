@@ -16,7 +16,7 @@ define [ "./ResourceModel" ], ( ResourceModel )->
     port2Comp()
       description : returns the component of each port
 
-    getTarget : ( ctype )
+    getTarget : ( type )
       description : returns a component of a specific type
 
     remove()
@@ -28,7 +28,7 @@ define [ "./ResourceModel" ], ( ResourceModel )->
     isConnection : ()->
       true
 
-    ctype : "Framework_CN"
+    type : "Framework_CN"
 
     constructor : ( p1Comp, p1Name, p2Comp, p2Name ) ->
 
@@ -57,11 +57,11 @@ define [ "./ResourceModel" ], ( ResourceModel )->
     port1Comp : ()-> this.get("__port1Comp")
     port2Comp : ()-> this.get("__port2Comp")
 
-    getTarget : ( ctype )->
-      if this.attributes.__port1Comp.ctype is ctype
+    getTarget : ( type )->
+      if this.attributes.__port1Comp.type is type
         return this.attributes.__port1Comp
 
-      if this.attributes.__port2Comp.ctype is ctype
+      if this.attributes.__port2Comp.type is type
         return this.attributes.__port2Comp
 
       null

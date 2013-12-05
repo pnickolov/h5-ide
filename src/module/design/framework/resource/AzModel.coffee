@@ -5,7 +5,7 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
 
   Model = GroupModel.extend {
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+    type : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 
     defaults :
       x      : 2

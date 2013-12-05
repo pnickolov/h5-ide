@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 9
       height   : 9
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get("imageId") ]

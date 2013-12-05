@@ -6,7 +6,7 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
     defaults :
       group : true
 
-    ctype : "Framework_G"
+    type : "Framework_G"
 
     remove : ()->
       console.debug "GroupModel.remove, Removing Children"
@@ -64,7 +64,7 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       width  = @width()  * MC.canvas.GRID_WIDTH
       height = @height() * MC.canvas.GRID_HEIGHT
 
-      text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ @ctype ]
+      text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ @type ]
 
       pad = 10
 
@@ -109,9 +109,9 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
         })
       ).attr({
         'id'         : @id
-        'class'      : 'dragable ' + @ctype.replace(/\./g, "-")
+        'class'      : 'dragable ' + @type.replace(/\./g, "-")
         'data-type'  : 'group'
-        'data-class' : @ctype
+        'data-class' : @type
       })
   }
 

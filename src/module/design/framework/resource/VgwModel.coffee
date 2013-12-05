@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 8
       height   : 8
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 
     draw : ( isCreate )->
 

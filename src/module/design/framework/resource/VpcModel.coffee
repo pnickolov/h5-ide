@@ -3,7 +3,7 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
 
   Model = GroupModel.extend {
 
-    ctype    : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
 
     defaults :
       dnsSupport   : true

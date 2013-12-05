@@ -10,7 +10,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 8
       height   : 8
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
     iconUrl : ()->
       if @get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"

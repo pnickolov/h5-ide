@@ -3,7 +3,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
   Model = ComplexResModel.extend {
 
-    ctype    : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    type    : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
     defaults :
       x      : 2
       y      : 2

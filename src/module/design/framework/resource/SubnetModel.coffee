@@ -3,7 +3,7 @@ define [ "constant", "../Design", "../GroupModel", "../CanvasManager" ], ( const
 
   Model = GroupModel.extend {
 
-    ctype    : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+    type    : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
     defaults :
       x      : 2
       y      : 2

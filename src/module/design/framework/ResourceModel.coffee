@@ -23,7 +23,7 @@ define [ "./Design", "backbone" ], ( Design )->
                   ( Defined by user )
         description : This attribute is used to determine which ResourceModel's deserialize is called when Desin is deserializing the JSON data.
 
-    # ctype : String
+    # type : String
         description : This attribute is used for users to identify what type is the resource.
 
     # id : String
@@ -41,6 +41,7 @@ define [ "./Design", "backbone" ], ( Design )->
     # remove() : [FORCE]
         description : Just like the destructor in C++. User can override this method.
         The framework will ensure the base class's remove() will get called.
+        This method will fire "REMOVED" event when called.
 
     # initialize() : [FORCE]
         description : The same as Backbone.Model.initialize()
@@ -57,7 +58,7 @@ define [ "./Design", "backbone" ], ( Design )->
   ResourceModel = Backbone.Model.extend {
 
     classId : _.uniqueId("dfc_")
-    ctype   : "Framework_R"
+    type   : "Framework_R"
 
     initialize : ()->
 
@@ -88,7 +89,7 @@ define [ "./Design", "backbone" ], ( Design )->
     isTypeof : ( type )->
       c = this
       while c
-        if c.ctype is type
+        if c.type is type
           return true
         c = c.constructor.__super__
 
@@ -96,7 +97,7 @@ define [ "./Design", "backbone" ], ( Design )->
 
 
     serialize : ()->
-      console.error "Class '#{@ctype}' doesn't implement serialize"
+      console.error "Class '#{@type}' doesn't implement serialize"
       null
 
   }, {
@@ -105,15 +106,15 @@ define [ "./Design", "backbone" ], ( Design )->
       Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->
-      console.error "Class '#{@.prototype.ctype}' doesn't implement deserialize"
+      console.error "Class '#{@.prototype.type}' doesn't implement deserialize"
       null
 
     extend : ( protoProps, staticProps ) ->
 
-      console.assert protoProps.ctype, "Subclass of ResourceModel does not specifying a type"
+      console.assert protoProps.type, "Subclass of ResourceModel does not specifying a type"
 
       if _.has(protoProps, 'constructor')
-        console.warn "Subclass of ResourceModel (type : #{protoProps.ctype}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
+        console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
 
       if staticProps and staticProps.handleTypes
         handleTypes = staticProps.handleTypes

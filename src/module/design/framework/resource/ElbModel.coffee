@@ -10,7 +10,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 9
       height   : 9
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    type : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
     iconUrl : ()->
       "ide/icon/elb-" + (if @get("internal") then "internal-canvas.png" else "internet-canvas.png")

@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       width    : 13
       height   : 13
 
-    ctype : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
     draw : ( isCreate )->
 
@@ -62,7 +62,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           'id'         : @id
           'class'      : 'dragable node AWS-AutoScaling-Group'
           'data-type'  : 'group'
-          'data-class' : @ctype
+          'data-class' : @type
         })
 
         # Move the node to right place

@@ -27,7 +27,7 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
       height   : 0
       __parent : null
 
-    ctype : "Framework_CR"
+    type : "Framework_CR"
 
     initialize : ()->
 
@@ -76,9 +76,9 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
 
       ).attr({
         'id'         : @id
-        'class'      : 'dragable node ' + @ctype.replace(/\./g, "-")
+        'class'      : 'dragable node ' + @type.replace(/\./g, "-")
         'data-type'  : 'node'
-        'data-class' : @ctype
+        'data-class' : @type
       })
 
       if option.labelBg

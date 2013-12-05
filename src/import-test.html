@@ -622,7 +622,7 @@
 				layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
 
 				// ELB
-				var ELB_START_LEFT = 10,
+				var ELB_START_LEFT = 14,
 					ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
 
 				if (resource_stack[ 'AWS-ELB' ] !== undefined)
@@ -630,8 +630,8 @@
 					$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
 					{
 						resources[ id ].coordinate = [
-							ELB_START_LEFT,
-							layout.coordinate[1] + (current_index * 10) + (layout.size[1] / 2) - 4
+							ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+							layout.size[1] / 2
 						];
 					});
 				}
@@ -684,6 +684,21 @@
 								ROUTE_TABLE_START_TOP
 							];
 						});
+					}
+				}
+
+				// Add AZ margin for ELB
+				if (
+					layout.children !== undefined &&
+					layout.children.length > 1
+				)
+				{
+					var i = 1,
+						l = layout.children.length;
+
+					for ( ; i < l ; i++ )
+					{
+						layout.children[ i ].coordinate[ 1 ] += 15;
 					}
 				}
 

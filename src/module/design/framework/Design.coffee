@@ -153,13 +153,13 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.shouldDraw = ()-> true
 
   DesignImpl.prototype.use = ()->
-    design_instance = @
+    window.DesignInst = design_instance = @
     @
 
   DesignImpl.prototype.getComponent = ( uid )-> @__componentMap[ uid ]
 
-  DesignImpl.prototype.getCanvasNodes  = ()-> _.extend {},  @__canvasNodes
-  DesignImpl.prototype.getCanvasGroups = ()-> _.extend {},  @__canvasGroups
+  DesignImpl.prototype.node  = ()-> _.extend {},  @__canvasNodes
+  DesignImpl.prototype.group = ()-> _.extend {},  @__canvasGroups
 
   DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
     AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )

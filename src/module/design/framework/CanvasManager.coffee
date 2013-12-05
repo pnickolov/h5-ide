@@ -44,6 +44,36 @@ define [ "./Design" ], ( Design )->
         translateVal = node.ownerSVGElement.createSVGTransform()
         translateVal.setTranslate(x, y)
         transformVal.appendItem(translateVal)
+
+    updateSGLabel : ( uid, sgLabelGroup )->
+      # TODO : Change this function to use the framework
+
+      # Prepare data
+      labels = [{
+        color : "#f26c4f"
+        name  : "DefaultSG"
+      }]
+
+      # Update canvas sg label
+      if not sgLabelGroup
+        sgLabelGroup = $( uid + "_node-sg-color-group" ).children()
+      else
+        sgLabelGroup = sgLabelGroup.children()
+
+      i = 0
+      while i < MC.canvas.SG_MAX_NUM
+        if i < labels.length and labels[i]
+          Canvon( sgLabelGroup.eq(i).attr( "fill", labels[i].color ) )
+            .addClass("tooltip").data("tooltip", labels[i].name )
+            .attr("data-tooltip", labels[i].name )
+
+        else
+          Canvon( sgLabelGroup.eq(i).attr( "fill", "none" ) )
+            .addClass("tooltip").data("tooltip", "" )
+            .attr("data-tooltip", "" )
+
+        ++i
+
   }
 
   CanvasManager

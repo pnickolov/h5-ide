@@ -66,9 +66,7 @@ define [ 'jquery',
                     if obj
                         region_name = obj.region
                     else
-
-                        if Tabbar.current isnt 'appview'
-                            region_name = MC.data.nav_new_stack_list[ tab_id ].region
+                        region_name = MC.data.nav_new_stack_list[ tab_id ].region
 
                     model.favoriteAmiService region_name
 

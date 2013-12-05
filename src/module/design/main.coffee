@@ -48,8 +48,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 try
 
-                    # only include 'new-xxx' 'stack-xxx' 'app-xxx'
-                    if tab_id.split( '-' )[0] not in [ 'process', 'appview' ]
+                    # only include 'new-xxx' | 'stack-xxx' | 'app-xxx' | 'appview-xxx'
+                    if tab_id.split( '-' )[0] not in [ 'process' ]
                         model.addTab tab_id,
                                      view.html(),
                                      model.getCanvasData(),
@@ -75,7 +75,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                 try
 
-                    console.log 'design:SWITCH_TAB, type = ' + type + ', tab_id = ' + tab_id + ', region_name = ' + region_name + ', current_platform = ' + current_platform
+                    console.log 'design:SWITCH_TAB', type, tab_id, region_name, result, current_platform
 
                     # new stack store MC.open_failed_list
                     if type in [ 'NEW_STACK' ]
@@ -89,9 +89,8 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
 
                         if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
-                            if Tabbar.current isnt 'appview'
-                                #set MC.canvas_data
-                                model.setCanvasData result.resolved_data[0]
+                            #set MC.canvas_data
+                            model.setCanvasData result.resolved_data[0]
 
                         if type is 'OPEN_APP'
 

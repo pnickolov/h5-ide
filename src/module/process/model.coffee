@@ -2,7 +2,11 @@
 #  View Mode for header module
 #############################
 
-define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( aws_model, ide_event, Backbone, $, _, constant ) ->
+define [ 'aws_model',
+         'event', 'constant',
+         'text!./module/process/appview.json'
+         'backbone', 'jquery', 'underscore'
+], ( aws_model, ide_event, constant, appview_json ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -14,6 +18,10 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
         initialize  : ->
             me = this
 
+            # test json object
+            appview_json = JSON.parse appview_json
+            console.log 'appview json is ', appview_json
+
             # set init flag_list
             me.set 'flag_list', { 'is_pending' : true }
 
@@ -22,13 +30,17 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
 
                 if result and not result.is_error and result.resolved_data
 
+                    # set result.resolved_data
+                    result.resolved_data = []
+                    result.resolved_data.push appview_json
+
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap result.param[4], result.resolved_data
+                    obj = MC.forge.other.setCacheMap result.param[4], result
 
                     if MC.forge.other.isCurrentTab obj.id
 
                         # reload app view
-                        # @reloadAppView obj
+                        @reloadAppView obj
 
                     else
 
@@ -122,7 +134,7 @@ define [ 'aws_model', 'event', 'backbone', 'jquery', 'underscore', 'constant' ],
                 if obj
 
                     # reload app view
-                    # @reloadAppView obj
+                    @reloadAppView obj
 
                 else
 

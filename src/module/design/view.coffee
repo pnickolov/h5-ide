@@ -120,9 +120,12 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         hideStatusbar :  ->
             console.log 'hideStatusbar'
 
-            if Tabbar.current in [ 'app' ]
+            # hide
+            if Tabbar.current in [ 'app', 'appview' ]
                 $( '#main-statusbar' ).hide()
                 $( '#canvas' ).css 'bottom', 0
+
+            # show
             else
                 $( '#main-statusbar' ).show()
 

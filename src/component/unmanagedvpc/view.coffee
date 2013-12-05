@@ -17,6 +17,20 @@ define [ 'event',
 
         initialize : ->
 
+            # is empty
+            Handlebars.registerHelper 'is_empty', ( value, options ) ->
+
+                # is object
+                if _.isObject value
+
+                    # is empty object {}
+                    if _.isEmpty value
+                        options.fn this
+                    else
+                        options.inverse this
+                else
+                    options.inverse this
+
             # city code
             Handlebars.registerHelper 'city_code', ( text ) ->
                 new Handlebars.SafeString constant.REGION_SHORT_LABEL[ text ]

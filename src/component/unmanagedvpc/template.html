@@ -7,9 +7,15 @@
 	<div class="scroll-wrap scrollbar-auto-hide" style="height:400px;">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 		<div id="unmanaged-VPC-modal-body" class="scroll-content">
+
 			{{#unless resource_list }}
 			<div class="loading-spinner"></div>
 			{{/unless}}
+
+			{{#is_empty resource_list }}
+			<div>There is no unmanaged VPC to visualse.</div>
+			{{/is_empty }}
+
 			<ul id="unmanaged-VPC-region-list">
 				{{#each resource_list }}
 				<li class="unmanaged-VPC-region-item" data-region-name="{{ @key }}">
@@ -47,6 +53,7 @@
 				</li>
 				{{/each}}
 			</ul>
+
 		</div>
 	</div>
 </div>

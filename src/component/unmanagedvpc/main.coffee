@@ -17,8 +17,8 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             # set model
             view.model    = model
 
-            model.on 'change:resource_list', ( result ) ->
-                console.log 'change:resource_list', result
+            model.on 'change:resource_list', () ->
+                console.log 'change:resource_list', model.get 'resource_list'
                 view.render()
 
             # invoke api

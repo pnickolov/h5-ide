@@ -823,7 +823,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             if constant.AWS_RESOURCE_KEY[comp.type]
 
-                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = "@#{uid}.resource.#{"@#{uid}.resource.InstanceId"}"
+                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = "@#{uid}.resource.#{constant.AWS_RESOURCE_KEY[comp.type]}"
 
         #replace reference
         for uid, comp of canvas_component
@@ -841,9 +841,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 for k, v of obj
 
-                    if typeof(v) is 'string' and reference[k] and k isnt except_key
+                    if typeof(v) is 'string' and reference[v] and k isnt except_key
 
-                        obj[k] = reference[k]
+                        obj[k] = reference[v]
 
                     if typeof(v) is 'object'
 

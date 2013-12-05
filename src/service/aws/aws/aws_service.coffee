@@ -291,17 +291,94 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	# end of parserStatusReturn
 
 
+	vpc_resource_map = {
+		#"DescribeImagesResponse"               :   MC.aws.convert.resolveDescribeImagesResult
+		#"DescribeAvailabilityZonesResponse"    :   ec2_service.resolveDescribeAvailabilityZonesResult
+		"DescribeVolumes"              :   MC.aws.convert.convertVolume
+		#"DescribeSnapshots"            :   ebs_service.resolveDescribeSnapshotsResult
+		"DescribeAddresses"            :   MC.aws.convert.convertEIP
+		"DescribeInstances"            :   MC.aws.convert.convertInstance
+		"DescribeKeyPairs"             :   MC.aws.convert.convertKP
+		"DescribeSecurityGroups"       :   MC.aws.convert.convertSGGroup
+		"DescribeLoadBalancers"        :   MC.aws.convert.convertELB
+		"DescribeNetworkAcls"          :   MC.aws.convert.convertACL
+		"DescribeCustomerGateways"     :   MC.aws.convert.convertCGW
+		"DescribeDhcpOptions"          :   MC.aws.convert.convertDHCP
+		"DescribeNetworkInterfaces"    :   MC.aws.convert.convertEni
+		"DescribeInternetGateways"     :   MC.aws.convert.convertIGW
+		"DescribeRouteTables"          :   MC.aws.convert.convertRTB
+		"DescribeSubnets"              :   MC.aws.convert.convertSubnet
+		"DescribeVpcs"                 :   MC.aws.convert.convertVPC
+		"DescribeVpnConnections"       :   MC.aws.convert.convertVPN
+		"DescribeVpnGateways"          :   MC.aws.convert.convertVGW
+		#
+		"DescribeAutoScalingGroups"            :   MC.aws.convert.convertASG
+		"DescribeLaunchConfigurations"         :   MC.aws.convert.convertLC
+		"DescribeNotificationConfigurations"   :   MC.aws.convert.convertNC
+		"DescribePolicies"                     :   MC.aws.convert.convertScalingPolicy
+		#"DescribeScheduledActionsResponse"             :   autoscaling_service.resolveDescribeScheduledActionsResult
+		#"DescribeScalingActivitiesResponse"            :   autoscaling_service.resolveDescribeScalingActivitiesResult
+		#"DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
+		#"ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
+		#"ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
 
+	}
 
 	#///////////////// Parser for vpc_resource return (need resolve) /////////////////
 	#private (resolve result to vo )
 	resolveVpcResourceResult = ( result ) ->
 		#resolve result
 		#return vo
+
+		vpc_resource_layout_map = {
+			'AWS.EC2.Instance' 				: MC.canvas.INSTANCE_JSON,
+			'AWS.ELB' 						: MC.canvas.ELB_JSON,
+			'AWS.EC2.EBS.Volume' 			: MC.canvas.VOLUME_JSON,
+			'AWS.VPC.VPC' 					: MC.canvas.VPC_JSON,
+			'AWS.VPC.Subnet'				: MC.canvas.SUBNET_JSON,
+			'AWS.VPC.InternetGateway'		: MC.canvas.IGW_JSON,
+			'AWS.VPC.RouteTable'			: MC.canvas.ROUTETABLE_JSON,
+			'AWS.VPC.VPNGateway'			: MC.canvas.VGW_JSON,
+			'AWS.VPC.CustomerGateway'		: MC.canvas.CGW_JSON,
+			'AWS.VPC.NetworkInterface'		: MC.canvas.ENI_JSON,
+			'AWS.VPC.DhcpOptions'			: MC.canvas.DHCP_JSON,
+			'AWS.AutoScaling.Group'			: MC.canvas.ASG_JSON,
+			'AWS.AutoScaling.LaunchConfiguration' : MC.canvas.ASL_LC_JSON
+		}
+
 		res = {}
 		res[region] = resourceMap nodes for region, nodes of result
 
-		res
+		app_json = MC.canvas.STACK_JSON
+
+		for region, nodes of res
+
+			for resource_type, resource_comp of nodes
+
+				if resource_comp
+
+					for comp in resource_comp
+
+						c = vpc_resource_map[resource_type] comp
+
+						app_json.component[c.uid] = c
+
+						if vpc_resource_layout_map[c.type]
+
+							if c.type not in ['AWS.VPC.NetworkInterface', 'AWS.AutoScaling.Group', 'AWS.AutoScaling.LaunchConfiguration']
+
+								if c.type in ['AWS.VPC.Subnet', 'AWS.VPC.VPC']
+									app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
+								else
+									app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+
+		console.log app_json
+
+		app_json.component = MC.aws.aws.collectReference app_json.component
+
+		app_json
+
+		#res
 
 	#private (parser vpc_resource return)
 	parserVpcResourceReturn = ( result, return_code, param ) ->

@@ -5820,6 +5820,8 @@ MC.canvas.event.keyEvent = function (event)
 
 MC.canvas.analysis = function ( data )
 {
+	MC.canvas_data = data;
+
 	var resources = {},
 		layout = {};
 

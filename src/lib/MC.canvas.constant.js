@@ -800,6 +800,77 @@ var constant_data = {
 		}
 	},
 
+	DESIGN_INIT_DATA:
+	{
+		KP : {
+			type : "AWS.EC2.KeyPair",
+			name : "DefaultKP",
+			resource : { KeyName : "DefaultKP" }
+		},
+		SG : {
+			type : "AWS.EC2.SecurityGroup",
+			name : "DefaultSG",
+			resource : {
+				IpPermissions: [{
+					IpProtocol : "tcp",
+					IpRanges   : "0.0.0.0/0",
+					FromPort   : "22",
+					ToPort     : "22",
+					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
+				}],
+				IpPermissionsEgress : [],
+				Default             : "true",
+				GroupName           : "DefaultSG",
+				GroupDescription    : 'Default Security Group'
+			}
+		}
+	},
+
+	DESIGN_INIT_DATA_VPC:
+	{
+		KP : {
+			type : "AWS.EC2.KeyPair",
+			name : "DefaultKP",
+			resource : { KeyName : "DefaultKP" }
+		},
+		SG : {
+			type : "AWS.EC2.SecurityGroup",
+			name : "DefaultSG",
+			resource : {
+				IpPermissions: [{
+					IpProtocol : "tcp",
+					IpRanges   : "0.0.0.0/0",
+					FromPort   : "22",
+					ToPort     : "22",
+					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
+				}],
+				IpPermissionsEgress : [],
+				Default             : "true",
+				GroupName           : "DefaultSG",
+				GroupDescription    : 'Default Security Group'
+			}
+		},
+		VPC : {
+			type : "AWS.VPC.VPC",
+			name : "vpc",
+			resource : {}
+		},
+		RTB : {
+			type     : "AWS.VPC.RouteTable",
+			name     : "RT-0",
+			resource : {
+				PropagatingVgwSet : [],
+				RouteSet          : [{
+						State                : 'active',
+						Origin               : 'CreateRouteTable',
+						GatewayId            : 'local',
+						DestinationCidrBlock : '10.0.0.0/16'
+				}],
+				AssociationSet : [{Main:"true"}]
+			}
+		}
+	},
+
 	//***** AWS.EC2.AvailabilityZone *****/
 	AZ_JSON:
 	{

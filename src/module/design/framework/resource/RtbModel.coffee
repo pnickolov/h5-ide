@@ -5,8 +5,8 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     defaults :
       main     : false
-      x        : 0
-      y        : 0
+      x        : 50
+      y        : 5
       width    : 8
       height   : 8
 

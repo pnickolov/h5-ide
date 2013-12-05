@@ -6,6 +6,11 @@ define [ "constant", "../GroupModel", "../CanvasManager" ], ( constant, GroupMod
     ctype    : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
 
     defaults :
+      dnsSupport   : true
+      dnsHostnames : false
+      tenancy      : "default"
+      cidr         : "10.0.0.0/16"
+
       x      : 5
       y      : 3
       width  : 60

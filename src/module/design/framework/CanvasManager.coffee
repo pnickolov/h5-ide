@@ -66,7 +66,7 @@ define [ "./Design" ], ( Design )->
         connection : []
       }
 
-      MC.canvas.drawLine( from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data )
+      MC.canvas.drawLine( from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data, connection.id )
       null
 
     updateSGLabel : ( uid, sgLabelGroup )->

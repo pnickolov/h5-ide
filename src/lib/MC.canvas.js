@@ -974,7 +974,7 @@ MC.canvas = {
 	},
 
 
-	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data)
+	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data, connection_id)
 	{
 		if (typeof from_node === 'string')
 		{
@@ -1233,13 +1233,16 @@ MC.canvas = {
 						'data-type': 'line'
 					});
 
+					svg_line.id = connection_id ? connection_id : MC.guid();
+
+					/*
 					if (line_option)
 					{
 						svg_line.id = line_option['line_uid'];
 					}
 					else
 					{
-						svg_line.id = MC.guid();
+						svg_line.id = line_id ? line_id : MC.guid();
 
 						from_node_connection_data.push({
 							'target': to_uid,
@@ -1253,15 +1256,15 @@ MC.canvas = {
 							'line': svg_line.id
 						});
 
-						//MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
-						//MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
+						MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
+						MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
 					}
 
-					//layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
+					layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
 
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;
-
+					*/
 					// layout_connection_data = {
 					// 	'target': connection_target_data,
 					// 	'auto': true,

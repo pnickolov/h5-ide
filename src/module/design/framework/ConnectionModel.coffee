@@ -59,7 +59,7 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
       # Call super constructor
       ResourceModel.call(this)
 
-      if portDefs
+      if @portDefs
         # If we have portDefs, then it's considered to be visual line
         # So ask CanvasManager to draw the line
         CanvasManager.drawLine( this )

@@ -50,10 +50,6 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
         console.assert( @__port1, "Cannot create connection!" )
 
-        # If we have portDefs, then it's considered to be visual line
-        # So ask CanvasManager to draw the line
-        CanvasManager.drawLine( this )
-
       else
         # If there's no portDefs, we directly assign the parameter to this
         @__port1Comp = p1Comp
@@ -61,12 +57,18 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
 
       # Call super constructor
-      res = ResourceModel.call(this)
+      ResourceModel.call(this)
 
+      if portDefs
+        # If we have portDefs, then it's considered to be visual line
+        # So ask CanvasManager to draw the line
+        CanvasManager.drawLine( this )
+
+      # Put connect() calls to last, in case of some resource might want the Line SVG Node
       @__port1Comp.connect this
       @__port2Comp.connect this
 
-      res
+      this
 
 
     port1     : ()-> @__port1 || ""

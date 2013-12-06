@@ -1,6 +1,8 @@
 
 define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManager, ResourceModel )->
 
+  emptrArr = []
+
   ###
     -------------------------------
      ComplexResModel is the base class to implement a Resource that have relationship with other resources. Any visual resources should inherit from ComplexResModel
@@ -141,7 +143,7 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
     ###
      ReadOnly Infomation
     ###
-    connections : ()-> this.get("__connections") || []
+    connections : ()-> this.get("__connections") || emptrArr
     parent      : ()-> this.get("__parent")
     x           : ()-> this.get("x")
     y           : ()-> this.get("y")

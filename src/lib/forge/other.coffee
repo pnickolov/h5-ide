@@ -109,7 +109,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	origin_id : <vpc_id>
 	#	data      : <vpc_resource result>
 	#	region    : <region_name>
-	#	type      : <appview>
+	#	type      : <'appview'>
 	#	state     : <'OLD', 'OPEN'>
 
 	cacheIDMap = {}

@@ -1303,6 +1303,42 @@ MC.canvas = {
 		}
 	},
 
+	createConnect: function (from_uid, from_target_port, to_uid, to_target_port)
+	{
+		var line_id = MC.guid(),
+
+			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
+
+			layout_component_data = MC.canvas_data.layout.component,
+			layout_node_data = layout_component_data.node,
+
+			from_node_class = COMPONENT_TYPE[ layout_component_data[ from_uid ].type ],
+			to_node_class = COMPONENT_TYPE[ layout_component_data[ to_uid ].type ],
+
+			from_data = layout_component_data[ from_node_class ][ from_uid ],
+			to_data = layout_component_data[ to_node_class ][ to_uid ],
+
+			from_node_connection_data = from_data.connection || [],
+			to_node_connection_data = to_data.connection || [];
+
+		from_node_connection_data.push({
+			'target': to_uid,
+			'port': from_target_port,
+			'line': line_id
+		});
+
+		to_node_connection_data.push({
+			'target': from_uid,
+			'port': to_target_port,
+			'line': line_id
+		});
+
+		MC.canvas_data.layout.component[ from_node_class ][ from_uid ].connection = from_node_connection_data;
+		MC.canvas_data.layout.component[ to_node_class ][ to_uid ].connection = to_node_connection_data;
+
+		return true;
+	},
+
 	reConnect: function (node_id)
 	{
 		var node = $('#' + node_id),

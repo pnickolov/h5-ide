@@ -1324,7 +1324,7 @@ MC.canvas = {
 		$.each(from_node_connection_data, function (key, value)
 		{
 			var line_data = layout_connection_data[ value[ 'line' ] ];
-			
+
 			if (line_data)
 			{
 				line_data_target = line_data.target;
@@ -6466,7 +6466,7 @@ MC.canvas.analysis = function ( data )
 		{
 			resources[ id ].coordinate = [
 				ELB_START_LEFT + (current_index * 10) + (current_index * 10),
-				layout.size[1] / 2
+				layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] + 5
 			];
 		});
 	}
@@ -6556,6 +6556,8 @@ MC.canvas.analysis = function ( data )
 	}
 
 	absPosition( layout, 0, 0 );
+
+	console.info(layout);
 
 	function updateLayoutData(node)
 	{

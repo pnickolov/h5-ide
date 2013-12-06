@@ -54,7 +54,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                         #    # call MC.canvas.xxx parsing tab_id(result)
                         #
                         #    # when OPEN_APP tab_id is result
-                        #    MC.canvas.analysis tab_id
+                        #    MC.canvas.analysis tab_id.resolved_data[0]
 
                         MC.canvas.layout.init()
                         model.initLine()

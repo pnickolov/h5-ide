@@ -16,6 +16,12 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
         description : if the user defines this method, it will be called after object is created. And the framework might call this method at an approprieate time.
         If the method is defined, it means it's a visual resource
 
+    isRemovable   : ()->
+        description : When user press delete key in canvas, canvas will ask if the object can be removed. If isRemovable returns a string, it will treat it as a warning, if the string starts with '!', it is a infomation for not allowing the user to delete
+
+    isConnectable : ( targetComp, selfPort, targetPort )->
+        description : When user wants to connect a target. This method will be called
+
   ###
 
   ComplexResModel = ResourceModel.extend {
@@ -34,6 +40,9 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
       if @draw and Design.instance().shouldDraw()
         @draw true
       null
+
+    isRemovable   : ()-> true
+    isConnectable : ( targetComp, selfPort, targetPort )-> false
 
     remove : ()->
       console.debug "ComplexResModel.remove, Removing Connections"

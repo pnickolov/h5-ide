@@ -640,7 +640,7 @@
                 var result = getResult( value );
 
                 if ( !result ) {
-                  $( context ).val( origin );
+                  $( context ).val( origin ).parsley( 'validate' );
                 }
               }
 

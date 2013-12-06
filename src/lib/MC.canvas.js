@@ -1253,11 +1253,11 @@ MC.canvas = {
 							'line': svg_line.id
 						});
 
-						MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
-						MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
+						//MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
+						//MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
 					}
 
-					layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
+					//layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
 
 					connection_target_data[ from_uid ] = from_target_port;
 					connection_target_data[ to_uid ] = to_target_port;

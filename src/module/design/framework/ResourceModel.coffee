@@ -60,17 +60,21 @@ define [ "./Design", "backbone" ], ( Design )->
     classId : _.uniqueId("dfc_")
     type   : "Framework_R"
 
-    initialize : ()->
+    constructor : ( attributes, options )->
 
       # Assign a new GUID to this object, if it don't have an id.
       if not this.id
         this.id = MC.guid()
 
+      Backbone.Model.call this, attributes, options
+
       # Cache the object inside the current design.
       design = Design.instance()
       design.classCacheForCid( this.classId ).push( this )
       design.cacheComponent( this.id, this )
-      null
+
+      this
+
 
     isRemovable : () -> true
 

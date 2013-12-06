@@ -60,8 +60,8 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
         @__port2Comp = p2Comp
 
 
-      # Call super (Backbone.Model) constructor
-      res = ResourceModel.constructor.call(this)
+      # Call super constructor
+      res = ResourceModel.call(this)
 
       @__port1Comp.connect this
       @__port2Comp.connect this

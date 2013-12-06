@@ -48,7 +48,7 @@
 			MC.aws = aws;
 			MC.aws.eip = eip;
 
-			$.getJSON( './import-test-2.json', function(data)
+			$.getJSON( './import-test-crayfish.json', function(data)
 			{
 				Tabbar.current = 'stack';
 
@@ -643,7 +643,7 @@
 					{
 						resources[ id ].coordinate = [
 							ELB_START_LEFT + (current_index * 10) + (current_index * 10),
-							layout.size[1] / 2
+							layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] + 5
 						];
 					});
 				}

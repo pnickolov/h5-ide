@@ -1,15 +1,18 @@
 
 define [], ()->
 
-  CanvasElement = ( component )->
-    this.coordinate = [ component.x(), component.y() ]
-    this.size       = [ component.width(), component.height() ]
-    this.id         = component.id
-    this.type       = component.type
-    this.group      = component.get("group")
+  CanvasElement = ( component, quick )->
 
-    this.parentId   = component.parent()
-    this.parentId   = if this.parent then "" else this.parentId.id
+    this.id = component.id
+
+    if quick isnt true
+      this.coordinate = [ component.x(), component.y() ]
+      this.size       = [ component.width(), component.height() ]
+      this.type       = component.type
+      this.group      = component.get("group")
+
+      this.parentId   = component.parent()
+      this.parentId   = if this.parent then "" else this.parentId.id
 
     this
 
@@ -51,6 +54,38 @@ define [], ()->
   CanvasElement.prototype.show = ()->
 
   CanvasElement.prototype.hide = ()->
+
+  CanvasElement.prototype.hover = ()->
+    comp = Design.instance().component( this.id )
+    connections = comp.connections()
+
+    for cn in connections
+      el = document.getElementById( cn.id )
+      if not el
+        continue
+
+      klass = el.getAttribute("class")
+
+      if not klass.match(/\bview-hover\b/)
+        el.setAttribute("class", klass + " view-hover")
+
+
+  CanvasElement.prototype.hoverOut = ()->
+    comp = Design.instance().component( this.id )
+    connections = comp.connections()
+
+    for cn in connections
+      el = document.getElementById( cn.id )
+      if not el
+        continue
+
+      klass    = el.getAttribute("class")
+      newKlass = $.trim( klass.replace( /\s?view-hover/g, "" ) )
+
+      if klass != newKlass
+        el.setAttribute("class", newKlass)
+
+    null
 
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined

@@ -41,7 +41,6 @@ define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasMan
         @draw true
       null
 
-    isRemovable   : ()-> true
     isConnectable : ( targetComp, selfPort, targetPort )-> false
 
     remove : ()->

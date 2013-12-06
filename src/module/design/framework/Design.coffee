@@ -15,6 +15,8 @@ define [ "constant", "./CanvasElement" ], ( constant, CanvasElement ) ->
     _.map design_instance.__canvasGroups, ( comp )->
       new CanvasElement( comp )
 
+  window.$canvas = $canvas
+
   Canvas = ( size )->
     this.size   = size
     this.offset = [0, 0]

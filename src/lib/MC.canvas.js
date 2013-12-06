@@ -5772,23 +5772,12 @@ MC.canvas.event.clearList = function ()
 
 MC.canvas.event.nodeHover = function (event)
 {
-	if (event.type === 'mouseenter')
-	{
-		var target = $(this),
-			target_id = this.id,
-			node_connections = MC.canvas_data.layout.component.node[ target_id ].connection,
-			//layout_connection_data = MC.canvas_data.layout.connection,
-			i = node_connections.length;
-
-		while ( i-- )
-		{
-			Canvon('#' + node_connections[ i ].line).addClass('view-hover');
-		}
+	if (event.type === 'mouseenter') {
+		$canvas( this.id, true ).hover()
 	}
 
-	if (event.type === 'mouseleave')
-	{
-		Canvon('#svg_canvas .view-hover').removeClass('view-hover');
+	if (event.type === 'mouseleave') {
+		$canvas( this.id, true ).hoverOut()
 	}
 };
 

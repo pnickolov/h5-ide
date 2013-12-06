@@ -1321,6 +1321,25 @@ MC.canvas = {
 			from_node_connection_data = from_data.connection || [],
 			to_node_connection_data = to_data.connection || [];
 
+		$.each(from_node_connection_data, function (key, value)
+		{
+			var line_data = layout_connection_data[ value[ 'line' ] ];
+			
+			if (line_data)
+			{
+				line_data_target = line_data.target;
+				if (
+					line_data_target[ from_uid ] === from_target_port &&
+					line_data_target[ to_uid ] === to_target_port
+				)
+				{
+					is_connected = true;
+
+					return false;
+				}
+			}
+		});
+
 		from_node_connection_data.push({
 			'target': to_uid,
 			'port': from_target_port,

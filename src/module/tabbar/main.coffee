@@ -288,7 +288,7 @@ define [ 'jquery', 'event', 'base_main',
             #############################
 
             # open tab
-            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP'
+            # type: 'NEW_STACK' 'OPEN_STACK' 'OPEN_APP' 'NEW_PROCESS' 'NEW_APPVIEW' 'RELOAD_STACK' 'RELOAD_NEW_STACK' 'RELOAD_APP'
             ide_event.onLongListen ide_event.OPEN_DESIGN_TAB, ( type, tab_name, region_name, tab_id ) ->
                 console.log 'OPEN_DESIGN_TAB', type, tab_name, region_name, tab_id
                 switch type

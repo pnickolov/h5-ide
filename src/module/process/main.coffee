@@ -36,11 +36,11 @@ define [ 'event' ], ( ide_event ) ->
                 # view type
                 view.render type
 
-            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
-                console.log 'UPDATE_PROCESS'
+            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_id ) ->
+                console.log 'UPDATE_PROCESS', tab_id
 
-                if MC.data.current_tab_id is tab_name
-                    model.getProcess tab_name
+                if MC.data.current_tab_id is tab_id
+                    model.getProcess tab_id
 
     unLoadModule = () ->
         #

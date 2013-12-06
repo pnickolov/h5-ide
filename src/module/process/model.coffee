@@ -126,6 +126,7 @@ define [ 'aws_model',
 
             if state is 'OPEN_PROCESS'
                 aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
+
             else if state is 'OLD_PROCESS'
 
                 # get obj
@@ -148,7 +149,7 @@ define [ 'aws_model',
             # set state 'OPEN'
             MC.forge.other.setCacheMap obj.origin_id, null, 'OPEN'
 
-            # set new id
+            # set appview id
             appview_id = 'appview-' + obj.id.split('-')[1]
 
             # update tab

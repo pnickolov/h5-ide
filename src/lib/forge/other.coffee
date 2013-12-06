@@ -106,7 +106,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	# cacheIDMap[ tab_id ] =
 	#	type      : <appview>
 	#	id        : <id>
-	#	origin_id : <origin_id>
+	#	origin_id : <vpc_id>
 	#	region    : <region_name>
 	#	data      : <vpc_resource result>
 	#	state     : <'OLD', 'OPEN'>
@@ -146,16 +146,16 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		cacheIDMap
 
-	setCacheMap = ( id, data, state = 'OPEN' ) ->
-		console.log 'setCacheMap', id, data, state
+	setCacheMap = ( vpc_id, data, state = 'OPEN' ) ->
+		console.log 'setCacheMap', vpc_id, data, state
 
 		obj = null
 
 		_.each cacheIDMap, ( item ) ->
-			if item.origin_id is id
+			if item.origin_id is vpc_id
 				item.data  = $.extend true, {}, data if data
 				item.state = state
-				obj = item
+				obj        = item
 
 		obj
 

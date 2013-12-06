@@ -293,7 +293,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 	vpc_resource_map = {
 		#"DescribeImagesResponse"               :   MC.aws.convert.resolveDescribeImagesResult
-		#"DescribeAvailabilityZonesResponse"    :   ec2_service.resolveDescribeAvailabilityZonesResult
+		"DescribeAvailabilityZones"    :   MC.aws.convert.convertAZ
 		"DescribeVolumes"              :   MC.aws.convert.convertVolume
 		#"DescribeSnapshots"            :   ebs_service.resolveDescribeSnapshotsResult
 		"DescribeAddresses"            :   MC.aws.convert.convertEIP
@@ -331,6 +331,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		#return vo
 
 		vpc_resource_layout_map = {
+			'AWS.EC2.AvailabilityZone'		: MC.canvas.AZ_JSON,
 			'AWS.EC2.Instance' 				: MC.canvas.INSTANCE_JSON,
 			'AWS.ELB' 						: MC.canvas.ELB_JSON,
 			'AWS.EC2.EBS.Volume' 			: MC.canvas.VOLUME_JSON,
@@ -347,9 +348,12 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		}
 
 		res = {}
+
 		res[region] = resourceMap nodes for region, nodes of result
 
 		app_json = MC.canvas.STACK_JSON
+
+		vpc_id = ""
 
 		for region, nodes of res
 
@@ -357,26 +361,128 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 				if resource_comp
 
-					for comp in resource_comp
+					if resource_type is 'DescribeAvailabilityZones'
 
-						c = vpc_resource_map[resource_type] comp
+						for comp in resource_comp.item
 
-						app_json.component[c.uid] = c
+							c = vpc_resource_map[resource_type] comp
 
-						if vpc_resource_layout_map[c.type]
+							app_json.component[c.uid] = c
+							# layout = vpc_resource_layout_map[c.type].layout
 
-							if c.type not in ['AWS.VPC.NetworkInterface', 'AWS.AutoScaling.Group', 'AWS.AutoScaling.LaunchConfiguration']
+							# layout.name = c.name
 
-								if c.type in ['AWS.VPC.Subnet', 'AWS.VPC.VPC']
-									app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
-								else
-									app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+							# todo: add vpc groud uid
+							#layout.groupUId =
+
+							# app_json.layout.component.group[c.uid] = layout
+
+					else
+						if resource_type is "DescribeVpcs"
+
+							vpc_id = comp.vpcId
+
+						for comp in resource_comp
+
+							c = vpc_resource_map[resource_type] comp
+
+							app_json.component[c.uid] = c
+
+		ref_res = MC.aws.aws.collectReference app_json.component
+
+		app_json.component = ref_res[0]
+
+		ref_key = ref_res[1]
+
+		vpc_uid = ref_key[vpc_id].split('.')[0].slice(1)
+
+		for uid, c of app_json.component
+
+
+			if vpc_resource_layout_map[c.type]
+
+				# if c.type not in ['AWS.VPC.NetworkInterface', 'AWS.AutoScaling.Group', 'AWS.AutoScaling.LaunchConfiguration']
+
+				# 	if c.type in ['AWS.VPC.Subnet', 'AWS.VPC.VPC']
+				# 		app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
+				# 	else
+				# 		app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+				layout = vpc_resource_layout_map[c.type].layout
+
+				layout.uid = c.uid
+
+				switch c.type
+
+					when 'AWS.VPC.NetworkInterface'
+
+						if c.resource.Attachment and c.resource.Attachment.DeviceIndex not in ['0', 0]
+
+							app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+
+						else if not c.resource.Attachment
+
+							app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+
+					when "AWS.AutoScaling.Group"
+
+						if c.resource.AvailabilityZones.length != 1
+
+							for idx, zone of c.resource.AvailabilityZones
+
+								if idx != 0
+
+									extend_asg_uid = MC.guid()
+
+									extend_asg = vpc_resource_layout_map[c.type].layout
+
+									extend_asg.originalId = c.uid
+
+									app_json.layout.component.group[extend_asg_uid] = extend_asg
+
+						app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
+
+
+					when 'AWS.EC2.Instance'
+
+						if c.resource.SubnetId
+
+							layout.groupUId = c.resource.SubnetId.split('.')[0].slice(1)
+
+						else
+
+							layout.groupUId = c.resource.Placement.AvailabilityZone.split('.')[0].slice(1)
+
+						app_json.layout.component.node[c.uid] = layout
+
+					when 'AWS.AutoScaling.LaunchConfiguration'
+
+						app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+
+					when "AWS.EC2.AvailabilityZone"
+
+						layout.name = c.name
+
+						layout.groupUId = vpc_uid
+
+						app_json.layout.component.group[c.uid] = layout
+
+					when "AWS.VPC.Subnet"
+
+						layout.groupUId = c.resource.AvailabilityZone.split('.')[0].slice(1)
+
+						app_json.layout.component.group[c.uid] = layout
+
+					when "AWS.VPC.VPC"
+
+						app_json.layout.component.group[c.uid] = layout
+
+
 
 		console.log app_json
 
-		app_json.component = MC.aws.aws.collectReference app_json.component
+		#app_json.component = MC.aws.aws.collectReference app_json.component
 
-		app_json
+		[app_json]
 
 		#res
 

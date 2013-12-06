@@ -830,7 +830,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
             canvas_component[uid] = replaceReference comp, key, constant.AWS_RESOURCE_KEY[comp.type]
 
-        canvas_component
+        [canvas_component, key]
 
 
     replaceReference = ( obj, reference, except_key ) ->

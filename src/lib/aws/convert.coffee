@@ -763,7 +763,22 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		dhcp_json
 
+	convertAZ = ( aws_az ) ->
 
+		az_json = {
+			'uid' : MC.guid(),
+			"type": "AWS.EC2.AvailabilityZone",
+			"name": aws_az.zoneName,
+			"resource": {
+				"ZoneName" : aws_az.zoneName
+				"RegionName" : aws_az.regionName
+			}
+		}
+
+		az_json
+
+
+	convertAZ : convertAZ
 	convertDHCP : convertDHCP
 	convertScalingPolicy : convertScalingPolicy
 	convertNC  : convertNC

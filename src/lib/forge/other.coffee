@@ -131,9 +131,9 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'listCacheMap'
 		cacheIDMap
 
-	addCacheMap = ( type, id, origin_id, region ) ->
+	addCacheMap = ( type, id, origin_id, region, state = 'OPEN' ) ->
 		console.log 'addCacheMap', type, id, region
-		cacheIDMap[ id ] = { 'type' : type, 'id' : id, 'origin_id' : origin_id, 'region' : region }
+		cacheIDMap[ id ] = { 'type' : type, 'id' : id, 'origin_id' : origin_id, 'region' : region, 'state' : state }
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id
@@ -146,7 +146,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		cacheIDMap
 
-	setCacheMap = ( vpc_id, data, state = 'OPEN' ) ->
+	setCacheMap = ( vpc_id, data, state ) ->
 		console.log 'setCacheMap', vpc_id, data, state
 
 		obj = null

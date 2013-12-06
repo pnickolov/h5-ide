@@ -35,17 +35,12 @@ define [ 'aws_model',
                     result.resolved_data.push appview_json
 
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap result.param[4], result
+                    obj = MC.forge.other.setCacheMap result.param[4], result, 'OLD'
 
                     if MC.forge.other.isCurrentTab obj.id
 
                         # reload app view
                         @reloadAppView obj
-
-                    else
-
-                        # set state 'OLD'
-                        MC.forge.other.setCacheMap result.param[4], null, 'OLD'
 
                     null
 
@@ -125,14 +120,19 @@ define [ 'aws_model',
             console.log 'getVpcResourceService', region, vpc_id, state
 
             if state is 'OPEN_PROCESS'
+
+                # call api
                 aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
+
+                # set state 'OLD'
+                MC.forge.other.setCacheMap vpc_id, null, 'OLD'
 
             else if state is 'OLD_PROCESS'
 
                 # get obj
                 obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
 
-                if obj
+                if obj and obj.data
 
                     # reload app view
                     @reloadAppView obj
@@ -145,9 +145,6 @@ define [ 'aws_model',
 
         reloadAppView : ( obj ) ->
             console.log 'reloadAppView', obj
-
-            # set state 'OPEN'
-            MC.forge.other.setCacheMap obj.origin_id, null, 'OPEN'
 
             # set appview id
             appview_id = 'appview-' + obj.id.split('-')[1]

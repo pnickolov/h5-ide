@@ -1,4 +1,49 @@
-define [ "constant" ], ( constant ) ->
+define [ "constant", "./CanvasElement" ], ( constant, CanvasElement ) ->
+
+  ### Canvas is a adaptor for MC.canvas.js ###
+  $canvas = ( id )->
+    new CanvasElement( Design.instance().component(id) )
+
+  $canvas.size   = ( w, h  )-> design_instance.canvas.size( w, h )
+  $canvas.scale  = ( ratio )-> design_instance.canvas.scale( ratio )
+  $canvas.offset = ( x, y  )-> design_instance.canvas.offset( x, y )
+  $canvas.node   = ()->
+    _.map design_instance.__canvasNodes, ( comp )->
+      new CanvasElement( comp )
+
+  $canvas.group  = ()->
+    _.map design_instance.__canvasGroups, ( comp )->
+      new CanvasElement( comp )
+
+  Canvas = ( size )->
+    this.size   = size
+    this.offset = [0, 0]
+    this.scale  = 1
+    this
+
+  Canvas.prototype.scale = ( ratio )->
+    if ratio is undefined
+      return this.scale
+
+    this.scale = ratio
+    null
+
+  Canvas.prototype.offset = ( x, y )->
+    if x is undefined
+      return this.offset
+
+    this.offset[0] = x
+    this.offset[1] = y
+    null
+
+  Canvas.prototype.size = ( w, h )->
+    if w is undefined
+      return this.size
+
+    this.size[0] = w
+    this.size[1] = h
+    null
+
 
   ###
     -------------------------------
@@ -39,6 +84,7 @@ define [ "constant" ], ( constant ) ->
   Design = ( json_data, layout_data, options )->
 
     design = (new DesignImpl( options )).use()
+    design.canvas = new Canvas( layout_data.size )
 
     # Temporarily set layout_data in design, so that getAZ can use it
     design.groupLayoutData = layout_data.component.group
@@ -157,11 +203,6 @@ define [ "constant" ], ( constant ) ->
     @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
-
-  # These two api are intent to be used by MC.canvas.js
-  # And may be deprecated in the future
-  DesignImpl.prototype.node  = ()-> _.extend {},  @__canvasNodes
-  DesignImpl.prototype.group = ()-> _.extend {},  @__canvasGroups
 
   DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
     AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )

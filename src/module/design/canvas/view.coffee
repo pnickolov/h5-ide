@@ -2,11 +2,11 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( ide_event, canvas_layout, constant, forge_app ) ->
+define [ 'text!./module/design/canvas/template.html', "event", "canvas_layout", "constant", 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, canvas_layout, constant, forge_app ) ->
+
+    template = Handlebars.compile( template )()
 
     CanvasView = Backbone.View.extend {
-
-        el       : $( '#canvas' )
 
         initialize : ->
             #listen
@@ -37,7 +37,7 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
                 .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
                 .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
 
-        render   : ( template ) ->
+        render : () ->
             console.log 'canvas render'
             $( '#canvas' ).html template
             #
@@ -45,7 +45,7 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
 
         reRender   : ( template ) ->
             console.log 're-canvas render'
-            if $.trim( this.$el.html() ) is 'loading...' then $( '#canvas' ).html template
+            if $("#canvas").is(":empty") then $( '#canvas' ).html template
 
         showInstanceProperty : ( event, uid ) ->
             # Directly open the instance property

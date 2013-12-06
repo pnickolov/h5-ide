@@ -45,7 +45,7 @@ define [ "./Design" ], ( Design )->
         translateVal.setTranslate(x, y)
         transformVal.appendItem(translateVal)
 
-    drawLine : ()->
+    drawLine : ( connection )->
       null
 
     updateSGLabel : ( uid, sgLabelGroup )->

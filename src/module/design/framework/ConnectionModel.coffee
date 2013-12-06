@@ -1,5 +1,5 @@
 
-define [ "./ResourceModel", "./Design" ], ( ResourceModel, Design )->
+define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, Design, CanvasManager )->
 
   ###
     -------------------------------
@@ -32,32 +32,45 @@ define [ "./ResourceModel", "./Design" ], ( ResourceModel, Design )->
 
     constructor : ( p1Comp, p2Comp ) ->
 
-      for def in @portDefs
-        if def.port1.type is p1Comp.type and def.port2.type is p2Comp.type
-          @__port1     = def.port1.name
-          @__port1Comp = p1Comp
-          @__port2     = def.port2.name
-          @__port2Comp = p2Comp
-          break
-        else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
-          @__port1     = def.port1.name
-          @__port1Comp = p2Comp
-          @__port2     = def.port2.name
-          @__port2Comp = p1Comp
-          break
+      if @portDefs
 
+        for def in @portDefs
+          if def.port1.type is p1Comp.type and def.port2.type is p2Comp.type
+            @__port1     = def.port1.name
+            @__port1Comp = p1Comp
+            @__port2     = def.port2.name
+            @__port2Comp = p2Comp
+            break
+          else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
+            @__port1     = def.port1.name
+            @__port1Comp = p2Comp
+            @__port2     = def.port2.name
+            @__port2Comp = p1Comp
+            break
 
-      console.assert( @__port1, "Cannot create connection!" )
+        console.assert( @__port1, "Cannot create connection!" )
+
+        # If we have portDefs, then it's considered to be visual line
+        # So ask CanvasManager to draw the line
+        CanvasManager.drawLine( this )
+
+      else
+        # If there's no portDefs, we directly assign the parameter to this
+        @__port1Comp = p1Comp
+        @__port2Comp = p2Comp
 
 
       # Call super (Backbone.Model) constructor
-      ResourceModel.constructor.call(this)
+      res = ResourceModel.constructor.call(this)
 
       @__port1Comp.connect this
       @__port2Comp.connect this
 
-    port1     : ()-> @__port1
-    port2     : ()-> @__port2
+      res
+
+
+    port1     : ()-> @__port1 || ""
+    port2     : ()-> @__port2 || ""
     port1Comp : ()-> @__port1Comp
     port2Comp : ()-> @__port2Comp
 

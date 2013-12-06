@@ -139,7 +139,7 @@ var constant_data = {
 	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
 
 
-	PORT_PADDING: 4, //port padding (to point of junction)
+	PORT_PADDING: 5, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line
 
 	//**for port, direction is position**//

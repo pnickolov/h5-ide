@@ -2,9 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', 'i18n!nls/lang.js' ], ( $, template, ide_event, MC, lang ) ->
-
-    template = Handlebars.compile template
+define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
     #private
     loadModule = () ->
@@ -12,13 +10,12 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
         #
         require [ './module/design/canvas/view',
                   './module/design/canvas/model',
-                  './component/sgrule/main',
-                  'canvas_layout'
-        ], ( View, model, sgrule_main, canvas_layout ) ->
+                  './component/sgrule/main'
+        ], ( View, model, sgrule_main ) ->
 
             #view
-            view       = new View()
-            view.render template
+            view = new View()
+            view.render()
 
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
@@ -26,7 +23,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
 
                 try
                     #check re-render
-                    view.reRender template
+                    view.reRender()
                     #
                     if type is 'NEW_STACK'
                         MC.canvas.layout.create {
@@ -70,7 +67,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
             ide_event.onLongListen ide_event.RESTORE_CANVAS, () ->
                 console.log 'RESTORE_CANVAS'
                 #
-                view.render template
+                view.render()
                 #
                 MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
                 #redraw

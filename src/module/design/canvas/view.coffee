@@ -2,13 +2,13 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'text!./module/design/canvas/template.html', "event", "canvas_layout", "constant", 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, canvas_layout, constant, forge_app ) ->
-
-    template = Handlebars.compile( template )()
+define [ 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, canvas_layout, constant, forge_app ) ->
 
     CanvasView = Backbone.View.extend {
 
         initialize : ->
+            this.template = Handlebars.compile( template )()
+
             #listen
             this.listenTo ide_event, 'SWITCH_TAB', ()->
                 canvas_layout.listen()
@@ -39,13 +39,13 @@ define [ 'text!./module/design/canvas/template.html', "event", "canvas_layout", 
 
         render : () ->
             console.log 'canvas render'
-            $( '#canvas' ).html template
+            $( '#canvas' ).html this.template
             #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
         reRender   : ( template ) ->
             console.log 're-canvas render'
-            if $("#canvas").is(":empty") then $( '#canvas' ).html template
+            if $("#canvas").is(":empty") then $( '#canvas' ).html this.template
 
         showInstanceProperty : ( event, uid ) ->
             # Directly open the instance property

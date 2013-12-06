@@ -21,8 +21,10 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
             view.render template
 
             #listen OPEN_DESIGN
-            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'canvas:OPEN_DESIGN', region_name, type, current_platform, tab_name, tab_id
+            # when 'NEW_STACK' result is tab_id
+            # when Tabbar.current is 'appview' result is result
+            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, result ) ->
+                console.log 'canvas:OPEN_DESIGN', region_name, type, current_platform, tab_name, result
 
                 try
                     #check re-render
@@ -30,7 +32,7 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                     #
                     if type is 'NEW_STACK'
                         MC.canvas.layout.create {
-                            id       : tab_id
+                            id       : result
                             name     : tab_name,
                             region   : region_name,
                             platform : current_platform
@@ -49,12 +51,10 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                             return
                         #### added by song, if the stack/app too old, unable to open ###
 
-                        #if Tabbar.current is 'appview'
-                        #
-                        #    # call MC.canvas.xxx parsing tab_id(result)
-                        #
-                        #    # when OPEN_APP tab_id is result
-                        #    MC.canvas.analysis tab_id.resolved_data[0]
+                        if Tabbar.current is 'appview'
+
+                            # when OPEN_APP result is result
+                            MC.canvas.analysis result.resolved_data[0]
 
                         MC.canvas.layout.init()
                         model.initLine()
@@ -67,8 +67,6 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                 catch error
                     console.error error
 
-                #
-                #ide_event.trigger ide_event.OPEN_TOOLBAR, tab_id, type
                 null
 
             #listen RESTORE_CANVAS

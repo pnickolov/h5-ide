@@ -31,8 +31,8 @@ define [ 'aws_model',
                 if result and not result.is_error and result.resolved_data
 
                     # set result.resolved_data
-                    result.resolved_data = []
-                    result.resolved_data.push appview_json
+                    #result.resolved_data = []
+                    #result.resolved_data.push appview_json
 
                     # set cacheMap data
                     obj = MC.forge.other.setCacheMap result.param[4], result, null

@@ -87,6 +87,10 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # new stack | open stack | open app
                     if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
+                        if result and result.resolved_data.length is 0
+                            console.log 'current tab inexistence', type, tab_id, region_name, result, current_platform
+                            return
+
                         if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
                             #set MC.canvas_data
@@ -177,8 +181,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                 #MC.data.process             = $.extend true, {}, MC.process
                 #MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
 
-                # set MC.data.process
-                MC.forge.other.initDataProcess id, type, MC.process
+                # set MC.data.process when MC.data.process is {} return
+                if _.isEmpty MC.forge.other.initDataProcess id, type, MC.process
+                    return
 
                 # not current tab return
                 if MC.data.current_tab_id isnt id

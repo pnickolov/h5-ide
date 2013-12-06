@@ -97,7 +97,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		MC.data.process			 = $.extend true, {}, data
 		MC.data.process[ id ].state = type if MC.data.process and MC.data.process[ id ]
 		console.log 'current MC.data.process', MC.data.process
-		null
+		MC.data.process
 
 	#############################
 	#  cache id

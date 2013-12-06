@@ -78,8 +78,9 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     console.log 'design:SWITCH_TAB', type, tab_id, region_name, result, current_platform
 
                     # new stack store MC.open_failed_list
+                    # when 'NEW_STACK' result is tab_id
                     if type in [ 'NEW_STACK' ]
-                        MC.open_failed_list[ tab_id ] = { 'id' : tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type }
+                        MC.open_failed_list[ MC.data.current_tab_id ] = { 'id' : tab_id, 'region' : region_name, 'platform' : current_platform, 'type' : type }
 
                     # restore old tab
                     if type in [ 'OLD_STACK', 'OLD_APP' ] then model.getTab type, tab_id else view.$el.html design_view_init

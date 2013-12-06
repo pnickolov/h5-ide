@@ -156,7 +156,10 @@ define [ 'jquery', 'event', 'base_main',
                 ide_event.trigger ide_event.SWITCH_TAB, 'NEW_STACK' , model.get( 'tab_name' ).replace( ' - stack', '' ), model.get( 'stack_region_name' ), tab_id, model.get 'current_platform'
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stack', tab_id
 
-                MC.data.nav_new_stack_list[ tab_id ] = { region : model.get( 'stack_region_name' ) }
+                MC.data.nav_new_stack_list[ tab_id ] =
+                    region   : model.get 'stack_region_name'
+                    platform : model.get 'current_platform'
+                    tab_name : model.get( 'tab_name' ).replace ' - stack', ''
 
                 null
 

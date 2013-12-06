@@ -19,6 +19,7 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
     initalize : ()->
       if not @attributes.dhcp
         @attributes.dhcp = new DhcpModel()
+        null
 
     draw : ( isCreate )->
 

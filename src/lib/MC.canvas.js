@@ -973,6 +973,315 @@ MC.canvas = {
 		);
 	},
 
+
+	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data)
+	{
+		if (typeof from_node === 'string')
+		{
+			from_node = $('#' + from_node);
+		}
+
+		if (typeof to_node === 'string')
+		{
+			to_node = $('#' + to_node);
+		}
+
+		var canvas_offset = $('#svg_canvas').offset(),
+			from_uid = from_node[0].id,
+			to_uid = to_node[0].id,
+			layout_component_data = MC.canvas_data.layout.component,
+			layout_node_data = layout_component_data.node,
+			from_node_type = from_node.data('type'),
+			to_node_type = to_node.data('type'),
+			from_type = from_data.type,
+			to_type = to_data.type,
+			layout_connection_data = MC.canvas_data.layout.connection,
+			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
+			connection_target_data = {},
+			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			controlPoints = [],
+			direction,
+			layout_connection_data,
+			line_data_target,
+			from_port,
+			to_port,
+			from_port_offset,
+			to_port_offset,
+			from_node_connection_data,
+			to_node_connection_data,
+			is_connected,
+			port_direction,
+			startX,
+			startY,
+			endX,
+			endY,
+			start0,
+			end0,
+			dash_style,
+			path,
+			svg_line;
+
+		if (connection_option)
+		{
+			if ($.type(connection_option) === 'array')
+			{
+				$.each(connection_option, function (index, item)
+				{
+					if (
+						item.from === from_target_port &&
+						item.to === to_target_port
+					)
+					{
+						connection_option = item;
+					}
+				});
+			}
+
+			from_node_connection_data = from_data.connection || [];
+			to_node_connection_data = to_data.connection || [];
+			is_connected = false;
+
+			$.each(from_node_connection_data, function (key, value)
+			{
+				var line_data = layout_connection_data[ value[ 'line' ] ];
+				if (line_data)
+				{
+					line_data_target = line_data.target;
+					if (
+						line_data_target[ from_uid ] === from_target_port &&
+						line_data_target[ to_uid ] === to_target_port
+					)
+					{
+						is_connected = true;
+
+						return false;
+					}
+				}
+			});
+
+			if (
+				line_option ||
+				is_connected === false
+			)
+			{
+				// Special connection
+				if (
+					connection_option.direction
+				)
+				{
+					direction = connection_option.direction;
+
+					if (direction.from && direction.to)
+					{
+						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
+						{
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-left');
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-right');
+						}
+						else
+						{
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-right');
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-left');
+						}
+
+						from_port_offset = from_port.getBoundingClientRect();
+						to_port_offset = to_port.getBoundingClientRect();
+					}
+					else
+					{
+						if (direction.from)
+						{
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port);
+							to_port_offset = to_port.getBoundingClientRect();
+
+							if (direction.from === 'vertical')
+							{
+								port_direction = to_port_offset.top > from_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
+							}
+
+							if (direction.from === 'horizontal')
+							{
+								port_direction = to_port_offset.left > from_node[0].getBoundingClientRect().left ? 'right' : 'left';
+							}
+
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-' + port_direction);
+							from_port_offset = from_port.getBoundingClientRect();
+						}
+
+						if (direction.to)
+						{
+							from_port = document.getElementById(from_uid + '_port-' + from_target_port);
+							from_port_offset = from_port.getBoundingClientRect();
+
+							if (direction.to === 'vertical')
+							{
+								port_direction = from_port_offset.top > to_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
+							}
+
+							if (direction.to === 'horizontal')
+							{
+								port_direction = from_port_offset.left > to_node[0].getBoundingClientRect().left ? 'right' : 'left';
+							}
+
+							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-' + port_direction);
+							to_port_offset = to_port.getBoundingClientRect();
+						}
+					}
+				}
+				else
+				{
+					from_port = document.getElementById(from_uid + '_port-' + from_target_port);
+					from_port_offset = from_port.getBoundingClientRect();
+					to_port = document.getElementById(to_uid + '_port-' + to_target_port);
+					to_port_offset = to_port.getBoundingClientRect();
+				}
+
+				startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
+				startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
+				endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
+				endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
+
+				//add by xjimmy
+				start0 = {
+					x : startX,
+					y : startY,
+					connectionAngle: from_port.getAttribute('data-angle') * 1
+				};
+
+				end0 = {
+					x: endX,
+					y: endY,
+					connectionAngle: to_port.getAttribute('data-angle') * 1
+				};
+
+				//add pad to start0 and end0
+				MC.canvas._addPad(start0, 1);
+				MC.canvas._addPad(end0, 1);
+
+				// straight line
+				if (start0.x === end0.x || start0.y === end0.y)
+				{
+					path = 'M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y;
+				}
+				else
+				{
+					// fold line
+					MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
+
+					if (controlPoints.length > 0)
+					{
+						if (connection_option.type === 'sg')
+						{
+							switch (MC.canvas_property.LINE_STYLE)
+							{
+								case 0: //straight
+									path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y +
+										' L ' + controlPoints[1].x + ' ' + controlPoints[1].y +
+										' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y +
+										' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
+									break;
+
+								case 1: //elbow
+									path = MC.canvas._round_corner(controlPoints);
+									break;
+
+								case 2: //bezier-q
+									path = MC.canvas._bezier_q_corner(controlPoints);
+									break;
+
+								case 3: //bezier-qt
+									path = MC.canvas._bezier_qt_corner(controlPoints);
+									break;
+							}
+
+						}
+						else
+						{
+							path = MC.canvas._round_corner(controlPoints); //elbow
+						}
+					}
+				}
+
+				if (line_option && line_option.line_uid)
+				{
+					svg_line = document.getElementById( line_option.line_uid );
+				}
+
+				if (line_option && svg_line !== null)
+				{
+					$(svg_line).children().attr('d', path);
+				}
+				else
+				{
+					//line style
+					MC.paper.start();
+
+					MC.paper.path(path);
+					MC.paper.path(path).attr('class','fill-line');
+
+					if (connection_option.dash_line === true)
+					{
+						MC.paper.path(path).attr('class', 'dash-line');
+					}
+
+					svg_line = MC.paper.save();
+
+					$('#line_layer').append(svg_line);
+
+					$(svg_line).attr({
+						'class': 'line line-' + connection_option.type,
+						'data-type': 'line'
+					});
+
+					if (line_option)
+					{
+						svg_line.id = line_option['line_uid'];
+					}
+					else
+					{
+						svg_line.id = MC.guid();
+
+						from_node_connection_data.push({
+							'target': to_uid,
+							'port': from_target_port,
+							'line': svg_line.id
+						});
+
+						to_node_connection_data.push({
+							'target': from_uid,
+							'port': to_target_port,
+							'line': svg_line.id
+						});
+
+						MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
+						MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
+					}
+
+					layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
+
+					connection_target_data[ from_uid ] = from_target_port;
+					connection_target_data[ to_uid ] = to_target_port;
+
+					// layout_connection_data = {
+					// 	'target': connection_target_data,
+					// 	'auto': true,
+					// 	'point': [],
+					// 	'type': connection_option.type
+					// };
+
+					MC.canvas_data.layout.connection[ svg_line.id ] = {
+						'target': connection_target_data,
+						'auto': true,
+						'point': [],
+						'type': connection_option.type
+					};
+				}
+
+				return svg_line.id;
+			}
+		}
+	},
+
 	connect: function (from_node, from_target_port, to_node, to_target_port, line_option)
 	{
 		if (typeof from_node === 'string')

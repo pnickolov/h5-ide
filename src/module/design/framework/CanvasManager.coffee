@@ -46,6 +46,27 @@ define [ "./Design" ], ( Design )->
         transformVal.appendItem(translateVal)
 
     drawLine : ( connection )->
+      from_node        = $( '#' + connection.__port1Comp.id )
+      from_target_port = connection.__port1
+      to_node          = $( '#' + connection.__port2Comp.id )
+      to_target_port   = connection.__port2
+      line_option      = null
+      from_data        = {
+        uid        : connection.__port1Comp.id
+        type       : connection.__port1Comp.type
+        coordinate : [connection.__port1Comp.x(), connection.__port1Comp.y()]
+        groupUId   : ''
+        connection : []
+      }
+      to_data          = {
+        uid        : connection.__port2Comp.id
+        type       : connection.__port2Comp.type
+        coordinate : [connection.__port2Comp.x(), connection.__port2Comp.y()]
+        groupUId   : ''
+        connection : []
+      }
+
+      MC.canvas.drawLine( from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data )
       null
 
     updateSGLabel : ( uid, sgLabelGroup )->

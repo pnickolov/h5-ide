@@ -87,7 +87,7 @@ define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant' ], ( lan
                     # new stack | open stack | open app
                     if type in [ 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' ]
 
-                        if result and result.resolved_data.length is 0
+                        if result and result.resolved_data and result.resolved_data.length is 0
                             console.log 'current tab inexistence', type, tab_id, region_name, result, current_platform
                             return
 

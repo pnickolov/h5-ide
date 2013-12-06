@@ -82,6 +82,9 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+
+        width: layout_data.size[0]
+        height: layout_data.size[1]
       })
 
   }

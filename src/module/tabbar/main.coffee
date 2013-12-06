@@ -240,11 +240,14 @@ define [ 'jquery', 'event', 'base_main',
 
                 else if type is 'appview'
 
+                    # create uid
+                    uid       = MC.forge.other.createUID()
+
                     # create appview id
-                    appview_id = 'process-' + MC.forge.other.createUID()
+                    appview_id = 'process-' + uid
 
                     # add id to cache id map
-                    MC.forge.other.addCacheMap type, appview_id, tab_id, region
+                    MC.forge.other.addCacheMap uid, appview_id, tab_id, region, type
 
                     # add appview tab
                     Tabbar.add appview_id, tab_name + ' - view'

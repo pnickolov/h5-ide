@@ -147,7 +147,7 @@ define [ 'aws_model',
             console.log 'reloadAppView', obj
 
             # set appview id
-            appview_id = 'appview-' + obj.id.split('-')[1]
+            appview_id = 'appview-' + obj.uid
 
             # update tab
             ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - app'

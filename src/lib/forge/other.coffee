@@ -104,11 +104,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#############################
 
 	# cacheIDMap[ tab_id ] =
-	#	type      : <appview>
+	#	uid       : <uid>
 	#	id        : <id>
 	#	origin_id : <vpc_id>
-	#	region    : <region_name>
 	#	data      : <vpc_resource result>
+	#	region    : <region_name>
+	#	type      : <appview>
 	#	state     : <'OLD', 'OPEN'>
 
 	cacheIDMap = {}
@@ -131,9 +132,16 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'listCacheMap'
 		cacheIDMap
 
-	addCacheMap = ( type, id, origin_id, region, state = 'OPEN' ) ->
-		console.log 'addCacheMap', type, id, region
-		cacheIDMap[ id ] = { 'type' : type, 'id' : id, 'origin_id' : origin_id, 'region' : region, 'state' : state }
+	addCacheMap = ( uid, id, origin_id, region, type, state = 'OPEN' ) ->
+		console.log 'addCacheMap', uid, id, origin_id, region, type, state
+
+		cacheIDMap[ id ] =
+			'uid'       : uid
+			'id'        : id
+			'origin_id' : origin_id
+			'region'    : region
+			'type'      : type
+			'state'     : state
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id

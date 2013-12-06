@@ -231,5 +231,19 @@ define [ "constant" ], ( constant ) ->
   DesignImpl.prototype.serializeLayout = ()->
 
   DesignImpl.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
+    if port1 < port2
+      p1Comp = @component( p1Uid )
+      p2Comp = @component( p2Uid )
+      type = port1 + "<" + port2
+    else
+      p1Comp = @component( p2Uid )
+      p2Comp = @component( p1Uid )
+      type = port2 + "<" + port1
+
+    C = Design.modelClassForType( type )
+
+    console.assert( C, "Cannot found Class for type: #{type}" )
+
+    new C( p1Comp, p2Comp )
 
   Design

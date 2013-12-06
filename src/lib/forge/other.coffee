@@ -154,7 +154,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		_.each cacheIDMap, ( item ) ->
 			if item.origin_id is vpc_id
 				item.data  = $.extend true, {}, data if data
-				item.state = state
+				item.state = state                   if state
 				obj        = item
 
 		obj

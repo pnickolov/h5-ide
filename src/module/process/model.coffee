@@ -35,7 +35,7 @@ define [ 'aws_model',
                     result.resolved_data.push appview_json
 
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap result.param[4], result, 'OLD'
+                    obj = MC.forge.other.setCacheMap result.param[4], result, null
 
                     if MC.forge.other.isCurrentTab obj.id
 

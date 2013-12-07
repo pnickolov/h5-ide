@@ -54,7 +54,11 @@ define [ 'jquery', 'text!./module/design/canvas/template.html', 'event', 'MC', '
                         if Tabbar.current is 'appview'
 
                             # when OPEN_APP result is result
-                            MC.canvas.analysis result.resolved_data[0]
+                            MC.canvas_data = result.resolved_data[0]
+                            #MC.canvas.layout.init()
+                            model.initLine( true )
+                            #model.reDrawSgLine()
+                            MC.canvas.analysis MC.canvas_data
 
                         MC.canvas.layout.init()
                         model.initLine()

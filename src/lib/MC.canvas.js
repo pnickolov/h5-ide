@@ -1310,10 +1310,13 @@ MC.canvas = {
 			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
 
 			layout_component_data = MC.canvas_data.layout.component,
-			layout_node_data = layout_component_data.node,
+			layout_node_data = layout_component_data.node;
 
-			from_node_class = COMPONENT_TYPE[ layout_component_data[ from_uid ].type ],
-			to_node_class = COMPONENT_TYPE[ layout_component_data[ to_uid ].type ],
+		//console.info(layout_component_data[ from_uid ]);
+
+		var
+			from_node_class = COMPONENT_TYPE[ MC.canvas_data.component[ from_uid ].type ],
+			to_node_class = COMPONENT_TYPE[ MC.canvas_data.component[ to_uid ].type ],
 
 			from_data = layout_component_data[ from_node_class ][ from_uid ],
 			to_data = layout_component_data[ to_node_class ][ to_uid ],

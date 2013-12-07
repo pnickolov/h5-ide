@@ -11,7 +11,7 @@
 
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-MC.canvas.initLine = function() {
+MC.canvas.initLine = function( write ) {
   var lines, main_rt, subnet_ids;
   subnet_ids = [];
   lines = [];
@@ -104,7 +104,13 @@ MC.canvas.initLine = function() {
   });
   return $.each(lines, function(idx, line_data) {
     if((MC.canvas_data.layout.component.node[line_data[0]] || MC.canvas_data.layout.component.group[line_data[0]]) && (MC.canvas_data.layout.component.node[line_data[1]] || MC.canvas_data.layout.component.group[line_data[1]])){
-      return MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+      if(write === true){
+        MC.canvas.createConnect(line_data[0], line_data[2], line_data[1], line_data[3]);
+      }
+      else{
+        MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+      }
+      return true;
     }
   });
 }

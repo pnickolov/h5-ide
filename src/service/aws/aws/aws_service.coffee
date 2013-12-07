@@ -476,7 +476,15 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 						app_json.layout.component.group[c.uid] = layout
 
+					when "AWS.EC2.EBS.Volume"
 
+						app_json.layout.component.node[c.uid] = layout
+
+					else
+
+						layout.groupUId = vpc_uid
+
+						app_json.layout.component.node[c.uid] = layout
 
 		console.log app_json
 

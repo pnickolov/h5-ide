@@ -1310,7 +1310,8 @@ MC.canvas = {
 			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
 
 			layout_component_data = MC.canvas_data.layout.component,
-			layout_node_data = layout_component_data.node;
+			layout_node_data = layout_component_data.node,
+			layout_connection_data = MC.canvas_data.layout.connection;
 
 		//console.info(layout_component_data[ from_uid ]);
 

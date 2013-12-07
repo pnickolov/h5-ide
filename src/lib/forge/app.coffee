@@ -64,13 +64,13 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			$.each canvas_data.component, (uid, comp) ->
 
 				res_key = constant.AWS_RESOURCE_KEY[comp.type]
-				
+
 				if res_key and resource_list and resource_list[comp.resource[res_key]]
 
 					delete resource_list[comp.resource[res_key]]
 
 				null
-			
+
 		null
 
 
@@ -81,7 +81,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			return null
 
 		if canvas_data and canvas_data.component and MC.data.resource_list
-			
+
 			resource_list = MC.data.resource_list[MC.canvas.data.get('region')]
 			resource_type_list = [ "AWS.ELB", "AWS.VPC.VPC", "AWS.VPC.Subnet", "AWS.VPC.InternetGateway", "AWS.AutoScaling.Group" ]
 			resource_type_list = resource_type_list.concat ["AWS.VPC.RouteTable", "AWS.VPC.VPNGateway", "AWS.VPC.CustomerGateway", "AWS.AutoScaling.LaunchConfiguration" ]
@@ -94,7 +94,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			$.each canvas_data.component, (uid, comp) ->
 
 				isExisted = true
-				
+
 				if comp.type in resource_type_list
 					isExisted = _isExistedResource resource_list, comp
 				else
@@ -149,10 +149,22 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 		#return
 		res_data
 
+	getAmis = ( data ) ->
+		console.log 'getAmis', data
+
+		amis = []
+
+		_.each data.component, ( item ) ->
+			if item.type is 'AWS.EC2.Instance' and item.resource and item.resource.ImageId
+				amis.push item.resource.ImageId
+
+		amis
 
 	#public
-	existing_app_resource : existing_app_resource
-	getNameById : getNameById
+	existing_app_resource      : existing_app_resource
+	getNameById                : getNameById
 	updateDeletedResourceState : updateDeletedResourceState
-	clearResourceInCache : clearResourceInCache
-	getResourceById : getResourceById
+	clearResourceInCache       : clearResourceInCache
+	getResourceById            : getResourceById
+
+	getAmis                    : getAmis

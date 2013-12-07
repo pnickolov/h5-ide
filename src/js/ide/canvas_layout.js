@@ -65,8 +65,6 @@ var listen = function ()
 
 	if (canvas_state === 'appview')
 	{
-		console.info("sdsadaas");
-		
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)

@@ -1,8 +1,5 @@
 
-// [ Warning!!!! ] DEAD CODE
-// This source code is dead. listen() / ready() / connect() seems like doing nothing.
-// But it pollutes the window object. Which makes it un-removable !!!!
-// Dom Ready
+define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon', 'MC.canvas.line'], function() {
 var listen = function ()
 {
 	var canvas_state = MC.canvas.getState(),
@@ -86,7 +83,6 @@ var connect = function ()
 
 };
 
-define( ['jquery'], function() {
 	return {
 		'listen'     : listen,
 		'canvas_initialize' : canvas_initialize,

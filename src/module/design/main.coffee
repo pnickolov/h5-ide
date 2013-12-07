@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'constant', 'jquery', 'MC.canvas.constant','./module/design/framework/test' ], ( lang, constant ) ->
+define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( lang, constant ) ->
 
     #private
     loadModule = () ->

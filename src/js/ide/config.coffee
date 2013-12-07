@@ -134,7 +134,7 @@ require.config {
 		'process_view'       : 'module/process/view'
 		'process_model'      : 'module/process/model'
 
-		'design'             : 'module/design/main'
+		'design_module'      : 'module/design/main'
 		'design_view'        : 'module/design/view'
 		'design_model'       : 'module/design/model'
 
@@ -338,13 +338,6 @@ require.config {
 		'WS'           :
 			deps       : [ 'Meteor', 'underscore', 'MC' ]
 			exports    : 'WS'
-
-		#############################################
-		# temp
-		#############################################
-
-		'canvas_layout':
-			deps       : [ 'MC.canvas', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
 
 		#############################################
 		# modules

@@ -2,11 +2,11 @@
 #  View Mode for header module
 #############################
 
-define [ 'aws_model',
+define [ 'aws_model', 'ami_model'
          'event', 'constant',
          'text!./module/process/appview.json'
          'backbone', 'jquery', 'underscore'
-], ( aws_model, ide_event, constant, appview_json ) ->
+], ( aws_model, ami_model, ide_event, constant, appview_json ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -14,6 +14,7 @@ define [ 'aws_model',
 
             #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
             'flag_list'         : null
+            'current_tab_id'    : null
 
         initialize  : ->
             me = this
@@ -28,7 +29,7 @@ define [ 'aws_model',
             @on 'AWS_VPC__RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_VPC__RESOURCE_RETURN', result
 
-                if result and not result.is_error and result.resolved_data
+                if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
                     # set result.resolved_data
                     #result.resolved_data = []
@@ -37,12 +38,38 @@ define [ 'aws_model',
                     # set cacheMap data
                     obj = MC.forge.other.setCacheMap result.param[4], result, null
 
-                    if MC.forge.other.isCurrentTab obj.id
+                    # set current tab id
+                    @set 'current_tab_id', obj.id
+
+                    # set ami_ids
+                    ami_ids = MC.forge.app.getAmis result.resolved_data[0]
+
+                    # call api
+                    @getDescribeImages result.param[3], ami_ids
+
+                    null
+
+            @on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                console.log 'EC2_AMI_DESC_IMAGES_RETURN', result
+
+                if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
+
+                    # set cache resource
+                    MC.aws.aws.cacheResource result.resolved_data[0], result.param[3], false
+
+                    # get call service current tab id
+                    current_tab_id = result.param[0].src.sender.get 'current_tab_id'
+
+                    # get origin_id
+                    origin_obj = MC.forge.other.getCacheMap current_tab_id
+
+                    # set cacheMap data
+                    obj = MC.forge.other.setCacheMap origin_obj.origin_id, null, 'FINISH'
+
+                    if MC.forge.other.isCurrentTab current_tab_id
 
                         # reload app view
                         @reloadAppView obj
-
-                    null
 
         getProcess  : (tab_name) ->
             me = this
@@ -132,7 +159,7 @@ define [ 'aws_model',
                 # get obj
                 obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
 
-                if obj and obj.data
+                if obj and obj.data and obj.state is 'FINISH'
 
                     # reload app view
                     @reloadAppView obj
@@ -140,6 +167,13 @@ define [ 'aws_model',
                 else
 
                     console.log 'not found process'
+
+            null
+
+        getDescribeImages : ( region, ami_ids ) ->
+            console.log 'getDescribeImages', region, ami_ids
+
+            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
 
             null
 

@@ -355,8 +355,8 @@ require.config {
 		'dashboard'    :
 			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
 
-		'design'       :
-			deps       : [ 'design_view', 'design_model', 'MC' ]
+		# 'design_module' :
+		# 	deps       : [ 'design_view', 'design_model', 'MC' ]
 
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]

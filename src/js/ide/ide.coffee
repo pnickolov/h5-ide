@@ -5,7 +5,7 @@
 define [ 'MC', 'event', 'handlebars'
 		 'i18n!nls/lang.js',
 		 'view', 'canvas_layout',
-		 'header', 'navigation', 'tabbar', 'dashboard', 'design', 'process',
+		 'header', 'navigation', 'tabbar', 'dashboard', 'design_module', 'process',
 		 'WS', 'constant',
 		 'base_model',
 		 'forge_handle', 'validation', 'aws_handle'

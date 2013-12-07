@@ -86,7 +86,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"OwnerId": "",
 				"RequestManaged": "",
 				"SecondPriIpCount": "",
-				"Attachment":{},
+				"Attachment":{
+						"DeviceIndex" : "",
+						"InstanceId"	: "",
+						"AttachmentId"	: "",
+						"AttachTime"	: ""
+					},
 				"AvailabilityZone": "",
 				"SubnetId": "",
 				"Description": "",
@@ -97,10 +102,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
-		eni_json.resource.Attachment.DeviceIndex = aws_eni.attachment.deviceIndex
-		eni_json.resource.Attachment.InstanceId = aws_eni.attachment.instanceId
-		eni_json.resource.Attachment.AttachmentId = aws_eni.attachment.attachmentId
-		eni_json.resource.Attachment.AttachTime = aws_eni.attachment.attachTime
+		if aws_eni.attachment
+			eni_json.resource.Attachment.DeviceIndex = aws_eni.attachment.deviceIndex
+			eni_json.resource.Attachment.InstanceId = aws_eni.attachment.instanceId
+			eni_json.resource.Attachment.AttachmentId = aws_eni.attachment.attachmentId
+			eni_json.resource.Attachment.AttachTime = aws_eni.attachment.attachTime
 
 		for ip in aws_eni.privateIpAddressesSet.item
 

@@ -841,7 +841,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 for k, v of obj
 
-                    if typeof(v) is 'string' and reference[v] and k isnt except_key
+                    if typeof(v) is 'string' and reference[v] and k not in [except_key, 'name']
 
                         obj[k] = reference[v]
 

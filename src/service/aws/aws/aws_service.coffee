@@ -351,11 +351,13 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 		res[region] = resourceMap nodes for region, nodes of result
 
-		app_json = MC.canvas.STACK_JSON
+		app_json = $.extend true, {}, MC.canvas.STACK_JSON
 
 		vpc_id = ""
 
 		for region, nodes of res
+
+			app_json.region = region
 
 			for resource_type, resource_comp of nodes
 

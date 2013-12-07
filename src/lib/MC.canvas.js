@@ -22,7 +22,7 @@ MC.canvas = {
 		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
 			state = 'stack';
 		}
-		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' || Tabbar.current === 'appview' ) {
 			state = Tabbar.current;
 		}
 		return state;
@@ -5592,11 +5592,14 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
+	var canvas_status = MC.canvas.getState();
+
 	if (
-		Tabbar.current === 'new' ||
-		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack' ||
-		Tabbar.current === 'appedit'
+		canvas_status === 'new' ||
+		canvas_status === 'app' ||
+		canvas_status === 'stack' ||
+		canvas_status === 'appedit' ||
+		canvas_status === 'appview'
 	)
 	{
 		var keyCode = event.which,
@@ -5879,8 +5882,6 @@ MC.canvas.event.keyEvent = function (event)
 
 MC.canvas.analysis = function ( data )
 {
-	MC.canvas_data = data;
-
 	var resources = {},
 		layout = {};
 

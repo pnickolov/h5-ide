@@ -14,16 +14,12 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       this.coordinate = [ component.x(), component.y() ]
       this.size       = [ component.width(), component.height() ]
       this.type       = component.type
-      this.group      = component.get("group")
+      this.nodeType   = if component.get("group") then "group" else "node"
 
       this.parentId   = component.parent()
       this.parentId   = if this.parent then "" else this.parentId.id
 
     this
-
-  CanvasElement.prototype.isNode  = ()-> !this.group
-  CanvasElement.prototype.isGroup = ()-> this.group
-
 
   CanvasElement.prototype.element = ()->
     if not this.el

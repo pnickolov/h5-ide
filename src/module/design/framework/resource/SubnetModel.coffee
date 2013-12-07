@@ -19,25 +19,17 @@ define [ "constant", "../Design", "../GroupModel", "../CanvasManager" ], ( const
         portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 5
 
         node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({
-          'class'          : 'port port-gray port-subnet-assoc-in'
-          'id'             : @id + '_port-subnet-assoc-in'
-          'transform'      : 'translate(-12, ' + portY + ')' # port poition
-          'data-name'      : 'subnet-assoc-in' # for identify port
-          'data-position'  : 'left' # port position: for calc point of junction
-          'data-type'      : 'association' # color of line
-          'data-direction' : 'in' # direction
-          'data-angle'     : MC.canvas.PORT_LEFT_ANGLE # port angle
+          'class'      : 'port port-gray port-subnet-assoc-in'
+          'id'         : @id + '_port-subnet-assoc-in'
+          'transform'  : 'translate(-12, ' + portY + ')' # port poition
+          'data-angle' : MC.canvas.PORT_LEFT_ANGLE # port angle
         }) )
 
         node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({
-          'class'          : 'port port-gray port-subnet-assoc-out'
-          'id'             : @id + '_port-subnet-assoc-out'
-          'transform'      : 'translate(' + portX + ', ' + portY + ')'
-          'data-name'      : 'subnet-assoc-out'
-          'data-position'  : 'right'
-          'data-type'      : 'association'
-          'data-direction' : 'out'
-          'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+          'class'      : 'port port-gray port-subnet-assoc-out'
+          'id'         : @id + '_port-subnet-assoc-out'
+          'transform'  : 'translate(' + portX + ', ' + portY + ')'
+          'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
         }) )
 
         $('#subnet_layer').append node

@@ -30,26 +30,18 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
         node.append(
           # Left port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-vgw-tgt'
-            'class'          : 'port port-blue port-vgw-tgt'
-            'transform'      : 'translate(3, 30)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'vgw-tgt'
-            'data-position'  : 'left'
-            'data-type'      : 'sg'
-            'data-direction' : 'in'
-            'data-angle'     : MC.canvas.PORT_LEFT_ANGLE
+            'id'         : @id + '_port-vgw-tgt'
+            'class'      : 'port port-blue port-vgw-tgt'
+            'transform'  : 'translate(3, 30)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
           }),
 
           # Right port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-vgw-vpn'
-            'class'          : 'port port-purple port-vgw-vpn'
-            'transform'      : 'translate(69, 30)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'vgw-vpn'
-            'data-position'  : 'right'
-            'data-type'      : 'vpn'
-            'data-direction' : 'out'
-            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+            'id'         : @id + '_port-vgw-vpn'
+            'class'      : 'port port-purple port-vgw-vpn'
+            'transform'  : 'translate(69, 30)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           })
         )
 

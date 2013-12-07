@@ -37,38 +37,26 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           node.append(
             # Left
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'             : @id + '_port-elb-sg-in'
-              'class'          : 'port port-blue port-elb-sg-in'
-              'transform'      : 'translate(2, 30)' + MC.canvas.PORT_RIGHT_ROTATE
-              'data-name'      : 'elb-sg-in'
-              'data-position'  : 'left'
-              'data-type'      : 'sg'
-              'data-direction' : "in"
-              'data-angle'     : MC.canvas.PORT_LEFT_ANGLE
+              'id'         : @id + '_port-elb-sg-in'
+              'class'      : 'port port-blue port-elb-sg-in'
+              'transform'  : 'translate(2, 30)' + MC.canvas.PORT_RIGHT_ROTATE
+              'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             }),
             # Right gray
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'             : @id + '_port-elb-assoc'
-              'class'          : 'port port-gray port-elb-assoc'
-              'transform'      : 'translate(79, 45)' + MC.canvas.PORT_RIGHT_ROTATE
-              'data-name'      : 'elb-assoc'
-              'data-position'  : 'right'
-              'data-type'      : 'association'
-              'data-direction' : 'out'
-              'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+              'id'         : @id + '_port-elb-assoc'
+              'class'      : 'port port-gray port-elb-assoc'
+              'transform'  : 'translate(79, 45)' + MC.canvas.PORT_RIGHT_ROTATE
+              'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             })
           )
 
         node.append(
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-elb-sg-out'
-            'class'          : 'port port-blue port-elb-sg-out'
-            'transform'      : 'translate(79, 15)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'elb-sg-out'
-            'data-position'  : 'right'
-            'data-type'      : 'sg'
-            'data-direction' : 'out'
-            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+            'id'         : @id + '_port-elb-sg-out'
+            'class'      : 'port port-blue port-elb-sg-out'
+            'transform'  : 'translate(79, 15)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           })
         )
 

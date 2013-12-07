@@ -81,26 +81,18 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
           # left port(blue)
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'             : @id + '_port-instance-sg-left'
-            'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
-            'transform'      : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'instance-sg'
-            'data-position'  : 'left'
-            'data-type'      : 'sg'
-            'data-direction' : 'in'
-            'data-angle'     : MC.canvas.PORT_LEFT_ANGLE
+            'id'         : @id + '_port-instance-sg-left'
+            'class'      : 'port port-blue port-instance-sg port-instance-sg-left'
+            'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
           }),
 
           # right port(blue)
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'             : @id + '_port-instance-sg-right'
-            'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
-            'transform'      : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'instance-sg'
-            'data-position'  : 'right'
-            'data-type'      : 'sg'
-            'data-direction' : 'out'
-            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+            'id'         : @id + '_port-instance-sg-right'
+            'class'      : 'port port-blue port-instance-sg port-instance-sg-right'
+            'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           })
         )
 
@@ -108,25 +100,17 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           # Show RTB/ENI Port in VPC Mode
           node.append(
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'             : @id + '_port-instance-attach'
-              'class'          : 'port port-green port-instance-attach'
-              'transform'      : 'translate(78, 45)' + MC.canvas.PORT_RIGHT_ROTATE
-              'data-name'      : 'instance-attach'
-              'data-position'  : 'right'
-              'data-type'      : 'attachment'
-              'data-direction' : 'out'
-              'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+              'id'         : @id + '_port-instance-attach'
+              'class'      : 'port port-green port-instance-attach'
+              'transform'  : 'translate(78, 45)' + MC.canvas.PORT_RIGHT_ROTATE
+              'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             })
 
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'             : @id + '_port-instance-rtb'
-              'class'          : 'port port-blue port-instance-rtb'
-              'transform'      : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
-              'data-name'      : 'instance-rtb'
-              'data-position'  : 'top'
-              'data-type'      : 'sg'
-              'data-direction' : 'in'
-              'data-angle'     : MC.canvas.PORT_UP_ANGLE
+              'id'         : @id + '_port-instance-rtb'
+              'class'      : 'port port-blue port-instance-rtb'
+              'transform'  : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
+              'data-angle' : MC.canvas.PORT_UP_ANGLE
             })
           )
 

@@ -30,14 +30,10 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
         node.append(
           # Port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-igw-tgt'
-            'class'          : 'port port-blue port-igw-tgt'
-            'transform'      : 'translate(70, 30)' + MC.canvas.PORT_LEFT_ROTATE
-            'data-name'      : 'igw-tgt'
-            'data-position'  : 'right'
-            'data-type'      : 'sg'
-            'data-direction' : 'in'
-            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+            'id'         : @id + '_port-igw-tgt'
+            'class'      : 'port port-blue port-igw-tgt'
+            'transform'  : 'translate(70, 30)' + MC.canvas.PORT_LEFT_ROTATE
+            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           })
         )
 

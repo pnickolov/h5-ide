@@ -33,50 +33,34 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "../connection/R
         node.append(
           # Left port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-rtb-tgt-left'
-            'class'          : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
-            'transform'      : 'translate(2, 30)' + MC.canvas.PORT_LEFT_ROTATE
-            'data-name'      : 'rtb-tgt'
-            'data-position'  : 'left'
-            'data-type'      : 'sg'
-            'data-direction' : 'out'
-            'data-angle'     : MC.canvas.PORT_LEFT_ANGLE
+            'id'         : @id + '_port-rtb-tgt-left'
+            'class'      : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
+            'transform'  : 'translate(2, 30)' + MC.canvas.PORT_LEFT_ROTATE
+            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
           }),
 
           # Right port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-rtb-tgt-right'
-            'class'          : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
-            'transform'      : 'translate(70, 30)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-name'      : 'rtb-tgt'
-            'data-position'  : 'right'
-            'data-type'      : 'sg'
-            'data-direction' : 'out'
-            'data-angle'     : MC.canvas.PORT_RIGHT_ANGLE
+            'id'         : @id + '_port-rtb-tgt-right'
+            'class'      : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
+            'transform'  : 'translate(70, 30)' + MC.canvas.PORT_RIGHT_ROTATE
+            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           }),
 
           # Top port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-rtb-src-top'
-            'class'          : 'port port-gray port-rtb-src port-rtb-src-top'
-            'transform'      : 'translate(37, 2)' + MC.canvas.PORT_UP_ROTATE
-            'data-name'      : 'rtb-src'
-            'data-position'  : 'top'
-            'data-type'      : 'association'
-            'data-direction' : 'in'
-            'data-angle'     : MC.canvas.PORT_UP_ANGLE
+            'id'         : @id + '_port-rtb-src-top'
+            'class'      : 'port port-gray port-rtb-src port-rtb-src-top'
+            'transform'  : 'translate(37, 2)' + MC.canvas.PORT_UP_ROTATE
+            'data-angle' : MC.canvas.PORT_UP_ANGLE
           }),
 
           # Bottom port
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'             : @id + '_port-rtb-src-bottom'
-            'class'          : 'port port-gray port-rtb-src port-rtb-src-bottom'
-            'transform'      : 'translate(36, 69)' + MC.canvas.PORT_DOWN_ROTATE
-            'data-name'      : 'rtb-src'
-            'data-position'  : 'bottom'
-            'data-type'      : 'association'
-            'data-direction' : 'in'
-            'data-angle'     : MC.canvas.PORT_DOWN_ANGLE
+            'id'         : @id + '_port-rtb-src-bottom'
+            'class'      : 'port port-gray port-rtb-src port-rtb-src-bottom'
+            'transform'  : 'translate(36, 69)' + MC.canvas.PORT_DOWN_ROTATE
+            'data-angle' : MC.canvas.PORT_DOWN_ANGLE
           }),
 
           Canvon.text(41, 27, @get("name")).attr({

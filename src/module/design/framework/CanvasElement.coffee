@@ -1,5 +1,10 @@
 
-define [], ()->
+define [ "./CanvasManager" ], ( CanvasManager )->
+
+  ###
+  CanvasElement is intent to be an adaptor for MC.canvas.js to use ResourceModel.
+  But in the future, this class can be upgrade to ResourceModel's view on canvas.
+  ###
 
   CanvasElement = ( component, quick )->
 
@@ -22,15 +27,25 @@ define [], ()->
 
   CanvasElement.prototype.element = ()->
     if not this.el
-      this.el = $("#" + this.id)
+      this.el = $( document.getElementById( this.id ) )
 
     this.el
 
-  CanvasElement.prototype.resize = ()->
-    this.size
+  CanvasElement.prototype.resize = ( w, h )->
+    if w is undefined
+      return this.size
 
-  CanvasElement.prototype.position = ()->
-    this.coordinate
+    CanvasManager.resize( this.id, w, h )
+    null
+
+
+  CanvasElement.prototype.position = ( x, y )->
+    if x is undefined
+      return this.coordinate
+
+    CanvasManager.move( this.id, x, y )
+    null
+
 
   CanvasElement.prototype.offset = ()->
     {

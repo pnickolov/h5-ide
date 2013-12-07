@@ -22,7 +22,7 @@ MC.canvas = {
 		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
 			state = 'stack';
 		}
-		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' || Tabbar.current === 'appview' ) {
 			state = Tabbar.current;
 		}
 		return state;
@@ -5593,7 +5593,7 @@ MC.canvas.keypressed = [];
 MC.canvas.event.keyEvent = function (event)
 {
 	var canvas_status = MC.canvas.getState();
-	
+
 	if (
 		canvas_status === 'new' ||
 		canvas_status === 'app' ||

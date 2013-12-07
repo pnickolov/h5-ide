@@ -391,6 +391,11 @@
 							column_index = 0,
 							row_index = 0;
 
+						stack[ 'AWS.EC2.Instance' ].sort(function (a, b)
+						{
+							return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+						});
+
 						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
 						{
 							if (column_index >= max_child_column)

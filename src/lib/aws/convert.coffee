@@ -70,7 +70,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		eni_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.NetworkInterface",
-			"name": aws_eni.networkInterfaceId,
+			"name": if aws_eni.tagSet and aws_eni.tagSet.Name then aws_eni.tagSet.Name else aws_eni.networkInterfaceId,
 			"serverGroupUid": "",
 			"serverGroupName": "",
 			"number": 1,
@@ -129,7 +129,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		instance_json = {
 			"uid": MC.guid(),
 			"type": "AWS.EC2.Instance",
-			"name": aws_instance.instanceId,
+			"name": if aws_instance.tagSet and aws_instance.tagSet.Name then aws_instance.tagSet.Name else aws_instance.instanceId,
 			"serverGroupUid": "",
 			"serverGroupName": "",
 			"number": 1,
@@ -424,7 +424,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		subnet_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.Subnet",
-			"name": aws_subnet.subnetId,
+			"name": if aws_subnet.tagSet and aws_subnet.tagSet.Name then aws_subnet.tagSet.Name else aws_subnet.subnetId,
 			"resource":	{
 				"AvailabilityZone": "",
 				"CidrBlock": "",
@@ -444,7 +444,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		vpc_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.VPC",
-			"name": "vpc",
+			"name": if aws_vpc.tagSet and aws_vpc.tagSet.Name then aws_vpc.tagSet.Name else aws_vpc.vpcId,
 			"resource":	{
 				"EnableDnsHostnames": "",
 				"DhcpOptionsId": "",
@@ -636,7 +636,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		igw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.InternetGateway",
-			"name": "IGW",
+			"name": "InternetGateway",
 			"resource":	{
 				"InternetGatewayId": aws_igw.internetGatewayId,
 				"AttachmentSet": [{
@@ -656,7 +656,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		vgw_json = {
 			"uid": MC.guid(),
 			"type": "AWS.VPC.VPNGateway",
-			"name": "VGW",
+			"name": "VirtualPrivateGateway",
 			"resource":	{
 				"Attachments": [{
 					"VpcId": aws_vgw.attachments.item[0].vpcId,

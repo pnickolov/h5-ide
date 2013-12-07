@@ -417,17 +417,29 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 					when 'AWS.VPC.NetworkInterface'
 
+						layout.groupUId = c.resource.SubnetId.split('.')[0].slice(1)
+
 						if c.resource.Attachment and c.resource.Attachment.DeviceIndex not in ['0', 0]
 
-							app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+							app_json.layout.component.node[c.uid] = layout
 
 						else if not c.resource.Attachment
 
-							app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+							app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.AutoScaling.Group"
 
 						if c.resource.AvailabilityZones.length != 1
+
+							subnets = []
+
+							if c.resource.VPCZoneIdentifier
+
+								subs = c.resource.VPCZoneIdentifier.split(',')
+
+								for subnet in subs
+
+									subnets.push ref_key[subnet].split('.')[0].slice(1)
 
 							for idx, zone of c.resource.AvailabilityZones
 
@@ -438,6 +450,14 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 									extend_asg = vpc_resource_layout_map[c.type].layout
 
 									extend_asg.originalId = c.uid
+
+									if subnets.length != 0
+
+										extend_asg.groupUId = subnets[idx]
+
+									else
+
+										extend_asg.groupUId = zone.split('.')[0].slice(1)
 
 									app_json.layout.component.group[extend_asg_uid] = extend_asg
 

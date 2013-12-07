@@ -20,6 +20,7 @@ define [ 'event',
 
         events   :
             'click #close-awscredential'            : 'onClose'
+            'click #account-setting-close'          : 'onClose'
             'click #awscredentials-submit'          : 'onSubmit'
             'click #awscredentials-update-done'     : 'onDone'
             'click .AWSCredentials-account-update'  : 'onUpdate'
@@ -61,14 +62,11 @@ define [ 'event',
                 # reset key
                 @trigger 'CANCAL_CREDENTIAL'
             else
-                # close modal
-                modal.close()
                 @trigger 'CLOSE_POPUP'
             null
 
         onDone : ->
             console.log 'account_setting_tab onDone'
-            modal.close()
             this.trigger 'CLOSE_POPUP'
 
         onUpdate : ->

@@ -304,6 +304,16 @@ a {
 }
 
 /*Account Settings*/
+#account-setting-close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	font-style: normal;
+	cursor: pointer;
+	font-size: 20px;
+	line-height: 20px;
+}
+
 #account-setting-wrap .modal-body {
 	padding: 0;
 }

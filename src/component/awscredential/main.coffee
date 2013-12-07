@@ -160,6 +160,8 @@ define [ 'jquery', 'event',
         #
         view  = null
         model = null
+        #
+        modal.close()
 
     #public
     loadModule   : loadModule

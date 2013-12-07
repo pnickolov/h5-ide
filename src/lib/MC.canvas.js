@@ -2019,7 +2019,7 @@ MC.canvas = {
 					{
 						id = group_stack[ layer ][ i ].id;
 
-						group_comp = Design.instance().getComponent( id )
+						group_comp = Design.instance().component( id )
 						coordinate = [ group_comp.x(), group_comp.y() ];
 						size       = [ group_comp.width(), group_comp.height() ];
 
@@ -2224,7 +2224,7 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = Design.instance().getComponent( group_node.id );
+		var group_data = Design.instance().component( group_node.id );
 
 		return MC.canvas.areaChild(
 			group_data.id,

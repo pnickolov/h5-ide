@@ -13,7 +13,7 @@ var listen = function ()
 
 	canvas_container
 		.off(name_space)
-		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack');
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_canvas_state_appview');
 
 	if (canvas_state === 'app')
 	{
@@ -53,6 +53,22 @@ var listen = function ()
 		canvas_container
 			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.port', MC.canvas.event.drawConnection.mousedown)
+			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
+			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
+			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)
+			.on('click' + name_space, '.line', MC.canvas.event.selectLine)
+			.on('mousedown' + name_space, MC.canvas.event.clearSelected)
+			.on('mousedown' + name_space, '#svg_canvas', MC.canvas.event.clickBlank)
+			.on('selectstart' + name_space, returnFalse)
+			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown);
+	}
+
+	if (canvas_state === 'appview')
+	{
+		console.info("sdsadaas");
+		
+		canvas_container
+			.addClass('canvas_state_' + canvas_state)
 			.on('mousedown' + name_space, '.dragable', MC.canvas.event.dragable.mousedown)
 			.on('mousedown' + name_space, '.group-resizer', MC.canvas.event.groupResize.mousedown)
 			.on('mouseenter'  + name_space + ' mouseleave'  + name_space, '.node', MC.canvas.event.nodeHover)

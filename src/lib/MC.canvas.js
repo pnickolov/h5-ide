@@ -5592,11 +5592,14 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
+	var canvas_status = MC.canvas.getState();
+	
 	if (
-		Tabbar.current === 'new' ||
-		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack' ||
-		Tabbar.current === 'appedit'
+		canvas_status === 'new' ||
+		canvas_status === 'app' ||
+		canvas_status === 'stack' ||
+		canvas_status === 'appedit' ||
+		canvas_status === 'appview'
 	)
 	{
 		var keyCode = event.which,

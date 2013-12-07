@@ -31,7 +31,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
             'id'             : @id + '_port-cgw-vpn',
             'class'          : 'port port-purple port-cgw-vpn',
-            'transform'      : 'translate(6, 35)' + MC.canvas.PORT_RIGHT_ROTATE,
+            'transform'      : 'translate(6, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
             'data-name'      : 'cgw-vpn',
             'data-position'  : 'left',
             'data-type'      : 'vpn',

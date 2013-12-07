@@ -46,11 +46,10 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             return
                         #### added by song, if the stack/app too old, unable to open ###
 
-                        #MC.canvas.layout.init()
-                        #MC.canvas.initLine()
                         MC.canvas.layout.init()
-                        model.initLine()
-                        model.reDrawSgLine()
+                        # model.initLine()
+                        # model.reDrawSgLine()
+                        new Design( MC.canvas_data.component, MC.canvas_data.layout, {} )
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
                     #

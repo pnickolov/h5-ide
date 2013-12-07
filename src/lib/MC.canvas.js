@@ -973,6 +973,85 @@ MC.canvas = {
 		);
 	},
 
+	route2 : function ( start, end )
+	{
+		//add by xjimmy, connection algorithm (xjimmy's algorithm)
+    var controlPoints = [],
+      //start.x >= end.x
+      start_0_90    = false,
+      end_0_90      = false,
+      start_180_270 = false,
+      end_180_270   = false,
+      //start.x<end.x
+      start_0_270  = false,
+      end_0_270    = false,
+      start_90_180 = false,
+      end_90_180   = false;
+
+    //ensure start.y>=end.y
+    if (start.y < end.y) {
+    	var tmp = start;
+    	start = end;
+    	end   = tmp;
+    }
+
+    if (start.x >= end.x)
+    {
+      start_0_90    = start.angle === 0   || start.angle === 90;
+      end_0_90      = end.angle   === 0   || end.angle   === 90;
+      start_180_270 = start.angle === 180 || start.angle === 270;
+      end_180_270   = end.angle   === 180 || end.angle   === 270;
+    } else
+    {
+      //start.x<end.x
+      start_0_270  = start.angle === 0  || start.angle === 270;
+      end_0_270    = end.angle   === 0  || end.angle   === 270;
+      start_90_180 = start.angle === 90 || start.angle === 180;
+      end_90_180   = end.angle   === 90 || end.angle   === 180;
+    }
+
+    //1.start point
+    controlPoints.push( start );
+    controlPoints.push( start );
+
+    //2.control point
+    if (
+    	(start_0_90 && end_0_90) || (start_90_180 && end_90_180)
+    )
+    {
+      //A
+      controlPoints.push({ x: start.x, y: end.y });
+    } else if (
+      (start_180_270 && end_180_270) || (start_0_270 && end_0_270)
+    )
+    {
+      //B
+      controlPoints.push({ x: end.x, y: start.y });
+    } else if (
+      (start_0_90 && end_180_270) || (start_90_180 && end_0_270)
+    )
+    {
+      //C
+      mid_y = (start.y + end.y) / 2;
+      controlPoints.push({ x: start.x, y: mid_y });
+      controlPoints.push({ x: end.x,   y: mid_y });
+    } else if (
+      (start_180_270 && end_0_90) || (start_0_270 && end_90_180)
+    )
+    {
+      //D
+      mid_x = (start.x + end.x) / 2;
+      controlPoints.push({ x: mid_x, y: start.y });
+      controlPoints.push({ x: mid_x, y: end.y });
+    }
+
+    //3.end point
+    controlPoints.push( end );
+    controlPoints.push( end );
+
+    return controlPoints;
+	},
+
 
 	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data, connection_id)
 	{
@@ -2190,149 +2269,6 @@ MC.canvas.layout = {
 
 		components = MC.canvas.data.get("component");
 
-		// $.each(components, function (key, value)
-		// {
-		// 	try
-		// 	{
-		// 		if (value.type === 'AWS.EC2.KeyPair')
-		// 		{
-
-		// 			if (value.name === "$key-default$" || value.name === "key-default" || value.name === "kp-default" || value.name === "default-kp" )
-		// 			{
-		// 				value.name = "DefaultKP";
-		// 				value.resource.KeyName = value.name;
-		// 			}
-		// 			if (value.resource.KeyName === "")
-		// 			{
-		// 				value.resource.KeyName = value.name;
-		// 			}
-		// 			if (value.name === "DefaultKP")
-		// 			{
-		// 				has_default_kp=true;
-		// 			}
-		// 			MC.canvas_property.kp_list[ value.name ] = value.uid;
-		// 		}
-		// 		if (value.type === "AWS.EC2.SecurityGroup")
-		// 		{
-		// 			tmp = {};
-
-		// 			if (value.name === "$sg-default$" || value.name === "sg-default" || value.name === "default-sg" )
-		// 			{
-		// 				value.name = "DefaultSG";
-		// 				value.resource.GroupDescription = 'Stack Default Security Group';
-		// 				value.resource.GroupName = value.name;
-		// 			}
-
-		// 			tmp.name = value.name;
-		// 			tmp.uid = value.uid;
-		// 			tmp.member = [];
-		// 			$.each(components, function (k, v)
-		// 			{
-		// 				if (v.type === "AWS.EC2.Instance")
-		// 				{
-		// 					sg_uids = v.resource.SecurityGroupId;
-		// 					$.each(sg_uids, function (id, sg_ref)
-		// 					{
-		// 						if (sg_ref.split('.')[0].slice(1) === tmp.uid)
-		// 						{
-		// 							tmp.member.push(v.uid);
-		// 						}
-		// 					});
-		// 				}
-		// 				if (v.type === "AWS.AutoScaling.LaunchConfiguration")
-		// 				{
-		// 					sg_uids = v.resource.SecurityGroups;
-		// 					$.each(sg_uids, function (id, sg_ref)
-		// 					{
-		// 						if (sg_ref.split('.')[0].slice(1) === tmp.uid)
-		// 						{
-		// 							tmp.member.push(v.uid);
-		// 						}
-		// 					});
-		// 				}
-		// 			});
-		// 			MC.canvas_property.sg_list.push(tmp);
-		// 		}
-		// 		if (
-		// 			value.type === "AWS.VPC.RouteTable" &&
-		// 			value.resource.AssociationSet.length > 0 &&
-		// 			value.resource.AssociationSet[0].Main === true
-		// 		)
-		// 		{
-		// 			MC.canvas_property.main_route = value.uid;
-		// 		}
-		// 		if (
-		// 			value.type === "AWS.VPC.NetworkAcl" &&
-		// 			value.resource.Default === true
-		// 		)
-		// 		{
-		// 			MC.canvas_property.default_acl = value.uid;
-		// 		}
-		// 	}
-		// 	catch(error)
-		// 	{
-		// 		console.error('[MC.canvas.layout.init]init component error:');
-
-		// 		return true;//continue
-		// 	}
-		// });
-
-		// if (!has_default_kp)
-		// {//add DefaultKP
-		// 	var kp = $.extend(true, {}, MC.canvas.KP_JSON.data),
-		// 		uid = MC.guid();
-		// 	kp.uid = uid;
-		// 	MC.canvas_property.kp_list[kp.name] = kp.uid;
-		// 	MC.canvas.data.get("component")[kp.uid] = kp;
-		// }
-
-		// $.each(MC.canvas_property.sg_list, function (key, value)
-		// {
-		// 	try
-		// 	{
-		// 		if (value.name === "DefaultSG" && key !== 0)
-		// 		{
-		// 			//move DefaultSG to the first one
-		// 			default_sg = MC.canvas_property.sg_list.splice(key, 1);
-		// 			MC.canvas_property.sg_list.unshift(default_sg[0]);
-		// 			return false;
-		// 		}
-		// 	}
-		// 	catch(error)
-		// 	{
-		// 		console.error('[MC.canvas.layout.init]init sg_list error:');
-
-		// 		return true;//continue
-		// 	}
-		// });
-
-		// //init sg color
-		// $.each(MC.canvas_property.sg_list, function (key, value)
-		// {
-		// 	try
-		// 	{
-		// 		if (key < MC.canvas.SG_COLORS.length)
-		// 		{//use color table
-		// 			MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
-		// 		}
-		// 		else
-		// 		{//random color
-		// 			var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-		// 			for (; rand.length < 6;)
-		// 			{
-		// 				rand = '0' + rand;
-		// 			}
-		// 			MC.canvas_property.sg_list[key].color = rand;
-		// 		}
-		// 	}
-		// 	catch(error)
-		// 	{
-		// 		console.error('[MC.canvas.layout.init]init sg color error:');
-
-		// 		return true;//continue
-		// 	}
-		// });
-
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -2342,57 +2278,6 @@ MC.canvas.layout = {
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
-
-		// if (layout_data.component.node)
-		// {
-		// 	$.each(layout_data.component.node, function (id, data)
-		// 	{
-		// 		try
-		// 		{
-		// 			data.connection = [];
-		// 			MC.canvas.add(id);
-		// 		}
-		// 		catch(error)
-		// 		{
-		// 			console.error('[MC.canvas.layout.init]add node error');
-
-		// 			return true;//continue
-		// 		}
-		// 	});
-		// }
-		// else
-		// {
-		// 	layout_data.component.node = {};
-		// }
-
-		// if (layout_data.component.group)
-		// {
-		// 	$.each(layout_data.component.group, function (id, data)
-		// 	{
-		// 		try
-		// 		{
-		// 			if(data.connection){
-		// 				data.connection = [];
-		// 			}
-		// 			MC.canvas.add(id);
-		// 		}
-		// 		catch(error)
-		// 		{
-		// 			/* env:dev */
-		// 			throw error
-		// 			/* env:dev:end */
-
-		// 			return true;//continue
-		// 		}
-		// 	});
-		// }
-		// else
-		// {
-		// 	layout_data.component.group = {};
-		// }
-		layout_data.component.node = {};
-		layout_data.component.group = {};
-		layout_data.connection = {};
 
 		//store json to original_json
 		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);

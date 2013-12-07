@@ -3,7 +3,8 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   C = ConnectionModel.extend {
 
-    lineType : "attachment"
+    defaults :
+      lineType : "attachment"
 
     portDefs :
       port1 :

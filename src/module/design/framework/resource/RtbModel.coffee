@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "../Design", "../connection/Route", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -97,7 +97,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
       if data.resource.AssociationSet and data.resource.AssociationSet[0]
         asso_main =  data.resource.AssociationSet[0].Main
 
-      new Model({
+      rtb = new Model({
 
         id   : data.uid
         name : data.name
@@ -107,6 +107,17 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       })
+
+      # Create routes between RTB and other resources
+      routes = data.resource.RouteSet
+      if routes.length > 1
+        # The first RouteSet is always local, so we don't deserialize it
+        i = 1
+        while i < routes.length
+          r = routes[i]
+          id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
+          new Route( rtb, resolve( id ) )
+          ++i
 
   }
 

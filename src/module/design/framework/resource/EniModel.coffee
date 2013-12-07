@@ -4,7 +4,7 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
   Model = ComplexResModel.extend {
 
     defaults :
-      primary  : false
+      embed : false
 
       x        : 0
       y        : 0
@@ -18,8 +18,8 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     draw : ( isCreate )->
 
-      if @get("primary")
-        # Do nothing if this is primary eni, a.k.a the internal eni of an Instance
+      if @get("embed")
+        # Do nothing if this is embed eni, a.k.a the internal eni of an Instance
         return
 
       if isCreate
@@ -120,19 +120,19 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
     deserialize : ( data, layout_data, resolve )->
 
-      primary = false
-      if data.resource.PrivateIpAddressSet and data.resource.PrivateIpAddressSet[0]
-        primary = MC.getBoolean( data.resource.PrivateIpAddressSet[0].Primary )
+      embed = false
+      if data.resource.Attachment
+        embed = data.resource.Attachment.DeviceIndex is "0"
 
       new Model({
 
         id   : data.uid
         name : data.name
 
-        primary : primary
+        embed : embed
 
-        x : if primary then 0 else layout_data.coordinate[0]
-        y : if primary then 0 else layout_data.coordinate[1]
+        x : if embed then 0 else layout_data.coordinate[0]
+        y : if embed then 0 else layout_data.coordinate[1]
       })
 
   }

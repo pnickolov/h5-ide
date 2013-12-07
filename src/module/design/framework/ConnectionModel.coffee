@@ -36,19 +36,17 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
         for def in @portDefs
           if def.port1.type is p1Comp.type and def.port2.type is p2Comp.type
-            @__port1     = def.port1.name
+            @__portDef   = def
             @__port1Comp = p1Comp
-            @__port2     = def.port2.name
             @__port2Comp = p2Comp
             break
           else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
-            @__port1     = def.port1.name
+            @__portDef   = def
             @__port1Comp = p2Comp
-            @__port2     = def.port2.name
             @__port2Comp = p1Comp
             break
 
-        console.assert( @__port1, "Cannot create connection!" )
+        console.assert( @__portDef, "Cannot create connection!" )
 
       else
         # If there's no portDefs, we directly assign the parameter to this
@@ -59,7 +57,7 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
       # Call super constructor
       ResourceModel.call(this)
 
-      if @portDefs
+      if @get("visual")
         # If we have portDefs, then it's considered to be visual line
         # So ask CanvasManager to draw the line
         CanvasManager.drawLine( this )
@@ -70,9 +68,11 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
       this
 
+    port1 : ( attr )->
+      if @__portDef then @__portDef.port1[ attr ] else ""
+    port2 : ( attr )->
+      if @__portDef then @__portDef.port2[ attr ] else ""
 
-    port1     : ()-> @__port1 || ""
-    port2     : ()-> @__port2 || ""
     port1Comp : ()-> @__port1Comp
     port2Comp : ()-> @__port2Comp
 
@@ -118,6 +118,13 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
       if not protoProps.type
         protoProps.type = tags[0]
+
+      # If the class defines ports, then it is visual
+      if protoProps.portDefs
+        if not protoProps.defaults
+          protoProps.defaults = { visual : true }
+        else
+          protoProps.defaults.visual = true
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )
 

@@ -346,7 +346,10 @@ define [ 'MC', 'event',
                 'download' : MC.canvas_data.name + '.png'
             })
 
-            $( '.modal-body' ).html '<img src="' + base64_image + '" />'
+            $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
+                "background":"none"
+                "text-align":"center"
+            })
 
             _.delay ()->
                 modal.position()

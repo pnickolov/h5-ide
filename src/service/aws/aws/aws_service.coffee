@@ -616,8 +616,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		true
 
 	#def vpc_resource(self, username, session_id, region_name, vpc_id):
-	vpc_resource = ( src, username, session_id, region_name, vpc_id, callback ) ->
-		send_request "vpc_resource", src, [ username, session_id, region_name, vpc_id ], parserVpcResourceReturn, callback
+	vpc_resource = ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1, callback ) ->
+		send_request "vpc_resource", src, [ username, session_id, region_name, resources, addition, retry_times ], parserVpcResourceReturn, callback
 		true
 
 	#def stat_resource(self, username, session_id, region_name=None, resources=None):

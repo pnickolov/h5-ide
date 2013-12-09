@@ -8,7 +8,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
     loadModule = () ->
 
         #load remote design.js
-        require [ 'design_view', 'design_model', 'event', 'resource', 'property', 'toolbar', 'canvas' ], ( View, model, ide_event, resource, property, toolbar, canvas ) ->
+        require [ 'design_view', 'design_model', 'property', 'event' ], ( View, model, property_main, ide_event ) ->
 
             #
             design_view_init       = null
@@ -21,17 +21,8 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
             #listen event
             view.once 'DESIGN_COMPLETE', () ->
                 console.log 'view:DESIGN_COMPLETE'
-                #load remote design/canvas
-                canvas.loadModule()
-
-                #load remote design/toolbar
-                toolbar.loadModule()
-
-                #load remote design/resource
-                resource.loadModule()
-
-                #load remote design/property
-                property.loadModule()
+                #wrap 'resource', 'property', 'toolbar', 'canvas'
+                wrap()
 
             #render
             view.render()
@@ -62,7 +53,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                                   view.html(),
                                   model.getCanvasData(),
                                   model.getCanvasProperty(),
-                                  property.snapshot(),
+                                  property_main.snapshot(),
                                   model.getOriginData(),
                                   model.getTAValidation()
                 null
@@ -243,7 +234,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                 view.hideStatusbar()
 
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
-                property.restore property_panel
+                property_main.restore property_panel
                 null
 
 
@@ -251,6 +242,22 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
     unLoadModule = () ->
         #view.remove()
 
+    #private
+    wrap = () ->
+
+        require [ 'resource', 'property', 'toolbar', 'canvas' ], ( resource, property, toolbar, canvas ) ->
+
+            #load remote design/canvas
+            canvas.loadModule()
+
+            #load remote design/toolbar
+            toolbar.loadModule()
+
+            #load remote design/resource
+            resource.loadModule()
+
+            #load remote design/property
+            property.loadModule()
 
     #public
     loadModule   : loadModule

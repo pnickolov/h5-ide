@@ -5882,12 +5882,61 @@ MC.canvas.event.keyEvent = function (event)
 
 MC.canvas.analysis = function ( data )
 {
-	var resources = {},
-		layout = {};
-
 	var component_data = data.component,
-		layout_data = data.layout;
+		layout_data = data.layout,
 
+		resources = {},
+		resource_stack = {},
+		
+		elb_child_stack = [],
+		elb_connection,
+
+		GROUP_MARGIN = 2,
+
+		VPC_PADDING_LEFT = 20,
+		VPC_PADDING_TOP = 10,
+		VPC_PADDING_RIGHT = 8,
+		VPC_PADDING_BOTTOM = 5,
+
+		ELB_START_LEFT = 14,
+		ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'],
+
+		// Initialize group construction
+		SUBGROUP = {
+			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
+			'AWS.VPC.Subnet': [
+				'AWS.EC2.Instance',
+				'AWS.AutoScaling.Group',
+				'AWS.VPC.NetworkInterface'
+			],
+			'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
+		},
+
+		SORT_ORDER = {
+			'AWS.AutoScaling.Group': 1,
+			'AWS.EC2.Instance': 2,
+			'AWS.VPC.NetworkInterface': 3
+		},
+
+		GROUP_DEFAULT_SIZE = {
+			'AWS.VPC.VPC': [60, 60],
+			'AWS.EC2.AvailabilityZone': [17, 17],
+			'AWS.VPC.Subnet': [15, 15],
+			'AWS.AutoScaling.Group' : [13, 13]
+		},
+
+		// For childeren node order
+		POSITION_METHOD = {
+			'AWS.VPC.VPC': 'vertical',
+			'AWS.EC2.AvailabilityZone': 'horizontal',
+			'AWS.VPC.Subnet': 'matrix',
+			'AWS.AutoScaling.Group': 'center'
+		},
+
+		layout,
+		previous_node;
+		
 	$.each(data.layout.component.node, function (key, value)
 	{
 		resources[ key ] = value;
@@ -5897,8 +5946,6 @@ MC.canvas.analysis = function ( data )
 	{
 		resources[ key ] = value;
 	});
-
-	var resource_stack = {};
 
 	$.each(resources, function (key, value)
 	{
@@ -5912,10 +5959,14 @@ MC.canvas.analysis = function ( data )
 		resource_stack[ value.type.replace(/\./ig, '-') ].push(key);
 	});
 
-	// ELB connected children
-	var elb_child_stack = [],
-		elb_connection;
+	layout = {
+		'id': resource_stack[ 'AWS-VPC-VPC' ][0],
+		'coordinate': [5, 3],
+		'size': [0, 0],
+		'type': 'AWS.VPC.VPC'
+	};
 
+	// ELB connected children
 	if (resource_stack[ 'AWS-ELB' ] !== undefined)
 	{
 		$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
@@ -5931,34 +5982,6 @@ MC.canvas.analysis = function ( data )
 			});
 		});
 	}
-
-	// Initialize group construction
-	var layout = {};
-
-	var SUBGROUP = {
-		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
-		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
-		'AWS.VPC.Subnet': [
-			'AWS.EC2.Instance',
-			'AWS.AutoScaling.Group',
-			'AWS.VPC.NetworkInterface'
-		],
-		'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
-	};
-
-	var GROUP_DEFAULT_SIZE = {
-		'AWS.VPC.VPC': [60, 60],
-		'AWS.EC2.AvailabilityZone': [17, 17],
-		'AWS.VPC.Subnet': [15, 15],
-		'AWS.AutoScaling.Group' : [13, 13]
-	};
-
-	layout = {
-		'id': resource_stack[ 'AWS-VPC-VPC' ][0],
-		'coordinate': [5, 3],
-		'size': [0, 0],
-		'type': 'AWS.VPC.VPC'
-	};
 
 	function searchChild(id)
 	{
@@ -6135,41 +6158,22 @@ MC.canvas.analysis = function ( data )
 
 	absPosition( layout, 0, 0 );
 
-	// For childeren node order
-	var POSITION_METHOD = {
-		'AWS.VPC.VPC': 'vertical',
-		'AWS.EC2.AvailabilityZone': 'horizontal',
-		'AWS.VPC.Subnet': 'matrix',
-		'AWS.AutoScaling.Group': 'center'
-	};
-
-	var GROUP_MARGIN = 2,
-		previous_node;
-
 	function positionSubnetChild(node)
 	{
-		var GROUP_INNER_PADDING = 2;
-
-		var children = node.children;
-
-		var length = children.length,
+		var GROUP_INNER_PADDING = 2,
+			children = node.children,
+			length = children.length,
 			method = POSITION_METHOD[ node.type ],
 			max_width = 0,
-			max_height = 0;
+			max_height = 0,
 
-		var NODE_MARGIN_LEFT = 2,
-			NODE_MARGIN_TOP = 2;
+			NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2,
 
-		var max_column = Math.ceil( Math.sqrt( length ) ),
+			max_column = Math.ceil( Math.sqrt( length ) ),
 			max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
 			column_index = 0,
 			row_index = 0;
-
-		var SORT_ORDER = {
-			'AWS.AutoScaling.Group': 1,
-			'AWS.EC2.Instance': 2,
-			'AWS.VPC.NetworkInterface': 3
-		};
 
 		children.sort(function (a, b)
 		{
@@ -6190,9 +6194,8 @@ MC.canvas.analysis = function ( data )
 
 		if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
 		{
-			var childLength = stack[ 'AWS.AutoScaling.Group' ].length;
-
-			var row_index = 0;
+			var childLength = stack[ 'AWS.AutoScaling.Group' ].length,
+				row_index = 0;
 
 			$.each(stack[ 'AWS.AutoScaling.Group' ], function (i, item)
 			{
@@ -6212,12 +6215,16 @@ MC.canvas.analysis = function ( data )
 
 		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
 		{
-			var childLength = stack[ 'AWS.EC2.Instance' ].length;
-
-			var max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+			var childLength = stack[ 'AWS.EC2.Instance' ].length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
 				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
 				column_index = 0,
 				row_index = 0;
+
+			stack[ 'AWS.EC2.Instance' ].sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+			});
 
 			$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
 			{
@@ -6297,7 +6304,6 @@ MC.canvas.analysis = function ( data )
 			});
 		}
 
-
 		var max_width = 0,
 			max_height = 0,
 			item_coordinate;
@@ -6326,18 +6332,16 @@ MC.canvas.analysis = function ( data )
 
 	function positionChild(node)
 	{
-		var children = node.children;
+		var children = node.children,
+			GROUP_INNER_PADDING = 2,
+			GROUP_MARGIN = 2,
 
-		var GROUP_INNER_PADDING = 2;
-
-		var GROUP_MARGIN = 2;
-
-		var length = children.length,
+			length = children.length,
 			method = POSITION_METHOD[ node.type ],
 			max_width = 0,
-			max_height = 0;
+			max_height = 0,
 
-		var NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_LEFT = 2,
 			NODE_MARGIN_TOP = 2;
 
 		if (node.type === 'AWS.EC2.AvailabilityZone')
@@ -6442,11 +6446,6 @@ MC.canvas.analysis = function ( data )
 	positionChild( layout );
 
 	// VPC padding
-	var VPC_PADDING_LEFT = 20,
-		VPC_PADDING_TOP = 10,
-		VPC_PADDING_RIGHT = 8,
-		VPC_PADDING_BOTTOM = 5;
-
 	$.each(layout.children, function (i, item)
 	{
 		item.coordinate[0] += VPC_PADDING_LEFT;
@@ -6457,9 +6456,6 @@ MC.canvas.analysis = function ( data )
 	layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
 
 	// ELB
-	var ELB_START_LEFT = 14,
-		ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'];
-
 	if (resource_stack[ 'AWS-ELB' ] !== undefined)
 	{
 		resource_stack[ 'AWS-ELB' ].sort(function (a, b)
@@ -6508,15 +6504,56 @@ MC.canvas.analysis = function ( data )
 		var ROUTE_TABLE_START_LEFT = 15,
 			ROUTE_TABLE_START_TOP = 5,
 			ROUTE_TABLE_MARGIN = 4,
-			ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'];
-
-		resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
-		{
-			return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
-		});
+			ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'],
+			RT_to_IGW = [],
+			RT_to_VGW = [],
+			RT_other = [],
+			RT_prefer,
+			RT_connection,
+			RT_connect_target;
 
 		if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
 		{
+			resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+			});
+
+			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (index, id)
+			{
+				RT_prefer = false;
+				RT_connection = layout_data.component.node[ id ].connection;
+				
+				$.each(RT_connection, function (i, data)
+				{
+					if (data.port === 'rtb-tgt')
+					{
+						RT_connect_target = layout_data.component.node[ data.target ].type;
+
+						if (RT_connect_target === 'AWS.VPC.InternetGateway')
+						{
+							RT_prefer = true;
+							RT_to_IGW.push( id );
+						}
+
+						if (RT_connect_target === 'AWS.VPC.VPNGateway')
+						{
+							RT_prefer = true;
+							RT_to_VGW.push( id );
+						}
+
+					}
+				});
+
+				if (RT_prefer === false)
+				{
+					RT_other.push( id );
+				}
+			});
+
+			// RT Children join
+			resource_stack[ 'AWS-VPC-RouteTable' ] = RT_to_IGW.concat(RT_to_VGW, RT_other);
+
 			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
 			{
 				resources[ id ].coordinate = [
@@ -6548,29 +6585,29 @@ MC.canvas.analysis = function ( data )
 
 	function absPosition(node, x, y)
 	{
-		node.coordinate[0] += x;
-		node.coordinate[1] += y;
+		var coordinate = node.coordinate;
+
+		coordinate[0] += x;
+		coordinate[1] += y;
 
 		if (node.children !== undefined)
 		{
 			$.each(node.children, function (i, item)
 			{
-				absPosition(item, node.coordinate[0], node.coordinate[1]);
+				absPosition(item, coordinate[0], coordinate[1]);
 			});
 		}
 	}
 
-	absPosition( layout, 0, 0 );
-
-	console.info(layout);
-
 	function updateLayoutData(node)
 	{
-		resources[ node.id ].coordinate = node.coordinate;
+		var resource = resources[ node.id ];
 
-		if (resources[ node.id ].size !== undefined)
+		resource.coordinate = node.coordinate;
+
+		if (resource.size !== undefined)
 		{
-			resources[ node.id ].size = node.size;
+			resource.size = node.size;
 		}
 
 		if (node.children !== undefined)
@@ -6582,7 +6619,13 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
+	absPosition( layout, 0, 0 );
+
+	console.info(layout);
+
 	updateLayoutData( layout );
+
+	return true;
 };
 
 MC.canvas.exportPNG = function ( $svg_canvas_element, data )

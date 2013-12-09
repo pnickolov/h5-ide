@@ -43,6 +43,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             # Get all az components.
             _.each AZClass.allObjects(), ( element )->
                 used_list[ element.get("name") ] = true
+                null
 
             possible_list = []
             for az in datalist
@@ -95,7 +96,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             #         else
             #             console.log "[Warning] component:", component "has the same AZ, but not changed!!!"
 
-            oldZoneName
+            #oldZoneName
     }
 
     new AZModel()

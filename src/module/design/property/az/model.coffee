@@ -12,14 +12,14 @@ define [ '../base/model', "../../framework/Design", 'constant' ], ( PropertyMode
 
         init : ( id ) ->
 
-            data      = { id : id }
             az_list   = MC.data.config[ MC.canvas_data.region ]
             component = Design.instance().component( id )
 
-            if not component or not data.az_list
+            if not component or not az_list
                 return false
 
             az_name = component.get("name")
+            data    = { id : id }
 
             if az_list and az_list.zone
                 data.az_list = @possibleAZList( az_list.zone.item, az_name )

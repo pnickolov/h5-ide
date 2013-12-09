@@ -583,8 +583,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		true
 
 	#def resource(self, username, session_id, region_name=None, resources=None):
-	resource = ( src, username, session_id, region_name=null, resources=null, callback ) ->
-		send_request "resource", src, [ username, session_id, region_name, resources ], parserResourceReturn, callback
+	resource = ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1, callback ) ->
+		send_request "resource", src, [ username, session_id, region_name, resources, addition, retry_times ], parserResourceReturn, callback
 		true
 
 	#def price(self, username, session_id):

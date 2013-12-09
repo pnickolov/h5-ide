@@ -13,8 +13,8 @@ define [ 'aws_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( aws_model ) 
 
             me = this
 
-            @on 'AWS_STAT__RESOURCE_RETURN', ( result ) ->
-                console.log 'AWS_STAT__RESOURCE_RETURN', result
+            @on 'AWS_RESOURCE_RETURN', ( result ) ->
+                console.log 'AWS_RESOURCE_RETURN', result
 
                 if result and not result.is_error and result.resolved_data
 
@@ -25,12 +25,16 @@ define [ 'aws_model', 'backbone', 'jquery', 'underscore', 'MC' ], ( aws_model ) 
 
             # set resources
             resources =
-                'AWS.EC2.Instance' : {}
-                'AWS.ELB'          : {}
-                'AWS.VPC.Subnet'   : {}
-                'AWS.VPC.VPC'      : {}
+                'AWS.VPC.VPC'           : {}
+                'AWS.ELB'               : {}
+                'AWS.EC2.Instance'      : {}
+                'AWS.VPC.RouteTable'    : {}
+                'AWS.VPC.Subnet'        : {}
+                'AWS.VPC.VPNGateway'    : {}
+                'AWS.VPC.VPNConnection' : {}
+                'AWS.AutoScaling.Group' : {}
 
-            aws_model.stat_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources
+            aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1
 
             null
 

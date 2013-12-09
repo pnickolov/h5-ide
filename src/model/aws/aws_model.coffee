@@ -157,13 +157,13 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
 
         #vpc_resource api (define function)
-        vpc_resource : ( src, username, session_id, region_name, vpc_id ) ->
+        vpc_resource : ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1 ) ->
 
             me = this
 
             src.model = me
 
-            aws_service.vpc_resource src, username, session_id, region_name, vpc_id, ( aws_result ) ->
+            aws_service.vpc_resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #vpc_resource succeed

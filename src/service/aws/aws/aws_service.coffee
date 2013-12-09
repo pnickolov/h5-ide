@@ -360,6 +360,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 		for region, nodes of res
 
+			MC.aws.aws.cacheResource nodes, region, false
+
 			app_json.region = region
 
 			for resource_type, resource_comp of nodes
@@ -412,7 +414,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 				# 		app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
 				# 	else
 				# 		app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
-				layout = vpc_resource_layout_map[c.type].layout
+				layout = $.extend true, {}, vpc_resource_layout_map[c.type].layout
 
 				layout.uid = c.uid
 
@@ -444,27 +446,40 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 									subnets.push ref_key[subnet].split('.')[0].slice(1)
 
+							originalId = ''
+
 							for idx, zone of c.resource.AvailabilityZones
 
-								if idx != 0
+								extend_asg = layout
 
-									extend_asg_uid = MC.guid()
-
-									extend_asg = vpc_resource_layout_map[c.type].layout
-
-									extend_asg.originalId = c.uid
+								if idx is 0
 
 									if subnets.length != 0
 
-										extend_asg.groupUId = subnets[idx]
+										originalId = subnets[idx]
 
 									else
 
-										extend_asg.groupUId = zone.split('.')[0].slice(1)
+										originalId = zone.split('.')[0].slice(1)
 
-									app_json.layout.component.group[extend_asg_uid] = extend_asg
+									extend_asg_uid = c.uid
+								else
 
-						app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
+									extend_asg_uid = MC.guid()
+
+									extend_asg.originalId = originalId
+
+								if subnets.length != 0
+
+									extend_asg.groupUId = subnets[idx]
+
+								else
+
+									extend_asg.groupUId = zone.split('.')[0].slice(1)
+
+								app_json.layout.component.group[extend_asg_uid] = extend_asg
+
+						#app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
 
 
 					when 'AWS.EC2.Instance'
@@ -481,7 +496,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 					when 'AWS.AutoScaling.LaunchConfiguration'
 
-						app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+						app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.EC2.AvailabilityZone"
 
@@ -601,8 +616,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		true
 
 	#def vpc_resource(self, username, session_id, region_name, vpc_id):
-	vpc_resource = ( src, username, session_id, region_name, vpc_id, callback ) ->
-		send_request "vpc_resource", src, [ username, session_id, region_name, vpc_id ], parserVpcResourceReturn, callback
+	vpc_resource = ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1, callback ) ->
+		send_request "vpc_resource", src, [ username, session_id, region_name, resources, addition, retry_times ], parserVpcResourceReturn, callback
 		true
 
 	#def stat_resource(self, username, session_id, region_name=None, resources=None):

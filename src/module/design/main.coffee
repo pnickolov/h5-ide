@@ -8,7 +8,7 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
     loadModule = () ->
 
         #load remote design.js
-        require [ 'design_view', 'design_model', 'event', 'resource', 'property', 'toolbar', 'canvas' ], ( View, model, property, ide_event, resource, property, toolbar, canvas ) ->
+        require [ 'design_view', 'design_model', 'event', 'resource', 'property', 'toolbar', 'canvas' ], ( View, model, ide_event, resource, property, toolbar, canvas ) ->
 
             #
             design_view_init       = null

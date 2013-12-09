@@ -25,7 +25,9 @@
 					</div>
 					<ul class="unmanaged-VPC-resource-list clearfix">
 						{{#each this }}
-						<li class="unmanaged-VPC-resource-item" data-vpc-id="{{ @key }}">
+						<li class="unmanaged-VPC-resource-item"
+							data-vpc-id="{{ @key }}"
+							data-vpc-obj='{{ convert_string @key this }}'>
 							<a href="javascript:void(0)">
 								<h5>{{ @key }}</h5>
 								<ol class="unmanaged-resource-data">

@@ -52,6 +52,25 @@ define [ "./Design" ], ( Design )->
 
       return this
 
+    update : ( element, value, attr )->
+
+      if _.isString element
+        element = document.getElementById( element )
+
+      element = $( element )
+
+      if not attr
+        element.text( value )
+      else if attr is "href"
+        element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
+      else if attr is "tooltip"
+        element.data("tooltip", value).attr("data-tooltip", value)
+        CanvasManager.addClass( element, "tooltip" )
+      else if attr is "color"
+        element.attr("style", "fill:#{value}")
+      else
+        element.attr( attr, value )
+
     move : ( compUid, x, y ) ->
 
       design = Design.instance()

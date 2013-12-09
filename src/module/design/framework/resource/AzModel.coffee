@@ -13,6 +13,14 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
       width  : 21
       height : 21
 
+    setName : ( newName )->
+      if @get("name") is newName
+        return
+
+      @set "name", newName
+      @draw()
+      null
+
     draw : ( isCreate ) ->
 
       if isCreate
@@ -21,6 +29,9 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
 
         # Move the group to right place
         CanvasManager.position node, @x(), @y()
+
+      else
+        CanvasManager.update( @id + "_label", @get("name") )
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

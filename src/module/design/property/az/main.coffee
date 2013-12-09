@@ -14,14 +14,10 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
 
         # wait for 'Resouce Panel Module' to process the data
         # the processed data will be stored at MC.data.config.zone
-        doRefresh = () ->
-            if ( new_az_data.item.length == 0 )
-                return
-
+        setTimeout ()->
             me.model.reInit()
             me.view.render()
-
-        setTimeout doRefresh, 0
+        , 0
 
         null
 
@@ -34,20 +30,13 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
 
         setupStack : ()->
             me = this
-            @view.on "SELECT_AZ", ( oldZoneID, newZone ) ->
+            @view.on "SELECT_AZ", ( newZone ) ->
                 # Set data
-                oldZone = me.model.setNewAZ oldZoneID, newZone
+                oldZone = me.model.setName newZone
 
-                if !oldZone
-                    return
-
-                # Update Canvas
-                MC.canvas.update oldZoneID, "text", "label", newZone
                 # Update Resource Panel
-
                 res_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
-                filter   = ( data ) ->
-                    return data.option.name == name
+                filter   = ( data ) -> return data.option.name is name
 
                 name = oldZone
                 ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, res_type, filter
@@ -60,7 +49,6 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
         initStack : ()->
             @model = model
             @view  = view
-
             null
     }
 

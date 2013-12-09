@@ -626,7 +626,7 @@
 }
 
 .resizer-wrap {
-	fill: none;
+	fill-opacity:0;
 }
 
 .node-dragging .dropable-group .resizer-wrap {
@@ -674,6 +674,7 @@
 .resizer-bottom:hover,
 .resizer-bottomleft:hover,
 .resizer-bottomright:hover {
+	fill-opacity:1;
 	fill: rgba(200, 200, 200, 0.12);
 }
 

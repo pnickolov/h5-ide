@@ -154,7 +154,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
                             tmp_rule.protocol = 'all'
 
                         else
-                            tmp_rule.protocol = "Custom"
+                            tmp_rule.protocol = "Custom(#{rule.IpProtocol})"
                     else
                         tmp_rule.protocol = rule.IpProtocol
 

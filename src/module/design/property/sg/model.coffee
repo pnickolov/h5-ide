@@ -80,15 +80,13 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     rule.FromPort   = 0
                     rule.ToPort     = 65535
                 else if protocol isnt 'tcp' and protocol isnt 'udp' and protocol isnt 'icmp'
-                    rule.protocol_display = "custom"
-                    rule.DispPort = rule.IpProtocol
+                    rule.protocol_display = "custom(#{rule.IpProtocol})"
                 else
                     rule.protocol_display = protocol
 
                 # Port
                 if rule.FromPort is rule.ToPort and rule.IpProtocol isnt 'icmp'
-                    if rule.ToPort
-                        rule.DispPort = rule.ToPort
+                    rule.DispPort = rule.ToPort
                 else
                     partType = if rule.IpProtocol is 'icmp' then '/' else '-'
                     rule.DispPort = rule.FromPort + partType + rule.ToPort

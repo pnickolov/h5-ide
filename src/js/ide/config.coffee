@@ -138,6 +138,9 @@ require.config {
 		'design_view'        : 'module/design/view'
 		'design_model'       : 'module/design/model'
 
+		"Design"        : 'module/design/framework/Design'
+		"CanvasManager" : 'module/design/framework/CanvasManager'
+
 		#sub module with design
 		'resource'           : 'module/design/resource/main'
 		'property'           : 'module/design/property/main'
@@ -354,9 +357,6 @@ require.config {
 
 		'dashboard'    :
 			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
-
-		# 'design_module' :
-		# 	deps       : [ 'design_view', 'design_model', 'MC' ]
 
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]

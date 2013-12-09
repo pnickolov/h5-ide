@@ -2,7 +2,7 @@
 #  View Mode for design/property/az
 #############################
 
-define [ '../base/model', "../../framework/Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
 
     AZModel = PropertyModel.extend {
 

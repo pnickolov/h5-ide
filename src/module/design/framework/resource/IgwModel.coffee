@@ -49,8 +49,9 @@ define [ "../ComplexResModel", "../CanvasManager", "../Design", "constant" ], ( 
 
       new Model({
 
-        id           : data.uid
-        name         : data.name
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.InternetGatewayId
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

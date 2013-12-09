@@ -73,8 +73,6 @@ define [ 'event',
                 #vpc_obj= JSON.parse $item.attr 'data-vpc-obj'
                 region  = $item.parent( 'ul' ).parent( 'li' ).attr 'data-region-name'
 
-                console.log 'vpc_obj', vpc_obj
-
                 # push OPEN_DESIGN_TAB
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_APPVIEW', vpc_id, region, vpc_id
 

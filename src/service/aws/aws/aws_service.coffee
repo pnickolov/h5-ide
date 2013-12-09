@@ -216,13 +216,16 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	#private (parser resource return)
 	parserResourceReturn = ( result, return_code, param ) ->
 
+		addition = param[5]
 		#1.resolve return_code
 		aws_result = result_vo.processAWSReturnHandler result, return_code, param
 
 		#2.resolve return_data when return_code is E_OK
 		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
-			resolved_data = resolveResourceResult result
+			resolved_data = result
+			if addition isnt 'statistic'
+				resolved_data = resolveResourceResult result
 
 			aws_result.resolved_data = resolved_data
 

@@ -60,8 +60,8 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         _.each vpc_obj, ( value, key ) ->
 
                             switch key
-                                when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-                                    new_value[ key ] = { 'id' : vpc }
+                                #when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+                                #    new_value[ key ] = { 'id' : vpc }
                                 when constant.AWS_RESOURCE_TYPE.AWS_ELB
                                     new_value[ key ] = { 'id' : [] }
                                     console.log 'key is ' + vpc + ' AWS_ELB is ', value
@@ -76,6 +76,8 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                     new_value[ key ] = { 'id' : [] }
                                     console.log 'key is ' + vpc + ' AWS_AutoScaling_Group is ', value
 
+                        # add vpc
+                        new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : vpc }
                         vpcs[ vpc ] = new_value
 
                     resources[ region ] = vpcs

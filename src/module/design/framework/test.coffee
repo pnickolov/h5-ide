@@ -1,4 +1,4 @@
-define [ './Design',
+define [ 'Design',
          './ResourceModel',
          './ComplexResModel',
          './GroupModel',

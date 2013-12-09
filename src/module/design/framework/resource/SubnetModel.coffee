@@ -1,5 +1,5 @@
 
-define [ "constant", "../Design", "../GroupModel", "../CanvasManager" ], ( constant, Design, GroupModel, CanvasManager )->
+define [ "constant", "Design", "../GroupModel", "../CanvasManager" ], ( constant, Design, GroupModel, CanvasManager )->
 
   Model = GroupModel.extend {
 

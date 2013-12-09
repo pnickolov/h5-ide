@@ -1,7 +1,13 @@
 
-define [ "./Design" ], ( Design )->
+define [], ()->
+
+  Design = null
 
   CanvasManager = {
+
+    setDesign : (d)->
+      Design = d
+      null
 
     removeClass : ( element, theClass )->
       if element.length

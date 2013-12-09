@@ -1,5 +1,5 @@
 
-define [ "./Design", "backbone" ], ( Design )->
+define [ "Design", "backbone" ], ( Design )->
 
   ###
     -------------------------------

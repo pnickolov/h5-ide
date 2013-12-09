@@ -1,5 +1,5 @@
 
-define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
+define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
   GroupModel = ComplexResModel.extend {
 

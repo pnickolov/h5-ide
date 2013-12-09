@@ -1,4 +1,4 @@
-define [ "constant", "./CanvasElement" ], ( constant, CanvasElement ) ->
+define [ "constant", "module/design/framework/CanvasElement", "module/design/framework/CanvasManager" ], ( constant, CanvasElement, CanvasManager ) ->
 
   ### Canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
@@ -288,5 +288,8 @@ define [ "constant", "./CanvasElement" ], ( constant, CanvasElement ) ->
     console.assert( C, "Cannot found Class for type: #{type}" )
 
     new C( p1Comp, p2Comp )
+
+  # Inject dependency, so that CanvasManager won't require Design.js
+  CanvasManager.setDesign( Design )
 
   Design

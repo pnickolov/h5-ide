@@ -139,7 +139,6 @@ require.config {
 		'design_model'       : 'module/design/model'
 
 		"Design"        : 'module/design/framework/Design'
-		"CanvasManager" : 'module/design/framework/CanvasManager'
 
 		#sub module with design
 		'resource'           : 'module/design/resource/main'

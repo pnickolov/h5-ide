@@ -1,5 +1,5 @@
 
-define [ "./Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManager, ResourceModel )->
+define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManager, ResourceModel )->
 
   emptrArr = []
 

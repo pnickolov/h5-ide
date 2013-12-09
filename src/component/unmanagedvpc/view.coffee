@@ -39,6 +39,14 @@ define [ 'event',
             Handlebars.registerHelper 'city_area', ( text ) ->
                 new Handlebars.SafeString constant.REGION_LABEL[ text ]
 
+            # convert string
+            Handlebars.registerHelper 'convert_string', ( key, value ) ->
+
+                # set unmanaged vpc list
+                MC.data.unmanaged_vpc_list[ key ] = value
+
+                new Handlebars.SafeString JSON.stringify value
+
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'
 
@@ -60,9 +68,10 @@ define [ 'event',
             try
 
                 # get vpc_id and region
-                $item  = $ event.currentTarget
-                vpc_id = $item.attr 'data-vpc-id'
-                region = $item.parent( 'ul' ).parent( 'li' ).attr 'data-region-name'
+                $item   = $ event.currentTarget
+                vpc_id  = $item.attr 'data-vpc-id'
+                #vpc_obj= JSON.parse $item.attr 'data-vpc-obj'
+                region  = $item.parent( 'ul' ).parent( 'li' ).attr 'data-region-name'
 
                 # push OPEN_DESIGN_TAB
                 ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_APPVIEW', vpc_id, region, vpc_id

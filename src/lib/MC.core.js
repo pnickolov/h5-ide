@@ -88,13 +88,14 @@ var MC = {
 
 				if (data.call === 'success' && option.success)
 				{
-					try{
+					option.success(data.result[1], data.result[0]);
+					/*try{
 						option.success(data.result[1], data.result[0]);
 					}
 					catch(error)
 					{
 						console.info(error);
-					}
+					}*/
 				}
 				if (data.call === 'error' && option.error)
 				{

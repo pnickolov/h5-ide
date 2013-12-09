@@ -60,6 +60,21 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		value
 
+	isResultRight = ( result ) ->
+		console.log 'isResultRight'
+		if result and not result.is_error and result.resolved_data and result.resolved_data.lenght > 0
+			true
+		else if not result
+			'result_empty'
+		else if result and result.is_error
+			'result_error'
+		else if result and not result.is_error and not result.resolved_data
+			'resolved_data_empty'
+		else if result and not result.is_error and result.resolved_data and result.resolved_data.lenght = 0
+			'resolved_data_lenght'
+		else
+			'other_error'
+
 	#############################
 	#  process
 	#############################
@@ -200,6 +215,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#public
 	isCurrentTab       : isCurrentTab
+	isResultRight      : isResultRight
 
 	searchStackAppById : searchStackAppById
 

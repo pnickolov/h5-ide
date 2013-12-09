@@ -88,13 +88,13 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
 
         #resource api (define function)
-        resource : ( src, username, session_id, region_name=null, resources=null ) ->
+        resource : ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1 ) ->
 
             me = this
 
             src.model = me
 
-            aws_service.resource src, username, session_id, region_name, resources, ( aws_result ) ->
+            aws_service.resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
 
                 if !aws_result.is_error
                 #resource succeed

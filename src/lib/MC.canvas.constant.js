@@ -139,7 +139,7 @@ var constant_data = {
 	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
 
 
-	PORT_PADDING: 5, //port padding (to point of junction)
+	PORT_PADDING: 4, //port padding (to point of junction)
 	CORNER_RADIUS: 8, //cornerRadius of fold line
 
 	//**for port, direction is position**//
@@ -149,9 +149,9 @@ var constant_data = {
 	PORT_DOWN_ANGLE: 270, //bottom
 
 	PORT_RIGHT_ROTATE: "", //port rotate
-	PORT_UP_ROTATE: ", rotate(90,0,9)",
+	PORT_UP_ROTATE: ", rotate(90,0,8)",
 	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
-	PORT_DOWN_ROTATE: ", rotate(270,0,9)",
+	PORT_DOWN_ROTATE: ", rotate(270,0,8)",
 
 	COLOR_BLUE: '#6DAEFE',
 	COLOR_GREEN: '#12CD4F',

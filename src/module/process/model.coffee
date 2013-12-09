@@ -157,8 +157,11 @@ define [ 'aws_model', 'ami_model'
 
             if state is 'OPEN_PROCESS'
 
+                # get resources
+                resources = MC.data.unmanaged_vpc_list[ vpc_id ]
+
                 # call api
-                aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, vpc_id
+                aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'all', 1
 
                 # set state 'OLD'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD'

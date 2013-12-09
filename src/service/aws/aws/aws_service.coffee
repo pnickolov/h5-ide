@@ -387,7 +387,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 					else
 						if resource_type is "DescribeVpcs"
 
-							vpc_id = comp.vpcId
+							vpc_id = resource_comp.vpcId
 
 						for comp in resource_comp
 

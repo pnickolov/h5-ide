@@ -77,7 +77,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                     console.log 'key is ' + vpc + ' AWS_AutoScaling_Group is ', value
 
                         # add vpc
-                        new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : vpc }
+                        new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : [vpc] }
                         vpcs[ vpc ] = new_value
 
                     resources[ region ] = vpcs

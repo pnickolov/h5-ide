@@ -2,46 +2,48 @@
 #  View Mode for design/property/vgw
 #############################
 
-define [ "../base/model", "Design", "constant" ], ( PropertyModel, Design, constant ) ->
+define ->
 
-    StaticModel = PropertyModel.extend {
+    require [ "module/design/property/base/model", "Design", "constant" ], ( PropertyModel, Design, constant ) ->
 
-      init : ( id ) ->
+      StaticModel = PropertyModel.extend {
 
-        component = Design.instance().component( id )
+        init : ( id ) ->
 
-        isIGW = component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+          component = Design.instance().component( id )
 
-        @set "isIGW", isIGW
-        @set "id", id
+          isIGW = component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
-        if @isApp
+          @set "isIGW", isIGW
+          @set "id", id
 
-          @set "readOnly", true
+          if @isApp
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
-          appId   = component.get("appId")
+            @set "readOnly", true
 
-          data    = appData[ appId ]
+            appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appId   = component.get("appId")
 
-          if data
-            if isIGW
-              if data.attachmentSet and data.attachmentSet.item.length
-                item = data.attachmentSet.item[0]
-            else if data.attachments and data.attachments.item.length
-              item = data.attachments.item[0]
+            data    = appData[ appId ]
 
-          if item
-            @set "state", item.state
-            vpcId = item.vpcId
+            if data
+              if isIGW
+                if data.attachmentSet and data.attachmentSet.item.length
+                  item = data.attachmentSet.item[0]
+              else if data.attachments and data.attachments.item.length
+                item = data.attachments.item[0]
 
-          vpc = appData[ vpcId ]
-          if vpc then vpcId += " (#{vpc.cidrBlock})"
+            if item
+              @set "state", item.state
+              vpcId = item.vpcId
 
-          @set "id", gatewayId
-          @set "vpc", vpcId
+            vpc = appData[ vpcId ]
+            if vpc then vpcId += " (#{vpc.cidrBlock})"
 
-        null
-    }
+            @set "id", gatewayId
+            @set "vpc", vpcId
 
-    new StaticModel()
+          null
+      }
+
+      new StaticModel()

@@ -14,7 +14,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       this.coordinate = [ component.x(), component.y() ]
       this.size       = [ component.width(), component.height() ]
       this.type       = component.type
-      this.nodeType   = if component.get("group") then "group" else "node"
+      this.nodeType   = if component.get("group") then "group" else if component.get("connection") then "line" else "node"
 
       this.parentId   = component.parent()
       this.parentId   = if this.parent then "" else this.parentId.id
@@ -59,6 +59,32 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     this.ports
 
   CanvasElement.prototype.remove = ()->
+    comp = Design.instance().component( this.id )
+    res  = comp.isRemovable()
+
+    if _.isString( res )
+      # Confirmation
+      template = MC.template.canvasOpConfirm {
+        operation : sprintf lang.ide.CVS_CFM_DEL, comp.get("name")
+        content   : res
+        color     : "red"
+        proceed   : lang.ide.CFM_BTN_DELETE
+        cancel    : lang.ide.CFM_BTN_CANCEL
+      }
+      modal template, true
+      theID = this.id
+      $("#canvas-op-confirm").one "click", ()->
+        comp = Design.instance().component( theID )
+        if comp
+          comp.remove()
+
+    else if res.error
+      # Error
+      notification "error", res.error
+
+    else if res is true
+      # Do remove
+      comp.remove()
 
   CanvasElement.prototype.select = ()->
 

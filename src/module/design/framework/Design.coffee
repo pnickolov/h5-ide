@@ -246,7 +246,7 @@ define [ "constant", "./CanvasElement" ], ( constant, CanvasElement ) ->
 
     # ResourceModel can only add json component.
     for uid, comp of @__componentMap
-      if comp.isConnection and comp.isConnection()
+      if comp.get("connection")
         connections.push comp
         continue
 

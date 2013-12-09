@@ -25,8 +25,8 @@ define [ "./ResourceModel", "./Design", "./CanvasManager" ], ( ResourceModel, De
 
   ConnectionModel = ResourceModel.extend {
 
-    isConnection : ()->
-      true
+    defaults :
+      connection : true
 
     type : "Framework_CN"
 

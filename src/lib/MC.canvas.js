@@ -1157,10 +1157,20 @@ MC.canvas = {
 					to_port_offset = to_port.getBoundingClientRect();
 				}
 
-				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
-				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
-				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
-				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
+				//patch startX for rtb-src port 
+				var offset_startX=0,
+					offset_endX=0;
+				if (from_type == 'AWS.VPC.RouteTable' && from_target_port == "rtb-src"){
+					offset_startX+=1;
+				}
+				if (to_type == 'AWS.VPC.RouteTable' && to_target_port == "rtb-src"){
+					offset_endX+=1;
+				}
+
+				startX = (offset_startX + from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
+				startY = (1 + from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
+				endX = (offset_endX + to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
+				endY = (1 + to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
 				start0 = {
@@ -5363,9 +5373,9 @@ MC.canvas.event.groupResize = {
 		{
 			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
 
 			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');

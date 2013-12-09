@@ -405,7 +405,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-in',
 					'id' : group.id + '_port-subnet-assoc-in',
-					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(-10, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'subnet-assoc-in', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'association', //color of line
@@ -417,7 +417,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-out',
 					'id' : group.id + '_port-subnet-assoc-out',
-					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
+					'transform': 'translate(' + (width + 2) + ', ' + ((height / 2) - 13) + ')',
 					'data-name': 'subnet-assoc-out',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -1624,7 +1624,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-top',
 					'id' : group.id + '_port-rtb-src-top',
-					'transform': 'translate(39, -4)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(40, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
 					'data-type': 'association',
@@ -1636,7 +1636,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
 					'id' : group.id + '_port-rtb-src-bottom',
-					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(40, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',

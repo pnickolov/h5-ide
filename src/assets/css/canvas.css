@@ -621,21 +621,15 @@
 
 /*scale area style*/
 
-.match-dropable-group .group-resizer {
+.match-dropable-group .resizer-wrap {
 	display: none;
 }
 
-.group-resizer {
-	fill-opacity: 0;
+.resizer-wrap {
+	fill: none;
 }
 
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
-	fill: rgba(252, 190, 23, 0.15);
-}
-
-.node-dragging .dropable-group .group-resizer {
-	fill-opacity: 1;
+.node-dragging .dropable-group .resizer-wrap {
 	fill: rgba(238, 238, 238, 0.5);
 }
 
@@ -680,7 +674,6 @@
 .resizer-bottom:hover,
 .resizer-bottomleft:hover,
 .resizer-bottomright:hover {
-	fill-opacity: 1;
 	fill: rgba(200, 200, 200, 0.12);
 }
 

@@ -32,6 +32,9 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       children.push( child )
       @set("__children", children)
 
+      # Set child's parent to this
+      child.set("__parent", this)
+
       # Listen child's removal
       child.on "REMOVED", @removeChild, @
       null
@@ -78,28 +81,28 @@ define [ "./Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
         Canvon.group().append(
           Canvon.rectangle( pad, 0, width - 2 * pad, pad )
-                .attr({'class':'group-resizer resizer-top'}),
+                .attr({'class':'resizer-top'}),
 
           Canvon.rectangle( 0, pad, pad, height - 2 * pad )
-                .attr({'class':'group-resizer resizer-left'}),
+                .attr({'class':'resizer-left'}),
 
           Canvon.rectangle( width - pad, pad, pad, height - 2 * pad )
-                .attr({'class':'group-resizer resizer-right'}),
+                .attr({'class':'resizer-right'}),
 
           Canvon.rectangle( pad, height - pad, width - 2 * pad, pad )
-                .attr({'class':'group-resizer resizer-bottom'}),
+                .attr({'class':'resizer-bottom'}),
 
           Canvon.rectangle( 0, 0, pad, pad )
-                .attr({'class':'group-resizer resizer-topleft'}),
+                .attr({'class':'resizer-topleft'}),
 
           Canvon.rectangle( width - pad, 0, pad, pad )
-                .attr({'class':'group-resizer resizer-topright'}),
+                .attr({'class':'resizer-topright'}),
 
           Canvon.rectangle( 0, height - pad, pad, pad )
-                .attr({'class':'group-resizer resizer-bottomleft'}),
+                .attr({'class':'resizer-bottomleft'}),
 
           Canvon.rectangle( width - pad, height - pad, pad, pad )
-                .attr({'class':'group-resizer resizer-bottomright'})
+                .attr({'class':'resizer-bottomright'})
 
         ).attr({'class':'resizer-wrap'}),
 

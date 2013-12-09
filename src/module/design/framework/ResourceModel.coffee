@@ -35,8 +35,11 @@ define [ "./Design", "backbone" ], ( Design )->
     # allObjects() : Array
         description : returns a array containing all objects of this type of Model.
 
-    # isRemovable() : Boolean / String
-        description : returns true to indicate the resource can be removed. returns a string as an error message to indicate the resource cannot be removed.
+    # isRemovable() : Boolean / Object / String
+        description : Returns true to indicate the resource can be removed. Returns string to show as an warning asking user if he/she wants to delete anyway. Returns {error:String} to show as an error.
+
+    # isReparentable( newParent ) : Boolean / String
+        description : Returns true to indicate the resource can change to other parent. Returns string to show as an error.
 
     # remove() : [FORCE]
         description : Just like the destructor in C++. User can override this method.
@@ -77,6 +80,7 @@ define [ "./Design", "backbone" ], ( Design )->
 
 
     isRemovable : () -> true
+    isReparentable : ()-> true
 
     remove : ()->
       console.debug "ResourceModel.remove"

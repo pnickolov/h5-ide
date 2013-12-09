@@ -85,12 +85,26 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     else if res is true
       # Do remove
       comp.remove()
+      return true
+
+    return false
 
   CanvasElement.prototype.select = ()->
+    # Remove old selected
+    $allwarp = $(document.getElementById("group_layer")).children().add( document.getElementById("line_layer") ).add( document.getElementById("node_layer") )
+    DesignManager.removeClass $allwarp.children(".selected")[0], "selected"
+
+    # Added selected to this.element
+    DesignManager.addClass this.element()[0], "selected"
+    true
 
   CanvasElement.prototype.show = ()->
+    CanvasManager.toggle this.element(), true
+    null
 
   CanvasElement.prototype.hide = ()->
+    CanvasManager.toggle this.element(), false
+    null
 
   CanvasElement.prototype.hover = ()->
     comp = Design.instance().component( this.id )
@@ -101,11 +115,8 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       if not el
         continue
 
-      klass = el.getAttribute("class")
-
-      if not klass.match(/\bview-hover\b/)
-        el.setAttribute("class", klass + " view-hover")
-
+      CanvasManager.addClass( el, "view-hover" )
+    null
 
   CanvasElement.prototype.hoverOut = ()->
     comp = Design.instance().component( this.id )
@@ -116,12 +127,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       if not el
         continue
 
-      klass    = el.getAttribute("class")
-      newKlass = $.trim( klass.replace( /\s?view-hover/g, "" ) )
-
-      if klass != newKlass
-        el.setAttribute("class", newKlass)
-
+      CanvasManager.removeClass( el, "view-hover" )
     null
 
   CanvasElement.prototype.parent  = ()->
@@ -129,6 +135,29 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       this.parent = if this.parentId then new CanvasElement( this.parentId ) else null
 
     this.parent
+
+  CanvasElement.prototype.append = ( child )->
+    if this.type isnt "group"
+      return false
+
+    if _.isString( child )
+      childComp = Design.instance().component( if _.isString( child ) then child else child.id )
+      if not childComp
+        return false
+
+    parentComp = Design.instance().component( this.id )
+    res = childComp.isReparentable( parentComp )
+
+    if _.isString( res )
+      # Error
+      notification "error", res
+
+    else if res is true
+      # Do remove
+      parentComp.addChild( child )
+      return true
+
+    return false
 
   CanvasElement.prototype.children = ()->
     self = Design.instance().component( this.id )
@@ -139,5 +168,6 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       []
 
   CanvasElement.prototype.updateResizer = ()->
+    console.error( new Error() )
 
   CanvasElement

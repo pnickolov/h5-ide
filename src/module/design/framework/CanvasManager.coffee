@@ -3,6 +3,55 @@ define [ "./Design" ], ( Design )->
 
   CanvasManager = {
 
+    removeClass : ( element, theClass )->
+      if element.length
+        element = element[0]
+      if not element
+        return this
+
+      klass = el.getAttribute "class"
+      newKlass = klass.replace( new Reg("\\b#{theClass}\\b", "g"), "" )
+
+      if klass isnt newKlass
+        el.setAttribute "class", newKlass
+
+      return this
+
+    addClass : ( element, theClass )->
+      if element.length
+        element = element[0]
+      if not element
+        return this
+
+      klass = el.getAttribute "class"
+
+      if not klass.match( new Reg("\\b#{theClass}\\b") )
+        klass += " " + theClass
+        el.setAttribute "class", klass
+
+      return this
+
+    toggle : ( element, isShow ) ->
+      if element.length
+        element = element[0]
+      if not element
+        return this
+
+      if isShow is null || isShow is undefined
+        isShow = element.getAttribute("display") is "none"
+
+      if isShow
+        element.setAttribute "display", "inline"
+        element.setAttribute "style", ""
+        if element.getAttribute "data-tooltip"
+          @addClass element, "tooltip"
+      else
+        element.setAttribute "display", "none"
+        element.setAttribute "style", "opacity:0"
+        @removeClass element, "tooltip"
+
+      return this
+
     move : ( compUid, x, y ) ->
 
       design = Design.instance()
@@ -19,11 +68,72 @@ define [ "./Design" ], ( Design )->
       design = Design.instance()
       component = design.component compUid
 
+      if not component.get("group")
+        console.error "Only group element can be resized."
+        return
+
+      oldw = component.get "width"
+      oldh = component.get "height"
+
       component.set "width", w
       component.set "height", h
 
-      # TODO : Update SVG
+      @size document.getElementById( compUid ), w, h, oldw, oldh
       null
+
+    size : ( node, w, h, oldw, oldh )->
+
+      pad    = 10
+      w     *= MC.canvas.GRID_WIDTH
+      h     *= MC.canvas.GRID_HEIGHT
+      oldw  *= MC.canvas.GRID_WIDTH
+      deltaW = w - oldw
+
+      # Update layout
+      $node = $(node)
+      $node.children("group").attr("width", w).attr("height", h)
+
+      # Update port if there's any
+      # Currently we only have to update subnet's port
+      $ports = $node.children("path")
+      transformReg = /translate\(([^)]+)\)/
+      for child in $ports
+        transform = transformReg.exec( child.getAttribute("class") )
+        if transform and transform[1]
+          transform = transform[1].split(",")
+          newX = x = parseInt( transform[0], 10 )
+          y = parseInt( transform[1], 10 )
+          newY = h / 2
+          if x >= oldw
+            newX += deltaW
+          if x != newX || y != newY
+            @position child, newX, newY
+
+      # Update Resizer
+      $wrap = $node.children('.resizer-wrap').children()
+      if $wrap.length
+        childMap = {}
+        for child in $wrap
+          childMap[ child.getAttribute("class") ] = child
+
+        child = childMap["resizer-top"]
+        if child then child.setAttribute("width", w - 2 * pad)
+        child = childMap["resizer-bottom"]
+        if child then child.setAttribute("width", w - 2 * pad)
+
+        child = childMap["resizer-left"]
+        if child then child.setAttribute("height", h - 2 * pad)
+        child = childMap["resizer-right"]
+        if child then child.setAttribute("height", h - 2 * pad)
+
+        child = childMap["resizer-topright"]
+        if child then child.setAttribute("x", w - pad)
+        child = childMap["resizer-bottomleft"]
+        if child then child.setAttribute("y", h - pad)
+        child = childMap["resizer-bot"]
+        if child
+          child.setAttribute("x", w - pad)
+          child.setAttribute("y", h - pad)
 
     position : ( node, x, y )->
 

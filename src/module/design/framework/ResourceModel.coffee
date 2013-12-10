@@ -53,6 +53,9 @@ define [ "Design", "backbone" ], ( Design )->
     # serialize()
         description : Must be implemented by the user, otherwise it logs an error in console.
 
+    # listen()
+        description :
+
   ###
 
   # FORCE_MAP defines what parent method will be called when child's overriden method is called
@@ -92,6 +95,8 @@ define [ "Design", "backbone" ], ( Design )->
       design.cacheComponent( this.id )
 
       this.trigger "REMOVED"
+
+      this.off()
       null
 
     isTypeof : ( type )->
@@ -107,6 +112,8 @@ define [ "Design", "backbone" ], ( Design )->
     serialize : ()->
       console.error "Class '#{@type}' doesn't implement serialize"
       null
+
+    listen : ( other_resource, event, callback )->
 
   }, {
 

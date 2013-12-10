@@ -68,7 +68,9 @@ define [], ()->
       if not attr
         element.text( value )
       else if attr is "href"
-        element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
+        href = element[0].getAttributeNS("http://www.w3.org/1999/xlink", "href")
+        if href isnt value
+          element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
       else if attr is "tooltip"
         element.data("tooltip", value).attr("data-tooltip", value)
         CanvasManager.addClass( element, "tooltip" )

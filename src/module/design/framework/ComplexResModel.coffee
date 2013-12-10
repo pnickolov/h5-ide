@@ -45,6 +45,15 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
     isConnectable : ( targetComp, selfPort, targetPort )-> false
 
+    setName : ( name )->
+      if @get("name") is name
+        return
+
+      @set "name", name
+
+      if @draw then @draw()
+      null
+
     remove : ()->
       console.debug "ComplexResModel.remove, Removing Connections"
 

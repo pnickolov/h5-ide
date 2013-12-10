@@ -13,14 +13,6 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
       width  : 21
       height : 21
 
-    setName : ( newName )->
-      if @get("name") is newName
-        return
-
-      @set "name", newName
-      @draw()
-      null
-
     draw : ( isCreate ) ->
 
       if isCreate

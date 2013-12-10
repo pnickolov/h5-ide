@@ -21,12 +21,6 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
         @attributes.dhcp = new DhcpModel()
         null
 
-    setName : ( name )->
-      @set("name", name)
-      @draw()
-      null
-
-
     setCIDR : ( cidr )->
 
       # TODO : Update all subnet's cidr

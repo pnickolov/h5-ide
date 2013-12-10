@@ -37,7 +37,7 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
   Model = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
 
-    defaults :
+    defaults : ()->
       dhcpType       : "" # "none" || "default" || ""
       amazonDNS      : true
       domainName     : ""

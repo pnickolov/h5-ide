@@ -3,9 +3,10 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   C = ConnectionModel.extend {
 
-    defaults:
+    defaults : ()->
       lineType : "rtb-target"
       dashLine : true
+      routes   : []
 
     portDefs : [
       {

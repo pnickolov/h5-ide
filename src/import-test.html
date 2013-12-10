@@ -63,6 +63,7 @@
 					elb_child_stack = [],
 					elb_connection,
 
+					GROUP_INNER_PADDING = 2,
 					GROUP_MARGIN = 2,
 
 					VPC_PADDING_LEFT = 20,
@@ -272,15 +273,9 @@
 							node.children.sort(function (a, b)
 							{
 								if (
-									(
-										a.hasELBConnected === true &&
-										b.hasELBConnected === true
-									)
+									(a.hasELBConnected === true && b.hasELBConnected === true)
 									||
-									(
-										a.hasELBConnected === false &&
-										b.hasELBConnected === false
-									)
+									(a.hasELBConnected === false && b.hasELBConnected === false)
 								)
 								{
 									return b.totalChild - a.totalChild;
@@ -340,8 +335,7 @@
 
 				function positionSubnetChild(node)
 				{
-					var GROUP_INNER_PADDING = 2,
-						stack = {},
+					var stack = {},
 						children = node.children,
 						length = children.length,
 						method = POSITION_METHOD[ node.type ],
@@ -514,7 +508,6 @@
 				function positionChild(node)
 				{
 					var children = node.children,
-						GROUP_INNER_PADDING = 2,
 						GROUP_MARGIN = 2,
 
 						length = children.length,

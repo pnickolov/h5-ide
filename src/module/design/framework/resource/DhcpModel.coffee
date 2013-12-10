@@ -3,7 +3,7 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
 
   configNameMap = {
     "domain-name"          : "domainName"
-    "domain-name-servers"  : "domainNameServers"
+    "domain-name-servers"  : "domainServers"
     "ntp-servers"          : "ntpServers"
     "netbios-name-servers" : "netbiosServers"
     "netbios-node-type"    : "netbiosType"
@@ -38,8 +38,13 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
 
     defaults :
-      amazonDNS  : true
-      domainName : ""
+      dhcpType       : "" # "none" || "default" || ""
+      amazonDNS      : true
+      domainName     : ""
+      netbiosType    : 0
+      domainServers  : []
+      ntpServers     : []
+      netbiosServers : []
 
     isNone : ()->
       @attributes.dhcpType is "none"
@@ -47,6 +52,9 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
     isDefault : ()->
       @attributes.dhcpType is "default"
 
+    setNone    : ()-> @set "dhcpType", "none"
+    setDefault : ()-> @set "dhcpType", "default"
+    setCustom  : ()-> @set "dhcpType", ""
 
   }, {
 

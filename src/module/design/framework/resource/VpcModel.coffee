@@ -21,14 +21,36 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
         @attributes.dhcp = new DhcpModel()
         null
 
+    setName : ( name )->
+      @set("name", name)
+      @draw()
+      null
+
+
+    setCIDR : ( cidr )->
+
+      # TODO : Update all subnet's cidr
+      if not MC.aws.vpc.updateAllSubnetCIDR( cidr, @get("cidr") )
+        return
+
+      @set("cidr", cidr)
+      @draw()
+
+      null
+
     draw : ( isCreate )->
 
+      label = "#{@get('name')} (#{ @get('cidr')})"
+
       if isCreate
-        node = @createNode( "vpc (" + @get('cidr') + ")" )
+        node = @createNode( label )
         $('#vpc_layer').append node
 
         # Move the group to right place
         CanvasManager.position node, @x(), @y()
+
+      else
+        CanvasManager.update( @id + "_label", label )
 
   }, {
 
@@ -37,6 +59,9 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
     deserialize : ( data, layout_data, resolve )->
 
       # Create/Get a DHCP object for VPC
+
+      # DhcpOptionsId is "default" means use no dhcp
+      # DhcpOPtionsId is "" means use default dhcp
       dhcp = data.resource.DhcpOptionsId
 
       if dhcp is ""
@@ -49,12 +74,13 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
       # Create VPC
       new Model({
 
-        id           : data.uid
-        name         : data.name
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.VpcId
 
         cidr         : data.resource.CidrBlock
         dnsHostnames : MC.getBoolean( data.resource.EnableDnsHostnames )
-        dnsSupport   : MC.getBoolean( data.resource.InstanceTenancy )
+        dnsSupport   : MC.getBoolean( data.resource.EnableDnsSupport )
         tenancy      : data.resource.InstanceTenancy
         dhcp         : dhcp
 

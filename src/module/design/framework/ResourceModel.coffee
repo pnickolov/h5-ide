@@ -53,8 +53,9 @@ define [ "Design", "backbone" ], ( Design )->
     # serialize()
         description : Must be implemented by the user, otherwise it logs an error in console.
 
-    # listen()
-        description :
+    # listenTo()
+        description : listenTo() is a convinant method for on().
+        Benifits is that when this resource is removed, it will automatically unListen everything it previous listened to. Side-effects are the context of the callback will always be this.
 
   ###
 
@@ -94,8 +95,17 @@ define [ "Design", "backbone" ], ( Design )->
       cache.splice( cache.indexOf( this ), 1 )
       design.cacheComponent( this.id )
 
+      # Clear all events attached to others using listenTo
+      if this.__interestedObj
+        for uid, obj in this.__interestedObj
+          obj = design.component( uid )
+          if obj then obj.off( null, null, this )
+        this.__interestedObj = null
+
+      # Broadcast remove event
       this.trigger "REMOVED"
 
+      # Clear all events attached to me
       this.off()
       null
 
@@ -113,8 +123,13 @@ define [ "Design", "backbone" ], ( Design )->
       console.error "Class '#{@type}' doesn't implement serialize"
       null
 
-    listen : ( other_resource, event, callback )->
+    listenTo : ( other_resource, event, callback )->
+      if not this.__interestedObj
+        this.__interestedObj = {}
+      this.__interestedObj[ other_resource.id ] = true
 
+      other_resource.on( event, callback, this )
+      null
   }, {
 
     allObjects : ()->

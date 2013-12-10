@@ -2415,6 +2415,10 @@ module.exports =
       en: "Target"
       zh: "路由对象"
 
+    PROP_RT_LOCAL:
+      en: "local"
+      zh: "本地"
+
     PROP_RT_DESTINATION:
       en: "Destination"
       zh: "数据包目的地"

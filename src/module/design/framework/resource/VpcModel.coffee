@@ -50,6 +50,10 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
 
+    # Returns current VPC in this application.
+    theVPC : ()->
+      Design.instance().classCacheForCid( this.prototype.classId )[0]
+
     deserialize : ( data, layout_data, resolve )->
 
       # Create/Get a DHCP object for VPC

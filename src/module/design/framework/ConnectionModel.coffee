@@ -19,6 +19,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
     getTarget : ( type )
       description : returns a component of a specific type
 
+    getOtherTarget : ( theType )
+      description : returns a component that its type is not of theType
+
     remove()
       description : remove the connection from two resources.
   ###
@@ -57,9 +60,10 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       # Call super constructor
       ResourceModel.call(this)
 
-      if @get("visual")
+      if @get("visual") isnt false and @portDefs
         # If we have portDefs, then it's considered to be visual line
-        # So ask CanvasManager to draw the line
+        # But the subclass can also set visual to false,
+        # to indicate this is not a visual line.
         CanvasManager.drawLine( this )
 
       # Put connect() calls to last, in case of some resource might want the Line SVG Node
@@ -75,6 +79,12 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
     port1Comp : ()-> @__port1Comp
     port2Comp : ()-> @__port2Comp
+
+    getOtherTarget : ( type )->
+      if @__port1Comp.type isnt type
+        return @__port1Comp
+
+      return @__port2Comp
 
     getTarget : ( type )->
       if @__port1Comp.type is type
@@ -118,13 +128,6 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       if not protoProps.type
         protoProps.type = tags[0]
-
-      # If the class defines ports, then it is visual
-      if protoProps.portDefs
-        if not protoProps.defaults
-          protoProps.defaults = { visual : true }
-        else
-          protoProps.defaults.visual = true
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )
 

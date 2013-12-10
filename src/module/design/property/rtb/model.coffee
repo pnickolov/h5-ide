@@ -2,269 +2,189 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
 
-    RTBModel = PropertyModel.extend {
+  RTBModel = PropertyModel.extend {
 
-        setName : ( name ) ->
+    setName : ( name )->
+      Design.instance().component( @get("uid") ).setName( name )
+      null
 
-            uid = @get 'uid'
+    setMainRT : () ->
 
-            MC.canvas_data.component[uid].name = name
+      uid = @get 'uid'
 
-            MC.canvas.update uid, 'text', 'rt_name', name
-            null
 
-        setMainRT : () ->
+      for id, comp of MC.canvas_data.component
+        if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+          continue
 
-            uid = @get 'uid'
+        if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
+          comp.resource.AssociationSet.splice 0, 1
+          MC.canvas.update comp.uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_NOT_MAIN
 
 
-            for id, comp of MC.canvas_data.component
-                if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                    continue
+      asso =
+        "Main"                    : "true"
+        "RouteTableId"            : ""
+        "SubnetId"                : ""
+        "RouteTableAssociationId" : ""
 
-                if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
-                    comp.resource.AssociationSet.splice 0, 1
-                    MC.canvas.update comp.uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_NOT_MAIN
+      comp = MC.canvas_data.component[ uid ]
+      comp.resource.AssociationSet.splice 0, 0, asso
+      MC.canvas.update uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_MAIN
 
+      MC.aws.rtb.updateRT_SubnetLines()
 
-            asso =
-                "Main"                    : "true"
-                "RouteTableId"            : ""
-                "SubnetId"                : ""
-                "RouteTableAssociationId" : ""
+      @init( uid )
+      null
 
-            comp = MC.canvas_data.component[ uid ]
-            comp.resource.AssociationSet.splice 0, 0, asso
-            MC.canvas.update uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_MAIN
+    reInit : () ->
+      @init( @get( "uid" ) )
+      null
 
-            MC.aws.rtb.updateRT_SubnetLines()
+    init : ( uid ) ->
 
-            @init( uid )
-            null
+      design    = Design.instance()
 
-        reInit : () ->
-            @init( @get( "uid" ) )
-            null
+      component = design.component( uid )
+      res_type  = constant.AWS_RESOURCE_TYPE
 
-        init : ( uid ) ->
+      # uid might be a line connecting RTB and other resource
+      if component.get("connection")
+        subnet    = component.getTarget( res_type.AWS_VPC_Subnet )
+        component = component.getTarget( res_type.AWS_VPC_RouteTable )
 
+        if subnet
+          @set {
+            title : 'Subnet-RT Association'
+            association :
+              subnet : subnet.get("name")
+              rtb    : component.get("name")
+          }
+          return
 
-            # uid might be a line connecting RTB and other resource
-            connection = MC.canvas_data.layout.connection[ uid ]
-            if connection
-                data = {}
-                for uid, value of connection.target
-                    component = MC.canvas_data.component[ uid ]
-                    if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                        data.subnet = component.name
-                        has_subnet = true
-                    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                        data.rtb  = component.name
-                        route_uid = uid
+      VPCModel = Design.modelClassForType( res_type.AWS_VPC_VPC )
 
-                if has_subnet
-                    this.set 'association', data
-                    this.set 'title', 'Subnet-RT Association'
-                    return
-                else
-                    uid = route_uid
+      # If this is RTB or this is RTB blue lines, show RTB property
+      routes = []
+      data =
+        uid         : uid
+        title       : component.get("name")
+        isMain      : component.get("main")
+        local_route : VPCModel.theVPC().get("cidr")
+        routes      : routes
 
+      for cn in component.connections()
+        if cn.type isnt "RTB_Route"
+          continue
 
-            @set "uid", uid
+        theOtherPort = cn.getOtherTarget( res_type.AWS_VPC_RouteTable )
 
-            # This is a route table component
+        routes.push {
+          name     : theOtherPort.get("name")
+          isVgw    : theOtherPort.type is res_type.AWS_VPC_VPNGateway
+          isProp   : cn.get("propagate")
+          cidr_set : cn.get("routes")
+        }
 
-            rt = $.extend true, {}, MC.canvas_data.component[uid]
+      @set data
+      true
 
-            if rt.resource.AssociationSet.length != 0 and rt.resource.AssociationSet[0].Main == 'true'
+    setPropagation : ( value ) ->
 
-                rt.isMain = true
+      uid = @get 'uid'
 
-            route_set = []
+      vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
 
-            $.each rt.resource.RouteSet, ( idx, route ) ->
+      vgw_ref = '@' + value + '.resource.VpnGatewayId'
 
-                existing = false
+      if vgw_set.length == 0
 
-                tmp_r = {}
+        vgw_set.push vgw_ref
 
-                if route.state == 'active'
+      else
+        MC.canvas_data.component[uid].resource.PropagatingVgwSet = []
 
-                    route.isActive = true
+      null
 
-                else
-                    route.isActive = false
+    setRoutes : ( data, routes ) ->
 
-                $.each route_set, ( i, r ) ->
+      uid = @get 'uid'
 
-                    if (r.InstanceId and r.InstanceId == route.InstanceId) or (r.NetworkInterfaceId and r.NetworkInterfaceId == route.NetworkInterfaceId) or (r.GatewayId and r.GatewayId == route.GatewayId)
+      # remove all routes
+      delete_idx = []
 
-                        existing = true
+      switch data.type
 
-                        r.cidr_set.push route.DestinationCidrBlock
+        when 'gateway'
 
-                        return false
+          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
 
-                if not existing
+            if route.GatewayId == data.ref
 
-                    if route.InstanceId
+              delete_idx.push idx
 
-                        uid = route.InstanceId.split('.')[0][1...]
+        when 'instance'
 
-                        route.type = 'instance'
+          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
 
-                        route.ref  = route.InstanceId
+            if route.InstanceId == data.ref
 
-                        route.name = MC.canvas_data.component[uid].name
+              delete_idx.push idx
 
-                    if route.NetworkInterfaceId
+        when 'eni'
 
-                        uid = route.NetworkInterfaceId.split('.')[0][1...]
+          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
 
-                        route.type = 'eni'
+            if route.NetworkInterfaceId == data.ref
 
-                        route.ref  = route.NetworkInterfaceId
+              delete_idx.push idx
 
-                        route.name = MC.canvas_data.component[uid].name
+      delete_idx.sort ( x, y )->
 
-                    if route.GatewayId
+        if x <= y
+          return 1
 
-                        uid = route.GatewayId.split('.')[0][1...]
+        else
+          return -1
 
-                        route.type = 'gateway'
+      $.each delete_idx, ( i, v ) ->
 
-                        route.ref  = route.GatewayId
+        MC.canvas_data.component[uid].resource.RouteSet.splice v, 1
 
-                        if route.GatewayId is 'local'
-                            route.name = "local"
-                            route.isLocal = true
-                        else
-                            route.isLocal = false
-                            route.name = MC.canvas_data.component[uid].name
 
-                            if MC.canvas_data.component[route.GatewayId.split('.')[0][1...]].type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+      # add all routes
+      $.each routes, ( idx, route ) ->
 
-                                route.isVgw = true
+        if route.children[1].children[0].value != ''
 
-                                route.vgw = route.GatewayId.split('.')[0][1...]
+          route_tmpl = {
+            'DestinationCidrBlock'      :   route.children[1].children[0].value,
+            'GatewayId'                 :   '',
+            'InstanceId'                :   '',
+            'InstanceOwnerId'           :   '',
+            'NetworkInterfaceId'        :   '',
+            'State'                     :   '',
+            'Origin'                    :   ''
+          }
 
-                                if route.GatewayId in rt.resource.PropagatingVgwSet
+          switch data.type
 
-                                    route.isProp = true
+            when 'gateway'
 
+              route_tmpl.GatewayId = data.ref
 
+            when 'instance'
 
-                    route.cidr_set = [route.DestinationCidrBlock]
+              route_tmpl.InstanceId = data.ref
 
-                    route_set.push route
+            when 'eni'
 
+              route_tmpl.NetworkInterfaceId = data.ref
 
-            rt.route_disp = route_set
 
-            if rt.resource.VpcId
-                rt.local_cidr = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.CidrBlock
-                rt.vpc_id = MC.canvas_data.component[rt.resource.VpcId.split('.')[0][1...]].resource.VpcId
+          MC.canvas_data.component[uid].resource.RouteSet.push route_tmpl
+  }
 
-            this.set 'route_table', rt
-            this.set 'association', null
-            this.set 'title', rt.name
-
-        setPropagation : ( value ) ->
-
-            uid = @get 'uid'
-
-            vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
-
-            vgw_ref = '@' + value + '.resource.VpnGatewayId'
-
-            if vgw_set.length == 0
-
-                vgw_set.push vgw_ref
-
-            else
-                MC.canvas_data.component[uid].resource.PropagatingVgwSet = []
-
-            null
-
-        setRoutes : ( data, routes ) ->
-
-            uid = @get 'uid'
-
-            # remove all routes
-            delete_idx = []
-
-            switch data.type
-
-                when 'gateway'
-
-                    $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-                        if route.GatewayId == data.ref
-
-                            delete_idx.push idx
-
-                when 'instance'
-
-                    $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-                        if route.InstanceId == data.ref
-
-                            delete_idx.push idx
-
-                when 'eni'
-
-                    $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-                        if route.NetworkInterfaceId == data.ref
-
-                            delete_idx.push idx
-
-            delete_idx.sort ( x, y )->
-
-                if x <= y
-                    return 1
-
-                else
-                    return -1
-
-            $.each delete_idx, ( i, v ) ->
-
-                MC.canvas_data.component[uid].resource.RouteSet.splice v, 1
-
-
-            # add all routes
-            $.each routes, ( idx, route ) ->
-
-                if route.children[1].children[0].value != ''
-
-                    route_tmpl = {
-                        'DestinationCidrBlock'      :   route.children[1].children[0].value,
-                        'GatewayId'                 :   '',
-                        'InstanceId'                :   '',
-                        'InstanceOwnerId'           :   '',
-                        'NetworkInterfaceId'        :   '',
-                        'State'                     :   '',
-                        'Origin'                    :   ''
-                    }
-
-                    switch data.type
-
-                        when 'gateway'
-
-                            route_tmpl.GatewayId = data.ref
-
-                        when 'instance'
-
-                            route_tmpl.InstanceId = data.ref
-
-                        when 'eni'
-
-                            route_tmpl.NetworkInterfaceId = data.ref
-
-
-                    MC.canvas_data.component[uid].resource.RouteSet.push route_tmpl
-    }
-
-    new RTBModel()
+  new RTBModel()

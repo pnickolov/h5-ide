@@ -12,6 +12,25 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
+    addRoute : ( targetId, r, propagating )->
+
+      # Find out if we already have one connection between this rtb to targetId
+      connection = _.find @connections(), ( cn )->
+        p1 = cn.port1Comp()
+        p2 = cn.port2Comp()
+
+        p1 && p2 && (p1.id is targetId or p2.id is targetId)
+
+      # No connection found, create a new one.
+      if not connection
+        connection = new Route( this, Design.instance().component( targetId ) )
+        # Set propagating
+        if propagating
+          connection.setPropagate true
+
+      # Add the route to the connection
+      connection.addRoute( r )
+
     iconUrl : ()->
       if @get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"
 
@@ -72,6 +91,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+      else
+        node = $( document.getElementById( @id ) )
+        # Update label
+        CanvasManager.update node.children(".node-label"), @get("name")
+
+        # Update Image
+        CanvasManager.update node.children("image"), @iconUrl()
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
@@ -95,12 +122,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
       # Create routes between RTB and other resources
       routes = data.resource.RouteSet
       if routes.length > 1
+
+        # Find out which route is propagating
+        propagateMap = {}
+        if data.resource.PropagatingVgwSet
+          for ref in data.resource.PropagatingVgwSet
+            propagateMap[ MC.extractID(ref) ] = true
+
         # The first RouteSet is always local, so we don't deserialize it
         i = 1
         while i < routes.length
-          r = routes[i]
+          r  = routes[i]
           id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
-          new Route( rtb, resolve( id ) )
+
+          rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
 
   }

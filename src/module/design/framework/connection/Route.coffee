@@ -3,10 +3,39 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   C = ConnectionModel.extend {
 
+    type : "RTB_Route"
+
     defaults : ()->
       lineType : "rtb-target"
       dashLine : true
       routes   : []
+
+    addRoute : ( route )->
+      routes = @get("routes")
+
+      idx = _.indexOf routes, route
+
+      if idx != -1 then return false
+
+      routes.push route
+      @set "routes", routes
+      true
+
+    removeRoute : ( route )->
+      routes = @get("routes")
+
+      idx = _.indexOf routes, route
+
+      if idx != -1 then return false
+
+      routes.splice idx, 1
+      @set "routes", routes
+      true
+
+    setPropagate : ( propagate )->
+      console.assert( (@port1Comp().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway) or (@port2Comp().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway), "Propagation can only be set to VPN<==>RTB connection." )
+
+      @set "propagate", propagate
 
     portDefs : [
       {

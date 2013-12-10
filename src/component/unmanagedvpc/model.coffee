@@ -58,45 +58,71 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                         l2_res = {
                             'AWS.VPC.VPC'                               : {'id':[vpc_id]},
+
+                            'AWS.AutoScaling.Group'                     : {'id':[]},
                             'AWS.ELB'                                   : {'id':[]},
+                            'AWS.VPC.DhcpOptions'                       : {'id':[]},
+                            'AWS.VPC.CustomerGateway'                   : {'id':[]},
+                            'AWS.AutoScaling.LaunchConfiguration'       : {'id':[]},    # asg name
+                            'AWS.AutoScaling.NotificationConfiguration' : {'id':[]},    # asg name
+
                             'AWS.EC2.Instance'                          : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.RouteTable'                        : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.Subnet'                            : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.VPNGateway'                        : {'filter':{'attachment.vpc-id':vpc_id}},
-                            #'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':''}},
-                            'AWS.AutoScaling.Group'                     : {'id':[]},
-
                             'AWS.EC2.SecurityGroup'                     : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.NetworkAcl'                        : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.NetworkInterface'                  : {'filter':{'vpc-id':vpc_id}},
-                            #'AWS.VPC.InternetGateway'                   : {'filter':{'attachment.vpc-id':vpc_id}},
-
+                            'AWS.VPC.InternetGateway'                   : {'filter':{'attachment.vpc-id':vpc_id}},
                             'AWS.EC2.AvailabilityZone'                  : {'filter':{'region-name':region}},
-                            #'AWS.EC2.EBS.Volume'                        : {'filter':{'attachment.instance-id':[]}},
-                            #'AWS.EC2.EIP'                               : {'filter':{'instance-id':[]}},
-                            'AWS.VPC.DhcpOptions'                       : {'id':[]},
-                            'AWS.VPC.CustomerGateway'                   : {'id':[]},
-                            #'AWS.AutoScaling.LaunchConfiguration'       : {'id':[]},
-                            #'AWS.AutoScaling.NotificationConfiguration' : {'id':[]},
-                            #'AWS.AutoScaling.ScalingPolicy'             : {'filter':{'AutoScalingGroupName':[]}},
+
+                            'AWS.EC2.EBS.Volume'                        : {'filter':{'attachment.instance-id':[]}},
+                            'AWS.EC2.EIP'                               : {'filter':{'instance-id':[]}},
+                            'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':''}},
+                            'AWS.AutoScaling.ScalingPolicy'             : {'filter':{'AutoScalingGroupName':[]}},
                         }
 
                         new_value = {}
 
                         _.each l2_res, ( attrs, type ) ->
-                            filter = attrs
+                            filter = {}
 
-                            if 'id' of filter and filter['id'].length == 0
-                                if type of vpc_obj
-                                    filter['id'] = _.keys(vpc_obj[type])
-                                    new_value[type] = filter
+                            # set id
+                            if 'id' of attrs
+                                if attrs['id'].length == 0
+                                    if type of vpc_obj
+                                        filter['id'] = _.keys(vpc_obj[type])
 
-                            else
+                                    if (type is 'AWS.AutoScaling.LaunchConfiguration' or type is 'AWS.AutoScaling.NotificationConfiguration') and 'AWS.AutoScaling.Group' of vpc_obj
+                                        filter['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+
+                                else
+                                    filter['id'] = attrs['id']
+
+                            # set filter
+                            if 'filter' of attrs
+                                filter['filter'] = {}
+
+                                for k, v of attrs['filter']
+                                    if not v or v.length == 0
+                                        if k in ['instance-id', 'attachment.instance-id'] and 'AWS.EC2.Instance' of vpc_obj
+                                            filter['filter'][k] = _.keys(vpc_obj['AWS.EC2.Instance'])
+
+                                        if k is 'vpn-gateway-id' and 'AWS.VPC.VPNGateway' of vpc_obj
+                                            filter['filter'][k] = _.keys(vpc_obj['AWS.VPC.VPNGateway'])[0]
+
+                                        if k is 'AutoScalingGroupName' and 'AWS.AutoScaling.Group' of vpc_obj
+                                            filter['filter'][k] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+
+                                    else
+
+                                        filter['filter'][k] = attrs['filter'][k]
+
+                            if 'id' of filter or 'filter' of filter
                                 new_value[type] = filter
 
-                        # add vpc
-                        new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : [vpc_id] }
-                        vpcs[ vpc_id ] = new_value
+                        if _.keys(new_value).length > 0
+                            vpcs[ vpc_id ] = new_value
 
                     resources[ region ] = vpcs
 

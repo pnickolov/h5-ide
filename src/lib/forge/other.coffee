@@ -4,6 +4,20 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#  core
 	#############################
 
+	createUID  = ( length = 8 ) ->
+		chars  = undefined
+		str    = undefined
+		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
+		length = Math.floor(Math.random() * chars.length)  unless length
+		str    = ""
+		i      = 0
+
+		while i < length
+			str += chars[Math.floor(Math.random() * chars.length)]
+			i++
+
+		str
+
 	isCurrentTab = ( tab_id ) ->
 		console.log 'isCurrentTab', tab_id
 
@@ -128,20 +142,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	state     : <'OLD', 'OPEN', 'FINISH'>
 
 	cacheIDMap = {}
-
-	createUID  = ( length = 8 ) ->
-		chars  = undefined
-		str    = undefined
-		chars  = "0123456789abcdefghiklmnopqrstuvwxyz".split("")
-		length = Math.floor(Math.random() * chars.length)  unless length
-		str    = ""
-		i      = 0
-
-		while i < length
-			str += chars[Math.floor(Math.random() * chars.length)]
-			i++
-
-		str
 
 	listCacheMap = ->
 		console.log 'listCacheMap'

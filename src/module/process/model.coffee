@@ -14,6 +14,8 @@ define [ 'aws_model', 'ami_model'
 
             #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
             'flag_list'         : null
+
+            # when aws_model.vpc_resource current tab id
             'current_tab_id'    : null
 
         initialize  : ->
@@ -35,8 +37,11 @@ define [ 'aws_model', 'ami_model'
                     #result.resolved_data = []
                     #result.resolved_data.push appview_json
 
+                    # get vpc_id
+                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap result.param[4], result, null
+                    obj = MC.forge.other.setCacheMap vpc_id, result, null
 
                     # set current tab id
                     @set 'current_tab_id', obj.id

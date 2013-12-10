@@ -1,6 +1,6 @@
 define [ "constant", "module/design/framework/CanvasElement", "module/design/framework/CanvasManager" ], ( constant, CanvasElement, CanvasManager ) ->
 
-  ### Canvas is a adaptor for MC.canvas.js ###
+  ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
     new CanvasElement( Design.instance().component(id) )
 
@@ -17,6 +17,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   window.$canvas = $canvas
 
+  ### Canvas is used by $canvas to store data of svg canvas ###
   Canvas = ( size )->
     this.size   = size
     this.offset = [0, 0]
@@ -118,10 +119,22 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
       design_instance.component( uid )
 
+    # Use resolve to replace component(), so that during deserialization,
+    # dependency can be resolved by using design.component()
+    _old_get_component_ = design.component
+    design.component = resolveDeserialize
 
+    # Always deserialize VPC resource first
+    for uid, comp of json_data
+      if uid.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+        resolveDeserialize uid
+
+    # Deserialize other resources
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid
+
+    design.component = _old_get_component_
 
     delete design.groupLayoutData
 

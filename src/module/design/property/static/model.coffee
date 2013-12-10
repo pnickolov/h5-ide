@@ -11,9 +11,7 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
         component = Design.instance().component( id )
 
         isIGW = component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-
         @set "isIGW", isIGW
-        @set "id", id
 
         if @isApp
 

@@ -80,18 +80,29 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     rule.FromPort   = 0
                     rule.ToPort     = 65535
                 else if protocol isnt 'tcp' and protocol isnt 'udp' and protocol isnt 'icmp'
-                    rule.protocol_display = "custom"
-                    rule.DispPort = rule.IpProtocol
+                    rule.protocol_display = "#{rule.IpProtocol}"
                 else
                     rule.protocol_display = protocol
 
                 # Port
                 if rule.FromPort is rule.ToPort and rule.IpProtocol isnt 'icmp'
-                    if rule.ToPort
-                        rule.DispPort = rule.ToPort
+                    rule.DispPort = rule.ToPort
+                    if Number(rule.FromPort) is 0
+                        if rule.IpProtocol in ['tcp', 'udp']
+                            rule.DispPort = '0-65535'
+                        else
+                            rule.DispPort = 'all'
                 else
                     partType = if rule.IpProtocol is 'icmp' then '/' else '-'
                     rule.DispPort = rule.FromPort + partType + rule.ToPort
+
+                # for custom protocol
+                if rule.IpProtocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+                    if rule.IpProtocol in ['6', 6, '17', 17]
+                        rule.DispPort = '0-65535'
+                    else
+                        rule.DispPort = 'all'
+
             null
 
 
@@ -162,18 +173,19 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     FromPort   : rule.fromport
                     IpRanges   : rule.ipranges
                     IpProtocol : rule.protocol
-                    inbound    : rule.direction is 'inbound'
 
-                if tmp.inbound
+                inbound = rule.direction is 'inbound'
+                if inbound
                     comp_res.IpPermissions.push tmp
                 else
                     if not comp_res.IpPermissionsEgress
                         comp_res.IpPermissionsEgress = []
 
                     comp_res.IpPermissionsEgress.push tmp
-
+                    
                 # If not existing, return new data to let view to render
                 dispTmp = $.extend(true, {}, tmp)
+                dispTmp.inbound = inbound
                 tmpArr = [ dispTmp ]
                 @formatRule tmpArr
 

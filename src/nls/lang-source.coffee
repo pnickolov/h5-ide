@@ -3453,6 +3453,10 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> redirects <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-port'>443</span>. Suggest to use load balancer to decrypt and redirect to port <span class='validation-tag tag-port'>80</span>."
       zh: ""
 
+    TA_MSG_ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has duplicate load balancer ports."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."

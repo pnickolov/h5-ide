@@ -211,7 +211,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				ruleObj.fromPort = 0
 				ruleObj.toPort = 65535
 			else if ruleObj.ipProtocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
-				ruleObj.ipProtocol = "custom(#{ruleObj.ipProtocol})"
+				ruleObj.ipProtocol = "#{ruleObj.ipProtocol}"
 
 			partType = ''
 			if ruleObj.ipProtocol is 'icmp'
@@ -222,9 +222,21 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			dispPort = ruleObj.fromPort + partType + ruleObj.toPort
 			if Number(ruleObj.fromPort) is Number(ruleObj.toPort) and ruleObj.ipProtocol isnt 'icmp'
 				dispPort = ruleObj.toPort
+				if Number(ruleObj.fromPort) is 0
+					if ruleObj.ipProtocol in ['tcp', 'udp']
+						dispPort = '0-65535'
+					else
+						dispPort = 'all'
 
 			if ((!ruleObj.fromPort or !ruleObj.toPort) and ruleObj.ipProtocol not in ['all', -1, '-1'])
 				dispPort = '-'
+
+			# for custom protocol
+			if ruleObj.ipProtocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+				if ruleObj.ipProtocol in ['6', 6, '17', 17]
+					dispPort = '0-65535'
+				else
+					dispPort = 'all'
 
 			dispSGObj =
 				fromPort : ruleObj.fromPort

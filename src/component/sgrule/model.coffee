@@ -223,8 +223,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                             tmp_rule.protocol = 'all'
 
                         else
-                            tmp_rule.protocol = "Custom"
-                            tmp_rule.port = rule.IpProtocol
+                            tmp_rule.protocol = "#{rule.IpProtocol}"
                     else
                         tmp_rule.protocol = rule.IpProtocol
 
@@ -240,15 +239,17 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                     portRangeType = '-'
                     if tmp_rule.protocol is 'icmp'
                         portRangeType = '/'
+                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + portRangeType + rule.ToPort
 
-                    if not tmp_rule.port
-                        if rule.FromPort is rule.ToPort
-                            tmp_rule.port = rule.FromPort
-                        else
-                            tmp_rule.port = rule.FromPort + portRangeType + rule.ToPort
-
-                        if tmp_rule.protocol is 'all'
+                    if tmp_rule.protocol is 'all'
+                        tmp_rule.port = '0-65535'
+                    
+                    # for custom protocol
+                    if tmp_rule.protocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+                        if tmp_rule.protocol in ['6', 6, '17', 17]
                             tmp_rule.port = '0-65535'
+                        else
+                            tmp_rule.port = 'all'
 
                     rules.push tmp_rule
 

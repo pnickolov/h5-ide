@@ -8,6 +8,14 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			compName = compObj.name
 		return compName
 
+	_getCompType = (compUID) ->
+
+		compType = ''
+		compObj = MC.canvas_data.component[compUID]
+		if compObj and compObj.type
+			compType = compObj.type
+		return compType
+
 	verify = (callback) ->
 
 		try
@@ -41,10 +49,27 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 									# get api call info
 									errCompUID = returnInfoObj.uid
+
+									errCode = returnInfoObj.code
+									errKey = returnInfoObj.key
 									errMessage = returnInfoObj.message
+
 									errCompName = _getCompName(errCompUID)
+									errCompType = _getCompType(errCompUID)
 
 									errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
+
+									if (errCode is 'EMPTY_VALUE' and
+										errKey is 'InstanceId' and
+										errMessage is 'Key InstanceId can not empty' and
+										errCompType is 'AWS.VPC.NetworkInterface')
+											checkResult = true
+
+									if (errCode is 'EMPTY_VALUE' and
+										errKey is 'LaunchConfigurationName' and
+										errMessage is 'Key LaunchConfigurationName can not empty' and
+										errCompType is 'AWS.AutoScaling.Group')
+											checkResult = true
 
 								catch err
 									errInfoStr = "Stack format validation error"

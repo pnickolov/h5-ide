@@ -178,7 +178,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 							value.display_port = '0-65535'
 
 						else
-							value.IpProtocol = "custom(#{value.IpProtocol})"
+							value.IpProtocol = "#{value.IpProtocol}"
 
 
 				if sgCompRes.IpPermissionsEgress
@@ -209,7 +209,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 								value.display_port = '0-65535'
 
 							else
-								value.IpProtocol = "custom(#{value.IpProtocol})"
+								value.IpProtocol = "#{value.IpProtocol}"
 
 					sgIpPermissionsAry = sgIpPermissionsAry.concat sgIpPermissionsEgressAry
 

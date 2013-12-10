@@ -237,7 +237,7 @@ define [ '../base/view',
                 else if value.Protocol is 1 or value.Protocol is '1'
                     newRuleObj.protocol = 'ICMP'
                 else
-                    newRuleObj.protocol = 'Custom(' + value.Protocol + ')'
+                    newRuleObj.protocol = '' + value.Protocol + ''
 
                 newRuleObj.port = ''
 

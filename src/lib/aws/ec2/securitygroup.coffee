@@ -226,7 +226,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 					if ruleObj.ipProtocol in ['tcp', 'udp']
 						dispPort = '0-65535'
 					else
-						dispPort = 'all'
+						dispPort = 'ALL'
 
 			if ((!ruleObj.fromPort or !ruleObj.toPort) and ruleObj.ipProtocol not in ['all', -1, '-1'])
 				dispPort = '-'
@@ -236,7 +236,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 				if ruleObj.ipProtocol in ['6', 6, '17', 17]
 					dispPort = '0-65535'
 				else
-					dispPort = 'all'
+					dispPort = 'ALL'
 
 			dispSGObj =
 				fromPort : ruleObj.fromPort

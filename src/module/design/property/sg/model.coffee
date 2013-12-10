@@ -91,7 +91,7 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                         if rule.IpProtocol in ['tcp', 'udp']
                             rule.DispPort = '0-65535'
                         else
-                            rule.DispPort = 'all'
+                            rule.DispPort = 'ALL'
                 else
                     partType = if rule.IpProtocol is 'icmp' then '/' else '-'
                     rule.DispPort = rule.FromPort + partType + rule.ToPort
@@ -101,7 +101,7 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                     if rule.IpProtocol in ['6', 6, '17', 17]
                         rule.DispPort = '0-65535'
                     else
-                        rule.DispPort = 'all'
+                        rule.DispPort = 'ALL'
 
             null
 

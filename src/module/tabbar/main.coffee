@@ -243,17 +243,27 @@ define [ 'jquery', 'event', 'base_main',
 
                 else if type is 'appview'
 
-                    # create uid
-                    uid       = MC.forge.other.createUID()
+                    # search tab id by searchCacheMap
+                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : tab_id  }
 
-                    # create appview id
-                    appview_id = 'process-' + uid
+                    if not _.isEmpty obj
 
-                    # add id to cache id map
-                    MC.forge.other.addCacheMap uid, appview_id, tab_id, region, type
+                        # create appview id
+                        appview_id = obj.type + '-' + obj.uid
+
+                    else
+
+                        # create uid
+                        uid       = MC.forge.other.createUID()
+
+                        # create appview id
+                        appview_id = 'process-' + uid
+
+                        # add id to cache id map
+                        MC.forge.other.addCacheMap uid, appview_id, tab_id, region, 'process'
 
                     # add appview tab
-                    Tabbar.add appview_id, tab_name + ' - view'
+                    Tabbar.open appview_id, tab_name + ' - view'
 
             # reload new stack
             reloadNewStackTab = ( tab_id, region_name, platform ) ->

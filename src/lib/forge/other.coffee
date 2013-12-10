@@ -138,8 +138,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	origin_id : <vpc_id>
 	#	data      : <vpc_resource result>
 	#	region    : <region_name>
-	#	type      : <'appview'>
-	#	state     : <'OLD', 'OPEN', 'FINISH'>
+	#	type      : <'process', 'appview'>
+	#	state     : <'OPEN', 'OLD', 'FINISH'>
 
 	cacheIDMap = {}
 
@@ -169,8 +169,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		cacheIDMap
 
-	setCacheMap = ( vpc_id, data, state ) ->
-		console.log 'setCacheMap', vpc_id, data, state
+	setCacheMap = ( vpc_id, data, state, type ) ->
+		console.log 'setCacheMap', vpc_id, data, state, type
 
 		obj = null
 
@@ -178,12 +178,18 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			if item.origin_id is vpc_id
 				item.data  = $.extend true, {}, data if data
 				item.state = state                   if state
+				item.type  = type                    if type
 				obj        = item
 
 		obj
 
 	getCacheMap = ( id ) ->
 		console.log 'getCacheMap', id
+
+		# if appview replace process
+		if id.split('-')[0] is 'appview'
+			id = id.replace 'appview', 'process'
+
 		cacheIDMap[ id ]
 
 	# conditions = { key : 'xxx', value : 'xxx' }
@@ -202,7 +208,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'processType', id
 
 		# tab id sample process-cs6dbvrc
-		if getCacheMap( id ) and getCacheMap( id ).type is 'appview'
+		if getCacheMap( id ) and id.split( '-' ).length = 2
 			return 'appview'
 
 		# tab id sample process-us-west-1-untitled-112

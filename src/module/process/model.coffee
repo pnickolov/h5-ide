@@ -41,7 +41,7 @@ define [ 'aws_model', 'ami_model'
                     vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
 
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap vpc_id, result, null
+                    obj = MC.forge.other.setCacheMap vpc_id, result, null, null
 
                     # set ami_ids
                     ami_ids = MC.forge.app.getAmis result.resolved_data[0]
@@ -49,7 +49,7 @@ define [ 'aws_model', 'ami_model'
                     if _.isEmpty ami_ids
 
                         # set FINISH by cacheMap
-                        me.setCacheMapDataFlg obj
+                        @setCacheMapDataFlg obj
 
                     else
 
@@ -168,7 +168,7 @@ define [ 'aws_model', 'ami_model'
                 aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'all', 1
 
                 # set state 'OLD'
-                MC.forge.other.setCacheMap vpc_id, null, 'OLD'
+                MC.forge.other.setCacheMap vpc_id, null, 'OLD', null
 
             else if state is 'OLD_PROCESS'
 
@@ -196,8 +196,8 @@ define [ 'aws_model', 'ami_model'
         setCacheMapDataFlg : ( data ) ->
             console.log 'setCacheMapDataFlg', data
 
-            # set 'FINISH' flag by vpc( origin_id )
-            obj = MC.forge.other.setCacheMap data.origin_id, null, 'FINISH'
+            # set 'FINISH' and 'appview' flag by vpc( origin_id )
+            obj = MC.forge.other.setCacheMap data.origin_id, null, 'FINISH', null
 
             # when current tab reload app view
             if MC.forge.other.isCurrentTab obj.id
@@ -207,6 +207,9 @@ define [ 'aws_model', 'ami_model'
 
         reloadAppView : ( obj ) ->
             console.log 'reloadAppView', obj
+
+            # set 'appview' flag by vpc( origin_id )
+            MC.forge.other.setCacheMap obj.origin_id, null, null, 'appview'
 
             # set appview id
             appview_id = 'appview-' + obj.uid

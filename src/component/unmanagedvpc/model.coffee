@@ -60,24 +60,33 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         _.each vpc_obj, ( value, key ) ->
 
                             switch key
-                                #when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-                                #    new_value[ key ] = { 'id' : vpc }
+
+                                when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+                                    new_value[ key ] = { 'id' : [ vpc ] }
+
                                 when constant.AWS_RESOURCE_TYPE.AWS_ELB
                                     new_value[ key ] = { 'id' : [] }
                                     console.log 'key is ' + vpc + ' AWS_ELB is ', value
+
                                 when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
                                     new_value[ key ] = { 'filter' : 'vpc-id' : vpc }
+
                                 when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
                                     new_value[ key ] = { 'filter' : { 'attachment.vpc-id' : vpc }}
+
                                 when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
                                     #console.log 'key is ' + vpc + ' AWS_VPC_VPNConnection is ', value
                                     new_value[ key ] = { 'filter' : { 'vpn-gateway-id' : value[ 'vpnGatewayId' ] }}
+
+                                when constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+                                    new_value[ key ] = { 'filter' : { 'region-name' : region }}
+
                                 when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
                                     new_value[ key ] = { 'id' : [] }
                                     console.log 'key is ' + vpc + ' AWS_AutoScaling_Group is ', value
 
                         # add vpc
-                        new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : [vpc] }
+
                         vpcs[ vpc ] = new_value
 
                     resources[ region ] = vpcs

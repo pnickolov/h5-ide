@@ -94,23 +94,6 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                             else
                                 new_value[type] = filter
 
-                        # _.each vpc_obj, ( value, key ) ->
-
-                        #     switch key
-                        #         when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                        #             new_value[ key ] = { 'id' : [] }
-                        #             console.log 'key is ' + vpc_id + ' AWS_ELB is ', value
-                        #         when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                        #             new_value[ key ] = { 'filter' : 'vpc-id' : vpc_id }
-                        #         when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-                        #             new_value[ key ] = { 'filter' : { 'attachment.vpc-id' : vpc_id }}
-                        #         when constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
-                        #             #console.log 'key is ' + vpc + ' AWS_VPC_VPNConnection is ', value
-                        #             new_value[ key ] = { 'filter' : { 'vpn-gateway-id' : value[ 'vpnGatewayId' ] }}
-                        #         when constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-                        #             new_value[ key ] = { 'id' : [] }
-                        #             console.log 'key is ' + vpc_id + ' AWS_AutoScaling_Group is ', value
-
                         # add vpc
                         new_value[ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ] = { 'id' : [vpc_id] }
                         vpcs[ vpc_id ] = new_value

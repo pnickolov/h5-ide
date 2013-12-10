@@ -99,7 +99,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
 
-      obj = design_instance.component( uid )
+      obj = design_instance.__componentMap[ uid ]
       if obj
         return obj
 
@@ -117,7 +117,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
       ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
 
-      design_instance.component( uid )
+      design_instance.__componentMap[ uid ]
 
     # Use resolve to replace component(), so that during deserialization,
     # dependency can be resolved by using design.component()

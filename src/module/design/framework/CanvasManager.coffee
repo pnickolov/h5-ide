@@ -67,7 +67,8 @@ define [], ()->
 
       if not attr
         element.text( value )
-      else if attr is "href"
+      else if attr is "href" or attr is "image"
+        value = MC.IMG_URL + value
         href = element[0].getAttributeNS("http://www.w3.org/1999/xlink", "href")
         if href isnt value
           element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)

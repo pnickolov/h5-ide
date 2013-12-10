@@ -55,6 +55,24 @@ define [ 'constant',
             PropertyView.event.trigger PropertyView.event.FORCE_SHOW
             null
 
+        checkDupName : ( $input, type )->
+            if not $input.length
+                $input = $( $input )
+
+            name = $input.val()
+
+            if not type then type is name
+
+            if name && !MC.validate( 'awsName',  name )
+                error = "This value should be a valid #{type} name."
+
+            if not error and @model.isNameDup( name )
+                error = "#{type} name \" #{name} \" is already in using. Please use another one."
+
+
+            $input.parsley 'custom', ()-> error
+            $input.parsley 'validate'
+
         _load : () ->
             # The module is loaded. Here we re-init the view.
 
@@ -105,7 +123,7 @@ define [ 'constant',
             # If render() returns a string.
             # Assume it is the title of the property panel
             if _.isString result
-                
+
                 # if is sg property, do not set title
                 resUID = @model.get 'uid'
                 if resUID

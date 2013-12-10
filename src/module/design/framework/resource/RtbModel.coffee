@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Route", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -11,6 +11,25 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
       height   : 8
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+
+    setMain : ()->
+      if @get("main") then return
+
+      old_main_rtb = _.find Model.allObjects(), ( obj )-> obj.get("main")
+
+      old_main_rtb.set("main", false)
+      old_main_rtb.draw()
+
+      @set("main", true)
+      @draw()
+
+      # Update all implicitly association to subnets
+      for cn in old_main_rtb.connections()
+        if cn.type is "RTB_ASSO" and cn.get("implicit")
+          # Get the subnet that is previously asso-ed to the Main RouteTable
+          subnet = cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+          new RtbAsso( this, subnet, { implicit : true } )
+          cn.remove()
 
     addRoute : ( targetId, r, propagating )->
 
@@ -97,7 +116,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
         CanvasManager.update node.children(".node-label"), @get("name")
 
         # Update Image
-        CanvasManager.update node.children("image"), @iconUrl()
+        CanvasManager.update node.children("image"), @iconUrl(), "href"
 
   }, {
 
@@ -106,7 +125,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
     deserialize : ( data, layout_data, resolve )->
 
       if data.resource.AssociationSet and data.resource.AssociationSet[0]
-        asso_main =  data.resource.AssociationSet[0].Main
+        asso_main = data.resource.AssociationSet[0].Main
 
       rtb = new Model({
 
@@ -121,7 +140,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
       # Create routes between RTB and other resources
       routes = data.resource.RouteSet
-      if routes.length > 1
+      if routes and routes.length > 1
 
         # Find out which route is propagating
         propagateMap = {}
@@ -138,6 +157,12 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
           rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
 
+      # Create asso between RTB and subnets
+      routes = data.resource.AssociationSet
+      _.each routes, ( r )->
+        if r.Main isnt "true" and r.SubnetId
+          id = MC.extractID( r.SubnetId )
+          new RtbAsso( rtb, resolve( id ) )
   }
 
   Model

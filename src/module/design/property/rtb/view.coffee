@@ -55,11 +55,10 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
 
         beforeRemoveIp : ( event ) ->
-            vals = 0
-            $("#property-rtb-ips input").each ()->
-                v = $(this).val()
-                if v
-                    ++vals
+
+            vals = _.reduce $( event.currentTarget ).children(), ( v, child )->
+                if child.value then v + 1 else v
+            , 0
 
             # If we only have valid item and user is trying to remove it.
             # prevent deletion
@@ -70,11 +69,12 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
         removeIp : ( event ) ->
 
-            data = event.target.dataset
+            $target = $(event.currentTarget)
+            ref = $target.attr("data-ref")
 
-            children = event.target.children
+            newIps = _.map $target.children(), ( child )-> child.value
 
-            @model.setRoutes data, children
+            @model.setRoutes ref, newIps
             null
 
         changeName : ( event ) ->
@@ -82,9 +82,7 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             target = $ event.currentTarget
             name = target.val()
 
-            MC.validate.preventDupname target, @model.get('uid'), name, 'Route Table'
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "Route Table" )
                 @model.setName name
                 @setTitle name
 
@@ -94,16 +92,14 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             null
 
         changePropagation : ( event ) ->
-            @model.setPropagation event.target.dataset.uid
+            @model.setPropagation $( event.target ).is(":checked")
             null
 
         onPressCIDR : ( event ) ->
-
             if (event.keyCode is 13)
                 $(event.currentTarget).blur()
 
         onFocusCIDR : ( event ) ->
-
             MC.aws.aws.disabledAllOperabilityArea(true)
             null
 

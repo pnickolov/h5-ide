@@ -11,32 +11,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       null
 
     setMainRT : () ->
-
-      uid = @get 'uid'
-
-
-      for id, comp of MC.canvas_data.component
-        if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-          continue
-
-        if comp.resource.AssociationSet.length and "" + comp.resource.AssociationSet[0].Main is 'true'
-          comp.resource.AssociationSet.splice 0, 1
-          MC.canvas.update comp.uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_NOT_MAIN
-
-
-      asso =
-        "Main"                    : "true"
-        "RouteTableId"            : ""
-        "SubnetId"                : ""
-        "RouteTableAssociationId" : ""
-
-      comp = MC.canvas_data.component[ uid ]
-      comp.resource.AssociationSet.splice 0, 0, asso
-      MC.canvas.update uid, 'image', 'rt_status', MC.canvas.IMAGE.RT_CANVAS_MAIN
-
-      MC.aws.rtb.updateRT_SubnetLines()
-
-      @init( uid )
+      Design.instance().component( @get("uid") ).setMain()
       null
 
     reInit : () ->
@@ -83,108 +58,32 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
         routes.push {
           name     : theOtherPort.get("name")
+          type     : theOtherPort.type
+          ref      : cn.id
           isVgw    : theOtherPort.type is res_type.AWS_VPC_VPNGateway
           isProp   : cn.get("propagate")
           cidr_set : cn.get("routes")
         }
 
+      routes = _.sortBy routes, "type"
+
       @set data
       true
 
-    setPropagation : ( value ) ->
+    setPropagation : ( propagate ) ->
 
-      uid = @get 'uid'
+      component = Design.instance().component( @get("uid") )
 
-      vgw_set = MC.canvas_data.component[uid].resource.PropagatingVgwSet
+      # Only one vgw will be in a stack. So, RTB can only connects to one VPN
+      cn = _.find component.connections(), ( cn )->
+        cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ) isnt null
 
-      vgw_ref = '@' + value + '.resource.VpnGatewayId'
-
-      if vgw_set.length == 0
-
-        vgw_set.push vgw_ref
-
-      else
-        MC.canvas_data.component[uid].resource.PropagatingVgwSet = []
-
+      cn.setPropagate propagate
       null
 
-    setRoutes : ( data, routes ) ->
-
-      uid = @get 'uid'
-
-      # remove all routes
-      delete_idx = []
-
-      switch data.type
-
-        when 'gateway'
-
-          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-            if route.GatewayId == data.ref
-
-              delete_idx.push idx
-
-        when 'instance'
-
-          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-            if route.InstanceId == data.ref
-
-              delete_idx.push idx
-
-        when 'eni'
-
-          $.each MC.canvas_data.component[uid].resource.RouteSet, ( idx, route ) ->
-
-            if route.NetworkInterfaceId == data.ref
-
-              delete_idx.push idx
-
-      delete_idx.sort ( x, y )->
-
-        if x <= y
-          return 1
-
-        else
-          return -1
-
-      $.each delete_idx, ( i, v ) ->
-
-        MC.canvas_data.component[uid].resource.RouteSet.splice v, 1
-
-
-      # add all routes
-      $.each routes, ( idx, route ) ->
-
-        if route.children[1].children[0].value != ''
-
-          route_tmpl = {
-            'DestinationCidrBlock'      :   route.children[1].children[0].value,
-            'GatewayId'                 :   '',
-            'InstanceId'                :   '',
-            'InstanceOwnerId'           :   '',
-            'NetworkInterfaceId'        :   '',
-            'State'                     :   '',
-            'Origin'                    :   ''
-          }
-
-          switch data.type
-
-            when 'gateway'
-
-              route_tmpl.GatewayId = data.ref
-
-            when 'instance'
-
-              route_tmpl.InstanceId = data.ref
-
-            when 'eni'
-
-              route_tmpl.NetworkInterfaceId = data.ref
-
-
-          MC.canvas_data.component[uid].resource.RouteSet.push route_tmpl
+    setRoutes : ( routeId, routes ) ->
+      Design.instance().component( routeId ).set( "routes", routes )
+      null
   }
 
   new RTBModel()

@@ -22,6 +22,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
     getOtherTarget : ( theType )
       description : returns a component that its type is not of theType
 
+    connectsTo : ( id )
+      description : returns true if this connection connects to resource of id
+
     remove()
       description : remove the connection from two resources.
   ###
@@ -33,7 +36,7 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
     type : "Framework_CN"
 
-    constructor : ( p1Comp, p2Comp ) ->
+    constructor : ( p1Comp, p2Comp, attr ) ->
 
       if @portDefs
 
@@ -58,7 +61,7 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
 
       # Call super constructor
-      ResourceModel.call(this)
+      ResourceModel.call(this, attr)
 
       if @get("visual") isnt false and @portDefs
         # If we have portDefs, then it's considered to be visual line
@@ -76,6 +79,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       if @__portDef then @__portDef.port1[ attr ] else ""
     port2 : ( attr )->
       if @__portDef then @__portDef.port2[ attr ] else ""
+
+    connectsTo : ( id )->
+      ( @__port1Comp && @__port1Comp.id is id ) or ( @__port2Comp && @__port2Comp.id is id )
 
     port1Comp : ()-> @__port1Comp
     port2Comp : ()-> @__port2Comp

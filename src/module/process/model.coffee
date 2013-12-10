@@ -59,17 +59,12 @@ define [ 'aws_model', 'ami_model'
 
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
-                    # set cache resource
-                    amis = {
+                    # set amis and cache resource
+                    amis =
                         "DescribeImages" : []
-                    }
                     for ami in result.resolved_data
-
                         amis.DescribeImages.push ami
-
                     MC.aws.aws.cacheResource amis, result.param[3], false
-
-                    MC.aws.ami.setLayout(MC.canvas_data)
 
                     # get call service current tab id
                     current_tab_id = result.param[0].src.sender.get 'current_tab_id'

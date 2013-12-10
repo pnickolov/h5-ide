@@ -501,7 +501,6 @@
 					];
 				}
 
-
 				function positionChild(node)
 				{
 					var children = node.children,
@@ -624,9 +623,6 @@
 					item.coordinate[1] += VPC_PADDING_TOP;
 				});
 
-				layout.size[0] += VPC_PADDING_LEFT + VPC_PADDING_RIGHT;
-				layout.size[1] += VPC_PADDING_TOP + VPC_PADDING_BOTTOM;
-
 				// ELB
 				if (resource_stack[ 'AWS-ELB' ] !== undefined)
 				{
@@ -642,32 +638,6 @@
 							layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] + 5
 						];
 					});
-				}
-
-				// IGW & VGW
-				if (resource_stack[ 'AWS-VPC-InternetGateway' ] !== undefined)
-				{
-					resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
-						layout.coordinate[0] - 4,
-						layout.coordinate[1] + (layout.size[1] / 2) - 4
-					];
-				}
-
-				if (resource_stack[ 'AWS-VPC-VPNGateway' ] !== undefined)
-				{
-					resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
-						layout.coordinate[0] + layout.size[0] - 4,
-						layout.coordinate[1] + (layout.size[1] / 2) - 4
-					];
-				}
-
-				// CGW
-				if (resource_stack[ 'AWS-VPC-CustomerGateway' ] !== undefined)
-				{
-					resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
-						layout.coordinate[0] + layout.size[0] + 8,
-						layout.coordinate[1] + (layout.size[1] / 2) - 4
-					];
 				}
 
 				// RouteTable
@@ -793,9 +763,88 @@
 
 				absPosition( layout, 0, 0 );
 
-				console.info(layout);
+				function VPCsize()
+				{
+					var VPC_max_width = 0,
+						VPC_max_height = 0,
+						layout_data = data.layout.component,
+						ignore_type = ['AWS.VPC.CustomerGateway', 'AWS.VPC.InternetGateway', 'AWS.VPC.VPNGateway'],
+						component_size,
+						item_type;
+
+					$.each(layout_data.node, function (i, item)
+					{
+						if ($.inArray(item.type, ignore_type) === -1)
+						{
+							component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+
+							if (item.coordinate[0] + component_size[0] > VPC_max_width)
+							{
+								VPC_max_width = item.coordinate[0] + component_size[0];
+							}
+
+							if (item.coordinate[1] + component_size[1] > VPC_max_height)
+							{
+								VPC_max_height = item.coordinate[1] + component_size[1];
+							}
+						}
+					});
+
+					$.each(layout_data.group, function (i, item)
+					{
+						group_size = item.size;
+
+						if (item.coordinate[0] + group_size[0] > VPC_max_width)
+						{
+							VPC_max_width = item.coordinate[0] + group_size[0];
+						}
+
+						if (item.coordinate[1] + group_size[1] > VPC_max_height)
+						{
+							VPC_max_height = item.coordinate[1] + group_size[1];
+						}
+					});
+
+					layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
+					layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+				}
 
 				updateLayoutData( layout );
+
+				VPCsize();
+
+				// IGW & VGW
+				if (resource_stack[ 'AWS-VPC-InternetGateway' ] !== undefined)
+				{
+					resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] - 4,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				if (resource_stack[ 'AWS-VPC-VPNGateway' ] !== undefined)
+				{
+					resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] + layout.size[0] - 4,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				// CGW
+				if (resource_stack[ 'AWS-VPC-CustomerGateway' ] !== undefined)
+				{
+					resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
+						layout.coordinate[0] + layout.size[0] + 8,
+						layout.coordinate[1] + (layout.size[1] / 2) - 4
+					];
+				}
+
+				console.info(data.layout);
+
+
+				console.info(layout);
+
+				//updateLayoutData( layout );
 
 				MC.canvas.layout.init();
 				model.initLine();

@@ -43,14 +43,28 @@ define [ 'aws_model', 'ami_model'
                     # set cacheMap data
                     obj = MC.forge.other.setCacheMap vpc_id, result, null
 
-                    # set current tab id
-                    @set 'current_tab_id', obj.id
-
                     # set ami_ids
                     ami_ids = MC.forge.app.getAmis result.resolved_data[0]
 
-                    # call api
-                    @getDescribeImages result.param[3], ami_ids
+                    if _.isEmpty ami_ids
+
+                        # set cacheMap data
+                        #obj = MC.forge.other.setCacheMap obj.origin_id, null, 'FINISH'
+                        #
+                        #if MC.forge.other.isCurrentTab obj.id
+                        #
+                        #    # reload app view
+                        #    @reloadAppView obj
+
+                        me.setCacheMapData obj
+
+                    else
+
+                        # set current tab id
+                        @set 'current_tab_id', obj.id
+
+                        # call api
+                        @getDescribeImages result.param[3], ami_ids
 
                     null
 
@@ -59,12 +73,13 @@ define [ 'aws_model', 'ami_model'
 
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
-                    # set amis and cache resource
+                    # set amis and cache resource start
                     amis =
                         "DescribeImages" : []
                     for ami in result.resolved_data
                         amis.DescribeImages.push ami
                     MC.aws.aws.cacheResource amis, result.param[3], false
+                    # set amis and cache resource end
 
                     # get call service current tab id
                     current_tab_id = result.param[0].src.sender.get 'current_tab_id'
@@ -72,13 +87,17 @@ define [ 'aws_model', 'ami_model'
                     # get origin_id
                     origin_obj = MC.forge.other.getCacheMap current_tab_id
 
+                    @setCacheMapData origin_obj
+
                     # set cacheMap data
-                    obj = MC.forge.other.setCacheMap origin_obj.origin_id, null, 'FINISH'
+                    #obj = MC.forge.other.setCacheMap origin_obj.origin_id, null, 'FINISH'
+                    #
+                    #if MC.forge.other.isCurrentTab current_tab_id
+                    #
+                    #    # reload app view
+                    #    @reloadAppView obj
 
-                    if MC.forge.other.isCurrentTab current_tab_id
-
-                        # reload app view
-                        @reloadAppView obj
+                    null
 
         getProcess  : (tab_name) ->
             me = this
@@ -189,6 +208,18 @@ define [ 'aws_model', 'ami_model'
 
             null
 
+        setCacheMapData : ( data ) ->
+            console.log 'setCacheMapData', data
+
+            # set 'FINISH' flag by vpc( origin_id )
+            obj = MC.forge.other.setCacheMap data.origin_id, null, 'FINISH'
+
+            # when current tab reload app view
+            if MC.forge.other.isCurrentTab obj.id
+                @reloadAppView obj
+
+            null
+
         reloadAppView : ( obj ) ->
             console.log 'reloadAppView', obj
 
@@ -202,6 +233,7 @@ define [ 'aws_model', 'ami_model'
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APPVIEW', obj.origin_id, obj.region, appview_id
 
             null
+
     }
 
     model = new ProcessModel()

@@ -223,7 +223,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                             tmp_rule.protocol = 'all'
 
                         else
-                            tmp_rule.protocol = "Custom(#{rule.IpProtocol})"
+                            tmp_rule.protocol = "#{rule.IpProtocol}"
                     else
                         tmp_rule.protocol = rule.IpProtocol
 
@@ -243,6 +243,13 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
 
                     if tmp_rule.protocol is 'all'
                         tmp_rule.port = '0-65535'
+                    
+                    # for custom protocol
+                    if tmp_rule.protocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+                        if tmp_rule.protocol in ['6', 6, '17', 17]
+                            tmp_rule.port = '0-65535'
+                        else
+                            tmp_rule.port = 'all'
 
                     rules.push tmp_rule
 

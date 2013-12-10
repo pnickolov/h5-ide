@@ -118,7 +118,34 @@ define [ 'constant', 'MC','i18n!nls/lang.js'], ( constant, MC, lang ) ->
 	# 				attachedASGAry.push()
 	# 		null
 
+	isHaveRepeatListener = (elbUID) ->
+
+		elbComp = MC.canvas_data.component[elbUID]
+		listenerAry = elbComp.resource.ListenerDescriptions
+		portExistMap = {}
+
+		haveRepeat = false
+		_.each listenerAry, (listenerItem) ->
+			listenerObj = listenerItem.Listener
+			elbPort = listenerObj.LoadBalancerPort
+			if not portExistMap[elbPort]
+				portExistMap[String(elbPort)] = true
+			else
+				haveRepeat = true
+			null
+
+		if not haveRepeat
+			return null
+		else
+			elbName = elbComp.name
+			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM, elbName
+			# return
+			level: constant.TA.ERROR
+			info: tipInfo
+			uid: elbUID
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
 	isRedirectPortHttpsToHttp : isRedirectPortHttpsToHttp
+	isHaveRepeatListener : isHaveRepeatListener

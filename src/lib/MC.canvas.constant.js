@@ -1343,14 +1343,6 @@ var constant_data = {
 	//***** AWS.VPC.DhcpOptions *****/
 	DHCP_JSON:
 	{
-		layout:
-		{
-			'uid' : '',
-			"type": "AWS.VPC.DhcpOptions",
-			"coordinate": [0, 0],
-			"groupUId": "",
-			"connection": []
-		},
 		data:
 		{
 			"uid": "",

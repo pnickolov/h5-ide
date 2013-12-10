@@ -345,7 +345,6 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 			'AWS.VPC.VPNGateway'			: MC.canvas.VGW_JSON,
 			'AWS.VPC.CustomerGateway'		: MC.canvas.CGW_JSON,
 			'AWS.VPC.NetworkInterface'		: MC.canvas.ENI_JSON,
-			'AWS.VPC.DhcpOptions'			: MC.canvas.DHCP_JSON,
 			'AWS.AutoScaling.Group'			: MC.canvas.ASG_JSON,
 			'AWS.AutoScaling.LaunchConfiguration' : MC.canvas.ASL_LC_JSON
 		}
@@ -357,6 +356,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		app_json = $.extend true, {}, MC.canvas.STACK_JSON
 
 		vpc_id = ""
+
+		ignore_instances = []
 
 		for region, nodes of res
 
@@ -389,11 +390,40 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 							vpc_id = resource_comp[0].vpcId
 
+						#collect ignore asg instance
+						if resource_type is 'DescribeAutoScalingGroups'
+							for asg in resource_comp
+
+								if asg.Instances
+
+									for ins in asg.Instances.member
+
+										ignore_instances.push ins.InstanceId
+
 						for comp in resource_comp
 
 							c = vpc_resource_map[resource_type] comp
 
-							app_json.component[c.uid] = c
+							if c
+
+								app_json.component[c.uid] = c
+
+		#remove_asg_instance
+		remove_uid = []
+
+		for uid, c of app_json.component
+
+			if c.type is 'AWS.EC2.Instance' and c.resource.InstanceId in ignore_instances
+
+				remove_uid.push c.uid
+
+			if c.typs is 'AWS.VPC.NetworkInterface' and c.resource.Attachment.InstanceId and c.resource.Attachment.InstanceId.split('.')[0].slice(1) in remove_uid
+
+				remove_uid.push c.uid
+
+		for uid in remove_uid
+
+			delete app_json.component[uid]
 
 		ref_res = MC.aws.aws.collectReference app_json.component
 
@@ -434,50 +464,55 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 					when "AWS.AutoScaling.Group"
 
-						if c.resource.AvailabilityZones.length != 1
+						subnets = []
 
-							subnets = []
+						if c.resource.VPCZoneIdentifier
 
-							if c.resource.VPCZoneIdentifier
+							subs = c.resource.VPCZoneIdentifier.split(',')
 
-								subs = c.resource.VPCZoneIdentifier.split(',')
+							for subnet in subs
 
-								for subnet in subs
+								if subnet[0] isnt "@"
 
 									subnets.push ref_key[subnet].split('.')[0].slice(1)
 
-							originalId = ''
-
-							for idx, zone of c.resource.AvailabilityZones
-
-								extend_asg = layout
-
-								if idx is 0
-
-									if subnets.length != 0
-
-										originalId = subnets[idx]
-
-									else
-
-										originalId = zone.split('.')[0].slice(1)
-
-									extend_asg_uid = c.uid
 								else
+									subnets.push subnet
 
-									extend_asg_uid = MC.guid()
+							c.resource.VPCZoneIdentifier = subnets.join(',')
 
-									extend_asg.originalId = originalId
+						originalId = ''
+
+						for idx, zone of c.resource.AvailabilityZones
+
+							extend_asg = layout
+
+							if idx in [0,"0"]
 
 								if subnets.length != 0
 
-									extend_asg.groupUId = subnets[idx]
+									originalId = subnets[idx]
 
 								else
 
-									extend_asg.groupUId = zone.split('.')[0].slice(1)
+									originalId = zone.split('.')[0].slice(1)
 
-								app_json.layout.component.group[extend_asg_uid] = extend_asg
+								extend_asg_uid = c.uid
+							else
+
+								extend_asg_uid = MC.guid()
+
+								extend_asg.originalId = originalId
+
+							if subnets.length != 0
+
+								extend_asg.groupUId = subnets[idx]
+
+							else
+
+								extend_asg.groupUId = zone.split('.')[0].slice(1)
+
+							app_json.layout.component.group[extend_asg_uid] = extend_asg
 
 						#app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
 

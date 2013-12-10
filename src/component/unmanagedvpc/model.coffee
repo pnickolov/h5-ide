@@ -63,22 +63,22 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                             'AWS.VPC.RouteTable'                        : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.Subnet'                            : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.VPNGateway'                        : {'filter':{'attachment.vpc-id':vpc_id}},
-                            #'AWS.VPC.VPNConnection'                     : {'filter':{'vpn-gateway-id':''}},
+                            #'AWS.VPC.VPNConnection'                    : {'filter':{'vpn-gateway-id':''}},
                             'AWS.AutoScaling.Group'                     : {'id':[]},
 
                             'AWS.EC2.SecurityGroup'                     : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.NetworkAcl'                        : {'filter':{'vpc-id':vpc_id}},
                             'AWS.VPC.NetworkInterface'                  : {'filter':{'vpc-id':vpc_id}},
-                            #'AWS.VPC.InternetGateway'                   : {'filter':{'attachment.vpc-id':vpc_id}},
+                            #'AWS.VPC.InternetGateway'                  : {'filter':{'attachment.vpc-id':vpc_id}},
 
                             'AWS.EC2.AvailabilityZone'                  : {'filter':{'region-name':region}},
-                            #'AWS.EC2.EBS.Volume'                        : {'filter':{'attachment.instance-id':[]}},
-                            #'AWS.EC2.EIP'                               : {'filter':{'instance-id':[]}},
+                            #'AWS.EC2.EBS.Volume'                       : {'filter':{'attachment.instance-id':[]}},
+                            #'AWS.EC2.EIP'                              : {'filter':{'instance-id':[]}},
                             'AWS.VPC.DhcpOptions'                       : {'id':[]},
                             'AWS.VPC.CustomerGateway'                   : {'id':[]},
-                            #'AWS.AutoScaling.LaunchConfiguration'       : {'id':[]},
-                            #'AWS.AutoScaling.NotificationConfiguration' : {'id':[]},
-                            #'AWS.AutoScaling.ScalingPolicy'             : {'filter':{'AutoScalingGroupName':[]}},
+                            #'AWS.AutoScaling.LaunchConfiguration'      : {'id':[]},
+                            #'AWS.AutoScaling.NotificationConfiguration': {'id':[]},
+                            #'AWS.AutoScaling.ScalingPolicy'            : {'filter':{'AutoScalingGroupName':[]}},
                         }
 
                         new_value = {}

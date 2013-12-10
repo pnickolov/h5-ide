@@ -102,6 +102,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 			}
 		}
 
+		if aws_eni.attachment and aws_eni.attachment.instanceOwnerId is "amazon-elb"
+
+			return false
+
 		if aws_eni.attachment
 			eni_json.resource.Attachment.DeviceIndex = aws_eni.attachment.deviceIndex
 			eni_json.resource.Attachment.InstanceId = aws_eni.attachment.instanceId

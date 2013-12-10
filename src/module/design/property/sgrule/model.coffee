@@ -173,7 +173,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
                         if tmp_rule.protocol in ['6', 6, '17', 17]
                             tmp_rule.port = '0-65535'
                         else
-                            tmp_rule.port = 'all'
+                            tmp_rule.port = 'ALL'
 
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 

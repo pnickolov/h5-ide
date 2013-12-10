@@ -249,7 +249,7 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                         if tmp_rule.protocol in ['6', 6, '17', 17]
                             tmp_rule.port = '0-65535'
                         else
-                            tmp_rule.port = 'all'
+                            tmp_rule.port = 'ALL'
 
                     rules.push tmp_rule
 

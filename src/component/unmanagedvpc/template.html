@@ -31,22 +31,8 @@
 							<a href="javascript:void(0)">
 								<h5>{{ @key }}</h5>
 								<ol class="unmanaged-resource-data">
-									<li>
-										<span class="unmanaged-resource-number">3</span>
-										<span class="unmanaged-resource-name">subnets</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">23</span>
-										<span class="unmanaged-resource-name">running instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">10</span>
-										<span class="unmanaged-resource-name">stopped instances</span>
-									</li>
-									<li>
-										<span class="unmanaged-resource-number">1</span>
-										<span class="unmanaged-resource-name">load balancer</span>
-									</li>
+									{{#vpc_list this }}
+									{{/vpc_list}}
 								</ol>
 							</a>
 						</li>

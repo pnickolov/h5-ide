@@ -47,6 +47,32 @@ define [ 'event',
 
                 new Handlebars.SafeString JSON.stringify value
 
+            # vpc_list
+            Handlebars.registerHelper 'vpc_list', ( items, options ) ->
+
+                new_item = ''
+                prefix   = '<li><span class="unmanaged-resource-number">'
+                infix    = '</span><span class="unmanaged-resource-name">'
+                suffix   = '</span></li>'
+
+                _.each items, ( value, key ) ->
+
+                    switch key
+
+                        when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                            new_item += prefix + '1' + infix + ' instance' + suffix
+
+                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                            new_item += prefix + '1' + infix + ' subnets' + suffix
+
+                        when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                            new_item += prefix + value.filter['instance-id'].length + infix + ' eip' + suffix
+
+                        when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                            new_item += prefix + value.id.length + infix + ' load balancer' + suffix
+
+                new Handlebars.SafeString new_item
+
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'
 

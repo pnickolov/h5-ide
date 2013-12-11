@@ -130,7 +130,7 @@ define [ 'event',
 
 		getTabType = ( uid )->
 			tab_type = MC.canvas.getState()
-			if tab_type is "app"
+			if tab_type is "app" or tab_type is "appview" # Quick mod, appview map to app
 				tab_type = PropertyBaseModule.TYPE.App
 			else if tab_type is "stack"
 				tab_type = PropertyBaseModule.TYPE.Stack

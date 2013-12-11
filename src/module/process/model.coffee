@@ -18,6 +18,10 @@ define [ 'aws_model', 'ami_model'
             # when aws_model.vpc_resource current tab id
             'current_tab_id'    : null
 
+            # when timeout, set timeout_obj
+            # id : { id : null, is_show : false }
+            'timeout_obj'       : {}
+
         initialize  : ->
             me = this
 
@@ -83,6 +87,39 @@ define [ 'aws_model', 'ami_model'
                     @setCacheMapDataFlg origin_obj
 
                     null
+
+            # loop time 1's
+            setInterval ( ->
+
+                # when current tab not appview return
+                if MC.forge.other.processType( MC.data.current_tab_id ) isnt 'appview'
+                    return
+
+                # get obj
+                obj = MC.forge.other.getCacheMap MC.data.current_tab_id
+
+                # return obj when undefined
+                if not obj
+                    return
+
+                # when create_time is 'timeout' or state is 'FINISH' return
+                if obj.create_time is 'timeout' or obj.state is 'FINISH'
+                    return
+
+                # set T1 and T2
+                t1 = obj.create_time
+                t2 = new Date()
+
+                # timestamp
+                if MC.timestamp( t1, t2, 's' ) > 10
+
+                    # set create_time is 'timeout'
+                    MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'timeout'
+
+                    # set timeout
+                    me.set 'timeout_obj', { 'id' : obj.id, 'is_show' : true }
+
+            ), 1000
 
         getProcess  : (tab_name) ->
             me = this
@@ -153,6 +190,27 @@ define [ 'aws_model', 'ami_model'
                 else
 
                     me.set 'flag_list', flag_list
+
+            null
+
+        getTimestamp : ( state, tab_id ) ->
+            console.log 'getTimestamp', state, tab_id
+
+            if state is 'OPEN_PROCESS'
+                @set 'timeout_obj', { id : tab_id, is_show : false }
+
+            else if state is 'OLD_PROCESS'
+
+                # get obj
+                obj = MC.forge.other.getCacheMap tab_id
+
+                # when create_time is 'timeout' show tip
+                if obj and obj.create_time is 'timeout'
+                    @set 'timeout_obj', { id : tab_id, is_show : true }
+
+                # when create_time isnt 'timeout' hide tip
+                else if obj and obj.create_time isnt 'timeout'
+                    @set 'timeout_obj', { id : tab_id, is_show : false }
 
             null
 

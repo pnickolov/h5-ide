@@ -1,10 +1,12 @@
 <div id="process-panel">
 	<section id="process-container">
 
-		<header id="process-title" class="overlay-text">
+		<header id="process-title" class="overlay-text" data-tab-id="{{ id }}">
 			Loading resources...
+			{{#if is_show }}
 			<div>It takes longer to load resources since your system is quite signiﬁcant.</br>
 Just sit back and we are off to go soon!</div>
+			{{/if}}
 		</header>
 
 		<div id="process-body">

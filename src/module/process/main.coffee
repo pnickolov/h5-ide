@@ -19,6 +19,10 @@ define [ 'event' ], ( ide_event ) ->
                 console.log 'change:flag_list'
                 view.render type
 
+            model.on 'change:timeout_obj', () ->
+                console.log 'change:timeout_obj'
+                view.render type
+
             ide_event.onLongListen ide_event.SWITCH_PROCESS, ( state, tab_id ) ->
                 console.log 'process:SWITCH_PROCESS', state, tab_id
 
@@ -30,6 +34,7 @@ define [ 'event' ], ( ide_event ) ->
                     when 'appview'
                         obj = MC.forge.other.getCacheMap tab_id
                         model.getVpcResourceService obj.region, obj.origin_id, state
+                        model.getTimestamp state, tab_id
                     when 'process'
                         model.getProcess tab_id
 

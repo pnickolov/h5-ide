@@ -23,7 +23,7 @@ define [ 'event',
             if type is 'process'
                 $( @el ).html @template @model.attributes
             else if type is 'appview'
-                $( @el ).html @appview_template()
+                $( @el ).html @appview_template @model.attributes.timeout_obj
 
         closeProcess : ->
             console.log 'closeProcess'

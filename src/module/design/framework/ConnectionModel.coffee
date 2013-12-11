@@ -121,22 +121,22 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
   }, {
     extend : ( protoProps, staticProps )->
 
-      if protoProps.portDefs and not _.isArray( protoProps.portDefs )
-        protoProps.portDefs = [ protoProps.portDefs ]
-
       tags = []
 
-      # Ensure port1 is always smaller than port2
-      for def in protoProps.portDefs
-        if def.port1.name > def.port2.name
-          tmp = def.port1
-          def.port1 = def.port2
-          def.port2 = tmp
+      if protoProps.portDefs
+        if not _.isArray( protoProps.portDefs )
+          protoProps.portDefs = [ protoProps.portDefs ]
 
-        tags.push def.port1.name + ">" + def.port2.name
+        # Ensure port1 is always smaller than port2
+        for def in protoProps.portDefs
+          if def.port1.name > def.port2.name
+            tmp = def.port1
+            def.port1 = def.port2
+            def.port2 = tmp
 
-      if not protoProps.type
-        protoProps.type = tags[0]
+          tags.push def.port1.name + ">" + def.port2.name
+
+        if not protoProps.type then protoProps.type = tags[0]
 
       # If we have portDefs, then it's considered to be visual line
       # But the subclass can also set visual to false,

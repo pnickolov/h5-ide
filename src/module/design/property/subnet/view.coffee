@@ -14,25 +14,23 @@ define [ '../base/view',
     SubnetView = PropertyView.extend {
 
         events   :
-            'click #networkacl-create': 'openCreateAclPanel'
-            'click .networkacl-edit': 'openEditAclPanel'
-            "change #property-subnet-name" : 'onChangeName'
-            "focus #property-cidr-block"  : 'onFocusCIDR'
-            "keypress #property-cidr-block"  : 'onPressCIDR'
-            "blur #property-cidr-block"  : 'onBlurCIDR'
-            "click .item-networkacl input" : 'onChangeACL'
-            "click .item-networkacl" : 'onClickACL'
-            "change #networkacl-create"    : 'onCreateACL'
-            'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
+            "change #property-subnet-name"  : 'onChangeName'
 
-        render     : () ->
-            console.log 'property:subnet render'
+            "focus #property-cidr-block"    : 'onFocusCIDR'
+            "keypress #property-cidr-block" : 'onPressCIDR'
+            "blur #property-cidr-block"     : 'onBlurCIDR'
 
+            'click #networkacl-create'  : 'createAcl'
+            'click .icon-btn-details'   : 'openAcl'
+            "click .ppty-acl-cb"        : 'changeAcl'
+            'click .sg-list-delete-btn' : 'deleteAcl'
+
+        render : () ->
             # Should not touch model's data
             data = $.extend true, {}, this.model.attributes
 
-            subnetUID = this.model.get('uid')
-            subnetName = this.model.get('name')
+            subnetUID  = data.uid
+            subnetName = data.name
 
             if subnetUID
 
@@ -61,45 +59,13 @@ define [ '../base/view',
             else
                 @$el.html template data
 
-            @model.attributes.name
-
-
-        openCreateAclPanel : ( event ) ->
-            aclUID = MC.guid()
-            aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
-
-            # remove 100's acl rule
-            entrySet = aclObj.resource.EntrySet
-            newEntrySet = _.filter entrySet, (aclRuleObj) ->
-                if aclRuleObj.RuleNumber in ['100', 100]
-                    return false
-                return true
-            aclObj.resource.EntrySet = newEntrySet
-
-            aclObj.name = MC.aws.acl.getNewName()
-            aclObj.uid = aclUID
-
-            vpcUID = MC.aws.vpc.getVPCUID()
-            aclObj.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
-
-            MC.canvas_data.component[aclUID] = aclObj
-
-            @model.setACL aclUID
-            @trigger "OPEN_ACL", aclUID
-
-        openEditAclPanel : ( event ) ->
-            @trigger "OPEN_ACL", $(event.currentTarget).attr('acl-uid')
+            data.name
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
-            id = @model.get 'uid'
 
-            MC.validate.preventDupname target, id, name, 'Subnet'
-
-            # Notify changes
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "Subnet" )
                 @model.setName name
                 @setTitle name
 
@@ -114,37 +80,6 @@ define [ '../base/view',
 
             null
 
-        deleteNetworkAcl : (event) ->
-
-            subnetUID = @model.get 'uid'
-
-            that = this
-
-            $target = $(event.currentTarget)
-            aclUID = $target.attr('acl-uid')
-
-            associationNum = Number($target.attr('acl-association'))
-            aclName = $target.attr('acl-name')
-
-            # show dialog to confirm that delete acl
-            if associationNum
-                mainContent = 'Are you sure you want to delete ' + aclName + '?'
-                descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
-                dialog_template = MC.template.modalDeleteSGOrACL {
-                    title : 'Delete Network ACL',
-                    main_content : mainContent,
-                    desc_content : descContent
-                }
-                modal dialog_template, false, () ->
-                    $('#modal-confirm-delete').click () ->
-                        MC.aws.acl.addAssociationToDefaultACL(subnetUID)
-                        delete MC.canvas_data.component[aclUID]
-                        that.refreshACLList()
-                        modal.close()
-
-            else
-                delete MC.canvas_data.component[aclUID]
-                that.refreshACLList()
 
         onBlurCIDR : ( event ) ->
 
@@ -209,18 +144,46 @@ define [ '../base/view',
 
                 MC.aws.aws.disabledAllOperabilityArea(false)
 
-        onChangeACL : () ->
-            @model.setACL $( "#networkacl-list :checked" ).attr "data-uid"
+        createAcl : ()->
+            @trigger "OPEN_ACL", @model.createAcl()
+
+        openAclPanel : ( event ) ->
+            id = $(event.currentTarget).closest("li").attr("data-uid")
+            @trigger "OPEN_ACL", id
+            null
+
+        deleteAcl : (event) ->
+
+            $target  = $( event.currentTarget )
+            assoCont = parseInt $target.attr('data-count'), 10
+            aclUID   = $target.closest("li").attr('data-uid')
+
+            # show dialog to confirm that delete acl
+            if assoCont
+                that    = this
+                aclName = $target.attr('data-name')
+
+                dialog_template = MC.template.modalDeleteSGOrACL {
+                    title : 'Delete Network ACL'
+                    main_content : "Are you sure you want to delete #{aclName}?"
+                    desc_content : "Subnets associated with #{aclName} will use DefaultACL."
+                }
+                modal dialog_template, false, () ->
+                    $('#modal-confirm-delete').click () ->
+                        that.model.removeAcl( aclUID )
+                        that.refreshACLList()
+                        modal.close()
+            else
+                @model.removeAcl( aclUID )
+                @refreshACLList()
+
+        changeAcl : ( event ) ->
+            @model.setACL $( event.currentTarget ).closest("li").attr "data-uid"
             @refreshACLList()
 
-        onClickACL : (event) ->
-
-            inputElem = $(event.currentTarget).find('input')
-            inputElem.select()
-
         refreshACLList : () ->
-            this.model.init( this.model.get('uid') )
-            $('#networkacl-list').html acl_template(this.model.attributes)
+            @model.init( @model.get('uid') )
+            $('#networkacl-list').html acl_template(@model.attributes)
 
     }
 

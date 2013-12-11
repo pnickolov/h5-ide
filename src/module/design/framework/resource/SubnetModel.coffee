@@ -1,5 +1,11 @@
 
-define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connection/RtbAsso" ], ( constant, Design, GroupModel, CanvasManager, RtbAsso )->
+define [ "constant",
+         "Design",
+         "../GroupModel",
+         "../CanvasManager",
+         "../connection/RtbAsso",
+         "../connection/AclAsso",
+], ( constant, Design, GroupModel, CanvasManager, RtbAsso, AclAsso )->
 
   Model = GroupModel.extend {
 
@@ -16,6 +22,10 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
       new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
+
+      # Connect to the DefaultACL automatically
+      Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      new AclAsso( this, Acl.getDefaultAcl() )
       null
 
     setCIDR : ( cidr )->
@@ -32,9 +42,11 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
 
     # Association is the connection between RTB and Subnet
     getAssociation : ()-> @rtb_asso
-    setAssociation : ( connection )->
-      @rtb_asso = connection
-      null
+    getAcl         : ()-> @acl_asso.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+
+    setAcl : ( uid )->
+      acl = Design.instance().component( uid )
+      new AclAsso( this, acl )
 
     connect : ( connection ) ->
 
@@ -42,6 +54,10 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
         # Remove previous association if there's any
         if @rtb_asso then @rtb_asso.remove()
         @rtb_asso = connection
+
+      else if connection.type is "ACL_Asso"
+        if @acl_asso then @acl_asso.remove()
+        @acl_asso = connection
 
       null
 
@@ -84,7 +100,12 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
 
     deserialize : ( data, layout_data )->
 
-      az = Design.instance().getAZ( data.resource.AvailabilityZone )
+      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      mainRT   = RtbModel.getMainRouteTable()
+
+      # If we don't have a mainRT yet, then we don't deserialize this data
+      if not mainRT
+        return
 
       subnet = new Model({
 
@@ -98,7 +119,7 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
         height : layout_data.size[1]
       })
 
-      az.addChild( subnet )
+      Design.instance().getAZ( data.resource.AvailabilityZone ).addChild( subnet )
 
       null
   }

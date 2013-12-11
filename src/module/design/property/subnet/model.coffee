@@ -2,108 +2,64 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Design ) ->
 
   SubnetModel = PropertyModel.extend {
 
     init : ( uid ) ->
 
-      subnet_component = MC.canvas_data.component[ uid ]
+      subnet_component = Design.instance().component( uid )
 
       if !subnet_component then return false
 
+      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+
+      subnet_acl = subnet_component.getAcl()
+
+      defaultACL  = null
       networkACLs = []
+      _.each ACLModel.allObjects(), ( acl )->
+        aclObj = {
+          uid         : acl.id
+          name        : acl.get("name")
+          isUsed      : acl is subnet_acl
+          rule        : acl.getRuleCount()
+          association : acl.getAssoCount()
+        }
 
-      ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+        if acl.get("isDefault")
+          defaultACL = aclObj
+          aclObj.isDefault = true
+        else
+          networkACLs.splice( _.sortedIndex( networkACLs, aclObj, "name" ), 0, aclObj )
 
-      linkToDefault = true
-      defaultACLIdx = -1
+      console.assert( defaultACL, "Cannot find DefaultACL" )
+      networkACLs.splice( 0, 0, defaultACL )
 
-      for id, component of MC.canvas_data.component
-        if component.type == ACL_TYPE
-          acl =
-            uid    : component.uid
-            rule   : component.resource.EntrySet.length
-            name   : component.name
-            association : component.resource.AssociationSet.length
-            isUsed  : false
-
-          for asscn in component.resource.AssociationSet
-            if asscn.SubnetId.indexOf( uid ) != -1
-              linkToDefault = false
-              acl.isUsed = true
-              break
-
-          if component.name == "DefaultACL"
-            defaultACLIdx = networkACLs.length
-
-          # if component.resource.AssociationSet.length isnt 0
-          #     acl.isUsed = true
-
-          if component.name == "DefaultACL"
-            # acl.isUsed = true
-            acl.isDefault = true
-            defaultACLIdx = networkACLs.length
-          else
-            acl.isDefault = false
-
-          networkACLs.push acl
-
-      if defaultACLIdx == -1
-        console.log "[Warning] Cannot find DefaultACL!!!"
-
-      if defaultACLIdx != 0
-        defaultACL = networkACLs.splice defaultACLIdx, 1
-        networkACLs.splice 0, 0, defaultACL[0]
-      else
-        defaultACL = networkACLs[ 0 ]
-
-      # if linkToDefault
-      #     defaultACL.isUsed = true
-
-      data =
-        uid  : uid
-        name : subnet_component.name
-        CIDR : subnet_component.resource.CidrBlock
+      @set {
+        uid        : uid
+        name       : subnet_component.get("name")
+        CIDR       : subnet_component.get("cidr")
         networkACL : networkACLs
+      }
+      null
 
-      this.set data
+    createAcl : ()->
+      ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      acl = new ACLModel()
+      # Assign acl to the newly created acl
+      @setACL( acl.id )
+      acl.id
+
+    removeAcl : ( acl_uid )->
+      Design.instance().component( acl_uid ).remove()
       null
 
     setCIDR : ( cidr ) ->
-
-      # TODO : Validate CIDR
-      MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
-      subnetName = MC.canvas_data.component[ this.attributes.uid ].name
-      MC.canvas.update this.attributes.uid, "text", "label", subnetName + ' (' + cidr + ')'
-
-      MC.aws.subnet.updateAllENIIPList(this.attributes.uid, false)
-
-      null
+      Design.instance().component( @get("uid") ).setCIDR( cidr )
 
     setACL : ( acl_uid ) ->
-
-      ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-      for id, component of MC.canvas_data.component
-        if component.type != ACL_TYPE
-          continue
-
-        removed = false
-
-        for asscn, idx in component.resource.AssociationSet
-          if asscn.SubnetId.indexOf( this.attributes.uid ) != -1
-            component.resource.AssociationSet.splice idx, 1
-            removed = true
-            break
-
-        if removed
-          break
-
-      acl = MC.canvas_data.component[ acl_uid ]
-      acl.resource.AssociationSet.push
-        SubnetId : "@" + this.attributes.uid + ".resource.SubnetId"
-        NetworkAclAssociationId : ""
-        NetworkAclId : ""
+      Design.instance().component( @get("uid") ).setAcl( acl_uid )
       null
   }
 

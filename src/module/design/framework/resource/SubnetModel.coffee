@@ -1,5 +1,5 @@
 
-define [ "constant", "Design", "../GroupModel", "../CanvasManager" ], ( constant, Design, GroupModel, CanvasManager )->
+define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connection/RtbAsso" ], ( constant, Design, GroupModel, CanvasManager, RtbAsso )->
 
   Model = GroupModel.extend {
 
@@ -9,6 +9,29 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager" ], ( constant
       y      : 2
       width  : 17
       height : 17
+
+    initialize : ()->
+      # Connect to the MainRT automatically
+      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      new RtbAsso( this, RtbModel.getMainRouteTable() )
+      null
+
+
+    # Association is the connection between RTB and Subnet
+    getAssociation : ()-> @rtb_asso
+    setAssociation : ( connection )->
+      @rtb_asso = connection
+      null
+
+    connect : ( connection ) ->
+
+      if connection.type is "RTB_Asso"
+        # Remove previous association if there's any
+        if @rtb_asso then @rtb_asso.remove()
+        @rtb_asso = connection
+
+      null
+
 
     draw : ( isCreate )->
 

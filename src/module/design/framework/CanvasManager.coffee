@@ -96,7 +96,7 @@ define [], ()->
       design = Design.instance()
       component = design.component compUid
 
-      if not component.get("group")
+      if not component.node_group
         console.error "Only group element can be resized."
         return
 

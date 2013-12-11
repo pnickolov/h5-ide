@@ -29,12 +29,14 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       description : remove the connection from two resources.
   ###
 
+  connectionDraw = ()->
+    CanvasManager.drawLine( @ )
+    null
+
   ConnectionModel = ResourceModel.extend {
 
-    defaults :
-      connection : true
-
-    type : "Framework_CN"
+    node_line : true
+    type      : "Framework_CN"
 
     constructor : ( p1Comp, p2Comp, attr ) ->
 
@@ -63,21 +65,14 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       # Call super constructor
       ResourceModel.call(this, attr)
 
-      if Design.instance().shouldDraw()
-        draw()
+      if @draw and Design.instance().shouldDraw()
+        @draw()
 
       # Put connect() calls to last, in case of some resource might want the Line SVG Node
       @__port1Comp.connect this
       @__port2Comp.connect this
 
       this
-
-    draw : ()->
-      if @get("visual") isnt false and @portDefs
-        # If we have portDefs, then it's considered to be visual line
-        # But the subclass can also set visual to false,
-        # to indicate this is not a visual line.
-        CanvasManager.drawLine( this )
 
     port1 : ( attr )->
       if @__portDef then @__portDef.port1[ attr ] else ""
@@ -138,6 +133,14 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       if not protoProps.type
         protoProps.type = tags[0]
+
+      # If we have portDefs, then it's considered to be visual line
+      # But the subclass can also set visual to false,
+      # to indicate this is not a visual line.
+      # If it's visual, insert a draw() into it.
+      if protoProps.portDefs and protoProps.defaults
+        if _.result( protoProps, "defaults" ).visual isnt false
+          protoProps.draw = connectionDraw
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )
 

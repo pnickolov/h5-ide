@@ -14,7 +14,8 @@ define [ "./CanvasManager" ], ( CanvasManager )->
       this.coordinate = [ component.x(), component.y() ]
       this.size       = [ component.width(), component.height() ]
       this.type       = component.type
-      this.nodeType   = if component.get("group") then "group" else if component.get("connection") then "line" else "node"
+
+      this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 
       this.parentId   = component.parent()
       this.parentId   = if this.parent then "" else this.parentId.id

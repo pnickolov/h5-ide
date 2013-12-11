@@ -26,7 +26,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
       res_type  = constant.AWS_RESOURCE_TYPE
 
       # uid might be a line connecting RTB and other resource
-      if component.get("connection")
+      if component.node_line
         subnet    = component.getTarget( res_type.AWS_VPC_Subnet )
         component = component.getTarget( res_type.AWS_VPC_RouteTable )
 

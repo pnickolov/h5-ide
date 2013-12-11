@@ -146,9 +146,18 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
     # Draw everything after deserialization is done.
     # Because some resources might just deleted right after it's been created.
+    # And draw lines at the end
     design.__shoulddraw = true
+    lines = []
     for uid, comp of design.__componentMap
-      if comp.draw then comp.draw( true )
+      if not comp.draw then continue
+      if comp.node_line
+        lines.push comp
+      else
+        comp.draw( true )
+
+    for comp in lines
+      comp.draw( true )
 
     design.component = _old_get_component_
 
@@ -204,9 +213,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
       # Cache them into another cache if they are visual objects
       if _.isFunction comp.draw
-        if comp.get("group")
+        if comp.node_group
           @__canvasGroups[ id ] = comp
-        else
+        else if comp.node_line isnt true
           @__canvasNodes[ id ] = comp
     null
   ### Private Interface End ###
@@ -277,7 +286,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
     # ResourceModel can only add json component.
     for uid, comp of @__componentMap
-      if comp.get("connection")
+      if comp.node_line
         connections.push comp
         continue
 

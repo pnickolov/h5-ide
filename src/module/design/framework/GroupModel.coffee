@@ -3,10 +3,8 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
   GroupModel = ComplexResModel.extend {
 
-    defaults :
-      group : true
-
-    type : "Framework_G"
+    node_group : true
+    type       : "Framework_G"
 
     remove : ()->
       console.debug "GroupModel.remove, Removing Children"

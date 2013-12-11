@@ -15,7 +15,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
     setMain : ()->
       if @get("main") then return
 
-      old_main_rtb = _.find Model.allObjects(), ( obj )-> obj.get("main")
+      old_main_rtb = Model.getMainRouteTable()
 
       old_main_rtb.set("main", false)
       old_main_rtb.draw()
@@ -24,12 +24,15 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
       @draw()
 
       # Update all implicitly association to subnets
-      for cn in old_main_rtb.connections()
-        if cn.type is "RTB_ASSO" and cn.get("implicit")
-          # Get the subnet that is previously asso-ed to the Main RouteTable
-          subnet = cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
-          new RtbAsso( this, subnet, { implicit : true } )
-          cn.remove()
+      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
+      for sb in subnets
+        asso = sb.getAssociation()
+        console.assert( asso, "Subnet should at least associate to one RouteTable" )
+
+        # The association is implicit, we transfer this to the new MainRT
+        if asso.get("implicit")
+          new RtbAsso( this, sb, { implicit : true } )
 
     addRoute : ( targetId, r, propagating )->
 
@@ -120,7 +123,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    getMainRouteTable : ()->
+      _.find Model.allObjects(), ( obj )-> obj.get("main")
+
+    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
     resolveFirst : true
 
     deserialize : ( data, layout_data, resolve )->

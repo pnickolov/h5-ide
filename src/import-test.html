@@ -797,14 +797,17 @@
 					{
 						group_size = item.size;
 
-						if (item.coordinate[0] + group_size[0] > VPC_max_width)
+						if (item.type !== 'AWS.AutoScaling.Group')
 						{
-							VPC_max_width = item.coordinate[0] + group_size[0];
-						}
+							if (item.coordinate[0] + group_size[0] > VPC_max_width)
+							{
+								VPC_max_width = item.coordinate[0] + group_size[0];
+							}
 
-						if (item.coordinate[1] + group_size[1] > VPC_max_height)
-						{
-							VPC_max_height = item.coordinate[1] + group_size[1];
+							if (item.coordinate[1] + group_size[1] > VPC_max_height)
+							{
+								VPC_max_height = item.coordinate[1] + group_size[1];
+							}
 						}
 					});
 

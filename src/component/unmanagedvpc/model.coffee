@@ -93,6 +93,9 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                     if type of vpc_obj
                                         filter['id'] = _.keys(vpc_obj[type])
 
+                                    if type is 'AWS.VPC.CustomerGateway' and 'AWS.VPC.VPNConnection' of vpc_obj
+                                        filter['id'] = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id]['customerGatewayId'] for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
+
                                     if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
                                         filter['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
 

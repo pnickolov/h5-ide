@@ -1,7 +1,7 @@
 
 define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
 
-  Model = ComplexResModel.extend {
+  Model = ResourceModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 

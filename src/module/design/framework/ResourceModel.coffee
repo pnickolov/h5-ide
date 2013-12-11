@@ -93,12 +93,12 @@ define [ "Design", "backbone" ], ( Design )->
       this
 
     getNewName : ()->
-      if not this.newNameTmpl then return ""
+      if not @newNameTmpl then return ""
 
       myKinds = Design.modelClassForType( @type ).allObjects()
       base = myKinds.length + 1
       while true
-        newName = newNameTmpl + base
+        newName = @newNameTmpl + base
         same    = false
         for k in myKinds
           if k.get("name") is newName

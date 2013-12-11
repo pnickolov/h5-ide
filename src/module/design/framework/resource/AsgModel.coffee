@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scalingPolicyModel" ], ( ComplexResModel, CanvasManager, Design, constant, scalingPolicy )->
 
   Model = ComplexResModel.extend {
 
@@ -10,6 +10,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       height   : 13
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+
+    scalingPolicies: []
+
+    addScalingPolicy: ( policy ) ->
+      @scalingPolicies.push new scalingPolicy( policy )
 
     draw : ( isCreate )->
 

@@ -164,6 +164,10 @@ define [ 'aws_model', 'ami_model'
                 # get resources
                 resources = MC.data.unmanaged_vpc_list[ vpc_id ]
 
+                # delete resource.origin
+                if resources and resources.origin
+                    delete resources.origin
+
                 # call api
                 aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'all', 1
 

@@ -5892,6 +5892,7 @@ MC.canvas.event.keyEvent = function (event)
 
 MC.canvas.analysis = function ( data )
 {
+	console.info(data);
 	var component_data = data.component,
 		layout_data = data.layout,
 
@@ -6635,14 +6636,17 @@ MC.canvas.analysis = function ( data )
 		{
 			group_size = item.size;
 
-			if (item.coordinate[0] + group_size[0] > VPC_max_width)
+			if (item.type !== 'AWS.AutoScaling.Group')
 			{
-				VPC_max_width = item.coordinate[0] + group_size[0];
-			}
+				if (item.coordinate[0] + group_size[0] > VPC_max_width)
+				{
+					VPC_max_width = item.coordinate[0] + group_size[0];
+				}
 
-			if (item.coordinate[1] + group_size[1] > VPC_max_height)
-			{
-				VPC_max_height = item.coordinate[1] + group_size[1];
+				if (item.coordinate[1] + group_size[1] > VPC_max_height)
+				{
+					VPC_max_height = item.coordinate[1] + group_size[1];
+				}
 			}
 		});
 

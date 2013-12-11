@@ -55,21 +55,53 @@ define [ 'event',
                 infix    = '</span><span class="unmanaged-resource-name">'
                 suffix   = '</span></li>'
 
-                _.each items, ( value, key ) ->
+                try
+                    _.each items, ( value, key ) ->
 
-                    switch key
+                        count = _.keys( value ).length
+                        type  = ''
 
-                        when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                            new_item += prefix + '1' + infix + ' instance' + suffix
+                        switch key
 
-                        when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                            new_item += prefix + '1' + infix + ' subnets' + suffix
+                            when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                                type = ' subnets'
 
-                        when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                            new_item += prefix + value.filter['instance-id'].length + infix + ' eip' + suffix
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                                type = ' eip'
 
-                        when constant.AWS_RESOURCE_TYPE.AWS_ELB
-                            new_item += prefix + value.id.length + infix + ' load balancer' + suffix
+                            when constant.AWS_RESOURCE_TYPE.AWS_ELB
+                                type = ' load balancer'
+
+                            # instance include running and stopped
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+                                running = 0
+                                stopped = 0
+                                type    = ' instance'
+
+                                _.each _.values( value ), ( item ) ->
+
+                                    if item.instanceState.name is 'running'
+                                        running = running + 1
+                                    else if item.instanceState.name is 'stopped'
+                                        stopped = stopped + 1
+
+                                if running > 0
+                                    count = running
+                                    type  = ' running instance'
+
+                                if stopped > 0
+                                    count = stopped
+                                    type  = ' stopped instance'
+
+                        if type
+                            new_item += prefix + count + infix + type + suffix
+
+
+                catch error
+                    console.log 'unmanagedvpc view vpc_id', items
+                finally
+                    new Handlebars.SafeString new_item
 
                 new Handlebars.SafeString new_item
 

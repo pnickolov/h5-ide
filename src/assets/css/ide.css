@@ -6847,6 +6847,7 @@ summary:focus {
 
 .unmanaged-VPC-resource-item a {
 	width: 125px;
+	height: 80px;
 	border: 4px solid #ccc;
 	padding: 12px 20px;
 	border-radius: 5px;

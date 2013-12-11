@@ -133,13 +133,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#############################
 
 	# cacheIDMap[ tab_id ] =
-	#	uid       : <uid>
-	#	id        : <id>
-	#	origin_id : <vpc_id>
-	#	data      : <vpc_resource result>
-	#	region    : <region_name>
-	#	type      : <'process', 'appview'>
-	#	state     : <'OPEN', 'OLD', 'FINISH'>
+	#	uid         : <uid>
+	#	id          : <id>
+	#	origin_id   : <vpc_id>
+	#	data        : <vpc_resource result>
+	#	region      : <region_name>
+	#	type        : <'process', 'appview'>
+	#	state       : <'OPEN', 'OLD', 'FINISH'>
+	#   create_time : <new Date(), 'timeout'>
 
 	cacheIDMap = {}
 
@@ -151,12 +152,13 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'addCacheMap', uid, id, origin_id, region, type, state
 
 		cacheIDMap[ id ] =
-			'uid'       : uid
-			'id'        : id
-			'origin_id' : origin_id
-			'region'    : region
-			'type'      : type
-			'state'     : state
+			'uid'         : uid
+			'id'          : id
+			'origin_id'   : origin_id
+			'region'      : region
+			'type'        : type
+			'state'       : state
+			'create_time' : new Date()
 
 	delCacheMap = ( id ) ->
 		console.log 'delCacheMap', id
@@ -169,8 +171,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		cacheIDMap
 
-	setCacheMap = ( vpc_id, data, state, type ) ->
-		console.log 'setCacheMap', vpc_id, data, state, type
+	setCacheMap = ( vpc_id, data, state, type, create_time ) ->
+		console.log 'setCacheMap', vpc_id, data, state, type, create_time
 
 		obj = null
 
@@ -179,12 +181,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 				item.data  = $.extend true, {}, data if data
 				item.state = state                   if state
 				item.type  = type                    if type
+				item.create_time  = create_time      if create_time
 				obj        = item
 
 		obj
 
 	getCacheMap = ( id ) ->
-		console.log 'getCacheMap', id
 
 		# if appview replace process
 		if id.split('-')[0] is 'appview'
@@ -205,10 +207,17 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		obj
 
 	processType = ( id ) ->
-		console.log 'processType', id
+
+		# id is String
+		if not _.isString id
+			return undefined
+
+		# tab id sample dashboard
+		else if id.indexOf('-') is -1
+			return undefined
 
 		# tab id sample process-cs6dbvrc
-		if getCacheMap( id ) and id.split( '-' ).length = 2
+		else if getCacheMap( id ) and id.split( '-' ).length = 2
 			return 'appview'
 
 		# tab id sample process-us-west-1-untitled-112

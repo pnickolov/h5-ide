@@ -113,6 +113,10 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       if ci != -1
         c.splice( ci, 1 )
 
+
+      # Remove element in SVG, if the line implements draw
+      if @draw
+        $( document.getElementById( @id ) ).remove()
       null
   }, {
     extend : ( protoProps, staticProps )->
@@ -139,7 +143,7 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       # to indicate this is not a visual line.
       # If it's visual, insert a draw() into it.
       if protoProps.portDefs and protoProps.defaults
-        if _.result( protoProps, "defaults" ).visual isnt false
+        if _.result( protoProps, "defaults" ).visual isnt false and not protoProps.draw
           protoProps.draw = connectionDraw
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )

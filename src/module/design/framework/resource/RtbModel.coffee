@@ -11,6 +11,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
       height   : 8
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    newNameTmpl : "RT-"
 
     setMain : ()->
       if @get("main") then return

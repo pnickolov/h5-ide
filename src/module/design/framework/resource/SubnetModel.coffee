@@ -4,6 +4,8 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
   Model = GroupModel.extend {
 
     type    : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+    newNameTmpl : "subnet"
+
     defaults :
       x      : 2
       y      : 2

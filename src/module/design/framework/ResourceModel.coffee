@@ -29,6 +29,9 @@ define [ "Design", "backbone" ], ( Design )->
     # id : String
         description : The GUID of this component.
 
+    # newNameTmpl : String
+        description : This string is used to create a name for an resource
+
 
     ++ Object Method ++
 
@@ -69,9 +72,13 @@ define [ "Design", "backbone" ], ( Design )->
 
     constructor : ( attributes, options )->
 
-      # Assign a new GUID to this object, if it don't have an id.
-      if not this.id
-        this.id = MC.guid()
+      # Assign new GUID
+      if not attributes.id
+        attributes.id = MC.guid()
+
+      # Assign new name
+      if not attributes.name
+        attributes.name = @getNewName()
 
       Backbone.Model.call this, attributes, options
 
@@ -82,6 +89,23 @@ define [ "Design", "backbone" ], ( Design )->
 
       this
 
+    getNewName : ()->
+      if not this.newNameTmpl then return ""
+
+      myKinds = Design.modelClassForType( @type ).allObjects()
+      base = myKinds.length + 1
+      while true
+        newName = newNameTmpl + base
+        same    = false
+        for k in myKinds
+          if k.get("name") is newName
+            same = true
+            break
+
+        if not same then break
+        base += 1
+
+      newName
 
     isRemovable : () -> true
     isReparentable : ()-> true

@@ -1,5 +1,127 @@
 var API_DATA_LIST = {
   "Forge" : {
+    "Account" : {
+      "register" : {
+        "method"  : "/account:register",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "password" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "email" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "update_account" : {
+        "method"  : "/account:update_account",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "attributes" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "reset_password" : {
+        "method"  : "/account:reset_password",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "update_password" : {
+        "method"  : "/account:update_password",
+        "param"   : {
+          "key" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "new_pwd" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "check_repeat" : {
+        "method"  : "/account:check_repeat",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "email" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "check_validation" : {
+        "method"  : "/account:check_validation",
+        "param"   : {
+          "key" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "flag" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "reset_key" : {
+        "method"  : "/account:reset_key",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "flag" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "del_account" : {
+        "method"  : "/account:del_account",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "email" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "password" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "force_delete" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      }
+    },
     "Log" : {
       "put_user_log" : {
         "method"  : "/log:put_user_log",

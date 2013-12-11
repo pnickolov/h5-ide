@@ -176,7 +176,7 @@ define [ "Design", "backbone" ], ( Design )->
           handleTypes = [ handleTypes ]
 
         for type in handleTypes
-          Design.registerModelClass type, subClass
+          Design.registerModelClass type, subClass, staticProps.resolveFirst
 
       subClass
   }

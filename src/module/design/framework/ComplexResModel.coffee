@@ -62,6 +62,9 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       this.attributes.__connections = []
       for c in connections
         c.remove()
+
+      # Remove element in SVG
+      $( document.getElementById( @id ) ).remove()
       null
 
     connect : ( connection )->

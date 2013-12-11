@@ -127,12 +127,19 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Disable drawing for deserializing, delay it until everything is deserialized
     design.__shoulddraw = false
 
-    # Always deserialize VPC resource first
+    # Deserialize resolveFisrt resources
     for uid, comp of json_data
-      if uid.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+      if Design.__resolveFirstMap[ comp.type ] is true
+        recursiveCheck = {}
         resolveDeserialize uid
 
     # Deserialize other resources
+    for uid, comp of json_data
+      recursiveCheck = {}
+      resolveDeserialize uid
+
+    # Some resources might need to delay until other resources are deserialized.
+    # So here, we give a second chance for them to serialize
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid
@@ -171,9 +178,11 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   }
 
   ### Private Interface ###
-  Design.__modelClassMap = {}
-  Design.registerModelClass = ( type, modelClass )->
-    @__modelClassMap[ type ] = modelClass
+  Design.__modelClassMap   = {}
+  Design.__resolveFirstMap = {}
+  Design.registerModelClass = ( type, modelClass, resolveFirst )->
+    @__modelClassMap[ type ]   = modelClass
+    @__resolveFirstMap[ type ] = true
     null
 
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]

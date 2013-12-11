@@ -121,6 +121,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+    resolveFirst : true
 
     deserialize : ( data, layout_data, resolve )->
 

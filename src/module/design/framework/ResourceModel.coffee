@@ -72,6 +72,9 @@ define [ "Design", "backbone" ], ( Design )->
 
     constructor : ( attributes, options )->
 
+      if not attributes
+        attributes = {}
+
       # Assign new GUID
       if not attributes.id
         attributes.id = MC.guid()

@@ -61,7 +61,7 @@ define [ 'constant',
 
             name = $input.val()
 
-            if not type then type is name
+            if not type then type = name
 
             if name && !MC.validate( 'awsName',  name )
                 error = "This value should be a valid #{type} name."

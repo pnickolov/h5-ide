@@ -124,6 +124,8 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         if _.keys(new_value).length > 0
                             vpcs[ vpc_id ] = new_value
 
+                        vpcs[ vpc_id ][ 'origin' ] = vpc_obj
+
                     resources[ region ] = vpcs
 
                 console.log 'new resources is ', resources

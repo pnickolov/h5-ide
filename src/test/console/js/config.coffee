@@ -27,6 +27,8 @@ require.config {
 
         'session_model'     : 'model/session_model'
 
+        #account service
+        'account_service' : 'service/account/account_service'
 
         #log service
         'log_service'   : 'service/log/log_service'
@@ -137,6 +139,7 @@ require.config {
 
 
         #####forge#####
+        'account_model'     : 'model/account_model'
         'log_model'         : 'model/log_model'
         'public_model'      : 'model/public_model'
         'request_model'     : 'model/request_model'

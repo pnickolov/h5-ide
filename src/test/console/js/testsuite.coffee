@@ -1,6 +1,6 @@
 
-define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model', 'autoscaling_model', 'cloudwatch_model', 'sns_model'],
-( MC, session_model, $, apiList, log_model, public_model, request_model, app_model, favorite_model, stack_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model, autoscaling_model, cloudwatch_model, sns_model ) ->
+define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'state_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model', 'autoscaling_model', 'cloudwatch_model', 'sns_model'],
+( MC, session_model, $, apiList, log_model, public_model, request_model, app_model, favorite_model, stack_model, state_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model, autoscaling_model, cloudwatch_model, sns_model ) ->
     #session info
 
     session_id   = ""
@@ -549,6 +549,14 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             stack_model.once "STACK_VERIFY_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
+
+        ########## State ##########
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "state" && current_api == "module"
+
+            #state.module
+            state_model.module {sender: state_model}, username, session_id
+            state_model.once "STATE_MODULE_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
 
 
         ########## AutoScaling ##########

@@ -846,6 +846,21 @@ var API_DATA_LIST = {
           }
         }
       }
+    },
+    "State" : {
+      "module" : {
+        "method"  : "/state:module",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      }
     }
   },
   "AutoScaling" : {

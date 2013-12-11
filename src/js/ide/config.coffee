@@ -168,6 +168,7 @@ require.config {
 		'favorite_model'         : 'model/favorite_model'
 		'app_model'              : 'model/app_model'
 		'stack_model'            : 'model/stack_model'
+		'state_model'            : 'model/state/state_model'
 		'ec2_model'              : 'model/aws/ec2/ec2_model'
 		'vpc_model'              : 'model/aws/vpc/vpc_model'
 		'aws_model'              : 'model/aws/aws_model'

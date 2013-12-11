@@ -53,6 +53,8 @@ require.config {
         #app service
         'app_service'   : 'service/app/app_service'
 
+        #stack service
+        'state_service'   : 'service/state/state_service'
 
 
         #aws service
@@ -144,6 +146,7 @@ require.config {
         'favorite_model'    : 'model/favorite_model'
         'guest_model'       : 'model/guest_model'
         'stack_model'       : 'model/stack_model'
+        'state_model'       : 'model/state_model'
 
 
         'aws_model'             : 'model/aws/aws_model'

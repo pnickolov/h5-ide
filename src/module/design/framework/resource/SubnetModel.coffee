@@ -13,7 +13,7 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
     initialize : ()->
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-      new RtbAsso( this, RtbModel.getMainRouteTable() )
+      new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
       null
 
 

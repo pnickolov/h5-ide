@@ -62,6 +62,9 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
         # Move the group to right place
         CanvasManager.position node, @x(), @y()
 
+      else
+        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), @get("name") )
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
@@ -74,6 +77,7 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
 
         id   : data.uid
         name : data.name
+        cidr : data.resource.CidrBlock
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

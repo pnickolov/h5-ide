@@ -18,10 +18,17 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
         init : () ->
             null
 
+        setName : ( name )->
+            id = @get("uid")
+            console.assert( id, "This property model doesn't have an id" )
+
+            Design.instance().component( id ).setName( name )
+            null
+
+
         isNameDup : ( newName )->
 
-            id = @get("uid") || @get("id")
-
+            id = @get("uid")
             console.assert( id, "This property model doesn't have an id" )
 
             comp = Design.instance().component( id )

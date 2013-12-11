@@ -29,11 +29,6 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             @set data
             null
 
-        setName : ( newName ) ->
-            uid = @get("uid")
-            Design.instance().component( uid ).setName( newName )
-            null
-
         setCIDR : ( newCIDR ) ->
             uid = @get("uid")
             Design.instance().component( uid ).setCIDR( newCIDR )

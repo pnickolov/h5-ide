@@ -2,121 +2,109 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant ) ->
 
-    SubnetModel = PropertyModel.extend {
+  SubnetModel = PropertyModel.extend {
 
-        defaults :
-            uid  : null
-            name : null
-            CIDR : null
-            networkACL : null # Array
+    init : ( uid ) ->
 
-        init : ( uid ) ->
+      subnet_component = MC.canvas_data.component[ uid ]
 
-            subnet_component = MC.canvas_data.component[ uid ]
+      if !subnet_component then return false
 
-            if !subnet_component then return false
+      networkACLs = []
 
-            networkACLs = []
+      ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
-            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+      linkToDefault = true
+      defaultACLIdx = -1
 
-            linkToDefault = true
-            defaultACLIdx = -1
+      for id, component of MC.canvas_data.component
+        if component.type == ACL_TYPE
+          acl =
+            uid    : component.uid
+            rule   : component.resource.EntrySet.length
+            name   : component.name
+            association : component.resource.AssociationSet.length
+            isUsed  : false
 
-            for id, component of MC.canvas_data.component
-                if component.type == ACL_TYPE
-                    acl =
-                        uid    : component.uid
-                        rule   : component.resource.EntrySet.length
-                        name   : component.name
-                        association : component.resource.AssociationSet.length
-                        isUsed  : false
+          for asscn in component.resource.AssociationSet
+            if asscn.SubnetId.indexOf( uid ) != -1
+              linkToDefault = false
+              acl.isUsed = true
+              break
 
-                    for asscn in component.resource.AssociationSet
-                        if asscn.SubnetId.indexOf( uid ) != -1
-                            linkToDefault = false
-                            acl.isUsed = true
-                            break
+          if component.name == "DefaultACL"
+            defaultACLIdx = networkACLs.length
 
-                    if component.name == "DefaultACL"
-                        defaultACLIdx = networkACLs.length
+          # if component.resource.AssociationSet.length isnt 0
+          #     acl.isUsed = true
 
-                    # if component.resource.AssociationSet.length isnt 0
-                    #     acl.isUsed = true
+          if component.name == "DefaultACL"
+            # acl.isUsed = true
+            acl.isDefault = true
+            defaultACLIdx = networkACLs.length
+          else
+            acl.isDefault = false
 
-                    if component.name == "DefaultACL"
-                        # acl.isUsed = true
-                        acl.isDefault = true
-                        defaultACLIdx = networkACLs.length
-                    else
-                        acl.isDefault = false
+          networkACLs.push acl
 
-                    networkACLs.push acl
+      if defaultACLIdx == -1
+        console.log "[Warning] Cannot find DefaultACL!!!"
 
-            if defaultACLIdx == -1
-                console.log "[Warning] Cannot find DefaultACL!!!"
+      if defaultACLIdx != 0
+        defaultACL = networkACLs.splice defaultACLIdx, 1
+        networkACLs.splice 0, 0, defaultACL[0]
+      else
+        defaultACL = networkACLs[ 0 ]
 
-            if defaultACLIdx != 0
-                defaultACL = networkACLs.splice defaultACLIdx, 1
-                networkACLs.splice 0, 0, defaultACL[0]
-            else
-                defaultACL = networkACLs[ 0 ]
+      # if linkToDefault
+      #     defaultACL.isUsed = true
 
-            # if linkToDefault
-            #     defaultACL.isUsed = true
+      data =
+        uid  : uid
+        name : subnet_component.name
+        CIDR : subnet_component.resource.CidrBlock
+        networkACL : networkACLs
 
-            data =
-                uid  : uid
-                name : subnet_component.name
-                CIDR : subnet_component.resource.CidrBlock
-                networkACL : networkACLs
+      this.set data
+      null
 
-            this.set data
-            null
+    setCIDR : ( cidr ) ->
 
-        setName : ( name ) ->
-            MC.canvas_data.component[ this.attributes.uid ].name = name
-            subnetCIDR = MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock
-            MC.canvas.update this.attributes.uid, "text", "label", name + ' (' + subnetCIDR + ')'
-            null
+      # TODO : Validate CIDR
+      MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
+      subnetName = MC.canvas_data.component[ this.attributes.uid ].name
+      MC.canvas.update this.attributes.uid, "text", "label", subnetName + ' (' + cidr + ')'
 
-        setCIDR : ( cidr ) ->
+      MC.aws.subnet.updateAllENIIPList(this.attributes.uid, false)
 
-            # TODO : Validate CIDR
-            MC.canvas_data.component[ this.attributes.uid ].resource.CidrBlock = cidr
-            subnetName = MC.canvas_data.component[ this.attributes.uid ].name
-            MC.canvas.update this.attributes.uid, "text", "label", subnetName + ' (' + cidr + ')'
+      null
 
-            MC.aws.subnet.updateAllENIIPList(this.attributes.uid, false)
+    setACL : ( acl_uid ) ->
 
-            null
+      ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+      for id, component of MC.canvas_data.component
+        if component.type != ACL_TYPE
+          continue
 
-        setACL : ( acl_uid ) ->
+        removed = false
 
-            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-            for id, component of MC.canvas_data.component
-                if component.type != ACL_TYPE
-                    continue
+        for asscn, idx in component.resource.AssociationSet
+          if asscn.SubnetId.indexOf( this.attributes.uid ) != -1
+            component.resource.AssociationSet.splice idx, 1
+            removed = true
+            break
 
-                removed = false
+        if removed
+          break
 
-                for asscn, idx in component.resource.AssociationSet
-                    if asscn.SubnetId.indexOf( this.attributes.uid ) != -1
-                        component.resource.AssociationSet.splice idx, 1
-                        removed = true
-                        break
+      acl = MC.canvas_data.component[ acl_uid ]
+      acl.resource.AssociationSet.push
+        SubnetId : "@" + this.attributes.uid + ".resource.SubnetId"
+        NetworkAclAssociationId : ""
+        NetworkAclId : ""
+      null
+  }
 
-                if removed
-                    break
-
-            acl = MC.canvas_data.component[ acl_uid ]
-            acl.resource.AssociationSet.push
-                SubnetId : "@" + this.attributes.uid + ".resource.SubnetId"
-                NetworkAclAssociationId : ""
-                NetworkAclId : ""
-            null
-    }
-
-    new SubnetModel()
+  new SubnetModel()

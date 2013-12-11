@@ -105,7 +105,6 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
         ).attr({'class':'resizer-wrap'}),
 
         Canvon.text(text_pos[0], text_pos[1], name).attr({
-          'id'    : "#{@id}_label"
           'class' : 'group-label name'
         })
       ).attr({

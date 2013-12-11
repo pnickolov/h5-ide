@@ -23,7 +23,7 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
         CanvasManager.position node, @x(), @y()
 
       else
-        CanvasManager.update( @id + "_label", @get("name") )
+        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), @get("name") )
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

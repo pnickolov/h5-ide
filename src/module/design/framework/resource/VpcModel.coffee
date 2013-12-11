@@ -44,7 +44,7 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
         CanvasManager.position node, @x(), @y()
 
       else
-        CanvasManager.update( @id + "_label", label )
+        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
 
   }, {
 

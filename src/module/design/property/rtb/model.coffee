@@ -6,10 +6,6 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
   RTBModel = PropertyModel.extend {
 
-    setName : ( name )->
-      Design.instance().component( @get("uid") ).setName( name )
-      null
-
     setMainRT : () ->
       Design.instance().component( @get("uid") ).setMain()
       null

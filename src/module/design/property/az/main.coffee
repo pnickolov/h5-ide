@@ -32,7 +32,9 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
             me = this
             @view.on "SELECT_AZ", ( newZone ) ->
                 # Set data
-                oldZone = me.model.setName newZone
+                oldZone = me.model.get("name")
+
+                me.model.setName newZone
 
                 # Update Resource Panel
                 res_type = constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone

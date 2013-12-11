@@ -93,7 +93,8 @@ define [ '../base/view',
             cidr = target.val()
 
             if target.parsley 'validate'
-                @model.setCIDR cidr
+                if not @model.setCIDR cidr
+                    target.val( @model.get("cidr") )
             null
 
         onChangeTenancy : ( event, newValue ) ->

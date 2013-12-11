@@ -25,7 +25,7 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
 
       # TODO : Update all subnet's cidr
       if not MC.aws.vpc.updateAllSubnetCIDR( cidr, @get("cidr") )
-        return
+        return false
 
       @set("cidr", cidr)
       @draw()

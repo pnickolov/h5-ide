@@ -18,6 +18,17 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
       new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
       null
 
+    setCIDR : ( cidr )->
+
+      # TODO : Update all Eni's IP
+      #if not MC.aws.vpc.updateAllSubnetCIDR( cidr, @get("cidr") )
+      #  return false
+
+      @set("cidr", cidr)
+      @draw()
+
+      null
+
 
     # Association is the connection between RTB and Subnet
     getAssociation : ()-> @rtb_asso
@@ -37,8 +48,10 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
 
     draw : ( isCreate )->
 
+      label = "#{@get('name')} (#{ @get('cidr')})"
+
       if isCreate
-        node = @createNode( @get("name") )
+        node = @createNode( label )
 
         portX = @width()  * MC.canvas.GRID_WIDTH + 4
         portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 5
@@ -63,7 +76,7 @@ define [ "constant", "Design", "../GroupModel", "../CanvasManager", "../connecti
         CanvasManager.position node, @x(), @y()
 
       else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), @get("name") )
+        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
 
   }, {
 

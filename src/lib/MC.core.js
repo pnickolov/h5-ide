@@ -429,6 +429,44 @@ var MC = {
 	},
 
 	/**
+	 * Calculate the interval time between two date time.
+	 * @param  {Date} first time
+	 * @param  {Date} second time
+	 * @param  {String} (s)econd | (m)inute | (h)our | (d)ay default is second
+	 * @return {number} time difference
+	 */
+	timestamp : function( t1, t2, type ) {
+
+		if ( $.type( t1 ) === 'date' && $.type( t2 ) === 'date' ) {
+
+			var div_num = 1;
+
+			switch ( type ) {
+				case 's':
+					div_num = 1000;
+					break;
+				case 'm':
+					div_num = 1000 * 60;
+					break;
+				case 'h':
+					div_num = 1000 * 3600;
+					break;
+				case 'd':
+					div_num = 1000 * 3600 * 24;
+					break;
+				default:
+					div_num = 1000;
+					break;
+			}
+			return parseInt(( t2.getTime() - t1.getTime() ) / parseInt( div_num ));
+		}
+
+		else {
+			console.error( 'variable is type date', t1, t2, type );
+		}
+	},
+
+	/**
 	 * Generate random number
 	 * @param  {number} min min number
 	 * @param  {number} max max number

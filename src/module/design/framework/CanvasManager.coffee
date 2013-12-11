@@ -15,11 +15,11 @@ define [], ()->
       if not element
         return this
 
-      klass = el.getAttribute "class"
-      newKlass = klass.replace( new Reg("\\b#{theClass}\\b", "g"), "" )
+      klass = element.getAttribute "class"
+      newKlass = klass.replace( new RegExp("\\b#{theClass}\\b", "g"), "" )
 
       if klass isnt newKlass
-        el.setAttribute "class", newKlass
+        element.setAttribute "class", newKlass
 
       return this
 
@@ -29,11 +29,11 @@ define [], ()->
       if not element
         return this
 
-      klass = el.getAttribute "class"
+      klass = element.getAttribute "class"
 
-      if not klass.match( new Reg("\\b#{theClass}\\b") )
+      if not klass.match( new RegExp("\\b#{theClass}\\b") )
         klass += " " + theClass
-        el.setAttribute "class", klass
+        element.setAttribute "class", klass
 
       return this
 
@@ -288,6 +288,7 @@ define [], ()->
         svg_line = $(MC.paper.save()).attr({
           'class'     : 'line line-' + connection.get("lineType"),
           'data-type' : 'line'
+          'id'        : connection.id
         })
 
         document.getElementById( "line_layer" ).appendChild( svg_line[0] )

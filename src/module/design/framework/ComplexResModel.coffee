@@ -65,8 +65,6 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       null
 
     connect : ( connection )->
-      console.debug "ComplexResModel.connet"
-
       connections = @get "__connections"
 
       if not connections

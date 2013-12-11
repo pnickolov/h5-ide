@@ -124,6 +124,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     _old_get_component_ = design.component
     design.component = resolveDeserialize
 
+    # Disable drawing for deserializing, delay it until everything is deserialized
+    design.__shoulddraw = false
+
     # Always deserialize VPC resource first
     for uid, comp of json_data
       if uid.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
@@ -133,6 +136,12 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid
+
+    # Draw everything after deserialization is done.
+    # Because some resources might just deleted right after it's been created.
+    design.__shoulddraw = true
+    for uid, comp of design.__componentMap
+      if comp.draw then comp.draw( true )
 
     design.component = _old_get_component_
 
@@ -211,7 +220,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
 
 
-  DesignImpl.prototype.shouldDraw = ()-> true
+  DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
 
   DesignImpl.prototype.use = ()->
     window.DesignInst = design_instance = @

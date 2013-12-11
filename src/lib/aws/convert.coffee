@@ -483,7 +483,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 		vol_json = {
 			"uid": MC.guid(),
 			"type": "AWS.EC2.EBS.Volume",
-			"name": if aws_vol.attachmentSet then aws_vol.attachmentSet[0].device else "",
+			"name": if aws_vol.attachmentSet then aws_vol.attachmentSet.item[0].device else "",
 			"serverGroupUid": "",
 			"serverGroupName": "",
 			"number": 1,
@@ -510,12 +510,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
 		if aws_vol.attachmentSet
 
-			vol_json.resource.AttachmentSet.AttachTime = aws_vol.attachmentSet[0].attachTime
-			vol_json.resource.AttachmentSet.Status = aws_vol.attachmentSet[0].status
-			vol_json.resource.AttachmentSet.VolumeId = aws_vol.attachmentSet[0].volumeId
-			vol_json.resource.AttachmentSet.InstanceId = aws_vol.attachmentSet[0].instanceId
-			vol_json.resource.AttachmentSet.DeleteOnTermination = aws_vol.attachmentSet[0].deleteOnTermination
-			vol_json.resource.AttachmentSet.Device = aws_vol.attachmentSet[0].device
+			vol_json.resource.AttachmentSet.AttachTime = aws_vol.attachmentSet.item[0].attachTime
+			vol_json.resource.AttachmentSet.Status = aws_vol.attachmentSet.item[0].status
+			vol_json.resource.AttachmentSet.VolumeId = aws_vol.attachmentSet.item[0].volumeId
+			vol_json.resource.AttachmentSet.InstanceId = aws_vol.attachmentSet.item[0].instanceId
+			vol_json.resource.AttachmentSet.DeleteOnTermination = aws_vol.attachmentSet.item[0].deleteOnTermination
+			vol_json.resource.AttachmentSet.Device = aws_vol.attachmentSet.item[0].device
 
 		vol_json = mapProperty aws_vol, vol_json
 
@@ -678,7 +678,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 	convertVPN = ( aws_vpn ) ->
 
 		vpn_json = {
-			"uid": "",
+			"uid": MC.guid(),
 			"type": "AWS.VPC.VPNConnection",
 			"name": "VPN",
 			"resource":	{

@@ -9,7 +9,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
     deserialize : ( data, layout_data, resolve )->
 

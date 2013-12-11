@@ -106,7 +106,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log MC.process
 
             # delete appview
-            MC.forge.other.delCacheMap tab_id if tab_id.split('-')[0] is 'appview'
+            MC.forge.other.delCacheMap tab_id if MC.forge.other.processType( tab_id ) is 'appview'
 
             null
 

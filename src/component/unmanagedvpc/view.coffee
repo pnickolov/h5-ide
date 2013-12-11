@@ -66,7 +66,8 @@ define [ 'event',
                             new_item += prefix + '1' + infix + ' subnets' + suffix
 
                         when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                            new_item += prefix + value.filter['instance-id'].length + infix + ' eip' + suffix
+                            if value.filter['instance-id'] and value.filter['instance-id'].length
+                                new_item += prefix + value.filter['instance-id'].length + infix + ' eip' + suffix
 
                         when constant.AWS_RESOURCE_TYPE.AWS_ELB
                             new_item += prefix + value.id.length + infix + ' load balancer' + suffix

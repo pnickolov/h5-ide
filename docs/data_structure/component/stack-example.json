@@ -1,0 +1,1471 @@
+{
+  "id": "stack-d901ce2b",
+  "version": "2013-09-04",
+  "region": "us-east-1",
+  "platform": "ec2-vpc",
+  "name": "aws-all",
+  "description": "",
+  "state": "Enabled",
+  "username": "eGppbW15",
+  "owner": "",
+  "key": "0KmcthfkEKGIHKgEov3Wbe4es3cqpF6Hw0hiCNbm0iXQYy8WGb6wNuF+mvqqPO5TdGFjayBrZXk=",
+  "usage": "",
+  "tag": "",
+  "history": {
+    "time": {
+      "updated": 1386648015,
+      "created": 1386647772
+    }
+  },
+  "property": {
+    "policy": {
+      "ha": ""
+    },
+    "stoppable": true,
+    "schedule": {
+      "stop": {
+        "run": null,
+        "when": null,
+        "during": null
+      },
+      "backup": {
+        "when": null,
+        "day": null
+      },
+      "start": {
+        "when": null
+      }
+    },
+    "lease": {
+      "action": "",
+      "length": null,
+      "due": null
+    }
+  },
+  "component": {
+    "$INSTANCE": {
+      "type": "AWS.EC2.Instance",
+      "name": "host1",
+      "uid": "$INSTANCE",
+      "index": 0,
+      "number": 1,
+      "serverGroupUid": "$INSTANCE",
+      "serverGroupName": "host1",
+      "resource": {
+        "UserData": {
+          "Base64Encoded": "false",
+          "Data": ""
+        },
+        "BlockDeviceMapping": [
+          "#$VOLUME"
+        ],
+        "Placement": {
+          "GroupName": "",
+          "Tenancy": "",
+          "AvailabilityZone": "us-east-1a"
+        },
+        "InstanceId": "",
+        "DisableApiTermination": "false",
+        "SecurityGroupId": [],
+        "KernelId": "",
+        "SecurityGroup": [],
+        "ImageId": "ami-cde4bca4",
+        "KeyName": "@$DEFAULT-KP.resource.KeyName",
+        "EbsOptimized": "false",
+        "VpcId": "@$VPC.resource.VpcId",
+        "ShutdownBehavior": "terminate",
+        "RamdiskId": "",
+        "SubnetId": "@$SUBNET1.resource.SubnetId",
+        "Monitoring": "disabled",
+        "NetworkInterface": [],
+        "InstanceType": "m1.small",
+        "PrivateIpAddress": ""
+      },
+      "state": "",
+      "software": {}
+    },
+    "$VOLUME": {
+      "type": "AWS.EC2.EBS.Volume",
+      "name": "/dev/sdf",
+      "uid": "$VOLUME",
+      "index": 0,
+      "number": 1,
+      "serverGroupUid": "$VOLUME",
+      "serverGroupName": "/dev/sdf",
+      "resource": {
+        "Status": "",
+        "AvailabilityZone": "us-east-1a",
+        "VolumeType": "standard",
+        "VolumeId": "",
+        "Iops": "",
+        "AttachmentSet": {
+          "Status": "",
+          "AttachTime": "",
+          "InstanceId": "@$INSTANCE.resource.InstanceId",
+          "VolumeId": "@$VOLUME.resource.VolumeId",
+          "DeleteOnTermination": "true",
+          "Device": "/dev/sdf"
+        },
+        "SnapshotId": "",
+        "CreateTime": "",
+        "Size": "1"
+      }
+    },
+    "$DEFAULT-SG": {
+      "type": "AWS.EC2.SecurityGroup",
+      "name": "DefaultSG",
+      "uid": "$DEFAULT-SG",
+      "resource": {
+        "IpPermissionsEgress": [],
+        "Default": "true",
+        "GroupId": "",
+        "IpPermissions": [
+          {
+            "ToPort": "22",
+            "IpProtocol": "tcp",
+            "IpRanges": "0.0.0.0/0",
+            "Groups": [
+              {
+                "GroupName": "",
+                "UserId": "",
+                "GroupId": ""
+              }
+            ],
+            "FromPort": "22"
+          },
+          {
+            "ToPort": "8080",
+            "IpProtocol": "tcp",
+            "IpRanges": "@$HOST-SG.resource.GroupId",
+            "FromPort": "8080"
+          }
+        ],
+        "GroupName": "DefaultSG",
+        "VpcId": "@$VPC.resource.VpcId",
+        "OwnerId": "",
+        "GroupDescription": "Default Security Group"
+      }
+    },
+    "$HOST-SG": {
+      "type": "AWS.EC2.SecurityGroup",
+      "name": "custom-sg-host",
+      "uid": "$HOST-SG",
+      "resource": {
+        "IpPermissionsEgress": [
+          {
+            "ToPort": "65535",
+            "IpProtocol": "-1",
+            "IpRanges": "0.0.0.0/0",
+            "Groups": [],
+            "FromPort": "0"
+          },
+          {
+            "ToPort": "8080",
+            "IpProtocol": "tcp",
+            "IpRanges": "@$DEFAULT-SG.resource.GroupId",
+            "FromPort": "8080"
+          }
+        ],
+        "Default": "true",
+        "GroupId": "",
+        "IpPermissions": [],
+        "GroupName": "custom-sg-host",
+        "VpcId": "@$VPC.resource.VpcId",
+        "OwnerId": "",
+        "GroupDescription": "Custom Security Group"
+      }
+    },
+    "$ELB-SG": {
+      "type": "AWS.EC2.SecurityGroup",
+      "name": "load-balancer-1-sg",
+      "uid": "$ELB-SG",
+      "resource": {
+        "IpPermissionsEgress": [],
+        "Default": "true",
+        "GroupId": "",
+        "IpPermissions": [
+          {
+            "ToPort": "80",
+            "FromPort": "80",
+            "IpRanges": "0.0.0.0/0",
+            "Groups": [
+              {
+                "GroupName": "",
+                "UserId": "",
+                "GroupId": ""
+              }
+            ],
+            "IpProtocol": "tcp"
+          }
+        ],
+        "GroupName": "load-balancer-1-sg",
+        "VpcId": "@$VPC.resource.VpcId",
+        "OwnerId": "",
+        "GroupDescription": "Automatically created SG for load-balancer"
+      }
+    },
+    "$DEFAULT-KP": {
+      "type": "AWS.EC2.KeyPair",
+      "name": "DefaultKP",
+      "uid": "$DEFAULT-KP",
+      "resource": {
+        "KeyName": "DefaultKP",
+        "KeyFingerprint": ""
+      }
+    },
+    "$ENI0": {
+      "type": "AWS.VPC.NetworkInterface",
+      "name": "eni0",
+      "uid": "$ENI0",
+      "index": 0,
+      "number": 1,
+      "serverGroupUid": "",
+      "serverGroupName": "",
+      "resource": {
+        "Status": "",
+        "MacAddress": "",
+        "SourceDestCheck": "true",
+        "GroupSet": [
+          {
+            "GroupName": "@$DEFAULT-SG.resource.GroupName",
+            "GroupId": "@$DEFAULT-SG.resource.GroupId"
+          },
+          {
+            "GroupName": "@$HOST-SG.resource.GroupName",
+            "GroupId": "@$HOST-SG.resource.GroupId"
+          }
+        ],
+        "Description": "",
+        "NetworkInterfaceId": "",
+        "PrivateIpAddressSet": [
+          {
+            "AutoAssign": true,
+            "Association": {
+              "InstanceId": "",
+              "AssociationID": "",
+              "PublicDnsName": "",
+              "IpOwnerId": "",
+              "PublicIp": "",
+              "AllocationID": ""
+            },
+            "PrivateIpAddress": "10.0.0.4",
+            "Primary": "true"
+          }
+        ],
+        "SecondPriIpCount": "",
+        "PrivateDnsName": "",
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": "@$VPC.resource.VpcId",
+        "RequestId": "",
+        "RequestManaged": "",
+        "OwnerId": "",
+        "PrivateIpAddress": "",
+        "SubnetId": "@$SUBNET1.resource.SubnetId",
+        "AssociatePublicIpAddress": false,
+        "Attachment": {
+          "InstanceId": "@$INSTANCE.resource.InstanceId",
+          "DeviceIndex": "0",
+          "AttachmentId": "",
+          "AttachTime": ""
+        }
+      }
+    },
+    "$ENI1": {
+      "type": "AWS.VPC.NetworkInterface",
+      "name": "eni1",
+      "uid": "$ENI1",
+      "index": 0,
+      "number": 1,
+      "serverGroupUid": "$ENI1",
+      "serverGroupName": "eni1",
+      "resource": {
+        "Status": "",
+        "MacAddress": "",
+        "SourceDestCheck": "true",
+        "GroupSet": [
+          {
+            "GroupName": "@$DEFAULT-SG.resource.GroupName",
+            "GroupId": "@$DEFAULT-SG.resource.GroupId"
+          }
+        ],
+        "Description": "",
+        "NetworkInterfaceId": "",
+        "PrivateIpAddressSet": [
+          {
+            "AutoAssign": true,
+            "Association": {
+              "InstanceId": "",
+              "AssociationID": "",
+              "PublicDnsName": "",
+              "IpOwnerId": "",
+              "PublicIp": "",
+              "AllocationID": ""
+            },
+            "PrivateIpAddress": "10.0.0.5",
+            "Primary": "true"
+          }
+        ],
+        "SecondPriIpCount": "",
+        "PrivateDnsName": "",
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": "@$VPC.resource.VpcId",
+        "RequestId": "",
+        "RequestManaged": "",
+        "OwnerId": "",
+        "SubnetId": "@$SUBNET1.resource.SubnetId",
+        "PrivateIpAddress": "",
+        "Attachment": {
+          "InstanceId": "@$INSTANCE.resource.InstanceId",
+          "DeviceIndex": "1",
+          "AttachmentId": "",
+          "AttachTime": ""
+        }
+      }
+    },
+    "$ELB": {
+      "type": "AWS.ELB",
+      "name": "load-balancer-1",
+      "uid": "$ELB",
+      "resource": {
+        "Subnets": [
+          "@$SUBNET1.resource.SubnetId",
+          "@$SUBNET2.resource.SubnetId"
+        ],
+        "CanonicalHostedZoneNameID": "",
+        "CanonicalHostedZoneName": "",
+        "ListenerDescriptions": [
+          {
+            "Listener": {
+              "InstancePort": "80",
+              "Protocol": "HTTP",
+              "InstanceProtocol": "HTTP",
+              "LoadBalancerPort": "80",
+              "Canremove": false,
+              "SSLCertificateId": ""
+            },
+            "PolicyNames": ""
+          }
+        ],
+        "Instances": [
+          {
+            "InstanceId": "@$INSTANCE.resource.InstanceId"
+          }
+        ],
+        "HealthCheck": {
+          "HealthyThreshold": "9",
+          "Interval": "30",
+          "Target": "HTTP:80/index.html",
+          "Timeout": "5",
+          "UnhealthyThreshold": "4"
+        },
+        "BackendServerDescriptions": [
+          {
+            "InstantPort": "",
+            "PoliciyNames": ""
+          }
+        ],
+        "CrossZoneLoadBalancing": "false",
+        "DNSName": "",
+        "VpcId": "@$VPC.resource.VpcId",
+        "Policies": {
+          "LBCookieStickinessPolicies": [
+            {
+              "PolicyName": "",
+              "CookieExpirationPeriod": ""
+            }
+          ],
+          "AppCookieStickinessPolicies": [
+            {
+              "PolicyName": "",
+              "CookieName": ""
+            }
+          ],
+          "OtherPolicies": []
+        },
+        "LoadBalancerName": "load-balancer-1",
+        "CreatedTime": "",
+        "SecurityGroups": [
+          "@$ELB-SG.resource.GroupId"
+        ],
+        "AvailabilityZones": [
+          "us-east-1a",
+          "us-east-1b"
+        ],
+        "Scheme": "internal",
+        "SourceSecurityGroup": {
+          "OwnerAlias": "",
+          "GroupName": ""
+        }
+      }
+    },
+    "$VPC": {
+      "type": "AWS.VPC.VPC",
+      "name": "vpc",
+      "uid": "$VPC",
+      "resource": {
+        "EnableDnsSupport": "true",
+        "InstanceTenancy": "default",
+        "EnableDnsHostnames": "false",
+        "State": "",
+        "VpcId": "",
+        "DhcpOptionsId": "@$DHCP.resource.DhcpOptionsId",
+        "CidrBlock": "10.0.0.0/16",
+        "IsDefault": "false"
+      }
+    },
+    "$DHCP": {
+      "type": "AWS.VPC.DhcpOptions",
+      "name": "default",
+      "uid": "$DHCP",
+      "resource": {
+        "VpcId": "@$VPC.resource.VpcId",
+        "DhcpConfigurationSet": [
+          {
+            "ValueSet": [
+              {
+                "Value": "madeiracloud.com"
+              }
+            ],
+            "Key": "domain-name"
+          },
+          {
+            "ValueSet": [
+              {
+                "Value": "AmazonProvidedDNS"
+              }
+            ],
+            "Key": "domain-name-servers"
+          },
+          {
+            "ValueSet": [
+              {
+                "Value": "211.98.26.2"
+              }
+            ],
+            "Key": "ntp-servers"
+          },
+          {
+            "ValueSet": [
+              {
+                "Value": "211.98.26.3"
+              }
+            ],
+            "Key": "netbios-name-servers"
+          }
+        ],
+        "DhcpOptionsId": ""
+      }
+    },
+    "$SUBNET1": {
+      "type": "AWS.VPC.Subnet",
+      "name": "subnet1",
+      "uid": "$SUBNET1",
+      "resource": {
+        "VpcId": "@$VPC.resource.VpcId",
+        "AvailableIpAddressCount": "",
+        "State": "",
+        "AvailabilityZone": "us-east-1a",
+        "SubnetId": "",
+        "CidrBlock": "10.0.0.0/24"
+      }
+    },
+    "$SUBNET2": {
+      "type": "AWS.VPC.Subnet",
+      "name": "subnet2",
+      "uid": "$SUBNET2",
+      "resource": {
+        "VpcId": "@$VPC.resource.VpcId",
+        "AvailableIpAddressCount": "",
+        "State": "",
+        "AvailabilityZone": "us-east-1b",
+        "SubnetId": "",
+        "CidrBlock": "10.0.1.0/24"
+      }
+    },
+    "$ROUTETABLE": {
+      "type": "AWS.VPC.RouteTable",
+      "name": "RT-1",
+      "uid": "$ROUTETABLE",
+      "resource": {
+        "PropagatingVgwSet": [
+          "@$VGW.resource.VpnGatewayId"
+        ],
+        "RouteTableId": "",
+        "VpcId": "@$VPC.resource.VpcId",
+        "RouteSet": [
+          {
+            "Origin": "CreateRouteTable",
+            "DestinationCidrBlock": "10.0.0.0/16",
+            "InstanceId": "",
+            "NetworkInterfaceId": "",
+            "State": "active",
+            "GatewayId": "local",
+            "InstanceOwnerId": ""
+          },
+          {
+            "Origin": "",
+            "DestinationCidrBlock": "192.168.1.1/24",
+            "InstanceId": "@$INSTANCE.resource.InstanceId",
+            "NetworkInterfaceId": "",
+            "State": "",
+            "GatewayId": "",
+            "InstanceOwnerId": ""
+          },
+          {
+            "Origin": "",
+            "DestinationCidrBlock": "0.0.0.0/0",
+            "InstanceId": "",
+            "NetworkInterfaceId": "",
+            "State": "",
+            "GatewayId": "@$IGW.resource.InternetGatewayId",
+            "InstanceOwnerId": ""
+          },
+          {
+            "Origin": "",
+            "DestinationCidrBlock": "192.168.10.2/24",
+            "InstanceId": "",
+            "NetworkInterfaceId": "",
+            "State": "",
+            "GatewayId": "@$VGW.resource.VpnGatewayId",
+            "InstanceOwnerId": ""
+          },
+          {
+            "Origin": "",
+            "DestinationCidrBlock": "192.168.20.0/24",
+            "InstanceId": "",
+            "NetworkInterfaceId": "@$ENI1.resource.NetworkInterfaceId",
+            "State": "",
+            "GatewayId": "",
+            "InstanceOwnerId": ""
+          }
+        ],
+        "AssociationSet": [
+          {
+            "SubnetId": "",
+            "RouteTableId": "",
+            "Main": "true",
+            "RouteTableAssociationId": ""
+          }
+        ]
+      }
+    },
+    "$ACL": {
+      "type": "AWS.VPC.NetworkAcl",
+      "name": "DefaultACL",
+      "uid": "$ACL",
+      "resource": {
+        "NetworkAclId": "",
+        "RouteTableId": "",
+        "VpcId": "@$VPC.resource.VpcId",
+        "Default": "true",
+        "EntrySet": [
+          {
+            "IcmpTypeCode": {
+              "Code": "",
+              "Type": ""
+            },
+            "RuleNumber": "100",
+            "Protocol": "-1",
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "Egress": "true",
+            "RuleAction": "allow",
+            "CidrBlock": "0.0.0.0/0"
+          },
+          {
+            "IcmpTypeCode": {
+              "Code": "",
+              "Type": ""
+            },
+            "RuleNumber": "32767",
+            "Protocol": "-1",
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "Egress": "true",
+            "RuleAction": "deny",
+            "CidrBlock": "0.0.0.0/0"
+          },
+          {
+            "IcmpTypeCode": {
+              "Code": "",
+              "Type": ""
+            },
+            "RuleNumber": "100",
+            "Protocol": "-1",
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "Egress": "false",
+            "RuleAction": "allow",
+            "CidrBlock": "0.0.0.0/0"
+          },
+          {
+            "IcmpTypeCode": {
+              "Code": "",
+              "Type": ""
+            },
+            "RuleNumber": "32767",
+            "Protocol": "-1",
+            "PortRange": {
+              "To": "",
+              "From": ""
+            },
+            "Egress": "false",
+            "RuleAction": "deny",
+            "CidrBlock": "0.0.0.0/0"
+          }
+        ],
+        "AssociationSet": [
+          {
+            "SubnetId": "@$SUBNET1.resource.SubnetId",
+            "NetworkAclId": "",
+            "NetworkAclAssociationId": ""
+          },
+          {
+            "SubnetId": "@$SUBNET2.resource.SubnetId",
+            "NetworkAclId": "",
+            "NetworkAclAssociationId": ""
+          }
+        ]
+      }
+    },
+    "$IGW": {
+      "type": "AWS.VPC.InternetGateway",
+      "name": "Internet-gateway",
+      "uid": "$IGW",
+      "resource": {
+        "AttachmentSet": [
+          {
+            "State": "available",
+            "VpcId": "@$VPC.resource.VpcId"
+          }
+        ],
+        "InternetGatewayId": ""
+      }
+    },
+    "$VGW": {
+      "type": "AWS.VPC.VPNGateway",
+      "name": "VPN-gateway",
+      "uid": "$VGW",
+      "resource": {
+        "State": "available",
+        "AvailabilityZone": "",
+        "Type": "ipsec.1",
+        "Attachments": [
+          {
+            "State": "attached",
+            "VpcId": "@$VPC.resource.VpcId"
+          }
+        ],
+        "VpnGatewayId": ""
+      }
+    },
+    "$VPN1": {
+      "type": "AWS.VPC.VPNConnection",
+      "name": "VPN",
+      "uid": "$VPN1",
+      "resource": {
+        "VpnConnectionId": "",
+        "CustomerGatewayConfiguration": "",
+        "Routes": [
+          {
+            "Source": "",
+            "State": "",
+            "DestinationCidrBlock": "192.168.1.0/24"
+          }
+        ],
+        "VgwTelemetry": {
+          "Status": "",
+          "LastStatusChange": "",
+          "AcceptRouteCount": "",
+          "OutsideIpAddress": "",
+          "StatusMessage": ""
+        },
+        "State": "",
+        "VpnGatewayId": "@$VGW.resource.VpnGatewayId",
+        "CustomerGatewayId": "@$CGW11.resource.CustomerGatewayId",
+        "Type": "ipsec.1",
+        "Options": {
+          "StaticRoutesOnly": "true"
+        }
+      }
+    },
+    "$VPN2": {
+      "type": "AWS.VPC.VPNConnection",
+      "name": "VPN",
+      "uid": "$VPN2",
+      "resource": {
+        "VpnConnectionId": "",
+        "CustomerGatewayConfiguration": "",
+        "Routes": [],
+        "VgwTelemetry": {
+          "Status": "",
+          "LastStatusChange": "",
+          "AcceptRouteCount": "",
+          "OutsideIpAddress": "",
+          "StatusMessage": ""
+        },
+        "State": "",
+        "VpnGatewayId": "@$VGW.resource.VpnGatewayId",
+        "CustomerGatewayId": "@CGW2.resource.CustomerGatewayId",
+        "Type": "ipsec.1",
+        "Options": {
+          "StaticRoutesOnly": "true"
+        }
+      }
+    },
+    "$CGW1": {
+      "type": "AWS.VPC.CustomerGateway",
+      "name": "customer-gateway-1",
+      "uid": "$CGW1",
+      "resource": {
+        "CustomerGatewayId": "",
+        "BgpAsn": "",
+        "State": "available",
+        "Type": "ipsec.1",
+        "IpAddress": "211.98.26.10"
+      }
+    },
+    "$CGW2": {
+      "type": "AWS.VPC.CustomerGateway",
+      "name": "customer-gateway-2",
+      "uid": "$CGW2",
+      "resource": {
+        "CustomerGatewayId": "",
+        "BgpAsn": "",
+        "State": "available",
+        "Type": "ipsec.1",
+        "IpAddress": "211.98.26.11"
+      }
+    },
+    "$ASG": {
+      "type": "AWS.AutoScaling.Group",
+      "name": "asg1",
+      "uid": "$ASG",
+      "resource": {
+        "PlacementGroup": "",
+        "VPCZoneIdentifier": "@$SUBNET1.resource.SubnetId , @$SUBNET2.resource.SubnetId",
+        "LoadBalancerNames": [
+          "@$ELB.resource.LoadBalancerName"
+        ],
+        "CreatedTime": "",
+        "Status": "",
+        "AutoScalingGroupARN": "",
+        "SuspendedProcesses": [
+          {
+            "ProcessName": "",
+            "SuspensionReason": ""
+          }
+        ],
+        "Tags": "",
+        "InstanceId": "",
+        "MaxSize": 2,
+        "TerminationPolicies": [
+          "Default"
+        ],
+        "HealthCheckGracePeriod": "300",
+        "HealthCheckType": "EC2",
+        "AutoScalingGroupName": "asg1",
+        "MinSize": 1,
+        "LaunchConfigurationName": "@$LAUNCH-CONFIGURATION.resource.LaunchConfigurationName",
+        "DesiredCapacity": 1,
+        "EnabledMetrics": [
+          {
+            "Metric": "",
+            "Granularity": ""
+          }
+        ],
+        "DefaultCooldown": "300",
+        "Instances": [],
+        "AvailabilityZones": [
+          "us-east-1a",
+          "us-east-1b"
+        ],
+        "ShouldDecrementDesiredCapacity": ""
+      }
+    },
+    "$LAUNCH-CONFIGURATION": {
+      "type": "AWS.AutoScaling.LaunchConfiguration",
+      "name": "launch-config-1",
+      "uid": "$LAUNCH-CONFIGURATION",
+      "resource": {
+        "UserData": "",
+        "BlockDeviceMapping": [],
+        "LaunchConfigurationARN": "",
+        "InstanceMonitoring": "",
+        "ImageId": "ami-cde4bca4",
+        "CreatedTime": "",
+        "EbsOptimized": "",
+        "KeyName": "@$DEFAULT-KP.resource.KeyName",
+        "SecurityGroups": [
+          "@$DEFAULT-SG.resource.GroupId"
+        ],
+        "LaunchConfigurationName": "launch-config-1",
+        "KernelId": "",
+        "RamdiskId": "",
+        "IamInstanceProfile": "",
+        "InstanceType": "m1.small",
+        "SpotPrice": ""
+      }
+    },
+    "$TOPIC": {
+      "type": "AWS.SNS.Topic",
+      "name": "sns-topic",
+      "uid": "$TOPIC",
+      "resource": {
+        "Policy": "",
+        "DeliveryPolicy": "",
+        "DisplayName": "sns-topic",
+        "Name": "sns-topic",
+        "TopicArn": ""
+      }
+    },
+    "$SCALING-POLICY": {
+      "type": "AWS.AutoScaling.ScalingPolicy",
+      "name": "asg1-policy-1",
+      "uid": "$SCALING-POLICY",
+      "resource": {
+        "PolicyName": "asg1-policy-1",
+        "MinAdjustmentStep": "",
+        "AutoScalingGroupName": "@$ASG.resource.AutoScalingGroupName",
+        "PolicyARN": "",
+        "Cooldown": "",
+        "AdjustmentType": "ChangeInCapacity",
+        "Alarms": [
+          {
+            "AlarmName": "",
+            "AlarmARN": ""
+          }
+        ],
+        "ScalingAdjustment": "1"
+      }
+    },
+    "$CLOUD-WATCH": {
+      "type": "AWS.CloudWatch.CloudWatch",
+      "name": "asg1-policy-1-alarm",
+      "uid": "$CLOUD-WATCH",
+      "resource": {
+        "EvaluationPeriods": "2",
+        "Threshold": "1",
+        "AlarmArn": "",
+        "Dimensions": [
+          {
+            "name": "AutoScalingGroupName",
+            "value": "@$ASG.resource.AutoScalingGroupName"
+          }
+        ],
+        "AlarmConfigurationUpdatedTimestamp": "",
+        "AlarmActions": [
+          "@$SCALING-POLICY.resource.PolicyARN"
+        ],
+        "Namespace": "AWS/AutoScaling",
+        "AlarmDescription": "",
+        "StateReasonData": "",
+        "Period": "300",
+        "StateValue": "",
+        "ActionEnabled": "",
+        "ComparisonOperator": ">=",
+        "AlarmName": "asg1-policy-1-alarm",
+        "StateReason": "",
+        "OKAction": [],
+        "StateUpdateTimestamp": "",
+        "InsufficientDataActions": [],
+        "Statistic": "Average",
+        "Unit": "",
+        "MetricName": "CPUUtilization"
+      }
+    },
+    "$NOTIFICATION-CONFIGURATION": {
+      "type": "AWS.AutoScaling.NotificationConfiguration",
+      "name": "",
+      "uid": "$NOTIFICATION-CONFIGURATION",
+      "resource": {
+        "AutoScalingGroupName": "@$ASG.resource.AutoScalingGroupName",
+        "NotificationType": [
+          "autoscaling:EC2_INSTANCE_LAUNCH",
+          "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"
+        ],
+        "TopicARN": "@$TOPIC.resource.TopicArn"
+      }
+    },
+    "$SUBSCRIPTION1": {
+      "type": "AWS.SNS.Subscription",
+      "name": "",
+      "uid": "$SUBSCRIPTION1",
+      "resource": {
+        "DeliveryPolicy": "",
+        "Endpoint": "xjimmyshcn@gmail.com",
+        "Protocol": "email",
+        "TopicArn": "@$TOPIC.resource.TopicArn",
+        "SubscriptionArn": ""
+      }
+    },
+    "$SUBSCRIPTION2": {
+      "type": "AWS.SNS.Subscription",
+      "name": "",
+      "uid": "$SUBSCRIPTION2",
+      "resource": {
+        "DeliveryPolicy": "",
+        "Endpoint": "jimmy@mc2.io",
+        "Protocol": "email",
+        "TopicArn": "@$TOPIC.resource.TopicArn",
+        "SubscriptionArn": ""
+      }
+    }
+  },
+  "layout": {
+    "component": {
+      "node": {
+        "$INSTANCE": {
+          "coordinate": [
+            27,
+            22
+          ],
+          "virtualizationType": "paravirtual",
+          "osFamily": "linux",
+          "uid": "$INSTANCE",
+          "instanceList": [
+            "$INSTANCE"
+          ],
+          "groupUId": "$SUBNET1",
+          "volumeList": {
+            "$VOLUME": [
+              "$VOLUME"
+            ]
+          },
+          "eipList": {},
+          "connection": [
+            {
+              "target": "$ROUTETABLE",
+              "port": "instance-rtb",
+              "line": "0EE2F884-BC0D-4793-9919-CB3C9732F25B"
+            },
+            {
+              "target": "$ELB",
+              "port": "instance-sg",
+              "line": "80447053-9AC3-4CBF-8B5B-60D254CB86F7"
+            },
+            {
+              "target": "$ENI1",
+              "port": "instance-attach",
+              "line": "0E2BEED8-072E-4EFB-B2DA-986C8806BA08"
+            },
+            {
+              "target": "$LAUNCH-CONFIGURATION",
+              "port": "instance-sg",
+              "line": "29CCCE1E-36C0-43F1-A607-44CC495AD2EE"
+            },
+            {
+              "target": "3E2E3F46-49C8-4541-A5F4-04D5219213A8",
+              "port": "instance-sg",
+              "line": "DA783FB7-5E14-4C8E-9554-5A6A7C2E4EA1"
+            }
+          ],
+          "architecture": "i386",
+          "rootDeviceType": "ebs",
+          "eniList": [
+            "$ENI0"
+          ],
+          "type": "AWS.EC2.Instance",
+          "osType": "amazon"
+        },
+        "$ENI1": {
+          "uid": "$ENI1",
+          "groupUId": "$SUBNET1",
+          "eipList": {},
+          "connection": [
+            {
+              "target": "$ROUTETABLE",
+              "port": "eni-rtb",
+              "line": "94DD35D3-0EA5-4932-BC21-C4CE4E8291C9"
+            },
+            {
+              "target": "$INSTANCE",
+              "port": "eni-attach",
+              "line": "0E2BEED8-072E-4EFB-B2DA-986C8806BA08"
+            }
+          ],
+          "coordinate": [
+            45,
+            22
+          ],
+          "eniList": [
+            "$ENI1"
+          ],
+          "type": "AWS.VPC.NetworkInterface"
+        },
+        "$IGW": {
+          "coordinate": [
+            1,
+            12
+          ],
+          "connection": [
+            {
+              "target": "$ROUTETABLE",
+              "port": "igw-tgt",
+              "line": "98A434AC-2190-4E12-BECA-A77DB9DE7169"
+            }
+          ],
+          "type": "AWS.VPC.InternetGateway",
+          "uid": "$IGW",
+          "groupUId": "$VPC"
+        },
+        "$VGW": {
+          "coordinate": [
+            60,
+            9
+          ],
+          "connection": [
+            {
+              "target": "$ROUTETABLE",
+              "port": "vgw-tgt",
+              "line": "B50348D9-797E-46FF-99CE-6C0460480492"
+            },
+            {
+              "target": "$CGW1",
+              "port": "vgw-vpn",
+              "line": "3BB564AC-0CE4-4271-B843-95C0ACBEF4CB"
+            },
+            {
+              "target": "$CGW2",
+              "port": "vgw-vpn",
+              "line": "40B99F23-CBDE-48E1-B71E-59DE2F7437A0"
+            }
+          ],
+          "type": "AWS.VPC.VPNGateway",
+          "uid": "$VGW",
+          "groupUId": "$VPC"
+        },
+        "$CGW1": {
+          "uid": "$CGW1",
+          "type": "AWS.VPC.CustomerGateway",
+          "groupUId": "",
+          "connection": [
+            {
+              "target": "$VGW",
+              "port": "cgw-vpn",
+              "line": "3BB564AC-0CE4-4271-B843-95C0ACBEF4CB"
+            }
+          ],
+          "coordinate": [
+            71,
+            7
+          ],
+          "networkName": "customer-gateway-1"
+        },
+        "$CGW2": {
+          "uid": "$CGW2",
+          "type": "AWS.VPC.CustomerGateway",
+          "groupUId": "",
+          "connection": [
+            {
+              "target": "$VGW",
+              "port": "cgw-vpn",
+              "line": "40B99F23-CBDE-48E1-B71E-59DE2F7437A0"
+            }
+          ],
+          "coordinate": [
+            71,
+            22
+          ],
+          "networkName": "customer-gateway-2"
+        },
+        "$ROUTETABLE": {
+          "coordinate": [
+            36,
+            5
+          ],
+          "connection": [
+            {
+              "target": "$INSTANCE",
+              "port": "rtb-tgt",
+              "line": "0EE2F884-BC0D-4793-9919-CB3C9732F25B"
+            },
+            {
+              "target": "$IGW",
+              "port": "rtb-tgt",
+              "line": "98A434AC-2190-4E12-BECA-A77DB9DE7169"
+            },
+            {
+              "target": "$VGW",
+              "port": "rtb-tgt",
+              "line": "B50348D9-797E-46FF-99CE-6C0460480492"
+            },
+            {
+              "target": "$ENI1",
+              "port": "rtb-tgt",
+              "line": "94DD35D3-0EA5-4932-BC21-C4CE4E8291C9"
+            },
+            {
+              "target": "$SUBNET2",
+              "port": "rtb-src",
+              "line": "5B03ECF5-C3F0-45FE-AB17-2650CCEE6D88"
+            },
+            {
+              "target": "$SUBNET1",
+              "port": "rtb-src",
+              "line": "F5F203E4-6B77-4A08-B73F-9C29E2AE5ADD"
+            }
+          ],
+          "type": "AWS.VPC.RouteTable",
+          "uid": "$ROUTETABLE",
+          "groupUId": "$VPC"
+        },
+        "$ELB": {
+          "coordinate": [
+            8,
+            47
+          ],
+          "connection": [
+            {
+              "target": "$LAUNCH-CONFIGURATION",
+              "port": "elb-sg-out",
+              "line": "A2FD9CF0-DF6F-4E76-AB4F-E53E6D24425B"
+            },
+            {
+              "target": "3E2E3F46-49C8-4541-A5F4-04D5219213A8",
+              "port": "elb-sg-out",
+              "line": "91CCE648-293F-45E4-B45A-5CB35D5C46B2"
+            },
+            {
+              "target": "$INSTANCE",
+              "port": "elb-sg-out",
+              "line": "80447053-9AC3-4CBF-8B5B-60D254CB86F7"
+            },
+            {
+              "target": "$SUBNET1",
+              "port": "elb-assoc",
+              "line": "0693B58C-3C96-40CB-A3B1-9DCFCCF2F541"
+            },
+            {
+              "target": "$SUBNET2",
+              "port": "elb-assoc",
+              "line": "F803512F-02FB-4EDF-93A9-965545F18581"
+            }
+          ],
+          "type": "AWS.ELB",
+          "uid": "$ELB",
+          "groupUId": "$VPC"
+        },
+        "$LAUNCH-CONFIGURATION": {
+          "virtualizationType": "paravirtual",
+          "osFamily": "linux",
+          "uid": "$LAUNCH-CONFIGURATION",
+          "originalId": "$LAUNCH-CONFIGURATION",
+          "groupUId": "$ASG",
+          "coordinate": [
+            30,
+            34
+          ],
+          "connection": [
+            {
+              "target": "$ELB",
+              "port": "launchconfig-sg",
+              "line": "A2FD9CF0-DF6F-4E76-AB4F-E53E6D24425B"
+            },
+            {
+              "target": "$INSTANCE",
+              "port": "launchconfig-sg",
+              "line": "29CCCE1E-36C0-43F1-A607-44CC495AD2EE"
+            }
+          ],
+          "architecture": "i386",
+          "rootDeviceType": "ebs",
+          "type": "AWS.AutoScaling.LaunchConfiguration",
+          "osType": "amazon"
+        }
+      },
+      "group": {
+        "E7187718-1D22-47E1-B4C6-F368AD95BCFF": {
+          "uid": "E7187718-1D22-47E1-B4C6-F368AD95BCFF",
+          "groupUId": "$VPC",
+          "name": "us-east-1a",
+          "coordinate": [
+            23,
+            17
+          ],
+          "type": "AWS.EC2.AvailabilityZone",
+          "size": [
+            36,
+            31
+          ],
+          "connection": []
+        },
+        "3E2E3F46-49C8-4541-A5F4-04D5219213A8": {
+          "uid": "3E2E3F46-49C8-4541-A5F4-04D5219213A8",
+          "originalId": "$ASG",
+          "groupUId": "$SUBNET2",
+          "connection": [
+            {
+              "target": "$ELB",
+              "port": "launchconfig-sg",
+              "line": "91CCE648-293F-45E4-B45A-5CB35D5C46B2"
+            },
+            {
+              "target": "$INSTANCE",
+              "port": "launchconfig-sg",
+              "line": "DA783FB7-5E14-4C8E-9554-5A6A7C2E4EA1"
+            }
+          ],
+          "coordinate": [
+            28,
+            57
+          ],
+          "type": "AWS.AutoScaling.Group",
+          "size": [
+            13,
+            13
+          ]
+        },
+        "$ASG": {
+          "uid": "$ASG",
+          "originalId": "",
+          "groupUId": "$SUBNET1",
+          "connection": [],
+          "coordinate": [
+            28,
+            31
+          ],
+          "type": "AWS.AutoScaling.Group",
+          "size": [
+            13,
+            13
+          ]
+        },
+        "D684877A-2EF5-4B80-AC22-3A211B45045E": {
+          "uid": "D684877A-2EF5-4B80-AC22-3A211B45045E",
+          "groupUId": "$VPC",
+          "name": "us-east-1b",
+          "coordinate": [
+            23,
+            53
+          ],
+          "type": "AWS.EC2.AvailabilityZone",
+          "size": [
+            36,
+            21
+          ],
+          "connection": []
+        },
+        "$SUBNET1": {
+          "uid": "$SUBNET1",
+          "groupUId": "E7187718-1D22-47E1-B4C6-F368AD95BCFF",
+          "connection": [
+            {
+              "target": "$ELB",
+              "port": "subnet-assoc-in",
+              "line": "0693B58C-3C96-40CB-A3B1-9DCFCCF2F541"
+            },
+            {
+              "target": "$ROUTETABLE",
+              "port": "subnet-assoc-out",
+              "line": "F5F203E4-6B77-4A08-B73F-9C29E2AE5ADD"
+            }
+          ],
+          "coordinate": [
+            25,
+            19
+          ],
+          "type": "AWS.VPC.Subnet",
+          "size": [
+            32,
+            27
+          ]
+        },
+        "$VPC": {
+          "coordinate": [
+            5,
+            3
+          ],
+          "connection": [],
+          "type": "AWS.VPC.VPC",
+          "uid": "$VPC",
+          "size": [
+            59,
+            73
+          ]
+        },
+        "$SUBNET2": {
+          "uid": "$SUBNET2",
+          "groupUId": "D684877A-2EF5-4B80-AC22-3A211B45045E",
+          "connection": [
+            {
+              "target": "$ROUTETABLE",
+              "port": "subnet-assoc-out",
+              "line": "5B03ECF5-C3F0-45FE-AB17-2650CCEE6D88"
+            },
+            {
+              "target": "$ELB",
+              "port": "subnet-assoc-in",
+              "line": "F803512F-02FB-4EDF-93A9-965545F18581"
+            }
+          ],
+          "coordinate": [
+            25,
+            55
+          ],
+          "type": "AWS.VPC.Subnet",
+          "size": [
+            32,
+            17
+          ]
+        }
+      }
+    },
+    "size": [
+      240,
+      240
+    ],
+    "connection": {
+      "0EE2F884-BC0D-4793-9919-CB3C9732F25B": {
+        "target": {
+          "$INSTANCE": "instance-rtb",
+          "$ROUTETABLE": "rtb-tgt"
+        },
+        "auto": true,
+        "point": [],
+        "type": "rtb-target"
+      },
+      "98A434AC-2190-4E12-BECA-A77DB9DE7169": {
+        "target": {
+          "$IGW": "igw-tgt",
+          "$ROUTETABLE": "rtb-tgt"
+        },
+        "auto": true,
+        "point": [],
+        "type": "rtb-target"
+      },
+      "B50348D9-797E-46FF-99CE-6C0460480492": {
+        "target": {
+          "$VGW": "vgw-tgt",
+          "$ROUTETABLE": "rtb-tgt"
+        },
+        "auto": true,
+        "point": [],
+        "type": "rtb-target"
+      },
+      "94DD35D3-0EA5-4932-BC21-C4CE4E8291C9": {
+        "target": {
+          "$ENI1": "eni-rtb",
+          "$ROUTETABLE": "rtb-tgt"
+        },
+        "auto": true,
+        "point": [],
+        "type": "rtb-target"
+      },
+      "3BB564AC-0CE4-4271-B843-95C0ACBEF4CB": {
+        "target": {
+          "$CGW1": "cgw-vpn",
+          "$VGW": "vgw-vpn"
+        },
+        "auto": true,
+        "point": [],
+        "type": "vpn"
+      },
+      "5B03ECF5-C3F0-45FE-AB17-2650CCEE6D88": {
+        "target": {
+          "$SUBNET2": "subnet-assoc-out",
+          "$ROUTETABLE": "rtb-src"
+        },
+        "auto": true,
+        "point": [],
+        "type": "association"
+      },
+      "A2FD9CF0-DF6F-4E76-AB4F-E53E6D24425B": {
+        "target": {
+          "$LAUNCH-CONFIGURATION": "launchconfig-sg",
+          "$ELB": "elb-sg-out"
+        },
+        "auto": true,
+        "point": [],
+        "type": "elb-sg"
+      },
+      "91CCE648-293F-45E4-B45A-5CB35D5C46B2": {
+        "target": {
+          "3E2E3F46-49C8-4541-A5F4-04D5219213A8": "launchconfig-sg",
+          "$ELB": "elb-sg-out"
+        },
+        "auto": true,
+        "point": [],
+        "type": "elb-sg"
+      },
+      "80447053-9AC3-4CBF-8B5B-60D254CB86F7": {
+        "target": {
+          "$ELB": "elb-sg-out",
+          "$INSTANCE": "instance-sg"
+        },
+        "auto": true,
+        "point": [],
+        "type": "elb-sg"
+      },
+      "0693B58C-3C96-40CB-A3B1-9DCFCCF2F541": {
+        "target": {
+          "$ELB": "elb-assoc",
+          "$SUBNET1": "subnet-assoc-in"
+        },
+        "auto": true,
+        "point": [],
+        "type": "association"
+      },
+      "F803512F-02FB-4EDF-93A9-965545F18581": {
+        "target": {
+          "$ELB": "elb-assoc",
+          "$SUBNET2": "subnet-assoc-in"
+        },
+        "auto": true,
+        "point": [],
+        "type": "association"
+      },
+      "0E2BEED8-072E-4EFB-B2DA-986C8806BA08": {
+        "target": {
+          "$ENI1": "eni-attach",
+          "$INSTANCE": "instance-attach"
+        },
+        "auto": true,
+        "point": [],
+        "type": "attachment"
+      },
+      "40B99F23-CBDE-48E1-B71E-59DE2F7437A0": {
+        "target": {
+          "$CGW2": "cgw-vpn",
+          "$VGW": "vgw-vpn"
+        },
+        "auto": true,
+        "point": [],
+        "type": "vpn"
+      },
+      "F5F203E4-6B77-4A08-B73F-9C29E2AE5ADD": {
+        "target": {
+          "$SUBNET1": "subnet-assoc-out",
+          "$ROUTETABLE": "rtb-src"
+        },
+        "auto": true,
+        "point": [],
+        "type": "association"
+      },
+      "29CCCE1E-36C0-43F1-A607-44CC495AD2EE": {
+        "target": {
+          "$LAUNCH-CONFIGURATION": "launchconfig-sg",
+          "$INSTANCE": "instance-sg"
+        },
+        "auto": true,
+        "point": [],
+        "type": "sg"
+      },
+      "DA783FB7-5E14-4C8E-9554-5A6A7C2E4EA1": {
+        "target": {
+          "3E2E3F46-49C8-4541-A5F4-04D5219213A8": "launchconfig-sg",
+          "$INSTANCE": "instance-sg"
+        },
+        "auto": true,
+        "point": [],
+        "type": "sg"
+      }
+    }
+  }
+}

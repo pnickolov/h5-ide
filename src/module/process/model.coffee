@@ -22,8 +22,8 @@ define [ 'aws_model', 'ami_model'
             me = this
 
             # test json object
-            appview_json = JSON.parse appview_json
-            console.log 'appview json is ', appview_json
+            #appview_json = JSON.parse appview_json
+            #console.log 'appview json is ', appview_json
 
             # set init flag_list
             me.set 'flag_list', { 'is_pending' : true }

@@ -93,8 +93,11 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                     if type of vpc_obj
                                         filter['id'] = _.keys(vpc_obj[type])
 
-                                    if (type is 'AWS.AutoScaling.LaunchConfiguration' or type is 'AWS.AutoScaling.NotificationConfiguration') and 'AWS.AutoScaling.Group' of vpc_obj
+                                    if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
                                         filter['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+
+                                    if type is 'AWS.AutoScaling.LaunchConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
+                                        filter['id'] = (vpc_obj['AWS.AutoScaling.Group'][asg_id]['LaunchConfigurationName'] for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
 
                                 else
                                     filter['id'] = attrs['id']

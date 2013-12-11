@@ -337,7 +337,6 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 			'AWS.EC2.AvailabilityZone'		: MC.canvas.AZ_JSON,
 			'AWS.EC2.Instance' 				: MC.canvas.INSTANCE_JSON,
 			'AWS.ELB' 						: MC.canvas.ELB_JSON,
-			'AWS.EC2.EBS.Volume' 			: MC.canvas.VOLUME_JSON,
 			'AWS.VPC.VPC' 					: MC.canvas.VPC_JSON,
 			'AWS.VPC.Subnet'				: MC.canvas.SUBNET_JSON,
 			'AWS.VPC.InternetGateway'		: MC.canvas.IGW_JSON,
@@ -417,7 +416,11 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 				remove_uid.push c.uid
 
-			if c.typs is 'AWS.VPC.NetworkInterface' and c.resource.Attachment.InstanceId and c.resource.Attachment.InstanceId.split('.')[0].slice(1) in remove_uid
+			if c.type is 'AWS.VPC.NetworkInterface' and c.resource.Attachment.InstanceId and c.resource.Attachment.InstanceId in remove_uid
+
+				remove_uid.push c.uid
+
+			if c.type is 'AWS.EC2.EBS.Volume' and c.resource.AttachmentSet.InstanceId and c.resource.AttachmentSet.InstanceId in remove_uid
 
 				remove_uid.push c.uid
 
@@ -483,9 +486,40 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 						originalId = ''
 
+						for uid_tmp, comp_tmp of app_json.component
+
+							if comp_tmp.type is 'AWS.AutoScaling.LaunchConfiguration' and uid_tmp is c.resource.LaunchConfigurationName.split('.')[0].slice(1)
+
+								if app_json.layout.component.node[uid_tmp].groupUId
+
+									new_comp = $.extend true, {}, comp_tmp
+
+									new_uid = MC.guid()
+
+									new_comp.uid = new_uid
+
+									new_layout = $.extend true, {}, app_json.layout.component.node[uid_tmp]
+
+									new_layout.originalId = new_uid
+
+									new_layout.groupUId = c.uid
+
+									new_layout.uid = new_uid
+
+									c.resource.LaunchConfigurationName = "#{new_uid}.resource.LaunchConfigurationName"
+
+									app_json.component[new_uid] = new_comp
+
+									app_json.layout.component.node[new_uid] = new_layout
+
+								else
+									app_json.layout.component.node[uid_tmp].groupUId = c.uid
+
+
+
 						for idx, zone of c.resource.AvailabilityZones
 
-							extend_asg = layout
+							extend_asg = $.extend true, {}, layout
 
 							if idx in [0,"0"]
 
@@ -502,7 +536,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 								extend_asg_uid = MC.guid()
 
-								extend_asg.originalId = originalId
+								extend_asg.originalId = c.uid
 
 							if subnets.length != 0
 
@@ -531,6 +565,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 					when 'AWS.AutoScaling.LaunchConfiguration'
 
+						layout.originalId = c.uid
+
 						app_json.layout.component.node[c.uid] = layout
 
 					when "AWS.EC2.AvailabilityZone"
@@ -550,10 +586,6 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 					when "AWS.VPC.VPC"
 
 						app_json.layout.component.group[c.uid] = layout
-
-					when "AWS.EC2.EBS.Volume"
-
-						app_json.layout.component.node[c.uid] = layout
 
 					else
 

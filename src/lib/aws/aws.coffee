@@ -825,6 +825,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                 key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = "@#{uid}.resource.#{constant.AWS_RESOURCE_KEY[comp.type]}"
 
+                if comp.type is "AWS.AutoScaling.Group"
+
+                    key[comp.resource.AutoScalingGroupName] = "@#{uid}.resource.AutoScalingGroupName"
+
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration"
+
+                    key[comp.resource.LaunchConfigurationName] = "@#{uid}.resource.LaunchConfigurationName"
+
         #replace reference
         for uid, comp of canvas_component
 

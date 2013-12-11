@@ -75,8 +75,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
     deserialize : ( data, layout_data, resolve )->
 
-      new Model({
-
+      attr =
         id           : data.uid
         name         : data.name
 
@@ -85,7 +84,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
         width: layout_data.size[0]
         height: layout_data.size[1]
-      })
+
+      for key, value of data.resource
+        attr[ key ] = value
+
+      new Model( attr )
 
   }
 

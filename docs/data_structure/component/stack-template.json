@@ -147,6 +147,22 @@
         "KeyFingerprint": "Not necessary, filled by RW, example:'44:2c:71:09:92:15:9e:15:7c:38:ce:fc:34:f4:ac:8a:60:91:a9:2b'"
       }
     },
+    "$EIP": {
+      "type": "Valid value, 'AWS.EC2.EIP', required",
+      "name": "regex name,^\\w+[A-Za-z0-9-]*$, not required",
+      "uid": "regex UID,^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$, required, same to $EIP",
+      "resource": {
+        "PublicIp": "filled by RW, regex IP, '\\d+\\.\\d+\\.\\d+\\.\\d+', not required",
+        "PrivateIpAddress": "referenceeni ip,@xxxx.resource.xxxx, not required, example:@ENI0.resource.PrivateIpAddressSet.0.PrivateIpAddress",
+        "InstanceId": "reference,@xxxx.resource.xxxx, not required, example:@INSTANCE.resource.InstanceId",
+        "NetworkInterfaceId": "reference,@xxxx.resource.xxxx, not required, example:@ENI0.resource.NetworkInterfaceId",
+        "Domain": "Valid value ,['vpc','standard'], not required, example:'vpc'",
+        "AllocationId": "regex AllocationId,'eipalloc-\\w{8}', not required",
+        "AssociationId": "Not necessary",
+        "NetworkInterfaceOwnerId": "Not necessary",
+        "AllowReassociation": "Not necessary"
+      }
+    },
     "$ENI0": {
       "type": "Valid value,'AWS.VPC.NetworkInterface', required",
       "name": "regex name,^\\w+[A-Za-z0-9-]*$, not required, example:eni0",
@@ -223,12 +239,12 @@
         "ListenerDescriptions": [
           {
             "Listener": {
-              "InstancePort": "INT, [0, 65535], required, example:80",
-              "Protocol": "Valid value,['TCP','HTTP','HTTPS','SSL'], required, example:HTTP",
-              "InstanceProtocol": "Valid value,['TCP','HTTP','HTTPS','SSL'], not required, example:HTTP",
-              "LoadBalancerPort": "INT, [0, 65535], required, example:80",
+              "InstancePort": "INT, [0, 65535], required, example:443",
+              "Protocol": "Valid value,['TCP','HTTP','HTTPS','SSL'], required, example:SSL",
+              "InstanceProtocol": "Valid value,['TCP','HTTP','HTTPS','SSL'], not required, example:SSL",
+              "LoadBalancerPort": "INT, [0, 65535], required, example:443",
               "Canremove": "Valid value, [true, *false], required",
-              "SSLCertificateId": "reference, not required"
+              "SSLCertificateId": "reference, not required, example:@SERVER-CERTIFICATE.resource.ServerCertificateMetadata.Arn"
             },
             "PolicyNames": "Not necessary"
           }
@@ -288,6 +304,23 @@
           "OwnerAlias": "Not necessary",
           "GroupName": "Not necessary"
         }
+      }
+    },
+    "$SERVER-CERTIFICATE": {
+      "type": "Valid value,'AWS.IAM.ServerCertificate', required",
+      "name": "regex name,^\\w+[A-Za-z0-9-]*$, not required, example:'aaa'",
+      "uid": "regex UID,^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$, required, same to $SERVER-CERTIFICATE",
+      "resource": {
+        "PrivateKey": "Not necessary",
+        "ServerCertificateMetadata": {
+          "Arn": "Not necessary",
+          "ServerCertificateId": "Not necessary",
+          "ServerCertificateName": "Not necessary, example:aaa",
+          "Path": "Not necessary",
+          "UploadDate": "Not necessary"
+        },
+        "CertificateBody": "Not necessary",
+        "CertificateChain": "Not necessary"
       }
     },
     "$VPC": {
@@ -746,7 +779,9 @@
               "$VOLUME"
             ]
           },
-          "eipList": {},
+          "eipList": [
+            "$EIP"
+          ],
           "connection": [
             {
               "target": "$ROUTETABLE",

@@ -6604,7 +6604,7 @@ MC.canvas.analysis = function ( data )
 			});
 
 			// RT Children join
-			resource_stack[ 'AWS-VPC-RouteTable' ] = RT_to_IGW.concat(RT_to_VGW, RT_other);
+			resource_stack[ 'AWS-VPC-RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
 
 			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
 			{
@@ -6750,7 +6750,8 @@ MC.canvas.analysis = function ( data )
 			layout.coordinate[0] + layout.size[0] + 8,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
-	}	
+	}
+
 	return true;
 };
 

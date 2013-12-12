@@ -89,6 +89,28 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		else
 			'other_error'
 
+	processType = ( id ) ->
+
+		# id is String
+		if not _.isString id
+			return undefined
+
+		# tab id sample dashboard
+		else if id.indexOf('-') is -1
+			return undefined
+
+		# tab id sample process-cs6dbvrc
+		else if getCacheMap( id ) and id.split( '-' ).length = 2
+			return 'appview'
+
+		# tab id sample process-us-west-1-untitled-112
+		else if id.split('-')[0] is 'process' and id.split( '-' ).length > 2
+			return 'process'
+
+		# undefined
+		else
+			return undefined
+
 	#############################
 	#  process
 	#############################
@@ -129,7 +151,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		MC.data.process
 
 	#############################
-	#  cache id
+	#  cache id by appview
 	#############################
 
 	# cacheIDMap[ tab_id ] =
@@ -139,7 +161,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	data        : <vpc_resource result>
 	#	region      : <region_name>
 	#	type        : <'process', 'appview'>
-	#	state       : <'OPEN', 'OLD', 'FINISH'>
+	#	state       : <'OPEN', 'OLD', 'FINISH', 'ERROR'>
 	#   create_time : <new Date(), 'timeout'>
 
 	cacheIDMap = {}
@@ -206,33 +228,64 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		obj
 
-	processType = ( id ) ->
+	#############################
+	#  unmanaged vpc
+	#############################
 
-		# id is String
-		if not _.isString id
-			return undefined
+	unmanaged_resource_list = {}
 
-		# tab id sample dashboard
-		else if id.indexOf('-') is -1
-			return undefined
+	initUnmanaged = ->
+		console.log 'initUnmanaged'
+		unmanaged_resource_list = {}
 
-		# tab id sample process-cs6dbvrc
-		else if getCacheMap( id ) and id.split( '-' ).length = 2
-			return 'appview'
+	listUnmanaged = () ->
+		console.log 'listUnmanaged'
+		unmanaged_resource_list
 
-		# tab id sample process-us-west-1-untitled-112
-		else if id.split('-')[0] is 'process' and id.split( '-' ).length > 2
-			return 'process'
+	addUnmanaged = ( data ) ->
+		console.log 'addUnmanaged', data
+		unmanaged_resource_list = data
 
-		# undefined
-		else
-			return undefined
+	delUnmanaged = ( vpc_id ) ->
+		console.log 'delUnmanaged', vpc_id
+
+		try
+
+			_.each unmanaged_resource_list, ( item ) ->
+
+				delete_item = {}
+
+				_.each item, ( vpc_item ) ->
+
+					if _.indexOf( _.keys( item ), vpc_id ) isnt -1
+						delete_item = item[ vpc_id ]
+
+				delete item[ vpc_id ] if delete_item
+
+		catch error
+		  console.log 'delUnmanaged', vpc_id, error
+
+		unmanaged_resource_list
+
+	unmanaged_vpc_list = {}
+
+	addUnmanagedVpc = ( key, value ) ->
+		unmanaged_vpc_list[ key ] = value
+
+	getUnmanagedVpc = ( id ) ->
+		console.log 'getUnmanagedVpc', id
+		unmanaged_vpc_list[ id ]
+
+	listUnmanagedVpc = ->
+		console.log 'listUnmanagedVpc'
+		unmanaged_vpc_list
 
 	#public
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
-
+	setCurrentTabId	   : setCurrentTabId
 	searchStackAppById : searchStackAppById
+	processType        : processType
 
 	addProcess         : addProcess
 	getProcess         : getProcess
@@ -247,6 +300,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	getCacheMap        : getCacheMap
 	searchCacheMap     : searchCacheMap
 	listCacheMap       : listCacheMap
-	processType        : processType
 
-	setCurrentTabId	   : setCurrentTabId
+	initUnmanaged      : initUnmanaged
+	listUnmanaged      : listUnmanaged
+	addUnmanaged       : addUnmanaged
+	delUnmanaged       : delUnmanaged
+
+	addUnmanagedVpc    : addUnmanagedVpc
+	getUnmanagedVpc    : getUnmanagedVpc
+	listUnmanagedVpc   : listUnmanagedVpc

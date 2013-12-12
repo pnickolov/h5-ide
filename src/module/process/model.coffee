@@ -5,6 +5,7 @@
 define [ 'aws_model', 'ami_model'
          'event', 'constant',
          'text!./module/process/appview.json'
+         'UI.notification',
          'backbone', 'jquery', 'underscore'
 ], ( aws_model, ami_model, ide_event, constant, appview_json ) ->
 
@@ -34,6 +35,11 @@ define [ 'aws_model', 'ami_model'
 
             @on 'AWS_VPC__RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_VPC__RESOURCE_RETURN', result
+
+                #
+                #result.resolved_data = {}
+                #result.is_error = true
+                #result.error_message = 'sdfasdfasdfsadfasdf'
 
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
@@ -65,6 +71,37 @@ define [ 'aws_model', 'ami_model'
 
                     null
 
+                else if result
+
+                    # get vpc_id
+                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+
+                    # set cacheMap state 'ERROR'
+                    obj = MC.forge.other.setCacheMap vpc_id, null, 'ERROR', null, null
+
+                    if not result.is_error and _.isEmpty result.resolved_data
+
+                        # delete this vpc by delUnmanaged
+                        MC.forge.other.delUnmanaged vpc_id
+
+                        # set error message
+                        error_message = 'VPC does not exist.'
+
+                    else if result.is_error
+
+                        # set error message
+                        error_message = result.error_message
+
+                    # get this tab id and close this tab
+                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+                    if obj and obj.id
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
+
+                    # notification
+                    notification 'error', error_message, true
+
+                    null
+
             @on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
                 console.log 'EC2_AMI_DESC_IMAGES_RETURN', result
 
@@ -79,6 +116,7 @@ define [ 'aws_model', 'ami_model'
 
                     # get call service current tab id
                     current_tab_id = result.param[0].src.sender.get 'current_tab_id'
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN, current_tab_id', current_tab_id
 
                     # get origin_id
                     origin_obj = MC.forge.other.getCacheMap current_tab_id
@@ -220,7 +258,7 @@ define [ 'aws_model', 'ami_model'
             if state is 'OPEN_PROCESS'
 
                 # get resources
-                resources = MC.data.unmanaged_vpc_list[ vpc_id ]
+                resources = MC.forge.other.getUnmanagedVpc vpc_id
 
                 # delete resource.origin
                 if resources and resources.origin
@@ -233,7 +271,6 @@ define [ 'aws_model', 'ami_model'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD', null
 
             else if state is 'OLD_PROCESS'
-
                 # get obj
                 obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
 
@@ -242,8 +279,12 @@ define [ 'aws_model', 'ami_model'
                     # reload app view
                     @reloadAppView obj
 
-                else
+                else if obj and obj.id
 
+                    # update tab icon
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', obj.id
+
+                else
                     console.log 'not found process'
 
             null
@@ -251,7 +292,10 @@ define [ 'aws_model', 'ami_model'
         getDescribeImages : ( region, ami_ids ) ->
             console.log 'getDescribeImages', region, ami_ids
 
-            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
+            # deep copy
+            me = $.extend true, {}, this
+
+            ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
 
             null
 
@@ -277,7 +321,7 @@ define [ 'aws_model', 'ami_model'
             appview_id = 'appview-' + obj.uid
 
             # update tab
-            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - visualization'
 
             # reload app
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APPVIEW', obj.origin_id, obj.region, appview_id

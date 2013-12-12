@@ -768,7 +768,7 @@
 						});
 
 						// RT Children join
-						resource_stack[ 'AWS-VPC-RouteTable' ] = RT_to_IGW.concat(RT_to_VGW, RT_other);
+						resource_stack[ 'AWS-VPC-RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
 
 						$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
 						{

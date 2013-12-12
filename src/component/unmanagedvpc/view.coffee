@@ -43,9 +43,37 @@ define [ 'event',
             Handlebars.registerHelper 'convert_string', ( key, value ) ->
 
                 # set unmanaged vpc list
-                MC.data.unmanaged_vpc_list[ key ] = value
+                MC.forge.other.addUnmanagedVpc key, value
 
-                new Handlebars.SafeString JSON.stringify value
+                # object to string
+                #new Handlebars.SafeString JSON.stringify value
+
+                new Handlebars.SafeString key
+
+            # is vpc disabled
+            Handlebars.registerHelper 'is_vpc_disabled', ( key, value, options ) ->
+
+                is_true = false
+
+                try
+
+                    _.each value.origin, ( item, type ) ->
+
+                        if type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                            vpc_ids = _.keys item
+                            if isArray( vpc_ids ) and vpc_ids.length > 2
+                                is_true = true
+
+                    if is_true
+                        options.fn this
+                    else
+                        options.inverse this
+
+                catch error
+                  console.log 'is_vpc_disabled', key, value, options, error
+
+                finally
+                    options.inverse this
 
             # vpc_list
             Handlebars.registerHelper 'vpc_list', ( items, options ) ->

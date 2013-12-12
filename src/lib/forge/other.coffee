@@ -161,7 +161,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#	data        : <vpc_resource result>
 	#	region      : <region_name>
 	#	type        : <'process', 'appview'>
-	#	state       : <'OPEN', 'OLD', 'FINISH'>
+	#	state       : <'OPEN', 'OLD', 'FINISH', 'ERROR'>
 	#   create_time : <new Date(), 'timeout'>
 
 	cacheIDMap = {}

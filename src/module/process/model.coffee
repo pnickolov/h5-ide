@@ -38,6 +38,8 @@ define [ 'aws_model', 'ami_model'
 
                 #
                 #result.resolved_data = {}
+                #result.is_error = true
+                #result.error_message = 'sdfasdfasdfsadfasdf'
 
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
@@ -69,23 +71,34 @@ define [ 'aws_model', 'ami_model'
 
                     null
 
-                else if result and not result.is_error and _.isEmpty result.resolved_data
-
-                    # notification
-                    notification 'error', 'VPC does not exist.', true
+                else if result
 
                     # get vpc_id
                     vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
 
-                    # delete this vpc by delUnmanaged
-                    MC.forge.other.delUnmanaged vpc_id
+                    # set cacheMap state 'ERROR'
+                    obj = MC.forge.other.setCacheMap vpc_id, null, 'ERROR', null, null
 
-                    # get this tab id
+                    if not result.is_error and _.isEmpty result.resolved_data
+
+                        # delete this vpc by delUnmanaged
+                        MC.forge.other.delUnmanaged vpc_id
+
+                        # set error message
+                        error_message = 'VPC does not exist.'
+
+                    else if result.is_error
+
+                        # set error message
+                        error_message = result.error_message
+
+                    # get this tab id and close this tab
                     obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
-
-                    # close this tab
                     if obj and obj.id
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
+
+                    # notification
+                    notification 'error', error_message, true
 
                     null
 

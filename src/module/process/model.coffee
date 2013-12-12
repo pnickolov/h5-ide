@@ -5,6 +5,7 @@
 define [ 'aws_model', 'ami_model'
          'event', 'constant',
          'text!./module/process/appview.json'
+         'UI.notification',
          'backbone', 'jquery', 'underscore'
 ], ( aws_model, ami_model, ide_event, constant, appview_json ) ->
 
@@ -35,6 +36,9 @@ define [ 'aws_model', 'ami_model'
             @on 'AWS_VPC__RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_VPC__RESOURCE_RETURN', result
 
+                #
+                #result.resolved_data = {}
+
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 
                     # set result.resolved_data
@@ -62,6 +66,26 @@ define [ 'aws_model', 'ami_model'
 
                         # call api
                         @getDescribeImages result.param[3], ami_ids
+
+                    null
+
+                else if result and not result.is_error and _.isEmpty result.resolved_data
+
+                    # notification
+                    notification 'error', 'VPC does not exist.', true
+
+                    # get vpc_id
+                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+
+                    # delete this vpc by delUnmanaged
+                    MC.forge.other.delUnmanaged vpc_id
+
+                    # get this tab id
+                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+
+                    # close this tab
+                    if obj and obj.id
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
 
                     null
 

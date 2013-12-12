@@ -24,23 +24,36 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                     # set vo
                     me.set 'resource_list', $.extend true, {}, resources
 
+                    # set global resource list
+                    MC.forge.other.addUnmanaged $.extend true, {}, resources
+
                     null
 
         getStatResourceService : ->
             console.log 'getStatResourceService'
 
-            # set resources
-            resources =
-                'AWS.VPC.VPC'           : {}
-                'AWS.ELB'               : {}
-                'AWS.EC2.Instance'      : {}
-                'AWS.VPC.RouteTable'    : {}
-                'AWS.VPC.Subnet'        : {}
-                'AWS.VPC.VPNGateway'    : {}
-                'AWS.VPC.VPNConnection' : {}
-                'AWS.AutoScaling.Group' : {}
+            # get resource list by cache
+            obj = MC.forge.other.listUnmanaged()
 
-            aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1
+            if not _.isEmpty obj
+
+                # set vo
+                @set 'resource_list', $.extend true, {}, obj
+
+            else
+
+                # set resources
+                resources =
+                    'AWS.VPC.VPC'           : {}
+                    'AWS.ELB'               : {}
+                    'AWS.EC2.Instance'      : {}
+                    'AWS.VPC.RouteTable'    : {}
+                    'AWS.VPC.Subnet'        : {}
+                    'AWS.VPC.VPNGateway'    : {}
+                    'AWS.VPC.VPNConnection' : {}
+                    'AWS.AutoScaling.Group' : {}
+
+                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1
 
             null
 

@@ -410,17 +410,32 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		#remove_asg_instance
 		remove_uid = []
 
+		used_az = []
+
 		for uid, c of app_json.component
 
 			if c.type is 'AWS.EC2.Instance' and c.resource.InstanceId in ignore_instances
 
 				remove_uid.push c.uid
 
-			if c.type is 'AWS.VPC.NetworkInterface' and c.resource.Attachment.InstanceId and c.resource.Attachment.InstanceId in remove_uid
+			if c.type is 'AWS.VPC.Subnet'
+
+				if c.resource.AvailabilityZone not in used_az
+
+					used_az.push c.resource.AvailabilityZone
+
+		# remove related resource
+		for uid, c of app_json.component
+
+			if c.type is 'AWS.VPC.NetworkInterface' and c.resource.Attachment.InstanceId and c.resource.Attachment.InstanceId in ignore_instances
 
 				remove_uid.push c.uid
 
-			if c.type is 'AWS.EC2.EBS.Volume' and c.resource.AttachmentSet.InstanceId and c.resource.AttachmentSet.InstanceId in remove_uid
+			if c.type is 'AWS.EC2.EBS.Volume' and c.resource.AttachmentSet.InstanceId and c.resource.AttachmentSet.InstanceId in ignore_instances
+
+				remove_uid.push c.uid
+
+			if c.type is 'AWS.EC2.AvailabilityZone' and c.resource.ZoneName not in used_az
 
 				remove_uid.push c.uid
 
@@ -560,6 +575,17 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 						else
 
 							layout.groupUId = c.resource.Placement.AvailabilityZone.split('.')[0].slice(1)
+
+
+						# collect volume
+
+						for uid_tmp, comp_tmp of app_json.component
+
+							if comp_tmp.type is "AWS.EC2.EBS.Volume" and comp_tmp.resource.AttachmentSet and comp_tmp.resource.AttachmentSet.InstanceId and comp_tmp.resource.AttachmentSet.InstanceId.split('.')[0].slice(1) is c.uid
+
+								layout.volumeList[uid_tmp] = [uid_tmp]
+
+								app_json.component[c.uid].resource.BlockDeviceMapping.push "##{uid_tmp}"
 
 						app_json.layout.component.node[c.uid] = layout
 

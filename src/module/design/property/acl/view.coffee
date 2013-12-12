@@ -224,12 +224,12 @@ define [ '../base/view',
                     newRuleObj.isStarRule = true
 
                 # if value.Protocol is '-1'
-                #     newRuleObj.protocol = 'All'
+                #     newRuleObj.protocol = 'ALL'
                 # else
                 #     newRuleObj.protocol = value.Protocol
 
                 if value.Protocol is -1 or value.Protocol is '-1'
-                    newRuleObj.protocol = 'All'
+                    newRuleObj.protocol = 'ALL'
                 else if value.Protocol is 6 or value.Protocol is '6'
                     newRuleObj.protocol = 'TCP'
                 else if value.Protocol is 17 or value.Protocol is '17'
@@ -250,7 +250,7 @@ define [ '../base/view',
                         newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
 
                     if (value.PortRange.To is '') and (value.PortRange.From is '')
-                        newRuleObj.port = 'All'
+                        newRuleObj.port = 'ALL'
 
                 newEntrySet.push newRuleObj
 

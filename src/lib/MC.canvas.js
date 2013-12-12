@@ -4010,7 +4010,7 @@ MC.canvas.event.dragable = {
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		MC.canvas.position(target[0], coordinate.x, coordinate.y);
+		MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
 
 		MC.canvas.reConnect(target_id);
 

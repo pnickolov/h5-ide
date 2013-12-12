@@ -263,7 +263,7 @@ define [ 'jquery', 'event', 'base_main',
                         MC.forge.other.addCacheMap uid, appview_id, tab_id, region, 'process'
 
                     # add appview tab
-                    Tabbar.open appview_id, tab_name + ' - view'
+                    Tabbar.open appview_id, tab_name + ' - visualization'
 
             # reload new stack
             reloadNewStackTab = ( tab_id, region_name, platform ) ->

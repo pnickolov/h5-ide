@@ -321,7 +321,7 @@ define [ 'aws_model', 'ami_model'
             appview_id = 'appview-' + obj.uid
 
             # update tab
-            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - app'
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - visualization'
 
             # reload app
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APPVIEW', obj.origin_id, obj.region, appview_id

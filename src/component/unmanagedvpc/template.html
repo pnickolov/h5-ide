@@ -18,14 +18,16 @@
 
 			<ul id="unmanaged-VPC-region-list">
 				{{#each resource_list }}
-				<li class="unmanaged-VPC-region-item" data-region-name="{{ @key }}">
+				<li class="unmanaged-VPC-region-item"
+					data-region-name="{{ @key }}">
 					<div class="unmanaged-VPC-region-header">
 						<span class="unmanaged-VPC-location-name">{{ city_code @key }}</span>
 						<span class="unmanaged-VPC-region-name">{{ city_area @key }}</span>
 					</div>
 					<ul class="unmanaged-VPC-resource-list clearfix">
 						{{#each this }}
-						<li class="unmanaged-VPC-resource-item"
+						<li class="unmanaged-VPC-resource-item{{#is_vpc_disabled @key this }} unmanaged-VPC-resource-item-disabled{{/is_vpc_disabled}}"
+							id="{{ @key }}-item"
 							data-vpc-id="{{ @key }}"
 							data-vpc-obj='{{ convert_string @key this }}'>
 							<a href="javascript:void(0)">

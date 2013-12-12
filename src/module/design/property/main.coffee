@@ -75,20 +75,40 @@ define [ 'event',
 			# - "component_asg_volume"   => Volume Property
 			# - "component_asg_instance" => Instance main
 			# - "component"
+			# - "stack"
 
-			component = Design.instance().component( uid )
-			if not component then return
+			design    = Design.instance()
 
 			# If type is "component", type should be changed to ResourceModel's type
-			if type is "component"
-				if MC.canvas.getState() is 'app' and !component.hasAppResource()
+			if uid
+				component = design.component( uid )
+				if not component then return
+
+				if design.modeIsApp() and !component.hasAppResource()
 					type = 'missing_resource'
 				else
 					type = component.type
+			else
+				type = "stack"
+
+
+			# Get current model of design
+			if design.modeIsApp()
+				tab_type = PropertyBaseModule.TYPE.App
+
+			else if design.modeIsStack()
+				tab_type = PropertyBaseModule.TYPE.Stack
+
+			else
+				# If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
+				# Otherwise, it's Stack mode ( Fully Editable )
+				if not component or component.get("appId")
+					tab_type = PropertyBaseModule.TYPE.AppEdit
+				else
+					tab_type = PropertyBaseModule.TYPE.Stack
+
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( component )
-
 			try
 				PropertyBaseModule.load type, uid, tab_type
 				view.afterLoad()
@@ -98,26 +118,6 @@ define [ 'event',
 				### env:dev:end ###
 
 			null
-
-		getTabType = ( component )->
-			tab_type = MC.canvas.getState()
-			if tab_type is "app"
-				tab_type = PropertyBaseModule.TYPE.App
-			else if tab_type is "stack"
-				tab_type = PropertyBaseModule.TYPE.Stack
-			else
-				# If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
-				# Otherwise, it's Stack mode ( Fully Editable )
-				if component.get("appId")
-					tab_type = PropertyBaseModule.TYPE.AppEdit
-				else
-					tab_type = PropertyBaseModule.TYPE.Stack
-
-			tab_type
-
-		null
-		### Helper Functions End ###
-
 
 	unLoadModule = () ->
 		null

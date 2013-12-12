@@ -34,7 +34,7 @@ define [ '../base/main',
 
         ideEvents : ideEvents
 
-        handleTypes : ""
+        handleTypes : "stack"
 
         onUnloadSubPanel : ( id )->
 

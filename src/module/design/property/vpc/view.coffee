@@ -146,7 +146,9 @@ define [ '../base/view',
 
         onChangeDhcpOptions : ( event ) ->
 
-            if event and not $( event.currentTarget ).parsley( 'validateForm' )
+            if event and not $( event.currentTarget )
+                            .closest( '[data-bind=true]' )
+                            .parsley( 'validate' )
                 return
 
             # Gather all the infomation to submit

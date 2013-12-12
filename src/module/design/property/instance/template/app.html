@@ -34,7 +34,11 @@
       <dd>{{instanceType}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
+      {{#if app_view}}
+      <dd>{{keyName}}</dd>
+      {{else}}
       <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
+      {{/if}}
 
     </dl>
 

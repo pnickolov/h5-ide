@@ -10,6 +10,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
         #
         require [ 'unmanagedvpc_view', 'unmanagedvpc_model' ], ( View, Model ) ->
 
+            # init unmanager resource list
+            MC.forge.other.initUnmanaged()
+
             # new view and model
             view  = new View()
             model = new Model()

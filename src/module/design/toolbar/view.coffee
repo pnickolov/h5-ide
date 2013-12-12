@@ -322,7 +322,7 @@ define [ 'MC', 'event',
             modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
 
             $("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
-            $("#modal-wrap").find(".modal-body").css({padding:"0", margin:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
+            $("#modal-wrap").find(".modal-body").css({padding:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
             null

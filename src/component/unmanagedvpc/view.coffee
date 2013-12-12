@@ -79,7 +79,7 @@ define [ 'event',
             Handlebars.registerHelper 'vpc_list', ( items, options ) ->
 
                 new_item = ''
-                prefix   = '<li><span class="unmanaged-resource-number">'
+                prefix   = '<li class="unmanaged-resource-item"><span class="unmanaged-resource-number">'
                 infix    = '</span><span class="unmanaged-resource-name">'
                 suffix   = '</span></li>'
 
@@ -92,10 +92,10 @@ define [ 'event',
                         switch key
 
                             when constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                                type = ' subnets'
+                                type = ' subnet'
 
                             when constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-                                type = ' eip'
+                                type = ' elastic ip'
 
                             when constant.AWS_RESOURCE_TYPE.AWS_ELB
                                 type = ' load balancer'
@@ -121,10 +121,8 @@ define [ 'event',
                                 if stopped > 0
                                     count = stopped
                                     type  = ' stopped instance'
-
                         if type
                             new_item += prefix + count + infix + type + suffix
-
 
                 catch error
                     console.log 'unmanagedvpc view vpc_id', items

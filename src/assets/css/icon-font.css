@@ -67,7 +67,8 @@
 .icon-toolbar-cloudformation,
 .icon-update-app,
 .icon-cancel-update-app,
-.icon-apply-app
+.icon-apply-app,
+.icon-visualize
 {
 	font : 16px/1em "MCIcon";
 	font-weight : normal;
@@ -131,3 +132,4 @@
 .icon-bezier-q:before {content:"\F146";}
 .icon-toolbar-cloudformation:before {content:"\F147";}
 .icon-update-app:before {content:"\F148";}
+.icon-visualize:before {content:"\F149";}

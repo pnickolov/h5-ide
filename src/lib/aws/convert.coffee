@@ -739,7 +739,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				'ScalingAdjustment': ''
 			}
 		}
-		sp_json.resource.Alarms = aws_sp.Alarms.member
+
+		if aws_sp.Alarms
+			sp_json.resource.Alarms = aws_sp.Alarms.member
 		sp_json = mapProperty aws_sp, sp_json
 
 		sp_json

@@ -270,7 +270,6 @@ define [ 'aws_model', 'ami_model'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD', null
 
             else if state is 'OLD_PROCESS'
-
                 # get obj
                 obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
 
@@ -279,8 +278,12 @@ define [ 'aws_model', 'ami_model'
                     # reload app view
                     @reloadAppView obj
 
-                else
+                else if obj and obj.id
 
+                    # update tab icon
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', obj.id
+
+                else
                     console.log 'not found process'
 
             null

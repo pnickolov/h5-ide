@@ -267,6 +267,19 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		unmanaged_resource_list
 
+	unmanaged_vpc_list = {}
+
+	addUnmanagedVpc = ( key, value ) ->
+		unmanaged_vpc_list[ key ] = value
+
+	getUnmanagedVpc = ( id ) ->
+		console.log 'getUnmanagedVpc', id
+		unmanaged_vpc_list[ id ]
+
+	listUnmanagedVpc = ->
+		console.log 'listUnmanagedVpc'
+		unmanaged_vpc_list
+
 	#public
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
@@ -292,3 +305,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	listUnmanaged      : listUnmanaged
 	addUnmanaged       : addUnmanaged
 	delUnmanaged       : delUnmanaged
+
+	addUnmanagedVpc    : addUnmanagedVpc
+	getUnmanagedVpc    : getUnmanagedVpc
+	listUnmanagedVpc   : listUnmanagedVpc

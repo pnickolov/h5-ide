@@ -132,9 +132,6 @@ define [ 'MC', 'event', 'handlebars'
 		#
 		MC.open_failed_list = {}
 
-		# unmanaged vpc list
-		MC.data.unmanaged_vpc_list = {}
-
 		#trusted advisor
 		MC.ta            = {}
 		MC.ta            = validation

@@ -43,7 +43,7 @@ define [ 'event',
             Handlebars.registerHelper 'convert_string', ( key, value ) ->
 
                 # set unmanaged vpc list
-                MC.data.unmanaged_vpc_list[ key ] = value
+                MC.forge.other.addUnmanagedVpc key, value
 
                 new Handlebars.SafeString JSON.stringify value
 

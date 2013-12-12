@@ -244,7 +244,7 @@ define [ 'aws_model', 'ami_model'
             if state is 'OPEN_PROCESS'
 
                 # get resources
-                resources = MC.data.unmanaged_vpc_list[ vpc_id ]
+                resources = MC.forge.other.getUnmanagedVpc vpc_id
 
                 # delete resource.origin
                 if resources and resources.origin

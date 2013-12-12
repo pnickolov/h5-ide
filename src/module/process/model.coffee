@@ -116,6 +116,7 @@ define [ 'aws_model', 'ami_model'
 
                     # get call service current tab id
                     current_tab_id = result.param[0].src.sender.get 'current_tab_id'
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN, current_tab_id', current_tab_id
 
                     # get origin_id
                     origin_obj = MC.forge.other.getCacheMap current_tab_id
@@ -291,7 +292,10 @@ define [ 'aws_model', 'ami_model'
         getDescribeImages : ( region, ami_ids ) ->
             console.log 'getDescribeImages', region, ami_ids
 
-            ami_model.DescribeImages { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
+            # deep copy
+            me = $.extend true, {}, this
+
+            ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
 
             null
 

@@ -3384,7 +3384,7 @@ MC.canvas.event.dragable = {
 				return false;
 			}
 
-			if (currentTarget.is('.eip-status'))
+			if (currentTarget.is('.eip-status') && MC.canvas.getState() !== 'appview')
 			{
 				MC.canvas.event.EIPstatus.call(event.target);
 

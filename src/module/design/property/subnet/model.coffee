@@ -33,6 +33,8 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
         else
           networkACLs.splice( _.sortedIndex( networkACLs, aclObj, "name" ), 0, aclObj )
 
+        null
+
       console.assert( defaultACL, "Cannot find DefaultACL" )
       networkACLs.splice( 0, 0, defaultACL )
 

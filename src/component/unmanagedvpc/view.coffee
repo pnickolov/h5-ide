@@ -45,7 +45,10 @@ define [ 'event',
                 # set unmanaged vpc list
                 MC.forge.other.addUnmanagedVpc key, value
 
-                new Handlebars.SafeString JSON.stringify value
+                # object to string
+                #new Handlebars.SafeString JSON.stringify value
+
+                new Handlebars.SafeString key
 
             # vpc_list
             Handlebars.registerHelper 'vpc_list', ( items, options ) ->

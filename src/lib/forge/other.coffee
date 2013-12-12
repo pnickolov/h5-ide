@@ -249,16 +249,21 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	delUnmanaged = ( vpc_id ) ->
 		console.log 'delUnmanaged', vpc_id
 
-		_.each unmanaged_resource_list, ( item ) ->
+		try
 
-			delete_item = {}
+			_.each unmanaged_resource_list, ( item ) ->
 
-			_.each item, ( vpc_item ) ->
+				delete_item = {}
 
-				if _.indexOf( _.keys( item ), vpc_id ) isnt -1
-					delete_item = item[ vpc_id ]
+				_.each item, ( vpc_item ) ->
 
-			delete item[ vpc_id ] if delete_item
+					if _.indexOf( _.keys( item ), vpc_id ) isnt -1
+						delete_item = item[ vpc_id ]
+
+				delete item[ vpc_id ] if delete_item
+
+		catch error
+		  console.log 'delUnmanaged', vpc_id, error
 
 		unmanaged_resource_list
 

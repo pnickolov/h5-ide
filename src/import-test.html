@@ -345,6 +345,8 @@
 						NODE_MARGIN_LEFT = 2,
 						NODE_MARGIN_TOP = 2,
 
+						hasUniqueInstanceConnectedToELB = false,
+
 						max_column = Math.ceil( Math.sqrt( length ) ),
 						max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
 						column_index = 0,
@@ -368,13 +370,14 @@
 					if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
 					{
 						var childLength = stack[ 'AWS.AutoScaling.Group' ].length,
+							elb_connected_instance = [],
 							row_index = 0;
 
 						$.each(stack[ 'AWS.AutoScaling.Group' ], function (i, item)
 						{
 							item.coordinate = [
 								GROUP_INNER_PADDING,
-								row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+								row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
 							];
 
 							if (item.children !== undefined)
@@ -384,6 +387,67 @@
 
 							row_index++;
 						});
+
+						if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+						{
+							$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+							{
+								if ($.inArray(item.id, elb_child_stack) > -1)
+								{
+									elb_connected_instance.push( item );
+								}
+							});
+
+							elb_connected_instance.sort(function (a, b)
+							{
+								return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+							});
+
+							$.each(elb_connected_instance, function (i, item)
+							{
+								item.coordinate = [
+									// Adjust instance x axis with ASG (+2)
+									GROUP_INNER_PADDING + 2,
+									// Adjust instance y axis with ASG (+4)
+									row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING + 4
+								];
+
+								row_index++;
+							});
+						}
+					}
+					else
+					{
+						var 	elb_connected_instance = [],
+							row_index = 0;
+
+						if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+						{
+							$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+							{
+								if ($.inArray(item.id, elb_child_stack) > -1)
+								{
+									hasUniqueInstanceConnectedToELB = true;
+
+									elb_connected_instance.push( item );
+								}
+							});
+
+							elb_connected_instance.sort(function (a, b)
+							{
+								return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+							});
+
+							$.each(elb_connected_instance, function (i, item)
+							{
+								item.coordinate = [
+									GROUP_INNER_PADDING,
+									row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
+								];
+
+								row_index++;
+							});
+						}
 					}
 
 					if (stack[ 'AWS.EC2.Instance' ] !== undefined)
@@ -401,18 +465,21 @@
 
 						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
 						{
-							if (column_index >= max_child_column)
+							if ($.inArray(item.id, elb_child_stack) === -1)
 							{
-								column_index = 0;
-								row_index++;
+								if (column_index >= max_child_column)
+								{
+									column_index = 0;
+									row_index++;
+								}
+
+								item.coordinate = [
+									column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+									row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+								];
+
+								column_index++;
 							}
-
-							item.coordinate = [
-								column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
-								row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
-							];
-
-							column_index++;
 						});
 					}
 
@@ -451,9 +518,17 @@
 							offset_left += 13 + NODE_MARGIN_LEFT;
 						}
 
+						if (hasUniqueInstanceConnectedToELB)
+						{
+							offset_left += 11;
+						}
+
 						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
 						{
-							item.coordinate[0] += offset_left;
+							if ($.inArray(item.id, elb_child_stack) === -1)
+							{
+								item.coordinate[0] += offset_left;
+							}
 						});
 					}
 
@@ -464,6 +539,11 @@
 						if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
 						{
 							offset_left += 13 + NODE_MARGIN_LEFT + 4;
+						}
+
+						if (hasUniqueInstanceConnectedToELB)
+						{
+							offset_left += 11;
 						}
 
 						if (stack[ 'AWS.EC2.Instance' ] !== undefined)

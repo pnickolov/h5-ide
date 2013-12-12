@@ -19,3 +19,5 @@ define [ "Design", "./ResourceModel" ], ( Design, ResourceModel )->
 
       null
   }
+
+  Model

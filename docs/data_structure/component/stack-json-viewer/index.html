@@ -1,4 +1,29 @@
-{
+<!DOCTYPE HTML>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="jsoneditor.css">
+  <script type="text/javascript" src="jsoneditor-patch.js"></script>
+  <style type="text/css">
+    body {
+      font: 11pt arial;
+    }
+    #jsoneditor {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="jsoneditor"></div>
+
+<script type="text/javascript" >
+  var container = document.getElementById('jsoneditor');
+
+  var options = {
+    mode: 'view'
+  };
+
+  var json = {
   "id": "regex id, STRING, 'stack-\\w{8}', required, example:stack-d901ce2b",
   "name": "regex name, STRING, '^\\w+[A-Za-z0-9-]*$', required, example:crayfish",
   "username": "base64 encoded username, STRING, required, example:eGppbW15",
@@ -603,7 +628,7 @@
           "?Not necessary, example:'us-east-1b'"
         ],
         "LoadBalancerNames": [
-          "reference,ã€€not required, example:@$ELB.resource.LoadBalancerName"
+          "reference,¡¡not required, example:@$ELB.resource.LoadBalancerName"
         ],
         "Instances ?": [],
         "InstanceId": "?",
@@ -641,7 +666,7 @@
       "uid": "regex UID,^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$, required, same to $LAUNCH-CONFIGURATION",
       "resource": {
         "LaunchConfigurationARN": "fixed by RW, regex LC, ^arn:aws:\\w+:[a-zA-Z0-9-]*:[0-9]*:, not required",
-        "LaunchConfigurationName": "regex name,^\\w+[A-Za-z0-9-]*$, required, exampleï¼šâ€˜launch-config-1â€™",
+        "LaunchConfigurationName": "regex name,^\\w+[A-Za-z0-9-]*$, required, example£º¡®launch-config-1¡¯",
         "ImageId": "regex AMI, ^ami-\\w{8}$, required, example:'ami-cde4bca4'",
         "InstanceType": "required, example:'m1.small'",
         "SecurityGroups": [
@@ -1356,4 +1381,11 @@
       }
     }
   }
-}
+};
+
+  var editor = new jsoneditor.JSONEditor(container, options, json);
+</script>
+
+
+</body>
+</html>

@@ -8,8 +8,7 @@ define [ 'event',
 				'./module/design/property/base/main',
 				'./module/design/property/base/view',
 
-				"./module/design/framework/Design"
-				'lib/forge/app',
+				"Design"
 				'i18n!nls/lang.js',
 
 				'./module/design/property/stack/main',
@@ -33,7 +32,7 @@ define [ 'event',
 				'./module/design/property/acl/main',
 				'./module/design/property/launchconfig/main',
 				'./module/design/property/asg/main'
-], ( ide_event, constant, MC, View, PropertyBaseModule, PropertyBaseView, forge_app, lang ) ->
+], ( ide_event, constant, MC, View, PropertyBaseModule, PropertyBaseView, Design, lang ) ->
 
 	#private
 	loadModule = () ->

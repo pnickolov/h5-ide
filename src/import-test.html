@@ -345,6 +345,10 @@
 						NODE_MARGIN_LEFT = 2,
 						NODE_MARGIN_TOP = 2,
 
+						elb_connected_instance = [],
+						normal_instance = [],
+						hasUniqueInstanceConnectedToELB = false,
+
 						max_column = Math.ceil( Math.sqrt( length ) ),
 						max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
 						column_index = 0,
@@ -365,16 +369,42 @@
 						stack[ item.type ].push( item );
 					});
 
+					if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+					{
+						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+						{
+							if ($.inArray(item.id, elb_child_stack) > -1)
+							{
+								elb_connected_instance.push( item );
+							}
+							else
+							{
+								normal_instance.push( item );
+							}
+						});
+
+						elb_connected_instance.sort(function (a, b)
+						{
+							return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+						});
+
+						normal_instance.sort(function (a, b)
+						{
+							return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+						});
+					}
+
 					if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
 					{
 						var childLength = stack[ 'AWS.AutoScaling.Group' ].length,
+							//elb_connected_instance = [],
 							row_index = 0;
 
 						$.each(stack[ 'AWS.AutoScaling.Group' ], function (i, item)
 						{
 							item.coordinate = [
 								GROUP_INNER_PADDING,
-								row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+								row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
 							];
 
 							if (item.children !== undefined)
@@ -384,22 +414,51 @@
 
 							row_index++;
 						});
+
+						$.each(elb_connected_instance, function (i, item)
+						{
+							item.coordinate = [
+								// Adjust instance x axis with ASG (+2)
+								GROUP_INNER_PADDING + 2,
+								// Adjust instance y axis with ASG (+4)
+								row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING + 4
+							];
+
+							row_index++;
+						});
+					}
+					else
+					{
+						var row_index = 0;
+
+						if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+						{
+							if (elb_connected_instance.length > 0)
+							{
+								hasUniqueInstanceConnectedToELB = true;
+							}
+
+							$.each(elb_connected_instance, function (i, item)
+							{
+								item.coordinate = [
+									GROUP_INNER_PADDING,
+									row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
+								];
+
+								row_index++;
+							});
+						}
 					}
 
-					if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+					if (normal_instance.length > 0)
 					{
-						var childLength = stack[ 'AWS.EC2.Instance' ].length,
+						var childLength = normal_instance.length,
 							max_child_column = Math.ceil( Math.sqrt( childLength ) ),
 							max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
 							column_index = 0,
 							row_index = 0;
 
-						stack[ 'AWS.EC2.Instance' ].sort(function (a, b)
-						{
-							return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
-						});
-
-						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+						$.each(normal_instance, function (i, item)
 						{
 							if (column_index >= max_child_column)
 							{
@@ -451,7 +510,12 @@
 							offset_left += 13 + NODE_MARGIN_LEFT;
 						}
 
-						$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+						if (hasUniqueInstanceConnectedToELB)
+						{
+							offset_left += 11;
+						}
+
+						$.each(normal_instance, function (i, item)
 						{
 							item.coordinate[0] += offset_left;
 						});
@@ -463,12 +527,19 @@
 
 						if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
 						{
-							offset_left += 13 + NODE_MARGIN_LEFT + 4;
+							offset_left += 13 + NODE_MARGIN_LEFT;
 						}
 
-						if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+						if (hasUniqueInstanceConnectedToELB)
 						{
-							offset_left += Math.ceil( Math.sqrt( stack[ 'AWS.EC2.Instance' ].length ) ) * 9;
+							offset_left += 11;
+						}
+
+						if (normal_instance.length > 0)
+						{
+							offset_left += Math.ceil( Math.sqrt( normal_instance.length ) ) * 9;
+
+							offset_left += 4;
 						}
 
 						$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)

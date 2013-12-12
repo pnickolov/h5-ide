@@ -158,6 +158,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 			if item.type is 'AWS.EC2.Instance' and item.resource and item.resource.ImageId
 				amis.push item.resource.ImageId
 
+			if item.type is 'AWS.AutoScaling.LaunchConfiguration' and item.resource and item.resource.ImageId
+				amis.push item.resource.ImageId
+
 		amis
 
 	#public

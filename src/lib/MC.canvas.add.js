@@ -932,7 +932,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			option.number = component_data.number;
 
 			//os type
-			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			if(option.osType && option.architecture && option.rootDeviceType){
+				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			}
+			else{
+				os_type = "ami-unknown";
+			}
 
 			//check volume number,set icon
 			volume_number = component_data.resource.BlockDeviceMapping.length;
@@ -2356,7 +2361,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//os type
-			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			if(option.osType && option.architecture && option.rootDeviceType){
+				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			}
+			else{
+				os_type = "ami-unknown";
+			}
 
 			//check volume number,set icon
 			volume_number = component_data.resource.BlockDeviceMapping.length;

@@ -833,6 +833,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
                     key[comp.resource.LaunchConfigurationName] = "@#{uid}.resource.LaunchConfigurationName"
 
+                if comp.type is 'AWS.VPC.NetworkInterface'
+
+                    for idx, ipset of comp.resource.PrivateIpAddressSet
+
+                        key[ipset.PrivateIpAddress] = "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+
         #replace reference
         for uid, comp of canvas_component
 

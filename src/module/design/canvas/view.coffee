@@ -84,7 +84,7 @@ define [ 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forg
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_volume', uid
 
         lineSelected : ( event, line_id ) ->
-            ide_event.trigger ide_event.OPEN_PROPERTY, 'line', line_id
+            ide_event.trigger ide_event.OPEN_PROPERTY, 'component', line_id
 
         route : ( event, option ) ->
             # Dispatch the event to model

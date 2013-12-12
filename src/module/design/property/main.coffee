@@ -7,6 +7,8 @@ define [ 'event',
 				'./module/design/property/view',
 				'./module/design/property/base/main',
 				'./module/design/property/base/view',
+
+				"./module/design/framework/Design"
 				'lib/forge/app',
 				'i18n!nls/lang.js',
 
@@ -74,19 +76,19 @@ define [ 'event',
 			# - "component_asg_volume"   => Volume Property
 			# - "component_asg_instance" => Instance main
 			# - "component"
-			# - "line"
 
-			# If type is "component", type should be changed to `constant.AWS_RESOURCE_TYPE`
-			# If type is "line", type should be changed to `PORTATYPE>PORTBTYPE`
+			component = Design.instance().component( uid )
+			if not component then return
 
-			type = getComponentType( type, uid )
-
-			# We cannot format the type for "component" / "line", then do not refresh the property panel
-			if type is null
-				return
+			# If type is "component", type should be changed to ResourceModel's type
+			if type is "component"
+				if MC.canvas.getState() is 'app' and !component.hasAppResource()
+					type = 'missing_resource'
+				else
+					type = component.type
 
 			# Tell `PropertyBaseModule` to load corresponding property panel.
-			tab_type = getTabType( uid )
+			tab_type = getTabType( component )
 
 			try
 				PropertyBaseModule.load type, uid, tab_type
@@ -98,59 +100,19 @@ define [ 'event',
 
 			null
 
-		### Helper Functions Start ###
-		getComponentType = ( type, uid )->
-			if uid and MC.canvas.getState() is 'app' and !MC.aws.aws.isExistResourceInApp(uid)
-				return 'missing_resource'
-
-			if type is "component"
-				type = null # Reset type.
-
-				if uid is ""
-					type = "" # If uid is empty, show default property
-				else
-					comp = MC.canvas_data.component[ uid ]
-					if comp
-						type = comp.type
-					else
-						# The component is not in canvas_data.component, it should be in canvas_data.layout
-						# Currently AZ is the only component that is in canvas_data.layout
-						group = MC.canvas_data.layout.component.group[ uid ]
-						if group
-							type = group.type
-
-			else if type is "line"
-				type = null # Reset type
-				if MC.canvas_data.layout.connection[uid]
-					line_option = MC.canvas.lineTarget uid
-					if line_option.length == 2
-						type = line_option[0].port + '>' + line_option[1].port
-
-			type
-
-		getTabType = ( uid )->
+		getTabType = ( component )->
 			tab_type = MC.canvas.getState()
 			if tab_type is "app"
 				tab_type = PropertyBaseModule.TYPE.App
 			else if tab_type is "stack"
 				tab_type = PropertyBaseModule.TYPE.Stack
 			else
-				tab_type = PropertyBaseModule.TYPE.AppEdit
-
-				# If component has associated aws resource, it's AppEdit mode ( Partially Editable )
+				# If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
 				# Otherwise, it's Stack mode ( Fully Editable )
-				if uid isnt ""
-					awsResource = forge_app.existing_app_resource( uid )
-					if awsResource is true
-						tab_type = PropertyBaseModule.TYPE.AppEdit
-					else if awsResource is false
-						tab_type = PropertyBaseModule.TYPE.Stack
-					else
-						# This property is not covered, fallback to App mode
-						tab_type = PropertyBaseModule.TYPE.AppEdit
-						### env:dev ###
-						console.warn "lib/forge/app:existing_app_resource does not handle component. Uid :", uid
-						### env:dev:end ###
+				if component.get("appId")
+					tab_type = PropertyBaseModule.TYPE.AppEdit
+				else
+					tab_type = PropertyBaseModule.TYPE.Stack
 
 			tab_type
 

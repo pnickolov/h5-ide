@@ -647,7 +647,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 				aws_result.is_error = true
 
-				aws_result.error_message = "We can not reverse your app, please contact MadeiracCloud"
+				aws_result.error_message = "We can not reverse your app, please contact MadeiraCloud"
 
 				aws_result.return_code = 15
 

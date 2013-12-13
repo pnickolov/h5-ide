@@ -27,7 +27,7 @@
 					<ul class="unmanaged-VPC-resource-list clearfix">
 						{{#each this }}
 						<li class="unmanaged-VPC-resource-item{{#is_vpc_disabled this }} unmanaged-VPC-resource-item-disabled tooltip{{/is_vpc_disabled}}"
-							{{#is_vpc_disabled this }} data-tooltip="xxxxxxxxxxxxxxx" {{/is_vpc_disabled}}
+							{{#is_vpc_disabled this }} data-tooltip="Currently we do not support to visualize system has more than 100 instances. Contact us by the Feedback button for details." {{/is_vpc_disabled}}
 							id="{{ @key }}-item"
 							data-vpc-id="{{ @key }}"
 							data-vpc-obj='{{ convert_string @key this }}'>
@@ -36,11 +36,11 @@
 								<ol class="unmanaged-resource-data">
 									<li class="unmanaged-resource-item">
 										<span class="unmanaged-resource-number">{{ vpc_sub_item this.origin 'running' }}</span>
-										<span class="unmanaged-resource-name">running</span>
+										<span class="unmanaged-resource-name">running instance</span>
 									</li>
 									<li class="unmanaged-resource-item">
 										<span class="unmanaged-resource-number">{{ vpc_sub_item this.origin 'stopped' }}</span>
-										<span class="unmanaged-resource-name">stopped</span>
+										<span class="unmanaged-resource-name">stopped instance</span>
 									</li>
 									<li class="unmanaged-resource-item">
 										<span class="unmanaged-resource-number">{{ vpc_sub_item this.origin 'AWS.VPC.Subnet' }}</span>

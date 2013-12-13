@@ -2064,7 +2064,7 @@ module.exports =
       zh: "安全组"
 
     PROP_ELB_DNS_NAME:
-      en: "Dns"
+      en: "DNS"
       zh: "域名"
 
     PROP_ELB_HOST_ZONE_ID:

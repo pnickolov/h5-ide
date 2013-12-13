@@ -128,7 +128,7 @@ define [ 'event',
 
                     # empty dispose
                     if _.isEmpty new_item
-                        new_item = '<p>this is empty</p>'
+                        new_item = '<p class="unmanaged-vpc-empty">There is no subnet, instance or load balancer to be visualized in this VPC.</p>'
 
                 catch error
                     console.log 'unmanagedvpc view vpc_id', items

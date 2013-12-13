@@ -3123,12 +3123,23 @@ td.table-action a.btn {
 
 #toolbar-run,
 #toolbar-edit-app,
-#toolbar-save-edit-app {
+#toolbar-save-edit-app,
+.toolbar-btn-primary #toolbar-export-png {
 	width : 112px;
 	color : #fff;
 	box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
 	background: #17c249;
 	border-right: 1px solid #17a03a;
+}
+
+.toolbar-btn-primary #toolbar-export-png {
+	background: #4495d3;
+	border-right: 1px solid #377bb0;
+	width: 160px;
+}
+
+.toolbar-btn-primary #toolbar-export-png:hover {
+	background: #377bb0;
 }
 
 #toolbar-save-edit-app {
@@ -3143,7 +3154,8 @@ td.table-action a.btn {
 
 #toolbar-run span,
 #toolbar-edit-app span,
-#toolbar-save-edit-app span {
+#toolbar-save-edit-app span,
+.toolbar-btn-primary #toolbar-export-png span {
 	margin-left : 10px;
 	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
@@ -6957,6 +6969,12 @@ summary:focus {
 .unmanaged-resource-name {
 	font-variant: small-caps;
 	height: 31px;
+}
+
+.unmanaged-vpc-empty {
+	padding: 40px 10px;
+	text-align: center;
+	color: #aaa;
 }
 
 #process-body .long-lag-message {

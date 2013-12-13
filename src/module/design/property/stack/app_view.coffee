@@ -20,7 +20,11 @@ define [ '../base/view',
             @$el.html template @model.attributes
             @refreshACLList()
 
-            "App - " + @model.attributes.property_detail.name
+            if MC.canvas.getState() isnt 'appview'
+                "App - " + @model.attributes.property_detail.name
+            else
+                str = '<header class="property-sidebar-title sidebar-title truncate" id="property-title">Visualization - '+@model.attributes.property_detail.vpcid+'<i class="icon-info tooltip property-header-info" data-tooltip="Importing visualisation as app will be supported soon.Currently you can rearrange the layout of visualisation and export it as PNG image file."></i></header>'
+                $('#property-title').html(str)
 
 
         refreshACLList : () ->

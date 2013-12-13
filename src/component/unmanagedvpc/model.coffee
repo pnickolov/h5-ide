@@ -60,7 +60,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
         createResources : ( data ) ->
             console.log 'createResources', data
 
-            resources = {}
+            resource_map = {}
 
             try
 
@@ -98,61 +98,70 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         new_value = {}
 
                         _.each l2_res, ( attrs, type ) ->
-                            filter = {}
+                            resources = {}
 
                             # set id
                             if 'id' of attrs
                                 if attrs['id'].length == 0
                                     if type of vpc_obj
-                                        filter['id'] = _.keys(vpc_obj[type])
+                                        resources['id'] = _.keys(vpc_obj[type])
 
                                     if type is 'AWS.VPC.CustomerGateway' and 'AWS.VPC.VPNConnection' of vpc_obj
-                                        filter['id'] = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id]['customerGatewayId'] for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
+                                        resources['id'] = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id]['customerGatewayId'] for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
 
                                     if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
-                                        filter['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+                                        resources['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
 
                                     if type is 'AWS.AutoScaling.LaunchConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
-                                        filter['id'] = (vpc_obj['AWS.AutoScaling.Group'][asg_id]['LaunchConfigurationName'] for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
+                                        resources['id'] = (vpc_obj['AWS.AutoScaling.Group'][asg_id]['LaunchConfigurationName'] for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
 
                                 else
-                                    filter['id'] = attrs['id']
+                                    resources['id'] = attrs['id']
 
                             # set filter
                             if 'filter' of attrs
-                                filter['filter'] = {}
-
                                 for k, v of attrs['filter']
+                                    filter = {}
                                     if not v or v.length == 0
                                         if k in ['instance-id', 'attachment.instance-id'] and 'AWS.EC2.Instance' of vpc_obj
-                                            filter['filter'][k] = _.keys(vpc_obj['AWS.EC2.Instance'])
+                                            instances = _.keys(vpc_obj['AWS.EC2.Instance'])
+                                            if instances.length > 0
+                                                filter[k] = instances
 
                                         if k is 'vpn-gateway-id' and 'AWS.VPC.VPNGateway' of vpc_obj
-                                            filter['filter'][k] = _.keys(vpc_obj['AWS.VPC.VPNGateway'])[0]
+                                            filter[k] = _.keys(vpc_obj['AWS.VPC.VPNGateway'])[0]
 
                                         if k is 'AutoScalingGroupName' and 'AWS.AutoScaling.Group' of vpc_obj
-                                            filter['filter'][k] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+                                            asgs = _.keys(vpc_obj['AWS.AutoScaling.Group'])
+                                            if asgs.length > 0
+                                                filter[k] = asgs
 
                                     else
+                                        filter[k] = attrs['filter'][k]
 
-                                        filter['filter'][k] = attrs['filter'][k]
+                                    if _.keys(filter).length > 0
+                                        if not ('filter' of resources)
+                                            resources['filter'] = {}
 
-                            if 'id' of filter or 'filter' of filter
-                                new_value[type] = filter
+                                        for k, v of filter
+                                            resources['filter'][k] = v
+
+                            if _.keys(resources).length > 0
+                                new_value[type] = resources
 
                         if _.keys(new_value).length > 0
                             vpcs[ vpc_id ] = new_value
 
                         vpcs[ vpc_id ][ 'origin' ] = vpc_obj
 
-                    resources[ region ] = vpcs
+                    resource_map[ region ] = vpcs
 
-                console.log 'new resources is ', resources
+                console.log 'new resources is ', resource_map
 
             catch error
                 console.log 'createResources error', error, data
 
-            resources
+            resource_map
     }
 
     return UnmanagedVPCModel

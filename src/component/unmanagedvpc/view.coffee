@@ -132,10 +132,41 @@ define [ 'event',
 
                 catch error
                     console.log 'unmanagedvpc view vpc_id', items
+
                 finally
                     new Handlebars.SafeString new_item
 
                 new Handlebars.SafeString new_item
+
+            # vpc_sub_item
+            Handlebars.registerHelper 'vpc_sub_item', ( items, type ) ->
+
+                new_count = 0
+
+                try
+                    _.each items, ( value, key ) ->
+
+                        switch key
+
+                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP, constant.AWS_RESOURCE_TYPE.AWS_ELB
+                            when type
+                                new_count = _.keys( value ).length
+
+                            # instance include running and stopped
+                            when constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
+                                _.each _.values( value ), ( item ) ->
+
+                                    if item.instanceState.name is type
+                                        new_count += 1
+
+                    new Handlebars.SafeString new_count
+
+                catch error
+                    console.log 'unmanagedvpc view vpc_id', items
+
+                finally
+                    new Handlebars.SafeString new_count
 
         render     :  ->
             console.log 'pop-up:unmanaged vpc render'

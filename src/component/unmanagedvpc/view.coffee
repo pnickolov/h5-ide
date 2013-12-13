@@ -126,9 +126,9 @@ define [ 'event',
                         if type
                             new_item += prefix + count + infix + type + suffix
 
-                        # empty dispose
-                        if _.isEmpty new_item
-                            new_item = '<p>this is empty</p>'
+                    # empty dispose
+                    if _.isEmpty new_item
+                        new_item = '<p>this is empty</p>'
 
                 catch error
                     console.log 'unmanagedvpc view vpc_id', items

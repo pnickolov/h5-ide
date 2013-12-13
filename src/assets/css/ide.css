@@ -6896,7 +6896,7 @@ summary:focus {
 
 .unmanaged-VPC-resource-item a {
 	color: #999;
-	width: 242px;
+	width: 248px;
 	height: 190px;
 	font-size: 12px;
 	display: block;
@@ -6931,6 +6931,11 @@ summary:focus {
 	text-align: center;
 	border-left: 1px solid #ddd;
 	float: left;
+	padding: 0 3px;
+}
+
+.unmanaged-resource-item:nth-child(3n+1) {
+border: none;
 }
 
 .unmanaged-resource-item:nth-child(3n+1) {

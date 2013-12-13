@@ -2182,7 +2182,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			// update eip tooltip
 			var currentState = MC.canvas.getState();
-			if (currentState === 'app') {
+			if (currentState === 'app' || currentState === 'appview') {
 				MC.aws.eip.updateAppTooltip(group.id);
 			} else {
 				if (data_eip_state === 'on') {

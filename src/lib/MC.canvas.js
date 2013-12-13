@@ -1248,7 +1248,7 @@ MC.canvas = {
 					MC.paper.start();
 
 					MC.paper.path(path);
-					//MC.paper.path(path).attr('class','fill-line');
+					MC.paper.path(path).attr('class','fill-line');
 
 					if (connection_option.dash_line === true)
 					{

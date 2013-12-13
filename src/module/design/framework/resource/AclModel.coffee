@@ -49,6 +49,25 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
         new AclAsso( defaultAcl, cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl ) )
       null
 
+    addRule : ( rule )->
+      console.assert( rule.number isnt undefined && rule.protocol isnt undefined && rule.egress isnt undefined && rule.action isnt undefined && rule.cidr isnt undefined && rule.port isnt undefined, "Invalid ACL Rule data")
+
+      ruleExist = false
+
+      currentRules = @get("rules")
+
+      for r in currentRules
+        if r.number is rule.number
+          ruleExist = true
+          break
+
+      if ruleExist then return false
+
+      currentRules = currentRules.slice(0)
+      currentRules.push rule
+      @set "rules", currentRules
+      true
+
     removeRule : ( ruleId )->
       rules = @get("rules")
       for rule, idx in rules
@@ -59,7 +78,7 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
       if theRule.number is "32767" then return false
       if @get("isDefault") and theRule.number is "100" then return false
 
-      @set "rules", rules.splice(0).splice( idx, 1 )
+      @set "rules", rules.slice(0).splice( idx, 1 )
       true
 
     getRuleCount : ()-> @get("rules").length

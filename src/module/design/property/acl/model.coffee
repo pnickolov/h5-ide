@@ -12,8 +12,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                 @appInit( uid )
                 return
 
-            aclObj    = Design.instance().component( uid )
-            isDefault = aclObj.get("isDefault")
+            aclObj = Design.instance().component( uid )
 
             assos = _.map aclObj.connections(), ( cn )->
                 subnet = cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
@@ -22,7 +21,22 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                     cidr : subnet.get('cidr')
                 }
 
-            rules = aclObj.get("rules").splice(0)
+            @set {
+                uid          : uid
+                isDefault    : aclObj.get("isDefault")
+                name         : aclObj.get("name")
+                rules        : null
+                associations : _.sortBy assos, name
+            }
+
+            @getRules()
+            @sortRules()
+            null
+
+        getRules : ()->
+            rules = Design.instance().component( @get("uid") ).get("rules").slice(0)
+
+            isDefault = @get("isDefault")
 
             # Format rules
             _.each rules, ( rule )->
@@ -40,24 +54,15 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                     when "6"  then rule.protocol = "TCP"
                     when "17" then rule.protocol = "UDP"
 
-            @set {
-                uid          : uid
-                isDefault    : isDefault
-                name         : aclObj.get("name")
-                rules        : rules
-                associations : _.sortBy assos, name
-            }
-
-            @sortRules()
-            null
+            @set "rules", rules
 
         sortRules : () ->
-            key = @get "sortKey"
+            key = @get( "sortKey" ) || "number"
 
-            if not key or key is "number"
+            if key is "number"
                 compare = ( a, b )->
-                    a_n = parseInt( a, 10 ) || -1
-                    b_n = parseInt( b, 10 ) || -1
+                    a_n = parseInt( a.number, 10 ) || -1
+                    b_n = parseInt( b.number, 10 ) || -1
                     if a_n > b_n then return 1
                     if a_n = b_n then return 0
                     if a_n < b_n then return -1
@@ -73,7 +78,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
         setSortOption : ( key )->
             @set "sortKey", key
-            @attributes.rules = _.sortBy @attributes.rules, key
+            @sortRules()
             null
 
         removeAclRule : ( ruleId ) ->
@@ -163,55 +168,28 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             this.set 'component', aclObj
 
-        addRuleToACL : (ruleObj) ->
-            uid = @get 'uid'
+        addAclRule : ( ruleObj ) ->
+            Design.instance().component( @get("uid") ).addRule( ruleObj )
 
-            newEntrySet = []
+            @getRules()
+            @sortRules()
 
-            originEntrySet = MC.canvas_data.component[uid].resource.EntrySet
-
-            currentRuleNumber = ruleObj.rule
-
-            addToACL = true
-            _.each originEntrySet, (value, key) ->
-                if value.RuleNumber is currentRuleNumber
-                    addToACL = false
-                null
-
-            if addToACL
-                newEntrySet.push {
-                    "RuleNumber": ruleObj.rule,
-                    "IcmpTypeCode": {
-                        "Type": ruleObj.type,
-                        "Code": ruleObj.code
-                    },
-                    "PortRange": {
-                        "To": ruleObj.portTo,
-                        "From": ruleObj.portFrom
-                    },
-                    "CidrBlock": ruleObj.source,
-                    "Protocol": ruleObj.protocol,
-                    "RuleAction": ruleObj.action,
-                    "Egress": ruleObj.egress
-                }
-
-                newEntrySet = originEntrySet.concat newEntrySet
-
-                MC.canvas_data.component[uid].resource.EntrySet = newEntrySet
-
-                this.trigger 'REFRESH_RULE_LIST', MC.canvas_data.component[uid]
-
+            @trigger "REFRESH_RULE_LIST"
             null
 
-        haveRepeatRuleNumber : (newRuleNumber) ->
-            uid = @get 'uid'
-            result = false
-            entrySet = MC.canvas_data.component[uid].resource.EntrySet
-            _.each entrySet, (entryObj) ->
-                if entryObj.RuleNumber is newRuleNumber
-                    result = true
-                null
-            return result
+        checkRuleNumber : ( rulenumber )->
+            if Number( rulenumber ) > 32767
+                return 'The maximum value is 32767.'
+
+            if @get("isDefault") and rulenumber is "100"
+                return "The DefaultACL's Rule Number 100 has existed."
+
+
+            rule = _.find Design.instance().component( @get("uid") ).get("rules"), ( r )->
+                r.number is rulenumber
+
+            if rule then return 'Rule #{rulenumber} already exists.'
+            return true
     }
 
     new ACLModel()

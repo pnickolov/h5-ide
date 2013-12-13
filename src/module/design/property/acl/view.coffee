@@ -20,8 +20,8 @@ define [ '../base/view',
         events   :
             'change #property-acl-name'           : 'aclNameChanged'
             'click #acl-add-rule-icon'            : 'showCreateRuleModal'
-            'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
-            'click .rule-list-row .icon-remove'   : 'removeACLRule'
+            'OPTION_CHANGE #acl-sort-rule-select' : 'sortAclRule'
+            'click .rule-list-row .icon-remove'   : 'removeAclRule'
 
         render : () ->
             @$el.html htmlTpl @model.attributes
@@ -35,7 +35,7 @@ define [ '../base/view',
                 @model.setName name
                 @setTitle name
 
-        sortACLRule : ( event ) ->
+        sortAclRule : ( event ) ->
             sg_rule_list = $('#acl-rule-list')
 
             sortType = $(event.target).find('.selected').attr('data-id')
@@ -49,7 +49,7 @@ define [ '../base/view',
             $('#acl-rule-count').text(@model.attributes.rules.length)
             null
 
-        removeACLRule : (event) ->
+        removeAclRule : (event) ->
             $target = $( event.currentTarget ).closest("li")
             ruleId  = $target.attr("data-id")
 
@@ -84,40 +84,36 @@ define [ '../base/view',
 
         saveRule : () ->
 
-            that = this
-            aclUID = that.model.get('component').uid
-            aclName = that.model.get('component').name
+            # Number
+            $rule_number_dom = $('#modal-acl-number')
+            number = $('#modal-acl-number').val()
+            result = @model.checkRuleNumber( number )
+            $rule_number_dom.parsley 'custom', ( val ) ->
+                if _.isString result then result else null
 
-            rule_number_dom =  $('#modal-acl-number')
-            ruleNumber = $('#modal-acl-number').val()
-            action = $('#acl-add-model-action-allow').prop('checked')
-            inboundDirection = $('#acl-add-model-direction-inbound').prop('checked')
-            source = $.trim($('#acl-add-model-source-select').find('.selected').attr('data-id'))
-            custom_source_dom = $('#modal-acl-source-input')
+            if not $rule_number_dom.parsley 'validate'
+                return
 
-            if custom_source_dom.is(':visible')
-                source = custom_source_dom.val()
 
-            protocol_dom = $('#modal-protocol-select').find('.selected')
-            protocol = $.trim(protocol_dom.attr('data-id'))
-            protocolStr = $.trim(protocol_dom.attr('data-id'))
+            # Source
+            source = $('#acl-add-model-source-select').find('.selected').attr('data-id')
+            if source is "custom"
 
-            port = $('#acl-rule-modal-port-input').val()
+                $custom_source_dom = $('#modal-acl-source-input')
+                $custom_source_dom.parsley 'custom', ( val ) ->
+                    if !MC.validate 'cidr', val
+                        return 'Must be a valid form of CIDR block.'
+                    null
 
-            ruleAction = ''
-            if action
-                ruleAction = 'allow'
-            else
-                ruleAction = 'deny'
+                if not $custom_source_dom.parsley 'validate'
+                    return
 
-            egress = ''
-            if inboundDirection
-                egress = 'false'
-            else
-                egress = 'true'
+                source = $custom_source_dom.val()
 
-            # validation #####################################################
-            validateMap =
+            # Protocol Validate
+            $protocol_dom = $('#modal-protocol-select').find('.selected')
+            protocol      = $protocol_dom.attr('data-id')
+            validateMap   =
                 'tcp':
                     dom: $('#sg-protocol-tcp input')
                     method: ( val ) ->
@@ -145,77 +141,48 @@ define [ '../base/view',
                             return 'Must be a valid format of port.'
                         null
 
-            if protocolStr of validateMap
-                needValidate = validateMap[ protocolStr ]
+            if validateMap[ protocol ]
+                needValidate = validateMap[ protocol ]
                 needValidate.dom.parsley 'custom', needValidate.method
-
-            custom_source_dom.parsley 'custom', ( val ) ->
-                if !MC.validate 'cidr', val
-                    return 'Must be a valid form of CIDR block.'
-                null
-
-            rule_number_dom.parsley 'custom', ( val ) ->
-                if Number(val) > 32767
-                    return 'The maximum value is 32767.'
-                if that.model.haveRepeatRuleNumber(aclUID, val)
-                    return 'The Rule Number have exist one.'
-                if aclName is 'DefaultACL' and Number(val) is 100
-                    return 'The DefaultACL\'s Rule Number 100 has existed.'
-                null
-
-            if (not rule_number_dom.parsley 'validate') or (custom_source_dom.is(':visible') and not custom_source_dom.parsley 'validate') or
-                (needValidate and not needValidate.dom.parsley 'validate')
+                if not needValidate.dom.parsley 'validate'
                     return
-            # validation #####################################################
 
-            icmpType = icmpCode = ''
+            #####
             if protocol is 'tcp'
-                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
-                portRangeAry = MC.validate.portRange(portRangeStr)
-                if portRangeAry.length is 2
-                    portFrom = portRangeAry[0]
-                    portTo = portRangeAry[1]
-                else
-                    portTo = portFrom = portRangeAry[0]
-                protocol = '6'
+                port     = $('#sg-protocol-' + protocol + ' input').val()
+                protocol = "6"
+
             else if protocol is 'udp'
-                portRangeStr = $('#sg-protocol-' + protocol + ' input').val()
-                portRangeAry = MC.validate.portRange(portRangeStr)
-                if portRangeAry.length is 2
-                    portFrom = portRangeAry[0]
-                    portTo = portRangeAry[1]
-                else
-                    portTo = portFrom = portRangeAry[0]
+                port     = $('#sg-protocol-' + protocol + ' input').val()
                 protocol = '17'
+
             else if protocol is 'icmp'
-                portTo = portFrom = ''
                 icmpType = $('#protocol-icmp-main-select').find('.selected').attr('data-id')
-                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id')
-                if !icmpCode
-                    icmpCode = '-1'
+                icmpCode = $('#protocol-icmp-sub-select-' + icmpType).find('.selected').attr('data-id') || "-1"
+
                 protocol = '1'
+                port     = icmpType + "/" + icmpCode
+
             else if protocol is 'custom'
                 protocol = $('#sg-protocol-' + protocol + ' input').val()
-                portTo = portFrom = ''
-            else if protocol is 'all'
-                portFrom = '0'
-                portTo = '65535'
-                protocol = '-1'
+                port     = ""
 
-            @model.addRuleToACL {
-                rule: ruleNumber,
-                action: ruleAction,
-                egress: egress,
-                source: source,
-                protocol: protocol,
-                portTo: portTo
-                portFrom: portFrom
-                type: icmpType
-                code: icmpCode
+            else if protocol is 'all'
+                protocol = '-1'
+                port     = '0-65535'
+
+
+            @model.addAclRule {
+                number   : number
+                action   : if $('#acl-add-model-action-allow').is(':checked') then "allow" else "deny"
+                egress   : $('#acl-add-model-direction-outbound').is(':checked')
+                cidr     : source
+
+                protocol : protocol
+                port     : port
             }
 
             modal.close()
-
             null
 
         modalRuleSourceSelected : (event) ->

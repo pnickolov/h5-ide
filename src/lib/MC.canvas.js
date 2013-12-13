@@ -6414,11 +6414,6 @@ MC.canvas.analysis = function ( data )
 
 	function positionChild(node)
 	{
-		if (children === undefined)
-		{
-			return false;
-		}
-
 		var children = node.children,
 			GROUP_MARGIN = 2,
 
@@ -6529,8 +6524,11 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
-	positionChild( layout );
-
+	if (layout.children)
+	{
+		positionChild( layout );
+	}
+	
 	// VPC padding
 	if (layout.children)
 	{
@@ -6540,7 +6538,6 @@ MC.canvas.analysis = function ( data )
 			item.coordinate[1] += VPC_PADDING_TOP;
 		});
 	}
-	
 	// ELB
 	if (resource_stack[ 'AWS-ELB' ] !== undefined)
 	{
@@ -6759,6 +6756,7 @@ MC.canvas.analysis = function ( data )
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
 	}
+
 	return true;
 };
 

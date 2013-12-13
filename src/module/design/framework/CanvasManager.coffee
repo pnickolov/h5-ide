@@ -32,7 +32,7 @@ define [], ()->
       klass = element.getAttribute "class"
 
       if not klass.match( new RegExp("\\b#{theClass}\\b") )
-        klass += " " + theClass
+        klass = $.trim(klass) + " " + theClass
         element.setAttribute "class", klass
 
       return this
@@ -238,6 +238,12 @@ define [], ()->
         node_to = document.getElementById( id_to + "_port-" + to_port )
         pos_to  = node_to.getBoundingClientRect()
 
+      else
+        node_from = document.getElementById( id_from + "_port-" + from_port )
+        node_to   = document.getElementById( id_to   + "_port-" + to_port   )
+
+        pos_from = node_from.getBoundingClientRect()
+        pos_to   = node_to.getBoundingClientRect()
 
       # Calculate port position
       scale    = MC.canvas_property.SCALE_RATIO

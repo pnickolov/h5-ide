@@ -4,6 +4,7 @@ define [ 'Design',
          './GroupModel',
          './ConnectionModel',
          './connection/EniAttachment',
+         './connection/VPNConnection',
          './resource/InstanceModel',
          './resource/EniModel',
          './resource/AclModel',
@@ -20,7 +21,7 @@ define [ 'Design',
          './resource/VpcModel',
          './resource/IgwModel',
          './resource/VgwModel',
-], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, InstanceModel, EniModel )->
+], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->
 
   window.Design          = Design
   window.ResourceModel   = ResourceModel

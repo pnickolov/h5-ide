@@ -26,7 +26,7 @@
 					</div>
 					<ul class="unmanaged-VPC-resource-list clearfix">
 						{{#each this }}
-						<li class="unmanaged-VPC-resource-item{{#is_vpc_disabled @key this }} unmanaged-VPC-resource-item-disabled{{/is_vpc_disabled}}"
+						<li class="unmanaged-VPC-resource-item{{#is_vpc_disabled this }} unmanaged-VPC-resource-item-disabled{{/is_vpc_disabled}}"
 							id="{{ @key }}-item"
 							data-vpc-id="{{ @key }}"
 							data-vpc-obj='{{ convert_string @key this }}'>

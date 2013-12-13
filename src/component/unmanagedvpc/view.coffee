@@ -51,7 +51,7 @@ define [ 'event',
                 new Handlebars.SafeString key
 
             # is vpc disabled
-            Handlebars.registerHelper 'is_vpc_disabled', ( key, value, options ) ->
+            Handlebars.registerHelper 'is_vpc_disabled', ( value, options ) ->
 
                 is_true = false
 
@@ -121,8 +121,14 @@ define [ 'event',
                                 if stopped > 0
                                     count = stopped
                                     type  = ' stopped instance'
+
+                        # cumulative new_item
                         if type
                             new_item += prefix + count + infix + type + suffix
+
+                    # empty dispose
+                    if _.isEmpty new_item
+                        new_item = '<p>this is empty</p>'
 
                 catch error
                     console.log 'unmanagedvpc view vpc_id', items

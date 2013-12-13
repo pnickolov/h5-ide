@@ -11,10 +11,12 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
-    scalingPolicies: []
+    scalingPolicies: new Backbone.Collection()
+    launchConfigurations: new Backbone.Collection()
 
-    addScalingPolicy: ( policy ) ->
-      @scalingPolicies.push new scalingPolicy( policy )
+    #addScalingPolicy: ( policyModel ) ->
+
+    #  @scalingPolicies.add policyModel
 
     draw : ( isCreate )->
 

@@ -40,6 +40,16 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
     constructor : ( p1Comp, p2Comp, attr ) ->
 
+      console.assert ( (self = this) && (()->
+        cns = Design.modelClassForType( self.type ).allObjects()
+        for cn in cns
+          if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
+            return false
+          if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
+            return false
+        return true
+      )() && (self = this) ), "Connectoin #{@type} of ", p1Comp, p2Comp, " already exists"
+
       if @portDefs
 
         for def in @portDefs
@@ -150,6 +160,8 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       for t in tags
         Design.registerModelClass t, child
+
+      Design.registerModelClass protoProps.type, child
 
       child
   }

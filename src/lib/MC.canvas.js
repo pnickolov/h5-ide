@@ -1248,7 +1248,7 @@ MC.canvas = {
 					MC.paper.start();
 
 					MC.paper.path(path);
-					//MC.paper.path(path).attr('class','fill-line');
+					MC.paper.path(path).attr('class','fill-line');
 
 					if (connection_option.dash_line === true)
 					{
@@ -2681,11 +2681,13 @@ MC.canvas.volume = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				state = MC.canvas.getState(),
 				shadow,
 				clone_node;
 
 			if (
-				MC.canvas.getState() === 'app' ||
+				state === 'app' ||
+				state === 'appview' ||
 				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{

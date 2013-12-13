@@ -165,19 +165,17 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
             aws_service.vpc_resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
 
-                if !aws_result.is_error
+                #if !aws_result.is_error
                 #vpc_resource succeed
-
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_VPC__RESOURCE_RETURN', aws_result
-
-                else
+                #
+                #else
                 #vpc_resource failed
+                #
+                #    console.log 'aws.vpc_resource failed, error is ' + aws_result.error_message
+                #    me.pub aws_result
 
-                    console.log 'aws.vpc_resource failed, error is ' + aws_result.error_message
-                    me.pub aws_result
-
-
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_VPC__RESOURCE_RETURN', aws_result
 
         #stat_resource api (define function)
         stat_resource : ( src, username, session_id, region_name=null, resources=null ) ->

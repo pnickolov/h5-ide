@@ -6524,7 +6524,7 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
-	if (layout,children)
+	if (layout.children)
 	{
 		positionChild( layout );
 	}
@@ -6538,7 +6538,6 @@ MC.canvas.analysis = function ( data )
 			item.coordinate[1] += VPC_PADDING_TOP;
 		});
 	}
-	
 	// ELB
 	if (resource_stack[ 'AWS-ELB' ] !== undefined)
 	{
@@ -6757,6 +6756,7 @@ MC.canvas.analysis = function ( data )
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
 	}
+
 	return true;
 };
 

@@ -1,7 +1,7 @@
 
-define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
+define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant ) ->
 
-  Model = ResourceModel.extend {
+  Model = ComplexResModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
@@ -11,7 +11,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
-    deserialize : ( data, layout_data, resolve )->
+    deserialize : ( data, layout_data, resolve ) ->
 
       attr =
         id           : data.uid
@@ -20,7 +20,18 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant )->
       for key, value of data.resource
         attr[ key ] = value
 
-      new Model( attr )
+      asgUid = MC.extractID attr.AutoScalingGroupName
+      asg = resolve asgUid
+      delete attr.AutoScalingGroupName
+
+      model = new Model( attr )
+
+      asg.scalingPolicies.add model
+
+
+
+
+      model
 
   }
 

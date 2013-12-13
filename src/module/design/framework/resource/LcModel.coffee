@@ -84,14 +84,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
     deserialize : ( data, layout_data, resolve )->
 
-      new Model({
-
+      attr =
         id           : data.uid
         name         : data.name
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
-      })
+
+      for key, value of data.resource
+        attr[ key ] = value
+
+      model = new Model( attr )
+
+      model
+
 
   }
 

@@ -95,7 +95,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
       for key, value of data.resource
         attr[ key ] = value
 
-      new Model( attr )
+      lcUid = MC.extractID attr.LaunchConfigurationName
+      lc = resolve lcUid
+      delete attr.LaunchConfigurationName
+
+      model = new Model( attr )
+
+
+      model.launchConfigurations.add lc
 
   }
 

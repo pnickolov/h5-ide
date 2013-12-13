@@ -21,7 +21,11 @@ define [ 'Design',
          './resource/VpcModel',
          './resource/IgwModel',
          './resource/VgwModel',
+         './resource/ScalingPolicyModel'
+
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->
+
+
 
   window.Design          = Design
   window.ResourceModel   = ResourceModel

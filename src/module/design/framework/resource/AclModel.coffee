@@ -1,10 +1,44 @@
 
 define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexResModel, AclAsso, constant )->
 
+  formatRules = ( JsonRuleEntrySet )->
+
+    if not JsonRuleEntrySet or not JsonRuleEntrySet.length
+      return []
+
+    _.map JsonRuleEntrySet, ( r )->
+
+      rule = {
+        id       : _.uniqueId( "aclrule_" )
+        cidr     : r.CidrBlock
+        egress   : r.Egress
+        protocol : r.Protocol
+        action   : r.RuleAction
+        number   : r.RuleNumber
+        port     : ""
+      }
+
+      if r.Protocol is "1" and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type
+        rule.port = r.IcmpTypeCode.Code + "/" + r.IcmpTypeCode.Type
+      else if r.PortRange.From and r.PortRange.To
+        if r.PortRange.From is r.PortRange.To
+          rule.port = r.PortRange.From
+        else
+          rule.port = r.PortRange.From + "-" + r.PortRange.To
+
+      rule
+
+
   Model = ComplexResModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
     newNameTmpl : "CustomACL-"
+
+    defaults : ()->
+      {
+        isDefault : false
+        rules     : []
+      }
 
     remove : ()->
       console.assert( not this.get("isDefault"), "Cannot delete DefaultACL" )
@@ -15,9 +49,20 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
         new AclAsso( defaultAcl, cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl ) )
       null
 
-    getRuleCount : ()->
-      0
+    removeRule : ( ruleId )->
+      rules = @get("rules")
+      for rule, idx in rules
+        if rule.id is ruleId
+          theRule = rule
+          break
 
+      if theRule.number is "32767" then return false
+      if @get("isDefault") and theRule.number is "100" then return false
+
+      @set "rules", rules.splice(0).splice( idx, 1 )
+      true
+
+    getRuleCount : ()-> @get("rules").length
     getAssoCount : ()-> @connections().length
 
   }, {
@@ -44,6 +89,7 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
       acl = new Model({
         id        : data.uid
         name      : data.name
+        rules     : formatRules( data.resource.EntrySet )
         isDefault : isDefault
       })
 

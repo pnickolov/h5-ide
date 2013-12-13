@@ -17,6 +17,7 @@ define [ "constant",
       y      : 2
       width  : 17
       height : 17
+      cidr   : ""
 
     initialize : ()->
       # Connect to the MainRT automatically

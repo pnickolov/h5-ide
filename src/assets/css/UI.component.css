@@ -489,12 +489,13 @@ textarea[readonly]  {
 }
 
 .prefix-input label {
-	font-size: 12px;
-	position: relative;
-	top: 1px;
-	left: 7px;
-	margin: 0 12px 0 0;
-	color: #999;
+	float       : left;
+	color       : #999;
+	font-size   : 12px;
+	width       : 20px;
+	text-align  : center;
+	line-height : 29px;
+	height      : 29px;
 }
 
 .prefix-input input {

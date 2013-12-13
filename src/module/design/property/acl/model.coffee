@@ -2,14 +2,9 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
 
     ACLModel = PropertyModel.extend {
-
-        defaults :
-            'component'    : null
-            'associations' : null
-            'is_default'   : null
 
         init : (uid) ->
 
@@ -17,29 +12,72 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 @appInit( uid )
                 return
 
-            allComp = MC.canvas_data.component
-            aclObj = MC.canvas_data.component[uid]
+            aclObj    = Design.instance().component( uid )
+            isDefault = aclObj.get("isDefault")
 
-            if aclObj.name is 'DefaultACL'
-                this.set 'is_default', true
-            else
-                this.set 'is_default', false
+            assos = _.map aclObj.connections(), ( cn )->
+                subnet = cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+                {
+                    name : subnet.get('name')
+                    cidr : subnet.get('cidr')
+                }
 
-            this.set 'component', aclObj
+            rules = aclObj.get("rules").splice(0)
 
-            that = this
+            # Format rules
+            _.each rules, ( rule )->
+                if not rule.port then rule.port = "All"
 
-            associationsAry = []
-            _.each aclObj.resource.AssociationSet, (value, key) ->
-                subnetInfo = that.getSubnetInfo(value)
-                if subnetInfo
-                    associationsAry.push(subnetInfo)
-                null
+                if rule.number is '32767'
+                    rule.number   = "*"
+                    rule.readOnly = true
+                else if rule.number is "100" and isDefault
+                    rule.readOnly = true
 
-            this.set 'associations', associationsAry
-            this.set 'uid', uid
+                switch rule.protocol
+                    when "-1" then rule.protocol = "ALL"
+                    when "1"  then rule.protocol = "ICMP"
+                    when "6"  then rule.protocol = "TCP"
+                    when "17" then rule.protocol = "UDP"
 
+            @set {
+                uid          : uid
+                isDefault    : isDefault
+                name         : aclObj.get("name")
+                rules        : rules
+                associations : _.sortBy assos, name
+            }
+
+            @sortRules()
             null
+
+        sortRules : () ->
+            key = @get "sortKey"
+
+            if not key or key is "number"
+                compare = ( a, b )->
+                    a_n = parseInt( a, 10 ) || -1
+                    b_n = parseInt( b, 10 ) || -1
+                    if a_n > b_n then return 1
+                    if a_n = b_n then return 0
+                    if a_n < b_n then return -1
+
+            else
+                compare = ( a, b )->
+                    if a[key] > b[key] then return 1
+                    if a[key] = b[key] then return 0
+                    if a[key] < b[key] then return -1
+
+            @attributes.rules = @attributes.rules.sort( compare )
+
+
+        setSortOption : ( key )->
+            @set "sortKey", key
+            @attributes.rules = _.sortBy @attributes.rules, key
+            null
+
+        removeAclRule : ( ruleId ) ->
+            Design.instance().component( @get("uid") ).removeRule( ruleId )
 
         appInit : ( uid ) ->
 
@@ -125,16 +163,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             this.set 'component', aclObj
 
-        getSubnetInfo : (associationObj) ->
-            subnetUID = associationObj.SubnetId
-            subnetUID = subnetUID.slice(1).split('.')[0]
-            subnetComp = MC.canvas_data.component[subnetUID]
-            if !subnetComp then return null
-            return {
-                subnet_name: subnetComp.name,
-                subnet_cidr: subnetComp.resource.CidrBlock
-            }
-
         addRuleToACL : (ruleObj) ->
             uid = @get 'uid'
 
@@ -173,22 +201,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                 this.trigger 'REFRESH_RULE_LIST', MC.canvas_data.component[uid]
 
-            null
-
-        removeRuleFromACL : (ruleNum, ruleEngress) ->
-            uid = @get 'uid'
-            currentEntrySet = MC.canvas_data.component[uid].resource.EntrySet
-            newEntrySet = _.filter currentEntrySet, (ruleObj) ->
-                if ruleObj.RuleNumber is ruleNum and ruleEngress is ruleObj.Egress
-                    return false
-                else
-                    return true
-            MC.canvas_data.component[uid].resource.EntrySet = newEntrySet
-            null
-
-        setACLName : (aclName) ->
-            uid = @get 'uid'
-            MC.canvas_data.component[uid].name = aclName
             null
 
         haveRepeatRuleNumber : (newRuleNumber) ->

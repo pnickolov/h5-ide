@@ -78,8 +78,8 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
         appId : data.resource.VpcId
 
         cidr         : data.resource.CidrBlock
-        dnsHostnames : MC.getBoolean( data.resource.EnableDnsHostnames )
-        dnsSupport   : MC.getBoolean( data.resource.EnableDnsSupport )
+        dnsHostnames : data.resource.EnableDnsHostnames
+        dnsSupport   : data.resource.EnableDnsSupport
         tenancy      : data.resource.InstanceTenancy
         dhcp         : dhcp
 

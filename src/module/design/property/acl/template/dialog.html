@@ -4,8 +4,8 @@
 	<div class="modal-control-group clearfix">
 	  <label class="label-short" for="modal-acl-number">{{ i18n "POP_ACLRULE_LBL_RULE_NUMBER" }}</label>
 	  <div class="prefix-input left">
-	  		<label for="modal-acl-number">#</label>
-	  		<input class="input" type="text" id="modal-acl-number" required data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+  		<label for="modal-acl-number">#</label>
+  		<input class="input" type="text" id="modal-acl-number" required data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true" autofocus>
 	  </div>
 	</div>
 	<div class="modal-control-group clearfix">
@@ -47,7 +47,10 @@
 		<div class="selectbox" id="acl-add-model-source-select">
 			<div class="selection">{{ i18n "POP_ACLRULE_PROTOCOL_CUSTOM" }}</div>
 			<ul class="dropdown">
-
+			<li class="item tooltip" data-id="custom">{{ i18n "POP_ACLRULE_PROTOCOL_CUSTOM" }}</li>
+			{{#each subnets}}
+				<li class="item tooltip" data-id="{{cidr}}"><div class="main truncate">{{name}}</div></li>
+			{{/each}}
 			</ul>
 	  </div>
 	  <input class="input" type="text" id="modal-acl-source-input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-required="true" placeholder='{{ i18n "POP_ACLRULE_PLACEHOLD_SOURCE" }}' >
@@ -55,8 +58,6 @@
 
 	<div class="modal-control-group clearfix">
 	  <label class="label-short" >{{ i18n "POP_ACLRULE_LBL_PROTOCOL" }}</label>
-	  <!-- <div class="context" > -->
-		<!-- <div class="modal-protocol-select"> -->
 		  <div class="selectbox modal-protocol-select" id="modal-protocol-select"  data-protocal-type="tcp">
 			<div class="selection">{{ i18n "POP_ACLRULE_PROTOCOL_TCP" }}</div>
 			<ul class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" tabindex="-1">
@@ -64,14 +65,13 @@
 			  <li class="selected item" data-id="tcp">{{ i18n "POP_ACLRULE_PROTOCOL_TCP" }}</li>
 			  <li class="item" data-id="udp">{{ i18n "POP_ACLRULE_PROTOCOL_UDP" }}</li>
 			  <li class="item" data-id="icmp">{{ i18n "POP_ACLRULE_PROTOCOL_ICMP" }}</li>
-			  {{#if isclassic}}
-			  {{else}}
+			  {{#unless classic}}
 			  <li class="item" data-id="custom">{{ i18n "POP_ACLRULE_PROTOCOL_CUSTOM" }}</li>
 			  <li class="item" data-id="all">{{ i18n "POP_ACLRULE_PROTOCOL_ALL" }}</li>
-			  {{/if}}
+			  {{/unless}}
 			</ul>
 		  </div>
-		<!-- </div> -->
+
 	  <div id="sg-protocol-select-result">
 		  <div class="sg-protocol-option-input show" id="sg-protocol-tcp">
 			<input class="input" type="text" placeholder='{{ i18n "POP_ACLRULE_PLACEHOLD_PORT_RANGE" }}' required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true"/>
@@ -165,11 +165,9 @@
 		  </div>
 		  </div>
 		  <div class="sg-protocol-option-input" id="sg-protocol-custom">
-			<input class="input" type="string" name="protocol-custom-ranged" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
+				<input class="input" type="string" value="1" min="1" max="255" required="" required data-ignore="true" data-ignore-regexp="^[0-9-]*$" data-required="true">
 		  </div>
-		  <div class="sg-protocol-option-input" id="sg-protocol-all" required data-ignore="true" data-ignore-regexp="^[0-9-]*$">
-			{{ i18n "POP_ACLRULE_LBL_PORT_RANGE_ALL" }}
-		  </div>
+		  <div class="sg-protocol-option-input" id="sg-protocol-all" required data-ignore="true" data-ignore-regexp="^[0-9-]*$"> {{ i18n "POP_ACLRULE_LBL_PORT_RANGE_ALL" }} </div>
 	  </div>
 	  <ul class="simple-protocol-select">
 			<li>SSH</li>

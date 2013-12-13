@@ -3,11 +3,13 @@
 #############################
 
 define [ '../base/view',
+         'Design',
+         'constant'
          'text!./template/stack.html',
          'text!./template/rule_item.html',
          'text!./template/dialog.html',
          'i18n!nls/lang.js'
-], ( PropertyView, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
+], ( PropertyView, Design, constant, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
 
     htmlTpl  = Handlebars.compile htmlTpl
     ruleTpl  = Handlebars.compile ruleTpl
@@ -19,13 +21,58 @@ define [ '../base/view',
             'change #property-acl-name'           : 'aclNameChanged'
             'click #acl-add-rule-icon'            : 'showCreateRuleModal'
             'OPTION_CHANGE #acl-sort-rule-select' : 'sortACLRule'
-            'click .property-rule-delete-btn'     : 'removeRuleClicked'
+            'click .rule-list-row .icon-remove'   : 'removeACLRule'
 
         render : () ->
             @$el.html htmlTpl @model.attributes
-            @model.attributes.component.name
+            @model.attributes.name
 
-        bindModalEvent : ()->
+        aclNameChanged : (event) ->
+            target = $ event.currentTarget
+            name = target.val()
+
+            if @checkDupName( target, "ACL" )
+                @model.setName name
+                @setTitle name
+
+        sortACLRule : ( event ) ->
+            sg_rule_list = $('#acl-rule-list')
+
+            sortType = $(event.target).find('.selected').attr('data-id')
+
+            @model.setSortOption( sortType )
+            @refreshRuleList()
+            null
+
+        refreshRuleList : () ->
+            $('#acl-rule-list').html ruleTpl @model.attributes.rules
+            $('#acl-rule-count').text(@model.attributes.rules.length)
+            null
+
+        removeACLRule : (event) ->
+            $target = $( event.currentTarget ).closest("li")
+            ruleId  = $target.attr("data-id")
+
+            if @model.removeAclRule ruleId
+                $target.remove()
+            null
+
+        showCreateRuleModal : () ->
+
+            SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+
+            data = {
+                classic : Design.instance().typeIsClassic()
+                subnets : _.map SubnetModel.allObjects(), ( subnet )->
+                    {
+                        name : subnet.get("name")
+                        cidr : subnet.get("cidr")
+                    }
+            }
+
+            modal rulePopupTpl( data )
+
+            # Bind Modal Events
             $("#acl-modal-rule-save-btn").on("click", _.bind( @saveRule, @ ))
             $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )
             $("#modal-protocol-select").on("OPTION_CHANGE", @modalRuleProtocolSelected )
@@ -33,35 +80,6 @@ define [ '../base/view',
             $("#acl-add-model-direction-outbound").on("change", @changeBoundInModal )
             $("#acl-add-model-direction-inbound").on("change", @changeBoundInModal )
             $('.simple-protocol-select li').on('click', @clickSimpleProtocolSelect)
-            null
-
-        showCreateRuleModal : () ->
-            modal rulePopupTpl({}, true)
-
-            subnetMap = {}
-
-            # subnet list
-            _.each MC.canvas_data.component, (value, key) ->
-                compType = value.type
-                if compType is 'AWS.VPC.Subnet'
-                    subnetMap[value.name] = value.resource.CidrBlock
-                null
-
-            # load subnet select menu
-            selectboxContainer = $('#acl-add-model-source-select .dropdown').empty()
-            selected = ''
-            _.each subnetMap, (value, key) ->
-                # if !selected
-                #     selected = 'selected'
-                #     $('#acl-add-model-source-select .selection').text(key)
-
-                selectboxContainer.append(
-                    '<li class="item tooltip ' + selected + '" data-id="' + value + '"><div class="main truncate">' + key + '</div></li>'
-                )
-
-            selectboxContainer.append('<li class="item tooltip" data-id="custom"><div class="main truncate">' + lang.ide.POP_ACLRULE_PROTOCOL_CUSTOM + '</div></li>')
-
-            @bindModalEvent()
             return false
 
         saveRule : () ->
@@ -200,74 +218,6 @@ define [ '../base/view',
 
             null
 
-        refreshRuleList : () ->
-            value = @model.attributes.component
-            entrySet = value.resource.EntrySet
-            aclName = value.name
-
-            newEntrySet = []
-            _.each entrySet, (value, key) ->
-                newRuleObj = {}
-
-                newRuleObj.ruleAction = value.RuleAction
-                newRuleObj.cidrBlock = value.CidrBlock
-                newRuleObj.egress = value.Egress
-
-                if value.RuleNumber is '32767'
-                    newRuleObj.ruleNumber = '*'
-                    newRuleObj.isStarRule = true
-                else
-                    newRuleObj.ruleNumber = value.RuleNumber
-                    newRuleObj.isStarRule = false
-
-                if value.RuleNumber in ['100', 100] and aclName is 'DefaultACL'
-                    newRuleObj.isStarRule = true
-
-                # if value.Protocol is '-1'
-                #     newRuleObj.protocol = 'All'
-                # else
-                #     newRuleObj.protocol = value.Protocol
-
-                if value.Protocol is -1 or value.Protocol is '-1'
-                    newRuleObj.protocol = 'All'
-                else if value.Protocol is 6 or value.Protocol is '6'
-                    newRuleObj.protocol = 'TCP'
-                else if value.Protocol is 17 or value.Protocol is '17'
-                    newRuleObj.protocol = 'UDP'
-                else if value.Protocol is 1 or value.Protocol is '1'
-                    newRuleObj.protocol = 'ICMP'
-                else
-                    newRuleObj.protocol = 'Custom(' + value.Protocol + ')'
-
-                newRuleObj.port = ''
-
-                if value.Protocol is '1'
-                    newRuleObj.port = value.IcmpTypeCode.Type + '/' + value.IcmpTypeCode.Code
-                else
-                    if value.PortRange.From is value.PortRange.To
-                        newRuleObj.port = value.PortRange.From
-                    else
-                        newRuleObj.port = value.PortRange.From + '-' + value.PortRange.To
-
-                    if (value.PortRange.To is '') and (value.PortRange.From is '')
-                        newRuleObj.port = 'All'
-
-                newEntrySet.push newRuleObj
-
-                null
-
-            $('#acl-rule-list').html ruleTpl({
-                content: newEntrySet
-            })
-
-            $('#acl-rule-count').text(newEntrySet.length)
-
-            #sort acl list
-            sg_rule_list = $('#acl-rule-list')
-            sorted_items = $('#acl-rule-list li')
-            sorted_items = sorted_items.sort(this._sortNumber)
-            sg_rule_list.html sorted_items
-
         modalRuleSourceSelected : (event) ->
             value = $.trim($(event.target).find('.selected').attr('data-id'))
 
@@ -277,26 +227,6 @@ define [ '../base/view',
             else
                 $('#modal-acl-source-input').hide()
                 $('#acl-add-model-source-select .selection').width(322)
-
-        removeRuleClicked : (event) ->
-            parentElem = $(event.target).parents('li')
-            currentRuleNumber = parentElem.attr('rule-num')
-            if currentRuleNumber is '*'
-                currentRuleNumber = '32767'
-            currentRuleEngress = parentElem.attr('rule-engress')
-            @model.removeRuleFromACL currentRuleNumber, currentRuleEngress
-            this.refreshRuleList()
-
-        aclNameChanged : (event) ->
-            target = $ event.currentTarget
-            name = target.val()
-
-            id = @model.get( 'component' ).uid
-
-            MC.validate.preventDupname target, id, name, 'ACL'
-
-            if target.parsley 'validate'
-                @model.setACLName name
 
         modalRuleProtocolSelected : (event) ->
             protocolSelectElem = $(event.target)
@@ -332,43 +262,6 @@ define [ '../base/view',
                 $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_SOURCE)
             else
                 $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_DEST)
-
-        sortACLRule : ( event ) ->
-            sg_rule_list = $('#acl-rule-list')
-
-            sortType = $(event.target).find('.selected').attr('data-id')
-
-            sorted_items = $('#acl-rule-list li')
-
-            if sortType is 'number'
-                sorted_items = sorted_items.sort(this._sortNumber)
-            else if sortType is 'action'
-                sorted_items = sorted_items.sort(this._sortAction)
-            else if sortType is 'direction'
-                sorted_items = sorted_items.sort(this._sortDirection)
-            else if sortType is 'source/destination'
-                sorted_items = sorted_items.sort(this._sortSource)
-
-            sg_rule_list.html sorted_items
-
-        _sortNumber : ( a, b) ->
-            valueA = $(a).find('.acl-rule-number').attr('data-id')
-            valueB = $(b).find('.acl-rule-number').attr('data-id')
-            if valueA is '*' then valueA = 0
-            if valueB is '*' then valueB = 0
-            return Number(valueA) > Number(valueB)
-
-        _sortAction : ( a, b) ->
-            return $(a).find('.acl-rule-action').attr('data-id') >
-                $(b).find('.acl-rule-action').attr('data-id')
-
-        _sortDirection : ( a, b) ->
-            return $(a).find('.acl-rule-direction').attr('data-id') >
-                $(b).find('.acl-rule-direction').attr('data-id')
-
-        _sortSource : ( a, b) ->
-            return $(a).find('.acl-rule-reference').attr('data-id') >
-                $(b).find('.acl-rule-reference').attr('data-id')
 
         clickSimpleProtocolSelect : (event) ->
             protocolName = $(event.currentTarget).text()

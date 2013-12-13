@@ -147,7 +147,7 @@ define [ '../base/view',
         createAcl : ()->
             @trigger "OPEN_ACL", @model.createAcl()
 
-        openAclPanel : ( event ) ->
+        openAcl : ( event ) ->
             id = $(event.currentTarget).closest("li").attr("data-uid")
             @trigger "OPEN_ACL", id
             null

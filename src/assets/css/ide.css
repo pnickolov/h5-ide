@@ -6897,7 +6897,7 @@ summary:focus {
 .unmanaged-VPC-resource-item a {
 	color: #999;
 	width: 242px;
-	height: 160px;
+	height: 190px;
 	font-size: 12px;
 	display: block;
 	background: #f5f5f5;
@@ -6917,6 +6917,7 @@ summary:focus {
 	padding: 10px;
 	background: rgba(0, 0, 0, 0.05);
 }
+
 .unmanaged-VPC-resource-item-disabled {
 
 }
@@ -6960,5 +6961,13 @@ summary:focus {
 	padding: 10px;
 	text-align: center;
 	color: #aaa;
+}
+
+.property-header-info {
+	position: absolute;
+	right: 4px;
+	top: 15px;
+	color: #4495d3;
+	cursor: pointer;
 }
 

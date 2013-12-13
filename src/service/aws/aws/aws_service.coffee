@@ -224,11 +224,30 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
 
 			resolved_data = result
-			if addition isnt 'statistic'
-				resolved_data = resolveResourceResult result
+			try
+				if addition is 'statistic'
 
-			aws_result.resolved_data = resolved_data
+					resolved_data = result
 
+				else if addition is 'vpc'
+
+					resolved_data = resolveVpcResourceResult result
+
+				else
+
+					resolved_data = resolveResourceResult result
+
+				aws_result.resolved_data = resolved_data
+
+			catch error
+				console.log error
+
+				if addition is 'vpc'
+					aws_result.is_error = true
+
+					aws_result.error_message = "We can not reverse your app, please contact MadeiracCloud"
+
+					aws_result.return_code = 15
 
 		#3.return vo
 		aws_result
@@ -720,8 +739,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		true
 
 	#def vpc_resource(self, username, session_id, region_name, vpc_id):
-	vpc_resource = ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1, callback ) ->
-		send_request "vpc_resource", src, [ username, session_id, region_name, resources, addition, retry_times ], parserVpcResourceReturn, callback
+	vpc_resource = ( src, username, session_id, region_name=null, resources=null, addition='vpc', retry_times=1, callback ) ->
+		send_request "resource", src, [ username, session_id, region_name, resources, addition, retry_times ], parserVpcResourceReturn, callback
 		true
 
 	#def stat_resource(self, username, session_id, region_name=None, resources=None):

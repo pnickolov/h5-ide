@@ -33,8 +33,8 @@ define [ 'aws_model', 'ami_model'
             # set init flag_list
             me.set 'flag_list', { 'is_pending' : true }
 
-            @on 'AWS_VPC__RESOURCE_RETURN', ( result ) ->
-                console.log 'AWS_VPC__RESOURCE_RETURN', result
+            @on 'AWS_RESOURCE_RETURN', ( result ) ->
+                console.log 'AWS_RESOURCE_RETURN', result
 
                 #
                 #result.resolved_data = {}
@@ -265,7 +265,7 @@ define [ 'aws_model', 'ami_model'
                     delete resources.origin
 
                 # call api
-                aws_model.vpc_resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'all', 1
+                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
 
                 # set state 'OLD'
                 MC.forge.other.setCacheMap vpc_id, null, 'OLD', null

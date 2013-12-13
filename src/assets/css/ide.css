@@ -6896,7 +6896,7 @@ summary:focus {
 
 .unmanaged-VPC-resource-item a {
 	color: #999;
-	width: 248px;
+	width: 240px;
 	height: 190px;
 	font-size: 12px;
 	display: block;
@@ -6926,16 +6926,16 @@ summary:focus {
 	display: inline-block;
 	width: 69px;
 	height: 60px;
-	margin: 5px 10px 5px 0;
+	margin: 5px 0 5px 0;
 	position: relative;
 	text-align: center;
 	border-left: 1px solid #ddd;
 	float: left;
-	padding: 0 3px;
+	padding: 0 5px;
 }
 
-.unmanaged-resource-item:nth-child(3n+1) {
-border: none;
+.unmanaged-resource-item:nth-child(3n) {
+	margin-right: 0;
 }
 
 .unmanaged-resource-item:nth-child(3n+1) {

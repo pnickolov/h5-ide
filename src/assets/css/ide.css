@@ -6921,14 +6921,10 @@ summary:focus {
 
 }
 
-.unmanaged-VPC-resource-item ol {
-	/*padding: 10px;*/
-}
-
 .unmanaged-resource-item {
 	display: inline-block;
 	width: 69px;
-	height: 45px;
+	height: 60px;
 	margin: 5px 10px 5px 0;
 	position: relative;
 	text-align: center;
@@ -6938,6 +6934,12 @@ summary:focus {
 
 .unmanaged-resource-item:nth-child(3n+1) {
 	border: none;
+}
+
+.unmanaged-resource-data:empty {
+	content: "There is no resource inside this VPC.";
+	text-align: center;
+	color: #ccc;
 }
 
 .unmanaged-resource-number {

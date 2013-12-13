@@ -4,10 +4,9 @@
 
 define [ 'aws_model', 'ami_model'
          'event', 'constant',
-         'text!./module/process/appview.json'
          'UI.notification',
          'backbone', 'jquery', 'underscore'
-], ( aws_model, ami_model, ide_event, constant, appview_json ) ->
+], ( aws_model, ami_model, ide_event, constant ) ->
 
     ProcessModel = Backbone.Model.extend {
 
@@ -26,26 +25,18 @@ define [ 'aws_model', 'ami_model'
         initialize  : ->
             me = this
 
-            # test json object
-            #appview_json = JSON.parse appview_json
-            #console.log 'appview json is ', appview_json
-
             # set init flag_list
             me.set 'flag_list', { 'is_pending' : true }
 
             @on 'AWS_RESOURCE_RETURN', ( result ) ->
                 console.log 'AWS_RESOURCE_RETURN', result
 
-                #
+                # test exception flow
                 #result.resolved_data = {}
                 #result.is_error = true
                 #result.error_message = 'sdfasdfasdfsadfasdf'
 
                 if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
-
-                    # set result.resolved_data
-                    #result.resolved_data = []
-                    #result.resolved_data.push appview_json
 
                     # get vpc_id
                     vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]

@@ -127,6 +127,16 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Disable drawing for deserializing, delay it until everything is deserialized
     design.__shoulddraw = false
 
+    ###########################
+    # Quick fix Boolean value in JSON, might removed latter
+    ###########################
+    Design.fixJson( json_data )
+
+
+
+    ###########################
+    # Start deserialization
+    ###########################
     # Deserialize resolveFisrt resources
     for uid, comp of json_data
       if Design.__resolveFirstMap[ comp.type ] is true
@@ -144,6 +154,11 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
       recursiveCheck = {}
       resolveDeserialize uid
 
+
+
+    ####################
+    # Draw after deserialization
+    ####################
     # Draw everything after deserialization is done.
     # Because some resources might just deleted right after it's been created.
     # And draw lines at the end
@@ -194,8 +209,6 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     @__resolveFirstMap[ type ] = true
     null
 
-  Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
-
   DesignImpl.prototype.classCacheForCid = ( cid )->
     if @__classCache[ cid ]
       return @__classCache[ cid ]
@@ -218,10 +231,35 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
         else if comp.node_line isnt true
           @__canvasNodes[ id ] = comp
     null
+
+
+  Design.fixJson = ( data )->
+    checkObj = ( obj )->
+      for attr, d of obj
+        if _.isString( d )
+          if d is "true"
+            obj[ attr ] = true
+          else if d is "false"
+            obj[ attr ] = false
+        else if _.isArray( d )
+          for dd in d
+            if _.isObject( dd ) then checkObj( dd )
+
+        else if _.isObject( d )
+          checkObj( d )
+      null
+
+    for uid, comp of data
+      checkObj( comp )
+
+    null
+
   ### Private Interface End ###
 
 
+
   Design.instance = ()-> design_instance
+  Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
 
   DesignImpl.prototype.mode          = ()-> this.__mode
@@ -241,7 +279,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
 
   DesignImpl.prototype.use = ()->
-    window.DesignInst = design_instance = @
+    design_instance = @
     @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]

@@ -140,7 +140,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
         id   : data.uid
         name : data.name
 
-        main : MC.getBoolean( asso_main )
+        main : asso_main
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

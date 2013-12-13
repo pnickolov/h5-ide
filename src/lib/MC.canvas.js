@@ -6242,7 +6242,7 @@ MC.canvas.analysis = function ( data )
 			{
 				item.coordinate = [
 					GROUP_INNER_PADDING,
-					row_index * 9 + (row_index * NODE_MARGIN_TOP) + GROUP_INNER_PADDING
+					row_index * 9 + (row_index * (NODE_MARGIN_TOP + 4)) + GROUP_INNER_PADDING
 				];
 
 				if (item.children !== undefined)

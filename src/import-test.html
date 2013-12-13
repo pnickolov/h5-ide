@@ -578,11 +578,6 @@
 
 				function positionChild(node)
 				{
-					if (children === undefined)
-					{
-						return false;
-					}
-
 					var children = node.children,
 						GROUP_MARGIN = 2,
 
@@ -693,8 +688,11 @@
 					}
 				}
 
-				positionChild( layout );
-
+				if (layout.children)
+				{
+					positionChild( layout );
+				}
+				
 				// VPC padding
 				if (layout.children)
 				{
@@ -704,7 +702,6 @@
 						item.coordinate[1] += VPC_PADDING_TOP;
 					});
 				}
-				
 				// ELB
 				if (resource_stack[ 'AWS-ELB' ] !== undefined)
 				{

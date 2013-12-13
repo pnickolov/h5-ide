@@ -6414,11 +6414,6 @@ MC.canvas.analysis = function ( data )
 
 	function positionChild(node)
 	{
-		if (children === undefined)
-		{
-			return false;
-		}
-
 		var children = node.children,
 			GROUP_MARGIN = 2,
 
@@ -6529,8 +6524,11 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
-	positionChild( layout );
-
+	if (layout,children)
+	{
+		positionChild( layout );
+	}
+	
 	// VPC padding
 	if (layout.children)
 	{

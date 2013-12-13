@@ -6524,15 +6524,20 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
-	positionChild( layout );
-
-	// VPC padding
-	$.each(layout.children, function (i, item)
+	if (layout.children)
 	{
-		item.coordinate[0] += VPC_PADDING_LEFT;
-		item.coordinate[1] += VPC_PADDING_TOP;
-	});
-
+		positionChild( layout );
+	}
+	
+	// VPC padding
+	if (layout.children)
+	{
+		$.each(layout.children, function (i, item)
+		{
+			item.coordinate[0] += VPC_PADDING_LEFT;
+			item.coordinate[1] += VPC_PADDING_TOP;
+		});
+	}
 	// ELB
 	if (resource_stack[ 'AWS-ELB' ] !== undefined)
 	{

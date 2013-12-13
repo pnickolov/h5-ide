@@ -47,7 +47,7 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 			isStackParent = parent_model.get 'is_stack'
 
 			current_tab_type = MC.canvas.getState()
-			if current_tab_type is 'app'
+			if current_tab_type is 'app' or current_tab_type is 'appview'
 				readonly = true
 			else if current_tab_type is 'appedit'
 				if parent_model.isSGListReadOnly

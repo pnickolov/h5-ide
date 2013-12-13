@@ -96,7 +96,11 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
             aws_service.resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
 
-                if !aws_result.is_error
+                if addition is 'vpc'
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_RESOURCE_RETURN', aws_result
+
+                else if !aws_result.is_error
                 #resource succeed
 
                     #dispatch event (dispatch event whenever login succeed or failed)

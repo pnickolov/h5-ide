@@ -35,6 +35,12 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             property_detail.type   = @getStackType()
             property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
 
+            for uid, comp of MC.canvas_data.component
+
+                if comp.type is 'AWS.VPC.VPC'
+
+                    property_detail.vpcid = comp.resource.VpcId
+
             @set 'property_detail', property_detail
 
 

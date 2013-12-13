@@ -51,7 +51,7 @@ define [ 'event',
                 new Handlebars.SafeString key
 
             # is vpc disabled
-            Handlebars.registerHelper 'is_vpc_disabled', ( key, value, options ) ->
+            Handlebars.registerHelper 'is_vpc_disabled', ( value, options ) ->
 
                 is_true = false
 

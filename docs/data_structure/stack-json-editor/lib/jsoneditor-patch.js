@@ -2847,6 +2847,22 @@ Node.prototype.updateDom = function (options) {
       field = '';
     }
 
+
+  // update value, modify by xjimmy
+  var domValue = this.dom.value;
+  if (domValue) {
+    var count = this.childs ? this.childs.length : 0;
+    if (this.type == 'array') {
+      domValue.innerHTML = '[' + count + ']';
+    }
+    else if (this.type == 'object') {
+      domValue.innerHTML = '{' + count + '}';
+    }
+    else {
+      domValue.innerHTML = this._escapeHTML(this.value);
+    }
+  }
+
 	//modify by xjimmy
 	if (res_list.indexOf('|'+field+'|') != -1)
 	{
@@ -2869,29 +2885,35 @@ Node.prototype.updateDom = function (options) {
 				}
 			}
 		}
-		field = field + link_ary.join(' ');
+		field = '<b>'+field+'</b>' + link_ary.join(' ');
 		domField.innerHTML = field;
 	}
 	else
 	{
-		domField.innerHTML = this._escapeHTML(field);
+		//domField.innerHTML = this._escapeHTML(field);
+		domField.innerHTML = '<font color="black" style="font-weight: bold;">' + field + '</font>';
 	}
   }
 
-  // update value
-  var domValue = this.dom.value;
-  if (domValue) {
-    var count = this.childs ? this.childs.length : 0;
-    if (this.type == 'array') {
-      domValue.innerHTML = '[' + count + ']';
-    }
-    else if (this.type == 'object') {
-      domValue.innerHTML = '{' + count + '}';
-    }
-    else {
-      domValue.innerHTML = this._escapeHTML(this.value);
-    }
+  //add by xjimmy
+  if ( domField && this.value )
+  {
+	  if (this.value.indexOf(", required")!=-1)
+	  {//required property
+		domField.innerHTML = '<font color="red" style="font-weight: bold;">' + field + '</font>';
+	  }
+	  else if (this.value.indexOf(", not required")!=-1)
+	  {//not required property
+		domField.innerHTML = '<font color="blue" style="font-weight: bold;">' + field + '</font>';
+	  }
+	  else if (this.value.indexOf("Not necessary")!=-1)
+	  {//not necessary property
+		domField.innerHTML = '<font color="grey" style="font-weight: bold;">' + field + '</font>';
+	  }
   }
+
+
+
 
   // update field and value
   this._updateDomField();
@@ -5741,7 +5763,8 @@ util.stripFormatting = function stripFormatting(divElement) {
     // remove the style
     if (child.style) {
       // TODO: test if child.attributes does contain style
-      child.removeAttribute('style');
+      //remove by xjimmy
+	  //child.removeAttribute('style');
     }
 
     // remove all attributes
@@ -5751,7 +5774,7 @@ util.stripFormatting = function stripFormatting(divElement) {
         var attribute = attributes[j];
         if (attribute.specified == true) {
 		  //modify by xjimmy
-		  if (attribute.name=="target" || attribute.name=="href")
+		  if ( "|target|href|color|style|".indexOf(attribute.name) !=-1 )
 		  {
 			continue;
 		  }

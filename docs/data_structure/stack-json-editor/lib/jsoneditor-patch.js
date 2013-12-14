@@ -32,35 +32,35 @@
  */
 (function () {
 
-var res_list = '|$VPC|$SUBNET1|$ASG|$INSTANCE|$ELB|$ROUTETABLE|$IGW|$VPN1|$VGW|$CGW1|$ENI0|$VOLUME|$DHCP|$ACL|$DEFAULT-SG|$DEFAULT-KP|$EIP|$CLOUD-WATCH|$LAUNCH-CONFIGURATION|$SCALING-POLICY|$SUBSCRIPTION1|$TOPIC|$NOTIFICATION-CONFIGURATION|$SERVER-CERTIFICATE|$EC2-TAG|$ASG-TAG|$AZ|';
+var res_list = '|$AZ0|$INSTANCE0|$VOLUME0|$DEFAULT-SG|$DEFAULT-KP|$EIP0|$ENI0|$ELB0|$SERVER-CERTIFICATE0|$VPC|$DHCP|$IGW|$VGW|$SUBNET0|$ROUTETABLE0|$DEFAULT-ACL|$VPN0|$CGW0|$ASG0|$LAUNCH-CONFIGURATION0|$CLOUD-WATCH0|$SCALING-POLICY0|$NOTIFICATION-CONFIGURATION0|$TOPIC|$SUBSCRIPTION0|$EC2-TAG|$ASG-TAG|';
 var res_map = {};
 res_map['$VPC']={'desc':'stack/app', 'api':{ 'DescribeVpcs':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVpcs', 'VpcType':'AWSEC2/latest/APIReference/ApiReference-ItemType-VpcType'}};
-res_map['$SUBNET1']={'desc':'stack/app', 'api':{ 'DescribeSubnets':'AWSEC2/latest/APIReference/ApiReference-query-DescribeSubnets', 'SubnetType':'AWSEC2/latest/APIReference/ApiReference-ItemType-SubnetType'}};
-res_map['$ASG']={'desc':'stack/app', 'api':{ 'DescribeAutoScalingGroups':'AutoScaling/latest/APIReference/API_DescribeAutoScalingGroups', 'AutoScalingGroup':'AutoScaling/latest/APIReference/API_AutoScalingGroup'}};
-res_map['$INSTANCE']={'desc':'stack/app', 'api':{ 'DescribeInstances':'AWSEC2/latest/APIReference/ApiReference-query-DescribeInstances', 'RunningInstancesItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-RunningInstancesItemType'}};
-res_map['$ELB']={'desc':'stack/app', 'api':{ 'DescribeLoadBalancers':'ElasticLoadBalancing/latest/APIReference/API_DescribeLoadBalancers', 'LoadBalancerDescription':'ElasticLoadBalancing/latest/APIReference/API_LoadBalancerDescription'}};
-res_map['$ROUTETABLE']={'desc':'stack/app', 'api':{ 'DescribeRouteTables':'AWSEC2/latest/APIReference/ApiReference-query-DescribeRouteTables', 'RouteTableType':'AWSEC2/latest/APIReference/ApiReference-ItemType-RouteTableType'}};
+res_map['$SUBNET0']={'desc':'stack/app', 'api':{ 'DescribeSubnets':'AWSEC2/latest/APIReference/ApiReference-query-DescribeSubnets', 'SubnetType':'AWSEC2/latest/APIReference/ApiReference-ItemType-SubnetType'}};
+res_map['$ASG0']={'desc':'stack/app', 'api':{ 'DescribeAutoScalingGroups':'AutoScaling/latest/APIReference/API_DescribeAutoScalingGroups', 'AutoScalingGroup':'AutoScaling/latest/APIReference/API_AutoScalingGroup'}};
+res_map['$INSTANCE0']={'desc':'stack/app', 'api':{ 'DescribeInstances':'AWSEC2/latest/APIReference/ApiReference-query-DescribeInstances', 'RunningInstancesItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-RunningInstancesItemType'}};
+res_map['$ELB0']={'desc':'stack/app', 'api':{ 'DescribeLoadBalancers':'ElasticLoadBalancing/latest/APIReference/API_DescribeLoadBalancers', 'LoadBalancerDescription':'ElasticLoadBalancing/latest/APIReference/API_LoadBalancerDescription'}};
+res_map['$ROUTETABLE0']={'desc':'stack/app', 'api':{ 'DescribeRouteTables':'AWSEC2/latest/APIReference/ApiReference-query-DescribeRouteTables', 'RouteTableType':'AWSEC2/latest/APIReference/ApiReference-ItemType-RouteTableType'}};
 res_map['$IGW']={'desc':'stack/app', 'api':{ 'DescribeInternetGateways':'AWSEC2/latest/APIReference/ApiReference-query-DescribeInternetGateways', 'InternetGatewayType':'AWSEC2/latest/APIReference/ApiReference-ItemType-InternetGatewayType'}};
-res_map['$VPN1']={'desc':'stack/app', 'api':{ 'DescribeVpnConnections':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVpnConnections', 'VpnConnectionType':'AWSEC2/latest/APIReference/ApiReference-ItemType-VpnConnectionType'}};
+res_map['$VPN0']={'desc':'stack/app', 'api':{ 'DescribeVpnConnections':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVpnConnections', 'VpnConnectionType':'AWSEC2/latest/APIReference/ApiReference-ItemType-VpnConnectionType'}};
 res_map['$VGW']={'desc':'stack/app', 'api':{ 'DescribeVpnGateways':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVpnGateways', 'VpnGatewayType':'AWSEC2/latest/APIReference/ApiReference-ItemType-VpnGatewayType'}};
-res_map['$CGW1']={'desc':'stack/app', 'api':{ 'DescribeCustomerGateways':'AWSEC2/latest/APIReference/ApiReference-query-DescribeCustomerGateways', 'CustomerGatewayType':'AWSEC2/latest/APIReference/ApiReference-ItemType-CustomerGatewayType'}};
+res_map['$CGW0']={'desc':'stack/app', 'api':{ 'DescribeCustomerGateways':'AWSEC2/latest/APIReference/ApiReference-query-DescribeCustomerGateways', 'CustomerGatewayType':'AWSEC2/latest/APIReference/ApiReference-ItemType-CustomerGatewayType'}};
 res_map['$ENI0']={'desc':'stack/app', 'api':{ 'DescribeNetworkInterfaces':'AWSEC2/latest/APIReference/ApiReference-query-DescribeNetworkInterfaces', 'NetworkInterfaceType':'AWSEC2/latest/APIReference/ApiReference-ItemType-NetworkInterfaceType'}};
-res_map['$VOLUME']={'desc':'stack/app', 'api':{ 'DescribeVolumes':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVolumes', 'DescribeVolumesSetItemRespon':'AWSEC2/latest/APIReference/ApiReference-ItemType-DescribeVolumesSetItemResponseType'}};
+res_map['$VOLUME0']={'desc':'stack/app', 'api':{ 'DescribeVolumes':'AWSEC2/latest/APIReference/ApiReference-query-DescribeVolumes', 'DescribeVolumesSetItemRespon':'AWSEC2/latest/APIReference/ApiReference-ItemType-DescribeVolumesSetItemResponseType'}};
 res_map['$DHCP']={'desc':'stack/app', 'api':{ 'DescribeDhcpOptions':'AWSEC2/latest/APIReference/ApiReference-query-DescribeDhcpOptions', 'DhcpOptionsType':'AWSEC2/latest/APIReference/ApiReference-ItemType-DhcpOptionsType'}};
-res_map['$ACL']={'desc':'stack/app', 'api':{ 'DescribeNetworkAcls':'AWSEC2/latest/APIReference/ApiReference-query-DescribeNetworkAcls', 'NetworkAclType':'AWSEC2/latest/APIReference/ApiReference-ItemType-NetworkAclType'}};
+res_map['$DEFAULT-ACL']={'desc':'stack/app', 'api':{ 'DescribeNetworkAcls':'AWSEC2/latest/APIReference/ApiReference-query-DescribeNetworkAcls', 'NetworkAclType':'AWSEC2/latest/APIReference/ApiReference-ItemType-NetworkAclType'}};
 res_map['$DEFAULT-SG']={'desc':'stack/app', 'api':{ 'DescribeSecurityGroups':'AWSEC2/latest/APIReference/ApiReference-query-DescribeSecurityGroups', 'SecurityGroupItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-SecurityGroupItemType'}};
 res_map['$DEFAULT-KP']={'desc':'stack/app', 'api':{ 'DescribeKeyPairs':'AWSEC2/latest/APIReference/ApiReference-query-DescribeKeyPairs', 'DescribeKeyPairsResponseItem':'AWSEC2/latest/APIReference/ApiReference-ItemType-DescribeKeyPairsResponseItemType'}};
-res_map['$EIP']={'desc':'stack/app', 'api':{ 'DescribeAddresses':'AWSEC2/latest/APIReference/ApiReference-query-DescribeAddresses', 'DescribeAddressesResponseIte':'AWSEC2/latest/APIReference/ApiReference-ItemType-DescribeAddressesResponseItemType'}};
-res_map['$CLOUD-WATCH']={'desc':'stack/app', 'api':{ 'DescribeAlarms':'AmazonCloudWatch/latest/APIReference/API_DescribeAlarms', 'MetricAlarm':'AmazonCloudWatch/latest/APIReference/API_MetricAlarm'}};
-res_map['$LAUNCH-CONFIGURATION']={'desc':'stack/app', 'api':{ 'DescribeLaunchConfigurations':'AutoScaling/latest/APIReference/API_DescribeLaunchConfigurations', 'LaunchConfiguration':'AutoScaling/latest/APIReference/API_LaunchConfiguration'}};
-res_map['$SCALING-POLICY']={'desc':'stack/app', 'api':{ 'DescribePolicies':'AutoScaling/latest/APIReference/API_DescribePolicies', 'ScalingPolicy':'AutoScaling/latest/APIReference/API_ScalingPolicy'}};
-res_map['$SUBSCRIPTION1']={'desc':'stack/app', 'api':{ 'ListSubscriptions':'sns/latest/APIReference/API_ListSubscriptions', 'Subscription':'sns/latest/APIReference/API_Subscription'}};
+res_map['$EIP0']={'desc':'stack/app', 'api':{ 'DescribeAddresses':'AWSEC2/latest/APIReference/ApiReference-query-DescribeAddresses', 'DescribeAddressesResponseIte':'AWSEC2/latest/APIReference/ApiReference-ItemType-DescribeAddressesResponseItemType'}};
+res_map['$CLOUD-WATCH0']={'desc':'stack/app', 'api':{ 'DescribeAlarms':'AmazonCloudWatch/latest/APIReference/API_DescribeAlarms', 'MetricAlarm':'AmazonCloudWatch/latest/APIReference/API_MetricAlarm'}};
+res_map['$LAUNCH-CONFIGURATION0']={'desc':'stack/app', 'api':{ 'DescribeLaunchConfigurations':'AutoScaling/latest/APIReference/API_DescribeLaunchConfigurations', 'LaunchConfiguration':'AutoScaling/latest/APIReference/API_LaunchConfiguration'}};
+res_map['$SCALING-POLICY0']={'desc':'stack/app', 'api':{ 'DescribePolicies':'AutoScaling/latest/APIReference/API_DescribePolicies', 'ScalingPolicy':'AutoScaling/latest/APIReference/API_ScalingPolicy'}};
+res_map['$SUBSCRIPTION0']={'desc':'stack/app', 'api':{ 'ListSubscriptions':'sns/latest/APIReference/API_ListSubscriptions', 'Subscription':'sns/latest/APIReference/API_Subscription'}};
 res_map['$TOPIC']={'desc':'stack/app', 'api':{ 'ListTopics':'sns/latest/APIReference/API_ListTopics', 'Topic':'sns/latest/APIReference/API_Topic'}};
-res_map['$NOTIFICATION-CONFIGURATION']={'desc':'stack/app', 'api':{ 'DescribeNotificationConfigurations':'AutoScaling/latest/APIReference/API_DescribeNotificationConfigurations', 'NotificationConfiguration':'AutoScaling/latest/APIReference/API_NotificationConfiguration'}};
-res_map['$SERVER-CERTIFICATE']={'desc':'stack/app', 'api':{ 'ListServerCertificates':'IAM/latest/APIReference/API_ListServerCertificates', 'ServerCertificateMetadata':'IAM/latest/APIReference/API_ServerCertificateMetadata'}};
+res_map['$NOTIFICATION-CONFIGURATION0']={'desc':'stack/app', 'api':{ 'DescribeNotificationConfigurations':'AutoScaling/latest/APIReference/API_DescribeNotificationConfigurations', 'NotificationConfiguration':'AutoScaling/latest/APIReference/API_NotificationConfiguration'}};
+res_map['$SERVER-CERTIFICATE0']={'desc':'stack/app', 'api':{ 'ListServerCertificates':'IAM/latest/APIReference/API_ListServerCertificates', 'ServerCertificateMetadata':'IAM/latest/APIReference/API_ServerCertificateMetadata'}};
 res_map['$EC2-TAG']={'desc':'app', 'api':{ 'DescribeTags':'AWSEC2/latest/APIReference/ApiReference-query-DescribeTags', 'TagSetItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-TagSetItemType'}};
 res_map['$ASG-TAG']={'desc':'app', 'api':{ 'DescribeTags':'AutoScaling/latest/APIReference/API_DescribeTags', 'TagDescription':'AutoScaling/latest/APIReference/API_TagDescription'}};
-res_map['$AZ']={'desc':'stack/app', 'api':{ 'DescribeAvailabilityZones':'AWSEC2/latest/APIReference/ApiReference-query-DescribeAvailabilityZones', 'AvailabilityZoneItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-AvailabilityZoneItemType'}};
+res_map['$AZ0']={'desc':'stack/app', 'api':{ 'DescribeAvailabilityZones':'AWSEC2/latest/APIReference/ApiReference-query-DescribeAvailabilityZones', 'AvailabilityZoneItemType':'AWSEC2/latest/APIReference/ApiReference-ItemType-AvailabilityZoneItemType'}};
 
 
 /**

@@ -12,7 +12,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       {
         port1 :
           name : "elb-sg-out"
-          type : constant.AWS_RESOURCE_TYPE.AWS.ELB
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
           name      : "launchconfig-sg"
           direction : "horizontal"

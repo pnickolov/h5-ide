@@ -70,6 +70,20 @@ define [ "Design", "backbone" ], ( Design )->
     classId : _.uniqueId("dfc_")
     type   : "Framework_R"
 
+    # store child model
+    collection: new Backbone.Collection()
+
+    # get childs by type
+    getCollection: ( type ) ->
+      childs = @collection.filter ( model ) ->
+        if model.type is type
+          return true
+        return false
+
+
+      new Backbone.Collection( childs )
+
+
     constructor : ( attributes, options )->
 
       if not attributes

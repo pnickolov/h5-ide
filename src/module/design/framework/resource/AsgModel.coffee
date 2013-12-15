@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scalingPolicyModel" ], ( ComplexResModel, CanvasManager, Design, constant, scalingPolicy )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scalingPolicyModel", "../connection/ElbAsso" ], ( ComplexResModel, CanvasManager, Design, constant, scalingPolicy, ElbAsso )->
 
   Model = ComplexResModel.extend {
 
@@ -101,6 +101,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
 
       model = new Model( attr )
 
+      for elbName in LoadBalancerNames
+        elb = resolve MC.extractID elbName
+        new ElbAsso( model, elb )
 
       model.collection.add lc
 

@@ -53,6 +53,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                     when "1"  then rule.protocol = "ICMP"
                     when "6"  then rule.protocol = "TCP"
                     when "17" then rule.protocol = "UDP"
+                null
 
             @set "rules", rules
 

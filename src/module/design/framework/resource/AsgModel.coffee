@@ -101,7 +101,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
 
       model = new Model( attr )
 
-      for elbName in LoadBalancerNames
+      for elbName in attr.LoadBalancerNames
         elb = resolve MC.extractID elbName
         new ElbAsso( model, elb )
 

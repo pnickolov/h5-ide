@@ -28,7 +28,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       if not cgw or not vpn
         return
 
-      vpn_connection = new C( cgw, vpn, {
+      new C( cgw, vpn, {
         id     : data.uid
         routes : _.map data.resource.Routes, ( r )-> r.DestinationCidrBlock
       } )

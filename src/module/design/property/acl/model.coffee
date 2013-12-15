@@ -65,16 +65,17 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                     a_n = parseInt( a.number, 10 ) || -1
                     b_n = parseInt( b.number, 10 ) || -1
                     if a_n > b_n then return 1
-                    if a_n = b_n then return 0
+                    if a_n is b_n then return 0
                     if a_n < b_n then return -1
 
             else
                 compare = ( a, b )->
                     if a[key] > b[key] then return 1
-                    if a[key] = b[key] then return 0
+                    if a[key] is b[key] then return 0
                     if a[key] < b[key] then return -1
 
             @attributes.rules = @attributes.rules.sort( compare )
+            null
 
 
         setSortOption : ( key )->

@@ -1,7 +1,7 @@
 
-define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant ) ->
+define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
-  Model = ComplexResModel.extend {
+  Model = ResourceModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
@@ -26,7 +26,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant ) ->
 
       model = new Model( attr )
 
-      asg.scalingPolicies.add model
+      asg.collection.add model
 
 
 

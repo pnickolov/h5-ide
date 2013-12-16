@@ -11,7 +11,7 @@ define [ '../base/main',
 
     VPNModule = PropertyModule.extend {
 
-        handleTypes : "vgw-vpn>cgw-vpn"
+        handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection
 
         initStack : () ->
             @view  = view

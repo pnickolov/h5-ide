@@ -21,11 +21,14 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       asgUid = MC.extractID attr.AutoScalingGroupName
       asg = resolve asgUid
-      delete attr.AutoScalingGroupName
+
+      topicUid = MC.extractID attr.TopicARN
+      topic = resolve topicUid
 
       model = new Model( attr )
 
       asg.addToStorage model
+      model.addToStorage topic
 
 
       model

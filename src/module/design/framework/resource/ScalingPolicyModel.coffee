@@ -22,7 +22,6 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       asgUid = MC.extractID attr.AutoScalingGroupName
       asg = resolve asgUid
-      delete attr.AutoScalingGroupName
 
       model = new Model( attr )
 

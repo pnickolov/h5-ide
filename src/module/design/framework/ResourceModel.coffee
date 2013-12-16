@@ -71,7 +71,7 @@ define [ "Design", "backbone" ], ( Design )->
   ###
 
   # FORCE_MAP defines what parent method will be called when child's overriden method is called
-  FORCE_MAP = [ "remove", "initialize", "connect", "addChild" ]
+  FORCE_MAP = [ "remove", "initialize", "connect", "addChild", "disconnect" ]
 
   ResourceModel = Backbone.Model.extend {
 

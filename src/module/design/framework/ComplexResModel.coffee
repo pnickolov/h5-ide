@@ -13,6 +13,9 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
     connect : ( ConnectionModel ) -> [FORCE]
         description : connect is called when a connection is created, subclass should override it to do its own logic.
 
+    disconnect : ( ConnectionModel )-> [FORCE]
+        description : disconnect is called when a connection is removed, subclass should override it to do its own logic.
+
 
     draw : ( isNewlyCreated : Boolean ) ->
         description : if the user defines this method, it will be called after object is created. And the framework might call this method at an approprieate time.
@@ -78,6 +81,17 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       connections.push connection
       @set "__connections", connections
       null
+
+    disconnect : ( connection )->
+      connections = @get "__connections"
+      # Directly remove the connection without triggering anything changed.
+
+      console.assert( connections, "Disconnecting a resource, when the resource doesn't connect to anything." )
+      console.assert( connections.indexOf(connection) != -1, "Disconnecting a resource, when the connection doesn't connect to resource." )
+
+      connections.splice( connections.indexOf( connection ), 1 )
+      null
+
 
     createNode : ( option )->
       # A helper function to create a SVG Element to represent a group

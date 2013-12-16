@@ -111,23 +111,14 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       null
 
     remove : ()->
-
-      # Directly remove the connection without triggering anything.
-      c = @__port1Comp.attributes.__connections
-      ci = c.indexOf this
-      if ci != -1
-        c.splice( ci, 1 )
-
-      c = @__port2Comp.attributes.__connections
-      ci = c.indexOf this
-      if ci != -1
-        c.splice( ci, 1 )
-
+      @__port1Comp.disconnect( this )
+      @__port2Comp.disconnect( this )
 
       # Remove element in SVG, if the line implements draw
       if @draw
         $( document.getElementById( @id ) ).remove()
       null
+
   }, {
     extend : ( protoProps, staticProps )->
 

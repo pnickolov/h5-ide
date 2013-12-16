@@ -8,14 +8,16 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       y        : 0
       width    : 17
       height   : 10
+      bgpAsn   : ""
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
+
+    isDynamic : ()->
+      !!@get("bgpAsn")
 
     draw : ( isCreate )->
 
       if isCreate
-
-        design = Design.instance()
 
         # Call parent's createNode to do basic creation
         node = @createNode({
@@ -42,6 +44,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+      else
+        node = $( document.getElementById( @id ) )
+        # Update label
+        CanvasManager.update node.children(".node-label"), @get("name")
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
@@ -50,8 +57,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
       new Model({
 
-        id           : data.uid
-        name         : data.name
+        id     : data.uid
+        name   : data.name
+        appId  : data.resource.CustomerGatewayId
+        bgpAsn : data.resource.BgpAsn
+        ip     : data.resource.IpAddress
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

@@ -26,7 +26,7 @@ define [ '../base/view',
                 @forceShow()
                 $inputs.focus()
 
-            "vpn:#{@model.attributes.cgw_name}"
+            @model.attributes.name
 
         removeIP : (event, ip) ->
             if not ip

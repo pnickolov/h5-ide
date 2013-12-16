@@ -10,12 +10,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
 
         events   :
             "click #property-cgw .cgw-routing input" : 'onChangeRouting'
-            "change #property-cgw-bgp"  : 'onChangeBGP'
-            "change #property-cgw-name" : 'onChangeName'
+            "change #property-cgw-bgp"               : 'onChangeBGP'
+            "change #property-cgw-name"              : 'onChangeName'
 
-            "focus #property-cgw-ip"  : 'onFocusIP'
-            "keypress #property-cgw-ip"  : 'onPressIP'
-            "blur #property-cgw-ip"  : 'onBlurIP'
+            "focus #property-cgw-ip"    : 'onFocusIP'
+            "keypress #property-cgw-ip" : 'onPressIP'
+            "blur #property-cgw-ip"     : 'onBlurIP'
 
         render     : () ->
             @$el.html template @model.attributes
@@ -50,24 +50,12 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant' ], ( 
                 @model.setBGP $target.val()
 
         onChangeName : ( event ) ->
-            $target = $ event.currentTarget
-            id = @model.get 'uid'
-            MC.validate.preventDupname $target, id, 'Customer Gateway'
+            target = $ event.currentTarget
+            name = target.val()
 
-            if $target.parsley 'validate'
-                name = $target.val()
-                @trigger "CHANGE_NAME", name
+            if @checkDupName( target, "Customer Gateway" )
+                @model.setName name
                 @setTitle name
-
-        setBGP : ( bgp ) ->
-            dynamic = false
-            if bgp
-                $( '#property-cgw-bgp' ).val bgp
-                dynamic = true
-
-            $( '#property-routing-dynamic' ).prop "checked", dynamic
-            $( '#property-routing-static' ).prop  "checked", !dynamic
-            $( '#property-cgw-bgp-wrapper').toggle dynamic
 
         onPressIP : ( event ) ->
             if (event.keyCode is 13)

@@ -20,7 +20,7 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
                     uid     : uid
                     name    : "vpn:#{cgw.get('name')}"
                     ips     : vpn.get("routes")
-                    dynamic : cgw.get("dynamic")
+                    dynamic : cgw.isDynamic()
                 }
 
             null

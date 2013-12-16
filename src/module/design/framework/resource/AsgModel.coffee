@@ -105,7 +105,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
         elb = resolve MC.extractID elbName
         new ElbAsso( model, elb )
 
-      model.collection.add lc
+      model.addToStorage lc
 
   }
 

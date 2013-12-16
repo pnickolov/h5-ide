@@ -25,7 +25,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       model = new Model( attr )
 
-      asg.collection.add model
+      asg.addToStorage model
 
 
       model

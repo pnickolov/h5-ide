@@ -695,7 +695,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 				"VpnConnectionId": ""
 			}
 		}
-		vpn_json.resource.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
+		if aws_vpn.options and aws_vpn.options.staticRoutesOnly
+			vpn_json.resource.Options.StaticRoutesOnly = aws_vpn.options.staticRoutesOnly
 		if aws_vpn.routes
 			for route in aws_vpn.routes
 

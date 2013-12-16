@@ -6487,8 +6487,8 @@ MC.canvas.analysis = function ( data )
 			if (
 				b.totalChild === a.totalChild &&
 				(
-					a.children.length > 0 &&
-					b.children.length > 0
+					b.totalChild > 0 &&
+					a.totalChild > 0
 				)
 			)
 			{
@@ -6902,10 +6902,13 @@ MC.canvas.analysis = function ( data )
 	// CGW
 	if (resource_stack[ 'AWS.VPC.CustomerGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS.VPC.CustomerGateway' ][ 0 ] ].coordinate = [
-			layout.coordinate[0] + layout.size[0] + 8,
-			layout.coordinate[1] + (layout.size[1] / 2) - 4
-		];
+		$.each(resource_stack[ 'AWS.VPC.CustomerGateway' ], function (i, item)
+		{
+			resources[ item ].coordinate = [
+				layout.coordinate[0] + layout.size[0] + 8,
+				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 4
+			];
+		});
 	}
 
 	console.info(layout);

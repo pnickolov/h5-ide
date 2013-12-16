@@ -5476,6 +5476,10 @@ a.action-link:hover {
 }
 
 
+.icon-visualization-tabbar {
+	background: url('../images/ide/icon-app-visualization.png') center center no-repeat;
+}
+
 #json-content {
 	margin: 15px 0;
 	width: 645px;
@@ -7004,7 +7008,7 @@ summary:focus {
 
 .property-header-info {
 	position: absolute;
-	right: 4px;
+	right: 15px;
 	top: 15px;
 	color: #4495d3;
 	cursor: pointer;

@@ -1,7 +1,7 @@
 
 define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManager, ResourceModel )->
 
-  emptrArr = []
+  emptyArr = []
 
   ###
     -------------------------------
@@ -63,9 +63,9 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       # Remove connection
       connections = this.attributes.__connections
       if connections
-      this.attributes.__connections = []
-      for c in connections
-        c.remove()
+        this.attributes.__connections = []
+        for c in connections
+          c.remove()
 
       # Remove element in SVG
       if @draw
@@ -135,41 +135,31 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
       if option.sg
         sggroup = Canvon.group().append(
-          Canvon.rectangle(10, 6, 7 , 5).attr({
-            'id'    : @id + '_sg-color-label1'
-            'class' : 'node-sg-color-border tooltip'
-          }),
-          Canvon.rectangle(20, 6, 7 , 5).attr({
-            'id'    : @id + '_sg-color-label2'
-            'class' : 'node-sg-color-border tooltip'
-          }),
-          Canvon.rectangle(30, 6, 7 , 5).attr({
-            'id'    : @id + '_sg-color-label3'
-            'class' : 'node-sg-color-border tooltip'
-          }),
-          Canvon.rectangle(40, 6, 7 , 5).attr({
-            'id'    : @id + '_sg-color-label4'
-            'class' : 'node-sg-color-border tooltip'
-          }),
-          Canvon.rectangle(50, 6, 7 , 5).attr({
-            'id'    : @id + '_sg-color-label5'
-            'class' : 'node-sg-color-border tooltip'
-          })
+          Canvon.rectangle(10, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(20, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(30, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(40, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(50, 6, 7 , 5).attr({'class' : 'node-sg-color-border tooltip'})
         ).attr({
-          'id'        : @id + '_node-sg-color-group'
           'class'     : 'node-sg-color-group'
           'transform' : 'translate(8, 62)'
         })
 
         node.append( sggroup )
-        CanvasManager.updateSGLabel( @id, sggroup )
 
       node
 
     ###
      ReadOnly Infomation
     ###
-    connections : ()-> this.get("__connections") || emptrArr
+    connections : ( type )->
+      cnns = this.get("__connections")
+
+      if cnns and _.isString type
+        cnns = _.filter cnns, ( cn )-> cn.type is type
+
+      cnns || emptyArr
+
     parent      : ()-> this.get("__parent")
     x           : ()-> this.get("x")
     y           : ()-> this.get("y")

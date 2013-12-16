@@ -61,7 +61,7 @@ define [ 'event',
 
                         if type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
                             vpc_ids = _.keys item
-                            if isArray( vpc_ids ) and vpc_ids.length > 2
+                            if isArray( vpc_ids ) and vpc_ids.length > 100
                                 is_true = true
 
                     if is_true

@@ -76,9 +76,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 ide_event.trigger ide_event.SWITCH_MAIN
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
+        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid, design_model ) ->
             console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid }
+            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid, 'design_model' : design_model }
             null
 
         saveProcessTab : ( tab_id ) ->
@@ -101,6 +101,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
             @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
+            @setDesignModel       $.extend true, {}, MC.tab[ tab_id ].design_model
             #
             null
 
@@ -181,6 +182,15 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             console.log 'setOriginResource', data, tab_id
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
+
+        setDesignModel : ( design ) ->
+            console.log 'setDesignModel'
+            design.use()
+            null
+
+        getDesignModel : () ->
+            console.log 'getDesignModel'
+            Design.instance()
 
         describeInstancesOfASG : (region) ->
 

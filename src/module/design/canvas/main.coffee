@@ -49,7 +49,32 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.canvas.layout.init()
                         # model.initLine()
                         # model.reDrawSgLine()
-                        new Design( MC.canvas_data.component, MC.canvas_data.layout, {} )
+
+                    # new design flow
+                    options =
+                        type  : if current_platform is 'custom-vpc' then Design.TYPE.Vpc else current_platform
+                        model : Tabbar.current
+
+                    if type is 'NEW_STACK'
+
+                        # platform is classic
+                        if options.type is Design.Type.Classic
+                            component = MC.canvas.DESIGN_INIT_DATA
+
+                        # platform is vpc
+                        else if options.type in [ Design.Type.Vpc, Design.Type.DefaultVpc ]
+                            component = MC.canvas.DESIGN_INIT_DATA_VPC
+
+                        layout    = MC.canvas.DESIGN_INIT_LAYOUT
+
+                    else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
+
+                        component = MC.canvas_data.component
+                        layout    = MC.canvas_data.layout
+
+                    new Design component, layout, options
+                    # new design flow
+
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
                     #

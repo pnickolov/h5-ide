@@ -55,7 +55,8 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                                   model.getCanvasProperty(),
                                   property_main.snapshot(),
                                   model.getOriginData(),
-                                  model.getTAValidation()
+                                  model.getTAValidation(),
+                                  model.getDesignModel()
                 null
 
             #listen SWITCH_TAB

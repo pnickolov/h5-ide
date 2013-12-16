@@ -110,6 +110,11 @@ require.config {
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
 		#############################################
+		# design model
+		#############################################
+		'Design'             : 'module/design/framework/Design'
+
+		#############################################
 		# module
 		#############################################
 		'base_main'          : 'module/base/base_main'
@@ -137,8 +142,6 @@ require.config {
 		'design_module'      : 'module/design/main'
 		'design_view'        : 'module/design/view'
 		'design_model'       : 'module/design/model'
-
-		"Design"        : 'module/design/framework/Design'
 
 		#sub module with design
 		'resource'           : 'module/design/resource/main'

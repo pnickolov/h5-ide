@@ -191,14 +191,15 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
 
   Design.TYPE = {
-    Classic    : "Classic"
-    Vpc        : "Vpc"
-    DefaultVpc : "DefaultVpc"
+    Classic    : "ec2-classic"
+    Vpc        : "ec2-vpc"
+    DefaultVpc : "default-vpc"
   }
   Design.MODE = {
-    Stack   : "Stack"
-    App     : "App"
-    AppEdit : "AppEdit"
+    Stack   : "stack"
+    App     : "app"
+    AppEdit : "appedit"
+    AppView : "appview"
   }
 
   ### Private Interface ###

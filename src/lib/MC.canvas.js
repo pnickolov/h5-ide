@@ -6478,6 +6478,12 @@ MC.canvas.analysis = function ( data )
 
 		if (method === 'horizontal')
 		{
+			children.sort(function (a, b)
+			{
+				//console.info(a, b);
+				return a.totalChild - b.totalChild; 
+			});
+
 			$.each(children, function (current_index, item)
 			{
 				item.coordinate = [
@@ -6631,15 +6637,36 @@ MC.canvas.analysis = function ( data )
 		resource_stack[ 'AWS-ELB' ].length > 1
 	)
 	{
-		var i = 1,
-			l = layout.children.length;
+		// var i = 1,
+		// 	l = layout.children.length;
 
-		for ( ; i < l ; i++ )
+		// for ( ; i < l ; i++ )
+		// {
+		// 	layout.children[ i ].coordinate[ 1 ] += 15;
+		// }
+
+		if (layout.children[ 1 ])
 		{
-			layout.children[ i ].coordinate[ 1 ] += 15;
+			layout.children[ 1 ].coordinate[ 1 ] += 15;
 		}
 
-		layout.size[ 1 ] += 10;
+		if (layout.children[ 2 ])
+		{
+			layout.children[ 2 ].coordinate = [
+				layout.children[ 0 ].coordinate[ 0 ] + layout.children[ 0 ].size[ 0 ] + 5,
+				layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] - layout.children[ 2 ].size[ 1 ]
+			];
+		}
+
+		if (layout.children[ 3 ])
+		{
+			layout.children[ 3 ].coordinate = [
+				layout.children[ 1 ].coordinate[ 0 ] + layout.children[ 1 ].size[ 0 ] + 5,
+				layout.children[ 1 ].coordinate[ 1 ]
+			];
+		}
+
+		//layout.size[ 1 ] += 10;
 	}
 
 	function absPosition(node, x, y)
@@ -6758,6 +6785,8 @@ MC.canvas.analysis = function ( data )
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
 	}
+
+	console.info(layout);
 
 	return true;
 };

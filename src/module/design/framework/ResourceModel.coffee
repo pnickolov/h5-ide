@@ -60,6 +60,14 @@ define [ "Design", "backbone" ], ( Design )->
         description : listenTo() is a convinant method for on().
         Benifits is that when this resource is removed, it will automatically unListen everything it previous listened to. Side-effects are the context of the callback will always be this.
 
+    # storage()
+    # getFromStorage( filter )
+    # addToStorage( resouceModel )
+        description : One can store resourceModels into this.storage(). All the resources in this.storage() will be remove when this remove().
+        According to `Backbone.Collection.model` and `Backbone.Collection.create()`, collection is ususally used to store the same type/kind of objects.
+        Practically speaking, using this.storage() ( especially using it store different kinds of objects ) are unreasonable. It is uncertain if something is inside this.storage(), thus making it hard to manage these things.
+        Better not to use this api.
+
   ###
 
   # FORCE_MAP defines what parent method will be called when child's overriden method is called
@@ -68,21 +76,33 @@ define [ "Design", "backbone" ], ( Design )->
   ResourceModel = Backbone.Model.extend {
 
     classId : _.uniqueId("dfc_")
-    type   : "Framework_R"
+    type    : "Framework_R"
 
-    # store child model
-    collection: new Backbone.Collection()
+    # Storage is created when necessary
+    storage : ()->
+      if not this.__storage
+        this.__storage = new Backbone.collection()
 
-    # get childs by type
-    getCollection: ( type ) ->
-      childs = @collection.filter ( model ) ->
-        if model.type is type
-          return true
-        return false
+      this.__storage
 
+    getFromStorage : ( filter ) ->
+      storage = this.storage()
 
-      new Backbone.Collection( childs )
+      if _.isString filter
+        models = _.filter storage.models, ( res )-> res.type is filter
 
+      else if _.isFunction filter
+        models = _.filter storage.models, filter
+
+      else
+        models = storage.models
+
+      new Backbone.collection( models )
+
+    addToStorage : ( resource ) ->
+      storage = this.storage()
+      storage.add resource
+      null
 
     constructor : ( attributes, options )->
 
@@ -151,8 +171,16 @@ define [ "Design", "backbone" ], ( Design )->
           if obj then obj.off( null, null, this )
         this.__interestedObj = null
 
+      # Clear everything in storage, if we have storage
+      if this.__storage
+        this.__storage.off()
+        for m in this.__storage.models
+          m.remove()
+
       # Broadcast remove event
       this.trigger "REMOVED"
+      # Also trigger a destroy event for Backbone.
+      this.trigger "destroy"
 
       # Clear all events attached to me
       this.off()

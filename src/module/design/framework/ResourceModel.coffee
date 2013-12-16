@@ -155,6 +155,8 @@ define [ "Design", "backbone" ], ( Design )->
     isRemovable : () -> true
     isReparentable : ()-> true
 
+    destroy : ()-> @remove()
+
     remove : ()->
       console.debug "ResourceModel.remove"
 

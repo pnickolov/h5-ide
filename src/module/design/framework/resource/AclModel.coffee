@@ -18,6 +18,8 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
         port     : ""
       }
 
+      # For ICMP rule, port will be "IcmpTypeCode.Code/IcmTypeCode.Type"
+
       if r.Protocol is "1" and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type
         rule.port = r.IcmpTypeCode.Code + "/" + r.IcmpTypeCode.Type
       else if r.PortRange.From and r.PortRange.To

@@ -115,7 +115,14 @@ define [ 'jquery', 'event', 'base_main',
                 console.log 'OPEN_PROCESS'
                 #push event
                 ide_event.trigger ide_event.SWITCH_PROCESS, 'OPEN_PROCESS', tab_id
-                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', tab_id
+
+                # check process type
+                if MC.forge.other.processType( tab_id ) is 'appview'
+                    icon = 'visualization'
+                else if MC.forge.other.processType( tab_id ) is 'process'
+                    icon = 'pending'
+
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, icon, tab_id
 
             #listen old_stack
             model.on 'OLD_STACK', ( tab_id ) ->
@@ -295,7 +302,7 @@ define [ 'jquery', 'event', 'base_main',
                 console.log obj
 
                 ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, region_name, obj.data, null
-                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'Running', tab_id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'visualization', tab_id
 
                 null
 

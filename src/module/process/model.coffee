@@ -273,7 +273,7 @@ define [ 'aws_model', 'ami_model'
                 else if obj and obj.id
 
                     # update tab icon
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', obj.id
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'visualization', obj.id
 
                 else
                     console.log 'not found process'

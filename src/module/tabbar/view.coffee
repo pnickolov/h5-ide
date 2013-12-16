@@ -101,10 +101,27 @@ define [ 'event',
 
         updateTabIcon : ( type, tab_id ) ->
             console.log 'updateTabIcon, type = ' + type + ', tab_id = ' + tab_id
+
             _.each $( '.tabbar-group' ).children(), ( item ) ->
-                $item = $( item )
+
+                $item = $ item
+
                 if $item.attr( 'id' ) is 'tab-bar-' + tab_id
-                    if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
+
+                    switch type
+                        when 'stack'
+                            classname = 'icon-stack-tabbar'
+
+                        when 'app', 'pending'
+                            classname = 'icon-app-' + type.toLowerCase()
+
+                        when 'visualization'
+                            classname = 'icon-' + type + '-tabbar'
+
+                        else
+                            console.log 'current not fond icon type', type, tab_id
+
+                    #if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()
                     $item.find( 'i' ).addClass 'icon-tabbar-label ' + classname
 

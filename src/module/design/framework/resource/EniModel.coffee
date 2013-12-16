@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAsso", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -108,7 +108,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       if data.resource.Attachment
         embed = data.resource.Attachment.DeviceIndex is "0"
 
-      new Model({
+      eni = new Model({
 
         id   : data.uid
         name : data.name
@@ -118,6 +118,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
         x : if embed then 0 else layout_data.coordinate[0]
         y : if embed then 0 else layout_data.coordinate[1]
       })
+
+      if data.resource.GroupSet
+        for group in data.resource.GroupSet
+          new SgAsso( eni, resolve( MC.extractID( group.GroupId ) ) )
+      null
 
   }
 

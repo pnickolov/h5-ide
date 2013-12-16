@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ 'lib/forge/app' ], ( forge_app ) ->
+define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app ) ->
 
 	SGListModel = Backbone.Model.extend {
 
@@ -38,100 +38,74 @@ define [ 'lib/forge/app' ], ( forge_app ) ->
 
 		getSGInfoList : ->
 
+			design       = Design.instance()
 			parent_model = @parent_model
-			if !parent_model or !parent_model.getSGList
-				return
+
+			readonly = false
+			if design.modeIsApp()
+				readonly = true
+			else if design.modeIsAppEdit()
+				if parent_model.isSGListReadOnly
+					readonly = parent_model.isSGListReadOnly()
 
 
 			isELBParent   = parent_model.get 'is_elb'
 			isStackParent = parent_model.get 'is_stack'
+			resource      = design.component( parent_model.get("uid") )
 
-			current_tab_type = MC.canvas.getState()
-			if current_tab_type is 'app'
-				readonly = true
-			else if current_tab_type is 'appedit'
-				if parent_model.isSGListReadOnly
-					readonly = parent_model.isSGListReadOnly()
-				else
-					readonly = false
-			else
-				readonly = false
-
-			parentSGList  = parent_model.getSGList()
-			allElbSGAry   = MC.aws.elb.getAllElbSGUID()
-			allSGUIDAry   = []
-			displaySGAry  = []
-			allElbSGMap   = {}
-
-			for uid in allElbSGAry
-				allElbSGMap[ uid ] = true
-
-			for uid, comp of MC.canvas_data.component
-				if comp.type isnt 'AWS.EC2.SecurityGroup'
-					continue
-				if isELBParent or isStackParent or not allElbSGMap.hasOwnProperty( uid )
-					allSGUIDAry.push uid
-
-			sg_full        = { full : false }
+			sg_list = []
 			enabledSGCount = 0
-			defaultSG      = null
 
-			for uid in allSGUIDAry
-
-				sgComp = MC.canvas_data.component[uid]
-				sgCompRes = sgComp.resource
-
-				sgIpPermissionsLength = sgCompRes.IpPermissions.length
-				sgIpPermissionsEgressLength = if sgCompRes.IpPermissionsEgress then sgCompRes.IpPermissionsEgress.length else 0
-
-				sgChecked = uid in parentSGList
-				if sgChecked
-					++enabledSGCount
+			for sg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects()
+				# Ignore ElbSG if the property panel is not stack/elb
+				if sg.isElbSg() and not ( isELBParent or isStackParent )
+					continue
 
 				needShow = isStackParent or ( not readonly ) or sgChecked
-
 				if not needShow
 					continue
 
-				isDefault = sgComp.name is 'DefaultSG'
-				deletable = not ( readonly or isStackParent or isDefault or forge_app.existing_app_resource( uid ) )
-				isElbSG = MC.aws.elb.isELBDefaultSG(uid)
-				if isElbSG
+				if sg.isElbSg() or sg.get("isDefault") or readonly or isStackParent or resource.get("appId")
 					deletable = false
-
-				# need to display
-				sgDisplayObj =
-					sgUID       : uid
-					sgName      : sgComp.name
-					sgDesc      : sgCompRes.GroupDescription
-					sgRuleNum   : sgIpPermissionsLength + sgIpPermissionsEgressLength
-					sgMemberNum : @_getSGRefNum uid
-					sgChecked   : sgChecked
-					sgHideCheck : readonly or isStackParent
-					sgIsDefault : isDefault
-					sgFull      : sg_full
-					sgColor     : MC.aws.sg.getSGColor uid
-					readonly    : readonly
-					deletable   : deletable
-
-				if sgDisplayObj.sgIsDefault
-					defaultSG = sgDisplayObj
 				else
-					displaySGAry.push sgDisplayObj
+					deletable = true
 
-			#move DefaultSG to the first
-			if defaultSG
-				displaySGAry.unshift defaultSG
+				assos = sg.connections( "SgAsso" )
+				used  = false
+				if resource
+					for asso in assos
+						if asso.connectsTo( resource.id )
+							used = true
+							++enabledSGCount
+							break
 
-			# if MC.canvas_data.platform != "ec2-classic" && enabledSGCount >= 5
-				# In VPC, user can only select 5 SG
-				# sg_full.full = true
+				sg_list.push {
+					uid         : sg.id
+					color       : sg.color
+					name        : sg.get("name")
+					desc        : sg.get("description")
+					ruleCount   : sg.connections( "SgRule" ).length
+					memberCount : assos.length
+					hideCheck   : readonly or isStackParent
+					deletable   : deletable
+					used        : used
+				}
 
-			@set 'is_stack_sg', isStackParent
-			@set 'only_one_sg', enabledSGCount is 1
-			@set 'sg_list',     displaySGAry
-			@set 'sg_length',   if isStackParent then displaySGAry.length else enabledSGCount
-			@set 'readonly',    readonly
+			sg_list = sg_list.sort ( a_sg, b_sg )->
+				if a_sg.name is "DefaultSG" then return -1
+				if b_sg.name is "DefaultSG" then return 1
+				if a_sg.name <  b_sg.name   then return -1
+				if a_sg.name == b_sg.name   then return 0
+				if a_sg.name >  b_sg.name   then return 1
+
+
+			@set {
+				is_stack_sg : isStackParent
+				only_one_sg : enabledSGCount is 1
+				sg_list     : sg_list
+				sg_length   : if isStackParent then sg_list.length else enabledSGCount
+				readonly    : readonly
+			}
 			null
 
 

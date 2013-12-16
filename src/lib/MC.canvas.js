@@ -6484,7 +6484,46 @@ MC.canvas.analysis = function ( data )
 
 		normalSubnet.sort(function (a, b)
 		{
-			return b.totalChild - a.totalChild;
+			if (
+				b.totalChild === a.totalChild &&
+				(
+					a.children.length > 0 &&
+					b.children.length > 0
+				)
+			)
+			{
+				var weight = {
+						'a': 0,
+						'b': 0
+					};
+
+				$.each({"a": a, "b": b}, function (key, value)
+				{
+					$.each(value.children, function (i, item)
+					{
+						if (item.type === 'AWS.AutoScaling.Group')
+						{
+							weight[ key ] += 3;
+						}
+
+						if (item.type === 'AWS.EC2.Instance')
+						{
+							weight[ key ] += 2;
+						}
+
+						if (item.type === 'AWS.VPC.NetworkInterface')
+						{
+							weight[ key ] += 1;
+						}
+					});
+				});
+
+				return weight.b - weight.a;
+			}
+			else
+			{
+				return b.totalChild - a.totalChild;
+			}
 		});
 
 		children = internetELBconnected.concat(internalELBconnected, normalSubnet);

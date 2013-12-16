@@ -5769,7 +5769,8 @@ MC.canvas.event.keyEvent = function (event)
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 			(
 				canvas_status === 'stack' ||
-				canvas_status === 'appedit'
+				canvas_status === 'appedit' ||
+				canvas_status === 'appview'
 			) &&
 			MC.canvas_property.selected_node.length === 1 &&
 			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
@@ -5960,7 +5961,7 @@ MC.canvas.analysis = function ( data )
 
 	$.each(resources, function (key, value)
 	{
-		var type = value.type.replace(/\./ig, '-');
+		var type = value.type;//.replace(/\./ig, '-');
 
 		stack = resource_stack[ type ];
 
@@ -5973,16 +5974,16 @@ MC.canvas.analysis = function ( data )
 	});
 
 	layout = {
-		'id': resource_stack[ 'AWS-VPC-VPC' ][0],
+		'id': resource_stack[ 'AWS.VPC.VPC' ][0],
 		'coordinate': [5, 3],
 		'size': [0, 0],
 		'type': 'AWS.VPC.VPC'
 	};
 
 	// ELB connected children
-	if (resource_stack[ 'AWS-ELB' ] !== undefined)
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
 	{
-		$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
+		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
 		{
 			elb_connection = layout_data.component.node[ id ].connection;
 
@@ -6041,7 +6042,7 @@ MC.canvas.analysis = function ( data )
 		return children.length < 1 ? false : children;
 	}
 
-	node_child = searchChild( resource_stack[ 'AWS-VPC-VPC' ][0] );
+	node_child = searchChild( resource_stack[ 'AWS.VPC.VPC' ][0] );
 
 	if (node_child)
 	{
@@ -6414,6 +6415,83 @@ MC.canvas.analysis = function ( data )
 		];
 	}
 
+	function sortSubnet( children )
+	{
+		var internetELBconnected = [],
+			internalELBconnected = [],
+			normalSubnet = [],
+
+			isInternetELBconnected,
+			isInternalELBconnected,
+
+			layout_component_data = MC.canvas_data.
+
+			elb_type,
+			item_connection;
+
+		$.each(children, function (i, item)
+		{
+			item_connection = resources[ item.id ].connection;
+			isInternetELBconnected = false;
+			isInternalELBconnected = false;
+
+			if (item_connection)
+			{
+				$.each(item_connection, function (index, data)
+				{
+					if (resources[ data.target ].type === 'AWS.ELB')
+					{
+						elb_type = component_data[ data.target ].resource.Scheme;
+
+						if (elb_type === 'internet-facing')
+						{
+							isInternetELBconnected = true;
+						}
+
+						if (elb_type === 'internal')
+						{
+							isInternalELBconnected = true;
+						}
+					}
+				});
+			}
+
+			if (isInternetELBconnected)
+			{
+				internetELBconnected.push( item );
+			}
+
+			if (isInternalELBconnected)
+			{
+				internalELBconnected.push( item );
+			}
+
+			if (!isInternetELBconnected && !isInternalELBconnected)
+			{
+				normalSubnet.push( item );
+			}
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		normalSubnet.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		children = internetELBconnected.concat(internalELBconnected, normalSubnet);
+
+		return children;
+	}
+
 	function positionChild(node)
 	{
 		var children = node.children,
@@ -6478,11 +6556,15 @@ MC.canvas.analysis = function ( data )
 
 		if (method === 'horizontal')
 		{
-			children.sort(function (a, b)
+			if (node.type === 'AWS.EC2.AvailabilityZone')
 			{
-				//console.info(a, b);
-				return a.totalChild - b.totalChild; 
-			});
+				children = sortSubnet( children );
+				// children.sort(function (a, b)
+				// {
+				// 	//console.info(a, b);
+				// 	return a.totalChild - b.totalChild; 
+				// });
+			}
 
 			$.each(children, function (current_index, item)
 			{
@@ -6546,15 +6628,16 @@ MC.canvas.analysis = function ( data )
 			item.coordinate[1] += VPC_PADDING_TOP;
 		});
 	}
+
 	// ELB
-	if (resource_stack[ 'AWS-ELB' ] !== undefined)
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
 	{
-		resource_stack[ 'AWS-ELB' ].sort(function (a, b)
+		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
 		{
 			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
 		});
 
-		$.each(resource_stack[ 'AWS-ELB' ], function (current_index, id)
+		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
 		{
 			resources[ id ].coordinate = [
 				ELB_START_LEFT + (current_index * 10) + (current_index * 10),
@@ -6564,7 +6647,7 @@ MC.canvas.analysis = function ( data )
 	}
 
 	// RouteTable
-	if (resource_stack[ 'AWS-VPC-RouteTable' ] !== undefined)
+	if (resource_stack[ 'AWS.VPC.RouteTable' ] !== undefined)
 	{
 		var ROUTE_TABLE_START_LEFT = 15,
 			ROUTE_TABLE_START_TOP = 5,
@@ -6577,14 +6660,14 @@ MC.canvas.analysis = function ( data )
 			RT_connection,
 			RT_connect_target;
 
-		if (resource_stack[ 'AWS-VPC-RouteTable' ].length > 0)
+		if (resource_stack[ 'AWS.VPC.RouteTable' ].length > 0)
 		{
-			resource_stack[ 'AWS-VPC-RouteTable' ].sort(function (a, b)
+			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
 			{
 				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
 			});
 
-			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (index, id)
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)
 			{
 				RT_prefer = false;
 				RT_connection = layout_data.component.node[ id ].connection;
@@ -6617,9 +6700,9 @@ MC.canvas.analysis = function ( data )
 			});
 
 			// RT Children join
-			resource_stack[ 'AWS-VPC-RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
+			resource_stack[ 'AWS.VPC.RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
 
-			$.each(resource_stack[ 'AWS-VPC-RouteTable' ], function (current_index, id)
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (current_index, id)
 			{
 				resources[ id ].coordinate = [
 					(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
@@ -6633,8 +6716,8 @@ MC.canvas.analysis = function ( data )
 	if (
 		layout.children !== undefined &&
 		layout.children.length > 1 &&
-		resource_stack[ 'AWS-ELB' ] !== undefined &&
-		resource_stack[ 'AWS-ELB' ].length > 1
+		resource_stack[ 'AWS.ELB' ] !== undefined &&
+		resource_stack[ 'AWS.ELB' ].length > 1
 	)
 	{
 		// var i = 1,
@@ -6761,26 +6844,26 @@ MC.canvas.analysis = function ( data )
 	VPCsize();
 
 	// IGW & VGW
-	if (resource_stack[ 'AWS-VPC-InternetGateway' ] !== undefined)
+	if (resource_stack[ 'AWS.VPC.InternetGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS-VPC-InternetGateway' ][ 0 ] ].coordinate = [
+		resources[ resource_stack[ 'AWS.VPC.InternetGateway' ][ 0 ] ].coordinate = [
 			layout.coordinate[0] - 4,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
 	}
 
-	if (resource_stack[ 'AWS-VPC-VPNGateway' ] !== undefined)
+	if (resource_stack[ 'AWS.VPC.VPNGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS-VPC-VPNGateway' ][ 0 ] ].coordinate = [
+		resources[ resource_stack[ 'AWS.VPC.VPNGateway' ][ 0 ] ].coordinate = [
 			layout.coordinate[0] + layout.size[0] - 4,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];
 	}
 
 	// CGW
-	if (resource_stack[ 'AWS-VPC-CustomerGateway' ] !== undefined)
+	if (resource_stack[ 'AWS.VPC.CustomerGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS-VPC-CustomerGateway' ][ 0 ] ].coordinate = [
+		resources[ resource_stack[ 'AWS.VPC.CustomerGateway' ][ 0 ] ].coordinate = [
 			layout.coordinate[0] + layout.size[0] + 8,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
 		];

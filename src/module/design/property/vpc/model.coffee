@@ -2,7 +2,7 @@
 #  View Mode for design/property/vpc
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
 
     VPCModel = PropertyModel.extend {
 

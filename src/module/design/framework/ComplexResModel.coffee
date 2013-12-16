@@ -59,6 +59,7 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
       # Remove connection
       connections = this.attributes.__connections
+      if connections
       this.attributes.__connections = []
       for c in connections
         c.remove()

@@ -15,7 +15,7 @@ define [], ()->
       if not element
         return this
 
-      klass = element.getAttribute "class"
+      klass = element.getAttribute("class") || ""
       newKlass = klass.replace( new RegExp("\\b#{theClass}\\b", "g"), "" )
 
       if klass isnt newKlass
@@ -29,7 +29,7 @@ define [], ()->
       if not element
         return this
 
-      klass = element.getAttribute "class"
+      klass = element.getAttribute("class") || ""
 
       if not klass.match( new RegExp("\\b#{theClass}\\b") )
         klass = $.trim(klass) + " " + theClass

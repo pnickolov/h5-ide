@@ -800,6 +800,16 @@ var constant_data = {
 		}
 	},
 
+	DESIGN_INIT_LAYOUT:
+	{
+
+	},
+
+	DESIGN_INIT_LAYOUT_VPC:
+	{
+
+	},
+
 	DESIGN_INIT_DATA:
 	{
 		KP : {

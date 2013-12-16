@@ -112,14 +112,12 @@ define [ 'event',
                         when 'stack'
                             classname = 'icon-stack-tabbar'
 
-                        when 'app', 'pending'
-                            classname = 'icon-app-' + type.toLowerCase()
-
                         when 'visualization'
                             classname = 'icon-' + type + '-tabbar'
 
                         else
-                            console.log 'current not fond icon type', type, tab_id
+                            # app xxxx
+                            classname = 'icon-app-' + type.toLowerCase()
 
                     #if type is 'stack' then classname = 'icon-stack-tabbar' else classname = 'icon-app-' + type.toLowerCase()
                     $item.find( 'i' ).removeClass()

@@ -262,7 +262,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
 
-  DesignImpl.prototype.mode          = ()-> this.__mode
+  DesignImpl.prototype.mode          = ()->
+    console.warn("Better not to use Design.instance().mode() directly.")
+    this.__mode
   DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
@@ -270,7 +272,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     this.__mode = m
     null
 
-  DesignImpl.prototype.type             = ()-> this.__type
+  DesignImpl.prototype.type             = ()->
+    console.warn("Better not to use Design.instance().type() directly.")
+    this.__type
   DesignImpl.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
   DesignImpl.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
   DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc

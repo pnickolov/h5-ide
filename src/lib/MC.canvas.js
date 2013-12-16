@@ -1032,7 +1032,7 @@ MC.canvas = {
     )
     {
       //C
-      mid_y = (start.y + end.y) / 2;
+      mid_y = Math.round( (start.y + end.y) / 2 );
       controlPoints.push({ x: start.x, y: mid_y });
       controlPoints.push({ x: end.x,   y: mid_y });
     } else if (
@@ -1040,7 +1040,7 @@ MC.canvas = {
     )
     {
       //D
-      mid_x = (start.x + end.x) / 2;
+      mid_x = Math.round( (start.x + end.x) / 2 );
       controlPoints.push({ x: mid_x, y: start.y });
       controlPoints.push({ x: mid_x, y: end.y });
     }

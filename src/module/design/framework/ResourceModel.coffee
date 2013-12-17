@@ -78,6 +78,24 @@ define [ "Design", "backbone" ], ( Design )->
     classId : _.uniqueId("dfc_")
     type    : "Framework_R"
 
+    # Associate Map, consisted of key, type and suffix
+    __asso: []
+
+    # Do Associate, bind asso to the couple model
+    Associate: ( resolve, uid ) ->
+      if resolve instanceof ResourceModel
+        model = resolve
+        @addToStorage model
+        model.addToStorage @
+      else if uid
+        model = resolve uid
+        @Associate model
+      else
+        for attr in @__asso
+          uid = MC.extractID @.get attr.key
+          model = resolve uid
+          @Associate model
+
     # Storage is created when necessary
     storage : ()->
       if not this.__storage

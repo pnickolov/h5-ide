@@ -6184,6 +6184,8 @@ MC.canvas.analysis = function ( data )
 			NODE_MARGIN_LEFT = 2,
 			NODE_MARGIN_TOP = 2,
 
+			unique_row = {},
+
 			elb_connected_instance = [],
 			normal_instance = [],
 			hasUniqueInstanceConnectedToELB = false,
@@ -6191,7 +6193,10 @@ MC.canvas.analysis = function ( data )
 			max_column = Math.ceil( Math.sqrt( length ) ),
 			max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
 			column_index = 0,
-			row_index = 0;
+			row_index = 0,
+
+			node_connection,
+			hasELBConnected;
 
 		children.sort(function (a, b)
 		{
@@ -6200,13 +6205,41 @@ MC.canvas.analysis = function ( data )
 
 		$.each(children, function (current_index, item)
 		{
+			hasELBConnected = false;
+
 			if (stack[ item.type ] === undefined)
 			{
 				stack[ item.type ] = [];
 			}
 
 			stack[ item.type ].push( item );
+
+			// Check connection
+			node_connection = resources[ item.id ].connection;
+
+			if (node_connection)
+			{
+				$.each(node_connection, function (i, data)
+				{
+					if (resources[ data.target ].type === 'AWS.ELB')
+					{
+						hasELBConnected = true;
+					}
+				});
+
+				if (hasELBConnected)
+				{
+					if (unique_row[ data.type ] === undefined)
+					{
+						unique_row[ data.type ] = [];
+					}
+
+					unique_row[ data.type ].push( item.id );
+				}
+			}
 		});
+
+		console.info(unique_row);
 
 		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
 		{
@@ -6316,9 +6349,8 @@ MC.canvas.analysis = function ( data )
 
 		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
 		{
-			var childLength = stack[ 'AWS.VPC.NetworkInterface' ].length;
-
-			var max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+			var childLength = stack[ 'AWS.VPC.NetworkInterface' ].length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
 				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
 				eni_padding = 0,
 				column_index = 0,
@@ -6485,8 +6517,7 @@ MC.canvas.analysis = function ( data )
 				{
 					internetELBconnected.push( item );
 				}
-
-				if (isInternalELBconnected)
+				else if (isInternalELBconnected)
 				{
 					internalELBconnected.push( item );
 				}
@@ -6624,11 +6655,6 @@ MC.canvas.analysis = function ( data )
 			if (node.type === 'AWS.EC2.AvailabilityZone')
 			{
 				children = sortSubnet( children );
-				// children.sort(function (a, b)
-				// {
-				// 	//console.info(a, b);
-				// 	return a.totalChild - b.totalChild; 
-				// });
 			}
 
 			$.each(children, function (current_index, item)

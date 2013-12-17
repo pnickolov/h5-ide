@@ -63,7 +63,7 @@ define [ "Design", "backbone" ], ( Design )->
     # storage()
     # getFromStorage( filter )
     # addToStorage( resouceModel )
-        description : One can store resourceModels into this.storage(). All the resources in this.storage() will be remove when this remove().
+        description : One can store resourceModels into this.storage().
         According to `Backbone.Collection.model` and `Backbone.Collection.create()`, collection is ususally used to store the same type/kind of objects.
         Practically speaking, using this.storage() ( especially using it store different kinds of objects ) are unreasonable. It is uncertain if something is inside this.storage(), thus making it hard to manage these things.
         Better not to use this api.
@@ -173,11 +173,7 @@ define [ "Design", "backbone" ], ( Design )->
           if obj then obj.off( null, null, this )
         this.__interestedObj = null
 
-      # Clear everything in storage, if we have storage
-      if this.__storage
-        this.__storage.off()
-        for m in this.__storage.models
-          m.remove()
+      # Storage is not automatically cleared.
 
       # Broadcast remove event
       this.trigger "REMOVED"

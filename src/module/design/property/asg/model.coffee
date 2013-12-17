@@ -53,7 +53,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       nc_array = [false, false, false, false, false]
 
       SubModel = Design.modelClassForType( typeSub )
-      allSub = SubModel.allObjects()
+      allSub = SubModel and SubModel.allObjects() or []
 
       if allSub.length
         @set "has_sns_topic", true
@@ -116,7 +116,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
 
       lc_comp = LCS.first()
-      @set 'detail_monitor', if lc_comp then "" + lc_comp.resource.InstanceMonitoring is 'true' else false
+      @set 'detail_monitor', if lc_comp then "" + lc_comp.get( 'InstanceMonitoring' ) is 'true' else false
 
       @set 'notification_type', nc_array
       @set 'policies', policies
@@ -251,7 +251,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         topic_arn = null
 
         topicModel = Design.modelClassForType( typeTopic )
-        topic = topicModel.allObjects()[ 0 ]
+        allTopic = topicModel and topicModel.allObjects() or []
+        topic = allTopic[ 0 ]
 
         if topic
           topic_arn = '@' + topic.id + '.resource.TopicArn'
@@ -303,8 +304,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
       model = new Model( attr )
 
-      asg.addToStorage model
-      model.addToStorage topic
+      model.associate asg
+      model.associate topic
 
     setTerminatePolicy : ( policies ) ->
 
@@ -359,17 +360,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
       WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
 
-      allTopic = TopicModel.allObjects()
-      allWatch = WatchModel.allObjects()
+      allTopic = TopicModel and TopicModel.allObjects() or []
+      allWatch = WatchModel and WatchModel.allObjects() or []
 
       _.each allTopic, ( model ) ->
         topic_arn = "@#{model.id}.resource.TopicArn"
         null
 
+      topic = allTopic[ 0 ]
+
       _.each allWatch, ( model ) ->
         if model.get( 'name' ) is cw_name
           cw_comp = model.toJSON()
           cw_uid  = model.id
+        null
 
       policy_res = policy_comp.resource
       cw_res     = cw_comp.resource
@@ -381,14 +385,14 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       policy_comp.PolicyName        = policy_detail.name
       policy_comp.ScalingAdjustment = policy_detail.adjustment
 
-      policy_comp.AutoScalingGroupName = "@#{uid}.resource.AutoScalingGroupName"
+      #policy_comp.AutoScalingGroupName = "@#{uid}.resource.AutoScalingGroupName"
 
       if policy_detail.adjusttype is 'PercentChangeInCapacity'
         policy_comp.MinAdjustmentStep = policy_detail.step || 1
 
       # Set CloudWatch Component
       cw_comp.id  = cw_uid
-      cw_comp.name = cw_res.AlarmName = policy_detail.name + '-alarm'
+      cw_comp.name = policy_detail.name + '-alarm'
 
       cw_comp.ComparisonOperator = policy_detail.evaluation
       cw_comp.EvaluationPeriods  = policy_detail.periods
@@ -400,7 +404,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
       # Set trigger
       # Remove old trigger array
-      cw_comp.AlarmActions = cw_res.InsufficientDataActions = cw_res.OKAction = []
+      cw_comp.AlarmActions = cw_comp.InsufficientDataActions = cw_comp.OKAction = []
 
       action = [ "@#{policy_uid}.resource.PolicyARN" ]
 
@@ -418,11 +422,12 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         if not topic_arn
           topic_comp = $.extend true, {}, MC.canvas.SNS_TOPIC_JSON.data
           topic_uid  = MC.guid()
-          topic_comp.uid = topic_uid
-          topic_comp.name = topic_comp.resource.Name = topic_comp.resource.DisplayName = 'sns-topic'
+          topic_comp.id = topic_uid
+          topic_comp.name  = 'sns-topic'
           topic_arn = "@#{topic_uid}.resource.TopicArn"
 
-          MC.canvas_data.component[topic_uid] = topic_comp
+          topic = new TopicModel topic_comp
+          #MC.canvas_data.component[topic_uid] = topic_comp
 
         action.push topic_arn
 
@@ -432,35 +437,33 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         if res[0] and not res[1]
 
-          delete MC.canvas_data.component[res[2]]
+          #delete MC.canvas_data.component[res[2]]
           Design.instance().component( res[2] ).remove()
 
       policyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
       CWatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
 
-      new policyModel policy_comp
-      new CWatchModel cw_comp
+      policy = new policyModel policy_comp
+      cwatch = new CWatchModel cw_comp
+
+      cwatch.accociate Design.instance().component
+      policy.associate Design.instance().component, uid
 
       @attributes.policies[policy_uid] = policy_detail
       null
 
     defaultScalingPolicyName : () ->
-      count = 1
-      for uid, comp of MC.canvas_data.component
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
-          ++count
+      asgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group )
+      count = asgModel.length + 1
 
       "#{@attributes.asg.AutoScalingGroupName}-policy-#{count}" + ""
 
     delPolicy : ( uid ) ->
-
-      $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-          if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch and comp.name is MC.canvas_data.component[uid].name + '-alarm'
-
-            delete MC.canvas_data.component[comp.uid]
-            delete MC.canvas_data.component[uid]
-            return false
+      policy = Design.instance().component( uid )
+      cWatches = policy.getFromStorage constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+      cWatches.each ( watch ) ->
+        watch.remove()
+      policy.remove()
 
     checkTopicDependency :() ->
 
@@ -474,10 +477,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
 
 
-      allTopic = TopicModel.allObjects()
-      allSub = SubModel.allObjects()
-      allNoti = NotiModel.allObjects()
-      allWatch = WatchModel.allObjects()
+      allTopic = TopicModel and TopicModel.allObjects() or []
+      allSub = SubModel and SubModel.allObjects() or []
+      allNoti = NotiModel and NotiModel.allObjects() or []
+      allWatch = WatchModel and WatchModel.allObjects() or []
 
       if allTopic.length
         topic_uid = allTopic[0].id

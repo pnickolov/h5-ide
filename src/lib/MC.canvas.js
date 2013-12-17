@@ -6320,8 +6320,19 @@ MC.canvas.analysis = function ( data )
 
 			var max_child_column = Math.ceil( Math.sqrt( childLength ) ),
 				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				eni_padding = 0,
 				column_index = 0,
 				row_index = 0;
+
+			if (stack[ 'AWS.AutoScaling.Group' ] !== undefined)
+			{
+				eni_padding += 2;
+			}
+
+			if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+			{
+				eni_padding += 2;
+			}
 
 			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
 			{
@@ -6332,7 +6343,7 @@ MC.canvas.analysis = function ( data )
 				}
 
 				item.coordinate = [
-					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + eni_padding + GROUP_INNER_PADDING,
 					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
 				];
 

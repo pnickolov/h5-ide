@@ -100,6 +100,9 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                     MC.data.config = {}
                     MC.data.config[r] = {} for r in constant.REGION_KEYS
 
+                    # init unmanaged_resource_list
+                    MC.forge.other.initUnmanaged()
+
                     null
 
                 else # no credentia

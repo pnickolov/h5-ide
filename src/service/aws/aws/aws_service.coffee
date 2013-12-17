@@ -426,6 +426,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 								app_json.component[c.uid] = c
 
+		app_json.name = app_json.id = vpc_id
 		#remove_asg_instance
 		remove_uid = []
 
@@ -514,7 +515,7 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 									subnets.push ref_key[subnet].split('.')[0].slice(1)
 
 								else
-									subnets.push subnet
+									subnets.push subnet.split('.')[0].slice(1)
 
 							c.resource.VPCZoneIdentifier = subnets.join(',')
 

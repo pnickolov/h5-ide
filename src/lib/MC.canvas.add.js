@@ -656,7 +656,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5.asg label
-				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], MC.asgName( option.name) ).attr({
 					'class': 'group-label name',
 					'id': group.id + '_name'
 				})

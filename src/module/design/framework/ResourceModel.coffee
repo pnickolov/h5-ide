@@ -47,7 +47,7 @@ define [ "Design", "backbone" ], ( Design )->
     # remove() : [FORCE]
         description : Just like the destructor in C++. User can override this method.
         The framework will ensure the base class's remove() will get called.
-        This method will fire "REMOVED" event when called.
+        This method will fire "remove" event when called.
 
     # initialize() : [FORCE]
         description : The same as Backbone.Model.initialize()
@@ -201,7 +201,7 @@ define [ "Design", "backbone" ], ( Design )->
       # Storage is not automatically cleared.
 
       # Broadcast remove event
-      this.trigger "REMOVED"
+      this.trigger "remove"
       # Also trigger a destroy event for Backbone.
       this.trigger "destroy"
 

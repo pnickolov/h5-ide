@@ -12,7 +12,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       # Remove children
       if @.attributes.__children
         for child in @.attributes.__children
-          child.off "REMOVED", @removeChild, @
+          child.off "remove", @removeChild, @
           child.remove()
       null
 
@@ -34,7 +34,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       child.set("__parent", this)
 
       # Listen child's removal
-      child.on "REMOVED", @removeChild, @
+      child.on "remove", @removeChild, @
       null
 
     removeChild : ( child )->
@@ -53,7 +53,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       @set("__children", children)
 
-      child.off "REMOVED", @removeChild, @
+      child.off "remove", @removeChild, @
       null
 
     children : ()-> this.get("__children") || []

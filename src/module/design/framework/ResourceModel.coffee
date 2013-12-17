@@ -82,19 +82,26 @@ define [ "Design", "backbone" ], ( Design )->
     __asso: []
 
     # Do Associate, bind asso to the couple model
-    Associate: ( resolve, uid ) ->
+    associate: ( resolve, uid ) ->
       if resolve instanceof ResourceModel
         model = resolve
         @addToStorage model
         model.addToStorage @
       else if uid
         model = resolve uid
-        @Associate model
+        @associate model
       else
         for attr in @__asso
-          uid = MC.extractID @.get attr.key
-          model = resolve uid
-          @Associate model
+          arns = @get attr.key
+          if _.isString arns
+            arns = [ arns ]
+          if _.isArray arns
+            for arn in arns
+              uid = MC.extractID arn
+              model = resolve uid
+              @associate model
+            @unset attr.key
+      null
 
     # Storage is created when necessary
     storage : ()->

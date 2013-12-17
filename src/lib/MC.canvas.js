@@ -5938,7 +5938,7 @@ MC.canvas.analysis = function ( data )
 			'AWS.AutoScaling.Group' : [13, 13]
 		},
 
-		// For childeren node order
+		// For children node order
 		POSITION_METHOD = {
 			'AWS.VPC.VPC': 'vertical',
 			'AWS.EC2.AvailabilityZone': 'horizontal',
@@ -6431,39 +6431,54 @@ MC.canvas.analysis = function ( data )
 
 		$.each(children, function (i, item)
 		{
-			item_connection = resources[ item.id ].connection;
 			isInternetELBconnected = false;
 			isInternalELBconnected = false;
 
-			if (item_connection)
+			if (item.children !== undefined)
 			{
-				$.each(item_connection, function (index, data)
+				$.each(item.children, function (index, node)
 				{
-					if (resources[ data.target ].type === 'AWS.ELB')
+					if (
+						node.type === 'AWS.AutoScaling.Group' &&
+						node.children !== undefined
+					)
 					{
-						elb_type = component_data[ data.target ].resource.Scheme;
+						node = node.children[ 0 ];
+					}
 
-						if (elb_type === 'internet-facing')
-						{
-							isInternetELBconnected = true;
-						}
+					node_connection = resources[ node.id ].connection;
 
-						if (elb_type === 'internal')
+					if (node_connection)
+					{
+						$.each(node_connection, function (index, data)
 						{
-							isInternalELBconnected = true;
-						}
+							if (resources[ data.target ].type === 'AWS.ELB')
+							{
+								elb_type = component_data[ data.target ].resource.Scheme;
+
+								if (elb_type === 'internet-facing')
+								{
+									isInternetELBconnected = true;
+								}
+
+								if (elb_type === 'internal')
+								{
+									isInternalELBconnected = true;
+								}
+							}
+						});
 					}
 				});
-			}
 
-			if (isInternetELBconnected)
-			{
-				internetELBconnected.push( item );
-			}
+				if (isInternetELBconnected)
+				{
+					internetELBconnected.push( item );
+				}
 
-			if (isInternalELBconnected)
-			{
-				internalELBconnected.push( item );
+				if (isInternalELBconnected)
+				{
+					internalELBconnected.push( item );
+				}
 			}
 
 			if (!isInternetELBconnected && !isInternalELBconnected)

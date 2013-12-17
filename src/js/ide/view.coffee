@@ -135,18 +135,22 @@ define [ 'event',
             has_refresh = true
 
             if Tabbar.current is 'dashboard'
-                _.each MC.tab, ( item ) ->
-                    if not _.isEqual( item.data, item.origin_data )
+                _.each MC.tab, ( item, id ) ->
+                    if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
                         has_refresh = false
                         null
             else
 
+                # MC.tab is {}
                 if not MC.tab[ MC.data.current_tab_id ]
-                    if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
+
+                    if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data ) and MC.canvas_data.id and MC.canvas_data.id isnt 'appview'
                         has_refresh = false
 
-                _.each MC.tab, ( item ) ->
-                    if not _.isEqual( item.data, item.origin_data )
+                # MC.tab isnt {}
+                _.each MC.tab, ( item, id ) ->
+                    console.log 'sdfasdfasdf', id, item
+                    if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
                         has_refresh = false
                         null
 

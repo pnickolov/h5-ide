@@ -144,7 +144,7 @@ define [ 'event',
             console.log 'closeTabRestrictionEvent', tab_name, tab_id
 
             # process direct close
-            if tab_id.split( '-' )[0] in [ 'process' ]
+            if tab_id.split( '-' )[0] in [ 'process', 'appview' ]
                 @directCloseTab tab_id
                 return
 

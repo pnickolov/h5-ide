@@ -35,12 +35,9 @@ define [ '../base/view',
                 tpl = template
 
             @$el.html tpl @model.attributes
+            $('#sg-rule-list').html rule_item_template( @model.attributes )
 
-            # change sg color for header
-            sgUID = @model.get 'uid'
-            sgName = @model.get 'name'
-            sgColor = MC.aws.sg.getSGColor(sgUID)
-            $('#property-second-title').html('<div class="sg-color sg-color-header" style="background-color:' + sgColor + '" ></div>' + sgName)
+            $('#property-second-title').html('<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name") )
 
             @forceShow()
 
@@ -88,24 +85,6 @@ define [ '../base/view',
             @bindRuleModelEvent()
             return false
 
-        removeRulefromList: (event) ->
-            li_dom = $(event.target).parents('li').first()
-            rule =
-                inbound  : li_dom.data('inbound')
-                protocol : li_dom.data('protocol')
-                fromport : li_dom.data('fromport')
-                toport   : li_dom.data('toport')
-                iprange  : li_dom.data('iprange')
-
-            li_dom.remove()
-
-            ruleCount = $("#sg-rule-list").children().length
-            $("#sg-rule-empty").toggle ruleCount == 0
-            $("#rule-count").text ruleCount
-
-            @model.removeSGRule rule
-            null
-
         radioSgModalChange : (event) ->
             if $('#sg-modal-direction input:checked').val() is "inbound"
                 $('#rule-modal-ip-range').text "Source"
@@ -130,22 +109,6 @@ define [ '../base/view',
 
         icmpSubSelect : ( event, id ) ->
             $("#protocol-icmp-main-select").data('protocal-sub', id)
-
-        setSGName : ( event ) ->
-            id = @model.get 'uid'
-            target = $ event.currentTarget
-            name = target.val()
-
-            MC.validate.preventDupname target, id, name, 'SG'
-
-            if target.parsley 'validate'
-                @trigger 'NAME_CHANGE', name
-                @model.setSGName name
-            null
-
-        setSGDescription : ( event ) ->
-            @model.setSGDescription event.target.value
-            null
 
         saveSgModal : ( event ) ->
 
@@ -257,7 +220,7 @@ define [ '../base/view',
             data = @model.addSGRule rule
 
             # Insert new rule
-            
+
             # the rule is exist
             if not data
                 notification 'warning', lang.ide.PROP_WARN_SG_RULE_EXIST
@@ -277,32 +240,40 @@ define [ '../base/view',
             $('#sg-add-model-source-select .selection').width( if isCustom then 69 else 322 )
             null
 
+        setSGName : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+
+            if @checkDupName( target, "SG" )
+                @model.setName name
+                @setTitle name
+            null
+
+        setSGDescription : ( event ) ->
+            @model.setDescription event.target.value
+            null
+
         sortSgRule : ( event ) ->
-            sg_rule_list = $('#sg-rule-list')
+            @model.sortSGRule( $(event.target).find('.selected').attr('data-id') )
+            $('#sg-rule-list').html rule_item_template( @model.attributes )
+            null
 
-            sortType = $(event.target).find('.selected').attr('data-id')
+        removeRulefromList: (event) ->
+            li_dom = $(event.target).closest('li')
+            rule =
+                uid       : li_dom.data('uid')
+                port      : li_dom.data('port')
+                protocol  : li_dom.data('protocol')
+                direction : li_dom.data('direction')
+                target    : li_dom.data("target")
 
-            sorted_items = $('#sg-rule-list li')
-            if sortType is 'direction'
-                sorted_items = sorted_items.sort(this._sortDirection)
-            else if sortType is 'source/destination'
-                sorted_items = sorted_items.sort(this._sortSource)
-            else if sortType is 'protocol'
-                sorted_items = sorted_items.sort(this._sortProtocol)
+            li_dom.remove()
 
-            sg_rule_list.html sorted_items
+            ruleCount = $("#sg-rule-list").children().length
+            $("#rule-count").text ruleCount
 
-        _sortDirection : ( a, b) ->
-            return $(a).attr('data-direction') >
-                $(b).attr('data-direction')
-
-        _sortProtocol : ( a, b) ->
-            return $(a).attr('data-protocol') >
-                $(b).attr('data-protocol')
-
-        _sortSource : ( a, b) ->
-            return $(a).attr('data-iprange') >
-                $(b).attr('data-iprange')
+            @model.removeSGRule rule
+            null
     }
 
     new SgView()

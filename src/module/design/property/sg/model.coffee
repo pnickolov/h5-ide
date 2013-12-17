@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyModel, constant, ide_event, forge_app ) ->
+define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Design, constant, ide_event ) ->
 
     SgModel = PropertyModel.extend {
 
@@ -12,53 +12,49 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
                 @appInit uid
                 return
 
-            component = MC.canvas_data.component[ uid ]
-            comp_res  = component.resource
+            component = Design.instance().component( uid )
 
-            # Get Basic Info
-            @set 'name', component.name
-            @set 'description', comp_res.GroupDescription
+            rules = []
+            for rule in component.connections("SgRule")
+                rules = rules.concat( rule.toPlainObjects() )
 
-            # Get Members
-            members = MC.aws.sg.getAllRefComp(uid)
-            members = MC.aws.sg.convertMemberNameToReal(members)
-            @set 'members', members
+            members = _.map component.connections("SgAsso"), ( asso )->
+                asso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).get("name")
 
-            # Get Rule Count
-            ruleCount = comp_res.IpPermissions.length
-            if comp_res.IpPermissionsEgress
-                ruleCount += comp_res.IpPermissionsEgress.length
-            @set 'ruleCount', ruleCount
+            @set {
+                uid          : uid
+                name         : component.get("name")
+                description  : component.get("description")
+                members      : members
+                rules        : rules
+                color        : component.color
+                ruleEditable : true
+            }
 
-            # Get Rules
-            ipPermissions       = $.extend(true, [], comp_res.IpPermissions)
-            ipPermissionsEgress = $.extend(true, [], comp_res.IpPermissionsEgress)
-
-            @formatRule ipPermissions
-            @formatRule ipPermissionsEgress
-
-            @set 'ipPermissions', ipPermissions
-            @set 'ipPermissionsEgress', ipPermissionsEgress
+            @sortSGRule()
 
             # Set Editable
-            isElbSG = MC.aws.elb.isELBDefaultSG(uid)
-
-            if isElbSG
+            if component.isElbSg()
                 inputReadOnly = true
+
+                # If the SG is Elb SG, its rule is not editable
+                @set "ruleEditable", false
             else if @isAppEdit
                 # In AppEdit mode, if the SG has no aws resource associated :
                 # Meaning it is a newly created SG. So the input should be editable
-                inputReadOnly = forge_app.existing_app_resource( uid )
+                inputReadOnly = component.get("appId")
 
-            if inputReadOnly or component.name is 'DefaultSG'
+            if inputReadOnly or component.get("isDefault")
                 @set 'nameReadOnly', true
             if inputReadOnly
                 @set 'descReadOnly', true
 
-            # If the SG is Elb SG, its rule is not editable
-            @set 'ruleEditable', not isElbSG
 
-            @set 'uid', uid
+            null
+
+        sortSGRule : ( key )->
+            sgRuleList = _.sortBy @attributes.rules, ( key or "direction" )
+            @set "rules", sgRuleList
             null
 
         formatRule : ( rules ) ->
@@ -120,22 +116,9 @@ define [ '../base/model', 'constant', 'event', 'lib/forge/app' ], ( PropertyMode
             @set sg_app_detail
             null
 
-        setSGName : ( value ) ->
-
-            component = MC.canvas_data.component[ @get 'uid' ]
-            comp_res  = component.resource
-
-            for sg in MC.canvas_property.sg_list
-                if sg.name is comp_res.GroupName
-                    sg.name = value
-
-            component.name = comp_res.GroupName = value
+        setDescription : ( value ) ->
+            Design.instance().component( @get("uid") ).set( "description", value )
             null
-
-        setSGDescription : ( value ) ->
-            MC.canvas_data.component[@get 'uid'].resource.GroupDescription = value
-            null
-
 
         addSGRule : ( rule ) ->
 

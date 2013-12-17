@@ -5,15 +5,17 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-
     initialize : ()->
       # Listen to myself's remove event, so that we can update the target's element
       @on "remove", @onRemove, @
       null
 
     onRemove : ()->
+
+      @set "removing", true
       # Update target's label
       @draw()
+      @set "removing", false
 
       # Update target's line
       null
@@ -21,9 +23,18 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
     sortedSgList : ()->
 
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+
+      sgAssos = resource.connections("SgAsso")
+
+      if not @get "removing"
+        # When the connection is created, draw() is called before resource.connect()
+        # So sgAssos might not have this SgAsso inside.
+        if sgAssos.indexOf( this ) is -1
+          sgAssos.push this
+
       # Sort the SG
-      sgAssos = _.filter resource.connections(), ( cn )-> cn.type is "SgAsso"
-      sgs     = sgAssos.map ( a )-> a.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      sgs = _.map sgAssos, ( a )->
+        a.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
 
       sgs.sort ( a_sg, b_sg )->
         if a_sg.get("isDefault") then return -1

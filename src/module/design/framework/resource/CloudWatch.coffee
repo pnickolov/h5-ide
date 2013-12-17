@@ -5,6 +5,13 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     type : constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
 
+    __asso: [
+      {
+        key: 'AlarmActions'
+        type: constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
+        suffix: 'PolicyARN'
+      }
+    ]
 
 
   }, {
@@ -21,12 +28,13 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         attr[ key ] = value
 
       model = new Model( attr )
-
+      ###
       for action in attr.AlarmActions
         policyUid = MC.extractID action
         policy = resolve policyUid
         policy.collection.add model
-
+      ###
+      model.associate resolve
 
       model
 

@@ -11,6 +11,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
 
+    __asso: [
+      {
+        key: 'LaunchConfigurationName'
+        type: constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        suffix: 'LaunchConfigurationName'
+      }
+    ]
+
     #scalingPolicies: new Backbone.Collection()
     #launchConfigurations: new Backbone.Collection()
 
@@ -95,17 +103,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
       for key, value of data.resource
         attr[ key ] = value
 
-      lcUid = MC.extractID attr.LaunchConfigurationName
-      lc = resolve lcUid
-      delete attr.LaunchConfigurationName
-
       model = new Model( attr )
 
       for elbName in attr.LoadBalancerNames
         elb = resolve MC.extractID elbName
         new ElbAsso( model, elb )
 
-      model.addToStorage lc
+      model.associate resolve
+
 
   }
 

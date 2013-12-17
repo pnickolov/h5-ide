@@ -5,6 +5,18 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
+    __asso: [
+      {
+        key: 'TopicARN'
+        type: constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+        suffix: 'TopicArn'
+      }
+      {
+        key: 'AutoScalingGroupName'
+        type: constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        suffix: 'AutoScalingGroupName'
+      }
+    ]
 
   }, {
 
@@ -19,17 +31,9 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       for key, value of data.resource
         attr[ key ] = value
 
-      asgUid = MC.extractID attr.AutoScalingGroupName
-      asg = resolve asgUid
-
-      topicUid = MC.extractID attr.TopicARN
-      topic = resolve topicUid
-
       model = new Model( attr )
 
-      asg.addToStorage model
-      model.addToStorage topic
-
+      model.associate resolve
 
       model
 

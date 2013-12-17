@@ -880,7 +880,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
 
-						if (val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
+						if (val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment && val.resource.Attachment.InstanceId && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
 
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){

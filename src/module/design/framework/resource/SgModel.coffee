@@ -97,7 +97,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRule", "cons
         rule = new SgRule( group, ruleTarget, attr )
         # The rule might already exist, so we call addDirection here
         # to try to upgrade the direction.
-        rule.addDirection( if ruleObj.out then SgRule.DIRECTION.OUT else SgRule.DIRECTION.IN )
+        if ruleObj.out
+          rule.setOut( group, true )
+        else
+          rule.setIn( group, true )
 
       null
   }

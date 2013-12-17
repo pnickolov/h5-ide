@@ -63,9 +63,8 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       # Remove connection
       connections = this.attributes.__connections
       if connections
-        this.attributes.__connections = []
         for c in connections
-          c.remove()
+          c.remove( { reason : this } )
 
       # Remove element in SVG
       if @draw
@@ -78,8 +77,9 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       if not connections
         connections = []
 
-      connections.push connection
-      @set "__connections", connections
+      if connections.indexOf( connection ) == -1
+        connections.push connection
+        @set "__connections", connections
       null
 
     disconnect : ( connection )->

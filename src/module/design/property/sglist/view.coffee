@@ -2,9 +2,10 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ 'text!./template/stack.html' ], ( template ) ->
+define [ 'text!./template/stack.html', "text!./template/rule.html" ], ( template, rule_template ) ->
 
-	template = Handlebars.compile template
+	template      = Handlebars.compile template
+	rule_template = Handlebars.compile rule_template
 
 	SGListView = Backbone.View.extend {
 
@@ -17,19 +18,20 @@ define [ 'text!./template/stack.html' ], ( template ) ->
 
 		render     : () ->
 			@model.getSGInfoList()
-			@model.getRuleInfoList()
 
 			@setElement $('.sg-group')
 			@$el.html template @model.attributes
+
+			$("#sglist-rule-list").html rule_template @model.attributes
 			$('#property-head-sg-num').text( @model.attributes.sg_length )
 
 		openSgPanel : ( event ) ->
-			sgUID = $(event.target).parents('li').attr('sg-uid')
-			if !sgUID
-				sgUID = MC.aws.sg.createNewSG()
-				this.trigger 'ASSIGN_SG_TOCOMP', sgUID, true
+			if event.currentTarget.id is "add-sg-btn"
+				sgUID = @model.createNewSG()
+			else
+				sgUID = $(event.currentTarget).closest("li").attr("data-uid")
 
-			this.trigger 'OPEN_SG', sgUID
+			@trigger 'OPEN_SG', sgUID
 
 		refreshSGList: () ->
 			this.render()
@@ -41,21 +43,22 @@ define [ 'text!./template/stack.html' ], ( template ) ->
 			if $checked.length is 0
 				return false
 
-			sgUID     = $target.attr('sg-uid')
+			sgUID     = $target.closest("li").attr('data-uid')
 			sgChecked = $target.prop('checked')
-			this.trigger 'ASSIGN_SG_TOCOMP', sgUID, sgChecked
-			this.render()
-			$('#property-head-sg-num').text(this.model.attributes.sg_length)
+
+			@model.assignSG sgUID, sgChecked
+			@render()
+			null
 
 		deleteSGFromComp : (event) ->
 
 			that = this
 
 			$target = $(event.currentTarget)
-			sgUID = $target.parents('li').attr('sg-uid')
+			sgUID   = $target.closest('li').attr('data-uid')
 
-			memberNum = Number($target.attr('members'))
-			sgName = $target.attr('sg-name')
+			memberNum = Number($target.attr('data-count'))
+			sgName    = $target.attr('data-name')
 
 			# show dialog to confirm that delete sg
 			if memberNum
@@ -68,40 +71,20 @@ define [ 'text!./template/stack.html' ], ( template ) ->
 				}
 				modal tpl, false, () ->
 					$('#modal-confirm-delete').click () ->
-						that.trigger 'DELETE_SG_FROM_COMP', sgUID
+						that.model.deleteSG sgUID
 						that.render()
 						modal.close()
 
 			else
-				that.trigger 'DELETE_SG_FROM_COMP', sgUID
-				that.render()
+				@model.deleteSG sgUID
+				@render()
 
 		sortSgRule : ( event ) ->
 			sg_rule_list = $('#sglist-rule-list')
 
 			sortType = $(event.target).find('.selected').attr('data-id')
-
-			sorted_items = $('#sglist-rule-list li')
-			if sortType is 'direction'
-				sorted_items = sorted_items.sort(this._sortDirection)
-			else if sortType is 'source/destination'
-				sorted_items = sorted_items.sort(this._sortSource)
-			else if sortType is 'protocol'
-				sorted_items = sorted_items.sort(this._sortProtocol)
-
-			sg_rule_list.html sorted_items
-
-		_sortDirection : ( a, b) ->
-			return $(a).attr('data-direction') >
-				$(b).attr('data-direction')
-
-		_sortProtocol : ( a, b) ->
-			return $(a).attr('data-protocol') >
-				$(b).attr('data-protocol')
-
-		_sortSource : ( a, b) ->
-			return $(a).attr('data-iprange') >
-				$(b).attr('data-iprange')
+			@model.sortSGRule( sortType )
+			$("#sglist-rule-list").html rule_template @model.attributes
 	}
 
 	new SGListView()

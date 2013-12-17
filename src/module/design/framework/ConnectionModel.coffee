@@ -80,7 +80,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       # Put connect() calls to last, in case of some resource might want the Line SVG Node
       @__port1Comp.connect this
-      @__port2Comp.connect this
+
+      if @__port1Comp isnt @__port2Comp
+        @__port2Comp.connect this
 
       this
 
@@ -110,9 +112,19 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       null
 
-    remove : ()->
-      @__port1Comp.disconnect( this )
-      @__port2Comp.disconnect( this )
+    remove : ( option )->
+
+      if option and option.reason
+        # If the connection is removed because a resource is removed, that resource's disconnect will not be called
+        if @__port1Comp isnt option.reason
+          @__port1Comp.disconnect( this )
+        if @__port1Comp isnt @__port2Comp and @__port2Comp isnt option.reason
+          @__port2Comp.disconnect( this )
+
+      else
+        @__port1Comp.disconnect( this )
+        if @__port1Comp isnt @__port2Comp
+          @__port2Comp.disconnect( this )
 
       # Remove element in SVG, if the line implements draw
       if @draw

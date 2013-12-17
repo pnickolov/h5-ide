@@ -23,7 +23,7 @@
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div>{{name}}</div>
 					<div class="col2-2 truncate">{{desc}}</div>
-					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
+					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>
 			</li>
 			{{/each}}
@@ -38,25 +38,11 @@
 				<div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
 				<ul class="dropdown" tabindex="-1">
 					<li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
-					<li class="item" data-id="source/destination">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
+					<li class="item" data-id="target">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
 					<li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
 				</ul>
 			</div>
 		</div>
-		<ul class="sg-rule-list property-list" id="sglist-rule-list">
-			{{#each sg_rule_list}}
-			<li data-inbound="true" data-protocol="{{IpProtocol}}" data-fromport="{{FromPort}}" data-iprange="{{IpRanges}}" data-direction="{{Direction}}">
-				<div class="rule-list-row">
-					<div data-id="{{Direction}}" class='rule-direction-icon tooltip icon-{{Direction}}' data-tooltip='{{#ifCond Direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
-					<span {{#if sgColor}}class="sg-color"{{/if}} style="background-color:{{sgColor}}"></span>
-					<div data-id="{{IpRanges}}" class='rule-reference tooltip truncate' data-tooltip='{{#ifCond Direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{IpRanges}}</div>
-				</div>
-				<div class="rule-list-row">
-					<div data-id="{{IpProtocol}}"><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{IpProtocol}}</span></div>
-					<div data-id="{{FromPort}}" class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{display_port}}</div>
-				</div>
-			</li>
-			{{/each}}
-		</ul>
+		<ul class="sg-rule-list property-list" id="sglist-rule-list"> </ul>
 	</div>
 </div>

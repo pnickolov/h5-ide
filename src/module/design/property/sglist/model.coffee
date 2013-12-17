@@ -80,6 +80,15 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 			for rule in allRules
 				sgRuleAry = sgRuleAry.concat( rule.toPlainObjects( filter ) )
 
+			# Remove duplicate rules
+			ruleMap = {}
+			rules   = []
+			for rule in sgRuleAry
+				ruleString = rule.direction + rule.target + rule.protocol + rule.port
+				if ruleMap[ ruleString ]
+					continue
+				ruleMap[ ruleString ] = true
+				rules.push rule
 
 			# Set
 			@set {
@@ -88,7 +97,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				sg_list      : sg_list
 				sg_length    : if isStackParent then sg_list.length else enabledSGCount
 				readonly     : readonly
-				sg_rule_list : sgRuleAry
+				sg_rule_list : rules
 			}
 
 			@sortSGList()

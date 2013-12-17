@@ -106,7 +106,7 @@ define [ "Design", "backbone" ], ( Design )->
     # Storage is created when necessary
     storage : ()->
       if not this.__storage
-        this.__storage = new Backbone.collection()
+        this.__storage = new Backbone.Collection()
 
       this.__storage
 
@@ -122,7 +122,7 @@ define [ "Design", "backbone" ], ( Design )->
       else
         models = storage.models
 
-      new Backbone.collection( models )
+      new Backbone.Collection( models )
 
     addToStorage : ( resource ) ->
       storage = this.storage()

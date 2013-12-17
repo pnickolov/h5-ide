@@ -6541,11 +6541,7 @@ MC.canvas.analysis = function ( data )
 			}
 		});
 
-		console.info(internetELBconnected, internalELBconnected, normalSubnet);
-
 		children = internetELBconnected.concat(internalELBconnected, normalSubnet);
-
-		console.info(children);
 
 		return children;
 	}

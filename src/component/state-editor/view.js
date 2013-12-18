@@ -125,7 +125,7 @@ StateEditorView = Backbone.View.extend({
       rightInputValue = $rightInputElem.text();
       if (leftInputValue || rightInputValue) {
         newDictItemHTML = that.paraDictListTpl({});
-        $newDictItem = $(newDictItemHTML).appendTo($currentDictItemContainer);
+        $newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer);
         return that.bindDictInputEvent($newDictItem);
       }
     }
@@ -153,7 +153,7 @@ StateEditorView = Backbone.View.extend({
   },
   getCurrentCommand: function($subElem) {
     var $cmdValue, $stateItem;
-    $stateItem = $subElem.parents('state-item');
+    $stateItem = $subElem.parents('.state-item');
     $cmdValue = $stateItem.find('.command-value');
     return $cmdValue.text();
   }

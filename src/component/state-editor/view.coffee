@@ -150,7 +150,7 @@ StateEditorView = Backbone.View.extend({
 
 			if leftInputValue or rightInputValue
 				newDictItemHTML = that.paraDictListTpl({})
-				$newDictItem = $(newDictItemHTML).appendTo($currentDictItemContainer)
+				$newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer)
 				that.bindDictInputEvent($newDictItem)
 
 	onDictInputBlur: (event) ->
@@ -171,7 +171,7 @@ StateEditorView = Backbone.View.extend({
 
 	getCurrentCommand: ($subElem) ->
 
-		$stateItem = $subElem.parents('state-item')
+		$stateItem = $subElem.parents('.state-item')
 		$cmdValue = $stateItem.find('.command-value')
 		return $cmdValue.text()
 

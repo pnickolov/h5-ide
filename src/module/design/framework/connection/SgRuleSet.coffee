@@ -83,12 +83,15 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
             continue
 
         for rule in portion.ary
-          if rule.fromPort is rule.toPort or not rule.toPort
+          if rule.protocol is "icmp"
+            port = rule.fromPort + "/" + rule.toPort
+          else if rule.fromPort is rule.toPort or not rule.toPort
             port = rule.fromPort
           else
             port = rule.fromPort + "-" + rule.toPort
 
           rules.push {
+            ruleSetId : @id
             port      : port
             protocol  : rule.protocol
             direction : portion.direction
@@ -105,14 +108,23 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     addRawRule : ( ruleOwner, direction, rule ) ->
       console.assert( ruleOwner is @port1Comp().id or ruleOwner is @port2Comp().id or ruleOwner is @port1Comp().get("name") or ruleOwner is @port2Comp().get("name"), "Invalid ruleOwner, when adding a raw rule to SgRuleSet : ", ruleOwner )
       console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rule )
-      console.assert( rule.fromPort isnt undefined and rule.toPort isnt undefined and rule.protocol isnt undefined, "Invalid rule, when adding a raw rule to SgRuleSet : ", rule )
+      console.assert( rule.fromPort isnt undefined and rule.toPort isnt undefined and typeof rule.protocol is "string", "Invalid rule, when adding a raw rule to SgRuleSet : ", rule )
 
       if Design.instance().typeIsClassic() and direction is SgRuleSet.DIRECTION.OUT
         console.warn( "Ignoring setting outbound rule in Classic Mode " )
         return
 
-      rule  = $.extend {}, rule
-      if rule.protocol is "-1" then rule.protocol = "all"
+      # Ensure valid protocol and port
+      rule = $.extend {}, rule
+      if rule.protocl is "-1" or rule.protocol is "all"
+        rule.protocol = "all"
+        rule.fromPort = "0"
+        rule.toPort   = "65535"
+
+      if rule.fromPort is rule.toPort
+        rule.toPort   = ""
+
+
       port1 = ruleOwner is @port1Comp().id or ruleOwner is @port1Comp().get("name")
 
       switch direction
@@ -173,6 +185,9 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         console.warn( "Ignoring removing outbound rule in Classic Mode " )
         return
 
+      if rule.protocol is "-1"        then rule.protocol = "all"
+      if rule.fromPort is rule.toPort then rule.toPort   = ""
+
       port1 = ruleOwner is @port1Comp().id or ruleOwner is @port1Comp().get("name")
 
       switch direction
@@ -187,6 +202,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           ]
 
       checkEmpty = false
+      found      = false
 
       for portionName in portions
         portion = @get( portionName )
@@ -197,26 +213,33 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
             portion = portion.slice(0)
             portion.splice( idx, 1 )
             checkEmpty = portion.length is 0
+            found = true
             @set portionName, portion
             break
 
       if checkEmpty and @attributes.in1.length is 0 and @attributes.in2.length is 0 and @attributes.out1.length is 0 and @attributes.out2.length is 0
         @remove()
+
+      console.assert( found, "Rule is not found when removing SG Rule", rule )
       null
 
     removeRuleByPlainObj : ( ruleObj )->
       console.assert( ruleObj.relation is @port1Comp().id or ruleObj.relation is @port1Comp().get("name") or ruleObj.relation is @port2Comp().id or ruleObj.relation is @port2Comp().get("name"), "Invalid ruleObj.relation, when removing a rule : ", ruleObj )
 
-      console.assert( ruleObj.direction is SgRuleSet.DIRECTION.BIWAY or ruleObj.direction is SgRuleSet.DIRECTION.IN or ruleObj.direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when removing a raw rule from SgRuleSet : ", rule )
+      console.assert( ruleObj.direction is SgRuleSet.DIRECTION.BIWAY or ruleObj.direction is SgRuleSet.DIRECTION.IN or ruleObj.direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when removing a raw rule from SgRuleSet : ", ruleObj )
 
       console.assert( ruleObj.relation isnt undefined and ruleObj.port isnt undefined and ruleObj.protocol isnt undefined and ruleObj.direction isnt undefined, "Invalid ruleObj, when removing a rule : ", ruleObj )
 
-      if ruleObj.relation is @port1Comp().id or ruleObj.relation is @port1Comp.get("name")
+      if ruleObj.relation is @port1Comp().id or ruleObj.relation is @port1Comp().get("name")
         owner = @port2Comp().id
       else
         owner = @port1Comp().id
 
-      @removeRawRule( owner, ruleObj.direction, rule )
+      ports = (""+ruleObj.port).split("-")
+      ruleObj.fromPort = ports[0]
+      ruleObj.toPort   = if ports.length >= 2 then ruleObj[1] else ""
+
+      @removeRawRule( owner, ruleObj.direction, ruleObj )
       null
 
   }, {

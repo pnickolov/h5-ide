@@ -52,48 +52,62 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
 
             null
 
-        sortSGRule : ( key )->
-            sgRuleList = _.sortBy @attributes.rules, ( key or "direction" )
-            @set "rules", sgRuleList
+        setDescription : ( value ) ->
+            Design.instance().component( @get("uid") ).set( "description", value )
             null
 
-        addRule : ()->
+        sortSGRule : ( key )->
+            @attributes.rules = _.sortBy @attributes.rules, ( key or "direction" )
             null
+
+        addRule : ( rule )->
+            uid = @get("uid")
+
+            # Get Target
+            if rule.relation[0] is "@"
+                target = Design.instance().component( rule.relation.substr(1) )
+            else
+                # The source/destination is Ip
+                IpTargetModel = Design.modelClassForType( "SgIpTarget" )
+                target = new IpTargetModel({ name:rule.relation })
+
+            # Get the SgRuleSet
+            SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
+            mySg = Design.instance().component( uid )
+            sgRuleSet = new SgRuleSetModel( mySg, target )
+
+            # Insert Rule
+            beforeCount = sgRuleSet.ruleCount( mySg.id )
+            sgRuleSet.addRule( mySg.id, rule.direction, rule )
+
+            # See if the rule is inserted
+            if beforeCount < sgRuleSet.ruleCount( mySg.id )
+                rules = []
+                for rule in mySg.connections("SgRuleSet")
+                    rules = rules.concat( rule.toPlainObjects( uid ) )
+                @attributes.rules = rules
+                @sortSGRule()
+                return true
+            else
+                return false
+
+        createSGRuleData : ()->
+            sgList = _.map Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects(), ( sg )->
+                {
+                    id    : sg.id
+                    color : sg.color
+                    name  : sg.get("name")
+                }
+
+            {
+                isClassic : Design.instance().typeIsClassic()
+                sgList    : sgList
+            }
 
         removeRule : ( rule )->
+            sgRuleSet = Design.instance().component( rule.ruleSetId )
+            sgRuleSet.removeRuleByPlainObj( rule )
             null
-
-        formatRule : ( rules ) ->
-
-            components = MC.canvas_data.component
-
-            for rule, idx in rules
-
-                rule.ip_display = rule.IpRanges
-                if rule.IpRanges.indexOf('@') >= 0
-                    sgUID = MC.extractID( rule.IpRanges)
-                    rule.ip_display = components[ sgUID ].name
-                    rule.sg_color = MC.aws.sg.getSGColor(sgUID)
-
-                # Protocol
-                protocol = "" + rule.IpProtocol
-                if protocol is "-1"
-                    rule.protocol_display = 'all'
-                    rule.FromPort   = 0
-                    rule.ToPort     = 65535
-                else if protocol isnt 'tcp' and protocol isnt 'udp' and protocol isnt 'icmp'
-                    rule.protocol_display = "custom(#{rule.IpProtocol})"
-                else
-                    rule.protocol_display = protocol
-
-                # Port
-                if rule.FromPort is rule.ToPort and rule.IpProtocol isnt 'icmp'
-                    rule.DispPort = rule.ToPort
-                else
-                    partType = if rule.IpProtocol is 'icmp' then '/' else '-'
-                    rule.DispPort = rule.FromPort + partType + rule.ToPort
-            null
-
 
         appInit : ( sg_uid ) ->
 
@@ -122,88 +136,6 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             @set sg_app_detail
             null
 
-        setDescription : ( value ) ->
-            Design.instance().component( @get("uid") ).set( "description", value )
-            null
-
-        addSGRule : ( rule ) ->
-
-            uid = @get 'uid'
-
-            comp_res = MC.canvas_data.component[uid].resource
-
-            if !rule.direction
-                rule.direction = 'inbound'
-
-            if rule.direction == 'inbound'
-                rules = comp_res.IpPermissions
-            else
-                rules = comp_res.IpPermissionsEgress
-
-            existing = _.some rules, ( existing_rule )->
-                existing_rule.ToPort is rule.toport and existing_rule.FromPort is rule.fromport and existing_rule.IpRanges is rule.ipranges and existing_rule.IpProtocol is rule.protocol
-
-            if not existing
-                tmp =
-                    ToPort     : rule.toport
-                    FromPort   : rule.fromport
-                    IpRanges   : rule.ipranges
-                    IpProtocol : rule.protocol
-                    inbound    : rule.direction is 'inbound'
-
-                if tmp.inbound
-                    comp_res.IpPermissions.push tmp
-                else
-                    if not comp_res.IpPermissionsEgress
-                        comp_res.IpPermissionsEgress = []
-
-                    comp_res.IpPermissionsEgress.push tmp
-
-                # If not existing, return new data to let view to render
-                dispTmp = $.extend(true, {}, tmp)
-                tmpArr = [ dispTmp ]
-                @formatRule tmpArr
-
-                return tmpArr[0]
-
-            null
-
-        removeSGRule : ( rule ) ->
-
-            uid = @get 'uid'
-
-            sg = MC.canvas_data.component[uid].resource
-
-            if rule.inbound == true
-
-                $.each sg.IpPermissions, ( idx, value ) ->
-
-                    if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
-
-                        if rule.protocol.toString() isnt '-1'
-                            if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
-                                sg.IpPermissions.splice idx, 1
-                                return false
-                        else
-                            sg.IpPermissions.splice idx, 1
-                            return false
-
-            else
-
-                if sg.IpPermissionsEgress
-                    $.each sg.IpPermissionsEgress, ( idx, value ) ->
-
-                        if rule.protocol.toString() == value.IpProtocol.toString() and value.IpRanges == rule.iprange
-
-                            if rule.protocol.toString() isnt '-1'
-                                if rule.fromport.toString() == value.FromPort.toString() and rule.toport.toString() == value.ToPort.toString()
-                                    sg.IpPermissionsEgress.splice idx, 1
-                                    return false
-                            else
-                                sg.IpPermissionsEgress.splice idx, 1
-                                return false
-
-            ide_event.trigger ide_event.REDRAW_SG_LINE
     }
 
     new SgModel()

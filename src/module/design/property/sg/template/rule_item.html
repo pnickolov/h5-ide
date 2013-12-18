@@ -1,5 +1,5 @@
 {{#each rules}}
-<li data-uid="{{uid}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}">
 	<div class="rule-list-row">
 		<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
 		<span {{#if color}}class="sg-color" style="background-color:{{color}}"{{/if}}></span>

@@ -647,18 +647,15 @@ Additional Notes and Questions
 <!-- modalSGRule -->
 <div id="modal-sg-rule" data-bind="true">
 	<div class="modal-header">
-		{{#if isAdd}}
-		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3>
-		{{else}}
-		<h3>{{ i18n "POP_SGRULE_TITLE_EDIT" }}</h3>
-		{{/if}}
-		<i class="modal-close">&times;</i>
+		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3><i class="modal-close">&times;</i>
 	</div>
+
 	<div class="modal-body">
 		<div class="modal-control-group clearfix">
 			<label class="label-short">{{ i18n "POP_SGRULE_LBL_DIRECTION" }}</label>
+
 			<div id="sg-modal-direction">
-			{{#if isclassic}}
+			{{#if isClassic}}
 				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</div>
 			{{else}}
 			<div class="radio-group-horizontal">
@@ -687,7 +684,7 @@ Additional Notes and Questions
 				<ul class="dropdown">
 					<li class="item selected" data-id="custom">IP...</li>
 					{{#each sgList}}
-					<li class="item truncate" data-id="sg" data-sg-uid="{{sgUID}}">{{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}{{sgName}}</li>
+					<li class="item truncate" data-id="sg" data-uid="{{id}}">{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{name}}</li>
 					{{/each}}
 				</ul>
 			</div>

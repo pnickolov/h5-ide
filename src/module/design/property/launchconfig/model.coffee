@@ -48,16 +48,17 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
 
     init  : ( uid ) ->
+      @lc = lc = Design.instance().component( uid )
 
       if @isApp
         @getAppLaunch( uid )
       else
-        component = MC.canvas_data.component[ uid ]
+
         data = {
           uid      : uid
-          userData : component.resource.UserData
-          name     : component.name
-          imageId  : component.resource.ImageId
+          userData : lc.get 'UserData'
+          name     : lc.get 'name'
+          imageId  : lc.get 'ImageId'
         }
         @getCheckBox( uid, data )
         @getKeyPair( uid, data )
@@ -70,7 +71,9 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     setName  : ( name ) ->
       uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].name = name
+
+      @lc.set 'name', name
+
       MC.canvas.update(uid,'text','lc_name', name)
 
       # update lc in extended asg
@@ -82,10 +85,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       null
 
     setInstanceType  : ( value ) ->
-      uid = this.get 'uid'
-      component = MC.canvas_data.component[ uid ]
 
-      component.resource.InstanceType = value
+      @lc.set 'InstanceType', value
 
       has_ebs = EbsMap.hasOwnProperty value
       if not has_ebs
@@ -94,42 +95,32 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       has_ebs
 
     setEbsOptimized : ( value )->
-      uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.EbsOptimized = value
+      @lc.set 'EbsOptimized', value
+
       null
 
     setCloudWatch : ( value ) ->
-      uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.InstanceMonitoring = value
+      @lc.set 'InstanceMonitoring', value
       null
 
     setUserData : ( value ) ->
-
-      uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.UserData = value
+      @lc.set 'UserData', value
       null
 
     unAssignSGToComp : (sg_uid) ->
-
-      lcUID = this.get 'uid'
-
-      originSGIdAry = MC.canvas_data.component[lcUID].resource.SecurityGroups
+      originSGIdAry = @lc.get 'SecurityGroups'
 
       currentSGId = '@' + sg_uid + '.resource.GroupId'
 
       originSGIdAry = _.filter originSGIdAry, (value) ->
         value isnt currentSGId
 
-      MC.canvas_data.component[lcUID].resource.SecurityGroups = originSGIdAry
-
+      @lc.set 'SecurityGroups', originSGIdAry
 
       null
 
     assignSGToComp : (sg_uid) ->
-
-      instanceUID = this.get 'uid'
-
-      originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroups
+      originSGIdAry = @lc.get 'SecurityGroups'
 
       currentSGId = '@' + sg_uid + '.resource.GroupId'
 
@@ -137,7 +128,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       if !Boolean(currentSGId in originSGIdAry)
         originSGIdAry.push currentSGId
 
-      MC.canvas_data.component[instanceUID].resource.SecurityGroups = originSGIdAry
+      @lc.set 'SecurityGroups', originSGIdAry
 
       null
 
@@ -145,23 +136,25 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       resource = MC.canvas_data.component[ uid ].resource
 
-      checkbox.ebsOptimized = "" + resource.EbsOptimized is 'true'
-      checkbox.monitoring   = "" + resource.InstanceMonitoring is 'true'
+      checkbox.ebsOptimized = "" + @lc.get( 'EbsOptimized' ) is 'true'
+      checkbox.monitoring   = "" + @lc.get( 'InstanceMonitoring' ) is 'true'
 
       watches = []
       asg = null
       monitorEnabled = true
-      for id, comp of MC.canvas_data.component
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-          watches.push comp
-        else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-          if comp.resource.LaunchConfigurationName.indexOf( uid ) != -1
-            asg = comp
+
+      WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
+
+      allWatch = WatchModel and WatchModel.allObjects() or []
+
+      _.each allWatch, ( watch ) ->
+        watches.push watch
+      asg = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).first()
 
       for watch in watches
-        if watch.resource.MetricName.indexOf("StatusCheckFailed") != -1
-          for d in watch.resource.Dimensions
-            if d.value and d.value.indexOf( asg.uid ) != -1
+        if watch.get( 'MetricName' ).indexOf("StatusCheckFailed") != -1
+          for d in watch.get( 'Dimensions' )
+            if d.value and d.value.indexOf( asg.id ) != -1
               monitorEnabled = false
               break
 
@@ -174,7 +167,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     getAmi : ( uid, data ) ->
 
-      ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+      ami_id = @lc.get 'ImageId'
       ami    = MC.data.dict_ami[ami_id]
 
       if not ami
@@ -192,7 +185,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     getKeyPair : ( uid, data )->
 
-      keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
+      keypair_id = MC.extractID @lc.get 'KeyName'
       data.keypair = MC.aws.kp.getList( keypair_id )
 
       null
@@ -204,8 +197,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       if not result
         return result
 
-      uid = @get 'uid'
-      MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
+      @lc.set 'KeyName', "@#{result}.resource.KeyName"
       true
 
     deleteKP : ( key_name ) ->
@@ -223,19 +215,18 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     setKP : ( key_name ) ->
 
       uid = this.get 'uid'
-      MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
+      @lc.set 'KeyName', "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
 
       null
 
     getInstanceType : ( uid, data ) ->
-
-      amiId = MC.canvas_data.component[uid].resource.ImageId
+      amiId = @lc.get 'ImageId'
 
       ami_info = MC.data.dict_ami[amiId]
 
       #MC.canvas_data.layout.component.node[ uid ]
 
-      current_instance_type = MC.canvas_data.component[ uid ].resource.InstanceType
+      current_instance_type = @lc.get 'InstanceType'
 
       instanceTypeAry = MC.aws.ami.getInstanceType(ami_info)
       view_instance_type = _.map instanceTypeAry, ( value )->
@@ -257,7 +248,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     getSGList : () ->
 
       uid = this.get 'uid'
-      sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+      sgAry = @lc.get 'SecurityGroups'
 
       sgUIDAry = []
       _.each sgAry, (value) ->
@@ -268,11 +259,9 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       return sgUIDAry
 
     getAppLaunch : ( uid ) ->
+      lc_data   = MC.data.resource_list[MC.canvas_data.region][ @lc.get 'LaunchConfigurationARN' ]
 
-      component = MC.canvas_data.component[uid]
-      lc_data   = MC.data.resource_list[MC.canvas_data.region][ component.resource.LaunchConfigurationARN ]
-
-      this.set 'name', component.name
+      this.set 'name', @lc.get 'name'
       this.set 'lc',   lc_data
       this.set 'uid',  uid
       null

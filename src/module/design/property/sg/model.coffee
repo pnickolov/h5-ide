@@ -15,8 +15,8 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             component = Design.instance().component( uid )
 
             rules = []
-            for rule in component.connections("SgRule")
-                rules = rules.concat( rule.toPlainObjects() )
+            for rule in component.connections("SgRuleSet")
+                rules = rules.concat( rule.toPlainObjects( uid ) )
 
             members = _.map component.connections("SgAsso"), ( asso )->
                 asso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).get("name")
@@ -55,6 +55,12 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
         sortSGRule : ( key )->
             sgRuleList = _.sortBy @attributes.rules, ( key or "direction" )
             @set "rules", sgRuleList
+            null
+
+        addRule : ()->
+            null
+
+        removeRule : ( rule )->
             null
 
         formatRule : ( rules ) ->

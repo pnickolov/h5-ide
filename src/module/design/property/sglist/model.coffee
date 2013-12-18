@@ -25,10 +25,9 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 			resource_id   = if resource then resource.id else ""
 
 			sg_list  = []
-			allRules = []
 
-			enabledSGCount = 0
-			enabledSG = {}
+			enabledSG    = {}
+			enabledSGArr = []
 
 			## ## ## Get All SG
 			for sg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects()
@@ -45,17 +44,13 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				else
 					deletable = true
 
-				# SgAsso is a connection to represent SG <=> Resource
 				assos = sg.connections( "SgAsso" )
-				# SgRule is a connection to represent SG <=> SG
-				rules = sg.connections( "SgRule" )
-
+				# SgAsso is a connection to represent SG <=> Resource
 				# See what SG is used by this resource
 				for asso in assos
 					if asso.connectsTo( resource_id )
-						++enabledSGCount
 						enabledSG[ sg.id ] = true
-						allRules = allRules.concat( rules )
+						enabledSGArr.push sg
 						break
 
 				sg_list.push {
@@ -63,7 +58,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 					color       : sg.color
 					name        : sg.get("name")
 					desc        : sg.get("description")
-					ruleCount   : rules.length
+					ruleCount   : sg.ruleCount()
 					memberCount : assos.length
 					hideCheck   : readonly or isStackParent
 					deletable   : deletable
@@ -72,30 +67,28 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 
 
 			## ## ## Get All Rules
+			# SgRuleSet is a connection to represent SG <=> SG
 			sgRuleAry = []
-
-			# Only get plain rules, that its destination is our sg
-			filter = ( ruleDestination ) -> enabledSG[ ruleDestination.id ]
-
-			for rule in allRules
-				sgRuleAry = sgRuleAry.concat( rule.toPlainObjects( filter ) )
+			for usedSG in enabledSGArr
+				ruleSets = usedSG.connections( "SgRuleSet" )
+				for ruleset in ruleSets
+ 					sgRuleAry = sgRuleAry.concat( ruleset.toPlainObjects( usedSG.id ) )
 
 			# Remove duplicate rules
 			ruleMap = {}
 			rules   = []
 			for rule in sgRuleAry
 				ruleString = rule.direction + rule.target + rule.protocol + rule.port
-				if ruleMap[ ruleString ]
-					continue
+				if ruleMap[ ruleString ] then continue
 				ruleMap[ ruleString ] = true
 				rules.push rule
 
 			# Set
 			@set {
 				is_stack_sg  : isStackParent
-				only_one_sg  : enabledSGCount is 1
+				only_one_sg  : enabledSGArr.length is 1
 				sg_list      : sg_list
-				sg_length    : if isStackParent then sg_list.length else enabledSGCount
+				sg_length    : if isStackParent then sg_list.length else enabledSGArr.length
 				readonly     : readonly
 				sg_rule_list : rules
 			}

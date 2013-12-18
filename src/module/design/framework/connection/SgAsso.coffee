@@ -5,12 +5,7 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-    initialize : ()->
-      # Listen to myself's remove event, so that we can update the target's element
-      @on "remove", @onRemove, @
-      null
-
-    onRemove : ()->
+    remove : ()->
 
       @set "removing", true
       # Update target's label
@@ -26,11 +21,15 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
 
       sgAssos = resource.connections("SgAsso")
 
+      idx = sgAssos.indexOf( this )
       if not @get "removing"
         # When the connection is created, draw() is called before resource.connect()
         # So sgAssos might not have this SgAsso inside.
-        if sgAssos.indexOf( this ) is -1
+        if idx is -1
           sgAssos.push this
+      else
+        if idx isnt -1
+          sgAssos.splice( idx, 1 )
 
       # Sort the SG
       sgs = _.map sgAssos, ( a )->

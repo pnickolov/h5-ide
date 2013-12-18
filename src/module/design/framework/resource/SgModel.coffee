@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRule", "constant" ], ( ComplexResModel, ResourceModel, SgRule, constant )->
+define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", "constant" ], ( ComplexResModel, ResourceModel, SgRuleSet, constant )->
 
   SgTargetModel = ComplexResModel.extend {
     type : "SgIpTarget"
@@ -26,6 +26,11 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRule", "cons
     isElbSg : ()->
       false
 
+    ruleCount : ()->
+      count = 0
+      for ruleset in @connections( "SgRuleSet" )
+        count += ruleset.ruleCount( @id )
+      count
 
     generateColor : ()->
       # The first color is always for DefaultSG
@@ -94,14 +99,11 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRule", "cons
           toPort   : rule.ToPort
           protocol : rule.IpProtocol
 
-        rule = new SgRule( group, ruleTarget, attr )
+
         # The rule might already exist, so we call addDirection here
         # to try to upgrade the direction.
-        if ruleObj.out
-          rule.setOut( group, true )
-        else
-          rule.setIn( group, true )
-
+        dir = if ruleObj.out then SgRuleSet.DIRECTION.OUT else SgRuleSet.DIRECTION.IN
+        (new SgRuleSet( group, ruleTarget )).addRawRule( group.id, dir, attr )
       null
   }
 

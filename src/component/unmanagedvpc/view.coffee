@@ -11,11 +11,11 @@ define [ 'event',
 
     UnmanagedVPCView = Backbone.View.extend {
 
-        events   :
-            'closed' : 'closedPopup'
+        events      :
+            'closed'                             : 'closedPopup'
             'click .unmanaged-VPC-resource-item' : 'resourceItemClickEvent'
 
-        initialize : ->
+        initialize  : ->
 
             # is no unmanaged
             Handlebars.registerHelper 'is_unmanaged', ( value, options ) ->
@@ -59,9 +59,9 @@ define [ 'event',
 
                     _.each value.origin, ( item, type ) ->
 
-                        if type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                        if type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
                             vpc_ids = _.keys item
-                            if isArray( vpc_ids ) and vpc_ids.length > 100
+                            if _.isArray( vpc_ids ) and vpc_ids.length > 99
                                 is_true = true
 
                     if is_true
@@ -148,7 +148,10 @@ define [ 'event',
 
                         switch key
 
-                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP, constant.AWS_RESOURCE_TYPE.AWS_ELB
+                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                            # constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+                            # constant.AWS_RESOURCE_TYPE.AWS_ELB
+                            # constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
                             when type
                                 new_count = _.keys( value ).length
 

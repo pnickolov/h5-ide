@@ -46,11 +46,23 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                 resources =
                     'AWS.VPC.VPC'           : {}
                     'AWS.ELB'               : {}
-                    'AWS.EC2.Instance'      : {}
+                    'AWS.EC2.Instance'      : {
+                        'filter' : {
+                            'instance-state-name' : [ 'pending', 'running', 'stopping', 'stopped' ]     # filter terminating and terminated instances
+                        }
+                    }
                     'AWS.VPC.RouteTable'    : {}
                     'AWS.VPC.Subnet'        : {}
-                    'AWS.VPC.VPNGateway'    : {}
-                    'AWS.VPC.VPNConnection' : {}
+                    'AWS.VPC.VPNGateway'    : {
+                        'filter' : {
+                            'state' : [ 'pending', 'available' ]    # filter deleting and deleted vgw
+                        }
+                    }
+                    'AWS.VPC.VPNConnection' : {
+                        'filter' : {
+                            'state' : [ 'pending', 'available' ]    # filter deleting and deleted vpn
+                        }
+                    }
                     'AWS.AutoScaling.Group' : {}
 
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1

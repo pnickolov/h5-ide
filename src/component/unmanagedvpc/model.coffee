@@ -44,14 +44,15 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
 
                 # set resources
                 resources =
-                    'AWS.VPC.VPC'           : {}
-                    'AWS.ELB'               : {}
-                    'AWS.EC2.Instance'      : {}
-                    'AWS.VPC.RouteTable'    : {}
-                    'AWS.VPC.Subnet'        : {}
-                    'AWS.VPC.VPNGateway'    : {}
-                    'AWS.VPC.VPNConnection' : {}
-                    'AWS.AutoScaling.Group' : {}
+                    'AWS.VPC.VPC'              : {}
+                    'AWS.ELB'                  : {}
+                    'AWS.EC2.Instance'         : {}
+                    'AWS.VPC.RouteTable'       : {}
+                    'AWS.VPC.Subnet'           : {}
+                    'AWS.VPC.VPNGateway'       : {}
+                    'AWS.VPC.VPNConnection'    : {}
+                    'AWS.AutoScaling.Group'    : {}
+                    'AWS.VPC.NetworkInterface' : {}
 
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1
 

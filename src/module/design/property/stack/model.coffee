@@ -274,7 +274,13 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             me = this
 
             copy_data = $.extend( true, {}, MC.canvas_data )
-            result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
+            if MC.canvas.getState() is 'appview'
+
+                result = MC.aws.aws.getCost copy_data
+
+            else
+
+                result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
 
             me.set 'cost_list', result.cost_list
             me.set 'total_fee', result.total_fee

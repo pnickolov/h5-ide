@@ -7,11 +7,12 @@ define [ 'MC', 'event',
          'text!./stack_template.html',
          'text!./app_template.html',
          'text!./appview_template.html',
+         "UI.download"
          'constant'
          'backbone', 'jquery', 'handlebars',
          'UI.selectbox', 'UI.notification',
          "UI.tabbar"
-], ( MC, ide_event, lang, stack_tmpl, app_tmpl, appview_tmpl, constant ) ->
+], ( MC, ide_event, lang, stack_tmpl, app_tmpl, appview_tmpl, download, constant ) ->
 
     stack_tmpl   = Handlebars.compile stack_tmpl
     app_tmpl     = Handlebars.compile app_tmpl
@@ -341,15 +342,19 @@ define [ 'MC', 'event',
                     console.log 'clickExportJSONIcon'
                     modal.close()
 
-        exportPNG : ( base64_image, uid ) ->
+        exportPNG : ( base64_image, uid, blob ) ->
 
             if $("#modal-wrap").data("uid") isnt uid
                 return
 
-            $("#modal-wrap").find("#btn-confirm").show().attr({
-                'href'     : base64_image
-                'download' : MC.canvas_data.name + '.png'
-            })
+            if not blob
+                $("#modal-wrap").find("#btn-confirm").show().attr({
+                    'href'     : base64_image
+                    'download' : MC.canvas_data.name + '.png'
+                })
+            else
+                $("#modal-wrap").find("#btn-confirm").show().click ()->
+                    download( blob, MC.canvas_data.name + ".png" )
 
             $( '.modal-body' ).html '<img src="' + base64_image + '" />'
 

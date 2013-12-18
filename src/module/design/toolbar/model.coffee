@@ -616,12 +616,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         generatePNG : () ->
             me = this
             MC.canvas.exportPNG $("#svg_canvas"), {
-                isExport : true
-                name     : MC.canvas_data.name
-                id       : MC.canvas_data.id
+                isExport   : true
+                createBlob : true
+                name       : MC.canvas_data.name
+                id         : MC.canvas_data.id
                 onFinish : ( data ) ->
                     if ( data.id is MC.canvas_data.id )
-                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id
+                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
 

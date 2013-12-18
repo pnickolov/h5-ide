@@ -70,6 +70,7 @@ require.config {
 		# ui/common
 		#############################################
 		'UI.tooltip'       : 'ui/common/UI.tooltip'
+		'UI.download'      : 'ui/common/UI.download'
 		'UI.scrollbar'     : 'ui/common/UI.scrollbar'
 		'UI.tabbar'        : 'ui/common/UI.tabbar'
 		'UI.bubble'        : 'ui/common/UI.bubble'

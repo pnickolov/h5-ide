@@ -64,6 +64,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                         }
                     }
                     'AWS.AutoScaling.Group' : {}
+                    'AWS.VPC.NetworkInterface' : {}
 
                 aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, resources, 'statistic', 1
 

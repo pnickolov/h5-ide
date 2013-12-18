@@ -198,6 +198,10 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 			dict[dict_name] = [] if dict[dict_name]?
 
+			# ignore no response
+			if action_name not of responses
+				continue
+
 			dict[dict_name] = responses[action_name] [null, node]
 
 		dict

@@ -52,10 +52,10 @@
 
 				<!-- array type parameter --> 
 				{{#if type_array}}
-					<div class="parameter-item">
+					<div class="parameter-item array">
 						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
-							<div class="parameter-value editable-area line" contenteditable="true"></div>
+							{{> state-template-para-array-item}}
 						</div>
 					</div>
 				{{/if}}
@@ -88,6 +88,10 @@
 				<div class="parameter-value editable-area line" contenteditable="true"></div>
 				<div class="parameter-value editable-area line" contenteditable="true"></div>
 			</div>
+		</script>
+
+		<script id="state-template-para-array-item" type="x-handlebars-template">
+			<div class="parameter-value editable-area line" contenteditable="true"></div>
 		</script>
 
 		<script type="text/javascript" src="model.js"></script>

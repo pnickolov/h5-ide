@@ -6,10 +6,13 @@ StateEditorView = Backbone.View.extend({
   model: new StateEditorModel(),
   editorHTML: $('#state-template-main').html(),
   paraListHTML: $('#state-template-para-list').html(),
-  paraDictListHTML: $('#state-template-para-dict-item').html(),
+  paraDictItemHTML: $('#state-template-para-dict-item').html(),
+  paraArrayItemHTML: $('#state-template-para-array-item').html(),
   events: {
     'keyup .parameter-item.dict .parameter-value': 'onDictInputChange',
-    'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
+    'blur .parameter-item.dict .parameter-value': 'onDictInputBlur',
+    'keyup .parameter-item.array .parameter-value': 'onArrayInputChange',
+    'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
   },
   initialize: function() {
     this.compileTpl();
@@ -21,9 +24,11 @@ StateEditorView = Backbone.View.extend({
   compileTpl: function() {
     this.editorTpl = Handlebars.compile(this.editorHTML);
     Handlebars.registerPartial('state-template-para-list', this.paraListHTML);
-    Handlebars.registerPartial('state-template-para-dict-item', this.paraDictListHTML);
+    Handlebars.registerPartial('state-template-para-dict-item', this.paraDictItemHTML);
+    Handlebars.registerPartial('state-template-para-array-item', this.paraArrayItemHTML);
     this.paraListTpl = Handlebars.compile(this.paraListHTML);
-    return this.paraDictListTpl = Handlebars.compile(this.paraDictListHTML);
+    this.paraDictListTpl = Handlebars.compile(this.paraDictItemHTML);
+    return this.paraArrayListTpl = Handlebars.compile(this.paraArrayItemHTML);
   },
   refreshStateList: function() {
     var cmdName, cmdParaAry, cmdParaMap, stateListObj, that;
@@ -102,8 +107,21 @@ StateEditorView = Backbone.View.extend({
       data: atValueAry
     });
   },
+  bindArrayInputEvent: function($arrayItem) {
+    var $paraInputElem, atValueAry, cmdName, cmdParaMap, that;
+    that = this;
+    cmdName = that.getCurrentCommand($arrayItem);
+    cmdParaMap = that.model.get('cmdParaMap');
+    atValueAry = cmdParaMap[cmdName];
+    $paraInputElem = $arrayItem.find('.parameter-value');
+    return $paraInputElem.atwho({
+      at: '@',
+      tpl: '<li data-value="${atwho-at}${name}">${name}</li>',
+      data: atValueAry
+    });
+  },
   onDictInputChange: function(event) {
-    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $leftInputElem, $newDictItem, $rightInputElem, leftInputValue, newDictItemHTML, nextDictItemElemAry, nextInputAry, prevInputAry, rightInputValue, that;
+    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $leftInputElem, $rightInputElem, leftInputValue, newDictItemHTML, nextDictItemElemAry, nextInputAry, prevInputAry, rightInputValue, that;
     that = this;
     $currentInputElem = $(event.currentTarget);
     $currentDictItemElem = $currentInputElem.parents('.parameter-dict-item');
@@ -125,8 +143,8 @@ StateEditorView = Backbone.View.extend({
       rightInputValue = $rightInputElem.text();
       if (leftInputValue || rightInputValue) {
         newDictItemHTML = that.paraDictListTpl({});
-        $newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer);
-        return that.bindDictInputEvent($newDictItem);
+        $currentDictItemContainer.append(newDictItemHTML);
+        return that.bindDictInputEvent($currentDictItemContainer);
       }
     }
   },
@@ -151,6 +169,35 @@ StateEditorView = Backbone.View.extend({
       return null;
     });
   },
+  onArrayInputChange: function(event) {
+    var $currentArrayInputContainer, $currentInputElem, currentInput, newArrayItemHTML, nextInputElemAry, that;
+    that = this;
+    $currentInputElem = $(event.currentTarget);
+    nextInputElemAry = $currentInputElem.next();
+    if (!nextInputElemAry.length) {
+      $currentArrayInputContainer = $currentInputElem.parents('.parameter-container');
+      currentInput = $currentInputElem.text();
+      if (currentInput) {
+        newArrayItemHTML = that.paraArrayListTpl({});
+        $currentArrayInputContainer.append(newArrayItemHTML);
+        return that.bindArrayInputEvent($currentArrayInputContainer);
+      }
+    }
+  },
+  onArrayInputBlur: function(event) {
+    var $currentArrayItemContainer, $currentInputElem, allInputElemAry;
+    $currentInputElem = $(event.currentTarget);
+    $currentArrayItemContainer = $currentInputElem.parents('.parameter-container');
+    allInputElemAry = $currentArrayItemContainer.find('.parameter-value');
+    return _.each(allInputElemAry, function(itemElem, idx) {
+      var inputValue;
+      inputValue = $(itemElem).text();
+      if (!inputValue && idx !== allInputElemAry.length - 1) {
+        $(itemElem).remove();
+      }
+      return null;
+    });
+  },
   getCurrentCommand: function($subElem) {
     var $cmdValue, $stateItem;
     $stateItem = $subElem.parents('.state-item');
@@ -159,4 +206,4 @@ StateEditorView = Backbone.View.extend({
   }
 });
 
-StateEditorView;
+window.StateEditorView = StateEditorView;

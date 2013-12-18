@@ -20,7 +20,7 @@ StateEditorModel = Backbone.Model.extend({
 			# get parameter array
 			_.each paraAryObj, (paraObj, paraName) ->
 				paraBuildObj = _.extend paraObj, {}
-				paraBuildObj.name = paraName
+				paraBuildObj.name = paraName + '(' + paraBuildObj.type + ')'
 				paraBuildObj['type_' + paraBuildObj.type] = true
 				cmdParaMap[cmdName].push paraBuildObj
 				null
@@ -57,4 +57,4 @@ StateEditorModel = Backbone.Model.extend({
 		this.set('lookupDataAry', lookupDataAry)
 })
 
-StateEditorModel
+window.StateEditorModel = StateEditorModel

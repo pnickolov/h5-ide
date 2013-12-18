@@ -18,7 +18,7 @@ StateEditorModel = Backbone.Model.extend({
       _.each(paraAryObj, function(paraObj, paraName) {
         var paraBuildObj;
         paraBuildObj = _.extend(paraObj, {});
-        paraBuildObj.name = paraName;
+        paraBuildObj.name = paraName + '(' + paraBuildObj.type + ')';
         paraBuildObj['type_' + paraBuildObj.type] = true;
         cmdParaMap[cmdName].push(paraBuildObj);
         return null;
@@ -55,4 +55,4 @@ StateEditorModel = Backbone.Model.extend({
   }
 });
 
-StateEditorModel;
+window.StateEditorModel = StateEditorModel;

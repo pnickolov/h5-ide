@@ -6,13 +6,17 @@ StateEditorView = Backbone.View.extend({
 
 	editorHTML: $('#state-template-main').html()
 	paraListHTML: $('#state-template-para-list').html()
-	paraDictListHTML: $('#state-template-para-dict-item').html()
+	paraDictItemHTML: $('#state-template-para-dict-item').html()
+	paraArrayItemHTML: $('#state-template-para-array-item').html()
 
 	events:
 
 		# 'AUTOCOMPLETE_SELECTED .autocomplete-input': 'onAutoCompleteSelected'
 		'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
 		'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
+
+		'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
+		'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
 
 	initialize: () ->
 
@@ -28,10 +32,12 @@ StateEditorView = Backbone.View.extend({
 		this.editorTpl = Handlebars.compile(this.editorHTML)
 
 		Handlebars.registerPartial('state-template-para-list', this.paraListHTML)
-		Handlebars.registerPartial('state-template-para-dict-item', this.paraDictListHTML)
+		Handlebars.registerPartial('state-template-para-dict-item', this.paraDictItemHTML)
+		Handlebars.registerPartial('state-template-para-array-item', this.paraArrayItemHTML)
 
 		this.paraListTpl = Handlebars.compile(this.paraListHTML)
-		this.paraDictListTpl = Handlebars.compile(this.paraDictListHTML)
+		this.paraDictListTpl = Handlebars.compile(this.paraDictItemHTML)
+		this.paraArrayListTpl = Handlebars.compile(this.paraArrayItemHTML)
 
 	refreshStateList: () ->
 
@@ -120,6 +126,21 @@ StateEditorView = Backbone.View.extend({
 			data: atValueAry
 		})
 
+	bindArrayInputEvent: ($arrayItem) ->
+
+		that = this
+		cmdName = that.getCurrentCommand($arrayItem)
+
+		cmdParaMap = that.model.get('cmdParaMap')
+		atValueAry = cmdParaMap[cmdName]
+
+		$paraInputElem = $arrayItem.find('.parameter-value')
+		$paraInputElem.atwho({
+			at: '@',
+			tpl: '<li data-value="${atwho-at}${name}">${name}</li>'
+			data: atValueAry
+		})
+
 	onDictInputChange: (event) ->
 
 		that = this
@@ -150,8 +171,9 @@ StateEditorView = Backbone.View.extend({
 
 			if leftInputValue or rightInputValue
 				newDictItemHTML = that.paraDictListTpl({})
-				$newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer)
-				that.bindDictInputEvent($newDictItem)
+				$currentDictItemContainer.append(newDictItemHTML)
+				# $newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer)
+				that.bindDictInputEvent($currentDictItemContainer)
 
 	onDictInputBlur: (event) ->
 
@@ -169,6 +191,36 @@ StateEditorView = Backbone.View.extend({
 				$(itemElem).remove()
 			null
 
+	onArrayInputChange: (event) ->
+
+		that = this
+
+		$currentInputElem = $(event.currentTarget)
+		nextInputElemAry = $currentInputElem.next()
+
+		# append new dict item
+		if not nextInputElemAry.length
+
+			$currentArrayInputContainer = $currentInputElem.parents('.parameter-container')
+
+			currentInput = $currentInputElem.text()
+
+			if currentInput
+				newArrayItemHTML = that.paraArrayListTpl({})
+				$currentArrayInputContainer.append(newArrayItemHTML)
+				that.bindArrayInputEvent($currentArrayInputContainer)
+
+	onArrayInputBlur: (event) ->
+
+		$currentInputElem = $(event.currentTarget)
+		$currentArrayItemContainer = $currentInputElem.parents('.parameter-container')
+		allInputElemAry = $currentArrayItemContainer.find('.parameter-value')
+		_.each allInputElemAry, (itemElem, idx) ->
+			inputValue = $(itemElem).text()
+			if not inputValue and idx isnt allInputElemAry.length - 1
+				$(itemElem).remove()
+			null
+
 	getCurrentCommand: ($subElem) ->
 
 		$stateItem = $subElem.parents('.state-item')
@@ -177,4 +229,4 @@ StateEditorView = Backbone.View.extend({
 
 })
 
-StateEditorView
+window.StateEditorView = StateEditorView

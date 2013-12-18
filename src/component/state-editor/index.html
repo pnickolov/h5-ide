@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link id="css" rel="stylesheet" type="text/css" href="index.css">
+
+		<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="jquery.atwho.css">
+
+		<script type="text/javascript" src="jquery.caret.js"></script>
+		<script type="text/javascript" src="jquery.atwho.js"></script>
+		
+		<script type="text/javascript" src="jquery.autocomplete.js"></script>
+
+		<script type="text/javascript" src="data.js"></script>
+
+		<script type="text/javascript" src="underscore.js"></script>
+		<script type="text/javascript" src="handlebars-v1.1.2.js"></script>
+
+		<script type="text/javascript" src="backbone.js"></script>
+
+		<script id="state-template-main" type="x-handlebars-template">
+			{{#each state_list}}
+				<div class="state-item">
+					<div class="command-value editable-area line" data-value="{{cmd_name}}" contenteditable="true">{{cmd_name}}</div>
+					<div class="parameter-list">
+						{{> state-template-para-list}}
+					</div>
+				</div>
+			{{/each}}
+		</script>
+
+		<script id="state-template-para-list" type="x-handlebars-template">
+			{{#each parameter_list}}
+
+				<!-- line type parameter -->
+				{{#if type_line}}
+					<div class="parameter-item">
+						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-container">
+							<div class="parameter-value editable-area line" contenteditable="true">{{default}}</div>
+						</div>
+					</div>
+				{{/if}}
+
+				<!-- dict type parameter --> 
+				{{#if type_dict}}
+					<div class="parameter-item dict">
+						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-container">
+							{{> state-template-para-dict-item}}
+						</div>
+					</div>
+				{{/if}}
+
+				<!-- array type parameter --> 
+				{{#if type_array}}
+					<div class="parameter-item">
+						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-container">
+							<div class="parameter-value editable-area line" contenteditable="true"></div>
+						</div>
+					</div>
+				{{/if}}
+
+				<!-- bool type parameter --> 
+				{{#if type_bool}}
+					<div class="parameter-item">
+						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-container">
+							<div class="parameter-value editable-area line" contenteditable="true"></div>
+						</div>
+					</div>
+				{{/if}}
+
+				<!-- text type parameter --> 
+				{{#if type_text}}
+					<div class="parameter-item">
+						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-container">
+							<div class="parameter-value editable-area text" contenteditable="true">ssh apt@192.168.1.1:/opt/<span>@{supervisord}</span>/</div>
+						</div>
+					</div>
+				{{/if}}
+
+			{{/each}}
+		</script>
+
+		<script id="state-template-para-dict-item" type="x-handlebars-template">
+			<div class="parameter-dict-item">
+				<div class="parameter-value editable-area line" contenteditable="true"></div>
+				<div class="parameter-value editable-area line" contenteditable="true"></div>
+			</div>
+		</script>
+
+		<script type="text/javascript" src="model.js"></script>
+		<script type="text/javascript" src="view.js"></script>
+		<script type="text/javascript" src="index.js"></script>
+	</head>
+	<body>
+		<div id="state-editor" spellcheck="false"></div>
+	</body>
+<requiredl>

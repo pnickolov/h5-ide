@@ -1,0 +1,105 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family : 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	color: #313131;
+	font-size: 62.5%;
+	line-height: 1;
+	background-color: #f0f0f0;
+}
+
+/* *************************************** state editor */
+
+#state-editor {
+	border: 1px solid #999;
+	margin: 50px 80px;
+	padding: 20px;
+	overflow: auto;
+}
+
+/* *************************************** editable-area */
+
+#state-editor .editable-area {
+	background-color: #fff;
+	border: 1px solid #bbb;
+	width: 100%;
+	outline: 0px solid transparent;
+	padding: 4px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+}
+
+#state-editor .editable-area.line {
+	white-space: nowrap;
+	display: inline;
+	height: 16px;
+	line-height: 17px;
+	padding-top: 3px;
+	overflow: hidden;
+}
+
+#state-editor .editable-area.line br {
+	display: none;
+}
+
+#state-editor .editable-area.line * {
+	display: inline;
+	white-space: nowrap;
+}
+
+#state-editor .editable-area.text {
+	height: 200px;
+	line-height: 20px;
+	/*overflow: hidden;*/
+}
+
+/* *************************************** parameter */
+
+#state-editor .parameter-list {
+	float: left;
+	overflow: auto;
+	width: 100%;
+	max-width: 500px;
+	display: inline;
+}
+
+#state-editor .parameter-item {
+	width: 100%;
+	overflow: auto;
+	margin-top: 4px;
+}
+
+#state-editor .parameter-name {
+	float: left;
+	padding: 5px;
+	max-width: 100px;
+	background-color: #ddd;
+	margin-top: 2px;
+	width: 100%;
+}
+
+#state-editor .parameter-value {
+	float: left;
+	width: 100%;
+	max-width: 309px;
+}
+
+#state-editor .parameter-container {
+	float: left;
+	width: 100%;
+	max-width: 350px;
+	overflow: auto;
+	margin-left: 10px;
+}
+
+/* dict */
+#state-editor .parameter-item.dict .parameter-value {
+	width: 147px;
+	margin-right: 5px;
+}
+
+
+#state-editor .command-value {
+	float: left;
+	width: 150px;
+}

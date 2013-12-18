@@ -17,7 +17,7 @@ define [ 'event',
         open_fail: false
 
         initialize : ->
-            $( window ).on 'beforeunload', @_beforeunloadEvent
+            $( window ).on 'beforeunload', @beforeunloadEvent
 
         showMain : ->
             console.log 'showMain'
@@ -115,16 +115,21 @@ define [ 'event',
             $(".disconnected-notification").toggle( type is 'show' )
             null
 
-        _beforeunloadEvent : ->
+        beforeunloadEvent : ->
 
             # temp when proces tab return
-            if Tabbar.current is 'process'
+            #if Tabbar.current is 'process'
+            #    return
+
+            # ie 10 not check
+            if MC.browser is 'msie' and MC.browserVersion is 10
                 return
 
-            return if MC.browser is 'msie' and MC.browserVersion is 10
+            # when not cookie userid
+            if !forge_handle.cookie.getCookieByName( 'userid' )
+                return
 
             #return if MC.data.current_tab_id in [ 'dashboard', undefined ]
-            return if !forge_handle.cookie.getCookieByName( 'userid' )
             #return if MC.data.current_tab_id.split( '-' )[0] in [ 'process' ]
 
             #if _.isEqual( MC.canvas_data, MC.data.origin_canvas_data )
@@ -133,26 +138,71 @@ define [ 'event',
             #    return lang.ide.BEFOREUNLOAD_MESSAGE
 
             has_refresh = true
+            checked_tab_id = null
 
-            if Tabbar.current is 'dashboard'
-                _.each MC.tab, ( item, id ) ->
-                    if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
-                        has_refresh = false
-                        null
+            #if Tabbar.current is 'dashboard'
+            #    _.each MC.tab, ( item, id ) ->
+            #        if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
+            #            has_refresh = false
+            #            null
+            #else
+            #
+            #    # MC.tab is {}
+            #    if not MC.tab[ MC.data.current_tab_id ]
+            #
+            #        if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data ) and MC.canvas_data.id and MC.canvas_data.id isnt 'appview'
+            #            has_refresh = false
+            #
+            #    # MC.tab isnt {}
+            #    _.each MC.tab, ( item, id ) ->
+            #        console.log 'sdfasdfasdf', id, item
+            #        if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
+            #            has_refresh = false
+            #            null
+
+            # when current tab not 'dashboard' 'appview' 'process' and MC.canvas_data not {} MC.data.origin_canvas_data not {}
+            if not _.isEmpty( MC.canvas_data ) and not _.isEmpty( MC.data.origin_canvas_data ) and Tabbar.current not in [ 'dashboard', 'appview', 'process' ]
+
+                data        = $.extend true, {}, MC.canvas_data
+                origin_data = $.extend true, {}, MC.data.origin_canvas_data
+
+                if _.isEqual data, origin_data
+                    #has_refresh = true
+                    console.log 'current equal #1'
+                else
+                    has_refresh = false
+
+                # set current tab id
+                checked_tab_id = MC.canvas_data.id
+
             else
+                #has_refresh = true
+                console.log 'current equal #2'
 
-                # MC.tab is {}
-                if not MC.tab[ MC.data.current_tab_id ]
+            # loop MC.tab
+            _.each MC.tab, ( item, id ) ->
+                console.log 'beforeunload current tab item', id, item
 
-                    if not _.isEqual( MC.canvas_data, MC.data.origin_canvas_data ) and MC.canvas_data.id and MC.canvas_data.id isnt 'appview'
+                # when id is 'appview' allow refresh
+                if id.split('-')[0] is 'appview'
+                    #has_refresh = true
+                    console.log 'current equal #3'
+
+                # when id isnt 'appview' check refresh
+                else
+
+                    # current item data and origin_data
+                    if not _.isEqual( item.data, item.origin_data ) and id isnt checked_tab_id
                         has_refresh = false
 
-                # MC.tab isnt {}
-                _.each MC.tab, ( item, id ) ->
-                    console.log 'sdfasdfasdf', id, item
-                    if not _.isEqual( item.data, item.origin_data ) and id.split('-') isnt 'appview'
-                        has_refresh = false
-                        null
+                    else
+                        #has_refresh = true
+                        console.log 'current equal #4'
+
+                has_refresh
+
+            console.log 'If I can refresh', has_refresh
+            #return lang.ide.BEFOREUNLOAD_MESSAGE
 
             if has_refresh
                 return undefined

@@ -105,17 +105,23 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 # set id
                                 if 'id' of attrs
                                     if attrs['id'].length == 0
-                                        if type of vpc_obj
-                                            resources['id'] = _.keys(vpc_obj[type])
+                                        # filter 'default' dhcpOptionsId
+                                        if type is 'AWS.VPC.DhcpOptions' and 'default' of vpc_obj[type]
+                                            dhcp_ids = ( id for id in vpc_obj[type] when id isnt 'default' )
+                                            if dhcp_ids.length > 0
+                                                resources['id'] = dhcp_ids
 
-                                        if type is 'AWS.VPC.CustomerGateway' and 'AWS.VPC.VPNConnection' of vpc_obj
+                                        else if type is 'AWS.VPC.CustomerGateway' and 'AWS.VPC.VPNConnection' of vpc_obj
                                             resources['id'] = (vpc_obj['AWS.VPC.VPNConnection'][vpn_id]['customerGatewayId'] for vpn_id in _.keys(vpc_obj['AWS.VPC.VPNConnection']) when 'customerGatewayId' of vpc_obj['AWS.VPC.VPNConnection'][vpn_id])
 
-                                        if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
+                                        else if type is 'AWS.AutoScaling.NotificationConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
                                             resources['id'] = _.keys(vpc_obj['AWS.AutoScaling.Group'])
 
-                                        if type is 'AWS.AutoScaling.LaunchConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
+                                        else if type is 'AWS.AutoScaling.LaunchConfiguration' and 'AWS.AutoScaling.Group' of vpc_obj
                                             resources['id'] = (vpc_obj['AWS.AutoScaling.Group'][asg_id]['LaunchConfigurationName'] for asg_id in _.keys(vpc_obj['AWS.AutoScaling.Group']) when 'LaunchConfigurationName' of vpc_obj['AWS.AutoScaling.Group'][asg_id])
+
+                                        else if type of vpc_obj
+                                            resources['id'] = _.keys(vpc_obj[type])
 
                                     else
                                         resources['id'] = attrs['id']

@@ -681,7 +681,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					lc_comp_id = orig_asg_comp.resource.LaunchConfigurationName.split(".")[0].substr(1);
 					lc_comp_layout = layout.node[ lc_comp_id ];
-					os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					os_type = "";
+					if (lc_comp_layout.osType && lc_comp_layout.architecture && lc_comp_layout.rootDeviceType){
+						os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					}
+					else{
+						os_type = "ami-unknown";
+					}
+
 					lc_name = data[ lc_comp_id ].name;
 
 					$(group).append(

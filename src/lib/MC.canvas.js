@@ -1319,6 +1319,8 @@ MC.canvas = {
 
 			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
 
+			connection_target_data = {},
+
 			layout_component_data = MC.canvas_data.layout.component,
 			layout_node_data = layout_component_data.node,
 			layout_connection_data = MC.canvas_data.layout.connection,
@@ -1329,8 +1331,30 @@ MC.canvas = {
 			from_data = layout_component_data[ from_node_class ][ from_uid ],
 			to_data = layout_component_data[ to_node_class ][ to_uid ],
 
+			from_type = from_data.type,
+			to_data = to_data.type,
+
+			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
+
 			from_node_connection_data = from_data.connection || [],
 			to_node_connection_data = to_data.connection || [];
+
+		if (connection_option)
+		{
+			if ($.type(connection_option) === 'array')
+			{
+				$.each(connection_option, function (index, item)
+				{
+					if (
+						item.from === from_target_port &&
+						item.to === to_target_port
+					)
+					{
+						connection_option = item;
+					}
+				});
+			}
+		}
 
 		$.each(from_node_connection_data, function (key, value)
 		{
@@ -1365,6 +1389,16 @@ MC.canvas = {
 
 		MC.canvas_data.layout.component[ from_node_class ][ from_uid ].connection = from_node_connection_data;
 		MC.canvas_data.layout.component[ to_node_class ][ to_uid ].connection = to_node_connection_data;
+
+		connection_target_data[ from_uid ] = from_target_port;
+		connection_target_data[ to_uid ] = to_target_port;
+
+		MC.canvas_data.layout.connection[ line_id ] = {
+			'target': connection_target_data,
+			'auto': true,
+			'point': [],
+			'type': connection_option.type
+		};
 
 		return true;
 	},

@@ -11,6 +11,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
+    __asso: [
+      {
+        key: 'KeyName'
+        type: constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+        suffix: 'KeyName'
+      }
+    ]
+
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get 'ImageId' ]
 
@@ -96,7 +104,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
       model = new Model( attr )
 
-      model
+      model.associate resolve
+
+      null
 
 
   }

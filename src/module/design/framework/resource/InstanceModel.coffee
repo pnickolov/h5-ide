@@ -10,6 +10,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       width  : 9
       height : 9
 
+    __asso: [
+      {
+        key: 'KeyName'
+        type: constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+        suffix: 'KeyName'
+      }
+    ]
+
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get("imageId") ]
 
@@ -144,7 +152,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
       else if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
-        instance = new Model({
+        model = new Model({
 
           id           : data.uid
           name         : data.name
@@ -155,6 +163,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
           y      : layout_data.coordinate[1]
         })
 
+        model.associate resolve
         null
 
 

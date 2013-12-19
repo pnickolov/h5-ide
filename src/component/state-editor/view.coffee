@@ -23,6 +23,7 @@ StateEditorView = Backbone.View.extend({
 	initialize: () ->
 
 		this.compileTpl()
+		this.initData()
 		this.render()
 
 	render: () ->
@@ -84,8 +85,6 @@ StateEditorView = Backbone.View.extend({
 		}
 
 		that.$el.html(this.editorTpl(stateListObj))
-
-		that.initData()
 
 		that.bindStateListEvent()
 
@@ -164,6 +163,34 @@ StateEditorView = Backbone.View.extend({
 
 			null
 
+	bindParaItemEvent: ($paraItem, paraType) ->
+
+		that = this
+
+		if paraType is 'dict'
+			$keyInput = $paraItem.find('.key')
+			$valueInput = $paraItem.find('.value')
+			
+			atwhoOption = {
+				at: '@',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			}
+
+			$keyInput.atwho(atwhoOption)
+			$valueInput.atwho(atwhoOption)
+
+		else if paraType in ['line', 'text', 'array']
+			$inputElem = $paraItem.find('.parameter-value')
+			$inputElem.atwho({
+				at: '@',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			})
+
+		else if paraType is 'bool'
+			null
+
 	refreshParaList: ($paraListElem, currentCMD) ->
 
 		that = this
@@ -200,34 +227,6 @@ StateEditorView = Backbone.View.extend({
 		}))
 
 		that.bindParaListEvent($paraListElem, currentCMD)
-
-	bindParaItemEvent: ($paraItem, paraType) ->
-
-		that = this
-
-		if paraType is 'dict'
-			$keyInput = $paraItem.find('.key')
-			$valueInput = $paraItem.find('.value')
-			$valueInput.atwho({
-				at: '',
-				tpl: that.paraCompleteItemHTML
-				data: that.refObjAry
-			}).atwho({
-				at: '@',
-				tpl: that.paraCompleteItemHTML
-				data: that.refObjAry
-			})
-
-		else if paraType in ['line', 'text', 'array']
-			$inputElem = $paraItem.find('.parameter-value')
-			$inputElem.atwho({
-				at: '@',
-				tpl: that.paraCompleteItemHTML
-				data: that.refObjAry
-			})
-
-		else if paraType is 'bool'
-			null
 
 	onDictInputChange: (event) ->
 
@@ -297,7 +296,7 @@ StateEditorView = Backbone.View.extend({
 					para_value: ['']
 				})
 				$currentArrayInputContainer.append(newArrayItemHTML)
-				that.bindArrayInputEvent($currentArrayInputContainer, 'array')
+				that.bindParaItemEvent($currentArrayInputContainer, 'array')
 
 	onArrayInputBlur: (event) ->
 

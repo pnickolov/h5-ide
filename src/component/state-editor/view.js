@@ -18,6 +18,7 @@ StateEditorView = Backbone.View.extend({
   },
   initialize: function() {
     this.compileTpl();
+    this.initData();
     return this.render();
   },
   render: function() {
@@ -75,7 +76,6 @@ StateEditorView = Backbone.View.extend({
       ]
     };
     that.$el.html(this.editorTpl(stateListObj));
-    that.initData();
     return that.bindStateListEvent();
   },
   initData: function() {
@@ -149,6 +149,30 @@ StateEditorView = Backbone.View.extend({
       return null;
     });
   },
+  bindParaItemEvent: function($paraItem, paraType) {
+    var $inputElem, $keyInput, $valueInput, atwhoOption, that;
+    that = this;
+    if (paraType === 'dict') {
+      $keyInput = $paraItem.find('.key');
+      $valueInput = $paraItem.find('.value');
+      atwhoOption = {
+        at: '@',
+        tpl: that.paraCompleteItemHTML,
+        data: that.refObjAry
+      };
+      $keyInput.atwho(atwhoOption);
+      return $valueInput.atwho(atwhoOption);
+    } else if (paraType === 'line' || paraType === 'text' || paraType === 'array') {
+      $inputElem = $paraItem.find('.parameter-value');
+      return $inputElem.atwho({
+        at: '@',
+        tpl: that.paraCompleteItemHTML,
+        data: that.refObjAry
+      });
+    } else if (paraType === 'bool') {
+      return null;
+    }
+  },
   refreshParaList: function($paraListElem, currentCMD) {
     var currentParaAry, currentParaMap, newParaAry, that;
     that = this;
@@ -181,32 +205,6 @@ StateEditorView = Backbone.View.extend({
       parameter_list: newParaAry
     }));
     return that.bindParaListEvent($paraListElem, currentCMD);
-  },
-  bindParaItemEvent: function($paraItem, paraType) {
-    var $inputElem, $keyInput, $valueInput, that;
-    that = this;
-    if (paraType === 'dict') {
-      $keyInput = $paraItem.find('.key');
-      $valueInput = $paraItem.find('.value');
-      return $valueInput.atwho({
-        at: '',
-        tpl: that.paraCompleteItemHTML,
-        data: that.refObjAry
-      }).atwho({
-        at: '@',
-        tpl: that.paraCompleteItemHTML,
-        data: that.refObjAry
-      });
-    } else if (paraType === 'line' || paraType === 'text' || paraType === 'array') {
-      $inputElem = $paraItem.find('.parameter-value');
-      return $inputElem.atwho({
-        at: '@',
-        tpl: that.paraCompleteItemHTML,
-        data: that.refObjAry
-      });
-    } else if (paraType === 'bool') {
-      return null;
-    }
   },
   onDictInputChange: function(event) {
     var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $keyInput, $valueInput, leftInputValue, newDictItemHTML, nextDictItemElemAry, rightInputValue, that;
@@ -268,7 +266,7 @@ StateEditorView = Backbone.View.extend({
           para_value: ['']
         });
         $currentArrayInputContainer.append(newArrayItemHTML);
-        return that.bindArrayInputEvent($currentArrayInputContainer, 'array');
+        return that.bindParaItemEvent($currentArrayInputContainer, 'array');
       }
     }
   },

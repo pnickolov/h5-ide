@@ -58,6 +58,11 @@ define [ 'Design',
 
   # new Design({},{ component : { group : {}, node : {} } },{type:"ec2-vpc",mode:"appview"})
 
+  # Model = Design.modelClassForType("SgIpTarget")
+  # new Model("0.0.0.0")
+  # new Model("0.0.0.0")
+  # new Model("0.0.0.0")
+
   # a = new ComplexResModel()
   # b = new ComplexResModel()
   # c = new ComplexResModel()

@@ -67,6 +67,7 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
       attr.id = data.uid
 
       new Model( attr )
+      null
   }
 
   Model

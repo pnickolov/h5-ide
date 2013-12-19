@@ -116,6 +116,8 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
 
       for sb in subnets
         new AclAsso( acl, sb )
+
+      null
   }
 
   Model

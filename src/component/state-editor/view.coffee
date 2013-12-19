@@ -159,13 +159,28 @@ StateEditorView = Backbone.View.extend({
 			$paraItem = $(paraItem)
 			currentParaName = $paraItem.attr('data-para-name')
 			paraObj = currentParaMap[currentParaName]
-			that.bindParaItemEvent($paraItem, paraObj.type)
+			that.bindParaItemEvent($paraItem, paraObj)
 
 			null
 
-	bindParaItemEvent: ($paraItem, paraType) ->
+	bindParaItemEvent: ($paraItem, paraObj) ->
 
 		that = this
+
+		paraType = paraObj.type
+		paraOption = paraObj.option
+
+		paraOptionAry = null
+		if paraOption
+			if _.isString(paraOption)
+				paraOptionAry = [paraOption]
+			else if _.isArray(paraOption)
+				paraOptionAry = paraOption
+			paraOptionAry = _.map paraOptionAry, (valueStr) ->
+				return {
+					name: valueStr
+					value: valueStr
+				}
 
 		if paraType is 'dict'
 			$keyInput = $paraItem.find('.key')
@@ -180,6 +195,13 @@ StateEditorView = Backbone.View.extend({
 			$keyInput.atwho(atwhoOption)
 			$valueInput.atwho(atwhoOption)
 
+			if paraOptionAry
+				$valueInput.atwho({
+					at: '',
+					tpl: that.paraCompleteItemHTML
+					data: paraOptionAry
+				})
+
 		else if paraType in ['line', 'text', 'array']
 			$inputElem = $paraItem.find('.parameter-value')
 			$inputElem.atwho({
@@ -188,8 +210,26 @@ StateEditorView = Backbone.View.extend({
 				data: that.refObjAry
 			})
 
+			if paraOptionAry
+				$inputElem.atwho({
+					at: '',
+					tpl: that.paraCompleteItemHTML
+					data: paraOptionAry
+				})
+
 		else if paraType is 'bool'
-			null
+			$inputElem = $paraItem.find('.parameter-value')
+			$inputElem.atwho({
+				at: '',
+				tpl: that.paraCompleteItemHTML
+				data: [{
+					name: 'true',
+					value: 'true'
+				}, {
+					name: 'false',
+					value: 'false'
+				}]
+			})
 
 	refreshParaList: ($paraListElem, currentCMD) ->
 
@@ -228,6 +268,21 @@ StateEditorView = Backbone.View.extend({
 
 		that.bindParaListEvent($paraListElem, currentCMD)
 
+	getParaObj: ($inputElem) ->
+
+		that = this
+
+		$stateItem = $inputElem.parents('.state-item')
+		$paraItem = $inputElem.parents('.parameter-item')
+
+		currentCMD = $stateItem.attr('data-command')
+		currentParaName = $paraItem.attr('data-para-name')
+
+		currentParaMap = that.cmdParaObjMap[currentCMD]
+		paraObj = currentParaMap[currentParaName]
+
+		return paraObj
+
 	onDictInputChange: (event) ->
 
 		# append new dict item
@@ -235,6 +290,9 @@ StateEditorView = Backbone.View.extend({
 		that = this
 
 		$currentInputElem = $(event.currentTarget)
+
+		paraObj = that.getParaObj($currentInputElem)
+
 		$currentDictItemElem = $currentInputElem.parent('.parameter-dict-item')
 		nextDictItemElemAry = $currentDictItemElem.next()
 
@@ -245,10 +303,10 @@ StateEditorView = Backbone.View.extend({
 			$keyInput = $currentDictItemElem.find('.key')
 			$valueInput = $currentDictItemElem.find('.value')
 
-			leftInputValue = $keyInput.text()
-			rightInputValue = $valueInput.text()
+			keyInputValue = $keyInput.text()
+			valueInputValue = $valueInput.text()
 
-			if leftInputValue or rightInputValue
+			if keyInputValue
 				newDictItemHTML = that.paraDictListTpl({
 					para_value: [{
 						key: '',
@@ -256,13 +314,14 @@ StateEditorView = Backbone.View.extend({
 					}]
 				})
 				$currentDictItemContainer.append(newDictItemHTML)
-				that.bindParaItemEvent($currentDictItemContainer, 'dict')
+				that.bindParaItemEvent($currentDictItemContainer, paraObj)
 
 	onDictInputBlur: (event) ->
 
 		# remove empty dict item
 
 		$currentInputElem = $(event.currentTarget)
+
 		$currentDictItemContainer = $currentInputElem.parents('.parameter-container')
 		allInputElemAry = $currentDictItemContainer.find('.parameter-dict-item')
 		_.each allInputElemAry, (itemElem, idx) ->
@@ -283,6 +342,9 @@ StateEditorView = Backbone.View.extend({
 		that = this
 
 		$currentInputElem = $(event.currentTarget)
+
+		paraObj = that.getParaObj($currentInputElem)
+
 		nextInputElemAry = $currentInputElem.next()
 
 		if not nextInputElemAry.length
@@ -296,7 +358,7 @@ StateEditorView = Backbone.View.extend({
 					para_value: ['']
 				})
 				$currentArrayInputContainer.append(newArrayItemHTML)
-				that.bindParaItemEvent($currentArrayInputContainer, 'array')
+				that.bindParaItemEvent($currentArrayInputContainer, paraObj)
 
 	onArrayInputBlur: (event) ->
 

@@ -145,13 +145,29 @@ StateEditorView = Backbone.View.extend({
       $paraItem = $(paraItem);
       currentParaName = $paraItem.attr('data-para-name');
       paraObj = currentParaMap[currentParaName];
-      that.bindParaItemEvent($paraItem, paraObj.type);
+      that.bindParaItemEvent($paraItem, paraObj);
       return null;
     });
   },
-  bindParaItemEvent: function($paraItem, paraType) {
-    var $inputElem, $keyInput, $valueInput, atwhoOption, that;
+  bindParaItemEvent: function($paraItem, paraObj) {
+    var $inputElem, $keyInput, $valueInput, atwhoOption, paraOption, paraOptionAry, paraType, that;
     that = this;
+    paraType = paraObj.type;
+    paraOption = paraObj.option;
+    paraOptionAry = null;
+    if (paraOption) {
+      if (_.isString(paraOption)) {
+        paraOptionAry = [paraOption];
+      } else if (_.isArray(paraOption)) {
+        paraOptionAry = paraOption;
+      }
+      paraOptionAry = _.map(paraOptionAry, function(valueStr) {
+        return {
+          name: valueStr,
+          value: valueStr
+        };
+      });
+    }
     if (paraType === 'dict') {
       $keyInput = $paraItem.find('.key');
       $valueInput = $paraItem.find('.value');
@@ -161,16 +177,43 @@ StateEditorView = Backbone.View.extend({
         data: that.refObjAry
       };
       $keyInput.atwho(atwhoOption);
-      return $valueInput.atwho(atwhoOption);
+      $valueInput.atwho(atwhoOption);
+      if (paraOptionAry) {
+        return $valueInput.atwho({
+          at: '',
+          tpl: that.paraCompleteItemHTML,
+          data: paraOptionAry
+        });
+      }
     } else if (paraType === 'line' || paraType === 'text' || paraType === 'array') {
       $inputElem = $paraItem.find('.parameter-value');
-      return $inputElem.atwho({
+      $inputElem.atwho({
         at: '@',
         tpl: that.paraCompleteItemHTML,
         data: that.refObjAry
       });
+      if (paraOptionAry) {
+        return $inputElem.atwho({
+          at: '',
+          tpl: that.paraCompleteItemHTML,
+          data: paraOptionAry
+        });
+      }
     } else if (paraType === 'bool') {
-      return null;
+      $inputElem = $paraItem.find('.parameter-value');
+      return $inputElem.atwho({
+        at: '',
+        tpl: that.paraCompleteItemHTML,
+        data: [
+          {
+            name: 'true',
+            value: 'true'
+          }, {
+            name: 'false',
+            value: 'false'
+          }
+        ]
+      });
     }
   },
   refreshParaList: function($paraListElem, currentCMD) {
@@ -206,19 +249,31 @@ StateEditorView = Backbone.View.extend({
     }));
     return that.bindParaListEvent($paraListElem, currentCMD);
   },
+  getParaObj: function($inputElem) {
+    var $paraItem, $stateItem, currentCMD, currentParaMap, currentParaName, paraObj, that;
+    that = this;
+    $stateItem = $inputElem.parents('.state-item');
+    $paraItem = $inputElem.parents('.parameter-item');
+    currentCMD = $stateItem.attr('data-command');
+    currentParaName = $paraItem.attr('data-para-name');
+    currentParaMap = that.cmdParaObjMap[currentCMD];
+    paraObj = currentParaMap[currentParaName];
+    return paraObj;
+  },
   onDictInputChange: function(event) {
-    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $keyInput, $valueInput, leftInputValue, newDictItemHTML, nextDictItemElemAry, rightInputValue, that;
+    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $keyInput, $valueInput, keyInputValue, newDictItemHTML, nextDictItemElemAry, paraObj, that, valueInputValue;
     that = this;
     $currentInputElem = $(event.currentTarget);
+    paraObj = that.getParaObj($currentInputElem);
     $currentDictItemElem = $currentInputElem.parent('.parameter-dict-item');
     nextDictItemElemAry = $currentDictItemElem.next();
     if (!nextDictItemElemAry.length) {
       $currentDictItemContainer = $currentDictItemElem.parents('.parameter-container');
       $keyInput = $currentDictItemElem.find('.key');
       $valueInput = $currentDictItemElem.find('.value');
-      leftInputValue = $keyInput.text();
-      rightInputValue = $valueInput.text();
-      if (leftInputValue || rightInputValue) {
+      keyInputValue = $keyInput.text();
+      valueInputValue = $valueInput.text();
+      if (keyInputValue) {
         newDictItemHTML = that.paraDictListTpl({
           para_value: [
             {
@@ -228,7 +283,7 @@ StateEditorView = Backbone.View.extend({
           ]
         });
         $currentDictItemContainer.append(newDictItemHTML);
-        return that.bindParaItemEvent($currentDictItemContainer, 'dict');
+        return that.bindParaItemEvent($currentDictItemContainer, paraObj);
       }
     }
   },
@@ -254,9 +309,10 @@ StateEditorView = Backbone.View.extend({
     });
   },
   onArrayInputChange: function(event) {
-    var $currentArrayInputContainer, $currentInputElem, currentInput, newArrayItemHTML, nextInputElemAry, that;
+    var $currentArrayInputContainer, $currentInputElem, currentInput, newArrayItemHTML, nextInputElemAry, paraObj, that;
     that = this;
     $currentInputElem = $(event.currentTarget);
+    paraObj = that.getParaObj($currentInputElem);
     nextInputElemAry = $currentInputElem.next();
     if (!nextInputElemAry.length) {
       $currentArrayInputContainer = $currentInputElem.parents('.parameter-container');
@@ -266,7 +322,7 @@ StateEditorView = Backbone.View.extend({
           para_value: ['']
         });
         $currentArrayInputContainer.append(newArrayItemHTML);
-        return that.bindParaItemEvent($currentArrayInputContainer, 'array');
+        return that.bindParaItemEvent($currentArrayInputContainer, paraObj);
       }
     }
   },

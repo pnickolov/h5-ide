@@ -6261,7 +6261,7 @@ MC.canvas.analysis = function ( data )
 				item.children !== undefined
 			)
 			{
-				node_connection = resources[ item.children[ 0 ].id ].connection;
+				node_connection = resources[ item.children[ 0 ].id ].connection;	
 			}
 			else
 			{
@@ -6750,23 +6750,6 @@ MC.canvas.analysis = function ( data )
 		});
 	}
 
-	// ELB
-	if (resource_stack[ 'AWS.ELB' ] !== undefined)
-	{
-		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
-		{
-			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
-		});
-
-		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
-		{
-			resources[ id ].coordinate = [
-				ELB_START_LEFT + (current_index * 10) + (current_index * 10),
-				layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] + 5
-			];
-		});
-	}
-
 	// RouteTable
 	if (resource_stack[ 'AWS.VPC.RouteTable' ] !== undefined)
 	{
@@ -6834,43 +6817,94 @@ MC.canvas.analysis = function ( data )
 	}
 
 	// Add AZ margin for ELB
+	var elb_stack = layout.children,
+		max_first_height = 0;
+
 	if (
-		layout.children !== undefined &&
-		layout.children.length > 1 &&
-		resource_stack[ 'AWS.ELB' ] !== undefined &&
-		resource_stack[ 'AWS.ELB' ].length > 1
+		elb_stack !== undefined &&
+		elb_stack.length > 1 &&
+		resource_stack[ 'AWS.ELB' ] !== undefined
 	)
 	{
 		// var i = 1,
-		// 	l = layout.children.length;
+		// 	l = elb_stack.length;
 
 		// for ( ; i < l ; i++ )
 		// {
-		// 	layout.children[ i ].coordinate[ 1 ] += 15;
+		// 	elb_stack[ i ].coordinate[ 1 ] += 15;
 		// }
 
-		if (layout.children[ 1 ])
+		max_first_height = elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ];
+
+		if (elb_stack[ 2 ])
 		{
-			layout.children[ 1 ].coordinate[ 1 ] += 15;
+			if (elb_stack[ 2 ].size[ 1 ] > elb_stack[ 0 ].size[ 1 ])
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ]
+				];
+
+				elb_stack[ 0 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ],
+					elb_stack[ 0 ].coordinate[ 1 ] + (elb_stack[ 2 ].size[ 1 ] - elb_stack[ 0 ].size[ 1 ]) / 2
+				];
+
+				max_first_height = elb_stack[ 2 ].coordinate[ 1 ] + elb_stack[ 2 ].size[ 1 ];
+			}
+			else
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ] - elb_stack[ 2 ].size[ 1 ]
+				];
+			}
 		}
 
-		if (layout.children[ 2 ])
+		if (elb_stack[ 1 ])
 		{
-			layout.children[ 2 ].coordinate = [
-				layout.children[ 0 ].coordinate[ 0 ] + layout.children[ 0 ].size[ 0 ] + 5,
-				layout.children[ 0 ].coordinate[ 1 ] + layout.children[ 0 ].size[ 1 ] - layout.children[ 2 ].size[ 1 ]
-			];
+			elb_stack[ 1 ].coordinate[ 1 ] = max_first_height + 15;
 		}
 
-		if (layout.children[ 3 ])
+		if (elb_stack[ 3 ])
 		{
-			layout.children[ 3 ].coordinate = [
-				layout.children[ 1 ].coordinate[ 0 ] + layout.children[ 1 ].size[ 0 ] + 5,
-				layout.children[ 1 ].coordinate[ 1 ]
+			elb_stack[ 3 ].coordinate = [
+				elb_stack[ 1 ].coordinate[ 0 ] + elb_stack[ 1 ].size[ 0 ] + 5,
+				elb_stack[ 1 ].coordinate[ 1 ]
 			];
 		}
 
 		//layout.size[ 1 ] += 10;
+	}
+
+	// ELB
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
+	{
+		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
+		{
+			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+		});
+
+		if (elb_stack.length > 1)
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+					max_first_height + 5
+				];
+			});
+		}
+		else
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT,
+					elb_stack[ 0 ].coordinate[ 0 ] + (elb_stack[ 0 ].size[ 1 ] / 2 - 5) + current_index * 10
+				];
+			});
+		}
 	}
 
 	function absPosition(node, x, y)

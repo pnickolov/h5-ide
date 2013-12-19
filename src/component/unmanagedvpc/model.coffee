@@ -119,7 +119,7 @@ define [ 'aws_model', 'constant', 'backbone', 'jquery', 'underscore', 'MC' ], ( 
                                 if 'id' of attrs
                                     if attrs['id'].length == 0
                                         # filter 'default' dhcpOptionsId
-                                        if type is 'AWS.VPC.DhcpOptions' and 'default' of vpc_obj[type]
+                                        if type is 'AWS.VPC.DhcpOptions' and type of vpc_obj and 'default' of vpc_obj[type]
                                             dhcp_ids = ( id for id in vpc_obj[type] when id isnt 'default' )
                                             if dhcp_ids.length > 0
                                                 resources['id'] = dhcp_ids

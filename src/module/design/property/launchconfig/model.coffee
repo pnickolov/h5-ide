@@ -219,20 +219,22 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       result = MC.aws.kp.add kp_name
 
-      if not result
-        return result
+      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      kp = new kpModel { id: MC.guid(), name:kp_name }
 
-      @lc.set 'KeyName', "@#{result}.resource.KeyName"
+      @lc.associate kp
+
       true
 
     deleteKP : ( key_name ) ->
 
-      MC.aws.kp.del key_name
+      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
 
-      # Update data of this model
-      for kp, idx in @attributes.keypair
-        if kp.name is key_name
-          @attributes.keypair.splice idx, 1
+      allKp = kpModel and kpModel.allObjects() or []
+
+      for kp in allKp
+        if kp.get 'name' is key_name
+          kp.remove()
           break
 
       null
@@ -240,7 +242,17 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     setKP : ( key_name ) ->
 
       uid = this.get 'uid'
-      @lc.set 'KeyName', "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
+      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+
+      allKp = kpModel and kpModel.allObjects() or []
+
+      for kp in allKp
+        if kp.get( 'name' ) is key_name
+          @lc.disassociate constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+          @lc.associate kp
+          break
+
+      #@lc.set 'KeyName', "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
 
       null
 

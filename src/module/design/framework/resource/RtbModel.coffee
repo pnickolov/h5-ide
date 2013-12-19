@@ -132,8 +132,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
     deserialize : ( data, layout_data, resolve )->
 
-      if data.resource.AssociationSet and data.resource.AssociationSet[0]
-        asso_main = data.resource.AssociationSet[0].Main
+      subnets = []
+
+      if data.resource.AssociationSet
+        if data.resource.AssociationSet[0]
+          asso_main = data.resource.AssociationSet[0].Main
+
+        for r in data.resource.AssociationSet
+          if not r.Main and r.SubnetId
+            subnet = resolve( MC.extractID( r.SubnetId ) )
+
+            # We don't have all the subnet we need
+            # Then don't deserialize this RTB
+            if not subnet
+              return
 
       rtb = new Model({
 
@@ -165,12 +177,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
           rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
 
-      # Create asso between RTB and subnets
-      routes = data.resource.AssociationSet
-      _.each routes, ( r )->
-        if r.Main isnt "true" and r.SubnetId
-          id = MC.extractID( r.SubnetId )
-          new RtbAsso( rtb, resolve( id ) )
+      # Create Asso between RTB and Subnets
+      for subnet in subnets
+        new RtbAsso( rtb, subnet )
       null
   }
 

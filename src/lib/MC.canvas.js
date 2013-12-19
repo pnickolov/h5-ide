@@ -6959,6 +6959,12 @@ MC.canvas.analysis = function ( data )
 		});
 	}
 
+	// Canvas size
+	MC.canvas_data.size = [
+		layout.size[ 0 ] + 50,
+		layout.size[ 1 ] + 50
+	];
+
 	console.info(layout);
 
 	return true;

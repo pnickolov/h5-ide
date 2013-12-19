@@ -58,11 +58,10 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       null
 
     remove : ()->
-      console.debug "ComplexResModel.remove, Removing Connections"
-
       # Remove connection
       connections = this.attributes.__connections
       if connections
+        console.debug "ComplexResModel.remove, Removing Connections"
         for c in connections
           c.remove( { reason : this } )
 
@@ -71,7 +70,7 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
         $( document.getElementById( @id ) ).remove()
       null
 
-    connect : ( connection )->
+    connect_base : ( connection )->
       connections = @get "__connections"
 
       if not connections
@@ -80,16 +79,23 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
       if connections.indexOf( connection ) == -1
         connections.push connection
         @set "__connections", connections
+
+      if @connect
+        @connect( connection )
       null
 
-    disconnect : ( connection )->
+    disconnect_base : ( connection )->
       connections = @get "__connections"
       # Directly remove the connection without triggering anything changed.
+      # But I'm not sure if this will affect undo/redo
 
       console.assert( connections, "Disconnecting a resource, when the resource doesn't connect to anything." )
       console.assert( connections.indexOf(connection) != -1, "Disconnecting a resource, when the connection doesn't connect to resource." )
 
       connections.splice( connections.indexOf( connection ), 1 )
+
+      if @disconnect
+        @disconnect( connection )
       null
 
 

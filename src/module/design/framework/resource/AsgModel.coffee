@@ -81,7 +81,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
         })
 
         # Move the node to right place
-        $("#node_layer").append node
+        $("#asg_layer").append node
         CanvasManager.position node, @x(), @y()
 
   }, {

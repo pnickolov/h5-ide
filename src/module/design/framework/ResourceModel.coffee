@@ -115,7 +115,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       null
 
     disassociate: ( filter ) ->
-      @removeFromStorage
+      removed = @removeFromStorage filter
+      for model in removed
+        model.removeFromStorage @
 
     # Storage is created when necessary
     storage : ()->
@@ -155,7 +157,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       else
         storage.reset()
 
-      storage
+      models
 
     addToStorage : ( resource ) ->
       storage = this.storage()

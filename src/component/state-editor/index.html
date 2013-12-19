@@ -18,8 +18,8 @@
 
 		<script id="state-template-main" type="x-handlebars-template">
 			{{#each state_list}}
-				<div class="state-item">
-					<div class="command-value editable-area line" data-value="{{cmd_name}}" contenteditable="true">{{cmd_name}}</div>
+				<div class="state-item" data-command="{{cmd_value}}">
+					<div class="command-value editable-area line" contenteditable="true">{{cmd_value}}</div>
 					<div class="parameter-list">
 						{{> state-template-para-list}}
 					</div>
@@ -32,18 +32,18 @@
 
 				<!-- line type parameter -->
 				{{#if type_line}}
-					<div class="parameter-item">
-						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+					<div class="parameter-item line" data-para-name="{{para_name}}">
+						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
-							<div class="parameter-value editable-area line" contenteditable="true">{{default}}</div>
+							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
 					</div>
 				{{/if}}
 
 				<!-- dict type parameter --> 
 				{{#if type_dict}}
-					<div class="parameter-item dict">
-						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+					<div class="parameter-item dict" data-para-name="{{para_name}}">
+						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
 							{{> state-template-para-dict-item}}
 						</div>
@@ -52,8 +52,8 @@
 
 				<!-- array type parameter --> 
 				{{#if type_array}}
-					<div class="parameter-item array">
-						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+					<div class="parameter-item array" data-para-name="{{para_name}}">
+						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
 							{{> state-template-para-array-item}}
 						</div>
@@ -62,20 +62,20 @@
 
 				<!-- bool type parameter --> 
 				{{#if type_bool}}
-					<div class="parameter-item">
-						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+					<div class="parameter-item bool" data-para-name="{{para_name}}">
+						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
-							<div class="parameter-value editable-area line" contenteditable="true"></div>
+							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
 					</div>
 				{{/if}}
 
 				<!-- text type parameter --> 
 				{{#if type_text}}
-					<div class="parameter-item">
-						<div class="parameter-name">{{name}}{{#if required}} (required){{/if}}</div>
+					<div class="parameter-item text" data-para-name="{{para_name}}">
+						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
 						<div class="parameter-container">
-							<div class="parameter-value editable-area text" contenteditable="true">ssh apt@192.168.1.1:/opt/<span>@{supervisord}</span>/</div>
+							<div class="parameter-value editable-area text" contenteditable="true">{{para_value}}</div>
 						</div>
 					</div>
 				{{/if}}
@@ -84,14 +84,18 @@
 		</script>
 
 		<script id="state-template-para-dict-item" type="x-handlebars-template">
-			<div class="parameter-dict-item">
-				<div class="parameter-value editable-area line" contenteditable="true"></div>
-				<div class="parameter-value editable-area line" contenteditable="true"></div>
-			</div>
+			{{#each para_value}}
+				<div class="parameter-dict-item">
+					<div class="parameter-value editable-area line key" contenteditable="true">{{key}}</div>
+					<div class="parameter-value editable-area line value" contenteditable="true">{{value}}</div>
+				</div>
+			{{/each}}
 		</script>
 
 		<script id="state-template-para-array-item" type="x-handlebars-template">
-			<div class="parameter-value editable-area line" contenteditable="true"></div>
+			{{#each para_value}}
+				<div class="parameter-value editable-area line" contenteditable="true">{{this}}</div>
+			{{/each}}
 		</script>
 
 		<script type="text/javascript" src="model.js"></script>

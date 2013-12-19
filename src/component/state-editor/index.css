@@ -17,6 +17,14 @@ body {
 	overflow: auto;
 }
 
+/* *************************************** state item */
+
+#state-editor .state-item {
+	overflow: auto;
+	float: none;
+	margin-bottom: 30px;
+}
+
 /* *************************************** editable-area */
 
 #state-editor .editable-area {
@@ -97,7 +105,6 @@ body {
 	width: 147px;
 	margin-right: 5px;
 }
-
 
 #state-editor .command-value {
 	float: left;

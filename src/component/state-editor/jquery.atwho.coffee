@@ -423,7 +423,7 @@
       onSelectedCallback = @context.get_opt('onSelected')
       if (onSelectedCallback)
         value = $li.attr('data-value')
-        onSelectedCallback(value)
+        onSelectedCallback.apply(@context.$inputor[0], [value])
 
     reposition: (rect) ->
       if rect.bottom + @$el.height() - $(window).scrollTop() > $(window).height()

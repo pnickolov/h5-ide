@@ -8,15 +8,17 @@ StateEditorView = Backbone.View.extend({
 	paraListHTML: $('#state-template-para-list').html()
 	paraDictItemHTML: $('#state-template-para-dict-item').html()
 	paraArrayItemHTML: $('#state-template-para-array-item').html()
+	paraCompleteItemHTML: '<li data-value="${atwho-at}${name}">${name}</li>'
 
 	events:
 
-		# 'AUTOCOMPLETE_SELECTED .autocomplete-input': 'onAutoCompleteSelected'
 		'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
 		'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
 
 		'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
 		'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
+
+		'focus .editable-area': 'onFocusInput'
 
 	initialize: () ->
 
@@ -43,139 +45,223 @@ StateEditorView = Backbone.View.extend({
 
 		that = this
 
-		cmdName = 'apt pkg'
-		cmdParaMap = that.model.get('cmdParaMap')
-		cmdParaAry = cmdParaMap[cmdName]
-
 		stateListObj = {
 			state_list: [{
-				cmd_name: cmdName,
-				parameter_list: cmdParaAry
+				state_id: 1,
+				cmd_value: 'apt pkg',
+				parameter_list: [{
+					para_name: 'name',
+					type_dict: true,
+					required: true,
+					para_value: [{
+						key: 'name',
+						value: 'xxx'
+					}, {
+						key: 'abc',
+						value: 'xxx'
+					}]
+				}, {
+					para_name: 'fromrepo',
+					type_array: true,
+					required: true,
+					para_value: [
+						'qqq',
+						'qqq',
+						'qqq'
+					]
+				}, {
+					para_name: 'verify_gpg',
+					type_text: true,
+					required: true,
+					para_value: 'ssh apt@211.98.26.7/pot'
+				}, {
+					para_name: 'debconf',
+					type_line: true,
+					required: false,
+					para_value: 'what'
+				}]
 			}]
 		}
 
 		that.$el.html(this.editorTpl(stateListObj))
 
-		that.bindCommandEvent()
+		that.initData()
 
-	refreshParaList: (cmdName) ->
+		that.bindStateListEvent()
 
-		that = this
-
-		if not cmdName
-			$('.parameter-list').html('')
-			return
-
-		cmdParaMap = that.model.get('cmdParaMap')
-		cmdParaAry = cmdParaMap[cmdName]
-
-		$('.parameter-list').html(that.paraListTpl({
-			parameter_list: cmdParaAry
-		}))
-
-		that.bindParaListEvent(cmdName)
-
-	bindCommandEvent: () ->
+	initData: () ->
 
 		that = this
+		that.$stateEditor = that.$el
+		that.cmdParaMap = that.model.get('cmdParaMap')
+		that.cmdParaObjMap = that.model.get('cmdParaObjMap')
+		that.refObjAry = [{
+			name: '{host1.privateIP}',
+			value: '{host1.privateIP}'
+		}, {
+			name: '{host1.keyName}',
+			name: '{host1.keyName}'
+		}, {
+			name: '{host2.instanceId}',
+			name: '{host1.instanceId}'
+		}]
 
-		cmdParaMap = that.model.get('cmdParaMap')
-		cmdNameAry = _.keys(cmdParaMap)
+	bindStateListEvent: () ->
 
-		cmdNameAry = $.map(cmdNameAry, (value, i) ->
+		that = this
+		that.$stateEditor = that.$el
+
+		$stateItems = that.$stateEditor.find('.state-item')
+
+		_.each $stateItems, (stateItem) ->
+
+			$stateItem = $(stateItem)
+			currentCMD = $stateItem.attr('data-command')
+
+			$paraListItem = $stateItem.find('.parameter-list')
+			$cmdValueItem = $stateItem.find('.command-value')
+
+			that.bindCommandEvent($cmdValueItem)
+
+			that.bindParaListEvent($paraListItem, currentCMD)
+
+			null
+
+	bindCommandEvent: ($cmdValueItem) ->
+
+		that = this
+		
+		cmdNameAry = _.keys(that.cmdParaMap)
+
+		cmdNameAry = _.map cmdNameAry, (value, i) ->
 			return {'name': value}
-		)
 
-		$cmdValueInput = $('.editable-area.command-value')
-		$cmdValueInput.atwho({
+		$cmdValueItem.atwho({
 			at: '',
-			tpl: '<li data-value="${atwho-at}${name}">${name}</li>'
+			tpl: that.paraCompleteItemHTML
 			data: cmdNameAry,
 			onSelected: (value) ->
-				$cmdValueInput.attr('data-value', value)
-				that.refreshParaList(value)
+				$that = $(this)
+				$that.attr('data-value', value)
+				$paraListElem = $that.parent('.state-item').find('.parameter-list')
+				that.refreshParaList($paraListElem, value)
 		})
 
-		that.refreshParaList()
-
-	bindParaListEvent: (cmdName) ->
+	bindParaListEvent: ($paraListElem, currentCMD) ->
 
 		that = this
 
-		cmdParaMap = that.model.get('cmdParaMap')
-		atValueAry = cmdParaMap[cmdName]
+		$paraItemList = $paraListElem.find('.parameter-item')
 
-		$('.parameter-list .editable-area.line, .editable-area.text').atwho({
-			at: '@',
-			tpl: '<li data-value="${atwho-at}${name}">${name}</li>'
-			data: atValueAry
-		})
+		currentParaMap = that.cmdParaObjMap[currentCMD]
 
-	bindDictInputEvent: ($dictItem) ->
+		_.each $paraItemList, (paraItem) ->
+			
+			$paraItem = $(paraItem)
+			currentParaName = $paraItem.attr('data-para-name')
+			paraObj = currentParaMap[currentParaName]
+			that.bindParaItemEvent($paraItem, paraObj.type)
 
-		that = this
-		cmdName = that.getCurrentCommand($dictItem)
+			null
 
-		cmdParaMap = that.model.get('cmdParaMap')
-		atValueAry = cmdParaMap[cmdName]
-
-		$paraInputElem = $dictItem.find('.parameter-value')
-		$paraInputElem.atwho({
-			at: '@',
-			tpl: '<li data-value="${atwho-at}${name}">${name}</li>'
-			data: atValueAry
-		})
-
-	bindArrayInputEvent: ($arrayItem) ->
+	refreshParaList: ($paraListElem, currentCMD) ->
 
 		that = this
-		cmdName = that.getCurrentCommand($arrayItem)
+		currentParaMap = that.cmdParaObjMap[currentCMD]
+		currentParaAry = that.cmdParaMap[currentCMD]
 
-		cmdParaMap = that.model.get('cmdParaMap')
-		atValueAry = cmdParaMap[cmdName]
+		newParaAry = []
 
-		$paraInputElem = $arrayItem.find('.parameter-value')
-		$paraInputElem.atwho({
-			at: '@',
-			tpl: '<li data-value="${atwho-at}${name}">${name}</li>'
-			data: atValueAry
-		})
+		_.each currentParaAry, (paraObj) ->
+
+			newParaObj = {
+				para_name: paraObj.name,
+				required: paraObj.required
+			}
+
+			newParaObj['type_' + paraObj.type] = true
+
+			if paraObj.type in ['line', 'text', 'bool']
+				newParaObj.para_value = ''
+			else if paraObj.type is 'dict'
+				newParaObj.para_value = [{
+					key: '',
+					value: ''
+				}]
+			else if paraObj.type is 'array'
+				newParaObj.para_value = ['']
+
+			newParaAry.push(newParaObj)
+
+			null
+
+		$paraListElem.html(that.paraListTpl({
+			parameter_list: newParaAry
+		}))
+
+		that.bindParaListEvent($paraListElem, currentCMD)
+
+	bindParaItemEvent: ($paraItem, paraType) ->
+
+		that = this
+
+		if paraType is 'dict'
+			$keyInput = $paraItem.find('.key')
+			$valueInput = $paraItem.find('.value')
+			$valueInput.atwho({
+				at: '',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			}).atwho({
+				at: '@',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			})
+
+		else if paraType in ['line', 'text', 'array']
+			$inputElem = $paraItem.find('.parameter-value')
+			$inputElem.atwho({
+				at: '@',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			})
+
+		else if paraType is 'bool'
+			null
 
 	onDictInputChange: (event) ->
+
+		# append new dict item
 
 		that = this
 
 		$currentInputElem = $(event.currentTarget)
-		$currentDictItemElem = $currentInputElem.parents('.parameter-dict-item')
+		$currentDictItemElem = $currentInputElem.parent('.parameter-dict-item')
 		nextDictItemElemAry = $currentDictItemElem.next()
 
-		# append new dict item
 		if not nextDictItemElemAry.length
 
 			$currentDictItemContainer = $currentDictItemElem.parents('.parameter-container')
 
-			prevInputAry = $currentInputElem.prev()
-			nextInputAry = $currentInputElem.next()
+			$keyInput = $currentDictItemElem.find('.key')
+			$valueInput = $currentDictItemElem.find('.value')
 
-			$leftInputElem = null
-			$rightInputElem = null
-			if nextInputAry.length
-				$leftInputElem = $currentInputElem
-				$rightInputElem = $(nextInputAry[0])
-			else if prevInputAry.length
-				$leftInputElem = $(prevInputAry[0])
-				$rightInputElem = $currentInputElem
-
-			leftInputValue = $leftInputElem.text()
-			rightInputValue = $rightInputElem.text()
+			leftInputValue = $keyInput.text()
+			rightInputValue = $valueInput.text()
 
 			if leftInputValue or rightInputValue
-				newDictItemHTML = that.paraDictListTpl({})
+				newDictItemHTML = that.paraDictListTpl({
+					para_value: [{
+						key: '',
+						value: ''
+					}]
+				})
 				$currentDictItemContainer.append(newDictItemHTML)
-				# $newDictItem = $($.parseHTML(newDictItemHTML)).appendTo($currentDictItemContainer)
-				that.bindDictInputEvent($currentDictItemContainer)
+				that.bindParaItemEvent($currentDictItemContainer, 'dict')
 
 	onDictInputBlur: (event) ->
+
+		# remove empty dict item
 
 		$currentInputElem = $(event.currentTarget)
 		$currentDictItemContainer = $currentInputElem.parents('.parameter-container')
@@ -193,12 +279,13 @@ StateEditorView = Backbone.View.extend({
 
 	onArrayInputChange: (event) ->
 
+		# append new array item
+
 		that = this
 
 		$currentInputElem = $(event.currentTarget)
 		nextInputElemAry = $currentInputElem.next()
 
-		# append new dict item
 		if not nextInputElemAry.length
 
 			$currentArrayInputContainer = $currentInputElem.parents('.parameter-container')
@@ -206,11 +293,15 @@ StateEditorView = Backbone.View.extend({
 			currentInput = $currentInputElem.text()
 
 			if currentInput
-				newArrayItemHTML = that.paraArrayListTpl({})
+				newArrayItemHTML = that.paraArrayListTpl({
+					para_value: ['']
+				})
 				$currentArrayInputContainer.append(newArrayItemHTML)
-				that.bindArrayInputEvent($currentArrayInputContainer)
+				that.bindArrayInputEvent($currentArrayInputContainer, 'array')
 
 	onArrayInputBlur: (event) ->
+
+		# remove empty array item
 
 		$currentInputElem = $(event.currentTarget)
 		$currentArrayItemContainer = $currentInputElem.parents('.parameter-container')
@@ -221,11 +312,10 @@ StateEditorView = Backbone.View.extend({
 				$(itemElem).remove()
 			null
 
-	getCurrentCommand: ($subElem) ->
+	onFocusInput: (event) ->
 
-		$stateItem = $subElem.parents('.state-item')
-		$cmdValue = $stateItem.find('.command-value')
-		return $cmdValue.text()
+		$currentInput = $(event.currentTarget)
+		# document.execCommand('selectAll', false, null)
 
 })
 

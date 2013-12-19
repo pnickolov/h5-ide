@@ -7,20 +7,23 @@ StateEditorModel = Backbone.Model.extend({
     lookupDataAry: null
   },
   initialize: function() {
-    var cmdAry, cmdParaMap, lookupDataAry;
+    var cmdAry, cmdParaMap, cmdParaObjMap, lookupDataAry;
     cmdAry = [];
     cmdParaMap = {};
+    cmdParaObjMap = {};
     _.each(data.linux, function(cmdObj, cmdName) {
       var cmdAllParaAry, paraAryObj;
       cmdAry.push(cmdName);
       paraAryObj = cmdObj.parameter;
       cmdParaMap[cmdName] = [];
+      cmdParaObjMap[cmdName] = {};
       _.each(paraAryObj, function(paraObj, paraName) {
         var paraBuildObj;
         paraBuildObj = _.extend(paraObj, {});
-        paraBuildObj.name = paraName + '(' + paraBuildObj.type + ')';
+        paraBuildObj.name = paraName;
         paraBuildObj['type_' + paraBuildObj.type] = true;
         cmdParaMap[cmdName].push(paraBuildObj);
+        cmdParaObjMap[cmdName][paraName] = paraBuildObj;
         return null;
       });
       cmdAllParaAry = cmdParaMap[cmdName];
@@ -37,7 +40,6 @@ StateEditorModel = Backbone.Model.extend({
       });
       return null;
     });
-    cmdParaMap = cmdParaMap;
     cmdAry = cmdAry.sort(function(val1, val2) {
       return val1 < val2;
     });
@@ -51,6 +53,7 @@ StateEditorModel = Backbone.Model.extend({
       };
     });
     this.set('cmdParaMap', cmdParaMap);
+    this.set('cmdParaObjMap', cmdParaObjMap);
     return this.set('lookupDataAry', lookupDataAry);
   }
 });

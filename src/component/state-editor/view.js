@@ -8,11 +8,13 @@ StateEditorView = Backbone.View.extend({
   paraListHTML: $('#state-template-para-list').html(),
   paraDictItemHTML: $('#state-template-para-dict-item').html(),
   paraArrayItemHTML: $('#state-template-para-array-item').html(),
+  paraCompleteItemHTML: '<li data-value="${atwho-at}${name}">${name}</li>',
   events: {
     'keyup .parameter-item.dict .parameter-value': 'onDictInputChange',
     'blur .parameter-item.dict .parameter-value': 'onDictInputBlur',
     'keyup .parameter-item.array .parameter-value': 'onArrayInputChange',
-    'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
+    'blur .parameter-item.array .parameter-value': 'onArrayInputBlur',
+    'focus .editable-area': 'onFocusInput'
   },
   initialize: function() {
     this.compileTpl();
@@ -31,120 +33,204 @@ StateEditorView = Backbone.View.extend({
     return this.paraArrayListTpl = Handlebars.compile(this.paraArrayItemHTML);
   },
   refreshStateList: function() {
-    var cmdName, cmdParaAry, cmdParaMap, stateListObj, that;
+    var stateListObj, that;
     that = this;
-    cmdName = 'apt pkg';
-    cmdParaMap = that.model.get('cmdParaMap');
-    cmdParaAry = cmdParaMap[cmdName];
     stateListObj = {
       state_list: [
         {
-          cmd_name: cmdName,
-          parameter_list: cmdParaAry
+          state_id: 1,
+          cmd_value: 'apt pkg',
+          parameter_list: [
+            {
+              para_name: 'name',
+              type_dict: true,
+              required: true,
+              para_value: [
+                {
+                  key: 'name',
+                  value: 'xxx'
+                }, {
+                  key: 'abc',
+                  value: 'xxx'
+                }
+              ]
+            }, {
+              para_name: 'fromrepo',
+              type_array: true,
+              required: true,
+              para_value: ['qqq', 'qqq', 'qqq']
+            }, {
+              para_name: 'verify_gpg',
+              type_text: true,
+              required: true,
+              para_value: 'ssh apt@211.98.26.7/pot'
+            }, {
+              para_name: 'debconf',
+              type_line: true,
+              required: false,
+              para_value: 'what'
+            }
+          ]
         }
       ]
     };
     that.$el.html(this.editorTpl(stateListObj));
-    return that.bindCommandEvent();
+    that.initData();
+    return that.bindStateListEvent();
   },
-  refreshParaList: function(cmdName) {
-    var cmdParaAry, cmdParaMap, that;
+  initData: function() {
+    var that;
     that = this;
-    if (!cmdName) {
-      $('.parameter-list').html('');
-      return;
-    }
-    cmdParaMap = that.model.get('cmdParaMap');
-    cmdParaAry = cmdParaMap[cmdName];
-    $('.parameter-list').html(that.paraListTpl({
-      parameter_list: cmdParaAry
-    }));
-    return that.bindParaListEvent(cmdName);
+    that.$stateEditor = that.$el;
+    that.cmdParaMap = that.model.get('cmdParaMap');
+    that.cmdParaObjMap = that.model.get('cmdParaObjMap');
+    return that.refObjAry = [
+      {
+        name: '{host1.privateIP}',
+        value: '{host1.privateIP}'
+      }, {
+        name: '{host1.keyName}',
+        name: '{host1.keyName}'
+      }, {
+        name: '{host2.instanceId}',
+        name: '{host1.instanceId}'
+      }
+    ];
   },
-  bindCommandEvent: function() {
-    var $cmdValueInput, cmdNameAry, cmdParaMap, that;
+  bindStateListEvent: function() {
+    var $stateItems, that;
     that = this;
-    cmdParaMap = that.model.get('cmdParaMap');
-    cmdNameAry = _.keys(cmdParaMap);
-    cmdNameAry = $.map(cmdNameAry, function(value, i) {
+    that.$stateEditor = that.$el;
+    $stateItems = that.$stateEditor.find('.state-item');
+    return _.each($stateItems, function(stateItem) {
+      var $cmdValueItem, $paraListItem, $stateItem, currentCMD;
+      $stateItem = $(stateItem);
+      currentCMD = $stateItem.attr('data-command');
+      $paraListItem = $stateItem.find('.parameter-list');
+      $cmdValueItem = $stateItem.find('.command-value');
+      that.bindCommandEvent($cmdValueItem);
+      that.bindParaListEvent($paraListItem, currentCMD);
+      return null;
+    });
+  },
+  bindCommandEvent: function($cmdValueItem) {
+    var cmdNameAry, that;
+    that = this;
+    cmdNameAry = _.keys(that.cmdParaMap);
+    cmdNameAry = _.map(cmdNameAry, function(value, i) {
       return {
         'name': value
       };
     });
-    $cmdValueInput = $('.editable-area.command-value');
-    $cmdValueInput.atwho({
+    return $cmdValueItem.atwho({
       at: '',
-      tpl: '<li data-value="${atwho-at}${name}">${name}</li>',
+      tpl: that.paraCompleteItemHTML,
       data: cmdNameAry,
       onSelected: function(value) {
-        $cmdValueInput.attr('data-value', value);
-        return that.refreshParaList(value);
+        var $paraListElem, $that;
+        $that = $(this);
+        $that.attr('data-value', value);
+        $paraListElem = $that.parent('.state-item').find('.parameter-list');
+        return that.refreshParaList($paraListElem, value);
       }
     });
-    return that.refreshParaList();
   },
-  bindParaListEvent: function(cmdName) {
-    var atValueAry, cmdParaMap, that;
+  bindParaListEvent: function($paraListElem, currentCMD) {
+    var $paraItemList, currentParaMap, that;
     that = this;
-    cmdParaMap = that.model.get('cmdParaMap');
-    atValueAry = cmdParaMap[cmdName];
-    return $('.parameter-list .editable-area.line, .editable-area.text').atwho({
-      at: '@',
-      tpl: '<li data-value="${atwho-at}${name}">${name}</li>',
-      data: atValueAry
+    $paraItemList = $paraListElem.find('.parameter-item');
+    currentParaMap = that.cmdParaObjMap[currentCMD];
+    return _.each($paraItemList, function(paraItem) {
+      var $paraItem, currentParaName, paraObj;
+      $paraItem = $(paraItem);
+      currentParaName = $paraItem.attr('data-para-name');
+      paraObj = currentParaMap[currentParaName];
+      that.bindParaItemEvent($paraItem, paraObj.type);
+      return null;
     });
   },
-  bindDictInputEvent: function($dictItem) {
-    var $paraInputElem, atValueAry, cmdName, cmdParaMap, that;
+  refreshParaList: function($paraListElem, currentCMD) {
+    var currentParaAry, currentParaMap, newParaAry, that;
     that = this;
-    cmdName = that.getCurrentCommand($dictItem);
-    cmdParaMap = that.model.get('cmdParaMap');
-    atValueAry = cmdParaMap[cmdName];
-    $paraInputElem = $dictItem.find('.parameter-value');
-    return $paraInputElem.atwho({
-      at: '@',
-      tpl: '<li data-value="${atwho-at}${name}">${name}</li>',
-      data: atValueAry
+    currentParaMap = that.cmdParaObjMap[currentCMD];
+    currentParaAry = that.cmdParaMap[currentCMD];
+    newParaAry = [];
+    _.each(currentParaAry, function(paraObj) {
+      var newParaObj, _ref;
+      newParaObj = {
+        para_name: paraObj.name,
+        required: paraObj.required
+      };
+      newParaObj['type_' + paraObj.type] = true;
+      if ((_ref = paraObj.type) === 'line' || _ref === 'text' || _ref === 'bool') {
+        newParaObj.para_value = '';
+      } else if (paraObj.type === 'dict') {
+        newParaObj.para_value = [
+          {
+            key: '',
+            value: ''
+          }
+        ];
+      } else if (paraObj.type === 'array') {
+        newParaObj.para_value = [''];
+      }
+      newParaAry.push(newParaObj);
+      return null;
     });
+    $paraListElem.html(that.paraListTpl({
+      parameter_list: newParaAry
+    }));
+    return that.bindParaListEvent($paraListElem, currentCMD);
   },
-  bindArrayInputEvent: function($arrayItem) {
-    var $paraInputElem, atValueAry, cmdName, cmdParaMap, that;
+  bindParaItemEvent: function($paraItem, paraType) {
+    var $inputElem, $keyInput, $valueInput, that;
     that = this;
-    cmdName = that.getCurrentCommand($arrayItem);
-    cmdParaMap = that.model.get('cmdParaMap');
-    atValueAry = cmdParaMap[cmdName];
-    $paraInputElem = $arrayItem.find('.parameter-value');
-    return $paraInputElem.atwho({
-      at: '@',
-      tpl: '<li data-value="${atwho-at}${name}">${name}</li>',
-      data: atValueAry
-    });
+    if (paraType === 'dict') {
+      $keyInput = $paraItem.find('.key');
+      $valueInput = $paraItem.find('.value');
+      return $valueInput.atwho({
+        at: '',
+        tpl: that.paraCompleteItemHTML,
+        data: that.refObjAry
+      }).atwho({
+        at: '@',
+        tpl: that.paraCompleteItemHTML,
+        data: that.refObjAry
+      });
+    } else if (paraType === 'line' || paraType === 'text' || paraType === 'array') {
+      $inputElem = $paraItem.find('.parameter-value');
+      return $inputElem.atwho({
+        at: '@',
+        tpl: that.paraCompleteItemHTML,
+        data: that.refObjAry
+      });
+    } else if (paraType === 'bool') {
+      return null;
+    }
   },
   onDictInputChange: function(event) {
-    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $leftInputElem, $rightInputElem, leftInputValue, newDictItemHTML, nextDictItemElemAry, nextInputAry, prevInputAry, rightInputValue, that;
+    var $currentDictItemContainer, $currentDictItemElem, $currentInputElem, $keyInput, $valueInput, leftInputValue, newDictItemHTML, nextDictItemElemAry, rightInputValue, that;
     that = this;
     $currentInputElem = $(event.currentTarget);
-    $currentDictItemElem = $currentInputElem.parents('.parameter-dict-item');
+    $currentDictItemElem = $currentInputElem.parent('.parameter-dict-item');
     nextDictItemElemAry = $currentDictItemElem.next();
     if (!nextDictItemElemAry.length) {
       $currentDictItemContainer = $currentDictItemElem.parents('.parameter-container');
-      prevInputAry = $currentInputElem.prev();
-      nextInputAry = $currentInputElem.next();
-      $leftInputElem = null;
-      $rightInputElem = null;
-      if (nextInputAry.length) {
-        $leftInputElem = $currentInputElem;
-        $rightInputElem = $(nextInputAry[0]);
-      } else if (prevInputAry.length) {
-        $leftInputElem = $(prevInputAry[0]);
-        $rightInputElem = $currentInputElem;
-      }
-      leftInputValue = $leftInputElem.text();
-      rightInputValue = $rightInputElem.text();
+      $keyInput = $currentDictItemElem.find('.key');
+      $valueInput = $currentDictItemElem.find('.value');
+      leftInputValue = $keyInput.text();
+      rightInputValue = $valueInput.text();
       if (leftInputValue || rightInputValue) {
-        newDictItemHTML = that.paraDictListTpl({});
+        newDictItemHTML = that.paraDictListTpl({
+          para_value: [
+            {
+              key: '',
+              value: ''
+            }
+          ]
+        });
         $currentDictItemContainer.append(newDictItemHTML);
-        return that.bindDictInputEvent($currentDictItemContainer);
+        return that.bindParaItemEvent($currentDictItemContainer, 'dict');
       }
     }
   },
@@ -178,9 +264,11 @@ StateEditorView = Backbone.View.extend({
       $currentArrayInputContainer = $currentInputElem.parents('.parameter-container');
       currentInput = $currentInputElem.text();
       if (currentInput) {
-        newArrayItemHTML = that.paraArrayListTpl({});
+        newArrayItemHTML = that.paraArrayListTpl({
+          para_value: ['']
+        });
         $currentArrayInputContainer.append(newArrayItemHTML);
-        return that.bindArrayInputEvent($currentArrayInputContainer);
+        return that.bindArrayInputEvent($currentArrayInputContainer, 'array');
       }
     }
   },
@@ -198,11 +286,9 @@ StateEditorView = Backbone.View.extend({
       return null;
     });
   },
-  getCurrentCommand: function($subElem) {
-    var $cmdValue, $stateItem;
-    $stateItem = $subElem.parents('.state-item');
-    $cmdValue = $stateItem.find('.command-value');
-    return $cmdValue.text();
+  onFocusInput: function(event) {
+    var $currentInput;
+    return $currentInput = $(event.currentTarget);
   }
 });
 

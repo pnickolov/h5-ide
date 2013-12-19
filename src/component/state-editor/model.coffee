@@ -9,6 +9,7 @@ StateEditorModel = Backbone.Model.extend({
 
 		cmdAry = []
 		cmdParaMap = {}
+		cmdParaObjMap = {}
 
 		_.each data.linux, (cmdObj, cmdName) ->
 
@@ -16,13 +17,15 @@ StateEditorModel = Backbone.Model.extend({
 			cmdAry.push cmdName
 			paraAryObj = cmdObj.parameter
 			cmdParaMap[cmdName] = []
+			cmdParaObjMap[cmdName] = {}
 
 			# get parameter array
 			_.each paraAryObj, (paraObj, paraName) ->
 				paraBuildObj = _.extend paraObj, {}
-				paraBuildObj.name = paraName + '(' + paraBuildObj.type + ')'
+				paraBuildObj.name = paraName
 				paraBuildObj['type_' + paraBuildObj.type] = true
 				cmdParaMap[cmdName].push paraBuildObj
+				cmdParaObjMap[cmdName][paraName] = paraBuildObj
 				null
 
 			# sort parameter array
@@ -39,8 +42,6 @@ StateEditorModel = Backbone.Model.extend({
 				return true
 			null
 
-		cmdParaMap = cmdParaMap
-
 		# init command
 		cmdAry = cmdAry.sort (val1, val2) ->
 			return val1 < val2
@@ -54,6 +55,7 @@ StateEditorModel = Backbone.Model.extend({
 			data: elem
 
 		this.set('cmdParaMap', cmdParaMap)
+		this.set('cmdParaObjMap', cmdParaObjMap)
 		this.set('lookupDataAry', lookupDataAry)
 })
 

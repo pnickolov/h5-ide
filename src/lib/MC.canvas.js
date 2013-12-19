@@ -195,6 +195,9 @@ MC.canvas = {
 					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
 					if ( $('#' + uid + '_instance-state').length  === 1)
 					{
+						//remove deleted first
+						Canvon( $('#' + uid ) ).removeClass('deleted');
+
 						if ( instance_data )
 						{//instance data exist
 							$('#' + uid + '_instance-state').attr({

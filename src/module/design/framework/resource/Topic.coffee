@@ -23,7 +23,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       model = new Model( attr )
 
 
-      model
+      null
 
   }
 

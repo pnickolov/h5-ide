@@ -35,7 +35,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       #asg.addToStorage model
       model.associate resolve
 
-      model
+      null
 
   }
 

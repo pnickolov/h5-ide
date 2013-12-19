@@ -171,6 +171,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
         if r.Main isnt "true" and r.SubnetId
           id = MC.extractID( r.SubnetId )
           new RtbAsso( rtb, resolve( id ) )
+      null
   }
 
   Model

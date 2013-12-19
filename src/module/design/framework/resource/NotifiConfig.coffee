@@ -35,7 +35,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       model.associate resolve
 
-      model
+      null
 
   }
 

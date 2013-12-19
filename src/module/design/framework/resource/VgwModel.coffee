@@ -65,6 +65,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
         y : layout_data.coordinate[1]
       })
 
+      null
+
   }
 
   Model

@@ -15,6 +15,8 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
         name : data.name
       })
 
+      null
+
   }
 
   Model

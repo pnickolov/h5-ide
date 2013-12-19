@@ -110,7 +110,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant", "./scal
         new ElbAsso( model, elb )
 
       model.associate resolve
-
+      null
 
   }
 

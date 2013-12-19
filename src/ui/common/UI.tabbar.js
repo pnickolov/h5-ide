@@ -109,7 +109,7 @@ var Tabbar = {
 
 	add: function (tab_id, tab_name)
 	{
-		var tab_type = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
+		var tab_type = tab_id.match(/(appview|app\-edit|app|stack|new|process)*/ig)[0];
 
 		$('#tab-bar ul').append(
 			MC.template.tab.item({

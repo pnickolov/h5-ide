@@ -838,7 +838,8 @@
 }
 
 .canvas_state_app .asg-resource-dragger,
-.canvas_state_appedit .asg-resource-dragger {
+.canvas_state_appedit .asg-resource-dragger,
+.canvas_state_appview .asg-resource-dragger {
 	display: none;
 }
 
@@ -1025,7 +1026,7 @@
 }
 
 .node-label-rtb-name {
-	fill: white;
+	/*fill: white;*/
 }
 
 

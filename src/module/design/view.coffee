@@ -120,9 +120,12 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         hideStatusbar :  ->
             console.log 'hideStatusbar'
 
-            if Tabbar.current in [ 'app' ]
+            # hide
+            if Tabbar.current in [ 'app', 'appview' ]
                 $( '#main-statusbar' ).hide()
                 $( '#canvas' ).css 'bottom', 0
+
+            # show
             else
                 $( '#main-statusbar' ).show()
 
@@ -167,18 +170,20 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                     obj = MC.forge.other.searchStackAppById MC.data.current_tab_id
                     #
                     if Tabbar.current is 'new'
-                        event_type = ide_event.RELOAD_NEW_STACK_TAB
+                        event_type = 'RELOAD_NEW_STACK'
                     else if obj
-                        event_type = if MC.data.current_tab_id.split('-')[0] is 'app' then ide_event.PROCESS_RUN_SUCCESS else ide_event.RELOAD_STACK_TAB
+                        event_type = if MC.data.current_tab_id.split('-')[0] is 'app' then 'RELOAD_APP' else 'RELOAD_STACK'
                         MC.open_failed_list[ MC.data.current_tab_id ] = $.extend true, {}, obj
                     else
                         console.error 'app or stack not find, current id is ' + MC.data.current_tab_id
                     #
                     $( '#btn-fail-reload' ).one 'click', ( event ) ->
                         if Tabbar.current is 'new'
-                            ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region, MC.open_failed_list[ MC.data.current_tab_id ].platform
+                            #ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region, MC.open_failed_list[ MC.data.current_tab_id ].platform
+                            ide_event.trigger ide_event.OPEN_DESIGN_TAB, event_type, MC.open_failed_list[ MC.data.current_tab_id ].platform, MC.open_failed_list[ MC.data.current_tab_id ].region, MC.open_failed_list[ MC.data.current_tab_id ].id
                         else if MC.open_failed_list[ MC.data.current_tab_id ]
-                            ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                            #ide_event.trigger event_type, MC.open_failed_list[ MC.data.current_tab_id ].id, MC.open_failed_list[ MC.data.current_tab_id ].region
+                            ide_event.trigger ide_event.OPEN_DESIGN_TAB, event_type, null, MC.open_failed_list[ MC.data.current_tab_id ].region, MC.open_failed_list[ MC.data.current_tab_id ].id
                         else
                             console.error 'not click, current not id'
                         #
@@ -195,7 +200,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                         # delete MC.process and MC.data.process
                         # delete MC.process[ MC.data.current_tab_id ]
                         # delete MC.data.process[ MC.data.current_tab_id ]
-                        MC.forge.other.deleteProcess MC.data.current_tab_id
+                        # MC.forge.other.deleteProcess MC.data.current_tab_id
 
                         null
 

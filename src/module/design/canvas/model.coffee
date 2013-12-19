@@ -1946,9 +1946,9 @@ define [ 'constant',
 
 			# lines
 
-		initLine: ()->
+		initLine: ( write )->
 
-			MC.canvas.initLine()
+			MC.canvas.initLine( write )
 			# subnet_ids = []
 
 			# lines = []

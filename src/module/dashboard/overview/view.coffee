@@ -6,8 +6,9 @@ define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
          'constant',
+         'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant ) ->
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant, unmanagedvpc ) ->
 
     current_region = null
 
@@ -106,6 +107,8 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .terminate-app'                : 'terminateAppClick'
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
+
+            'click #global-region-visualize-VPC'        : 'unmanagedVPCClick'
 
         status:
             reloading       : false
@@ -273,10 +276,14 @@ define [ 'event', 'i18n!nls/lang.js',
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
-            $topButton = $( "#global-create-stack" )
+            $topButton    = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
-            $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+            $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
+
+            $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+
+            null
 
         enableSwitchRegion: ->
             $( '#region-switch' )
@@ -292,7 +299,8 @@ define [ 'event', 'i18n!nls/lang.js',
             $target = $ event.currentTarget
             if $target.prop 'disabled'
                 return
-            ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
+            #ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ) or current_region, null
 
         gotoRegion: ( event ) ->
             if event is Object event
@@ -324,7 +332,8 @@ define [ 'event', 'i18n!nls/lang.js',
             $target = $ event.currentTarget
             name = $target.data 'name'
             id = $target.data 'id'
-            ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
         showCredential: ( flag ) ->
             #flag = ''
@@ -377,9 +386,11 @@ define [ 'event', 'i18n!nls/lang.js',
             id = event.currentTarget.id
 
             if id.indexOf('app-') == 0
-                ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                #ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', $("#"+id).data('option').name, $("#"+id).data('option').region, id
             else if id.indexOf('stack-') == 0
-                ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                #ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', $("#"+id).data('option').name, $("#"+id).data('option').region, id
 
             null
 
@@ -398,10 +409,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
                 ##check params:region, id, name
                 if id.indexOf('app-') is 0
-                    ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+                    #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
                 else if id.indexOf('stack-') is 0
-                    ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                    #ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', name, current_region, id
 
             null
 
@@ -516,6 +529,14 @@ define [ 'event', 'i18n!nls/lang.js',
                     console.log 'new_url = ' + new_url
                     $item.attr 'src', new_url
                     $item.removeAttr 'style'
+
+            null
+
+        unmanagedVPCClick : ->
+            console.log 'unmanagedVPCClick'
+
+            # load unmanagedvpc
+            unmanagedvpc.loadModule()
 
             null
 

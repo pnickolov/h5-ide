@@ -63,6 +63,7 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
 
                 null
 
+            #listen GET_NOT_EXIST_AMI_RETURN
             me.on 'GET_NOT_EXIST_AMI_RETURN', ( result ) ->
 
                 if $.type(result.resolved_data) == 'array'
@@ -76,19 +77,43 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
                 ide_event.trigger ide_event.SWITCH_MAIN
                 null
 
-        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
-            console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid }
+        #############################
+        #  tab
+        #############################
+
+        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
+            console.log 'add'
+
+            MC.tab[ tab_id ] =
+                'snapshot'        : snapshot
+                'data'            : data
+                'property'        : property
+                'property_panel'  : property_panel
+                'origin_data'     : origin_data
+                'origin_ta_valid' : origin_ta_valid
+
             null
 
-        saveProcessTab : ( tab_id ) ->
-            console.log 'saveProcessTab'
-            if !MC.tab[ tab_id ]     then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
-            #if MC.process[ tab_id ] then delete MC.process[ tab_id ]
+        deleteTab    : ( tab_id ) ->
+            console.log 'deleteTab'
+
+            # delete MC.tab
+            delete MC.tab[ tab_id ]
+            console.log MC.tab
+
+            # delete MC.process and MC.data.process
+            MC.forge.other.deleteProcess tab_id if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process'
+            console.log MC.process
+
+            # delete appview
+            obj = MC.forge.other.getCacheMap tab_id
+            if obj and obj.state is 'ERROR' or tab_id.split('-')[0] is 'appview'
+                MC.forge.other.delCacheMap tab_id
+
             null
 
-        readTab : ( type, tab_id ) ->
-            console.log 'readTab'
+        getTab : ( type, tab_id ) ->
+            console.log 'getTab'
             #set random number
             @set 'snapshot', Math.round(+new Date())
             #
@@ -104,14 +129,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             null
 
-        updateTab : ( old_tab_id, tab_id ) ->
-            console.log 'updateTab'
-            if MC.tab[ old_tab_id ] is undefined then return
-            #
-            MC.tab[ tab_id ] = { 'snapshot' : MC.tab[ old_tab_id ].snapshot, 'data' : MC.tab[ old_tab_id ].data, 'property' : MC.tab[ old_tab_id ].property, 'origin_data' : MC.tab[ old_tab_id ].origin_data }
-            #
-            @deleteTab old_tab_id
-
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
             MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
@@ -120,18 +137,6 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
         updateAppTabOriginDate : ( data, tab_id ) ->
             console.log 'updateAppTabOriginDate'
             MC.tab[ tab_id ].origin_data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
-            null
-
-        deleteTab    : ( tab_id ) ->
-            console.log 'deleteTab'
-            delete MC.tab[ tab_id ]
-            #intercom
-            #if tab_id.split( '-' )[0] is 'stack'
-            #    window.intercomSettings.stack_total = window.intercomSettings.stack_total - 1
-            #
-            console.log MC.tab
-            #
-            if MC.process[ tab_id ] and tab_id.split('-')[0] is 'process' then delete MC.process[ tab_id ]
             null
 
         setCanvasData : ( data ) ->
@@ -181,6 +186,15 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             console.log 'setOriginResource', data, tab_id
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
+
+        #saveProcessTab : ( tab_id ) ->
+        #    console.log 'saveProcessTab'
+        #    if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
+        #    null
+
+        #############################
+        #  api
+        #############################
 
         describeInstancesOfASG : (region) ->
 

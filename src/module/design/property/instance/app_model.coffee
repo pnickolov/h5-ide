@@ -161,6 +161,8 @@ define [ '../base/model',
                 # Eni Data
                 instance.eni = this.getEniData instance
 
+                instance.app_view = if MC.canvas.getState() is 'appview' then true else false
+
                 this.set instance
 
             else

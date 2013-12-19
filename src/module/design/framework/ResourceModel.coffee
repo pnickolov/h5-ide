@@ -257,8 +257,12 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       console.assert protoProps.type, "Subclass of ResourceModel does not specifying a type"
 
+      ### env:dev ###
       if _.has(protoProps, 'constructor')
-        console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
+        constructorStr = protoProps.constructor.toString()
+        if not constructorStr.match(/\.call\s?\(?\s?this/)
+          console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
+      ### env:dev:end ###
 
       if staticProps
         handleTypes  = staticProps.handleTypes

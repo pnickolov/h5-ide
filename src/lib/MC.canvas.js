@@ -7023,9 +7023,12 @@ MC.canvas.analysis = function ( data )
 	}
 
 	// Canvas size
-	MC.canvas_data.size = [
-		layout.size[ 0 ] + 50,
-		layout.size[ 1 ] + 50
+	var canvas_width = layout.size[ 0 ] + 80,
+		canvas_height = layout.size[ 1 ] + 50;
+
+	MC.canvas_data.layout.size = [
+		canvas_width < 180 ? 180 : canvas_width,
+		canvas_height < 150 ? 150 : canvas_height
 	];
 
 	console.info(layout);

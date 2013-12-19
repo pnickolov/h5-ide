@@ -56,6 +56,20 @@ define [ 'Design',
   window.EniModel      = EniModel
   window.EniAttachment = EniAttachment
 
+  # new Design({},{ component : { group : {}, node : {} } },{type:"ec2-vpc",mode:"appview"})
+
+  # a = new ComplexResModel()
+  # b = new ComplexResModel()
+  # c = new ComplexResModel()
+  # d = new ComplexResModel()
+  # a.listenTo b, "charge", ()-> null
+  # a.listenTo b, "charge2", ()-> null
+  # a.listenTo c, "destroy", ()-> null
+  # a.listenTo d, "charge", ()-> null
+  # b.remove()
+  # c.remove()
+  # a.remove()
+
   null
 
 

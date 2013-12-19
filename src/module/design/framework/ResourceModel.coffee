@@ -1,5 +1,20 @@
 
-define [ "Design", "backbone" ], ( Design )->
+define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
+
+  __checkEventOnUsage = ( protoProps )->
+    for propName, prop of protoProps
+      if not _.isFunction prop then continue
+      funcString = prop.toString()
+
+      found = false
+      # this.on() is allowed.
+      funcString.replace /(this)?\.on\b/g, ($0, $1)->
+        found = found or !$1
+
+      if found
+        console.warn "Do not use Backbone.Events.on. Instead use Backbone.Events.listenTo. Found on() for resource : #{protoProps.type}"
+        break
+    null
 
   ###
     -------------------------------
@@ -47,7 +62,7 @@ define [ "Design", "backbone" ], ( Design )->
     # remove() : [FORCE]
         description : Just like the destructor in C++. User can override this method.
         The framework will ensure the base class's remove() will get called.
-        This method will fire "remove" event when called.
+        This method will fire "destroy" event when called.
 
     # initialize() : [FORCE]
         description : The same as Backbone.Model.initialize()
@@ -55,10 +70,6 @@ define [ "Design", "backbone" ], ( Design )->
 
     # serialize()
         description : Must be implemented by the user, otherwise it logs an error in console.
-
-    # listenTo()
-        description : listenTo() is a convinant method for on().
-        Benifits is that when this resource is removed, it will automatically unListen everything it previous listened to. Side-effects are the context of the callback will always be this.
 
     # storage()
     # getFromStorage( filter )
@@ -180,35 +191,6 @@ define [ "Design", "backbone" ], ( Design )->
     isRemovable : () -> true
     isReparentable : ()-> true
 
-    destroy : ()-> @remove()
-
-    remove : ()->
-      console.debug "ResourceModel.remove"
-
-      # Clean up reference
-      design = Design.instance()
-      cache = design.classCacheForCid( this.classId )
-      cache.splice( cache.indexOf( this ), 1 )
-      design.cacheComponent( this.id )
-
-      # Clear all events attached to others using listenTo
-      if this.__interestedObj
-        for uid, obj in this.__interestedObj
-          obj = design.component( uid )
-          if obj then obj.off( null, null, this )
-        this.__interestedObj = null
-
-      # Storage is not automatically cleared.
-
-      # Broadcast remove event
-      this.trigger "remove"
-      # Also trigger a destroy event for Backbone.
-      this.trigger "destroy"
-
-      # Clear all events attached to me
-      this.off()
-      null
-
     isTypeof : ( type )->
       c = this
       while c
@@ -223,13 +205,45 @@ define [ "Design", "backbone" ], ( Design )->
       console.error "Class '#{@type}' doesn't implement serialize"
       null
 
-    listenTo : ( other_resource, event, callback )->
-      if not this.__interestedObj
-        this.__interestedObj = {}
-      this.__interestedObj[ other_resource.id ] = true
+    destroy : ()-> @remove()
 
-      other_resource.on( event, callback, this )
+    remove : ()->
+      console.debug "Removing #{@type} resource : #{@get('name')}", this
+
+      # Clean up reference
+      design = Design.instance()
+      cache = design.classCacheForCid( this.classId )
+      cache.splice( cache.indexOf( this ), 1 )
+      design.cacheComponent( this.id )
+
+      # Clear all events attached to others using listenTo
+      @stopListening()
+
+      # Storage is not automatically cleared.
+
+      # Broadcast destroy event.
+      this.trigger "destroy"
+
+      this.trigger "__remove"
+
+      # Clear all events attached to me
+      this.off()
       null
+
+
+    listenTo : ( other, event, callback )->
+      # Override Backbone.Events.listenTo.
+      # This method will make sure that when other is removed, this will stop listen to it.
+
+      model = Design.modelClassForType other.type
+      if model and ( not this._listeners or not this._listeners[ other._listenerId ] )
+        # The `other` is a ResourceModel that is registered in Design.
+        # We should stopListening once the `other` is removed
+        that = this
+        other.once "__remove", ()-> that.stopListening( this ) # this here is `other`
+
+      Backbone.Events.listenTo.call this, other, event, callback
+
   }, {
 
     allObjects : ()->
@@ -246,9 +260,15 @@ define [ "Design", "backbone" ], ( Design )->
       if _.has(protoProps, 'constructor')
         console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
 
-      if staticProps and staticProps.handleTypes
-        handleTypes = staticProps.handleTypes
+      if staticProps
+        handleTypes  = staticProps.handleTypes
+        resolveFirst = staticProps.resolveFirst
         delete staticProps.handleTypes
+        delete staticProps.resolveFirst
+
+      ### env:dev ###
+      __checkEventOnUsage( protoProps )
+      ### env:dev:end ###
 
       ### jshint -W083 ###
       for m in FORCE_MAP
@@ -271,15 +291,19 @@ define [ "Design", "backbone" ], ( Design )->
       subClass = Backbone.Model.extend.call( this, protoProps, staticProps )
 
       # Register this class, so that Design knows this class can handle resources.
+      if not handleTypes then handleTypes = protoProps.type
+
       if handleTypes
         if _.isString( handleTypes )
           handleTypes = [ handleTypes ]
 
         for type in handleTypes
-          Design.registerModelClass type, subClass, staticProps.resolveFirst
+          Design.registerModelClass type, subClass, resolveFirst
 
       subClass
   }
+
+  Design.registerModelClass ResourceModel.prototype.type, ResourceModel
 
   ResourceModel
 

@@ -10,9 +10,9 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       console.debug "GroupModel.remove, Removing Children"
 
       # Remove children
-      if @.attributes.__children
-        for child in @.attributes.__children
-          child.off "remove", @removeChild, @
+      if @attributes.__children
+        for child in @attributes.__children
+          child.off "destroy", @removeChild, @
           child.remove()
       null
 
@@ -34,7 +34,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
       child.set("__parent", this)
 
       # Listen child's removal
-      child.on "remove", @removeChild, @
+      child.once "destroy", @removeChild, @
       null
 
     removeChild : ( child )->
@@ -53,7 +53,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       @set("__children", children)
 
-      child.off "remove", @removeChild, @
+      child.off "destroy", @removeChild, @
       null
 
     children : ()-> this.get("__children") || []

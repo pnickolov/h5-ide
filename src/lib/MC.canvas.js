@@ -1332,7 +1332,7 @@ MC.canvas = {
 			to_data = layout_component_data[ to_node_class ][ to_uid ],
 
 			from_type = from_data.type,
-			to_data = to_data.type,
+			to_type = to_data.type,
 
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 
@@ -6261,7 +6261,7 @@ MC.canvas.analysis = function ( data )
 				item.children !== undefined
 			)
 			{
-				node_connection = resources[ item.children[ 0 ].id ].connection;	
+				node_connection = resources[ item.children[ 0 ].id ].connection;
 			}
 			else
 			{

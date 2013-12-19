@@ -12,7 +12,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
     iconUrl : ()->
-      ami = MC.data.dict_ami[ @get("imageId") ]
+      ami = MC.data.dict_ami[ @get 'ImageId' ]
 
       if not ami
         return "ide/ami/ami-not-available.png"

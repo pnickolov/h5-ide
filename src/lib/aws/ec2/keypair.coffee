@@ -35,7 +35,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
       using_kps[ comp.resource.KeyName ] = true
 
-    kps = [ null ]
+    kps = []
     for name, kp_uid of MC.canvas_property.kp_list
 
       kp = {

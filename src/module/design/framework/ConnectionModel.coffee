@@ -44,10 +44,10 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       cns = Design.modelClassForType( @type ).allObjects()
       for cn in cns
         if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
-          console.warn "Connectoin #{@type} of ", p1Comp, p2Comp, " already exists"
+          console.warn "Found existing connection #{@type} of ", p1Comp, p2Comp
           return cn
         if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
-          console.warn "Connectoin #{@type} of ", p1Comp, p2Comp, " already exists"
+          console.warn "Found existing connectoin #{@type} of ", p1Comp, p2Comp
           return cn
 
       if @portDefs
@@ -75,14 +75,13 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       # Call super constructor
       ResourceModel.call(this, attr)
 
+      @__port1Comp.connect_base this
+      if @__port1Comp isnt @__port2Comp
+        @__port2Comp.connect_base this
+
+      # Draw in the end
       if @draw and Design.instance().shouldDraw()
         @draw()
-
-      # Put connect() calls to last, in case of some resource might want the Line SVG Node
-      @__port1Comp.connect this
-
-      if @__port1Comp isnt @__port2Comp
-        @__port2Comp.connect this
 
       this
 

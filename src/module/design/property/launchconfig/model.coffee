@@ -185,8 +185,33 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
     getKeyPair : ( uid, data )->
 
-      keypair_id = MC.extractID @lc.get 'KeyName'
-      data.keypair = MC.aws.kp.getList( keypair_id )
+      keypairInuse = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair ).first()
+
+      #data.keypair = MC.aws.kp.getList( keypair_id )
+
+      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+
+      allKp = kpModel and kpModel.allObjects() or []
+
+      kps = []
+
+      for kp in allKp
+        name = kp.get 'name'
+        kp_uid = kp.id
+        inUse = kp.getFromStorage().length > 0
+
+        kp = {
+          name     : name
+          using    : inUse
+          selected : kp_uid is keypairInuse.id
+        }
+
+        if name is "DefaultKP"
+          kps.unshift kp
+        else
+          kps.push kp
+
+      data.keypair = kps
 
       null
 

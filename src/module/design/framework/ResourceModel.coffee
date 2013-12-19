@@ -2,6 +2,7 @@
 define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
   __checkEventOnUsage = ( protoProps )->
+    ### jshint -W083 ###
     for propName, prop of protoProps
       if not _.isFunction prop then continue
       funcString = prop.toString()
@@ -10,10 +11,12 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # this.on() is allowed.
       funcString.replace /(this)?\.on\b/g, ($0, $1)->
         found = found or !$1
+        found
 
       if found
         console.warn "Do not use Backbone.Events.on. Instead use Backbone.Events.listenTo. Found on() for resource : #{protoProps.type}"
         break
+    ### jshint +W083 ###
     null
 
   ###

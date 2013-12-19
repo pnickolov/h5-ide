@@ -114,6 +114,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
             @unset attr.key
       null
 
+    disassociate: ( filter ) ->
+      @removeFromStorage
+
     # Storage is created when necessary
     storage : ()->
       if not this.__storage
@@ -134,6 +137,25 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         models = storage.models
 
       new Backbone.Collection( models )
+
+    removeFromStorage: ( filter ) ->
+      storage = this.storage()
+
+      if _.isString filter
+        models = _.filter storage.models, ( res )-> res.type is filter
+
+      else if _.isFunction filter
+        models = _.filter storage.models, filter
+
+      else if filter instanceof ResourceModel
+        models = filter
+
+      if models
+        storage.remove models
+      else
+        storage.reset()
+
+      storage
 
     addToStorage : ( resource ) ->
       storage = this.storage()

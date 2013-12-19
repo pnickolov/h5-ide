@@ -61,19 +61,18 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             null
 
         addRule : ( rule )->
-            uid = @get("uid")
+            uid  = @get("uid")
+            mySg = Design.instance().component( uid )
 
             # Get Target
             if rule.relation[0] is "@"
                 target = Design.instance().component( rule.relation.substr(1) )
             else
                 # The source/destination is Ip
-                IpTargetModel = Design.modelClassForType( "SgIpTarget" )
-                target = new IpTargetModel({ name:rule.relation })
+                target = mySg.createIpTarget( rule.relation )
 
             # Get the SgRuleSet
             SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
-            mySg = Design.instance().component( uid )
             sgRuleSet = new SgRuleSetModel( mySg, target )
 
             # Insert Rule

@@ -106,7 +106,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
       embed = false
       if data.resource.Attachment
-        embed = data.resource.Attachment.DeviceIndex is "0"
+        embed    = data.resource.Attachment.DeviceIndex is "0"
+        instance = resolve( MC.extractID data.resource.Attachment.InstanceId )
 
       eni = new Model({
 
@@ -120,8 +121,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       })
 
       if data.resource.GroupSet
+        sgTarget = if embed then instance else eni
         for group in data.resource.GroupSet
-          new SgAsso( eni, resolve( MC.extractID( group.GroupId ) ) )
+          new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
       null
 
   }

@@ -375,9 +375,20 @@ StateEditorView = Backbone.View.extend({
 
 	onFocusInput: (event) ->
 
-		$currentInput = $(event.currentTarget)
-		# document.execCommand('selectAll', false, null)
+		that = this
 
+		$currentInput = $(event.currentTarget)
+
+		if $currentInput.hasClass('parameter-value')
+
+			currentValue = $currentInput.text()
+
+			paraObj = that.getParaObj($currentInput)
+
+			if paraObj and paraObj.default isnt undefined
+				defaultValue = String(paraObj.default)
+				if not currentValue and defaultValue and not $currentInput.hasClass('key')
+					$currentInput.html(defaultValue)
 })
 
 window.StateEditorView = StateEditorView

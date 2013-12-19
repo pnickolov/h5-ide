@@ -341,8 +341,19 @@ StateEditorView = Backbone.View.extend({
     });
   },
   onFocusInput: function(event) {
-    var $currentInput;
-    return $currentInput = $(event.currentTarget);
+    var $currentInput, currentValue, defaultValue, paraObj, that;
+    that = this;
+    $currentInput = $(event.currentTarget);
+    if ($currentInput.hasClass('parameter-value')) {
+      currentValue = $currentInput.text();
+      paraObj = that.getParaObj($currentInput);
+      if (paraObj && paraObj["default"] !== void 0) {
+        defaultValue = String(paraObj["default"]);
+        if (!currentValue && defaultValue && !$currentInput.hasClass('key')) {
+          return $currentInput.html(defaultValue);
+        }
+      }
+    }
   }
 });
 

@@ -116,7 +116,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       # Ensure valid protocol and port
       rule = $.extend {}, rule
-      if rule.protocl is "-1" or rule.protocol is "all"
+      if rule.protocol is "-1" or rule.protocol is "all"
         rule.protocol = "all"
         rule.fromPort = "0"
         rule.toPort   = "65535"

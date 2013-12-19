@@ -5,31 +5,15 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-    remove : ()->
-
-      @set "removing", true
-      # Update target's label
-      @draw()
-      @set "removing", false
-
-      # Update target's line
-      null
+    initialize : ()->
+      # Update target's label after this connection is removed.
+      @on "destroy", @draw
 
     sortedSgList : ()->
 
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
 
       sgAssos = resource.connections("SgAsso")
-
-      idx = sgAssos.indexOf( this )
-      if not @get "removing"
-        # When the connection is created, draw() is called before resource.connect()
-        # So sgAssos might not have this SgAsso inside.
-        if idx is -1
-          sgAssos.push this
-      else
-        if idx isnt -1
-          sgAssos.splice( idx, 1 )
 
       # Sort the SG
       sgs = _.map sgAssos, ( a )->

@@ -104,6 +104,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				if a_sg.name <  b_sg.name   then return -1
 				if a_sg.name == b_sg.name   then return 0
 				if a_sg.name >  b_sg.name   then return 1
+			@attributes.sg_list
 
 
 		sortSGRule : ( key )->

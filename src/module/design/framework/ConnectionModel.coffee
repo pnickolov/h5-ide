@@ -97,10 +97,17 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
     port2Comp : ()-> @__port2Comp
 
     getOtherTarget : ( type )->
-      if @__port1Comp.type isnt type
-        return @__port1Comp
+      if not _.isString type
+        if @__port1Comp is type
+          return @__port2Comp
+        else
+          return @__port1Comp
 
-      return @__port2Comp
+      else
+        if @__port1Comp.type is type
+          return @__port2Comp
+        else
+          return @__port1Comp
 
     getTarget : ( type )->
       if @__port1Comp.type is type

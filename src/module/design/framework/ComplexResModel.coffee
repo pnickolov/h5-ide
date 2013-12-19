@@ -31,12 +31,14 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
   ComplexResModel = ResourceModel.extend {
 
+    ###
     defaults :
       x        : 0
       y        : 0
       width    : 0
       height   : 0
       __parent : null
+    ###
 
     type : "Framework_CR"
 
@@ -166,11 +168,11 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
       cnns || emptyArr
 
-    parent      : ()-> this.get("__parent")
-    x           : ()-> this.get("x")
-    y           : ()-> this.get("y")
-    width       : ()-> this.get("width")
-    height      : ()-> this.get("height")
+    parent : ()-> @attributes.__parent || null
+    x      : ()-> @attributes.x || 0
+    y      : ()-> @attributes.y || 0
+    width  : ()-> @attributes.width || 0
+    height : ()-> @attributes.height || 0
 
   }
 

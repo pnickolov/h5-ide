@@ -174,6 +174,19 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
     width  : ()-> @attributes.width || 0
     height : ()-> @attributes.height || 0
 
+  }, {
+    extend : ( protoProps, staticProps )->
+
+      # Force to check if the design should be draw before drawing is done.
+      if protoProps.draw
+        protoProps.draw = (()->
+          draw = protoProps.draw
+          ()->
+            if Design.instance().shouldDraw()
+              draw.apply @, arguments
+        )()
+
+      ResourceModel.extend.call this, protoProps, staticProps
   }
 
   ComplexResModel

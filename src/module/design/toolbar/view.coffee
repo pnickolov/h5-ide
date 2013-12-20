@@ -167,6 +167,12 @@ define [ 'MC', 'event',
                         return
 
                     process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+
+                    # delete F5 old process
+                    obj = MC.forge.other.getProcess process_tab_name
+                    if obj and obj.flag_list and obj.flag_list.is_failed is true
+                        MC.forge.other.deleteProcess process_tab_name
+
                     # repeat with app list or tab name(some run failed app tabs)
                     if (not MC.aws.aws.checkAppName app_name) or (_.contains(_.keys(MC.process), process_tab_name))
                         notification 'warning', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME

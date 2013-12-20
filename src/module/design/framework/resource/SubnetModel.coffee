@@ -43,11 +43,11 @@ define [ "constant",
 
     # Association is the connection between RTB and Subnet
     getAssociation : ()-> @rtb_asso
-    getAcl         : ()-> @acl_asso.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+    getAcl         : ()-> @acl_asso.getOtherTarget( @ )
 
     setAcl : ( uid )->
-      acl = Design.instance().component( uid )
-      new AclAsso( this, acl )
+      new AclAsso( this, Design.instance().component( uid ) )
+      null
 
     connect : ( connection ) ->
 

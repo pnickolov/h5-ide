@@ -1,9 +1,31 @@
 
 define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
-  C = ConnectionModel.extend {
+  # Elb <==> Subnet
+  ConnectionModel.extend {
 
-    type : "ElbAsso"
+    type : "ElbSubnetAsso"
+
+    defaults : ()->
+      lineType : "association"
+
+    portDefs : [
+      {
+        port1 :
+          name : "elb-sg-out"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+        port2 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+      }
+    ]
+  }
+
+  # Elb <==> Ami
+  ConnectionModel.extend {
+
+    type : "ElbAmiAsso"
 
     defaults : ()->
       lineType : "elb-sg"
@@ -18,9 +40,16 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
       }
+      {
+        port1 :
+          name : "elb-sg-out"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+        port2 :
+          name      : "instance-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      }
     ]
-
-
   }
 
-  C
+  null

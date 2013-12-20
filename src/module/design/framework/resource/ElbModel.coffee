@@ -21,6 +21,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "cons
     iconUrl : ()->
       "ide/icon/elb-" + (if @get("internal") then "internal-canvas.png" else "internet-canvas.png")
 
+    setInternal : ( isInternal )->
+      @set "internal", !!isInternal
+      @draw()
+      null
+
     draw : ( isCreate )->
 
       if isCreate
@@ -70,6 +75,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "cons
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+      else
+        node = $( document.getElementById( @id ) )
+        # Update label
+        CanvasManager.update node.children(".node-label"), @get("name")
+
+        # Update Image
+        CanvasManager.update node.children("image"), @iconUrl(), "href"
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
@@ -81,7 +94,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "cons
         id           : data.uid
         name         : data.name
 
-        internal : data.resource.Scheme is 'internal'
+        internal  : data.resource.Scheme is 'internal'
+        crossZone : data.resource.CrossZoneLoadBalancing
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

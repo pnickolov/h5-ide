@@ -27,6 +27,12 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
     isConnectable : ( targetComp, selfPort, targetPort )->
         description : When user wants to connect a target. This method will be called
 
+    connections : ( typeString )->
+        description : returns an array of connections. Can be filter by typeString
+
+    connectionTargets : ( typeString )->
+        description : The same as connections, except the array holds targets connceted to this.
+
   ###
 
   ComplexResModel = ResourceModel.extend {
@@ -167,6 +173,15 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
         cnns = _.filter cnns, ( cn )-> cn.type is type
 
       cnns || emptyArr
+
+    connectionTargets : ( connectionType )->
+      targets = []
+
+      for cnn in this.get("__connections")
+        if not connectionType or cnn.type is connectionType
+          targets.push( cnn.getOtherTarget( @ ) )
+
+      targets
 
     parent : ()-> @attributes.__parent || null
     x      : ()-> @attributes.x || 0

@@ -38,17 +38,18 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
     node_line : true
     type      : "Framework_CN"
 
-    constructor : ( p1Comp, p2Comp, attr ) ->
+    constructor : ( p1Comp, p2Comp, attr, option ) ->
 
-      # Detect if we have already created the same connection between p1Comp, p2Comp
-      cns = Design.modelClassForType( @type ).allObjects()
-      for cn in cns
-        if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
-          console.warn "Found existing connection #{@type} of ", p1Comp, p2Comp
-          return cn
-        if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
-          console.warn "Found existing connectoin #{@type} of ", p1Comp, p2Comp
-          return cn
+      if not option or option.detectDuplicate isnt false
+        # Detect if we have already created the same connection between p1Comp, p2Comp
+        cns = Design.modelClassForType( @type ).allObjects()
+        for cn in cns
+          if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
+            console.warn "Found existing connection #{@type} of ", p1Comp, p2Comp
+            return cn
+          if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
+            console.warn "Found existing connectoin #{@type} of ", p1Comp, p2Comp
+            return cn
 
       if @portDefs
 

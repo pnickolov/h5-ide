@@ -62,6 +62,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         @getCheckBox( uid, data )
         @getKeyPair( uid, data )
         @getInstanceType( uid, data )
+        @getAssociatePublicIp( uid, data )
         @getAmi( uid, data )
 
         this.set data
@@ -224,6 +225,26 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       uid = this.get 'uid'
       MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
+
+      null
+
+    setPublicIp : ( value ) ->
+
+      uid = this.get 'uid'
+
+      MC.canvas_data.component[ uid ].resource.AssociatePublicIpAddress = value
+
+      null
+
+    getAssociatePublicIp: ( uid, data ) ->
+      resource = MC.canvas_data.component[ uid ].resource
+
+      vpcId = MC.aws.vpc.getVPCUID()
+      isDefaultVpc = MC.aws.aws.checkDefaultVPC()
+
+      if vpcId and not isDefaultVpc
+        data.displayAssociatePublicIp = true
+        data.AssociatePublicIpAddress = resource.AssociatePublicIpAddress
 
       null
 

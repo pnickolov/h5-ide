@@ -31,7 +31,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         html : ->
             data =
                 resource : $( '#resource-panel' ).html()
-                property : $( '#property-panel' ).html()
+                #property : $( '#property-panel' ).html()
                 canvas   : $( '#canvas-panel'   ).html()
                 overlay  : $( '#overlay-panel'  ).html()
             data
@@ -45,7 +45,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             $( '#resource-panel' ).html this.model.get( 'snapshot' ).resource
             $( '#canvas-panel'   ).html this.model.get( 'snapshot' ).canvas
             $( '#overlay-panel'  ).html this.model.get( 'snapshot' ).overlay
-            $( '#property-panel' ).html this.model.get( 'snapshot' ).property
+            #$( '#property-panel' ).html this.model.get( 'snapshot' ).property
             #
             if $.trim( $( '#overlay-panel'  ).html() ) isnt '' then @showDesignOverlay() else @hideDesignOverlay()
             ###

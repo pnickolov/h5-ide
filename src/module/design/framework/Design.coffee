@@ -132,6 +132,13 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     ###########################
     # Start deserialization
     ###########################
+    # Deserialize VPC first
+    for uid, comp of json_data
+      if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+        recursiveCheck = {}
+        resolveDeserialize uid
+        break
+
     # Deserialize resolveFisrt resources
     for uid, comp of json_data
       if Design.__resolveFirstMap[ comp.type ] is true
@@ -210,7 +217,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   Design.__resolveFirstMap = {}
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
     @__modelClassMap[ type ]   = modelClass
-    @__resolveFirstMap[ type ] = true
+    @__resolveFirstMap[ type ] = resolveFirst
     null
 
   DesignImpl.prototype.classCacheForCid = ( cid )->

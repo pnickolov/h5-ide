@@ -45,10 +45,10 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
     remove : ()->
       console.assert( not this.get("isDefault"), "Cannot delete DefaultACL" )
 
-      # When remove and acl, attach all its subnet to DefaultACL
+      # When remove an acl, attach all its subnet to DefaultACL
       defaultAcl = Model.getDefaultAcl()
-      for cn in @connections()
-        new AclAsso( defaultAcl, cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl ) )
+      for target in @connectionTargets()
+        new AclAsso( defaultAcl, target )
       null
 
     addRule : ( rule )->

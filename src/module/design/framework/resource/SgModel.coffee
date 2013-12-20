@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", "../connection/SgLine", "constant" ], ( ComplexResModel, ResourceModel, SgRuleSet, SgLine, constant )->
+define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", "../connection/SgLine", "Design", "constant" ], ( ComplexResModel, ResourceModel, SgRuleSet, SgLine, Design, constant )->
 
   SgTargetModel = ComplexResModel.extend {
     type : "SgIpTarget"
@@ -45,6 +45,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       count
 
     connect : ( cn )->
+
+      # Don't modify SgLine when Design is not ready for drawing
+      if not Design.instance().shouldDraw() then return
+
       if cn.type is "SgAsso"
         @vlineAdd( cn.getOtherTarget( @ ) )
 
@@ -59,14 +63,12 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       null
 
     disconnect : ( cn )->
+
+      # Don't modify SgLine when Design is not ready for drawing
+      if not Design.instance().shouldDraw() then return
+
       if cn.type is "SgAsso"
-        possibleAffectedResources = []
-
-        for sg in @getVisualConnectedSg()
-          for otherAsso in sg.connections( "SgAsso" )
-            possibleAffectedResources.push otherAsso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
-
-        @vlineRemove( cn.getOtherTarget( @ ), possibleAffectedResources )
+        @vlineRemove( cn.getOtherTarget( @ ) )
 
       else if cn.type is "SgRuleSet"
 
@@ -80,9 +82,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       # Get all the resources that will connect to SG.
       for sg in @getVisualConnectedSg()
 
-        for asso in sg.connections( "SgAsso" )
-
-          res = asso.getOtherTarget( sg )
+        for res in sg.connectionTargets( "SgAsso" )
 
           # The res is already connected
           if connectedResMap[ res.id ] then continue
@@ -97,45 +97,45 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       # Do not add visual line for self reference rule
       if otherSg is @ then return
 
-      groupRes = []
-      for asso in @connections( "SgAsso" )
-        groupRes.push asso.getOtherTarget( @ )
+      groupRes = @connectionTargets( "SgAsso" )
 
-      for asso in otherSg.connections( "SgAsso" )
-        otherRes = asso.getOtherTarget( otherSg )
-
+      for otherRes in otherSg.connectionTargets( "SgAsso" )
         for myRes in groupRes
           if myRes isnt otherRes
             new SgLine( myRes, otherRes )
 
       null
 
-    vlineRemove : ( resource, possibleAffectedResources )->
+    vlineRemove : ( resource, possibleAffectedRes )->
+
+      # Get a list of target resources that might need to update.
+      if not possibleAffectedRes
+        possibleAffectedRes = []
+        for sg in @getVisualConnectedSg()
+          possibleAffectedRes = possibleAffectedRes.concat( sg.connectionTargets("SgAsso") )
+
       connectableMap = {}
 
       # Find out what resource can connect to
-      for asso in resource.connections( "SgAsso" )
+      for resourceSg in resource.connectionTargets( "SgAsso" )
 
-        for sg in asso.getOtherTarget( resource ).getVisualConnectedSg()
+        for sg in resourceSg.getVisualConnectedSg()
 
-          for otherAsso in sg.connections( "SgAsso" )
+          for sgTarget in sg.connectionTargets( "SgAsso" )
 
-            connectableMap[ otherAsso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).id ] = true
+            connectableMap[ sgTarget.id ] = true
 
       # Try remove all the resources connectable to this SG
-      for res in possibleAffectedResources
-        if not connectableMap[ res.id ]
+      for res in possibleAffectedRes
+        if not connectableMap[ res.id ] and res isnt resource
             (new SgLine(resource, res)).remove()
       null
 
     vlineRemoveBatch : ( otherSg )->
-      possibleAffectedResources = []
+      possibleAffectedRes = otherSg.connectionTargets( "SgAsso" )
 
-      for asso in otherSg.connections( "SgAsso" )
-        possibleAffectedResources.push( asso.getOtherTarget( otherSg ) )
-
-      for asso in @connections( "SgAsso" )
-        @vlineRemove( asso.getOtherTarget(@), possibleAffectedResources )
+      for resource in @connectionTargets( "SgAsso" )
+        @vlineRemove( resource, possibleAffectedRes )
       null
 
     # Get the collections of SG, which will have visual lines to this SG
@@ -176,6 +176,42 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
+
+    updateSgLines : ()->
+      ### env:dev ###
+      if this isnt Design
+        console.error( "Possible misuse of updateSgLines detected!" )
+      ### env:dev:end ###
+
+      connectableMap = {}
+      for ruleset in SgRuleSet.allObjects()
+        sg1 = ruleset.port1Comp()
+        sg2 = ruleset.port2Comp()
+
+        # Self-reference and IpTarget Ruleset is not visual
+        if sg1 is sg2 or sg1.type is "SgIpTarget" or sg2.type is "SgIpTarget" then continue
+
+        leftPortRes = sg1.connectionTargets( "SgAsso" )
+
+        for resource in sg2.connectionTargets( "SgAsso" )
+          for leftRes in leftPortRes
+            # Avoid created line if two port is the same
+            if leftRes.id is resource.id then continue
+            if leftRes.id < resource.id
+              key = leftRes.id + "|" + resource.id
+            else
+              key = resource.id + "|" + leftRes.id
+
+            a = connectableMap[ key ] || []
+            a[0] = leftRes
+            a[1] = resource
+            connectableMap[ key ] = a
+
+
+      for idKey, ress of connectableMap
+        # Create a SgLine between the object, and avoid duplicate check in ConnectionModel
+        new SgLine( ress[0], ress[1], undefined, { detectDuplicate : false } )
+      null
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
 
@@ -220,5 +256,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         (new SgRuleSet( group, ruleTarget )).addRawRule( group.id, dir, attr )
       null
   }
+
+  Design.on "deserialized", Model.updateSgLines
 
   Model

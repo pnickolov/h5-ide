@@ -14,8 +14,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             aclObj = Design.instance().component( uid )
 
-            assos = _.map aclObj.connections(), ( cn )->
-                subnet = cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+            assos = _.map aclObj.connectionTargets( "ACL_Asso" ), ( subnet )->
                 {
                     name : subnet.get('name')
                     cidr : subnet.get('cidr')

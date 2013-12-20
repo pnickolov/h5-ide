@@ -4,6 +4,11 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
 
+    ### env:dev ###
+    initialize : ()->
+      console.assert( @port1Comp() isnt @port2Comp(), "Sgline should connect to different resources." )
+    ### env:dev:end ###
+
     type : "SgRuleLine"
 
     defaults :

@@ -48,6 +48,18 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
     type : "Framework_CR"
 
+    constructor : ( attributes, options )->
+
+      if attributes and attributes.parent
+        p = attributes.parent
+        delete attributes.parent
+
+      ResourceModel.call this, attributes, options
+
+      if p
+        p.addChild( this )
+      null
+
     initialize : ()->
 
       if @draw and Design.instance().shouldDraw()

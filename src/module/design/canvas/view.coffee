@@ -2,7 +2,11 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( ide_event, canvas_layout, constant, forge_app ) ->
+define [ 'event', 'canvas_layout', 'constant',
+         'lib/forge/app',
+         'stateeditor'
+         'MC.canvas', 'backbone', 'jquery'
+], ( ide_event, canvas_layout, constant, forge_app, stateeditor ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -78,6 +82,13 @@ define [ 'event', 'canvas_layout', 'constant', 'lib/forge/app', 'MC.canvas', 'ba
                         uid = layout_data.originalId
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
+
+            # stateeditor modal
+            if component and component.type in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
+
+                stateeditor.loadModule component
+
+            null
 
         showASGVolumeProperty : ( event, uid ) ->
             console.log 'showProperty, uid = ' + uid

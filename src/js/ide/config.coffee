@@ -111,6 +111,14 @@ require.config {
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
 		#############################################
+		# component
+		#############################################
+
+		'stateeditor'        : 'component/stateeditor/main'
+		'stateeditor_view'   : 'component/stateeditor/view'
+		'stateeditor_model'  : 'component/stateeditor/model'
+
+		#############################################
 		# module
 		#############################################
 		'base_main'          : 'module/base/base_main'
@@ -375,6 +383,9 @@ require.config {
 
 		'main'         :
 			deps       : [ 'jquery' ]
+
+		'stateeditor' :
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]
 
 
 }

@@ -359,7 +359,7 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     PropertyModule.restore  = ( snapshot )->
 
-        PropertyModule.__noRender = true
+        #PropertyModule.__noRender = true
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 
         if snapshot.activeSubModuleType

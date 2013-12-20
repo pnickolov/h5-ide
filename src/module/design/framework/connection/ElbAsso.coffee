@@ -12,12 +12,11 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     portDefs : [
       {
         port1 :
-          name : "elb-sg-out"
+          name : "elb-assoc"
           type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "launchconfig-sg"
-          direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          name : "subnet-assoc-in"
+          type : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
       }
     ]
   }

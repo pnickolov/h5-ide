@@ -284,7 +284,9 @@ define [ 'event', 'i18n!nls/lang.js',
             $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
             # when is_invitated cookie not true hide
-            if MC.forge.cookie.getCookieByName( 'is_invitated' ) not in [ 'true', true ]
+            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+                $( '#global-region-visualize-VPC' ).show()
+            else
                 $( '#global-region-visualize-VPC' ).hide()
 
             null

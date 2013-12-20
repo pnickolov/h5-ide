@@ -1122,6 +1122,7 @@ a {
 	left: 240px;
 	width: 250px;
 	padding-right: 6px;
+	display: none;
 }
 
 .firefox #global-region-visualize-VPC {

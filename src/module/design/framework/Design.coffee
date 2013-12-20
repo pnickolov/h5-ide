@@ -149,7 +149,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
       resolveDeserialize uid
 
     # Some resources might need to delay until other resources are deserialized.
-    # So here, we give a second chance for them to serialize
+    # So here, we give a second chance for them to deserialize
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid

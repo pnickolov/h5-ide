@@ -62,9 +62,9 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       if cn.type is "SgAsso"
         possibleAffectedResources = []
 
-        for ruleset in @getVisualRuleSet()
-          for otherAsso in ruleset.getOtherTarget( @ ).connections( "SgAsso" )
-            possibleAffectedResources.push otherAsso.getOtherTarget( constan.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        for sg in @getVisualConnectedSg()
+          for otherAsso in sg.connections( "SgAsso" )
+            possibleAffectedResources.push otherAsso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
 
         @vlineRemove( cn.getOtherTarget( @ ), possibleAffectedResources )
 
@@ -116,10 +116,9 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       # Find out what resource can connect to
       for asso in resource.connections( "SgAsso" )
 
-        sg = asso.getOtherTarget( resource )
-        for ruleset in sg.getVisualRuleSet()
+        for sg in asso.getOtherTarget( resource ).getVisualConnectedSg()
 
-          for otherAsso in ruleset.getOtherTarget( sg ).connections( "SgAsso" )
+          for otherAsso in sg.connections( "SgAsso" )
 
             connectableMap[ otherAsso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).id ] = true
 

@@ -1,13 +1,25 @@
 
-define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, ConnectionModel, CanvasManager )->
+define [ "constant", "../ConnectionModel", "../CanvasManager", "Design" ], ( constant, ConnectionModel, CanvasManager, Design )->
 
   # SgAsso is used to represent that one Resource is using on SecurityGroup
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
     initialize : ()->
+
+      # A hack for optimization.
+      # When deserializing, shouldDraw() returns false.
+      # Thus this sgAsso doesn't have a draw() method.
+      # So that the Design won't call it after deserialization.
+      # Then we update all resources in the callback of `deserialized`
+      if Design.instance().shouldDraw()
+        # Assign to draw after deserialization to make sure ConnectionModel
+        # will draw us after connetion is established
+        @draw = @updateLabel
+
       # Update target's label after this connection is removed.
-      @on "destroy", @draw
+      @on "destroy", @updateLabel
+      null
 
     sortedSgList : ()->
 
@@ -32,7 +44,7 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
 
 
     # Drawing method, drawing method is used to update resource label
-    draw : ()->
+    updateLabel : ()->
       resource = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
       res_node = document.getElementById( resource.id )
 
@@ -51,6 +63,16 @@ define [ "constant", "../ConnectionModel", "../CanvasManager" ], ( constant, Con
 
       null
   }
+
+  Design.on "deserialized", ()->
+    # After the design is deserialized, we update all resource's label at once.
+    updateMap = {}
+    for asso in SgAsso.allObjects()
+      updateMap[ asso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).id ] = asso
+
+    for resId, asso of updateMap
+      asso.updateLabel()
+    null
 
   SgAsso
 

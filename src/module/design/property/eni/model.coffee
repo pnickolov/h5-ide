@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, ide_event, lang ) ->
+define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], ( PropertyModel, constant, Design, ide_event, lang ) ->
 
 	ENIModel = PropertyModel.extend {
 
@@ -12,19 +12,17 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 
 		init : ( uid ) ->
 
-			component = MC.canvas_data.component[ uid ]
+			component = Design.instance().component( uid )
 
 			data = {
 				uid             : uid
-				name            : component.name
-				desc            : component.resource.Description
-				sourceDestCheck : "" + component.resource.SourceDestCheck is "true"
+				name            : component.get("name")
+				desc            : component.get("description")
+				sourceDestCheck : component.get("sourceDestCheck")
 				isAppEdit       : @isAppEdit
 				isGroupMode     : @isGroupMode
+				attached        : component.connections("EniAttachment").length > 0
 			}
-
-			if component.resource.Attachment and component.resource.Attachment.InstanceId.length
-				data.attached = true
 
 			@set data
 
@@ -149,70 +147,11 @@ define [ '../base/model', 'constant', "event", 'i18n!nls/lang.js'  ], ( Property
 			null
 
 		setEniDesc : ( value ) ->
-			uid = @get 'uid'
-			MC.canvas_data.component[uid].resource.Description = value
-
+			Design.instance().component( @get("uid") ).set("description", value)
 			null
 
 		setSourceDestCheck : ( value ) ->
-			uid = @get 'uid'
-			MC.canvas_data.component[uid].resource.SourceDestCheck = value
-
-			null
-
-		getSGList : () ->
-
-			uid = this.get 'uid'
-			sgAry = MC.canvas_data.component[uid].resource.GroupSet
-
-			sgUIDAry = []
-			_.each sgAry, (value) ->
-				sgUID = value.GroupId.slice(1).split('.')[0]
-				sgUIDAry.push sgUID
-				null
-
-			return sgUIDAry
-
-		unAssignSGToComp : (sg_uid) ->
-
-			eniUID = this.get 'uid'
-
-			originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
-
-			currentSG = '@' + sg_uid + '.resource.GroupName'
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-			originSGAry = _.filter originSGAry, (value) ->
-				value.GroupId isnt currentSGId
-
-			MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
-
-			null
-
-		assignSGToComp : (sg_uid) ->
-
-			eniUID = this.get 'uid'
-
-			originSGAry = MC.canvas_data.component[eniUID].resource.GroupSet
-
-			currentSG = '@' + sg_uid + '.resource.GroupName'
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-			isInGroup = false
-
-			_.each originSGAry, (value) ->
-				if value.GroupId is currentSGId
-					isInGroup = true
-				null
-
-			if !isInGroup
-				originSGAry.push {
-					GroupName: currentSG
-					GroupId: currentSGId
-				}
-
-			MC.canvas_data.component[eniUID].resource.GroupSet = originSGAry
-
+			Design.instance().component( @get("uid") ).set("sourceDestCheck", value)
 			null
 
 		addIP : () ->

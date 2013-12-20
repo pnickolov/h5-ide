@@ -49,6 +49,14 @@ define [ 'event',
 			view.showSecondPanel()
 			null
 
+		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL_IMM, ()->
+			view.immShowSecondPanel()
+			null
+
+		PropertyBaseModule.event.on PropertyBaseModule.event.HIDE_SUB_PANEL, ()->
+			view.immHideSecondPanel()
+			null
+
 		view.on "HIDE_SUBPANEL", ()->
 			PropertyBaseModule.onUnloadSubPanel()
 			null

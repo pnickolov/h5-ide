@@ -479,6 +479,10 @@ a {
 	color: #4495d3;
 }
 
+#email-verification-status.verification-status {
+	color: #ec3c38;
+}
+
 #account-update-email-link:hover,
 #account-change-password:hover {
 	text-decoration: underline;

@@ -56,6 +56,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # allObjects() : Array
         description : returns a array containing all objects of this type of Model.
 
+    # isDesignAwake() : Boolean
+        description : return true if the object is in current tab. Otherwise, return false.
+
     # isRemovable() : Boolean / Object / String
         description : Returns true to indicate the resource can be removed. Returns string to show as an warning asking user if he/she wants to delete anyway. Returns {error:String} to show as an error.
 
@@ -180,10 +183,14 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       if not attributes.name
         attributes.name = @getNewName()
 
+      # Remember current design object
+      # So that later, we can check if this object's design is showing
+      design = Design.instance()
+      this.__design = design
+
       Backbone.Model.call this, attributes, options
 
       # Cache the object inside the current design.
-      design = Design.instance()
       design.classCacheForCid( this.classId ).push( this )
       design.cacheComponent( this.id, this )
 
@@ -214,6 +221,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
           return true
 
         return false
+
+    isDesignAwake : ()-> Design.instance() is @__design
+
 
     isRemovable : () -> true
     isReparentable : ()-> true
@@ -255,6 +265,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       # Clear all events attached to me
       this.off()
+
+      this.__design = null
       null
 
 
@@ -285,12 +297,14 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       console.assert protoProps.type, "Subclass of ResourceModel does not specifying a type"
 
       ### env:dev ###
+      # Check if the class is overriding constructor
       if _.has(protoProps, 'constructor')
         constructorStr = protoProps.constructor.toString()
         if not constructorStr.match(/\.call\s?\(?\s?this/)
           console.warn "Subclass of ResourceModel (type : #{protoProps.type}) is overriding Constructor, don't forget to call 'this.constructor.__super__.constructor' !"
       ### env:dev:end ###
 
+      # Get handleTypes and resolveFirst
       if staticProps
         handleTypes  = staticProps.handleTypes
         resolveFirst = staticProps.resolveFirst
@@ -302,6 +316,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       ### env:dev:end ###
 
       ### jshint -W083 ###
+      # Handle overriding methods for FORCED methods.
       for m in FORCE_MAP
         parentMethod = this.prototype[m]
         if protoProps[ m ] and parentMethod

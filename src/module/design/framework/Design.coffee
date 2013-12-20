@@ -174,11 +174,20 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     for comp in lines
       comp.draw( true )
 
+    ####################
+    # CleanUp
+    ####################
     design.component = _old_get_component_
-
     delete design.groupLayoutData
 
+    ####################
+    # Broadcast event
+    ####################
+    Design.trigger "deserialized"
+
     design
+
+  _.extend( Design, Backbone.Events )
 
   DesignImpl = ( options )->
     @__componentMap = {}

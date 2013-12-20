@@ -188,10 +188,12 @@ define [ "Design", "./CanvasManager", "./ResourceModel" ], ( Design, CanvasManag
 
     connectionTargets : ( connectionType )->
       targets = []
+      cnns    = this.get("__connections")
 
-      for cnn in this.get("__connections")
-        if not connectionType or cnn.type is connectionType
-          targets.push( cnn.getOtherTarget( @ ) )
+      if cnns
+        for cnn in cnns
+          if not connectionType or cnn.type is connectionType
+            targets.push( cnn.getOtherTarget( @ ) )
 
       targets
 

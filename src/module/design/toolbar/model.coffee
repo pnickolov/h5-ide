@@ -119,7 +119,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
 
-                    ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
 
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'REMOVE_STACK', [id]
-                    ide_event.trigger ide_event.CLOSE_TAB, name, id
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, id
 
                     me.setFlag id, 'DELETE_STACK'
 
@@ -207,7 +207,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 id          = result.param[4]
                 app_name    = result.param[5]
 
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_PROCESS', app_name, region, id
 
                 # handle request
                 me.handleRequest result, 'RUN_STACK', region, id, app_name
@@ -423,7 +424,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
@@ -435,7 +436,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stopped', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
@@ -454,7 +455,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = true
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
             else if flag is 'UPDATE_APP'
                 if id of item_state_map
@@ -623,12 +624,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         generatePNG : () ->
             me = this
             MC.canvas.exportPNG $("#svg_canvas"), {
-                isExport : true
-                name     : MC.canvas_data.name
-                id       : MC.canvas_data.id
+                isExport   : true
+                createBlob : true
+                name       : MC.canvas_data.name
+                id         : MC.canvas_data.id
                 onFinish : ( data ) ->
                     if ( data.id is MC.canvas_data.id )
-                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id
+                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
 

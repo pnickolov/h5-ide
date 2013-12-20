@@ -506,6 +506,7 @@ define [ 'i18n!nls/lang.js',
 
         #call service
         myAmiService : ( region_name ) ->
+            console.log 'myAmiService', region_name
 
             me = this
 

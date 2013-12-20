@@ -95,5 +95,22 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		return currentTypeData
 
+	setLayout = ( canvas_data ) ->
+
+		for uid, comp of canvas_data.component
+
+			if comp.type in ['AWS.EC2.Instance', "AWS.AutoScaling.LaunchConfiguration"]
+
+				if MC.data.dict_ami[comp.resource.ImageId]
+
+					canvas_data.layout.component.node[uid].osType = MC.data.dict_ami[comp.resource.ImageId].osType
+					canvas_data.layout.component.node[uid].architecture = MC.data.dict_ami[comp.resource.ImageId].architecture
+					canvas_data.layout.component.node[uid].rootDeviceType = MC.data.dict_ami[comp.resource.ImageId].rootDeviceType
+					#canvas_data.layout.component.node[uid].virtualizationType = MC.data.dict_ami[comp.resource.ImageId].virtualizationType
+
+
+
+
+	setLayout : setLayout
 	getOSType : getOSType
 	getInstanceType : getInstanceType

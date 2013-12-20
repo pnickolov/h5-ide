@@ -53,8 +53,8 @@ module.exports = {
         actions: [
             {
                 name: 's3 url',
-                search: '/madeiracloudthumbnail/',
-                replace: '/madeiracloudthumbnails/',
+                search: 'madeiracloudthumbnails-dev.s3.amazonaws.com',
+                replace: 'madeiracloudthumbnails.s3.amazonaws.com',
                 flags: 'g'
             }
         ]

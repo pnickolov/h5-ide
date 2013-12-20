@@ -36,6 +36,8 @@ define [ 'jquery',
                 console.log 'change:app_list'
                 #push event
                 ide_event.trigger ide_event.RESULT_APP_LIST, model.get 'app_list'
+                # set nav_app_list
+                MC.data.nav_app_list = model.get 'app_list'
                 #refresh view
                 view.appListRender()
 
@@ -43,6 +45,8 @@ define [ 'jquery',
                 console.log 'change:stack_list'
                 #push event
                 ide_event.trigger ide_event.RESULT_STACK_LIST, model.get 'stack_list'
+                # set nav_stack_list
+                MC.data.nav_stack_list = model.get 'stack_list'
                 #refresh view
                 view.stackListRender()
                 #call
@@ -66,15 +70,15 @@ define [ 'jquery',
             model.appListService()
             model.stackListService()
 
-            ide_event.onLongListen ide_event.UPDATE_APP_LIST, (flag, ids) ->
+            ide_event.onLongListen ide_event.UPDATE_APP_LIST, ( flag, ids ) ->
                 console.log 'UPDATE_APP_LIST'
                 #call
-                model.appListService(flag, ids)
+                model.appListService flag, ids
 
-            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, (flag, ids) ->
+            ide_event.onLongListen ide_event.UPDATE_STACK_LIST, ( flag, ids ) ->
                 console.log 'UPDATE_STACK_LIST'
                 #call
-                model.stackListService(flag, ids)
+                model.stackListService flag, ids
 
             ide_event.onLongListen ide_event.UPDATE_AWS_CREDENTIAL, () ->
                 console.log 'navigation:UPDATE_AWS_CREDENTIAL'

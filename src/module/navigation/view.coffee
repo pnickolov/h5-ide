@@ -81,22 +81,14 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
         stackListItemsClick : ( event ) ->
             console.log 'stack tab click event'
             target   = event.currentTarget
-            #nav      = $ '#navigation'
-            #main     = $ '#main'
             tab_name = $( target ).text()
-            #
-            #ide_event.trigger ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
-            this.checkDesignLoadComplete ide_event.OPEN_STACK_TAB, tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
+            @openDesignTab 'OPEN_STACK', tab_name, $( target ).attr( 'data-region-name' ), $( target ).attr( 'data-stack-id' )
 
         appListItemsClick : ( event ) ->
             console.log 'app tab click event'
             target   = event.currentTarget
-            #nav      = $ '#navigation'
-            #main     = $ '#main'
             tab_name = $( target ).text()
-            #
-            #ide_event.trigger ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
-            this.checkDesignLoadComplete ide_event.OPEN_APP_TAB, $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
+            @openDesignTab 'OPEN_APP', $.trim( tab_name ), $( target ).attr( 'data-region-name' ) , $( target ).attr( 'data-app-id' )
 
         showEmptyRegionClick : ( event ) ->
             $( event.target ).parent().prev().find('.hide').show()
@@ -106,9 +98,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
             console.log 'createNewStackClick'
             console.log $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' )
             if $( event.target ).parent().parent().find('li a').first().attr( 'data-region-name' ) is undefined then return
-            #
-            #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
-            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().find( 'li a' ).first().attr( 'data-region-name' )
+            @openDesignTab 'NEW_STACK', null, $( event.target ).parent().parent().find( 'li a' ).first().attr( 'data-region-name' ), null
 
         createNewEmptyStackClick  : ( event ) ->
             console.log 'createNewEmptyStackClick'
@@ -120,9 +110,7 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
                     current_region_name = key
                     return current_region_name
             console.log 'current_region_name = ' + current_region_name
-            #
-            #ide_event.trigger ide_event.ADD_STACK_TAB, $( event.target ).parent().parent().next().find( 'li a' ).first().attr( 'data-region-name' )
-            this.checkDesignLoadComplete ide_event.ADD_STACK_TAB, current_region_name
+            @openDesignTab 'NEW_STACK', null, current_region_name, null
 
         regionNameClick      : ( event ) ->
             console.log 'regionNameClick'
@@ -146,12 +134,12 @@ define [ 'event', 'constant', 'i18n!nls/lang.js',
                     $( this ).removeClass 'collapsed-show'
             }
 
-        checkDesignLoadComplete : ( type, tab_name, region_name, tab_id ) ->
-            console.log 'checkDesignLoadComplete'
+        openDesignTab : ( type, tab_name, region_name, tab_id ) ->
+            console.log 'openDesignTab', type, tab_name, region_name, tab_id
             if MC.data.design_submodule_count isnt -1
                 notification 'warning', lang.ide.NAV_DESMOD_NOT_FINISH_LOAD , false
             else
-                ide_event.trigger type, tab_name, region_name, tab_id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, type, tab_name, region_name, tab_id
     }
 
     return NavigationView

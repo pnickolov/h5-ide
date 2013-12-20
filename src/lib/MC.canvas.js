@@ -22,7 +22,7 @@ MC.canvas = {
 		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
 			state = 'stack';
 		}
-		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' || Tabbar.current === 'appview' ) {
 			state = Tabbar.current;
 		}
 		return state;
@@ -195,6 +195,9 @@ MC.canvas = {
 					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
 					if ( $('#' + uid + '_instance-state').length  === 1)
 					{
+						//remove deleted first
+						Canvon( $('#' + uid ) ).removeClass('deleted');
+
 						if ( instance_data )
 						{//instance data exist
 							$('#' + uid + '_instance-state').attr({
@@ -376,46 +379,6 @@ MC.canvas = {
 
 		$('#canvas_body')
 			.addClass('canvas_zoomed');
-
-		return true;
-	},
-
-	screenshotInit: function ()
-	{
-		var layout_node_data = MC.canvas.data.get('layout.component.node'),
-			layout_group_data = MC.canvas.data.get('layout.component.group'),
-			node_minX = [],
-			node_minY = [],
-			node_maxX = [],
-			node_maxY = [],
-			node_data,
-			group_node_data,
-			screen_maxX,
-			screen_maxY,
-			group_minX,
-			group_minY;
-
-		$.each(layout_node_data, function (index, data)
-		{
-			node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
-			node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
-		});
-
-		$.each(layout_group_data, function (index, data)
-		{
-			node_maxX.push(data.coordinate[0] + data.size[0]);
-			node_maxY.push(data.coordinate[1] + data.size[1]);
-		});
-
-		screen_maxX = Math.max.apply(Math, node_maxX) * MC.canvas.GRID_WIDTH;
-		screen_maxY = Math.max.apply(Math, node_maxY) * MC.canvas.GRID_HEIGHT;
-
-		$('#svg_canvas, #screenshot_canvas_body').css({
-			'width': screen_maxX,
-			'height': screen_maxY
-		});
-
-		$('#screenshot_canvas_header').css('width', screen_maxX);
 
 		return true;
 	},
@@ -811,6 +774,9 @@ MC.canvas = {
 				break;
 
 			case 'rtb-tgt':
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				mid_y = point.y + 40 * sign;
 				break;
 		}
@@ -822,6 +788,9 @@ MC.canvas = {
 		switch (port_id)
 		{
 			case 'rtb-tgt': //for start
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				if (point.connectionAngle === 0)
 				{//left port
 					mid_x = point.x + 4;
@@ -937,14 +906,14 @@ MC.canvas = {
 		{
 			//C
 			mid_y = (start.y + end.y) / 2;
-			if (to_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			if ( (to_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(mid_y - end.y) > 5)
 				{
 					mid_y = MC.canvas._adjustMidY(to_port_name, mid_y, end, 1);
 				}
 			}
-			else if (from_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			else if ( (from_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(start.y - mid_y) > 5)
 				{
@@ -961,7 +930,7 @@ MC.canvas = {
 		{
 			//D
 			mid_x = (start.x + end.x) / 2;
-			if (to_type === 'AWS.VPC.RouteTable' && to_type !== from_type)
+			if ( (to_type === 'AWS.VPC.RouteTable' || to_type === 'AWS.ELB' ) && to_type !== from_type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
@@ -973,6 +942,20 @@ MC.canvas = {
 				if (Math.abs(mid_x - end.x) > 5)
 				{
 					if (to_type === 'AWS.VPC.InternetGateway' || to_type === 'AWS.VPC.VPNGateway')
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
+					}
+				}
+			}
+			else if (from_type === 'AWS.ELB' && to_type !== from_type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					if (to_type === 'AWS.EC2.Instance' || to_type === 'AWS.VPC.Subnet' || to_type === 'AWS.AutoScaling.Group' || to_type === 'AWS.AutoScaling.LaunchConfiguration' )
 					{
 						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
 					}
@@ -1177,10 +1160,20 @@ MC.canvas = {
 					to_port_offset = to_port.getBoundingClientRect();
 				}
 
-				startX = (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
-				startY = (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
-				endX = (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
-				endY = (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
+				//patch startX for rtb-src port
+				var offset_startX=0,
+					offset_endX=0;
+				if (from_type == 'AWS.VPC.RouteTable' && from_target_port == "rtb-src"){
+					offset_startX+=1;
+				}
+				if (to_type == 'AWS.VPC.RouteTable' && to_target_port == "rtb-src"){
+					offset_endX+=1;
+				}
+
+				startX = (offset_startX + from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
+				startY = (1 + from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
+				endX = (offset_endX + to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
+				endY = (1 + to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
 				start0 = {
@@ -1321,6 +1314,96 @@ MC.canvas = {
 				return svg_line.id;
 			}
 		}
+	},
+
+	createConnect: function (from_uid, from_target_port, to_uid, to_target_port)
+	{
+		var line_id = MC.guid(),
+
+			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
+
+			connection_target_data = {},
+
+			layout_component_data = MC.canvas_data.layout.component,
+			layout_node_data = layout_component_data.node,
+			layout_connection_data = MC.canvas_data.layout.connection,
+
+			from_node_class = layout_component_data.node[ from_uid ] ? 'node' : 'group',
+			to_node_class = layout_component_data.node[ to_uid ] ? 'node' : 'group',
+
+			from_data = layout_component_data[ from_node_class ][ from_uid ],
+			to_data = layout_component_data[ to_node_class ][ to_uid ],
+
+			from_type = from_data.type,
+			to_type = to_data.type,
+
+			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
+
+			from_node_connection_data = from_data.connection || [],
+			to_node_connection_data = to_data.connection || [];
+
+		if (connection_option)
+		{
+			if ($.type(connection_option) === 'array')
+			{
+				$.each(connection_option, function (index, item)
+				{
+					if (
+						item.from === from_target_port &&
+						item.to === to_target_port
+					)
+					{
+						connection_option = item;
+					}
+				});
+			}
+		}
+
+		$.each(from_node_connection_data, function (key, value)
+		{
+			var line_data = layout_connection_data[ value[ 'line' ] ];
+
+			if (line_data)
+			{
+				line_data_target = line_data.target;
+				if (
+					line_data_target[ from_uid ] === from_target_port &&
+					line_data_target[ to_uid ] === to_target_port
+				)
+				{
+					is_connected = true;
+
+					return false;
+				}
+			}
+		});
+
+		from_node_connection_data.push({
+			'target': to_uid,
+			'port': from_target_port,
+			'line': line_id
+		});
+
+		to_node_connection_data.push({
+			'target': from_uid,
+			'port': to_target_port,
+			'line': line_id
+		});
+
+		MC.canvas_data.layout.component[ from_node_class ][ from_uid ].connection = from_node_connection_data;
+		MC.canvas_data.layout.component[ to_node_class ][ to_uid ].connection = to_node_connection_data;
+
+		connection_target_data[ from_uid ] = from_target_port;
+		connection_target_data[ to_uid ] = to_target_port;
+
+		MC.canvas_data.layout.connection[ line_id ] = {
+			'target': connection_target_data,
+			'auto': true,
+			'point': [],
+			'type': connection_option.type
+		};
+
+		return true;
 	},
 
 	reConnect: function (node_id)
@@ -2635,11 +2718,13 @@ MC.canvas.volume = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				state = MC.canvas.getState(),
 				shadow,
 				clone_node;
 
 			if (
-				MC.canvas.getState() === 'app' ||
+				state === 'app' ||
+				state === 'appview' ||
 				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{
@@ -3338,7 +3423,7 @@ MC.canvas.event.dragable = {
 				return false;
 			}
 
-			if (currentTarget.is('.eip-status'))
+			if (currentTarget.is('.eip-status') && MC.canvas.getState() !== 'appview')
 			{
 				MC.canvas.event.EIPstatus.call(event.target);
 
@@ -3964,7 +4049,7 @@ MC.canvas.event.dragable = {
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		MC.canvas.position(target[0], coordinate.x, coordinate.y);
+		MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
 
 		MC.canvas.reConnect(target_id);
 
@@ -5324,9 +5409,9 @@ MC.canvas.event.groupResize = {
 		{
 			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
 
 			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');
@@ -5497,12 +5582,12 @@ MC.canvas.event.appDrawConnection = function ()
 	return false;
 };
 
-MC.canvas.event.clearList = function ()
+MC.canvas.event.clearList = function (event)
 {
 	MC.canvas.instanceList.close();
 	MC.canvas.eniList.close();
 	MC.canvas.asgList.close();
-	MC.canvas.event.clearSelected();
+	MC.canvas.event.clearSelected(event);
 
 	return true;
 };
@@ -5529,8 +5614,14 @@ MC.canvas.event.nodeHover = function (event)
 	}
 };
 
-MC.canvas.event.clearSelected = function ()
+MC.canvas.event.clearSelected = function (event)
 {
+	// Except for tab switching
+	if (event && $(event.currentTarget).is('#tab-bar li'))
+	{
+		return false;
+	}
+
 	Canvon('#svg_canvas .selected').removeClass('selected');
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
@@ -5553,11 +5644,14 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
+	var canvas_status = MC.canvas.getState();
+
 	if (
-		Tabbar.current === 'new' ||
-		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack' ||
-		Tabbar.current === 'appedit'
+		canvas_status === 'new' ||
+		canvas_status === 'app' ||
+		canvas_status === 'stack' ||
+		canvas_status === 'appedit' ||
+		canvas_status === 'appview'
 	)
 	{
 		var keyCode = event.which,
@@ -5718,7 +5812,8 @@ MC.canvas.event.keyEvent = function (event)
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 			(
 				canvas_status === 'stack' ||
-				canvas_status === 'appedit'
+				canvas_status === 'appedit' ||
+				canvas_status === 'appview'
 			) &&
 			MC.canvas_property.selected_node.length === 1 &&
 			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
@@ -5838,129 +5933,1643 @@ MC.canvas.event.keyEvent = function (event)
 	}
 };
 
+MC.canvas.analysis = function ( data )
+{
+	console.info(data);
+	var component_data = data.component,
+		layout_data = data.layout,
+		connection_data = data.layout.connection,
+
+		resources = {},
+		resource_stack = {},
+
+		elb_child_stack = [],
+		elb_connection,
+
+		GROUP_INNER_PADDING = 2,
+		GROUP_MARGIN = 2,
+
+		VPC_PADDING_LEFT = 20,
+		VPC_PADDING_TOP = 10,
+		VPC_PADDING_RIGHT = 8,
+		VPC_PADDING_BOTTOM = 5,
+
+		ELB_START_LEFT = 14,
+		ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'],
+
+		// Initialize group construction
+		SUBGROUP = {
+			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
+			'AWS.VPC.Subnet': [
+				'AWS.EC2.Instance',
+				'AWS.AutoScaling.Group',
+				'AWS.VPC.NetworkInterface'
+			],
+			'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
+		},
+
+		SORT_ORDER = {
+			'AWS.AutoScaling.Group': 1,
+			'AWS.EC2.Instance': 2,
+			'AWS.VPC.NetworkInterface': 3
+		},
+
+		GROUP_DEFAULT_SIZE = {
+			'AWS.VPC.VPC': [60, 60],
+			'AWS.EC2.AvailabilityZone': [17, 17],
+			'AWS.VPC.Subnet': [15, 15],
+			'AWS.AutoScaling.Group' : [13, 13]
+		},
+
+		// For children node order
+		POSITION_METHOD = {
+			'AWS.VPC.VPC': 'vertical',
+			'AWS.EC2.AvailabilityZone': 'horizontal',
+			'AWS.VPC.Subnet': 'matrix',
+			'AWS.AutoScaling.Group': 'center'
+		},
+
+		layout,
+		previous_node;
+
+	$.each(data.layout.component.node, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	$.each(data.layout.component.group, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	$.each(resources, function (key, value)
+	{
+		var type = value.type,
+			stack = resource_stack[ type ];
+
+		if (stack === undefined)
+		{
+			resource_stack[ type ] = [];
+		}
+
+		resource_stack[ type ].push(key);
+	});
+
+	layout = {
+		'id': resource_stack[ 'AWS.VPC.VPC' ][0],
+		'coordinate': [5, 3],
+		'size': [0, 0],
+		'type': 'AWS.VPC.VPC'
+	};
+
+	var elb_connection;
+
+	// ELB connected children
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
+	{
+		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+		{
+			elb_connection = layout_data.component.node[ id ].connection;
+
+			$.each(elb_connection, function (i, item)
+			{
+				if (item.port === 'elb-sg-out')
+				{
+					elb_child_stack.push( item.target );
+				}
+			});
+		});
+	}
+
+	function searchChild(id)
+	{
+		var children = [],
+			target_group = SUBGROUP[ resources[ id ].type ],
+			node_data,
+			node_child;
+
+		$.each(resources, function (key, value)
+		{
+			if (
+				$.inArray(resources[ key ].type, target_group) > -1 &&
+				value.groupUId === id
+			)
+			{
+				node_child = searchChild(key);
+
+				node_data = {
+					'id': key,
+					'coordinate': [0, 0],
+					'size': [0, 0],
+					'type': value.type
+				};
+
+				if (MC.canvas.COMPONENT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = MC.canvas.COMPONENT_SIZE[ value.type ];
+				}
+
+				if (GROUP_DEFAULT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = GROUP_DEFAULT_SIZE[ value.type ];
+				}
+
+				if (node_child)
+				{
+					node_data[ 'children' ] = node_child;
+				}
+
+				children.push(node_data);
+			}
+		});
+
+		return children.length < 1 ? false : children;
+	}
+
+	node_child = searchChild( resource_stack[ 'AWS.VPC.VPC' ][0] );
+
+	if (node_child)
+	{
+		layout[ 'children' ] = node_child;
+	}
+
+	function checkChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			var count = 0;
+
+			$.each(node.children, function (i, item)
+			{
+				count += checkChild(item);
+			});
+
+			node.totalChild = count + node.children.length;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node.hasELBConnected = false;
+
+				$.each(node.children, function (i, item)
+				{
+					if ($.inArray(item.id, elb_child_stack) > -1)
+					{
+						node.hasELBConnected = true;
+					}
+
+					if (item.type === 'AWS.AutoScaling.Group')
+					{
+						if (
+							item.children !== undefined &&
+							$.inArray(item.children[ 0 ].id, elb_child_stack) > -1
+						)
+						{
+							node.hasELBConnected = true;
+						}
+					}
+				});
+			}
+
+			return node.children.length;
+		}
+		else
+		{
+			node.totalChild = 0;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node.hasELBConnected = false;
+			}
+
+			return 0;
+		}
+	}
+
+	checkChild( layout );
+
+	function sortChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			if (node.type === 'AWS.EC2.AvailabilityZone')
+			{
+				node.children.sort(function (a, b)
+				{
+					if (
+						(a.hasELBConnected === true && b.hasELBConnected === true)
+						||
+						(a.hasELBConnected === false && b.hasELBConnected === false)
+					)
+					{
+						return b.totalChild - a.totalChild;
+					}
+					else
+					{
+						if (
+							a.hasELBConnected === true &&
+							b.hasELBConnected === false
+						)
+						{
+							return -1;
+						}
+
+						if (
+							a.hasELBConnected === false &&
+							b.hasELBConnected === true
+						)
+						{
+							return 1;
+						}
+					}
+				});
+			}
+			else
+			{
+				node.children.sort(function (a, b)
+				{
+					return b.totalChild - a.totalChild;
+				});
+			}
+
+			$.each(node.children, function (i, item)
+			{
+				sortChild( item );
+			});
+		}
+	}
+
+	sortChild( layout );
+
+	function absPosition(node, x, y)
+	{
+		node.coordinate[0] += x;
+		node.coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, node.coordinate[0], node.coordinate[1]);
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	function positionSubnetChild(node)
+	{
+		var stack = {},
+			children = node.children,
+			length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0,
+
+			NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2,
+
+			unique_row = {},
+			noELBstack = [],
+
+			elb_connected_instance = [],
+			normal_instance = [],
+			hasUniqueInstanceConnectedToELB = false,
+
+			max_column = Math.ceil( Math.sqrt( length ) ),
+			max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
+			column_index = 0,
+			row_index = 0,
+
+			node_connection,
+			hasELBConnected,
+			targetELB;
+
+		children.sort(function (a, b)
+		{
+			return SORT_ORDER[ a.type ] - SORT_ORDER[ b.type ];
+		});
+
+		$.each(children, function (current_index, item)
+		{
+			hasELBConnected = false;
+			targetELB = null;
+
+			if (stack[ item.type ] === undefined)
+			{
+				stack[ item.type ] = [];
+			}
+
+			stack[ item.type ].push( item );
+
+			// Check connection
+			if (
+				(
+					item.type === 'AWS.AutoScaling.Group' ||
+					item.type === 'AWS.EC2.Instance'
+				) &&
+				item.children !== undefined
+			)
+			{
+				node_connection = resources[ item.children[ 0 ].id ].connection;	
+			}
+			else
+			{
+				node_connection = resources[ item.id ].connection;
+			}
+
+			if (node_connection)
+			{
+				$.each(node_connection, function (i, data)
+				{
+					if (resources[ data.target ].type === 'AWS.ELB')
+					{
+						if (connection_data[ data.line ].target[ data.target ] === 'elb-sg-out')
+						{
+							hasELBConnected = true;
+							targetELB = data.target;
+						}
+					}
+				});
+
+				if (hasELBConnected)
+				{
+					if (unique_row[ targetELB ] === undefined)
+					{
+						unique_row[ targetELB ] = [];
+					}
+
+					unique_row[ targetELB ].push( item );
+				}
+				else
+				{
+					if (item.type === 'AWS.AutoScaling.Group')
+					{
+						noELBstack.push( item );
+					}
+				}
+			}
+			else
+			{
+				if (item.type === 'AWS.AutoScaling.Group')
+				{
+					noELBstack.push( item );
+				}
+			}
+		});
+
+		var column_count = 0,
+			row_width = 0,
+			row_top = 0,
+			left_padding = 0,
+			row_index,
+
+			// Range
+			ASG_WIDTH = 15,
+			ASG_HEIGHT = 15,
+			INSTANCE_WIDTH = 11,
+			INSTANCE_HEIGHT = 11;
+
+		if (noELBstack.length > 0)
+		{
+			unique_row[ 'zz' ] = noELBstack;
+		}
+
+		$.each(unique_row, function (row, row_stack)
+		{
+			row_top = 0;
+
+			row_stack.sort(function (a, b)
+			{
+				return SORT_ORDER[ a.type ] - SORT_ORDER[ b.type ];
+			});
+
+			$.each(row_stack, function (row_index, item)
+			{
+				if (item.type === 'AWS.AutoScaling.Group')
+				{
+					row_width = ASG_WIDTH;
+
+					item.coordinate = [
+						left_padding + 2,
+						row_top + GROUP_INNER_PADDING
+					];
+
+					row_top += ASG_HEIGHT;
+
+					if (item.children !== undefined)
+					{
+						positionChild( item );
+					}
+				}
+
+				if (item.type === 'AWS.EC2.Instance')
+				{
+					row_width = row_width === ASG_WIDTH ? ASG_WIDTH : INSTANCE_WIDTH;
+
+					item.coordinate = [
+						// Adjust instance x axis with ASG (+2)
+						left_padding + (row_width === ASG_WIDTH ? 4 : 2),
+						// Adjust instance y axis with ASG (+4)
+						row_top + GROUP_INNER_PADDING
+					];
+
+					row_top += INSTANCE_HEIGHT;
+				}
+			});
+
+			column_count++;
+
+			left_padding += row_width;
+		})
+
+		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+		{
+			$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+			{
+				if ($.inArray(item.id, elb_child_stack) === -1)
+				{
+					normal_instance.push( item );
+				}
+			});
+
+			normal_instance.sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+			});
+		}
+
+		if (normal_instance.length > 0)
+		{
+			var childLength = normal_instance.length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				column_index = 0,
+				row_index = 0;
+
+			$.each(normal_instance, function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+
+			$.each(normal_instance, function (i, item)
+			{
+				item.coordinate[0] += left_padding;
+			});
+
+			left_padding += max_child_column * INSTANCE_WIDTH;
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			var childLength = stack[ 'AWS.VPC.NetworkInterface' ].length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				eni_padding = 0,
+				column_index = 0,
+				row_index = 0;
+
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + eni_padding + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				item.coordinate[0] += left_padding;
+			});
+		}
+
+		var max_width = 0,
+			max_height = 0,
+			item_coordinate,
+			component_size;
+
+		$.each(children, function (i, item)
+		{
+			item_coordinate = item.coordinate;
+
+			component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+
+			if (item_coordinate[0] + component_size[0] > max_width)
+			{
+				max_width = item_coordinate[0] + component_size[0];
+			}
+
+			if (item_coordinate[1] + component_size[1] > max_height)
+			{
+				max_height = item_coordinate[1] + component_size[1];
+			}
+		});
+
+		node.size = [
+			max_width + GROUP_INNER_PADDING,
+			max_height + GROUP_INNER_PADDING
+		];
+	}
+
+	function sortSubnet( children )
+	{
+		var internetELBconnected = [],
+			internalELBconnected = [],
+			normalSubnet = [],
+
+			isInternetELBconnected,
+			isInternalELBconnected,
+
+			layout_component_data = MC.canvas_data.
+
+			elb_type,
+			item_connection;
+
+		$.each(children, function (i, item)
+		{
+			isInternetELBconnected = false;
+			isInternalELBconnected = false;
+
+			if (item.children !== undefined)
+			{
+				$.each(item.children, function (index, node)
+				{
+					if (
+						node.type === 'AWS.AutoScaling.Group' &&
+						node.children !== undefined
+					)
+					{
+						node = node.children[ 0 ];
+					}
+
+					node_connection = resources[ node.id ].connection;
+
+					if (node_connection)
+					{
+						$.each(node_connection, function (index, data)
+						{
+							if (resources[ data.target ].type === 'AWS.ELB')
+							{
+								elb_type = component_data[ data.target ].resource.Scheme;
+
+								if (elb_type === 'internet-facing')
+								{
+									isInternetELBconnected = true;
+								}
+
+								if (elb_type === 'internal')
+								{
+									isInternalELBconnected = true;
+								}
+							}
+						});
+					}
+				});
+
+				if (isInternetELBconnected)
+				{
+					internetELBconnected.push( item );
+				}
+				else if (isInternalELBconnected)
+				{
+					internalELBconnected.push( item );
+				}
+			}
+
+			if (!isInternetELBconnected && !isInternalELBconnected)
+			{
+				normalSubnet.push( item );
+			}
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		normalSubnet.sort(function (a, b)
+		{
+			if (
+				b.totalChild === a.totalChild &&
+				(
+					b.totalChild > 0 &&
+					a.totalChild > 0
+				)
+			)
+			{
+				var weight = {
+						'a': 0,
+						'b': 0
+					};
+
+				$.each({"a": a, "b": b}, function (key, value)
+				{
+					$.each(value.children, function (i, item)
+					{
+						if (item.type === 'AWS.AutoScaling.Group')
+						{
+							weight[ key ] += 3;
+						}
+
+						if (item.type === 'AWS.EC2.Instance')
+						{
+							weight[ key ] += 2;
+						}
+
+						if (item.type === 'AWS.VPC.NetworkInterface')
+						{
+							weight[ key ] += 1;
+						}
+					});
+				});
+
+				return weight.b - weight.a;
+			}
+			else
+			{
+				return b.totalChild - a.totalChild;
+			}
+		});
+
+		children = internetELBconnected.concat(internalELBconnected, normalSubnet);
+
+		return children;
+	}
+
+	function positionChild(node)
+	{
+		var children = node.children,
+			GROUP_MARGIN = 2,
+
+			length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0,
+
+			NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2;
+
+		if (node.type === 'AWS.EC2.AvailabilityZone')
+		{
+			GROUP_MARGIN = 4;
+		}
+
+		if (method === 'matrix')
+		{
+			positionSubnetChild(node);
+		}
+
+		if (method === 'vertical')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					0 + GROUP_INNER_PADDING,
+					current_index + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[0] > max_width)
+				{
+					max_width = item.size[0];
+				}
+
+				max_height += item.size[1];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						0 + GROUP_INNER_PADDING,
+						previous_node.size[1] + previous_node.coordinate[1] + GROUP_MARGIN
+					];
+
+					max_height += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_MARGIN * (length - 1)) + GROUP_INNER_PADDING
+			];
+		}
+
+		if (method === 'horizontal')
+		{
+			if (node.type === 'AWS.EC2.AvailabilityZone')
+			{
+				children = sortSubnet( children );
+			}
+
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					current_index + GROUP_INNER_PADDING,
+					0 + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[1] > max_height)
+				{
+					max_height = item.size[1];
+				}
+
+				max_width += item.size[0];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						previous_node.size[0] + previous_node.coordinate[0] + GROUP_MARGIN,
+						0 + GROUP_INNER_PADDING
+					];
+
+					max_width += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width - (GROUP_MARGIN * (length - 1)) + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_INNER_PADDING * 2)
+			];
+		}
+
+		if (method === 'center')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [2, 2];
+			});
+
+			node.size = [13, 13];
+		}
+	}
+
+	if (layout.children)
+	{
+		positionChild( layout );
+	}
+
+	// VPC padding
+	if (layout.children)
+	{
+		$.each(layout.children, function (i, item)
+		{
+			item.coordinate[0] += VPC_PADDING_LEFT;
+			item.coordinate[1] += VPC_PADDING_TOP;
+		});
+	}
+
+	// RouteTable
+	if (resource_stack[ 'AWS.VPC.RouteTable' ] !== undefined)
+	{
+		var ROUTE_TABLE_START_LEFT = 15,
+			ROUTE_TABLE_START_TOP = 5,
+			ROUTE_TABLE_MARGIN = 4,
+			ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'],
+			RT_to_IGW = [],
+			RT_to_VGW = [],
+			RT_other = [],
+			RT_prefer,
+			RT_connection,
+			RT_connect_target;
+
+		if (resource_stack[ 'AWS.VPC.RouteTable' ].length > 0)
+		{
+			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+			});
+
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)
+			{
+				RT_prefer = false;
+				RT_connection = layout_data.component.node[ id ].connection;
+
+				$.each(RT_connection, function (i, data)
+				{
+					if (data.port === 'rtb-tgt')
+					{
+						RT_connect_target = layout_data.component.node[ data.target ].type;
+
+						if (RT_connect_target === 'AWS.VPC.InternetGateway')
+						{
+							RT_prefer = true;
+							RT_to_IGW.push( id );
+						}
+
+						if (RT_connect_target === 'AWS.VPC.VPNGateway')
+						{
+							RT_prefer = true;
+							RT_to_VGW.push( id );
+						}
+
+					}
+				});
+
+				if (RT_prefer === false)
+				{
+					RT_other.push( id );
+				}
+			});
+
+			// RT Children join
+			resource_stack[ 'AWS.VPC.RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
+
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
+					ROUTE_TABLE_START_TOP
+				];
+			});
+		}
+	}
+
+	// Add AZ margin for ELB
+	var elb_stack = layout.children,
+		max_first_height = 0;
+
+	if (
+		elb_stack !== undefined &&
+		elb_stack.length > 1 &&
+		resource_stack[ 'AWS.ELB' ] !== undefined
+	)
+	{
+		// var i = 1,
+		// 	l = elb_stack.length;
+
+		// for ( ; i < l ; i++ )
+		// {
+		// 	elb_stack[ i ].coordinate[ 1 ] += 15;
+		// }
+
+		max_first_height = elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ];
+
+		if (elb_stack[ 2 ])
+		{
+			if (elb_stack[ 2 ].size[ 1 ] > elb_stack[ 0 ].size[ 1 ])
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ]
+				];
+
+				elb_stack[ 0 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ],
+					elb_stack[ 0 ].coordinate[ 1 ] + (elb_stack[ 2 ].size[ 1 ] - elb_stack[ 0 ].size[ 1 ]) / 2
+				];
+
+				max_first_height = elb_stack[ 2 ].coordinate[ 1 ] + elb_stack[ 2 ].size[ 1 ];
+			}
+			else
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ] - elb_stack[ 2 ].size[ 1 ]
+				];
+			}
+		}
+
+		if (elb_stack[ 1 ])
+		{
+			elb_stack[ 1 ].coordinate[ 1 ] = max_first_height + 15;
+		}
+
+		if (elb_stack[ 3 ])
+		{
+			elb_stack[ 3 ].coordinate = [
+				elb_stack[ 1 ].coordinate[ 0 ] + elb_stack[ 1 ].size[ 0 ] + 5,
+				elb_stack[ 1 ].coordinate[ 1 ]
+			];
+		}
+	}
+
+	// ELB
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
+	{
+		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
+		{
+			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+		});
+
+		if (elb_stack.length > 1)
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+					max_first_height + 5
+				];
+			});
+		}
+		else
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT,
+					elb_stack[ 0 ].coordinate[ 0 ] + (elb_stack[ 0 ].size[ 1 ] / 2 - 5) + current_index * 10
+				];
+			});
+		}
+	}
+
+	function absPosition(node, x, y)
+	{
+		var coordinate = node.coordinate;
+
+		coordinate[0] += x;
+		coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, coordinate[0], coordinate[1]);
+			});
+		}
+	}
+
+	function updateLayoutData(node)
+	{
+		var resource = resources[ node.id ];
+
+		resource.coordinate = node.coordinate;
+
+		if (resource.size !== undefined)
+		{
+			resource.size = node.size;
+		}
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				updateLayoutData( item );
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	function VPCsize()
+	{
+		var VPC_max_width = 0,
+			VPC_max_height = 0,
+			layout_data = data.layout.component,
+			ignore_type = ['AWS.VPC.CustomerGateway', 'AWS.VPC.InternetGateway', 'AWS.VPC.VPNGateway'],
+			component_size,
+			group_size,
+			item_type;
+
+		$.each(layout_data.node, function (i, item)
+		{
+			if ($.inArray(item.type, ignore_type) === -1)
+			{
+				component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+
+				if (item.coordinate[0] + component_size[0] > VPC_max_width)
+				{
+					VPC_max_width = item.coordinate[0] + component_size[0];
+				}
+
+				if (item.coordinate[1] + component_size[1] > VPC_max_height)
+				{
+					VPC_max_height = item.coordinate[1] + component_size[1];
+				}
+			}
+		});
+
+		$.each(layout_data.group, function (i, item)
+		{
+			group_size = item.size;
+
+			if (item.type !== 'AWS.AutoScaling.Group')
+			{
+				if (item.coordinate[0] + group_size[0] > VPC_max_width)
+				{
+					VPC_max_width = item.coordinate[0] + group_size[0];
+				}
+
+				if (item.coordinate[1] + group_size[1] > VPC_max_height)
+				{
+					VPC_max_height = item.coordinate[1] + group_size[1];
+				}
+			}
+		});
+
+		layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
+		layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+	}
+
+	updateLayoutData( layout );
+
+	VPCsize();
+
+	// IGW & VGW
+	if (resource_stack[ 'AWS.VPC.InternetGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS.VPC.InternetGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	if (resource_stack[ 'AWS.VPC.VPNGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS.VPC.VPNGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] + layout.size[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	// CGW
+	if (resource_stack[ 'AWS.VPC.CustomerGateway' ] !== undefined)
+	{
+		$.each(resource_stack[ 'AWS.VPC.CustomerGateway' ], function (i, item)
+		{
+			resources[ item ].coordinate = [
+				layout.coordinate[0] + layout.size[0] + 8,
+				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 5
+			];
+		});
+	}
+
+	// Canvas size
+	var canvas_width = layout.size[ 0 ] + 80,
+		canvas_height = layout.size[ 1 ] + 50;
+
+	MC.canvas_data.layout.size = [
+		canvas_width < 180 ? 180 : canvas_width,
+		canvas_height < 150 ? 150 : canvas_height
+	];
+
+	console.info(layout);
+
+	return true;
+};
+
+
+
+
+/* Blob.js
+ * A Blob implementation.
+ * 2013-06-20
+ *
+ * By Eli Grey, http://eligrey.com
+ * By Devin Samarin, https://github.com/eboyjr
+ * License: X11/MIT
+ *   See LICENSE.md
+ */
+
+/*global self, unescape */
+/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */
+
+/*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
+if (!(typeof Blob === "function" || typeof Blob === "object") || typeof URL === "undefined")
+if ((typeof Blob === "function" || typeof Blob === "object") && typeof webkitURL !== "undefined") (self || window).URL = webkitURL;
+else var Blob = (function (view) {
+  "use strict";
+
+  var BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || view.MSBlobBuilder || (function(view) {
+    var
+        get_class = function(object) {
+        return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
+      }
+      , FakeBlobBuilder = function BlobBuilder() {
+        this.data = [];
+      }
+      , FakeBlob = function Blob(data, type, encoding) {
+        this.data = data;
+        this.size = data.length;
+        this.type = type;
+        this.encoding = encoding;
+      }
+      , FBB_proto = FakeBlobBuilder.prototype
+      , FB_proto = FakeBlob.prototype
+      , FileReaderSync = view.FileReaderSync
+      , FileException = function(type) {
+        this.code = this[this.name = type];
+      }
+      , file_ex_codes = (
+          "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR "
+        + "NO_MODIFICATION_ALLOWED_ERR INVALID_STATE_ERR SYNTAX_ERR"
+      ).split(" ")
+      , file_ex_code = file_ex_codes.length
+      , real_URL = view.URL || view.webkitURL || view
+      , real_create_object_URL = real_URL.createObjectURL
+      , real_revoke_object_URL = real_URL.revokeObjectURL
+      , URL = real_URL
+      , btoa = view.btoa
+      , atob = view.atob
+
+      , ArrayBuffer = view.ArrayBuffer
+      , Uint8Array = view.Uint8Array
+    ;
+    FakeBlob.fake = FB_proto.fake = true;
+    while (file_ex_code--) {
+      FileException.prototype[file_ex_codes[file_ex_code]] = file_ex_code + 1;
+    }
+    if (!real_URL.createObjectURL) {
+      URL = view.URL = {};
+    }
+    URL.createObjectURL = function(blob) {
+      var
+          type = blob.type
+        , data_URI_header
+      ;
+      if (type === null) {
+        type = "application/octet-stream";
+      }
+      if (blob instanceof FakeBlob) {
+        data_URI_header = "data:" + type;
+        if (blob.encoding === "base64") {
+          return data_URI_header + ";base64," + blob.data;
+        } else if (blob.encoding === "URI") {
+          return data_URI_header + "," + decodeURIComponent(blob.data);
+        } if (btoa) {
+          return data_URI_header + ";base64," + btoa(blob.data);
+        } else {
+          return data_URI_header + "," + encodeURIComponent(blob.data);
+        }
+      } else if (real_create_object_URL) {
+        return real_create_object_URL.call(real_URL, blob);
+      }
+    };
+    URL.revokeObjectURL = function(object_URL) {
+      if (object_URL.substring(0, 5) !== "data:" && real_revoke_object_URL) {
+        real_revoke_object_URL.call(real_URL, object_URL);
+      }
+    };
+    FBB_proto.append = function(data/*, endings*/) {
+      var bb = this.data;
+      // decode data to a binary string
+      if (Uint8Array && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {
+        var
+            str = ""
+          , buf = new Uint8Array(data)
+          , i = 0
+          , buf_len = buf.length
+        ;
+        for (; i < buf_len; i++) {
+          str += String.fromCharCode(buf[i]);
+        }
+        bb.push(str);
+      } else if (get_class(data) === "Blob" || get_class(data) === "File") {
+        if (FileReaderSync) {
+          var fr = new FileReaderSync;
+          bb.push(fr.readAsBinaryString(data));
+        } else {
+          // async FileReader won't work as BlobBuilder is sync
+          throw new FileException("NOT_READABLE_ERR");
+        }
+      } else if (data instanceof FakeBlob) {
+        if (data.encoding === "base64" && atob) {
+          bb.push(atob(data.data));
+        } else if (data.encoding === "URI") {
+          bb.push(decodeURIComponent(data.data));
+        } else if (data.encoding === "raw") {
+          bb.push(data.data);
+        }
+      } else {
+        if (typeof data !== "string") {
+          data += ""; // convert unsupported types to strings
+        }
+        // decode UTF-16 to binary string
+        bb.push(unescape(encodeURIComponent(data)));
+      }
+    };
+    FBB_proto.getBlob = function(type) {
+      if (!arguments.length) {
+        type = null;
+      }
+      return new FakeBlob(this.data.join(""), type, "raw");
+    };
+    FBB_proto.toString = function() {
+      return "[object BlobBuilder]";
+    };
+    FB_proto.slice = function(start, end, type) {
+      var args = arguments.length;
+      if (args < 3) {
+        type = null;
+      }
+      return new FakeBlob(
+          this.data.slice(start, args > 1 ? end : this.data.length)
+        , type
+        , this.encoding
+      );
+    };
+    FB_proto.toString = function() {
+      return "[object Blob]";
+    };
+    return FakeBlobBuilder;
+  }(view));
+
+  return function Blob(blobParts, options) {
+    var type = options ? (options.type || "") : "";
+    var builder = new BlobBuilder();
+    if (blobParts) {
+      for (var i = 0, len = blobParts.length; i < len; i++) {
+        builder.append(blobParts[i]);
+      }
+    }
+    return builder.getBlob(type);
+  };
+}(window));
+
+/* canvas-toBlob.js
+ * A canvas.toBlob() implementation.
+ * 2011-07-13
+ *
+ * By Eli Grey, http://eligrey.com and Devin Samarin, https://github.com/eboyjr
+ * License: X11/MIT
+ *   See LICENSE.md
+ */
+
+/*global self */
+/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */
+
+/*! @source http://purl.eligrey.com/github/canvas-toBlob.js/blob/master/canvas-toBlob.js */
+
+(function(view) {
+"use strict";
+var
+    Uint8Array = view.Uint8Array
+  , HTMLCanvasElement = view.HTMLCanvasElement
+  , is_base64_regex = /\s*;\s*base64\s*(?:;|$)/i
+  , base64_ranks
+  , decode_base64 = function(base64) {
+    var
+        len = base64.length
+      , buffer = new Uint8Array(len / 4 * 3 | 0)
+      , i = 0
+      , outptr = 0
+      , last = [0, 0]
+      , state = 0
+      , save = 0
+      , rank
+      , code
+      , undef
+    ;
+    while (len--) {
+      code = base64.charCodeAt(i++);
+      rank = base64_ranks[code-43];
+      if (rank !== 255 && rank !== undef) {
+        last[1] = last[0];
+        last[0] = code;
+        save = (save << 6) | rank;
+        state++;
+        if (state === 4) {
+          buffer[outptr++] = save >>> 16;
+          if (last[1] !== 61 /* padding character */) {
+            buffer[outptr++] = save >>> 8;
+          }
+          if (last[0] !== 61 /* padding character */) {
+            buffer[outptr++] = save;
+          }
+          state = 0;
+        }
+      }
+    }
+    // 2/3 chance there's going to be some null bytes at the end, but that
+    // doesn't really matter with most image formats.
+    // If it somehow matters for you, truncate the buffer up outptr.
+    return buffer.buffer;
+  }
+;
+if (Uint8Array) {
+  base64_ranks = new Uint8Array([
+      62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1
+    , -1, -1,  0, -1, -1, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9
+    , 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+    , -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35
+    , 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+  ]);
+}
+if (HTMLCanvasElement && !HTMLCanvasElement.prototype.toBlob) {
+  HTMLCanvasElement.prototype.toBlob = function(callback, type /*, ...args*/) {
+      if (!type) {
+      type = "image/png";
+    } if (this.mozGetAsFile) {
+      callback(this.mozGetAsFile("canvas", type));
+      return;
+    }
+    var
+        args = Array.prototype.slice.call(arguments, 1)
+      , dataURI = this.toDataURL.apply(this, args)
+      , header_end = dataURI.indexOf(",")
+      , data = dataURI.substring(header_end + 1)
+      , is_base64 = is_base64_regex.test(dataURI.substring(0, header_end))
+      , blob
+    ;
+    if (Blob.fake) {
+      // no reason to decode a data: URI that's just going to become a data URI again
+      blob = new Blob
+      if (is_base64) {
+        blob.encoding = "base64";
+      } else {
+        blob.encoding = "URI";
+      }
+      blob.data = data;
+      blob.size = data.length;
+    } else if (Uint8Array) {
+      if (is_base64) {
+        blob = new Blob([decode_base64(data)], {type: type});
+      } else {
+        blob = new Blob([decodeURIComponent(data)], {type: type});
+      }
+    }
+    callback(blob, dataURI);
+  };
+}
+}(window));
+
 MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 {
 
 	/*
 	data = {
-		isExport : boolean
-		onFinish : function
-		name     : string
+		isExport   : boolean
+		createBlob : false
+		drawInfo   : true
+		onFinish   : function (required)
+		name       : string
 	}
 	*/
+
+	if ( !data.onFinish ) { return; }
+	// Prepare grid background
 	if ( !MC.canvas.exportPNG.bg )
 	{
 		var img = document.createElement("img");
-		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAA1SURBVHjaYvj48eP/79+/E8TEqmP48ePHf2IAsepGDRw1cFAYOJpTRg0cNZAIAAAAAP//AwBI5DMfIrkrPwAAAABJRU5ErkJggg==";
+		img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAHUlEQVQYV2P48ePHf9yAgabSHz9+/I4bENI9gNIA0iYpJd74eOIAAAAASUVORK5CYII=";
 		MC.canvas.exportPNG.bg = img;
+
+		$("<div id='export-png-wrap'></div>").appendTo("body").hide();
 	}
 
-	require( [ 'text!/assets/css/canvas_trim.css', 'UI.canvg' ], function( css ){
 
-		/* Trim SVG */
-		var clone = $svg_canvas_element.clone().attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
+	var svg_canvas_element = $svg_canvas_element[0];
+	var size               = svg_canvas_element.getBBox();
+	var clone              = svg_canvas_element.cloneNode( true );
+	var beforeRender       = null;
+	var line               = clone.getElementById("svg_padding_line");
 
-		var size = $svg_canvas_element[0].getBBox();
-		// In IE, getBBox returns SvgRect which is not allowed to modified.
-		size = {
-			width  : size.width,
-			height : size.height
-		};
-		size.width  += 50;
-		size.height += 30;
+	// cloneNode won't clone the xmlns:xlink attribute
+	clone.setAttribute( "xmlns:xlink", "http://www.w3.org/1999/xlink" );
+	clone.removeAttribute( "id" );
 
-		var ratio = 1;
-		var beforeRender = null;
+	// Insert the document so that we can calculate the style.
+	$("#export-png-wrap")
+		.append( clone )
+		.attr("class", $("#canvas_container").attr("class"));
 
-		// Calc the perfect size for the thumbnail
-		if ( data.isExport ) {
-			size.height += 54;
+	// Inline styles
+	var removeArray = [ clone ]; /// Detach the clone from document.
+	var children = clone.children || clone.childNodes;
+	for ( var i = 0; i < children.length; ++i ) {
+		if ( !children[i].tagName ) { continue; }
+		MC.canvas.exportPNG.fixSVG( children[i], removeArray );
+	}
+	// Remove unnecessary elements
+	if ( removeArray[i].remove ) {
+		for ( i = 0; i < removeArray.length; ++i ) {
+			removeArray[i].remove();
+		}
+	} else {
+		for ( i = 0; i < removeArray.length; ++i ) {
+			removeArray[i].parentNode.removeChild( removeArray[i] );
+		}
+	}
 
-			if ( size.width  < 360 ) { size.width  = 360; }
-			if ( size.height < 380 ) { size.height = 380; }
+	// Prepare to insert header for Exporting Image
+	if ( data.isExport ) {
+		var replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+		replaceEl.textContent = "PLACEHOLDER";
+		// We use canvg's translate instead of calling context.translate()
+		// because context.translate seems a little bit slow.
+		replaceEl.setAttribute("transform","translate(0 54)");
+		clone.insertBefore( replaceEl, line );
+	}
 
-			beforeRender = function( ctx ){
-				ctx.save();
-				ctx.translate(0, 54);
-				var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
-				ctx.fillStyle = pat;
-				ctx.fillRect(0, 0, size.width, size.height);
-				ctx.restore();
-			}
-		} else {
-			beforeRender = function( ctx ){
-				var ratio1 = 220 / size.width;
-				var ratio2 = 145 / size.height;
-				ratio = ratio1 <= ratio2 ? ratio2 : ratio1;
+	// Remove a line that is useless
+	clone.removeChild(line);
 
-				var pattern = document.createElement('canvas');
-				pattern.width  = size.width;
-				pattern.height = size.height;
+	// Generate svg text, and remove data attributes
+	var svg = (new XMLSerializer()).serializeToString( clone )
+							.replace(/data-[^=]+="[^"]*?"/g, "");
 
-				size.width  = 220;
-				size.height = 145;
-
-				patternctx = pattern.getContext("2d");
-
-				patternctx.fillStyle = patternctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
-				patternctx.fillRect(0, 0, pattern.width, pattern.height);
-
-				ctx.scale( ratio, ratio );
-				ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
-			}
+	// Insert header
+	if ( data.isExport ) {
+		if ( MC.canvas.exportPNG.href === undefined ) {
+			// In IE, XMLSerializer will change xlink:href to href
+			MC.canvas.exportPNG.href = svg.indexOf("xlink:href") == -1 ? "href" : "xlink:href";
 		}
 
-		clone.attr("width", size.width).attr("height", size.height);
-
-		var styleElement = document.createElementNS("http://www.w3.org/2000/svg", "style");
-		styleElement.setAttribute("type", "text/css");
-		styleElement.textContent = "CSS_PLACEHOLDER";
-
-		var line = clone[0].getElementById("svg_padding_line")
-		clone[0].insertBefore( styleElement, line );
-
-		// remove useless elements
-		clone.find(".resizer-wrap").remove();
-		clone.find(".group-resizer").remove();
-		clone.find("g:empty").remove();
-		clone[0].removeChild( line );
-
-		// fix group label color
-		clone.find(".group-label").each(function(){
-			var $t = $(this);
-			var newClass = $t.parent().data("class").replace(/\./g, "-") + "-group-label";
-			var oldClass = $t.attr("class");
-			$t.attr("class", oldClass + " " + newClass);
-		})
-
-		var svg = (new XMLSerializer()).serializeToString( clone[0] );
-		if ( data.isExport ) {
-
-			if ( MC.canvas.exportPNG.isIE === undefined ) {
-				// In IE, XMLSerializer will change xlink:href to href
-				MC.canvas.exportPNG.isIE = svg.indexOf("xlink:href") == -1;
-			}
-
-			// Insert header
-			var datetime = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
-			var imageHref = MC.canvas.exportPNG.isIE ? "href" : "xlink:href";
-			css += '</style><rect fill="#ad5992" width="100%" height="4"></rect><rect fill="#252526" width="100%" height="50" y="4"></rect><image ' + imageHref + '="./assets/images/ide/logo-t.png" x="10" y="12" width="160" height="34"></image><g transform="translate(-10 0)"><text class="title_label" x="100%" y="27">' + datetime + '</text><text class="title_label" x="100%" y="41">' + data.name + '</text></g><g transform="translate(0 54)"><style>';
-
-			svg = svg.replace("</svg>", '</g></svg>');
+		var time = "";
+		var name = "";
+		if ( data.drawInfo !== false ) {
+			time = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
+			name = data.name;
 		}
 
-		svg = svg.replace(/(id|data-[^=]+)="[^"]*?"/g, "").replace("CSS_PLACEHOLDER", css);
+		var head = '<rect fill="#ad5992" width="100%" height="4" y="-54"></rect><rect fill="#252526" width="100%" height="50" y="-50"></rect><image ' + MC.canvas.exportPNG.href + '="./assets/images/ide/logo-t.png" x="10" y="-42" width="160" height="34"></image><text x="100%" y="-27" fill="#fff" text-anchor="end" transform="translate(-10 0)">' + time + '</text><text fill="#fff" x="100%" y="-13" text-anchor="end" transform="translate(-10 0)">' + name + '</text>';
 
-		var canvas = document.createElement('canvas');
-		canvas.width  = size.width;
-		canvas.height = size.height;
-		canvg( canvas, svg, {
-			ignoreDimensions : true,
-			beforeRender : beforeRender,
-			afterRender  : data.onFinish ? function(){
-				data.image = canvas.toDataURL()
-				data.onFinish( data );
-			} : null
-		} );
+		svg = svg.replace("PLACEHOLDER</g>", head).replace("</svg>", "</g></svg>");
+	}
+
+	// Calc the size for the canvas
+	// In IE, getBBox returns SvgRect which is not allowed to modified.
+	size = { width : size.width + 50, height : size.height + 30 };
+
+	// Calc the perfect size
+	if ( data.isExport ) {
+		size.height += 54;
+
+		if ( size.width  < 360 ) { size.width  = 360; }
+		if ( size.height < 380 ) { size.height = 380; }
+
+		beforeRender = function( ctx ){
+			var pat = ctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+			ctx.fillStyle = pat;
+			ctx.fillRect(0, 54, size.width, size.height-54);
+		}
+	} else {
+		beforeRender = function( ctx ){
+			var ratio1 = 220 / size.width;
+			var ratio2 = 145 / size.height;
+			var ratio  = ratio1 <= ratio2 ? ratio2 : ratio1;
+
+			var pattern = document.createElement('canvas');
+			pattern.width  = size.width;
+			pattern.height = size.height;
+
+			size.width  = 220;
+			size.height = 145;
+
+			patternctx = pattern.getContext("2d");
+
+			patternctx.fillStyle = patternctx.createPattern( MC.canvas.exportPNG.bg, 'repeat' );
+			patternctx.fillRect(0, 0, pattern.width, pattern.height);
+
+			ctx.scale( ratio, ratio );
+			ctx.drawImage( pattern, 0, 0, pattern.width, pattern.height );
+		}
+	}
+
+	// Draw
+	var canvas = document.createElement('canvas');
+	canvas.width  = size.width;
+	canvas.height = size.height;
+	canvg( canvas, svg, {
+		beforeRender : beforeRender,
+		afterRender  : function() {
+
+			onFinish = data.onFinish;
+			data.onFinish = null;
+
+			if ( data.createBlob === true ) {
+				canvas.toBlob(function( blob, possibleDataURL ){
+
+					if ( typeof possibleDataURL === "string" ) {
+						// We are using an 3rd party implementation of toBlob
+						// And we get the DataURL.
+						data.image = possibleDataURL;
+					} else {
+						data.image = canvas.toDataURL();
+					}
+					data.blob = blob;
+					onFinish( data );
+				});
+			} else {
+				data.image = canvas.toDataURL();
+				onFinish( data );
+			}
+		}
 	});
 };
+
+MC.canvas.exportPNG.fixSVG = function( element, removeArray ) {
+
+	var tagName = element.tagName.toLowerCase();
+
+	// Remove <defs/>, empty <g/> and g.resizer-wrap
+	if ( tagName === "defs" ) { return removeArray.push( element ); }
+
+	var children = element.children || element.childNodes;
+	var remove   = false;
+
+	if ( tagName === "g" ) {
+		if ( children.length == 0 ) {
+			remove = true;
+		} else if ( !element.classList ) {
+			var k = element.getAttribute("class");
+			if ( k && k.indexOf("resizer-wrap") != -1 ) {
+				remove = true;
+			}
+		} else if ( element.classList.contains("resizer-wrap") ) {
+				remove = true;
+		}
+	}
+
+	if ( !remove ) {
+		if ( !element.classList ) {
+			k = element.getAttribute("class");
+			if ( k && k.indexOf("fill-line") != -1 ) {
+				remove = true;
+			}
+		} else if ( element.classList.contains("fill-line") ) {
+			remove = true;
+		}
+	}
+	if ( remove ) { return removeArray.push(element); }
+
+	var ss = window.getComputedStyle( element );
+	// Remove non-visual element
+	if ( ss.visibility == "hidden" || ss.display == "none" || ss.opacity == "0" ) {
+		return removeArray.push( element );
+	}
+
+	// Store the inline stylesheet in stylez
+	var s = [];
+
+	if ( ss.opacity != 1 ) { s.push( "opacity:" + ss.opacity ); }
+
+	if ( tagName !== "g" && tagName !== "image" ) {
+		// Fill
+		if ( ss.fillOpacity == 0 ) {
+			s.push( "fill:none" );
+		} else {
+			if ( ss.fill != "#000000" ) { s.push( "fill:" + ss.fill ); }
+			if ( ss.fillOpacity != 1 )  { s.push( "fill-opacity:" + ss.fillOpacity ); }
+		}
+
+		// Stroke
+		var t1 = (ss.strokeWidth + "").replace("px", "");
+		if ( ss.strokeWidth == 0 || ss.strokeOpacity == 0 ) {
+			s.push( "stroke:none" );
+		} else {
+			s.push( "stroke:" + ss.stroke );
+			if ( t1 != 1 )               { s.push( "stroke-width:" + ss.strokeWidth ); }
+			if ( ss.strokeOpacity != 1 ) { s.push( "stroke-opacity:" + ss.strokeOpacity ); }
+		}
+		if ( ss.strokeLinejoin !="miter" ) { s.push("stroke-linejoin:"+ss.strokeLinejoin); }
+		if ( ss.strokeDasharray!="none"  ) { s.push("stroke-dasharray:"+ss.strokeDasharray); }
+
+		// Text ( Font-family is hard coded in UI.canvg )
+		if ( tagName === "text" ) {
+			s.push( "font-size:"+ ss.fontSize );
+			if ( ss.textAnchor != "start" ) { s.push( "text-anchor:" + ss.textAnchor ); }
+		}
+	}
+
+	if ( s.length ) {
+		element.setAttribute("stylez", s.join(";"));
+	}
+
+	for ( var i = 0; i < children.length; ++i ) {
+		var c = children[i];
+		if ( !c.tagName ) { continue; }
+		MC.canvas.exportPNG.fixSVG( c, removeArray );
+		c.removeAttribute("id");
+		c.removeAttribute("class");
+	}
+}

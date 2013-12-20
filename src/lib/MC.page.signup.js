@@ -98,7 +98,7 @@ var signup = {
 			}
 			else
 			{
-				status.addClass('error-status').show().text('It`s not an email address.');
+				status.addClass('error-status').show().text("Please provide a valid email address.");
 				
 				return false;
 			}

@@ -88,15 +88,19 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
 
         #resource api (define function)
-        resource : ( src, username, session_id, region_name=null, resources=null ) ->
+        resource : ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1 ) ->
 
             me = this
 
             src.model = me
 
-            aws_service.resource src, username, session_id, region_name, resources, ( aws_result ) ->
+            aws_service.resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
 
-                if !aws_result.is_error
+                if addition is 'vpc'
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_RESOURCE_RETURN', aws_result
+
+                else if !aws_result.is_error
                 #resource succeed
 
                     #dispatch event (dispatch event whenever login succeed or failed)
@@ -154,6 +158,49 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
                     console.log 'aws.status failed, error is ' + aws_result.error_message
                     me.pub aws_result
 
+
+
+        #vpc_resource api (define function)
+        vpc_resource : ( src, username, session_id, region_name=null, resources=null, addition='all', retry_times=1 ) ->
+
+            me = this
+
+            src.model = me
+
+            aws_service.vpc_resource src, username, session_id, region_name, resources, addition, retry_times, ( aws_result ) ->
+
+                #if !aws_result.is_error
+                #vpc_resource succeed
+                #
+                #else
+                #vpc_resource failed
+                #
+                #    console.log 'aws.vpc_resource failed, error is ' + aws_result.error_message
+                #    me.pub aws_result
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'AWS_VPC__RESOURCE_RETURN', aws_result
+
+        #stat_resource api (define function)
+        stat_resource : ( src, username, session_id, region_name=null, resources=null ) ->
+
+            me = this
+
+            src.model = me
+
+            aws_service.stat_resource src, username, session_id, region_name, resources, ( aws_result ) ->
+
+                if !aws_result.is_error
+                #stat_resource succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_STAT__RESOURCE_RETURN', aws_result
+
+                else
+                #stat_resource failed
+
+                    console.log 'aws.stat_resource failed, error is ' + aws_result.error_message
+                    me.pub aws_result
 
 
 

@@ -14,6 +14,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-user-data'         : 'userdataChange'
+            'change #property-instance-public-ip'         : 'publicIpChange'
             'OPTION_CHANGE #instance-type-select'         : "instanceTypeSelect"
             'OPTION_CHANGE #keypair-select'               : "setKP"
             'EDIT_UPDATE #keypair-select'                 : "addKP"
@@ -29,6 +30,9 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
 
             @model.attributes.name
 
+        publicIpChange : ( event ) ->
+            @model.setPublicIp event.currentTarget.checked
+            null
 
         lcNameChange : ( event ) ->
             target = $ event.currentTarget

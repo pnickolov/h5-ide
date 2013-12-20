@@ -340,6 +340,7 @@ define [ 'event',
                     $('#account-email-change-wrap').hide()
                     $('#account-email-input-wrap').show()
                     $('#account-password-wrap').hide()
+                    $('#email-verification-status').hide()
 
                     $('#account-email-input').val MC.base64Decode($.cookie('email'))
 

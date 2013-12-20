@@ -88,13 +88,14 @@ var MC = {
 
 				if (data.call === 'success' && option.success)
 				{
-					try{
+					option.success(data.result[1], data.result[0]);
+					/*try{
 						option.success(data.result[1], data.result[0]);
 					}
 					catch(error)
 					{
 						console.info(error);
-					}
+					}*/
 				}
 				if (data.call === 'error' && option.error)
 				{
@@ -246,6 +247,11 @@ var MC = {
 	canvasName : function (string)
 	{
 		return string.length > 17 ? string.substring(0, 17) + '...' : string;
+	},
+
+	asgName : function (string)
+	{
+		return string.length > 12 ? string.substring(0, 12) + '...' : string;
 	},
 
 	truncate: function (string, length)
@@ -425,6 +431,44 @@ var MC = {
 	 	{
 			return days > 0 ? days + ' days ago' : hours > 0 ? hours + ' hours ago' : minute > 0 ? minute + ' minutes ago' : 'just now';
 	 	}
+	},
+
+	/**
+	 * Calculate the interval time between two date time.
+	 * @param  {Date} first time
+	 * @param  {Date} second time
+	 * @param  {String} (s)econd | (m)inute | (h)our | (d)ay default is second
+	 * @return {number} time difference
+	 */
+	timestamp : function( t1, t2, type ) {
+
+		if ( $.type( t1 ) === 'date' && $.type( t2 ) === 'date' ) {
+
+			var div_num = 1;
+
+			switch ( type ) {
+				case 's':
+					div_num = 1000;
+					break;
+				case 'm':
+					div_num = 1000 * 60;
+					break;
+				case 'h':
+					div_num = 1000 * 3600;
+					break;
+				case 'd':
+					div_num = 1000 * 3600 * 24;
+					break;
+				default:
+					div_num = 1000;
+					break;
+			}
+			return parseInt(( t2.getTime() - t1.getTime() ) / parseInt( div_num ));
+		}
+
+		else {
+			console.error( 'variable is type date', t1, t2, type );
+		}
 	},
 
 	/**

@@ -17,13 +17,13 @@
       <dd>{{emptyStr ipAddress}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
-      <dd class="click-select tooltip" data-tooltip="Click to select">{{emptyStr dnsName}}</dd>
+      <dd class="click-select tooltip" data-tooltip="Click to select all">{{emptyStr dnsName}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PRIMARY_PRIVATE_IP"}}</dt>
       <dd>{{emptyStr privateIpAddress}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
-      <dd class="click-select tooltip" data-tooltip="Click to select">{{emptyStr privateDnsName}}</dd>
+      <dd class="click-select tooltip" data-tooltip="Click to select all">{{emptyStr privateDnsName}}</dd>
     </dl>
 
     <dl class="dl-vertical">
@@ -34,7 +34,11 @@
       <dd>{{instanceType}}</dd>
 
       <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
+      {{#if app_view}}
+      <dd>{{keyName}}</dd>
+      {{else}}
       <dd><a href="#" class="icon-download" id="property-app-keypair">{{keyName}}</a></dd>
+      {{/if}}
 
     </dl>
 

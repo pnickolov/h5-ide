@@ -7020,7 +7020,7 @@ MC.canvas.analysis = function ( data )
 		{
 			resources[ item ].coordinate = [
 				layout.coordinate[0] + layout.size[0] + 8,
-				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 4
+				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 5
 			];
 		});
 	}

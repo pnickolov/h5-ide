@@ -4,7 +4,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
   Model = ComplexResModel.extend {
 
     defaults :
-      embed : false
+      embed           : false
+      sourceDestCheck : true
+      description     : ""
 
       x        : 0
       y        : 0
@@ -13,8 +15,29 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
+
+    connect : ( connection )->
+      if connection.type is "EniAttachment"
+        @draw()
+      null
+
     iconUrl : ()->
-      "ide/icon/eni-canvas-attached.png"
+      if @connections( "EniAttachment" ).length
+        state = "attached"
+      else
+        state = "unattached"
+
+      "ide/icon/eni-canvas-#{state}.png"
+
+    eipIconUrl : ()->
+      if @hasEip()
+        MC.canvas.IMAGE.EIP_ON
+      else
+        MC.canvas.IMAGE.EIP_OFF
+
+    hasEip : ()->
+      false
+
 
     draw : ( isCreate )->
 
@@ -39,10 +62,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         })
 
         node.append(
-          Canvon.image( MC.canvas.IMAGE.EIP_ON, 44, 37, 12, 14 ).attr({
-            'id'    : @id + '_eip_status'
-            'class' : 'eip-status'
-          }),
+          Canvon.image( @eipIconUrl(), 44,37,12,14 ).attr({'class':'eip-status'}),
 
           # Left Port
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -98,25 +118,42 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+      else
+        node = $( document.getElementById( @id ) )
+        # Update label
+        CanvasManager.update node.children(".node-label"), @get("name")
+
+        # Update Image
+        CanvasManager.update node.children("image:not(.eip-status)"), @iconUrl(), "href"
+
+        # Update Image
+        CanvasManager.update node.children(".eip-status"), @eipIconUrl(), "href"
+
+
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
     deserialize : ( data, layout_data, resolve )->
 
-      attachment = data.resource.Attachment
+      subnet = resolve( MC.extractID( data.resource.SubnetId ) )
 
-      embed = false
-      if attachment
-        embed    = attachment.DeviceIndex is "0"
-        instance = resolve( MC.extractID attachment.InstanceId )
+      attachment = data.resource.Attachment
+      embed      = attachment and attachment.DeviceIndex is "0"
+      instance   = if attachment and attachment.InstanceId then resolve( MC.extractID( attachment.InstanceId) ) else null
 
       eni = new Model({
 
-        id   : data.uid
-        name : data.name
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.NetworkInterfaceId
 
-        embed : embed
+        embed           : embed
+        description     : data.resource.Description
+        sourceDestCheck : data.resource.SourceDestCheck
+
+        parent : subnet
 
         x : if embed then 0 else layout_data.coordinate[0]
         y : if embed then 0 else layout_data.coordinate[1]
@@ -127,8 +164,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         for group in data.resource.GroupSet
           new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
 
-      if attachment and attachment.DeviceIndex isnt "0"
-        new EniAttachment( eni, resolve( MC.extractID( attachment.InstanceId ) ) )
+      if not embed and instance
+        new EniAttachment( eni, instance )
 
       null
 

@@ -264,8 +264,17 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
             obj[ attr ] = azMap[ d]
 
         else if _.isArray( d )
-          for dd in d
-            if _.isObject( dd ) then checkObj( dd )
+          for dd, idx in d
+            if _.isObject( dd )
+              checkObj( dd )
+            if _.isString( dd )
+              if d is "true"
+                d[ idx ] = true
+              else if d is "false"
+                d[ idx ] = false
+
+              else if azMap[ d ] # Change azName to id
+                d[ idx ] = azMap[ d]
 
         else if _.isObject( d )
           checkObj( d )

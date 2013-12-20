@@ -99,7 +99,7 @@ define [ "constant",
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 
-    deserialize : ( data, layout_data )->
+    deserialize : ( data, layout_data, resolve )->
 
       RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
 
@@ -123,9 +123,9 @@ define [ "constant",
         y      : layout_data.coordinate[1]
         width  : layout_data.size[0]
         height : layout_data.size[1]
-      })
 
-      Design.instance().getAZ( data.resource.AvailabilityZone ).addChild( subnet )
+        parent : resolve( MC.extractID(data.resource.AvailabilityZone) )
+      })
 
       null
   }

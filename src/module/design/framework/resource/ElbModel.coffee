@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "constant" ], ( ComplexResModel, CanvasManager, Design, VpcModel, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -11,6 +11,12 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       height   : 9
 
     type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+
+    initialize : ()->
+      vpc = VpcModel.theVPC()
+      if vpc
+        vpc.addChild( @ )
+      null
 
     iconUrl : ()->
       "ide/icon/elb-" + (if @get("internal") then "internal-canvas.png" else "internet-canvas.png")

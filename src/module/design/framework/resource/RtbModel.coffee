@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -12,6 +12,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
     newNameTmpl : "RT-"
+
+    initialize : ()->
+      # Add RouteTable to CurrentVPC
+      VpcModel.theVPC().addChild( @ )
+      null
 
     setMain : ()->
       if @get("main") then return

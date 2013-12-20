@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, CanvasManager, constant )->
+define [ "../GroupModel", "../CanvasManager", "./VpcModel", "constant" ], ( GroupModel, CanvasManager, VpcModel, constant )->
 
   Model = GroupModel.extend {
 
@@ -10,6 +10,12 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
       y      : 2
       width  : 21
       height : 21
+
+    initialize : ()->
+      vpc = VpcModel.theVPC()
+      if vpc
+        vpc.addChild( @ )
+      null
 
     draw : ( isCreate ) ->
 

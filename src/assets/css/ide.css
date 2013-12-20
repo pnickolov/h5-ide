@@ -1668,6 +1668,14 @@ a {
 	margin-top: 70px;
 }
 
+.scroll-transition {
+	-webkit-transition: -webkit-transform .1s;
+	-moz-transition: -moz-transform .1s;
+	-ms-transition: -ms-transform .1s;
+	-o-transition: -o-transform, .1s;
+	transition: transform .1s;
+}
+
 .dashboard-demo .enter-credential {
 	text-align: center;
 	border: 1px solid #b4d5ed;

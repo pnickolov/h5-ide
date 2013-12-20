@@ -59,6 +59,13 @@ define [ 'event', 'i18n!nls/lang.js',
             $('#global-refresh span').text time
 
         scrollToResource: ->
+            scrollContent = $( '#global-region-wrap .scroll-content' )
+            scrollContent.addClass 'scroll-transition'
+            setTimeout ->
+                scrollContent.removeClass( 'scroll-transition' )
+                null
+            , 100
+
             scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 

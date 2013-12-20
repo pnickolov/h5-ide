@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "./VpcModel", "Design", "constant" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -10,6 +10,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       height   : 8
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+
+    initialize : ()->
+      VpcModel.theVPC().addChild( this )
+      null
 
     draw : ( isCreate )->
 

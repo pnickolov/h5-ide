@@ -58,7 +58,7 @@ var Tabbar = {
 				}, Tabbar.mouseup);
 
 			MC.canvas.volume.close();
-			MC.canvas.event.clearList();
+			MC.canvas.event.clearList(event);
 		}
 
 		return false;

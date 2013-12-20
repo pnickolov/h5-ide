@@ -5582,12 +5582,12 @@ MC.canvas.event.appDrawConnection = function ()
 	return false;
 };
 
-MC.canvas.event.clearList = function ()
+MC.canvas.event.clearList = function (event)
 {
 	MC.canvas.instanceList.close();
 	MC.canvas.eniList.close();
 	MC.canvas.asgList.close();
-	MC.canvas.event.clearSelected();
+	MC.canvas.event.clearSelected(event);
 
 	return true;
 };
@@ -5614,8 +5614,14 @@ MC.canvas.event.nodeHover = function (event)
 	}
 };
 
-MC.canvas.event.clearSelected = function ()
+MC.canvas.event.clearSelected = function (event)
 {
+	// Except for tab switching
+	if (event && $(event.currentTarget).is('#tab-bar li'))
+	{
+		return false;
+	}
+
 	Canvon('#svg_canvas .selected').removeClass('selected');
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');

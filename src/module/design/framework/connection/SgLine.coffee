@@ -17,6 +17,28 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
             return
 
       # Only show sg line for inbound rules of elb
+      elb = @getTarget constant.AWS_RESOURCE_TYPE.AWS_ELB
+      if elb
+        elbSgMap  = {}
+        hasInRule = false
+        for sg in elb.connectionTargets( "SgAsso" )
+          elbSgMap[ sg.id ] = sg
+
+        for sg in @getOtherTarget( elb ).connectionTargets( "SgAsso" )
+          for ruleset in sg.connections( "SgRuleSet" )
+            target = ruleset.getOtherTarget( sg )
+            if not elbSgMap[ target.id ] then continue
+
+            if ruleset.hasRawRuleTo( elbSgMap[ target.id ] )
+              hasInRule = true
+              break
+          if hasInRule
+            break
+
+        if not hasInRule
+          @setDestroyAfterInit()
+      null
+
 
     type : "SgRuleLine"
 

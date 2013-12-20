@@ -101,6 +101,15 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       rules
 
+    # return true, if there are rules to port
+    hasRawRuleTo : ( port )->
+      console.assert( port is @port1Comp() or port is @port2Comp(), "Invalid port for calling SgRuleSet.hasRawRuleTo()" )
+
+      if port is @port1Comp()
+        return @attributes.in1.length > 0 or @attributes.out2.length > 0
+      else
+        return @attributes.in2.length > 0 or @attributes.out1.length > 0
+
     # addRawRule() is used to create rules for one SG, the SG1 might not be connectable to SG2 even after calling addRawRule()
     # use addRule() to create rules for both SG. The SG1 is guaranteed to be connectable to SG2
 

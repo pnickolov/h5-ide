@@ -8,6 +8,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
     ++ Object Method ++
 
+    setDestroyAfterInit()
+      description : calling this method will cause the line to be removed after initialize()
+
     port1()
     port2()
       description : returns the name of the port, port1() is always smaller than port2()

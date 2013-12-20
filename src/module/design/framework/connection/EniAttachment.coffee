@@ -3,6 +3,31 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   C = ConnectionModel.extend {
 
+    type : "EniAttachment"
+
+    initialize : ()->
+
+      # If Eni is attached to Ami, then hide sg line
+      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+      for e in ami.connectionTargets( "EniAttachment" )
+        if e is eni
+          @setDestroyAfterInit()
+          return
+
+      @on "destroy", @tryReconnect
+
+    tryReconnect : ()->
+      # When remove attachment, see if we need to connect sgline between eni and ami
+      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+      if ami and eni
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel.tryDrawLine( ami, eni )
+
+      null
+
     defaults :
       lineType : "attachment"
 

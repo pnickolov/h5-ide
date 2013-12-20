@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAsso", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, constant )->
+define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
 
   Model = ComplexResModel.extend {
 
@@ -104,10 +104,12 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
     deserialize : ( data, layout_data, resolve )->
 
+      attachment = data.resource.Attachment
+
       embed = false
-      if data.resource.Attachment
-        embed    = data.resource.Attachment.DeviceIndex is "0"
-        instance = resolve( MC.extractID data.resource.Attachment.InstanceId )
+      if attachment
+        embed    = attachment.DeviceIndex is "0"
+        instance = resolve( MC.extractID attachment.InstanceId )
 
       eni = new Model({
 
@@ -124,6 +126,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         sgTarget = if embed then instance else eni
         for group in data.resource.GroupSet
           new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
+
+      if attachment and attachment.DeviceIndex isnt "0"
+        new EniAttachment( eni, resolve( MC.extractID( attachment.InstanceId ) ) )
+
       null
 
   }

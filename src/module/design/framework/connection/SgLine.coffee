@@ -4,10 +4,19 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
 
-    ### env:dev ###
     initialize : ()->
       console.assert( @port1Comp() isnt @port2Comp(), "Sgline should connect to different resources." )
-    ### env:dev:end ###
+
+      # If Eni is attached to Ami, then hide sg line
+      ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+      if ami and eni
+        for e in ami.connectionTargets( "EniAttachment" )
+          if e is eni
+            @setDestroyAfterInit()
+            return
+
+      # Only show sg line for inbound rules of elb
 
     type : "SgRuleLine"
 

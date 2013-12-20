@@ -177,6 +177,20 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
 
+    tryDrawLine : ( leftRes, rightRes )->
+      rightMap = {}
+      for sg in rightRes.connectionTargets("SgAsso")
+        rightMap[ sg.id ] = true
+
+      for sg in leftRes.connectionTargets("SgAsso")
+        for connectedSg in sg.getVisualConnectedSg()
+          if rightMap[ connectedSg.id ]
+            new SgLine( leftRes, rightRes )
+            return
+
+      null
+
+
     updateSgLines : ()->
       ### env:dev ###
       if this isnt Design

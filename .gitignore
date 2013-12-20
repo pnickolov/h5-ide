@@ -56,4 +56,3 @@ src/event/*.js
 
 #ignore *.map
 *.map
-

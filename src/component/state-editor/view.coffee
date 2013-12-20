@@ -4,8 +4,9 @@ StateEditorView = Backbone.View.extend({
 
 	model: new StateEditorModel()
 
-	editorHTML: $('#state-template-main').html()
+	stateListHTML: $('#state-template-state-list').html()
 	paraListHTML: $('#state-template-para-list').html()
+	paraViewListHTML: $('#state-template-para-view-list').html()
 	paraDictItemHTML: $('#state-template-para-dict-item').html()
 	paraArrayItemHTML: $('#state-template-para-array-item').html()
 	paraCompleteItemHTML: '<li data-value="${atwho-at}${name}">${name}</li>'
@@ -14,11 +15,11 @@ StateEditorView = Backbone.View.extend({
 
 		'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
 		'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
-
 		'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
 		'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
-
 		'focus .editable-area': 'onFocusInput'
+		'click .state-item .state-id': 'onStateIdClick'
+		'click .state-item .state-add': 'onStateAddClick'
 
 	initialize: () ->
 
@@ -29,16 +30,19 @@ StateEditorView = Backbone.View.extend({
 	render: () ->
 
 		this.refreshStateList()
+		this.refreshStateViewList()
 
 	compileTpl: () ->
 
-		this.editorTpl = Handlebars.compile(this.editorHTML)
+		this.stateListTpl = Handlebars.compile(this.stateListHTML)
 
 		Handlebars.registerPartial('state-template-para-list', this.paraListHTML)
+		Handlebars.registerPartial('state-template-para-view-list', this.paraViewListHTML)
 		Handlebars.registerPartial('state-template-para-dict-item', this.paraDictItemHTML)
 		Handlebars.registerPartial('state-template-para-array-item', this.paraArrayItemHTML)
 
 		this.paraListTpl = Handlebars.compile(this.paraListHTML)
+		this.paraViewListTpl = Handlebars.compile(this.paraViewListHTML)
 		this.paraDictListTpl = Handlebars.compile(this.paraDictItemHTML)
 		this.paraArrayListTpl = Handlebars.compile(this.paraArrayItemHTML)
 
@@ -81,12 +85,121 @@ StateEditorView = Backbone.View.extend({
 					required: false,
 					para_value: 'what'
 				}]
+			}, {
+				state_id: 2,
+				cmd_value: 'apt pkg',
+				parameter_list: [{
+					para_name: 'name',
+					type_dict: true,
+					required: true,
+					para_value: [{
+						key: 'name',
+						value: 'xxx'
+					}, {
+						key: 'abc',
+						value: 'xxx'
+					}]
+				}, {
+					para_name: 'fromrepo',
+					type_array: true,
+					required: true,
+					para_value: [
+						'qqq',
+						'qqq',
+						'qqq'
+					]
+				}, {
+					para_name: 'verify_gpg',
+					type_text: true,
+					required: true,
+					para_value: 'ssh apt@211.98.26.7/pot'
+				}, {
+					para_name: 'debconf',
+					type_line: true,
+					required: false,
+					para_value: 'what'
+				}]
 			}]
 		}
 
-		that.$el.html(this.editorTpl(stateListObj))
+		that.$stateEditor.html(this.stateListTpl(stateListObj))
 
 		that.bindStateListEvent()
+
+	refreshStateViewList: () ->
+
+		that = this
+
+		$stateItemList = that.$stateEditor.find('.state-item')
+
+		_.each $stateItemList, (stateItem) ->
+
+			$stateItem = $(stateItem)
+			that.refreshStateView($stateItem)
+
+			null
+
+	refreshStateView: ($stateItem) ->
+
+		that = this
+
+		cmdName = $stateItem.attr('data-command')
+		currentParaMap = that.cmdParaObjMap[cmdName]
+
+		$paraListElem = $stateItem.find('.parameter-list')
+		$paraViewListElem = $stateItem.find('.parameter-view-list')
+		$paraItemList = $paraListElem.find('.parameter-item')
+
+		paraListViewRenderAry = []
+
+		_.each $paraItemList, (paraItemElem) ->
+
+			$paraItem = $(paraItemElem)
+			paraName = $paraItem.attr('data-para-name')
+			paraObj = currentParaMap[paraName]
+
+			paraType = paraObj.type
+			paraName = paraObj.name
+
+			viewRenderObj = {
+				para_name: paraName
+			}
+
+			viewRenderObj['type_' + paraType] = true
+
+			paraValue = ''
+
+			if paraType is 'dict'
+
+				$keyInput = $paraItem.find('.parameter-dict-item:first-child .key')
+				$valueInput = $paraItem.find('.parameter-dict-item:first-child .value')
+
+				keyValue = $keyInput.text()
+				valueValue = $valueInput.text()
+
+				paraValue = keyValue + '=' + valueValue
+
+			else if paraType is 'array'
+
+				$valueInput = $paraItem.find('.parameter-value:first-child')
+				valueValue = $valueInput.text()
+				paraValue = valueValue
+
+			else if paraType in ['line', 'text', 'bool']
+
+				$valueInput = $paraItem.find('.parameter-value')
+				valueValue = $valueInput.text()
+				paraValue = valueValue
+
+			viewRenderObj.para_value = paraValue
+
+			paraListViewRenderAry.push(viewRenderObj)
+
+			null
+
+		$paraViewListElem.html(that.paraViewListTpl({
+			parameter_view_list: paraListViewRenderAry
+		}))
 
 	initData: () ->
 
@@ -108,7 +221,6 @@ StateEditorView = Backbone.View.extend({
 	bindStateListEvent: () ->
 
 		that = this
-		that.$stateEditor = that.$el
 
 		$stateItems = that.$stateEditor.find('.state-item')
 
@@ -141,9 +253,11 @@ StateEditorView = Backbone.View.extend({
 			data: cmdNameAry,
 			onSelected: (value) ->
 				$that = $(this)
-				$that.attr('data-value', value)
+				$stateItem = $that.parent('.state-item')
+				$stateItem.attr('data-command', value)
 				$paraListElem = $that.parent('.state-item').find('.parameter-list')
 				that.refreshParaList($paraListElem, value)
+				that.refreshStateView($stateItem)
 		})
 
 	bindParaListEvent: ($paraListElem, currentCMD) ->
@@ -268,6 +382,21 @@ StateEditorView = Backbone.View.extend({
 
 		that.bindParaListEvent($paraListElem, currentCMD)
 
+	refreshStateId: () ->
+
+		that = this
+
+		$stateItemList = that.$stateEditor.find('.state-item')
+
+		_.each $stateItemList, (stateItem, idx) ->
+
+			currentStateId = idx + 1
+			$stateItem = $(stateItem)
+			$stateItem.attr('data-id', currentStateId)
+			$stateItem.find('.state-id').text(currentStateId)
+
+			null
+
 	getParaObj: ($inputElem) ->
 
 		that = this
@@ -389,6 +518,45 @@ StateEditorView = Backbone.View.extend({
 				defaultValue = String(paraObj.default)
 				if not currentValue and defaultValue and not $currentInput.hasClass('key')
 					$currentInput.html(defaultValue)
+
+	onStateIdClick: (event) ->
+
+		that = this
+
+		$stateIdElem = $(event.currentTarget)
+		$stateItem = $stateIdElem.parent('.state-item')
+
+		if $stateItem.hasClass('view')
+			$stateItem.removeClass('view')
+		else
+			that.refreshStateView($stateItem)
+			$stateItem.addClass('view')
+
+	onStateAddClick: (event) ->
+
+		that = this
+
+		$currentElem = $(event.currentTarget)
+		$stateItem = $currentElem.parent('.state-item')
+
+		stateId = Number($stateItem.attr('data-id'))
+
+		newStateId = ++stateId
+
+		newStateHTML = that.stateListTpl({
+			state_list: [{
+				state_id: newStateId
+			}]
+		})
+
+		$stateItem.after(newStateHTML)
+
+		$newStateItem = $stateItem.next()
+
+		$cmdValueItem = $newStateItem.find('.command-value')
+		that.bindCommandEvent($cmdValueItem)
+
+		that.refreshStateId()
 })
 
 window.StateEditorView = StateEditorView

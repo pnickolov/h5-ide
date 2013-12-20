@@ -25,6 +25,44 @@ body {
 	margin-bottom: 30px;
 }
 
+#state-editor .state-id {
+	float: left;
+	margin-top: 3px;
+	margin-right: 15px;
+	background-color: #ddd;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+	border-radius: 20px;
+	background-color: #66f;
+	color: #fff;
+	cursor: pointer;
+}
+
+#state-editor .state-id:hover {
+	background-color: #77f;
+}
+
+#state-editor .state-add {
+	float: left;
+	margin-top: 6px;
+	margin-right: 15px;
+	background-color: #ddd;
+	width: 15px;
+	height: 15px;
+	text-align: center;
+	line-height: 13px;
+	border-radius: 20px;
+	background-color: #aaa;
+	color: #fff;
+	cursor: pointer;
+}
+
+#state-editor .state-add:hover {
+	background-color: #ccc;
+}
+
 /* *************************************** editable-area */
 
 #state-editor .editable-area {
@@ -109,4 +147,38 @@ body {
 #state-editor .command-value {
 	float: left;
 	width: 150px;
+}
+
+/* *************************************** state view/edit */
+
+#state-editor .state-item.view .parameter-list {
+	display: none;
+}
+
+#state-editor .parameter-view-list {
+	display: none;
+}
+
+#state-editor .state-item.view .parameter-view-list {
+	display: block;
+}
+
+#state-editor .parameter-view-list .parameter-item {
+	float: left;
+	max-width: 100px;
+	min-height: 12px;
+	display: inline;
+	overflow: hidden;
+	white-space: nowrap;
+	border: 1px #444 solid;
+	padding: 4px;
+	background-color: #fff;
+	margin-right: 10px;
+}
+
+#state-editor .parameter-view-list .parameter-value {
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }

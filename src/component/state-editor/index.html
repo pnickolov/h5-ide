@@ -16,12 +16,17 @@
 
 		<script type="text/javascript" src="backbone.js"></script>
 
-		<script id="state-template-main" type="x-handlebars-template">
+		<script id="state-template-state-list" type="x-handlebars-template">
 			{{#each state_list}}
-				<div class="state-item" data-command="{{cmd_value}}">
+				<div class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
+					<div class="state-add">+</div>
+					<div class="state-id">{{state_id}}</div>
 					<div class="command-value editable-area line" contenteditable="true">{{cmd_value}}</div>
 					<div class="parameter-list">
 						{{> state-template-para-list}}
+					</div>
+					<div class="parameter-view-list">
+						{{> state-template-para-view-list}}
 					</div>
 				</div>
 			{{/each}}
@@ -77,6 +82,47 @@
 						<div class="parameter-container">
 							<div class="parameter-value editable-area text" contenteditable="true">{{para_value}}</div>
 						</div>
+					</div>
+				{{/if}}
+
+			{{/each}}
+		</script>
+
+		<script id="state-template-para-view-list" type="x-handlebars-template">
+			{{#each parameter_view_list}}
+
+				<!-- line type parameter -->
+				{{#if type_line}}
+					<div class="parameter-item line" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
+					</div>
+				{{/if}}
+
+				<!-- dict type parameter --> 
+				{{#if type_dict}}
+					<div class="parameter-item dict" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
+					</div>
+				{{/if}}
+
+				<!-- array type parameter --> 
+				{{#if type_array}}
+					<div class="parameter-item array" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
+					</div>
+				{{/if}}
+
+				<!-- bool type parameter --> 
+				{{#if type_bool}}
+					<div class="parameter-item bool" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
+					</div>
+				{{/if}}
+
+				<!-- text type parameter --> 
+				{{#if type_text}}
+					<div class="parameter-item text" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}
 

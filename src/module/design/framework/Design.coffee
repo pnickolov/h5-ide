@@ -83,16 +83,13 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   design_instance = null
 
 
-
   Design = ( json_data, layout_data, options )->
 
     design = (new DesignImpl( options )).use()
     design.canvas = new Canvas( layout_data.size )
 
-    # Temporarily set layout_data in design, so that getAZ can use it
-    design.groupLayoutData = layout_data.component.group
-
-    layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
+    json_data   = $.extend true, {}, json_data
+    layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
 
     # Deserialize
 
@@ -100,12 +97,10 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     resolveDeserialize = ( uid )->
 
       obj = design_instance.__componentMap[ uid ]
-      if obj
-        return obj
+      if obj then return obj
 
       # Check if we have recursive dependency
       console.assert (not recursiveCheck[uid] && recursiveCheck[uid] = true ), "Recursive dependency found when deserializing JSON_DATA"
-
 
 
       component_data = json_data[ uid ]
@@ -130,7 +125,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     ###########################
     # Quick fix Boolean value in JSON, might removed latter
     ###########################
-    Design.fixJson( json_data )
+    Design.fixJson( json_data, layout_data )
 
 
 
@@ -178,7 +173,6 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # CleanUp
     ####################
     design.component = _old_get_component_
-    delete design.groupLayoutData
 
     ####################
     # Broadcast event
@@ -243,7 +237,21 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     null
 
 
-  Design.fixJson = ( data )->
+  Design.fixJson = ( data, layout_data )->
+
+    azMap = {}
+    azArr = []
+
+    for uid, comp of layout_data
+      if comp.type is "AWS.EC2.AvailabilityZone"
+        azArr.push {
+          uid  : uid
+          type : "AWS.EC2.AvailabilityZone"
+          name : comp.name
+        }
+
+        azMap[ comp.name ] = "@#{uid}.name"
+
     checkObj = ( obj )->
       for attr, d of obj
         if _.isString( d )
@@ -251,6 +259,10 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
             obj[ attr ] = true
           else if d is "false"
             obj[ attr ] = false
+
+          else if azMap[ d ] # Change azName to id
+            obj[ attr ] = azMap[ d]
+
         else if _.isArray( d )
           for dd in d
             if _.isObject( dd ) then checkObj( dd )
@@ -262,6 +274,8 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     for uid, comp of data
       checkObj( comp )
 
+    for az in azArr
+      data[ az.uid ] = az
     null
 
   ### Private Interface End ###
@@ -298,36 +312,36 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
-  DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
-    AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
+  # DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
+  #   AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
 
-    allAzs = AzModel.allObjects()
-    for az in allAzs
-      if az.get("name") is azName
-        return az
+  #   allAzs = AzModel.allObjects()
+  #   for az in allAzs
+  #     if az.get("name") is azName
+  #       return az
 
-    # Retrieve AZ's layout info from layoutData
-    if @groupLayoutData
-      for uid, layout of @groupLayoutData
-        if layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and layout.name is azName
-          attr =
-            id     : uid
-            name   : azName
-            x      : layout.coordinate[0]
-            y      : layout.coordinate[1]
-            width  : layout.size[0]
-            height : layout.size[1]
+  #   # Retrieve AZ's layout info from layoutData
+  #   if @groupLayoutData
+  #     for uid, layout of @groupLayoutData
+  #       if layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and layout.name is azName
+  #         attr =
+  #           id     : uid
+  #           name   : azName
+  #           x      : layout.coordinate[0]
+  #           y      : layout.coordinate[1]
+  #           width  : layout.size[0]
+  #           height : layout.size[1]
 
-    if not attr
-      attr = {
-        name   : azName
-        x      : x
-        y      : y
-        width  : width
-        height : height
-      }
+  #   if not attr
+  #     attr = {
+  #       name   : azName
+  #       x      : x
+  #       y      : y
+  #       width  : width
+  #       height : height
+  #     }
 
-    new AzModel( attr )
+  #   new AzModel( attr )
 
   DesignImpl.prototype.serialize = ()->
 

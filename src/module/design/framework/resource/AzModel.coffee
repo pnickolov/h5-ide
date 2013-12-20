@@ -1,8 +1,6 @@
 
 define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, CanvasManager, constant )->
 
-  # AzModel doesn't have deserialize() method, because it doesn't
-
   Model = GroupModel.extend {
 
     type : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
@@ -27,6 +25,24 @@ define [ "../GroupModel", "../CanvasManager", "constant" ], ( GroupModel, Canvas
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+
+    deserialize : ( data, layout_data, resolve )->
+      new Model({
+        id    : data.uid
+        name  : data.name
+
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
+        width  : layout_data.size[0]
+        height : layout_data.size[1]
+      })
+      null
+
+    getAzByName : ( name )->
+      for az in Model.allObjects()
+        if az.get("name") is name
+          return az
+      null
   }
 
   Model

@@ -2,25 +2,161 @@
 #  View Mode for header module
 #############################
 
-define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event, Backbone, $, _, constant ) ->
-
-    #websocket
-    #ws = MC.data.websocket
+define [ 'aws_model', 'ami_model'
+         'event', 'constant',
+         'UI.notification',
+         'backbone', 'jquery', 'underscore'
+], ( aws_model, ami_model, ide_event, constant ) ->
 
     ProcessModel = Backbone.Model.extend {
 
         defaults:
-            'flag_list'         : null  #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+
+            #flag_list = {'is_pending':true|false, 'is_inprocess':true|false, 'is_done':true|false, 'is_failed':true|false, 'steps':0, 'dones':0, 'rate':0}
+            'flag_list'         : null
+
+            # when aws_model.vpc_resource current tab id
+            'current_tab_id'    : null
+
+            # when timeout, set timeout_obj
+            # id : { id : null, is_show : false }
+            'timeout_obj'       : {}
 
         initialize  : ->
             me = this
 
-            me.set 'flag_list', {'is_pending':true}
+            # set init flag_list
+            me.set 'flag_list', { 'is_pending' : true }
+
+            @on 'AWS_RESOURCE_RETURN', ( result ) ->
+                console.log 'AWS_RESOURCE_RETURN', result
+
+                # test exception flow
+                #result.resolved_data = {}
+                #result.is_error = true
+                #result.error_message = 'sdfasdfasdfsadfasdf'
+
+                if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
+
+                    # get vpc_id
+                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+
+                    # set cacheMap data
+                    obj = MC.forge.other.setCacheMap vpc_id, result, null, null
+
+                    # set ami_ids
+                    ami_ids = MC.forge.app.getAmis result.resolved_data[0]
+
+                    if _.isEmpty ami_ids
+
+                        # set FINISH by cacheMap
+                        @setCacheMapDataFlg obj
+
+                    else
+
+                        # set current tab id
+                        @set 'current_tab_id', obj.id
+
+                        # call api
+                        @getDescribeImages result.param[3], ami_ids
+
+                    null
+
+                else if result
+
+                    # get vpc_id
+                    vpc_id = result.param[4][ constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ].id[0]
+
+                    # set cacheMap state 'ERROR'
+                    obj = MC.forge.other.setCacheMap vpc_id, null, 'ERROR', null, null
+
+                    if not result.is_error and _.isEmpty result.resolved_data
+
+                        # delete this vpc by delUnmanaged
+                        MC.forge.other.delUnmanaged vpc_id
+
+                        # set error message
+                        error_message = 'VPC does not exist.'
+
+                    else if result.is_error
+
+                        # set error message
+                        error_message = result.error_message
+
+                    # get this tab id and close this tab
+                    obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+                    if obj and obj.id
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
+
+                    # notification
+                    notification 'error', error_message, true
+
+                    null
+
+            @on 'EC2_AMI_DESC_IMAGES_RETURN', ( result ) ->
+                console.log 'EC2_AMI_DESC_IMAGES_RETURN', result
+
+                if result and not result.is_error
+
+                    if result.resolved_data and result.resolved_data.length > 0
+
+                        # set amis and cache resource
+                        amis =
+                            "DescribeImages" : []
+                        for ami in result.resolved_data
+                            amis.DescribeImages.push ami
+                        MC.aws.aws.cacheResource amis, result.param[3], false
+
+                    # get call service current tab id
+                    current_tab_id = result.param[0].src.sender.get 'current_tab_id'
+                    console.log 'EC2_AMI_DESC_IMAGES_RETURN, current_tab_id', current_tab_id
+
+                    # get origin_id
+                    origin_obj = MC.forge.other.getCacheMap current_tab_id
+
+                    # set FINISH by cacheMap
+                    @setCacheMapDataFlg origin_obj
+
+                    null
+
+            # loop time 1's
+            setInterval ( ->
+
+                # when current tab not appview return
+                if MC.forge.other.processType( MC.data.current_tab_id ) isnt 'appview'
+                    return
+
+                # get obj
+                obj = MC.forge.other.getCacheMap MC.data.current_tab_id
+
+                # return obj when undefined
+                if not obj
+                    return
+
+                # when create_time is 'timeout' or state is 'FINISH' return
+                if obj.create_time is 'timeout' or obj.state is 'FINISH'
+                    return
+
+                # set T1 and T2
+                t1 = obj.create_time
+                t2 = new Date()
+
+                # timestamp
+                if MC.timestamp( t1, t2, 's' ) > 10
+
+                    # set create_time is 'timeout'
+                    MC.forge.other.setCacheMap obj.origin_id, null, null, null, 'timeout'
+
+                    # set timeout
+                    me.set 'timeout_obj', { 'id' : obj.id, 'is_show' : true }
+
+            ), 1000
 
         getProcess  : (tab_name) ->
             me = this
 
             if MC.process[tab_name]
+
                 # get the data
                 flag_list = MC.process[tab_name].flag_list
 
@@ -42,33 +178,35 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                     # hold on 1 second
                     setTimeout () ->
-                        #me.set 'flag_list', flag_list
 
                         app_id = flag_list.app_id
                         region = MC.process[tab_name].region
 
                         # save png
                         app_name = MC.process[tab_name].name
-                        #ide_event.trigger ide_event.SAVE_APP_THUMBNAIL, region, app_name, app_id
 
-                        return if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
+                        # not current tab return
+                        if MC.data.current_tab_id isnt 'process-' + region + '-' + app_name
+                            return
 
                         # hold on two seconds
                         setTimeout () ->
-                            ide_event.trigger ide_event.UPDATE_TABBAR, app_id, app_name + ' - app'
-                            ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
-                            ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
+
+                            # update tab
+                            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, app_id, app_name + ' - app'
+
+                            # reload app
+                            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', app_name, region, app_id
+
+                            #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
+                            #ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null
+
                         , 800
+
                     , 1000
 
                 else if 'is_inprocess' of flag_list and flag_list.is_inprocess # in progress
-
-                    # check rollback
-                    # if 'dones' of last_flag and last_flag.dones > flag_list.dones
-                    #     flag_list = last_flag
-
-                    #me.set 'flag_list', flag_list
 
                     if flag_list.dones > 0 and 'steps' of flag_list and flag_list.steps > 0
                         $('#progress_bar').css('width', Math.round( flag_list.dones/flag_list.steps*100 ) + "%" )
@@ -84,10 +222,104 @@ define [ 'event', 'backbone', 'jquery', 'underscore', 'constant' ], ( ide_event,
 
                     me.set 'flag_list', flag_list
 
-                #console.log flag_list
+            null
+
+        getTimestamp : ( state, tab_id ) ->
+            console.log 'getTimestamp', state, tab_id
+
+            if state is 'OPEN_PROCESS'
+                @set 'timeout_obj', { id : tab_id, is_show : false }
+
+            else if state is 'OLD_PROCESS'
+
+                # get obj
+                obj = MC.forge.other.getCacheMap tab_id
+
+                # when create_time is 'timeout' show tip
+                if obj and obj.create_time is 'timeout'
+                    @set 'timeout_obj', { id : tab_id, is_show : true }
+
+                # when create_time isnt 'timeout' hide tip
+                else if obj and obj.create_time isnt 'timeout'
+                    @set 'timeout_obj', { id : tab_id, is_show : false }
 
             null
 
+        getVpcResourceService : ( region, vpc_id, state )  ->
+            console.log 'getVpcResourceService', region, vpc_id, state
+
+            if state is 'OPEN_PROCESS'
+
+                # get resources
+                resources = MC.forge.other.getUnmanagedVpc vpc_id
+
+                # delete resource.origin
+                if resources and resources.origin
+                    delete resources.origin
+
+                # call api
+                aws_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, resources, 'vpc', 1
+
+                # set state 'OLD'
+                MC.forge.other.setCacheMap vpc_id, null, 'OLD', null
+
+            else if state is 'OLD_PROCESS'
+                # get obj
+                obj = MC.forge.other.searchCacheMap { key : 'origin_id', value : vpc_id }
+
+                if obj and obj.data and obj.state is 'FINISH'
+
+                    # reload app view
+                    @reloadAppView obj
+
+                else if obj and obj.id
+
+                    # update tab icon
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'visualization', obj.id
+
+                else
+                    console.log 'not found process'
+
+            null
+
+        getDescribeImages : ( region, ami_ids ) ->
+            console.log 'getDescribeImages', region, ami_ids
+
+            # deep copy
+            me = $.extend true, {}, this
+
+            ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_ids
+
+            null
+
+        setCacheMapDataFlg : ( data ) ->
+            console.log 'setCacheMapDataFlg', data
+
+            # set 'FINISH' and 'appview' flag by vpc( origin_id )
+            obj = MC.forge.other.setCacheMap data.origin_id, null, 'FINISH', null
+
+            # when current tab reload app view
+            if MC.forge.other.isCurrentTab obj.id
+                @reloadAppView obj
+
+            null
+
+        reloadAppView : ( obj ) ->
+            console.log 'reloadAppView', obj
+
+            # set 'appview' flag by vpc( origin_id )
+            MC.forge.other.setCacheMap obj.origin_id, null, null, 'appview'
+
+            # set appview id
+            appview_id = 'appview-' + obj.uid
+
+            # update tab
+            ide_event.trigger ide_event.UPDATE_DESIGN_TAB, appview_id, obj.origin_id + ' - visualization'
+
+            # reload app
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APPVIEW', obj.origin_id, obj.region, appview_id
+
+            null
 
     }
 

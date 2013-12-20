@@ -328,6 +328,10 @@
 	stroke: #0973f6;
 }
 
+.line-elb-sg.view-hover {
+	stroke-width: 3px;
+}
+
 .line-rtb-target {
 	stroke: #6DAEFE;
 }
@@ -838,7 +842,8 @@
 }
 
 .canvas_state_app .asg-resource-dragger,
-.canvas_state_appedit .asg-resource-dragger {
+.canvas_state_appedit .asg-resource-dragger,
+.canvas_state_appview .asg-resource-dragger {
 	display: none;
 }
 
@@ -1025,7 +1030,7 @@
 }
 
 .node-label-rtb-name {
-	fill: white;
+	/*fill: white;*/
 }
 
 

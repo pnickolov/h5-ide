@@ -318,10 +318,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
         # Injects the model to the view. So that the view doesn't have hard dependency
         # to the model. Thus they're decoupled.
-        property.view.model     = property.model
-        property.view._isSub    = !!property.subPanelID
-        property.view._noRender = PropertyModule.__noRender # If we are restore state of a tab, no need to render the property panel
-        PropertyModule.__noRender = false # Reset __noRender here. So that even _load() throws error, we still reset it.
+        property.view.model      = property.model
+        property.view._isSub     = !!property.subPanelID
+        property.view.__restore  = PropertyModule.__restore
+        PropertyModule.__restore = false # Reset this attr here, so that even there's error, it still get reset
 
         # 6. Tell view to Render
         if property.subPanelID
@@ -359,21 +359,23 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
 
     PropertyModule.restore  = ( snapshot )->
 
-        PropertyModule.__noRender = true
         PropertyModule.load snapshot.activeModuleType, snapshot.activeModuleId, snapshot.tab_type
 
         if snapshot.activeSubModuleType
-            PropertyModule.__noRender = true
+            PropertyModule.__restore = true
             PropertyModule.loadSubPanel snapshot.activeSubModuleType, snapshot.activeSubModuleId, true
+            PropertyModule.__restore = false
+        else
+            PropertyModule.event.trigger PropertyModule.event.HIDE_SUB_PANEL
 
-        PropertyModule.__noRender = false
         null
 
     # The event object is used to communicate with design/property/view
     # So that we don't have a reference to desing/property/view, avoiding
     # a strong dependency on it.
     PropertyModule.event = _.extend {}, Backbone.Events
-    PropertyModule.event.FORCE_SHOW = "forceshow"
+    PropertyModule.event.FORCE_SHOW     = "forceshow"
+    PropertyModule.event.HIDE_SUB_PANEL = "hidesubpanel"
 
 
     # Export PropertyModule

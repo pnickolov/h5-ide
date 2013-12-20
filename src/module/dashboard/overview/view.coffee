@@ -281,7 +281,9 @@ define [ 'event', 'i18n!nls/lang.js',
             $middleButton.removeAttr 'disabled'
             $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
 
-            $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+            # when is_invitated cookie is true remove dishable
+            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+                $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
             null
 
@@ -535,8 +537,11 @@ define [ 'event', 'i18n!nls/lang.js',
         unmanagedVPCClick : ->
             console.log 'unmanagedVPCClick'
 
-            # load unmanagedvpc
-            unmanagedvpc.loadModule()
+            # when is_invitated cookie is true remove dishable
+            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+
+                # load unmanagedvpc
+                unmanagedvpc.loadModule()
 
             null
 

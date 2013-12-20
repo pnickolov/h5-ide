@@ -1,6 +1,10 @@
 *.bat
 .DS_Store
 
+#ignore import-test
+src/import-test.html
+src/import-test-crayfish.json
+
 #ignore demo
 src/js/demo/*.js
 src/js/demo/**/*.js

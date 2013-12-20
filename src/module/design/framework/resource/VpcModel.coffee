@@ -49,7 +49,6 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
   }, {
 
     handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-    resolveFirst : true
 
     # Returns current VPC in this application.
     theVPC : ()->

@@ -80,11 +80,18 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       if @__port1Comp isnt @__port2Comp
         @__port2Comp.connect_base this
 
+      # The line wants to destroy itslef a
+      if @__destroyAfterInit
+        @remove()
+        return this
+
       # Draw in the end
       if @draw and Design.instance().shouldDraw()
         @draw()
 
       this
+
+    setDestroyAfterInit : ()-> @__destroyAfterInit = true
 
     port1 : ( attr )->
       if @__portDef then @__portDef.port1[ attr ] else ""

@@ -116,15 +116,23 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         @associate model
       else
         for attr in @__asso
-          arns = @get attr.key
+          keys = attr.key.split '.'
+          masterKey = keys.pop()
+          arns = @get keys
+
+          for k in keys
+            arns = arns[ k ]
+
           if _.isString arns
             arns = [ arns ]
+
           if _.isArray arns
             for arn in arns
               uid = MC.extractID arn
               model = resolve uid
               @associate model
-            @unset attr.key
+            if not keys.length
+              @unset attr.key
       null
 
     disassociate: ( filter ) ->

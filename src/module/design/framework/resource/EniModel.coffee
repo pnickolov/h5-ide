@@ -112,12 +112,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
           }),
 
           Canvon.group().append(
-            Canvon.rectangle(35, 3, 20, 16).attr({
-              'class' : 'server-number-bg'
-              'rx'    : 4
-              'ry'    : 4
-            }),
-            Canvon.text(45, 15, "0").attr({'class':'node-label server-number'})
+            Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
+            Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
           ).attr({
             'class'   : 'server-number-group'
             'display' : "none"

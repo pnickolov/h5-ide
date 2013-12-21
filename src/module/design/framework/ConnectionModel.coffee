@@ -94,7 +94,9 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
 
       this
 
-    setDestroyAfterInit : ()-> @__destroyAfterInit = true
+    setDestroyAfterInit : ()->
+      @__destroyAfterInit = true
+      @__destroyAfterInit
 
     port1 : ( attr )->
       if @__portDef then @__portDef.port1[ attr ] else ""

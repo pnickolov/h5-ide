@@ -35,7 +35,9 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     isElbSg    : ()-> @get "isElbSg"
     setAsElbSg : ()-> @set "isElbSg", true
 
-    createIpTarget : ( ipAddress )-> ipTarget = new SgIpTarget( ipAddress )
+    createIpTarget : ( ipAddress )->
+      ipTarget = new SgIpTarget( ipAddress )
+      ipTarget
 
 
     ruleCount : ()->

@@ -9,6 +9,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       y      : 2
       width  : 9
       height : 9
+      count  : 1
 
     __asso: [
       {
@@ -22,7 +23,6 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       this.__mainEni.remove()
 
 
-    count : ()-> 1
     setEmbedEni : ( eni )->
       this.__mainEni = eni
       null
@@ -57,10 +57,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
           Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({'class':'volume-image'}),
           # Volume Label
           Canvon.text( 35, 56, "0" ).attr({
-            'id'    : @id + '_volume_number'
             'class' : 'node-label volume-number'
             'value' : 0
           }),
@@ -72,26 +71,19 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
           }),
 
           # Eip
-          Canvon.image( MC.canvas.IMAGE.EIP_ON, 53, 47, 12, 14).attr({
-            'id'    : @id + '_eip_status'
-            'class' : 'eip-status'
-          }),
+          Canvon.image( MC.canvas.IMAGE.EIP_ON, 53, 47, 12, 14).attr({'class':'eip-status'}),
 
           # Child number
           Canvon.group().append(
             Canvon.rectangle(36, 1, 20, 16).attr({
-              'class': 'instance-number-bg'
+              'class': 'server-number-bg'
               'rx': 4
               'ry': 4
             }),
 
-            Canvon.text(46, 13, "0").attr({
-              'id'    : @id + '_instance-number'
-              'class' : 'node-label instance-number'
-            })
+            Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
           ).attr({
-            'id'      : @id + '_instance-number-group'
-            'class'   : 'instance-number-group'
+            'class'   : 'server-number-group'
             "display" : "none"
           }),
 
@@ -144,8 +136,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+
       # Update the node
-      # TODO : Update Server number
+      # Update Server number
+      numberGroup = node.children(".server-number-group")
+      if @get("count") > 1
+        CanvasManager.toggle node.children(".port-instance-rtb"), false
+        CanvasManager.toggle numberGroup, true
+        CanvasManager.update numberGroup.children("text"), @get("count")
+      else
+        CanvasManager.toggle node.children(".port-instance-rtb"), true
+        CanvasManager.toggle numberGroup, false
+
+
+
       # TODO : Update Volume number
       # TODO : Update Eip indicator
       # TODO : Update Instance status
@@ -163,8 +167,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
         model = new Model({
 
-          id           : data.uid
-          name         : data.name
+          id    : data.uid
+          name  : data.name
+          count : data.number
 
           imageId : data.resource.ImageId
 

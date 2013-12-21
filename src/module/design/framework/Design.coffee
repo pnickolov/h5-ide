@@ -160,7 +160,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     design.component = _old_get_component_
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
-      if ModelClass.postDeserialize
+      if ModelClass and ModelClass.postDeserialize
         ModelClass.postDeserialize( comp, layout_data[uid] )
 
 

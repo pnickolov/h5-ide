@@ -35,6 +35,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         @draw()
       null
 
+    disconnect : ( connection )->
+      if connection.type is "EniAttachment"
+        @draw()
+      null
+
     iconUrl : ()->
       if @connections( "EniAttachment" ).length
         state = "attached"
@@ -108,13 +113,13 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
           Canvon.group().append(
             Canvon.rectangle(35, 3, 20, 16).attr({
-              'class' : 'eni-number-bg'
+              'class' : 'server-number-bg'
               'rx'    : 4
               'ry'    : 4
             }),
-            Canvon.text(45, 15, "0").attr({'class':'node-label eni-number'})
+            Canvon.text(45, 15, "0").attr({'class':'node-label server-number'})
           ).attr({
-            'class'   : 'eni-number-group'
+            'class'   : 'server-number-group'
             'display' : "none"
           })
 
@@ -138,17 +143,16 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
       # Update SeverGroup Count
       instance = @connectionTargets("EniAttachment")
-      if instance.length
-        instance = instance[0]
+      count = if instance.length then instance[0].get("count") else 0
 
-        numberGroup = node.children(".eni-number-group")
-        if instance.count() > 1
-          CanvasManager.toggle node.children(".port-eni-rtb"), false
-          CanvasManager.toggle numberGroup, true
-          CanvasManager.update numberGroup.children("text"), instance.count()
-        else
-          CanvasManager.toggle node.children(".port-eni-rtb"), true
-          CanvasManager.toggle numberGroup, false
+      numberGroup = node.children(".server-number-group")
+      if count > 1
+        CanvasManager.toggle node.children(".port-eni-rtb"), false
+        CanvasManager.toggle numberGroup, true
+        CanvasManager.update numberGroup.children("text"), count
+      else
+        CanvasManager.toggle node.children(".port-eni-rtb"), true
+        CanvasManager.toggle numberGroup, false
 
 
   }, {

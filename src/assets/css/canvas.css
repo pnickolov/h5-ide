@@ -413,11 +413,10 @@
 
 #svg_canvas .deleted.selected .node-label-name-bg {
 	fill: rgb(243, 98, 98);
-		fill-opacity: 0.3;
+	fill-opacity: 0.3;
 }
 
-.deleted .eni-number-bg,
-.deleted .instance-number-bg {
+.deleted .server-number-bg {
 	fill: red;
 }
 
@@ -804,21 +803,19 @@
 	display: none;
 }
 
-.canvas_state_app .instance-number-bg {
+.canvas_state_app .server-number-bg {
 	cursor: pointer;
 }
 
-.canvas_state_appedit .instance-number-bg,
-.canvas_state_appedit .eni-number-bg {
+.canvas_state_appedit .server-number-bg {
 	fill: #C4C4C4;
 }
 
-.canvas_state_appedit .instance-number {
+.canvas_state_appedit .server-number {
 	font-weight: normal;
 }
 
-.canvas_state_app .instance-number,
-.canvas_state_app .eni-number {
+.canvas_state_app .server-number{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -1009,25 +1006,13 @@
 }
 
 
-.instance-number-bg {
+.server-number-bg {
 	stroke-width:0;
 	fill:#439beb;
 	opacity: 1;
 }
 
-.instance-number {
-	font-weight: bold;
-	fill: white;
-	font-size: 12px;
-}
-
-.eni-number-bg {
-	stroke-width:0;
-	fill:#439beb;
-	opacity: 1;
-}
-
-.eni-number {
+.server-number {
 	font-weight: bold;
 	fill: white;
 	font-size: 12px;

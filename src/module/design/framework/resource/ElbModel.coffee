@@ -25,6 +25,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
       }
 
     type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+
     newNameTmpl : "load-balancer-"
 
     initialize : ()->
@@ -132,6 +133,14 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
+      for lis in elb.get 'ListenerDescriptions'
+        if lis.Listener.SSLCertificateId
+          uid = MC.extractID lis.Listener.SSLCertificateId
+          elb.associate resolve, uid
+
+      if data.resource.SecurityGroups
+        for sg in data.resource.SecurityGroups
+          new SgAsso( elb, resolve( MC.extractID( sg ) ) )
 
       # SgAsso
       for sg in data.resource.SecurityGroups || []

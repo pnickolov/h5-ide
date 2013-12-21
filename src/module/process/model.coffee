@@ -89,7 +89,7 @@ define [ 'aws_model', 'ami_model'
                         ide_event.trigger ide_event.CLOSE_DESIGN_TAB, obj.id
 
                     # notification
-                    notification 'error', error_message, true
+                    notification 'error', error_message, false
 
                     null
 

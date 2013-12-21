@@ -2,7 +2,8 @@
 #  View Mode for component/awscredential
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'UI.notification' ], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event) ->
+define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model', 'account_model', 'i18n!nls/lang.js', 'event', 'constant', 'UI.notification'
+], (Backbone, $, _, MC, session_model, vpc_model, account_model, lang, ide_event, constant) ->
 
     AWSCredentialModel = Backbone.Model.extend {
 
@@ -106,17 +107,29 @@ define [ 'backbone', 'jquery', 'underscore', 'MC', 'session_model', 'vpc_model',
                             me.set 'is_authenticated', true
                             MC.forge.cookie.setCookieByName 'has_cred',   true
                             MC.forge.cookie.setCookieByName 'account_id', account_id
-                            #MC.forge.cookie.setCookieByName 'new_account', false if MC.forge.cookie.getCookieByName( 'new_account' ) is 'true'
                             MC.forge.cookie.setIDECookie $.cookie()
+
+                            # update account attributes
+                            regionAttrSet = result.resolved_data
+                            _.map constant.REGION_KEYS, ( value ) ->
+                                if regionAttrSet[ value ] and regionAttrSet[ value ].accountAttributeSet
+
+                                    #resolve support-platform
+                                    support_platform = regionAttrSet[ value ].accountAttributeSet.item[0].attributeValueSet.item
+                                    if support_platform and $.type(support_platform) == "array"
+                                        if support_platform.length == 2
+                                            MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue + ',' + support_platform[1].attributeValue
+                                        else if support_platform.length == 1
+                                            MC.data.account_attribute[ value ].support_platform = support_platform[0].attributeValue
+
+                                    #resolve default-vpc
+                                    default_vpc = regionAttrSet[ value ].accountAttributeSet.item[1].attributeValueSet.item
+                                    if  default_vpc and $.type(default_vpc) == "array" and default_vpc.length == 1
+                                        MC.data.account_attribute[ value ].default_vpc = default_vpc[0].attributeValue
+                                null
 
                         else
                             me.set 'is_authenticated', false
-                            #MC.forge.cookie.setCookieByName 'has_cred', false
-
-                            # reset key: last key -> key
-                            #me.resetKey 0
-                            #
-                            #notification 'warning', lang.ide.HEAD_MSG_ERR_KEY_UPDATE
                             null
 
                         me.set 'account_id', account_id

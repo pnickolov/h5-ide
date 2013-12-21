@@ -177,19 +177,32 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
 
+    # This method will try to draw a line if the leftRes connects to rightRes
+    # If rightRes is undefined, it will try to redraw sgLine for leftRes
     tryDrawLine : ( leftRes, rightRes )->
-      rightMap = {}
-      for sg in rightRes.connectionTargets("SgAsso")
-        rightMap[ sg.id ] = true
 
-      for sg in leftRes.connectionTargets("SgAsso")
-        for connectedSg in sg.getVisualConnectedSg()
-          if rightMap[ connectedSg.id ]
-            new SgLine( leftRes, rightRes )
-            return
+      if rightRes
+        rightMap = {}
+        for sg in rightRes.connectionTargets("SgAsso")
+          rightMap[ sg.id ] = true
+
+        for sg in leftRes.connectionTargets("SgAsso")
+          for connectedSg in sg.getVisualConnectedSg()
+            if rightMap[ connectedSg.id ]
+              new SgLine( leftRes, rightRes )
+              return
+      else
+        rightResArr = []
+        for sg in leftRes.connectionTargets("SgAsso")
+
+          for otherSg in sg.connectionTargets("SgRuleSet")
+
+            rightResArr = rightResArr.concat otherSg.connectionTargets("SgAsso")
+
+        for rightres in rightResArr
+          new SgLine( leftRes, rightRes )
 
       null
-
 
     updateSgLines : ()->
       ### env:dev ###

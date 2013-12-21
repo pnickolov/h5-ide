@@ -39,6 +39,16 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
     setInternal : ( isInternal )->
       @set "internal", !!isInternal
       @draw()
+
+      if isInternal
+        # Redraw SG Line
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        SgModel.tryDrawLine( @ )
+
+      else
+        # Hide Sg Line when set to internal
+        for line in @connections("SgRuleLine")
+          line.remove()
       null
 
     draw : ( isCreate )->
@@ -97,6 +107,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
 
         # Update Image
         CanvasManager.update node.children("image"), @iconUrl(), "href"
+
+      # Toggle left port
+      CanvasManager.toggle node.children(".port-elb-sg-in"), @get("internal")
 
   }, {
 

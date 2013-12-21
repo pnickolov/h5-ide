@@ -130,21 +130,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
 
       })
 
-      if data.resource.SecurityGroups
-        for sg in data.resource.SecurityGroups
-          new SgAsso( elb, resolve( MC.extractID( sg ) ) )
+      ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
+      ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
 
-      if data.resource.Instances
-        InstanceModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
-        ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
+      # SgAsso
+      for sg in data.resource.SecurityGroups || []
+        new SgAsso( elb, resolve( MC.extractID(sg) ) )
 
-        for ami in data.resource.Instances
-          new ElbAmiAsso( elb, resolve( MC.extractID( ami.InstanceId ) ) )
+      # Elb <=> Ami
+      for ami in data.resource.Instances || []
+        new ElbAmiAsso( elb, resolve( MC.extractID(ami.InstanceId) ) )
 
-      if data.resource.Subnets
-        ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
-        for sb in data.resource.Subnets
-          new ElbSubnetAsso( elb, resolve( MC.extractID sb  ) )
+      # Elb <=> Subnet
+      for sb in data.resource.Subnets || []
+        new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
 
       null
   }

@@ -101,19 +101,19 @@ define [ "constant",
 
     deserialize : ( data, layout_data, resolve )->
 
-      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      # RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
 
-      # If we don't have a mainRT yet, then we don't deserialize this data
-      if not RtbModel.getMainRouteTable()
-        return
+      # # If we don't have a mainRT yet, then we don't deserialize this data
+      # if not RtbModel.getMainRouteTable()
+      #   return
 
-      AclModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      # AclModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
-      # If we don't have a DefaultAcl yet, then we don't deserialzie this data
-      if not AclModel.getDefaultAcl()
-        return
+      # # If we don't have a DefaultAcl yet, then we don't deserialzie this data
+      # if not AclModel.getDefaultAcl()
+      #   return
 
-      subnet = new Model({
+      new Model({
 
         id   : data.uid
         name : data.name

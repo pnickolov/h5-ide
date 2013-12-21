@@ -32,8 +32,15 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # extend( protoProps, overrideArray, staticProps ) : ResourceModelSubClass
         description : returns a subClass of ResourceModel
 
-    # deserialize()
-        description : Must be implemented by the user, otherwise it logs an error in console.
+    # preDeserialize( JSON_DATA, LAYOUT_DATA )
+        description : If a Class is marked as resolveFirst, this method will be call.
+
+    # deserialize( JSON_DATA, LAYOUT_DATA, resolve )
+        description : This method is used to create objects from JSON.
+        Must be implemented by the user, otherwise it logs an error in console.
+
+    # postDeserialize( JSON_DATA, LAYOUT_DATA )
+        description : This method is called after all objects are created. It's the place to create connections between objects.
 
     ++ Class Attributes ++
 

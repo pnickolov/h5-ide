@@ -4,7 +4,6 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
   Model = ComplexResModel.extend {
 
     defaults :
-      embed           : false
       sourceDestCheck : true
       description     : ""
 
@@ -14,6 +13,21 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       height   : 9
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+
+
+    constructor : ( attributes, option )->
+      if attributes.instance
+        @__embedInstance = attributes.instance
+
+      delete attributes.instance
+
+      ComplexResModel.call this, attributes, option
+      null
+
+
+    embedInstance : ()-> @__embedInstance
+
+    hasEip : ()-> false
 
 
     connect : ( connection )->
@@ -35,13 +49,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       else
         MC.canvas.IMAGE.EIP_OFF
 
-    hasEip : ()->
-      false
-
-
     draw : ( isCreate )->
 
-      if @get("embed")
+      if @embedInstance()
         # Do nothing if this is embed eni, a.k.a the internal eni of an Instance
         return
 
@@ -102,12 +112,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
               'rx'    : 4
               'ry'    : 4
             }),
-            Canvon.text(45, 15, "0").attr({
-              'id'    : @id + '_eni-number'
-              'class' : 'node-label eni-number'
-            })
+            Canvon.text(45, 15, "0").attr({'class':'node-label eni-number'})
           ).attr({
-            'id'      : @id + '_eni-number-group'
             'class'   : 'eni-number-group'
             'display' : "none"
           })
@@ -126,9 +132,23 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         # Update Image
         CanvasManager.update node.children("image:not(.eip-status)"), @iconUrl(), "href"
 
-        # Update Image
+        # Update EIP
         CanvasManager.update node.children(".eip-status"), @eipIconUrl(), "href"
 
+
+      # Update SeverGroup Count
+      instance = @connectionTargets("EniAttachment")
+      if instance.length
+        instance = instance[0]
+
+        numberGroup = node.children(".eni-number-group")
+        if instance.count() > 1
+          CanvasManager.toggle node.children(".port-eni-rtb"), false
+          CanvasManager.toggle numberGroup, true
+          CanvasManager.update numberGroup.children("text"), instance.count()
+        else
+          CanvasManager.toggle node.children(".port-eni-rtb"), true
+          CanvasManager.toggle numberGroup, false
 
 
   }, {
@@ -137,38 +157,44 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
     deserialize : ( data, layout_data, resolve )->
 
-      subnet = resolve( MC.extractID( data.resource.SubnetId ) )
-
+      # See if it's embeded eni
       attachment = data.resource.Attachment
       embed      = attachment and attachment.DeviceIndex is "0"
       instance   = if attachment and attachment.InstanceId then resolve( MC.extractID( attachment.InstanceId) ) else null
 
-      eni = new Model({
-
+      # Create
+      attr = {
         id    : data.uid
         name  : data.name
         appId : data.resource.NetworkInterfaceId
 
-        embed           : embed
         description     : data.resource.Description
         sourceDestCheck : data.resource.SourceDestCheck
 
-        parent : subnet
+        parent : resolve( MC.extractID(data.resource.SubnetId) )
 
         x : if embed then 0 else layout_data.coordinate[0]
         y : if embed then 0 else layout_data.coordinate[1]
-      })
+      }
 
-      if data.resource.GroupSet
-        sgTarget = if embed then instance else eni
-        for group in data.resource.GroupSet
-          new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
+      if embed then attr.instance = instance
+      eni = new Model( attr )
 
-      if not embed and instance
-        new EniAttachment( eni, instance )
 
+      sgTarget = eni.embedInstance() or eni
+
+      # Create SgAsso
+      for group in data.resource.GroupSet || []
+        new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
+
+      # Create connection between Eni and Instance
+      if instance
+        if embed
+          instance.setEmbedEni( eni )
+          eni.__embedInstance = instance
+        else
+          new EniAttachment( eni, instance )
       null
-
   }
 
   Model

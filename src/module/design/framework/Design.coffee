@@ -117,7 +117,6 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Use resolve to replace component(), so that during deserialization,
     # dependency can be resolved by using design.component()
     _old_get_component_ = design.component
-    design.component = resolveDeserialize
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     design.__shoulddraw = false
@@ -132,30 +131,37 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     ###########################
     # Start deserialization
     ###########################
-    # Deserialize VPC first
-    for uid, comp of json_data
-      if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-        recursiveCheck = {}
-        resolveDeserialize uid
-        break
-
     # Deserialize resolveFisrt resources
+    design.component = null # Forbid user to call component at this time.
     for uid, comp of json_data
       if Design.__resolveFirstMap[ comp.type ] is true
-        recursiveCheck = {}
-        resolveDeserialize uid
+        ModelClass = Design.modelClassForType( comp.type )
 
-    # Deserialize other resources
+        ### env:dev ###
+        if not ModelClass
+          console.warn "We do not support deserializing resource of type : #{component_data.type}"
+          continue
+        if not ModelClass.preDeserialize
+          console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
+          continue
+        ### env:dev:end ###
+
+        ModelClass.preDeserialize( comp, layout_data[uid] )
+
+
+    # Deserialize normal resources
+    design.component = resolveDeserialize
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid
 
-    # Some resources might need to delay until other resources are deserialized.
-    # So here, we give a second chance for them to deserialize
-    for uid, comp of json_data
-      recursiveCheck = {}
-      resolveDeserialize uid
 
+    # Give a chance for resources to create connection between each others.
+    design.component = _old_get_component_
+    for uid, comp of json_data
+      ModelClass = Design.modelClassForType( comp.type )
+      if ModelClass.postDeserialize
+        ModelClass.postDeserialize( comp, layout_data[uid] )
 
 
     ####################
@@ -176,10 +182,6 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     for comp in lines
       comp.draw( true )
 
-    ####################
-    # CleanUp
-    ####################
-    design.component = _old_get_component_
 
     ####################
     # Broadcast event
@@ -216,8 +218,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   Design.__modelClassMap   = {}
   Design.__resolveFirstMap = {}
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
-    @__modelClassMap[ type ]   = modelClass
-    @__resolveFirstMap[ type ] = resolveFirst
+    @__modelClassMap[ type ] = modelClass
+    if resolveFirst
+      @__resolveFirstMap[ type ] = resolveFirst
     null
 
   DesignImpl.prototype.classCacheForCid = ( cid )->

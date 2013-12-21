@@ -18,6 +18,15 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       }
     ]
 
+    remove : ()->
+      this.__mainEni.remove()
+
+
+    count : ()-> 1
+    setEmbedEni : ( eni )->
+      this.__mainEni = eni
+      null
+
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get("imageId") ]
 

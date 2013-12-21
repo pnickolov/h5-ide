@@ -15,7 +15,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
 
     initialize : ()->
       # Add RouteTable to CurrentVPC
-      VpcModel.theVPC().addChild( @ )
+      # When deserializing() the VPC might not be available.
+      vpc = VpcModel.theVPC()
+      if vpc
+        vpc.addChild( @ )
       null
 
     setMain : ()->
@@ -41,6 +44,12 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
           new RtbAsso( this, sb, { implicit : true } )
 
     addRoute : ( targetId, r, propagating )->
+
+      # If the target is an ENI, and it's embeded.
+      # We connect to its Instance
+      component = Design.instance().component( targetId )
+      if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.embedInstance()
+        component = component.embedInstance()
 
       # Find out if we already have one connection between this rtb to targetId
       connection = _.find @connections(), ( cn )->
@@ -135,56 +144,57 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
     handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
     resolveFirst : true
 
-    deserialize : ( data, layout_data, resolve )->
-
-      subnets = []
+    preDeserialize : ( data, layout_data )->
 
       if data.resource.AssociationSet
         if data.resource.AssociationSet[0]
           asso_main = data.resource.AssociationSet[0].Main
 
-        for r in data.resource.AssociationSet
-          if not r.Main and r.SubnetId
-            subnet = resolve( MC.extractID( r.SubnetId ) )
-
-            # We don't have all the subnet we need
-            # Then don't deserialize this RTB
-            if not subnet
-              return
-
       rtb = new Model({
-
         id   : data.uid
         name : data.name
-
-        main : asso_main
-
-        x : layout_data.coordinate[0]
-        y : layout_data.coordinate[1]
+        main : !!asso_main
+        x    : layout_data.coordinate[0]
+        y    : layout_data.coordinate[1]
       })
 
-      # Create routes between RTB and other resources
+
+    deserialize : ( data, layout_data, resolve )->
+
+      rtb = resolve( data.uid )
+
+      # A fix for subnet
+      if not rtb.parent()
+        VpcModel.theVPC().addChild( rtb )
+      null
+
+    postDeserialize : ( data, layout_data )->
+
+      design = Design.instance()
+
+      rtb = design.component( data.uid )
+
+      # Create asso between RTB and Subnet
+      for r in data.resource.AssociationSet || []
+        if not r.Main and r.SubnetId
+          new RtbAsso( rtb, design.component( MC.extractID( r.SubnetId ) ) )
+
+      # Create routes between RTB and resources
       routes = data.resource.RouteSet
       if routes and routes.length > 1
-
         # Find out which route is propagating
         propagateMap = {}
-        if data.resource.PropagatingVgwSet
-          for ref in data.resource.PropagatingVgwSet
-            propagateMap[ MC.extractID(ref) ] = true
+        for ref in data.resource.PropagatingVgwSet || []
+          propagateMap[ MC.extractID(ref) ] = true
+
 
         # The first RouteSet is always local, so we don't deserialize it
         i = 1
         while i < routes.length
           r  = routes[i]
           id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
-
           rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
           ++i
-
-      # Create Asso between RTB and Subnets
-      for subnet in subnets
-        new RtbAsso( rtb, subnet )
       null
   }
 

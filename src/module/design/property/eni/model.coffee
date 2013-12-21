@@ -32,6 +32,14 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 				@getEniGroup( uid )
 			null
 
+		setEniDesc : ( value ) ->
+			Design.instance().component( @get("uid") ).set("description", value)
+			null
+
+		setSourceDestCheck : ( value ) ->
+			Design.instance().component( @get("uid") ).set("sourceDestCheck", value)
+			null
+
 		getEniGroup : ( eni_uid ) ->
 
 			group          = []
@@ -144,14 +152,6 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 							ip.eip = true
 
 			@set "ips", ips
-			null
-
-		setEniDesc : ( value ) ->
-			Design.instance().component( @get("uid") ).set("description", value)
-			null
-
-		setSourceDestCheck : ( value ) ->
-			Design.instance().component( @get("uid") ).set("sourceDestCheck", value)
 			null
 
 		addIP : () ->

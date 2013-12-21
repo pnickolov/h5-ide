@@ -52,10 +52,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 'haveIGW' : haveIGW
             }
 
-            if scheme is 'internal'
-                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
-            else
-                MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
+            # if scheme is 'internal'
+            #     MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
+            # else
+            #     MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNET_CANVAS
 
             this.set 'elb_detail', elb_detail
 

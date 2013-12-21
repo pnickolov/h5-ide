@@ -16,7 +16,7 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
       width  : 60
       height : 60
 
-    initalize : ()->
+    initialize : ()->
       if not @attributes.dhcp
         @attributes.dhcp = new DhcpModel()
         null
@@ -49,25 +49,13 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
   }, {
 
     handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+    resolveFirst : true
 
     # Returns current VPC in this application.
     theVPC : ()->
       Design.instance().classCacheForCid( this.prototype.classId )[0]
 
-    deserialize : ( data, layout_data, resolve )->
-
-      # Create/Get a DHCP object for VPC
-
-      # DhcpOptionsId is "default" means use no dhcp
-      # DhcpOPtionsId is "" means use default dhcp
-      dhcp = data.resource.DhcpOptionsId
-
-      if dhcp is ""
-        dhcp = new DhcpModel( { dhcpType : "default" } )
-      else if dhcp is "default"
-        dhcp = new DhcpModel( { dhcpType : "none" } )
-      else
-        dhcp = resolve( MC.extractID( dhcp ) )
+    preDeserialize : ( data, layout_data )->
 
       # Create VPC
       new Model({
@@ -80,7 +68,6 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
         dnsHostnames : data.resource.EnableDnsHostnames
         dnsSupport   : data.resource.EnableDnsSupport
         tenancy      : data.resource.InstanceTenancy
-        dhcp         : dhcp
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]
@@ -90,6 +77,25 @@ define [ "constant", "../GroupModel", "../CanvasManager", "./DhcpModel" ], ( con
 
       null
 
+    deserialize : ( data, layout, resolve )->
+
+      # The VPC has already created in preDeserialize().
+      vpc = resolve( data.uid )
+
+      # Create/Get a DHCP object for VPC
+
+      # DhcpOptionsId is "default" means use no dhcp
+      # DhcpOPtionsId is "" means use default dhcp
+      dhcp = data.resource.DhcpOptionsId
+
+      if dhcp is ""
+        vpc.get("dhcp").setDefault()
+      else if dhcp is "default"
+        vpc.get("dhcp").setNone()
+      else
+        vpc.set("dhcp", resolve( MC.extractID( dhcp ) ) )
+
+      null
   }
 
   Model

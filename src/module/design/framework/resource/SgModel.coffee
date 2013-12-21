@@ -247,14 +247,12 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     deserialize : ( data, layout_data, resolve )->
 
       group = new Model({
-
         name  : data.name
         id    : data.uid
         appId : data.resource.GroupId
 
         isDefault   : data.name is "DefaultSG"
         description : data.resource.GroupDescription
-
       })
 
       rules = []

@@ -94,29 +94,21 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
     getDefaultAcl : ()->
       _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
 
-    deserialize : ( data, layout_data, resolve )->
-
-      isDefault = data.name is "DefaultACL"
-      subnets   = []
-
-      if not isDefault and data.resource.AssociationSet
-        # If this is not DefaultACL, then we need to get its subnets.
-        # If the subnet cannot be resolve yet, then, we do not deserialize this ACL
-        for asso in data.resource.AssociationSet
-          subnet = resolve( MC.extractID( asso.SubnetId ) )
-          if not subnet then return
-          subnets.push subnet
-
-      acl = new Model({
+    preDeserialize : ( data, layout_data )->
+      new Model({
         id        : data.uid
         name      : data.name
         rules     : formatRules( data.resource.EntrySet )
-        isDefault : isDefault
+        isDefault : data.name is "DefaultACL"
       })
 
-      for sb in subnets
-        new AclAsso( acl, sb )
+      null
 
+    deserialize : ( data, layout_data, resolve )->
+      acl = resolve( data.uid )
+
+      for asso in data.resource.AssociationSet
+        new AclAsso( acl, resolve( MC.extractID(asso.SubnetId) ) )
       null
   }
 

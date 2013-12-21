@@ -131,6 +131,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                         eni = MC.canvas_data.component[uid]
                         if eni.resource.Attachment and eni.resource.Attachment.DeviceIndex is "0"
+                            route.ref  = eni.resource.Attachment.InstanceId
                             route.name = MC.canvas_data.component[ MC.extractID(eni.resource.Attachment.InstanceId) ].name
 
                     if route.GatewayId

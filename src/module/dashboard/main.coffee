@@ -90,11 +90,13 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                         view.enableSwitchRegion()
                         ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
                         view.hideLoadTime()
+                        $( '#global-region-visualize-VPC' ).addClass 'disabled'
                     else # normal case
                         view.clearDemo()
                         view.enableSwitchRegion()
                         view.reloadResource( null, true ) if view  #skip_load=true, only show loading progress
                         view.displayLoadTime()
+                        $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
                     #reset config data after chagne credential
                     MC.data.config = {}

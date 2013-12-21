@@ -212,6 +212,8 @@ var Tabbar = {
 			Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
 
 			$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+
+			Tabbar.resize($('#tab-bar').width());
 		}
 
 		return false;

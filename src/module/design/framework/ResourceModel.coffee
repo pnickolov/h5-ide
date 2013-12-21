@@ -114,7 +114,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       else if uid
         model = resolve uid
         @associate model
-      else
+      else if _.isFunction resolve
         for attr in @__asso
           keys = attr.key.split '.'
           masterKey = keys.pop()
@@ -130,7 +130,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
             for arn in arns
               uid = MC.extractID arn
               model = resolve uid
-              @associate model
+              if model
+                @associate model
             if not keys.length
               @unset attr.key
       null

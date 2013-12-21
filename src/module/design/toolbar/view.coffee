@@ -170,7 +170,7 @@ define [ 'MC', 'event',
 
                     # delete F5 old process
                     obj = MC.forge.other.getProcess process_tab_name
-                    if obj and obj.flag_list and obj.flag_list.is_failed is true
+                    if obj and obj.flag_list and obj.flag_list.is_failed is true and obj.flag_list.flag is 'RUN_STACK'
                         MC.forge.other.deleteProcess process_tab_name
 
                     # repeat with app list or tab name(some run failed app tabs)

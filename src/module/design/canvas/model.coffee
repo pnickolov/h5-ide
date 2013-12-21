@@ -1100,8 +1100,13 @@ define [ 'constant',
 				keepArray = []
 				component_resource = MC.canvas_data.component[ rt_uid ].resource
 
+				for uid, comp of MC.canvas_data.component
+					if comp.type is "AWS.VPC.NetworkInterface" and comp.resource.Attachment and comp.resource.Attachment.DeviceIndex is "0" and MC.extractID( comp.resource.Attachment.InstanceId ) is portMap['instance-rtb']
+						eni_uid = uid
+						break
+
 				for i in component_resource.RouteSet
-					if MC.extractID( i.InstanceId ) isnt portMap['instance-rtb']
+					if MC.extractID( i.InstanceId ) isnt portMap['instance-rtb'] and MC.extractID( i.NetworkInterfaceId ) isnt eni_uid
 						keepArray.push i
 
 				component_resource.RouteSet = keepArray
@@ -1455,6 +1460,8 @@ define [ 'constant',
 
 					MC.aws.eni.reduceAllENIIPList(instance_component.uid)
 
+
+
 				if not main_public_eni
 					doAssociate()
 				else
@@ -1540,12 +1547,18 @@ define [ 'constant',
 			else if portMap['instance-rtb'] and ( portMap['rtb-tgt'] or portMap['rtb-tgt'] )
 
 				rt_uid = if portMap['rtb-tgt'] then portMap['rtb-tgt'] else portMap['rtb-tgt']
+
+				for uid, comp of MC.canvas_data.component
+					if comp.type is "AWS.VPC.NetworkInterface" and comp.resource.Attachment and comp.resource.Attachment.DeviceIndex is "0" and MC.extractID( comp.resource.Attachment.InstanceId ) is portMap['instance-rtb']
+						eni = comp
+						break
+
 				MC.canvas_data.component[rt_uid].resource.RouteSet.push {
 					'DestinationCidrBlock' : "",
 					'GatewayId'            : "",
-					'InstanceId'           : "@#{portMap['instance-rtb']}.resource.InstanceId",
+					'InstanceId'           : "",
 					'InstanceOwnerId'      : "",
-					'NetworkInterfaceId'   : "",
+					'NetworkInterfaceId'   : "@#{eni.uid}.resource.NetworkInterfaceId",
 					'State'                : "",
 					'Origin'               : ""
 				}

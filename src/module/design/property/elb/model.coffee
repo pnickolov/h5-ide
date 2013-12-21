@@ -24,26 +24,34 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             this.set 'is_elb', true
 
+            #----------
             allComp = MC.canvas_data.component
 
-            elb_data = MC.canvas_data.component[ uid ]
+            elb_data = Design.instance().component( uid )
+            @elb = elb_data
 
             this.set 'component', elb_data
+            #----------
+
 
             # cross zone
-            crossZone = elb_data.resource.CrossZoneLoadBalancing
+            crossZone = elb_data.get 'CrossZoneLoadBalancing'
             if crossZone and crossZone is 'true'
                 this.set 'cross_zone', true
             else
                 this.set 'cross_zone', false
 
-            scheme = elb_data.resource.Scheme
+            scheme = elb_data.get 'Scheme'
 
             # have igw ?
             haveIGW = false
 
-            igwCompAry = _.filter allComp, (obj) ->
-                obj.type is 'AWS.VPC.InternetGateway'
+
+            IGWModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+            allIGW = IGWModel and IGWModel.allObjects() or []
+
+            igwCompAry = allIGW
+
             if igwCompAry.length isnt 0
                 haveIGW = true
 
@@ -59,7 +67,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             this.set 'elb_detail', elb_detail
 
-            healthcheck = elb_data.resource.HealthCheck
+            healthcheck = elb_data.get 'HealthCheck'
 
             target = healthcheck.Target
 
@@ -101,7 +109,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             }
 
             #Listener
-            listenerAry = elb_data.resource.ListenerDescriptions
+            listenerAry = elb_data.get 'ListenerDescriptions'
             this.set 'listener_detail', {
                 listenerAry: listenerAry
             }
@@ -123,19 +131,20 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 azObj[elem.zoneName] = 0
                 null
 
-            _.each MC.canvas_data.component, (compObj) ->
-                compType = compObj.type
-                if compType is 'AWS.EC2.Instance'
-                    # subnetUID = compObj.resource.SubnetId.split('.')[0].slice(1)
-                    # subnetCompObj = MC.canvas_data.component[subnetUID]
-                    # azName = subnetCompObj.resource.AvailabilityZone
-                    azName = compObj.resource.Placement.AvailabilityZone
-                    azObj[azName]++
+            InstanceModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+            allInstance = InstanceModel and InstanceModel.allObjects() or []
+
+            _.each allInstance, ( instance ) ->
+                # subnetUID = compObj.resource.SubnetId.split('.')[0].slice(1)
+                # subnetCompObj = MC.canvas_data.component[subnetUID]
+                # azName = subnetCompObj.resource.AvailabilityZone
+                azName = compObj.resource.Placement.AvailabilityZone
+                azObj[azName]++
                 null
 
             # have az ##################################################################
-            if !MC.canvas_data.component[uid].resource.VpcId
-                azAry = MC.canvas_data.component[uid].resource.AvailabilityZones
+            if not @elb.get 'VpcId'
+                azAry = @elb.get 'AvailabilityZones'
                 _.each azObj, (value, key) ->
                     obj = {}
                     obj[key] = value
@@ -175,7 +184,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if MC.aws.aws.checkDefaultVPC()
                 defaultVPC = true
 
-            if defaultVPC or MC.canvas_data.component[uid].resource.VpcId
+            if defaultVPC or @elb.get 'VpcId'
                 this.set 'have_vpc', true
             else
                 this.set 'have_vpc', false
@@ -190,15 +199,16 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             # before, modify elb default sg name
             elbSG = MC.aws.elb.getElbDefaultSG uid
             if elbSG
-                originELBName = MC.canvas_data.component[uid].resource.LoadBalancerName
+                originELBName = @elb.get 'LoadBalancerName'
                 newSGName = value + '-sg'
                 elbSGUID = elbSG.uid
-                MC.canvas_data.component[elbSGUID].name = newSGName
-                MC.canvas_data.component[elbSGUID].resource.GroupName = newSGName
+                elb = Design.instance().component( elbSGUID )
+                elb.set 'name', newSGName
+                elb.set 'GroupName', newSGName
 
             # after, modify elb name
-            MC.canvas_data.component[uid].name = value
-            MC.canvas_data.component[uid].resource.LoadBalancerName = value
+            @elb.set 'name', value
+            @elb.set 'LoadBalancerName', value
 
             null
 
@@ -210,9 +220,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             component = MC.canvas_data.component[ uid ]
 
             if value is 'internal'
-                component.resource.Scheme = 'internal'
+                @elb.set 'Scheme', 'internal'
             else
-                component.resource.Scheme = 'internet-facing'
+                @elb.set 'Scheme', 'internet-facing'
 
             if value is 'internal'
                 MC.canvas.update uid, 'image', 'elb_scheme', MC.canvas.IMAGE.ELB_INTERNAL_CANVAS
@@ -226,9 +236,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         setHealthProtocol   : ( value ) ->
             console.log 'setHealthProtocol = ' + value
 
-            uid = @get 'uid'
-
-            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            healthcheck = @elb.get 'HealthCheck'
+            target = healthcheck.Target
             new_target = value + ':' + target.split(':')[1]
 
             if value is 'TCP' or value is 'SSL'
@@ -238,70 +247,79 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 if !path
                     new_target += '/index.html'
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
+            healthcheck.Target = new_target
+
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthPort: ( value ) ->
             console.log 'setHealthPort = ' + value
 
-            uid = @get 'uid'
-
-            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            healthcheck = @elb.get 'HealthCheck'
+            target = healthcheck.Target
             new_target = target.split(':')[0] + ':' + value
             path = target.split('/')[1]
             if path
                 new_target += '/' + path
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
+
+            healthcheck.Target = new_target
+
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthPath: ( value ) ->
             console.log 'setHealthPath = ' + value
 
-            uid = @get 'uid'
-
-            target = MC.canvas_data.component[ uid ].resource.HealthCheck.Target
+            healthcheck = @elb.get 'HealthCheck'
+            target = healthcheck.Target
             new_target = target.split('/')[0] + value
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.Target = new_target
+            healthcheck.Target = new_target
+
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthInterval: ( value ) ->
             console.log 'setHealthInterval = ' + value
 
-            uid = @get 'uid'
+            healthcheck = @elb.get 'HealthCheck'
+            healthcheck.Interval = Number(value)
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.Interval = Number(value)
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthTimeout: ( value ) ->
             console.log 'setHealthTimeout = ' + value
 
-            uid = @get 'uid'
+            healthcheck = @elb.get 'HealthCheck'
+            healthcheck.Timeout = Number(value)
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.Timeout = Number(value)
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthUnhealth: ( value ) ->
             console.log 'setHealthUnhealth = ' + value
 
-            uid = @get 'uid'
+            healthcheck = @elb.get 'HealthCheck'
+            healthcheck.UnhealthyThreshold = Number(value)
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.UnhealthyThreshold = Number(value)
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
         setHealthHealth: ( value ) ->
             console.log 'setHealthHealth = ' + value
 
-            uid = @get 'uid'
+            healthcheck = @elb.get 'HealthCheck'
+            healthcheck.HealthyThreshold = Number(value)
 
-            MC.canvas_data.component[ uid ].resource.HealthCheck.HealthyThreshold = Number(value)
+            @elb.set 'HealthCheck', healthcheck
 
             null
 
@@ -325,9 +343,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     null
 
                 if delCertComp
-                    delete MC.canvas_data.component[currentCertUID]
+                    Design.instance().component( currentCertUID ) and Design.instance().component( currentCertUID ).remove()
 
-            MC.canvas_data.component[uid].resource.ListenerDescriptions = value
+            @elb.set 'ListenerDescriptions', value
             MC.aws.elb.updateRuleToElbSG uid
 
             null
@@ -340,7 +358,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 uid = @get 'uid'
 
             certUID = ''
-            listenerAry = MC.canvas_data.component[ uid ].resource.ListenerDescriptions
+            listenerAry = @elb.get 'ListenerDescriptions'
             _.each listenerAry, (obj) ->
                 certId = obj.Listener.SSLCertificateId
                 if certId != ''
@@ -349,13 +367,14 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                         return false
                     catch err
 
-            MC.canvas_data.component[certUID]
+            Design.instance().component( certUID )
+
 
         setListenerCert: ( value ) ->
 
             uid = @get 'uid'
 
-            listenerAry = MC.canvas_data.component[uid].resource.ListenerDescriptions
+            listenerAry = @elb.get 'ListenerDescriptions'
 
             currentCertUID = ''
 
@@ -365,9 +384,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                 #clean ami
                 if (!value.name && !value.resource.PrivateKey && !value.resource.CertificateBody)
-                    delete MC.canvas_data.component[currentCertUID]
+                    Design.instance().component( currentCertUID ) and Design.instance().component( currentCertUID ).remove()
+
                     _.each listenerAry, (obj, index) ->
-                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = ''
+                        ListenerDescriptions = @elb.get 'ListenerDescriptions'
+                        ListenerDescriptions[index].Listener.SSLCertificateId = ''
+                        @elb.set 'ListenerDescriptions', ListenerDescriptions
                         null
             else
                 currentCertUID = MC.guid()

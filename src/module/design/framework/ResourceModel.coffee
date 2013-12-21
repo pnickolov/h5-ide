@@ -111,29 +111,30 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         model = resolve
         @addToStorage model
         model.addToStorage @
-      else if uid
-        model = resolve uid
-        @associate model
       else if _.isFunction resolve
-        for attr in @__asso
-          keys = attr.key.split '.'
-          masterKey = keys.pop()
-          arns = @get keys
+        if uid
+          model = resolve uid
+          @associate model
+        else
+          for attr in @__asso
+            keys = attr.key.split '.'
+            masterKey = keys.pop()
+            arns = @get keys
 
-          for k in keys
-            arns = arns[ k ]
+            for k in keys
+              arns = arns[ k ]
 
-          if _.isString arns
-            arns = [ arns ]
+            if _.isString arns
+              arns = [ arns ]
 
-          if _.isArray arns
-            for arn in arns
-              uid = MC.extractID arn
-              model = resolve uid
-              if model
-                @associate model
-            if not keys.length
-              @unset attr.key
+            if _.isArray arns
+              for arn in arns
+                uid = MC.extractID arn
+                model = resolve uid
+                if model
+                  @associate model
+              if not keys.length
+                @unset attr.key
       null
 
     disassociate: ( filter ) ->

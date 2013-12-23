@@ -219,7 +219,7 @@ StateEditorView = Backbone.View.extend({
 		that.cmdParaObjMap = that.model.get('cmdParaObjMap')
 		that.cmdModuleMap = that.model.get('cmdModuleMap')
 		that.moduleCMDMap = that.model.get('moduleCMDMap')
-		that.refObjAry = [{
+		###that.refObjAry = [{
 			name: '{host1.privateIP}',
 			value: '{host1.privateIP}'
 		}, {
@@ -228,7 +228,8 @@ StateEditorView = Backbone.View.extend({
 		}, {
 			name: '{host2.instanceId}',
 			value: '{host1.instanceId}'
-		}]
+		}]###
+		that.refObjAry = JSON.parse(localStorage['state_editor_list'])
 
 	bindStateListEvent: () ->
 
@@ -253,7 +254,7 @@ StateEditorView = Backbone.View.extend({
 	bindCommandEvent: ($cmdValueItem) ->
 
 		that = this
-		
+
 		cmdNameAry = _.keys(that.cmdParaMap)
 
 		cmdNameAry = _.map cmdNameAry, (value, i) ->
@@ -281,7 +282,7 @@ StateEditorView = Backbone.View.extend({
 		currentParaMap = that.cmdParaObjMap[currentCMD]
 
 		_.each $paraItemList, (paraItem) ->
-			
+
 			$paraItem = $(paraItem)
 			currentParaName = $paraItem.attr('data-para-name')
 			paraObj = currentParaMap[currentParaName]
@@ -311,7 +312,7 @@ StateEditorView = Backbone.View.extend({
 		if paraType is 'dict'
 			$keyInput = $paraItem.find('.key')
 			$valueInput = $paraItem.find('.value')
-			
+
 			atwhoOption = {
 				at: '@',
 				tpl: that.paraCompleteItemHTML

@@ -90,15 +90,20 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                         view.enableSwitchRegion()
                         ide_event.trigger ide_event.ACCOUNT_DEMONSTRATE
                         view.hideLoadTime()
+                        $( '#global-region-visualize-VPC' ).addClass 'disabled'
                     else # normal case
                         view.clearDemo()
                         view.enableSwitchRegion()
                         view.reloadResource( null, true ) if view  #skip_load=true, only show loading progress
                         view.displayLoadTime()
+                        $( '#global-region-visualize-VPC' ).removeClass 'disabled'
 
                     #reset config data after chagne credential
                     MC.data.config = {}
                     MC.data.config[r] = {} for r in constant.REGION_KEYS
+
+                    # init unmanaged_resource_list
+                    MC.forge.other.initUnmanaged()
 
                     null
 
@@ -184,11 +189,19 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
 
             # reload resource
             view.on 'RELOAD_RESOURCE', ( region ) ->
+                console.log 'dashboard:RELOAD_RESOURCE'
+
                 view.displayLoadTime()
                 model.describeAWSResourcesService region
 
+                # update stack and app
                 ide_event.trigger ide_event.UPDATE_STACK_LIST
                 ide_event.trigger ide_event.UPDATE_APP_LIST
+
+                # clear cache
+                MC.forge.other.initUnmanaged()
+
+                null
 
             model.on 'change:cur_app_list', () ->
                 view.renderRegionAppStack( 'app' )
@@ -215,8 +228,8 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 null
 
             #update region app state when pending
-            # ide_event.onLongListen ide_event.UPDATE_TAB_ICON, ( flag, app_id ) ->
-            #     console.log 'UPDATE_TAB_ICON'
+            # ide_event.onLongListen ide_event.UPDATE_DESIGN_TAB_ICON, ( flag, app_id ) ->
+            #     console.log 'UPDATE_DESIGN_TAB_ICON'
 
             #     model.updateAppList flag, app_id
 

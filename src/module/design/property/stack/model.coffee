@@ -35,6 +35,12 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             property_detail.type   = @getStackType()
             property_detail.is_vpc = true if property_detail.type and property_detail.type != 'EC2 Classic'
 
+            for uid, comp of MC.canvas_data.component
+
+                if comp.type is 'AWS.VPC.VPC'
+
+                    property_detail.vpcid = comp.resource.VpcId
+
             @set 'property_detail', property_detail
 
 
@@ -268,7 +274,13 @@ define ['../base/model', 'constant'], ( PropertyModel, constant ) ->
             me = this
 
             copy_data = $.extend( true, {}, MC.canvas_data )
-            result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
+            if MC.canvas.getState() is 'appview'
+
+                result = MC.aws.aws.getCost copy_data
+
+            else
+
+                result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
 
             me.set 'cost_list', result.cost_list
             me.set 'total_fee', result.total_fee

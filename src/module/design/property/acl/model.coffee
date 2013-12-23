@@ -66,7 +66,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                     if entry.protocol == -1 or entry.protocol == '-1'
 
-                        entry.protocolName = 'All'
+                        entry.protocolName = 'ALL'
 
                     else if entry.protocol == 6 or entry.protocol == '6'
 

@@ -74,8 +74,8 @@ define [ '../base/view',
             listenerAry = @model.get('listener_detail').listenerAry
 
             Canremove = false
-            _.each listenerAry, (obj) ->
-                listener = obj.Listener
+            _.each listenerAry, (originObj) ->
+                listener = _.extend {}, originObj.Listener
                 listener.Canremove = Canremove
                 itemTpl = MC.template.elbPropertyListenerItem(listener)
                 $('#accordion-group-elb-property-listener').append itemTpl

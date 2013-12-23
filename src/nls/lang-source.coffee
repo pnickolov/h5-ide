@@ -2076,7 +2076,7 @@ module.exports =
       zh: "安全组"
 
     PROP_ELB_DNS_NAME:
-      en: "Dns"
+      en: "DNS"
       zh: "域名"
 
     PROP_ELB_HOST_ZONE_ID:
@@ -2768,8 +2768,8 @@ module.exports =
       zh: "邮箱地址已被使用"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
-      en: "It`s not an email address."
-      zh: "非有效邮箱地址"
+      en: "Please provide a valid email address."
+      zh: "请提供有效邮箱地址"
 
     HEAD_LABEL_TOUR_DESIGN_DIAGRAM:
       en: "Drag and Drop to Design Diagram"

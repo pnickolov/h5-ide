@@ -35,9 +35,8 @@ define [ 'underscore', 'backbone' ], () ->
         #
         OPEN_DESIGN            : 'OPEN_DESIGN'
         OPEN_PROPERTY          : 'OPEN_PROPERTY'
-        #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
-        SAVE_DESIGN_MODULE     : 'SAVE_DESIGN_MODULE'
         RELOAD_AZ              : 'RELOAD_AZ'
+        #OPEN_TOOLBAR          : 'OPEN_TOOLBAR'
 
         #design overlay
         SHOW_DESIGN_OVERLAY    : 'SHOW_DESIGN_OVERLAY'
@@ -46,33 +45,36 @@ define [ 'underscore', 'backbone' ], () ->
         #resource panel
         UPDATE_RESOURCE_STATE  : 'UPDATE_RESOURCE_STATE'
 
-        #tab
-        ADD_STACK_TAB          : 'ADD_STACK_TAB'
-        OPEN_STACK_TAB         : 'OPEN_STACK_TAB'
-        OPEN_APP_TAB           : 'OPEN_APP_TAB'
-        OPEN_APP_PROCESS_TAB   : 'OPEN_APP_PROCESS_TAB'
-        PROCESS_RUN_SUCCESS    : 'PROCESS_RUN_SUCCESS'
-        RELOAD_STACK_TAB       : 'RELOAD_STACK_TAB'
-        RELOAD_NEW_STACK_TAB   : 'RELOAD_NEW_STACK_TAB'
-        CLOSE_TAB              : 'CLOSE_TAB'
-        #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
-
-        #switch ide.html
+        #switch
         SWITCH_TAB             : 'SWITCH_TAB'
         SWITCH_DASHBOARD       : 'SWITCH_DASHBOARD'
-        SWITCH_APP_PROCESS     : 'SWITCH_APP_PROCESS'
+        SWITCH_PROCESS         : 'SWITCH_PROCESS'
         SWITCH_LOADING_BAR     : 'SWITCH_LOADING_BAR'
         SWITCH_WAITING_BAR     : 'SWITCH_WAITING_BAR'
         SWITCH_MAIN            : 'SWITCH_MAIN'
 
-        #tabbar
-        UPDATE_TABBAR          : 'UPDATE_TABBAR'
-        UPDATE_TAB_DATA        : 'UPDATE_TAB_DATA'
+        #tab
+        ADD_TAB_DATA           : 'ADD_TAB_DATA'
         DELETE_TAB_DATA        : 'DELETE_TAB_DATA'
-        UPDATE_TAB_ICON        : 'UPDATE_TAB_ICON'
-        UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
-        UPDATE_TAB_CLOSE_STATE : 'UPDATE_TAB_CLOSE_STATE'
-        UPDATE_TABBAR_TYPE     : 'UPDATE_TABBAR_TYPE'
+        #UPDATE_TAB_DATA       : 'UPDATE_TAB_DATA'
+        #UPDATE_TAB_CLOSE_STATE: 'UPDATE_TAB_CLOSE_STATE'
+
+        #tabbar
+        OPEN_DESIGN_TAB        : 'OPEN_DESIGN_TAB'
+        CLOSE_DESIGN_TAB       : 'CLOSE_DESIGN_TAB'
+        UPDATE_DESIGN_TAB      : 'UPDATE_DESIGN_TAB'
+        UPDATE_DESIGN_TAB_ICON : 'UPDATE_DESIGN_TAB_ICON'
+        UPDATE_DESIGN_TAB_TYPE : 'UPDATE_DESIGN_TAB_TYPE'
+
+        #ADD_STACK_TAB         : 'ADD_STACK_TAB'
+        #OPEN_STACK_TAB        : 'OPEN_STACK_TAB'
+        #OPEN_APP_TAB          : 'OPEN_APP_TAB'
+        #OPEN_APP_PROCESS_TAB  : 'OPEN_APP_PROCESS_TAB'
+
+        #PROCESS_RUN_SUCCESS   : 'PROCESS_RUN_SUCCESS'
+        #RELOAD_STACK_TAB      : 'RELOAD_STACK_TAB'
+        #RELOAD_NEW_STACK_TAB  : 'RELOAD_NEW_STACK_TAB'
+        #TERMINATE_APP_TAB     : 'TERMINATE_APP_TAB'
 
         #status bar & ta
         HIDE_STATUS_BAR        : 'HIDE_STATUS_BAR'
@@ -87,14 +89,15 @@ define [ 'underscore', 'backbone' ], () ->
         RESULT_STACK_LIST      : 'RESULT_STACK_LIST'
         RESULT_EMPTY_REGION_LIST  : 'RESULT_EMPTY_REGION_LIST'
         UPDATE_DASHBOARD       : 'UPDATE_DASHBOARD'
+        UPDATE_REGION_THUMBNAIL: 'UPDATE_REGION_THUMBNAIL'
 
         #return overview region tab
         RETURN_OVERVIEW_TAB    : 'RETURN_OVERVIEW_TAB'
         RETURN_REGION_TAB      : 'RETURN_REGION_TAB'
 
         #appedit
-        RESTORE_CANVAS         : 'RESTORE_CANVAS'
         APPEDIT_2_APP          : 'APPEDIT_2_APP'
+        RESTORE_CANVAS         : 'RESTORE_CANVAS'
         #APPEDIT_UPDATE_ERROR  : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event

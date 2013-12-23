@@ -7,39 +7,45 @@ define [ 'event' ], ( ide_event ) ->
     #private
     loadModule = () ->
 
-        #add handlebars script
-        #template = '<script type="text/x-handlebars-template" id="process-tmpl">' + template + '</script>'
-
-        #load remote html template
-        #$( template ).appendTo '#header'
-
-        #
         require [ 'process_view', 'process_model' ], ( view, model ) ->
-            #
+
+            # set current type, include 'process' and 'appview'
+            type = null
+
+            # set model
             view.model = model
-            view.render()
-
-            #test
-            MC.ide_event = ide_event
-
-            #listen
-            ide_event.onLongListen ide_event.SWITCH_APP_PROCESS, ( tab_name ) ->
-                console.log 'process:SWITCH_APP_PROCESS tab_name = ' + tab_name
-
-                if tab_name.indexOf('process-') == 0
-                    model.getProcess(tab_name)
-
-                view.render()
-
-            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_name ) ->
-                console.log 'UPDATE_PROCESS'
-
-                if MC.data.current_tab_id is tab_name
-                    model.getProcess tab_name
 
             model.on 'change:flag_list', () ->
                 console.log 'change:flag_list'
-                view.render()
+                view.render type
+
+            model.on 'change:timeout_obj', () ->
+                console.log 'change:timeout_obj'
+                view.render type
+
+            ide_event.onLongListen ide_event.SWITCH_PROCESS, ( state, tab_id ) ->
+                console.log 'process:SWITCH_PROCESS', state, tab_id
+
+                # get type
+                type = MC.forge.other.processType tab_id
+
+                # call model method
+                switch type
+                    when 'appview'
+                        obj = MC.forge.other.getCacheMap tab_id
+                        model.getVpcResourceService obj.region, obj.origin_id, state
+                        model.getTimestamp state, tab_id
+                    when 'process'
+                        model.getProcess tab_id
+
+                # view type
+                view.render type
+
+            ide_event.onLongListen ide_event.UPDATE_PROCESS, ( tab_id ) ->
+                console.log 'UPDATE_PROCESS', tab_id
+
+                if MC.data.current_tab_id is tab_id
+                    model.getProcess tab_id
 
     unLoadModule = () ->
         #

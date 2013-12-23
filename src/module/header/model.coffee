@@ -173,7 +173,8 @@ define [ 'backbone', 'jquery', 'underscore',
 
             if req
 
-                ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
+                #ide_event.trigger ide_event.OPEN_APP_TAB, req.name, req.region, req.rid
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', req.name, req.region, req.rid
 
             null
 

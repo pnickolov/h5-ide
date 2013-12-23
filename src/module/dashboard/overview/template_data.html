@@ -216,7 +216,7 @@
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
                                 <div class="region-resource-thumbnail app-thumbnail">
-                                    <img width="220" data-id="{{id}}" src="https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}"/>
+                                    <img width="220" data-id="{{id}}" src="https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{code}}?time={{update_time}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
@@ -263,7 +263,7 @@
                         <li>
                             <a href="javascript:void(0)" class="region-resource-list-item">
                                 <div class="region-resource-thumbnail">
-                                    <img width="220" data-id="{{id}}" src="{{#if code}}https://s3.amazonaws.com/madeiracloudthumbnail/{{code}}?time={{update_time}}{{else}}https://s3.amazonaws.com/madeiracloudthumbnail/{{name}}{{/if}}"/>
+                                    <img width="220" data-id="{{id}}" src="{{#if code}}https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{code}}?time={{update_time}}{{else}}https://madeiracloudthumbnails-dev.s3.amazonaws.com/{{name}}{{/if}}"/>
                                 </div>
                                 <div class="region-resource-info">
                                     <span class="region-resource-item-name truncate">{{name}}</span>
@@ -823,7 +823,7 @@
                                                         </td>
                                                         <td>{{dimension_display}}</td>
                                                         <td>{{threshold_display}}</td>
-                                                        <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grace{{/if}} icon-label"></i>{{StateValue}}</td>
+                                                        <td><i class="status {{#if state_ok}}status-green{{/if}} {{#if state_alarm}}status-red{{/if}} {{#if state_insufficient}}status-grey{{/if}} icon-label"></i>{{StateValue}}</td>
                                                         <td class="table-action"><a href="javascript:void(0)" title="View resource detail" class="icon-detail modal" data-modal-template="modalRegionResourceDetail" data-modal-data='{{{detail}}}' data-modal-dismiss="true"><i class="icon-list-2"></i></a></td>
                                                     </tr>
                                                     {{else}}

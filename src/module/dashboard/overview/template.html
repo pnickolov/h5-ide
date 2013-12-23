@@ -4,7 +4,7 @@
 		<span>just now</span>
 	</a>
 
-	<a id="global-create-stack" class="disabled" href="javascript:void(0)">
+	<a id="global-create-stack" class="disabled btn btn-primary" href="javascript:void(0)">
 		<div class="icon-new-stack"></div>
 		<span>{{i18n "IDE_COM_CREATE_NEW_STACK"}}</span>
 		<i class="icon-caret-down"></i>
@@ -18,6 +18,14 @@
 			</li>
 			{{/each}}
 		</ul>
+	</div>
+
+	<!-- Visualize unmanaged VPC -->
+	<a id="global-region-visualize-VPC" href="javascript:void(0)" class="disabled btn btn-blue help-tip"><div class="icon-visualize"></div><span>Visualize unmanaged VPC</span></a>
+	<div class="help-tip-body">
+		<p><b>Visualize custom VPC resources you have created outside MadeiraCloud.</b></p>
+		<p>Once the VPC you select has been visualized, you can manually fine-tune the auto-generated diagram.
+		<p>Currently we support to save the visualization as PNG. Future version will include the feature to import VPC resource as an app.</p>
 	</div>
 </div>
 

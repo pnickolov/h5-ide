@@ -22,6 +22,7 @@ define [ 'Design',
          './resource/IgwModel',
          './resource/VgwModel',
          './resource/ScalingPolicyModel'
+         './resource/CertificateModel'
 
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->
 

@@ -77,16 +77,11 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 ide_event.trigger ide_event.SWITCH_MAIN
                 null
 
-<<<<<<< HEAD
-        saveTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid, design_model ) ->
-            console.log 'saveTab'
-            MC.tab[ tab_id ] = { 'snapshot' : snapshot, 'data' : data, 'property' : property, 'property_panel' : property_panel, 'origin_data' : origin_data, 'origin_ta_valid' : origin_ta_valid, 'design_model' : design_model }
-=======
         #############################
         #  tab
         #############################
 
-        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid ) ->
+        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid, design_model ) ->
             console.log 'add'
 
             MC.tab[ tab_id ] =
@@ -96,8 +91,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 'property_panel'  : property_panel
                 'origin_data'     : origin_data
                 'origin_ta_valid' : origin_ta_valid
+                'design_model'    : design_model
 
->>>>>>> develop
             null
 
         deleteTab    : ( tab_id ) ->
@@ -194,7 +189,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             MC.tab[ tab_id ].origin_resource = $.extend true, {}, data if MC.tab[ tab_id ]
             null
 
-<<<<<<< HEAD
         setDesignModel : ( design ) ->
             console.log 'setDesignModel'
             design.use()
@@ -203,7 +197,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         getDesignModel : () ->
             console.log 'getDesignModel'
             Design.instance()
-=======
+
         #saveProcessTab : ( tab_id ) ->
         #    console.log 'saveProcessTab'
         #    if !MC.tab[ tab_id ] then MC.tab[ tab_id ] = $.extend true, {}, MC.process[ tab_id ]
@@ -212,7 +206,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #############################
         #  api
         #############################
->>>>>>> develop
 
         describeInstancesOfASG : (region) ->
 

@@ -42,23 +42,6 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                     MC.data.design_submodule_count = MC.data.design_submodule_count + 1
                 null
 
-<<<<<<< HEAD
-            #listen SAVE_DESIGN_MODULE
-            ide_event.onLongListen ide_event.SAVE_DESIGN_MODULE, ( tab_id ) ->
-                console.log 'design:SAVE_DESIGN_MODULE = ' + tab_id
-                #save tab
-                if tab_id.split( '-' )[0] is 'process'
-                    model.saveProcessTab tab_id
-                else
-                    model.saveTab tab_id,
-                                  view.html(),
-                                  model.getCanvasData(),
-                                  model.getCanvasProperty(),
-                                  property_main.snapshot(),
-                                  model.getOriginData(),
-                                  model.getTAValidation(),
-                                  model.getDesignModel()
-=======
             # ADD_TAB_DATA
             ide_event.onLongListen ide_event.ADD_TAB_DATA, ( tab_id ) ->
                 console.log 'ADD_TAB_DATA = ' + tab_id
@@ -73,7 +56,8 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                                      model.getCanvasProperty(),
                                      property_main.snapshot(),
                                      model.getOriginData(),
-                                     model.getTAValidation()
+                                     model.getTAValidation(),
+                                     model.getDesignModel()
 
                 catch error
                   console.log 'ADD_TAB_DATA error, current tab id is ' + tab_id
@@ -85,7 +69,6 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
             ide_event.onLongListen ide_event.DELETE_TAB_DATA, ( tab_id ) ->
                 console.log 'DELETE_TAB_DATA, tab_id = ' + tab_id
                 model.deleteTab tab_id
->>>>>>> develop
                 null
 
             # SWITCH_TAB

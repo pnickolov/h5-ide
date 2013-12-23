@@ -63,9 +63,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             MC.canvas.analysis MC.canvas_data
 
                         MC.canvas.layout.init()
-<<<<<<< HEAD
                         # model.initLine()
                         # model.reDrawSgLine()
+                        MC.aws.instance.updateStateIcon MC.canvas_data.id
 
                     # new design flow
                     options =
@@ -92,11 +92,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     new Design component, layout, options
                     # new design flow
 
-=======
-                        model.initLine()
-                        model.reDrawSgLine()
-                        MC.aws.instance.updateStateIcon MC.canvas_data.id
->>>>>>> develop
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
                     #

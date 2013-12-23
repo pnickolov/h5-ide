@@ -86,8 +86,6 @@ define [ 'event',
 
 				if design.modeIsApp() and !component.hasAppResource()
 					type = 'missing_resource'
-				else
-					type = component.type
 			else
 				type = "stack"
 

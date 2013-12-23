@@ -1,5 +1,5 @@
 
-define [ "./CanvasManager" ], ( CanvasManager )->
+define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
   ###
   CanvasElement is intent to be an adaptor for MC.canvas.js to use ResourceModel.
@@ -102,12 +102,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     return false
 
   CanvasElement.prototype.select = ()->
-    # Remove old selected
-    $allwarp = $(document.getElementById("group_layer")).children().add( document.getElementById("line_layer") ).add( document.getElementById("node_layer") )
-    CanvasManager.removeClass $allwarp.children(".selected")[0], "selected"
-
-    # Added selected to this.element
-    CanvasManager.addClass this.element(), "selected"
+    ide_event.trigger ide_event.OPEN_PROPERTY, this.type, this.id
     true
 
   CanvasElement.prototype.show = ()->

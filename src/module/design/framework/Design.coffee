@@ -23,16 +23,16 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   ### Canvas is used by $canvas to store data of svg canvas ###
   Canvas = ( size )->
-    this.size      = size
+    this.sizeAry   = size
     this.offsetAry = [0, 0]
-    this.scale     = 1
+    this.scaleAry  = 1
     this
 
   Canvas.prototype.scale = ( ratio )->
     if ratio is undefined
-      return this.scale
+      return this.scaleAry
 
-    this.scale = ratio
+    this.scaleAry = ratio
     null
 
   Canvas.prototype.offset = ( x, y )->
@@ -45,10 +45,10 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   Canvas.prototype.size = ( w, h )->
     if w is undefined
-      return this.size
+      return this.sizeAry
 
-    this.size[0] = w
-    this.size[1] = h
+    this.sizeAry[0] = w
+    this.sizeAry[1] = h
     null
 
 

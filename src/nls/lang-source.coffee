@@ -663,6 +663,10 @@ module.exports =
       en: "?"
       zh: " 吗"
 
+    TOOL_POP_TIT_STOP_PRD_APP:
+      en: "Confirm to Stop App for Production"
+      zh: "确认暂停产品应用"
+
     TOOL_POP_BTN_STOP_APP:
       en: "Stop"
       zh: "暂停"
@@ -718,6 +722,10 @@ module.exports =
     TOOL_POP_BTN_TERMINATE_APP:
       en: "Terminate"
       zh: "销毁"
+
+    TOOL_POP_TIT_TERMINATE_PRD_APP:
+      en: "Confirm to Terminate App for Production"
+      zh: "确认销毁产品应用"
 
     TOOL_MSG_INFO_REQ_SUCCESS:
       en: "Sending request to %s %s..."
@@ -1042,6 +1050,10 @@ module.exports =
     PROP_STACK_LBL_TYPE:
       en: "Type"
       zh: "类型"
+
+    PROP_STACK_LBL_USAGE:
+      en: "Usage"
+      zh: "用途"
 
     PROP_STACK_TIT_SG:
       en: "Security Groups"
@@ -2064,7 +2076,7 @@ module.exports =
       zh: "安全组"
 
     PROP_ELB_DNS_NAME:
-      en: "Dns"
+      en: "DNS"
       zh: "域名"
 
     PROP_ELB_HOST_ZONE_ID:
@@ -2760,8 +2772,8 @@ module.exports =
       zh: "邮箱地址已被使用"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
-      en: "It`s not an email address."
-      zh: "非有效邮箱地址"
+      en: "Please provide a valid email address."
+      zh: "请提供有效邮箱地址"
 
     HEAD_LABEL_TOUR_DESIGN_DIAGRAM:
       en: "Drag and Drop to Design Diagram"
@@ -3445,6 +3457,10 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> redirects <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-port'>443</span>. Suggest to use load balancer to decrypt and redirect to port <span class='validation-tag tag-port'>80</span>."
       zh: ""
 
+    TA_MSG_ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has duplicate load balancer ports."
+      zh: ""
+
     # SG
     TA_MSG_WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
@@ -3523,6 +3539,9 @@ module.exports =
       zh:""
     TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI:
       en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please use another AMI by creating new instance."
+      zh:""
+    TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI:
+      en:"You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
       zh:""
 
     ##### Trust Advisor

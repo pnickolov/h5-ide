@@ -145,6 +145,10 @@ define [ 'text!./template.html',
         onProtocolChange : ( event, id ) ->
           $(".sg-proto-input").hide()
           $("#sg-proto-ipt-" + id).show()
+          if id is 'custom'
+            $('#sg-rule-create-modal .sg-create-proto-label-port').text('Protocol')
+          else
+            $('#sg-rule-create-modal .sg-create-proto-label-port').text('Port')
 
         onICMPChange : ( event, id ) ->
           $(".sg-proto-input-sub").hide()
@@ -196,6 +200,8 @@ define [ 'text!./template.html',
           if data.protocol is "icmp"
             if protocolValue == "3" || protocolValue == "5" || protocolValue == "11" || protocolValue == "12"
               data.protocolSubValue = $("#sg-proto-input-sub-" + protocolValue).find(".selected").attr("data-id")
+            else
+              data.protocolSubValue = "-1"
 
           data
 

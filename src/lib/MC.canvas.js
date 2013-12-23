@@ -22,7 +22,7 @@ MC.canvas = {
 		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
 			state = 'stack';
 		}
-		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' ) {
+		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' || Tabbar.current === 'appview' ) {
 			state = Tabbar.current;
 		}
 		return state;
@@ -195,6 +195,9 @@ MC.canvas = {
 					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
 					if ( $('#' + uid + '_instance-state').length  === 1)
 					{
+						//remove deleted first
+						Canvon( $('#' + uid ) ).removeClass('deleted');
+
 						if ( instance_data )
 						{//instance data exist
 							$('#' + uid + '_instance-state').attr({
@@ -771,6 +774,9 @@ MC.canvas = {
 				break;
 
 			case 'rtb-tgt':
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				mid_y = point.y + 40 * sign;
 				break;
 		}
@@ -782,6 +788,9 @@ MC.canvas = {
 		switch (port_id)
 		{
 			case 'rtb-tgt': //for start
+			case 'elb-assoc':
+			case 'elb-sg-in':
+			case 'elb-sg-out':
 				if (point.connectionAngle === 0)
 				{//left port
 					mid_x = point.x + 4;
@@ -897,14 +906,14 @@ MC.canvas = {
 		{
 			//C
 			mid_y = (start.y + end.y) / 2;
-			if (to_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			if ( (to_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(mid_y - end.y) > 5)
 				{
 					mid_y = MC.canvas._adjustMidY(to_port_name, mid_y, end, 1);
 				}
 			}
-			else if (from_type === "AWS.VPC.RouteTable" && to_type !== from_type)
+			else if ( (from_type === "AWS.VPC.RouteTable" || to_type === "AWS.ELB" ) && to_type !== from_type)
 			{
 				if (Math.abs(start.y - mid_y) > 5)
 				{
@@ -921,7 +930,7 @@ MC.canvas = {
 		{
 			//D
 			mid_x = (start.x + end.x) / 2;
-			if (to_type === 'AWS.VPC.RouteTable' && to_type !== from_type)
+			if ( (to_type === 'AWS.VPC.RouteTable' || to_type === 'AWS.ELB' ) && to_type !== from_type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
@@ -933,6 +942,20 @@ MC.canvas = {
 				if (Math.abs(mid_x - end.x) > 5)
 				{
 					if (to_type === 'AWS.VPC.InternetGateway' || to_type === 'AWS.VPC.VPNGateway')
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, start, -1);
+					}
+				}
+			}
+			else if (from_type === 'AWS.ELB' && to_type !== from_type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					if (to_type === 'AWS.EC2.Instance' || to_type === 'AWS.VPC.Subnet' || to_type === 'AWS.AutoScaling.Group' || to_type === 'AWS.AutoScaling.LaunchConfiguration' )
 					{
 						mid_x = MC.canvas._adjustMidX(from_port_name, mid_x, end, -1);
 					}
@@ -971,397 +994,6 @@ MC.canvas = {
 			Canvon.rectangle(pad, height + top - pad, width - 2 * pad, pad).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
 			Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
 		);
-	},
-
-	route2 : function ( start, end )
-	{
-		//add by xjimmy, connection algorithm (xjimmy's algorithm)
-    var controlPoints = [],
-      //start.x >= end.x
-      start_0_90    = false,
-      end_0_90      = false,
-      start_180_270 = false,
-      end_180_270   = false,
-      //start.x<end.x
-      start_0_270  = false,
-      end_0_270    = false,
-      start_90_180 = false,
-      end_90_180   = false;
-
-    //ensure start.y>=end.y
-    if (start.y < end.y) {
-    	var tmp = start;
-    	start = end;
-    	end   = tmp;
-    }
-
-    if (start.x >= end.x)
-    {
-      start_0_90    = start.angle === 0   || start.angle === 90;
-      end_0_90      = end.angle   === 0   || end.angle   === 90;
-      start_180_270 = start.angle === 180 || start.angle === 270;
-      end_180_270   = end.angle   === 180 || end.angle   === 270;
-    } else
-    {
-      //start.x<end.x
-      start_0_270  = start.angle === 0  || start.angle === 270;
-      end_0_270    = end.angle   === 0  || end.angle   === 270;
-      start_90_180 = start.angle === 90 || start.angle === 180;
-      end_90_180   = end.angle   === 90 || end.angle   === 180;
-    }
-
-    //1.start point
-    controlPoints.push( start );
-    controlPoints.push( start );
-
-    //2.control point
-    if (
-    	(start_0_90 && end_0_90) || (start_90_180 && end_90_180)
-    )
-    {
-      //A
-      controlPoints.push({ x: start.x, y: end.y });
-    } else if (
-      (start_180_270 && end_180_270) || (start_0_270 && end_0_270)
-    )
-    {
-      //B
-      controlPoints.push({ x: end.x, y: start.y });
-    } else if (
-      (start_0_90 && end_180_270) || (start_90_180 && end_0_270)
-    )
-    {
-      //C
-      mid_y = Math.round( (start.y + end.y) / 2 );
-      controlPoints.push({ x: start.x, y: mid_y });
-      controlPoints.push({ x: end.x,   y: mid_y });
-    } else if (
-      (start_180_270 && end_0_90) || (start_0_270 && end_90_180)
-    )
-    {
-      //D
-      mid_x = Math.round( (start.x + end.x) / 2 );
-      controlPoints.push({ x: mid_x, y: start.y });
-      controlPoints.push({ x: mid_x, y: end.y });
-    }
-
-    //3.end point
-    controlPoints.push( end );
-    controlPoints.push( end );
-
-    return controlPoints;
-	},
-
-
-	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data, connection_id)
-	{
-		if (typeof from_node === 'string')
-		{
-			from_node = $('#' + from_node);
-		}
-
-		if (typeof to_node === 'string')
-		{
-			to_node = $('#' + to_node);
-		}
-
-		var canvas_offset = $('#svg_canvas').offset(),
-			from_uid = from_node[0].id,
-			to_uid = to_node[0].id,
-			layout_component_data = MC.canvas_data.layout.component,
-			layout_node_data = layout_component_data.node,
-			from_node_type = from_node.data('type'),
-			to_node_type = to_node.data('type'),
-			from_type = from_data.type,
-			to_type = to_data.type,
-			layout_connection_data = MC.canvas_data.layout.connection,
-			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
-			connection_target_data = {},
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
-			controlPoints = [],
-			direction,
-			layout_connection_data,
-			line_data_target,
-			from_port,
-			to_port,
-			from_port_offset,
-			to_port_offset,
-			from_node_connection_data,
-			to_node_connection_data,
-			is_connected,
-			port_direction,
-			startX,
-			startY,
-			endX,
-			endY,
-			start0,
-			end0,
-			dash_style,
-			path,
-			svg_line;
-
-		if (connection_option)
-		{
-			if ($.type(connection_option) === 'array')
-			{
-				$.each(connection_option, function (index, item)
-				{
-					if (
-						item.from === from_target_port &&
-						item.to === to_target_port
-					)
-					{
-						connection_option = item;
-					}
-				});
-			}
-
-			from_node_connection_data = from_data.connection || [];
-			to_node_connection_data = to_data.connection || [];
-			is_connected = false;
-
-			$.each(from_node_connection_data, function (key, value)
-			{
-				var line_data = layout_connection_data[ value[ 'line' ] ];
-				if (line_data)
-				{
-					line_data_target = line_data.target;
-					if (
-						line_data_target[ from_uid ] === from_target_port &&
-						line_data_target[ to_uid ] === to_target_port
-					)
-					{
-						is_connected = true;
-
-						return false;
-					}
-				}
-			});
-
-			if (
-				line_option ||
-				is_connected === false
-			)
-			{
-				// Special connection
-				if (
-					connection_option.direction
-				)
-				{
-					direction = connection_option.direction;
-
-					if (direction.from && direction.to)
-					{
-						if (from_node[0].getBoundingClientRect().left > to_node[0].getBoundingClientRect().left)
-						{
-							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-left');
-							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-right');
-						}
-						else
-						{
-							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-right');
-							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-left');
-						}
-
-						from_port_offset = from_port.getBoundingClientRect();
-						to_port_offset = to_port.getBoundingClientRect();
-					}
-					else
-					{
-						if (direction.from)
-						{
-							to_port = document.getElementById(to_uid + '_port-' + to_target_port);
-							to_port_offset = to_port.getBoundingClientRect();
-
-							if (direction.from === 'vertical')
-							{
-								port_direction = to_port_offset.top > from_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
-							}
-
-							if (direction.from === 'horizontal')
-							{
-								port_direction = to_port_offset.left > from_node[0].getBoundingClientRect().left ? 'right' : 'left';
-							}
-
-							from_port = document.getElementById(from_uid + '_port-' + from_target_port + '-' + port_direction);
-							from_port_offset = from_port.getBoundingClientRect();
-						}
-
-						if (direction.to)
-						{
-							from_port = document.getElementById(from_uid + '_port-' + from_target_port);
-							from_port_offset = from_port.getBoundingClientRect();
-
-							if (direction.to === 'vertical')
-							{
-								port_direction = from_port_offset.top > to_node[0].getBoundingClientRect().top ? 'bottom' : 'top';
-							}
-
-							if (direction.to === 'horizontal')
-							{
-								port_direction = from_port_offset.left > to_node[0].getBoundingClientRect().left ? 'right' : 'left';
-							}
-
-							to_port = document.getElementById(to_uid + '_port-' + to_target_port + '-' + port_direction);
-							to_port_offset = to_port.getBoundingClientRect();
-						}
-					}
-				}
-				else
-				{
-					from_port = document.getElementById(from_uid + '_port-' + from_target_port);
-					from_port_offset = from_port.getBoundingClientRect();
-					to_port = document.getElementById(to_uid + '_port-' + to_target_port);
-					to_port_offset = to_port.getBoundingClientRect();
-				}
-
-				startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
-				startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
-				endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
-				endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
-
-				//add by xjimmy
-				start0 = {
-					x : startX,
-					y : startY,
-					connectionAngle: from_port.getAttribute('data-angle') * 1
-				};
-
-				end0 = {
-					x: endX,
-					y: endY,
-					connectionAngle: to_port.getAttribute('data-angle') * 1
-				};
-
-				//add pad to start0 and end0
-				MC.canvas._addPad(start0, 1);
-				MC.canvas._addPad(end0, 1);
-
-				// straight line
-				if (start0.x === end0.x || start0.y === end0.y)
-				{
-					path = 'M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y;
-				}
-				else
-				{
-					// fold line
-					MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
-
-					if (controlPoints.length > 0)
-					{
-						if (connection_option.type === 'sg')
-						{
-							switch (MC.canvas_property.LINE_STYLE)
-							{
-								case 0: //straight
-									path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y +
-										' L ' + controlPoints[1].x + ' ' + controlPoints[1].y +
-										' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y +
-										' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
-									break;
-
-								case 1: //elbow
-									path = MC.canvas._round_corner(controlPoints);
-									break;
-
-								case 2: //bezier-q
-									path = MC.canvas._bezier_q_corner(controlPoints);
-									break;
-
-								case 3: //bezier-qt
-									path = MC.canvas._bezier_qt_corner(controlPoints);
-									break;
-							}
-
-						}
-						else
-						{
-							path = MC.canvas._round_corner(controlPoints); //elbow
-						}
-					}
-				}
-
-				if (line_option && line_option.line_uid)
-				{
-					svg_line = document.getElementById( line_option.line_uid );
-				}
-
-				if (line_option && svg_line !== null)
-				{
-					$(svg_line).children().attr('d', path);
-				}
-				else
-				{
-					//line style
-					MC.paper.start();
-
-					MC.paper.path(path);
-					MC.paper.path(path).attr('class','fill-line');
-
-					if (connection_option.dash_line === true)
-					{
-						MC.paper.path(path).attr('class', 'dash-line');
-					}
-
-					svg_line = MC.paper.save();
-
-					$('#line_layer').append(svg_line);
-
-					$(svg_line).attr({
-						'class': 'line line-' + connection_option.type,
-						'data-type': 'line'
-					});
-
-					svg_line.id = connection_id ? connection_id : MC.guid();
-
-					/*
-					if (line_option)
-					{
-						svg_line.id = line_option['line_uid'];
-					}
-					else
-					{
-						svg_line.id = line_id ? line_id : MC.guid();
-
-						from_node_connection_data.push({
-							'target': to_uid,
-							'port': from_target_port,
-							'line': svg_line.id
-						});
-
-						to_node_connection_data.push({
-							'target': from_uid,
-							'port': to_target_port,
-							'line': svg_line.id
-						});
-
-						MC.canvas_data.layout.component[ from_node_type ][ from_uid ].connection = from_node_connection_data;
-						MC.canvas_data.layout.component[ to_node_type ][ to_uid ].connection = to_node_connection_data;
-					}
-
-					layout_connection_data = MC.canvas_data.layout.connection[ svg_line.id ] || {};
-
-					connection_target_data[ from_uid ] = from_target_port;
-					connection_target_data[ to_uid ] = to_target_port;
-					*/
-					// layout_connection_data = {
-					// 	'target': connection_target_data,
-					// 	'auto': true,
-					// 	'point': [],
-					// 	'type': connection_option.type
-					// };
-
-					MC.canvas_data.layout.connection[ svg_line.id ] = {
-						'target': connection_target_data,
-						'auto': true,
-						'point': [],
-						'type': connection_option.type
-					};
-				}
-
-				return svg_line.id;
-			}
-		}
 	},
 
 	connect: function (from_node, from_target_port, to_node, to_target_port, line_option)
@@ -1528,10 +1160,20 @@ MC.canvas = {
 					to_port_offset = to_port.getBoundingClientRect();
 				}
 
-				startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
-				startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
-				endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
-				endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
+				//patch startX for rtb-src port
+				var offset_startX=0,
+					offset_endX=0;
+				if (from_type == 'AWS.VPC.RouteTable' && from_target_port == "rtb-src"){
+					offset_startX+=1;
+				}
+				if (to_type == 'AWS.VPC.RouteTable' && to_target_port == "rtb-src"){
+					offset_endX+=1;
+				}
+
+				startX = (offset_startX + from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio;
+				startY = (1 + from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio;
+				endX = (offset_endX + to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio;
+				endY = (1 + to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio;
 
 				//add by xjimmy
 				start0 = {
@@ -1672,6 +1314,96 @@ MC.canvas = {
 				return svg_line.id;
 			}
 		}
+	},
+
+	createConnect: function (from_uid, from_target_port, to_uid, to_target_port)
+	{
+		var line_id = MC.guid(),
+
+			COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
+
+			connection_target_data = {},
+
+			layout_component_data = MC.canvas_data.layout.component,
+			layout_node_data = layout_component_data.node,
+			layout_connection_data = MC.canvas_data.layout.connection,
+
+			from_node_class = layout_component_data.node[ from_uid ] ? 'node' : 'group',
+			to_node_class = layout_component_data.node[ to_uid ] ? 'node' : 'group',
+
+			from_data = layout_component_data[ from_node_class ][ from_uid ],
+			to_data = layout_component_data[ to_node_class ][ to_uid ],
+
+			from_type = from_data.type,
+			to_type = to_data.type,
+
+			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
+
+			from_node_connection_data = from_data.connection || [],
+			to_node_connection_data = to_data.connection || [];
+
+		if (connection_option)
+		{
+			if ($.type(connection_option) === 'array')
+			{
+				$.each(connection_option, function (index, item)
+				{
+					if (
+						item.from === from_target_port &&
+						item.to === to_target_port
+					)
+					{
+						connection_option = item;
+					}
+				});
+			}
+		}
+
+		$.each(from_node_connection_data, function (key, value)
+		{
+			var line_data = layout_connection_data[ value[ 'line' ] ];
+
+			if (line_data)
+			{
+				line_data_target = line_data.target;
+				if (
+					line_data_target[ from_uid ] === from_target_port &&
+					line_data_target[ to_uid ] === to_target_port
+				)
+				{
+					is_connected = true;
+
+					return false;
+				}
+			}
+		});
+
+		from_node_connection_data.push({
+			'target': to_uid,
+			'port': from_target_port,
+			'line': line_id
+		});
+
+		to_node_connection_data.push({
+			'target': from_uid,
+			'port': to_target_port,
+			'line': line_id
+		});
+
+		MC.canvas_data.layout.component[ from_node_class ][ from_uid ].connection = from_node_connection_data;
+		MC.canvas_data.layout.component[ to_node_class ][ to_uid ].connection = to_node_connection_data;
+
+		connection_target_data[ from_uid ] = from_target_port;
+		connection_target_data[ to_uid ] = to_target_port;
+
+		MC.canvas_data.layout.connection[ line_id ] = {
+			'target': connection_target_data,
+			'auto': true,
+			'point': [],
+			'type': connection_option.type
+		};
+
+		return true;
 	},
 
 	reConnect: function (node_id)
@@ -1944,7 +1676,8 @@ MC.canvas = {
 
 	isMatchPlace: function (target_id, target_type, node_type, x, y, width, height)
 	{
-		var group_stack = [
+		var layout_group_data = MC.canvas_data.layout.component.group,
+			group_stack = [
 				document.getElementById('asg_layer').childNodes,
 				document.getElementById('subnet_layer').childNodes,
 				document.getElementById('az_layer').childNodes,
@@ -2018,10 +1751,9 @@ MC.canvas = {
 					while ( i-- )
 					{
 						id = group_stack[ layer ][ i ].id;
-
-						group_comp = Design.instance().component( id )
-						coordinate = [ group_comp.x(), group_comp.y() ];
-						size       = [ group_comp.width(), group_comp.height() ];
+						group_data = layout_group_data[ id ];
+						coordinate = group_data.coordinate;
+						size = group_data.size;
 
 						if (
 							$.inArray(id, ignore_stack) === -1 &&
@@ -2031,7 +1763,7 @@ MC.canvas = {
 							points[ point ].y < coordinate[1] + size[1]
 						)
 						{
-							match_status['is_matched'] = $.inArray(group_comp.type, match_option) > -1;
+							match_status['is_matched'] = $.inArray(group_data.type, match_option) > -1;
 							match_status['target'] = id;
 							match_target = id;
 						}
@@ -2160,11 +1892,11 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children   = MC.canvas_data.layout.component.node,
-			groups       = MC.canvas_data.layout.component.group,
-			group_data   = groups[ node_id ],
+		var children = MC.canvas_data.layout.component.node,
+			groups = MC.canvas_data.layout.component.group,
+			group_data = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
-			matched      = [],
+			matched = [],
 			coordinate,
 			size;
 
@@ -2224,15 +1956,16 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = Design.instance().component( group_node.id );
+		var group_data = MC.canvas_data.layout.component.group[ group_node.id ],
+			coordinate = group_data.coordinate;
 
 		return MC.canvas.areaChild(
-			group_data.id,
+			group_node.id,
 			group_data.type,
-			group_data.x(),
-			group_data.y(),
-			group_data.x() + group_data.width(),
-			group_data.y() + group_data.height()
+			coordinate[0],
+			coordinate[1],
+			coordinate[0] + group_data.size[0],
+			coordinate[1] + group_data.size[1]
 		);
 	},
 
@@ -2254,7 +1987,6 @@ MC.canvas = {
 };
 
 MC.canvas.layout = {
-
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),
@@ -2269,6 +2001,149 @@ MC.canvas.layout = {
 
 		components = MC.canvas.data.get("component");
 
+		$.each(components, function (key, value)
+		{
+			try
+			{
+				if (value.type === 'AWS.EC2.KeyPair')
+				{
+
+					if (value.name === "$key-default$" || value.name === "key-default" || value.name === "kp-default" || value.name === "default-kp" )
+					{
+						value.name = "DefaultKP";
+						value.resource.KeyName = value.name;
+					}
+					if (value.resource.KeyName === "")
+					{
+						value.resource.KeyName = value.name;
+					}
+					if (value.name === "DefaultKP")
+					{
+						has_default_kp=true;
+					}
+					MC.canvas_property.kp_list[ value.name ] = value.uid;
+				}
+				if (value.type === "AWS.EC2.SecurityGroup")
+				{
+					tmp = {};
+
+					if (value.name === "$sg-default$" || value.name === "sg-default" || value.name === "default-sg" )
+					{
+						value.name = "DefaultSG";
+						value.resource.GroupDescription = 'Stack Default Security Group';
+						value.resource.GroupName = value.name;
+					}
+
+					tmp.name = value.name;
+					tmp.uid = value.uid;
+					tmp.member = [];
+					$.each(components, function (k, v)
+					{
+						if (v.type === "AWS.EC2.Instance")
+						{
+							sg_uids = v.resource.SecurityGroupId;
+							$.each(sg_uids, function (id, sg_ref)
+							{
+								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+								{
+									tmp.member.push(v.uid);
+								}
+							});
+						}
+						if (v.type === "AWS.AutoScaling.LaunchConfiguration")
+						{
+							sg_uids = v.resource.SecurityGroups;
+							$.each(sg_uids, function (id, sg_ref)
+							{
+								if (sg_ref.split('.')[0].slice(1) === tmp.uid)
+								{
+									tmp.member.push(v.uid);
+								}
+							});
+						}
+					});
+					MC.canvas_property.sg_list.push(tmp);
+				}
+				if (
+					value.type === "AWS.VPC.RouteTable" &&
+					value.resource.AssociationSet.length > 0 &&
+					value.resource.AssociationSet[0].Main === true
+				)
+				{
+					MC.canvas_property.main_route = value.uid;
+				}
+				if (
+					value.type === "AWS.VPC.NetworkAcl" &&
+					value.resource.Default === true
+				)
+				{
+					MC.canvas_property.default_acl = value.uid;
+				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.layout.init]init component error:');
+
+				return true;//continue
+			}
+		});
+
+		if (!has_default_kp)
+		{//add DefaultKP
+			var kp = $.extend(true, {}, MC.canvas.KP_JSON.data),
+				uid = MC.guid();
+			kp.uid = uid;
+			MC.canvas_property.kp_list[kp.name] = kp.uid;
+			MC.canvas.data.get("component")[kp.uid] = kp;
+		}
+
+		$.each(MC.canvas_property.sg_list, function (key, value)
+		{
+			try
+			{
+				if (value.name === "DefaultSG" && key !== 0)
+				{
+					//move DefaultSG to the first one
+					default_sg = MC.canvas_property.sg_list.splice(key, 1);
+					MC.canvas_property.sg_list.unshift(default_sg[0]);
+					return false;
+				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.layout.init]init sg_list error:');
+
+				return true;//continue
+			}
+		});
+
+		//init sg color
+		$.each(MC.canvas_property.sg_list, function (key, value)
+		{
+			try
+			{
+				if (key < MC.canvas.SG_COLORS.length)
+				{//use color table
+					MC.canvas_property.sg_list[key].color = MC.canvas.SG_COLORS[key];
+				}
+				else
+				{//random color
+					var rand = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+					for (; rand.length < 6;)
+					{
+						rand = '0' + rand;
+					}
+					MC.canvas_property.sg_list[key].color = rand;
+				}
+			}
+			catch(error)
+			{
+				console.error('[MC.canvas.layout.init]init sg color error:');
+
+				return true;//continue
+			}
+		});
+
 		$('#svg_canvas').attr({
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
@@ -2278,6 +2153,54 @@ MC.canvas.layout = {
 			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
 			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
 		});
+
+		if (layout_data.component.node)
+		{
+			$.each(layout_data.component.node, function (id, data)
+			{
+				try
+				{
+					data.connection = [];
+					MC.canvas.add(id);
+				}
+				catch(error)
+				{
+					console.error('[MC.canvas.layout.init]add node error');
+
+					return true;//continue
+				}
+			});
+		}
+		else
+		{
+			layout_data.component.node = {};
+		}
+
+		if (layout_data.component.group)
+		{
+			$.each(layout_data.component.group, function (id, data)
+			{
+				try
+				{
+					if(data.connection){
+						data.connection = [];
+					}
+					MC.canvas.add(id);
+				}
+				catch(error)
+				{
+					console.error('[MC.canvas.layout.init]add group error');
+
+					return true;//continue
+				}
+			});
+		}
+		else
+		{
+			layout_data.component.group = {};
+		}
+
+		layout_data.connection = {};
 
 		//store json to original_json
 		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
@@ -2320,64 +2243,64 @@ MC.canvas.layout = {
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		// kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
-		// kp.uid = uid;
-		// MC.canvas_property.kp_list[kp.name] = kp.uid;
+		kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
+		kp.uid = uid;
+		MC.canvas_property.kp_list[kp.name] = kp.uid;
 
-		// sg_uid = MC.guid();
-		// sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
-		// sg.uid = sg_uid;
-		// tmp = {};
-		// tmp.uid = sg.uid;
-		// tmp.name = sg.name;
-		// tmp.color = MC.canvas.SG_COLORS[0];
-		// tmp.member = [];
-		// MC.canvas_property.sg_list.push(tmp);
+		sg_uid = MC.guid();
+		sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
+		sg.uid = sg_uid;
+		tmp = {};
+		tmp.uid = sg.uid;
+		tmp.name = sg.name;
+		tmp.color = MC.canvas.SG_COLORS[0];
+		tmp.member = [];
+		MC.canvas_property.sg_list.push(tmp);
 
-		// data[kp.uid] = kp;
-		// data[sg.uid] = sg;
-		// MC.canvas.data.set('component', data);
+		data[kp.uid] = kp;
+		data[sg.uid] = sg;
+		MC.canvas.data.set('component', data);
 
-		// if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
-		// {
-		// 	//has vpc (create vpc, az, and subnet by default)
-		// 	vpc_group = MC.canvas.add('AWS.VPC.VPC', {
-		// 		'name': 'vpc'
-		// 	}, {
-		// 		'x': 5,
-		// 		'y': 3
-		// 	});
+		if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
+		{
+			//has vpc (create vpc, az, and subnet by default)
+			vpc_group = MC.canvas.add('AWS.VPC.VPC', {
+				'name': 'vpc'
+			}, {
+				'x': 5,
+				'y': 3
+			});
 
-		// 	node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
-		// 		'name': 'RT-0',
-		// 		'groupUId': vpc_group.id,
-		// 		'main' : true
-		// 	},{
-		// 		'x': 50,
-		// 		'y': 5
-		// 	});
+			node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
+				'name': 'RT-0',
+				'groupUId': vpc_group.id,
+				'main' : true
+			},{
+				'x': 50,
+				'y': 5
+			});
 
-		// 	//default sg
-		// 	main_asso = {
-		// 		"Main": "true",
-		// 		"RouteTableId": "",
-		// 		"SubnetId": "",
-		// 		"RouteTableAssociationId": ""
-		// 	};
-		// 	MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
-		// 	MC.canvas_property.main_route = node_rt.id;
+			//default sg
+			main_asso = {
+				"Main": "true",
+				"RouteTableId": "",
+				"SubnetId": "",
+				"RouteTableAssociationId": ""
+			};
+			MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
+			MC.canvas_property.main_route = node_rt.id;
 
-		// 	acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
-		// 	acl.uid = MC.guid();
-		// 	acl.resource.Default = 'true';
-		// 	acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-		// 	data[acl.uid] = acl;
-		// 	MC.canvas.data.set('component', data);
+			acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
+			acl.uid = MC.guid();
+			acl.resource.Default = 'true';
+			acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+			data[acl.uid] = acl;
+			MC.canvas.data.set('component', data);
 
-		// 	MC.canvas_property.default_acl = acl.uid;
+			MC.canvas_property.default_acl = acl.uid;
 
-		// 	sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-		// }
+			sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
+		}
 
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
@@ -2795,11 +2718,13 @@ MC.canvas.volume = {
 				canvas_offset = $('#svg_canvas').offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
+				state = MC.canvas.getState(),
 				shadow,
 				clone_node;
 
 			if (
-				MC.canvas.getState() === 'app' ||
+				state === 'app' ||
+				state === 'appview' ||
 				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{
@@ -3498,7 +3423,7 @@ MC.canvas.event.dragable = {
 				return false;
 			}
 
-			if (currentTarget.is('.eip-status'))
+			if (currentTarget.is('.eip-status') && MC.canvas.getState() !== 'appview')
 			{
 				MC.canvas.event.EIPstatus.call(event.target);
 
@@ -4124,7 +4049,7 @@ MC.canvas.event.dragable = {
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		MC.canvas.position(target[0], coordinate.x, coordinate.y);
+		MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
 
 		MC.canvas.reConnect(target_id);
 
@@ -4763,14 +4688,14 @@ MC.canvas.event.siderbarDrag = {
 	{
 		if (!$('#canvas_body').hasClass('canvas_zoomed'))
 		{
-			var target      = $(event.data.target),
-				target_id     = target.attr('id') || '',
-				target_type   = target.data('component-type'),
-				node_type     = target.data('type'),
+			var target = $(event.data.target),
+				target_id = target.attr('id') || '',
+				target_type = target.data('component-type'),
+				node_type = target.data('type'),
 				canvas_offset = $('#svg_canvas').offset(),
 				shadow_offset = event.data.shadow.position(),
-				node_option   = target.data('option'),
-				coordinate    = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+				node_option = target.data('option'),
+				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 				component_size,
 				match_place,
 				default_group_size,
@@ -4850,6 +4775,12 @@ MC.canvas.event.siderbarDrag = {
 				{
 					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
 
+					// Move a little bit offset for Subnet because its port
+					if (node_type === 'AWS.VPC.Subnet')
+					{
+						//coordinate.x -= 1;
+					}
+
 					match_place = MC.canvas.isMatchPlace(
 						null,
 						target_type,
@@ -4912,10 +4843,13 @@ MC.canvas.event.siderbarDrag = {
 			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
 			{
 				event.data.shadow.animate({
-					'left'    : coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
-					'top'     : coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
-					'opacity' : 0
-				}, function() { event.data.shadow.remove(); });
+					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
+					'opacity': 0
+				}, function ()
+				{
+					event.data.shadow.remove();
+				});
 			}
 			else
 			{
@@ -5475,9 +5409,9 @@ MC.canvas.event.groupResize = {
 		{
 			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')').show();
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')').show();
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
 
 			// Re-draw group connections
 			layout_connection_data = MC.canvas.data.get('layout.connection');
@@ -5648,29 +5582,46 @@ MC.canvas.event.appDrawConnection = function ()
 	return false;
 };
 
-MC.canvas.event.clearList = function ()
+MC.canvas.event.clearList = function (event)
 {
 	MC.canvas.instanceList.close();
 	MC.canvas.eniList.close();
 	MC.canvas.asgList.close();
-	MC.canvas.event.clearSelected();
+	MC.canvas.event.clearSelected(event);
 
 	return true;
 };
 
 MC.canvas.event.nodeHover = function (event)
 {
-	if (event.type === 'mouseenter') {
-		$canvas( this.id, true ).hover()
+	if (event.type === 'mouseenter')
+	{
+		var target = $(this),
+			target_id = this.id,
+			node_connections = MC.canvas_data.layout.component.node[ target_id ].connection,
+			//layout_connection_data = MC.canvas_data.layout.connection,
+			i = node_connections.length;
+
+		while ( i-- )
+		{
+			Canvon('#' + node_connections[ i ].line).addClass('view-hover');
+		}
 	}
 
-	if (event.type === 'mouseleave') {
-		$canvas( this.id, true ).hoverOut()
+	if (event.type === 'mouseleave')
+	{
+		Canvon('#svg_canvas .view-hover').removeClass('view-hover');
 	}
 };
 
-MC.canvas.event.clearSelected = function ()
+MC.canvas.event.clearSelected = function (event)
 {
+	// Except for tab switching
+	if (event && $(event.currentTarget).is('#tab-bar li'))
+	{
+		return false;
+	}
+
 	Canvon('#svg_canvas .selected').removeClass('selected');
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
@@ -5693,11 +5644,14 @@ MC.canvas.keypressed = [];
 
 MC.canvas.event.keyEvent = function (event)
 {
+	var canvas_status = MC.canvas.getState();
+
 	if (
-		Tabbar.current === 'new' ||
-		Tabbar.current === 'app' ||
-		Tabbar.current === 'stack' ||
-		Tabbar.current === 'appedit'
+		canvas_status === 'new' ||
+		canvas_status === 'app' ||
+		canvas_status === 'stack' ||
+		canvas_status === 'appedit' ||
+		canvas_status === 'appview'
 	)
 	{
 		var keyCode = event.which,
@@ -5858,7 +5812,8 @@ MC.canvas.event.keyEvent = function (event)
 			$.inArray(keyCode, [37, 38, 39, 40]) > -1 &&
 			(
 				canvas_status === 'stack' ||
-				canvas_status === 'appedit'
+				canvas_status === 'appedit' ||
+				canvas_status === 'appview'
 			) &&
 			MC.canvas_property.selected_node.length === 1 &&
 			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
@@ -5978,14 +5933,1405 @@ MC.canvas.event.keyEvent = function (event)
 	}
 };
 
+MC.canvas.analysis = function ( data )
+{
+	console.info(data);
+	var component_data = data.component,
+		layout_data = data.layout,
+		connection_data = data.layout.connection,
+
+		resources = {},
+		resource_stack = {},
+
+		elb_child_stack = [],
+		elb_connection,
+
+		GROUP_INNER_PADDING = 2,
+		GROUP_MARGIN = 2,
+
+		VPC_PADDING_LEFT = 20,
+		VPC_PADDING_TOP = 10,
+		VPC_PADDING_RIGHT = 8,
+		VPC_PADDING_BOTTOM = 5,
+
+		ELB_START_LEFT = 14,
+		ELB_SIZE = MC.canvas.COMPONENT_SIZE['AWS.ELB'],
+
+		// Initialize group construction
+		SUBGROUP = {
+			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+			'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
+			'AWS.VPC.Subnet': [
+				'AWS.EC2.Instance',
+				'AWS.AutoScaling.Group',
+				'AWS.VPC.NetworkInterface'
+			],
+			'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
+		},
+
+		SORT_ORDER = {
+			'AWS.AutoScaling.Group': 1,
+			'AWS.EC2.Instance': 2,
+			'AWS.VPC.NetworkInterface': 3
+		},
+
+		GROUP_DEFAULT_SIZE = {
+			'AWS.VPC.VPC': [60, 60],
+			'AWS.EC2.AvailabilityZone': [17, 17],
+			'AWS.VPC.Subnet': [15, 15],
+			'AWS.AutoScaling.Group' : [13, 13]
+		},
+
+		// For children node order
+		POSITION_METHOD = {
+			'AWS.VPC.VPC': 'vertical',
+			'AWS.EC2.AvailabilityZone': 'horizontal',
+			'AWS.VPC.Subnet': 'matrix',
+			'AWS.AutoScaling.Group': 'center'
+		},
+
+		layout,
+		previous_node;
+
+	$.each(data.layout.component.node, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	$.each(data.layout.component.group, function (key, value)
+	{
+		resources[ key ] = value;
+	});
+
+	$.each(resources, function (key, value)
+	{
+		var type = value.type,
+			stack = resource_stack[ type ];
+
+		if (stack === undefined)
+		{
+			resource_stack[ type ] = [];
+		}
+
+		resource_stack[ type ].push(key);
+	});
+
+	layout = {
+		'id': resource_stack[ 'AWS.VPC.VPC' ][0],
+		'coordinate': [5, 3],
+		'size': [0, 0],
+		'type': 'AWS.VPC.VPC'
+	};
+
+	var elb_connection;
+
+	// ELB connected children
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
+	{
+		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+		{
+			elb_connection = layout_data.component.node[ id ].connection;
+
+			$.each(elb_connection, function (i, item)
+			{
+				if (item.port === 'elb-sg-out')
+				{
+					elb_child_stack.push( item.target );
+				}
+			});
+		});
+	}
+
+	function searchChild(id)
+	{
+		var children = [],
+			target_group = SUBGROUP[ resources[ id ].type ],
+			node_data,
+			node_child;
+
+		$.each(resources, function (key, value)
+		{
+			if (
+				$.inArray(resources[ key ].type, target_group) > -1 &&
+				value.groupUId === id
+			)
+			{
+				node_child = searchChild(key);
+
+				node_data = {
+					'id': key,
+					'coordinate': [0, 0],
+					'size': [0, 0],
+					'type': value.type
+				};
+
+				if (MC.canvas.COMPONENT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = MC.canvas.COMPONENT_SIZE[ value.type ];
+				}
+
+				if (GROUP_DEFAULT_SIZE[ value.type ] !== undefined)
+				{
+					node_data.size = GROUP_DEFAULT_SIZE[ value.type ];
+				}
+
+				if (node_child)
+				{
+					node_data[ 'children' ] = node_child;
+				}
+
+				children.push(node_data);
+			}
+		});
+
+		return children.length < 1 ? false : children;
+	}
+
+	node_child = searchChild( resource_stack[ 'AWS.VPC.VPC' ][0] );
+
+	if (node_child)
+	{
+		layout[ 'children' ] = node_child;
+	}
+
+	function checkChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			var count = 0;
+
+			$.each(node.children, function (i, item)
+			{
+				count += checkChild(item);
+			});
+
+			node.totalChild = count + node.children.length;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node.hasELBConnected = false;
+
+				$.each(node.children, function (i, item)
+				{
+					if ($.inArray(item.id, elb_child_stack) > -1)
+					{
+						node.hasELBConnected = true;
+					}
+
+					if (item.type === 'AWS.AutoScaling.Group')
+					{
+						if (
+							item.children !== undefined &&
+							$.inArray(item.children[ 0 ].id, elb_child_stack) > -1
+						)
+						{
+							node.hasELBConnected = true;
+						}
+					}
+				});
+			}
+
+			return node.children.length;
+		}
+		else
+		{
+			node.totalChild = 0;
+
+			if (node.type === 'AWS.VPC.Subnet')
+			{
+				node.hasELBConnected = false;
+			}
+
+			return 0;
+		}
+	}
+
+	checkChild( layout );
+
+	function sortChild(node)
+	{
+		if (node.children !== undefined)
+		{
+			if (node.type === 'AWS.EC2.AvailabilityZone')
+			{
+				node.children.sort(function (a, b)
+				{
+					if (
+						(a.hasELBConnected === true && b.hasELBConnected === true)
+						||
+						(a.hasELBConnected === false && b.hasELBConnected === false)
+					)
+					{
+						return b.totalChild - a.totalChild;
+					}
+					else
+					{
+						if (
+							a.hasELBConnected === true &&
+							b.hasELBConnected === false
+						)
+						{
+							return -1;
+						}
+
+						if (
+							a.hasELBConnected === false &&
+							b.hasELBConnected === true
+						)
+						{
+							return 1;
+						}
+					}
+				});
+			}
+			else
+			{
+				node.children.sort(function (a, b)
+				{
+					return b.totalChild - a.totalChild;
+				});
+			}
+
+			$.each(node.children, function (i, item)
+			{
+				sortChild( item );
+			});
+		}
+	}
+
+	sortChild( layout );
+
+	function absPosition(node, x, y)
+	{
+		node.coordinate[0] += x;
+		node.coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, node.coordinate[0], node.coordinate[1]);
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	function positionSubnetChild(node)
+	{
+		var stack = {},
+			children = node.children,
+			length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0,
+
+			NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2,
+
+			unique_row = {},
+			noELBstack = [],
+
+			elb_connected_instance = [],
+			normal_instance = [],
+			hasUniqueInstanceConnectedToELB = false,
+
+			max_column = Math.ceil( Math.sqrt( length ) ),
+			max_row = length === 0 ? 0 : Math.ceil( length / max_column ),
+			column_index = 0,
+			row_index = 0,
+
+			node_connection,
+			hasELBConnected,
+			targetELB;
+
+		children.sort(function (a, b)
+		{
+			return SORT_ORDER[ a.type ] - SORT_ORDER[ b.type ];
+		});
+
+		$.each(children, function (current_index, item)
+		{
+			hasELBConnected = false;
+			targetELB = null;
+
+			if (stack[ item.type ] === undefined)
+			{
+				stack[ item.type ] = [];
+			}
+
+			stack[ item.type ].push( item );
+
+			// Check connection
+			if (
+				(
+					item.type === 'AWS.AutoScaling.Group' ||
+					item.type === 'AWS.EC2.Instance'
+				) &&
+				item.children !== undefined
+			)
+			{
+				node_connection = resources[ item.children[ 0 ].id ].connection;	
+			}
+			else
+			{
+				node_connection = resources[ item.id ].connection;
+			}
+
+			if (node_connection)
+			{
+				$.each(node_connection, function (i, data)
+				{
+					if (resources[ data.target ].type === 'AWS.ELB')
+					{
+						if (connection_data[ data.line ].target[ data.target ] === 'elb-sg-out')
+						{
+							hasELBConnected = true;
+							targetELB = data.target;
+						}
+					}
+				});
+
+				if (hasELBConnected)
+				{
+					if (unique_row[ targetELB ] === undefined)
+					{
+						unique_row[ targetELB ] = [];
+					}
+
+					unique_row[ targetELB ].push( item );
+				}
+				else
+				{
+					if (item.type === 'AWS.AutoScaling.Group')
+					{
+						noELBstack.push( item );
+					}
+				}
+			}
+			else
+			{
+				if (item.type === 'AWS.AutoScaling.Group')
+				{
+					noELBstack.push( item );
+				}
+			}
+		});
+
+		var column_count = 0,
+			row_width = 0,
+			row_top = 0,
+			left_padding = 0,
+			row_index,
+
+			// Range
+			ASG_WIDTH = 15,
+			ASG_HEIGHT = 15,
+			INSTANCE_WIDTH = 11,
+			INSTANCE_HEIGHT = 11;
+
+		if (noELBstack.length > 0)
+		{
+			unique_row[ 'zz' ] = noELBstack;
+		}
+
+		$.each(unique_row, function (row, row_stack)
+		{
+			row_top = 0;
+
+			row_stack.sort(function (a, b)
+			{
+				return SORT_ORDER[ a.type ] - SORT_ORDER[ b.type ];
+			});
+
+			$.each(row_stack, function (row_index, item)
+			{
+				if (item.type === 'AWS.AutoScaling.Group')
+				{
+					row_width = ASG_WIDTH;
+
+					item.coordinate = [
+						left_padding + 2,
+						row_top + GROUP_INNER_PADDING
+					];
+
+					row_top += ASG_HEIGHT;
+
+					if (item.children !== undefined)
+					{
+						positionChild( item );
+					}
+				}
+
+				if (item.type === 'AWS.EC2.Instance')
+				{
+					row_width = row_width === ASG_WIDTH ? ASG_WIDTH : INSTANCE_WIDTH;
+
+					item.coordinate = [
+						// Adjust instance x axis with ASG (+2)
+						left_padding + (row_width === ASG_WIDTH ? 4 : 2),
+						// Adjust instance y axis with ASG (+4)
+						row_top + GROUP_INNER_PADDING
+					];
+
+					row_top += INSTANCE_HEIGHT;
+				}
+			});
+
+			column_count++;
+
+			left_padding += row_width;
+		})
+
+		if (stack[ 'AWS.EC2.Instance' ] !== undefined)
+		{
+			$.each(stack[ 'AWS.EC2.Instance' ], function (i, item)
+			{
+				if ($.inArray(item.id, elb_child_stack) === -1)
+				{
+					normal_instance.push( item );
+				}
+			});
+
+			normal_instance.sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
+			});
+		}
+
+		if (normal_instance.length > 0)
+		{
+			var childLength = normal_instance.length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				column_index = 0,
+				row_index = 0;
+
+			$.each(normal_instance, function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+
+			$.each(normal_instance, function (i, item)
+			{
+				item.coordinate[0] += left_padding;
+			});
+
+			left_padding += max_child_column * INSTANCE_WIDTH;
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			var childLength = stack[ 'AWS.VPC.NetworkInterface' ].length,
+				max_child_column = Math.ceil( Math.sqrt( childLength ) ),
+				max_child_row = childLength === 0 ? 0 : Math.ceil( childLength / max_child_column ),
+				eni_padding = 0,
+				column_index = 0,
+				row_index = 0;
+
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				if (column_index >= max_child_column)
+				{
+					column_index = 0;
+					row_index++;
+				}
+
+				item.coordinate = [
+					column_index * 9 + (column_index * NODE_MARGIN_LEFT) + eni_padding + GROUP_INNER_PADDING,
+					row_index * 9 + (row_index * NODE_MARGIN_LEFT) + GROUP_INNER_PADDING
+				];
+
+				column_index++;
+			});
+		}
+
+		if (stack[ 'AWS.VPC.NetworkInterface' ] !== undefined)
+		{
+			$.each(stack[ 'AWS.VPC.NetworkInterface' ], function (i, item)
+			{
+				item.coordinate[0] += left_padding;
+			});
+		}
+
+		var max_width = 0,
+			max_height = 0,
+			item_coordinate,
+			component_size;
+
+		$.each(children, function (i, item)
+		{
+			item_coordinate = item.coordinate;
+
+			component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+
+			if (item_coordinate[0] + component_size[0] > max_width)
+			{
+				max_width = item_coordinate[0] + component_size[0];
+			}
+
+			if (item_coordinate[1] + component_size[1] > max_height)
+			{
+				max_height = item_coordinate[1] + component_size[1];
+			}
+		});
+
+		node.size = [
+			max_width + GROUP_INNER_PADDING,
+			max_height + GROUP_INNER_PADDING
+		];
+	}
+
+	function sortSubnet( children )
+	{
+		var internetELBconnected = [],
+			internalELBconnected = [],
+			normalSubnet = [],
+
+			isInternetELBconnected,
+			isInternalELBconnected,
+
+			layout_component_data = MC.canvas_data.
+
+			elb_type,
+			item_connection;
+
+		$.each(children, function (i, item)
+		{
+			isInternetELBconnected = false;
+			isInternalELBconnected = false;
+
+			if (item.children !== undefined)
+			{
+				$.each(item.children, function (index, node)
+				{
+					if (
+						node.type === 'AWS.AutoScaling.Group' &&
+						node.children !== undefined
+					)
+					{
+						node = node.children[ 0 ];
+					}
+
+					node_connection = resources[ node.id ].connection;
+
+					if (node_connection)
+					{
+						$.each(node_connection, function (index, data)
+						{
+							if (resources[ data.target ].type === 'AWS.ELB')
+							{
+								elb_type = component_data[ data.target ].resource.Scheme;
+
+								if (elb_type === 'internet-facing')
+								{
+									isInternetELBconnected = true;
+								}
+
+								if (elb_type === 'internal')
+								{
+									isInternalELBconnected = true;
+								}
+							}
+						});
+					}
+				});
+
+				if (isInternetELBconnected)
+				{
+					internetELBconnected.push( item );
+				}
+				else if (isInternalELBconnected)
+				{
+					internalELBconnected.push( item );
+				}
+			}
+
+			if (!isInternetELBconnected && !isInternalELBconnected)
+			{
+				normalSubnet.push( item );
+			}
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		internetELBconnected.sort(function (a, b)
+		{
+			return b.totalChild - a.totalChild;
+		});
+
+		normalSubnet.sort(function (a, b)
+		{
+			if (
+				b.totalChild === a.totalChild &&
+				(
+					b.totalChild > 0 &&
+					a.totalChild > 0
+				)
+			)
+			{
+				var weight = {
+						'a': 0,
+						'b': 0
+					};
+
+				$.each({"a": a, "b": b}, function (key, value)
+				{
+					$.each(value.children, function (i, item)
+					{
+						if (item.type === 'AWS.AutoScaling.Group')
+						{
+							weight[ key ] += 3;
+						}
+
+						if (item.type === 'AWS.EC2.Instance')
+						{
+							weight[ key ] += 2;
+						}
+
+						if (item.type === 'AWS.VPC.NetworkInterface')
+						{
+							weight[ key ] += 1;
+						}
+					});
+				});
+
+				return weight.b - weight.a;
+			}
+			else
+			{
+				return b.totalChild - a.totalChild;
+			}
+		});
+
+		children = internetELBconnected.concat(internalELBconnected, normalSubnet);
+
+		return children;
+	}
+
+	function positionChild(node)
+	{
+		var children = node.children,
+			GROUP_MARGIN = 2,
+
+			length = children.length,
+			method = POSITION_METHOD[ node.type ],
+			max_width = 0,
+			max_height = 0,
+
+			NODE_MARGIN_LEFT = 2,
+			NODE_MARGIN_TOP = 2;
+
+		if (node.type === 'AWS.EC2.AvailabilityZone')
+		{
+			GROUP_MARGIN = 4;
+		}
+
+		if (method === 'matrix')
+		{
+			positionSubnetChild(node);
+		}
+
+		if (method === 'vertical')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					0 + GROUP_INNER_PADDING,
+					current_index + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[0] > max_width)
+				{
+					max_width = item.size[0];
+				}
+
+				max_height += item.size[1];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						0 + GROUP_INNER_PADDING,
+						previous_node.size[1] + previous_node.coordinate[1] + GROUP_MARGIN
+					];
+
+					max_height += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_MARGIN * (length - 1)) + GROUP_INNER_PADDING
+			];
+		}
+
+		if (method === 'horizontal')
+		{
+			if (node.type === 'AWS.EC2.AvailabilityZone')
+			{
+				children = sortSubnet( children );
+			}
+
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [
+					current_index + GROUP_INNER_PADDING,
+					0 + GROUP_INNER_PADDING
+				];
+
+				if (item.children !== undefined)
+				{
+					positionChild( item );
+				}
+
+				if (item.size[1] > max_height)
+				{
+					max_height = item.size[1];
+				}
+
+				max_width += item.size[0];
+
+				if (current_index > 0)
+				{
+					previous_node = children[ current_index - 1 ];
+					item.coordinate = [
+						previous_node.size[0] + previous_node.coordinate[0] + GROUP_MARGIN,
+						0 + GROUP_INNER_PADDING
+					];
+
+					max_width += GROUP_MARGIN * 2;
+				}
+			});
+
+			node.size = [
+				max_width - (GROUP_MARGIN * (length - 1)) + (GROUP_INNER_PADDING * 2),
+				max_height + (GROUP_INNER_PADDING * 2)
+			];
+		}
+
+		if (method === 'center')
+		{
+			$.each(children, function (current_index, item)
+			{
+				item.coordinate = [2, 2];
+			});
+
+			node.size = [13, 13];
+		}
+	}
+
+	if (layout.children)
+	{
+		positionChild( layout );
+	}
+
+	// VPC padding
+	if (layout.children)
+	{
+		$.each(layout.children, function (i, item)
+		{
+			item.coordinate[0] += VPC_PADDING_LEFT;
+			item.coordinate[1] += VPC_PADDING_TOP;
+		});
+	}
+
+	// RouteTable
+	if (resource_stack[ 'AWS.VPC.RouteTable' ] !== undefined)
+	{
+		var ROUTE_TABLE_START_LEFT = 15,
+			ROUTE_TABLE_START_TOP = 5,
+			ROUTE_TABLE_MARGIN = 4,
+			ROUTE_TABLE_SIZE = MC.canvas.COMPONENT_SIZE['AWS.VPC.RouteTable'],
+			RT_to_IGW = [],
+			RT_to_VGW = [],
+			RT_other = [],
+			RT_prefer,
+			RT_connection,
+			RT_connect_target;
+
+		if (resource_stack[ 'AWS.VPC.RouteTable' ].length > 0)
+		{
+			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+			});
+
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)
+			{
+				RT_prefer = false;
+				RT_connection = layout_data.component.node[ id ].connection;
+
+				$.each(RT_connection, function (i, data)
+				{
+					if (data.port === 'rtb-tgt')
+					{
+						RT_connect_target = layout_data.component.node[ data.target ].type;
+
+						if (RT_connect_target === 'AWS.VPC.InternetGateway')
+						{
+							RT_prefer = true;
+							RT_to_IGW.push( id );
+						}
+
+						if (RT_connect_target === 'AWS.VPC.VPNGateway')
+						{
+							RT_prefer = true;
+							RT_to_VGW.push( id );
+						}
+
+					}
+				});
+
+				if (RT_prefer === false)
+				{
+					RT_other.push( id );
+				}
+			});
+
+			// RT Children join
+			resource_stack[ 'AWS.VPC.RouteTable' ] = _.unique( RT_to_IGW.concat(RT_to_VGW, RT_other) );
+
+			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
+					ROUTE_TABLE_START_TOP
+				];
+			});
+		}
+	}
+
+	// Add AZ margin for ELB
+	var elb_stack = layout.children,
+		max_first_height = 0;
+
+	if (
+		elb_stack !== undefined &&
+		elb_stack.length > 1 &&
+		resource_stack[ 'AWS.ELB' ] !== undefined
+	)
+	{
+		// var i = 1,
+		// 	l = elb_stack.length;
+
+		// for ( ; i < l ; i++ )
+		// {
+		// 	elb_stack[ i ].coordinate[ 1 ] += 15;
+		// }
+
+		max_first_height = elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ];
+
+		if (elb_stack[ 2 ])
+		{
+			if (elb_stack[ 2 ].size[ 1 ] > elb_stack[ 0 ].size[ 1 ])
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ]
+				];
+
+				elb_stack[ 0 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ],
+					elb_stack[ 0 ].coordinate[ 1 ] + (elb_stack[ 2 ].size[ 1 ] - elb_stack[ 0 ].size[ 1 ]) / 2
+				];
+
+				max_first_height = elb_stack[ 2 ].coordinate[ 1 ] + elb_stack[ 2 ].size[ 1 ];
+			}
+			else
+			{
+				elb_stack[ 2 ].coordinate = [
+					elb_stack[ 0 ].coordinate[ 0 ] + elb_stack[ 0 ].size[ 0 ] + 5,
+					elb_stack[ 0 ].coordinate[ 1 ] + elb_stack[ 0 ].size[ 1 ] - elb_stack[ 2 ].size[ 1 ]
+				];
+			}
+		}
+
+		if (elb_stack[ 1 ])
+		{
+			elb_stack[ 1 ].coordinate[ 1 ] = max_first_height + 15;
+		}
+
+		if (elb_stack[ 3 ])
+		{
+			elb_stack[ 3 ].coordinate = [
+				elb_stack[ 1 ].coordinate[ 0 ] + elb_stack[ 1 ].size[ 0 ] + 5,
+				elb_stack[ 1 ].coordinate[ 1 ]
+			];
+		}
+	}
+
+	// ELB
+	if (resource_stack[ 'AWS.ELB' ] !== undefined)
+	{
+		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
+		{
+			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+		});
+
+		if (elb_stack.length > 1)
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT + (current_index * 10) + (current_index * 10),
+					max_first_height + 5
+				];
+			});
+		}
+		else
+		{
+			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
+			{
+				resources[ id ].coordinate = [
+					ELB_START_LEFT,
+					elb_stack[ 0 ].coordinate[ 0 ] + (elb_stack[ 0 ].size[ 1 ] / 2 - 5) + current_index * 10
+				];
+			});
+		}
+	}
+
+	function absPosition(node, x, y)
+	{
+		var coordinate = node.coordinate;
+
+		coordinate[0] += x;
+		coordinate[1] += y;
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				absPosition(item, coordinate[0], coordinate[1]);
+			});
+		}
+	}
+
+	function updateLayoutData(node)
+	{
+		var resource = resources[ node.id ];
+
+		resource.coordinate = node.coordinate;
+
+		if (resource.size !== undefined)
+		{
+			resource.size = node.size;
+		}
+
+		if (node.children !== undefined)
+		{
+			$.each(node.children, function (i, item)
+			{
+				updateLayoutData( item );
+			});
+		}
+	}
+
+	absPosition( layout, 0, 0 );
+
+	function VPCsize()
+	{
+		var VPC_max_width = 0,
+			VPC_max_height = 0,
+			layout_data = data.layout.component,
+			ignore_type = ['AWS.VPC.CustomerGateway', 'AWS.VPC.InternetGateway', 'AWS.VPC.VPNGateway'],
+			component_size,
+			group_size,
+			item_type;
+
+		$.each(layout_data.node, function (i, item)
+		{
+			if ($.inArray(item.type, ignore_type) === -1)
+			{
+				component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+
+				if (item.coordinate[0] + component_size[0] > VPC_max_width)
+				{
+					VPC_max_width = item.coordinate[0] + component_size[0];
+				}
+
+				if (item.coordinate[1] + component_size[1] > VPC_max_height)
+				{
+					VPC_max_height = item.coordinate[1] + component_size[1];
+				}
+			}
+		});
+
+		$.each(layout_data.group, function (i, item)
+		{
+			group_size = item.size;
+
+			if (item.type !== 'AWS.AutoScaling.Group')
+			{
+				if (item.coordinate[0] + group_size[0] > VPC_max_width)
+				{
+					VPC_max_width = item.coordinate[0] + group_size[0];
+				}
+
+				if (item.coordinate[1] + group_size[1] > VPC_max_height)
+				{
+					VPC_max_height = item.coordinate[1] + group_size[1];
+				}
+			}
+		});
+
+		layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
+		layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+	}
+
+	updateLayoutData( layout );
+
+	VPCsize();
+
+	// IGW & VGW
+	if (resource_stack[ 'AWS.VPC.InternetGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS.VPC.InternetGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	if (resource_stack[ 'AWS.VPC.VPNGateway' ] !== undefined)
+	{
+		resources[ resource_stack[ 'AWS.VPC.VPNGateway' ][ 0 ] ].coordinate = [
+			layout.coordinate[0] + layout.size[0] - 4,
+			layout.coordinate[1] + (layout.size[1] / 2) - 4
+		];
+	}
+
+	// CGW
+	if (resource_stack[ 'AWS.VPC.CustomerGateway' ] !== undefined)
+	{
+		$.each(resource_stack[ 'AWS.VPC.CustomerGateway' ], function (i, item)
+		{
+			resources[ item ].coordinate = [
+				layout.coordinate[0] + layout.size[0] + 8,
+				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 5
+			];
+		});
+	}
+
+	// Canvas size
+	var canvas_width = layout.size[ 0 ] + 80,
+		canvas_height = layout.size[ 1 ] + 50;
+
+	MC.canvas_data.layout.size = [
+		canvas_width < 180 ? 180 : canvas_width,
+		canvas_height < 150 ? 150 : canvas_height
+	];
+
+	console.info(layout);
+
+	return true;
+};
+
+
+
+
+/* Blob.js
+ * A Blob implementation.
+ * 2013-06-20
+ *
+ * By Eli Grey, http://eligrey.com
+ * By Devin Samarin, https://github.com/eboyjr
+ * License: X11/MIT
+ *   See LICENSE.md
+ */
+
+/*global self, unescape */
+/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */
+
+/*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
+if (!(typeof Blob === "function" || typeof Blob === "object") || typeof URL === "undefined")
+if ((typeof Blob === "function" || typeof Blob === "object") && typeof webkitURL !== "undefined") (self || window).URL = webkitURL;
+else var Blob = (function (view) {
+  "use strict";
+
+  var BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || view.MSBlobBuilder || (function(view) {
+    var
+        get_class = function(object) {
+        return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
+      }
+      , FakeBlobBuilder = function BlobBuilder() {
+        this.data = [];
+      }
+      , FakeBlob = function Blob(data, type, encoding) {
+        this.data = data;
+        this.size = data.length;
+        this.type = type;
+        this.encoding = encoding;
+      }
+      , FBB_proto = FakeBlobBuilder.prototype
+      , FB_proto = FakeBlob.prototype
+      , FileReaderSync = view.FileReaderSync
+      , FileException = function(type) {
+        this.code = this[this.name = type];
+      }
+      , file_ex_codes = (
+          "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR "
+        + "NO_MODIFICATION_ALLOWED_ERR INVALID_STATE_ERR SYNTAX_ERR"
+      ).split(" ")
+      , file_ex_code = file_ex_codes.length
+      , real_URL = view.URL || view.webkitURL || view
+      , real_create_object_URL = real_URL.createObjectURL
+      , real_revoke_object_URL = real_URL.revokeObjectURL
+      , URL = real_URL
+      , btoa = view.btoa
+      , atob = view.atob
+
+      , ArrayBuffer = view.ArrayBuffer
+      , Uint8Array = view.Uint8Array
+    ;
+    FakeBlob.fake = FB_proto.fake = true;
+    while (file_ex_code--) {
+      FileException.prototype[file_ex_codes[file_ex_code]] = file_ex_code + 1;
+    }
+    if (!real_URL.createObjectURL) {
+      URL = view.URL = {};
+    }
+    URL.createObjectURL = function(blob) {
+      var
+          type = blob.type
+        , data_URI_header
+      ;
+      if (type === null) {
+        type = "application/octet-stream";
+      }
+      if (blob instanceof FakeBlob) {
+        data_URI_header = "data:" + type;
+        if (blob.encoding === "base64") {
+          return data_URI_header + ";base64," + blob.data;
+        } else if (blob.encoding === "URI") {
+          return data_URI_header + "," + decodeURIComponent(blob.data);
+        } if (btoa) {
+          return data_URI_header + ";base64," + btoa(blob.data);
+        } else {
+          return data_URI_header + "," + encodeURIComponent(blob.data);
+        }
+      } else if (real_create_object_URL) {
+        return real_create_object_URL.call(real_URL, blob);
+      }
+    };
+    URL.revokeObjectURL = function(object_URL) {
+      if (object_URL.substring(0, 5) !== "data:" && real_revoke_object_URL) {
+        real_revoke_object_URL.call(real_URL, object_URL);
+      }
+    };
+    FBB_proto.append = function(data/*, endings*/) {
+      var bb = this.data;
+      // decode data to a binary string
+      if (Uint8Array && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {
+        var
+            str = ""
+          , buf = new Uint8Array(data)
+          , i = 0
+          , buf_len = buf.length
+        ;
+        for (; i < buf_len; i++) {
+          str += String.fromCharCode(buf[i]);
+        }
+        bb.push(str);
+      } else if (get_class(data) === "Blob" || get_class(data) === "File") {
+        if (FileReaderSync) {
+          var fr = new FileReaderSync;
+          bb.push(fr.readAsBinaryString(data));
+        } else {
+          // async FileReader won't work as BlobBuilder is sync
+          throw new FileException("NOT_READABLE_ERR");
+        }
+      } else if (data instanceof FakeBlob) {
+        if (data.encoding === "base64" && atob) {
+          bb.push(atob(data.data));
+        } else if (data.encoding === "URI") {
+          bb.push(decodeURIComponent(data.data));
+        } else if (data.encoding === "raw") {
+          bb.push(data.data);
+        }
+      } else {
+        if (typeof data !== "string") {
+          data += ""; // convert unsupported types to strings
+        }
+        // decode UTF-16 to binary string
+        bb.push(unescape(encodeURIComponent(data)));
+      }
+    };
+    FBB_proto.getBlob = function(type) {
+      if (!arguments.length) {
+        type = null;
+      }
+      return new FakeBlob(this.data.join(""), type, "raw");
+    };
+    FBB_proto.toString = function() {
+      return "[object BlobBuilder]";
+    };
+    FB_proto.slice = function(start, end, type) {
+      var args = arguments.length;
+      if (args < 3) {
+        type = null;
+      }
+      return new FakeBlob(
+          this.data.slice(start, args > 1 ? end : this.data.length)
+        , type
+        , this.encoding
+      );
+    };
+    FB_proto.toString = function() {
+      return "[object Blob]";
+    };
+    return FakeBlobBuilder;
+  }(view));
+
+  return function Blob(blobParts, options) {
+    var type = options ? (options.type || "") : "";
+    var builder = new BlobBuilder();
+    if (blobParts) {
+      for (var i = 0, len = blobParts.length; i < len; i++) {
+        builder.append(blobParts[i]);
+      }
+    }
+    return builder.getBlob(type);
+  };
+}(window));
+
+/* canvas-toBlob.js
+ * A canvas.toBlob() implementation.
+ * 2011-07-13
+ *
+ * By Eli Grey, http://eligrey.com and Devin Samarin, https://github.com/eboyjr
+ * License: X11/MIT
+ *   See LICENSE.md
+ */
+
+/*global self */
+/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */
+
+/*! @source http://purl.eligrey.com/github/canvas-toBlob.js/blob/master/canvas-toBlob.js */
+
+(function(view) {
+"use strict";
+var
+    Uint8Array = view.Uint8Array
+  , HTMLCanvasElement = view.HTMLCanvasElement
+  , is_base64_regex = /\s*;\s*base64\s*(?:;|$)/i
+  , base64_ranks
+  , decode_base64 = function(base64) {
+    var
+        len = base64.length
+      , buffer = new Uint8Array(len / 4 * 3 | 0)
+      , i = 0
+      , outptr = 0
+      , last = [0, 0]
+      , state = 0
+      , save = 0
+      , rank
+      , code
+      , undef
+    ;
+    while (len--) {
+      code = base64.charCodeAt(i++);
+      rank = base64_ranks[code-43];
+      if (rank !== 255 && rank !== undef) {
+        last[1] = last[0];
+        last[0] = code;
+        save = (save << 6) | rank;
+        state++;
+        if (state === 4) {
+          buffer[outptr++] = save >>> 16;
+          if (last[1] !== 61 /* padding character */) {
+            buffer[outptr++] = save >>> 8;
+          }
+          if (last[0] !== 61 /* padding character */) {
+            buffer[outptr++] = save;
+          }
+          state = 0;
+        }
+      }
+    }
+    // 2/3 chance there's going to be some null bytes at the end, but that
+    // doesn't really matter with most image formats.
+    // If it somehow matters for you, truncate the buffer up outptr.
+    return buffer.buffer;
+  }
+;
+if (Uint8Array) {
+  base64_ranks = new Uint8Array([
+      62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1
+    , -1, -1,  0, -1, -1, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9
+    , 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+    , -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35
+    , 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+  ]);
+}
+if (HTMLCanvasElement && !HTMLCanvasElement.prototype.toBlob) {
+  HTMLCanvasElement.prototype.toBlob = function(callback, type /*, ...args*/) {
+      if (!type) {
+      type = "image/png";
+    } if (this.mozGetAsFile) {
+      callback(this.mozGetAsFile("canvas", type));
+      return;
+    }
+    var
+        args = Array.prototype.slice.call(arguments, 1)
+      , dataURI = this.toDataURL.apply(this, args)
+      , header_end = dataURI.indexOf(",")
+      , data = dataURI.substring(header_end + 1)
+      , is_base64 = is_base64_regex.test(dataURI.substring(0, header_end))
+      , blob
+    ;
+    if (Blob.fake) {
+      // no reason to decode a data: URI that's just going to become a data URI again
+      blob = new Blob
+      if (is_base64) {
+        blob.encoding = "base64";
+      } else {
+        blob.encoding = "URI";
+      }
+      blob.data = data;
+      blob.size = data.length;
+    } else if (Uint8Array) {
+      if (is_base64) {
+        blob = new Blob([decode_base64(data)], {type: type});
+      } else {
+        blob = new Blob([decodeURIComponent(data)], {type: type});
+      }
+    }
+    callback(blob, dataURI);
+  };
+}
+}(window));
+
 MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 {
 
 	/*
 	data = {
-		isExport : boolean
-		onFinish : function (required)
-		name     : string
+		isExport   : boolean
+		createBlob : false
+		drawInfo   : true
+		onFinish   : function (required)
+		name       : string
 	}
 	*/
 
@@ -6058,7 +7404,14 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 			MC.canvas.exportPNG.href = svg.indexOf("xlink:href") == -1 ? "href" : "xlink:href";
 		}
 
-		var head = '<rect fill="#ad5992" width="100%" height="4" y="-54"></rect><rect fill="#252526" width="100%" height="50" y="-50"></rect><image ' + MC.canvas.exportPNG.href + '="./assets/images/ide/logo-t.png" x="10" y="-42" width="160" height="34"></image><text x="100%" y="-27" fill="#fff" text-anchor="end" transform="translate(-10 0)">' + MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' ) + '</text><text fill="#fff" x="100%" y="-13" text-anchor="end" transform="translate(-10 0)">' + data.name + '</text>';
+		var time = "";
+		var name = "";
+		if ( data.drawInfo !== false ) {
+			time = MC.dateFormat( new Date(), 'yyyy-MM-dd hh:mm:ss' );
+			name = data.name;
+		}
+
+		var head = '<rect fill="#ad5992" width="100%" height="4" y="-54"></rect><rect fill="#252526" width="100%" height="50" y="-50"></rect><image ' + MC.canvas.exportPNG.href + '="./assets/images/ide/logo-t.png" x="10" y="-42" width="160" height="34"></image><text x="100%" y="-27" fill="#fff" text-anchor="end" transform="translate(-10 0)">' + time + '</text><text fill="#fff" x="100%" y="-13" text-anchor="end" transform="translate(-10 0)">' + name + '</text>';
 
 		svg = svg.replace("PLACEHOLDER</g>", head).replace("</svg>", "</g></svg>");
 	}
@@ -6109,8 +7462,27 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 	canvg( canvas, svg, {
 		beforeRender : beforeRender,
 		afterRender  : function() {
-			data.image = canvas.toDataURL()
-			data.onFinish( data );
+
+			onFinish = data.onFinish;
+			data.onFinish = null;
+
+			if ( data.createBlob === true ) {
+				canvas.toBlob(function( blob, possibleDataURL ){
+
+					if ( typeof possibleDataURL === "string" ) {
+						// We are using an 3rd party implementation of toBlob
+						// And we get the DataURL.
+						data.image = possibleDataURL;
+					} else {
+						data.image = canvas.toDataURL();
+					}
+					data.blob = blob;
+					onFinish( data );
+				});
+			} else {
+				data.image = canvas.toDataURL();
+				onFinish( data );
+			}
 		}
 	});
 };

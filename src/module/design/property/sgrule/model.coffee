@@ -154,16 +154,26 @@ define [ '../base/model' ], ( PropertyModel ) ->
                             tmp_rule.protocol = 'all'
 
                         else
-                            tmp_rule.protocol = "Custom(#{rule.IpProtocol})"
+                            tmp_rule.protocol = "#{rule.IpProtocol}"
                     else
                         tmp_rule.protocol = rule.IpProtocol
 
                     portRangeType = '-'
                     if tmp_rule.protocol is 'icmp'
                         portRangeType = '/'
-                    if rule.FromPort is rule.ToPort then tmp_rule.port = rule.FromPort else tmp_rule.port = rule.FromPort + portRangeType + rule.ToPort
+                    if rule.FromPort is rule.ToPort
+                        tmp_rule.port = rule.FromPort
+                    else
+                        tmp_rule.port = rule.FromPort + portRangeType + rule.ToPort
                     if tmp_rule.protocol is 'all'
                         tmp_rule.port = '0-65535'
+
+                    # for custom protocol
+                    if tmp_rule.protocol not in ['tcp', 'udp', 'icmp', 'all', -1, '-1']
+                        if tmp_rule.protocol in ['6', 6, '17', 17]
+                            tmp_rule.port = '0-65535'
+                        else
+                            tmp_rule.port = 'ALL'
 
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 

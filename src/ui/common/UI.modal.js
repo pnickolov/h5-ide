@@ -50,6 +50,7 @@ var modal = function (template, dismiss, callback)
 
 modal.open = function (event)
 {
+	console.info(event);
 	var target = $(this),
 		target_template = target.data('modal-template'),
 		target_data = target.data('modal-data');

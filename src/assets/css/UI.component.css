@@ -12,6 +12,12 @@
 	font-size: 12px;
 }
 
+.table.table-small th,
+.table.table-small td,
+.table.table-small thead th {
+	padding: 6px 8px;
+}
+
 .table th {
 	font-weight: 700;
 }
@@ -1015,13 +1021,10 @@ textarea {
 #modal-box {
 	position: absolute;
 	color: #999;
-	border-radius: 7px;
-	background: #f0f0f0;
-	-moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
-	-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
-	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
+	background: #eee;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
 	z-index: 70;
-	border: 4px solid #666;
+	border: 1px solid #242424;
 }
 
 #modal-box #bubble-box {
@@ -1031,34 +1034,34 @@ textarea {
 .modal-header .modal-close {
 	position: absolute;
 	right: 10px;
-	top: 10px;
+	top: 14px;
 	font-style: normal;
 	cursor: pointer;
 	font-size: 20px;
 	line-height: 20px;
 }
 
+.modal-header .modal-close:hover {
+	color: #fff;
+}
+
 .modal-header {
 	position: relative;
-	padding: 0px 10px;
-	background: #f0f0f0;
-	box-shadow: inset 0 1px 0 #fff;
-	border-radius: 4px 4px 0 0;
-	border-bottom: 1px solid #cfcfcf;
+	padding: 4px 10px;
+	background: #3D3D3D;
+	border-bottom: 1px solid #333;
 	color: #9b9b9b;
-	text-shadow: 0 1px 0 #fff;
 }
 
 .modal-header h3 {
-	color: #666;
+	color: #eee;
 	font-size: 16px;
-	/*cursor: pointer;*/
+	cursor: pointer;
 }
 
 .modal-body {
 	padding: 12px 20px;
-	background: #fcfcfc;
-	/*border-bottom: 1px solid #cfcfcf;*/
+	background: #fff;
 	min-height: 100px;
 }
 

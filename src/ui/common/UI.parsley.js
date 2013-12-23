@@ -2,6 +2,23 @@
 
   var Util = {
 
+    runOnceInSametime: function( func, context ) {
+      var runs = 0;
+      return function() {
+        runs ++;
+        context = context || this;
+        var args = arguments;
+        setTimeout( function() {
+          runs --;
+          if ( runs > 0 ) {
+            return;
+          }
+          func.apply( context, args );
+        }, 50);
+
+      }
+    },
+
     getCaretPosition: function( oField ) {
       // Initialize
       var iCaretPos = 0;
@@ -576,6 +593,7 @@
 
               if (!result) {
                 $(this).val($(this).data('pre-value'));
+               $(this).parsley('validate');
               }
             });
 
@@ -593,34 +611,36 @@
             awsCidr: '^[0-9]?$|^[0-9][0-9./]+$',
             ipv4: '^[0-9]*$|^[0-9][0-9.]+$',
             ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
-            domain: '^([a-zA-Z0-9]+[a-zA-Z0-9.-]*)*$',
+            domain: '^[a-zA-Z0-9]+[a-zA-Z0-9.-]*$',
             digits: '^[0-9]*$',
             ascii: '^[\x00-\x7F]*$'
           };
 
           vlidateType = this.options.type;
 
-          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^([0-9a-zA-Z][0-9a-zA-Z-]*)*$';
+          regExp = regExp || this.$element.data('ignore-regexp') || regMap[ vlidateType ] || '^[0-9a-zA-Z]+[0-9a-zA-Z-]*$';
 
           var wholeReg = this.options.regexp;
           // delay handler function
-          var delayHandler = function(origin, context, times) {
+          var delayHandlerFactory = function(origin, context, times) {
+            var getResult = function(val) {
+              return that.Validator.validators[ 'regexp' ]( val, regExp, that );
+            }
 
             return function( e ) {
                 // run specify times
                 if ( (times -= 1) < 0 ) {
                   return;
                 }
-                var getResult = function(val) {
-                  return that.Validator.validators[ 'regexp' ]( val, regExp, that );
+                var value = $( context ).val();
+                if ( value === '' ) {
+                  return;
                 }
 
-                var result = getResult($( context ).val());
+                var result = getResult( value );
 
                 if ( !result ) {
-                  if ( getResult( origin ) ) {
-                    $( context ).val( origin );
-                  }
+                  $( context ).val( origin ).parsley( 'validate' );
                 }
               }
 
@@ -634,19 +654,23 @@
           // Handle drag
           this.$element.on('dragenter', function( e ) {
             var origin = $( this ).val();
-            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler( origin, this, 1 ) );
+            var delayHandler = delayHandlerFactory( origin, this, 1 )
+            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler );
           });
 
 
           // Handle keydown
-          this.$element.on( 'keydown', function( e ) {
+          var keydownHandler = function(e) {
             var origin = $( this ).val();
-            $(this).one( 'keyup blur', delayHandler( origin, this, 1 ) );
-          });
+            var delayHandler = Util.runOnceInSametime( delayHandlerFactory( origin, this, 1 ) );
+            $(this).one( 'keyup blur', delayHandler );
+          };
+
+
+          this.$element.on( 'keydown', keydownHandler);
 
           // Handle keypress( main )
-
-          this.$element.on( 'keypress', function( e ) {
+          var keypressHandler = function(e) {
             var inputChar, isLegal;
             // control key green light
             if (e.which in controlCodeList) return true;
@@ -660,10 +684,9 @@
             isLegal = new RegExp( regExp, "i" ).test(newValue);
 
             if ( !isLegal ) return false;
+          };
 
-          });
-
-
+          this.$element.on( 'keypress', keypressHandler);
 
         }
 
@@ -1260,10 +1283,13 @@
             this.Validator.messages[ constraintName ][ constraint.requirements ] : ( 'undefined' === typeof this.Validator.messages[ constraintName ] ?
               this.Validator.messages.defaultMessage : this.Validator.formatMesssage( this.Validator.messages[ constraintName ], constraint.requirements ) ) );
 
+
       // add liError if not shown. Do not add more than once custom errorMessage if exist
       if ( !$( this.ulError + ' .' + liClass ).length ) {
         liError[ liClass ] = message;
         this.addError( liError );
+      } else if ( liClass === 'custom' ) {
+        $( this.ulError + ' .' + liClass ).text( message );
       }
     }
 
@@ -1831,8 +1857,16 @@ var errortip = function (event)
   {
     id = content.attr('id');
     tipId = 'errortip-' + id;
+    originTip = $('#' + tipId);
 
-    if ( $('#' + tipId).length ) return;
+    if ( originTip.length ) {
+      // if error message is changed, update the errortip and display it.
+      if ( originTip.html() != content.html() ) {
+        originTip.html( content.html() )
+        originTip.show();
+      }
+      return;
+    }
 
     errortip_box = content.clone();
     errortip_box

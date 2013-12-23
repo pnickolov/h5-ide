@@ -65,7 +65,7 @@ define [ 'event',
                 null
 
             ide_event.onLongListen ide_event.SWITCH_DASHBOARD, () ->
-                console.log 'SWITCH_DASHBOARD'
+                console.log 'header:SWITCH_DASHBOARD'
                 model.setFlag(true)
                 view.updateNotification()
 

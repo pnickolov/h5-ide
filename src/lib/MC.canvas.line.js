@@ -11,7 +11,7 @@
 
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-MC.canvas.initLine = function() {
+MC.canvas.initLine = function( write ) {
   var lines, main_rt, subnet_ids;
   subnet_ids = [];
   lines = [];
@@ -104,7 +104,13 @@ MC.canvas.initLine = function() {
   });
   return $.each(lines, function(idx, line_data) {
     if((MC.canvas_data.layout.component.node[line_data[0]] || MC.canvas_data.layout.component.group[line_data[0]]) && (MC.canvas_data.layout.component.node[line_data[1]] || MC.canvas_data.layout.component.group[line_data[1]])){
-      return MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+      if(write === true){
+        MC.canvas.createConnect(line_data[0], line_data[2], line_data[1], line_data[3]);
+      }
+      else{
+        MC.canvas.connect($("#" + line_data[0]), line_data[2], $("#" + line_data[1]), line_data[3]);
+      }
+      return true;
     }
   });
 }
@@ -283,9 +289,9 @@ MC.canvas.reDrawSgLine = function() {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
             }
           } else if ((from_port === 'instance-sg' && to_port === 'eni-sg') || (from_port === 'eni-sg' && to_port === 'instance-sg')) {
-            if (MC.canvas_data.component[from_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== from_comp_uid) {
+            if (MC.canvas_data.component[from_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[to_comp_uid].resource.Attachment && MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId && MC.canvas_data.component[to_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== from_comp_uid) {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
-            } else if (MC.canvas_data.component[to_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== to_comp_uid) {
+            } else if (MC.canvas_data.component[to_comp_uid].type === "AWS.EC2.Instance" && MC.canvas_data.component[from_comp_uid].resource.Attachment && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId && MC.canvas_data.component[from_comp_uid].resource.Attachment.InstanceId.split('.')[0].slice(1) !== to_comp_uid) {
               return lines.push([from_comp_uid, to_comp_uid, from_port, to_port]);
             }
           } else if (from_port === 'elb-sg-in' || to_port === 'elb-sg-in') {

@@ -58,7 +58,7 @@ var Tabbar = {
 				}, Tabbar.mouseup);
 
 			MC.canvas.volume.close();
-			MC.canvas.event.clearList();
+			MC.canvas.event.clearList(event);
 		}
 
 		return false;
@@ -109,7 +109,7 @@ var Tabbar = {
 
 	add: function (tab_id, tab_name)
 	{
-		var tab_type = tab_id.match(/(app\-edit|app|stack|new|process)*/ig)[0];
+		var tab_type = tab_id.match(/(appview|app\-edit|app|stack|new|process)*/ig)[0];
 
 		$('#tab-bar ul').append(
 			MC.template.tab.item({
@@ -212,6 +212,8 @@ var Tabbar = {
 			Tabbar.open($('#tab-bar li:last').attr('id').replace('tab-bar-', ''));
 
 			$('#tab-bar').trigger('CLOSE_TAB', tab_id);
+
+			Tabbar.resize($('#tab-bar').width());
 		}
 
 		return false;

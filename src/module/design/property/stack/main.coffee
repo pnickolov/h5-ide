@@ -54,7 +54,7 @@ define [ '../base/main',
 
             @view.on 'STACK_NAME_CHANGED', ( name ) ->
                 MC.canvas_data.name = name
-                ide_event.trigger ide_event.UPDATE_TABBAR, MC.canvas_data.id, name
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB, MC.canvas_data.id, name + ' - stack'
                 null
 
             @view.on 'OPEN_ACL', ( uid ) ->

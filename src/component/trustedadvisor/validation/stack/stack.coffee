@@ -8,6 +8,14 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			compName = compObj.name
 		return compName
 
+	_getCompType = (compUID) ->
+
+		compType = ''
+		compObj = MC.canvas_data.component[compUID]
+		if compObj and compObj.type
+			compType = compObj.type
+		return compType
+
 	verify = (callback) ->
 
 		try
@@ -41,10 +49,27 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 
 									# get api call info
 									errCompUID = returnInfoObj.uid
+
+									errCode = returnInfoObj.code
+									errKey = returnInfoObj.key
 									errMessage = returnInfoObj.message
+
 									errCompName = _getCompName(errCompUID)
+									errCompType = _getCompType(errCompUID)
 
 									errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
+
+									if (errCode is 'EMPTY_VALUE' and
+										errKey is 'InstanceId' and
+										errMessage is 'Key InstanceId can not empty' and
+										errCompType is 'AWS.VPC.NetworkInterface')
+											checkResult = true
+
+									if (errCode is 'EMPTY_VALUE' and
+										errKey is 'LaunchConfigurationName' and
+										errMessage is 'Key LaunchConfigurationName can not empty' and
+										errCompType is 'AWS.AutoScaling.Group')
+											checkResult = true
 
 								catch err
 									errInfoStr = "Stack format validation error"
@@ -142,13 +167,40 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 										null
 								null
 
-							# return error valid result
-							if tipInfoAry.length
-								callback(tipInfoAry)
-								console.log(tipInfoAry)
-							else
-								callback(null)
+						else if not result.is_error
+							descAMIIdAry = []
+							descAMIAry = result.resolved_data
+							if _.isArray descAMIAry
+								_.each descAMIAry, (amiObj) ->
+									descAMIIdAry.push(amiObj.imageId)
+									null
+							_.each amiAry, (amiId) ->
+								if amiId not in descAMIIdAry
+									# not exist in stack
+									instanceUIDAry = instanceAMIMap[amiId]
+									_.each instanceUIDAry, (instanceUID) ->
+										instanceObj = MC.canvas_data.component[instanceUID]
+										instanceType = instanceObj.type
+										instanceName = instanceObj.name
 
+										infoObjType = 'Instance'
+										infoTagType = 'instance'
+										if instanceType is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+											infoObjType = 'Launch Configuration'
+											infoTagType = 'lc'
+										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
+										tipInfoAry.push({
+											level: constant.TA.ERROR,
+											info: tipInfo,
+											uid: instanceUID
+										})
+										null
+								null
+
+						# return error valid result
+						if tipInfoAry.length
+							callback(tipInfoAry)
+							console.log(tipInfoAry)
 						else
 							callback(null)
 

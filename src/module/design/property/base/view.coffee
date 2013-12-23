@@ -78,17 +78,13 @@ define [ 'constant',
 
             $panel = $("#property-first-panel").find(".property-details")
 
-            if not @_noRender
-                # Remove the old panel, so that the event is removed
-                $new_panel = $("<div class='scroll-content property-content property-details'></div>").insertAfter( $panel )
-                # Remove children and detach it from DOM
-                $panel.empty().remove()
+            # Remove the old panel, so that the event is removed
+            $new_panel = $("<div class='scroll-content property-content property-details'></div>").insertAfter( $panel )
+            # Remove children and detach it from DOM
+            $panel.empty().remove()
 
-                @setElement $new_panel
-                @render()
-            else
-                # Recovering old tab, use setElement to bind the event
-                @setElement $panel
+            @setElement $new_panel
+            @render()
             null
 
         _loadAsSub : ( subPanelID ) ->
@@ -97,15 +93,18 @@ define [ 'constant',
             # I'm against using ide_event, because it seems like something is decoupled, but it
             # will create dependency hell, for example, you have no idea who will use your ide_event.
             # Instead, we use our own event
-            PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL
+            if @__restore
+                PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL_IMM
+            else
+                PropertyView.event.trigger PropertyView.event.OPEN_SUBPANEL
+
 
             # Set the element to Second Panel Wrapper
             # So that subclass can use it to insert there content
             # It's a bit weird, but I don't have better idea at this moment.
             @setElement $("#property-second-panel .property-content")
 
-            if not @_noRender
-                @render()
+            @render()
 
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.
@@ -144,8 +143,9 @@ define [ 'constant',
     # So that we don't have a reference to desing/property/view, avoiding
     # a strong dependency on it.
     PropertyView.event = _.extend {}, Backbone.Events
-    PropertyView.event.FORCE_SHOW    = "forceshow"
-    PropertyView.event.OPEN_SUBPANEL = "opensubpanel"
+    PropertyView.event.FORCE_SHOW        = "forceshow"
+    PropertyView.event.OPEN_SUBPANEL     = "opensubpanel"
+    PropertyView.event.OPEN_SUBPANEL_IMM = "opensubpanelimm"
 
     PropertyView.extend = ( protoProps, staticProps ) ->
 

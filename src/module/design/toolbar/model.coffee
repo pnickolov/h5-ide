@@ -119,7 +119,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
 
-                    ide_event.trigger ide_event.UPDATE_TABBAR, new_id, name + ' - stack'
+                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
 
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
@@ -192,7 +192,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #trigger event
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'REMOVE_STACK', name
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'REMOVE_STACK', [id]
-                    ide_event.trigger ide_event.CLOSE_TAB, name, id
+                    ide_event.trigger ide_event.CLOSE_DESIGN_TAB, id
 
                     me.setFlag id, 'DELETE_STACK'
 
@@ -207,7 +207,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 id          = result.param[4]
                 app_name    = result.param[5]
 
-                ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                #ide_event.trigger ide_event.OPEN_APP_PROCESS_TAB, id, app_name, region, result
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_PROCESS', app_name, region, id
 
                 # handle request
                 me.handleRequest result, 'RUN_STACK', region, id, app_name
@@ -401,7 +402,18 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
-                item_state_map[id] = { 'name':MC.canvas_data.name, 'state':MC.canvas_data.state, 'is_running':is_running, 'is_pending':is_pending, 'is_zoomin':false, 'is_zoomout':true, 'is_app_updating':false, 'has_instance_store_ami':me.isInstanceStore(MC.canvas_data) }
+                item_state_map[id] = {
+                    'name'                  : MC.canvas_data.name,
+                    'state'                 : MC.canvas_data.state,
+                    'is_running'            : is_running,
+                    'is_pending'            : is_pending,
+                    'is_zoomin'             : false,
+                    'is_zoomout'            : true,
+                    'is_app_updating'       : false,
+                    'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
+                    'is_asg'                : me.isAutoScaling(MC.canvas_data),
+                    'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+                }
 
                 is_tab = true
 
@@ -412,11 +424,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'running', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'running', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'STOPPED_APP'
                 if id of item_state_map
@@ -425,11 +436,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = false
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'stopped', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'stopped', id
 
                 # update app resource
                 ide_event.trigger ide_event.UPDATE_APP_INFO, region, id
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
 
             else if flag is 'TERMINATED_APP'
                 (delete item_state_map[id]) if id of item_state_map
@@ -445,10 +455,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     item_state_map[id].is_pending = true
 
                 region = value
-                ide_event.trigger ide_event.UPDATE_TAB_ICON, 'pending', id
-
-                # update app resource
-                #app_model.resource { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region,  id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
             else if flag is 'UPDATE_APP'
                 if id of item_state_map
@@ -516,18 +523,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             stack_model.remove { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, name
 
         #run
-        runStack : (app_name, data) ->
+        runStack : (data) ->
             me = this
 
-            id      = data.id
-            region  = data.region
+            id          = data.id
+            region      = data.region
+            app_name    = data.name
+            usage       = data.usage
 
-            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null
+            #src, username, session_id, region_name, stack_id, app_name, app_desc=null, app_component=null, app_property=null, app_layout=null, stack_name=null, usage=null
             if MC.aws.aws.checkDefaultVPC()
-                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC()
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, MC.aws.vpc.generateComponentForDefaultVPC(), null, null, null, usage
 
             else
-                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name
+                stack_model.run { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id, app_name, null, null, null, null, null, usage
 
             # save stack data for generating png
             idx = 'process-' + region + '-' + app_name
@@ -615,12 +624,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         generatePNG : () ->
             me = this
             MC.canvas.exportPNG $("#svg_canvas"), {
-                isExport : true
-                name     : MC.canvas_data.name
-                id       : MC.canvas_data.id
+                isExport   : true
+                createBlob : true
+                name       : MC.canvas_data.name
+                id         : MC.canvas_data.id
                 onFinish : ( data ) ->
                     if ( data.id is MC.canvas_data.id )
-                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id
+                        me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
 
@@ -1009,7 +1019,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
 
+        isAutoScaling : (data) ->
 
+            is_asg = false
+
+            for uid of data.component
+                item = data.component[uid]
+                if item.type is 'AWS.AutoScaling.Group'
+                    is_asg = true
+
+            is_asg
 
     }
 

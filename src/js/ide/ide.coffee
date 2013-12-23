@@ -77,6 +77,9 @@ define [ 'MC', 'event', 'handlebars'
 		#set MC.data
 		#MC.data = {}
 
+		# set default 'dashboard'
+		MC.data.current_tab_id = 'dashboard'
+
 		#global config data by region
 		MC.data.config = {}
 		MC.data.config[r] = {} for r in constant.REGION_KEYS
@@ -103,13 +106,11 @@ define [ 'MC', 'event', 'handlebars'
 		#set untitled
 		MC.data.untitled = 0
 		#set tab
-		MC.tab  = {}
+		MC.tab          = {}
 		#set process tab
-		MC.process = {}
+		MC.process      = {}
 		MC.data.process = {}
-		if MC.storage.get( 'process' )
-			MC.data.process = $.extend true, {}, MC.storage.get 'process'
-			MC.process      = $.extend true, {}, MC.storage.get 'process'
+		MC.storage.remove 'process'
 
 		#save <div class="loading-wrapper" class="main-content active">
 		MC.data.loading_wrapper_html = null
@@ -136,6 +137,9 @@ define [ 'MC', 'event', 'handlebars'
 		MC.ta            = validation
 		MC.ta.list       = []
 		MC.ta.state_list = {}
+
+		#test
+		MC.ide_event = ide_event
 
 		#############################
 		#  WebSocket
@@ -194,7 +198,7 @@ define [ 'MC', 'event', 'handlebars'
 		#listen SWITCH_TAB and SWITCH_DASHBOARD
 		ide_event.onLongListen ide_event.SWITCH_TAB,          () -> view.showTab()
 		ide_event.onLongListen ide_event.SWITCH_DASHBOARD,    () -> view.showDashbaordTab()
-		ide_event.onLongListen ide_event.SWITCH_APP_PROCESS,  () -> view.showProcessTab()
+		ide_event.onLongListen ide_event.SWITCH_PROCESS,      () -> view.showProcessTab()
 		#
 		ide_event.onLongListen ide_event.SWITCH_MAIN,         () -> view.showMain()
 		ide_event.onLongListen ide_event.SWITCH_LOADING_BAR,  ( tab_id, is_transparent ) -> view.showLoading tab_id, is_transparent
@@ -214,12 +218,13 @@ define [ 'MC', 'event', 'handlebars'
 		#  load module
 		#############################
 
-		#load header
-		header.loadModule()
-		#load tabbar
-		tabbar.loadModule()
-		#load dashboard
-		dashboard.loadModule()
+		if window.location.pathname isnt '/import-test.html'
+			#load header
+			header.loadModule()
+			#load tabbar
+			tabbar.loadModule()
+			#load dashboard
+			dashboard.loadModule()
 
 		#listen DASHBOARD_COMPLETE
 		ide_event.onListen ide_event.DASHBOARD_COMPLETE, () ->
@@ -304,7 +309,7 @@ define [ 'MC', 'event', 'handlebars'
 				relogin()
 				if error.param[0].method is 'info'
 					if error.param[0].url in [ '/stack/', '/app/' ]
-						ide_event.trigger ide_event.CLOSE_TAB, null, error.param[4][0]
+						ide_event.trigger ide_event.CLOSE_DESIGN_TAB, error.param[4][0]
 			else
 
 				label = 'ERROR_CODE_' + error.return_code + '_MESSAGE'

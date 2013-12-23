@@ -81,6 +81,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     if action isnt policy.arn
                         continue
 
+                    # Set arn to empty if we have cloudwatch.
+                    # So that view can show cloudwatch info.
+                    policy.arn = ""
+
                     policy.evaluation = alarm_data.ComparisonOperator
                     policy.metric     = alarm_data.MetricName
                     policy.notify     = actions.length is 2

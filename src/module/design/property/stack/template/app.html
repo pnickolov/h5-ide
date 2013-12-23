@@ -1,11 +1,14 @@
 <article class="property-app">
 
-
 	<dl class="dl-horizontal dl-region-type property-control-group">
 		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
 		<dd>{{property_detail.region}}</dd>
 		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
 		<dd>{{property_detail.type}}</dd>
+        {{#if property_detail.usage}}
+            <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
+            <dd style="text-transform: capitalize">{{property_detail.usage}}</dd>
+        {{/if}}
 	</dl>
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
@@ -25,7 +28,7 @@
         <dt>SNS Topic Name</dt>
         <dd>{{snstopic.name}}</dd>
         <dt>SNS Topic ARN</dt>
-        <dd class="click-select tooltip" data-tooltip="Click to select">{{snstopic.arn}}</dd>
+        <dd class="click-select tooltip" data-tooltip="Click to select all">{{snstopic.arn}}</dd>
       </dl>
     </div>
     <div class="property-group-head">Subscription</div>

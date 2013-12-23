@@ -6,8 +6,9 @@ define [ 'event', 'i18n!nls/lang.js',
          'text!./module/dashboard/overview/template.html',
          'text!./module/dashboard/overview/template_data.html',
          'constant',
+         'unmanagedvpc',
          'backbone', 'jquery', 'handlebars', 'MC.ide.template', 'UI.scrollbar'
-], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant ) ->
+], ( ide_event, lang, overview_tmpl, overview_tmpl_data, constant, unmanagedvpc ) ->
 
     current_region = null
 
@@ -58,6 +59,13 @@ define [ 'event', 'i18n!nls/lang.js',
             $('#global-refresh span').text time
 
         scrollToResource: ->
+            scrollContent = $( '#global-region-wrap .scroll-content' )
+            scrollContent.addClass 'scroll-transition'
+            setTimeout ->
+                scrollContent.removeClass( 'scroll-transition' )
+                null
+            , 100
+
             scrollTo = $('#global-region-map-wrap').height() + 7
             scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
 
@@ -107,6 +115,8 @@ define [ 'event', 'i18n!nls/lang.js',
             'modal-shown .duplicate-stack'              : 'duplicateStackClick'
             'modal-shown .delete-stack'                 : 'deleteStackClick'
 
+            'click #global-region-visualize-VPC'        : 'unmanagedVPCClick'
+
         status:
             reloading       : false
             resourceType    : null
@@ -114,6 +124,16 @@ define [ 'event', 'i18n!nls/lang.js',
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+            # work for dashboard and toolbar
+            $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
+
+        confirmAppName: ( event ) ->
+            confirm = $( @ ).data 'confirm'
+            if $( @ ).val() is confirm
+                $( '#btn-confirm' ).removeAttr 'disabled'
+            else
+                $( '#btn-confirm' ).attr 'disabled', 'disabled'
+
 
         setDemo: ->
             @status.isDemo = true
@@ -263,10 +283,22 @@ define [ 'event', 'i18n!nls/lang.js',
 
         enableCreateStack : ( platforms ) ->
             $middleButton = $( "#btn-create-stack" )
-            $topButton = $( "#global-create-stack" )
+            $topButton    = $( "#global-create-stack" )
 
             $middleButton.removeAttr 'disabled'
-            $topButton.removeClass( 'disabled' ).addClass( 'js-toggle-dropdown' )
+            $topButton.removeClass( 'disabled' ).addClass 'js-toggle-dropdown'
+
+            # $.cookie('account_id') isnt 'demo_account' remvoe disable
+            if MC.forge.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+                $( '#global-region-visualize-VPC' ).removeClass 'disabled'
+
+            # when is_invitated cookie not true hide
+            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ]
+                $( '#global-region-visualize-VPC' ).show()
+            else
+                $( '#global-region-visualize-VPC' ).hide()
+
+            null
 
         enableSwitchRegion: ->
             $( '#region-switch' )
@@ -282,7 +314,8 @@ define [ 'event', 'i18n!nls/lang.js',
             $target = $ event.currentTarget
             if $target.prop 'disabled'
                 return
-            ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
+            #ide_event.trigger ide_event.ADD_STACK_TAB, $target.data( 'region' ) or current_region
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ) or current_region, null
 
         gotoRegion: ( event ) ->
             if event is Object event
@@ -314,7 +347,8 @@ define [ 'event', 'i18n!nls/lang.js',
             $target = $ event.currentTarget
             name = $target.data 'name'
             id = $target.data 'id'
-            ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
         showCredential: ( flag ) ->
             #flag = ''
@@ -367,9 +401,11 @@ define [ 'event', 'i18n!nls/lang.js',
             id = event.currentTarget.id
 
             if id.indexOf('app-') == 0
-                ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                #ide_event.trigger ide_event.OPEN_APP_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', $("#"+id).data('option').name, $("#"+id).data('option').region, id
             else if id.indexOf('stack-') == 0
-                ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                #ide_event.trigger ide_event.OPEN_STACK_TAB, $("#"+id).data('option').name, $("#"+id).data('option').region, id
+                ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', $("#"+id).data('option').name, $("#"+id).data('option').region, id
 
             null
 
@@ -388,10 +424,12 @@ define [ 'event', 'i18n!nls/lang.js',
 
                 ##check params:region, id, name
                 if id.indexOf('app-') is 0
-                    ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+                    #ide_event.trigger ide_event.OPEN_APP_TAB, name, current_region, id
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_APP', name, current_region, id
 
                 else if id.indexOf('stack-') is 0
-                    ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                    #ide_event.trigger ide_event.OPEN_STACK_TAB, name, current_region, id
+                    ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'OPEN_STACK', name, current_region, id
 
             null
 
@@ -502,10 +540,21 @@ define [ 'event', 'i18n!nls/lang.js',
             _.each $('.region-resource-list-item').find('.region-resource-thumbnail img'), ( item ) ->
                 $item = $ item
                 if $item.attr('data-id') is id
-                    new_url = 'https://s3.amazonaws.com/madeiracloudthumbnail/' + url + '?time=' + Math.round(+new Date())
+                    new_url = 'https://madeiracloudthumbnails-dev.s3.amazonaws.com/' + url + '?time=' + Math.round(+new Date())
                     console.log 'new_url = ' + new_url
                     $item.attr 'src', new_url
                     $item.removeAttr 'style'
+
+            null
+
+        unmanagedVPCClick : ->
+            console.log 'unmanagedVPCClick'
+
+            # when is_invitated cookie is true can click
+            if MC.forge.cookie.getCookieByName( 'is_invitated' ) in [ 'true', true ] and MC.forge.cookie.getCookieByName( 'account_id' ) isnt 'demo_account'
+
+                # load unmanagedvpc
+                unmanagedvpc.loadModule()
 
             null
 

@@ -4,29 +4,6 @@
 
 define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, constant ) ->
 
-    ###
-    regions = [{
-        region_group: "Band"
-        region_count: 3
-        region_name_group: [
-            { name : "Generic Name"         },
-            { name : "Something Else!!"     },
-            { name : "Something Else!!3333" }
-        ]
-        },{
-        region_group: "Band2"
-        region_count: 2
-        region_name_group: [
-            { name : "Generic Name444"     },
-            { name : "Something Else!!555" }
-        ]
-    }]
-    ###
-
-    #private
-    #region map
-    #region_labels  = []
-    #stack region id
     stack_region_list = []
 
     #private
@@ -105,9 +82,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #set vo
                 me.set 'app_list', app_list
-                #
-                MC.data.nav_app_list = app_list
-                #
+
                 null
 
             #####listen STACK_LST_RETURN
@@ -181,9 +156,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
                 stack_region_list = []
                 _.each stack_list, ( item ) ->
                     stack_region_list.push item.region_name_group[0].region
-                #
-                MC.data.nav_stack_list = stack_list
-                #
+
                 @regionEmptyList()
 
                 null
@@ -216,64 +189,20 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
                 #set vo
                 me.set 'region_list', region_list
-                #
-                MC.data.nav_region_list = region_list
 
                 null
-
 
             null
 
         #app list
-        appListService : (flag, ids) ->
-
-            me = this
-
-            # #get service(model)
-            # if flag and ids and flag is 'TERMINATE_APP'     # delete item from list when terminated app
-            #     new_app_list = []
-            #     app_list = me.get 'app_list'
-
-            #     for rv in app_list
-            #         region_list = []
-            #         for item in rv.region_name_group
-            #             if item.id in ids
-            #                 continue
-
-            #             region_list.push item
-
-            #         new_app_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
-
-            #     me.set 'app_list', new_app_list
-
-            # else
-            app_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
+        appListService : ( flag, ids ) ->
+            console.log 'appListService', flag, ids
+            app_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
 
         #stack list
-        stackListService : (flag, ids) ->
-
-            me = this
-
-            #get service(model)
-            # if flag and ids and flag is 'REMOVE_STACK'
-            #     new_stack_list = []
-            #     stack_list = me.get 'stack_list'
-
-            #     for rv in stack_list
-            #         region_list = []
-            #         for item in rv.region_name_group
-            #             if item.id in ids
-            #                 continue
-
-            #             region_list.push item
-
-            #         new_stack_list.push {'region_name_group':region_list, 'region_group':rv.region_group, 'region_count':region_list.length}
-
-            #     me.set 'stack_list', new_stack_list
-
-            # else
-            stack_model.list { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
-
+        stackListService : ( flag, ids ) ->
+            console.log 'stackListService', flag, ids
+            stack_model.list { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), null, ids
 
         #region empty list
         regionEmptyList : () ->
@@ -310,6 +239,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'constant', 'backbone', 'jquer
 
             console.log temp
             this.set 'app_list', temp
+            MC.data.nav_app_list = @get 'app_list'
 
             null
 

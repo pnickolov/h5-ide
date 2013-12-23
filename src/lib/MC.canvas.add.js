@@ -405,7 +405,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-in',
 					'id' : group.id + '_port-subnet-assoc-in',
-					'transform': 'translate(-12, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
+					'transform': 'translate(-10, ' + ((height / 2) - 13) + ')', //port position: right:0 top:-90 left:-180 bottom:-270
 					'data-name': 'subnet-assoc-in', //for identify port
 					'data-position': 'left', //port position: for calc point of junction
 					'data-type': 'association', //color of line
@@ -417,7 +417,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-subnet-assoc-out',
 					'id' : group.id + '_port-subnet-assoc-out',
-					'transform': 'translate(' + (width + 4) + ', ' + ((height / 2) - 13) + ')',
+					'transform': 'translate(' + (width + 2) + ', ' + ((height / 2) - 13) + ')',
 					'data-name': 'subnet-assoc-out',
 					'data-position': 'right',
 					'data-type': 'association',
@@ -656,7 +656,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				}),
 
 				////5.asg label
-				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], option.name).attr({
+				Canvon.text(MC.canvas.GROUP_LABEL_COORDINATE[ type ][0], MC.canvas.GROUP_LABEL_COORDINATE[ type ][1], MC.asgName( option.name) ).attr({
 					'class': 'group-label name',
 					'id': group.id + '_name'
 				})
@@ -681,7 +681,14 @@ MC.canvas.add = function (flag, option, coordinate)
 				{
 					lc_comp_id = orig_asg_comp.resource.LaunchConfigurationName.split(".")[0].substr(1);
 					lc_comp_layout = layout.node[ lc_comp_id ];
-					os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					os_type = "";
+					if (lc_comp_layout.osType && lc_comp_layout.architecture && lc_comp_layout.rootDeviceType){
+						os_type = lc_comp_layout.osType + '.' + lc_comp_layout.architecture + '.' + lc_comp_layout.rootDeviceType;
+					}
+					else{
+						os_type = "ami-unknown";
+					}
+
 					lc_name = data[ lc_comp_id ].name;
 
 					$(group).append(
@@ -880,7 +887,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				if (MC.canvas_data.platform !== MC.canvas.PLATFORM_TYPE.EC2_CLASSIC){
 					$.each(MC.canvas_data.component, function ( key, val ){
 
-						if (val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
+						if (val.type === 'AWS.VPC.NetworkInterface' && val.resource.Attachment && val.resource.Attachment.InstanceId && val.resource.Attachment.InstanceId.split(".")[0].slice(1) === component_data.uid && val.resource.Attachment.DeviceIndex === '0'){
 
 							$.each(MC.canvas_data.component, function ( k, v ){
 								if(v.type === 'AWS.EC2.EIP' && v.resource.NetworkInterfaceId === '@' + val.uid + '.resource.NetworkInterfaceId'){
@@ -932,7 +939,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			option.number = component_data.number;
 
 			//os type
-			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			if(option.osType && option.architecture && option.rootDeviceType){
+				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			}
+			else{
+				os_type = "ami-unknown";
+			}
 
 			//check volume number,set icon
 			volume_number = component_data.resource.BlockDeviceMapping.length;
@@ -1143,7 +1155,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			try
 			{
-				if (currentState === 'app') {
+				if (currentState === 'app' || currentState === 'appview') {
 					MC.aws.eip.updateAppTooltip(group.id);
 				} else {
 					if (data_eip_state === 'on') {
@@ -1624,7 +1636,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-top',
 					'id' : group.id + '_port-rtb-src-top',
-					'transform': 'translate(39, -4)' + MC.canvas.PORT_UP_ROTATE,
+					'transform': 'translate(40, -4)' + MC.canvas.PORT_UP_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'top',
 					'data-type': 'association',
@@ -1636,7 +1648,7 @@ MC.canvas.add = function (flag, option, coordinate)
 				Canvon.path(MC.canvas.PATH_D_PORT).attr({
 					'class': 'port port-gray port-rtb-src port-rtb-src-bottom',
 					'id' : group.id + '_port-rtb-src-bottom',
-					'transform': 'translate(41, 66)' + MC.canvas.PORT_DOWN_ROTATE,
+					'transform': 'translate(40, 66)' + MC.canvas.PORT_DOWN_ROTATE,
 					'data-name': 'rtb-src',
 					'data-position': 'bottom',
 					'data-type': 'association',
@@ -2177,7 +2189,7 @@ MC.canvas.add = function (flag, option, coordinate)
 
 			// update eip tooltip
 			var currentState = MC.canvas.getState();
-			if (currentState === 'app') {
+			if (currentState === 'app' || currentState === 'appview') {
 				MC.aws.eip.updateAppTooltip(group.id);
 			} else {
 				if (data_eip_state === 'on') {
@@ -2356,7 +2368,12 @@ MC.canvas.add = function (flag, option, coordinate)
 			}
 
 			//os type
-			os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			if(option.osType && option.architecture && option.rootDeviceType){
+				os_type = option.osType + '.' + option.architecture + '.' + option.rootDeviceType;
+			}
+			else{
+				os_type = "ami-unknown";
+			}
 
 			//check volume number,set icon
 			volume_number = component_data.resource.BlockDeviceMapping.length;

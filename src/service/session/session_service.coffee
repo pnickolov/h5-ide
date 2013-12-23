@@ -71,6 +71,7 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
         session_info.has_cred    = result[5]
         session_info.account_id  = result[6]
         session_info.state       = result[7]
+        session_info.is_invitated= result[8]
 
         #return session_info
         session_info

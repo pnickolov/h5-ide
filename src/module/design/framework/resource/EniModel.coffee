@@ -1,17 +1,26 @@
 
 define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
 
-  # IpObject = {
-  #   eip        : false
-  #   ip         : "10.0.0.x"
-  #   autoAssign : false
-  # }
+  ###
+  IpObject is used to represent an ip in Eni
+  ###
+  IpObject = ( attr )->
+    this.hasEip     = attr.hasEip or false
+    this.eipId      = attr.eipId  or ""
+    this.autoAssign = attr.autoAssign or false
+    this.ip         = attr.ip or ""
+    null
 
+
+  ###
+  Defination of EniModel
+  ###
   Model = ComplexResModel.extend {
 
-    defaults :
+    defaults : ()->
       sourceDestCheck : true
       description     : ""
+      ips             : []
 
       x        : 0
       y        : 0
@@ -27,7 +36,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       delete attributes.instance
 
       ComplexResModel.call this, attributes, option
+
+      this.attributes.ips.push( new IpObject({autoAssign:true}) )
       null
+
+    embedInstance : ()-> @__embedInstance
 
     maxIpCount : ()->
       instance = @get("instance")
@@ -39,10 +52,52 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
           count = MC.data.config[MC.canvas_data.region].instance_type[ type[0] ][ type[1] ].ip_per_eni
       count
 
-    embedInstance : ()-> @__embedInstance
+    hasPrimaryEip : ()->
+      @get("ips")[0].hasEip
 
-    hasPrimaryEip : ()-> false
+    getIpArray : ()->
+      _.map @get("ips"), ( ip )->
+        $.extend {}, ip.attributes
 
+    addIp : ( idx, ip, autoAssign, hasEip )->
+      ips = @get("ips")
+
+      if @maxIpCount() >= ips.length then return false
+
+      ip = new IpObject({
+        hasEip     : !!hasEip
+        ip         : ip
+        autoAssign : autoAssign
+      })
+
+      ips = ips.slice(0)
+      ips.push( ip )
+      @set("ips", ips)
+
+      return true
+
+    setIp : ( idx, ip, autoAssign, hasEip )->
+      ipObj = @get("ips")[idx]
+
+      if ip isnt undefined or ip isnt null
+        ipObj.ip = ip
+
+      if autoAssign isnt undefined or autoAssign isnt null
+        ipObj.autoAssign = autoAssign
+
+      if hasEip isnt undefined or hasEip isnt null
+        ipObj.hasEip = hasEip
+
+      null
+
+    removeIp : ( idx )->
+      # Make sure we have at least ipAddress in this eni
+      if ips.length <= 1 then return
+
+      ips = @get("ips").slice(0)
+      ips.splice( idx, 1 )
+      @set( "ips", ips )
+      null
 
     connect : ( connection )->
       if connection.type is "EniAttachment" then @draw()
@@ -164,10 +219,23 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
 
     deserialize : ( data, layout_data, resolve )->
 
+      # deserialize EIP
+      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+        eni      = resolve( MC.extractID( data.resource.NetworkInterfaceId ) )
+        eipIndex = data.resource.PrivateIpAddress.split(".")[3]
+        ipObj    = eni.get("ips")[ eipIndex ]
+
+        # Update IpObject's Eip status.
+        ipObj.hasEip = true
+        ipObj.eipId  = data.uid
+        return
+
+
+      # deserialize Eni
       # See if it's embeded eni
       attachment = data.resource.Attachment
       embed      = attachment and attachment.DeviceIndex is "0"

@@ -158,6 +158,8 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Rout
         y    : layout_data.coordinate[1]
       })
 
+      null
+
 
     deserialize : ( data, layout_data, resolve )->
 

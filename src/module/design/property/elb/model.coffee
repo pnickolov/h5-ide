@@ -343,7 +343,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     null
 
                 if delCertComp
-                    Design.instance().component( currentCertUID ) and Design.instance().component( currentCertUID ).remove()
+                    if Design.instance().component( currentCertUID ) then Design.instance().component( currentCertUID ).remove()
 
             @elb.set 'ListenerDescriptions', value
             MC.aws.elb.updateRuleToElbSG uid
@@ -379,12 +379,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             currentCertUID = ''
 
             currentCert = this.getCurrentCert(uid)
-            if currentCert and currentCert.uid
-                currentCertUID = currentCert.uid
+            if currentCert and currentCert.id
+                currentCertUID = currentCert.id
 
                 #clean ami
                 if (!value.name && !value.resource.PrivateKey && !value.resource.CertificateBody)
-                    Design.instance().component( currentCertUID ) and Design.instance().component( currentCertUID ).remove()
+                    if Design.instance().component( currentCertUID ) then Design.instance().component( currentCertUID ).remove()
 
                     _.each listenerAry, (obj, index) ->
                         ListenerDescriptions = @elb.get 'ListenerDescriptions'

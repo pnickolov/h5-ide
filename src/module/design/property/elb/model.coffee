@@ -138,7 +138,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 # subnetUID = compObj.resource.SubnetId.split('.')[0].slice(1)
                 # subnetCompObj = MC.canvas_data.component[subnetUID]
                 # azName = subnetCompObj.resource.AvailabilityZone
-                azName = compObj.resource.Placement.AvailabilityZone
+                azName = instance.get( 'Placement' ).AvailabilityZone
                 azObj[azName]++
                 null
 

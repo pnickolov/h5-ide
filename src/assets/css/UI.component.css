@@ -961,7 +961,8 @@ textarea {
 .status-stopped,
 .status-Stopped,
 .status-Terminated,
-.status-terminated {
+.status-terminated,
+.status-deleted {
 	background-color: #ec3c38;
 	background-image: -webkit-linear-gradient(bottom, #c5312d , #ec3c38);
 	background-image: -moz-linear-gradient(bottom, #c5312d , #ec3c38);

@@ -321,10 +321,10 @@ define [ '../base/view',
 
         refreshCertPanel : ( certObj ) ->
 
-            $('#elb-property-cert-name-input').val(certObj.name)
-            $('#elb-property-cert-privatekey-input').val(certObj.resource.PrivateKey)
-            $('#elb-property-cert-publickey-input').val(certObj.resource.CertificateBody)
-            $('#elb-property-cert-chain-input').val(certObj.resource.CertificateChain)
+            $('#elb-property-cert-name-input').val(certObj.get 'name')
+            $('#elb-property-cert-privatekey-input').val(certObj.get 'PrivateKey')
+            $('#elb-property-cert-publickey-input').val(certObj.get 'CertificateBody')
+            $('#elb-property-cert-chain-input').val(certObj.get 'CertificateChain')
 
             $('#elb-property-listener-cert-main').show()
 

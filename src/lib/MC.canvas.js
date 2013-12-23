@@ -237,8 +237,8 @@ MC.canvas = {
 
 	resize: function (target, type)
 	{
-		var canvas_size = MC.canvas.data.get("layout.size"),
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+		var canvas_size = $canvas.size(),
+			scale_ratio = $canvas.scale(),
 			key = target === 'width' ? 0 : 1,
 			value,
 			target_value;
@@ -252,29 +252,25 @@ MC.canvas = {
 
 		if (type === 'shrink')
 		{
-			var layout_node_data = MC.canvas.data.get('layout.component.node'),
-				layout_group_data = MC.canvas.data.get('layout.component.group'),
+			var canvas_node = $canvas.node(),
+				canvas_group = $canvas.group(),
 				node_minX = [],
 				node_minY = [],
 				node_maxX = [],
 				node_maxY = [],
-				node_data,
-				group_node_data,
 				screen_maxX,
-				screen_maxY,
-				group_minX,
-				group_minY;
+				screen_maxY;
 
-			$.each(layout_node_data, function (index, data)
+			$.each(canvas_node, function (index, item)
 			{
-				node_maxX.push(data.coordinate[0] + MC.canvas.COMPONENT_SIZE[ data.type ][0]);
-				node_maxY.push(data.coordinate[1] + MC.canvas.COMPONENT_SIZE[ data.type ][1]);
+				node_maxX.push(item.coordinate[0] + item.size[0]);
+				node_maxY.push(item.coordinate[1] + item.size[1]);
 			});
 
-			$.each(layout_group_data, function (index, data)
+			$.each(canvas_group, function (index, item)
 			{
-				node_maxX.push(data.coordinate[0] + data.size[0]);
-				node_maxY.push(data.coordinate[1] + data.size[1]);
+				node_maxX.push(item.coordinate[0] + item.size[0]);
+				node_maxY.push(item.coordinate[1] + item.size[1]);
 			});
 
 			screen_maxX = Math.max.apply(Math, node_maxX);
@@ -311,7 +307,7 @@ MC.canvas = {
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT / scale_ratio
 		});
 
-		MC.canvas.data.set("layout.size", canvas_size);
+		$canvas.size(canvas_size[0], canvas_size[1]);
 
 		return true;
 	},
@@ -319,13 +315,13 @@ MC.canvas = {
 	zoomIn: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size'),
-			scale_ratio;
+			scale_ratio = $canvas.scale();
 
-		if (MC.canvas_property.SCALE_RATIO > 1)
+		if (scale_ratio > 1)
 		{
-			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 - 2) / 10;
+			$canvas.scale((scale_ratio * 10 - 2) / 10);
 
-			scale_ratio = MC.canvas_property.SCALE_RATIO;
+			scale_ratio = $canvas.scale();
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
@@ -354,13 +350,13 @@ MC.canvas = {
 	zoomOut: function ()
 	{
 		var canvas_size = MC.canvas.data.get('layout.size'),
-			scale_ratio;
+			scale_ratio = $canvas.scale();
 
-		if (MC.canvas_property.SCALE_RATIO < 1.6)
+		if (scale_ratio < 1.6)
 		{
-			MC.canvas_property.SCALE_RATIO = (MC.canvas_property.SCALE_RATIO * 10 + 2) / 10;
+			$canvas.scale((scale_ratio * 10 + 2) / 10);
 
-			scale_ratio = MC.canvas_property.SCALE_RATIO;
+			scale_ratio = $canvas.scale();
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
@@ -1100,7 +1096,7 @@ MC.canvas = {
 			layout_connection_data = MC.canvas_data.layout.connection,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = $canvas.scale(),
 			controlPoints = [],
 			direction,
 			layout_connection_data,
@@ -1413,7 +1409,7 @@ MC.canvas = {
 			layout_connection_data = MC.canvas_data.layout.connection,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			connection_target_data = {},
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = $canvas.scale(),
 			controlPoints = [],
 			direction,
 			layout_connection_data,
@@ -2036,7 +2032,7 @@ MC.canvas = {
 
 	pixelToGrid: function (x, y)
 	{
-		var scale_ratio = MC.canvas_property.SCALE_RATIO;
+		var scale_ratio = $canvas.scale();
 
 		return {
 			'x': Math.ceil(x * scale_ratio / MC.canvas.GRID_WIDTH),
@@ -3695,7 +3691,7 @@ MC.canvas.event.dragable = {
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'scale_ratio': $canvas.scale(),
 					'SVGtranslate': SVGtranslate
 				});
 			}
@@ -3723,7 +3719,7 @@ MC.canvas.event.dragable = {
 					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target[0].id + '.size'),
 					'grid_width': MC.canvas.GRID_WIDTH,
 					'grid_height': MC.canvas.GRID_HEIGHT,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'scale_ratio': $canvas.scale(),
 					'SVGtranslate': SVGtranslate
 				});
 			}
@@ -3820,7 +3816,7 @@ MC.canvas.event.dragable = {
 				layout_node_data = MC.canvas.data.get('layout.component.node'),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
-				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				scale_ratio = $canvas.scale(),
 				component_size,
 				match_place,
 				coordinate,
@@ -4255,7 +4251,7 @@ MC.canvas.event.dragable = {
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = $canvas.scale(),
 			coordinate;
 
 		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
@@ -4290,7 +4286,7 @@ MC.canvas.event.dragable = {
 			layout_node_data = MC.canvas.data.get('layout.component.node'),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = $canvas.scale(),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ],
 			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
@@ -4370,7 +4366,7 @@ MC.canvas.event.drawConnection = {
 				port_type = target.data('type'),
 				port_name = target.data('name'),
 				connection_option = MC.canvas.CONNECTION_OPTION[ node_type ],
-				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				scale_ratio = $canvas.scale(),
 				CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 				offset = {},
 				port_position_offset = 8 / scale_ratio,
@@ -4837,7 +4833,7 @@ MC.canvas.event.siderbarDrag = {
 					'canvas_offset': svg_canvas.offset(),
 					'node_type': node_type,
 					'shadow': shadow,
-					'scale_ratio': MC.canvas_property.SCALE_RATIO,
+					'scale_ratio': $canvas.scale(),
 					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ]
 				});
 			}
@@ -5099,7 +5095,7 @@ MC.canvas.event.groupResize = {
 				group = parent.find('.group'),
 				group_offset = group[0].getBoundingClientRect(),
 				canvas_offset = $('#svg_canvas').offset(),
-				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				scale_ratio = $canvas.scale(),
 				grid_width = MC.canvas.GRID_WIDTH,
 				grid_height = MC.canvas.GRID_HEIGHT,
 				group_left = (group_offset.left - canvas_offset.left) * scale_ratio,
@@ -5276,7 +5272,7 @@ MC.canvas.event.groupResize = {
 			direction = event_data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
 			canvas_offset = event_data.canvas_offset,
-			scale_ratio = MC.canvas_property.SCALE_RATIO,
+			scale_ratio = $canvas.scale(),
 			grid_width = MC.canvas.GRID_WIDTH,
 			grid_height = MC.canvas.GRID_HEIGHT,
 			offsetX = target.attr('x') * 1,
@@ -6040,7 +6036,7 @@ MC.canvas.event.keyEvent = function (event)
 				target_type = target.data('type'),
 				target_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id),
 				canvas_size = MC.canvas.data.get('layout.size'),
-				scale_ratio = MC.canvas_property.SCALE_RATIO,
+				scale_ratio = $canvas.scale(),
 				coordinate = {'x': target_data.coordinate[0], 'y': target_data.coordinate[1]},
 				component_size = MC.canvas.COMPONENT_SIZE[ node_type ],
 				match_place,

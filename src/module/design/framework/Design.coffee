@@ -2,7 +2,11 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
-    new CanvasElement( Design.instance().component(id) )
+    component = Design.instance().component(id)
+    if component.node_line
+      new CanvasElement.line( component )
+    else
+      new CanvasElement( component )
 
   $canvas.size   = ( w, h  )-> design_instance.canvas.size( w, h )
   $canvas.scale  = ( ratio )-> design_instance.canvas.scale( ratio )
@@ -19,9 +23,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   ### Canvas is used by $canvas to store data of svg canvas ###
   Canvas = ( size )->
-    this.size   = size
-    this.offset = [0, 0]
-    this.scale  = 1
+    this.size      = size
+    this.offsetAry = [0, 0]
+    this.scale     = 1
     this
 
   Canvas.prototype.scale = ( ratio )->
@@ -33,10 +37,10 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   Canvas.prototype.offset = ( x, y )->
     if x is undefined
-      return this.offset
+      return this.offsetAry
 
-    this.offset[0] = x
-    this.offset[1] = y
+    this.offsetAry[0] = x
+    this.offsetAry[1] = y
     null
 
   Canvas.prototype.size = ( w, h )->

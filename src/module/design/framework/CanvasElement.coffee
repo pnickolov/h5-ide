@@ -24,15 +24,24 @@ define [ "./CanvasManager" ], ( CanvasManager )->
 
   CanvasElement.prototype.element = ()->
     if not this.el
-      this.el = $( document.getElementById( this.id ) )
+      this.el = document.getElementById( this.id )
 
     this.el
+
+  CanvasElement.prototype.$element = ()->
+    if not this.$el
+      this.$el = $( document.getElementById( this.id ) )
+
+    this.$el
 
   CanvasElement.prototype.resize = ( w, h )->
     if w is undefined
       return this.size
 
-    CanvasManager.resize( this.id, w, h )
+    if this.nodeType is "group"
+      this.size[0] = w
+      this.size[1] = h
+      CanvasManager.resize( this.id, w, h )
     null
 
 
@@ -40,6 +49,8 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     if x is undefined
       return this.coordinate
 
+    this.coordinate[0] = x
+    this.coordinate[1] = y
     CanvasManager.move( this.id, x, y )
     null
 
@@ -54,7 +65,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
 
   CanvasElement.prototype.port = ()->
     if not this.ports
-      this.ports = _.map this.element().children(".port"), ( el )->
+      this.ports = _.map this.$element().children(".port"), ( el )->
         el.getAttribute("data-name")
 
     this.ports
@@ -96,15 +107,15 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     DesignManager.removeClass $allwarp.children(".selected")[0], "selected"
 
     # Added selected to this.element
-    DesignManager.addClass this.element()[0], "selected"
+    DesignManager.addClass this.element(), "selected"
     true
 
   CanvasElement.prototype.show = ()->
-    CanvasManager.toggle this.element(), true
+    CanvasManager.toggle this.$element(), true
     null
 
   CanvasElement.prototype.hide = ()->
-    CanvasManager.toggle this.element(), false
+    CanvasManager.toggle this.$element(), false
     null
 
   CanvasElement.prototype.hover = ()->
@@ -133,7 +144,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
 
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
-      this.parent = if this.parentId then new CanvasElement( this.parentId ) else null
+      this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null
 
     this.parent
 
@@ -161,14 +172,14 @@ define [ "./CanvasManager" ], ( CanvasManager )->
     return false
 
   CanvasElement.prototype.children = ()->
-    self = Design.instance().component( this.id )
-    if self.children
-      _.map self.children(), ( c )->
+    _.map Design.instance().component( this.id ).children() || [], ( c )->
         new CanvasElement( c )
-    else
-      []
 
-  CanvasElement.prototype.updateResizer = ()->
-    console.error( new Error() )
+  CanvasElement.line = ( component )->
+    this.id = component.id
+
+  CanvasElement.line.prototype.select   = CanvasElement.prototype.select
+  CanvasElement.line.prototype.element  = CanvasElement.prototype.element
+  CanvasElement.line.prototype.$element = CanvasElement.prototype.$element
 
   CanvasElement

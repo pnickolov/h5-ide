@@ -284,8 +284,9 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#  state editor
 	#############################
 
-	# [ 'host1.privateIP', 'host1.instanceId', 'host1.KeyName', 'host1.xxx' ]
 	# host1 is component name
+	# [{ name : '{host1.privateIP}', value: '{host1.privateIP}' }, { name: '{host1.keyName}', value: '{host1.keyName}' ]
+
 	state_editor_list = []
 
 	initSEList = ->
@@ -320,10 +321,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 					if key_list and not _.isEmpty( key_list ) and _.isArray( key_list ) and not _.isEmpty( component.name )
 
 						_.each key_list, ( item ) ->
-							state_editor_list.push name + '.' + item
+							str = '{' + name + '.' + item + '}'
+							state_editor_list.push { 'name' : str, 'value' : str }
 
 		# console
 		console.log 'state_editor_list', state_editor_list
+
+		# add test local storage state_editor_list
+		MC.storage.set 'state_editor_list', state_editor_list
 
 		# return
 		state_editor_list

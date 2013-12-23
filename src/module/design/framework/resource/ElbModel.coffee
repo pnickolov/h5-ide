@@ -133,10 +133,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
-      for lis in elb.get 'ListenerDescriptions'
-        if lis.Listener.SSLCertificateId
-          uid = MC.extractID lis.Listener.SSLCertificateId
-          elb.associate resolve, uid
+      # for lis in elb.get 'ListenerDescriptions'
+      #   if lis.Listener.SSLCertificateId
+      #     uid = MC.extractID lis.Listener.SSLCertificateId
+      #     elb.associate resolve, uid
 
       # SgAsso
       for sg in data.resource.SecurityGroups || []

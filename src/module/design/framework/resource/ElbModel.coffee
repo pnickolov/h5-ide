@@ -138,10 +138,6 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
           uid = MC.extractID lis.Listener.SSLCertificateId
           elb.associate resolve, uid
 
-      if data.resource.SecurityGroups
-        for sg in data.resource.SecurityGroups
-          new SgAsso( elb, resolve( MC.extractID( sg ) ) )
-
       # SgAsso
       for sg in data.resource.SecurityGroups || []
         new SgAsso( elb, resolve( MC.extractID(sg) ) )

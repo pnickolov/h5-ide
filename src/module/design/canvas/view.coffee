@@ -2,7 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, canvas_layout, constant, forge_app ) ->
+define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forge/app', 'MC.canvas', 'backbone', 'jquery' ], ( Design, template, ide_event, canvas_layout, constant, forge_app ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -35,7 +35,8 @@ define [ 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forg
                 .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
                 .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
-                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT  CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( "CANVAS_OBJECT_DELETE", this.deleteObject )
 
         render : () ->
             console.log 'canvas render'
@@ -99,6 +100,15 @@ define [ 'text!./template.html', "event", "canvas_layout", "constant", 'lib/forg
             ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
             null
 
+        deleteObject : ( event, option ) ->
+
+            # In AppEdit mode, we use a different method collection to deal with deleting object.
+            # See if we need to hackjack the deleteResMap / beforeDeleteResMap here
+            hijack = MC.canvas.getState() is "appedit"
+
+            resource = Design.instance().component( option.id )
+            if not resource then return
+            resource.remove()
     }
 
     return CanvasView

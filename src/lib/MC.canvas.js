@@ -1833,6 +1833,7 @@ MC.canvas = {
 		var target = $('#' + id),
 			target_type = target.data('type'),
 			svg_canvas = $("#svg_canvas"),
+			item = $canvas(id);
 			clone_node,
 			node_connections,
 			layout_connection_data;
@@ -1846,7 +1847,9 @@ MC.canvas = {
 			target.remove();
 			$('#line_layer').append(clone);
 
-			svg_canvas.trigger("CANVAS_LINE_SELECTED", id);
+			//svg_canvas.trigger("CANVAS_LINE_SELECTED", id);
+
+			item.select();
 		}
 
 		if (target_type === 'node')
@@ -1856,7 +1859,9 @@ MC.canvas = {
 			target.remove();
 			$('#node_layer').append(clone);
 
-			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+			//svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+
+			item.select();
 
 			node_connections = MC.canvas_data.layout.component.node[ id ].connection;
 			layout_connection_data = MC.canvas_data.layout.connection;
@@ -1871,7 +1876,9 @@ MC.canvas = {
 
 		if (target_type === 'group')
 		{
-			svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+			//svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
+
+			item.select();
 		}
 
 		MC.canvas_property.selected_node.push(id);
@@ -1887,7 +1894,9 @@ MC.canvas = {
 		var transformVal = node.transform.baseVal,
 			translateVal;
 
-		MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
+		//MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
+
+		$canvas( node.id ).position(x, y);
 
 		if (transformVal.numberOfItems === 1)
 		{
@@ -2099,7 +2108,7 @@ MC.canvas = {
 			is_matched = false,
 			match_status,
 			match_target,
-			group_data,
+			group_node,
 			group_child,
 			coordinate,
 			size,
@@ -2142,9 +2151,9 @@ MC.canvas = {
 					{
 						id = group_stack[ layer ][ i ].id;
 
-						group_comp = Design.instance().component( id )
-						coordinate = [ group_comp.x(), group_comp.y() ];
-						size       = [ group_comp.width(), group_comp.height() ];
+						group_node = $canvas(id);
+						coordinate = group_node.coordinate;
+						size = group_node.size;
 
 						if (
 							$.inArray(id, ignore_stack) === -1 &&
@@ -2154,7 +2163,7 @@ MC.canvas = {
 							points[ point ].y < coordinate[1] + size[1]
 						)
 						{
-							match_status['is_matched'] = $.inArray(group_comp.type, match_option) > -1;
+							match_status['is_matched'] = $.inArray(group_node.type, match_option) > -1;
 							match_status['target'] = id;
 							match_target = id;
 						}
@@ -2283,11 +2292,11 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children   = MC.canvas_data.layout.component.node,
-			groups       = MC.canvas_data.layout.component.group,
-			group_data   = groups[ node_id ],
+		var children = MC.canvas_data.layout.component.node,
+			groups = MC.canvas_data.layout.component.group,
+			group_data = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
-			matched      = [],
+			matched = [],
 			coordinate,
 			size;
 
@@ -2347,15 +2356,17 @@ MC.canvas = {
 
 	groupChild: function (group_node)
 	{
-		var group_data = Design.instance().component( group_node.id );
+		var group_node = $canvas(group_node.id),
+			coordinate = group_node.coordinate,
+			size = group_node.size;
 
 		return MC.canvas.areaChild(
-			group_data.id,
-			group_data.type,
-			group_data.x(),
-			group_data.y(),
-			group_data.x() + group_data.width(),
-			group_data.y() + group_data.height()
+			group_node.id,
+			group_node.type,
+			coordinate[ 0 ],
+			coordinate[ 1 ],
+			coordinate[ 0 ] + size[ 0 ],
+			coordinate[ 1 ] + size[ 1 ]
 		);
 	},
 
@@ -5580,10 +5591,17 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-			MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
-			MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
 
-			MC.canvas.updateResizer(parent, group_width, group_height);
+			var group_node = $canvas( group_id );
+
+			group_node.position(group_left, group_top);
+			group_node.size(group_width, group_height);
+
+			group_node.updateResizer(group_width, group_height);
+
+			//MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
+			//MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
+			//MC.canvas.updateResizer(parent, group_width, group_height);
 		}
 		else
 		{
@@ -5614,19 +5632,23 @@ MC.canvas.event.groupResize = {
 			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
 
 			// Re-draw group connections
-			layout_connection_data = MC.canvas.data.get('layout.connection');
-			node_connections = layout_group_data[ group_id ].connection || {};
+			// layout_connection_data = MC.canvas.data.get('layout.connection');
+			// node_connections = layout_group_data[ group_id ].connection || {};
 
-			$.each(node_connections, function (index, value)
-			{
-				line_connection = layout_connection_data[ value.line ];
+			// $.each(node_connections, function (index, value)
+			// {
+			// 	line_connection = layout_connection_data[ value.line ];
 
-				MC.canvas.connect(
-					$('#' + group_id), line_connection['target'][ group_id ],
-					$('#' + value.target), line_connection['target'][ value.target ],
-					{'line_uid': value['line']}
-				);
-			});
+			// 	MC.canvas.connect(
+			// 		$('#' + group_id), line_connection['target'][ group_id ],
+			// 		$('#' + value.target), line_connection['target'][ value.target ],
+			// 		{'line_uid': value['line']}
+			// 	);
+			// });
+			
+			var group_node = $canvas( group_id );
+
+			group_node.reConnect();
 		}
 
 		// Show label
@@ -5794,13 +5816,17 @@ MC.canvas.event.clearList = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	if (event.type === 'mouseenter') {
-		$canvas( this.id, true ).hover()
+	if (event.type === 'mouseenter')
+	{
+		$canvas( this.id, true ).hover();
 	}
 
-	if (event.type === 'mouseleave') {
-		$canvas( this.id, true ).hoverOut()
+	if (event.type === 'mouseleave')
+	{
+		$canvas( this.id, true ).hoverOut();
 	}
+
+	return true;
 };
 
 MC.canvas.event.clearSelected = function (event)
@@ -7233,9 +7259,6 @@ MC.canvas.analysis = function ( data )
 
 	return true;
 };
-
-
-
 
 /* Blob.js
  * A Blob implementation.

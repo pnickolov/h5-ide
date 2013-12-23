@@ -7,11 +7,12 @@ StateEditorModel = Backbone.Model.extend({
     lookupDataAry: null
   },
   initialize: function() {
-    var cmdAry, cmdModuleMap, cmdParaMap, cmdParaObjMap, lookupDataAry;
+    var cmdAry, cmdModuleMap, cmdParaMap, cmdParaObjMap, lookupDataAry, moduleCMDMap;
     cmdAry = [];
     cmdParaMap = {};
     cmdParaObjMap = {};
     cmdModuleMap = {};
+    moduleCMDMap = {};
     _.each(data.linux, function(cmdObj, cmdName) {
       var cmdAllParaAry, paraAryObj;
       cmdAry.push(cmdName);
@@ -19,6 +20,7 @@ StateEditorModel = Backbone.Model.extend({
       cmdParaMap[cmdName] = [];
       cmdParaObjMap[cmdName] = {};
       cmdModuleMap[cmdName] = cmdObj;
+      moduleCMDMap[cmdObj.module] = cmdName;
       _.each(paraAryObj, function(paraObj, paraName) {
         var paraBuildObj;
         paraBuildObj = _.extend(paraObj, {});
@@ -57,7 +59,8 @@ StateEditorModel = Backbone.Model.extend({
     this.set('cmdParaMap', cmdParaMap);
     this.set('cmdParaObjMap', cmdParaObjMap);
     this.set('lookupDataAry', lookupDataAry);
-    return this.set('cmdModuleMap', cmdModuleMap);
+    this.set('cmdModuleMap', cmdModuleMap);
+    return this.set('moduleCMDMap', moduleCMDMap);
   }
 });
 

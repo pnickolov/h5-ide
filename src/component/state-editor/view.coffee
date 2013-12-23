@@ -49,81 +49,83 @@ StateEditorView = Backbone.View.extend({
 		this.paraDictListTpl = Handlebars.compile(this.paraDictItemHTML)
 		this.paraArrayListTpl = Handlebars.compile(this.paraArrayItemHTML)
 
-	refreshStateList: () ->
+	refreshStateList: (stateListObj) ->
 
 		that = this
 
-		stateListObj = {
-			state_list: [{
-				state_id: 1,
-				cmd_value: 'apt pkg',
-				parameter_list: [{
-					para_name: 'name',
-					type_dict: true,
-					required: true,
-					para_value: [{
-						key: 'name',
-						value: 'xxx'
+		if not  stateListObj
+
+			stateListObj = {
+				state_list: [{
+					state_id: 1,
+					cmd_value: 'apt pkg',
+					parameter_list: [{
+						para_name: 'name',
+						type_dict: true,
+						required: true,
+						para_value: [{
+							key: 'name',
+							value: 'xxx'
+						}, {
+							key: 'abc',
+							value: 'xxx'
+						}]
 					}, {
-						key: 'abc',
-						value: 'xxx'
+						para_name: 'verify_gpg',
+						type_text: true,
+						required: true,
+						para_value: 'ssh apt@211.98.26.7/pot'
+					}, {
+						para_name: 'fromrepo',
+						type_array: true,
+						required: true,
+						para_value: [
+							'qqq',
+							'qqq',
+							'qqq'
+						]
+					}, {
+						para_name: 'debconf',
+						type_line: true,
+						required: false,
+						para_value: 'what'
 					}]
 				}, {
-					para_name: 'fromrepo',
-					type_array: true,
-					required: true,
-					para_value: [
-						'qqq',
-						'qqq',
-						'qqq'
-					]
-				}, {
-					para_name: 'verify_gpg',
-					type_text: true,
-					required: true,
-					para_value: 'ssh apt@211.98.26.7/pot'
-				}, {
-					para_name: 'debconf',
-					type_line: true,
-					required: false,
-					para_value: 'what'
-				}]
-			}, {
-				state_id: 2,
-				cmd_value: 'apt pkg',
-				parameter_list: [{
-					para_name: 'name',
-					type_dict: true,
-					required: true,
-					para_value: [{
-						key: 'name',
-						value: 'xxx'
+					state_id: 2,
+					cmd_value: 'apt pkg',
+					parameter_list: [{
+						para_name: 'name',
+						type_dict: true,
+						required: true,
+						para_value: [{
+							key: 'name',
+							value: 'xxx'
+						}, {
+							key: 'abc',
+							value: 'xxx'
+						}]
 					}, {
-						key: 'abc',
-						value: 'xxx'
+						para_name: 'verify_gpg',
+						type_text: true,
+						required: true,
+						para_value: 'ssh apt@211.98.26.7/pot'
+					}, {
+						para_name: 'fromrepo',
+						type_array: true,
+						required: true,
+						para_value: [
+							'qqq',
+							'qqq',
+							'qqq'
+						]
+					}, {
+						para_name: 'debconf',
+						type_line: true,
+						required: false,
+						para_value: 'what'
 					}]
-				}, {
-					para_name: 'fromrepo',
-					type_array: true,
-					required: true,
-					para_value: [
-						'qqq',
-						'qqq',
-						'qqq'
-					]
-				}, {
-					para_name: 'verify_gpg',
-					type_text: true,
-					required: true,
-					para_value: 'ssh apt@211.98.26.7/pot'
-				}, {
-					para_name: 'debconf',
-					type_line: true,
-					required: false,
-					para_value: 'what'
 				}]
-			}]
-		}
+			}
 
 		that.$stateList.html(this.stateListTpl(stateListObj))
 
@@ -216,15 +218,16 @@ StateEditorView = Backbone.View.extend({
 		that.cmdParaMap = that.model.get('cmdParaMap')
 		that.cmdParaObjMap = that.model.get('cmdParaObjMap')
 		that.cmdModuleMap = that.model.get('cmdModuleMap')
+		that.moduleCMDMap = that.model.get('moduleCMDMap')
 		that.refObjAry = [{
 			name: '{host1.privateIP}',
 			value: '{host1.privateIP}'
 		}, {
 			name: '{host1.keyName}',
-			name: '{host1.keyName}'
+			value: '{host1.keyName}'
 		}, {
 			name: '{host2.instanceId}',
-			name: '{host1.instanceId}'
+			value: '{host1.instanceId}'
 		}]
 
 	bindStateListEvent: () ->
@@ -582,7 +585,7 @@ StateEditorView = Backbone.View.extend({
 
 		that.refreshStateId()
 
-	generateData: () ->
+	saveStateData: () ->
 
 		that = this
 
@@ -633,7 +636,8 @@ StateEditorView = Backbone.View.extend({
 						keyValue = $keyInput.text()
 						valueValue = $valueInput.text()
 
-						dictObj[keyValue] = valueValue
+						if keyValue
+							dictObj[keyValue] = valueValue
 
 						null
 
@@ -663,11 +667,103 @@ StateEditorView = Backbone.View.extend({
 
 		return stateObj
 
+	loadStateData: (stateObj) ->
+
+		that = this
+
+		renderObj = {
+			state_list: []
+		}
+
+		_.each stateObj, (state, stateId) ->
+
+			cmdName = that.moduleCMDMap[state.module]
+			paraModelObj = that.cmdParaObjMap[cmdName]
+
+			paraListObj = state.parameter
+
+			stateRenderObj = {
+				state_id: stateId,
+				cmd_value: cmdName,
+				parameter_list: []
+			}
+
+			_.each paraModelObj, (paraModelValue, paraModelName) ->
+
+				paraModelType = paraModelValue.type
+				paraModelRequired = paraModelValue.required
+
+				renderParaObj = {
+					para_name: paraModelName
+					required: paraModelRequired
+				}
+
+				renderParaObj['type_' + paraModelType] = true
+
+				paraValue = paraListObj[paraModelName]
+
+				renderParaValue = null
+				if paraModelType in ['line', 'text', 'bool']
+
+					renderParaValue = paraValue
+
+				else if paraModelType is 'dict'
+
+					renderParaValue = []
+					_.each paraValue, (paraValueStr, paraKey) ->
+
+						renderParaValue.push({
+							key: paraKey
+							value: paraValueStr
+						})
+
+						null
+
+				else if paraModelType is 'array'
+
+					renderParaValue = []
+					_.each paraValue, (paraValueStr) ->
+
+						renderParaValue.push(paraValueStr)
+
+						null
+
+				renderParaObj.para_value = renderParaValue
+
+				stateRenderObj.parameter_list.push(renderParaObj)
+
+				paraListAry = stateRenderObj.parameter_list
+
+				stateRenderObj.parameter_list = paraListAry.sort((paraObj1, paraObj2) ->
+					if paraObj1.required and not paraObj2.required
+						return false
+
+					if paraObj1.required is paraObj2.required
+						if paraObj1.para_name > paraObj1.para_name
+							return false
+
+					return true
+				)
+
+				null
+
+			renderObj.state_list.push(stateRenderObj)
+
+			null
+
+		return renderObj
+
 	onStateSaveClick: (event) ->
 
 		that = this
-		data = that.generateData()
+		data = that.saveStateData()
 		console.log(data)
+
+		renderData = that.loadStateData(data)
+		console.log(renderData)
+
+		that.refreshStateList(renderData)
+		that.refreshStateViewList(renderData)
 
 })
 

@@ -162,9 +162,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
         null
 
       else if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-        model = new Model({
-
+        attr =
           id    : data.uid
           name  : data.name
           count : data.number
@@ -173,7 +171,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
 
           x      : layout_data.coordinate[0]
           y      : layout_data.coordinate[1]
-        })
+
+        for key, value of data.resource
+          attr[ key ] = value
+
+        model = new Model attr
 
         model.associate resolve
         null

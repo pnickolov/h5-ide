@@ -1833,7 +1833,7 @@ MC.canvas = {
 		var target = $('#' + id),
 			target_type = target.data('type'),
 			svg_canvas = $("#svg_canvas"),
-			item = $canvas(id);
+			item = $canvas(id),
 			clone_node,
 			node_connections,
 			layout_connection_data;
@@ -5645,7 +5645,7 @@ MC.canvas.event.groupResize = {
 			// 		{'line_uid': value['line']}
 			// 	);
 			// });
-			
+
 			var group_node = $canvas( group_id );
 
 			group_node.reConnect();
@@ -6486,7 +6486,7 @@ MC.canvas.analysis = function ( data )
 				item.children !== undefined
 			)
 			{
-				node_connection = resources[ item.children[ 0 ].id ].connection;	
+				node_connection = resources[ item.children[ 0 ].id ].connection;
 			}
 			else
 			{

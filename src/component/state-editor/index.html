@@ -19,14 +19,22 @@
 		<script id="state-template-state-list" type="x-handlebars-template">
 			{{#each state_list}}
 				<div class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
-					<div class="state-add">+</div>
-					<div class="state-id">{{state_id}}</div>
-					<div class="command-value editable-area line" contenteditable="true">{{cmd_value}}</div>
-					<div class="parameter-list">
-						{{> state-template-para-list}}
+					<div class="state-toolbar">
+						<div class="state-remove">-</div>
+						<div class="state-add">+</div>
+						<div class="state-id">{{state_id}}</div>
+						<div class="state-view">
+							<div class="command-view-value"></div>
+							<div class="parameter-view-list">
+								{{> state-template-para-view-list}}
+							</div>
+						</div>
 					</div>
-					<div class="parameter-view-list">
-						{{> state-template-para-view-list}}
+					<div class="state-edit">
+						<div class="command-value editable-area line" contenteditable="true">{{cmd_value}}</div>
+						<div class="parameter-list">
+							{{> state-template-para-list}}
+						</div>
 					</div>
 				</div>
 			{{/each}}
@@ -38,7 +46,7 @@
 				<!-- line type parameter -->
 				{{#if type_line}}
 					<div class="parameter-item line" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
@@ -48,7 +56,7 @@
 				<!-- dict type parameter --> 
 				{{#if type_dict}}
 					<div class="parameter-item dict" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
 						<div class="parameter-container">
 							{{> state-template-para-dict-item}}
 						</div>
@@ -58,7 +66,7 @@
 				<!-- array type parameter --> 
 				{{#if type_array}}
 					<div class="parameter-item array" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
 						<div class="parameter-container">
 							{{> state-template-para-array-item}}
 						</div>
@@ -68,7 +76,7 @@
 				<!-- bool type parameter --> 
 				{{#if type_bool}}
 					<div class="parameter-item bool" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
@@ -78,7 +86,7 @@
 				<!-- text type parameter --> 
 				{{#if type_text}}
 					<div class="parameter-item text" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{para_name}}{{#if required}} (required){{/if}}</div>
+						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area text" contenteditable="true">{{para_value}}</div>
 						</div>
@@ -149,6 +157,9 @@
 		<script type="text/javascript" src="index.js"></script>
 	</head>
 	<body>
-		<div id="state-editor" spellcheck="false"></div>
+		<div id="state-editor" spellcheck="false">
+			<div class="state-list"></div>
+			<div class="state-save">Save</div>
+		</div>
 	</body>
 <requiredl>

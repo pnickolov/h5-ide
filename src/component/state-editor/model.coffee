@@ -10,6 +10,7 @@ StateEditorModel = Backbone.Model.extend({
 		cmdAry = []
 		cmdParaMap = {}
 		cmdParaObjMap = {}
+		cmdModuleMap = {}
 
 		_.each data.linux, (cmdObj, cmdName) ->
 
@@ -18,6 +19,8 @@ StateEditorModel = Backbone.Model.extend({
 			paraAryObj = cmdObj.parameter
 			cmdParaMap[cmdName] = []
 			cmdParaObjMap[cmdName] = {}
+
+			cmdModuleMap[cmdName] = cmdObj
 
 			# get parameter array
 			_.each paraAryObj, (paraObj, paraName) ->
@@ -57,6 +60,7 @@ StateEditorModel = Backbone.Model.extend({
 		this.set('cmdParaMap', cmdParaMap)
 		this.set('cmdParaObjMap', cmdParaObjMap)
 		this.set('lookupDataAry', lookupDataAry)
+		this.set('cmdModuleMap', cmdModuleMap)
 })
 
 window.StateEditorModel = StateEditorModel

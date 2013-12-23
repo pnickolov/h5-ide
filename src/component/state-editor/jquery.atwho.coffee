@@ -445,7 +445,10 @@
       prev.addClass 'cur'
 
     show: ->
-      @$el.show() if not this.visible()
+      if @context.get_opt('at')
+        $('.atwho-view').hide()
+      if not this.visible()
+        @$el.show()
       this.reposition(rect) if rect = @context.rect()
 
     hide: (time) ->
@@ -654,5 +657,5 @@
     start_with_space: no
     limit: 100
     max_len: 200
-    display_timeout: 200
+    display_timeout: 0
     onSelected: () ->

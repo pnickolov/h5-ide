@@ -18,8 +18,11 @@ StateEditorView = Backbone.View.extend({
 		'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
 		'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
 		'focus .editable-area': 'onFocusInput'
-		'click .state-item .state-id': 'onStateIdClick'
-		'click .state-item .state-add': 'onStateAddClick'
+		'click .state-toolbar .state-id': 'onStateIdClick'
+		'click .state-toolbar .state-add': 'onStateAddClick'
+		'click .state-toolbar .state-remove': 'onStateRemoveClick'
+
+		'click .state-save': 'onStateSaveClick'
 
 	initialize: () ->
 
@@ -122,7 +125,7 @@ StateEditorView = Backbone.View.extend({
 			}]
 		}
 
-		that.$stateEditor.html(this.stateListTpl(stateListObj))
+		that.$stateList.html(this.stateListTpl(stateListObj))
 
 		that.bindStateListEvent()
 
@@ -130,7 +133,7 @@ StateEditorView = Backbone.View.extend({
 
 		that = this
 
-		$stateItemList = that.$stateEditor.find('.state-item')
+		$stateItemList = that.$stateList.find('.state-item')
 
 		_.each $stateItemList, (stateItem) ->
 
@@ -146,9 +149,14 @@ StateEditorView = Backbone.View.extend({
 		cmdName = $stateItem.attr('data-command')
 		currentParaMap = that.cmdParaObjMap[cmdName]
 
+		$cmdViewValueElem = $stateItem.find('.command-view-value')
 		$paraListElem = $stateItem.find('.parameter-list')
 		$paraViewListElem = $stateItem.find('.parameter-view-list')
 		$paraItemList = $paraListElem.find('.parameter-item')
+
+		$cmdValueElem = $stateItem.find('.state-edit .command-value')
+		cmdValue = $cmdValueElem.text()
+		$cmdViewValueElem.text(cmdValue)
 
 		paraListViewRenderAry = []
 
@@ -204,9 +212,10 @@ StateEditorView = Backbone.View.extend({
 	initData: () ->
 
 		that = this
-		that.$stateEditor = that.$el
+		that.$stateList = that.$el.find('.state-list')
 		that.cmdParaMap = that.model.get('cmdParaMap')
 		that.cmdParaObjMap = that.model.get('cmdParaObjMap')
+		that.cmdModuleMap = that.model.get('cmdModuleMap')
 		that.refObjAry = [{
 			name: '{host1.privateIP}',
 			value: '{host1.privateIP}'
@@ -222,7 +231,7 @@ StateEditorView = Backbone.View.extend({
 
 		that = this
 
-		$stateItems = that.$stateEditor.find('.state-item')
+		$stateItems = that.$stateList.find('.state-item')
 
 		_.each $stateItems, (stateItem) ->
 
@@ -253,9 +262,9 @@ StateEditorView = Backbone.View.extend({
 			data: cmdNameAry,
 			onSelected: (value) ->
 				$that = $(this)
-				$stateItem = $that.parent('.state-item')
+				$stateItem = $that.parents('.state-item')
 				$stateItem.attr('data-command', value)
-				$paraListElem = $that.parent('.state-item').find('.parameter-list')
+				$paraListElem = $stateItem.find('.parameter-list')
 				that.refreshParaList($paraListElem, value)
 				that.refreshStateView($stateItem)
 		})
@@ -306,9 +315,6 @@ StateEditorView = Backbone.View.extend({
 				data: that.refObjAry
 			}
 
-			$keyInput.atwho(atwhoOption)
-			$valueInput.atwho(atwhoOption)
-
 			if paraOptionAry
 				$valueInput.atwho({
 					at: '',
@@ -316,13 +322,11 @@ StateEditorView = Backbone.View.extend({
 					data: paraOptionAry
 				})
 
+			$keyInput.atwho(atwhoOption)
+			$valueInput.atwho(atwhoOption)
+
 		else if paraType in ['line', 'text', 'array']
 			$inputElem = $paraItem.find('.parameter-value')
-			$inputElem.atwho({
-				at: '@',
-				tpl: that.paraCompleteItemHTML
-				data: that.refObjAry
-			})
 
 			if paraOptionAry
 				$inputElem.atwho({
@@ -330,6 +334,12 @@ StateEditorView = Backbone.View.extend({
 					tpl: that.paraCompleteItemHTML
 					data: paraOptionAry
 				})
+
+			$inputElem.atwho({
+				at: '@',
+				tpl: that.paraCompleteItemHTML
+				data: that.refObjAry
+			})
 
 		else if paraType is 'bool'
 			$inputElem = $paraItem.find('.parameter-value')
@@ -386,7 +396,7 @@ StateEditorView = Backbone.View.extend({
 
 		that = this
 
-		$stateItemList = that.$stateEditor.find('.state-item')
+		$stateItemList = that.$stateList.find('.state-item')
 
 		_.each $stateItemList, (stateItem, idx) ->
 
@@ -524,7 +534,7 @@ StateEditorView = Backbone.View.extend({
 		that = this
 
 		$stateIdElem = $(event.currentTarget)
-		$stateItem = $stateIdElem.parent('.state-item')
+		$stateItem = $stateIdElem.parents('.state-item')
 
 		if $stateItem.hasClass('view')
 			$stateItem.removeClass('view')
@@ -537,7 +547,7 @@ StateEditorView = Backbone.View.extend({
 		that = this
 
 		$currentElem = $(event.currentTarget)
-		$stateItem = $currentElem.parent('.state-item')
+		$stateItem = $currentElem.parents('.state-item')
 
 		stateId = Number($stateItem.attr('data-id'))
 
@@ -556,7 +566,109 @@ StateEditorView = Backbone.View.extend({
 		$cmdValueItem = $newStateItem.find('.command-value')
 		that.bindCommandEvent($cmdValueItem)
 
+		$newStateItem.removeClass('view')
+		$cmdValueItem.focus()
+
 		that.refreshStateId()
+
+	onStateRemoveClick: (event) ->
+
+		that = this
+
+		$currentElem = $(event.currentTarget)
+		$stateItem = $currentElem.parents('.state-item')
+
+		$stateItem.remove()
+
+		that.refreshStateId()
+
+	generateData: () ->
+
+		that = this
+
+		$stateItemList = that.$stateList.find('.state-item')
+
+		stateObj = {}
+
+		_.each $stateItemList, (stateItem, idx) ->
+
+			$stateItem = $(stateItem)
+
+			cmdName = $stateItem.attr('data-command')
+			stateId = $stateItem.attr('data-id')
+
+			moduleObj = that.cmdModuleMap[cmdName]
+
+			stateObj[stateId] = {
+				module: moduleObj.module,
+				parameter: {}
+			}
+
+			$paraListElem = $stateItem.find('.parameter-list')
+			$paraItemList = $paraListElem.find('.parameter-item')
+
+			_.each $paraItemList, (paraItem) ->
+
+				$paraItem = $(paraItem)
+				paraName = $paraItem.attr('data-para-name')
+
+				paraValue = null
+
+				if $paraItem.hasClass('line') or $paraItem.hasClass('bool') or $paraItem.hasClass('text')
+
+					$paraInput = $paraItem.find('.parameter-value')
+					paraValue = $paraInput.text()
+
+				else if $paraItem.hasClass('dict')
+
+					$dictItemList = $paraItem.find('.parameter-dict-item')
+					dictObj = {}
+
+					_.each $dictItemList, (dictItem) ->
+
+						$dictItem = $(dictItem)
+						$keyInput = $dictItem.find('.key')
+						$valueInput = $dictItem.find('.value')
+
+						keyValue = $keyInput.text()
+						valueValue = $valueInput.text()
+
+						dictObj[keyValue] = valueValue
+
+						null
+
+					paraValue = dictObj
+
+				else if $paraItem.hasClass('array')
+
+					$arrayItemList = $paraItem.find('.parameter-value')
+					arrayObj = []
+
+					_.each $arrayItemList, (arrayItem) ->
+
+						$arrayItem = $(arrayItem)
+						arrayValue = $arrayItem.text()
+
+						arrayObj.push(arrayValue)
+
+						null
+
+					paraValue = arrayObj
+
+				stateObj[stateId]['parameter'][paraName] = paraValue
+
+				null
+
+			null
+
+		return stateObj
+
+	onStateSaveClick: (event) ->
+
+		that = this
+		data = that.generateData()
+		console.log(data)
+
 })
 
 window.StateEditorView = StateEditorView

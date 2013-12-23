@@ -1,3 +1,2 @@
 *.js
-!state-editor/*.js
 !state-editor/*.bat

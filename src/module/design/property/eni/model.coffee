@@ -22,11 +22,10 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 				isAppEdit       : @isAppEdit
 				isGroupMode     : @isGroupMode
 				attached        : component.connections("EniAttachment").length > 0
+				ips             : component.getIpArray()
 			}
 
 			@set data
-
-			@getIPList()
 
 			if @isAppEdit
 				@getEniGroup( uid )

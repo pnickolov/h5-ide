@@ -37,10 +37,21 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
       ComplexResModel.call this, attributes, option
 
-      this.attributes.ips.push( new IpObject({autoAssign:true}) )
+      if @get("ips").length is 0
+        @attributes.ips.push( new IpObject({autoAssign:true}) )
       null
 
     embedInstance : ()-> @__embedInstance
+
+    serverGroupCount : ()->
+      instance = @embedInstance()
+      if not instance
+        instance = @connectionTargets( "EniAttachment" )
+        if instance.length is 0
+          return 1
+        instance = instance[0]
+
+      instance.get("count")
 
     maxIpCount : ()->
       instance = @get("instance")
@@ -56,8 +67,40 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       @get("ips")[0].hasEip
 
     getIpArray : ()->
-      _.map @get("ips"), ( ip )->
-        $.extend {}, ip.attributes
+
+      parent = @parent()
+      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        cidr = parent.get("cidr")
+      else
+        cidr = MC.aws.vpc.getAZSubnetForDefaultVPC( parent.get("name") )
+
+      forceAutoAssign = @serverGroupCount() > 1
+      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+
+      ips = []
+      for ip in @get("ips")
+
+        obj = {
+          hasEip     : ip.hasEip
+          autoAssign : forceAutoAssign or ip.autoAssign
+          prefix     : prefixSuffixAry[0]
+        }
+
+        if obj.autoAssign
+          obj.suffix = prefixSuffixAry[1]
+        else
+          ipAry = ip.ip.split(".")
+          if prefixSuffixAry is "x.x"
+            obj.suffix = ipAry[2] + "." + ipAry[3]
+          else
+            obj.suffix = ipAry[3]
+
+        obj.ip = obj.prefix + obj.suffix
+
+        ips.push obj
+
+      ips
+
 
     addIp : ( idx, ip, autoAssign, hasEip )->
       ips = @get("ips")
@@ -92,7 +135,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
     removeIp : ( idx )->
       # Make sure we have at least ipAddress in this eni
-      if ips.length <= 1 then return
+      if ips.length <= 1 or idx is 0 then return
 
       ips = @get("ips").slice(0)
       ips.splice( idx, 1 )
@@ -205,8 +248,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
 
       # Update SeverGroup Count
-      instance = @connectionTargets("EniAttachment")
-      count = if instance.length then instance[0].get("count") else 0
+      count = @serverGroupCount()
 
       numberGroup = node.children(".server-number-group")
       if count > 1

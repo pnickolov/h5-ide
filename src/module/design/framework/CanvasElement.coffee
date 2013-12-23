@@ -104,10 +104,10 @@ define [ "./CanvasManager" ], ( CanvasManager )->
   CanvasElement.prototype.select = ()->
     # Remove old selected
     $allwarp = $(document.getElementById("group_layer")).children().add( document.getElementById("line_layer") ).add( document.getElementById("node_layer") )
-    DesignManager.removeClass $allwarp.children(".selected")[0], "selected"
+    CanvasManager.removeClass $allwarp.children(".selected")[0], "selected"
 
     # Added selected to this.element
-    DesignManager.addClass this.element(), "selected"
+    CanvasManager.addClass this.element(), "selected"
     true
 
   CanvasElement.prototype.show = ()->

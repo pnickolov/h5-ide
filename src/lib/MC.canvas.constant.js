@@ -35,6 +35,7 @@ var constant_data = {
 		'AWS.VPC.RouteTable': 'node',
 		'AWS.VPC.InternetGateway': 'node',
 		'AWS.VPC.VPNGateway': 'node',
+		'AWS.AutoScaling.LaunchConfiguration': 'node',
 
 		'AWS.EC2.AvailabilityZone': 'group',
 		'AWS.VPC.Subnet': 'group',
@@ -49,7 +50,8 @@ var constant_data = {
 			'AWS.VPC.CustomerGateway',
 			'AWS.VPC.RouteTable',
 			'AWS.VPC.InternetGateway',
-			'AWS.VPC.VPNGateway'
+			'AWS.VPC.VPNGateway',
+			'AWS.AutoScaling.LaunchConfiguration'
 		],
 		'group': [
 			'AWS.EC2.AvailabilityZone',
@@ -1041,14 +1043,6 @@ var constant_data = {
 	//***** AWS.EC2.EBS.Volume *****/
 	VOLUME_JSON:
 	{
-		layout:
-		{
-			'uid' : '',
-			"type": "AWS.EC2.EBS.Volume",
-			"coordinate": [0, 0],
-			"connection": [],
-			"volumeList": []
-		},
 		data:
 		{
 			"uid": "",
@@ -1424,14 +1418,6 @@ var constant_data = {
 	//***** AWS.VPC.DhcpOptions *****/
 	DHCP_JSON:
 	{
-		layout:
-		{
-			'uid' : '',
-			"type": "AWS.VPC.DhcpOptions",
-			"coordinate": [0, 0],
-			"groupUId": "",
-			"connection": []
-		},
 		data:
 		{
 			"uid": "",
@@ -1614,6 +1600,10 @@ var constant_data = {
 			"coordinate": [
 				0,
 				0
+			],
+			"size" : [
+				13,
+				13
 			],
 			"groupUId": "",
 			"originalId": "",

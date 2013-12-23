@@ -19,6 +19,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "constant" ], ( Com
       }
     ]
 
+    getAmi : ()->
+      MC.data.config[MC.canvas_data.region].ami[ @get("imageId") ]
+
     remove : ()->
       this.__mainEni.remove()
 

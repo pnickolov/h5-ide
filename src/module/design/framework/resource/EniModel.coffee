@@ -1,6 +1,12 @@
 
 define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
 
+  # IpObject = {
+  #   eip        : false
+  #   ip         : "10.0.0.x"
+  #   autoAssign : false
+  # }
+
   Model = ComplexResModel.extend {
 
     defaults :
@@ -14,7 +20,6 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-
     constructor : ( attributes, option )->
       if attributes.instance
         @__embedInstance = attributes.instance
@@ -24,20 +29,27 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       ComplexResModel.call this, attributes, option
       null
 
+    maxIpCount : ()->
+      instance = @get("instance")
+      count    = 1
+
+      if instance
+        type = instance.get("instanceType").split(".")
+        if type.length >= 2
+          count = MC.data.config[MC.canvas_data.region].instance_type[ type[0] ][ type[1] ].ip_per_eni
+      count
 
     embedInstance : ()-> @__embedInstance
 
-    hasEip : ()-> false
+    hasPrimaryEip : ()-> false
 
 
     connect : ( connection )->
-      if connection.type is "EniAttachment"
-        @draw()
+      if connection.type is "EniAttachment" then @draw()
       null
 
     disconnect : ( connection )->
-      if connection.type is "EniAttachment"
-        @draw()
+      if connection.type is "EniAttachment" then @draw()
       null
 
     iconUrl : ()->
@@ -49,7 +61,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       "ide/icon/eni-canvas-#{state}.png"
 
     eipIconUrl : ()->
-      if @hasEip()
+      if @hasPrimaryEip()
         MC.canvas.IMAGE.EIP_ON
       else
         MC.canvas.IMAGE.EIP_OFF
@@ -149,7 +161,6 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       else
         CanvasManager.toggle node.children(".port-eni-rtb"), true
         CanvasManager.toggle numberGroup, false
-
 
   }, {
 

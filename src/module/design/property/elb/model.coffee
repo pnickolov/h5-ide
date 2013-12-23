@@ -393,71 +393,58 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                         null
             else
                 currentCertUID = MC.guid()
-                currentCert = $.extend(true, {}, MC.canvas.SRVCERT_JSON).data
+                #currentCert = $.extend(true, {}, MC.canvas.SRVCERT_JSON).data
 
             if value and value.name and value.resource.PrivateKey and value.resource.CertificateBody
-                currentCert.uid = currentCertUID
+                currentCert.id = currentCertUID
                 currentCert.name = value.name
-                currentCert.resource.PrivateKey = value.resource.PrivateKey
-                currentCert.resource.CertificateBody = value.resource.CertificateBody
-                currentCert.resource.CertificateChain = value.resource.CertificateChain
-                currentCert.resource.ServerCertificateMetadata.ServerCertificateName = value.name
+                currentCert.PrivateKey = value.resource.PrivateKey
+                currentCert.CertificateBody = value.resource.CertificateBody
+                currentCert.CertificateChain = value.resource.CertificateChain
+                currentCert.ServerCertificateMetadata.ServerCertificateName = value.name
 
-                MC.canvas_data.component[currentCertUID] = currentCert
+                CertificateModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+                certificate = new AWS_IAM_ServerCertificate currentCert
 
-                certRef = '@' + currentCertUID + '.resource.ServerCertificateMetadata.Arn'
-                _.each listenerAry, (obj, index) ->
-                    elbProtocolValue = obj.Listener.Protocol
-                    if elbProtocolValue is 'HTTPS' or elbProtocolValue is 'SSL'
-                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = certRef
-                    else
-                        MC.canvas_data.component[uid].resource.ListenerDescriptions[index].Listener.SSLCertificateId = ''
-
-                    null
+                @elb.associate certificate
 
             null
 
         removeAZFromELB: ( value ) ->
-
-            uid = @get 'uid'
-
             azName = value
-            elbComp = MC.canvas_data.component[uid]
-            elbAZAry = elbComp.resource.AvailabilityZones
+            elbAZAry = @elb.get 'AvailabilityZones'
+
             newAZAry = _.filter elbAZAry, (item) ->
                 if azName is item
                     false
                 else
                     true
-
-            MC.canvas_data.component[uid].resource.AvailabilityZones = newAZAry
+            @elb.set 'AvailabilityZones', newAZAry
 
             null
 
         addAZToELB: ( value ) ->
-
-            uid = @get 'uid'
-
             azName = value
             addAZToElb = true
-            elbComp = MC.canvas_data.component[uid]
-            elbAZAry = elbComp.resource.AvailabilityZones
+
+            elbAZAry = @elb.get 'AvailabilityZones'
+
             _.each elbAZAry, (elem, index) ->
                 if elem is azName
                     addAZToElb = false
                     null
 
             if addAZToElb
-                MC.canvas_data.component[uid].resource.AvailabilityZones.push(azName)
+                elbAZAry.push azName
+                @elb.set 'AvailabilityZones', elbAZAry
 
             null
 
         getSGList : () ->
-
-            uid = this.get 'uid'
-            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+            sgAry = @elb.get 'SecurityGroups'
 
             sgUIDAry = []
+
             _.each sgAry, (value) ->
                 sgUID = value.slice(1).split('.')[0]
                 sgUIDAry.push sgUID
@@ -467,39 +454,33 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         unAssignSGToComp : (sg_uid) ->
 
-            elbUID = this.get 'uid'
-
-            originSGAry = MC.canvas_data.component[elbUID].resource.SecurityGroups
+            originSGAry = @elb.get 'SecurityGroups'
 
             currentSGId = '@' + sg_uid + '.resource.GroupId'
 
             originSGAry = _.filter originSGAry, (value) ->
                 value isnt currentSGId
 
-            MC.canvas_data.component[elbUID].resource.SecurityGroups = originSGAry
+            @elb.set 'SecurityGroups', originSGAry
 
             null
 
         assignSGToComp : (sg_uid) ->
 
-            elbUID = this.get 'uid'
-
-            originSGAry = MC.canvas_data.component[elbUID].resource.SecurityGroups
+            originSGAry = @elb.get 'SecurityGroups'
 
             currentSGId = '@' + sg_uid + '.resource.GroupId'
 
             if !Boolean(currentSGId in originSGAry)
                 originSGAry.push currentSGId
 
-            MC.canvas_data.component[elbUID].resource.SecurityGroups = originSGAry
+            @elb.set 'SecurityGroups', originSGAry
 
             null
 
         setElbCrossAZ : ( value )->
 
-            elbUID = this.get 'uid'
-
-            MC.canvas_data.component[ elbUID ].resource.CrossZoneLoadBalancing = String(value)
+            @elb.set 'CrossZoneLoadBalancing', String(value)
 
             null
     }

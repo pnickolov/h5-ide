@@ -186,6 +186,8 @@ define [], ()->
     drawLine : ( connection )->
 
       # Calculate the ports
+      type_from = connection.port1Comp().type
+      type_to   = connection.port2Comp().type
       id_from   = connection.port1Comp().id
       id_to     = connection.port2Comp().id
       node_from = document.getElementById( id_from )
@@ -253,11 +255,15 @@ define [], ()->
         x     : Math.floor(pos_from.left - pos_svg.left + pos_from.width  / 2) * scale
         y     : Math.floor(pos_from.top  - pos_svg.top  + pos_from.height / 2) * scale
         angle : parseInt( node_from.getAttribute("data-angle"), 10 ) || 0
+        type  : type_from
+        name  : from_port
 
       end0 =
         x     : Math.floor(pos_to.left - pos_svg.left + pos_to.width   / 2) * scale
         y     : Math.floor(pos_to.top  - pos_svg.top  + pos_to.height  / 2) * scale
         angle : parseInt( node_to.getAttribute("data-angle"), 10 ) || 0
+        type  : type_to
+        name  : to_port
 
 
       # Calculate line path

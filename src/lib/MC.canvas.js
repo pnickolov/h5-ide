@@ -382,7 +382,7 @@ MC.canvas = {
 	_addPad: function (point, adjust)
 	{
 		//add by xjimmy, adjust point
-		switch (point.connectionAngle)
+		switch (point.angle)
 		{
 			case 0:
 				point.x += MC.canvas.PORT_PADDING;
@@ -992,10 +992,12 @@ MC.canvas = {
 		);
 	},
 
-	route2 : function ( start, end )
-	{
-		//add by xjimmy, connection algorithm (xjimmy's algorithm)
+  route2 : function ( start, end )
+  {
+        //add by xjimmy, connection algorithm (xjimmy's algorithm)
     var controlPoints = [],
+      start0 = {},
+      end0   = {},
       //start.x >= end.x
       start_0_90    = false,
       end_0_90      = false,
@@ -1007,11 +1009,29 @@ MC.canvas = {
       start_90_180 = false,
       end_90_180   = false;
 
+
+    //first and last point
+    $.extend(true, start0, start);
+    $.extend(true, end0, end);
+
+    if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
+    {
+        //add pad to start and end
+        MC.canvas._addPad(start, 0);
+        MC.canvas._addPad(end, 0);
+    }
+
+    MC.canvas._addPad(start, 0);
+    MC.canvas._addPad(end, 0);
+
     //ensure start.y>=end.y
     if (start.y < end.y) {
-    	var tmp = start;
-    	start = end;
-    	end   = tmp;
+        var tmp = start;
+        start = end;
+        end   = tmp;
+        var tmp0 = start0;
+        start0 = end0;
+        end0   = tmp0;
     }
 
     if (start.x >= end.x)
@@ -1030,12 +1050,12 @@ MC.canvas = {
     }
 
     //1.start point
-    controlPoints.push( start );
+    controlPoints.push( start0 );
     controlPoints.push( start );
 
     //2.control point
     if (
-    	(start_0_90 && end_0_90) || (start_90_180 && end_90_180)
+        (start_0_90 && end_0_90) || (start_90_180 && end_90_180)
     )
     {
       //A
@@ -1052,6 +1072,20 @@ MC.canvas = {
     {
       //C
       mid_y = Math.round( (start.y + end.y) / 2 );
+      if ( (end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB" ) && end.type !== start.type)
+      {
+          if (Math.abs(mid_y - end.y) > 5)
+          {
+              mid_y = MC.canvas._adjustMidY(end.name, mid_y, end, 1);
+          }
+      }
+      else if ( (start.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB" ) && end.type !== start.type)
+      {
+          if (Math.abs(start.y - mid_y) > 5)
+          {
+              mid_y = MC.canvas._adjustMidY(start.name, mid_y, start, -1);
+          }
+      }
       controlPoints.push({ x: start.x, y: mid_y });
       controlPoints.push({ x: end.x,   y: mid_y });
     } else if (
@@ -1060,17 +1094,51 @@ MC.canvas = {
     {
       //D
       mid_x = Math.round( (start.x + end.x) / 2 );
+      if ( (end.type === 'AWS.VPC.RouteTable' || end.type === 'AWS.ELB' ) && end.type !== start.type)
+      {
+          if (Math.abs(start.x - mid_x) > 5)
+          {
+              mid_x = MC.canvas._adjustMidX(end.name, mid_x, start, 1);
+          }
+      }
+      else if (start.type === 'AWS.VPC.RouteTable' && end.type !== start.type)
+      {
+          if (Math.abs(mid_x - end.x) > 5)
+          {
+              if (end.type === 'AWS.VPC.InternetGateway' || end.type === 'AWS.VPC.VPNGateway')
+              {
+                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
+              }
+              else
+              {
+                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
+              }
+          }
+      }
+      else if (start.type === 'AWS.ELB' && end.type !== start.type)
+      {
+          if (Math.abs(mid_x - end.x) > 5)
+          {
+              if (end.type === 'AWS.EC2.Instance' || end.type === 'AWS.VPC.Subnet' || end.type === 'AWS.AutoScaling.Group' || end.type === 'AWS.AutoScaling.LaunchConfiguration' )
+              {
+                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
+              }
+              else
+              {
+                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
+              }
+          }
+      }
       controlPoints.push({ x: mid_x, y: start.y });
       controlPoints.push({ x: mid_x, y: end.y });
     }
 
     //3.end point
     controlPoints.push( end );
-    controlPoints.push( end );
+    controlPoints.push( end0 );
 
     return controlPoints;
-	},
-
+    },
 
 	drawLine: function (from_node, from_target_port, to_node, to_target_port, line_option, from_data, to_data, connection_id)
 	{

@@ -1152,7 +1152,7 @@ MC.canvas = {
 			to_node = $('#' + to_node);
 		}
 
-		var canvas_offset = $('#svg_canvas').offset(),
+		var canvas_offset = $canvas.offset(),
 			from_uid = from_node[0].id,
 			to_uid = to_node[0].id,
 			layout_component_data = MC.canvas_data.layout.component,
@@ -1463,7 +1463,7 @@ MC.canvas = {
 			to_node = $('#' + to_node);
 		}
 
-		var canvas_offset = $('#svg_canvas').offset(),
+		var canvas_offset = $canvas.offset(),
 			from_uid = from_node[0].id,
 			to_uid = to_node[0].id,
 			layout_component_data = MC.canvas_data.layout.component,
@@ -2990,7 +2990,7 @@ MC.canvas.volume = {
 		{
 			var target = $(this),
 				target_offset = target.offset(),
-				canvas_offset = $('#svg_canvas').offset(),
+				canvas_offset = $canvas.offset(),
 				node_type = target.data('type'),
 				target_component_type = target.data('component-type'),
 				state = MC.canvas.getState(),
@@ -3028,7 +3028,7 @@ MC.canvas.volume = {
 				'mouseup': MC.canvas.volume.mouseup
 			}, {
 				'target': target,
-				'canvas_offset': $('#svg_canvas').offset(),
+				'canvas_offset': $canvas.offset(),
 				'canvas_body': $('#canvas_body'),
 				'shadow': shadow,
 				'originalPageX': event.pageX,
@@ -3268,7 +3268,7 @@ MC.canvas.asgList = {
 			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon(target).offset(),
-				canvas_offset = $('#svg_canvas').offset();
+				canvas_offset = $canvas.offset();
 
 			// Prepare data
 			var uid     = MC.extractID( target_id );
@@ -3401,7 +3401,7 @@ MC.canvas.instanceList = {
 			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
-			   	canvas_offset = $('#svg_canvas').offset();
+			   	canvas_offset = $canvas.offset();
 
 			if ($('#' + target_id + '_instance-number').text() * 1 === 1)
 			{
@@ -3530,7 +3530,7 @@ MC.canvas.eniList = {
 			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
-				canvas_offset = $('#svg_canvas').offset();
+				canvas_offset = $canvas.offset();
 
 			if ($('#' + target_id + '_eni-number').text() * 1 === 1)
 			{
@@ -3881,7 +3881,7 @@ MC.canvas.event.dragable = {
 			var svg_canvas = $("#svg_canvas"),
 				canvas_offset = svg_canvas.offset(),
 				shadow_offset = Canvon(event.data.shadow).offset(),
-				layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_node_data = $canvas.node(),
 				layout_connection_data = MC.canvas.data.get('layout.connection'),
 				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = $canvas.scale(),
@@ -3963,7 +3963,7 @@ MC.canvas.event.dragable = {
 						shadow_offset.left - canvas_offset.left,
 						shadow_offset.top - canvas_offset.top
 					),
-					layout_group_data = MC.canvas.data.get('layout.component.group'),
+					layout_group_data = $canvas.group(),
 					group_data = layout_group_data[ target_id ],
 					group_coordinate = group_data.coordinate,
 					group_size = group_data.size,
@@ -4314,9 +4314,9 @@ MC.canvas.event.dragable = {
 		var target = event.data.target,
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
-			canvas_offset = $('#svg_canvas').offset(),
+			canvas_offset = $canvas.offset(),
 			shadow_offset = Canvon(event.data.shadow).offset(),
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_node_data = $canvas.node(),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
 			scale_ratio = $canvas.scale(),
@@ -4351,7 +4351,7 @@ MC.canvas.event.dragable = {
 			svg_canvas = $('#svg_canvas'),
 			canvas_offset = svg_canvas.offset(),
 			shadow_offset = Canvon(event.data.shadow).offset(),
-			layout_node_data = MC.canvas.data.get('layout.component.node'),
+			layout_node_data = $canvas.node(),
 			layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_type = target.data('class'),
 			scale_ratio = $canvas.scale(),
@@ -4698,7 +4698,7 @@ MC.canvas.event.drawConnection = {
 			!match_node
 		)
 		{
-			layout_group_data = MC.canvas.data.get('layout.component.group');
+			layout_group_data = $canvas.group();
 
 			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
 
@@ -4967,7 +4967,7 @@ MC.canvas.event.siderbarDrag = {
 				target_id = target.attr('id') || '',
 				target_type = target.data('component-type'),
 				node_type = target.data('type'),
-				canvas_offset = $('#svg_canvas').offset(),
+				canvas_offset = $canvas.offset(),
 				shadow_offset = event.data.shadow.position(),
 				node_option = target.data('option'),
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
@@ -5162,7 +5162,7 @@ MC.canvas.event.groupResize = {
 				parent = $(target.parentNode.parentNode),
 				group = parent.find('.group'),
 				group_offset = group[0].getBoundingClientRect(),
-				canvas_offset = $('#svg_canvas').offset(),
+				canvas_offset = $canvas.offset(),
 				scale_ratio = $canvas.scale(),
 				grid_width = MC.canvas.GRID_WIDTH,
 				grid_height = MC.canvas.GRID_HEIGHT,
@@ -5661,7 +5661,7 @@ MC.canvas.event.groupResize = {
 			group_node.position(group_left, group_top);
 			group_node.size(group_width, group_height);
 
-			group_node.updateResizer(group_width, group_height);
+			//group_node.updateResizer(group_width, group_height);
 
 			//MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
 			//MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
@@ -5738,7 +5738,7 @@ MC.canvas.event.ctrlMove = {
 		{
 			event.stopImmediatePropagation();
 
-			var canvas_offset = $('#svg_canvas').offset(),
+			var canvas_offset = $canvas.offset(),
 				canvas = $('#canvas'),
 				scroll_content = canvas.find('.scroll-content').first()[0];
 
@@ -5832,9 +5832,9 @@ MC.canvas.event.appMove = function (event)
 	{
 		MC.canvas.event.clearSelected();
 
-		var target = $(this),
-			target_type = target.data('class'),
-			node_type = target.data('type');
+		var target = $canvas(this.id),
+			target_type = target.class,
+			node_type = target.nodeType;
 
 		if (
 			target_type === 'AWS.EC2.Instance' ||
@@ -5926,11 +5926,13 @@ MC.canvas.event.keyEvent = function (event)
 	var canvas_status = MC.canvas.getState();
 
 	if (
-		canvas_status === 'new' ||
-		canvas_status === 'app' ||
-		canvas_status === 'stack' ||
-		canvas_status === 'appedit' ||
-		canvas_status === 'appview'
+		$.inArray(canvas_status, [
+			'new',
+			'app',
+			'stack',
+			'appedit',
+			'appview'
+		]) > -1
 	)
 	{
 		var keyCode = event.which,
@@ -6043,7 +6045,7 @@ MC.canvas.event.keyEvent = function (event)
 		)
 		{
 			var selected_node = $('#' + MC.canvas_property.selected_node[ 0 ]),
-				layout_node_data = MC.canvas.data.get('layout.component.node'),
+				layout_node_data = $canvas.node(),
 				current_node_id = MC.canvas_property.selected_node[ 0 ],
 				node_stack = [],
 				index = 0,

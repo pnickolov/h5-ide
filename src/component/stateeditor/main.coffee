@@ -5,10 +5,13 @@
 define [ 'event' ], ( ide_event ) ->
 
     #private
-    loadModule = ( component ) ->
+    loadModule = ( data ) ->
 
         #
         require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
+
+            # test
+            MC.forge.other.addSEList data
 
             view  = new View()
             model = new Model()

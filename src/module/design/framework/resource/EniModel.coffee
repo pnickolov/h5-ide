@@ -5,9 +5,11 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
   IpObject is used to represent an ip in Eni
   ###
   IpObject = ( attr )->
+    if not attr then attr = {}
+
     this.hasEip     = attr.hasEip or false
     this.eipId      = attr.eipId  or ""
-    this.autoAssign = attr.autoAssign or false
+    this.autoAssign = if attr.autoAssign isnt undefined then attr.autoAssign else true
     this.ip         = attr.ip or ""
     null
 
@@ -38,20 +40,21 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       ComplexResModel.call this, attributes, option
 
       if @get("ips").length is 0
-        @attributes.ips.push( new IpObject({autoAssign:true}) )
+        @attributes.ips.push( new IpObject() )
       null
 
     embedInstance : ()-> @__embedInstance
-
-    serverGroupCount : ()->
+    attachedInstance : ()->
       instance = @embedInstance()
       if not instance
-        instance = @connectionTargets( "EniAttachment" )
-        if instance.length is 0
-          return 1
-        instance = instance[0]
+        target = @connectionTargets( "EniAttachment" )
+        if target.length then instance = target[0]
 
-      instance.get("count")
+      return instance
+
+    serverGroupCount : ()->
+      instance = @attachedInstance()
+      if instance then instance.get("count") else 1
 
     maxIpCount : ()->
       instance = @get("instance")
@@ -66,23 +69,28 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
     hasPrimaryEip : ()->
       @get("ips")[0].hasEip
 
-    getIpArray : ()->
-
+    subnetCidr : ()->
       parent = @parent()
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         cidr = parent.get("cidr")
       else
         cidr = MC.aws.vpc.getAZSubnetForDefaultVPC( parent.get("name") )
 
-      forceAutoAssign = @serverGroupCount() > 1
-      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+      cidr
 
-      ips = []
-      for ip in @get("ips")
+    getIpArray : ()->
+
+      cidr            = @subnetCidr()
+      editable        = @serverGroupCount() is 1
+      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+      ips             = []
+
+      for ip, idx in @get("ips")
 
         obj = {
           hasEip     : ip.hasEip
-          autoAssign : forceAutoAssign or ip.autoAssign
+          autoAssign : ip.autoAssign
+          editable   : editable
           prefix     : prefixSuffixAry[0]
         }
 
@@ -101,6 +109,29 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
 
       ips
 
+    isValidIp : ( ip )->
+
+      if ip.indexOf("x") isnt -1
+        return true
+
+      # Check for subnet
+      if not MC.aws.subnet.isIPInSubnet( ip, @subnetCidr() )
+        return 'This IP address conflicts with subnet’s IP range'
+
+      # Check for other eni's ip
+      for eni in Model.allObjects()
+
+        if not eni.attachedInstance() # Only test attached Eni
+          continue
+
+        for ipObj in eni.attributes.ips
+          if ipObj.ip is ip and not ipObj.autoAssign
+            if eni is this
+              return 'This IP address conflicts with other IP'
+            else
+              return 'This IP address conflicts with other network interface’s IP'
+
+      return true
 
     addIp : ( idx, ip, autoAssign, hasEip )->
       ips = @get("ips")
@@ -108,9 +139,9 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       if @maxIpCount() >= ips.length then return false
 
       ip = new IpObject({
-        hasEip     : !!hasEip
-        ip         : ip
-        autoAssign : autoAssign
+        hasEip     : false
+        ip         : "x.x.x.x"
+        autoAssign : true
       })
 
       ips = ips.slice(0)
@@ -128,16 +159,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
       if autoAssign isnt undefined or autoAssign isnt null
         ipObj.autoAssign = autoAssign
 
-      if hasEip isnt undefined or hasEip isnt null
+      if hasEip isnt undefined or hasEip isnt null and hasEip isnt ipObj.hasEip
         ipObj.hasEip = hasEip
+
+        if idx is 0 then @draw()
 
       null
 
     removeIp : ( idx )->
+      ips = @get("ips")
+
       # Make sure we have at least ipAddress in this eni
       if ips.length <= 1 or idx is 0 then return
 
-      ips = @get("ips").slice(0)
+      ips = ips.slice(0)
       ips.splice( idx, 1 )
       @set( "ips", ips )
       null
@@ -292,11 +327,20 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/SgAs
         description     : data.resource.Description
         sourceDestCheck : data.resource.SourceDestCheck
 
+        ips : []
+
         parent : resolve( MC.extractID(data.resource.SubnetId) )
 
         x : if embed then 0 else layout_data.coordinate[0]
         y : if embed then 0 else layout_data.coordinate[1]
       }
+
+      for ip in data.resource.PrivateIpAddressSet || []
+        attr.ips.push( new IpObject({
+          autoAssign : ip.AutoAssign
+          ip         : ip.PrivateIpAddress
+        }) )
+
 
       if embed then attr.instance = instance
       eni = new Model( attr )

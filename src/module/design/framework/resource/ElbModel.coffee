@@ -117,9 +117,7 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
 
     deserialize : ( data, layout_data, resolve )->
-
-      elb = new Model({
-
+      attr =
         id           : data.uid
         name         : data.name
 
@@ -129,7 +127,10 @@ define [ "../ComplexResModel", "../CanvasManager", "Design", "./VpcModel", "../c
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
-      })
+      for key, value of data.resource
+        attr[ key ] = value
+
+      elb = new Model attr
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )

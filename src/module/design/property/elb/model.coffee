@@ -30,7 +30,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb_data = Design.instance().component( uid )
             @elb = elb_data
 
-            this.set 'component', elb_data
+            this.set 'component', elb_data.toJSON()
             #----------
 
 

@@ -177,6 +177,7 @@ define [ "./CanvasManager" ], ( CanvasManager )->
 
   CanvasElement.line = ( component )->
     this.id = component.id
+    @id
 
   CanvasElement.line.prototype.select   = CanvasElement.prototype.select
   CanvasElement.line.prototype.element  = CanvasElement.prototype.element

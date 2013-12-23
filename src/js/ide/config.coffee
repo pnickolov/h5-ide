@@ -69,6 +69,7 @@ require.config {
 		# ui/common
 		#############################################
 		'UI.tooltip'       : 'ui/common/UI.tooltip'
+		'UI.download'      : 'ui/common/UI.download'
 		'UI.scrollbar'     : 'ui/common/UI.scrollbar'
 		'UI.tabbar'        : 'ui/common/UI.tabbar'
 		'UI.bubble'        : 'ui/common/UI.bubble'
@@ -148,6 +149,14 @@ require.config {
 		'property'           : 'module/design/property/main'
 		'canvas'             : 'module/design/canvas/main'
 		'toolbar'            : 'module/design/toolbar/main'
+
+		#############################################
+		# component
+		#############################################
+
+		'unmanagedvpc'       : 'component/unmanagedvpc/main'
+		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
+		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
 
 		#############################################
 		# events

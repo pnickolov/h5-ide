@@ -1,24 +1,10 @@
-<article id="property-sgrule" data-line="{{line_id}}">
+<article>
 
   <section class="property-control-group">{{ i18n "PROP_SGRULE_DESCRIPTION" }}</section>
 
-	{{#each sg_group}}
-    <div class="property-group-head truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{header_sg_color}}"></span>{{name}}</div>
-    <ul class="property-group sg-rule-list property-list" id="sg-info-list">
-      {{#each rules}}
-      <li>
-        <div class="rule-list-row">
-          <div class="rule-direction-icon {{#if egress}}icon-outbound{{else}}icon-inbound{{/if}} tooltip" data-tooltip='{{#if egress}}{{{ i18n "PROP_SGRULE_TIP_OUTBOUND" }}}{{else}}{{{ i18n "PROP_SGRULE_TIP_INBOUND" }}}{{/if}}'></div>
-          {{#if ref_sg_color}}<span class="sg-color" style="background-color:{{ref_sg_color}}"></span>{{/if}}
-          <div class="rule-reference truncate tooltip" data-tooltip='{{#if egress}}Source{{else}}Destination{{/if}}'>{{connection}}</div>
-        </div>
-        <div class="rule-list-row">
-          <div><span class="rule-protocol tooltip" data-tooltip="Protocol">{{protocol}}</span></div>
-          <div class="rule-port tooltip" data-tooltip="Port or Code">{{port}}</div>
-        </div>
-      </li>
-      {{/each}}
-    </ul>
+	{{#each groups}}
+  <div class="property-group-head truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</div>
+  <ul class="property-group sg-rule-list property-list">{{{ruleListTpl}}}</ul>
   {{/each}}
 
   <div class="tac property-control-group">

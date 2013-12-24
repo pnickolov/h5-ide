@@ -35,7 +35,7 @@
       <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
       <div class="rule-list-row">
           <div class="icon-{{direction}} tooltip" data-tooltip="{{direction}}"></div>
-          {{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}
+          <span class="sg-color" style="background-color:{{sgColor}}"></span>
           <div class='rule-source tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
       </div>
       <div class="rule-list-row">

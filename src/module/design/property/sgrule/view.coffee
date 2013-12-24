@@ -14,17 +14,18 @@ define [ '../base/view',
         events   :
             "click #sg-edit-rule-button" : "onEditRule"
 
-
         render : () ->
             tpl = if @model.isApp then app_template else template
+
+            for group in @model.attributes.groups
+                group.ruleListTpl = MC.template.sgRuleList( group.rules )
 
             @$el.html tpl @model.attributes
 
             "Security Group Rule"
 
         onEditRule : ( event ) ->
-            line_id = $("#property-sgrule").data('line')
-            this.trigger "EDIT_RULE", line_id
+            this.trigger "EDIT_RULE"
             null
 
     }

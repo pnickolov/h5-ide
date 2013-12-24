@@ -74,14 +74,8 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				for ruleset in ruleSets
  					sgRuleAry = sgRuleAry.concat( ruleset.toPlainObjects( usedSG.id ) )
 
-			# Remove duplicate rules
-			ruleMap = {}
-			rules   = []
-			for rule in sgRuleAry
-				ruleString = rule.direction + rule.target + rule.protocol + rule.port
-				if ruleMap[ ruleString ] then continue
-				ruleMap[ ruleString ] = true
-				rules.push rule
+
+			SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
 
 			# Set
 			@set {
@@ -90,7 +84,8 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				sg_list      : sg_list
 				sg_length    : if isStackParent then sg_list.length else enabledSGArr.length
 				readonly     : readonly
-				sg_rule_list : rules
+				# Remove duplicate rules
+				sg_rule_list : SgRuleSetModel.getPlainObjFromRuleSets( sgRuleAry )
 			}
 
 			@sortSGList()

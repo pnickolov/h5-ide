@@ -2,10 +2,9 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ 'text!./template/stack.html', "text!./template/rule.html" ], ( template, rule_template ) ->
+define [ 'text!./template/stack.html' ], ( template, rule_template ) ->
 
-	template      = Handlebars.compile template
-	rule_template = Handlebars.compile rule_template
+	template = Handlebars.compile template
 
 	SGListView = Backbone.View.extend {
 
@@ -22,7 +21,7 @@ define [ 'text!./template/stack.html', "text!./template/rule.html" ], ( template
 			@setElement $('.sg-group')
 			@$el.html template @model.attributes
 
-			$("#sglist-rule-list").html rule_template @model.attributes
+			$("#sglist-rule-list").html MC.template.sgRuleList @model.attributes.sg_rule_list
 			$('#property-head-sg-num').text( @model.attributes.sg_length )
 
 		openSgPanel : ( event ) ->
@@ -84,7 +83,8 @@ define [ 'text!./template/stack.html', "text!./template/rule.html" ], ( template
 
 			sortType = $(event.target).find('.selected').attr('data-id')
 			@model.sortSGRule( sortType )
-			$("#sglist-rule-list").html rule_template @model.attributes
+
+			$("#sglist-rule-list").html MC.template.sgRuleList @model.attributes.sg_rule_list
 	}
 
 	new SGListView()

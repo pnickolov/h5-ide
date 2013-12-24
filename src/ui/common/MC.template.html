@@ -650,17 +650,18 @@ Additional Notes and Questions
 	</div>
 </div>
 
-
-<!-- sgListItem -->
-<li class="clearfix" data-sgid="000">
-	<div class="col1 sg-toggle-show-icon"></div>
-	<div class="col2">
-		<div class="col2-1">{{name}}</div>
-		<div class="col2-2">description</div>
-		<div class="col2-3">5 rules, 2 member</div>
-	</div>
-	<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
-</li>
+<!-- sgRuleList -->
+{{#each this}}<li>
+<div class="rule-list-row">
+	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
+	<span {{#if color}}class="sg-color" style="background-color:{{color}}"{{/if}}></span>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{relation}}</div>
+</div>
+<div class="rule-list-row">
+	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
+	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
+</div>
+</li>{{/each}}
 
 <!-- propertyIpList -->
 {{#each this}}
@@ -715,7 +716,7 @@ Additional Notes and Questions
 				<ul class="dropdown">
 					<li class="item selected" data-id="custom">IP...</li>
 					{{#each sgList}}
-					<li class="item truncate" data-id="sg" data-uid="{{id}}">{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{name}}</li>
+					<li class="item truncate" data-id="sg" data-uid="{{id}}"><span class="sg-color" style="background-color:{{color}}"></span>{{name}}</li>
 					{{/each}}
 				</ul>
 			</div>
@@ -969,20 +970,6 @@ Additional Notes and Questions
 		</div>
 	</div>
 </div>
-
-<!-- sgRuleItem -->
-<li data-inbound="true" data-protocol="{{rule.protocol}}" data-fromport="{{rule.fromport}}" data-toport="{{rule.toport}}" data-iprange="{{rule.ipranges}}" data-direction="{{rule.direction}}">
-	<div class="rule-list-row">
-		<div class='rule-direction-icon tooltip icon-{{rule.direction}}' data-tooltip="{{rule.direction}}"></div>
-		<div class='rule-reference'>{{rule.ipranges}}</div>
-
-	</div>
-	<div class="rule-list-row">
-		<div><span class="rule-protocol">{{rule.protocol}}</span></div>
-		<div class='rule-port' title="port message">{{rule.fromport}}-{{rule.toport}}</div>
-	</div>
-	<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
-</li>
 
 <!-- asgList -->
 <div id="asgList-wrap">

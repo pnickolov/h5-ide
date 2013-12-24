@@ -45,7 +45,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       else
         return @attributes.in2.length + @attributes.out2.length
 
-    toPlainObjects : ( filter )->
+    toPlainObjects : ( filter, detailedInfo )->
 
       portions = [ {
         ary       : @attributes.in1
@@ -90,14 +90,19 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           else
             port = rule.fromPort + "-" + rule.toPort
 
-          rules.push {
-            ruleSetId : @id
-            port      : port
-            protocol  : rule.protocol
-            direction : portion.direction
-            relation  : portion.relation.get("name")
-            color     : portion.relation.color
-          }
+          attr =
+            ruleSetId  : @id
+            port       : port
+            protocol   : rule.protocol
+            direction  : portion.direction
+            relation   : portion.relation.get("name")
+            color      : portion.relation.color
+
+          if detailedInfo
+            attr.relationId = portion.relation.id
+            attr.ownerId    = portion.owner.id
+
+          rules.push attr
 
       rules
 
@@ -253,15 +258,13 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
   }, {
 
-    getResourceSgRuleSet : ( resource )->
+    getResourceSgRuleSets : ( resource )->
 
-      sgAssos   = resource.connections("SgAsso")
       sgRuleMap = {}
       sgRuleAry = []
 
-      for sgAsso in sgAssos
-        # Find out what SG is used by this resource
-        sg = sgAsso.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+      # Find out what SG is used by this resource
+      for sg in resource.connectionTargets("SgAsso")
 
         # Find out what rules has in this sg
         for ruleset in sg.connections( "SgRuleSet" )
@@ -272,6 +275,79 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           sgRuleAry.push ruleset
 
       sgRuleAry
+
+    # Get an array of SgRuleSet. All the rulesets are releated to both
+    # res1 and res2
+    getRelatedSgRuleSets : ( res1, res2 )->
+
+      res1SgMap = {}
+      # Find out res1's RuleSets
+      for sg in res1.connectionTargets("SgAsso")
+        res1SgMap[ sg.id ] = true
+
+      # Find out what Ruleset affects both resource
+      foundRuleSet = []
+      for sg in res2.connectionTargets("SgAsso")
+        for ruleset in sg.connections("SgRuleSet")
+          if res1SgMap[ ruleset.getOtherTarget( sg ).id ]
+            foundRuleSet.push ruleset
+
+      foundRuleSet
+
+    # Get plain objects from an ruleset array.
+    # The objects are guaranteed to be unique
+    getPlainObjFromRuleSets : ( sgRuleAry )->
+
+      ruleMap = {}
+      rules   = []
+      for rule in sgRuleAry
+        ruleString = rule.direction + rule.target + rule.protocol + rule.port
+        if ruleMap[ ruleString ] then continue
+
+        ruleMap[ ruleString ] = true
+        rules.push rule
+
+      rules
+
+    getGroupedObjFromRuleSets : ( rulesetArray )->
+      tempMap = {}
+
+      for ruleset in rulesetArray
+        if ruleset.getTarget( "SgIpTarget" ) then return
+
+        comp = ruleset.port1Comp()
+        id   = comp.id
+        if not tempMap[ id ]
+          tempMap[ id ] = {
+            ownerId    : id
+            ownerName  : comp.get("name")
+            ownerColor : comp.color
+            rules      : []
+          }
+
+        comp = ruleset.port2Comp()
+        id   = comp.id
+        if not tempMap[ id ]
+          tempMap[ id ] = {
+            ownerId    : id
+            ownerName  : comp.get("name")
+            ownerColor : comp.color
+            rules      : []
+          }
+
+        for plainObj in ruleset.toPlainObjects( null, true )
+          tempMap[ plainObj.ownerId ].rules.push plainObj
+
+      arr = []
+      for uid, group of tempMap
+        arr.push group
+
+      arr.sort (a,b)->
+        if a.ownerName is "DefaultSG" then return -1
+        if b.ownerName is "DefaultSG" then return 1
+        if a.ownerName <  b.ownerName then return -1
+        if a.ownerName >  b.ownerName then return 1
+        return 0
   }
 
   SgRuleSet.DIRECTION = {

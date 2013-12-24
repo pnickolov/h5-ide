@@ -759,6 +759,7 @@ StateEditorView = Backbone.View.extend({
 		that = this
 		data = that.saveStateData()
 		console.log(data)
+		localStorage[ 'state_data' ] = JSON.stringify data
 
 		renderData = that.loadStateData(data)
 		console.log(renderData)

@@ -286,7 +286,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	# host1 is component name
 	# [{ name : '{host1.privateIP}', value: '{host1.privateIP}' }, { name: '{host1.keyName}', value: '{host1.keyName}' ]
-
 	state_editor_list = []
 
 	initSEList = ->
@@ -299,6 +298,9 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'addSEList', data
 
 		if data and data.component
+
+			# add name and uid object
+			addSENameUIDList data
 
 			# get components list
 			comp_list = _.values data.component
@@ -333,6 +335,56 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		# return
 		state_editor_list
 
+	# host1     : { uid : 'xxxxxxx-xxxx-xx', type : 'AWS.EC2.Instance' }
+	# DefaultSG : { uid : 'xxxxxxx-xxxx-xx', type : 'AWS.EC2.SecurityGroup' }
+	state_editor_name_list = {}
+
+	initSENameUIDList = ->
+		state_editor_name_list = {}
+
+	listSENameUID = ->
+		state_editor_name_list
+
+	addSENameUIDList = ( data ) ->
+		console.log 'addSENameUIDList', data
+
+		if data and data.component
+
+			# init
+			initSENameUIDList()
+
+			_.each data.component, ( item ) ->
+				state_editor_name_list[ item.name ] = { uid : item.uid, type : item.type }
+
+		# console
+		console.log 'state_editor_name_list', state_editor_name_list
+
+		# add test local storage state_editor_name_list
+		MC.storage.set 'state_editor_name_list', state_editor_name_list
+
+		# return
+		state_editor_name_list
+
+	# ssh apt@211.98.26.7/pot@{asg1.PlacementGroup} @{asg1.LoadBalancerNames} @{asg1.Status} @{asg1.AutoScalingGroupARN} @{eni0.MacAddress}
+	# @{[a-z0-9A-Z\.a-z0-9A-Z]+}
+	# @{[\w\.]*}
+	filterStateData = ( data ) ->
+		console.log 'filterStateData', data
+
+		# return data
+		filter_data = {}
+
+		# regexp
+		reg  = /[^@{][\w\.]*}/igm
+
+		_.each data, ( item ) ->
+
+			replace_str = item.parameter.verify_gpg
+			replace_arr = replace_str.match reg
+
+		# return
+		filter_data
+
 	#public
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
@@ -366,3 +418,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	initSEList         : initSEList
 	listSE             : listSE
 	addSEList          : addSEList
+
+	initSENameUIDList  : initSENameUIDList
+	listSENameUID      : listSENameUID
+	addSENameUIDList   : addSENameUIDList
+	filterStateData    : filterStateData

@@ -85,9 +85,9 @@ define [ 'event',
 				if not component then return
 
 				if design.modeIsApp() and !component.hasAppResource()
-					type = 'missing_resource'
+					type = 'Missing_Resource'
 			else
-				type = "stack"
+				type = "Stack"
 
 
 			# Get current model of design

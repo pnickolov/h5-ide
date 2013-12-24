@@ -15,7 +15,7 @@ define [ '../base/main', '../base/model', '../base/view' ], ( PropertyModule, Pr
 
     MissingModule = PropertyModule.extend {
 
-        handleTypes : "missing_resource"
+        handleTypes : "Missing_Resource"
 
         initApp : () ->
             @model = model

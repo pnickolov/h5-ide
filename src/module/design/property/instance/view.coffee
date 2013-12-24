@@ -326,11 +326,7 @@ define [ '../base/view',
             if not @model.attributes.eni_ips
                 return
 
-            html = ""
-            for ip in @model.attributes.eni_ips
-                html += MC.template.propertyIpListItem ip
-
-            $( '#property-network-list' ).html( html )
+            $( '#property-network-list' ).html( MC.template.propertyIpList(@model.attributes.eni_ips) )
             @updateIPAddBtnState()
             null
 

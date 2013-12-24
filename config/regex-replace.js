@@ -97,7 +97,7 @@ module.exports = {
     },
 
     href_release: {
-        src: [ '<%= release %>/component/awscredential/view.*', '<%= release %>/js/ide/ide.*', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.*', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*' ],
+        src: [ '<%= release %>/component/awscredential/view.*', '<%= release %>/js/ide/ide.*', '<%= release %>/js/login/template.html', '<%= release %>/module/header/model.*', '<%= release %>/module/register/*.*', '<%= release %>/module/reset/*.*', '<%= release %>/lib/forge/other.js' ],
         actions: [
             {
                 name: 'href-register',
@@ -115,13 +115,19 @@ module.exports = {
                 name: 'href-login',
                 search: '"login.html',
                 replace: '"/login/',
+                flags: 'g'
+            },
+            {
+                name: 'href-500',
+                search: '"500.html',
+                replace: '"/500/',
                 flags: 'g'
             }
         ]
     },
 
     href_debug: {
-        src: [ '<%= debug %>/component/awscredential/view.*', '<%= debug %>/js/ide/ide.*', '<%= debug %>/js/login/template.html', '<%= debug %>/module/header/model.*', '<%= debug %>/module/register/*.*', '<%= debug %>/module/reset/*.*' ],
+        src: [ '<%= debug %>/component/awscredential/view.*', '<%= debug %>/js/ide/ide.*', '<%= debug %>/js/login/template.html', '<%= debug %>/module/header/model.*', '<%= debug %>/module/register/*.*', '<%= debug %>/module/reset/*.*', '<%= debug %>/lib/forge/other.js' ],
         actions: [
             {
                 name: 'href-register',
@@ -139,6 +145,12 @@ module.exports = {
                 name: 'href-login',
                 search: '"login.html',
                 replace: '"/login/',
+                flags: 'g'
+            },
+            {
+                name: 'href-500',
+                search: '"500.html',
+                replace: '"/500/',
                 flags: 'g'
             }
         ]

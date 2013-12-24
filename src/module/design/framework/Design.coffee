@@ -100,7 +100,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     ###########################
     Design.fixJson( json_data, layout_data )
 
-    design.deserialize()
+    design.deserialize( json_data, layout_data )
     design
 
 

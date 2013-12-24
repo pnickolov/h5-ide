@@ -165,6 +165,7 @@ define [], ()->
 
     position : ( node, x, y )->
 
+      # Update Svg ( might move to MC.canvas.js though )
       if node.length then node = node[0]
 
       if x < 0 then x = 0
@@ -183,6 +184,12 @@ define [], ()->
         translateVal.setTranslate(x, y)
         transformVal.appendItem(translateVal)
 
+      # Update Lines
+      for cn in Design.instance().component( node.id ).connections()
+        if cn.get("lineType")
+          cn.draw()
+      null
+
     drawLine : ( connection )->
 
       # Calculate the ports
@@ -192,6 +199,10 @@ define [], ()->
       id_to     = connection.port2Comp().id
       node_from = document.getElementById( id_from )
       node_to   = document.getElementById( id_to )
+
+      if not node_from or not node_to
+        return
+
       pos_from  = node_from.getBoundingClientRect()
       pos_to    = node_to.getBoundingClientRect()
 
@@ -212,12 +223,18 @@ define [], ()->
         node_from = document.getElementById( id_from + "_port-" + from_port )
         node_to   = document.getElementById( id_to   + "_port-" + to_port   )
 
+        if not node_from or not node_to
+          return
+
         pos_from = node_from.getBoundingClientRect()
         pos_to   = node_to.getBoundingClientRect()
 
       else if dirn_from
 
         node_to = document.getElementById( id_to   + "_port-" + to_port   )
+        if not node_to
+          return
+
         pos_to  = node_to.getBoundingClientRect()
 
         if dirn_from is "vertical"
@@ -226,10 +243,14 @@ define [], ()->
           from_port += if pos_to.left > pos_from.left then "-right" else "-left"
 
         node_from = document.getElementById( id_from + "_port-" + from_port )
+        if not node_from
+          return
         pos_from  = node_from.getBoundingClientRect()
 
       else if dirn_to
         node_from = document.getElementById( id_from + "_port-" + from_port )
+        if not node_from
+          return
         pos_from  = node_from.getBoundingClientRect()
 
         if dirn_to is "vertical"
@@ -238,11 +259,15 @@ define [], ()->
           to_port += if pos_from.left > pos_to.left then "-right" else "-left"
 
         node_to = document.getElementById( id_to + "_port-" + to_port )
+        if not node_to
+          return
         pos_to  = node_to.getBoundingClientRect()
 
       else
         node_from = document.getElementById( id_from + "_port-" + from_port )
         node_to   = document.getElementById( id_to   + "_port-" + to_port   )
+        if not node_from or not node_to
+          return
 
         pos_from = node_from.getBoundingClientRect()
         pos_to   = node_to.getBoundingClientRect()
@@ -305,36 +330,6 @@ define [], ()->
 
         document.getElementById( "line_layer" ).appendChild( svg_line[0] )
       null
-
-    updateSGLabel : ( uid, sgLabelGroup )->
-      # TODO : Change this function to use the framework
-
-      # Prepare data
-      labels = [{
-        color : "#f26c4f"
-        name  : "DefaultSG"
-      }]
-
-      # Update canvas sg label
-      if not sgLabelGroup
-        sgLabelGroup = $( uid + "_node-sg-color-group" ).children()
-      else
-        sgLabelGroup = sgLabelGroup.children()
-
-      i = 0
-      while i < MC.canvas.SG_MAX_NUM
-        if i < labels.length and labels[i]
-          Canvon( sgLabelGroup.eq(i).attr( "fill", labels[i].color ) )
-            .addClass("tooltip").data("tooltip", labels[i].name )
-            .attr("data-tooltip", labels[i].name )
-
-        else
-          Canvon( sgLabelGroup.eq(i).attr( "fill", "none" ) )
-            .addClass("tooltip").data("tooltip", "" )
-            .attr("data-tooltip", "" )
-
-        ++i
-
   }
 
   CanvasManager

@@ -21,8 +21,8 @@ StateEditorView = Backbone.View.extend({
 		'click .state-toolbar .state-id': 'onStateIdClick'
 		'click .state-toolbar .state-add': 'onStateAddClick'
 		'click .state-toolbar .state-remove': 'onStateRemoveClick'
-
 		'click .state-save': 'onStateSaveClick'
+		'click .parameter-item .parameter-remove': 'onParaRemoveClick'
 
 	initialize: () ->
 
@@ -171,8 +171,13 @@ StateEditorView = Backbone.View.extend({
 			paraType = paraObj.type
 			paraName = paraObj.name
 
+			paraDisabled = false
+			if $paraItem.hasClass('disabled')
+				paraDisabled = true
+
 			viewRenderObj = {
-				para_name: paraName
+				para_name: paraName,
+				para_disabled: paraDisabled
 			}
 
 			viewRenderObj['type_' + paraType] = true
@@ -195,7 +200,7 @@ StateEditorView = Backbone.View.extend({
 				valueValue = $valueInput.text()
 				paraValue = valueValue
 
-			else if paraType in ['line', 'text', 'bool']
+			else if paraType in ['line', 'text', 'bool', 'state']
 
 				$valueInput = $paraItem.find('.parameter-value')
 				valueValue = $valueInput.text()
@@ -329,7 +334,7 @@ StateEditorView = Backbone.View.extend({
 			$keyInput.atwho(atwhoOption)
 			$valueInput.atwho(atwhoOption)
 
-		else if paraType in ['line', 'text', 'array']
+		else if paraType in ['line', 'text', 'array', 'state']
 			$inputElem = $paraItem.find('.parameter-value')
 
 			if paraOptionAry
@@ -376,7 +381,7 @@ StateEditorView = Backbone.View.extend({
 
 			newParaObj['type_' + paraObj.type] = true
 
-			if paraObj.type in ['line', 'text', 'bool']
+			if paraObj.type in ['line', 'text', 'bool', 'state']
 				newParaObj.para_value = ''
 			else if paraObj.type is 'dict'
 				newParaObj.para_value = [{
@@ -614,14 +619,21 @@ StateEditorView = Backbone.View.extend({
 			_.each $paraItemList, (paraItem) ->
 
 				$paraItem = $(paraItem)
+
+				if $paraItem.hasClass('disabled')
+					return
+
 				paraName = $paraItem.attr('data-para-name')
 
 				paraValue = null
 
-				if $paraItem.hasClass('line') or $paraItem.hasClass('bool') or $paraItem.hasClass('text')
+				if $paraItem.hasClass('line') or
+					$paraItem.hasClass('bool') or
+					$paraItem.hasClass('text') or
+					$paraItem.hasClass('state')
 
-					$paraInput = $paraItem.find('.parameter-value')
-					paraValue = $paraInput.text()
+						$paraInput = $paraItem.find('.parameter-value')
+						paraValue = $paraInput.text()
 
 				else if $paraItem.hasClass('dict')
 
@@ -695,7 +707,8 @@ StateEditorView = Backbone.View.extend({
 				paraModelRequired = paraModelValue.required
 
 				renderParaObj = {
-					para_name: paraModelName
+					para_name: paraModelName,
+					para_disabled: false,
 					required: paraModelRequired
 				}
 
@@ -703,10 +716,16 @@ StateEditorView = Backbone.View.extend({
 
 				paraValue = paraListObj[paraModelName]
 
+				if paraValue is undefined and not paraModelRequired
+					renderParaObj.para_disabled = true
+
 				renderParaValue = null
-				if paraModelType in ['line', 'text', 'bool']
+				if paraModelType in ['line', 'text', 'bool', 'state']
 
 					renderParaValue = paraValue
+
+					if not paraValue
+						renderParaValue = ''
 
 				else if paraModelType is 'dict'
 
@@ -720,14 +739,21 @@ StateEditorView = Backbone.View.extend({
 
 						null
 
+					if not paraValue or _.isEmpty(paraValue)
+						renderParaValue = [{
+							key: '',
+							value: ''
+						}]
+
 				else if paraModelType is 'array'
 
 					renderParaValue = []
 					_.each paraValue, (paraValueStr) ->
-
 						renderParaValue.push(paraValueStr)
-
 						null
+
+					if not paraValue
+						renderParaValue = ['']
 
 				renderParaObj.para_value = renderParaValue
 
@@ -765,6 +791,20 @@ StateEditorView = Backbone.View.extend({
 
 		that.refreshStateList(renderData)
 		that.refreshStateViewList(renderData)
+
+	onParaRemoveClick: (event) ->
+
+		that = this
+
+		$currentElem = $(event.currentTarget)
+		$paraItem = $currentElem.parents('.parameter-item')
+
+		if $paraItem.hasClass('disabled')
+			$paraItem.removeClass('disabled')
+		else
+			$paraItem.addClass('disabled')
+
+		null
 
 })
 

@@ -13,7 +13,11 @@ StateEditorModel = Backbone.Model.extend({
 		cmdModuleMap = {}
 		moduleCMDMap = {}
 
-		_.each data.linux, (cmdObj, cmdName) ->
+		moduleData = data.linux
+
+		moduleData = _.extend(moduleData, data.general)
+
+		_.each moduleData, (cmdObj, cmdName) ->
 
 			# get command name
 			cmdAry.push cmdName

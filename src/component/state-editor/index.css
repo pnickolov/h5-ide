@@ -73,6 +73,12 @@ body {
 
 /* *************************************** parameter */
 
+#state-editor .command-value {
+	float: left;
+	width: 150px;
+	margin-left: 40px;
+}
+
 #state-editor .parameter-list {
 	float: left;
 	overflow: auto;
@@ -115,10 +121,31 @@ body {
 	margin-right: 5px;
 }
 
-#state-editor .command-value {
+#state-editor .parameter-remove {
 	float: left;
-	width: 150px;
-	margin-left: 40px;
+	background-color: #f00;
+	width: 15px;
+	text-align: center;
+	height: 15px;
+	margin-right: 10px;
+	border-radius: 15px;
+	color: #fff;
+	line-height: 11px;
+	cursor: pointer;
+	font-size: 24px;
+}
+
+#state-editor .parameter-remove:hover {
+	background-color: #f44;
+}
+
+#state-editor .parameter-item.disabled .parameter-remove {
+	-moz-transform:rotate(-90deg);
+	-webkit-transform:rotate(-90deg);
+}
+
+#state-editor .parameter-item.disabled {
+	opacity: 0.3;
 }
 
 /* *************************************** state view/edit */
@@ -169,6 +196,10 @@ body {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+}
+
+#state-editor .parameter-view-list .parameter-item.disabled {
+	display: none;
 }
 
 /* *************************************** state toolbar */

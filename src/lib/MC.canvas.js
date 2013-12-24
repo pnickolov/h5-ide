@@ -1518,16 +1518,13 @@ MC.canvas = {
 	select: function (id)
 	{
 		var target = $('#' + id),
-			target_type = target.data('type'),
-			svg_canvas = $("#svg_canvas"),
+			node_type = $canvas(id).nodeType,
 			item = $canvas(id),
-			clone_node,
-			node_connections,
-			layout_connection_data;
+			clone_node;
 
 		Canvon(target).addClass('selected');
 
-		if (target_type === 'line')
+		if (node_type === 'line')
 		{
 			clone = target.clone();
 
@@ -1539,7 +1536,7 @@ MC.canvas = {
 			//item.select();
 		}
 
-		if (target_type === 'node')
+		if (node_type === 'node')
 		{
 			clone = target.clone();
 
@@ -1561,7 +1558,7 @@ MC.canvas = {
 			Canvon(clone.find('.port')).addClass('view-show');
 		}
 
-		if (target_type === 'group')
+		if (node_type === 'group')
 		{
 			//svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
 

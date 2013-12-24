@@ -101,6 +101,14 @@ define [ 'jquery', 'handlebars',
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
+			# test
+			#forge_result.is_error = true
+			#forge_result.return_code = -1
+
+			# 500
+			if forge_result.is_error and forge_result.return_code is -1
+				window.location.href = "/500.html"
+
 			if !forge_result.is_error
 				#login succeed
 

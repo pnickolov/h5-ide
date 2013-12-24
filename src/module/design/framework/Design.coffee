@@ -137,10 +137,12 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
+    that = @
+
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
 
-      obj = design_instance.__componentMap[ uid ]
+      obj = that.__componentMap[ uid ]
       if obj then return obj
 
       # Check if we have recursive dependency
@@ -160,7 +162,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
     # Use resolve to replace component(), so that during deserialization,
     # dependency can be resolved by using design.component()
-    _old_get_component_ = design.component
+    _old_get_component_ = @component
 
     ###########################
     # Start deserialization
@@ -169,7 +171,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Thus, there're 3 steps in the deserialization
     ###########################
     # Deserialize resolveFisrt resources
-    design.component = null # Forbid user to call component at this time.
+    @component = null # Forbid user to call component at this time.
     for uid, comp of json_data
       if Design.__resolveFirstMap[ comp.type ] is true
         ModelClass = Design.modelClassForType( comp.type )
@@ -187,14 +189,14 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
 
     # Deserialize normal resources
-    design.component = resolveDeserialize
+    @component = resolveDeserialize
     for uid, comp of json_data
       recursiveCheck = {}
       resolveDeserialize uid
 
 
     # Give a chance for resources to create connection between each others.
-    design.component = _old_get_component_
+    @component = _old_get_component_
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
@@ -207,9 +209,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Draw everything after deserialization is done.
     # Because some resources might just deleted right after it's been created.
     # And draw lines at the end
-    design.__shoulddraw = true
+    @__shoulddraw = true
     lines = []
-    for uid, comp of design.__componentMap
+    for uid, comp of @__componentMap
       if not comp.draw then continue
       if comp.node_line
         lines.push comp

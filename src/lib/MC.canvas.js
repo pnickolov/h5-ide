@@ -18,13 +18,25 @@ MC.canvas = {
 	{
 		//return Tabbar.current;
 		//return MC.canvas_data.stack_id !== undefined ? 'app' : 'stack';
-		var state = '';
-		if ( Tabbar.current === 'new' || Tabbar.current === 'stack' ) {
+		var state = '',
+			current = Tabbar.current;
+
+		if (
+			current === 'new' ||
+			current === 'stack'
+		)
+		{
 			state = 'stack';
 		}
-		else if ( Tabbar.current === 'app' || Tabbar.current === 'appedit' || Tabbar.current === 'appview' ) {
-			state = Tabbar.current;
+		else if (
+			current === 'app' ||
+			current === 'appedit' ||
+			current === 'appview'
+		)
+		{
+			state = current;
 		}
+
 		return state;
 	},
 
@@ -50,13 +62,13 @@ MC.canvas = {
 		{
 			target.attr('display', 'inline');
 			target.attr('style', '');
-			Canvon(target).addClass('tooltip')
+			Canvon(target).addClass('tooltip');
 		}
 		else
 		{
 			target.attr('display', 'none');
 			target.attr('style', 'opacity:0');
-			Canvon(target).removeClass('tooltip')
+			Canvon(target).removeClass('tooltip');
 		}
 	},
 
@@ -117,7 +129,7 @@ MC.canvas = {
 			if (comp.type === "AWS.EC2.Instance")
 			{
 
-				if (comp.number>1 && comp.index===0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
+				if (comp.number > 1 && comp.index === 0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
 				{//update state of ServerGroup
 					MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
 				}
@@ -906,25 +918,25 @@ MC.canvas = {
 		return controlPoints;
 	},
 
-	updateResizer: function(node, width, height)
-	{
-		var pad = 10,
-			top = 0;
+	// updateResizer: function(node, width, height)
+	// {
+	// 	var pad = 10,
+	// 		top = 0;
 
-		width = width * MC.canvas.GRID_WIDTH;
-		height = height * MC.canvas.GRID_HEIGHT;
+	// 	width = width * MC.canvas.GRID_WIDTH;
+	// 	height = height * MC.canvas.GRID_HEIGHT;
 
-		$(node).find('.resizer-wrap').empty().append(
-			Canvon.rectangle(0, top, pad, pad).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
-			Canvon.rectangle(pad, top, width - 2 * pad, pad).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
-			Canvon.rectangle(width - pad, top, pad, pad).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
-			Canvon.rectangle(0, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
-			Canvon.rectangle(width - pad, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
-			Canvon.rectangle(0, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
-			Canvon.rectangle(pad, height + top - pad, width - 2 * pad, pad).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
-			Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
-		);
-	},
+	// 	$(node).find('.resizer-wrap').empty().append(
+	// 		Canvon.rectangle(0, top, pad, pad).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
+	// 		Canvon.rectangle(pad, top, width - 2 * pad, pad).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
+	// 		Canvon.rectangle(width - pad, top, pad, pad).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
+	// 		Canvon.rectangle(0, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
+	// 		Canvon.rectangle(width - pad, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
+	// 		Canvon.rectangle(0, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
+	// 		Canvon.rectangle(pad, height + top - pad, width - 2 * pad, pad).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
+	// 		Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
+	// 	);
+	// },
 
   route2 : function ( start, end )
   {
@@ -1530,10 +1542,6 @@ MC.canvas = {
 
 			target.remove();
 			$('#line_layer').append(clone);
-
-			//svg_canvas.trigger("CANVAS_LINE_SELECTED", id);
-
-			//item.select();
 		}
 
 		if (node_type === 'node')
@@ -1543,26 +1551,12 @@ MC.canvas = {
 			target.remove();
 			$('#node_layer').append(clone);
 
-			//svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
-
-			//item.select();
-
-			//node_connections = MC.canvas_data.layout.component.node[ id ].connection;
-			//layout_connection_data = MC.canvas_data.layout.connection;
-
 			$.each(item.connection(), function (index, item)
 			{
 				Canvon('#' + item.line + ', #' + item.target + '_port-' + item.port).addClass('view-show');
 			});
 
 			Canvon(clone.find('.port')).addClass('view-show');
-		}
-
-		if (node_type === 'group')
-		{
-			//svg_canvas.trigger("CANVAS_NODE_SELECTED", id);
-
-			//item.select();
 		}
 
 		MC.canvas_property.selected_node.push(id);
@@ -1609,109 +1603,109 @@ MC.canvas = {
 			target_type = target.data('type'),
 			node_type = target.data('class');
 
-		if (target_type === 'line')
-		{
-			var line_data = MC.canvas.data.get('layout.connection.' + node_id),
-				layout_component_data = MC.canvas.data.get('layout.component'),
-				target_connection,
-				target_node,
-				new_connection_data;
+		// if (target_type === 'line')
+		// {
+		// 	var line_data = MC.canvas.data.get('layout.connection.' + node_id),
+		// 		layout_component_data = MC.canvas.data.get('layout.component'),
+		// 		target_connection,
+		// 		target_node,
+		// 		new_connection_data;
 
-			$.each(line_data.target, function (target_id, target_port)
-			{
-				target_node = $('#' + target_id);
-				target_node_type = target_node.data('type');
-				target_connection = layout_component_data[ target_node_type ][ target_id ].connection;
-				new_connection_data = [];
+		// 	$.each(line_data.target, function (target_id, target_port)
+		// 	{
+		// 		target_node = $('#' + target_id);
+		// 		target_node_type = target_node.data('type');
+		// 		target_connection = layout_component_data[ target_node_type ][ target_id ].connection;
+		// 		new_connection_data = [];
 
-				$.each(target_connection, function (i, option)
-				{
-					if (option.line !== node_id)
-					{
-						new_connection_data.push(option);
-					}
-				});
+		// 		$.each(target_connection, function (i, option)
+		// 		{
+		// 			if (option.line !== node_id)
+		// 			{
+		// 				new_connection_data.push(option);
+		// 			}
+		// 		});
 
-				MC.canvas.data.set('layout.component.' + target_node_type + '.' + target_id + '.connection', new_connection_data);
-			});
+		// 		MC.canvas.data.set('layout.component.' + target_node_type + '.' + target_id + '.connection', new_connection_data);
+		// 	});
 
-			MC.canvas.data.delete('layout.connection.' + node_id);
-		}
+		// 	MC.canvas.data.delete('layout.connection.' + node_id);
+		// }
 
-		if (target_type === 'node')
-		{
-			var	layout_component_data = MC.canvas.data.get('layout.component'),
-				//layout_connection_data = MC.canvas.data.get('layout.connection'),
-				line_layer = document.getElementById('line_layer'),
-				connections = layout_component_data.node[ node_id ].connection,
-				target_node_type,
-				new_connection_data,
-				connection_data,
-				connected_data;
+		// if (target_type === 'node')
+		// {
+		// 	var	layout_component_data = MC.canvas.data.get('layout.component'),
+		// 		//layout_connection_data = MC.canvas.data.get('layout.connection'),
+		// 		line_layer = document.getElementById('line_layer'),
+		// 		connections = layout_component_data.node[ node_id ].connection,
+		// 		target_node_type,
+		// 		new_connection_data,
+		// 		connection_data,
+		// 		connected_data;
 
-			$.each(connections, function (index, value)
-			{
-				connection_data = layout_connection_data[ value.line ];
-				new_connection_data = [];
+		// 	$.each(connections, function (index, value)
+		// 	{
+		// 		connection_data = layout_connection_data[ value.line ];
+		// 		new_connection_data = [];
 
-				line_layer.removeChild(document.getElementById( value.line ));
+		// 		line_layer.removeChild(document.getElementById( value.line ));
 
-				$.each(connection_data.target, function (key, item)
-				{
-					if (key !== node_id)
-					{
-						connected_node = key;
-					}
-				});
+		// 		$.each(connection_data.target, function (key, item)
+		// 		{
+		// 			if (key !== node_id)
+		// 			{
+		// 				connected_node = key;
+		// 			}
+		// 		});
 
-				target_node_type = $('#' + connected_node).data('type');
-				connected_data = layout_component_data[ target_node_type ][ connected_node ].connection;
+		// 		target_node_type = $('#' + connected_node).data('type');
+		// 		connected_data = layout_component_data[ target_node_type ][ connected_node ].connection;
 
-				$.each(connected_data, function (i, option)
-				{
-					if (option.line !== value.line && option.target !== node_id)
-					{
-						new_connection_data.push(option);
-					}
-				});
+		// 		$.each(connected_data, function (i, option)
+		// 		{
+		// 			if (option.line !== value.line && option.target !== node_id)
+		// 			{
+		// 				new_connection_data.push(option);
+		// 			}
+		// 		});
 
-				MC.canvas.data.set('layout.component.' + target_node_type + '.' + connected_node + '.connection', new_connection_data);
-				MC.canvas.data.delete('layout.connection.' + value.line);
-			});
+		// 		MC.canvas.data.set('layout.component.' + target_node_type + '.' + connected_node + '.connection', new_connection_data);
+		// 		MC.canvas.data.delete('layout.connection.' + value.line);
+		// 	});
 
-			MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
-			//MC.canvas.data.delete('component.' + node_id);
-		}
+		// 	MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
+		// 	//MC.canvas.data.delete('component.' + node_id);
+		// }
 
-		if (target_type === 'group')
-		{
-			var group_child = MC.canvas.groupChild(node),
-				group_data = MC.canvas.data.get('layout.component.group.' + node_id);
+		// if (target_type === 'group')
+		// {
+		// 	var group_child = MC.canvas.groupChild(node),
+		// 		group_data = MC.canvas.data.get('layout.component.group.' + node_id);
 
-			if (
-				(
-					node_type === 'AWS.VPC.Subnet' ||
-					(
-						node_type === 'AWS.AutoScaling.Group' &&
-						group_data.originalId !== ""
-					)
-				)
-				&& group_data.connection.length > 0
-			)
-			{
-				$.each(group_data.connection, function (index, data)
-				{
-					MC.canvas.remove(document.getElementById(data.line));
-				});
-			}
+		// 	if (
+		// 		(
+		// 			node_type === 'AWS.VPC.Subnet' ||
+		// 			(
+		// 				node_type === 'AWS.AutoScaling.Group' &&
+		// 				group_data.originalId !== ""
+		// 			)
+		// 		)
+		// 		&& group_data.connection.length > 0
+		// 	)
+		// 	{
+		// 		$.each(group_data.connection, function (index, data)
+		// 		{
+		// 			MC.canvas.remove(document.getElementById(data.line));
+		// 		});
+		// 	}
 
-			$.each(group_child, function (index, item)
-			{
-				MC.canvas.remove(item);
-			});
+		// 	$.each(group_child, function (index, item)
+		// 	{
+		// 		MC.canvas.remove(item);
+		// 	});
 
-			MC.canvas.data.delete('layout.component.group.' + node_id);
-		}
+		// 	MC.canvas.data.delete('layout.component.group.' + node_id);
+		// }
 
 		target.remove();
 
@@ -1732,21 +1726,21 @@ MC.canvas = {
 	{
 		var children = $canvas.node(),
 			coordinate = MC.canvas.pixelToGrid(x, y),
-			component_size,
+			size,
 			matched,
 			node_coordinate;
 
 		$.each(children, function (key, item)
 		{
 			node_coordinate = item.coordinate;
-			component_size = item.size;
+			size = item.size;
 
 			if (
 				node_coordinate &&
 				node_coordinate[0] <= coordinate.x &&
-				node_coordinate[0] + component_size[0] >= coordinate.x &&
+				node_coordinate[0] + size[0] >= coordinate.x &&
 				node_coordinate[1] <= coordinate.y &&
-				node_coordinate[1] + component_size[1] >= coordinate.y
+				node_coordinate[1] + size[1] >= coordinate.y
 			)
 			{
 				matched = document.getElementById( key );
@@ -1784,7 +1778,7 @@ MC.canvas = {
 					'y': y + height
 				}
 			],
-			canvas_size = MC.canvas_data.layout.size,
+			canvas_size = $canvas.size(),
 			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ node_type ],
 			ignore_stack = [],
 			match = [],

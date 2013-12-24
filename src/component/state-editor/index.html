@@ -45,8 +45,11 @@
 
 				<!-- line type parameter -->
 				{{#if type_line}}
-					<div class="parameter-item line" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
+					<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
@@ -55,8 +58,11 @@
 
 				<!-- dict type parameter --> 
 				{{#if type_dict}}
-					<div class="parameter-item dict" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
+					<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
 						<div class="parameter-container">
 							{{> state-template-para-dict-item}}
 						</div>
@@ -65,8 +71,11 @@
 
 				<!-- array type parameter --> 
 				{{#if type_array}}
-					<div class="parameter-item array" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
+					<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
 						<div class="parameter-container">
 							{{> state-template-para-array-item}}
 						</div>
@@ -75,8 +84,11 @@
 
 				<!-- bool type parameter --> 
 				{{#if type_bool}}
-					<div class="parameter-item bool" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
+					<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
 						</div>
@@ -85,10 +97,26 @@
 
 				<!-- text type parameter --> 
 				{{#if type_text}}
-					<div class="parameter-item text" data-para-name="{{para_name}}">
-						<div class="parameter-name">{{#if required}}* {{/if}}{{para_name}}</div>
+					<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
 						<div class="parameter-container">
 							<div class="parameter-value editable-area text" contenteditable="true">{{para_value}}</div>
+						</div>
+					</div>
+				{{/if}}
+
+				<!-- state type parameter --> 
+				{{#if type_state}}
+					<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-name">
+							{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+							{{para_name}}
+						</div>
+						<div class="parameter-container">
+							<div class="parameter-value editable-area state" contenteditable="true">{{para_value}}</div>
 						</div>
 					</div>
 				{{/if}}
@@ -101,35 +129,42 @@
 
 				<!-- line type parameter -->
 				{{#if type_line}}
-					<div class="parameter-item line" data-para-name="{{para_name}}">
+					<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}
 
 				<!-- dict type parameter --> 
 				{{#if type_dict}}
-					<div class="parameter-item dict" data-para-name="{{para_name}}">
+					<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}
 
 				<!-- array type parameter --> 
 				{{#if type_array}}
-					<div class="parameter-item array" data-para-name="{{para_name}}">
+					<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}
 
 				<!-- bool type parameter --> 
 				{{#if type_bool}}
-					<div class="parameter-item bool" data-para-name="{{para_name}}">
+					<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}
 
 				<!-- text type parameter --> 
 				{{#if type_text}}
-					<div class="parameter-item text" data-para-name="{{para_name}}">
+					<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+						<div class="parameter-value">{{para_value}}</div>
+					</div>
+				{{/if}}
+
+				<!-- text type parameter --> 
+				{{#if type_state}}
+					<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 						<div class="parameter-value">{{para_value}}</div>
 					</div>
 				{{/if}}

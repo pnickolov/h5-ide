@@ -3860,7 +3860,7 @@ MC.canvas.event.dragable = {
 						if (igw_gateway[0])
 						{
 							igw_item = $canvas(igw_gateway.attr('id'));
-							igw_top = igw_item.position()[1] + group_offsetY;
+							igw_top = igw_item.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							igw_item.position(group_left - 4, igw_top);
@@ -3871,7 +3871,7 @@ MC.canvas.event.dragable = {
 						if (vgw_gateway[0])
 						{
 							vgw_item = $canvas(vgw_gateway.attr('id'));
-							vgw_top = vgw_item.position()[1] + group_offsetY;
+							vgw_top = vgw_item.coordinate[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							vgw_item.position(group_left + group_width - 4, vgw_top);
@@ -3972,7 +3972,7 @@ MC.canvas.event.dragable = {
 
 		// MC.canvas.select(target_id);
 
-		target_item.position(target_item.position()[0], coordinate.y);
+		target_item.position(target_item.coordinate[0], coordinate.y);
 
 		//target_item.reConnect();
 

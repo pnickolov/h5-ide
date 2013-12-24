@@ -1997,19 +1997,25 @@ a {
 }
 
 .region-resource-thumbnail {
-	width           : 218px;
-	height          : 145px;
+	width           : 220px;
+	height          : 146px;
 	border-radius   : 5px 5px 0 0;
 	background      : #55626e url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
-	background-size : 225px auto;
-	border          : 1px solid #55626e;
-	border-bottom   : none;
+	background-size : 220px auto;
 	overflow        : hidden;
 }
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
 	background-size: 220px auto;
+}
+
+.blank-widget {
+	margin-top : 14px;
+	text-align : center;
+	padding    : 70px 0;
+	color      : #999;
+	background : #f8f8f8;
 }
 
 .region-resource-list-item.disabled {
@@ -2377,9 +2383,14 @@ a {
 		width: 195px;
 	}
 
+	.blank-widget {
+		margin-top : 15px;
+		padding : 65px 0;
+	}
+
 	.region-resource-thumbnail {
-		width  : 193px;
-		height : 136px;
+		width  : 195px;
+		height : 137px;
 
 		background-size: 193 auto;
 	}
@@ -2615,14 +2626,6 @@ a {
 	right: 0;
 	top: 9px;
 	font-style: italic;
-}
-
-.blank-widget {
-	margin-top : 15px;
-	text-align : center;
-	padding    : 78px 0;
-	color      : #999;
-	background : #f8f8f8;
 }
 
 .dashboard-widget-body-table.blank-widget {

@@ -1,4 +1,6 @@
+#!/usr/bin/env sh
+
 coffee -c index.coffee model.coffee view.coffee jquery.atwho.coffee
-pause
+echo "Coffee compile has Done"
 
 

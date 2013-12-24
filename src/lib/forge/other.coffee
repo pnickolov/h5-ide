@@ -367,22 +367,32 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	# ssh apt@211.98.26.7/pot@{asg1.PlacementGroup} @{asg1.LoadBalancerNames} @{asg1.Status} @{asg1.AutoScalingGroupARN} @{eni0.MacAddress}
 	# @{[a-z0-9A-Z\.a-z0-9A-Z]+}
-	# @{[\w\.]*}
+	# @{[^@{][-\w\.]*}}
 	filterStateData = ( data ) ->
 		console.log 'filterStateData', data
 
-		# return data
-		filter_data = {}
+		filter_data = $.extend true, {}, data
 
 		# regexp
-		reg  = /[^@{][\w\.]*}/igm
+		reg  = /[^@{][-\w\.]*}/igm
 
-		_.each data, ( item ) ->
+		_.each filter_data, ( item ) ->
 
-			replace_str = item.parameter.verify_gpg
-			replace_arr = replace_str.match reg
+			#replace_str = item.parameter.verify_gpg
+			#replace_arr = replace_str.match reg
 
-		# return
+			item.parameter.verify_gpg = item.parameter.verify_gpg.replace reg, ( $0 ) ->
+				console.log 'sfasdfasdf', $0
+
+				split_arr = $0.split('.')
+				obj       = state_editor_name_list[ split_arr[0] ]
+
+				if obj and obj.uid and split_arr.length > 1
+					obj.uid + '.' + split_arr[1]
+				else
+					$0
+
+		# return new object
 		filter_data
 
 	#public

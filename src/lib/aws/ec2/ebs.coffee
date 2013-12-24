@@ -6,7 +6,7 @@ define [ 'MC' ], ( MC) ->
 		comp_data 	= MC.canvas.data.get("component")[uid]
 		region 		= MC.canvas.data.get("region")
 		image_id 	= (if comp_data then comp_data.resource.ImageId else "")
-		ami_info 	= (if MC.data.config[region].ami then MC.data.config[region].ami[image_id] else MC.data.dict_ami[image_id])
+		ami_info 	= (if (MC.data.config[region].ami and MC.data.config[region].ami[image_id]) then MC.data.config[region].ami[image_id] else MC.data.dict_ami[image_id])
 		device_list	= []
 		device_name = null #result
 

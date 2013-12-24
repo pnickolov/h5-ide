@@ -4,19 +4,18 @@
 
 define [ 'text!./template.html',
          'text!./list_template.html',
-         'text!./delete_rule_dialog.html',
+         'text!./delete.html',
          'i18n!nls/lang.js',
          'event'
 ], ( template, list_template, delete_template, lang, ide_event ) ->
 
-    template      = Handlebars.compile template
-    list_template = Handlebars.compile list_template
+    template        = Handlebars.compile template
+    list_template   = Handlebars.compile list_template
     delete_template = Handlebars.compile delete_template
 
     SGRulePopupView = Backbone.View.extend {
 
         events    :
-          'closed'                           : 'onClose'
           'click .sg-rule-create-add'        : 'addRule'
           'click .sg-rule-create-readd'      : 'readdRule'
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
@@ -24,27 +23,21 @@ define [ 'text!./template.html',
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
           'click #confirm-delete-sg-line'    : 'deleteSGLine'
 
-        render   : () ->
-            console.log 'Showing Security Group Rule Create Dialog'
+        render : () ->
 
-            modal template( this.model.attributes ), true
+          modal template( @model.attributes ), true
 
-            # In case there's two modal dialog in the page, although it is ALMOST
-            # not possible
-            # And `closed` event is send to '#modal-wrap'
-            this.setElement $('#sg-rule-create-modal').closest '#modal-wrap'
+          # In case there's two modal dialog in the page, although it is ALMOST
+          # not possible
+          # And `closed` event is send to '#modal-wrap'
+          this.setElement $('#sg-rule-create-modal').closest '#modal-wrap'
 
-            # Update sidebar
-            this.trigger 'UPDATE_SLIDE_BAR'
-            #this.updateSidebar()
+          @updateSidebar()
+          null
 
         renderDeleteModule : () ->
-            modal delete_template( this.model.attributes ), true
-            this.setElement $("#confirm-delete-sg-line").closest '.modal-footer'
-
-        onClose : () ->
-          # TODO : When the popup close, if there's no sg rules, tell canvas to remove the line.
-          this.trigger 'CLOSE_POPUP'
+          modal delete_template( this.model.attributes ), true
+          this.setElement $("#confirm-delete-sg-line").closest '.modal-footer'
 
         addRule : ( event ) ->
           # Extract the data from the view
@@ -90,7 +83,7 @@ define [ 'text!./template.html',
           # validation #####################################################
 
           # Generate Ouput Info
-          if MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+          if @model.get("isClassic")
             rule_count = 1
           else
             rule_count = 2
@@ -116,27 +109,32 @@ define [ 'text!./template.html',
 
           $("#sg-rule-create-msg").text info
 
-
-
           # Switch to done view.
           this.$el.find('#modal-box').toggleClass('done', true)
 
-          this.trigger 'ADD_RULE', data
-          this.trigger 'UPDATE_LINE_ID'
-
-          # Update sidebar
-          this.trigger 'UPDATE_SLIDE_BAR'
-          #this.updateSidebar()
+          @model.addRule( data )
+          @updateSidebar()
 
         readdRule : () ->
           this.$el.find('#modal-box').toggleClass('done', false)
 
         deleteRule : ( event ) ->
-          console.log "delete"
 
-          this.trigger 'DELETE_RULE', $(event.currentTarget).closest('.sg-create-rule-item').attr("data-uid")
+          $li = $( event.currentTarget ).closest( "li" )
 
-          this.trigger 'UPDATE_SLIDE_BAR'
+          data =
+            ruleSetId : $li.attr("data-uid")
+            protocol  : $li.attr("data-port")
+            relation  : $li.attr("data-relation")
+            direction : $li.attr("data-direction")
+
+          $parent = $li.parent()
+          $li.remove()
+          if $parent.children().length == 0
+            $parent.prev().remove()
+            $parent.remove()
+
+          @model.delRule( data )
           false
 
         onDirChange : () ->
@@ -155,17 +153,19 @@ define [ 'text!./template.html',
           $("#sg-proto-input-sub-" + id).show()
 
         updateSidebar : () ->
-          data = $.extend true, {}, this.model.attributes
 
-          data.ruleCount = _.reduce data.sg_group, ( count, item )->
-            item.rules.length + count
-          , 0
+          ruleCount = 0
+          for group in @model.attributes.groups
+            ruleCount += group.rules.length
+            group.rules.deletable = true
+            group.content = MC.template.sgRuleList( group.rules )
 
-          this.$el.find( '.sg-rule-create-sidebar' ).html( list_template( data ) )
-          rule_count = $(".sg-create-rule-item").length
+          @model.attributes.ruleCount = ruleCount
 
-          $sidebar = $(".sg-rule-create-sidebar")
-          $modal   = this.$el.find('#modal-box')
+          $sidebar = $("#sgRuleCreateSidebar").html( list_template( @model.attributes ) )
+
+          rule_count = $sidebar.find("li").length
+          $modal     = this.$el.find('#modal-box')
 
           isShown = $sidebar.hasClass "shown"
 
@@ -206,7 +206,7 @@ define [ 'text!./template.html',
           data
 
         deleteSGLine : () ->
-          this.trigger 'DELETE_SG_LINE'
+          @model.deleteLine()
           modal.close()
           null
 

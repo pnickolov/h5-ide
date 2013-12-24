@@ -1,17 +1,18 @@
 <header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="modal-close">&times;</i></header>
 
+
 <article class="modal-body" id="sg-rule-create-modal" data-bind="true">
   <section class="sg-rule-create-add-wrap">
 
     <section class="sg-node-wrap clearfix">
       <label>Allow</label>
 
-      {{#if sg_detail.[0].sg.length}}
+      {{#if owner.length}}
 
       <div class="selectbox" id="sg-create-sg-out">
-        <div class="selection"><span class="sg-create-sg-color" style="background:{{sg_detail.[0].sg.[0].color}}"></span>{{sg_detail.[0].sg.[0].name}}</div>
+        <div class="selection"><span class="sg-create-sg-color" style="background:{{owner.[0].color}}"></span>{{owner.[0].name}}</div>
         <ul class="dropdown">
-          {{#each sg_detail.[0].sg}}
+          {{#each owner}}
             <li class="item {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
               <span class="sg-create-sg-color" style="background:{{color}}"></span>
               {{name}}
@@ -32,20 +33,20 @@
       {{else}}
 
       <div id="sg-create-sg-out">
-        <div class="sg-create-selection">{{sg_detail.[0].name}}</div>
+        <div class="sg-create-selection">{{owner.name}}</div>
       </div>
 
       <div id="sg-create-direction">
-        <div class="sg-create-selection selected" data-id="out">initiate traffic to</div>
+        <div class="sg-create-selection" data-id="out">initiate traffic to</div>
       </div>
 
       {{/if}}
 
       <div class="selectbox" id="sg-create-sg-in">
-        <div class="selection truncate"><span class="sg-create-sg-color" style="background:{{sg_detail.[1].sg.[0].color}}"></span>{{sg_detail.[1].sg.[0].name}}</div>
+        <div class="selection truncate"><span class="sg-create-sg-color" style="background:{{relation.[0].color}}"></span>{{relation.[0].name}}</div>
         <ul class="dropdown">
-          {{#each sg_detail.[1].sg}}
-            <li class="item truncate {{#unless @index}}selected{{/unless}}" data-id="{{uid}}" title="{{name}}">
+          {{#each relation}}
+            <li class="item truncate {{#unless @index}}selected{{/unless}}" data-id="{{uid}}">
               <span class="sg-create-sg-color" style="background:{{color}}"></span>
               {{name}}
             </li>
@@ -55,8 +56,8 @@
     </section>
 
     <p class="clearfix mgt10">
-      <label for="" class="sg-create-proto-label">Destination Protocol</label>
-      <label for="" class="sg-create-proto-label-port">Port</label>
+      <label class="sg-create-proto-label">Destination Protocol</label>
+      <label class="sg-create-proto-label-port">Port</label>
     </p>
 
     <section class="clearfix sg-proto-option-wrap">
@@ -66,10 +67,10 @@
           <li class="selected item" data-id="tcp">TCP</li>
           <li class="item" data-id="udp">UDP</li>
           <li class="item" data-id="icmp">ICMP</li>
-          {{#if isnt_classic}}
+          {{#unless isClassic}}
           <li class="item" data-id="custom">Custom</li>
           <li class="item" data-id="all">All</li>
-          {{/if}}
+          {{/unless}}
         </ul>
       </div>
 
@@ -169,13 +170,13 @@
           </section>
 
 
-    {{#if isnt_classic}}
+    {{#unless isClassic}}
           <section class="sg-proto-input" id="sg-proto-ipt-custom">
-            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" required="" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+            <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
           </section>
 
           <section class="sg-proto-input" id="sg-proto-ipt-all">Port Range: 0-65535</section>
-    {{/if}}
+    {{/unless}}
       </div>
     </section>
     <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
@@ -190,8 +191,6 @@
     <button class="btn btn-silver modal-close">Close</button>
   </section>
 </article>
-<aside class="sg-rule-create-sidebar"></aside>
-<!-- <section class="modal-footer">
-      <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
-      <button class="btn btn-silver modal-close">Close</button>
-</section> -->
+
+
+<aside class="sg-rule-create-sidebar" id="sgRuleCreateSidebar"></aside>

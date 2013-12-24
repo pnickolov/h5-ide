@@ -5128,32 +5128,28 @@ a.action-link:hover {
 	box-shadow    : inset 0 1px 0 rgba(255,255,255,.04);
 }
 
-.sg-create-rule-item {
+.sg-create-rule-list li {
 	border-bottom : 1px solid #333;
 	padding       : 5px 10px;
 	position      : relative;
 	background    : #414141;
+	font-size     : 12px;
 }
 
-.sidebar-wrap .sg-create-rule-item {
-	font-size : 12px;
-}
-
-.sidebar-wrap .sg-create-group {
+.sg-create-rule-list .sg-create-group {
 	width       : 194px;
 }
 
-.sidebar-wrap .rule-list-row .sg-color {
-	margin-top: 2px;
-}
-
-.sidebar-wrap .sg-color.sg-color-rule-header,
-#delete-rule-dialog .sg-color.sg-color-rule-header {
+.sg-create-rule-list .sg-color {
 	margin: 3px 5px;
 }
 
-.sg-create-rule-item .sg-rule-connection {
-	width: 113px;
+.sg-create-rule-list .rule-list-row .sg-color {
+	margin: 3px 3px 0 0;
+}
+
+.sg-create-rule-list .rule-reference {
+	width: 100px;
 }
 
 .sg-rule-col1 {
@@ -5172,11 +5168,11 @@ a.action-link:hover {
 	display     : none;
 }
 
-.sg-create-rule-item:hover .sg-rule-delete {
+.sg-create-rule-list:hover .sg-rule-delete {
 	display: block;
 }
 
-.sg-create-rule-item .sg-rule-delete:hover {
+.sg-create-rule-list .sg-rule-delete:hover {
 	color: #F74A48;
 }
 

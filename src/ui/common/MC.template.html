@@ -651,7 +651,12 @@ Additional Notes and Questions
 </div>
 
 <!-- sgRuleList -->
-{{#each this}}<li>
+{{#each this}}
+{{#if ../deletable}}
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}">
+{{else}}
+<li>
+{{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
 	<span {{#if color}}class="sg-color" style="background-color:{{color}}"{{/if}}></span>
@@ -661,6 +666,7 @@ Additional Notes and Questions
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
 	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
 </div>
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip="Remove rule"></a>{{/if}}
 </li>{{/each}}
 
 <!-- propertyIpList -->

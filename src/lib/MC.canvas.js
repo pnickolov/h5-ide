@@ -1583,24 +1583,24 @@ MC.canvas = {
 
 		//MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
 
-		$canvas( node.id ).position(x, y);
+		//$canvas( node.id ).position(x, y);
 
-		// if (transformVal.numberOfItems === 1)
-		// {
-		// 	/* MC.canvas.GRID_WIDTH = 10 */
-		// 	/* MC.canvas.GRID_HEIGHT = 10 */
-		// 	transformVal.getItem(0).setTranslate(x * 10, y * 10);
-		// }
-		// else
-		// {
-		// 	/* MC.canvas.GRID_WIDTH = 10 */
-		// 	/* MC.canvas.GRID_HEIGHT = 10 */
-		// 	translateVal = node.ownerSVGElement.createSVGTransform();
+		if (transformVal.numberOfItems === 1)
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			transformVal.getItem(0).setTranslate(x * 10, y * 10);
+		}
+		else
+		{
+			/* MC.canvas.GRID_WIDTH = 10 */
+			/* MC.canvas.GRID_HEIGHT = 10 */
+			translateVal = node.ownerSVGElement.createSVGTransform();
 
-		// 	translateVal.setTranslate(x * 10, y * 10);
+			translateVal.setTranslate(x * 10, y * 10);
 
-		// 	transformVal.appendItem(translateVal);
-		// }
+			transformVal.appendItem(translateVal);
+		}
 
 		return true;
 	},

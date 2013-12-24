@@ -111,7 +111,6 @@ require.config {
 		#'layout'            : 'js/ide/layout'
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
-
 		#############################################
 		# module
 		#############################################

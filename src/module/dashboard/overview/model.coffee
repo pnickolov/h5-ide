@@ -1064,6 +1064,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             me = @
             console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+            # 500
+            MC.forge.other.verify500 result
+
             region_classic_vpc_result = []
 
             if !result.is_error
@@ -1106,8 +1109,10 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 null
 
             else
+
                 # check whether invalid session
                 if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
+
                     #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false
                     ide_event.trigger ide_event.UPDATE_AWS_CREDENTIAL

@@ -113,6 +113,21 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
     CanvasManager.toggle this.$element(), false
     null
 
+  CanvasElement.prototype.connection = ()->
+    comp = Design.instance().component( this.id )
+    connections = comp.connections()
+
+    cns = []
+
+    for cn in connections
+      if cn.get("lineType")
+        cns.push {
+          line   : cn.id
+          target : this.id
+          port   : cn.port( this.id, "name" )
+        }
+    cns
+
   CanvasElement.prototype.hover = ()->
     comp = Design.instance().component( this.id )
     connections = comp.connections()

@@ -1,4 +1,6 @@
 *.js
+*.map
+*.swp
 
 !state-editor/*.bat
 !state-editor/*.js

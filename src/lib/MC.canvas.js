@@ -1484,36 +1484,36 @@ MC.canvas = {
 		return true;
 	},
 
-	reConnect: function (node_id)
-	{
-		var node = $('#' + node_id),
-			node_connections = MC.canvas_data.layout.component[ node.data('type') ][ node_id ].connection || {},
-			layout_connection_data = MC.canvas_data.layout.connection,
-			line_target;
+	// reConnect: function (node_id)
+	// {
+	// 	var node = $('#' + node_id),
+	// 		node_connections = MC.canvas_data.layout.component[ node.data('type') ][ node_id ].connection || {},
+	// 		layout_connection_data = MC.canvas_data.layout.connection,
+	// 		line_target;
 
-		$.each(node_connections, function (index, value)
-		{
-			try
-			{
-				line_target = layout_connection_data[ value.line ][ 'target' ];
+	// 	$.each(node_connections, function (index, value)
+	// 	{
+	// 		try
+	// 		{
+	// 			line_target = layout_connection_data[ value.line ][ 'target' ];
 
-				MC.canvas.connect(
-					// From
-					node_id, line_target[ node_id ],
-					// To
-					value.target, line_target[ value.target ],
-					// Line
-					{'line_uid': value['line']}
-				);
-			}
-			catch(error)
-			{
-				console.error('[MC.canvas.reConnect] create connection error');
-			}
-		});
+	// 			MC.canvas.connect(
+	// 				// From
+	// 				node_id, line_target[ node_id ],
+	// 				// To
+	// 				value.target, line_target[ value.target ],
+	// 				// Line
+	// 				{'line_uid': value['line']}
+	// 			);
+	// 		}
+	// 		catch(error)
+	// 		{
+	// 			console.error('[MC.canvas.reConnect] create connection error');
+	// 		}
+	// 	});
 
-		return true;
-	},
+	// 	return true;
+	// },
 
 	select: function (id)
 	{
@@ -3572,7 +3572,7 @@ MC.canvas.event.dragable = {
 
 					target_item.position(coordinate.x, coordinate.y);
 
-					target_item.reConnect();
+					//target_item.reConnect();
 
 					//MC.canvas.reConnect(target_id);
 
@@ -3836,7 +3836,7 @@ MC.canvas.event.dragable = {
 					if (group_data.type === 'AWS.VPC.Subnet' || group_data.type === 'AWS.AutoScaling.Group')
 					{
 						//MC.canvas.reConnect(target_id);
-						$canvas(target_id).reConnect();
+						//$canvas(target_id).reConnect();
 					}
 
 					var group_left = coordinate.x,
@@ -3865,7 +3865,7 @@ MC.canvas.event.dragable = {
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							igw_item.position(group_left - 4, igw_top);
 
-							igw_item.reConnect();
+							//igw_item.reConnect();
 						}
 
 						if (vgw_gateway[0])
@@ -3876,7 +3876,7 @@ MC.canvas.event.dragable = {
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							vgw_item.position(group_left + group_width - 4, vgw_top);
 
-							vgw_item.reConnect();
+							//vgw_item.reConnect();
 						}
 					}
 
@@ -3974,7 +3974,7 @@ MC.canvas.event.dragable = {
 
 		target_item.position(target_item.position()[0], coordinate.y);
 
-		target_item.reConnect();
+		//target_item.reConnect();
 
 		target_item.select();
 
@@ -5261,7 +5261,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					MC.canvas.position(igw_gateway[0],  group_left - 4, igw_top);
 
-					MC.canvas.reConnect(igw_gateway_id);
+					//MC.canvas.reConnect(igw_gateway_id);
 				}
 
 				if (vgw_gateway[0])
@@ -5283,7 +5283,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					MC.canvas.position(vgw_gateway[0], group_left + group_width - 4, vgw_top);
 
-					MC.canvas.reConnect(vgw_gateway_id);
+					//MC.canvas.reConnect(vgw_gateway_id);
 				}
 			}
 
@@ -5361,9 +5361,9 @@ MC.canvas.event.groupResize = {
 			// 	);
 			// });
 
-			var group_node = $canvas( group_id );
+			//var group_node = $canvas( group_id );
 
-			group_node.reConnect();
+			//group_node.reConnect();
 		}
 
 		// Show label
@@ -5826,7 +5826,7 @@ MC.canvas.event.keyEvent = function (event)
 			{
 				MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
-				MC.canvas.reConnect(target_id);
+				//MC.canvas.reConnect(target_id);
 			}
 
 			return false;

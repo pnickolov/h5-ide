@@ -121,7 +121,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		# verify
 		if result and result.return_code is -1
-			window.location.href = '/500.html'
+			window.location.href = "500.html"
 
 		return
 

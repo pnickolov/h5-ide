@@ -33,7 +33,8 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
   ###
 
   connectionDraw = ()->
-    CanvasManager.drawLine( @ )
+    if Design.instance().shouldDraw()
+      CanvasManager.drawLine( @ )
     null
 
   ConnectionModel = ResourceModel.extend {
@@ -89,14 +90,24 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
         return this
 
       # Draw in the end
-      if @draw and Design.instance().shouldDraw()
-        @draw()
+      if @draw then @draw()
 
       this
 
     setDestroyAfterInit : ()->
       @__destroyAfterInit = true
       @__destroyAfterInit
+
+    port : ( id, attr )->
+      if not @__portDef then return ""
+
+      if @__port1Comp is id or @__port1Comp.id is id
+        return @__portDef.port1[ attr ]
+
+      if @__port2Comp is id or @__port2Comp.id is id
+        return @__portDef.port2[ attr ]
+
+      return ""
 
     port1 : ( attr )->
       if @__portDef then @__portDef.port1[ attr ] else ""
@@ -175,8 +186,16 @@ define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Desi
       # to indicate this is not a visual line.
       # If it's visual, insert a draw() into it.
       if protoProps.portDefs and protoProps.defaults
-        if _.result( protoProps, "defaults" ).visual isnt false and not protoProps.draw
+        ### env:dev ###
+        if protoProps.draw and protoProps.draw.toString().indexOf(".shouldDraw") is -1
+            console.error "Subclass of connection's draw() method does not check Design.instance().shouldDraw()"
+        ### env:dev:end ###
+
+        if _.result( protoProps, "defaults" ).visual is false
+          delete protoProps.draw
+        else if not protoProps.draw
           protoProps.draw = connectionDraw
+
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )
 

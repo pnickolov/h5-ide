@@ -11,9 +11,7 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
     this.id = component.id
 
     if quick isnt true
-      this.coordinate = [ component.x(), component.y() ]
-      this.size       = [ component.width(), component.height() ]
-      this.type       = component.type
+      this.type = component.type
 
       this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 
@@ -36,7 +34,8 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
   CanvasElement.prototype.resize = ( w, h )->
     if w is undefined
-      return this.size
+      component = Design.instance().component( this.id )
+      return [ component.width(), component.height() ]
 
     if this.nodeType is "group"
       this.size[0] = w
@@ -47,7 +46,8 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
   CanvasElement.prototype.position = ( x, y )->
     if x is undefined
-      return this.coordinate
+      component = Design.instance().component( this.id )
+      return [ component.x(), component.y() ]
 
     this.coordinate[0] = x
     this.coordinate[1] = y
@@ -56,12 +56,7 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
 
   CanvasElement.prototype.offset = ()->
-    {
-      width  : this.size[0]
-      height : this.size[1]
-      left   : this.coordinate[0]
-      top    : this.coordinate[1]
-    }
+    this.element().getBoundingClientRect()
 
   CanvasElement.prototype.port = ()->
     if not this.ports

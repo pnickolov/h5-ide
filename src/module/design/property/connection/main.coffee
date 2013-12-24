@@ -9,7 +9,7 @@ define [ '../base/main',
 
     ConnectionModule = PropertyModule.extend {
 
-        handleTypes : [ "eni-attach>instance-attach", "elb-assoc>subnet-assoc-in" ]
+        handleTypes : [ "EniAttachment", "ElbSubnetAsso" ]
 
         initStack : ()->
             @model = model

@@ -185,6 +185,12 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
     _.map Design.instance().component( this.id ).children() || [], ( c )->
         new CanvasElement( c )
 
+  CanvasElement.prototype.trigger = ( event )->
+    # TODO :
+    $("#svg_canvas").trigger event, @id
+    return this
+
+
   CanvasElement.line = ( component )->
     this.id   = component.id
     this.type = component.get("lineType")

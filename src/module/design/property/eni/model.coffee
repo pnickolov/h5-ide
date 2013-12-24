@@ -131,6 +131,8 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 				return true
 
 			instance = eni.attachedInstance()
+			if not instance
+				return null
 
 			sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 

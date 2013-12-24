@@ -340,7 +340,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       arr = []
       for uid, group of tempMap
-        arr.push group
+        if group.rules.length
+          arr.push group
 
       arr.sort (a,b)->
         if a.ownerName is "DefaultSG" then return -1

@@ -1927,10 +1927,10 @@ MC.canvas = {
 
 			item.select();
 
-			node_connections = MC.canvas_data.layout.component.node[ id ].connection;
-			layout_connection_data = MC.canvas_data.layout.connection;
+			//node_connections = MC.canvas_data.layout.component.node[ id ].connection;
+			//layout_connection_data = MC.canvas_data.layout.connection;
 
-			$.each(node_connections, function (index, item)
+			$.each(item.connection(), function (index, item)
 			{
 				Canvon('#' + item.line + ', #' + item.target + '_port-' + item.port).addClass('view-show');
 			});
@@ -2110,7 +2110,7 @@ MC.canvas = {
 
 	matchPoint: function (x, y)
 	{
-		var children = MC.canvas_data.layout.component.node,
+		var children = $canvas.node(),
 			coordinate = MC.canvas.pixelToGrid(x, y),
 			component_size,
 			matched,
@@ -2119,7 +2119,7 @@ MC.canvas = {
 		$.each(children, function (key, item)
 		{
 			node_coordinate = item.coordinate;
-			component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+			component_size = item.size;
 
 			if (
 				node_coordinate &&
@@ -2356,8 +2356,8 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children = MC.canvas_data.layout.component.node,
-			groups = MC.canvas_data.layout.component.group,
+		var children = $canvas.node(),
+			groups = $canvas.group(),
 			group_data = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
 			matched = [],
@@ -2367,7 +2367,7 @@ MC.canvas = {
 		$.each(children, function (key, item)
 		{
 			coordinate = item.coordinate;
-			size = MC.canvas.COMPONENT_SIZE[ item.type ];
+			size = item.size;
 
 			if (
 				node_id !== key &&
@@ -2452,7 +2452,6 @@ MC.canvas = {
 };
 
 MC.canvas.layout = {
-
 	init: function ()
 	{
 		var layout_data = MC.canvas.data.get("layout"),

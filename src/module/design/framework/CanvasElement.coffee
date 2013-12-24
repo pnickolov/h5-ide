@@ -171,10 +171,12 @@ define [ "./CanvasManager", "event" ], ( CanvasManager, ide_event )->
         new CanvasElement( c )
 
   CanvasElement.line = ( component )->
-    this.id = component.id
+    this.id   = component.id
+    this.type = component.get("lineType")
     @id
 
   CanvasElement.line.prototype.select   = CanvasElement.prototype.select
+  CanvasElement.line.prototype.remove   = CanvasElement.prototype.remove
   CanvasElement.line.prototype.element  = CanvasElement.prototype.element
   CanvasElement.line.prototype.$element = CanvasElement.prototype.$element
 

@@ -95,7 +95,47 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     json_data   = $.extend true, {}, json_data
     layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
 
-    # Deserialize
+    ###########################
+    # Quick fix Boolean value in JSON, might removed latter
+    ###########################
+    Design.fixJson( json_data, layout_data )
+
+    design.deserialize()
+    design
+
+
+  _.extend( Design, Backbone.Events )
+  Design.__modelClassMap   = {}
+  Design.__resolveFirstMap = {}
+
+
+  DesignImpl = ( options )->
+    @__componentMap = {}
+    @__canvasNodes  = {}
+    @__canvasGroups = {}
+    @__classCache   = {}
+    @__type         = options.type
+    @__mode         = options.mode
+
+    # Disable drawing for deserializing, delay it until everything is deserialized
+    @__shoulddraw   = false
+    null
+
+
+  Design.TYPE = {
+    Classic    : "ec2-classic"
+    Vpc        : "ec2-vpc"
+    DefaultVpc : "default-vpc"
+  }
+  Design.MODE = {
+    Stack   : "stack"
+    App     : "app"
+    AppEdit : "appedit"
+    AppView : "appview"
+  }
+
+
+  DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
@@ -122,18 +162,11 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # dependency can be resolved by using design.component()
     _old_get_component_ = design.component
 
-    # Disable drawing for deserializing, delay it until everything is deserialized
-    design.__shoulddraw = false
-
-    ###########################
-    # Quick fix Boolean value in JSON, might removed latter
-    ###########################
-    Design.fixJson( json_data, layout_data )
-
-
-
     ###########################
     # Start deserialization
+    # Deserialization cases :
+    # subnets need mainRTB and defaultACL, mainRTB needs VPC.
+    # Thus, there're 3 steps in the deserialization
     ###########################
     # Deserialize resolveFisrt resources
     design.component = null # Forbid user to call component at this time.
@@ -191,36 +224,9 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     # Broadcast event
     ####################
     Design.trigger "deserialized"
-
-    design
-
-  _.extend( Design, Backbone.Events )
-
-  DesignImpl = ( options )->
-    @__componentMap = {}
-    @__canvasNodes  = {}
-    @__canvasGroups = {}
-    @__classCache   = {}
-    @__type         = options.type
-    @__mode         = options.mode
     null
 
-
-  Design.TYPE = {
-    Classic    : "ec2-classic"
-    Vpc        : "ec2-vpc"
-    DefaultVpc : "default-vpc"
-  }
-  Design.MODE = {
-    Stack   : "stack"
-    App     : "app"
-    AppEdit : "appedit"
-    AppView : "appview"
-  }
-
   ### Private Interface ###
-  Design.__modelClassMap   = {}
-  Design.__resolveFirstMap = {}
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
     @__modelClassMap[ type ] = modelClass
     if resolveFirst

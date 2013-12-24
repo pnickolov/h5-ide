@@ -366,20 +366,18 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		state_editor_name_list
 
 	# ssh apt@211.98.26.7/pot@{asg1.PlacementGroup} @{asg1.LoadBalancerNames} @{asg1.Status} @{asg1.AutoScalingGroupARN} @{eni0.MacAddress}
-	# @{[a-z0-9A-Z\.a-z0-9A-Z]+}
-	# @{[^@{][-\w\.]*}}
+	# @{aaa.bbb}
+	# [^@{][-\w\.]+[}]
 	filterStateData = ( data ) ->
 		console.log 'filterStateData', data
 
+		# new obj
 		filter_data = $.extend true, {}, data
 
 		# regexp
-		reg  = /[^@{][-\w\.]*}/igm
+		reg  = /[^@{][-\w\.]+[}]/igm
 
 		_.each filter_data, ( item ) ->
-
-			#replace_str = item.parameter.verify_gpg
-			#replace_arr = replace_str.match reg
 
 			item.parameter.verify_gpg = item.parameter.verify_gpg.replace reg, ( $0 ) ->
 				console.log 'sfasdfasdf', $0

@@ -316,3 +316,28 @@ footer {
 	height: 80px;
 	font-size: 12px;
 }
+
+/* 500 */
+
+#body-500 {
+	background-color: #242224;
+	height: 0;
+	padding: 200px 0;
+}
+
+.service-down-wrapper {
+	margin: 0 auto;
+	width: 500px;
+	text-align: center;
+}
+
+.service-down-message h4 {
+	font-size: 24px;
+	color: #ccc;
+}
+
+.service-down-message p {
+	margin-top: 20px;
+	color: #999;
+	font-size: 16px;
+}

@@ -111,13 +111,6 @@ require.config {
 		#'layout'            : 'js/ide/layout'
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
-		#############################################
-		# component
-		#############################################
-
-		'stateeditor'        : 'component/stateeditor/main'
-		'stateeditor_view'   : 'component/stateeditor/view'
-		'stateeditor_model'  : 'component/stateeditor/model'
 
 		#############################################
 		# module
@@ -161,6 +154,10 @@ require.config {
 		'unmanagedvpc'       : 'component/unmanagedvpc/main'
 		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
 		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
+
+		'stateeditor'        : 'component/stateeditor/main'
+		'stateeditor_view'   : 'component/stateeditor/view'
+		'stateeditor_model'  : 'component/stateeditor/model'
 
 		#############################################
 		# events
@@ -393,9 +390,6 @@ require.config {
 		'main'         :
 			deps       : [ 'jquery' ]
 
-		'stateeditor' :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]
-
 		#############################################
 		# component
 		#############################################
@@ -403,6 +397,8 @@ require.config {
 		'unmanagedvpc' :
 			deps       : [ 'unmanagedvpc_view', 'unmanagedvpc_model', 'MC' ]
 
+		'stateeditor' :
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]
 }
 
 #requirejs.onError = ( err ) ->

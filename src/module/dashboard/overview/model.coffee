@@ -1064,6 +1064,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
             me = @
             console.log 'VPC_VPC_DESC_ACCOUNT_ATTRS_RETURN'
 
+            # 500
+            MC.forge.other.verify500 result
+
             region_classic_vpc_result = []
 
             if !result.is_error
@@ -1106,13 +1109,9 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
                 null
 
             else
+
                 # check whether invalid session
                 if result.return_code isnt constant.RETURN_CODE.E_SESSION && result.return_code isnt constant.RETURN_CODE.E_BUSY
-
-                    # 500
-                    if result and result.return_code is -1
-                        window.location.href = "/500.html"
-                        return
 
                     #MC.forge.cookie.setCookieByName 'has_cred', false
                     forge_handle.cookie.setCred false

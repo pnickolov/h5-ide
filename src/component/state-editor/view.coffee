@@ -224,7 +224,7 @@ StateEditorView = Backbone.View.extend({
 		that.cmdParaObjMap = that.model.get('cmdParaObjMap')
 		that.cmdModuleMap = that.model.get('cmdModuleMap')
 		that.moduleCMDMap = that.model.get('moduleCMDMap')
-		###that.refObjAry = [{
+		that.refObjAry = [{
 			name: '{host1.privateIP}',
 			value: '{host1.privateIP}'
 		}, {
@@ -233,8 +233,8 @@ StateEditorView = Backbone.View.extend({
 		}, {
 			name: '{host2.instanceId}',
 			value: '{host1.instanceId}'
-		}]###
-		that.refObjAry = JSON.parse(localStorage['state_editor_list'])
+		}]
+		# that.refObjAry = JSON.parse(localStorage['state_editor_list'])
 
 	bindStateListEvent: () ->
 

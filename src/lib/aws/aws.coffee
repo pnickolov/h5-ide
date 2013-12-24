@@ -791,7 +791,135 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         osFamily
 
+    reference_key = [
+
+        'InstanceId',
+        'VolumeId',
+        'NetworkInterfaceId',
+        'DhcpOptionsId',
+        'VpcId',
+        'SubnetId',
+        'GroupId',
+        'LoadBalancerName',
+        'NetworkAclId',
+        'RouteTableId',
+        'KeyName',
+        'AutoScalingGroupARN',
+        'AutoScalingGroupName',
+        'LaunchConfigurationARN',
+        'LaunchConfigurationName',
+        'CustomerGatewayId',
+        'VpnGatewayId',
+        'InternetGatewayId',
+        'PolicyARN'
+    ]
+
+    collectReference = ( canvas_component ) ->
+
+        key = {}
+
+        #collect reference
+        for uid, comp of canvas_component
+
+            if constant.AWS_RESOURCE_KEY[comp.type]
+
+                key[comp.resource[constant.AWS_RESOURCE_KEY[comp.type]]] = "@#{uid}.resource.#{constant.AWS_RESOURCE_KEY[comp.type]}"
+
+                if comp.type is "AWS.AutoScaling.Group"
+
+                    key[comp.resource.AutoScalingGroupName] = "@#{uid}.resource.AutoScalingGroupName"
+
+                if comp.type is "AWS.AutoScaling.LaunchConfiguration"
+
+                    key[comp.resource.LaunchConfigurationName] = "@#{uid}.resource.LaunchConfigurationName"
+
+                if comp.type is 'AWS.VPC.NetworkInterface'
+
+                    for idx, ipset of comp.resource.PrivateIpAddressSet
+
+                        key[ipset.PrivateIpAddress] = "@#{uid}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+
+        #replace reference
+        for uid, comp of canvas_component
+
+            canvas_component[uid] = replaceReference comp, key, constant.AWS_RESOURCE_KEY[comp.type]
+
+        [canvas_component, key]
+
+
+    replaceReference = ( obj, reference, except_key ) ->
+
+        switch typeof(obj)
+
+            when 'object'
+
+                for k, v of obj
+
+                    if typeof(v) is 'string' and reference[v] and k not in [except_key, 'name']
+
+                        obj[k] = reference[v]
+
+                    if typeof(v) is 'object'
+
+                        replaceReference obj[k], reference, except_key
+
+                    if typeof(v) is 'array'
+
+                        replaceReference obj[k], reference, except_key
+
+            when 'array'
+
+                for index, slot of obj
+
+                    if typeof(v) is 'string' and reference[slot]
+
+                        obj[index] = reference[slot]
+
+                    if typeof(v) is 'object'
+
+                        replaceReference obj[index], reference, except_key
+
+                    if typeof(v) is 'array'
+
+                        replaceReference obj[index], reference, except_key
+
+        obj
+
+            # switch comp.type
+
+            #     when 'AWS.EC2.Instance'
+
+            #         key[comp.resource.InstanceId] = "@#{uid}.resource.InstanceId"
+
+            #     when 'AWS.EC2.EBS.Volume'
+
+            #         key[comp.resource.VolumeId] = "@#{uid}.resource.VolumeId"
+
+            #     when 'AWS.VPC.NetworkInterface'
+
+            #         key[comp.resource.NetworkInterfaceId] = "@#{uid}.resource.NetworkInterfaceId"
+
+            #     when 'AWS.VPC.DhcpOptions'
+
+            #         key[comp.resource.DhcpOptionsId] = "@#{uid}.resource.DhcpOptionsId"
+
+            #     when 'AWS.VPC.VPC'
+
+            #         key[comp.resource.VpcId] = "@#{uid}.resource.VpcId"
+
+            #     when 'AWS.VPC.Subnet'
+
+            #         key[comp.resource.SubnetId] = "@#{uid}.resource.SubnetId"
+
+            #     when 'AWS.VPC.SecurityGroup'
+
+            #         key[comp.resource.GroupId] = "@#{uid}.resource.GroupId"
+
+
+
+
     #public
+    collectReference            : collectReference
     getNewName                  : getNewName
     cacheResource               : cacheResource
     checkIsRepeatName           : checkIsRepeatName

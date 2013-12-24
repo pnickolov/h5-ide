@@ -10,7 +10,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
 
-
 		#set cookies
 		$.cookie 'userid',      result.userid,      option
 		$.cookie 'usercode',    result.usercode,    option
@@ -21,6 +20,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'username',    MC.base64Decode( result.usercode ), option
 		$.cookie 'account_id',	result.account_id,  option
 		$.cookie 'state',       result.state,       option
+		$.cookie 'is_invitated',result.is_invitated,option
 
 	deleteCookie = ->
 
@@ -30,7 +30,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		else
 			#domain is not *.madeiracloud.com, maybe localhost
 			option = constant.LOCAL_COOKIE_OPTION
-
 
 		#delete cookies
 		$.cookie 'userid',      '', option
@@ -42,6 +41,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 		$.cookie 'username',    '', option
 		$.cookie 'account_id',	'', option
 		$.cookie 'state',       '', option
+		$.cookie 'is_invitated','', option
 		$.cookie 'madeiracloud_ide_session_id', '', option
 
 	setCred = ( result ) ->
@@ -55,7 +55,6 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 
 		$.cookie 'has_cred', result, option
-
 
 	setIDECookie = ( result ) ->
 
@@ -76,6 +75,7 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 			result.has_cred,
 			result.account_id
 			result.state
+			result.is_invitated
 		]
 
 		$.cookie 'madeiracloud_ide_session_id', MC.base64Encode( JSON.stringify madeiracloud_ide_session_id ), option
@@ -102,10 +102,10 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 				has_cred    : result[5] ,
 				account_id	: result[6] ,
 				state       : result[7] ,
+				is_invitated: result[8] ,
 			}
 		else
 			null
-
 
 	checkAllCookie = ->
 
@@ -150,16 +150,14 @@ define [ 'jquery', 'MC', 'constant' ], ( $, MC, constant ) ->
 
 		$.cookie cookie_name, value, option
 
-
 	#public
-	setCookie    : setCookie
-	deleteCookie : deleteCookie
-	setIDECookie : setIDECookie
-	getIDECookie : getIDECookie
-	setCred      : setCred
-	checkAllCookie : checkAllCookie
-	clearV2Cookie  : clearV2Cookie
+	setCookie          : setCookie
+	deleteCookie       : deleteCookie
+	setIDECookie       : setIDECookie
+	getIDECookie       : getIDECookie
+	setCred            : setCred
+	checkAllCookie     : checkAllCookie
+	clearV2Cookie      : clearV2Cookie
 	clearInvalidCookie : clearInvalidCookie
-	getCookieByName : getCookieByName
-	setCookieByName : setCookieByName
-
+	getCookieByName    : getCookieByName
+	setCookieByName    : setCookieByName

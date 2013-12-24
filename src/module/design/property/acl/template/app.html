@@ -36,8 +36,8 @@
           <div class="acl-rule-details">
             <div class="rule-list-row">
               <div href="#" class="acl-rule-allow-cb tooltip acl-rule-action icon-{{ruleAction}}" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
-              <div class="{{#if egress}}acl-rule-outbound icon-outbound {{else}}acl-rule-inbound icon-inbound{{/if}} tooltip" data-tooltip='{{#if egress}}{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}{{else}}{{{ i18n "PROP_ACL_TIP_INBOUND" }}}{{/if}}' data-id="{{egress}}"></div>
-              <div class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}'>{{cidrBlock}}</div>
+              <div class="acl-rule-direction {{#if egress}}acl-rule-outbound icon-outbound {{else}}acl-rule-inbound icon-inbound{{/if}} tooltip" data-tooltip='{{#if egress}}{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}{{else}}{{{ i18n "PROP_ACL_TIP_INBOUND" }}}{{/if}}' data-id="{{egress}}"></div>
+              <div class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}' data-id="{{cidrBlock}}">{{cidrBlock}}</div>
             </div>
             <div class="rule-list-row">
               <span class="rule-protocol acl-rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}' data-id="{{protocol}}">{{protocolName}}({{protocol}})</span>

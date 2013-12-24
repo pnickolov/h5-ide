@@ -151,6 +151,14 @@ define [ 'event',
             $("#property-first-panel").animate {left:"-30%"}, 200, ()->
                 $("#property-first-panel").hide()
 
+        immShowSecondPanel : ()->
+            $("#hide-second-panel").data("tooltip", "Back to " + $("#property-title").text())
+
+            $("#property-second-panel").show().css({left:"0%"})
+
+            $("#property-first-panel").css({left:"-30%",display:"none"})
+            null
+
         hideSecondPanel : () ->
             $panel = $("#property-second-panel")
             $panel.animate {left:"100%"}, 200, ()->
@@ -161,10 +169,10 @@ define [ 'event',
             false
 
         immHideSecondPanel : () ->
-            $("#property-second-panel").css {
+            $("#property-second-panel").css({
                 display : "none"
                 left    : "100%"
-            }
+            }).children(".scroll-wrap").children(".property-content").empty()
 
             $("#property-first-panel").css {
                 display : "block"

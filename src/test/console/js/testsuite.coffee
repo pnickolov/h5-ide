@@ -1,6 +1,6 @@
 
-define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'state_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model', 'autoscaling_model', 'cloudwatch_model', 'sns_model'],
-( MC, session_model, $, apiList, log_model, public_model, request_model, app_model, favorite_model, stack_model, state_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model, autoscaling_model, cloudwatch_model, sns_model ) ->
+define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model', 'public_model', 'request_model', 'app_model', 'favorite_model', 'stack_model', 'aws_model', 'ami_model', 'ebs_model', 'ec2_model', 'eip_model', 'instance_model', 'keypair_model', 'placementgroup_model', 'securitygroup_model', 'elb_model', 'iam_model', 'acl_model', 'customergateway_model', 'dhcp_model', 'eni_model', 'internetgateway_model', 'routetable_model', 'subnet_model', 'vpc_model', 'vpngateway_model', 'vpn_model', 'autoscaling_model', 'cloudwatch_model', 'sns_model'],
+( MC, session_model, $, apiList, account_model, log_model, public_model, request_model, app_model, favorite_model, stack_model, aws_model, ami_model, ebs_model, ec2_model, eip_model, instance_model, keypair_model, placementgroup_model, securitygroup_model, elb_model, iam_model, acl_model, customergateway_model, dhcp_model, eni_model, internetgateway_model, routetable_model, subnet_model, vpc_model, vpngateway_model, vpn_model, autoscaling_model, cloudwatch_model, sns_model ) ->
     #session info
 
     session_id   = ""
@@ -133,6 +133,8 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
 
         ########## Account ##########
         if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "account" && current_api == "register"
+            username = if $("#username").val() != "null" then $("#username").val() else null
+            username = if username != null and MC.isJSON(username)==true then JSON.parse username else username
             password = if $("#password").val() != "null" then $("#password").val() else null
             password = if password != null and MC.isJSON(password)==true then JSON.parse password else password
             email = if $("#email").val() != "null" then $("#email").val() else null
@@ -738,6 +740,23 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList','log_model', 'public_model',
             aws_model.status {sender: aws_model}, username, session_id
             aws_model.once "AWS_STATUS_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "vpc_resource"
+            vpc_id = if $("#vpc_id").val() != "null" then $("#vpc_id").val() else null
+            vpc_id = if vpc_id != null and MC.isJSON(vpc_id)==true then JSON.parse vpc_id else vpc_id
+            #aws.vpc_resource
+            aws_model.vpc_resource {sender: aws_model}, username, session_id, region_name, vpc_id
+            aws_model.once "AWS_VPC__RESOURCE_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "stat_resource"
+            resources = if $("#resources").val() != "null" then $("#resources").val() else null
+            resources = if resources != null and MC.isJSON(resources)==true then JSON.parse resources else resources
+            #aws.stat_resource
+            aws_model.stat_resource {sender: aws_model}, username, session_id, region_name, resources
+            aws_model.once "AWS_STAT__RESOURCE_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
 
         ########## CloudWatch ##########
         if current_service.toLowerCase() == "cloudwatch" && current_resource.toLowerCase() == "cloudwatch" && current_api == "GetMetricStatistics"

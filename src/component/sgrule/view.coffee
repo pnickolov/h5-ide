@@ -41,78 +41,38 @@ define [ 'text!./template.html',
 
         addRule : ( event ) ->
           # Extract the data from the view
-          data = this.extractRuleData()
+          data = @extractRuleData( event )
 
-          # validation #####################################################
-          validateMap =
-            'custom':
-              dom: $('#sg-proto-ipt-custom input')
-              method: ( val ) ->
-                if not MC.validate.portRange(val)
-                  return 'Must be a valid format of number.'
-                if Number(val) < 0 or Number(val) > 255
-                  return 'The protocol number range must be 0-255.'
-                null
-            'tcp':
-              dom: $('#sg-proto-ipt-tcp input')
-              method: ( val ) ->
-                portAry = []
-                portAry = MC.validate.portRange(val)
-                if not portAry
-                  return 'Must be a valid format of port range.'
-                if not MC.validate.portValidRange(portAry)
-                  return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
-                null
-            'udp':
-              dom: $('#sg-proto-ipt-udp input')
-              method: ( val ) ->
-                portAry = []
-                portAry = MC.validate.portRange(val)
-                if not portAry
-                  return 'Must be a valid format of port range.'
-                if not MC.validate.portValidRange(portAry)
-                  return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
-                null
+          if not data then return
 
-          if data.protocol of validateMap
-            needValidate = validateMap[ data.protocol ]
-            needValidate.dom.parsley 'custom', needValidate.method
+          # Add Rule
+          ruleCount = @model.addRule( data )
 
-          if needValidate and not needValidate.dom.parsley 'validate'
-            return
-          # validation #####################################################
+          # Show add complete info
+          if ruleCount is 0 then return
 
           # Generate Ouput Info
-          if @model.get("isClassic")
-            rule_count = 1
-          else
-            rule_count = 2
-
-          if data.direction == "both"
-            rule_count *= 2
-
           out_target = $("#sg-create-sg-out").find(".selected").text()
           in_target  = $("#sg-create-sg-in").find(".selected").text()
           action     = $("#sg-create-direction").find(".selected").text()
 
           $("#sg-rule-self-ref").hide()
 
-          if rule_count == 1
+          if ruleCount is 1
             info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
 
-          else if data.inSg is data.outSg
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, rule_count, out_target, out_target
+          else if data.target is data.relation
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
             $("#sg-rule-self-ref").show()
 
           else
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, rule_count, out_target, in_target, out_target, action, in_target
+            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
 
           $("#sg-rule-create-msg").text info
 
           # Switch to done view.
           this.$el.find('#modal-box').toggleClass('done', true)
 
-          @model.addRule( data )
           @updateSidebar()
 
         readdRule : () ->
@@ -124,8 +84,9 @@ define [ 'text!./template.html',
 
           data =
             ruleSetId : $li.attr("data-uid")
-            protocol  : $li.attr("data-port")
+            protocol  : $li.attr("data-protocol")
             relation  : $li.attr("data-relation")
+            port      : $li.attr("data-port")
             direction : $li.attr("data-direction")
 
           $parent = $li.parent()
@@ -135,6 +96,9 @@ define [ 'text!./template.html',
             $parent.remove()
 
           @model.delRule( data )
+
+          $count = $("#sgRuleCreateSidebar").find(".sg-create-sb-h").find(".num-wrap")
+          $count.text( "(" + (parseInt( $count.text().replace("(",""), 10 ) - 1) + ")" )
           false
 
         onDirChange : () ->
@@ -178,32 +142,81 @@ define [ 'text!./template.html',
               $sidebar.addClass( "shown" ).animate({ left : "-200px" })
               $modal.animate({left:'+=100px'}, 300)
 
-        extractRuleData : () ->
-          outward = if $("#sg-rule-create-tgt-o").is(":checked") then "out" else "in"
+        extractRuleData : ( event ) ->
 
-          data =
-            outSg     : $("#sg-create-sg-out").find(".selected").attr("data-id")
+          tcp_port_dom        = $('#sg-proto-ipt-tcp input')
+          udp_port_dom        = $('#sg-proto-ipt-udp input')
+          custom_protocal_dom = $('#sg-proto-ipt-custom input')
+
+          protocol_type       = $("#sg-create-proto").find( ".selected" ).attr("data-id")
+
+          # validation #####################################################
+          validateMap =
+            'custom':
+              dom: custom_protocal_dom
+              method: ( val ) ->
+                if not MC.validate.portRange(val)
+                  return 'Must be a valid format of number.'
+                if Number(val) < 0 or Number(val) > 255
+                  return 'The protocol number range must be 0-255.'
+                null
+            'tcp':
+                dom: tcp_port_dom
+                method: ( val ) ->
+                  portAry = MC.validate.portRange(val)
+                  if not portAry
+                      return 'Must be a valid format of port range.'
+                  if not MC.validate.portValidRange(portAry)
+                      return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
+                  null
+            'udp':
+                dom: udp_port_dom
+                method: ( val ) ->
+                  portAry = MC.validate.portRange(val)
+                  if not portAry
+                      return 'Must be a valid format of port range.'
+                  if not MC.validate.portValidRange(portAry)
+                      return 'Port range needs to be a number or a range of numbers between 0 and 65535.'
+                  null
+
+          if protocol_type of validateMap
+            needValidate = validateMap[ protocol_type ]
+            needValidate.dom.parsley 'custom', needValidate.method
+
+          if needValidate and not needValidate.dom.parsley 'validate'
+            return
+          # validation #####################################################
+
+          rule = {
+            protocol  : protocol_type
             direction : $("#sg-create-direction").find(".selected").attr("data-id")
-            inSg      : $("#sg-create-sg-in").find(".selected").attr("data-id")
-            protocol  : $("#sg-create-proto").find( ".selected" ).attr("data-id")
+            fromPort  : ""
+            toPort    : ""
+            target    : $("#sg-create-sg-out").find(".selected").attr("data-id")
+            relation  : $("#sg-create-sg-in").find(".selected").attr("data-id")
+          }
 
-          $protoIptWrap = $("#sg-proto-ipt-"+data.protocol)
+
+          $protoIptWrap = $("#sg-proto-ipt-#{rule.protocol}")
           $protoIpt     = $protoIptWrap.find("input")
+          portValue     = $protoIpt.val()
 
-          if $protoIpt.length
-            protocolValue = $protoIpt.val()
-          else
-            protocolValue = $protoIptWrap.find(".selected").attr("data-id")
 
-          data.protocolValue = protocolValue
+          switch protocol_type
+            when "tcp", "udp"
+              ports = portValue.split("-")
+              rule.fromPort = ports[0].trim()
+              if ports.length >= 2 then rule.toPort = ports[1].trim()
 
-          if data.protocol is "icmp"
-            if protocolValue == "3" || protocolValue == "5" || protocolValue == "11" || protocolValue == "12"
-              data.protocolSubValue = $("#sg-proto-input-sub-" + protocolValue).find(".selected").attr("data-id")
-            else
-              data.protocolSubValue = "-1"
+            when "icmp"
+              rule.fromPort = $("#sg-proto-icmp-sel").find(".selected").attr("data-id")
+              if portValue is "3" or portValue is "5" or portValue is "11" or portValue is "12"
+                rule.toPort = $("#sg-proto-input-sub-#{portValue}").find(".selected").attr("data-id")
 
-          data
+            when "custom"
+              rule.protocol = portValue
+
+          return rule
 
         deleteSGLine : () ->
           @model.deleteLine()

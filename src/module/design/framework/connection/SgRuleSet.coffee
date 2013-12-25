@@ -119,17 +119,21 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     # use addRule() to create rules for both SG. The SG1 is guaranteed to be connectable to SG2
 
     #  ruleOwner : name or id of the target which will hold the rule
-    addRawRule : ( ruleOwner, direction, rule ) ->
+    addRawRule : ( ruleOwner, direction, rawRule ) ->
       console.assert( ruleOwner is @port1Comp().id or ruleOwner is @port2Comp().id or ruleOwner is @port1Comp().get("name") or ruleOwner is @port2Comp().get("name"), "Invalid ruleOwner, when adding a raw rule to SgRuleSet : ", ruleOwner )
-      console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rule )
-      console.assert( rule.fromPort isnt undefined and rule.toPort isnt undefined and typeof rule.protocol is "string", "Invalid rule, when adding a raw rule to SgRuleSet : ", rule )
+      console.assert( direction is SgRuleSet.DIRECTION.BIWAY or direction is SgRuleSet.DIRECTION.IN or direction is SgRuleSet.DIRECTION.OUT, "Invalid direction, when adding a raw rule to SgRuleSet : ", rawRule )
+      console.assert( rawRule.fromPort isnt undefined and rawRule.toPort isnt undefined and typeof rawRule.protocol is "string", "Invalid rule, when adding a raw rule to SgRuleSet : ", rawRule )
 
       if Design.instance().typeIsClassic() and direction is SgRuleSet.DIRECTION.OUT
         console.warn( "Ignoring setting outbound rule in Classic Mode " )
         return
 
       # Ensure valid protocol and port
-      rule = $.extend {}, rule
+      rule = {
+        protocol : rawRule.protocol
+        fromPort : rawRule.fromPort
+        toPort   : rawRule.toPort
+      }
       if rule.protocol is "-1" or rule.protocol is "all"
         rule.protocol = "all"
         rule.fromPort = "0"

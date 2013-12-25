@@ -2044,9 +2044,16 @@ a {
 }
 
 .region-resource-thumbnail img {
-	max-width : inherit;
-	width     : 220px;
-	height    : 145px;
+	max-width     : inherit;
+	height        : 145px;
+	border        : 1px solid #55626e;
+	border-radius : 4px;
+	width         : 100%;
+	background    : #fff;
+
+	-webkit-box-sizing : border-box;
+	   -moz-box-sizing : border-box;
+	        box-sizing : border-box;
 }
 
 
@@ -2393,10 +2400,6 @@ a {
 		height : 137px;
 
 		background-size: 193 auto;
-	}
-
-	.region-resource-thumbnail img {
-		width  : 197px;
 	}
 
 	.region-resource-list > .scroll-wrap {

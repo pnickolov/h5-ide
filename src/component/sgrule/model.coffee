@@ -6,7 +6,6 @@ define [ 'constant', "Design", 'backbone' ], ( constant, Design ) ->
 
   SGRulePopupModel = Backbone.Model.extend {
 
-
     initialize : ()->
 
       design = Design.instance()
@@ -83,9 +82,6 @@ define [ 'constant', "Design", 'backbone' ], ( constant, Design ) ->
       sgRuleSet = Design.instance().component( data.ruleSetId )
       sgRuleSet.removeRuleByPlainObj( data )
       null
-
-    deleteLine : ()->
-
   }
 
   return SGRulePopupModel

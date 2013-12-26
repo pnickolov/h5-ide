@@ -5,13 +5,10 @@
 define [ 'event', './view', './model' ], ( ide_event, View, Model ) ->
 
     #private
-    loadModule = ( line_id, delete_module ) ->
+    loadModule = ( line_id ) ->
 
         view  = new View()
-        model = new Model({
-            uid : line_id
-            deleteMode : delete_module
-        })
+        model = new Model({ uid : line_id })
 
         view.model = model
         view.render()

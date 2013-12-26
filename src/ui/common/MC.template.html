@@ -669,6 +669,12 @@ Additional Notes and Questions
 {{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip="Remove rule"></a>{{/if}}
 </li>{{/each}}
 
+<!-- groupedSgRuleList -->
+{{#each groups}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul>{{{content}}}</ul>
+{{/each}}
+
 <!-- propertyIpList -->
 {{#each this}}
 <li class="input-ip-item">

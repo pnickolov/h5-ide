@@ -3,16 +3,12 @@
 #############################
 
 define [ 'text!./template.html',
-         'text!./list_template.html',
          'text!./delete.html',
          'i18n!nls/lang.js',
          'event'
-], ( template, list_template, delete_template, lang, ide_event ) ->
+], ( template, delete_template, lang, ide_event ) ->
 
     template        = Handlebars.compile template
-    list_template   = Handlebars.compile list_template
-    delete_template = Handlebars.compile delete_template
-
     SGRulePopupView = Backbone.View.extend {
 
         events    :
@@ -21,7 +17,6 @@ define [ 'text!./template.html',
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
           'click .sg-rule-delete'            : 'deleteRule'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
-          'click #confirm-delete-sg-line'    : 'deleteSGLine'
 
         render : () ->
 
@@ -34,10 +29,6 @@ define [ 'text!./template.html',
 
           @updateSidebar()
           null
-
-        renderDeleteModule : () ->
-          modal delete_template( this.model.attributes ), true
-          this.setElement $("#confirm-delete-sg-line").closest '.modal-footer'
 
         addRule : ( event ) ->
           # Extract the data from the view
@@ -97,8 +88,10 @@ define [ 'text!./template.html',
 
           @model.delRule( data )
 
-          $count = $("#sgRuleCreateSidebar").find(".sg-create-sb-h").find(".num-wrap")
-          $count.text( "(" + (parseInt( $count.text().replace("(",""), 10 ) - 1) + ")" )
+          $count = $("#sgRuleCreateCount")
+          c = parseInt( $("#sgRuleCreateCount").text().replace("(",""), 10 ) - 1
+          if c < 0 then c = 0
+          $count.text( "(#{c})" )
           false
 
         onDirChange : () ->
@@ -124,9 +117,8 @@ define [ 'text!./template.html',
             group.rules.deletable = true
             group.content = MC.template.sgRuleList( group.rules )
 
-          @model.attributes.ruleCount = ruleCount
-
-          $sidebar = $("#sgRuleCreateSidebar").html( list_template( @model.attributes ) )
+          $sidebar = $("#sgRuleCreateSidebar").html( MC.template.groupedSgRuleList( @model.attributes ) )
+          $("#sgRuleCreateCount").text("(#{ruleCount})")
 
           rule_count = $sidebar.find("li").length
           $modal     = this.$el.find('#modal-box')
@@ -217,12 +209,6 @@ define [ 'text!./template.html',
               rule.protocol = portValue
 
           return rule
-
-        deleteSGLine : () ->
-          @model.deleteLine()
-          modal.close()
-          null
-
     }
 
     SGRulePopupView

@@ -33,7 +33,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     this.$el
 
-  CanvasElement.prototype.resize = ( w, h )->
+  CanvasElement.prototype.size = ( w, h )->
     if (w is undefined or w is null) and (h is undefined or h is null)
       attr = Design.instance().component( this.id ).attributes
       return [ attr.width, attr.height ]

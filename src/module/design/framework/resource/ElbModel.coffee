@@ -30,6 +30,9 @@ define [ "CanvasManager",
 
         # Listener
         listeners : []
+
+        # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
+        AvailabilityZones : []
       }
 
     type : constant.AWS_RESOURCE_TYPE.AWS_ELB
@@ -154,11 +157,15 @@ define [ "CanvasManager",
             })
           )
 
+          sgOutY = 15
+        else
+          sgOutY = 30
+
         node.append(
           Canvon.path(MC.canvas.PATH_D_PORT).attr({
             'id'         : @id + '_port-elb-sg-out'
             'class'      : 'port port-blue port-elb-sg-out'
-            'transform'  : 'translate(79, 15)' + MC.canvas.PORT_RIGHT_ROTATE
+            'transform'  : 'translate(79, ' + sgOutY + ')' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
           })
         )
@@ -196,7 +203,15 @@ define [ "CanvasManager",
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
-      elb = new Model attr
+      attr.AvailabilityZones = _.map data.resource.AvailabilityZones || [], ( azRef )->
+        # azRef might be azName
+        azComp = resolve( MC.extractID( azRef ) )
+        if azComp
+          return azComp.get("name")
+        else
+          return azRef
+
+      elb = new Model( attr )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )

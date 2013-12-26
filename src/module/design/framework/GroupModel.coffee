@@ -79,28 +79,52 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
         Canvon.group().append(
           Canvon.rectangle( pad, 0, width - 2 * pad, pad )
-                .attr({'class':'resizer-top'}),
+                .attr({
+                  'class':'group-resizer resizer-top'
+                  'data-direction':'top'
+                }),
 
           Canvon.rectangle( 0, pad, pad, height - 2 * pad )
-                .attr({'class':'resizer-left'}),
+                .attr({
+                  'class':'group-resizer resizer-left'
+                  'data-direction':'left'
+                }),
 
           Canvon.rectangle( width - pad, pad, pad, height - 2 * pad )
-                .attr({'class':'resizer-right'}),
+                .attr({
+                  'class':'group-resizer resizer-right'
+                  "data-direction":"right"
+                }),
 
           Canvon.rectangle( pad, height - pad, width - 2 * pad, pad )
-                .attr({'class':'resizer-bottom'}),
+                .attr({
+                  'class':'group-resizer resizer-bottom'
+                  "data-direction":"bottom"
+                }),
 
           Canvon.rectangle( 0, 0, pad, pad )
-                .attr({'class':'resizer-topleft'}),
+                .attr({
+                  'class':'group-resizer resizer-topleft'
+                  "data-direction":"topleft"
+                }),
 
           Canvon.rectangle( width - pad, 0, pad, pad )
-                .attr({'class':'resizer-topright'}),
+                .attr({
+                  'class':'group-resizer resizer-topright'
+                  "data-direction":"topright"
+                }),
 
           Canvon.rectangle( 0, height - pad, pad, pad )
-                .attr({'class':'resizer-bottomleft'}),
+                .attr({
+                  'class':'group-resizer resizer-bottomleft'
+                  "data-direction":"bottomleft"
+                }),
 
           Canvon.rectangle( width - pad, height - pad, pad, pad )
-                .attr({'class':'resizer-bottomright'})
+                .attr({
+                  'class':'group-resizer resizer-bottomright'
+                  "data-direction":"bottomright"
+                })
 
         ).attr({'class':'resizer-wrap'}),
 

@@ -21,6 +21,11 @@ define [ "./CanvasElement" ], ( CanvasElement )->
     _.map Design.__instance.__canvasGroups, ( comp )->
       new CanvasElement( comp )
 
+  $canvas.trigger = ( event, p1, p2, p3 )->
+    # TODO : QuickFix. Might improve later.
+    $("#svg_canvas").trigger( event, p1, p2, p3 )
+    null
+
   window.$canvas = $canvas
 
 

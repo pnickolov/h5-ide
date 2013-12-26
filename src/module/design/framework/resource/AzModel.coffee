@@ -58,7 +58,7 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant" ], ( GroupMo
             azMap[ z.zoneName ] = ""
 
       azArr = []
-      for azName, id in azMap
+      for azName, id of azMap
         azArr.push {
           name : azName
           id   : id

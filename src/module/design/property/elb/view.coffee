@@ -319,18 +319,11 @@ define [ '../base/view',
             null
 
         azCheckChanged : ( event ) ->
-            checkboxElem = $(event.target)
+            azArray = _.map $("#property-elb-az-cb-group").find("input:checked"), ( cb )->
+                $( cb ).attr("data-name")
 
-            azName = checkboxElem.attr('data-name')
-            checkStat = checkboxElem.prop('checked')
-
-            if checkStat
-                @model.addAZToELB azName
-            else
-                @model.removeAZFromELB azName
-
+            @model.updateElbAZ azArray
             null
-
 
         updateSlider : ( $target, value ) ->
             step  = $target.children(".marker").children().length - 1

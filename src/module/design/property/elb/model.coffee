@@ -21,79 +21,44 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             attr.pingPort     = pingArr[1]
             attr.pingPath     = pingArr[2]
 
+
+            # Get AZ List
+            if not attr.isVpc
+
+                AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
+
+                connectedAzMap = {}
+                for ami in component.connectionTargets("ElbAmiAsso")
+                    connectedAzMap[ ami.parent().get("name") ] = true
+
+                reg = /-[\w]/g
+                replaceFunc = (g)-> " " + g[1].toUpperCase()
+
+                azArr = AzModel.allPossibleAZ()
+                for az in azArr
+                    if attr.AvailabilityZones.indexOf( az.name ) isnt -1
+                        az.selected = true
+
+                    az.disabled    = connectedAzMap[ az.name ]
+                    az.displayName = az.name.replace reg, replaceFunc
+                    az.displayName = az.displayName[0].toUpperCase() + az.displayName.substr(1)
+
+                    if az.id
+                        azComp = Design.instance().component( az.id )
+                        az.instanceCount = _.filter( azComp.children(), ( ch )->
+                            ch.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+                        ).length
+
+                attr.azArray = azArr
+
             @set attr
+            null
 
             # #Listener
             # listenerAry = elb_data.get 'ListenerDescriptions'
             # this.set 'listener_detail', {
             #     listenerAry: listenerAry
             # }
-
-            # if MC.aws.vpc.getVPCUID()
-            #     this.set 'az_detail', null
-            #     # return
-
-            # #AZ & Instance Info
-            # azObj = {}
-            # azObjAry = []
-            # region = MC.canvas_data.region
-
-            # if !MC.data.config[region].zone
-            #     return
-
-            # azAry = MC.data.config[region].zone.item
-            # _.each azAry, (elem) ->
-            #     azObj[elem.zoneName] = 0
-            #     null
-
-            # InstanceModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            # allInstance = InstanceModel and InstanceModel.allObjects() or []
-
-            # _.each allInstance, ( instance ) ->
-            #     # subnetUID = compObj.resource.SubnetId.split('.')[0].slice(1)
-            #     # subnetCompObj = MC.canvas_data.component[subnetUID]
-            #     # azName = subnetCompObj.resource.AvailabilityZone
-            #     azName = instance.get( 'Placement' ).AvailabilityZone
-            #     azObj[azName]++
-            #     null
-
-            # # have az ##################################################################
-            # if not @elb.get 'VpcId'
-            #     azAry = @elb.get 'AvailabilityZones'
-            #     _.each azObj, (value, key) ->
-            #         obj = {}
-            #         obj[key] = value
-
-            #         selected = (key in azAry)
-
-            #         # keep az name to short name
-            #         # us-east-1a -> US East 1a
-
-            #         keyAry = key.split('-')
-            #         keyAry[0] = keyAry[0].toUpperCase()
-            #         keyAry[1] = keyAry[1][0].toUpperCase() + keyAry[1].slice(1)
-            #         keyStr = keyAry.join(' ')
-
-            #         disable_selected = MC.aws.elb.haveAssociateInAZ(uid, key)
-
-            #         azObjAry.push({
-            #             az_name: keyStr,
-            #             az_inner_name: key,
-            #             disable_selected: disable_selected,
-            #             instance_num: value,
-            #             selected: selected
-            #         })
-            #         null
-
-            #     azObjAry.sort (obj1, obj2) ->
-            #         key1 = obj1.az_name
-            #         length1 = key1.length
-            #         key2 = obj2.az_name
-            #         length2 = key2.length
-            #         return key1.slice(length1) - key2.slice(length2)
-
-            #     this.set 'az_detail', azObjAry
-            # # have az ##################################################################
 
         setScheme   : ( value ) ->
             value = value is "internal"
@@ -223,34 +188,10 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             null
 
-        removeAZFromELB: ( value ) ->
-            azName = value
-            elbAZAry = @elb.get 'AvailabilityZones'
 
-            newAZAry = _.filter elbAZAry, (item) ->
-                if azName is item
-                    false
-                else
-                    true
-            @elb.set 'AvailabilityZones', newAZAry
 
-            null
-
-        addAZToELB: ( value ) ->
-            azName = value
-            addAZToElb = true
-
-            elbAZAry = @elb.get 'AvailabilityZones'
-
-            _.each elbAZAry, (elem, index) ->
-                if elem is azName
-                    addAZToElb = false
-                    null
-
-            if addAZToElb
-                elbAZAry.push azName
-                @elb.set 'AvailabilityZones', elbAZAry
-
+        updateElbAZ : ( azArray )->
+            Design.instance().component( @get("uid") ).set("AvailabilityZones", azArray )
             null
     }
 

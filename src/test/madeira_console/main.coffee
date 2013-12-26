@@ -253,5 +253,5 @@ require [ 'jquery', 'domReady', 'MC',
         $('#progress_wrap').hide()
 
         $( '#login-btn' ).removeAttr 'disabled'
-        $( '#login-btn' ).addClass 'enabled'
+        $( '#login-btn' ).addClass 'enabled btn-blue'
         $( '#login-form' ).submit( MC.login )

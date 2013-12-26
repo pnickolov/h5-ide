@@ -318,35 +318,35 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 
 	vpc_resource_map = {
-		#"DescribeImagesResponse"               :   MC.aws.convert.resolveDescribeImagesResult
-		"DescribeAvailabilityZones"    :   MC.aws.convert.convertAZ
-		"DescribeVolumes"              :   MC.aws.convert.convertVolume
-		#"DescribeSnapshots"            :   ebs_service.resolveDescribeSnapshotsResult
-		"DescribeAddresses"            :   MC.aws.convert.convertEIP
-		"DescribeInstances"            :   MC.aws.convert.convertInstance
-		"DescribeKeyPairs"             :   MC.aws.convert.convertKP
-		"DescribeSecurityGroups"       :   MC.aws.convert.convertSGGroup
-		"DescribeLoadBalancers"        :   MC.aws.convert.convertELB
-		"DescribeNetworkAcls"          :   MC.aws.convert.convertACL
-		"DescribeCustomerGateways"     :   MC.aws.convert.convertCGW
-		"DescribeDhcpOptions"          :   MC.aws.convert.convertDHCP
-		"DescribeNetworkInterfaces"    :   MC.aws.convert.convertEni
-		"DescribeInternetGateways"     :   MC.aws.convert.convertIGW
-		"DescribeRouteTables"          :   MC.aws.convert.convertRTB
-		"DescribeSubnets"              :   MC.aws.convert.convertSubnet
-		"DescribeVpcs"                 :   MC.aws.convert.convertVPC
-		"DescribeVpnConnections"       :   MC.aws.convert.convertVPN
-		"DescribeVpnGateways"          :   MC.aws.convert.convertVGW
+		#"DescribeImagesResponse"               :  if MC.aws then MC.aws.convert.resolveDescribeImagesResult else {}
+		"DescribeAvailabilityZones"    :   if MC.aws then MC.aws.convert.convertAZ else {}
+		"DescribeVolumes"              :   if MC.aws then MC.aws.convert.convertVolume else {}
+		#"DescribeSnapshots"            :  if MC.aws then  ebs_service.resolveDescribeSnapshotsResult else {}
+		"DescribeAddresses"            :   if MC.aws then MC.aws.convert.convertEIP else {}
+		"DescribeInstances"            :   if MC.aws then MC.aws.convert.convertInstance else {}
+		"DescribeKeyPairs"             :   if MC.aws then MC.aws.convert.convertKP else {}
+		"DescribeSecurityGroups"       :   if MC.aws then MC.aws.convert.convertSGGroup else {}
+		"DescribeLoadBalancers"        :   if MC.aws then MC.aws.convert.convertELB else {}
+		"DescribeNetworkAcls"          :   if MC.aws then MC.aws.convert.convertACL else {}
+		"DescribeCustomerGateways"     :   if MC.aws then MC.aws.convert.convertCGW else {}
+		"DescribeDhcpOptions"          :   if MC.aws then MC.aws.convert.convertDHCP else {}
+		"DescribeNetworkInterfaces"    :   if MC.aws then MC.aws.convert.convertEni else {}
+		"DescribeInternetGateways"     :   if MC.aws then MC.aws.convert.convertIGW else {}
+		"DescribeRouteTables"          :   if MC.aws then MC.aws.convert.convertRTB else {}
+		"DescribeSubnets"              :   if MC.aws then MC.aws.convert.convertSubnet else {}
+		"DescribeVpcs"                 :   if MC.aws then MC.aws.convert.convertVPC else {}
+		"DescribeVpnConnections"       :   if MC.aws then MC.aws.convert.convertVPN else {}
+		"DescribeVpnGateways"          :   if MC.aws then MC.aws.convert.convertVGW else {}
 		#
-		"DescribeAutoScalingGroups"            :   MC.aws.convert.convertASG
-		"DescribeLaunchConfigurations"         :   MC.aws.convert.convertLC
-		"DescribeNotificationConfigurations"   :   MC.aws.convert.convertNC
-		"DescribePolicies"                     :   MC.aws.convert.convertScalingPolicy
-		#"DescribeScheduledActionsResponse"             :   autoscaling_service.resolveDescribeScheduledActionsResult
-		#"DescribeScalingActivitiesResponse"            :   autoscaling_service.resolveDescribeScalingActivitiesResult
-		#"DescribeAlarmsResponse"                       :   cloudwatch_service.resolveDescribeAlarmsResult
-		#"ListSubscriptionsResponse"                    :   sns_service.resolveListSubscriptionsResult
-		#"ListTopicsResponse"                           :   sns_service.resolveListTopicsResult
+		"DescribeAutoScalingGroups"            :   if MC.aws then MC.aws.convert.convertASG else {}
+		"DescribeLaunchConfigurations"         :   if MC.aws then MC.aws.convert.convertLC else {}
+		"DescribeNotificationConfigurations"   :   if MC.aws then MC.aws.convert.convertNC else {}
+		"DescribePolicies"                     :   if MC.aws then MC.aws.convert.convertScalingPolicy else {}
+		#"DescribeScheduledActionsResponse"             :   if MC.aws then autoscaling_service.resolveDescribeScheduledActionsResult else {}
+		#"DescribeScalingActivitiesResponse"            :   if MC.aws then autoscaling_service.resolveDescribeScalingActivitiesResult else {}
+		#"DescribeAlarmsResponse"                       :   if MC.aws then cloudwatch_service.resolveDescribeAlarmsResult else {}
+		#"ListSubscriptionsResponse"                    :   if MC.aws then sns_service.resolveListSubscriptionsResult else {}
+		#"ListTopicsResponse"                           :   if MC.aws then sns_service.resolveListTopicsResult else {}
 
 	}
 

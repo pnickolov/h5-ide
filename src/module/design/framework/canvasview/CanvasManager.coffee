@@ -38,7 +38,7 @@ define [], ()->
       return this
 
     toggle : ( element, isShow ) ->
-      if element.length
+      if element.hasOwnProperty("length")
         element = element[0]
       if not element
         return this

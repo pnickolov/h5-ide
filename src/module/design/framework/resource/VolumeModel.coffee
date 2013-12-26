@@ -20,11 +20,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         name   : data.name
         count  : data.number
         #resource property
-        snapshot : data.resource.SnapshotId
-        appId    : data.resource.VolumeId
-        size     : data.resource.Size
-        iops     : data.resource.Iops
-        device   : attachment.Device
+        snapshotId : data.resource.SnapshotId
+        appId      : data.resource.VolumeId
+        size       : data.resource.Size
+        iops       : data.resource.Iops
+        volumeType : data.resource.VolumeType
+        deviceName : attachment.Device
+        #
         instance : instance
 
 

@@ -14,10 +14,10 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         init : ( uid ) ->
 
-            components = MC.canvas_data.component
+            component = Design.instance().component( uid )
 
-            if not components[ uid ]
-
+            if not component
+            #volume of LC(not adjust)
                 realuid     = uid.split('_')
                 device_name = realuid[2]
                 realuid     = realuid[0]
@@ -43,17 +43,17 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     break
 
             else
-
-                res = components[ uid ].resource
+            #volume of instance
+                res = component.attributes
 
                 volume_detail =
                     isLC        : false
-                    isWin       : res.AttachmentSet.Device[0] != '/'
-                    isStandard  : res.VolumeType is 'standard'
-                    iops        : res.Iops
-                    volume_size : res.Size
-                    snapshot_id : res.SnapshotId
-                    name        : res.AttachmentSet.Device
+                    isWin       : res.deviceName[0] != '/'
+                    isStandard  : res.volumeType is 'standard'
+                    iops        : res.iops
+                    volume_size : res.size
+                    snapshot_id : res.snapshotId
+                    name        : res.deviceName
 
 
                 if volume_detail.isWin

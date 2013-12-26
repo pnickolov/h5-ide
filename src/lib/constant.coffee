@@ -482,6 +482,10 @@ use redirection server name:i:0\n"
 		'windows': 'mswin'
 	}
 
+	REGEXP =
+		'stateEditorReference': /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.\w+\}/g
+
+
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
 	INSTANCE_TYPE			: INSTANCE_TYPE
@@ -510,3 +514,4 @@ use redirection server name:i:0\n"
 	DEMO_STACK_NAME_LIST    : DEMO_STACK_NAME_LIST
 	TA                      : TA
 	OS_TYPE_MAPPING			: OS_TYPE_MAPPING
+	REGEXP					: REGEXP

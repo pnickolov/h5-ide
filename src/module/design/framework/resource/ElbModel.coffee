@@ -1,5 +1,13 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "./VpcModel", "../connection/SgAsso", "constant", "../connection/ElbAsso"  ], ( ComplexResModel, CanvasManager, Design, VpcModel, SgAsso, constant )->
+define [ "CanvasManager",
+         "Design",
+         "constant",
+         "../ComplexResModel",
+         "./VpcModel",
+         "./SgModel",
+         "../connection/SgAsso",
+         "../connection/ElbAsso"
+], ( CanvasManager, Design, constant, ComplexResModel, VpcModel, SgModel, SgAsso )->
 
   Model = ComplexResModel.extend {
 
@@ -28,10 +36,37 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "./VpcModel", "../conn
 
     newNameTmpl : "load-balancer-"
 
+    constructor : ( attr, option )->
+
+      dontCreateSg = attr.dontCreateSg
+      delete attr.dontCreateSg
+
+      ComplexResModel.call this, attr, option
+
+      if dontCreateSg isnt true
+        sg = new SgModel({ name : @get("name")+"-sg" })
+        sg.setAsElbSg()
+        @__elbSg = sg
+
+      null
+
     initialize : ()->
       vpc = VpcModel.theVPC()
       if vpc
         vpc.addChild( @ )
+      null
+
+    getElbSg : ()-> @__elbSg
+
+    setName : ( name )->
+      if @get("name") is name
+        return
+
+      @set "name", name
+      # Update Elb's Sg's Name
+      @__elbSg.set( "name", name+"-sg" )
+
+      if @draw then @draw()
       null
 
     iconUrl : ()->
@@ -127,19 +162,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "./VpcModel", "../conn
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
-      for key, value of data.resource
-        attr[ key ] = value
-
       elb = new Model attr
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
-      # for lis in elb.get 'ListenerDescriptions'
-      #   if lis.Listener.SSLCertificateId
-      #     uid = MC.extractID lis.Listener.SSLCertificateId
-      #     elb.associate resolve, uid
 
-      # SgAsso
+      # Elb <=> Subnet
       for sg in data.resource.SecurityGroups || []
         new SgAsso( elb, resolve( MC.extractID(sg) ) )
 
@@ -152,6 +180,18 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "./VpcModel", "../conn
         new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
 
       null
+
+    postDeserialize : ( data, layout_data )->
+
+      elb = Design.instance().component( data.uid )
+
+      # Find out which SG is this Elb's Sg
+      sgName = elb.get("name") + "-sg"
+      for sg in SgModel.allObjects()
+        if sg.get("name") is sgName
+          elb.__elbSg = sg
+          sg.setAsElbSg()
+          return
   }
 
   Model

@@ -32,8 +32,25 @@ StateEditorView = Backbone.View.extend({
 
 	render: () ->
 
-		this.refreshStateList()
-		this.refreshStateViewList()
+		that = this
+
+		that.refreshStateList()
+		that.refreshStateViewList()
+		that.bindStateListSortEvent()
+
+	bindStateListSortEvent: () ->
+
+		that = this
+
+		# state item sortable
+		that.$stateList.dragsort({
+			itemSelector: '.state-item',
+			dragSelector: '.state-id',
+			dragBetween: true,
+			placeHolderTemplate: '<div class="state-item placeholder"></div>',
+			dragEnd: () ->
+				that.refreshStateId()
+		})
 
 	compileTpl: () ->
 

@@ -32,7 +32,7 @@ body {
 #state-editor .state-item {
 	overflow: auto;
 	float: none;
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 }
 
 /* *************************************** editable-area */
@@ -278,4 +278,13 @@ body {
 
 #state-editor .state-remove:hover {
 	background-color: #ccc;
+}
+
+/* *************************************** state sortable */
+
+#state-editor .placeholder {
+	border: 3px dashed #bbb;
+	width: 100px;
+	height: 100px;
+	background: none;
 }

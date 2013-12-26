@@ -7,3 +7,5 @@
 state-editor/view.js
 state-editor/model.js
 state-editor/index.js
+state-editor/jquery.js
+state-editor/jquery.atwho.js

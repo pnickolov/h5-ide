@@ -1978,15 +1978,13 @@ MC.canvas = {
 
 	areaChild: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var children = $canvas.node(),
-			groups = $canvas.group(),
-			group_data = groups[ node_id ],
+		var group_data = groups[ node_id ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ node_type ],
 			matched = [],
 			coordinate,
 			size;
 
-		$.each(children, function (key, item)
+		$.each($canvas.node(), function (key, item)
 		{
 			coordinate = item.position();
 			size = item.size();
@@ -2012,11 +2010,11 @@ MC.canvas = {
 				)
 			)
 			{
-				matched.push(document.getElementById( key ));
+				matched.push(document.getElementById( item.id ));
 			}
 		});
 
-		$.each(groups, function (key, item)
+		$.each($canvas.group(), function (key, item)
 		{
 			coordinate = item.position();
 			size = item.size();
@@ -2033,9 +2031,11 @@ MC.canvas = {
 				end_y >= coordinate[1]
 			)
 			{
-				matched.push(document.getElementById( key ));
+				matched.push(document.getElementById( item.id ));
 			}
 		});
+
+		//console.info(matched);
 
 		return matched;
 	},
@@ -3602,8 +3602,8 @@ MC.canvas.event.dragable = {
 					),
 					layout_group_data = $canvas.group(),
 					group_data = layout_group_data[ target_id ],
-					group_coordinate = group_data.coordinate,
-					group_size = group_data.size,
+					group_coordinate = target_item.position(),
+					group_size = target_item.size(),
 					group_padding = MC.canvas.GROUP_PADDING,
 					child_stack = [],
 					unique_stack = [],
@@ -5706,9 +5706,9 @@ MC.canvas.event.keyEvent = function (event)
 			MC.canvas_property.selected_node.length === 1
 		)
 		{
-			var selected_node = $('#' + MC.canvas_property.selected_node[ 0 ]),
+			var 	current_node_id = MC.canvas_property.selected_node[ 0 ],
+				selected_node = $('#' + current_node_id),
 				layout_node_data = $canvas.node(),
-				current_node_id = MC.canvas_property.selected_node[ 0 ],
 				node_stack = [],
 				index = 0,
 				current_index,
@@ -5720,14 +5720,14 @@ MC.canvas.event.keyEvent = function (event)
 				return false;
 			}
 
-			$.each(layout_node_data, function (key, value)
+			$.each($canvas.node(), function (index, id)
 			{
-				if (key === current_node_id)
+				if (item.id === current_node_id)
 				{
 					current_index = index;
 				}
 
-				node_stack.push(key);
+				node_stack.push(item.id);
 
 				index++;
 			});

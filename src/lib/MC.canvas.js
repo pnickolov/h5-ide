@@ -74,12 +74,14 @@ MC.canvas = {
 
 	update: function (id, type, key, value)
 	{
-		var target = $('#' + id + '_' + key);
+		var target = $('#' + id + '_' + key),
+			value;
 
 		switch (type)
 		{
 			case 'text':
-				if ( key.indexOf("name") !== -1 ) {
+				if (key.indexOf("name") !== -1)
+				{
 					value = MC.canvasName( value );
 				}
 
@@ -163,7 +165,7 @@ MC.canvas = {
 								'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
 								'data-tooltip': 'unknown'
 							});
-							Canvon( $('#' + uid ) ).addClass('deleted');
+							Canvon('#' + uid).addClass('deleted');
 						}
 					}
 					else
@@ -180,14 +182,21 @@ MC.canvas = {
 		});
 	},
 
-
 	resize: function (target, type)
 	{
 		var canvas_size = $canvas.size(),
 			scale_ratio = $canvas.scale(),
 			key = target === 'width' ? 0 : 1,
+			node_minX = [],
+			node_minY = [],
+			node_maxX = [],
+			node_maxY = [],
+			coordinate,
+			size,
 			value,
-			target_value;
+			target_value,
+			screen_maxX,
+			screen_maxY;
 
 		if (type === 'expand')
 		{
@@ -198,25 +207,22 @@ MC.canvas = {
 
 		if (type === 'shrink')
 		{
-			var canvas_node = $canvas.node(),
-				canvas_group = $canvas.group(),
-				node_minX = [],
-				node_minY = [],
-				node_maxX = [],
-				node_maxY = [],
-				screen_maxX,
-				screen_maxY;
-
-			$.each(canvas_node, function (index, item)
+			$.each($canvas.node(), function (index, item)
 			{
-				node_maxX.push(item.coordinate[0] + item.size[0]);
-				node_maxY.push(item.coordinate[1] + item.size[1]);
+				coordinate = item.position();
+				size = item.size();
+
+				node_maxX.push(coordinate[0] + size[0]);
+				node_maxY.push(coordinate[1] + size[1]);
 			});
 
-			$.each(canvas_group, function (index, item)
+			$.each($canvas.group(), function (index, item)
 			{
-				node_maxX.push(item.coordinate[0] + item.size[0]);
-				node_maxY.push(item.coordinate[1] + item.size[1]);
+				coordinate = item.position();
+				size = item.size();
+
+				node_maxX.push(coordinate[0] + size[0]);
+				node_maxY.push(coordinate[1] + size[1]);
 			});
 
 			screen_maxX = Math.max.apply(Math, node_maxX);
@@ -260,7 +266,7 @@ MC.canvas = {
 
 	zoomIn: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size'),
+		var canvas_size = $canvas.size(),
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio > 1)
@@ -295,7 +301,7 @@ MC.canvas = {
 
 	zoomOut: function ()
 	{
-		var canvas_size = MC.canvas.data.get('layout.size'),
+		var canvas_size = $canvas.size(),
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio < 1.6)
@@ -1531,7 +1537,7 @@ MC.canvas = {
 	{
 		var target = $('#' + id),
 			node_type = $canvas(id).nodeType,
-			item = $canvas(id),
+			//item = $canvas(id),
 			clone_node;
 
 		Canvon(target).addClass('selected');
@@ -1598,10 +1604,13 @@ MC.canvas = {
 
 	remove: function (node)
 	{
-		var node_id = node.id,
-			target = $(node),
-			target_type = target.data('type'),
-			node_type = target.data('class');
+		$(node).remove();
+
+		return true;
+		// var node_id = node.id,
+		// 	target = $(node),
+		// 	target_type = target.data('type'),
+		// 	node_type = target.data('class');
 
 		// if (target_type === 'line')
 		// {
@@ -1707,9 +1716,9 @@ MC.canvas = {
 		// 	MC.canvas.data.delete('layout.component.group.' + node_id);
 		// }
 
-		target.remove();
+		// target.remove();
 
-		return true;
+		// return true;
 	},
 
 	pixelToGrid: function (x, y)
@@ -1724,16 +1733,15 @@ MC.canvas = {
 
 	matchPoint: function (x, y)
 	{
-		var children = $canvas.node(),
-			coordinate = MC.canvas.pixelToGrid(x, y),
+		var coordinate = MC.canvas.pixelToGrid(x, y),
 			size,
 			matched,
 			node_coordinate;
 
-		$.each(children, function (key, item)
+		$.each($canvas.node(), function (key, item)
 		{
-			node_coordinate = item.coordinate;
-			size = item.size;
+			node_coordinate = item.position();
+			size = item.size();
 
 			if (
 				node_coordinate &&
@@ -1830,8 +1838,8 @@ MC.canvas = {
 						id = group_stack[ layer ][ i ].id;
 
 						group_node = $canvas(id);
-						coordinate = group_node.coordinate;
-						size = group_node.size;
+						coordinate = group_node.position();
+						size = group_node.size();
 
 						if (
 							$.inArray(id, ignore_stack) === -1 &&
@@ -1899,7 +1907,7 @@ MC.canvas = {
 
 	isBlank: function (type, target_id, target_type, start_x, start_y, width, height)
 	{
-		var children = MC.canvas_data.layout.component[ type ],
+		var //children = MC.canvas_data.layout.component[ type ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
 			end_x,
@@ -1912,10 +1920,10 @@ MC.canvas = {
 			end_x = start_x + width;
 			end_y = start_y + height;
 
-			$.each(children, function (key, item)
+			$.each($canvas.group(), function (key, item)
 			{
-				coordinate = item.coordinate;
-				size = item.size;
+				coordinate = item.position();
+				size = item.size();
 
 				if (
 					key !== target_id &&
@@ -1936,14 +1944,14 @@ MC.canvas = {
 
 	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
 	{
-		var groups = MC.canvas_data.layout.component.group,
+		var //groups = MC.canvas_data.layout.component.group,
 			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ node_type ],
 			matched;
 
-		$.each(groups, function (key, item)
+		$.each($canvas.group(), function (key, item)
 		{
-			coordinate = item.coordinate;
-			size = item.size;
+			coordinate = item.position();
+			size = item.size();
 
 			if (
 				node_id !== key &&
@@ -1980,8 +1988,8 @@ MC.canvas = {
 
 		$.each(children, function (key, item)
 		{
-			coordinate = item.coordinate;
-			size = item.size;
+			coordinate = item.position();
+			size = item.size();
 
 			if (
 				node_id !== key &&
@@ -2010,8 +2018,8 @@ MC.canvas = {
 
 		$.each(groups, function (key, item)
 		{
-			coordinate = item.coordinate;
-			size = item.size;
+			coordinate = item.position();
+			size = item.size();
 
 			if (
 				node_id !== key &&
@@ -2035,8 +2043,8 @@ MC.canvas = {
 	groupChild: function (group_node)
 	{
 		var group_node = $canvas(group_node.id),
-			coordinate = group_node.coordinate,
-			size = group_node.size;
+			coordinate = group_node.position(),
+			size = group_node.size();
 
 		return MC.canvas.areaChild(
 			group_node.id,
@@ -4348,7 +4356,7 @@ MC.canvas.event.drawConnection = {
 
 			$.each(layout_group_data, function (key, item)
 			{
-				group_coordinate = item.coordinate;
+				group_coordinate = item.position();
 				group_size = item.size;
 
 				if (
@@ -5063,7 +5071,7 @@ MC.canvas.event.groupResize = {
 			{
 				item_data = layout_node_data[ item.id ];
 				item_size = component_size[ item_data.type ];
-				item_coordinate = item_data.coordinate;
+				item_coordinate = item_data.position();
 
 				node_minX.push(item_coordinate[0]);
 				node_minY.push(item_coordinate[1]);
@@ -5075,7 +5083,7 @@ MC.canvas.event.groupResize = {
 			{
 				item_data = layout_group_data[ item.id ];
 				item_size = item_data.size;
-				item_coordinate = item_data.coordinate;
+				item_coordinate = item_data.position();
 
 				node_minX.push(item_coordinate[0]);
 				node_minY.push(item_coordinate[1]);
@@ -5157,9 +5165,9 @@ MC.canvas.event.groupResize = {
 
 		if (parentGroup)
 		{
-			parent_data = layout_group_data[ parentGroup.id ];
-			parent_size = parent_data.size;
-			parent_coordinate = parent_data.coordinate;
+			parent_data = $canvas( parentGroup.id );
+			parent_size = parent_data.size();
+			parent_coordinate = parent_data.position();
 
 			if (group_left < parent_coordinate[0] + group_padding)
 			{

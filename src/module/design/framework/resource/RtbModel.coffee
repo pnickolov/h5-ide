@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant )->
+define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant )->
 
   Model = ComplexResModel.extend {
 

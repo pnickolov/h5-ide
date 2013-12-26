@@ -2,7 +2,7 @@
 define [ "constant",
          "Design",
          "../GroupModel",
-         "../CanvasManager",
+         "CanvasManager",
          "../connection/RtbAsso",
          "../connection/AclAsso",
 ], ( constant, Design, GroupModel, CanvasManager, RtbAsso, AclAsso )->

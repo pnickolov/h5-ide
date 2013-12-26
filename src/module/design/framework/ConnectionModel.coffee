@@ -1,5 +1,5 @@
 
-define [ "./ResourceModel", "Design", "./CanvasManager" ], ( ResourceModel, Design, CanvasManager )->
+define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design, CanvasManager )->
 
   ###
     -------------------------------

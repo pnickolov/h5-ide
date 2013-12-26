@@ -114,6 +114,7 @@ require.config {
 		# design model
 		#############################################
 		'Design'             : 'module/design/framework/Design'
+		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
 
 		#############################################
 		# module

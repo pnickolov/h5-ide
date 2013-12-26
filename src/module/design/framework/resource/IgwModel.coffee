@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "../CanvasManager", "./VpcModel", "Design", "constant" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant )->
+define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constant" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant )->
 
   Model = ComplexResModel.extend {
 

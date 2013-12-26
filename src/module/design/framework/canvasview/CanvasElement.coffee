@@ -1,5 +1,6 @@
-
 define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
+
+  Design = null
 
   ###
   CanvasElement is intent to be an adaptor for MC.canvas.js to use ResourceModel.
@@ -33,24 +34,20 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     this.$el
 
   CanvasElement.prototype.resize = ( w, h )->
-    if w is undefined
-      component = Design.instance().component( this.id )
-      return [ component.width(), component.height() ]
+    if (w is undefined or w is null) and (h is undefined or h is null)
+      attr = Design.instance().component( this.id ).attributes
+      return [ attr.width, attr.height ]
 
-    if this.nodeType is "group"
-      this.size[0] = w
-      this.size[1] = h
+    if @nodeType is "group"
       CanvasManager.resize( this.id, w, h )
     null
 
 
   CanvasElement.prototype.position = ( x, y )->
-    if x is undefined
-      component = Design.instance().component( this.id )
-      return [ component.x(), component.y() ]
+    if (x is undefined or x is null) and (y is undefined or y is null)
+      attr = Design.instance().component( this.id ).attributes
+      return [ attr.x, attr.y ]
 
-    this.coordinate[0] = x
-    this.coordinate[1] = y
     CanvasManager.move( this.id, x, y )
     null
 
@@ -198,5 +195,9 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
   CanvasElement.line.prototype.remove   = CanvasElement.prototype.remove
   CanvasElement.line.prototype.element  = CanvasElement.prototype.element
   CanvasElement.line.prototype.$element = CanvasElement.prototype.$element
+
+  CanvasElement.setDesign = ( design )->
+    Design = design
+    null
 
   CanvasElement

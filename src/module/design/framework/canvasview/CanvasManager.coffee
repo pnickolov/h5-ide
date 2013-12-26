@@ -100,10 +100,13 @@ define [], ()->
         console.error "Only group element can be resized."
         return
 
-      oldw = component.get "width"
-      oldh = component.get "height"
+      oldw = component.attributes.width
+      oldh = component.attributes.height
 
-      component.set "width", w
+      if w is null or w is undefined then w = oldw
+      if h is null or h is undefined then h = oldh
+
+      component.set "width",  w
       component.set "height", h
 
       @size document.getElementById( compUid ), w, h, oldw, oldh
@@ -168,24 +171,15 @@ define [], ()->
       # Update Svg ( might move to MC.canvas.js though )
       if node.length then node = node[0]
 
-      if x < 0 then x = 0
-      if y < 0 then y = 0
+      component = Design.instance().component( node.id )
 
-      transformVal = node.transform.baseVal
+      if x is null or y is undefined then x = component.attributes.x
+      if y is null or y is undefined then y = component.attributes.y
 
-      x *= MC.canvas.GRID_WIDTH
-      y *= MC.canvas.GRID_HEIGHT
-
-      if transformVal.numberOfItems is 1
-        transformVal.getItem(0).setTranslate(x, y)
-
-      else
-        translateVal = node.ownerSVGElement.createSVGTransform()
-        translateVal.setTranslate(x, y)
-        transformVal.appendItem(translateVal)
+      MC.canvas.position( node, x, y )
 
       # Update Lines
-      for cn in Design.instance().component( node.id ).connections()
+      for cn in component.connections()
         if cn.get("lineType")
           cn.draw()
       null

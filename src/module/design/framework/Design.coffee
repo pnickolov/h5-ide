@@ -1,56 +1,4 @@
-define [ "constant", "module/design/framework/CanvasElement", "module/design/framework/CanvasManager" ], ( constant, CanvasElement, CanvasManager ) ->
-
-  ### $canvas is a adaptor for MC.canvas.js ###
-  $canvas = ( id )->
-    component = Design.instance().component(id)
-    if component.node_line
-      new CanvasElement.line( component )
-    else
-      new CanvasElement( component )
-
-  $canvas.size   = ( w, h  )-> design_instance.canvas.size( w, h )
-  $canvas.scale  = ( ratio )-> design_instance.canvas.scale( ratio )
-  $canvas.offset = ( x, y  )-> design_instance.canvas.offset( x, y )
-  $canvas.node   = ()->
-    _.map design_instance.__canvasNodes, ( comp )->
-      new CanvasElement( comp )
-
-  $canvas.group  = ()->
-    _.map design_instance.__canvasGroups, ( comp )->
-      new CanvasElement( comp )
-
-  window.$canvas = $canvas
-
-  ### Canvas is used by $canvas to store data of svg canvas ###
-  Canvas = ( size )->
-    this.sizeAry   = size
-    this.offsetAry = [0, 0]
-    this.scaleAry  = 1
-    this
-
-  Canvas.prototype.scale = ( ratio )->
-    if ratio is undefined
-      return this.scaleAry
-
-    this.scaleAry = ratio
-    null
-
-  Canvas.prototype.offset = ( x, y )->
-    if x is undefined
-      return this.offsetAry
-
-    this.offsetAry[0] = x
-    this.offsetAry[1] = y
-    null
-
-  Canvas.prototype.size = ( w, h )->
-    if w is undefined
-      return this.sizeAry
-
-    this.sizeAry[0] = w
-    this.sizeAry[1] = h
-    null
-
+define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "CanvasManager" ], ( constant, CanvasAdaptor, CanvasManager ) ->
 
   ###
     -------------------------------
@@ -84,13 +32,10 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
   ###
 
-  design_instance = null
-
-
   Design = ( json_data, layout_data, options )->
 
     design = (new DesignImpl( options )).use()
-    design.canvas = new Canvas( layout_data.size )
+    design.canvas = new CanvasAdaptor( layout_data.size )
 
     json_data   = $.extend true, {}, json_data
     layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
@@ -107,6 +52,11 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   _.extend( Design, Backbone.Events )
   Design.__modelClassMap   = {}
   Design.__resolveFirstMap = {}
+  Design.__instance        = null
+
+  # Inject dependency, so that CanvasManager/CanvasAdaptor won't require Design.js
+  CanvasManager.setDesign( Design )
+  CanvasAdaptor.setDesign( Design )
 
 
   DesignImpl = ( options )->
@@ -158,7 +108,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
       ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
 
-      design_instance.__componentMap[ uid ]
+      Design.__instance.__componentMap[ uid ]
 
     # Use resolve to replace component(), so that during deserialization,
     # dependency can be resolved by using design.component()
@@ -313,7 +263,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
 
 
 
-  Design.instance = ()-> design_instance
+  Design.instance = ()-> @__instance
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
 
@@ -338,7 +288,7 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
 
   DesignImpl.prototype.use = ()->
-    design_instance = @
+    Design.__instance = @
     @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
@@ -425,8 +375,5 @@ define [ "constant", "module/design/framework/CanvasElement", "module/design/fra
     console.assert( C, "Cannot found Class for type: #{type}" )
 
     new C( p1Comp, p2Comp )
-
-  # Inject dependency, so that CanvasManager won't require Design.js
-  CanvasManager.setDesign( Design )
 
   Design

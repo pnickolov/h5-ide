@@ -1535,10 +1535,10 @@ MC.canvas = {
 
 	select: function (id)
 	{
-		var target = $('#' + id),
-			node_type = $canvas(id).nodeType,
-			//item = $canvas(id),
-			clone_node;
+		var item = $canvas(id);
+		var target    = item.$element(),
+			  node_type = item.nodeType,
+			  clone_node;
 
 		Canvon(target).addClass('selected');
 
@@ -1559,7 +1559,7 @@ MC.canvas = {
 
 			$.each(item.connection(), function (index, item)
 			{
-				Canvon('#' + item.line + ', #' + item.target + '_port-' + item.port).addClass('view-show');
+				Canvon('#' + item.line + ', #' + id + '_port-' + item.port).addClass('view-show');
 			});
 
 			Canvon(clone.find('.port')).addClass('view-show');
@@ -4834,7 +4834,7 @@ MC.canvas.event.groupResize = {
 				// {
 				// 	line_layer.removeChild(document.getElementById( value.line ));
 				// });
-				// 
+				//
 				$.each(parent_item.connection(), function (i, value)
 				{
 					line_layer.removeChild(document.getElementById( value.line ));

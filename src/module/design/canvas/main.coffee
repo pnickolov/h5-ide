@@ -69,8 +69,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     # new design flow
                     options =
-                        type  : if current_platform is 'custom-vpc' then Design.TYPE.Vpc else current_platform
-                        mode  : Tabbar.current
+                        type   : if current_platform is 'custom-vpc' then Design.TYPE.Vpc else current_platform
+                        mode   : Tabbar.current
+                        region : region_name
 
                     if type is 'NEW_STACK'
 

@@ -66,6 +66,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__classCache   = {}
     @__type         = options.type
     @__mode         = options.mode
+    @__region       = options.region
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw   = false
@@ -76,6 +77,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Classic    : "ec2-classic"
     Vpc        : "ec2-vpc"
     DefaultVpc : "default-vpc"
+    CustomVpc  : "custom-vpc"
   }
   Design.MODE = {
     Stack   : "stack"
@@ -266,10 +268,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   Design.instance = ()-> @__instance
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
-
-  DesignImpl.prototype.mode          = ()->
+  DesignImpl.prototype.region = ()-> @.__region
+  DesignImpl.prototype.mode   = ()->
     console.warn("Better not to use Design.instance().mode() directly.")
     this.__mode
+
+  DesignImpl.prototype.type   = ()->
+    console.warn("Better not to use Design.instance().type() directly.")
+    this.__type
+
+
   DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
@@ -277,16 +285,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     this.__mode = m
     null
 
-  DesignImpl.prototype.type             = ()->
-    console.warn("Better not to use Design.instance().type() directly.")
-    this.__type
   DesignImpl.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
   DesignImpl.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
-  DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc
-
+  DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc or this.__type is Design.TYPE.CustomVpc
 
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
-
   DesignImpl.prototype.use = ()->
     Design.__instance = @
     @

@@ -82,8 +82,15 @@ define [], ()->
 
     move : ( compUid, x, y ) ->
 
-      design = Design.instance()
-      component = design.component compUid
+      component = Design.instance().component compUid
+
+      oldx = component.attributes.x
+      oldy = component.attributes.y
+
+      if x is null or x is undefined then x = oldx
+      if y is null or y is undefined then y = oldy
+
+      if x is oldx and y is oldy then return
 
       component.set "x", x
       component.set "y", y
@@ -93,8 +100,7 @@ define [], ()->
 
     resize : ( compUid, w, h ) ->
 
-      design = Design.instance()
-      component = design.component compUid
+      component = Design.instance().component compUid
 
       if not component.node_group
         console.error "Only group element can be resized."
@@ -105,6 +111,8 @@ define [], ()->
 
       if w is null or w is undefined then w = oldw
       if h is null or h is undefined then h = oldh
+
+      if w is oldw and h is oldh then return
 
       component.set "width",  w
       component.set "height", h
@@ -171,15 +179,10 @@ define [], ()->
       # Update Svg ( might move to MC.canvas.js though )
       if node.length then node = node[0]
 
-      component = Design.instance().component( node.id )
-
-      if x is null or y is undefined then x = component.attributes.x
-      if y is null or y is undefined then y = component.attributes.y
-
       MC.canvas.position( node, x, y )
 
       # Update Lines
-      for cn in component.connections()
+      for cn in Design.instance().component( node.id ).connections()
         if cn.get("lineType")
           cn.draw()
       null

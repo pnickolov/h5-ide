@@ -393,6 +393,24 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		# return new object
 		filter_data
 
+	convertUID = ( str ) ->
+		console.log 'convertUID', str
+
+		# regexp
+		reg  = /[^@{][-\w\.]+[}]/igm
+
+		new_str = str.replace reg, ( $0 ) ->
+
+			split_arr = $0.split('.')
+			obj       = state_editor_name_list[ split_arr[0] ]
+
+			if obj and obj.uid and split_arr.length > 1
+				obj.uid + '.' + split_arr[1]
+			else
+				$0
+
+		new_str
+
 	#public
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
@@ -431,3 +449,4 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	listSENameUID      : listSENameUID
 	addSENameUIDList   : addSENameUIDList
 	filterStateData    : filterStateData
+	convertUID         : convertUID

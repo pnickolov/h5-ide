@@ -7,6 +7,7 @@ define [ 'Design',
          './connection/VPNConnection',
          './resource/InstanceModel',
          './resource/EniModel',
+         './resource/VolumeModel',
          './resource/AclModel',
          './resource/AsgModel',
          './resource/AzModel',
@@ -21,7 +22,7 @@ define [ 'Design',
          './resource/VpcModel',
          './resource/IgwModel',
          './resource/VgwModel',
-         './resource/ScalingPolicyModel'
+         './resource/ScalingPolicyModel',
          './resource/CertificateModel'
 
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->

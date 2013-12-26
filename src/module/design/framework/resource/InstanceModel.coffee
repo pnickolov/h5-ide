@@ -154,14 +154,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
   }, {
 
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume ]
+    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
     deserialize : ( data, layout_data, resolve )->
 
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-        null
-
-      else if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         attr =
           id    : data.uid
           name  : data.name

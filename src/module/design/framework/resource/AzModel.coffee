@@ -44,6 +44,29 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant" ], ( GroupMo
       })
       null
 
+    # Get all az, including unused az.
+    allPossibleAZ : ()->
+      azMap = {}
+
+      for az in Model.allObjects()
+        azMap[ az.get("name") ] = az.id
+
+      zones = MC.data.config[ MC.canvas_data.region ].zone
+      if zones
+        for z in zones.item
+          if not azMap.hasOwnProperty( z.zoneName )
+            azMap[ z.zoneName ] = ""
+
+      azArr = []
+      for azName, id in azMap
+        azArr.push {
+          name : azName
+          id   : id
+        }
+
+      azArr
+
+
     getAzByName : ( name )->
       for az in Model.allObjects()
         if az.get("name") is name

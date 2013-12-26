@@ -64,58 +64,52 @@ define [ '../base/view',
 
             @$el.html template @model.attributes
 
-            health_detail = @model.get('health_detail')
+            @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
+            @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
 
-            @updateSlider( $('#elb-property-slider-unhealthy'), health_detail.unhealthy_threshold - 2)
-            @updateSlider( $('#elb-property-slider-healthy'), health_detail.healthy_threshold - 2)
+            # #Init Listener List
 
-            #Init Listener List
+            # listenerAry = @model.get('listener_detail').listenerAry
 
-            listenerAry = @model.get('listener_detail').listenerAry
+            # Canremove = false
+            # _.each listenerAry, (originObj) ->
+            #     listener = _.extend {}, originObj.Listener
+            #     listener.Canremove = Canremove
+            #     itemTpl = MC.template.elbPropertyListenerItem(listener)
+            #     $('#accordion-group-elb-property-listener').append itemTpl
+            #     if !Canremove then Canremove = true
+            #     null
 
-            Canremove = false
-            _.each listenerAry, (originObj) ->
-                listener = _.extend {}, originObj.Listener
-                listener.Canremove = Canremove
-                itemTpl = MC.template.elbPropertyListenerItem(listener)
-                $('#accordion-group-elb-property-listener').append itemTpl
-                if !Canremove then Canremove = true
-                null
-
-            @model.attributes.component.name
+            @model.attributes.name
 
         elbNameChange : ( event ) ->
-            console.log 'elbNameChange'
-            $target = $ event.currentTarget
-            value = $target.val()
-            cid = $( '#elb-property-detail' ).attr 'component'
+            target = $ event.currentTarget
+            name = target.val()
 
-            MC.validate.preventDupname $target, cid, value, 'Load Balancer'
+            oldName = @model.get("name")
 
-            if not $target.parsley('validate')
-                return
+            if @checkDupName( target, "Load Balancer" )
+                @model.setName name
+                @setTitle name
 
-            @model.setELBName value
-            @setTitle value
-            MC.canvas.update cid, 'text', 'elb_name', value
-            @trigger 'REFRESH_SG_LIST'
+                # Update Elb's Sg's Name
+                oldName += "-sg"
+                newName = name + "-sg"
+                $("#sg-info-list").children().each ()->
+                    $name = $(this).find(".sg-name")
+                    if $name.text() is oldName
+                        $name.text( newName )
+                        return false
 
         schemeSelectChange : ( event ) ->
-            console.log 'schemeSelectChange'
-            value = event.target.value
-            cid = $( '#elb-property-detail' ).attr 'component'
-
-            this.trigger 'SCHEME_SELECT_CHANGED', value
-
-            ide_event.trigger ide_event.REDRAW_SG_LINE
-
-            return false
+            @model.setScheme event.currentTarget.value
+            null
 
         healthProtocolSelect : ( event, value ) ->
-            if _.contains [ 'TCP', 'SSL'], value
-                @$el.find('#property-elb-health-path').attr 'disabled', 'disabled'
+            if value is "TCP" or value is "SSL"
+                $('#property-elb-health-path').attr 'disabled', 'disabled'
             else
-                @$el.find('#property-elb-health-path').removeAttr 'disabled'
+                $('#property-elb-health-path').removeAttr 'disabled'
 
             @model.setHealthProtocol value
 
@@ -127,23 +121,17 @@ define [ '../base/view',
             @model.setHealthPort value
 
         healthPathChanged : ( event ) ->
-            console.log 'healthPathChanged'
-            $target = $ event.currentTarget
-
-            if $target.parsley 'validate'
-                @model.setHealthPath $target.val()
+            @model.setHealthPath $(event.currentTarget).val()
 
         healthIntervalChanged : ( event ) ->
             $target = $ event.currentTarget
-            value = $target.val()
-            value = Helper.makeInRange value, [6, 300], $target, 30
+            value = Helper.makeInRange $target.val(), [6, 300], $target, 30
 
             @model.setHealthInterval value
 
         healthTimeoutChanged : ( event ) ->
             $target = $ event.currentTarget
-            value = $target.val()
-            value = Helper.makeInRange value, [2, 60 ], $target, 5
+            value = Helper.makeInRange $target.val(), [2, 60 ], $target, 5
 
             @model.setHealthTimeout value
 
@@ -333,7 +321,7 @@ define [ '../base/view',
         azCheckChanged : ( event ) ->
             checkboxElem = $(event.target)
 
-            azName = checkboxElem.prop('name')
+            azName = checkboxElem.attr('data-name')
             checkStat = checkboxElem.prop('checked')
 
             if checkStat

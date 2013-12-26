@@ -23,6 +23,7 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
             console.assert( id, "This property model doesn't have an id" )
 
             Design.instance().component( id ).setName( name )
+            @set "name", name
             null
 
 

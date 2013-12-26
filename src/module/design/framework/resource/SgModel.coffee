@@ -26,7 +26,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     color       : "#f26c4f"
 
     defaults :
-      isDefault : false
+      isDefault   : false
+      description : ""
 
     initialize : ()->
       @color = @generateColor()
@@ -201,8 +202,9 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
             rightResArr = rightResArr.concat otherSg.connectionTargets("SgAsso")
 
-        for rightres in rightResArr
-          new SgLine( leftRes, rightRes )
+        for rightRes in rightResArr
+          if leftRes isnt rightRes
+            new SgLine( leftRes, rightRes )
 
       null
 

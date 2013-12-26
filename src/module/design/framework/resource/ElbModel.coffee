@@ -44,7 +44,10 @@ define [ "CanvasManager",
       ComplexResModel.call this, attr, option
 
       if dontCreateSg isnt true
-        sg = new SgModel({ name : @get("name")+"-sg" })
+        sg = new SgModel({
+          name : @get("name")+"-sg"
+          description : "Automatically created SG for load-balancer"
+        })
         sg.setAsElbSg()
         @__elbSg = sg
 
@@ -67,6 +70,34 @@ define [ "CanvasManager",
       @__elbSg.set( "name", name+"-sg" )
 
       if @draw then @draw()
+      null
+
+    getHealthCheckTarget : ()->
+      # Format ping
+      pingArr  = @attributes.healthCheckTarget.split(":")
+      protocol = pingArr[0]
+
+      pingArr  = (pingArr[1] || "").split("/")
+      port     = parseInt( pingArr[0], 10 )
+
+      if isNaN( port ) then port = 80
+
+      path = if pingArr.length is 2 then pingArr[1] else "index.html"
+
+      [ protocol, port, path ]
+
+    setHealthCheckTarget : ( protocol, port, path )->
+      target = @getHealthCheckTarget()
+      if protocol
+        target[0] = protocol
+
+      if port isnt undefined
+        target[1] = port
+
+      if path isnt undefined
+        target[2] = path
+
+      @set "healthCheckTarget", target[0] + ":" + target[1] + "/" + target[2]
       null
 
     iconUrl : ()->
@@ -153,8 +184,11 @@ define [ "CanvasManager",
 
     deserialize : ( data, layout_data, resolve )->
       attr =
-        id           : data.uid
-        name         : data.name
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.LoadBalancerName
+
+        dontCreateSg : true
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing

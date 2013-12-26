@@ -21,7 +21,7 @@
 				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP_SGLIST_TIP_VIEW_DETAIL" }}'></div>
 
 				<div class="col2">
-					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div>{{name}}</div>
+					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
 					<div class="col2-2 truncate">{{desc}}</div>
 					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>

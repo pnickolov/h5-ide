@@ -20,34 +20,15 @@ define [ '../base/main',
             sglist_main.onUnloadSubPanel id
             null
 
-        setupStack : () ->
-            me = this
-            @view.on 'SCHEME_SELECT_CHANGED', ( value ) ->
-                elbComponent = model.setScheme value
-
-                defaultVPC = false
-                if MC.aws.aws.checkDefaultVPC()
-                    defaultVPC = true
-
-                # Trigger an event to tell canvas that we want an IGW
-                if value isnt 'internal' and !defaultVPC
-                    ide_event.trigger ide_event.NEED_IGW
-
-                return true
-
-            @view.on 'REFRESH_SG_LIST', () ->
-                sglist_main.refresh()
-            null
-
         initStack : ()->
             @model = model
             @view  = view
             null
 
         afterLoadStack : ()->
-            currentCert = @model.getCurrentCert()
-            if currentCert
-                @view.refreshCertPanel currentCert
+            # currentCert = @model.getCurrentCert()
+            # if currentCert
+            #     @view.refreshCertPanel currentCert
 
             sglist_main.loadModule @model
             null
@@ -67,12 +48,7 @@ define [ '../base/main',
             null
 
         afterLoadAppEdit : ()->
-            # Use Stack model to handle sglist interaction
-            model.init( @model.get "componentUid" )
             sglist_main.loadModule model
             null
-
-
-
     }
     null

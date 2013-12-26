@@ -4747,7 +4747,29 @@ a.action-link:hover {
 	background: rgba(0,0,0,.1);
 }
 
-#elb-property-detail .elb-info-icon {
+.elb-pingpath-prefix {
+	position    : absolute;
+	height      : 31px;
+	line-height : 31px;
+	padding     : 0 0 0 8px;
+	top         : 1px;
+	left        : 0px;
+}
+
+#property-elb-health-path {
+	padding-left : 16px;
+	width : 212px;
+}
+
+#property-elb-health-path[disabled] {
+	color : transparent;
+}
+
+#property-elb-health-path[disabled] + .elb-pingpath-prefix {
+	display : none;
+}
+
+.elb-info-icon {
 	margin-top: 3px;
 	float: right;
 }

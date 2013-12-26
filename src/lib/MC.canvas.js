@@ -3971,7 +3971,7 @@ MC.canvas.event.dragable = {
 
 		// MC.canvas.select(target_id);
 
-		target_item.position(target_item.coordinate[0], coordinate.y);
+		target_item.position(undefined, coordinate.y);
 
 		//target_item.reConnect();
 

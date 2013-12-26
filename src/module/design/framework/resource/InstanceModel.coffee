@@ -169,6 +169,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
           x      : layout_data.coordinate[0]
           y      : layout_data.coordinate[1]
 
+        if data.resource.SubnetId
+          attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )
+        else
+          attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
+
         for key, value of data.resource
           attr[ key ] = value
 

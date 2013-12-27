@@ -205,11 +205,11 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       design = Design.instance()
       this.__design = design
 
-      Backbone.Model.call this, attributes, options
-
       # Cache the object inside the current design.
       design.classCacheForCid( this.classId ).push( this )
-      design.cacheComponent( this.id, this )
+      design.cacheComponent( attributes.id, this )
+
+      Backbone.Model.call this, attributes, options
 
       this
 

@@ -800,22 +800,26 @@ var constant_data = {
 
 	DESIGN_INIT_LAYOUT:
 	{
-
+		size  : [240,240],
 	},
 
 	DESIGN_INIT_LAYOUT_VPC:
 	{
-		group : {
-			VPC : {
-				coordinate : [5,3],
-				size       : [60,60]
-			}
-		},
-		node : {
-			RTB : {
-				coordinate : [50,5]
+		size  : [240,240],
+		component : {
+			group : {
+				VPC : {
+					coordinate : [5,3],
+					size       : [60,60]
+				}
+			},
+			node : {
+				RTB : {
+					coordinate : [50,5]
+				}
 			}
 		}
+
 	},
 
 	DESIGN_INIT_DATA:

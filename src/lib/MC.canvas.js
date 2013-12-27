@@ -1266,10 +1266,10 @@ MC.canvas = {
 					offset_endX+=1;
 				}
 
-				startX = Math.round( (from_port_offset.left - canvas_offset[0] + (from_port_offset.width / 2)) * scale_ratio );
-				startY = Math.round( (from_port_offset.top - canvas_offset[1] + (from_port_offset.height / 2)) * scale_ratio );
-				endX = Math.round( (to_port_offset.left - canvas_offset[0] + (to_port_offset.width / 2)) * scale_ratio );
-				endY = Math.round( (to_port_offset.top - canvas_offset[1] + (to_port_offset.height / 2)) * scale_ratio );
+				startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
+				startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
+				endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
+				endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
 
 				//add by xjimmy
 				start0 = {
@@ -2393,10 +2393,10 @@ MC.canvas.volume = {
 			width = bubble_box.width();
 			height = bubble_box.height();
 
-			coordinate.left = target_offset.left + target_width + 15 - canvas_offset[0];
+			coordinate.left = target_offset.left + target_width + 15 - canvas_offset.left;
 			bubble_box.addClass('bubble-left');
 
-			coordinate.top = target_offset.top - canvas_offset[1] - ((height - target_height) / 2);
+			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
 
 			bubble_box
 				.data('target-id', node_uid)
@@ -2666,8 +2666,8 @@ MC.canvas.volume = {
 	mousemove: function (event)
 	{
 		var match_node = MC.canvas.matchPoint(
-				event.pageX - event.data.canvas_offset[0],
-				event.pageY - event.data.canvas_offset[1]
+				event.pageX - event.data.canvas_offset.left,
+				event.pageY - event.data.canvas_offset.top
 			),
 			node_type = match_node ? match_node.getAttribute('data-class') : null,
 			event_data = event.data,
@@ -2963,8 +2963,8 @@ MC.canvas.asgList = {
 			$('#asgList-wrap')
 				.on('click', '.asgList-item', MC.canvas.asgList.select)
 				.css({
-					'top': target_offset.top - canvas_offset[1] - 30,
-					'left': target_offset.left - canvas_offset[0] - 20
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
 				});
 
 			MC.canvas.asgList.select.call($('#asgList-wrap .asgList-item').first());
@@ -3085,8 +3085,8 @@ MC.canvas.instanceList = {
 			$('#instanceList-wrap')
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
 				.css({
-					'top': target_offset.top - canvas_offset[1] - 30,
-					'left': target_offset.left - canvas_offset[0] - 20
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
 				});
 
 			MC.canvas.instanceList.select.call($('#instanceList-wrap .instanceList-item').first());
@@ -3208,8 +3208,8 @@ MC.canvas.eniList = {
 			$('#eniList-wrap')
 				.on('click', '.eniList-item', MC.canvas.eniList.select)
 				.css({
-					'top': target_offset.top - canvas_offset[1] - 30,
-					'left': target_offset.left - canvas_offset[0] - 20
+					'top': target_offset.top - canvas_offset.top - 30,
+					'left': target_offset.left - canvas_offset.left - 20
 				});
 
 			MC.canvas.eniList.select.call($('#eniList-wrap .eniList-item').first());
@@ -3383,8 +3383,8 @@ MC.canvas.event.dragable = {
 					'node_type': node_type,
 					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
 					'shadow': shadow,
-					'offsetX': event.pageX - target_offset.left + canvas_offset[0],
-					'offsetY': event.pageY - target_offset.top + canvas_offset[1],
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
 					'scale_ratio': $canvas.scale(),
@@ -3406,8 +3406,8 @@ MC.canvas.event.dragable = {
 					'target_type': target_type,
 					'node_type': node_type,
 					'shadow': shadow,
-					'offsetX': event.pageX - target_offset.left + canvas_offset[0],
-					'offsetY': event.pageY - target_offset.top + canvas_offset[1],
+					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
+					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
 					'groupChild': node_type === 'group' ? MC.canvas.groupChild(this) : null,
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
@@ -3527,8 +3527,8 @@ MC.canvas.event.dragable = {
 				component_size = event_data.component_size;// event.MC.canvas.COMPONENT_SIZE[ node_class ];
 
 				coordinate = MC.canvas.pixelToGrid(
-					shadow_offset.left - canvas_offset[0],
-					shadow_offset.top - canvas_offset[1]
+					shadow_offset.left - canvas_offset.left,
+					shadow_offset.top - canvas_offset.top
 				);
 
 				match_place = MC.canvas.isMatchPlace(
@@ -3597,8 +3597,8 @@ MC.canvas.event.dragable = {
 			if (target_type === 'group')
 			{
 				var coordinate = MC.canvas.pixelToGrid(
-						shadow_offset.left - canvas_offset[0],
-						shadow_offset.top - canvas_offset[1]
+						shadow_offset.left - canvas_offset.left,
+						shadow_offset.top - canvas_offset.top
 					),
 					layout_group_data = $canvas.group(),
 					group_data = layout_group_data[ target_id ],
@@ -3965,7 +3965,7 @@ MC.canvas.event.dragable = {
 			scale_ratio = $canvas.scale(),
 			coordinate;
 
-		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset[0], shadow_offset.top - canvas_offset[1]);
+		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 		// MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
 
@@ -4006,7 +4006,7 @@ MC.canvas.event.dragable = {
 			//layout_connection_data = MC.canvas.data.get('layout.connection'),
 			//node_class = target.data('class'),
 			scale_ratio = $canvas.scale(),
-			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset[0], shadow_offset.top - canvas_offset[1]),
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			component_size = event_data.component_size,//MC.canvas.GROUP_DEFAULT_SIZE[ node_class ],
 			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
 			areaChild = MC.canvas.areaChild(
@@ -4140,8 +4140,8 @@ MC.canvas.event.drawConnection = {
 			}, {
 				'connect': target.data('connect'),
 				'originalTarget': target.parent(),
-				'originalX': (offset.left - canvas_offset[0]) * scale_ratio,
-				'originalY': (offset.top - canvas_offset[1]) * scale_ratio,
+				'originalX': (offset.left - canvas_offset.left) * scale_ratio,
+				'originalY': (offset.top - canvas_offset.top) * scale_ratio,
 				'option': connection_option,
 				'draw_line': $('#draw-line-connection'),
 				'port_name': port_name,
@@ -4304,8 +4304,8 @@ MC.canvas.event.drawConnection = {
 		var event_data = event.data,
 			canvas_offset = event_data.canvas_offset,
 			scale_ratio = event_data.scale_ratio,
-			endX = (event.pageX - canvas_offset[0]) * scale_ratio,
-			endY = (event.pageY - canvas_offset[1]) * scale_ratio,
+			endX = (event.pageX - canvas_offset.left) * scale_ratio,
+			endY = (event.pageY - canvas_offset.top) * scale_ratio,
 			startX = event_data.originalX,
 			startY = event_data.originalY,
 			angle = Math.atan2(endY - startY, endX - startX),
@@ -4333,8 +4333,8 @@ MC.canvas.event.drawConnection = {
 		event.data.draw_line.remove();
 
 		var match_node = MC.canvas.matchPoint(
-				Math.round(event.pageX - event.data.canvas_offset[0]),
-				Math.round(event.pageY - event.data.canvas_offset[1])
+				Math.round(event.pageX - event.data.canvas_offset.left),
+				Math.round(event.pageY - event.data.canvas_offset.top)
 			),
 			//svg_canvas = $('#svg_canvas'),
 			from_node = event.data.originalTarget,
@@ -4360,7 +4360,7 @@ MC.canvas.event.drawConnection = {
 		{
 			layout_group_data = $canvas.group();
 
-			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset[0], event.pageY - event.data.canvas_offset[1]);
+			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
 
 			match_node = null;
 
@@ -4593,8 +4593,8 @@ MC.canvas.event.siderbarDrag = {
 
 			scale_ratio = event_data.scale_ratio,
 			coordinate = {
-				'x': Math.round((event.pageX - canvas_offset[0] - 50) / (grid_width / scale_ratio)),
-				'y': Math.round((event.pageY - canvas_offset[1] - 50) / (grid_height / scale_ratio))
+				'x': Math.round((event.pageX - canvas_offset.left - 50) / (grid_width / scale_ratio)),
+				'y': Math.round((event.pageY - canvas_offset.top - 50) / (grid_height / scale_ratio))
 			},
 			match_place = MC.canvas.isMatchPlace(
 				null,
@@ -4630,7 +4630,7 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $canvas.offset(),
 				shadow_offset = event.data.shadow.position(),
 				node_option = target.data('option'),
-				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset[0], shadow_offset.top - canvas_offset[1]),
+				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 				component_size,
 				match_place,
 				default_group_size,
@@ -4780,8 +4780,8 @@ MC.canvas.event.siderbarDrag = {
 			if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 			{
 				event.data.shadow.animate({
-					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset[0],
-					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset[1],
+					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset.left,
+					'top': coordinate.y * MC.canvas.GRID_HEIGHT + canvas_offset.top,
 					'opacity': 0
 				}, function ()
 				{
@@ -4829,8 +4829,8 @@ MC.canvas.event.groupResize = {
 				scale_ratio = $canvas.scale(),
 				grid_width = MC.canvas.GRID_WIDTH,
 				grid_height = MC.canvas.GRID_HEIGHT,
-				group_left = (group_offset.left - canvas_offset[0]) * scale_ratio,
-				group_top = (group_offset.top - canvas_offset[1]) * scale_ratio,
+				group_left = (group_offset.left - canvas_offset.left) * scale_ratio,
+				group_top = (group_offset.top - canvas_offset.top) * scale_ratio,
 				type = parent_item.type,
 				line_layer = document.getElementById('line_layer');
 
@@ -4881,8 +4881,8 @@ MC.canvas.event.groupResize = {
 					'originalLeft': group_offset.left,
 					'originalTranslate': parent.attr('transform'),
 					'canvas_offset': canvas_offset,
-					'offsetX': event.pageX - canvas_offset[0],
-					'offsetY': event.pageY - canvas_offset[1],
+					'offsetX': event.pageX - canvas_offset.left,
+					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
 					//'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
@@ -5020,8 +5020,8 @@ MC.canvas.event.groupResize = {
 
 			group_width = Math.round(target.attr('width') / grid_width),
 			group_height = Math.round(target.attr('height') / grid_height),
-			group_left = Math.round(((parent_offset.left - canvas_offset[0]) * scale_ratio + offsetX) / grid_width),
-			group_top = Math.round(((parent_offset.top - canvas_offset[1]) * scale_ratio + offsetY) / grid_height),
+			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
+			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
 
 			layout_node_data = MC.canvas_data.layout.component.node,
 			layout_group_data = MC.canvas_data.layout.component.group,
@@ -5060,7 +5060,7 @@ MC.canvas.event.groupResize = {
 		if (offsetX < 0)
 		{
 			// when resize by left,topleft, bottomleft
-			group_left = Math.round((parent_offset.left - canvas_offset[0]) * scale_ratio / grid_width);
+			group_left = Math.round((parent_offset.left - canvas_offset.left) * scale_ratio / grid_width);
 		}
 
 		// adjust group_top
@@ -5072,11 +5072,11 @@ MC.canvas.event.groupResize = {
 		{
 			if (offsetY < 0)
 			{
-				group_top = Math.round((parent_offset.top - canvas_offset[1]) * scale_ratio / grid_height);
+				group_top = Math.round((parent_offset.top - canvas_offset.top) * scale_ratio / grid_height);
 			}
 			else if (offsetY > 0)
 			{
-				group_top = Math.round(((parent_offset.top - canvas_offset[1])  * scale_ratio + offsetY) / grid_width);
+				group_top = Math.round(((parent_offset.top - canvas_offset.top)  * scale_ratio + offsetY) / grid_width);
 			}
 		}
 

@@ -16,7 +16,7 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
   $canvas.size   = ( w, h  )-> Design.__instance.canvas.size( w, h )
   $canvas.scale  = ( ratio )-> Design.__instance.canvas.scale( ratio )
-  $canvas.offset = ()-> document.getElementById("svg_canvas").offset()
+  $canvas.offset = ()-> $(document.getElementById("svg_canvas")).offset()
   $canvas.node   = ()->
     _.map Design.__instance.__canvasNodes, ( comp )->
       new CanvasElement( comp )

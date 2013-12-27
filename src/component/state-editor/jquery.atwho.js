@@ -510,7 +510,8 @@
         if (!next.length) {
           next = this.$el.find('li:first');
         }
-        return next.addClass('cur');
+        next.addClass('cur');
+        return this.adjustScroll();
       };
 
       View.prototype.prev = function() {
@@ -520,7 +521,24 @@
         if (!prev.length) {
           prev = this.$el.find('li:last');
         }
-        return prev.addClass('cur');
+        prev.addClass('cur');
+        return this.adjustScroll();
+      };
+
+      View.prototype.adjustScroll = function() {
+        var container, containerHeight, cur, heightDelta, lowerBound, offsetTop, upperBound;
+        heightDelta = 23;
+        container = this.$el.find('.atwho-view-ul');
+        cur = container.find('.cur');
+        containerHeight = container.height();
+        offsetTop = cur[0].offsetTop;
+        upperBound = container.scrollTop();
+        lowerBound = upperBound + containerHeight - heightDelta;
+        if (offsetTop < upperBound) {
+          return container.scrollTop(offsetTop);
+        } else if (offsetTop > lowerBound) {
+          return container.scrollTop(offsetTop - containerHeight + heightDelta);
+        }
       };
 
       View.prototype.show = function() {

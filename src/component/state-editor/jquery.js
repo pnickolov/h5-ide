@@ -524,6 +524,9 @@
 
       View.prototype.show = function() {
         var rect;
+        if (this.context.get_opt('at')) {
+          $('.atwho-view').hide();
+        }
         if (!this.visible()) {
           this.$el.show();
         }
@@ -749,7 +752,7 @@
       start_with_space: false,
       limit: 100,
       max_len: 200,
-      display_timeout: 200,
+      display_timeout: 0,
       onSelected: function() {}
     };
   });

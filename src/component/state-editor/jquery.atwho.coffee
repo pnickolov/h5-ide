@@ -437,12 +437,27 @@
       next = cur.next()
       next = @$el.find('li:first') if not next.length
       next.addClass 'cur'
+      this.adjustScroll()
 
     prev: ->
       cur = @$el.find('.cur').removeClass('cur')
       prev = cur.prev()
       prev = @$el.find('li:last') if not prev.length
       prev.addClass 'cur'
+      this.adjustScroll()
+
+    adjustScroll: ->
+      heightDelta = 23
+      container = @$el.find('.atwho-view-ul')
+      cur = container.find('.cur')
+      containerHeight = container.height()
+      offsetTop = cur[0].offsetTop
+      upperBound = container.scrollTop()
+      lowerBound = upperBound + containerHeight - heightDelta
+      if (offsetTop < upperBound)
+          container.scrollTop(offsetTop)
+      else if (offsetTop > lowerBound)
+          container.scrollTop(offsetTop - containerHeight + heightDelta)
 
     show: ->
       if @context.get_opt('at')

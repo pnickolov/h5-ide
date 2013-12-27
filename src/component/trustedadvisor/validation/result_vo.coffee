@@ -1,6 +1,16 @@
 
 define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
+	########## Polyfill ##########
+
+	if not Design
+		Design =
+			instance: ->
+				{
+					component: ( uid ) ->
+						MC.canvas_data.component[ uid ]
+				}
+
 	########## Functional Method ##########
 
 	_hash = ( str ) ->

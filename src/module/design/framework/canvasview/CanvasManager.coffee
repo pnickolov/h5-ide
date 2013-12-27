@@ -270,8 +270,8 @@ define [], ()->
         pos_to   = node_to.getBoundingClientRect()
 
       # Calculate port position
-      scale    = MC.canvas_property.SCALE_RATIO
-      pos_svg  = $('#svg_canvas').offset()
+      scale    = $canvas.scale()
+      pos_svg  = $canvas.offset()
 
       start0 =
         x     : Math.floor(pos_from.left - pos_svg.left + pos_from.width  / 2) * scale
@@ -294,9 +294,9 @@ define [], ()->
       else
         controlPoints = MC.canvas.route2( start0, end0 )
         if controlPoints
-          LINE_STYLE = if connection.get("lineType") is 'sg' then MC.canvas_property.LINE_STYLE else 777
+          ls = if connection.get("lineType") is 'sg' then $canvas.lineStyle() else 777
 
-          switch LINE_STYLE
+          switch ls
             when 0
               path = "M#{controlPoints[0].x} #{controlPoints[0].y} L#{controlPoints[1].x} #{controlPoints[1].y} L#{controlPoints[controlPoints.length-2].x} #{controlPoints[controlPoints.length-2].y} L#{controlPoints[controlPoints.length-1].x} #{controlPoints[controlPoints.length-1].y}"
             when 1 then path = MC.canvas._round_corner(controlPoints)

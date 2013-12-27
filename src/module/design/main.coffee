@@ -53,7 +53,6 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                         model.addTab tab_id,
                                      view.html(),
                                      model.getCanvasData(),
-                                     model.getCanvasProperty(),
                                      property_main.snapshot(),
                                      model.getOriginData(),
                                      model.getTAValidation(),

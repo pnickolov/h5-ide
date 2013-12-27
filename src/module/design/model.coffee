@@ -81,13 +81,12 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #  tab
         #############################
 
-        addTab : ( tab_id, snapshot, data, property, property_panel, origin_data, origin_ta_valid, design_model ) ->
+        addTab : ( tab_id, snapshot, data, property_panel, origin_data, origin_ta_valid, design_model ) ->
             console.log 'add'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
                 'data'            : data
-                'property'        : property
                 'property_panel'  : property_panel
                 'origin_data'     : origin_data
                 'origin_ta_valid' : origin_ta_valid
@@ -123,7 +122,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             @set 'snapshot',      MC.tab[ tab_id ].snapshot
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
-            @setCanvasProperty    MC.tab[ tab_id ].property
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
             @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
@@ -150,15 +148,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             console.log 'getCanvasData'
             #MC.canvas_data
             $.extend true, {}, MC.canvas_data
-
-        setCanvasProperty : ( property ) ->
-            console.log 'setCanvasProperty'
-            MC.canvas_property = property
-            null
-
-        getCanvasProperty : () ->
-            console.log 'getCanvasProperty'
-            MC.canvas_property
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'

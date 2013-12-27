@@ -721,11 +721,7 @@ var constant_data = {
 	//local variable for stack
 	STACK_PROPERTY:
 	{
-		sg_list: [],
-		kp_list: {},
 		original_json: '',
-		SCALE_RATIO: 1,
-		LINE_STYLE: 2, //0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
 		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},

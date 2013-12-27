@@ -14,7 +14,12 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     else
       new CanvasElement( component, quick )
 
-  $canvas.size          = ( w, h  )-> Design.__instance.canvas.size( w, h )
+  $canvas.size = ( w, h )->
+    if Design.__instance
+      return Design.__instance.canvas.size( w, h )
+    else
+      return [240, 240]
+
   $canvas.scale         = ( ratio )-> Design.__instance.canvas.scale( ratio )
   $canvas.offset        = ()-> $(document.getElementById("svg_canvas")).offset()
   $canvas.selected_node = ()-> Design.__instance.canvas.selectedNode
@@ -72,7 +77,7 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
   ### Canvas is used by $canvas to store data of svg canvas ###
   Canvas = ( size )->
-    this.sizeAry      = size
+    this.sizeAry      = size || [240, 240]
     this.offsetAry    = [0, 0]
     this.scaleAry     = 1
     this.lineStyle    = 2  # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt

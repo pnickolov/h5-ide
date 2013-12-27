@@ -69,7 +69,7 @@ define [ 'MC', 'event',
                 is_style3: null
 
             #restore line style
-            switch MC.canvas_property.LINE_STYLE
+            switch $canvas.lineStyle()
 
                 when 0
                     lines.is_style0 = true
@@ -265,11 +265,6 @@ define [ 'MC', 'event',
                     id      = MC.canvas_data.id
                     name    = MC.canvas_data.name
 
-                    # check change and save stack
-                    # ori_data = MC.canvas_property.original_json
-                    # new_data = JSON.stringify( MC.canvas.layout.save() )
-                    # if ori_data != new_data or id.indexOf('stack-') isnt 0
-                    #     #ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                     ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                     setTimeout () ->
@@ -375,11 +370,11 @@ define [ 'MC', 'event',
         #for debug
         clickOpenJSONDiff : ->
             #
-            a = MC.canvas_property.original_json.split('"').join('\\"')
-            b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
-            param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-            #
-            window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
+            # a = MC.canvas_property.original_json.split('"').join('\\"')
+            # b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
+            # param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
+            # #
+            # window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
             null
 
         clickOpenJSONView : ->
@@ -471,23 +466,19 @@ define [ 'MC', 'event',
 
 
         clickLineStyleStraight  : (event) ->
-            MC.canvas_property.LINE_STYLE = 0
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 0 )
             null
 
         clickLineStyleElbow     : (event) ->
-            MC.canvas_property.LINE_STYLE = 1
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 1 )
             null
 
         clickLineStyleBezierQ   : (event) ->
-            MC.canvas_property.LINE_STYLE = 2
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 2 )
             null
 
         clickLineStyleBezierQT  : (event) ->
-            MC.canvas_property.LINE_STYLE = 3
-            ide_event.trigger ide_event.REDRAW_SG_LINE
+            $canvas.lineStyle( 3 )
             null
 
         clickRefreshApp         : (event) ->

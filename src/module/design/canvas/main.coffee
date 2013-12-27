@@ -27,14 +27,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     #check re-render
                     view.reRender()
                     #
-                    if type is 'NEW_STACK'
-                        MC.canvas.layout.create {
-                            id       : result
-                            name     : tab_name,
-                            region   : region_name,
-                            platform : current_platform
-                        }
-                    else if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                    if type is 'OPEN_STACK' or type is 'OPEN_APP'
 
                         #compact components
                         if type is 'OPEN_STACK'
@@ -59,7 +52,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             # set analysis
                             MC.canvas.analysis MC.canvas_data
 
-                        MC.canvas.layout.init()
                         MC.aws.instance.updateStateIcon MC.canvas_data.id
 
                     # new design flow
@@ -88,7 +80,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         component = MC.canvas_data.component
                         layout    = MC.canvas_data.layout
 
-                    new Design component, layout, options
+                    new Design( component, layout, options )
+                    MC.canvas.layout.init()
                     # new design flow
 
                     #

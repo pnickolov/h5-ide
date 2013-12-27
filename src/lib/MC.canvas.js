@@ -2074,81 +2074,18 @@ MC.canvas = {
 MC.canvas.layout = {
 	init: function ()
 	{
-		var layout_data = MC.canvas.data.get("layout"),
-			has_default_kp = false,
-			connection_target_id,
-			tmp,
-			sg_uids;
-
 		MC.paper = Canvon('#svg_canvas');
 
-		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-
-		components = MC.canvas.data.get("component");
-
-		$('#svg_canvas').attr({
-			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
-			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
-		});
-
-		$('#canvas_container').css({
-			'width': layout_data.size[0] * MC.canvas.GRID_WIDTH,
-			'height': layout_data.size[1] * MC.canvas.GRID_HEIGHT
-		});
-
-		//store json to original_json
-		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
-
-		return true;
-	},
-
-	create: function (option)
-	{
-		var uid = MC.guid(),
-			canvas_size,
-			data,
-			vpc_group,
-			node_rt,
-			main_asso,
-			sg_uid,
-			acl,
-			sg,
-			kp,
-			tmp;
-
-		MC.paper = Canvon('#svg_canvas');
-
-		//clone MC.canvas.STACK_JSON to MC.canvas_data
-		MC.canvas_data = $.extend(true, {}, MC.canvas.STACK_JSON);
-
-		//clone MC.canvas.STACK_PROPERTY to MC.canvas_property
-		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
-
-		canvas_size = $canvas.size();
-
-		data = MC.canvas.data.get('component');
-
-		//set region and platform
-		if (option.id)
-		{
-			MC.canvas_data.id = option.id; //tab_id (temp for new stack)
-		}
-		MC.canvas_data.name = option.name;
-		MC.canvas_data.region = option.region;
-		MC.canvas_data.platform = option.platform;
-
-		$('#svg_canvas').attr({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
+		var canvas_size = $canvas.size();
+		var attr = {
+			'width' : canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
-		});
+		};
 
-		$('#canvas_container').css({
-			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
-			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
-		});
+		$('#svg_canvas, #canvas_container').attr( attr );
 
-		//store json to original_json
-		MC.canvas_property.original_json = JSON.stringify(MC.canvas_data);
+		// todo : remove
+		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		return true;
 	},

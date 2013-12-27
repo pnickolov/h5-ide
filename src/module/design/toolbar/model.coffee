@@ -56,8 +56,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #     stack_id: data.id
 
                     #update initial data
-                    MC.canvas_property.original_json = JSON.stringify( data )
-
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'SAVE_STACK', [id]
 
                     #update key
@@ -111,9 +109,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     MC.canvas_data.key = key
                     #
                     MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
-
-                    #update initial data
-                    MC.canvas_property.original_json = JSON.stringify( data )
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 
@@ -497,13 +492,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             id      = data.id
             name    = data.name
 
-            #check whether data change
-            ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify(data)
-            if ori_data == new_data
-                me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'SAVE_STACK', name
-                return
-
             if id.indexOf('stack-', 0) == 0   #save
                 stack_model.save_stack { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, data
 
@@ -552,11 +540,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         zoomIn : () ->
             me = this
 
-            if MC.canvas_property.SCALE_RATIO > 1
+            if $canvas.scale() > 1
                 MC.canvas.zoomIn()
 
             flag = true
-            if MC.canvas_property.SCALE_RATIO <= 1
+            if $canvas.scale() <= 1
                 flag = false
 
             me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
@@ -565,11 +553,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         zoomOut : () ->
             me = this
 
-            if MC.canvas_property.SCALE_RATIO < 1.6
+            if $canvas.scale() < 1.6
                 MC.canvas.zoomOut()
 
             flag = true
-            if MC.canvas_property.SCALE_RATIO >= 1.6
+            if $canvas.scale() >= 1.6
                 flag = false
 
             me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
@@ -635,14 +623,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         isChanged : (data) ->
-            #check if there are changes
-            ori_data = MC.canvas_property.original_json
-            new_data = JSON.stringify( data )
-
-            if ori_data != new_data
-                return true
-            else
-                return false
+            # Original version of isChanged() is a pointer comparation
+            # Meaning that most of the time, it's consider to be changed.
+            return true
 
         startApp : (region, id, name) ->
             me = this

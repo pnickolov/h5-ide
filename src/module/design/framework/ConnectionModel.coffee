@@ -80,14 +80,16 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       # Call super constructor
       ResourceModel.call(this, attr)
 
-      @__port1Comp.connect_base this
-      if @__port1Comp isnt @__port2Comp
-        @__port2Comp.connect_base this
 
       # The line wants to destroy itslef a
       if @__destroyAfterInit
         @remove()
         return this
+
+
+      @__port1Comp.connect_base this
+      if @__port1Comp isnt @__port2Comp
+        @__port2Comp.connect_base this
 
       # Draw in the end
       if @draw then @draw()
@@ -96,7 +98,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     setDestroyAfterInit : ()->
       @__destroyAfterInit = true
-      @__destroyAfterInit
+      null
 
     port : ( id, attr )->
       if not @__portDef then return ""

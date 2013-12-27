@@ -1,18 +1,22 @@
-define [ "./CanvasElement" ], ( CanvasElement )->
+define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
   Design = null
 
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
     component = Design.__instance.component(id)
+    if not component
+      component = { id : id }
+      quick = true
+
     if component.node_line
       new CanvasElement.line( component )
     else
-      new CanvasElement( component )
+      new CanvasElement( component, quick )
 
   $canvas.size   = ( w, h  )-> Design.__instance.canvas.size( w, h )
   $canvas.scale  = ( ratio )-> Design.__instance.canvas.scale( ratio )
-  $canvas.offset = ( x, y  )-> Design.__instance.canvas.offset( x, y )
+  $canvas.offset = ()-> $("#svg_canvas").offset()
   $canvas.node   = ()->
     _.map Design.__instance.__canvasNodes, ( comp )->
       new CanvasElement( comp )
@@ -21,10 +25,28 @@ define [ "./CanvasElement" ], ( CanvasElement )->
     _.map Design.__instance.__canvasGroups, ( comp )->
       new CanvasElement( comp )
 
-  $canvas.trigger = ( event, p1, p2, p3 )->
-    # TODO : QuickFix. Might improve later.
-    $("#svg_canvas").trigger( event, p1, p2, p3 )
+  $canvas.trigger = ( event )->
+    console.assert( _.isString( event ), "Invalid parameter : event " )
+
+    if CanvasEvent[event]
+      CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments) )
     null
+
+  $canvas.add = ( type, attributes, coordinate )->
+    Model = Design.modelClassForType type
+    new Model( attributes )
+    null
+
+  # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
+  CanvasEvent = {
+    CANVAS_NODE_SELECTED : ()->
+      ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+      null
+
+    SHOW_PROPERTY_PANEL : ()->
+      ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+      null
+  }
 
   window.$canvas = $canvas
 

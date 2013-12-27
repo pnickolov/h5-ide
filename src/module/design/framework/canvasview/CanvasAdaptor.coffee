@@ -36,8 +36,8 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     Model = Design.modelClassForType type
     attributes.x = coordinate.x
     attributes.y = coordinate.y
-    new Model( attributes )
-    null
+    model = new Model( attributes )
+    return { id : model.id }
 
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {

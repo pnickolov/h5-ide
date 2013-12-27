@@ -205,9 +205,8 @@ define [ "CanvasManager",
 
       attr.AvailabilityZones = _.map data.resource.AvailabilityZones || [], ( azRef )->
         # azRef might be azName
-        azComp = resolve( MC.extractID( azRef ) )
-        if azComp
-          return azComp.get("name")
+        if azRef[0] is "@"
+          return resolve( MC.extractID( azRef ) ).get("name")
         else
           return azRef
 

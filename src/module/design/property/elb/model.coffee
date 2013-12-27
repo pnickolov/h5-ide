@@ -33,6 +33,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 reg = /-[\w]/g
                 replaceFunc = (g)-> " " + g[1].toUpperCase()
+                filterFunc  = (ch)-> ch.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
                 azArr = AzModel.allPossibleAZ()
                 for az in azArr
@@ -45,9 +46,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                     if az.id
                         azComp = Design.instance().component( az.id )
-                        az.instanceCount = _.filter( azComp.children(), ( ch )->
-                            ch.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-                        ).length
+                        az.instanceCount = _.filter( azComp.children(), filterFunc ).length
 
                 attr.azArray = azArr
 

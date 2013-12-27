@@ -163,6 +163,20 @@ StateEditorView = Backbone.View.extend({
 
 			null
 
+		# create new dict input box
+		$lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
+		_.each $lastDictInputList, (lastDictInput) ->
+			that.onDictInputChange({
+				currentTarget: lastDictInput
+			})
+
+		# create new array input box
+		$lastArrayInputList = $stateItemList.find('.parameter-item.array .parameter-value')
+		_.each $lastArrayInputList, (lastArrayInput) ->
+			that.onArrayInputChange({
+				currentTarget: lastArrayInput
+			})
+
 	refreshStateView: ($stateItem) ->
 
 		that = this
@@ -249,6 +263,9 @@ StateEditorView = Backbone.View.extend({
 		}, {
 			name: '{host1.keyName}',
 			value: '{host1.keyName}'
+		}, {
+			name: '{host2.instanceId}',
+			value: '{host1.instanceId}'
 		}, {
 			name: '{host2.instanceId}',
 			value: '{host1.instanceId}'
@@ -473,7 +490,7 @@ StateEditorView = Backbone.View.extend({
 			keyInputValue = $keyInput.text()
 			valueInputValue = $valueInput.text()
 
-			if keyInputValue
+			if keyInputValue or valueInputValue
 				newDictItemHTML = that.paraDictListTpl({
 					para_value: [{
 						key: '',

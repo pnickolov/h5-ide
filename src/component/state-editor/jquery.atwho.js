@@ -527,9 +527,9 @@
 
       View.prototype.adjustScroll = function() {
         var container, containerHeight, cur, heightDelta, lowerBound, offsetTop, upperBound;
-        heightDelta = 23;
         container = this.$el.find('.atwho-view-ul');
         cur = container.find('.cur');
+        heightDelta = cur.outerHeight();
         containerHeight = container.height();
         offsetTop = cur[0].offsetTop;
         upperBound = container.scrollTop();

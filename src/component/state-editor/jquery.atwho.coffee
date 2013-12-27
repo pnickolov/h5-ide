@@ -447,9 +447,9 @@
       this.adjustScroll()
 
     adjustScroll: ->
-      heightDelta = 23
       container = @$el.find('.atwho-view-ul')
       cur = container.find('.cur')
+      heightDelta = cur.outerHeight()
       containerHeight = container.height()
       offsetTop = cur[0].offsetTop
       upperBound = container.scrollTop()

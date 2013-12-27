@@ -148,6 +148,22 @@ body {
 	opacity: 0.3;
 }
 
+#state-editor .state-edit .parameter-item.dict .parameter-dict-item:last-of-type:not(:only-of-type) {
+	opacity: 0.4;
+}
+
+#state-editor .state-edit .parameter-item.dict .parameter-dict-item:last-of-type:not(:only-of-type) > .parameter-value:focus {
+	opacity: 1.0;
+}
+
+#state-editor .state-edit .parameter-item.array .parameter-value:last-of-type:not(:only-of-type) {
+	opacity: 0.4;
+}
+
+#state-editor .state-edit .parameter-item.array .parameter-value:focus:last-of-type:not(:only-of-type) {
+	opacity: 1.0;
+}
+
 /* *************************************** state view/edit */
 
 #state-editor .state-item.view .state-edit {

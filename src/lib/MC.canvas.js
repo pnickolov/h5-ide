@@ -1976,10 +1976,10 @@ MC.canvas = {
 		return matched;
 	},
 
-	areaChild: function (node_id, node_class, start_x, start_y, end_x, end_y)
+	areaChild: function (node_id, target_type, start_x, start_y, end_x, end_y)
 	{
 		var //group_data = $canvas.group(),//groups[ node_id ],
-			group_weight = MC.canvas.GROUP_WEIGHT[ node_class ],
+			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			matched = [],
 			coordinate,
 			size;
@@ -2023,7 +2023,7 @@ MC.canvas = {
 				node_id !== item.id &&
 				(
 					$.inArray(item.type, group_weight) > -1 ||
-					item.type === node_class
+					item.type === target_type
 				) &&
 				start_x <= coordinate[0] + size[0] &&
 				end_x >= coordinate[0] &&
@@ -4465,8 +4465,8 @@ MC.canvas.event.siderbarDrag = {
 				target_offset = target.offset(),
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = $canvas.offset(),
-				node_type = target.data('type'),
-				target_type = target.data('component-type'),
+				target_type = target.data('type'),
+				node_type = target.data('component-type'),
 				platform = MC.canvas_data.platform,
 				shadow,
 				clone_node,
@@ -4484,9 +4484,9 @@ MC.canvas.event.siderbarDrag = {
 			$(document.body).append('<div id="drag_shadow"></div><div id="overlayer" class="grabbing"></div>');
 			shadow = $('#drag_shadow');
 
-			if (target_type === 'group')
+			if (node_type === 'group')
 			{
-				size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
+				size = MC.canvas.GROUP_DEFAULT_SIZE[ target_type ];
 
 				shadow
 					.css({
@@ -4495,14 +4495,14 @@ MC.canvas.event.siderbarDrag = {
 						'width': size[0] * MC.canvas.GRID_WIDTH,
 						'height': size[1] * MC.canvas.GRID_HEIGHT
 					})
-					.addClass(node_type.replace(/\./ig, '-'))
+					.addClass(target_type.replace(/\./ig, '-'))
 					.show();
 			}
 			else
 			{
 				clone_node = target.find('.resource-icon').clone();
 				shadow.append(clone_node);
-				component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
+				component_size = MC.canvas.COMPONENT_SIZE[ target_type ];
 
 				shadow
 					.css({
@@ -4514,7 +4514,7 @@ MC.canvas.event.siderbarDrag = {
 					.show();
 			}
 
-			if (node_type === 'AWS.EC2.EBS.Volume')
+			if (target_type === 'AWS.EC2.EBS.Volume')
 			{
 				if (MC.canvas.getState() === 'appedit')
 				{
@@ -4539,7 +4539,7 @@ MC.canvas.event.siderbarDrag = {
 			}
 			else
 			{
-				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ node_type ];
+				target_group_type = MC.canvas.MATCH_PLACEMENT[ platform ][ target_type ];
 
 				if (target_group_type)
 				{
@@ -4557,12 +4557,12 @@ MC.canvas.event.siderbarDrag = {
 					'mouseup': MC.canvas.event.siderbarDrag.mouseup
 				}, {
 					'target': target,
-					'target_type': target_type,
-					'canvas_offset': canvas_offset,
 					'node_type': node_type,
+					'canvas_offset': canvas_offset,
+					'target_type': target_type,
 					'shadow': shadow,
 					'scale_ratio': $canvas.scale(),
-					'component_size': target_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ node_type ]
+					'component_size': node_type === 'node' ? MC.canvas.COMPONENT_SIZE[ target_type ] : MC.canvas.GROUP_DEFAULT_SIZE[ target_type ]
 				});
 			}
 
@@ -4581,8 +4581,8 @@ MC.canvas.event.siderbarDrag = {
 			shadow = event_data.shadow[0],
 			canvas_offset = event_data.canvas_offset,
 			target_id = event_data.target[0].id,
-			target_type = event_data.target_type,
 			node_type = event_data.node_type,
+			target_type = event_data.target_type,
 			component_size = event_data.component_size,
 
 			// MC.canvas.GRID_WIDTH
@@ -4598,8 +4598,8 @@ MC.canvas.event.siderbarDrag = {
 			},
 			match_place = MC.canvas.isMatchPlace(
 				null,
-				target_type,
 				node_type,
+				target_type,
 				coordinate.x,
 				coordinate.y,
 				component_size[0],
@@ -4625,8 +4625,8 @@ MC.canvas.event.siderbarDrag = {
 		{
 			var target = $(event.data.target),
 				target_id = target.attr('id') || '',
-				target_type = target.data('component-type'),
-				node_type = target.data('type'),
+				node_type = target.data('component-type'),
+				target_type = target.data('type'),
 				canvas_offset = $canvas.offset(),
 				shadow_offset = event.data.shadow.position(),
 				node_option = target.data('option'),
@@ -4642,11 +4642,11 @@ MC.canvas.event.siderbarDrag = {
 
 			if (coordinate.x > 0 && coordinate.y > 0)
 			{
-				if (target_type === 'node')
+				if (node_type === 'node')
 				{
-					component_size = MC.canvas.COMPONENT_SIZE[ node_type ];
+					component_size = MC.canvas.COMPONENT_SIZE[ target_type ];
 
-					if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+					if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 					{
 						vpc_id = $('.AWS-VPC-VPC').attr('id');
 						vpc_data = MC.canvas_data.layout.component.group[ vpc_id ];
@@ -4663,16 +4663,16 @@ MC.canvas.event.siderbarDrag = {
 							coordinate.y = vpc_coordinate[1];
 						}
 
-						if (node_type === 'AWS.VPC.InternetGateway')
+						if (target_type === 'AWS.VPC.InternetGateway')
 						{
 							coordinate.x = vpc_coordinate[0] - (component_size[1] / 2);
 						}
-						if (node_type === 'AWS.VPC.VPNGateway')
+						if (target_type === 'AWS.VPC.VPNGateway')
 						{
 							coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
 						}
 
-						MC.canvas.add(node_type, node_option, coordinate);
+						MC.canvas.add(target_type, node_option, coordinate);
 					}
 					else
 					{
@@ -4689,7 +4689,8 @@ MC.canvas.event.siderbarDrag = {
 						if (match_place.is_matched)
 						{
 							node_option.groupUId = match_place.target;
-							new_node = MC.canvas.add(node_type, node_option, coordinate);
+
+							new_node = MC.canvas.add(target_type, node_option, coordinate);
 
 							if (new_node)
 							{
@@ -4700,18 +4701,18 @@ MC.canvas.event.siderbarDrag = {
 						{
 							// dispatch event when is not matched
 							$canvas.trigger("CANVAS_PLACE_NOT_MATCH", {
-								'type': node_type
+								'type': target_type
 							});
 						}
 					}
 				}
 
-				if (target_type === 'group')
+				if (node_type === 'group')
 				{
-					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ node_type ];
+					default_group_size = MC.canvas.GROUP_DEFAULT_SIZE[ target_type ];
 
 					// Move a little bit offset for Subnet because its port
-					if (node_type === 'AWS.VPC.Subnet')
+					if (target_type === 'AWS.VPC.Subnet')
 					{
 						//coordinate.x -= 1;
 					}
@@ -4742,7 +4743,7 @@ MC.canvas.event.siderbarDrag = {
 							MC.canvas.isBlank(
 								'group',
 								target_id,
-								node_type,
+								target_type,
 								// Enlarge a little bit to make the drop place correctly.
 								coordinate.x - 1,
 								coordinate.y - 1,
@@ -4752,8 +4753,9 @@ MC.canvas.event.siderbarDrag = {
 						)
 						{
 							node_option.groupUId = match_place.target;
-							new_node = MC.canvas.add(node_type, node_option, coordinate);
-							if (!(MC.aws.vpc.getVPCUID() && node_type === "AWS.EC2.AvailabilityZone"))
+
+							new_node = MC.canvas.add(target_type, node_option, coordinate);
+							if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
 							{
 								//has no vpc
 								MC.canvas.select(new_node.id);
@@ -4769,13 +4771,13 @@ MC.canvas.event.siderbarDrag = {
 					{
 						// dispatch event when is not matched
 						$canvas.trigger("CANVAS_PLACE_NOT_MATCH", {
-							type: node_type
+							type: target_type
 						});
 					}
 				}
 			}
 
-			if (node_type === 'AWS.VPC.InternetGateway' || node_type === 'AWS.VPC.VPNGateway')
+			if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 			{
 				event.data.shadow.animate({
 					'left': coordinate.x * MC.canvas.GRID_WIDTH + canvas_offset[0],

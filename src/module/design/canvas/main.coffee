@@ -66,12 +66,12 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                         # platform is classic
                         if options.type is Design.TYPE.Classic or options.type is Design.TYPE.DefaultVpc
-                            component = MC.canvas.DESIGN_INIT_DATA
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
                             layout    = MC.canvas.DESIGN_INIT_LAYOUT
 
                         # platform is vpc
-                        else if options.type in [ Design.TYPE.Vpc, Design.TYPE.CustomVpc ]
-                            component = MC.canvas.DESIGN_INIT_DATA_VPC
+                        else
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
                             layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 
 

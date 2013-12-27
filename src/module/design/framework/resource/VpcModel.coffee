@@ -58,7 +58,7 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
     preDeserialize : ( data, layout_data )->
 
       # Create VPC
-      new Model({
+      vpc = new Model({
 
         id    : data.uid
         name  : data.name
@@ -75,6 +75,10 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
         height : layout_data.size[1]
       })
 
+      # When creating a new VPC stack, the data has no id.
+      # This is a hack, and it should be remove in the future.
+      data.uid = vpc.id
+
       null
 
     deserialize : ( data, layout, resolve )->
@@ -88,7 +92,7 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       # DhcpOPtionsId is "" means use default dhcp
       dhcp = data.resource.DhcpOptionsId
 
-      if dhcp is ""
+      if not dhcp
         vpc.get("dhcp").setDefault()
       else if dhcp is "default"
         vpc.get("dhcp").setNone()

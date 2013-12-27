@@ -174,6 +174,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         y    : layout_data.coordinate[1]
       })
 
+      # When creating a new VPC stack, the data has no id.
+      # This is a hack, and it should be remove in the future.
+      data.uid = rtb.id
+
       null
 
 

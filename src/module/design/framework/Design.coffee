@@ -38,7 +38,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     design.canvas = new CanvasAdaptor( layout_data.size )
 
     json_data   = $.extend true, {}, json_data
-    layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
+    if layout_data.component
+      layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
+    else
+      layout_data = {}
 
     ###########################
     # Quick fix Boolean value in JSON, might removed latter
@@ -94,6 +97,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
+
+      if not uid then return null
 
       obj = that.__componentMap[ uid ]
       if obj then return obj

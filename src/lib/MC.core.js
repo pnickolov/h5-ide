@@ -307,6 +307,8 @@ var MC = {
 
 	extractID: function (uid)
 	{
+		if (!uid) { return ""; }
+
 		var result = MC._extractIDRegex.exec(uid);
 
 		return result ? result[1] : uid;

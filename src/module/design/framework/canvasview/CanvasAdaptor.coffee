@@ -14,10 +14,26 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     else
       new CanvasElement( component, quick )
 
-  $canvas.size   = ( w, h  )-> Design.__instance.canvas.size( w, h )
-  $canvas.scale  = ( ratio )-> Design.__instance.canvas.scale( ratio )
-  $canvas.offset = ()-> $(document.getElementById("svg_canvas")).offset()
-  $canvas.node   = ()->
+  $canvas.size          = ( w, h  )-> Design.__instance.canvas.size( w, h )
+  $canvas.scale         = ( ratio )-> Design.__instance.canvas.scale( ratio )
+  $canvas.offset        = ()-> $(document.getElementById("svg_canvas")).offset()
+  $canvas.selected_node = ()-> Design.__instance.canvas.selectedNode
+  $canvas.lineStyle     = (ls)->
+    if ls is undefined
+      if Design.__instance
+        return Design.__instance.canvas.lineStyle
+      else
+        return 0
+
+    Design.__instance.canvas.lineStyle = ls
+
+    if Design.__instance.shouldDraw()
+      # Update SgLine
+      _.each Design.modelClassForType("SgRuleLine").allObjects(), ( cn )->
+        cn.draw()
+    null
+
+  $canvas.node      = ()->
     _.map Design.__instance.__canvasNodes, ( comp )->
       new CanvasElement( comp )
 
@@ -56,9 +72,11 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
   ### Canvas is used by $canvas to store data of svg canvas ###
   Canvas = ( size )->
-    this.sizeAry   = size
-    this.offsetAry = [0, 0]
-    this.scaleAry  = 1
+    this.sizeAry      = size
+    this.offsetAry    = [0, 0]
+    this.scaleAry     = 1
+    this.lineStyle    = 2  # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
+    this.selectedNode = []
     this
 
   Canvas.prototype.scale = ( ratio )->

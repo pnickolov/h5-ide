@@ -75,13 +75,15 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     if type is 'NEW_STACK'
 
+                        options.type = Design.MODE.Stack
+
                         # platform is classic
-                        if options.type is Design.Type.Classic or options.type is Design.Type.DefaultVpc
+                        if options.type is Design.TYPE.Classic or options.type is Design.TYPE.DefaultVpc
                             component = MC.canvas.DESIGN_INIT_DATA
                             layout    = MC.canvas.DESIGN_INIT_LAYOUT
 
                         # platform is vpc
-                        else if options.type in [ Design.Type.Vpc, Design.Type.DefaultVpc ]
+                        else if options.type in [ Design.TYPE.Vpc, Design.TYPE.CustomVpc ]
                             component = MC.canvas.DESIGN_INIT_DATA_VPC
                             layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 

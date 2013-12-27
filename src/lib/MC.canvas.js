@@ -1401,8 +1401,8 @@ MC.canvas = {
 
 					MC.canvas_data.layout.connection[ svg_line.id ] = {
 						'target': connection_target_data,
-						'auto': true,
-						'point': [],
+						//'auto': true,
+						//'point': [],
 						'type': connection_option.type
 					};
 				}
@@ -3983,7 +3983,11 @@ MC.canvas.event.dragable = {
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
-			var new_node = $canvas.add(target_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
+			var new_node = $canvas.add(target_type, {
+				'name': MC.canvas.data.get('component')[target_id].name,
+				'groupUId': match_place.target,
+				'originalId': target_id
+			}, coordinate);
 
 			if (new_node)
 			{
@@ -4117,9 +4121,9 @@ MC.canvas.event.drawConnection = {
 								is_connected = false;
 
 								target_item = $canvas( item.id );
-								target_data = layout_node_data[ item.id ];
+								//target_data = layout_node_data[ item.id ];
 
-								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_item.type ][ target_type ];
+								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_item.type ][ parent_type ];
 
 								if ($.type(target_connection_option) !== 'array')
 								{
@@ -4130,7 +4134,7 @@ MC.canvas.event.drawConnection = {
 								{
 									if (option.from === value.to)
 									{
-										$.each(target_data.connection, function (index, data)
+										$.each(target_item.connection(), function (index, data)
 										{
 											if (option.relation === 'unique')
 											{
@@ -4167,8 +4171,9 @@ MC.canvas.event.drawConnection = {
 							{
 								is_connected = false;
 
-								target_data = layout_component_data[ item.getAttribute('data-type') ][ item.id ];
-								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_data.type ][ node_class ];
+								target_item = $canvas( item.id );
+								//target_data = layout_component_data[ item.getAttribute('data-type') ][ item.id ];
+								target_connection_option = MC.canvas.CONNECTION_OPTION[ target_item.type ][ parent_type ];
 
 								if ($.type(target_connection_option) !== 'array')
 								{
@@ -4179,7 +4184,7 @@ MC.canvas.event.drawConnection = {
 								{
 									if (option.from === value.to)
 									{
-										$.each(target_data.connection, function (index, data)
+										$.each(target_item.connection(), function (index, data)
 										{
 											if (option.relation === 'unique')
 											{

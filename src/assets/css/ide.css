@@ -4678,49 +4678,39 @@ a.action-link:hover {
 /* written by song */
 
 /* elb listener set */
-#accordion-group-elb-property-listener-main .accordion-body {
-	padding: 0;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-main {
+.elb-property-listener {
 	border-bottom: 1px #292929 solid;
 }
 
-#accordion-group-elb-property-listener .accordion-body {
+.elb-property-listener .accordion-body {
 	padding: 0;
 	margin: 0;
 }
 
-#accordion-group-elb-property-listener .selectbox {
+.elb-property-listener .selectbox {
+	width: 130px !important;
+}
+
+.elb-property-listener .dropdown-toggle {
 	width: 130px;
 }
 
-#accordion-group-elb-property-listener .dropdown-toggle {
-	width: 130px;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-item-1 {
+.elb-property-listener-item-1 {
 	float: left;
 	width: 150px;
-	/*margin-left: 10px;*/
 }
 
-#accordion-group-elb-property-listener .elb-property-listener-item-2 {
+.elb-property-listener-item-2 {
 	float: left;
 	width: 50px;
 	margin-left: 10px;
 }
 
-#accordion-group-elb-property-listener input {
-	width: 40px;
-	/*margin-top: 10px;*/
+.elb-property-listener input {
+	width: 40px !important;
 }
 
-#accordion-group-elb-property-listener .left {
-	display: block;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-item-remove {
+.elb-property-listener-item-remove {
 	position : absolute;
 	right    : 0;
 
@@ -4736,7 +4726,7 @@ a.action-link:hover {
 	cursor : pointer;
 }
 
-#accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
+.elb-property-listener-item-remove:hover {
 	background-color: rgba(0,0,0,.1);
 	color: #F74A48;
 }

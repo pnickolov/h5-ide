@@ -1,11 +1,11 @@
-<article id="elb-property-detail">
+<article>
 
 	<div class="option-group-head expand">{{ i18n "PROP_ELB_DETAILS" }}</div>
 	<div class="option-group" data-bind="true" >
 		<section class="property-control-group">
 			<label class="left" for="property-elb-name" >{{ i18n "PROP_ELB_NAME" }}</label>
 			<span class="required-input right">{{ i18n "PROP_ELB_REQUIRED" }}</span>
-			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{ name }}" id="property-elb-name"/>
+			<input data-ignore="true" data-required-rollback="true" maxlength="18" class="input elb-name"  type="text" value="{{name}}" id="property-elb-name"/>
 		</section>
 
 		{{#if isVpc}}
@@ -38,30 +38,74 @@
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
-	<div class="option-group" data-bind="true">
-		<div id="accordion-group-elb-property-listener"></div>
-		<a href="javascript:void(0)" id="elb-property-listener-content-add" class="add-to-list action-link">
+	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list">
+		{{#each listeners}}
+		<li class="elb-property-listener">
+			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listener" {{#unless @index}}style="display:none;"{{/unless}}></div>
+
+			<div class="property-control-group clearfix">
+				<div class="elb-property-listener-item-1">
+					<label class="left">Load Balancer Protocol</label>
+					<div class="selectbox elb-property-elb-protocol">
+						<div class="selection">{{protocol}}</div>
+						<ul class="dropdown">
+							<li class="item {{#ifCond protocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
+							<li class="item {{#ifCond protocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
+							<li class="item {{#ifCond protocol 'TCP'}}selected{{/ifCond}}">TCP</li>
+							<li class="item {{#ifCond protocol 'SSL'}}selected{{/ifCond}}">SSL</li>
+						</ul>
+					</div>
+				</div>
+				<div class="elb-property-listener-item-2">
+					<label class="left">Port</label>
+					<input class="input elb-property-elb-port tooltip" data-tooltip="25, 80, 443 or 1024 - 65535" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+				</div>
+			</div>
+
+			<div class="property-control-group clearfix">
+				<div class="left elb-property-listener-item-1">
+					<label class="left">Instance Protocol</label>
+					<div class="selectbox elb-property-instance-protocol">
+						<div class="selection">{{instanceProtocol}}</div>
+						<ul class="dropdown">
+							<li class="item {{#ifCond protocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
+							<li class="item {{#ifCond protocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
+							<li class="item {{#ifCond protocol 'TCP'}}selected{{/ifCond}}">TCP</li>
+							<li class="item {{#ifCond protocol 'SSL'}}selected{{/ifCond}}">SSL</li>
+						</ul>
+					</div>
+				</div>
+				<div class="left elb-property-listener-item-2">
+					<label class="left">Port</label>
+					<input class="input elb-property-instance-port tooltip" data-tooltip="1 - 65535" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+				</div>
+			</div>
+		</li>
+		{{/each}}
+		</ul>
+		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">
 			+ {{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}
 		</a>
-		<div id="elb-property-listener-cert-main">
-			<div class="property-control-group clearfix">
-				<h5 >{{ i18n "PROP_ELB_BTN_ADD_SERVER_CERTIFICATE"}}</h5>
+
+		<div id="elb-property-listener-cert-main" {{#if showCert}}style="display:block;"{{/if}}>
+			<div class="property-control-group">
+				<h5>{{ i18n "PROP_ELB_BTN_ADD_SERVER_CERTIFICATE"}}</h5>
 			</div>
 			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
-				<input class="input" value="{{server_cert.name}}" type="text" id="elb-property-cert-name-input"/>
+				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+				<input class="input" value="{{sslCert.name}}" type="text" id="elb-property-cert-name-input"/>
 			</div>
 			<div class="property-control-group clearfix">
-				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.prikey}}" id="elb-property-cert-privatekey-input"/>
+				<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-privatekey-input">{{sslCert.key}}</textarea>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.pubkey}}" id="elb-property-cert-publickey-input"/>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-publickey-input">{{sslCert.body}}</textarea>
 			</div>
 			<div class="property-control-group clearfix">
 				<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" value="{{server_cert.chain}}" id="elb-property-cert-chain-input"/>
+				<textarea class="input elb-property-cert-input tooltip" data-tooltip="PEM Encoded" id="elb-property-cert-chain-input">{{sslCert.chain}}</textarea>
 			</div>
 		</div>
 	</div>
@@ -70,7 +114,7 @@
 	<div class="option-group" data-bind="true" data-validate="parsley" >
 		<section class="property-control-group">
 			<label>{{ i18n "PROP_ELB_PING_PROTOCOL" }}</label>
-			<div class="selectbox selectbox-mega mgt5" id="elb-property-health-protocol-select">
+			<div class="selectbox mgt5" id="elb-property-health-protocol-select">
 				<div class="selection">{{pingProtocol}}</div>
 				<ul class="dropdown" tabindex="-1">
 					<li class="item{{#ifCond pingProtocol 'TCP'}} selected{{/ifCond}}" data-id="TCP">TCP</li>

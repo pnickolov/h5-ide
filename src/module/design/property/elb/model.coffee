@@ -21,6 +21,14 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             attr.pingPort     = pingArr[1]
             attr.pingPath     = pingArr[2]
 
+            if attr.sslCert
+                attr.sslCert = attr.sslCert.toJSON()
+
+            # See if we need to should certificate
+            for i in attr.listeners
+                if i.protocol is "SSL" or i.protocol is "HTTPS"
+                    attr.showCert = true
+                    break
 
             # Get AZ List
             if not attr.isVpc
@@ -52,12 +60,6 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             @set attr
             null
-
-            # #Listener
-            # listenerAry = elb_data.get 'ListenerDescriptions'
-            # this.set 'listener_detail', {
-            #     listenerAry: listenerAry
-            # }
 
         setScheme   : ( value ) ->
             value = value is "internal"
@@ -100,94 +102,17 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             Design.instance().component( @get("uid") ).set("healthyThreshold", value )
             null
 
-        setListenerAry: ( value ) ->
-            console.log 'setHealthHealth = ' + value
-
-            uid = @get 'uid'
-
-            #clean ami
-            currentCert = this.getCurrentCert( uid )
-            delCertComp = true
-            if currentCert
-                currentCertUID = currentCert.uid
-                _.each value, (obj, index) ->
-                    elbProtocolValue = obj.Listener.Protocol
-                    if elbProtocolValue isnt 'HTTPS' and elbProtocolValue isnt 'SSL'
-                        value[index].Listener.SSLCertificateId = ''
-                    else
-                        delCertComp = false
-                        value[index].Listener.SSLCertificateId = '@' + currentCertUID + '.resource.ServerCertificateMetadata.Arn'
-                    null
-
-                if delCertComp
-                    if Design.instance().component( currentCertUID ) then Design.instance().component( currentCertUID ).remove()
-
-            @elb.set 'ListenerDescriptions', value
-            MC.aws.elb.updateRuleToElbSG uid
-
+        setListener: ( idx, value ) ->
+            Design.instance().component( @get("uid") ).setListener( idx, value )
             null
 
-        getCurrentCert: ( uid ) ->
-
-            console.log 'getCurrentCert'
-
-            if not uid
-                uid = @get 'uid'
-
-            certUID = ''
-            listenerAry = @elb.get 'ListenerDescriptions'
-            _.each listenerAry, (obj) ->
-                certId = obj.Listener.SSLCertificateId
-                if certId != ''
-                    try
-                        certUID = certId.split('.')[0].slice(1)
-                        return false
-                    catch err
-
-            Design.instance().component( certUID )
-
-
-        setListenerCert: ( value ) ->
-
-            uid = @get 'uid'
-
-            listenerAry = @elb.get 'ListenerDescriptions'
-
-            currentCertUID = ''
-
-            currentCert = this.getCurrentCert(uid)
-            if currentCert and currentCert.id
-                currentCertUID = currentCert.id
-
-                #clean ami
-                if (!value.name && !value.resource.PrivateKey && !value.resource.CertificateBody)
-                    if Design.instance().component( currentCertUID ) then Design.instance().component( currentCertUID ).remove()
-
-                    _.each listenerAry, (obj, index) ->
-                        ListenerDescriptions = @elb.get 'ListenerDescriptions'
-                        ListenerDescriptions[index].Listener.SSLCertificateId = ''
-                        @elb.set 'ListenerDescriptions', ListenerDescriptions
-                        null
-            else
-                currentCertUID = MC.guid()
-                #currentCert = $.extend(true, {}, MC.canvas.SRVCERT_JSON).data
-
-            if value and value.name and value.resource.PrivateKey and value.resource.CertificateBody
-                currentCert.id = currentCertUID
-                currentCert.name = value.name
-                currentCert.PrivateKey = value.resource.PrivateKey
-                currentCert.CertificateBody = value.resource.CertificateBody
-                currentCert.CertificateChain = value.resource.CertificateChain
-                currentCert.ServerCertificateMetadata.ServerCertificateName = value.name
-
-                CertificateModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
-                certificate = new AWS_IAM_ServerCertificate currentCert
-
-                @elb.associate certificate
-
+        removeListener : ( idx )->
+            Design.instance().component( @get("uid") ).removeListener( idx )
             null
 
-
+        setCert : ( value )->
+            Design.instance().component( @get("uid") ).setSslCert( value )
+            null
 
         updateElbAZ : ( azArray )->
             Design.instance().component( @get("uid") ).set("AvailabilityZones", azArray )

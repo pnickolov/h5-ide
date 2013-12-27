@@ -29,30 +29,30 @@ define [ '../base/view',
     ElbView = PropertyView.extend {
 
         events   :
-            'change #property-elb-name' : 'elbNameChange'
+            'change #property-elb-name'  : 'elbNameChange'
             'change #elb-scheme-select1' : "schemeSelectChange"
             'change #elb-scheme-select2' : "schemeSelectChange"
 
             'OPTION_CHANGE #elb-property-health-protocol-select' : "healthProtocolSelect"
-            'change #property-elb-health-port' : 'healthPortChanged'
-            'change #property-elb-health-path' : 'healthPathChanged'
+            'change #property-elb-health-port'     : 'healthPortChanged'
+            'change #property-elb-health-path'     : 'healthPathChanged'
             'change #property-elb-health-interval' : 'healthIntervalChanged'
-            'change #property-elb-health-timeout' : 'healthTimeoutChanged'
+            'change #property-elb-health-timeout'  : 'healthTimeoutChanged'
+
+            'OPTION_CHANGE .elb-property-elb-protocol'      : 'protocolChanged'
+            'OPTION_CHANGE .elb-property-instance-protocol' : 'protocolChanged'
+            'change .elb-property-elb-port'                 : 'portChanged'
+            'change .elb-property-instance-port'            : 'portChanged'
 
             'click #elb-property-listener-content-add' : 'listenerItemAddClicked'
-            'OPTION_CHANGE .elb-property-listener-elb-protocol-select' : 'listenerItemChanged'
-            'OPTION_CHANGE .elb-property-listener-instance-protocol-select' : 'listenerItemChanged'
-            'change .elb-property-listener-elb-port-input' : 'listenerItemChanged'
-            'change .elb-property-listener-instance-port-input' : 'listenerItemChanged'
             'click .elb-property-listener-item-remove' : 'listenerItemRemovedClicked'
 
-            'change #elb-property-cert-name-input' : 'listenerCertChanged'
+            'change #elb-property-cert-name-input'       : 'listenerCertChanged'
             'change #elb-property-cert-privatekey-input' : 'listenerCertChanged'
-            'change #elb-property-cert-publickey-input' : 'listenerCertChanged'
-            'change #elb-property-cert-chain-input' : 'listenerCertChanged'
+            'change #elb-property-cert-publickey-input'  : 'listenerCertChanged'
+            'change #elb-property-cert-chain-input'      : 'listenerCertChanged'
 
             'change .property-elb-az-checkbox' : 'azCheckChanged'
-
 
             'mousedown .slider .thumb' : "sliderMouseDown"
             'mousedown .slider li'     : "sliderSelect"
@@ -66,19 +66,6 @@ define [ '../base/view',
 
             @updateSlider( $('#elb-property-slider-unhealthy'), @model.get('unHealthyThreshold') - 2)
             @updateSlider( $('#elb-property-slider-healthy'), @model.get('healthyThreshold') - 2)
-
-            # #Init Listener List
-
-            # listenerAry = @model.get('listener_detail').listenerAry
-
-            # Canremove = false
-            # _.each listenerAry, (originObj) ->
-            #     listener = _.extend {}, originObj.Listener
-            #     listener.Canremove = Canremove
-            #     itemTpl = MC.template.elbPropertyListenerItem(listener)
-            #     $('#accordion-group-elb-property-listener').append itemTpl
-            #     if !Canremove then Canremove = true
-            #     null
 
             @model.attributes.name
 
@@ -146,16 +133,96 @@ define [ '../base/view',
                 @model.setHealthHealth value
 
         listenerItemAddClicked : ( event ) ->
-            itemTpl = MC.template.elbPropertyListenerItem({
-                "LoadBalancerPort": "",
-                "InstanceProtocol": "HTTP",
-                "Protocol": "HTTP",
-                "SSLCertificateId": "",
-                "InstancePort":"",
-                "Canremove":true
-            })
-            $('#accordion-group-elb-property-listener').append itemTpl
+            $li = $("#elb-property-listener-list").children().eq(0).clone()
+            $li.find(".elb-property-listener-item-remove").show()
+            $selectbox = $li.find("ul")
+            $selectbox.children(".selected").removeClass("selected")
+            $selectbox.children(":first-child").addClass("selected")
+            $selectbox.prev(".selection").text("HTTP")
+            $('#elb-property-listener-list').append $li
             null
+
+        updateListener : ( $li )->
+            obj = {
+                port : $li.find(".elb-property-elb-port").val()
+                protocol : $li.find(".elb-property-elb-protocol .selected").text()
+                instancePort : $li.find(".elb-property-instance-port").val()
+                instanceProtocol : $li.find(".elb-property-instance-protocol .selected").text()
+            }
+
+            @model.setListener $li.index(), obj
+            @updateCertView()
+            null
+
+        protocolChanged : ( event )->
+            $protocol = $( event.currentTarget )
+            protocol = $protocol.find(".selected").text()
+            port = if protocol is "HTTPS" or protocol is "SSL" then 443 else 80
+            $protocol.parent().siblings().find("input").val( port )
+
+            $otherSelected = $protocol.closest(".property-control-group").siblings().find("selectbox .selected")
+            otherProtocol = $otherSelected.text()
+
+            layerMap =
+                'HTTP'  : 'application'
+                'HTTPS' : 'application'
+                'TCP'   : 'transport'
+                'SSL'   : 'transport'
+            switchMap =
+                'HTTP'  : 'TCP'
+                'HTTPS' : 'SSL'
+                'TCP'   : 'HTTP'
+                'SSL'   : 'HTTPS'
+
+            if layerMap[ protocol ] isnt layerMap[ otherProtocol ]
+                newProtocol = switchMap[otherProtocol]
+                $otherProtocol = $otherSelected.removeClass(".selected").siblings().filter ()->
+                    $(this).text() is newProtocol
+
+                $otherProtocol.addClass("selected")
+                $otherProtocol.closest(".selectbox").children(".selection").text( newProtocol )
+
+                port = if newProtocol is "HTTPS" or newProtocol is "SSL" then 443 else 80
+                $otherProtocol.closest(".property-control-group").siblings().find("input").val( port )
+
+
+
+            @updateListener( $protocol.closest("li") )
+            null
+
+        portChanged : ( event )->
+            $input = $( event.currentTarget )
+
+            if $input.hasClass("elb-property-elb-port")
+                validate = ( val )->
+                    val = parseInt( val, 10 )
+                    if not ( val is 25 or val is 80 or val is 443 or ( 1023 < val < 65536 ) )
+                        return 'Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive'
+            else
+                validate = ( val )->
+                    val = parseInt( val, 10 )
+                    if not ( 0 < val < 65536 )
+                        return 'Instance Port must be between 1 and 65535'
+
+                    # isThisSafe = _.contains [ 'https', 'ssl' ], instanceProtocolValue.toLowerCase()
+                    # i = 0
+                    # for listener in listenerAry
+                    #     listener = listener.Listener
+                    #     samePort = listener.InstancePort is instancePortValue
+                    #     isLisenerSafe = _.contains [ 'https', 'ssl' ], listener.InstanceProtocol.toLowerCase()
+                    #     if samePort and isLisenerSafe isnt isThisSafe and index > i
+                    #         if not isLisenerSafe
+                    #             prefix = 'in'
+                    #         return "The Instance Port specified was previous associated with #{prefix}secure protocol so this listener must also use a #{prefix}secure protocol for this Instance Port"
+
+                    #     i = i + 1
+
+            $input.parsley "custom", validate
+
+            if $input.parsley "validate"
+                @updateListener( $input.closest("li") )
+            null
+
 
         listenerItemChanged : ( event ) ->
 
@@ -224,31 +291,7 @@ define [ '../base/view',
                 elbPort = that.find('.elb-property-listener-elb-port-input')
                 instancePort = that.find('.elb-property-listener-instance-port-input')
 
-                elbPort.parsley 'custom', ( val ) ->
-                    val = + val
-                    allowPorts = [ 25, 80, 443]
-                    if not ( (_.contains allowPorts, val) or 1024 <= val <= 65535 )
-                        return 'Load Balancer Port must be either 25,80,443 or 1024 to 65535 inclusive'
 
-                instancePort.parsley 'custom', ( val ) ->
-                    val = + val
-                    if val < 1 or val > 65535
-                        return 'Instance Port must be between 1 and 65535'
-                    isThisSafe = _.contains [ 'https', 'ssl' ], instanceProtocolValue.toLowerCase()
-                    i = 0
-                    for listener in listenerAry
-                        listener = listener.Listener
-                        samePort = listener.InstancePort is instancePortValue
-                        isLisenerSafe = _.contains [ 'https', 'ssl' ], listener.InstanceProtocol.toLowerCase()
-                        if samePort and isLisenerSafe isnt isThisSafe and index > i
-                            if not isLisenerSafe
-                                prefix = 'in'
-                            return "The Instance Port specified was previous associated with #{prefix}secure protocol so this listener must also use a #{prefix}secure protocol for this Instance Port"
-
-                        i = i + 1
-
-                elbPortValidate = elbPort.parsley 'validate'
-                instancePortValidate = instancePort.parsley 'validate'
 
                 if elbPortValidate and instancePortValidate and !isNaN(parseInt(elbPortValue, 10)) and !isNaN(parseInt(instancePortValue, 10))
 
@@ -270,52 +313,37 @@ define [ '../base/view',
 
                 null
 
-            #show/hide cert panel
-            certPanelElem = $('#elb-property-listener-cert-main')
-            if isShowCertPanel
-                certPanelElem.show()
-                me.listenerCertChanged()
-            else certPanelElem.hide()
 
-            @model.setListenerAry listenerAry
-
+            @model.setListenerAry idx, listener
+            @updateCertView()
             null
 
         listenerItemRemovedClicked : ( event ) ->
-            elem = $(event.target)
-            elem.parent('.elb-property-listener-main').remove()
-            this.listenerItemChanged()
-            this.trigger 'REFRESH_SG_LIST'
-
-        listenerCertChanged : ( event ) ->
-            certNameValue = $('#elb-property-cert-name-input').val()
-            certPrikeyValue = $('#elb-property-cert-privatekey-input').val()
-            certPubkeyValue = $('#elb-property-cert-publickey-input').val()
-            certChainValue = $('#elb-property-cert-chain-input').val()
-
-            newCertObj = {
-                name: certNameValue,
-                resource: {
-                    PrivateKey: certPrikeyValue,
-                    CertificateBody: certPubkeyValue,
-                    CertificateChain: certChainValue
-                }
-            }
-
-            # if certNameValue and certPrikeyValue and certPubkeyValue
-            @model.setListenerCert newCertObj
-
+            $li = $( event.currentTarget ).closest("li")
+            @model.removeListener( $li.index() )
+            $li.remove()
+            @updateCertView()
             null
 
-        refreshCertPanel : ( certObj ) ->
+        listenerCertChanged : ( event ) ->
+            @model.setCert {
+                name  : $('#elb-property-cert-name-input').val()
+                key   : $('#elb-property-cert-privatekey-input').val()
+                body  : $('#elb-property-cert-publickey-input').val()
+                chain : $('#elb-property-cert-chain-input').val()
+            }
+            null
 
-            $('#elb-property-cert-name-input').val(certObj.get 'name')
-            $('#elb-property-cert-privatekey-input').val(certObj.get 'PrivateKey')
-            $('#elb-property-cert-publickey-input').val(certObj.get 'CertificateBody')
-            $('#elb-property-cert-chain-input').val(certObj.get 'CertificateChain')
+        updateCertView : ()->
+            show = false
 
-            $('#elb-property-listener-cert-main').show()
+            $("#elb-property-listener-list").children().each ()->
+                protocol = $(this).find(".elb-property-elb-protocol .selected").text()
+                if protocol is "HTTPS" or protocol is "SSL"
+                    show = true
+                    return false
 
+            $("#elb-property-listener-cert-main").toggle( show )
             null
 
         azCheckChanged : ( event ) ->

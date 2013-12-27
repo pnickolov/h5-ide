@@ -2,12 +2,13 @@
 define [ "CanvasManager",
          "Design",
          "constant",
+         "../ResourceModel",
          "../ComplexResModel",
          "./VpcModel",
          "./SgModel",
          "../connection/SgAsso",
          "../connection/ElbAsso"
-], ( CanvasManager, Design, constant, ComplexResModel, VpcModel, SgModel, SgAsso )->
+], ( CanvasManager, Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
 
   Model = ComplexResModel.extend {
 
@@ -62,6 +63,10 @@ define [ "CanvasManager",
         vpc.addChild( @ )
       null
 
+    remove : ()->
+      sslCert = @get("sslCert")
+      if sslCert then sslCert.remove()
+
     getElbSg : ()-> @__elbSg
 
     setName : ( name )->
@@ -74,6 +79,37 @@ define [ "CanvasManager",
 
       if @draw then @draw()
       null
+
+    setListener : ( idx, value )->
+      console.assert( value.port and value.protocol and value.instanceProtocol and value.instancePort, "Invalid parameter for setListener" )
+
+      listeners = @get("listeners")
+      if idx >= listeners.length
+        listeners.push value
+      else
+        listeners[ idx ] = $.extend {}, value
+
+      null
+
+    removeListener : ( idx ) ->
+      if idx is 0 then return
+      listeners = @get("listeners")
+      listeners.splice( idx, 1 )
+      @set "listeners", listeners
+      null
+
+    setSslCert : ( cert )->
+      console.assert( cert.body isnt undefined and cert.chain isnt undefined and cert.key isnt undefined and cert.name isnt undefined, "Invalid parameter for setSslCert" )
+
+      sslCert = @get("sslCert")
+      if sslCert
+        for key, value of cert
+          sslCert.set(key, value)
+      else
+        sslCert = new ResourceModel( cert )
+        @set("sslCert", sslCert)
+      null
+
 
     getHealthCheckTarget : ()->
       # Format ping
@@ -199,9 +235,23 @@ define [ "CanvasManager",
 
   }, {
 
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_ELB
+    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_ELB, constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate ]
 
     deserialize : ( data, layout_data, resolve )->
+
+      # Handle Certificate
+      if data.type is constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate
+        cert = new ResouceModel({
+          uid   : data.uid
+          name  : data.name
+          body  : data.resource.CertificateBody
+          chain : data.resource.CertificateChain
+          key   : data.resource.PrivaterKey
+          arn   : data.resource.ServerCertificateMetadata.Arn
+        })
+        return
+
+      # Handle Elb
       attr =
         id    : data.uid
         name  : data.name
@@ -211,10 +261,12 @@ define [ "CanvasManager",
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing
+        listeners : []
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
+      # AZ is used in classic mode
       attr.AvailabilityZones = _.map data.resource.AvailabilityZones || [], ( azRef )->
         # azRef might be azName
         if azRef[0] is "@"
@@ -223,6 +275,18 @@ define [ "CanvasManager",
           return azRef
 
       elb = new Model( attr )
+
+      # listener
+      for l in data.resource.ListenerDescriptions || []
+        l = l.Listener
+        attr.listeners.push {
+          port             : l.LoadBalancerPort
+          protocol         : l.Protocol
+          instanceProtocol : l.InstanceProtocol
+          instancePort     : l.InstancePort
+        }
+        if l.SSLCertificateId
+          attr.sslCert = resolve( MC.extractID( l.SSLCertificateId ) )
 
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )

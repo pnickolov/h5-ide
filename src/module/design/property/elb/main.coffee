@@ -26,10 +26,6 @@ define [ '../base/main',
             null
 
         afterLoadStack : ()->
-            # currentCert = @model.getCurrentCert()
-            # if currentCert
-            #     @view.refreshCertPanel currentCert
-
             sglist_main.loadModule @model
             null
 

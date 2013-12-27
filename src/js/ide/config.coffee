@@ -53,7 +53,6 @@ require.config {
 		#canvas
 		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
-		'MC.canvas.line'     : 'lib/MC.canvas.line'
 
 		#############################################
 		# lib/aws logic handler
@@ -286,9 +285,6 @@ require.config {
 
 		'MC.canvas.constant':
 			deps       : [ 'MC.canvas' ]
-
-		'MC.canvas.line':
-			deps		: ['MC.canvas', 'MC.canvas.constant']
 
 		#############################################
 		# UI

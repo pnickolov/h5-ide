@@ -56,15 +56,10 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             # set ami layout
                             MC.aws.ami.setLayout MC.canvas_data
 
-                            # init Line
-                            model.initLine true
-
                             # set analysis
                             MC.canvas.analysis MC.canvas_data
 
                         MC.canvas.layout.init()
-                        # model.initLine()
-                        # model.reDrawSgLine()
                         MC.aws.instance.updateStateIcon MC.canvas_data.id
 
                     # new design flow
@@ -115,8 +110,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
                 #redraw
                 MC.canvas.layout.init()
-                model.initLine()
-                model.reDrawSgLine()
                 #re set
                 #update instance icon of app
                 MC.aws.instance.updateStateIcon MC.canvas_data.id
@@ -134,9 +127,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
             ide_event.onLongListen ide_event.DELETE_LINE_TO_CANVAS, ( line_id ) ->
                 MC.canvas.remove $("#" + line_id)[0]
-
-            ide_event.onLongListen ide_event.REDRAW_SG_LINE, () ->
-                model.reDrawSgLine()
 
             ide_event.onLongListen ide_event.NEED_IGW, ( component )->
                 model.askToAddIGW()

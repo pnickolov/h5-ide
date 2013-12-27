@@ -1,5 +1,5 @@
 
-define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon', 'MC.canvas.line'], function() {
+define( ['jquery', 'MC.canvas', 'MC.canvas.constant', 'canvon'], function() {
 var listen = function ()
 {
 	var canvas_state = MC.canvas.getState(),

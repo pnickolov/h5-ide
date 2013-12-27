@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeModel" ], ( ComplexResModel, CanvasManager, Design, constant, VolumeModel )->
 
   Model = ComplexResModel.extend {
 
@@ -105,6 +105,18 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       model = new Model( attr )
 
       model.associate resolve
+
+      # Create Volume for
+      for volume in data.resource.BlockDeviceMapping || []
+        _attr =
+          deviceName : volume.DeviceName
+          snapshotId : volume.Ebs.SnapshotId
+          volumeSize : volume.Ebs.VolumeSize
+        _opt =
+          isForLC : true
+          owner   : model
+        new VolumeModel(_attr, _opt)
+
 
       null
 

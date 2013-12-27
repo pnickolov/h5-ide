@@ -24,6 +24,8 @@ StateEditorView = Backbone.View.extend({
 		'click .state-save': 'onStateSaveClick'
 		'click .parameter-item .parameter-remove': 'onParaRemoveClick'
 
+		'click .plain-text': 'getPlainTxt'
+
 	initialize: () ->
 
 		this.compileTpl()
@@ -799,6 +801,9 @@ StateEditorView = Backbone.View.extend({
 
 	onStateSaveClick: (event) ->
 
+		# test getPlainTxt
+		#@getPlainTxt()
+
 		that = this
 		data = that.saveStateData()
 		console.log(data)
@@ -823,6 +828,30 @@ StateEditorView = Backbone.View.extend({
 			$paraItem.addClass('disabled')
 
 		null
+
+	getPlainTxt : ->
+		console.log 'getPlainTxt', $ '#xxxxx'
+
+		$dom        = $ '#xxxxx'
+		$conent_arr = $dom.children()
+		new_str     = ''
+
+		$conent_arr.each ( index, item ) ->
+			$item  = $ item
+
+			$item.each ( index, values ) ->
+				$values = $ values
+				new_str += $values.html().replace( /<span>/igm, '' )
+										 .replace( /<\/span>/igm, '' )
+										 .replace( /<span contenteditable="true">/igm, '' )
+										 .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
+										 .replace( /&lt;/igm, '<' )
+										 .replace( /&gt;/igm, '>' )
+										 .replace( /<br>/igm, '\n' )
+										 .replace( /&nbsp;/igm, ' ' )
+
+		console.log 'new_str', new_str
+		new_str
 
 })
 

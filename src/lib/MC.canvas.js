@@ -2158,14 +2158,14 @@ MC.canvas.layout = {
 		// if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
 		// {
 		// 	//has vpc (create vpc, az, and subnet by default)
-		// 	vpc_group = MC.canvas.add('AWS.VPC.VPC', {
+		// 	vpc_group = $canvas.add('AWS.VPC.VPC', {
 		// 		'name': 'vpc'
 		// 	}, {
 		// 		'x': 5,
 		// 		'y': 3
 		// 	});
 
-		// 	node_rt = MC.canvas.add('AWS.VPC.RouteTable', {
+		// 	node_rt = $canvas.add('AWS.VPC.RouteTable', {
 		// 		'name': 'RT-0',
 		// 		'groupUId': vpc_group.id,
 		// 		'main' : true
@@ -2748,7 +2748,7 @@ MC.canvas.volume = {
 			{
 				data_option = target.data('option');
 				data_option['instance_id'] = target_id;
-				new_volume = MC.canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				new_volume = $canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
 				if (new_volume === null)
 				{
@@ -4042,7 +4042,7 @@ MC.canvas.event.dragable = {
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
-			var new_node = MC.canvas.add(target_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
+			var new_node = $canvas.add(target_type, {'name': MC.canvas.data.get('component')[target_id].name, 'groupUId': match_place.target, 'originalId': target_id}, coordinate);
 
 			if (new_node)
 			{
@@ -4672,7 +4672,7 @@ MC.canvas.event.siderbarDrag = {
 							coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
 						}
 
-						MC.canvas.add(target_type, node_option, coordinate);
+						$canvas.add(target_type, node_option, coordinate);
 					}
 					else
 					{
@@ -4690,7 +4690,7 @@ MC.canvas.event.siderbarDrag = {
 						{
 							node_option.groupUId = match_place.target;
 
-							new_node = MC.canvas.add(target_type, node_option, coordinate);
+							new_node = $canvas.add(target_type, node_option, coordinate);
 
 							if (new_node)
 							{
@@ -4754,7 +4754,7 @@ MC.canvas.event.siderbarDrag = {
 						{
 							node_option.groupUId = match_place.target;
 
-							new_node = MC.canvas.add(target_type, node_option, coordinate);
+							new_node = $canvas.add(target_type, node_option, coordinate);
 							if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
 							{
 								//has no vpc

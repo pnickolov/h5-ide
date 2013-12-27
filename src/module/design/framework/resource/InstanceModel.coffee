@@ -92,6 +92,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
             'class'      : 'port port-blue port-instance-sg port-instance-sg-left'
             'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'instance-sg' #for identify port
+            'data-position' : 'left' #port position: for calc point of junction
+            'data-type'     : 'sg'   #color of line
+            'data-direction': 'in'   #direction
           }),
 
           # right port(blue)
@@ -100,6 +104,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
             'class'      : 'port port-blue port-instance-sg port-instance-sg-right'
             'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+            'data-name'     : 'instance-sg'
+            'data-position' : 'right'
+            'data-type'     : 'sg'
+            'data-direction': 'out'
           })
         )
 
@@ -111,6 +119,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
               'class'      : 'port port-green port-instance-attach'
               'transform'  : 'translate(78, 45)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+              'data-name'     : 'instance-attach'
+              'data-position' : 'right'
+              'data-type'     : 'attachment'
+              'data-direction': 'out'
             })
 
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -118,6 +130,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
               'class'      : 'port port-blue port-instance-rtb'
               'transform'  : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
               'data-angle' : MC.canvas.PORT_UP_ANGLE
+              'data-name'     : 'instance-rtb'
+              'data-position' : 'top'
+              'data-type'     : 'sg'
+              'data-direction': 'in'
             })
           )
 

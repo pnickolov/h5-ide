@@ -38,6 +38,10 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
             'class'      : 'port port-blue port-vgw-tgt'
             'transform'  : 'translate(3, 30)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'vgw-tgt'
+            'data-position' : 'left'
+            'data-type'     : 'sg'
+            'data-direction': 'in'
           }),
 
           # Right port
@@ -46,6 +50,10 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
             'class'      : 'port port-purple port-vgw-vpn'
             'transform'  : 'translate(69, 30)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+            'data-name'     : 'vgw-vpn'
+            'data-position' : 'right'
+            'data-type'     : 'vpn'
+            'data-direction': 'out'
           })
         )
 

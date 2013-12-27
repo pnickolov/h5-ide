@@ -71,6 +71,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
             'class'      : 'port port-blue port-instance-sg port-instance-sg-left'
             'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'launchconfig-sg'
+            'data-position' : 'left'
+            'data-type'     : 'sg'
+            'data-direction': 'in'
           }),
 
           # right port(blue)
@@ -79,6 +83,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
             'class'      : 'port port-blue port-instance-sg port-instance-sg-right'
             'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+            'data-name'     : 'launchconfig-sg'
+            'data-position' : 'right'
+            'data-type'     : 'sg'
+            'data-direction': 'out'
           })
         )
 

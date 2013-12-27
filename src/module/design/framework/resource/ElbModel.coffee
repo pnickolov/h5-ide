@@ -147,6 +147,10 @@ define [ "CanvasManager",
               'class'      : 'port port-blue port-elb-sg-in'
               'transform'  : 'translate(2, 30)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+              'data-name'     : 'elb-sg-in'
+              'data-position' : 'left'
+              'data-type'     : 'sg'
+              'data-direction': "in"
             }),
             # Right gray
             Canvon.path(MC.canvas.PATH_D_PORT).attr({
@@ -154,6 +158,10 @@ define [ "CanvasManager",
               'class'      : 'port port-gray port-elb-assoc'
               'transform'  : 'translate(79, 45)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+              'data-name'     : 'elb-assoc'
+              'data-position' : 'right'
+              'data-type'     : 'association'
+              'data-direction': 'out'
             })
           )
 
@@ -167,6 +175,10 @@ define [ "CanvasManager",
             'class'      : 'port port-blue port-elb-sg-out'
             'transform'  : 'translate(79, ' + sgOutY + ')' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+            'data-name'     : 'elb-sg-out'
+            'data-position' : 'right'
+            'data-type'     : 'sg'
+            'data-direction': 'out'
           })
         )
 

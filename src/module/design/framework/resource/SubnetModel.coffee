@@ -78,6 +78,10 @@ define [ "constant",
           'id'         : @id + '_port-subnet-assoc-in'
           'transform'  : 'translate(-12, ' + portY + ')' # port poition
           'data-angle' : MC.canvas.PORT_LEFT_ANGLE # port angle
+          'data-name'     : 'subnet-assoc-in'
+          'data-position' : 'left'
+          'data-type'     : 'association'
+          'data-direction': 'in'
         }) )
 
         node.append( Canvon.path( MC.canvas.PATH_D_PORT ).attr({

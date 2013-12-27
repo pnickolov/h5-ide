@@ -230,6 +230,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             'class'      : 'port port-blue port-eni-sg port-eni-sg-left'
             'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'eni-sg'
+            'data-position' : 'left'
+            'data-type'     : 'sg'
+            'data-direction': "in"
           }),
 
           # Left port
@@ -238,6 +242,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             'class'      : 'port port-green port-eni-attach'
             'transform'  : 'translate(8, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'eni-attach'
+            'data-position' : 'left'
+            'data-type'     : 'attachment'
+            'data-direction': "in"
           }),
 
           # Right port
@@ -246,6 +254,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             'class'      : 'port port-blue port-eni-sg port-eni-sg-right'
             'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+            'data-name'     : 'eni-sg'
+            'data-position' : 'right'
+            'data-type'     : 'sg'
+            'data-direction': 'out'
           }),
 
           # Top port(blue)
@@ -254,6 +266,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             'class'      : 'port port-blue port-eni-rtb'
             'transform'  : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
             'data-angle' : MC.canvas.PORT_UP_ANGLE
+            'data-name'     : 'eni-rtb'
+            'data-position' : 'top'
+            'data-type'     : 'sg'
+            'data-direction': 'in'
           }),
 
           Canvon.group().append(

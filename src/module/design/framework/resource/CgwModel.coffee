@@ -35,6 +35,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
             'class'      : 'port port-purple port-cgw-vpn',
             'transform'  : 'translate(6, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
+            'data-name'     : 'cgw-vpn'
+            'data-position' : 'left'
+            'data-type'     : 'vpn'
+            'data-direction': 'in'
           }),
 
           Canvon.text(100, 95, MC.canvasName( @get("name") ) ).attr({'class': 'node-label'})

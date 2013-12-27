@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./component/stateeditor/template.html',
+         'text!./component/stateeditor/template1.html',
          'UI.modal'
 ], ( ide_event, template ) ->
 
@@ -15,8 +15,10 @@ define [ 'event',
         render   : ->
             console.log 'pop-up:state editor render'
 
+            tplRegex = '(<!-- (.*) -->)(\n|\r|.)*?(?=<!-- (.*) -->)'
+            alert(template)
             # modal this
-            modal Handlebars.compile( template )(), true
+            modal Handlebars.compile( template )(), false
 
             # set root element
             @setElement $( '#state-editor-body' ).closest '#modal-wrap'

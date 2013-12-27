@@ -2137,65 +2137,6 @@ MC.canvas.layout = {
 		MC.canvas_data.region = option.region;
 		MC.canvas_data.platform = option.platform;
 
-		// kp = $.extend(true, {}, MC.canvas.KP_JSON.data);
-		// kp.uid = uid;
-		// MC.canvas_property.kp_list[kp.name] = kp.uid;
-
-		// sg_uid = MC.guid();
-		// sg = $.extend(true, {}, MC.canvas.SG_JSON.data);
-		// sg.uid = sg_uid;
-		// tmp = {};
-		// tmp.uid = sg.uid;
-		// tmp.name = sg.name;
-		// tmp.color = MC.canvas.SG_COLORS[0];
-		// tmp.member = [];
-		// MC.canvas_property.sg_list.push(tmp);
-
-		// data[kp.uid] = kp;
-		// data[sg.uid] = sg;
-		// MC.canvas.data.set('component', data);
-
-		// if (option.platform === MC.canvas.PLATFORM_TYPE.CUSTOM_VPC || option.platform === MC.canvas.PLATFORM_TYPE.EC2_VPC)
-		// {
-		// 	//has vpc (create vpc, az, and subnet by default)
-		// 	vpc_group = $canvas.add('AWS.VPC.VPC', {
-		// 		'name': 'vpc'
-		// 	}, {
-		// 		'x': 5,
-		// 		'y': 3
-		// 	});
-
-		// 	node_rt = $canvas.add('AWS.VPC.RouteTable', {
-		// 		'name': 'RT-0',
-		// 		'groupUId': vpc_group.id,
-		// 		'main' : true
-		// 	},{
-		// 		'x': 50,
-		// 		'y': 5
-		// 	});
-
-		// 	//default sg
-		// 	main_asso = {
-		// 		"Main": "true",
-		// 		"RouteTableId": "",
-		// 		"SubnetId": "",
-		// 		"RouteTableAssociationId": ""
-		// 	};
-		// 	MC.canvas_data.component[node_rt.id].resource.AssociationSet.push(main_asso);
-		// 	MC.canvas_property.main_route = node_rt.id;
-
-		// 	acl = $.extend(true, {}, MC.canvas.ACL_JSON.data);
-		// 	acl.uid = MC.guid();
-		// 	acl.resource.Default = 'true';
-		// 	acl.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-		// 	data[acl.uid] = acl;
-		// 	MC.canvas.data.set('component', data);
-
-		// 	MC.canvas_property.default_acl = acl.uid;
-
-		// 	sg.resource.VpcId = "@" + vpc_group.id + '.resource.VpcId';
-		// }
-
 		$('#svg_canvas').attr({
 			'width': canvas_size[0] * MC.canvas.GRID_WIDTH,
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT

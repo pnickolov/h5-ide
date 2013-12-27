@@ -69,21 +69,22 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     # new design flow
                     options =
-                        type   : if current_platform is 'custom-vpc' then Design.TYPE.Vpc else current_platform
+                        type   : current_platform
                         mode   : Tabbar.current
                         region : region_name
 
                     if type is 'NEW_STACK'
 
                         # platform is classic
-                        if options.type is Design.Type.Classic
+                        if options.type is Design.Type.Classic or options.type is Design.Type.DefaultVpc
                             component = MC.canvas.DESIGN_INIT_DATA
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT
 
                         # platform is vpc
                         else if options.type in [ Design.Type.Vpc, Design.Type.DefaultVpc ]
                             component = MC.canvas.DESIGN_INIT_DATA_VPC
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
 
-                        layout    = MC.canvas.DESIGN_INIT_LAYOUT
 
                     else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 

@@ -811,10 +811,10 @@ var constant_data = {
 	{
 		group : {
 			VPC : {
-				coordinate : [5,3]
+				coordinate : [5,3],
 				size       : [60,60]
 			}
-		}
+		},
 		node : {
 			RTB : {
 				coordinate : [50,5]

@@ -2124,7 +2124,7 @@ MC.canvas.layout = {
 		//clone MC.canvas.STACK_PROPERTY to MC.canvas_property
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
-		canvas_size = MC.canvas.data.get('layout.size');
+		canvas_size = $canvas.size();
 
 		data = MC.canvas.data.get('component');
 
@@ -3381,7 +3381,7 @@ MC.canvas.event.dragable = {
 					'canvas_body': canvas_body,
 					'target_type': target_type,
 					'node_type': node_type,
-					'vpc_data': MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
+					'vpc_data': $canvas($('.AWS-VPC-VPC').attr('id')),//MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
 					'shadow': shadow,
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
@@ -3916,8 +3916,8 @@ MC.canvas.event.dragable = {
 	{
 		var event_data = event.data,
 			gateway_top = Math.round((event.pageY - event_data.offsetY) / (MC.canvas.GRID_HEIGHT / event_data.scale_ratio)),
-			vpc_coordinate = event_data.vpc_data.coordinate,
-			vpc_size = event_data.vpc_data.size,
+			vpc_coordinate = event_data.vpc_data.position(),
+			vpc_size = event_data.vpc_data.size(),
 			target_type = event_data.target_type;
 
 		// MC.canvas.COMPONENT_SIZE for AWS.VPC.InternetGateway and AWS.VPC.VPNGateway = 8
@@ -4341,7 +4341,7 @@ MC.canvas.event.drawConnection = {
 			port_name = event.data.port_name,
 			from_type = from_node.data('class'),
 			// CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
-			layout_group_data,
+			//layout_group_data,
 			to_node,
 			port_name,
 			to_port_name,
@@ -4358,13 +4358,13 @@ MC.canvas.event.drawConnection = {
 			!match_node
 		)
 		{
-			layout_group_data = $canvas.group();
+			//layout_group_data = $canvas.group();
 
 			coordinate = MC.canvas.pixelToGrid(event.pageX - event.data.canvas_offset.left, event.pageY - event.data.canvas_offset.top);
 
 			match_node = null;
 
-			$.each(layout_group_data, function (key, item)
+			$.each($canvas.group(), function (key, item)
 			{
 				group_coordinate = item.position();
 				group_size = item.size;
@@ -4598,8 +4598,8 @@ MC.canvas.event.siderbarDrag = {
 			},
 			match_place = MC.canvas.isMatchPlace(
 				null,
-				node_type,
 				target_type,
+				node_type,
 				coordinate.x,
 				coordinate.y,
 				component_size[0],
@@ -4650,13 +4650,14 @@ MC.canvas.event.siderbarDrag = {
 					{
 						vpc_id = $('.AWS-VPC-VPC').attr('id');
 						vpc_data = MC.canvas_data.layout.component.group[ vpc_id ];
-						vpc_coordinate = vpc_data.coordinate;
+						vpc_coordinate = vpc_data.position();
+						vpc_size = vpc_data.size();
 
 						node_option.groupUId = vpc_id;
 
-						if (coordinate.y > vpc_coordinate[1] + vpc_data.size[1] - component_size[1])
+						if (coordinate.y > vpc_coordinate[1] + vpc_size[1] - component_size[1])
 						{
-							coordinate.y = vpc_coordinate[1] + vpc_data.size[1] - component_size[1];
+							coordinate.y = vpc_coordinate[1] + vpc_size[1] - component_size[1];
 						}
 						if (coordinate.y < vpc_coordinate[1])
 						{
@@ -4669,7 +4670,7 @@ MC.canvas.event.siderbarDrag = {
 						}
 						if (target_type === 'AWS.VPC.VPNGateway')
 						{
-							coordinate.x = vpc_coordinate[0] + vpc_data.size[0] - (component_size[1] / 2);
+							coordinate.x = vpc_coordinate[0] + vpc_size[0] - (component_size[1] / 2);
 						}
 
 						$canvas.add(target_type, node_option, coordinate);
@@ -5803,7 +5804,8 @@ MC.canvas.event.keyEvent = function (event)
 				component_size = target_item.size(),//MC.canvas.COMPONENT_SIZE[ node_type ],
 				match_place,
 				vpc_id,
-				vpc_data,
+				vpc_item,
+				vpc_size,
 				vpc_coordinate;
 
 			if (node_type !== 'node')
@@ -5826,11 +5828,12 @@ MC.canvas.event.keyEvent = function (event)
 				match_place = {};
 
 				vpc_id = $('.AWS-VPC-VPC').attr('id');
-				vpc_data = MC.canvas.data.get('layout.component.group.' + vpc_id);
-				vpc_coordinate = vpc_data.coordinate;
+				vpc_item = $canvas(vpc_id);
+				vpc_coordinate = vpc_item.position();
+				vpc_size = vpc_item.size();
 
 				match_place.is_matched =
-					coordinate.y <= vpc_coordinate[1] + vpc_data.size[1] - component_size[1] &&
+					coordinate.y <= vpc_coordinate[1] + vpc_size.size[1] - component_size[1] &&
 					coordinate.y >= vpc_coordinate[1];
 			}
 			else
@@ -5847,8 +5850,8 @@ MC.canvas.event.keyEvent = function (event)
 
 				match_place = MC.canvas.isMatchPlace(
 					target_id,
-					node_type,
 					target_type,
+					node_type,
 					coordinate.x,
 					coordinate.y,
 					component_size[0],

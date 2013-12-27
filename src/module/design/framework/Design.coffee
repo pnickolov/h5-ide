@@ -261,6 +261,65 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       data[ az.uid ] = az
     null
 
+  ### env:dev ###
+  Design.debug = ()->
+    transform = ( a )->
+      b = {}
+      ignore = "|idAttribute|_pending|_changing|_previousAttributes|__design|validationError|node_group|node_line|changed|defaults|id|newNameTmpl"
+      for att of a
+        if _.isFunction( a[att] ) then continue
+        if ignore.indexOf( "|" + att + "|" ) isnt -1 then continue
+
+        if _.isArray( a[att] ) and a[att].length
+          if a[att][0].isTypeof
+            b[att] = []
+            for x in a[att]
+              b[att].push x.id
+          else
+            b[att] = $.extend( true, [], a[att] )
+        else if _.isObject( a[att] ) and not _.isEmpty( a[att] )
+          b[att] = $.extend( true, {}, a[att] )
+        else
+          b[att] = a[att]
+      if b.attibutes and b.attributes.name then b.name = b.attibutes.name
+
+      map = {}
+      funcName = b.type.replace(/\./g, "_")
+      ### jshint -W061 ###
+      obj = eval( "(function #{funcName}( a ){ $.extend( true, this, a ); })" )
+      ### jshint +W061 ###
+      new obj( b )
+
+    componentMap = Design.instance().__componentMap
+    canvasNodes  = Design.instance().__canvasNodes
+    canvasGroups = Design.instance().__canvasGroups
+    checkedMap   = {
+      "line"            : {}
+      "node"            : {}
+      "group"           : {}
+      "otherResource"   : {}
+      "otherConnection" : {}
+    }
+    checked = {}
+    for id, a of canvasNodes
+      checked[ id ] = true
+      checkedMap.node[ a.id ] = transform( a )
+    for id, a of canvasGroups
+      checked[ id ] = true
+      checkedMap.group[ a.id] = transform( a )
+    for id, a of componentMap
+      if checked[ id ] then continue
+      if a.node_line
+        if a.draw
+          checkedMap.line[ a.id ] = transform( a )
+        else
+          checkedMap.otherConnection[ a.id ] = transform( a )
+      else
+        checkedMap.otherResource[ a.id ] = transform( a )
+
+    checkedMap
+  ### env:dev:end ###
+
   ### Private Interface End ###
 
 

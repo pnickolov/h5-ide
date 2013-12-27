@@ -80,6 +80,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # initialize() : [FORCE]
         description : The same as Backbone.Model.initialize()
 
+    # constructor() :
+        description : new Model() will call constructor. If a model wants to create an object, it needs to call SuperClass's constructor. Otherwise, the object is consider not created.
+
 
     # serialize()
         description : Must be implemented by the user, otherwise it logs an error in console.

@@ -60,6 +60,26 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     model = new Model( attributes )
     return { id : model.id }
 
+  $canvas.connect = ( p1, p1Name, p2, p2Name )->
+    Design.instance().createConnection( p1, p1Name, p2, p2Name )
+    null
+
+  $canvas.connection = ( uid )->
+    if uid
+      cache = { uid : Design.__instance.component( uid ) }
+    else
+      cache = Design.__instance.__canvasLines
+
+    lineArray = []
+    for uid, line of cache
+      l = { type : line.get("lineType") }
+      l[ line.port1Comp().id ] = line.port1("name")
+      l[ line.port2Comp().id ] = line.port2("name")
+      lineArray.push l
+
+    lineArray
+
+
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {
     CANVAS_NODE_SELECTED : ()->

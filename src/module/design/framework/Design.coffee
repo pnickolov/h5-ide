@@ -62,6 +62,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   DesignImpl = ( options )->
     @__componentMap = {}
     @__canvasNodes  = {}
+    @__canvasLines  = {}
     @__canvasGroups = {}
     @__classCache   = {}
     @__type         = options.type
@@ -206,7 +207,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       if _.isFunction comp.draw
         if comp.node_group
           @__canvasGroups[ id ] = comp
-        else if comp.node_line isnt true
+        else if comp.node_line
+          @__canvasLines[ id ] = comp
+        else
           @__canvasNodes[ id ] = comp
     null
 

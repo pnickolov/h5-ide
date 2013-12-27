@@ -8,8 +8,13 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 			instance: ->
 				{
 					component: ( uid ) ->
-						MC.canvas_data.component[ uid ]
+						comp = MC.canvas_data.component[ uid ]
+						_.extend {
+								get: ( attr ) ->
+									comp[ attr ] or comp.resource[ attr ]
+							}, comp
 				}
+
 
 	########## Functional Method ##########
 

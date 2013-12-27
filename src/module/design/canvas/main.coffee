@@ -80,8 +80,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         component = MC.canvas_data.component
                         layout    = MC.canvas_data.layout
 
-                    new Design( component, layout, options )
                     MC.canvas.layout.init()
+                    new Design( component, layout, options )
                     # new design flow
 
                     #

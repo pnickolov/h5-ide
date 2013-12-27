@@ -2082,7 +2082,8 @@ MC.canvas.layout = {
 			'height': canvas_size[1] * MC.canvas.GRID_HEIGHT
 		};
 
-		$('#svg_canvas, #canvas_container').attr( attr );
+		$('#svg_canvas').attr( attr );
+		$('#canvas_container').css( attr );
 
 		// todo : remove
 		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);

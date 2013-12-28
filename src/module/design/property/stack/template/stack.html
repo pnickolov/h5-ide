@@ -2,23 +2,24 @@
 
 	<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-stack-name">{{ i18n "PROP_STACK_LBL_NAME" }}</label>
-		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{property_detail.name}}" name="property-stack-name" id="property-stack-name">
+		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-stack-name">
 	</section>
 	<dl class="dl-horizontal dl-region-type property-control-group">
-		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
-		<dd>{{property_detail.region}}</dd>
-		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
-		<dd>{{property_detail.type}}</dd>
+		<dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
+		<dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
 	</dl>
 
 	<!-- SG, ACL, COST -->
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 
-	{{#if network_acl}}
-	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{network_acl.length}})</span>
+	{{#if networkAcls}}
+	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{networkAcls.length}})</span>
 	</div>
-	<div class="option-group stack-property-acl-list"></div>
+	<div class="option-group">
+    <ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul>
+    {{#unless isApp}}<a href="#" class="add-to-list action-link" id="stack-property-new-acl">{{ i18n "PROP_STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
+  </div>
 	{{/if}}
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">(<span id="property-stack-sns-num">{{subscription.length}}</span>)</span></div>
@@ -31,10 +32,8 @@
 	        <dt><label>Endpoint</label></dt><dd class="endpoint"></dd>
         </dl>
         <div class="sns-action">
-        	<i class="icon-edit"></i>
-	        <i class="icon-del icon-remove"></i>
+          <i class="icon-edit"></i> <i class="icon-del icon-remove"></i>
         </div>
-
       </li>
       {{#each subscription}}
       <li class="pos-r" data-uid="{{uid}}">
@@ -43,8 +42,7 @@
 	        <dt><label>Endpoint</label></dt><dd class="endpoint">{{endpoint}}</dd>
         </dl>
         <div class="sns-action">
-        	<i class="icon-edit"></i>
-	        <i class="icon-del icon-remove"></i>
+        	<i class="icon-edit"></i> <i class="icon-del icon-remove"></i>
         </div>
       </li>
       {{/each}}
@@ -70,28 +68,14 @@
 	</div>
 	<div class="option-group">
 		<table class="table cost-estimation-table">
-			<thead>
-				<tr>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
-					<th style="">{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
-				</tr>
-			</thead>
-
-
-			<tbody>
-				{{#each cost_list}}
-				<tr>
-					<td>{{resource}}</td>
-                    {{#if size}}
-					<td>{{size}}</td>
-                    {{else}}
-                    <td>{{type}}</td>
-                    {{/if}}
-					<td>{{fee}} {{unit}}</td>
-				</tr>
-				{{/each}}
-			</tbody>
+			<thead> <tr>
+					<th>{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
+					<th>{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
+					<th>{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
+			</tr> </thead>
+			<tbody> {{#each costArray}}
+        <tr> <td>{{resource}}</td> <td>{{type}}</td> <td>{{formatedFee}}</td> </tr>
+      {{/each}} </tbody>
 
 		</table>
 		<div class="property-control-group tac">

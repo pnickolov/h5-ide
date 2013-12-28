@@ -22,6 +22,7 @@ define [ 'Design',
          './resource/VpcModel',
          './resource/IgwModel',
          './resource/VgwModel',
+         './resource/SnsSubscription',
          './resource/ScalingPolicyModel',
          './resource/CertificateModel'
 

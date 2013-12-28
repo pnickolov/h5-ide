@@ -20,14 +20,7 @@ define [ '../base/main',
     ideEvents = {}
 
     ideEvents[ ide_event.RESOURCE_QUICKSTART_READY ] = ()->
-        @model.getCost()
-        @renderPropertyPanel()
-        null
-
-    ideEvents[ ide_event.UPDATE_STACK_LIST ] = ( flag )->
-        if flag is 'NEW_STACK'
-            @model.init()
-            @renderPropertyPanel()
+        ide_event.trigger ide_event.OPEN_PROPERTY
         null
 
     StackModule = PropertyModule.extend {
@@ -41,6 +34,7 @@ define [ '../base/main',
             sglist_main.onUnloadSubPanel id
 
             if id is "ACL"
+                @model.getNetworkACL()
                 @view.refreshACLList()
 
         ### # # # # # # # # # # # #
@@ -100,12 +94,6 @@ define [ '../base/main',
         afterLoadAppEdit : () ->
             sglist_main.loadModule @model
             null
-
-
-        renderPropertyPanel : () ->
-            @model.getProperty()
-            @view.render()
-            sglist_main.loadModule @model
     }
 
     null

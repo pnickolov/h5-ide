@@ -362,6 +362,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @
 
   DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
+  DesignImpl.prototype.eachComponent = ( func, context )->
+    console.assert( _.isFunction(func), "User must pass in a function for Design.instance().eachCOmponent()" )
+
+    context = context || this
+    for uid, comp of @__componentMap
+      func.call( context, comp )
+    null
 
   # DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
   #   AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )

@@ -83,11 +83,11 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {
     CANVAS_NODE_SELECTED : ()->
-      ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+      ide_event.trigger ide_event.OPEN_PROPERTY
       null
 
     SHOW_PROPERTY_PANEL : ()->
-      ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+      ide_event.trigger ide_event.OPEN_PROPERTY
       null
   }
 

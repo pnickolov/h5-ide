@@ -64,7 +64,7 @@
 
 	<div class="option-group-head">
 		{{ i18n "PROP_STACK_TIT_COST_ESTIMATION" }}
-		<span class="cost-counter right">{{#if total_fee}}${{total_fee}}/{{{ i18n "PROP_STACK_LBL_COST_CYCLE" }}} {{/if}}</span>
+		<span class="cost-counter right">{{#if totalFee}}${{totalFee}}/{{{ i18n "PROP_STACK_LBL_COST_CYCLE" }}} {{/if}}</span>
 	</div>
 	<div class="option-group">
 		<table class="table cost-estimation-table">
@@ -73,7 +73,7 @@
 					<th>{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
 					<th>{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
 			</tr> </thead>
-			<tbody> {{#each costArray}}
+			<tbody> {{#each costList}}
         <tr> <td>{{resource}}</td> <td>{{type}}</td> <td>{{formatedFee}}</td> </tr>
       {{/each}} </tbody>
 

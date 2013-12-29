@@ -370,6 +370,27 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       func.call( context, comp )
     null
 
+  DesignImpl.prototype.getCost = ()->
+    costList = []
+    totalFee = 0
+
+    feeMap = MC.data.config[ @__region ]
+
+    if feeMap and feeMap.price
+      priceMap = feeMap.price
+      currency = feeMap.price.currency || 'USD'
+
+      for uid, comp of @__componentMap
+        if comp.getCost
+          cost = comp.getCost( priceMap, currency )
+          if cost
+            totalFee += cost.fee
+            costList.push cost
+
+      costList = _.sortBy costList, "resource"
+
+    { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
+
   # DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
   #   AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
 

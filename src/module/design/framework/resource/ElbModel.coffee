@@ -157,6 +157,23 @@ define [ "CanvasManager",
           line.remove()
       null
 
+    getCost : ( priceMap, currency )->
+      if not priceMap.elb or not priceMap.elb.types
+        return null
+
+      for p in priceMap.elb.types
+        if p.unit is "perELBHour"
+          fee = parseFloat( p[ currency ], 10 ) || 0
+          break
+
+      if fee
+        return {
+          resource    : @get("name")
+          type        : constant.AWS_RESOURCE_TYPE.AWS_ELB
+          fee         : fee * 24 * 30
+          formatedFee : fee + "/hr"
+        }
+
     draw : ( isCreate )->
 
       if isCreate

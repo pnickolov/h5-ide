@@ -30,17 +30,8 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       else
         @getSubscription()
 
-      # Calc cost
-      costArray = []
-      totalFee  = 0
-      Design.instance().eachComponent ( component )->
-        if component.getCost
-          cost = component.getCost()
-          totalFee += cost.fee
-          costArray.push cost
 
-      @set "costList", costArray
-      @set "totalFee", totalFee
+      @set Design.instance().getCost()
       null
 
     addSubscription : ( data ) ->

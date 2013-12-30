@@ -4857,8 +4857,8 @@ MC.canvas.event.groupResize = {
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
 
-			layout_node_data = MC.canvas_data.layout.component.node,
-			layout_group_data = MC.canvas_data.layout.component.group,
+			// layout_node_data = MC.canvas_data.layout.component.node,
+			// layout_group_data = MC.canvas_data.layout.component.group,
 			canvas_size = $canvas.size(),
 			node_minX = [],
 			node_minY = [],
@@ -4879,14 +4879,17 @@ MC.canvas.event.groupResize = {
 			group_maxY,
 			group_minX,
 			group_minY,
+
 			igw_gateway,
 			igw_gateway_id,
 			igw_gateway_data,
 			igw_top,
+
 			vgw_gateway,
 			vgw_gateway_id,
 			vgw_gateway_data,
 			vgw_top,
+
 			port_top,
 			line_connection;
 

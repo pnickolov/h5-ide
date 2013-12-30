@@ -57,6 +57,8 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     Model = Design.modelClassForType type
     attributes.x = coordinate.x
     attributes.y = coordinate.y
+    if attributes.groupUId
+      attributes.parent = Design.instance().__componentMap[ attributes.groupUId ]
     model = new Model( attributes )
     return { id : model.id }
 

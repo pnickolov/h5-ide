@@ -251,18 +251,18 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		getEni : () ->
 
 			uid          = @get 'uid'
-			component    = MC.canvas_data.component[ uid ]
+			attr    = @instance.attributes
 			defaultVPCId = MC.aws.aws.checkDefaultVPC()
 
-			if not component.resource.SubnetId and not defaultVPCId
+			if @instance.parent().type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and not defaultVPCId
 				return
 
 			if defaultVPCId
 				subnetObj  = MC.aws.vpc.getSubnetForDefaultVPC( uid )
 				subnetCIDR = subnetObj.cidrBlock
 			else
-				subnetUID  = MC.extractID component.resource.SubnetId
-				subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
+				subnetUID  = MC.extractID attr.parent.id
+				subnetCIDR = attr.CidrBlock
 
 			prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( subnetCIDR )
 			ip_customizable = parseInt( component.number, 10) == 1
@@ -331,7 +331,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			attr = @instance.attributes
 
-			ami_id = attr.ImageId
+			ami_id = attr.imageId
 			ami    = MC.data.dict_ami[ami_id]
 
 			if not ami
@@ -398,7 +398,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			uid = this.get 'uid'
 			attr = @instance.attributes
 
-			tenacy = attr.Placement.Tenancy isnt 'dedicated'
+			tenacy = attr.tenancy isnt 'dedicated'
 
 			this.set 'ebs_optimized', "" + attr.EbsOptimized is "true"
 			this.set 'monitoring',    attr.Monitoring is 'enabled'
@@ -407,7 +407,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			this.set 'force_tenacy', false
 
 			parent = @instance.parent()
-			if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+			if parent and parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
 			#has vpc
 				if parent.attributes.InstanceTenancy is 'dedicated'
 					this.set 'force_tenacy', true

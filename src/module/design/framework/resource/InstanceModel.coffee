@@ -9,7 +9,29 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       y      : 2
       width  : 9
       height : 9
-      number : 1
+
+      #servergroup
+      serverGroupUid  : ''
+      serverGroupName : ''
+      number          : 1
+
+      imageId         : ''
+      tenancy         : ''
+
+      #layout property
+      osType         : ''
+      architecture   : ''
+      rootDeviceType : ''
+
+      parent         : null #subnet model or az model
+
+
+    constructor : ( attributes, option )->
+
+      ComplexResModel.call this, attributes, option
+
+      null
+
 
     __asso: [
       {
@@ -202,6 +224,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
           number          : data.number
 
           imageId : data.resource.ImageId
+          tenancy : data.resource.Placement.Tenancy
 
           x      : layout_data.coordinate[0]
           y      : layout_data.coordinate[1]
@@ -210,6 +233,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
           osType         : layout_data.osType
           architecture   : layout_data.architecture
           rootDeviceType : layout_data.rootDeviceType
+
 
 
         if data.resource.SubnetId

@@ -32,8 +32,11 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       n = component.getNotification()
       @set "notification", n
       @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
-      @set "has_sns_topic", !!Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length
+      @set "has_sns_sub", !!(Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length)
       null
+
+    getPolicies : ()->
+
 
     setHealthCheckType : ( type ) ->
       Design.instance().component( @get("uid") ).set( "healthCheckType", type )
@@ -53,7 +56,14 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
     setHealthCheckGrace : ( value ) ->
       Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
 
-    getPolicies : ()->
+    setNotification : ( notification )->
+      Design.instance().component( @get("uid") ).setNotification( notification )
+
+    setTerminatePolicy : ( policies ) ->
+      Design.instance().component( @get("uid") ).set("terminationPolicies", policies)
+      @set "terminationPolicies", policies
+      null
+
 
 
 
@@ -278,22 +288,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       model.associate asg
       model.associate topic
 
-    setTerminatePolicy : ( policies ) ->
 
-      uid = this.get 'uid'
-      component = Design.instance().component( uid )
-
-      current_policies = []
-
-      for policy in policies
-
-        if policy.checked
-
-          current_policies.push policy.name
-
-      component.set 'TerminationPolicies', current_policies
-
-      null
 
     isDupPolicyName : ( policy_uid, name ) ->
 

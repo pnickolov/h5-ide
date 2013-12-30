@@ -51,7 +51,7 @@ define [ '../base/view',
 
         events   :
             "click #property-asg-term-edit"                : "showTermPolicy"
-            "click #property-asg-sns input[type=checkbox]" : "updateSNSOption"
+            "click #property-asg-sns input[type=checkbox]" : "setNotification"
             "change #property-asg-endpoint"                : "updateSNSOption"
             "OPTION_CHANGE #property-asg-sns-more"         : "updateSNSInput"
             "change #property-asg-elb"                     : "setHealthyCheckELBType"
@@ -70,15 +70,14 @@ define [ '../base/view',
         render     : () ->
             data = @model.toJSON()
 
-            if data.asg
-                data.policies = _.map data.policies, ( p )->
-                    {
-                        metric     : metricMap[ p.metric ]
-                        adjusttype : adjustMap[ p.adjusttype ]
-                        unit       : unitMap[ p.metric ]
-                    }
+            data.policies = _.map data.policies || [], ( p )->
+                {
+                    metric     : metricMap[ p.metric ]
+                    adjusttype : adjustMap[ p.adjusttype ]
+                    unit       : unitMap[ p.metric ]
+                }
 
-                data.term_policy_brief = data.terminationPolicies.join(" > ")
+            data.term_policy_brief = data.terminationPolicies.join(" > ")
 
             @$el.html template data
 
@@ -127,12 +126,10 @@ define [ '../base/view',
             @model.setHealthCheckGrace event.target.value
 
         showTermPolicy : () ->
-            policies = this.model.attributes.asg.TerminationPolicies
-
             data    = []
             checked = {}
 
-            for policy in policies
+            for policy in @model.get("terminationPolicies")
                 if policy is "Default"
                     data.useDefault = true
                 else
@@ -172,18 +169,14 @@ define [ '../base/view',
 
             $("#property-term-list .list-name").each ()->
                 $this = $(this)
-                data.push {
-                    name    : $this.text()
-                    checked : $this.closest("li").hasClass("enabled")
-                }
+                if $this.closest("li").hasClass("enabled")
+                    data.push $this.text()
                 null
 
-            data.push {
-               name : "Default"
-               checked : $("#property-asg-term-def").is(":checked")
-            }
+            if $("#property-asg-term-def").is(":checked")
+                data.push "Default"
 
-            console.log "Finish editing termination policy", data
+            $(".termination-policy-brief").text( data.join(" > ") )
 
             @model.setTerminatePolicy data
 
@@ -398,25 +391,23 @@ define [ '../base/view',
             this.updateScalingPolicy data
             null
 
-        updateSNSOption : () ->
-            checkArray = []
+        setNotification : () ->
+            checkMap = {}
             hasChecked = false
             $("#property-asg-sns input[type = checkbox]").each ()->
                 checked = $(this).is(":checked")
-                checkArray.push checked
-                if checked
-                    hasChecked = true
+                checkMap[ $(this).attr("data-key") ] = checked
+
+                if checked then hasChecked = true
 
                 null
 
-            noSNS = true
-
-            if noSNS and hasChecked
+            if hasChecked
                 $("#property-asg-sns-info").show()
             else
                 $("#property-asg-sns-info").hide()
 
-            @model.setSNSOption checkArray
+            @model.setNotification checkMap
 
         setHealthyCheckELBType :( event ) ->
             @model.setHealthCheckType 'ELB'

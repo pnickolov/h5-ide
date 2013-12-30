@@ -104,31 +104,31 @@
 		<div class="property-control-group property-asg-notification-wrap">
 			<p>{{ i18n "PROP_ASG_LBL_SEND_NOTIFICATION" }}</p>
 			<div><div class="checkbox">
-				<input id="property-asg-sns1" type="checkbox" {{#if notification.instanceLaunch}}checked="checked"{{/if}}/>
+				<input id="property-asg-sns1" type="checkbox" data-key="instanceLaunch" {{#if notification.instanceLaunch}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns1"></label>
 			</div>
 			<label for="property-asg-sns1">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH" }}</label></div>
 
 			<div><div class="checkbox">
-				<input id="property-asg-sns2" type="checkbox" {{#if notification.instanceLaunchError}}checked="checked"{{/if}}/>
+				<input id="property-asg-sns2" type="checkbox" data-key="instanceLaunchError" {{#if notification.instanceLaunchError}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns2"></label>
 			</div>
 			<label for="property-asg-sns2">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH" }}</label></div>
 
 			<div><div class="checkbox">
-				<input id="property-asg-sns3" type="checkbox"  {{#if notification.instanceTerminate}}checked="checked"{{/if}}/>
+				<input id="property-asg-sns3" type="checkbox" data-key="instanceTerminate" {{#if notification.instanceTerminate}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns3"></label>
 			</div>
 			<label for="property-asg-sns3">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE" }}</label></div>
 
 			<div><div class="checkbox">
-				<input id="property-asg-sns4" type="checkbox"  {{#if notification.instanceTerminateError}}checked="checked"{{/if}}/>
+				<input id="property-asg-sns4" type="checkbox" data-key="instanceTerminateError" {{#if notification.instanceTerminateError}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns4"></label>
 			</div>
 			<label for="property-asg-sns4">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE" }}</label></div>
 
 			<div><div class="checkbox">
-				<input id="property-asg-sns5" type="checkbox"  {{#if notification.test}}checked="checked"{{/if}}/>
+				<input id="property-asg-sns5" type="checkbox" data-key="test" {{#if notification.test}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns5"></label>
 			</div>
 			<label for="property-asg-sns5">{{ i18n "PROP_ASG_LBL_VALIDATE_SNS" }}</label></div>

@@ -3,6 +3,13 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
   NotificationModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
+
+    initialize : ()->
+      # Ensure there's a SNS_Topic
+      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      if TopicModel.allObjects().length is 0
+        new TopicModel()
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -23,11 +30,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       for t in data.resource.NotificationType
         attr[ NotificationModel.typeMap[t] ] = true
 
-      notifcation = new Model( attr )
+      notify = new NotificationModel( attr )
 
       asg = resolve( MC.extractID( data.resource.AutoScalingGroupName ) )
       if asg
-        asg.set("notification", notification)
+        asg.set("notification", notify)
       null
   }
 
@@ -163,8 +170,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       healthCheckGracePeriod : 300
       healthCheckType        : "EC2"
 
-
+      terminationPolicies : [ "Default" ]
       expandedList : []
+      policies : []
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     newNameTmpl : "asg"
@@ -195,6 +203,16 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         @set("notification", n)
       null
 
+    addScalingPolicy : ( policy )->
+      @get("policies").push( policy )
+      @listenTo( policy, "destroy", @__removeScalingPolicy )
+      null
+
+    __removeScalingPolicy : ( policy )->
+      @stopListening( policy )
+      @get("policies").splice( @get("policies").indexOf(policy), 1 )
+      null
+
     isEC2HealthCheckType : ()->
       lc = @get("lc")
       if lc and lc.connections("ElbAmiAsso").length and @get("healthCheckType") is "ELB"
@@ -208,6 +226,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       for asg in @get("expandedList")
         asg.off() # Need to off() first, because we are listening to expandedAsg.
         asg.remove()
+
+      for p in @get("policies")
+        p.off()
+        p.remove()
       null
 
     __addExpandedAsg : ( expandedAsg )->
@@ -303,6 +325,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         maxSize                : data.resource.MaxSize
         healthCheckType        : data.resource.HealthCheckType
         healthCheckGracePeriod : data.resource.HealthCheckGracePeriod
+        terminationPolicies    : data.resource.TerminationPolicies
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

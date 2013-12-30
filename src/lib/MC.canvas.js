@@ -1092,39 +1092,41 @@ MC.canvas = {
     return controlPoints;
     },
 
-    genPath: function (controlPoints, from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option)
-    {
-		//patch startX for rtb-src port
-		var offset_startX=0,
-			offset_endX=0;
+	// by xjimmy
+	genPath: function (from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option)
+	{
+		var offset_startX = 0,
+			offset_endX = 0,
+			controlPoints = [],
+
+			startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio ),
+			startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio ),
+			endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio ),
+			endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio ),
+
+			start0 = {
+				x : startX,
+				y : startY,
+				connectionAngle: from_port.getAttribute('data-angle') * 1
+			};
+
+			end0 = {
+				x: endX,
+				y: endY,
+				connectionAngle: to_port.getAttribute('data-angle') * 1
+			},
+
+			path;
 
 		if (from_type === 'AWS.VPC.RouteTable' && from_target_port === "rtb-src")
 		{
-			offset_startX+=1;
+			offset_startX += 1;
 		}
 
 		if (to_type === 'AWS.VPC.RouteTable' && to_target_port === "rtb-src")
 		{
-			offset_endX+=1;
+			offset_endX += 1;
 		}
-
-		startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
-		startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
-		endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
-		endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
-
-		//add by xjimmy
-		start0 = {
-			x : startX,
-			y : startY,
-			connectionAngle: from_port.getAttribute('data-angle') * 1
-		};
-
-		end0 = {
-			x: endX,
-			y: endY,
-			connectionAngle: to_port.getAttribute('data-angle') * 1
-		};
 
 		//add pad to start0 and end0
 		MC.canvas._addPad(start0, 1);
@@ -1165,7 +1167,6 @@ MC.canvas = {
 							path = MC.canvas._bezier_qt_corner(controlPoints);
 							break;
 					}
-
 				}
 				else
 				{
@@ -1178,19 +1179,7 @@ MC.canvas = {
 
 	connect: function (from_uid, from_target_port, to_uid, to_target_port, line_id)
 	{
-		// if (typeof from_node === 'string')
-		// {
-		// 	from_node = $('#' + from_node);
-		// }
-
-		// if (typeof to_node === 'string')
-		// {
-		// 	to_node = $('#' + to_node);
-		// }
-
 		var canvas_offset = $canvas.offset(),
-			// from_uid = from_node,[0].id,
-			// to_uid = to_node[0].id,
 
 			from_node = document.getElementById( from_uid ),
 			to_node = document.getElementById( to_uid ),
@@ -1320,8 +1309,7 @@ MC.canvas = {
 				to_port_offset = to_port.getBoundingClientRect();
 			}
 
-			//by xjimmy
-			path = MC.canvas.genPath(controlPoints, from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option);
+			path = MC.canvas.genPath(from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option);
 
 			svg_line = document.getElementById( line_id );
 
@@ -1343,7 +1331,6 @@ MC.canvas = {
 
 				svg_line = MC.paper.save();
 
-				//$('#line_layer').append(svg_line);
 				document.getElementById('line_layer').appendChild(svg_line);
 
 				svg_line.setAttributeNS("http://www.w3.org/1999/xlink", "class", 'line line-' + connection_option.type);
@@ -1352,11 +1339,6 @@ MC.canvas = {
 
 				svg_line = null;
 			}
-
-			// $(svg_line).attr({
-			// 	'class': 'line line-' + connection_option.type,
-			// 	'data-type': 'line'
-			// });
 
 			return true;
 		}
@@ -3655,13 +3637,11 @@ MC.canvas.event.dragable = {
 						});
 
 						MC.canvas.connect(
-							$('#' + connection_target_id[0]),
+							connection_target_id[0],
 							data.target[ connection_target_id[0] ],
-							$('#' + connection_target_id[1]),
+							connection_target_id[1],
 							data.target[ connection_target_id[1] ],
-							{
-								'line_uid': key
-							}
+							key
 						);
 					});
 

@@ -6,50 +6,61 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 	InstanceModel = PropertyModel.extend {
 
+		instance : null
+
 		init : ( uid ) ->
+
 			@set 'uid', uid
+			@instance = Design.instance().component uid
 
 			@getName()
 			@getInstanceType()
 			@getAmi()
 			@getComponent()
 			@getKeyPair()
+
 			@getEni()
 			null
 
-		setName  : ( value ) ->
-			uid = this.get 'uid'
-			component = MC.canvas_data.component[ uid ]
+		setName  : ( name ) ->
 
-			component.name = component.serverGroupName = value
-
-			MC.canvas.update(uid,'text','hostname', value)
+			@setName( @instance.attributes.name )
+			@instance.setName name
 
 			null
 
 
 		getName  : () ->
 			instance_uid = this.get( 'uid' )
-			component = MC.canvas_data.component[ instance_uid ]
+			attr = @instance.attributes
 
-			this.set 'name',   component.name
+			this.set 'name',  attr.name
 
 			# Instance count
-			this.set 'number', component.number
+			this.set 'number', attr.number
 			this.set 'number_disable', false
-			for uid, comp of MC.canvas_data.component
-				if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					connected = false
-					for route in comp.resource.RouteSet
-						if route.InstanceId.indexOf( instance_uid ) isnt -1
-							connected = true
-							break
-					if connected
-						this.set 'number_disable', true
-						break
 
-			# Classic Mode
-			this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+			connTgt = @instance.connections 'RTB_Route'
+			if connTgt and connTgt.length is 1
+				this.set 'number_disable', true
+
+			@set 'classic_stack', Design.instance().typeIsClassic()
+
+			# (old)
+			# for uid, comp of MC.canvas_data.component
+			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+			# 		connected = false
+			# 		for route in comp.resource.RouteSet
+			# 			if route.InstanceId.indexOf( instance_uid ) isnt -1
+			# 				connected = true
+			# 				break
+			# 		if connected
+			# 			this.set 'number_disable', true
+			# 			break
+			#
+			## Classic Mode
+			#this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
+
 			null
 
 		setCount : ( val ) ->
@@ -311,14 +322,16 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			null
 
 		getComponent : () ->
-			this.set 'component', MC.canvas_data.component[ this.get( 'uid') ]
+			this.set 'component', @instance.attributes
 			null
 
 		getAmi : () ->
 
 			uid = this.get 'uid'
 
-			ami_id = MC.canvas_data.component[ uid ].resource.ImageId
+			attr = @instance.attributes
+
+			ami_id = attr.ImageId
 			ami    = MC.data.dict_ami[ami_id]
 
 			if not ami
@@ -340,7 +353,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		getKeyPair : ()->
 
 			uid = this.get 'uid'
-			keypair_id = MC.extractID MC.canvas_data.component[ uid ].resource.KeyName
+			attr = @instance.attributes
+			keypair_id = MC.extractID attr.KeyName
 
 			kp_list = MC.aws.kp.getList( keypair_id )
 
@@ -382,28 +396,36 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		getInstanceType : () ->
 
 			uid = this.get 'uid'
-			component = MC.canvas_data.component[ uid ]
+			attr = @instance.attributes
 
-			tenacy = component.resource.Placement.Tenancy isnt 'dedicated'
+			tenacy = attr.Placement.Tenancy isnt 'dedicated'
 
-			this.set 'ebs_optimized', "" + component.resource.EbsOptimized is "true"
-			this.set 'monitoring',    component.resource.Monitoring is 'enabled'
+			this.set 'ebs_optimized', "" + attr.EbsOptimized is "true"
+			this.set 'monitoring',    attr.Monitoring is 'enabled'
 			this.set 'tenacy',        tenacy
 
 			this.set 'force_tenacy', false
-			for comp_uid, comp of MC.canvas_data.layout.component.group
-				if comp.type is 'AWS.VPC.VPC'
-					vpc = MC.canvas_data.component[ comp_uid ]
-					if vpc.resource.InstanceTenancy is "dedicated"
-						this.set 'force_tenacy', true
-					break
 
-			if MC.data.dict_ami and MC.data.dict_ami[ component.resource.ImageId ]
-				ami_info = MC.data.dict_ami[ component.resource.ImageId ]
+			parent = @instance.parent()
+			if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
+			#has vpc
+				if parent.attributes.InstanceTenancy is 'dedicated'
+					this.set 'force_tenacy', true
+
+			# for comp_uid, comp of MC.canvas_data.layout.component.group
+			# 	if comp.type is 'AWS.VPC.VPC'
+			# 		vpc = MC.canvas_data.component[ comp_uid ]
+			# 		if vpc.resource.InstanceTenancy is "dedicated"
+			# 			this.set 'force_tenacy', true
+			# 		break
+
+
+			if MC.data.dict_ami and MC.data.dict_ami[ attr.ImageId ]
+				ami_info = MC.data.dict_ami[ attr.ImageId ]
 			else
 				ami_info = MC.canvas_data.layout.component.node[ uid ]
 
-			current_instance_type = component.resource.InstanceType
+			current_instance_type = attr.InstanceType
 
 
 			instance_type_list = MC.aws.ami.getInstanceType( ami_info )
@@ -429,7 +451,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 				}]
 
 			this.set 'instance_type', view_instance_type
-			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized component
+			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized attr
 
 			null
 

@@ -279,7 +279,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # Storage is not automatically cleared.
 
       # Broadcast destroy event.
-      this.trigger "destroy"
+      this.trigger "destroy", this
 
       this.trigger "__remove"
 

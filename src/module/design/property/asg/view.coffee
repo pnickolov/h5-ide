@@ -68,25 +68,21 @@ define [ '../base/view',
 
 
         render     : () ->
-            console.log 'property:asg render'
-            data = this.model.attributes
+            data = @model.toJSON()
 
             if data.asg
+                data.policies = _.map data.policies, ( p )->
+                    {
+                        metric     : metricMap[ p.metric ]
+                        adjusttype : adjustMap[ p.adjusttype ]
+                        unit       : unitMap[ p.metric ]
+                    }
 
-                data = $.extend true, {}, this.model.attributes
-
-                policies = []
-                for uid, policy of data.policies
-                    policy.metric     = metricMap[ policy.metric ]
-                    policy.adjusttype = adjustMap[ policy.adjusttype ]
-                    policy.unit       = unitMap[ policy.metric ]
-                    policies.push policy
-
-                data.term_policy_brief = data.asg.TerminationPolicies.join(" > ")
+                data.term_policy_brief = data.terminationPolicies.join(" > ")
 
             @$el.html template data
 
-            @model.attributes.asg.AutoScalingGroupName
+            data.name
 
         setASGCoolDown : ( event ) ->
             @model.setASGCoolDown event.target.value
@@ -94,12 +90,10 @@ define [ '../base/view',
         setASGName : ( event ) ->
             target = $ event.currentTarget
             name = target.val()
-            id = @model.get 'uid'
 
-            MC.validate.preventDupname target, id, name, 'ASG'
-
-            if target.parsley 'validate'
-                @model.setASGName event.target.value
+            if @checkDupName( target, "ASG" )
+                @model.setName name
+                @setTitle name
 
         setSizeGroup: ( event ) ->
             $min        = @$el.find '#property-asg-min'

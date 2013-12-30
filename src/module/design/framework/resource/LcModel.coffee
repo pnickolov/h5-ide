@@ -10,6 +10,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
       height   : 9
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    newNameTmpl : "launch-config-"
 
     __asso: [
       {
@@ -100,19 +101,22 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
 
     deserialize : ( data, layout_data, resolve )->
 
-      attr =
-        id           : data.uid
-        name         : data.name
+      model = new Model({
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.LaunchConfigurationARN
+
+        imageId      : data.resource.ImageId
+        ebsOptimized : data.resource.EbsOptimized
+        instanceType : data.resource.InstanceType
+        monitoring   : data.resource.InstanceMonitoring
+        userData     : data.resource.userData
+        publicIp     : data.resource.AssociatePublicIpAddress
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+      })
 
-      for key, value of data.resource
-        attr[ key ] = value
-
-      model = new Model( attr )
-
-      model.associate resolve
 
       # Create Volume for
       for volume in data.resource.BlockDeviceMapping || []
@@ -125,6 +129,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
           owner   : model
         new VolumeModel(_attr, _opt)
 
+      # Asso SG
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      for sg in data.resource.SecurityGroups || []
+        new SgAsso( model, resolve( MC.extractID(sg) ) )
 
       null
 

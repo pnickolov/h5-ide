@@ -70,7 +70,7 @@
 		{{#if displayAssociatePublicIp}}
 			<section class="property-control-group">
 				<div class="checkbox">
-					<input id="property-instance-public-ip" type="checkbox" {{#if AssociatePublicIpAddress}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
+					<input id="property-instance-public-ip" type="checkbox" {{#if publicIp}}checked="checked"{{/if}} value="None" name="property-instance-public-ip" />
 					<label for="property-instance-public-ip"></label>
 				</div>
 				<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
@@ -96,5 +96,5 @@
 	</div>
 
 	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group">Loading...</div>
+  <div class="option-group sg-group"></div>
 </article>

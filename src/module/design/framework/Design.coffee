@@ -68,9 +68,15 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__canvasLines  = {}
     @__canvasGroups = {}
     @__classCache   = {}
-    @__type         = options.type
-    @__mode         = options.mode
-    @__region       = options.region
+
+    @__type   = options.type
+    @__mode   = options.mode
+    @__region = options.region
+
+    # TODO : QuickFix
+    for i in MC.canvas_data
+      if i is "component" or i is "layout" then continue
+      @[i] = options[i]
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw   = false
@@ -225,6 +231,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     azArr = []
 
     for uid, comp of layout_data
+
+      # Generate Component for AZ
       if comp.type is "AWS.EC2.AvailabilityZone"
         azArr.push {
           uid  : uid
@@ -234,6 +242,15 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
         azMap[ comp.name ] = "@#{uid}.name"
 
+      # Generate Component for expanded Asg
+      else if comp.type is "AWS.AutoScaling.Group"
+        if comp.originalId
+          data[ uid ] = {
+            type : "ExpandedAsg"
+            uid  : uid
+          }
+
+    # Fix AZ reference and Change Boolean value
     checkObj = ( obj )->
       for attr, d of obj
         if _.isString( d )

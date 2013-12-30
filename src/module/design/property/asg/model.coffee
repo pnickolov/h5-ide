@@ -6,20 +6,52 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
   ASGConfigModel = PropertyModel.extend {
 
-    defaults :
-      uid               : null
-      asg               : null
-      name              : null
-      has_sns_topic     : null
-      hasLaunchConfig   : null
-      notification_type : null
-      has_elb           : false
-      detail_monitor    : false
-
     init : ( uid ) ->
-      @set 'uid', uid
-      @getASGDetail uid
+      component = Design.instance().component( uid )
+
+      if component.type is "ExpandedAsg"
+        component = component.get("originalAsg")
+
+      data = component.toJSON()
+      data.uid = uid
+      @set( data )
+
+      lc = component.get("lc")
+
+      if not lc
+        @set "emptyAsg", true
+        return
+
+      @set "has_elb", !!component.get("lc").connections("ElbAmiAsso").length
+      @set "isEC2HealthCheck", component.isEC2HealthCheckType()
+      @set 'detail_monitor', lc.get( 'instanceMonitoring' )
+
+      # Notification
+      n = component.getNotification()
+      @set "notification", n
+      @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
+      @set "has_sns_topic", !!Design.modelClassForType(constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription).allObjects().length
       null
+
+    setHealthCheckType : ( type ) ->
+      Design.instance().component( @get("uid") ).set( "healthCheckType", type )
+
+    setASGMin : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "minSize", value )
+
+    setASGMax : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "maxSize", value )
+
+    setASGDesireCapacity : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "capacity", value )
+
+    setASGCoolDown : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "cooldown", value )
+
+    setHealthCheckGrace : ( value ) ->
+      Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
+
+
 
     getASGDetail : ( uid ) ->
 
@@ -56,7 +88,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       allSub = SubModel and SubModel.allObjects() or []
 
       if allSub.length
-        @set "has_sns_topic", true
+        @set "has_sns_sub", true
 
       Noti.each ( model ) ->
         type = model.get 'NotificationType'
@@ -123,72 +155,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       @set 'asg', component.toJSON()
       @set 'uid', uid
 
-
-    setHealthCheckType : ( type ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "HealthCheckType", type )
-
-      null
-
-    setASGName : ( name ) ->
-
-      uid = @get 'uid'
-
-      component = Design.instance().component( uid )
-
-      component.set { name: name, AutoScalingGroupName: name }
-
-      # canvas update will be bind to the change event of the corresponding model
-      MC.canvas.update uid, 'text', 'name', name
-
-      # update extended asg
-      _.each MC.canvas_data.layout.component.group, ( group, id ) ->
-        if group.originalId is uid
-          MC.canvas.update id, 'text', 'name', name
-
-      null
-
-    setASGMin : ( value ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "MinSize", value )
-
-      null
-
-    setASGMax : ( value ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "MaxSize", value )
-
-      null
-
-    setASGDesireCapacity : ( value ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "DesiredCapacity", value )
-
-      null
-
-    setASGCoolDown : ( value ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "DefaultCooldown", value )
-
-      null
-
-    setHealthCheckGrace : ( value ) ->
-
-      uid = @get 'uid'
-
-      Design.instance().component( uid ).set( "HealthCheckGracePeriod", value )
-
-      null
 
     setSNSOption : ( check_array ) ->
 

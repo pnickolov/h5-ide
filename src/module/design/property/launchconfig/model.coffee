@@ -48,42 +48,76 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
 
     init  : ( uid ) ->
-      @lc = lc = Design.instance().component( uid )
+      @lc = Design.instance().component( uid )
+
+      data = @lc.toJSON()
+      data.uid = uid
+      @set data
+
+      @set "displayAssociatePublicIp", Design.instance().typeIsVpc()
+      @set "monitorEnabled", @isMonitoringEnabled()
+      @getInstanceType()
 
       if @isApp
         @getAppLaunch( uid )
-      else
-
-        data = {
-          uid      : uid
-          userData : lc.get 'UserData'
-          name     : lc.get 'name'
-          imageId  : lc.get 'ImageId'
-        }
-        @getCheckBox( uid, data )
-        @getKeyPair( uid, data )
-        @getInstanceType( uid, data )
-        @getAssociatePublicIp( uid, data )
-        @getAmi( uid, data )
-
-        this.set data
+        return
 
       null
 
-    setName  : ( name ) ->
-      uid = this.get 'uid'
+    getInstanceType : ( uid, data ) ->
+      amiId = @lc.get 'imageId'
 
-      @lc.set 'name', name
+      ami_info = MC.data.dict_ami[amiId]
 
-      MC.canvas.update(uid,'text','lc_name', name)
+      current_instance_type = @lc.get 'instanceType'
 
-      # update lc in extended asg
-      asg_uid = MC.canvas_data.layout.component.node[ uid ].groupUId
+      instanceTypeAry = MC.aws.ami.getInstanceType(ami_info)
+      view_instance_type = _.map instanceTypeAry, ( value )->
 
-      _.each MC.canvas_data.layout.component.group, ( group, id ) ->
-        if group.originalId is asg_uid
-          MC.canvas.update id, 'text', 'node-label', name
+        main     : constant.INSTANCE_TYPE[value][0]
+        ecu      : constant.INSTANCE_TYPE[value][1]
+        core     : constant.INSTANCE_TYPE[value][2]
+        mem      : constant.INSTANCE_TYPE[value][3]
+        name     : value
+        selected : current_instance_type is value
+
+      data.instance_type = view_instance_type
+      data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
       null
+
+    isMonitoringEnabled : ()->
+      monitorEnabled = true
+
+      WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
+
+      asg = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).first()
+
+      for watch in WatchModel.allObjects()
+        if watch.get( 'MetricName' ).indexOf("StatusCheckFailed") != -1
+          for d in watch.get( 'Dimensions' )
+            if d.value and d.value.indexOf( asg.id ) != -1
+              monitorEnabled = false
+              break
+
+          if not monitorEnabled
+            break
+
+      monitorEnabled
+
+    setEbsOptimized : ( value )->
+      @lc.set 'ebsOptimized', value
+
+    setCloudWatch : ( value ) ->
+      @lc.set 'instanceMonitoring', value
+
+    setUserData : ( value ) ->
+      @lc.set 'userData', value
+
+    setPublicIp : ( value )->
+      @lc.set "publicIp", value
+
+
+
 
     setInstanceType  : ( value ) ->
 
@@ -94,77 +128,6 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         component.resource.EbsOptimized = "false"
 
       has_ebs
-
-    setEbsOptimized : ( value )->
-      @lc.set 'EbsOptimized', value
-
-      null
-
-    setCloudWatch : ( value ) ->
-      @lc.set 'InstanceMonitoring', value
-      null
-
-    setUserData : ( value ) ->
-      @lc.set 'UserData', value
-      null
-
-    unAssignSGToComp : (sg_uid) ->
-      originSGIdAry = @lc.get 'SecurityGroups'
-
-      currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-      originSGIdAry = _.filter originSGIdAry, (value) ->
-        value isnt currentSGId
-
-      @lc.set 'SecurityGroups', originSGIdAry
-
-      null
-
-    assignSGToComp : (sg_uid) ->
-      originSGIdAry = @lc.get 'SecurityGroups'
-
-      currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-
-      if !Boolean(currentSGId in originSGIdAry)
-        originSGIdAry.push currentSGId
-
-      @lc.set 'SecurityGroups', originSGIdAry
-
-      null
-
-    getCheckBox : ( uid, checkbox ) ->
-
-      resource = MC.canvas_data.component[ uid ].resource
-
-      checkbox.ebsOptimized = "" + @lc.get( 'EbsOptimized' ) is 'true'
-      checkbox.monitoring   = "" + @lc.get( 'InstanceMonitoring' ) is 'true'
-
-      watches = []
-      asg = null
-      monitorEnabled = true
-
-      WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
-
-      allWatch = WatchModel and WatchModel.allObjects() or []
-
-      _.each allWatch, ( watch ) ->
-        watches.push watch
-      asg = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).first()
-
-      for watch in watches
-        if watch.get( 'MetricName' ).indexOf("StatusCheckFailed") != -1
-          for d in watch.get( 'Dimensions' )
-            if d.value and d.value.indexOf( asg.id ) != -1
-              monitorEnabled = false
-              break
-
-          if not monitorEnabled
-            break
-
-      checkbox.monitorEnabled = monitorEnabled
-
-      null
 
     getAmi : ( uid, data ) ->
 
@@ -257,64 +220,8 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       null
 
-    setPublicIp : ( value ) ->
-
-      uid = this.get 'uid'
-
-      MC.canvas_data.component[ uid ].resource.AssociatePublicIpAddress = value
-
-      null
-
-    getAssociatePublicIp: ( uid, data ) ->
-      resource = MC.canvas_data.component[ uid ].resource
-
-      vpcId = MC.aws.vpc.getVPCUID()
-      isDefaultVpc = MC.aws.aws.checkDefaultVPC()
-
-      if vpcId and not isDefaultVpc
-        data.displayAssociatePublicIp = true
-        data.AssociatePublicIpAddress = resource.AssociatePublicIpAddress
-
-      null
-
-    getInstanceType : ( uid, data ) ->
-      amiId = @lc.get 'ImageId'
-
-      ami_info = MC.data.dict_ami[amiId]
-
-      #MC.canvas_data.layout.component.node[ uid ]
-
-      current_instance_type = @lc.get 'InstanceType'
-
-      instanceTypeAry = MC.aws.ami.getInstanceType(ami_info)
-      view_instance_type = _.map instanceTypeAry, ( value )->
-
-        main     : constant.INSTANCE_TYPE[value][0]
-        ecu      : constant.INSTANCE_TYPE[value][1]
-        core     : constant.INSTANCE_TYPE[value][2]
-        mem      : constant.INSTANCE_TYPE[value][3]
-        name     : value
-        selected : current_instance_type is value
-
-      data.instance_type = view_instance_type
-      data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
-      null
-
     isSGListReadOnly : ()->
       true
-
-    getSGList : () ->
-
-      uid = this.get 'uid'
-      sgAry = @lc.get 'SecurityGroups'
-
-      sgUIDAry = []
-      _.each sgAry, (value) ->
-        sgUID = value.slice(1).split('.')[0]
-        sgUIDAry.push sgUID
-        null
-
-      return sgUIDAry
 
     getAppLaunch : ( uid ) ->
       lc_data   = MC.data.resource_list[MC.canvas_data.region][ @lc.get 'LaunchConfigurationARN' ]

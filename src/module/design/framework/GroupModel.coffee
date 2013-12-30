@@ -19,7 +19,13 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
     addChild : ( child )->
       console.assert( child.remove, "This child is not a ResourceModel object" )
 
-      children = @.attributes.__children
+      # Remove from old parent
+      oldParent = child.parent()
+      if oldParent
+        oldParent.removeChild( child )
+
+      # Add to this parent
+      children = @attributes.__children
 
       if not children
         children = []

@@ -5665,7 +5665,8 @@ MC.canvas.event.keyEvent = function (event)
 		// Disable key event for input & textarea
 		if (
 			nodeName === 'input' ||
-			nodeName === 'textarea'
+			nodeName === 'textarea' ||
+			event.target.contentEditable === 'true'
 		)
 		{
 			return true;

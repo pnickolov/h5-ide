@@ -67,8 +67,8 @@
 
 		<ul id="property-asg-policies" class="property-list">
 			<li class="pos-r hide">
-        <h5 class="property-asg-policy-name name" title="Policy Name">{{name}}</h5>
-		<span class="asg-p-metric asg-p-tag" title="Alarm Metric"></span>
+        <h5 class="property-asg-policy-name name"></h5>
+				<span class="asg-p-metric asg-p-tag" title="Alarm Metric"></span>
         <span class="asg-p-eval asg-p-tag" title="Threshold"></span>
         <span class="asg-p-periods asg-p-tag" title="Evaluation Period x Periords"></span>
         <span class="asg-p-trigger asg-p-tag" title="Action Trigger"></span>
@@ -79,13 +79,13 @@
         </div>
       </li>
       {{#each policies}}
-      <li class="pos-r" data-uid="{{uid}}">
+      <li class="pos-r" data-uid="{{id}}">
         <h5 class="property-asg-policy-name name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</h5>
-      	<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{metric}}</span>
-        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{second}}s</span>
-        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
-        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjusttype}}</span>
+      	<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{alarmData.metricName}}</span>
+        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{alarmData.comparisonOperator}} {{alarmData.threshold}}{{unit}}</span>
+        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{alarmData.evaluationPeriods}}x{{alarmData.period}}s</span>
+        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{state}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{state}}</span>
+        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_EDIT'}}"></i>
 	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_REMOVE'}}"></i>
@@ -95,7 +95,7 @@
 
 		</ul>
 		<div class="property-control-group tac">
-			<button class="btn btn-blue" id="property-asg-policy-add" data-tooltip="You can only add 25 scaling policies">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
+			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="You can only add 25 scaling policies">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
 		</div>
 	</div>
 

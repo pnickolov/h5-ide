@@ -83,7 +83,11 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
       lineArray[ uid ] = l
 
-    lineArray
+
+    if uid
+      return lineArray.uid
+    else
+      return lineArray
 
 
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js

@@ -46,7 +46,7 @@
 							</ul>
 						</div>
 
-						<input type="text" class="input" id="asg-policy-threshold" value="{{threshold}}" placeholder="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}" data-ignore="true" data-ignore-regexp="^[0-9]*\.?[0-9]*$" data-required="true">
+						<input type="text" class="input" id="asg-policy-threshold" value="{{alarmData.threshold}}" placeholder="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}" data-ignore="true" data-ignore-regexp="^[0-9]*\.?[0-9]*$" data-required="true">
 
 						<span id="asg-policy-unit">%</span>
 
@@ -54,11 +54,11 @@
 
 						<span>{{i18n "PROP_ASG_ADD_POLICY_FOR"}}</span>
 
-						<input type="text" class="input" id="asg-policy-periods" value="{{periods}}" data-required="true" data-ignore="true" data-type="digits">
+						<input type="text" class="input" id="asg-policy-periods" value="{{alarmData.evaluationPeriods}}" data-required="true" data-ignore="true" data-type="digits">
 
 						<span>{{i18n "PROP_ASG_ADD_POLICY_PERIOD"}}</span>
 
-						<input type="text" class="input" id="asg-policy-second" value="{{second}}" data-required="true" data-ignore="true" data-type="digits">
+						<input type="text" class="input" id="asg-policy-second" value="{{alarmData.period}}" data-required="true" data-ignore="true" data-type="digits">
 
 						<span>{{i18n "PROP_ASG_ADD_POLICY_SECONDS"}}</span>
 
@@ -127,20 +127,20 @@
 
 						<div id="asg-policy-step-wrapper" class="hide clearfix pecentcapcity">
 							<label>{{ i18n "PROP_ASG_ADD_POLICY_ADVANCED_MIN_ADJUST_STEP" }}</label>
-							<input type="text" class="input tooltip" data-tooltip="{{i18n 'PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP'}}" id="asg-policy-step" value="{{step}}" data-ignore="true" maxlength="5" data-type="digits">
+							<input type="text" class="input tooltip" data-tooltip="{{i18n 'PROP_ASG_ADD_POLICY_ADVANCED_TIP_MIN_ADJUST_STEP'}}" id="asg-policy-step" value="{{minAdjustStep}}" data-ignore="true" maxlength="5" data-type="digits">
 						</div>
 					</section>
 
 					<section class="modal-control-group">
 						<h5>{{i18n "PROP_ASG_LBL_NOTIFICATION"}}</h5>
 						<div class="checkbox">
-							<input id="asg-policy-notify" type="checkbox" {{#if notify}}checked="checked"{{/if}}/>
+							<input id="asg-policy-notify" type="checkbox" {{#if sendNotification}}checked="checked"{{/if}}/>
 							<label for="asg-policy-notify"></label>
 						</div>
 						<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION_D"}}</label>
 
 						{{#if noSNS}}
-						<p class="{{#unless notify}}hide{{/unless}} property-warning" id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>
+						<p class="{{#unless sendNotification}}hide{{/unless}} property-warning" id="asg-policy-no-sns">{{ i18n "PROP_ASG_MSG_SNS_WARN" }}</p>
 						{{/if}}
 					</section>
 				</div>

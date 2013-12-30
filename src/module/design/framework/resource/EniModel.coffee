@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
+define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ServergroupModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
 
   ###
   IpObject is used to represent an ip in Eni
@@ -17,7 +17,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
   ###
   Defination of EniModel
   ###
-  Model = ComplexResModel.extend {
+  Model = ServergroupModel.extend {
 
     defaults : ()->
       sourceDestCheck : true
@@ -329,6 +329,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
 
       # deserialize Eni
+      # First, try to deserialize it by ServergroupModel
+      if ServergroupModel.tryDeserialize( data, layout_data, resolve )
+        return
+
       # See if it's embeded eni
       attachment = data.resource.Attachment
       embed      = attachment and attachment.DeviceIndex is "0"
@@ -337,7 +341,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       # Create
       attr = {
         id    : data.uid
-        name  : data.name
+        name  : data.serverGroupName || data.name
         appId : data.resource.NetworkInterfaceId
 
         description     : data.resource.Description

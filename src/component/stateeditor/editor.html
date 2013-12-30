@@ -1,0 +1,155 @@
+<!-- state-template-state-list -->
+{{#each state_list}}
+	<div class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
+		<div class="state-toolbar">
+			<div class="state-remove">-</div>
+			<div class="state-add">+</div>
+			<div class="state-id">{{state_id}}</div>
+			<div class="state-view">
+				<div class="command-view-value"></div>
+				<div class="parameter-view-list">
+					{{> state-template-para-view-list}}
+				</div>
+			</div>
+		</div>
+		<div class="state-edit">
+			<div class="command-value editable-area line" contenteditable="true">{{cmd_value}}</div>
+			<div class="parameter-list">
+				{{> state-template-para-list}}
+			</div>
+		</div>
+	</div>
+{{/each}}
+
+<!-- state-template-para-list -->
+{{#each parameter_list}}
+
+	{{#if type_line}}
+		<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_dict}}
+		<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				{{> state-template-para-dict-item}}
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_array}}
+		<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				{{> state-template-para-array-item}}
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_bool}}
+		<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_text}}
+		<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area text" contenteditable="true" id="xxxxx">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+	{{#if type_state}}
+		<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">
+				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
+				{{para_name}}
+			</div>
+			<div class="parameter-container">
+				<div class="parameter-value editable-area line" contenteditable="true">{{para_value}}</div>
+			</div>
+		</div>
+	{{/if}}
+
+{{/each}}
+
+<!-- state-template-para-view-list -->
+{{#each parameter_view_list}}
+
+	{{#if type_line}}
+		<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_dict}}
+		<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_array}}
+		<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_bool}}
+		<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_text}}
+		<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+	{{#if type_state}}
+		<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-value">{{para_value}}</div>
+		</div>
+	{{/if}}
+
+{{/each}}
+
+<!-- state-template-para-dict-item -->
+{{#each para_value}}
+	<div class="parameter-dict-item">
+		<div class="parameter-value editable-area line key" contenteditable="true">{{key}}</div>
+		<div class="parameter-value editable-area line value" contenteditable="true">{{value}}</div>
+	</div>
+{{/each}}
+
+<!-- state-template-para-array-item -->
+{{#each para_value}}
+	<div class="parameter-value editable-area line" contenteditable="true">{{this}}</div>
+{{/each}}
+
+<!-- template end -->

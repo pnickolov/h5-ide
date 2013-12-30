@@ -411,7 +411,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		new_str
 
-	getPlainTxt : ( $dom ) ->
+	getPlainTxt = ( $dom ) ->
 		console.log 'getPlainTxt', $dom
 
 		$conent_arr = $dom.children()

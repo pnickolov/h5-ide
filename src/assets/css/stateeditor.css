@@ -21,7 +21,7 @@ body {
 	min-width: 120px;
 	position: absolute;
 	top: 0;
-	z-index: 10;
+	z-index: 100;
 }
 .atwho-view .cur {
 	background: #36F;
@@ -70,9 +70,18 @@ body {
 
 /* *************************************** state editor */
 
+#state-editor * {
+	all: default;
+}
+
+#state-editor ::selection {
+	background: #4495d3;
+	color: #fcfcfc;
+}
+
 #state-editor {
-	border: 1px solid #999;
-	margin: 50px 80px;
+	/*border: 1px solid #999;*/
+	/*margin: 50px 80px;*/
 	padding: 20px;
 	overflow: auto;
 }
@@ -83,7 +92,7 @@ body {
 	padding: 10px;
 	text-align: center;
 	float: right;
-	margin-right: 45px;
+	/*margin-right: 45px;*/
 	cursor: pointer;
 }
 
@@ -114,6 +123,12 @@ body {
 	line-height: 17px;
 	padding-top: 3px;
 	overflow: hidden;
+	cursor: text;
+	opacity: 1.0;
+}
+
+#state-editor .editable-area.line:hover {
+	opacity: 1.0;
 }
 
 #state-editor .editable-area.line br {
@@ -282,7 +297,7 @@ body {
 
 #state-editor .state-toolbar {
 	float: none;
-	width: 95%;
+	/*width: 95%;*/
 	overflow: auto;
 	background-color: #ccc;
 	padding: 5px;
@@ -358,7 +373,7 @@ body {
 
 /* *************************************** state sortable */
 
-#state-editor .placeholder {
+#state-editor .state-placeholder {
 	border: 3px dashed #bbb;
 	width: 100px;
 	height: 100px;

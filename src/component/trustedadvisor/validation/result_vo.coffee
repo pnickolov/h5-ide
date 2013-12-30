@@ -3,13 +3,21 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 
 	########## Polyfill ##########
 
-	if not Design
-		Design =
+	if typeof Design is "undefined"
+		window.Design =
 			instance: ->
 				{
 					component: ( uid ) ->
-						MC.canvas_data.component[ uid ]
+						comp = MC.canvas_data.component[ uid ]
+						if comp
+							_.extend {
+									get: ( attr ) ->
+										comp[ attr ] or comp.resource[ attr ]
+								}, comp
+						else
+							null
 				}
+
 
 	########## Functional Method ##########
 

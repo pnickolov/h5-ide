@@ -2,10 +2,5 @@
 *.map
 *.swp
 
-!state-editor/*.bat
-!state-editor/*.js
-state-editor/view.js
-state-editor/model.js
-state-editor/index.js
-state-editor/jquery.js
-state-editor/jquery.atwho.js
+!stateeditor/lib/*.js
+stateeditor/lib/jquery-atwho.js

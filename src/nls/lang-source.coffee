@@ -3540,6 +3540,16 @@ module.exports =
       en:"You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
       zh:""
 
+    # State Editor
+    TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
+      en: "Instance %s state %s has referenced an inexistent component %s."
+      zh: ""
+    TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG:
+      en: "Auto Scaling Group %s state %s has referenced an inexistent component %s."
+      zh: ""
+
+
+
     ##### Trust Advisor
 
   service:

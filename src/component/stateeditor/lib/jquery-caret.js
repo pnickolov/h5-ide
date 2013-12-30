@@ -1,4 +1,3 @@
-//@ sourceMappingURL=jquery.caret.map
 /*
   Implement Github like autocomplete mentions
   http://ichord.github.com/At.js
@@ -24,6 +23,7 @@
     }
   })(function($) {
     "use strict";
+    $.browser = $.support;
     var EditableCaret, InputCaret, Mirror, Utils, methods, pluginName;
     pluginName = 'caret';
     EditableCaret = (function() {

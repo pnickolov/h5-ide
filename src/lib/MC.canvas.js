@@ -1107,8 +1107,8 @@ MC.canvas = {
 		var canvas_offset = $canvas.offset(),
 			from_uid = from_node[0].id,
 			to_uid = to_node[0].id,
-			layout_component_data = MC.canvas_data.layout.component,
-			layout_node_data = layout_component_data.node,
+			//layout_component_data = MC.canvas_data.layout.component,
+			//layout_node_data = layout_component_data.node,
 			from_node_type = from_node.data('type'),
 			to_node_type = to_node.data('type'),
 			//from_data = layout_component_data[ from_node_type ][ from_uid ],
@@ -1117,7 +1117,7 @@ MC.canvas = {
 			to_type = to_data.type,
 			//layout_connection_data = MC.canvas_data.layout.connection,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
-			connection_target_data = {},
+			//connection_target_data = {},
 			scale_ratio = $canvas.scale(),
 			controlPoints = [],
 			direction,
@@ -1233,10 +1233,13 @@ MC.canvas = {
 			var offset_startX=0,
 				offset_endX=0;
 
-			if (from_type == 'AWS.VPC.RouteTable' && from_target_port == "rtb-src"){
+			if (from_type === 'AWS.VPC.RouteTable' && from_target_port === "rtb-src")
+			{
 				offset_startX+=1;
 			}
-			if (to_type == 'AWS.VPC.RouteTable' && to_target_port == "rtb-src"){
+
+			if (to_type === 'AWS.VPC.RouteTable' && to_target_port === "rtb-src")
+			{
 				offset_endX+=1;
 			}
 
@@ -1332,8 +1335,11 @@ MC.canvas = {
 			// 	'data-type': 'line'
 			// });
 
-
 			return true;
+		}
+		else
+		{
+			return false;
 		}
 	},
 

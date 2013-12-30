@@ -434,7 +434,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'new_str', new_str
 		new_str
 
-	setPlainTxt : ( str ) ->
+	setPlainTxt = ( str ) ->
 		console.log 'setPlainTxt', str
 		new_str = str.replace( /\n/igm, '<br>' )
 					 .replace( /\s+/igm, '&nbsp;' )

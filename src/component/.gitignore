@@ -2,6 +2,5 @@
 *.map
 *.swp
 
-!state-editor/*.js
-state-editor/jquery.js
-state-editor/jquery.atwho.js
+!stateeditor/lib/*.js
+stateeditor/lib/jquery-atwho.js

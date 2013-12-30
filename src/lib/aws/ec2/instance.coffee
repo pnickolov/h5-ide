@@ -37,13 +37,12 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 				MC.canvas.display( eni, 'eni-number-group', false )
 				MC.canvas.display( eni, 'port-eni-rtb', true )
 
-	canSetEbsOptimized = ( instance_component ) ->
+	canSetEbsOptimized = ( instance_attr ) ->
 
-		if not EbsMap.hasOwnProperty instance_component.resource.InstanceType
+		if not EbsMap.hasOwnProperty instance_attr.InstanceType
 			return false
 
-		layout = MC.canvas_data.layout.component.node[ instance_component.uid ]
-		if layout and layout.rootDeviceType is "instance-store"
+		if instance_attr.rootDeviceType is "instance-store"
 			return false
 
 		return true

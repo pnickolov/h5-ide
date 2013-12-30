@@ -29,25 +29,25 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
     using_kps = {}
 
-    for comp_uid, comp of MC.canvas_data.component
-      if comp.type isnt res_type.AWS_EC2_Instance and comp.type isnt res_type.AWS_AutoScaling_LaunchConfiguration
-        continue
-
-      using_kps[ comp.resource.KeyName ] = true
+    kp_list = Design.modelClassForType("AWS.EC2.KeyPair").allObjects()
 
     kps = []
-    for name, kp_uid of MC.canvas_property.kp_list
+    for idx, kp of kp_list
 
-      kp = {
+      using_kps[ kp.attributes.id ] = true
+      name = kp.attributes.name
+      kp_uid = kp.attributes.id
+
+      kp_item = {
         name     : name
-        using    : using_kps.hasOwnProperty "@#{kp_uid}.resource.KeyName"
+        using    : using_kps.hasOwnProperty kp_uid
         selected : kp_uid is check_uid
       }
 
       if name is "DefaultKP"
-        kps[0] = kp
+        kps[0] = kp_item
       else
-        kps.push kp
+        kps.push kp_item
 
     kps
 

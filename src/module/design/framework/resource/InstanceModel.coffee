@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       y      : 2
       width  : 9
       height : 9
-      count  : 1
+      number : 1
 
     __asso: [
       {
@@ -25,6 +25,16 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
     remove : ()->
       this.__mainEni.remove()
 
+    setName : ( name )->
+
+      if @get("name") is name
+        return
+
+      @set "name", name
+      @set "serverGroupName", name
+
+      if @draw then @draw()
+      null
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni
@@ -34,7 +44,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       ami = MC.data.dict_ami[ @get("imageId") ]
 
       if not ami
-        return "ide/ami/ami-not-available.png"
+        _osType         = @get("osType")
+        _architecture   = @get("architecture")
+        _rootDeviceType = @get("rootDeviceType")
+        if _osType and _architecture and _rootDeviceType
+          return "ide/ami/" + _osType + "." + _architecture + "." + _rootDeviceType + ".png"
+        else
+          return "ide/ami/ami-not-available.png"
       else
         return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
 
@@ -154,15 +170,16 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       # Update the node
       # Update Server number
       numberGroup = node.children(".server-number-group")
-      if @get("count") > 1
+      if @get("number") > 1
         CanvasManager.toggle node.children(".port-instance-rtb"), false
         CanvasManager.toggle numberGroup, true
-        CanvasManager.update numberGroup.children("text"), @get("count")
+        CanvasManager.update numberGroup.children("text"), @get("number")
       else
         CanvasManager.toggle node.children(".port-instance-rtb"), true
         CanvasManager.toggle numberGroup, false
 
-
+      # update label
+      MC.canvas.update( @id, "text", "hostname", @get("name") )
 
       # TODO : Update Volume number
       # TODO : Update Eip indicator
@@ -178,12 +195,22 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         attr =
           id    : data.uid
           name  : data.name
-          count : data.number
+
+          #servergroup
+          serverGroupUid  : data.serverGroupUid
+          serverGroupName : data.serverGroupName
+          number          : data.number
 
           imageId : data.resource.ImageId
 
           x      : layout_data.coordinate[0]
           y      : layout_data.coordinate[1]
+
+          #layout property
+          osType         : layout_data.osType
+          architecture   : layout_data.architecture
+          rootDeviceType : layout_data.rootDeviceType
+
 
         if data.resource.SubnetId
           attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )

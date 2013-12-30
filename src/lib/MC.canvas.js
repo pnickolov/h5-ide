@@ -1092,51 +1092,57 @@ MC.canvas = {
     return controlPoints;
     },
 
-	connect: function (from_node, from_target_port, to_node, to_target_port, line_id)
+	connect: function (from_uid, from_target_port, to_uid, to_target_port, line_id)
 	{
-		if (typeof from_node === 'string')
-		{
-			from_node = $('#' + from_node);
-		}
+		// if (typeof from_node === 'string')
+		// {
+		// 	from_node = $('#' + from_node);
+		// }
 
-		if (typeof to_node === 'string')
-		{
-			to_node = $('#' + to_node);
-		}
+		// if (typeof to_node === 'string')
+		// {
+		// 	to_node = $('#' + to_node);
+		// }
 
 		var canvas_offset = $canvas.offset(),
-			from_uid = from_node[0].id,
-			to_uid = to_node[0].id,
+			// from_uid = from_node,[0].id,
+			// to_uid = to_node[0].id,
+
+			from_node = document.getElementById( from_uid ),
+			to_node = document.getElementById( to_uid ),
+
+			from_item = $canvas(from_uid),
+			to_item = $canvas(to_uid),
 			//layout_component_data = MC.canvas_data.layout.component,
 			//layout_node_data = layout_component_data.node,
-			from_node_type = from_node.data('type'),
-			to_node_type = to_node.data('type'),
+			from_node_type = from_item.nodeType,//from_node.data('type'),
+			to_node_type = to_item.nodeType,//to_node.data('type'),
 			//from_data = layout_component_data[ from_node_type ][ from_uid ],
 			//to_data = layout_component_data[ to_node_type ][ to_uid ],
-			from_type = from_data.type,
-			to_type = to_data.type,
+			from_type = from_item.type,
+			to_type = to_item.type,
 			//layout_connection_data = MC.canvas_data.layout.connection,
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			//connection_target_data = {},
 			scale_ratio = $canvas.scale(),
-			controlPoints = [],
+			//controlPoints = [],
 			direction,
 			//layout_connection_data,
-			line_data_target,
+			//line_data_target,
 			from_port,
 			to_port,
 			from_port_offset,
 			to_port_offset,
 			//from_node_connection_data,
 			//to_node_connection_data,
-			is_connected,
+			//is_connected,
 			port_direction,
-			startX,
-			startY,
-			endX,
-			endY,
-			start0,
-			end0,
+			// startX,
+			// startY,
+			// endX,
+			// endY,
+			// start0,
+			// end0,
 			dash_style,
 			path,
 			svg_line;
@@ -1225,6 +1231,7 @@ MC.canvas = {
 			{
 				from_port = document.getElementById(from_uid + '_port-' + from_target_port);
 				from_port_offset = from_port.getBoundingClientRect();
+				
 				to_port = document.getElementById(to_uid + '_port-' + to_target_port);
 				to_port_offset = to_port.getBoundingClientRect();
 			}

@@ -81,6 +81,14 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                         _pushResult result, method, filename, uid
                     catch err
                         _handleException( err )
+
+            # validate state editor
+            #try
+            result = validation_main[ 'state' ]( uid )
+            _pushResult result, 'state', 'state', uid
+            #catch err
+                #_handleException( err )
+
     _validAsync = ->
         finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
             console.log memo, arr
@@ -97,6 +105,9 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
+
+    _validState = ->
+
 
     ########## Public Method ##########
 

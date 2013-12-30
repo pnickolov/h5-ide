@@ -24,8 +24,6 @@ StateEditorView = Backbone.View.extend({
 		'click .state-save': 'onStateSaveClick'
 		'click .parameter-item .parameter-remove': 'onParaRemoveClick'
 
-		'click .plain-text': 'getPlainTxt'
-
 	initialize: () ->
 
 		this.compileTpl()
@@ -803,6 +801,7 @@ StateEditorView = Backbone.View.extend({
 
 		# test getPlainTxt
 		#@getPlainTxt()
+		#@setPlainTxt localStorage[ 'new_str' ]
 
 		that = this
 		data = that.saveStateData()
@@ -851,6 +850,16 @@ StateEditorView = Backbone.View.extend({
 										 .replace( /&nbsp;/igm, ' ' )
 
 		console.log 'new_str', new_str
+		localStorage[ 'new_str' ] = new_str
+		new_str
+
+	setPlainTxt : ( str ) ->
+		console.log 'setPlainTxt', str
+		new_str = str.replace( /\n/igm, '<br>' )
+					 .replace( /\s+/igm, '&nbsp;' )
+
+		console.log 'new_str', new_str
+		localStorage[ 'new_str' ] = new_str
 		new_str
 
 })

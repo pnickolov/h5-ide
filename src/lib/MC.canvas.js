@@ -5439,7 +5439,8 @@ MC.canvas.event.clearSelected = function (event)
 
 	//MC.canvas_property.selected_node = [];
 
-	$canvas.selected_node() = [];
+	// Empty selected_node
+	$canvas.selected_node().length = 0;
 };
 
 MC.canvas.event.clickBlank = function (event)
@@ -5515,7 +5516,7 @@ MC.canvas.event.keyEvent = function (event)
 					});
 				}
 			});
-			$canvas.selected_node() = [];
+			$canvas.selected_node().length = 0;
 
 			return false;
 		}

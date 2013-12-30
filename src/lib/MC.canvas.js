@@ -1482,10 +1482,10 @@ MC.canvas = {
 
 	select: function (id)
 	{
-		var item = $canvas(id);
-		var target    = item.$element(),
-			  node_type = item.nodeType,
-			  clone_node;
+		var item = $canvas(id),
+			target = item.$element(),
+			node_type = item.nodeType,
+			clone_node;
 
 		Canvon(target).addClass('selected');
 
@@ -1512,7 +1512,7 @@ MC.canvas = {
 			Canvon(clone.find('.port')).addClass('view-show');
 		}
 
-		MC.canvas_property.selected_node.push(id);
+		$canvas.selected_node().push( id );
 
 		return true;
 	},
@@ -5429,7 +5429,9 @@ MC.canvas.event.clearSelected = function (event)
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
 
-	MC.canvas_property.selected_node = [];
+	//MC.canvas_property.selected_node = [];
+
+	$canvas.selected_node() = [];
 };
 
 MC.canvas.event.clickBlank = function (event)
@@ -5487,12 +5489,12 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'stack' ||
 				canvas_status === 'appedit'
 			) &&
-			MC.canvas_property.selected_node.length > 0 &&
+			$canvas.selected_node().length > 0 &&
 			event.target === document.body
 		)
 		{
 			MC.canvas.volume.close();
-			$.each(MC.canvas_property.selected_node, function (index, id)
+			$.each($canvas.selected_node(), function (index, id)
 			{
 				selected_node = $('#' + id);
 
@@ -5505,22 +5507,22 @@ MC.canvas.event.keyEvent = function (event)
 					});
 				}
 			});
-			MC.canvas_property.selected_node = [];
+			$canvas.selected_node() = [];
 
 			return false;
 		}
 
 		if (
-			MC.canvas_property.selected_node.length === 1 &&
+			$canvas.selected_node().length === 1 &&
 			MC.canvas.keypressed.join('').match(/383840403739373966656665$/i)
 		)
 		{
-			if ($('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'node')
+			if ($('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'node')
 			{
 				return false;
 			}
 
-			var offset = Canvon('#' + MC.canvas_property.selected_node[ 0 ]).offset();
+			var offset = Canvon('#' + $canvas.selected_node()[ 0 ]).offset();
 
 			$(document.body).append('<div id="s"></div>');
 
@@ -5565,10 +5567,10 @@ MC.canvas.event.keyEvent = function (event)
 		// Switch node - [tab]
 		if (
 			keyCode === 9 &&
-			MC.canvas_property.selected_node.length === 1
+			$canvas.selected_node().length === 1
 		)
 		{
-			var 	current_node_id = MC.canvas_property.selected_node[ 0 ],
+			var 	current_node_id = $canvas.selected_node()[ 0 ],
 				selected_node = $('#' + current_node_id),
 				layout_node_data = $canvas.node(),
 				node_stack = [],
@@ -5620,12 +5622,12 @@ MC.canvas.event.keyEvent = function (event)
 				canvas_status === 'appedit' ||
 				canvas_status === 'appview'
 			) &&
-			MC.canvas_property.selected_node.length === 1 &&
-			$('#' + MC.canvas_property.selected_node[ 0 ]).data('type') !== 'line'
+			$canvas.selected_node().length === 1 &&
+			$('#' + $canvas.selected_node()[ 0 ]).data('type') !== 'line'
 		)
 		{
-			var target = $('#' + MC.canvas_property.selected_node[ 0 ]),
-				target_id = MC.canvas_property.selected_node[ 0 ],
+			var target = $('#' + $canvas.selected_node()[ 0 ]),
+				target_id = $canvas.selected_node()[ 0 ],
 				target_item = $canvas(target_id),
 				node_type = target_item.nodeType,
 				target_type = target_item.type,

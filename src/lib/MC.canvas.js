@@ -4918,27 +4918,35 @@ MC.canvas.event.groupResize = {
 		{
 			item = $canvas( item.id );
 
-			if (item.nodeType === 'node')
-			{
-				item_size = item.size();
-				item_coordinate = item.position();
+			// if (item.nodeType === 'node')
+			// {
+			// 	item_size = item.size();
+			// 	item_coordinate = item.position();
 
-				node_minX.push(item_coordinate[0]);
-				node_minY.push(item_coordinate[1]);
-				node_maxX.push(item_coordinate[0] + item_size[0]);
-				node_maxY.push(item_coordinate[1] + item_size[1]);
-			}
+			// 	node_minX.push(item_coordinate[0]);
+			// 	node_minY.push(item_coordinate[1]);
+			// 	node_maxX.push(item_coordinate[0] + item_size[0]);
+			// 	node_maxY.push(item_coordinate[1] + item_size[1]);
+			// }
 
-			if (item.nodeType === 'group')
-			{
-				item_size = item.size();
-				item_coordinate = item.position();
+			// if (item.nodeType === 'group')
+			// {
+			// 	item_size = item.size();
+			// 	item_coordinate = item.position();
 
-				node_minX.push(item_coordinate[0]);
-				node_minY.push(item_coordinate[1]);
-				node_maxX.push(item_coordinate[0] + item_size[0]);
-				node_maxY.push(item_coordinate[1] + item_size[1]);
-			}
+			// 	node_minX.push(item_coordinate[0]);
+			// 	node_minY.push(item_coordinate[1]);
+			// 	node_maxX.push(item_coordinate[0] + item_size[0]);
+			// 	node_maxY.push(item_coordinate[1] + item_size[1]);
+			// }
+
+			item_size = item.size();
+			item_coordinate = item.position();
+
+			node_minX.push(item_coordinate[0]);
+			node_minY.push(item_coordinate[1]);
+			node_maxX.push(item_coordinate[0] + item_size[0]);
+			node_maxY.push(item_coordinate[1] + item_size[1]);
 		});
 
 		group_maxX = Math.max.apply(Math, node_maxX) + group_padding;

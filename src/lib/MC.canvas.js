@@ -1092,6 +1092,90 @@ MC.canvas = {
     return controlPoints;
     },
 
+    genPath: function (controlPoints, from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option)
+    {
+		//patch startX for rtb-src port
+		var offset_startX=0,
+			offset_endX=0;
+
+		if (from_type === 'AWS.VPC.RouteTable' && from_target_port === "rtb-src")
+		{
+			offset_startX+=1;
+		}
+
+		if (to_type === 'AWS.VPC.RouteTable' && to_target_port === "rtb-src")
+		{
+			offset_endX+=1;
+		}
+
+		startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
+		startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
+		endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
+		endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
+
+		//add by xjimmy
+		start0 = {
+			x : startX,
+			y : startY,
+			connectionAngle: from_port.getAttribute('data-angle') * 1
+		};
+
+		end0 = {
+			x: endX,
+			y: endY,
+			connectionAngle: to_port.getAttribute('data-angle') * 1
+		};
+
+		//add pad to start0 and end0
+		MC.canvas._addPad(start0, 1);
+		MC.canvas._addPad(end0, 1);
+
+		// straight line
+		if (start0.x === end0.x || start0.y === end0.y)
+		{
+			path = 'M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y;
+		}
+		else
+		{
+			// fold line
+			MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
+
+			if (controlPoints.length > 0)
+			{
+				if (connection_option.type === 'sg')
+				{
+					switch (MC.canvas_property.LINE_STYLE)
+					{
+						case 0: //straight
+							path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y +
+								' L ' + controlPoints[1].x + ' ' + controlPoints[1].y +
+								' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y +
+								' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
+							break;
+
+						case 1: //elbow
+							path = MC.canvas._round_corner(controlPoints);
+							break;
+
+						case 2: //bezier-q
+							path = MC.canvas._bezier_q_corner(controlPoints);
+							break;
+
+						case 3: //bezier-qt
+							path = MC.canvas._bezier_qt_corner(controlPoints);
+							break;
+					}
+
+				}
+				else
+				{
+					path = MC.canvas._round_corner(controlPoints); //elbow
+				}
+			}
+		}
+		return path;
+    },
+
 	connect: function (from_uid, from_target_port, to_uid, to_target_port, line_id)
 	{
 		// if (typeof from_node === 'string')
@@ -1236,85 +1320,8 @@ MC.canvas = {
 				to_port_offset = to_port.getBoundingClientRect();
 			}
 
-			//patch startX for rtb-src port
-			var offset_startX=0,
-				offset_endX=0;
-
-			if (from_type === 'AWS.VPC.RouteTable' && from_target_port === "rtb-src")
-			{
-				offset_startX+=1;
-			}
-
-			if (to_type === 'AWS.VPC.RouteTable' && to_target_port === "rtb-src")
-			{
-				offset_endX+=1;
-			}
-
-			startX = Math.round( (from_port_offset.left - canvas_offset.left + (from_port_offset.width / 2)) * scale_ratio );
-			startY = Math.round( (from_port_offset.top - canvas_offset.top + (from_port_offset.height / 2)) * scale_ratio );
-			endX = Math.round( (to_port_offset.left - canvas_offset.left + (to_port_offset.width / 2)) * scale_ratio );
-			endY = Math.round( (to_port_offset.top - canvas_offset.top + (to_port_offset.height / 2)) * scale_ratio );
-
-			//add by xjimmy
-			start0 = {
-				x : startX,
-				y : startY,
-				connectionAngle: from_port.getAttribute('data-angle') * 1
-			};
-
-			end0 = {
-				x: endX,
-				y: endY,
-				connectionAngle: to_port.getAttribute('data-angle') * 1
-			};
-
-			//add pad to start0 and end0
-			MC.canvas._addPad(start0, 1);
-			MC.canvas._addPad(end0, 1);
-
-			// straight line
-			if (start0.x === end0.x || start0.y === end0.y)
-			{
-				path = 'M ' + start0.x + ' ' + start0.y + ' L ' + end0.x + ' ' + end0.y;
-			}
-			else
-			{
-				// fold line
-				MC.canvas.route(controlPoints, start0, end0, from_type, to_type ,from_target_port, to_target_port);
-
-				if (controlPoints.length > 0)
-				{
-					if (connection_option.type === 'sg')
-					{
-						switch (MC.canvas_property.LINE_STYLE)
-						{
-							case 0: //straight
-								path = 'M ' + controlPoints[0].x + ' ' + controlPoints[0].y +
-									' L ' + controlPoints[1].x + ' ' + controlPoints[1].y +
-									' L ' + controlPoints[controlPoints.length-2].x + ' ' + controlPoints[controlPoints.length-2].y +
-									' L ' + controlPoints[controlPoints.length-1].x + ' ' + controlPoints[controlPoints.length-1].y;
-								break;
-
-							case 1: //elbow
-								path = MC.canvas._round_corner(controlPoints);
-								break;
-
-							case 2: //bezier-q
-								path = MC.canvas._bezier_q_corner(controlPoints);
-								break;
-
-							case 3: //bezier-qt
-								path = MC.canvas._bezier_qt_corner(controlPoints);
-								break;
-						}
-
-					}
-					else
-					{
-						path = MC.canvas._round_corner(controlPoints); //elbow
-					}
-				}
-			}
+			//by xjimmy
+			path = MC.canvas.genPath(controlPoints, from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option);
 
 			svg_line = document.getElementById( line_id );
 

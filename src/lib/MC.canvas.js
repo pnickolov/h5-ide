@@ -2813,7 +2813,7 @@ MC.canvas.asgList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_ASG_SELECTED', target.data('id'));
+		$canvas.trigger('CANVAS_ASG_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -2944,7 +2944,7 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$canvas.trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -3058,7 +3058,7 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$('#svg_canvas').trigger('CANVAS_ENI_SELECTED', target.data('id'));
+		$canvas.trigger('CANVAS_ENI_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -3387,7 +3387,7 @@ MC.canvas.event.dragable = {
 					)
 					&&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+						$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
@@ -3400,7 +3400,7 @@ MC.canvas.event.dragable = {
 
 					//MC.canvas.reConnect(target_id);
 
-					svg_canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
+					$canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
 						'src_node': target_id,
 						'tgt_parent': parentGroup ? parentGroup.id : ''
 					});
@@ -3596,7 +3596,7 @@ MC.canvas.event.dragable = {
 					)
 					&&
 					(
-						svg_canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+						$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 						!BEFORE_DROP_EVENT.isDefaultPrevented()
 					)
 				)
@@ -3707,7 +3707,7 @@ MC.canvas.event.dragable = {
 					}
 
 					// after change node to another group,trigger event
-					svg_canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
+					$canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
 						'src_group': target_id,
 						'tgt_parent': parentGroup ? parentGroup.id : ''
 					});
@@ -3863,7 +3863,7 @@ MC.canvas.event.dragable = {
 		if (
 			areaChild.length === 0 &&
 			match_place.is_matched &&
-			svg_canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			$canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
 			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
@@ -4098,7 +4098,7 @@ MC.canvas.event.drawConnection = {
 								}
 							}
 
-							svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, {
+							$canvas.trigger(CHECK_CONNECTABLE_EVENT, {
 								from: node_id,
 								to: item.id,
 								from_port: value.from,
@@ -5341,7 +5341,7 @@ MC.canvas.event.selectNode = function (event)
 		// Double click event
 		if (MC.canvas.event.dblclick(function ()
 		{
-			$('#svg_canvas').trigger('SHOW_PROPERTY_PANEL');
+			$canvas.trigger('SHOW_PROPERTY_PANEL');
 		}))
 		{
 			return false;

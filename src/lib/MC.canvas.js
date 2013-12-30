@@ -4304,8 +4304,7 @@ MC.canvas.event.siderbarDrag = {
 				default_width,
 				default_height,
 				target_group_type,
-				size,
-				component_size;
+				size;
 
 			if (target.data('enable') === false)
 			{
@@ -4333,14 +4332,14 @@ MC.canvas.event.siderbarDrag = {
 			{
 				clone_node = target.find('.resource-icon').clone();
 				shadow.append(clone_node);
-				component_size = MC.canvas.COMPONENT_SIZE[ target_type ];
+				size = MC.canvas.COMPONENT_SIZE[ target_type ];
 
 				shadow
 					.css({
 						'top': event.pageY - 50,
 						'left': event.pageX - 50,
-						'width': component_size[0] * MC.canvas.GRID_WIDTH,
-						'height': component_size[1] * MC.canvas.GRID_HEIGHT
+						'width': size[0] * MC.canvas.GRID_WIDTH,
+						'height': size[1] * MC.canvas.GRID_HEIGHT
 					})
 					.show();
 			}

@@ -72,12 +72,16 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
     else
       cache = Design.__instance.__canvasLines
 
-    lineArray = []
+    lineArray = {}
     for uid, line of cache
-      l = { type : line.get("lineType") }
-      l[ line.port1Comp().id ] = line.port1("name")
-      l[ line.port2Comp().id ] = line.port2("name")
-      lineArray.push l
+      l = {
+        type   : line.get("lineType")
+        target : {}
+      }
+      l.target[ line.port1Comp().id ] = line.port1("name")
+      l.target[ line.port2Comp().id ] = line.port2("name")
+
+      lineArray[ uid ] = l
 
     lineArray
 

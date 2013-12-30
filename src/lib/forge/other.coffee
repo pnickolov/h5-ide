@@ -434,6 +434,17 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		console.log 'new_str', new_str
 		new_str
 
+	setPlainTxt : ( str ) ->
+		console.log 'setPlainTxt', str
+		new_str = str.replace( /\n/igm, '<br>' )
+					 .replace( /\s+/igm, '&nbsp;' )
+					 .replace( /</igm, '&lt;' )
+					 .replace( />/igm, '&gt;' )
+
+		console.log 'new_str', new_str
+		localStorage[ 'new_str' ] = new_str
+		new_str
+
 	#public
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
@@ -474,3 +485,4 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	filterStateData    : filterStateData
 	convertUID         : convertUID
 	getPlainTxt        : getPlainTxt
+	setPlainTxt        : setPlainTxt

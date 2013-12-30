@@ -48,6 +48,15 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
       }
+      {
+        port1 :
+          name : "elb-sg-out"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+        port2 :
+          name      : "instance-sg"
+          direction : "horizontal"
+          type      : "ExpandedAsg"
+      }
     ]
   }
 

@@ -181,9 +181,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       oldLc = @get("lc")
       if oldLc
         @stopListening( oldLc )
+        for elb in oldLc.connectionTargets("ElbAmiAsso")
+          @updateExpandedAsgAsso( elb, true )
 
       @listenTo( lc, "change:name", @__updateExpandedAsg )
       @set "lc", lc
+
+      for elb in lc.connectionTargets("ElbAmiAsso")
+        @updateExpandedAsgAsso( elb )
 
       @addChild( lc )
 
@@ -203,9 +208,21 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         @set("notification", n)
       null
 
+    updateExpandedAsgAsso : ( elb, isRemove )->
+      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
+
+      for i in @get("expandedList")
+        asso = new ElbAsso( i, elb )
+        if isRemove then asso.remove()
+
+      null
+
     addScalingPolicy : ( policy )->
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )
+
+      for elb in @get("lc").connectionTargets("ElbAmiAsso")
+          @updateExpandedAsgAsso( elb, true )
       null
 
     __removeScalingPolicy : ( policy )->
@@ -219,8 +236,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         return false
 
       return true
-
-    __updateExpandedAsg : ()->
 
     remove : ()->
       for asg in @get("expandedList")
@@ -239,6 +254,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       expandedAsg.originalAsg = this
 
       @listenTo( expandedAsg, "destroy", @__onExpandedAsgRemove )
+
+      # Connect Elb to expandedAsg
+      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
+      for elb in @get("lc").connectionTargets( "ElbAmiAsso" )
+        new ElbAsso( elb, expandedAsg )
       null
 
 

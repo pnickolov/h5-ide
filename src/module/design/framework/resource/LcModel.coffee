@@ -28,6 +28,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
       else
         return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
 
+    connect : ( cn )->
+
+      if cn.type is "ElbAmiAsso" and @parent()
+        @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB) )
+      null
+
+    disconnect : ( connection )->
+      if cn.type is "ElbAmiAsso" and @parent()
+        @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB), true )
+      null
+
     draw : ( isCreate )->
 
       if isCreate

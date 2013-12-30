@@ -1231,7 +1231,7 @@ MC.canvas = {
 			{
 				from_port = document.getElementById(from_uid + '_port-' + from_target_port);
 				from_port_offset = from_port.getBoundingClientRect();
-				
+
 				to_port = document.getElementById(to_uid + '_port-' + to_target_port);
 				to_port_offset = to_port.getBoundingClientRect();
 			}
@@ -1316,26 +1316,35 @@ MC.canvas = {
 				}
 			}
 
-			MC.paper.start();
+			svg_line = document.getElementById( line_id );
 
-			MC.paper.path(path);
-			MC.paper.path(path).attr('class','fill-line');
-
-			if (connection_option.dash_line === true)
+			if (svg_line !== null)
 			{
-				MC.paper.path(path).attr('class', 'dash-line');
+				$(svg_line).children().attr('d', path);
 			}
+			else
+			{
+				MC.paper.start();
 
-			svg_line = MC.paper.save();
+				MC.paper.path(path);
+				MC.paper.path(path).attr('class','fill-line');
 
-			//$('#line_layer').append(svg_line);
-			document.getElementById('line_layer').appendChild(svg_line);
+				if (connection_option.dash_line === true)
+				{
+					MC.paper.path(path).attr('class', 'dash-line');
+				}
 
-			svg_line.setAttributeNS("http://www.w3.org/1999/xlink", "class", 'line line-' + connection_option.type);
-			svg_line.setAttributeNS("http://www.w3.org/1999/xlink", "data-type", 'line');
-			svg_line.id = line_id;
+				svg_line = MC.paper.save();
 
-			svg_line = null;
+				//$('#line_layer').append(svg_line);
+				document.getElementById('line_layer').appendChild(svg_line);
+
+				svg_line.setAttributeNS("http://www.w3.org/1999/xlink", "class", 'line line-' + connection_option.type);
+				svg_line.setAttributeNS("http://www.w3.org/1999/xlink", "data-type", 'line');
+				svg_line.id = line_id;
+
+				svg_line = null;
+			}
 
 			// $(svg_line).attr({
 			// 	'class': 'line line-' + connection_option.type,

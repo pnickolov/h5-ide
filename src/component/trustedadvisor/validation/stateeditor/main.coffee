@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC, lang, resultVO ) ->
+define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
 
     ########## Functional Method ##########
     #errors = []
@@ -10,7 +10,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
     _getCompTip = ( compType, str1, str2, str100 ) ->
         tip = _componentTipMap[ arguments[ 0 ] ]
 
-        arguments[ 0 ] = _componentTipMap[ tip ]
+        arguments[ 0 ] = tip
 
         sprintf.apply @, arguments
 
@@ -23,7 +23,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
 
     # return  Array
     _findReference = ( str ) ->
-        reg = CONSTANT.REGEXP.stateEditorReference
+        reg = constant.REGEXP.stateEditorReference
         ret = []
 
         while ( resArr = reg.exec str ) isnt null
@@ -36,6 +36,9 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
         errs = []
 
         if _.isString obj
+            if obj.length is 0
+                return errs
+
             refs = _findReference obj
 
             for ref in refs
@@ -48,7 +51,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
 
         else
             for key, value of obj
-                errs.concat _checkComponentExist value
+                errs = errs.concat _checkComponentExist value, data
 
         errs
 
@@ -56,7 +59,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
     _checkState = ( state, data ) ->
         errs = []
 
-        errs.concat _checkComponentExist( state, data )
+        errs = errs.concat _checkComponentExist( state, data )
 
         errs
 
@@ -77,7 +80,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
 
         _.each states, ( state, id ) ->
 
-            errs.concat _checkState state, _.extend { stateId: id }, data
+            errs = errs.concat _checkState state, _.extend {}, data, { stateId: id }
 
         if not errs.length
             errs = null
@@ -85,4 +88,4 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( CONSTANT, MC,
         errs
 
 
-    isStateValid: isStateValid
+    isStateValid

@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManager", "Design", "constant" ], ( ResourceModel, ComplexResModel, GroupModel, CanvasManager, Design, constant )->
 
   NotificationModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -147,7 +147,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
   }
 
 
-  Model = ComplexResModel.extend {
+  Model = GroupModel.extend {
 
     defaults : ()->
       x            : 0

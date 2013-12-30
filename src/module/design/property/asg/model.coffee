@@ -22,6 +22,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         @set "emptyAsg", true
         return
 
+      @getPolicies()
+
       @set "has_elb", !!component.get("lc").connections("ElbAmiAsso").length
       @set "isEC2HealthCheck", component.isEC2HealthCheckType()
       @set 'detail_monitor', lc.get( 'instanceMonitoring' )
@@ -50,6 +52,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     setHealthCheckGrace : ( value ) ->
       Design.instance().component( @get("uid") ).set( "healthCheckGracePeriod", value )
+
+    getPolicies : ()->
+
 
 
 

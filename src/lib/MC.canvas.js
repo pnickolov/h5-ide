@@ -5161,7 +5161,6 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-
 			var group_node = $canvas( group_id );
 
 			group_node.position(group_left, group_top);
@@ -5571,15 +5570,15 @@ MC.canvas.event.keyEvent = function (event)
 		)
 		{
 			var 	current_node_id = $canvas.selected_node()[ 0 ],
-				selected_node = $('#' + current_node_id),
-				layout_node_data = $canvas.node(),
+				//selected_node = $('#' + current_node_id),
+				//layout_node_data = $canvas.node(),
 				node_stack = [],
 				index = 0,
 				current_index,
-				next_node,
-				clone_node;
+				next_node;
+				//clone_node;
 
-			if (selected_node.data('type') !== 'node')
+			if ($canvas(current_node_id).nodeType !== 'node')
 			{
 				return false;
 			}
@@ -5609,7 +5608,9 @@ MC.canvas.event.keyEvent = function (event)
 
 			MC.canvas.event.clearSelected();
 
-			MC.canvas.select(next_node.attr('id'));
+			//MC.canvas.select(next_node.attr('id'));
+
+			$canvas(next_node.attr('id')).select();
 
 			return false;
 		}

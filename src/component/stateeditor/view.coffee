@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'text!./component/stateeditor/editor.html',
+         'text!./component/stateeditor/template.html',
          'UI.modal'
 ], ( ide_event, template ) ->
 

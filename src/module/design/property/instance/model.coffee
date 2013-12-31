@@ -6,68 +6,31 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 	InstanceModel = PropertyModel.extend {
 
-		instance : null
-
 		init : ( uid ) ->
 
-			@set 'uid', uid
-			@instance = Design.instance().component uid
+			component = Design.instance().component( uid )
 
-			@getName()
-			@getInstanceType()
+			attr = component.toJSON()
+			attr.uid = uid
+			attr.number_disable = component.connections('RTB_Route').length <= 0
+			attr.classic_stack  = not Design.instance().typeIsVpc()
+
+			# If Vpc is dedicated, instance should be dedicated.
+			VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
+			vpc = VpcModel.allObjects()[0]
+			if vpc
+				attr.force_tenacy = vpc.get("tenancy") is "dedicated"
+
+			@set attr
+
 			@getAmi()
-			@getComponent()
-			@getKeyPair()
-
-			@getEni()
-			null
-
-		setName  : ( name ) ->
-
-			@setName( @instance.attributes.name )
-			@instance.setName name
-
-			null
-
-
-		getName  : () ->
-			instance_uid = this.get( 'uid' )
-			attr = @instance.attributes
-
-			this.set 'name',  attr.name
-
-			# Instance count
-			this.set 'number', attr.number
-			this.set 'number_disable', false
-
-			connTgt = @instance.connections 'RTB_Route'
-			if connTgt and connTgt.length is 1
-				this.set 'number_disable', true
-
-			@set 'classic_stack', Design.instance().typeIsClassic()
-
-			# (old)
-			# for uid, comp of MC.canvas_data.component
-			# 	if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-			# 		connected = false
-			# 		for route in comp.resource.RouteSet
-			# 			if route.InstanceId.indexOf( instance_uid ) isnt -1
-			# 				connected = true
-			# 				break
-			# 		if connected
-			# 			this.set 'number_disable', true
-			# 			break
-			#
-			## Classic Mode
-			#this.set 'classic_stack', MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.EC2_CLASSIC or MC.canvas_data.platform == MC.canvas.PLATFORM_TYPE.DEFAULT_VPC
-
+			@getInstanceType()
+			# @getKeyPair()
+			# @getEni()
 			null
 
 		setCount : ( val ) ->
-			uid = @get( 'uid' )
-			MC.canvas_data.component[ uid ].number = val
-			MC.aws.instance.updateCount( uid, val )
-			null
+			Design.instance().component( @get("uid") ).setCount( val )
 
 		canSetInstanceType : ( value ) ->
 			uid        = this.get 'uid'
@@ -108,143 +71,75 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 
 		setEbsOptimized : ( value )->
-			uid = this.get 'uid'
-			MC.canvas_data.component[ uid ].resource.EbsOptimized = value
-			null
+			Design.instance().component( @get("uid") ).set( "ebsOptimized", value )
 
 		setTenancy : ( value ) ->
-			uid  = this.get 'uid'
-			MC.canvas_data.component[ uid ].resource.Placement.Tenancy = value
-			null
+			Design.instance().component( @get("uid") ).set( "tenancy", value )
 
-		setCloudWatch : ( value ) ->
-
-			uid = this.get 'uid'
-			MC.canvas_data.component[ uid ].resource.Monitoring = if value then 'enabled' else 'disabled'
-			null
+		setMonitoring : ( value ) ->
+			Design.instance().component( @get("uid") ).set( "monitoring", value )
 
 		setUserData : ( value ) ->
-
-			uid = this.get 'uid'
-			MC.canvas_data.component[ uid ].resource.UserData.Data = value
-
-			null
+			Design.instance().component( @get("uid") ).set( "userData", value )
 
 		setEniDescription: ( value ) ->
-
-			uid = this.get 'uid'
-
-			_.map MC.canvas_data.component, ( val, key ) ->
-
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-					val.resource.Description = value
-
-				null
-
-			null
+			Design.instance().component( @get("uid") ).getEmbedEni().set("description", value)
 
 		setSourceCheck : ( value ) ->
-
-			uid = this.get 'uid'
-
-			_.map MC.canvas_data.component, ( val, key ) ->
-
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-					val.resource.SourceDestCheck = value
-
-				null
-
-			null
+			Design.instance().component( @get("uid") ).getEmbedEni().set("sourceDestCheck", value)
 
 		setPublicIp : ( value ) ->
+			Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
 
-			uid = this.get 'uid'
+		getAmi : () ->
+			ami_id = @get("imageId")
+			ami    = Design.instance().component( @get("uid") ).getAmi()
 
-			_.map MC.canvas_data.component, ( val, key ) ->
-
-				if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == uid and val.resource.Attachment.DeviceIndex == '0'
-
-					val.resource.AssociatePublicIpAddress = value
-
-				null
-
-			null
-
-		unAssignSGToComp : (sg_uid) ->
-
-			instanceUID = this.get 'uid'
-
-			currentSG = '@' + sg_uid + '.resource.GroupName'
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-			if !MC.canvas_data.component[instanceUID].resource.VpcId and !MC.aws.aws.checkDefaultVPC()
-				originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
-				originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
-
-				originSGAry = _.filter originSGAry, (value) ->
-					value isnt currentSG
-
-				originSGIdAry = _.filter originSGIdAry, (value) ->
-					value isnt currentSGId
-
-				MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
-				MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
-
-			# remove from eni sg
-			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
-			if !eniComp then return
-
-			eniGroupSet = eniComp.resource.GroupSet
-
-			newGroupSet = _.filter eniGroupSet, (groupObj) ->
-				if groupObj.GroupName is currentSG or groupObj.GroupId is currentSGId
-					return false
-				else
-					return true
-
-			MC.canvas_data.component[eniComp.uid].resource.GroupSet = newGroupSet
-
-			null
-
-		assignSGToComp : (sg_uid) ->
-
-			instanceUID = this.get 'uid'
-
-			currentSG = '@' + sg_uid + '.resource.GroupName'
-			currentSGId = '@' + sg_uid + '.resource.GroupId'
-
-			if !MC.canvas_data.component[instanceUID].resource.VpcId and !MC.aws.aws.checkDefaultVPC()
-				originSGAry = MC.canvas_data.component[instanceUID].resource.SecurityGroup
-				originSGIdAry = MC.canvas_data.component[instanceUID].resource.SecurityGroupId
-
-				if !Boolean(currentSG in originSGAry)
-					originSGAry.push currentSG
-
-				if !Boolean(currentSGId in originSGIdAry)
-					originSGIdAry.push currentSGId
-
-				MC.canvas_data.component[instanceUID].resource.SecurityGroup = originSGAry
-				MC.canvas_data.component[instanceUID].resource.SecurityGroupId = originSGIdAry
-
-			# add to eni sg
-			eniComp = MC.aws.eni.getInstanceDefaultENI instanceUID
-			if !eniComp then return
-
-			eniGroupSet = eniComp.resource.GroupSet
-
-			addToENISg = true
-			_.each eniGroupSet, (sgObj) ->
-				if sgObj.GroupName is currentSG or sgObj.GroupId is currentSGId
-					addToENISg = false
-					return
-				null
-			if addToENISg
-				MC.canvas_data.component[eniComp.uid].resource.GroupSet.push {
-					GroupId: currentSGId
-					GroupName: currentSG
+			if not ami
+				data = {
+					name        : ami_id + " is not available."
+					icon        : "ami-not-available.png"
+					unavailable : true
 				}
+			else
+				data = {
+					name : ami.name
+					icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+				}
+
+			@set 'instance_ami', data
+			null
+
+		getInstanceType : () ->
+
+			ami_info = Design.instance().component( @get("uid") ).getAmi()
+
+			current_instance_type = attr.instanceType
+
+			instance_type_list = MC.aws.ami.getInstanceType( ami_info )
+			if instance_type_list
+				view_instance_type = _.map instance_type_list, ( value )->
+
+					main     : constant.INSTANCE_TYPE[value][0]
+					ecu      : constant.INSTANCE_TYPE[value][1]
+					core     : constant.INSTANCE_TYPE[value][2]
+					mem      : constant.INSTANCE_TYPE[value][3]
+					name     : value
+					selected : current_instance_type is value
+					hide     : not tenacy and value is "t1.micro"
+			else
+				view_instance_type = [{
+					main     : ''
+					ecu      : ''
+					core     : ''
+					mem      : ''
+					name     : ''
+					selected : false
+					hide     : true
+				}]
+
+			this.set 'instance_type', view_instance_type
+			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized attr
 
 			null
 
@@ -321,34 +216,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			this.set 'eni_ips',     eni_ips
 			null
 
-		getComponent : () ->
-			this.set 'component', @instance.attributes
-			null
 
-		getAmi : () ->
-
-			uid = this.get 'uid'
-
-			attr = @instance.attributes
-
-			ami_id = attr.imageId
-			ami    = MC.data.dict_ami[ami_id]
-
-			if not ami
-				data = {
-					name        : ami_id + " is not available."
-					icon        : "ami-not-available.png"
-					unavailable : true
-				}
-			else
-				data = {
-					name : ami.name
-					icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
-				}
-
-			this.set 'instance_ami', data
-			this.set 'ami_uid', ami_id
-			null
 
 		getKeyPair : ()->
 
@@ -393,67 +261,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			null
 
 
-		getInstanceType : () ->
 
-			uid = this.get 'uid'
-			attr = @instance.attributes
-
-			tenacy = attr.tenancy isnt 'dedicated'
-
-			this.set 'ebs_optimized', "" + attr.EbsOptimized is "true"
-			this.set 'monitoring',    attr.Monitoring is 'enabled'
-			this.set 'tenacy',        tenacy
-
-			this.set 'force_tenacy', false
-
-			parent = @instance.parent()
-			if parent and parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC
-			#has vpc
-				if parent.attributes.InstanceTenancy is 'dedicated'
-					this.set 'force_tenacy', true
-
-			# for comp_uid, comp of MC.canvas_data.layout.component.group
-			# 	if comp.type is 'AWS.VPC.VPC'
-			# 		vpc = MC.canvas_data.component[ comp_uid ]
-			# 		if vpc.resource.InstanceTenancy is "dedicated"
-			# 			this.set 'force_tenacy', true
-			# 		break
-
-
-			if MC.data.dict_ami and MC.data.dict_ami[ attr.ImageId ]
-				ami_info = MC.data.dict_ami[ attr.ImageId ]
-			else
-				ami_info = MC.canvas_data.layout.component.node[ uid ]
-
-			current_instance_type = attr.InstanceType
-
-
-			instance_type_list = MC.aws.ami.getInstanceType( ami_info )
-			if instance_type_list
-				view_instance_type = _.map instance_type_list, ( value )->
-
-					main     : constant.INSTANCE_TYPE[value][0]
-					ecu      : constant.INSTANCE_TYPE[value][1]
-					core     : constant.INSTANCE_TYPE[value][2]
-					mem      : constant.INSTANCE_TYPE[value][3]
-					name     : value
-					selected : current_instance_type is value
-					hide     : not tenacy and value is "t1.micro"
-			else
-				view_instance_type = [{
-					main     : ''
-					ecu      : ''
-					core     : ''
-					mem      : ''
-					name     : ''
-					selected : false
-					hide     : true
-				}]
-
-			this.set 'instance_type', view_instance_type
-			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized attr
-
-			null
 
 		attachEIP : ( eip_index, attach ) ->
 
@@ -521,34 +329,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 
 					return false
-
-		getSGList : () ->
-
-			sgUIDAry = []
-			uid = this.get 'uid'
-
-			if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
-
-				defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
-				eniUID = defaultENIComp.uid
-
-				sgAry = MC.canvas_data.component[eniUID].resource.GroupSet
-
-				sgUIDAry = []
-				_.each sgAry, (value) ->
-					sgUID = value.GroupId.slice(1).split('.')[0]
-					sgUIDAry.push sgUID
-					null
-			else
-				sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
-
-				sgUIDAry = []
-				_.each sgAry, (value) ->
-					sgUID = value.slice(1).split('.')[0]
-					sgUIDAry.push sgUID
-					null
-
-			return sgUIDAry
 
 		addIP : () ->
 

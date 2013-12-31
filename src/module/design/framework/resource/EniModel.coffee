@@ -23,6 +23,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       sourceDestCheck : true
       description     : ""
       ips             : []
+      assoPublicIp    : false
 
       x        : 0
       y        : 0
@@ -346,6 +347,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
         description     : data.resource.Description
         sourceDestCheck : data.resource.SourceDestCheck
+        assoPublicIp    : data.resource.AssociatePublicIpAddress
 
         ips : []
 

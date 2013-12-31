@@ -13,7 +13,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       #servergroup
       serverGroupUid  : ''
       serverGroupName : ''
-      number          : 1
+      count           : 1
 
       imageId         : ''
       tenancy         : ''
@@ -23,44 +23,27 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       architecture   : ''
       rootDeviceType : ''
 
-      parent         : null #subnet model or az model
+    setCount : ( count )->
+      @set "count", count
 
-
-    constructor : ( attributes, option )->
-
-      ComplexResModel.call this, attributes, option
+      # Update my self and connected Eni
+      @draw()
+      for eni in @connectionTargets("EniAttachment")
+        eni.draw()
 
       null
 
-
-    __asso: [
-      {
-        key: 'KeyName'
-        type: constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-        suffix: 'KeyName'
-      }
-    ]
-
     getAmi : ()->
-      MC.data.config[MC.canvas_data.region].ami[ @get("imageId") ]
+      MC.data.dict_ami[@get("imageId")]
 
     remove : ()->
       this.__mainEni.remove()
 
-    setName : ( name )->
-
-      if @get("name") is name
-        return
-
-      @set "name", name
-      @set "serverGroupName", name
-
-      if @draw then @draw()
-      null
-
     setEmbedEni : ( eni )->
       this.__mainEni = eni
       null
+
+    getEmbedEni : ()-> this.__mainEni
 
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get("imageId") ]
@@ -192,10 +175,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       # Update the node
       # Update Server number
       numberGroup = node.children(".server-number-group")
-      if @get("number") > 1
+      if @get("count") > 1
         CanvasManager.toggle node.children(".port-instance-rtb"), false
         CanvasManager.toggle numberGroup, true
-        CanvasManager.update numberGroup.children("text"), @get("number")
+        CanvasManager.update numberGroup.children("text"), @get("count")
       else
         CanvasManager.toggle node.children(".port-instance-rtb"), true
         CanvasManager.toggle numberGroup, false
@@ -213,41 +196,40 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
     deserialize : ( data, layout_data, resolve )->
 
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-        attr =
-          id    : data.uid
-          name  : data.name
+      attr =
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.InstanceId
 
-          #servergroup
-          serverGroupUid  : data.serverGroupUid
-          serverGroupName : data.serverGroupName
-          number          : data.number
+        #servergroup
+        serverGroupUid  : data.serverGroupUid
+        serverGroupName : data.serverGroupName
+        count           : data.number
 
-          imageId : data.resource.ImageId
-          tenancy : data.resource.Placement.Tenancy
+        imageId      : data.resource.ImageId
+        tenancy      : data.resource.Placement.Tenancy
+        ebsOptimized : data.resource.EbsOptimized
+        instanceType : data.resource.instanceType
+        monitoring   : data.resource.Monitoring isnt "disabled"
+        userData     : data.resource.UserData.Data
 
-          x      : layout_data.coordinate[0]
-          y      : layout_data.coordinate[1]
+        x : layout_data.coordinate[0]
+        y : layout_data.coordinate[1]
 
-          #layout property
-          osType         : layout_data.osType
-          architecture   : layout_data.architecture
-          rootDeviceType : layout_data.rootDeviceType
+        #layout property
+        osType         : layout_data.osType
+        architecture   : layout_data.architecture
+        rootDeviceType : layout_data.rootDeviceType
 
 
 
-        if data.resource.SubnetId
-          attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )
-        else
-          attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
+      if data.resource.SubnetId
+        attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )
+      else
+        attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
-        for key, value of data.resource
-          attr[ key ] = value
-
-        model = new Model attr
-
-        model.associate resolve
-        null
+      model = new Model attr
+      null
 
 
   }

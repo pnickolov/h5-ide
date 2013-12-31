@@ -36,7 +36,6 @@ define [ '../base/view',
 
 
         render : () ->
-
             # TODO : Remove following 3 lines
             defaultVPCId = MC.aws.aws.checkDefaultVPC()
             if defaultVPCId
@@ -49,15 +48,10 @@ define [ '../base/view',
             @model.attributes.name
 
         instanceNameChange : ( event ) ->
-
             target = $ event.currentTarget
             name = target.val()
-            id = @model.get 'uid'
 
-            MC.validate.preventDupname target, id, name, 'Instance'
-
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "Instance" )
                 @model.setName name
                 @setTitle name
             null

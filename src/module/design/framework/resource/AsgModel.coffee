@@ -127,7 +127,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           'id'         : @id
           'class'      : 'dragable AWS-AutoScaling-Group asg-expand'
           'data-type'  : 'group'
-          'data-class' : @type
+          'data-class' : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
         })
 
         # Move the node to right place

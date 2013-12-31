@@ -924,25 +924,25 @@ MC.canvas = {
 		return controlPoints;
 	},
 
-	// updateResizer: function(node, width, height)
-	// {
-	// 	var pad = 10,
-	// 		top = 0;
+	updateResizer: function(node, width, height)
+	{
+		var pad = 10,
+			top = 0;
 
-	// 	width = width * MC.canvas.GRID_WIDTH;
-	// 	height = height * MC.canvas.GRID_HEIGHT;
+		width = width * MC.canvas.GRID_WIDTH;
+		height = height * MC.canvas.GRID_HEIGHT;
 
-	// 	$(node).find('.resizer-wrap').empty().append(
-	// 		Canvon.rectangle(0, top, pad, pad).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
-	// 		Canvon.rectangle(pad, top, width - 2 * pad, pad).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
-	// 		Canvon.rectangle(width - pad, top, pad, pad).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
-	// 		Canvon.rectangle(0, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
-	// 		Canvon.rectangle(width - pad, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
-	// 		Canvon.rectangle(0, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
-	// 		Canvon.rectangle(pad, height + top - pad, width - 2 * pad, pad).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
-	// 		Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
-	// 	);
-	// },
+		$(node).find('.resizer-wrap').empty().append(
+			Canvon.rectangle(0, top, pad, pad).attr('class', 'group-resizer resizer-topleft').data('direction', 'topleft'),
+			Canvon.rectangle(pad, top, width - 2 * pad, pad).attr('class', 'group-resizer resizer-top').data('direction', 'top'),
+			Canvon.rectangle(width - pad, top, pad, pad).attr('class', 'group-resizer resizer-topright').data('direction', 'topright'),
+			Canvon.rectangle(0, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-left').data('direction', 'left'),
+			Canvon.rectangle(width - pad, top + pad, pad, height - 2 * pad).attr('class', 'group-resizer resizer-right').data('direction', 'right'),
+			Canvon.rectangle(0, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomleft').data('direction', 'bottomleft'),
+			Canvon.rectangle(pad, height + top - pad, width - 2 * pad, pad).attr('class', 'group-resizer resizer-bottom').data('direction', 'bottom'),
+			Canvon.rectangle(width - pad, height + top - pad, pad, pad).attr('class', 'group-resizer resizer-bottomright').data('direction', 'bottomright')
+		);
+	},
 
   route2 : function ( start, end )
   {
@@ -5161,6 +5161,40 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
+			if (type === 'AWS.VPC.Subnet')
+			{
+				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
+
+				event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
+
+				event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
+
+				// $.each($canvas( group_id ).connection(), function (i, value)
+				// {
+				// 	$('#' + value.line).show();
+				// });
+
+				// Re-draw group connections
+				// layout_connection_data = MC.canvas.data.get('layout.connection');
+				// node_connections = layout_group_data[ group_id ].connection || {};
+
+				// $.each($canvas( group_id ).connection(), function (index, value)
+				// {
+				// 	line_connection = layout_connection_data[ value.line ];
+
+				// 	MC.canvas.connect(
+				// 		$('#' + group_id), line_connection['target'][ group_id ],
+				// 		$('#' + value.target), line_connection['target'][ value.target ],
+				// 		{'line_uid': value['line']}
+				// 	);
+				// });
+
+				//$canvas( group_id ).reConnect();
+				//var group_node = $canvas( group_id );
+
+				//group_node.reConnect();
+			}
+
 			var group_node = $canvas( group_id );
 
 			group_node.position(group_left, group_top);
@@ -5195,40 +5229,6 @@ MC.canvas.event.groupResize = {
 				'x': label_coordinate[0],
 				'y': label_coordinate[1]
 			});
-		}
-
-		if (type === 'AWS.VPC.Subnet')
-		{
-			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
-
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
-
-			// $.each($canvas( group_id ).connection(), function (i, value)
-			// {
-			// 	$('#' + value.line).show();
-			// });
-
-			// Re-draw group connections
-			// layout_connection_data = MC.canvas.data.get('layout.connection');
-			// node_connections = layout_group_data[ group_id ].connection || {};
-
-			// $.each($canvas( group_id ).connection(), function (index, value)
-			// {
-			// 	line_connection = layout_connection_data[ value.line ];
-
-			// 	MC.canvas.connect(
-			// 		$('#' + group_id), line_connection['target'][ group_id ],
-			// 		$('#' + value.target), line_connection['target'][ value.target ],
-			// 		{'line_uid': value['line']}
-			// 	);
-			// });
-
-			//$canvas( group_id ).reConnect();
-			//var group_node = $canvas( group_id );
-
-			//group_node.reConnect();
 		}
 
 		// Show label

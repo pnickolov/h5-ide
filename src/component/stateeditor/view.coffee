@@ -845,6 +845,21 @@ define [ 'event',
             if not $parentElem.length and not $currentElem.hasClass('editable-area')
                 $('.editable-area').blur()
 
+        getParaObjByInput: (inputElem) ->
+
+            that = this
+            $inputElem = $(inputElem)
+            $paraItem = $inputElem.parents('.parameter-item')
+            $stateItem = $paraItem.parents('.state-item')
+
+            paraName = $paraItem.attr('data-para-name')
+            cmdName = $stateItem.attr('data-command')
+
+            currentParaMap = that.cmdParaObjMap[cmdName]
+            paraObj = currentParaMap[paraName]
+
+            return paraObj
+
         getPlainTxt : ->
             console.log 'getPlainTxt', $ '#xxxxx'
 

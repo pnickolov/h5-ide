@@ -592,9 +592,13 @@ define [ 'event',
             that.refreshStateId()
 
         validate: () ->
-            $contentEditable = @$el.find '[contenteditable="true"]'
+            $contentEditable = @$stateList.find '[contenteditable="true"]'
+
             result = true
             $contentEditable.each ->
+                if $( @ ).parent( '[contenteditable="true"]' ).size()
+                    return true
+
                 res = $( @ )
                     .data( 'value', MC.forge.other.getPlainTxt $( @ ) )
                     .parsley( 'custom', ( val ) ->
@@ -605,6 +609,8 @@ define [ 'event',
 
                 if not res and result
                     result = false
+
+                true
 
 
             result
@@ -810,9 +816,11 @@ define [ 'event',
             that = this
             stateData = that.saveStateData()
 
-            that.compData.state = stateData
+            if stateData
 
-            that.closedPopup()
+                that.compData.state = stateData
+
+                that.closedPopup()
 
             # localStorage[ 'state_data' ] = JSON.stringify data
 

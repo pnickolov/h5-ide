@@ -437,13 +437,12 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	setPlainTxt = ( str ) ->
 		console.log 'setPlainTxt', str
 
-        new_str = str.replace( /</igm, '&lt;' )
-                     .replace( />/igm, '&gt;' )
-                     .replace( /\n/igm, '<br>' )
-                     .replace( /\s+/igm, '&nbsp;' )
+		new_str = str.replace( /</igm, '&lt;' )
+					 .replace( />/igm, '&gt;' )
+					 .replace( /\n/igm, '<br>' )
+					 .replace( /\s+/igm, '&nbsp;' )
 
 		console.log 'new_str', new_str
-		localStorage[ 'new_str' ] = new_str
 		new_str
 
 	#public

@@ -400,10 +400,10 @@ require.config {
 			deps       : [ 'unmanagedvpc_view', 'unmanagedvpc_model', 'MC' ]
 
 		# state editor
-		'jquery-caret' :
+		'jquery_caret' :
 			deps       : [ 'jquery' ]
 
-		'jquery-atwho' :
+		'jquery_atwho' :
 			deps       : [ 'jquery_caret' ]
 
 		'stateeditor' :

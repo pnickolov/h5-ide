@@ -39,8 +39,7 @@ module.exports = function( grunt ) {
 			'!<%= sourcedir[1] %>/design/resource/temp_view.js',
 			'!<%= sourcedir[1] %>/design/property/temp_view.js',
 			'!<%= src %>/service/*',
-			'!<%= src %>/test/*',
-			'!<%= src %>/component/state-editor/*'
+			'!<%= src %>/test/*'
 		],
 
 		cssfiles   : [
@@ -56,8 +55,7 @@ module.exports = function( grunt ) {
 
 		coffeefiles : [
 			'<%= src %>/**/*.coffee',
-			'!<%= src %>/nls/lang-source.coffee',
-			'!<%= src %>/component/state-editor/**/*.coffee'
+			'!<%= src %>/nls/lang-source.coffee'
 		],
 
 		htmlfiles   : [

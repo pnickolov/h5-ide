@@ -81,7 +81,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       ResourceModel.call(this, attr)
 
 
-      # The line wants to destroy itslef a
+      # The line wants to destroy itslef after init
       if @__destroyAfterInit
         @remove()
         return this

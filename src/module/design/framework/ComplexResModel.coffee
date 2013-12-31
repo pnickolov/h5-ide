@@ -110,7 +110,8 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       # But I'm not sure if this will affect undo/redo
 
       console.assert( connections, "Disconnecting a resource, when the resource doesn't connect to anything." )
-      console.assert( connections.indexOf(connection) != -1, "Disconnecting a resource, when the connection doesn't connect to resource." )
+
+      if connections.indexOf(connection) != -1 then return
 
       connections.splice( connections.indexOf( connection ), 1 )
 

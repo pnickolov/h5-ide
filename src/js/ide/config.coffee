@@ -406,7 +406,7 @@ require.config {
 		'jquery_atwho' :
 			deps       : [ 'jquery_caret' ]
 
-		'stateeditor' :
+		'stateeditor'  :
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC', 'jquery_caret', 'jquery_atwho' ]
 }
 

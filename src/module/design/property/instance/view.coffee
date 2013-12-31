@@ -36,13 +36,7 @@ define [ '../base/view',
 
 
         render : () ->
-            # TODO : Remove following 3 lines
-            defaultVPCId = MC.aws.aws.checkDefaultVPC()
-            if defaultVPCId
-                this.model.attributes.component.resource.VpcId = defaultVPCId
-
             @$el.html template @model.attributes
-
             @refreshIPList()
 
             @model.attributes.name
@@ -125,7 +119,7 @@ define [ '../base/view',
             null
 
         cloudwatchSelect : ( event ) ->
-            @model.setCloudWatch event.target.checked
+            @model.setMonitoring event.target.checked
             $("#property-cloudwatch-warn").toggle( $("#property-instance-enable-cloudwatch").is(":checked") )
 
         userdataChange : ( event ) ->
@@ -149,10 +143,14 @@ define [ '../base/view',
             null
 
         addKP : ( event, id ) ->
-            result = @model.addKP id
-            if not result
+            if not id then return
+
+            id = @model.addKP id
+            event.id = id
+
+            if not id
                 notification "error", "KeyPair with the same name already exists."
-                return result
+                return id
 
         updateKPSelect : () ->
             # Add remove icon to the newly created item

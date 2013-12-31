@@ -21,6 +21,8 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
         @attributes.dhcp = new DhcpModel()
         null
 
+    isDefaultTenancy : ()-> @get("tenancy") isnt "dedicated"
+
     setCIDR : ( cidr )->
 
       # TODO : Update all subnet's cidr

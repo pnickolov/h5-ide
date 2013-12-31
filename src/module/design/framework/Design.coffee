@@ -76,7 +76,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # TODO : QuickFix
     for key, value of MC.canvas_data
       if key is "component" or key is "layout" then continue
-      @[key] = value
+      @["__" + key] = value
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw   = false
@@ -352,7 +352,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   Design.instance = ()-> @__instance
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
 
-  DesignImpl.prototype.get = ( key )-> @[key]
+  DesignImpl.prototype.get = ( key )-> @["__"+key]
 
   DesignImpl.prototype.region = ()-> @.__region
   DesignImpl.prototype.mode   = ()->

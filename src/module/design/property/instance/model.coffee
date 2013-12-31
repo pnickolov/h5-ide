@@ -12,21 +12,48 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			attr = component.toJSON()
 			attr.uid = uid
-			attr.number_disable = component.connections('RTB_Route').length <= 0
+			attr.number_disable = component.getEmbedEni().connections('RTB_Route').length > 0
 			attr.classic_stack  = not Design.instance().typeIsVpc()
+			attr.can_set_ebs    = component.isEbsOptimizedEnabled()
+			attr.instance_type  = component.getInstanceTypeList()
+			attr.tenancy        = component.isDefaultTenancy()
 
 			# If Vpc is dedicated, instance should be dedicated.
-			VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
-			vpc = VpcModel.allObjects()[0]
-			if vpc
-				attr.force_tenacy = vpc.get("tenancy") is "dedicated"
+			vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).allObjects()[0]
+			attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
 
 			@set attr
 
 			@getAmi()
-			@getInstanceType()
-			# @getKeyPair()
+			@getKeyPair()
 			# @getEni()
+			null
+
+		getKeyPair : ()->
+			selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
+
+			@set "keypair", selectedKP.getKPList()
+			null
+
+		addKP : ( kp_name ) ->
+
+			KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+
+			for kp in KpModel.allObjects()
+				if kp.get("name") is kp_name
+					return false
+
+			kp = new KpModel( { name : kp_name } )
+			kp.id
+
+		deleteKP : ( kp_uid ) ->
+			Design.instance().component( kp_uid ).remove()
+			null
+
+		setKP : ( kp_uid ) ->
+			design  = Design.instance()
+			instance = design.component( @get("uid") )
+			design.component( kp_uid ).assignTo( instance )
 			null
 
 		setCount : ( val ) ->
@@ -110,39 +137,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			@set 'instance_ami', data
 			null
 
-		getInstanceType : () ->
-
-			ami_info = Design.instance().component( @get("uid") ).getAmi()
-
-			current_instance_type = attr.instanceType
-
-			instance_type_list = MC.aws.ami.getInstanceType( ami_info )
-			if instance_type_list
-				view_instance_type = _.map instance_type_list, ( value )->
-
-					main     : constant.INSTANCE_TYPE[value][0]
-					ecu      : constant.INSTANCE_TYPE[value][1]
-					core     : constant.INSTANCE_TYPE[value][2]
-					mem      : constant.INSTANCE_TYPE[value][3]
-					name     : value
-					selected : current_instance_type is value
-					hide     : not tenacy and value is "t1.micro"
-			else
-				view_instance_type = [{
-					main     : ''
-					ecu      : ''
-					core     : ''
-					mem      : ''
-					name     : ''
-					selected : false
-					hide     : true
-				}]
-
-			this.set 'instance_type', view_instance_type
-			this.set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized attr
-
-			null
-
 		getEni : () ->
 
 			uid          = @get 'uid'
@@ -215,53 +209,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			this.set 'eni_display', eni_detail
 			this.set 'eni_ips',     eni_ips
 			null
-
-
-
-		getKeyPair : ()->
-
-			uid = this.get 'uid'
-			attr = @instance.attributes
-			keypair_id = MC.extractID attr.KeyName
-
-			kp_list = MC.aws.kp.getList( keypair_id )
-
-			this.set 'keypair', kp_list
-
-			null
-
-		addKP : ( kp_name ) ->
-
-			result = MC.aws.kp.add kp_name
-
-			if not result
-				return result
-
-			uid = @get 'uid'
-			MC.canvas_data.component[ uid ].resource.KeyName = "@#{result}.resource.KeyName"
-			true
-
-		deleteKP : ( key_name ) ->
-
-			MC.aws.kp.del key_name
-
-			# Update data of this model
-			for kp, idx in @attributes.keypair
-				if kp.name is key_name
-					@attributes.keypair.splice idx, 1
-					break
-
-			null
-
-		setKP : ( key_name ) ->
-
-			uid = this.get 'uid'
-			MC.canvas_data.component[ uid ].resource.KeyName = "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
-
-			null
-
-
-
 
 		attachEIP : ( eip_index, attach ) ->
 

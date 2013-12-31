@@ -15,8 +15,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       serverGroupName : ''
       count           : 1
 
-      imageId         : ''
-      tenancy         : ''
+      imageId      : ''
+      tenancy      : ''
+      ebsOptimized : false
+      instanceType : ""
+      monitoring   : false
+      userData     : ""
 
       #layout property
       osType         : ''
@@ -26,15 +30,70 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
     setCount : ( count )->
       @set "count", count
 
+      # Remove route to Embed Eni
+      route = @getEmbedEni().connections('RTB_Route')[0]
+      if route then route.remove()
+
       # Update my self and connected Eni
       @draw()
       for eni in @connectionTargets("EniAttachment")
         eni.draw()
+      null
 
+    isDefaultTenancy : ()->
+      VpcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC )
+      vpc = VpcModel.allObjects()[0]
+      if vpc and not vpc.isDefaultTenancy()
+        return false
+      else
+        return @get("tenancy") isnt "dedicated"
       null
 
     getAmi : ()->
       MC.data.dict_ami[@get("imageId")]
+
+    isEbsOptimizedEnabled : ()->
+      EbsMap =
+        "m1.large"   : true
+        "m1.xlarge"  : true
+        "m2.2xlarge" : true
+        "m2.4xlarge" : true
+        "m3.xlarge"  : true
+        "m3.2xlarge" : true
+        "c1.xlarge"  : true
+
+      ami = @getAmi()
+      if ami.rootDeviceType is "instance-store"
+        return false
+
+      return !!EbsMap[ @get("instanceType") ]
+
+    getInstanceTypeList : ()->
+
+      instance_type_list = MC.aws.ami.getInstanceType( @getAmi() )
+
+      if not instance_type_list
+        return [{
+          main     : ''
+          ecu      : ''
+          core     : ''
+          mem      : ''
+          name     : ''
+          selected : false
+          hide     : true
+        }]
+
+      tenancy      = @isDefaultTenancy()
+      instanceType = @get("instanceType")
+
+      return _.map instance_type_list, ( value )->
+        main     : constant.INSTANCE_TYPE[value][0]
+        ecu      : constant.INSTANCE_TYPE[value][1]
+        core     : constant.INSTANCE_TYPE[value][2]
+        mem      : constant.INSTANCE_TYPE[value][3]
+        name     : value
+        selected : instanceType is value
+        hide     : not tenancy and value is "t1.micro"
 
     remove : ()->
       this.__mainEni.remove()
@@ -228,7 +287,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       else
         attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
-      model = new Model attr
+      model = new Model( attr )
+
+      KeypairUsage = Design.modelClassForType( "KeypairUsage" )
+      new KeypairUsage( model, resolve( MC.extractID( data.resource.KeyName ) ) )
       null
 
 

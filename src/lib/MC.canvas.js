@@ -3775,9 +3775,7 @@ MC.canvas.event.dragable = {
 			//layout_connection_data = MC.canvas.data.get('layout.connection'),
 			node_class = target.data('class'),
 			scale_ratio = $canvas.scale(),
-			coordinate;
-
-		coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
 		// MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
 
@@ -3811,23 +3809,24 @@ MC.canvas.event.dragable = {
 			target_id = target.attr('id'),
 			target_type = event.data.target_type,
 			node_type = event_data.nodeType,
+			asg_item = $canvas(target_id),
 			svg_canvas = $('#svg_canvas'),
-			canvas_offset = svg_canvas.offset(),
+			canvas_offset = $canvas.offset(),
 			shadow_offset = Canvon(event.data.shadow).offset(),
 			//layout_node_data = $canvas.node(),
 			//layout_connection_data = MC.canvas.data.get('layout.connection'),
 			//node_class = target.data('class'),
 			scale_ratio = $canvas.scale(),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
-			component_size = event_data.component_size,//MC.canvas.GROUP_DEFAULT_SIZE[ node_class ],
-			BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
+			size = event_data.size,//MC.canvas.GROUP_DEFAULT_SIZE[ node_class ],
+			//BEFORE_ASG_EXPAND_EVENT = $.Event("CANVAS_BEFORE_ASG_EXPAND"),
 			areaChild = MC.canvas.areaChild(
 				target_id,
 				target_type,
 				coordinate.x,
 				coordinate.y,
-				coordinate.x + component_size[0],
-				coordinate.y + component_size[1]
+				coordinate.x + size[0],
+				coordinate.y + size[1]
 			),
 			match_place = MC.canvas.isMatchPlace(
 				null,
@@ -3835,37 +3834,40 @@ MC.canvas.event.dragable = {
 				node_type,
 				coordinate.x,
 				coordinate.y,
-				component_size[0],
-				component_size[1]
+				size[0],
+				size[1]
 			),
 			parentGroup = MC.canvas.parentGroup(
 				target_id,
 				target_type,
 				coordinate.x,
 				coordinate.y,
-				coordinate.x + component_size[0],
-				coordinate.y + component_size[1]
+				coordinate.x + size[0],
+				coordinate.y + size[1]
 			);
 
 		if (
 			areaChild.length === 0 &&
-			match_place.is_matched &&
-			$canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-			!BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
+			match_place.is_matched// &&
+			// $canvas.trigger(BEFORE_ASG_EXPAND_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+			// !BEFORE_ASG_EXPAND_EVENT.isDefaultPrevented()
 		)
 		{
-			var new_node = $canvas.add(target_type, {
-				'name': MC.canvas.data.get('component')[target_id].name,
-				'groupUId': match_place.target,
-				'originalId': target_id
-			}, coordinate);
+			asg_item.asgExpand(match_place.target, coordinate.x, coordinate.y);
 
-			if (new_node)
-			{
-				//MC.canvas.select(new_node.id);
+			asg_item.select();
+			// var new_node = $canvas.add(target_type, {
+			// 	'name': MC.canvas.data.get('component')[target_id].name,
+			// 	'groupUId': match_place.target,
+			// 	'originalId': target_id
+			// }, coordinate);
 
-				$canvas(new_node.id).select();
-			}
+			// if (new_node)
+			// {
+			// 	//MC.canvas.select(new_node.id);
+
+			// 	$canvas(new_node.id).select();
+			// }
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');
@@ -3898,9 +3900,9 @@ MC.canvas.event.drawConnection = {
 				parent_item = $canvas(node_id),
 				parent_type = parent_item.type,
 
-				layout_component_data = MC.canvas_data.layout.component,
-				layout_connection_data = MC.canvas_data.layout.connection,
-				layout_node_data = layout_component_data[ parent_type ],
+				//layout_component_data = MC.canvas_data.layout.component,
+				//layout_connection_data = MC.canvas_data.layout.connection,
+				//layout_node_data = layout_component_data[ parent_type ],
 				//node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
 				port_type = target.data('type'),

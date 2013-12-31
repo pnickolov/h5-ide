@@ -4,8 +4,10 @@
 
 define [ 'event',
          'text!./component/stateeditor/template.html',
-         'UI.modal'
-], ( ide_event, template ) ->
+         'UI.modal',
+         'UI.parsley'
+
+], ( ide_event, modal_template, template ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -590,7 +592,28 @@ define [ 'event',
 
             that.refreshStateId()
 
+        validate: () ->
+            $contentEditable = @$el.find '[contenteditable="true"]'
+            result = true
+            $contentEditable.each ->
+                res = $( @ )
+                    .data( 'value', MC.forge.other.getPlainTxt $( @ ) )
+                    .parsley( 'custom', ( val ) ->
+                        console.log val
+                        return 'some error: ' + val
+                        )
+                    .parsley( 'validate' )
+
+                if not res and result
+                    result = false
+
+
+            result
+
+
         saveStateData: () ->
+            if not @validate()
+                return false
 
             that = this
 

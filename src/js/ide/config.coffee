@@ -154,8 +154,8 @@ require.config {
 		'unmanagedvpc_view'  : 'component/unmanagedvpc/view'
 		'unmanagedvpc_model' : 'component/unmanagedvpc/model'
 
-		'jquery-caret'       : 'component/stateeditor/lib/jquery-caret'
-		'jquery-atwho'       : 'component/stateeditor/lib/jquery-atwho'
+		'jquery_caret'       : 'component/stateeditor/lib/jquery_caret'
+		'jquery_atwho'       : 'component/stateeditor/lib/jquery_atwho'
 		'stateeditor'        : 'component/stateeditor/main'
 		'stateeditor_view'   : 'component/stateeditor/view'
 		'stateeditor_model'  : 'component/stateeditor/model'
@@ -395,20 +395,19 @@ require.config {
 		# component
 		#############################################
 
+		# unmanaged vpc
 		'unmanagedvpc' :
 			deps       : [ 'unmanagedvpc_view', 'unmanagedvpc_model', 'MC' ]
 
-
 		# state editor
-
 		'jquery-caret' :
 			deps       : [ 'jquery' ]
 
 		'jquery-atwho' :
-			deps       : [ 'jquery-caret' ]
+			deps       : [ 'jquery_caret' ]
 
 		'stateeditor' :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC', 'jquery-caret', 'jquery-atwho' ]
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC', 'jquery_caret', 'jquery_atwho' ]
 }
 
 #requirejs.onError = ( err ) ->

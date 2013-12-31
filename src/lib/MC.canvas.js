@@ -5358,15 +5358,13 @@ MC.canvas.event.appMove = function (event)
 {
 	if (event.which === 1)
 	{
+		var target = $canvas(this.id);
+
 		MC.canvas.event.clearSelected();
 
-		var target = $canvas(this.id),
-			target_type = target.class,
-			node_type = target.nodeType;
-
 		if (
-			target_type === 'AWS.EC2.Instance' ||
-			node_type === 'group'
+			target.class === 'AWS.EC2.Instance' ||
+			target.nodeType === 'group'
 		)
 		{
 			MC.canvas.event.dragable.mousedown.call( this, event );
@@ -5410,14 +5408,22 @@ MC.canvas.event.clearList = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
+	var connection = $canvas(this.id).connection();
+
 	if (event.type === 'mouseenter')
 	{
-		$canvas( this.id, true ).hover();
+		$.each(connection, function (i, item)
+		{
+			Canvon('#' + item.line).addClass('view-hover');
+		});
 	}
 
 	if (event.type === 'mouseleave')
 	{
-		$canvas( this.id, true ).hoverOut();
+		$.each(connection, function (i, item)
+		{
+			Canvon('#' + item.line).removeClass('view-hover');
+		});
 	}
 
 	return true;

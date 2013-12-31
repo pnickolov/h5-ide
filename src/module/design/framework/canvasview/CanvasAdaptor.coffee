@@ -38,9 +38,13 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
         cn.draw()
     null
 
-  $canvas.node      = ()->
-    _.map Design.__instance.__canvasNodes, ( comp )->
-      new CanvasElement( comp )
+  $canvas.node = ()->
+    nodes = []
+
+    for comp in Design.__instance.__canvasNodes
+      if not comp.isVisual or comp.isVisual()
+        nodes.push( new CanvasElement( comp ) )
+    nodes
 
   $canvas.group  = ()->
     _.map Design.__instance.__canvasGroups, ( comp )->

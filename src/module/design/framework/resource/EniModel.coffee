@@ -44,6 +44,9 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         @attributes.ips.push( new IpObject() )
       null
 
+    # isVisual() is used by CanavasAdaptor to determine this is a node is visually
+    # in the canvas.
+    isVisual : ()-> !@__embedInstance
     embedInstance : ()-> @__embedInstance
     attachedInstance : ()->
       instance = @embedInstance()

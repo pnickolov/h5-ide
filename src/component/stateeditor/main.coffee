@@ -2,7 +2,7 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', 'text!./component/stateeditor/modal.html', './component/stateeditor/lib/data' ], ( ide_event, modal_template ) ->
+define [ 'event', './component/stateeditor/lib/data' ], ( ide_event ) ->
 
     #private
     loadModule = ( data ) ->
@@ -14,8 +14,8 @@ define [ 'event', 'text!./component/stateeditor/modal.html', './component/statee
             MC.forge.other.addSEList data
 
             # add modal template
-            editorDialogTpl = Handlebars.compile modal_template
-            modal editorDialogTpl({}), false
+            #editorDialogTpl = Handlebars.compile modal_template
+            #modal editorDialogTpl({}), false
 
             model = new Model()
             view  = new View({

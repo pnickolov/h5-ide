@@ -3,15 +3,16 @@
 #############################
 
 define [ 'event',
+         'text!./component/stateeditor/modal.html',
          'text!./component/stateeditor/template.html',
          'UI.modal'
-], ( ide_event, template ) ->
+], ( ide_event, modal_template, template ) ->
 
     StateEditorView = Backbone.View.extend {
 
-        el: '#state-editor-model'
+        modal_tmpl  : Handlebars.compile modal_template
 
-        events:
+        events      :
 
             'closed': 'closedPopup'
 
@@ -36,10 +37,13 @@ define [ 'event',
 
         render: () ->
 
+            # modal modal_template
+            modal @modal_tmpl(), false
+            @setElement $( '#state-editor-model' ).closest '#modal-wrap'
+
+            # set template
             that = this
-
             that.$stateList = that.$el.find('.state-list')
-
             that.refreshStateList()
             that.refreshStateViewList()
             that.bindStateListSortEvent()

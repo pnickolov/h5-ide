@@ -42,6 +42,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   ExpandedAsgModel = ComplexResModel.extend {
 
     type : "ExpandedAsg"
+    # Even though the ExpandedAsgModel doesn't inherit from GroupModel,
+    # The canvas wants to treat it as a group
+    node_group : true
+
     defaults :
       x           : 0
       y           : 0
@@ -311,7 +315,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
         ).attr({
           'id'         : @id
-          'class'      : 'dragable node AWS-AutoScaling-Group'
+          'class'      : 'dragable AWS-AutoScaling-Group'
           'data-type'  : 'group'
           'data-class' : @type
         })

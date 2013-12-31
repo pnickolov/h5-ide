@@ -12,7 +12,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     this.id = component.id
 
     if quick isnt true
-      this.type = component.type
+      this.type = @$element().attr("data-class") or component.type
 
       this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 

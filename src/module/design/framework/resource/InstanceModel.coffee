@@ -16,16 +16,34 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       count           : 1
 
       imageId      : ''
-      tenancy      : ''
+      tenancy      : 'default'
       ebsOptimized : false
-      instanceType : ""
+      instanceType : "t1.micro"
       monitoring   : false
       userData     : ""
 
-      #layout property
-      osType         : ''
-      architecture   : ''
-      rootDeviceType : ''
+      cachedAmi : null
+
+    constructor : ( attr, option )->
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
+      # Create an embed eni
+      if option.createEni isnt false and vpc
+        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+        @setEmbedEni( new EniModel({}, { instance: this }) )
+
+      ComplexResModel.call( this, attr, option )
+
+      # Force to dedicated tenancy
+      if vpc and not vpc.isDefaultTenancy()
+        @setTenancy( "dedicated" )
+      null
+
+    initialize : ()->
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      if vpc and not vpc.isDefaultTenancy()
+        @setTenancy( "dedicated" )
+      null
 
     setCount : ( count )->
       @set "count", count
@@ -49,8 +67,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         return @get("tenancy") isnt "dedicated"
       null
 
-    getAmi : ()->
-      MC.data.dict_ami[@get("imageId")]
+    getAmi : ()-> MC.data.dict_ami[@get("imageId")]
+    getInstanceTypeConfig : ()->
+      t = @get("instanceType").split(".")
+      if t.length >= 2
+        return MC.data.config[ Design.instance().region() ].instance_type[ t[0] ][ t[1] ]
+
+      return null
+
 
     isEbsOptimizedEnabled : ()->
       EbsMap =
@@ -62,11 +86,35 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         "m3.2xlarge" : true
         "c1.xlarge"  : true
 
-      ami = @getAmi()
-      if ami.rootDeviceType is "instance-store"
+      ami = @getAmi() || @get("cachedAmi")
+      if ami and ami.rootDeviceType is "instance-store"
         return false
 
       return !!EbsMap[ @get("instanceType") ]
+
+    setInstanceType : ( type )->
+
+      # Ensure type is not t1.micro when using dedicated tenancy
+      if type is "t1.micro" and not @isDefaultTenancy()
+        type = "m1.small"
+
+      @set("instanceType", type)
+      if not @isEbsOptimizedEnabled()
+        @set("ebsOptimized", false)
+
+      # Eni's IP address count is limited by instanceType
+      enis = @connectionTargets("EniAttachment")
+      enis.push( @getEmbedEni() )
+      for eni in enis
+        eni.limitIpAddress()
+      null
+
+    setTenancy : ( tenancy )->
+      @set "tenancy", tenancy
+
+      if tenancy is "dedicated" and @get("instanceType") is "t1.micro"
+        @setInstanceType "m1.small"
+      null
 
     getInstanceTypeList : ()->
 
@@ -105,16 +153,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
     getEmbedEni : ()-> this.__mainEni
 
     iconUrl : ()->
-      ami = MC.data.dict_ami[ @get("imageId") ]
+      ami = @getAmi() || @get("cachedAmi")
 
       if not ami
-        _osType         = @get("osType")
-        _architecture   = @get("architecture")
-        _rootDeviceType = @get("rootDeviceType")
-        if _osType and _architecture and _rootDeviceType
-          return "ide/ami/" + _osType + "." + _architecture + "." + _rootDeviceType + ".png"
-        else
-          return "ide/ami/ami-not-available.png"
+        return "ide/ami/ami-not-available.png"
       else
         return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
 
@@ -154,7 +196,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
           }),
 
           # Eip
-          Canvon.image( MC.canvas.IMAGE.EIP_ON, 53, 47, 12, 14).attr({'class':'eip-status'}),
+          Canvon.image( "", 53, 47, 12, 14).attr({'class':'eip-status'}),
 
           # Child number
           Canvon.group().append(
@@ -230,8 +272,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+      else
+        node = $( document.getElementById( @id ) )
 
-      # Update the node
       # Update Server number
       numberGroup = node.children(".server-number-group")
       if @get("count") > 1
@@ -245,8 +288,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       # update label
       MC.canvas.update( @id, "text", "hostname", @get("name") )
 
-      # TODO : Update Volume number
-      # TODO : Update Eip indicator
+      # Update EIP
+      eni = @getEmbedEni()
+      if eni
+        CanvasManager.update node.children(".eip-status"), @getEmbedEni().eipIconUrl(), "href"
       # TODO : Update Instance status
 
   }, {
@@ -268,29 +313,29 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         imageId      : data.resource.ImageId
         tenancy      : data.resource.Placement.Tenancy
         ebsOptimized : data.resource.EbsOptimized
-        instanceType : data.resource.instanceType
+        instanceType : data.resource.InstanceType
         monitoring   : data.resource.Monitoring isnt "disabled"
         userData     : data.resource.UserData.Data
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
-        #layout property
-        osType         : layout_data.osType
-        architecture   : layout_data.architecture
-        rootDeviceType : layout_data.rootDeviceType
-
-
+      if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
+        attr.cachedAmi = {
+          osType         : layout_data.osType
+          architecture   : layout_data.architecture
+          rootDeviceType : layout_data.rootDeviceType
+        }
 
       if data.resource.SubnetId
         attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )
       else
         attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
-      model = new Model( attr )
+      model = new Model( attr, { createEni : false } )
 
-      KeypairUsage = Design.modelClassForType( "KeypairUsage" )
-      new KeypairUsage( model, resolve( MC.extractID( data.resource.KeyName ) ) )
+      # Add Keypair
+      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
       null
 
 

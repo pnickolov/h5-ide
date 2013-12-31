@@ -112,16 +112,16 @@
 		</section>
 	</div>
 
-	{{#if eni_display}}
+	{{#if eni}}
 	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ENI_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<label class="left" for="property-instance-ni-description">{{ i18n "PROP_INSTANCE_ENI_DESC" }}</label>
-			<textarea id="property-instance-ni-description">{{eni_display.description}}</textarea>
+			<textarea id="property-instance-ni-description">{{eni.description}}</textarea>
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">
-				{{#if eni_display.sourceCheck}}
+				{{#if eni.sourceDestCheck}}
 				<input id="property-instance-source-check" type="checkbox" checked="true" value="None" name="property-instance-source-check" />
 				{{else}}
 				<input id="property-instance-source-check" type="checkbox" value="None" name="property-instance-source-check" />
@@ -132,7 +132,7 @@
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">
-				<input id="property-instance-public-ip" type="checkbox" {{#if eni_display.multi_enis}}disabled="disabled"{{/if}} {{#if eni_display.asso_public_ip}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
+				<input id="property-instance-public-ip" type="checkbox" {{#if multi_enis}}disabled="disabled"{{/if}} {{#if eni.assoPublicIp}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
 				<label for="property-instance-public-ip"></label>
 			</div>
 			<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
@@ -143,9 +143,7 @@
 					{{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
 					<button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="Add IP Address">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
 				</div>
-				<ul class="network-list" id="property-network-list" data-bind="true">
-
-				</ul>
+				<ul class="network-list" id="property-network-list" data-bind="true"></ul>
 			</div>
 		</section>
 	</div>

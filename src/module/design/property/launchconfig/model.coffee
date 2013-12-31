@@ -4,15 +4,6 @@
 
 define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypair_model, constant ) ->
 
-  EbsMap =
-    "m1.large"   : true
-    "m1.xlarge"  : true
-    "m2.2xlarge" : true
-    "m2.4xlarge" : true
-    "m3.xlarge"  : true
-    "m3.2xlarge" : true
-    "c1.xlarge"  : true
-
   LaunchConfigModel = PropertyModel.extend {
 
     initialize : ->
@@ -56,7 +47,10 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
 
       @set "displayAssociatePublicIp", Design.instance().typeIsVpc()
       @set "monitorEnabled", @isMonitoringEnabled()
+      @set "can_set_ebs", @lc.isEbsOptimizedEnabled()
       @getInstanceType()
+      @getAmi()
+      @getKeyPair()
 
       if @isApp
         @getAppLaunch( uid )
@@ -65,50 +59,35 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       null
 
     getInstanceType : ( uid, data ) ->
-      amiId = @lc.get 'imageId'
 
-      ami_info = MC.data.dict_ami[amiId]
+      instance_type_list = MC.aws.ami.getInstanceType( @lc.getAmi() )
 
-      current_instance_type = @lc.get 'instanceType'
+      if instance_type_list
+        instanceType = @lc.get 'instanceType'
 
-      instanceTypeAry = MC.aws.ami.getInstanceType(ami_info)
-      view_instance_type = _.map instanceTypeAry, ( value )->
+        view_instance_type = _.map instance_type_list, ( value )->
+          main     : constant.INSTANCE_TYPE[value][0]
+          ecu      : constant.INSTANCE_TYPE[value][1]
+          core     : constant.INSTANCE_TYPE[value][2]
+          mem      : constant.INSTANCE_TYPE[value][3]
+          name     : value
+          selected : instanceType is value
 
-        main     : constant.INSTANCE_TYPE[value][0]
-        ecu      : constant.INSTANCE_TYPE[value][1]
-        core     : constant.INSTANCE_TYPE[value][2]
-        mem      : constant.INSTANCE_TYPE[value][3]
-        name     : value
-        selected : current_instance_type is value
-
-      data.instance_type = view_instance_type
-      data.can_set_ebs   = EbsMap.hasOwnProperty current_instance_type
+      @set "instance_type", view_instance_type
       null
 
     isMonitoringEnabled : ()->
-      monitorEnabled = true
+      for p in @lc.parent().get("policies")
+        if p.get("alarmData").metricName is "StatusCheckFailed"
+          return false
 
-      WatchModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch )
-
-      asg = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).first()
-
-      for watch in WatchModel.allObjects()
-        if watch.get( 'MetricName' ).indexOf("StatusCheckFailed") != -1
-          for d in watch.get( 'Dimensions' )
-            if d.value and d.value.indexOf( asg.id ) != -1
-              monitorEnabled = false
-              break
-
-          if not monitorEnabled
-            break
-
-      monitorEnabled
+      return true
 
     setEbsOptimized : ( value )->
       @lc.set 'ebsOptimized', value
 
     setCloudWatch : ( value ) ->
-      @lc.set 'instanceMonitoring', value
+      @lc.set 'monitoring', value
 
     setUserData : ( value ) ->
       @lc.set 'userData', value
@@ -116,108 +95,54 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
     setPublicIp : ( value )->
       @lc.set "publicIp", value
 
-
-
-
     setInstanceType  : ( value ) ->
+      @lc.setInstanceType( value )
+      @lc.isEbsOptimizedEnabled()
 
-      @lc.set 'InstanceType', value
-
-      has_ebs = EbsMap.hasOwnProperty value
-      if not has_ebs
-        component.resource.EbsOptimized = "false"
-
-      has_ebs
-
-    getAmi : ( uid, data ) ->
-
-      ami_id = @lc.get 'ImageId'
-      ami    = MC.data.dict_ami[ami_id]
+    getAmi : () ->
+      ami_id = @get("imageId")
+      ami    = @lc.getAmi()
 
       if not ami
-        data.instance_ami = {
+        data = {
           name        : ami_id + " is not available."
           icon        : "ami-not-available.png"
           unavailable : true
         }
       else
-        data.instance_ami = {
+        data = {
           name : ami.name
-          icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+          icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
         }
+
+      @set 'instance_ami', data
       null
 
-    getKeyPair : ( uid, data )->
+    getKeyPair : ()->
+      selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
 
-      keypairInuse = @lc.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair ).first()
-
-      #data.keypair = MC.aws.kp.getList( keypair_id )
-
-      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-
-      allKp = kpModel and kpModel.allObjects() or []
-
-      kps = []
-
-      for kp in allKp
-        name = kp.get 'name'
-        kp_uid = kp.id
-        inUse = kp.getFromStorage().length > 0
-
-        kp = {
-          name     : name
-          using    : inUse
-          selected : kp_uid is keypairInuse.id
-        }
-
-        if name is "DefaultKP"
-          kps.unshift kp
-        else
-          kps.push kp
-
-      data.keypair = kps
-
+      @set "keypair", selectedKP.getKPList()
       null
 
     addKP : ( kp_name ) ->
 
-      result = MC.aws.kp.add kp_name
+      KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
 
-      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-      kp = new kpModel { id: MC.guid(), name:kp_name }
+      for kp in KpModel.allObjects()
+        if kp.get("name") is kp_name
+          return false
 
-      @lc.associate kp
+      kp = new KpModel( { name : kp_name } )
+      kp.id
 
-      true
-
-    deleteKP : ( key_name ) ->
-
-      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-
-      allKp = kpModel and kpModel.allObjects() or []
-
-      for kp in allKp
-        if kp.get 'name' is key_name
-          kp.remove()
-          break
-
+    deleteKP : ( kp_uid ) ->
+      Design.instance().component( kp_uid ).remove()
       null
 
-    setKP : ( key_name ) ->
-
-      uid = this.get 'uid'
-      kpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-
-      allKp = kpModel and kpModel.allObjects() or []
-
-      for kp in allKp
-        if kp.get( 'name' ) is key_name
-          @lc.disassociate constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-          @lc.associate kp
-          break
-
-      #@lc.set 'KeyName', "@#{MC.canvas_property.kp_list[key_name]}.resource.KeyName"
-
+    setKP : ( kp_uid ) ->
+      design  = Design.instance()
+      instance = design.component( @get("uid") )
+      design.component( kp_uid ).assignTo( instance )
       null
 
     isSGListReadOnly : ()->

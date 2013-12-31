@@ -58,7 +58,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       null
 
     amiIconUrl : ()->
-      lc = @get("originalAsg").get("lc")[0]
+      lc = @get("originalAsg").get("lc")
 
       if lc then lc.iconUrl() else "ide/ami/ami-not-available.png"
 
@@ -139,7 +139,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
         CanvasManager.update( node.children(".asg-title"), label )
         CanvasManager.update( node.children(".node-label"), lcLabel )
-        CanvasManager.update( node.children(".ami-image"), @amiIconUrl(), "href" )
+        CanvasManager.update( node.children(".ami-icon"), @amiIconUrl(), "href" )
 
 
   }, {

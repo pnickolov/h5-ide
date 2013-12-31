@@ -116,7 +116,7 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 			comp = Design.instance().component( @get("uid") )
 			comp.addIp()
 
-			@set "ips", component.getIpArray()
+			@set "ips", comp.getIpArray()
 			null
 
 		isValidIp : ( ip )->

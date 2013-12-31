@@ -33,10 +33,8 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
     constructor : ( attributes, option )->
-      if attributes.instance
-        @__embedInstance = attributes.instance
-
-      delete attributes.instance
+      if option and option.instance
+        @__embedInstance = option.instance
 
       ComplexResModel.call this, attributes, option
 
@@ -61,14 +59,19 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       if instance then instance.get("count") else 1
 
     maxIpCount : ()->
-      instance = @get("instance")
-      count    = 1
-
+      instance = @attachedInstance()
       if instance
-        type = instance.get("instanceType").split(".")
-        if type.length >= 2
-          count = MC.data.config[MC.canvas_data.region].instance_type[ type[0] ][ type[1] ].ip_per_eni
-      count
+        config = instance.getInstanceTypeConfig()
+        if config
+          return config.ip_per_eni
+
+      return 1
+
+    limitIpAddress : ()->
+      ipCount = @maxIpCount()
+      if @get("ips").length > ipCount
+        @get("ips").length = ipCount
+      null
 
     hasPrimaryEip : ()->
       @get("ips")[0].hasEip
@@ -140,7 +143,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
     addIp : ( idx, ip, autoAssign, hasEip )->
       ips = @get("ips")
 
-      if @maxIpCount() >= ips.length then return false
+      if @maxIpCount() <= ips.length then return false
 
       ip = new IpObject({
         hasEip     : false
@@ -199,9 +202,9 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
     eipIconUrl : ()->
       if @hasPrimaryEip()
-        MC.canvas.IMAGE.EIP_ON
+        'ide/icon/eip-on.png'
       else
-        MC.canvas.IMAGE.EIP_OFF
+        'ide/icon/eip-off.png'
 
     draw : ( isCreate )->
 
@@ -226,7 +229,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         })
 
         node.append(
-          Canvon.image( @eipIconUrl(), 44,37,12,14 ).attr({'class':'eip-status'}),
+          Canvon.image( "", 44,37,12,14 ).attr({'class':'eip-status'}),
 
           # Left Port
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -298,10 +301,6 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         # Update Image
         CanvasManager.update node.children("image:not(.eip-status)"), @iconUrl(), "href"
 
-        # Update EIP
-        CanvasManager.update node.children(".eip-status"), @eipIconUrl(), "href"
-
-
       # Update SeverGroup Count
       count = @serverGroupCount()
 
@@ -313,6 +312,9 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       else
         CanvasManager.toggle node.children(".port-eni-rtb"), true
         CanvasManager.toggle numberGroup, false
+
+      # Update EIP
+      CanvasManager.update node.children(".eip-status"), @eipIconUrl(), "href"
 
   }, {
 
@@ -367,21 +369,21 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         }) )
 
 
-      if embed then attr.instance = instance
-      eni = new Model( attr )
+      if embed
+        option = { instance : instance }
+      eni = new Model( attr, option )
 
-
-      sgTarget = eni.embedInstance() or eni
 
       # Create SgAsso
+      sgTarget = eni.embedInstance() or eni
       for group in data.resource.GroupSet || []
         new SgAsso( sgTarget, resolve( MC.extractID( group.GroupId ) ) )
+
 
       # Create connection between Eni and Instance
       if instance
         if embed
-          instance.setEmbedEni( eni )
-          eni.__embedInstance = instance
+          instance.setEmbedEni( eni ) # Need to add it to instance
         else
           new EniAttachment( eni, instance )
       null

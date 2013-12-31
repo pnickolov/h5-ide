@@ -26,7 +26,6 @@ define [ '../base/view',
             @$el.html( template( @model.attributes ) )
 
             @refreshIPList()
-            @validateIPList()
 
             $("#prop-appedit-eni-list").html list_template @model.attributes
 
@@ -59,7 +58,7 @@ define [ '../base/view',
                 tooltip = lang.ide.PROP_INSTANCE_IP_MSG_3
             $target.toggleClass("associated", attach).data("tooltip", tooltip)
 
-            @model.attachEIP index, attach
+            @model.attachEip index, attach
             null
 
         removeIp : (event) ->
@@ -90,6 +89,8 @@ define [ '../base/view',
         refreshIPList : ( event ) ->
             $( '#property-eni-list' ).html( MC.template.propertyIpList( @model.attributes.ips ) )
             @updateIPAddBtnState()
+
+            @validateIPList()
             null
 
         validateIPList : () ->

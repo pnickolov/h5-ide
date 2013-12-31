@@ -12,7 +12,7 @@ define [ 'module/design/property/base/model', "Design", 'constant' ], ( Property
 
         init : ( id ) ->
 
-            az_list   = MC.data.config[ MC.canvas_data.region ]
+            az_list   = MC.data.config[ Design.instance().region() ]
             component = Design.instance().component( id )
 
             if not component or not az_list

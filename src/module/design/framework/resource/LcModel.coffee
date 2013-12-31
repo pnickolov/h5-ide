@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeModel" ], ( ComplexResModel, CanvasManager, Design, constant, VolumeModel )->
+define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "constant", "./VolumeModel" ], ( ComplexResModel, InstanceModel, CanvasManager, Design, constant, VolumeModel )->
 
   Model = ComplexResModel.extend {
 
@@ -9,11 +9,18 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
       width    : 9
       height   : 9
 
+      imageId      : ""
+      ebsOptimized : false
+      instanceType : ""
+      monitoring   : false
+      userData     : ""
+      publicIp     : false
+
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
     iconUrl : ()->
-      ami = MC.data.dict_ami[ @get 'ImageId' ]
+      ami = MC.data.dict_ami[ @get 'imageId' ] || @get("cachedAmi")
 
       if not ami
         return "ide/ami/ami-not-available.png"
@@ -25,10 +32,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
         @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB) )
       null
 
-    disconnect : ( connection )->
+    disconnect : ( cn )->
       if cn.type is "ElbAmiAsso" and @parent()
         @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB), true )
       null
+
+    getAmi                : InstanceModel.prototype.getAmi
+    setInstanceType       : InstanceModel.prototype.setInstanceType
+    isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
 
     draw : ( isCreate )->
 
@@ -103,7 +114,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
 
     deserialize : ( data, layout_data, resolve )->
 
-      model = new Model({
+      attr = {
         id    : data.uid
         name  : data.name
         appId : data.resource.LaunchConfigurationARN
@@ -112,12 +123,21 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
         ebsOptimized : data.resource.EbsOptimized
         instanceType : data.resource.InstanceType
         monitoring   : data.resource.InstanceMonitoring
-        userData     : data.resource.userData
+        userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
-      })
+      }
+
+      if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
+        attr.cachedAmi = {
+          osType         : layout_data.osType
+          architecture   : layout_data.architecture
+          rootDeviceType : layout_data.rootDeviceType
+        }
+
+      model = new Model( attr )
 
 
       # Create Volume for
@@ -136,9 +156,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
       for sg in data.resource.SecurityGroups || []
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
+      # Add Keypair
+      resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
       null
-
-
   }
 
   Model

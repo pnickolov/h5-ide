@@ -51,7 +51,7 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant" ], ( GroupMo
       for az in Model.allObjects()
         azMap[ az.get("name") ] = az.id
 
-      zones = MC.data.config[ MC.canvas_data.region ].zone
+      zones = MC.data.config[ Design.instance().region() ].zone
       if zones
         for z in zones.item
           if not azMap.hasOwnProperty( z.zoneName )

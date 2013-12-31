@@ -20,7 +20,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
                 uid            : uid
                 dnsSupport     : component.get("dnsSupport")
                 dnsHosts       : component.get("dnsHostnames")
-                defaultTenancy : component.get("tenancy") is "default"
+                defaultTenancy : component.isDefaultTenancy()
                 name           : component.get("name")
                 cidr           : component.get("cidr")
                 dhcp           : dhcp
@@ -33,17 +33,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             Design.instance().component( @get("uid") ).setCIDR( newCIDR )
 
         setTenancy : ( tenancy ) ->
-            Design.instance().component( @get("uid") ).set("tenancy", tenancy)
-
-            # TODO :
-            ###################################
-            # Set all AMI to be tenacy
-            # for uid, comp of MC.canvas_data.component
-            #     if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-            #         comp.resource.Placement.Tenancy = "dedicated"
-            #         if comp.resource.InstanceType is 't1.micro'
-            #             MC.canvas_data.component[uid].resource.InstanceType = 'm1.small'
-            ###################################
+            Design.instance().component( @get("uid") ).setTenancy( tenancy )
             null
 
         setDnsSupport : ( enable ) ->

@@ -23,6 +23,16 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
 
     isDefaultTenancy : ()-> @get("tenancy") isnt "dedicated"
 
+    setTenancy : ( tenancy )->
+      @set "tenancy", tenancy
+
+      # Update all instance's tenancy
+      if tenancy is "dedicated"
+        for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+          instance.setTenancy( tenancy )
+
+      null
+
     setCIDR : ( cidr )->
 
       # TODO : Update all subnet's cidr

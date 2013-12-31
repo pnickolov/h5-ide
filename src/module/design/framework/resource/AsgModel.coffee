@@ -177,20 +177,18 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     newNameTmpl : "asg"
 
-    setLC : ( lc )->
+    addChild : ( lc )->
       oldLc = @get("lc")
       if oldLc
         @stopListening( oldLc )
         for elb in oldLc.connectionTargets("ElbAmiAsso")
           @updateExpandedAsgAsso( elb, true )
 
-      @listenTo( lc, "change:name", @__updateExpandedAsg )
+      @listenTo( lc, "change:name", @__drawExpandedAsg )
       @set "lc", lc
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )
-
-      @addChild( lc )
 
       @draw()
       null
@@ -261,10 +259,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         new ElbAsso( elb, expandedAsg )
       null
 
-
     __onExpandedAsgRemove : ( target )->
       console.assert( target.type is "ExpandedAsg", "Invalid Parameter" )
       @get("expandedList").splice( @get("expandedList").indexOf(target), 1 )
+      null
+
+    __drawExpandedAsg : ()->
+      for asg in @get("expandedList")
+        asg.draw()
       null
 
     draw : ( isCreate )->
@@ -321,7 +323,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       else
         node = $( document.getElementById( @id ) )
 
-        @__updateExpandedAsg()
+        @__drawExpandedAsg()
 
 
       CanvasManager.toggle( node.children(".prompt_text"), !@get("lc") )
@@ -355,14 +357,13 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       # Associate with LC
       if data.resource.LaunchConfigurationName
         lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
-        asg.setLC( lc )
+        asg.addChild( lc )
 
-
-      # Elb Association to LC
-      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
-      for elbName in data.resource.LoadBalancerNames || []
-        elb = resolve MC.extractID elbName
-        new ElbAsso( lc, elb )
+        # Elb Association to LC
+        ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
+        for elbName in data.resource.LoadBalancerNames || []
+          elb = resolve MC.extractID elbName
+          new ElbAsso( lc, elb )
       null
 
   }

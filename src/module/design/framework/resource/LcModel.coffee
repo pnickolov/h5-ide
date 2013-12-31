@@ -12,14 +12,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
-    __asso: [
-      {
-        key: 'KeyName'
-        type: constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-        suffix: 'KeyName'
-      }
-    ]
-
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get 'ImageId' ]
 
@@ -29,7 +21,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "./VolumeM
         return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
 
     connect : ( cn )->
-
       if cn.type is "ElbAmiAsso" and @parent()
         @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB) )
       null

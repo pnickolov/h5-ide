@@ -894,10 +894,11 @@ define [ 'event',
 
     setPlainTxt : ( str ) ->
         console.log 'setPlainTxt', str
-        new_str = str.replace( /\n/igm, '<br>' )
-                     .replace( /\s+/igm, '&nbsp;' )
-                     .replace( /</igm, '&lt;' )
+
+        new_str = str.replace( /</igm, '&lt;' )
                      .replace( />/igm, '&gt;' )
+                     .replace( /\n/igm, '<br>' )
+                     .replace( /\s+/igm, '&nbsp;' )
 
         console.log 'new_str', new_str
         new_str

@@ -10,7 +10,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 
 		defaults: {
 			cmdParaMap: null,
-			lookupDataAry: null
+			lookupDataAry: null,
+			compData: null
 		},
 
 		initialize: () ->

@@ -86,7 +86,7 @@ define [ 'event', 'canvas_layout', 'constant',
             # stateeditor modal
             if component and component.type in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
 
-                stateeditor.loadModule MC.canvas_data
+                stateeditor.loadModule(MC.canvas_data, uid)
 
             null
 

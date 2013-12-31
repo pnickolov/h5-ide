@@ -142,7 +142,8 @@ modal.drag = {
 			'top': event.pageY - target_position.top
 		});
 
-		return false;
+		event.preventDefault();
+		// return false;
 	},
 
 	mousemove: function (event)

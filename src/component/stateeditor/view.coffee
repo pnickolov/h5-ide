@@ -3,14 +3,11 @@
 #############################
 
 define [ 'event',
-         'text!./component/stateeditor/modal.html',
          'text!./component/stateeditor/template.html',
          'UI.modal'
-], ( ide_event, modal_template, template ) ->
+], ( ide_event, template ) ->
 
     StateEditorView = Backbone.View.extend {
-
-        modal_tmpl  : Handlebars.compile modal_template
 
         events      :
 
@@ -36,17 +33,19 @@ define [ 'event',
 
         render: () ->
 
-            # modal modal_template
-            modal @modal_tmpl(), false
-            @setElement $( '#state-editor-model' ).closest '#modal-wrap'
-
-            # set template
             that = this
+
+            # show modal
+            modal that.editorModalTpl(), false
+            @setElement $( '#state-editor-model' ).closest '#modal-wrap'
             that.$stateList = that.$el.find('.state-list')
 
+            # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
             
-            that.refreshStateList()
+            compStateData = that.compData.state
+            stateObj = that.loadStateData(compStateData)
+            that.refreshStateList(stateObj)
             that.refreshStateViewList()
             that.bindStateListSortEvent()
 
@@ -70,6 +69,7 @@ define [ 'event',
                 name: '{host2.instanceId}',
                 value: '{host1.instanceId}'
             }]
+            that.compData = that.model.get('compData')
             # that.refObjAry = JSON.parse(localStorage['state_editor_list'])
 
         compileTpl: () ->
@@ -84,6 +84,7 @@ define [ 'event',
                 htmlMap[tplType] = tplHTML
                 null
 
+            editorModalHTML = htmlMap['state-template-editor-modal']
             stateListHTML = htmlMap['state-template-state-list']
             paraListHTML = htmlMap['state-template-para-list']
             paraViewListHTML = htmlMap['state-template-para-view-list']
@@ -102,6 +103,7 @@ define [ 'event',
             this.paraViewListTpl = Handlebars.compile(paraViewListHTML)
             this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
             this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
+            this.editorModalTpl = Handlebars.compile(editorModalHTML)
 
         bindStateListSortEvent: () ->
 
@@ -121,77 +123,12 @@ define [ 'event',
 
             that = this
 
-            if not  stateListObj
+            if not (stateListObj and stateListObj.state_list.length)
 
                 stateListObj = {
                     state_list: [{
                         state_id: 1,
-                        cmd_value: 'apt pkg',
-                        parameter_list: [{
-                            para_name: 'name',
-                            type_dict: true,
-                            required: true,
-                            para_value: [{
-                                key: 'name',
-                                value: 'xxx'
-                            }, {
-                                key: 'abc',
-                                value: 'xxx'
-                            }]
-                        }, {
-                            para_name: 'verify_gpg',
-                            type_text: true,
-                            required: true,
-                            para_value: 'ssh apt@211.98.26.7/pot'
-                        }, {
-                            para_name: 'fromrepo',
-                            type_array: true,
-                            required: true,
-                            para_value: [
-                                'qqq',
-                                'qqq',
-                                'qqq'
-                            ]
-                        }, {
-                            para_name: 'debconf',
-                            type_line: true,
-                            required: false,
-                            para_value: 'what'
-                        }]
-                    }, {
-                        state_id: 2,
-                        cmd_value: 'apt pkg',
-                        parameter_list: [{
-                            para_name: 'name',
-                            type_dict: true,
-                            required: true,
-                            para_value: [{
-                                key: 'name',
-                                value: 'xxx'
-                            }, {
-                                key: 'abc',
-                                value: 'xxx'
-                            }]
-                        }, {
-                            para_name: 'verify_gpg',
-                            type_text: true,
-                            required: true,
-                            para_value: 'ssh apt@211.98.26.7/pot'
-                        }, {
-                            para_name: 'fromrepo',
-                            type_array: true,
-                            required: true,
-                            para_value: [
-                                'qqq',
-                                'qqq',
-                                'qqq'
-                            ]
-                        }, {
-                            para_name: 'debconf',
-                            type_line: true,
-                            required: false,
-                            para_value: 'what'
-                        }]
+                        cmd_value: ''
                     }]
                 }
 
@@ -849,15 +786,19 @@ define [ 'event',
             #@setPlainTxt localStorage[ 'new_str' ]
 
             that = this
-            data = that.saveStateData()
-            console.log(data)
-            localStorage[ 'state_data' ] = JSON.stringify data
+            stateData = that.saveStateData()
 
-            renderData = that.loadStateData(data)
-            console.log(renderData)
+            that.compData.state = stateData
 
-            that.refreshStateList(renderData)
-            that.refreshStateViewList(renderData)
+            that.closedPopup()
+
+            # localStorage[ 'state_data' ] = JSON.stringify data
+
+            # renderData = that.loadStateData(data)
+            # console.log(renderData)
+
+            # that.refreshStateList(renderData)
+            # that.refreshStateViewList(renderData)
 
         onParaRemoveClick: (event) ->
 

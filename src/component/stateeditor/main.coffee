@@ -2,22 +2,22 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', 'jquery_caret', 'jquery_atwho' ], ( ide_event ) ->
+define [ 'event', 'UI.modal', 'jquery_caret', 'jquery_atwho' ], ( ide_event ) ->
 
     #private
-    loadModule = ( data ) ->
+    loadModule = ( canvas_data, uid ) ->
 
         #
         require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
 
             # add test
-            MC.forge.other.addSEList data
+            MC.forge.other.addSEList canvas_data
 
-            # add modal template
-            #editorDialogTpl = Handlebars.compile modal_template
-            #modal editorDialogTpl({}), false
+            compData = canvas_data.component[uid]
 
-            model = new Model()
+            model = new Model({
+                compData: compData
+            })
             view  = new View({
                 model: model
             })
@@ -34,6 +34,8 @@ define [ 'event', 'jquery_caret', 'jquery_atwho' ], ( ide_event ) ->
         view.off()
         model.off()
         view.undelegateEvents()
+        modal.close()
+
         #
         view  = null
         model = null

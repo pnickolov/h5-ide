@@ -70,8 +70,23 @@ body {
 
 /* *************************************** state editor */
 
-#state-editor * {
-	all: default;
+#state-editor {
+	padding: 20px;
+	height: 460px;
+	overflow-y: scroll;
+	border-bottom: 1px #000 solid;
+}
+
+#state-editor::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+	background-color: #F5F5F5;
+}
+#state-editor::-webkit-scrollbar {
+	width: 10px;
+	background-color: #F5F5F5;
+}
+#state-editor::-webkit-scrollbar-thumb {
+	background-color: #a4a4a4;
 }
 
 #state-editor ::selection {
@@ -79,24 +94,22 @@ body {
 	color: #fcfcfc;
 }
 
-#state-editor {
-	/*border: 1px solid #999;*/
-	/*margin: 50px 80px;*/
-	padding: 20px;
-	overflow: auto;
-}
-
-#state-editor .state-save {
+#state-editor-body .state-save {
 	background-color: #0f0;
 	width: 50px;
 	padding: 10px;
 	text-align: center;
 	float: right;
-	/*margin-right: 45px;*/
+	margin-right: 14px;
+	margin-top: 14px;
 	cursor: pointer;
 }
 
 /* *************************************** state item */
+
+#state-editor .state-list {
+	width: 99%;
+}
 
 #state-editor .state-item {
 	overflow: auto;
@@ -117,27 +130,27 @@ body {
 }
 
 #state-editor .editable-area.line {
-	white-space: nowrap;
-	display: inline;
-	height: 16px;
-	line-height: 17px;
-	padding-top: 3px;
-	overflow: hidden;
-	cursor: text;
-	opacity: 1.0;
+	white-space: nowrap !important;
+	display: inline !important;
+	height: 16px !important;
+	line-height: 17px !important;
+	padding-top: 3px !important;
+	overflow: hidden !important;
+	cursor: text !important;
+	opacity: 1.0 !important;
 }
 
 #state-editor .editable-area.line:hover {
-	opacity: 1.0;
+	opacity: 1.0 !important;
 }
 
 #state-editor .editable-area.line br {
-	display: none;
+	display: none !important;
 }
 
 #state-editor .editable-area.line * {
-	display: inline;
-	white-space: nowrap;
+	display: inline !important;
+	white-space: nowrap !important;
 }
 
 #state-editor .editable-area.text {

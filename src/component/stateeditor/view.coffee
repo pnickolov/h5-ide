@@ -15,7 +15,6 @@ define [ 'event',
         events      :
 
             'closed': 'closedPopup'
-
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
@@ -44,6 +43,9 @@ define [ 'event',
             # set template
             that = this
             that.$stateList = that.$el.find('.state-list')
+
+            $(document).on('mousedown', that.onDocumentMouseDown)
+            
             that.refreshStateList()
             that.refreshStateViewList()
             that.bindStateListSortEvent()
@@ -870,6 +872,15 @@ define [ 'event',
                 $paraItem.addClass('disabled')
 
             null
+
+        onDocumentMouseDown: (event) ->
+
+            that = this
+            $currentElem = $(event.target)
+            $parentElem = $currentElem.parents('.editable-area')
+            
+            if not $parentElem.length and not $currentElem.hasClass('editable-area')
+                $('.editable-area').blur()
 
         getPlainTxt : ->
             console.log 'getPlainTxt', $ '#xxxxx'

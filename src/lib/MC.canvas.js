@@ -115,6 +115,7 @@ MC.canvas = {
 					.addClass('tooltip')
 					.data( 'tooltip', value )
 					.attr( 'data-tooltip', value );
+				break;
 		}
 
 		return true;
@@ -1670,9 +1671,9 @@ MC.canvas = {
 	matchPoint: function (x, y)
 	{
 		var coordinate = MC.canvas.pixelToGrid(x, y),
-			size,
+			node_coordinate,
 			matched,
-			node_coordinate;
+			size;
 
 		$.each($canvas.node(), function (key, item)
 		{

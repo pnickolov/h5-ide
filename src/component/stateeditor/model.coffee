@@ -2,7 +2,9 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
+define [ 'backbone', 'jquery', 'underscore', 'MC',
+		 './component/stateeditor/lib/data'
+], () ->
 
 	StateEditorModel = Backbone.Model.extend {
 

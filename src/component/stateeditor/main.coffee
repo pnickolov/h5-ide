@@ -2,13 +2,13 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', './component/stateeditor/lib/data' ], ( ide_event ) ->
+define [ 'event', 'jquery_caret', 'jquery_atwho' ], ( ide_event ) ->
 
     #private
     loadModule = ( data ) ->
 
         #
-        require [ 'stateeditor_view', 'stateeditor_model', 'jquery_caret', 'jquery_atwho' ], ( View, Model ) ->
+        require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
 
             # add test
             MC.forge.other.addSEList data

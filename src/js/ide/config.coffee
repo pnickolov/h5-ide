@@ -401,13 +401,13 @@ require.config {
 
 		# state editor
 		'jquery_caret' :
-			deps       : [ 'jquery' ]
+			deps       : [ 'jquery', 'MC' ]
 
 		'jquery_atwho' :
-			deps       : [ 'jquery_caret' ]
+			deps       : [ 'jquery_caret', 'MC' ]
 
 		'stateeditor'  :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC', 'jquery_caret', 'jquery_atwho' ]
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]
 }
 
 #requirejs.onError = ( err ) ->

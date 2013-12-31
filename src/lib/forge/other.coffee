@@ -414,25 +414,15 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	getPlainTxt = ( $dom ) ->
 		#console.log 'getPlainTxt', $dom
 
-		$conent_arr = $dom.children()
-		new_str     = ''
+		$dom.html().replace( /<span>/igm, '' )
+								 .replace( /<\/span>/igm, '' )
+								 .replace( /<span contenteditable="true">/igm, '' )
+								 .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
+								 .replace( /&lt;/igm, '<' )
+								 .replace( /&gt;/igm, '>' )
+								 .replace( /<br>/igm, '\n' )
+								 .replace( /&nbsp;/igm, ' ' )
 
-		$conent_arr.each ( index, item ) ->
-			$item  = $ item
-
-			$item.each ( index, values ) ->
-				$values = $ values
-				new_str += $values.html().replace( /<span>/igm, '' )
-										 .replace( /<\/span>/igm, '' )
-										 .replace( /<span contenteditable="true">/igm, '' )
-										 .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
-										 .replace( /&lt;/igm, '<' )
-										 .replace( /&gt;/igm, '>' )
-										 .replace( /<br>/igm, '\n' )
-										 .replace( /&nbsp;/igm, ' ' )
-
-		#console.log 'new_str', new_str
-		new_str
 
 	setPlainTxt = ( str ) ->
 		console.log 'setPlainTxt', str

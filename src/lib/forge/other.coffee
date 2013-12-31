@@ -412,7 +412,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		new_str
 
 	getPlainTxt = ( $dom ) ->
-		console.log 'getPlainTxt', $dom
+		#console.log 'getPlainTxt', $dom
 
 		$conent_arr = $dom.children()
 		new_str     = ''
@@ -431,7 +431,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 										 .replace( /<br>/igm, '\n' )
 										 .replace( /&nbsp;/igm, ' ' )
 
-		console.log 'new_str', new_str
+		#console.log 'new_str', new_str
 		new_str
 
 	setPlainTxt = ( str ) ->

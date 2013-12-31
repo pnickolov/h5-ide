@@ -4253,10 +4253,11 @@ MC.canvas.event.drawConnection = {
 				}
 				*/
 
-				line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
+				//line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
+				$canvas.connect(from_node, port_name, to_node, to_port_name);
 
 				// trigger event when connect two port
-				$canvas.trigger("CANVAS_LINE_CREATE", line_id);
+				//$canvas.trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 

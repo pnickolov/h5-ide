@@ -160,16 +160,20 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
     setIp : ( idx, ip, autoAssign, hasEip )->
       ipObj = @get("ips")[idx]
 
-      if ip isnt undefined or ip isnt null
+      if ip isnt undefined and ip isnt null
         ipObj.ip = ip
 
-      if autoAssign isnt undefined or autoAssign isnt null
+      if autoAssign isnt undefined and autoAssign isnt null
         ipObj.autoAssign = autoAssign
 
-      if hasEip isnt undefined or hasEip isnt null and hasEip isnt ipObj.hasEip
+      if hasEip isnt undefined and hasEip isnt null and hasEip isnt ipObj.hasEip
         ipObj.hasEip = hasEip
 
-        if idx is 0 then @draw()
+        if idx is 0
+          if @embedInstance()
+            @embedInstance().draw()
+          else
+            @draw()
 
       null
 

@@ -129,6 +129,8 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 
 			eni_obj     = eni.toJSON()
 			eni_obj.ips = eni.getIpArray()
+			eni_obj.ips[0].unDeletable = true
+
 			@set "eni", eni_obj
 			@set "multi_enis", instance.connections("EniAttachment").length > 0
 			null
@@ -149,7 +151,10 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			comp = Design.instance().component( @get("uid") ).getEmbedEni()
 			comp.addIp()
 
-			@get("eni").ips = comp.getIpArray()
+			ips = comp.getIpArray()
+			ips[0].unDeletable = true
+
+			@get("eni").ips = ips
 			null
 
 		isValidIp : ( ip )->

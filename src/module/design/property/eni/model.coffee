@@ -115,8 +115,10 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 		addIp : () ->
 			comp = Design.instance().component( @get("uid") )
 			comp.addIp()
+			ips = comp.getIpArray()
+			ips[0].unDeletable = true
 
-			@set "ips", comp.getIpArray()
+			@set "ips", ips
 			null
 
 		isValidIp : ( ip )->

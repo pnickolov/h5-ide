@@ -29,7 +29,7 @@ define [ '../base/view',
             'click #keypair-select .icon-remove' : "deleteKP"
             "EDIT_FINISHED #keypair-select"      : "updateKPSelect"
 
-            'click .toggle-eip'                         : 'setEIP'
+            'click .toggle-eip'                         : 'setEip'
             'click #instance-ip-add'                    : "addIp"
             'click #property-network-list .icon-remove' : "removeIp"
             'change .input-ip'                          : 'syncIPList'

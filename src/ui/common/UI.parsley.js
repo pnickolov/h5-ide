@@ -1704,7 +1704,7 @@
   */
   $.fn.parsley.defaults = {
     // basic data-api overridable properties here..
-    inputs: 'input, textarea, select'           // Default supported inputs.
+    inputs: 'input, textarea, select, [contenteditable="true"]'           // Default supported inputs.
     , excluded: 'input[type=hidden], input[type=file], :disabled' // Do not validate input[type=hidden] & :disabled.
     , trigger: false                            // $.Event() that will trigger validation. eg: keyup, change..
     , animate: false                             // fade in / fade out error messages
@@ -1752,7 +1752,7 @@
 // global bind some event
 // focus, submit
 var globalBindList = 'focus';
-var bindElements = 'form[data-validate="parsley"] input, [data-bind="true"] input, form[data-validate="parsley"] textarea, [data-bind="true"] textarea';
+var bindElements = 'form[data-validate="parsley"] input, [data-bind="true"] input, form[data-validate="parsley"] textarea, [data-bind="true"] textarea, [data-bind="true"]';
 
 var isBind = function( elem ) {
   elem = elem instanceof $ ? elem : $( elem );
@@ -1784,7 +1784,7 @@ var bindForm = function( e ) {
   if ( !isBind( form ) ) {
     form.parsley();
   } else {
-    var inputs = form.find('input[type=text], input[type=radio], input[type=checkbox]');
+    var inputs = form.find('input[type=text], input[type=radio], input[type=checkbox], [contenteditable="true"]');
     inputs.each( function (index) {
       if ( !isBind( this ) ) {
         formAddItem( form, this );
@@ -1828,7 +1828,6 @@ $(document.body).on( 'click', '.parsley-submit', formValidate);
 
 // global bind on single input
 $(document.body).on( globalBindList, bindElements, bindFiled );
-
 
 
 

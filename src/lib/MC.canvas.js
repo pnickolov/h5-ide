@@ -5214,6 +5214,12 @@ MC.canvas.event.groupResize = {
 			var group_node = $canvas( group_id ),
 				group_coordinate = group_node.position();
 
+			if (type === 'AWS.VPC.Subnet')
+			{
+				event_data.group_port[0].show();
+				event_data.group_port[1].show();
+			}
+
 			group_node.position(group_coordinate[0], group_coordinate[1]);
 
 			parent.attr('transform', event_data.originalTranslate);

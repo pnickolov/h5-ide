@@ -416,8 +416,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		$dom.html().replace( /<span>/igm, '' )
 								 .replace( /<\/span>/igm, '' )
-								 .replace( /<span contenteditable="true">/igm, '' )
-								 .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
+								 .replace( /<span .*?>/igm, '' )
 								 .replace( /&lt;/igm, '<' )
 								 .replace( /&gt;/igm, '>' )
 								 .replace( /<br>/igm, '\n' )

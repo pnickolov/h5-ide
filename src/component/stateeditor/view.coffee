@@ -26,8 +26,6 @@ define [ 'event',
             'click .state-save': 'onStateSaveClick'
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
 
-            'click .plain-text': 'getPlainTxt'
-
         initialize: () ->
 
             this.compileTpl()
@@ -842,6 +840,7 @@ define [ 'event',
 
             # test getPlainTxt
             #@getPlainTxt()
+            #@setPlainTxt localStorage[ 'new_str' ]
 
             that = this
             data = that.saveStateData()
@@ -890,7 +889,19 @@ define [ 'event',
                                              .replace( /&nbsp;/igm, ' ' )
 
             console.log 'new_str', new_str
+            localStorage[ 'new_str' ] = new_str
             new_str
+
+    setPlainTxt : ( str ) ->
+        console.log 'setPlainTxt', str
+        new_str = str.replace( /\n/igm, '<br>' )
+                     .replace( /\s+/igm, '&nbsp;' )
+                     .replace( /</igm, '&lt;' )
+                     .replace( />/igm, '&gt;' )
+
+        console.log 'new_str', new_str
+        new_str
+
     }
 
     return StateEditorView

@@ -4,10 +4,9 @@
 
 define [ 'event',
          'text!./component/stateeditor/template.html',
-         'UI.modal',
          'UI.parsley'
 
-], ( ide_event, modal_template, template ) ->
+], ( ide_event, template ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -44,7 +43,7 @@ define [ 'event',
 
             # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
-            
+
             compStateData = that.compData.state
             stateObj = that.loadStateData(compStateData)
             that.refreshStateList(stateObj)
@@ -842,7 +841,7 @@ define [ 'event',
             that = this
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
-            
+
             if not $parentElem.length and not $currentElem.hasClass('editable-area')
                 $('.editable-area').blur()
 

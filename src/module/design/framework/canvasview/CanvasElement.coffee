@@ -56,7 +56,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
       height : h
     }
 
-    CanvasManager.size document.getElementById( compUid ), w, h, oldw, oldh
+    CanvasManager.size document.getElementById( this.id ), w, h, oldw, oldh
     null
 
 
@@ -184,7 +184,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     if parentId is "canvas" then parentId = ""
 
     if this.parentId is parentId
-      this.position( x, y )
+      MC.canvas.move( document.getElementById(@id), x, y )
       return false
 
     parent = Design.instance().component( parentId )
@@ -204,7 +204,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     else if res is true
       parent.addChild( child )
-      this.position( x, y )
+      MC.canvas.move( document.getElementById(@id), x, y )
       return true
 
     return false

@@ -139,30 +139,6 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
         }
     cns
 
-  CanvasElement.prototype.hover = ()->
-    comp = Design.instance().component( this.id )
-    connections = comp.connections()
-
-    for cn in connections
-      el = document.getElementById( cn.id )
-      if not el
-        continue
-
-      CanvasManager.addClass( el, "view-hover" )
-    null
-
-  CanvasElement.prototype.hoverOut = ()->
-    comp = Design.instance().component( this.id )
-    connections = comp.connections()
-
-    for cn in connections
-      el = document.getElementById( cn.id )
-      if not el
-        continue
-
-      CanvasManager.removeClass( el, "view-hover" )
-    null
-
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
       this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null

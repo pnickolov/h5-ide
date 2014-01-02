@@ -10,7 +10,7 @@ var listen = function ()
 
 	canvas_container
 		.off(name_space)
-		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_canvas_state_appview');
+		.removeClass('canvas_state_app canvas_state_appedit canvas_state_stack canvas_state_appview');
 
 	if (canvas_state === 'app')
 	{

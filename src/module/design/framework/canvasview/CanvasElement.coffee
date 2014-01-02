@@ -166,7 +166,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     if parentId is "canvas" then parentId = ""
 
-    if this.parentId = parentId
+    if this.parentId is parentId
       this.position( x, y )
       return false
 

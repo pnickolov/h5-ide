@@ -11,7 +11,7 @@
 var errortip = function (event)
 {
   var target = $(this),
-    content = errortip.findError( target )
+    content = findError( target )
     , target_offset
     , width
     , height
@@ -58,64 +58,89 @@ var errortip = function (event)
 
     }).show();
 
-    errortip.timer[ id ] = setInterval(function ()
+    timer[ id ] = setInterval(function ()
       {
         if (content.closest('html').length === 0)
         {
-          errortip.clear( content.attr('id') );
+          purge( content.attr('id') );
         }
       }, 200);
 
   }
 };
 
-errortip.timer = {};
-errortip.firstTimer = {};
-errortip.isEnter = false;
+var timer = {};
+var firstTimer = {};
+var isEnter = false;
+var enterUid;
 
-errortip.findError = function( $target ) {
+// Internal Helper
+
+var findError = function( $target ) {
   return $target.next('.parsley-error-list');
 }
 
-errortip.getEid = function ( target ) {
+var getEid = function ( target ) {
   $target = target instanceof $ ? target : $( target );
-  return errortip.findError( $target ).attr( 'id' )
+  return findError( $target ).attr( 'id' )
 }
 
-errortip.getUid = function ( event ) {
+var getUid = function ( event ) {
   var id;
   if ( event === Object( event ) ) {
-    id = errortip.getEid( event.currentTarget );
+    id = getEid( event.currentTarget );
   } else {
     id = event
   }
   return $( '#' + id ).data( 'uid' );
 }
 
-errortip.first = function( target ) {
+var removeInterval = function ( id ) {
+  if ( id ) {
+    clearInterval( timer[ id ] );
+  } else {
+    for ( var id in timer ) {
+      clearInterval( timer[ id ] );
+    }
+  }
+}
+
+var enter = function ( event ) {
+  enterUid = getUid( event );
+  errortip.call( this, event );
+}
+
+var leave = function ( event ) {
+  enterUid = false;
+  purge.call( this, event );
+}
+
+// Public Methods
+
+var first = function( target ) {
   errortip.call(target)
-  id = errortip.getEid( target )
-  errortip.firstTimer[ id ] = setTimeout(function() {
-    errortip.clear({currentTarget: target});
+  id = getEid( target )
+  firstTimer[ id ] = setTimeout(function() {
+    purge({currentTarget: target});
   }, 2000);
 }
 
-errortip.clear = function ( event )
+var purge = function ( event )
 {
   var id, uid, force = false;
   if ( event ){
     var errorPrefix = 'errortip-';
     if ( event === Object( event ) ) {
-      id = errortip.findError( $( event.currentTarget ) ).attr( 'id' );
+      id = findError( $( event.currentTarget ) ).attr( 'id' );
     }
     else {
       force = true;
       id = event;
     }
 
-    uid = errortip.getUid( id );
+    uid = getUid( id );
     setTimeout( function() {
-      if ( errortip.enterUid !== uid  || force ) {
+      if ( enterUid !== uid  || force ) {
         $( '#' + errorPrefix + id ).remove();
       }
     }, 100);
@@ -124,34 +149,18 @@ errortip.clear = function ( event )
     $('.errortip_box').remove();
   }
 
-  errortip.firstTimer[ id ] && clearInterval( errortip.firstTimer[ id ] )
-  errortip.removeInterval( id )
+  firstTimer[ id ] && clearInterval( firstTimer[ id ] )
+  removeInterval( id )
 
 };
 
-errortip.removeInterval = function ( id ) {
-  if ( id ) {
-    clearInterval( errortip.timer[ id ] );
-  } else {
-    for ( var id in errortip.timer ) {
-      clearInterval( errortip.timer[ id ] );
-    }
-  }
-}
+errortip.first = first;
+errortip.purge = purge;
 
-errortip.enter = function ( event ) {
-  errortip.enterUid = errortip.getUid( event );
-  errortip.call( this, event );
-}
-
-errortip.leave = function ( event ) {
-  errortip.enterUid = false;
-  errortip.clear.call( this, event );
-}
-
+// Bind Global Events[ mouseenter, mouseleave ]
 $(document).ready(function ()
 {
-  $(document.body).on('mouseenter', '.parsley-error', errortip.enter);
-  $(document.body).on('mouseleave', '.parsley-error', errortip.leave);
+  $(document.body).on('mouseenter', '.parsley-error', enter);
+  $(document.body).on('mouseleave', '.parsley-error', leave);
 });
 

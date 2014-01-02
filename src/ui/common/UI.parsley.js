@@ -1120,7 +1120,7 @@
       if ( true === this.valid ) {
         this.removeErrors();
         this.errorClassHandler.removeClass( this.options.errorClass ).addClass( this.options.successClass );
-        errortip.clear( this.hash );
+        errortip.purge( this.hash );
         return true;
       } else if ( false === this.valid ) {
         this.errorClassHandler.removeClass( this.options.successClass ).addClass( this.options.errorClass );

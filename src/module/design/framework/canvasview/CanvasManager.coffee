@@ -175,7 +175,10 @@ define [], ()->
           child.setAttribute("y", h - pad)
 
     position : ( node, x, y, updateLine )->
-      MC.canvas.position( ( if node.length then node[0] else node ), x, y )
+      if node.length
+        node = node[0]
+
+      MC.canvas.position( node, x, y )
 
       if updateLine isnt false
         # Update Lines

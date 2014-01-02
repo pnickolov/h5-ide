@@ -28,8 +28,9 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view.on 'CLOSE_POPUP', () ->
                 unLoadModule view, model
 
-            # render
-            view.render()
+            # render when resource_list is empty
+            if _.isEmpty model.get( 'resource_list' )
+                view.render()
 
     unLoadModule = ( view, model ) ->
         console.log 'unmanaged vpc unLoadModule'

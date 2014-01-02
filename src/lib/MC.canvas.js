@@ -3386,7 +3386,7 @@ MC.canvas.event.dragable = {
 
 					target_item.position(coordinate.x, coordinate.y);
 
-					//target_item.reConnect();
+					target_item.reConnect();
 
 					//MC.canvas.reConnect(target_id);
 
@@ -3653,7 +3653,7 @@ MC.canvas.event.dragable = {
 					if (group_type === 'AWS.VPC.Subnet' || group_type === 'AWS.AutoScaling.Group')
 					{
 						//MC.canvas.reConnect(target_id);
-						//$canvas(target_id).reConnect();
+						$canvas(target_id).reConnect();
 					}
 
 					var group_left = coordinate.x,
@@ -3682,7 +3682,7 @@ MC.canvas.event.dragable = {
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							igw_item.position(group_left - 4, igw_top);
 
-							//igw_item.reConnect();
+							igw_item.reConnect();
 						}
 
 						if (vgw_gateway[0])
@@ -3693,7 +3693,7 @@ MC.canvas.event.dragable = {
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							vgw_item.position(group_left + group_width - 4, vgw_top);
 
-							//vgw_item.reConnect();
+							vgw_item.reConnect();
 						}
 					}
 
@@ -3789,7 +3789,7 @@ MC.canvas.event.dragable = {
 
 		target_item.position(undefined, coordinate.y);
 
-		//target_item.reConnect();
+		target_item.reConnect();
 
 		target_item.select();
 
@@ -5122,7 +5122,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					igw_item.position(group_left - 4, igw_top);
 
-					//MC.canvas.reConnect(igw_gateway_id);
+					MC.canvas.reConnect(igw_gateway_id);
 				}
 
 				if (vgw_gateway[0])
@@ -5145,7 +5145,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					vgw_gateway.position(group_left + group_width - 4, vgw_top);
 
-					//MC.canvas.reConnect(vgw_gateway_id);
+					MC.canvas.reConnect(vgw_gateway_id);
 				}
 			}
 
@@ -5199,7 +5199,7 @@ MC.canvas.event.groupResize = {
 				//$canvas( group_id ).reConnect();
 				//var group_node = $canvas( group_id );
 
-				//group_node.reConnect();
+				group_node.reConnect();
 			}
 
 			var group_node = $canvas( group_id );
@@ -5228,6 +5228,8 @@ MC.canvas.event.groupResize = {
 			}
 
 			group_node.position(group_coordinate[0], group_coordinate[1]);
+
+			group_node.reConnect();
 
 			parent.attr('transform', event_data.originalTranslate);
 
@@ -5728,7 +5730,7 @@ MC.canvas.event.keyEvent = function (event)
 				target_item.position(coordinate.x, coordinate.y);
 				//MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
-				//MC.canvas.reConnect(target_id);
+				MC.canvas.reConnect(target_id);
 			}
 
 			return false;

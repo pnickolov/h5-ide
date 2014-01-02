@@ -3329,7 +3329,7 @@ MC.canvas.event.dragable = {
 				shadow_offset = Canvon(event_data.shadow).offset(),
 				layout_node_data = $canvas.node(),
 				//layout_connection_data = MC.canvas.data.get('layout.connection'),
-				BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+				//BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
 				scale_ratio = $canvas.scale(),
 				component_size,
 				match_place,
@@ -3370,43 +3370,47 @@ MC.canvas.event.dragable = {
 					coordinate.y > 0 &&
 					match_place.is_matched &&
 					// Disallow Instance to ASG
-					!(
-						parentGroup &&
-						parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-						target_type === 'AWS.EC2.Instance'
-					)
-					&&
-					(
-						$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-						!BEFORE_DROP_EVENT.isDefaultPrevented()
-					)
+					// !(
+					// 	parentGroup &&
+					// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+					// 	target_type === 'AWS.EC2.Instance'
+					// )
+					// &&
+					// target_item.changeParent()
+					// &&
+					// (
+					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
+					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
+					// )
 				)
 				{
+
+					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), coordinate.x, coordinate.y);
 					//MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
 
-					target_item.position(coordinate.x, coordinate.y);
+					// target_item.position(coordinate.x, coordinate.y);
 
-					target_item.reConnect();
+					// target_item.reConnect();
 
 					//MC.canvas.reConnect(target_id);
 
-					$canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
-						'src_node': target_id,
-						'tgt_parent': parentGroup ? parentGroup.id : ''
-					});
+					// $canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
+					// 	'src_node': target_id,
+					// 	'tgt_parent': parentGroup ? parentGroup.id : ''
+					// });
 
 					//MC.canvas.select(target_id);
 
-					$canvas(target_id).select();
+					//$canvas(target_id).select();
 				}
-				else if (
-					parentGroup &&
-					parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-					target_type === 'AWS.EC2.Instance'
-				)
-				{
-					notification('warning', 'Launch Configuration can only be created by using AMI from Resource Panel.');
-				}
+				// else if (
+				// 	parentGroup &&
+				// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
+				// 	target_type === 'AWS.EC2.Instance'
+				// )
+				// {
+				// 	notification('warning', 'Launch Configuration can only be created by using AMI from Resource Panel.');
+				// }
 			}
 
 			if (target_type === 'group')
@@ -5518,7 +5522,7 @@ MC.canvas.event.keyEvent = function (event)
 			MC.canvas.volume.close();
 			$.each($canvas.selected_node(), function (index, id)
 			{
-				$canvas( id ).remove()
+				$canvas( id ).remove();
 			});
 			$canvas.selected_node().length = 0;
 

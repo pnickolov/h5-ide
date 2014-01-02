@@ -136,7 +136,7 @@ define [ '../base/view',
                         $('#property-cidr-block').focus()
 
                     $('#cidr-remove').click () ->
-                        $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
+                        $canvas.clearSelected()
                         Design.instance().component( subnetUID ).remove()
 
                         MC.aws.aws.disabledAllOperabilityArea(false)

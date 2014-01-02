@@ -61,6 +61,7 @@ define [ '../base/view',
             inputValue = inputElem.val()
 
             cgwUID = this.model.get('cgw_uid')
+            lineUID = this.model.get("uid")
 
             allCidrAry = []
             repeatFlag = false
@@ -104,14 +105,9 @@ define [ '../base/view',
                         inputElem.focus()
 
                     $('#cidr-remove').click () ->
-                        connectionObj = MC.canvas_data.layout.component.node[cgwUID].connection[0]
-                        if connectionObj
-                            lineUID = connectionObj.line
-                            vgwUID = connectionObj.target
-                            $("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
-                                'id': lineUID,
-                                'type': 'line'
-                            })
+                        $canvas.clearSelected()
+                        Design.instance().component( lineUID ).remove()
+
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else

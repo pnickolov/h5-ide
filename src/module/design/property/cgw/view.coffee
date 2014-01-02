@@ -100,7 +100,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
                         $('#property-cgw-ip').focus()
 
                     $('#cidr-remove').click () ->
-                        $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
+                        $canvas.clearSelected()
                         Design.instance().component( cgwUID ).remove()
 
                         MC.aws.aws.disabledAllOperabilityArea(false)

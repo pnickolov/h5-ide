@@ -50,6 +50,11 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_
     _.map Design.__instance.__canvasGroups, ( comp )->
       new CanvasElement( comp )
 
+  $canvas.clearSelect = ()->
+    MC.canvas.event.clearSelected()
+    ide_event.trigger OPEN_PROPERTY
+    null
+
   $canvas.trigger = ( event )->
     console.assert( _.isString( event ), "Invalid parameter : event " )
 

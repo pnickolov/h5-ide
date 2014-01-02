@@ -4,9 +4,10 @@
 
 define [ 'event',
          'text!./component/stateeditor/template.html',
-         'UI.parsley'
+         './component/stateeditor/validate',
+         'UI.errortip'
 
-], ( ide_event, template ) ->
+], ( ide_event, template , validate ) ->
 
     StateEditorView = Backbone.View.extend {
 
@@ -624,23 +625,15 @@ define [ 'event',
 
             that.refreshStateId()
 
-        validate: () ->
-            $contentEditable = @$stateList.find '[contenteditable="true"]:visible, [type="input"]'
+        submitValidate: () ->
+            $contentEditable = @$stateList.find '[contenteditable="true"]'
 
             result = true
             $contentEditable.each ->
                 if $( @ ).parent( '[contenteditable="true"]' ).size()
                     return true
 
-
-
-                res = $( @ )
-                    .data( 'value', MC.forge.other.getPlainTxt $( @ ) )
-                    .parsley( 'custom', ( val ) ->
-                        console.log val
-                        return 'some error: ' + val
-                        )
-                    .parsley( 'validate' )
+                res = validate @
 
                 if not res and result
                     result = false
@@ -652,7 +645,7 @@ define [ 'event',
 
 
         saveStateData: () ->
-            if not @validate()
+            if not @submitValidate()
                 return false
 
             that = this

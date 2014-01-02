@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "constant", "./VolumeModel" ], ( ComplexResModel, InstanceModel, CanvasManager, Design, constant, VolumeModel )->
+define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js' ], ( ComplexResModel, InstanceModel, CanvasManager, Design, constant, VolumeModel, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -18,6 +18,8 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
+
+    isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
 
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get 'imageId' ] || @get("cachedAmi")

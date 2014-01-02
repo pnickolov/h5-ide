@@ -1,4 +1,4 @@
-define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
+define [ "CanvasManager", "event", "constant" ], ( CanvasManager, ide_event, constant )->
 
   Design = null
 
@@ -106,16 +106,35 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     C = Design.modelClassForPorts( fromPort, toPort )
     C and C.isConnectable( design.component(@id), design.component(toId) )
 
+  CanvasElement.prototype.isRemovable = ()->
+    res = Design.instance().component( @id ).isRemovable()
+    if res isnt true then return res
+
+    # If the object is ASG, we consider it as an node
+    # Doesn't check its children.
+    if @nodeType is "group" and @type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      for ch in @children()
+        res = ch.isRemovable()
+        if res isnt true
+          break
+
+    res
+
   CanvasElement.prototype.remove = ()->
     comp = Design.instance().component( this.id )
     if comp.isRemoved() then return
 
-    res = comp.isRemovable()
+    res = @isRemovable()
+    comp_name = comp.get("name")
+
+    # Ask user to confirm to delete an non-empty group
+    if res is true and comp.children and comp.children().length > 0
+      res = sprintf lang.ide.CVS_CFM_DEL_GROUP, comp_name
 
     if _.isString( res )
       # Confirmation
       template = MC.template.canvasOpConfirm {
-        operation : sprintf lang.ide.CVS_CFM_DEL, comp.get("name")
+        operation : sprintf lang.ide.CVS_CFM_DEL, comp_name
         content   : res
         color     : "red"
         proceed   : lang.ide.CFM_BTN_DELETE

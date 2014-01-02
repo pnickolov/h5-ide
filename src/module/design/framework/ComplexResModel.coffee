@@ -87,7 +87,7 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
 
       # Remove element in SVG
       if @draw
-        $( document.getElementById( @id ) ).remove()
+        CanvasManager.remove( document.getElementById( @id ) )
       null
 
     connect_base : ( connection )->

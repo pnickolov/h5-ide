@@ -9,6 +9,10 @@ define [], ()->
       Design = d
       null
 
+    remove : ( element )->
+      MC.canvas.remove( element )
+      null
+
     removeClass : ( element, theClass )->
       if element.length
         element = element[0]

@@ -166,7 +166,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
       # Remove element in SVG, if the line implements draw
       if @draw
-        $( document.getElementById( @id ) ).remove()
+        CanvasManager.remove( document.getElementById( @id ) )
       null
 
   }, {

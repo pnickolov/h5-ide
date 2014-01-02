@@ -1520,7 +1520,7 @@ MC.canvas = {
 
 			group_size,
 
-			connection_stack = {};
+			connection_stack = [];
 
 		if (node_type === 'node')
 		{
@@ -1577,14 +1577,14 @@ MC.canvas = {
 				{
 					$.each(node_item.connection(), function (i, data)
 					{
-						connection_stack[ data.line ] = true;
+						connection_stack.push( data.line );
 					});
 				}
 			});
 
-			$.each(connection_stack, function (key, value)
+			$.each(connection_stack, function (index, value)
 			{
-				$canvas.connection( key ).reConnect();
+				$canvas.connection( value ).reConnect();
 				//data = $canvas.connection( key );//layout_connection_data[ key ];
 
 				// connection_target_id = [];
@@ -1990,9 +1990,7 @@ MC.canvas = {
 
 	isBlank: function (target_id, target_type, node_type, start_x, start_y, width, height)
 	{
-		var //children = MC.canvas_data.layout.component[ type ],
-			//group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
-			isBlank = true,
+		var isBlank = true,
 			end_x,
 			end_y,
 			coordinate,
@@ -2009,7 +2007,7 @@ MC.canvas = {
 				size = item.size();
 
 				if (
-					key !== target_id &&
+					item.id !== target_id &&
 					item.type === target_type &&
 					coordinate[0] < end_x &&
 					coordinate[0] + size[0] > start_x &&

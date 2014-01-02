@@ -1516,7 +1516,11 @@ MC.canvas = {
 			group_child,
 			group_coordinate,
 			group_offsetX,
-			group_offsetY;
+			group_offsetY,
+
+			group_size,
+
+			connection_stack = {};
 
 		if (node_type === 'node')
 		{
@@ -1528,30 +1532,34 @@ MC.canvas = {
 		{
 			group_child = MC.canvas.groupChild(node);
 
+			//console.info(group_child);
+
 			group_coordinate = target_item.position();
 
-			group_offsetX = group_coordinate[0] - x;
-			group_offsetY = group_coordinate[1] - y;
+			group_size = target_item.size();
+
+			group_offsetX = x - group_coordinate[0];
+			group_offsetY = y - group_coordinate[1];
 
 			target_item.position(x, y);
 			target_item.reConnect();
 
-			target_item.position(coordinate.x, coordinate.y);
+			target_item.position(x, y);
 			//MC.canvas.position(event_data.target[0], coordinate.x, coordinate.y);
 
 			$.each(group_child, function (index, item)
 			{
 				child_type = item.getAttribute('data-type');
 
-				if (child_type === 'node')
-				{
-					node_data = layout_node_data[ item.id ];
-				}
+				// if (child_type === 'node')
+				// {
+				// 	node_data = layout_node_data[ item.id ];
+				// }
 
-				if (child_type === 'group')
-				{
-					node_data = layout_group_data[ item.id ];
-				}
+				// if (child_type === 'group')
+				// {
+				// 	node_data = layout_group_data[ item.id ];
+				// }
 
 				var node_item = $canvas( item.id ),
 					node_coordinate = node_item.position();
@@ -1562,12 +1570,12 @@ MC.canvas = {
 
 				// Re-draw group connection
 				if (
-					node_data.type === 'AWS.VPC.Subnet' ||
-					node_data.type === 'AWS.AutoScaling.Group' ||
-					child_type === 'node'
+					node_item.type === 'AWS.VPC.Subnet' ||
+					node_item.type === 'AWS.AutoScaling.Group' ||
+					node_item.nodeType === 'node'
 				)
 				{
-					$.each(node_data.connection, function (i, data)
+					$.each(node_item.connection(), function (i, data)
 					{
 						connection_stack[ data.line ] = true;
 					});
@@ -1576,46 +1584,47 @@ MC.canvas = {
 
 			$.each(connection_stack, function (key, value)
 			{
-				data = layout_connection_data[ key ];
+				$canvas.connection( key ).reConnect();
+				//data = $canvas.connection( key );//layout_connection_data[ key ];
 
-				connection_target_id = [];
+				// connection_target_id = [];
 
-				$.each(data.target, function (key, value)
-				{
-					connection_target_id.push(key);
-				});
+				// $.each(data.target, function (key, value)
+				// {
+				// 	connection_target_id.push(key);
+				// });
 
-				MC.canvas.connect(
-					connection_target_id[0],
-					data.target[ connection_target_id[0] ],
-					connection_target_id[1],
-					data.target[ connection_target_id[1] ],
-					key
-				);
+				// MC.canvas.connect(
+				// 	connection_target_id[0],
+				// 	data.target[ connection_target_id[0] ],
+				// 	connection_target_id[1],
+				// 	data.target[ connection_target_id[1] ],
+				// 	key
+				// );
 			});
 
 			// Re-draw group connection
-			if (group_type === 'AWS.VPC.Subnet' || group_type === 'AWS.AutoScaling.Group')
+			if (target_type === 'AWS.VPC.Subnet' || target_type === 'AWS.AutoScaling.Group')
 			{
 				//MC.canvas.reConnect(target_id);
 				$canvas(target_id).reConnect();
 			}
 
-			var group_left = coordinate.x,
-				group_top = coordinate.y,
-				group_width = group_size[0],
-				group_height = group_size[1],
-				igw_gateway,
-				igw_gateway_id,
-				igw_gateway_data,
-				igw_top,
-				vgw_gateway,
-				vgw_gateway_id,
-				vgw_gateway_data,
-				vgw_top;
-
-			if (group_type === 'AWS.VPC.VPC')
+			if (target_type === 'AWS.VPC.VPC')
 			{
+				var group_left = x,
+					group_top = y,
+					group_width = group_size[0],
+					group_height = group_size[1],
+					igw_gateway,
+					igw_gateway_id,
+					igw_gateway_data,
+					igw_top,
+					vgw_gateway,
+					vgw_gateway_id,
+					vgw_gateway_data,
+					vgw_top;
+
 				igw_gateway = $('.AWS-VPC-InternetGateway');
 				vgw_gateway = $('.AWS-VPC-VPNGateway');
 
@@ -3589,7 +3598,7 @@ MC.canvas.event.dragable = {
 				{
 					if (coordinate.y <= 3)
 					{
-						 coordinate.y = 3;
+						coordinate.y = 3;
 					}
 
 					if (coordinate.x <= 5)

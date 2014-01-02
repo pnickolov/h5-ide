@@ -59,12 +59,12 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_
 
   $canvas.add = ( type, attributes, coordinate )->
     Model = Design.modelClassForType type
-    attributes.x = coordinate.x
-    attributes.y = coordinate.y
-    if attributes.groupUId
-      attributes.parent = Design.instance().__componentMap[ attributes.groupUId ]
-    model = new Model( attributes )
-    return { id : model.id }
+    m = new Model({
+      x : coordinate.x
+      y : coordinate.y
+      parent : Design.__instance.component( attributes.groupUId )
+    })
+    return { id : m.id }
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
     Design.instance().createConnection( p1, p1Name, p2, p2Name )

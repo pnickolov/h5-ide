@@ -80,28 +80,6 @@ define [], ()->
       else
         element.attr( attr, value )
 
-    resize : ( compUid, w, h ) ->
-
-      component = Design.instance().component compUid
-
-      if not component.node_group
-        console.error "Only group element can be resized."
-        return
-
-      oldw = component.attributes.width
-      oldh = component.attributes.height
-
-      if w is null or w is undefined then w = oldw
-      if h is null or h is undefined then h = oldh
-
-      if w is oldw and h is oldh then return
-
-      component.set "width",  w
-      component.set "height", h
-
-      @size document.getElementById( compUid ), w, h, oldw, oldh
-      null
-
     size : ( node, w, h, oldw, oldh )->
 
       pad    = 10

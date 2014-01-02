@@ -4369,13 +4369,15 @@ MC.canvas.event.siderbarDrag = {
 
 				if (target_group_type)
 				{
-					$.each(target_group_type, function (index, item)
-					{
-						if (item !== 'Canvas')
-						{
-							Canvon('.' + item.replace(/\./ig, '-')).addClass('dropable-group');
-						}
-					});
+					// $.each(target_group_type, function (index, item)
+					// {
+					// 	if (item !== 'Canvas')
+					// 	{
+					// 		Canvon('.' + item.replace(/\./ig, '-')).addClass('dropable-group');
+					// 	}
+					// });
+
+					Canvon('.' + target_group_type.join(',').replace(/\./ig, '-').replace(/,/ig, ',.')).addClass('dropable-group');
 				}
 
 				$(document).on({

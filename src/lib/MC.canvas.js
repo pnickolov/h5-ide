@@ -1850,7 +1850,7 @@ MC.canvas = {
 	isBlank: function (target_id, target_type, node_type, start_x, start_y, width, height)
 	{
 		var //children = MC.canvas_data.layout.component[ type ],
-			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
+			//group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			isBlank = true,
 			end_x,
 			end_y,

@@ -143,12 +143,6 @@ define [], ()->
         node = node[0]
 
       MC.canvas.position( node, x, y )
-
-      if updateLine isnt false
-        # Update Lines
-        for cn in Design.instance().component( node.id ).connections()
-          if cn.get("lineType")
-            cn.draw()
       null
 
     drawLine : ( connection )->

@@ -14,7 +14,7 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
       ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
-      subnet_acl = subnet_component.getAcl()
+      subnet_acl = subnet_component.connectionTargets( "ACL_Asso" )[0]
 
       defaultACL  = null
       networkACLs = []

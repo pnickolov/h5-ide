@@ -36,7 +36,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
 
       for sb in subnets
-        asso = sb.getAssociation()
+        asso = sb.connections("Rtb_Asso")[0]
         console.assert( asso, "Subnet should at least associate to one RouteTable" )
 
         # The association is implicit, we transfer this to the new MainRT

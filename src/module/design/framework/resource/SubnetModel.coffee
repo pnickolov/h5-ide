@@ -41,10 +41,6 @@ define [ "constant",
       null
 
 
-    # Association is the connection between RTB and Subnet
-    getAssociation : ()-> @rtb_asso
-    getAcl         : ()-> @acl_asso.getOtherTarget( @ )
-
     setAcl : ( uid )->
       new AclAsso( this, Design.instance().component( uid ) )
       null
@@ -53,13 +49,15 @@ define [ "constant",
 
       if connection.type is "RTB_Asso"
         # Remove previous association if there's any
-        if @rtb_asso then @rtb_asso.remove()
-        @rtb_asso = connection
+        for cn in @connections( "RTB_Asso" )
+          if cn isnt connection
+            cn.remove()
 
       else if connection.type is "ACL_Asso"
-        if @acl_asso then @acl_asso.remove()
-        @acl_asso = connection
-
+        # Remove previous association if there's any
+        for cn in @connections( "ACL_Asso" )
+          if cn isnt connection
+            cn.remove()
       null
 
 

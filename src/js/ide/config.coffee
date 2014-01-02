@@ -157,6 +157,7 @@ require.config {
 
 		'jquery_caret'       : 'component/stateeditor/lib/jquery_caret'
 		'jquery_atwho'       : 'component/stateeditor/lib/jquery_atwho'
+		'jquery_markdown'    : 'component/stateeditor/lib/jquery_markdown'
 		'stateeditor'        : 'component/stateeditor/main'
 		'stateeditor_view'   : 'component/stateeditor/view'
 		'stateeditor_model'  : 'component/stateeditor/model'
@@ -410,6 +411,9 @@ require.config {
 
 		'jquery_atwho' :
 			deps       : [ 'jquery_caret', 'MC' ]
+
+		'jquery_markdown' :
+			deps       : [ 'jquery', 'MC' ]
 
 		'stateeditor'  :
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]

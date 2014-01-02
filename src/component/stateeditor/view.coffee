@@ -40,6 +40,7 @@ define [ 'event',
             modal that.editorModalTpl(), false
             @setElement $( '#state-editor-model' ).closest '#modal-wrap'
             that.$stateList = that.$el.find('.state-list')
+            that.$cmdDsec = $('#state-description')
 
             # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
@@ -273,6 +274,7 @@ define [ 'event',
                     $that = $(this)
                     $stateItem = $that.parents('.state-item')
                     $stateItem.attr('data-command', value)
+                    that.refreshDescription(value)
                     $paraListElem = $stateItem.find('.parameter-list')
                     that.refreshParaList($paraListElem, value)
                     that.refreshStateView($stateItem)
@@ -363,6 +365,23 @@ define [ 'event',
                         value: 'false'
                     }]
                 })
+
+        refreshDescription: (cmdName) ->
+
+            that = this
+            moduleObj = that.cmdModuleMap[cmdName]
+
+            descMarkdown = ''
+            if moduleObj.reference
+                descMarkdown = moduleObj.reference['en']
+
+            descHTML = ''
+            if descMarkdown
+                descHTML = $.markdown(descMarkdown)
+
+            that.$cmdDsec.html(descHTML).attr('data-command', cmdName)
+
+            null
 
         refreshParaList: ($paraListElem, currentCMD) ->
 
@@ -527,6 +546,8 @@ define [ 'event',
 
             $currentInput = $(event.currentTarget)
 
+            # add default value
+
             if $currentInput.hasClass('parameter-value')
 
                 currentValue = $currentInput.text()
@@ -538,6 +559,15 @@ define [ 'event',
                     if not currentValue and defaultValue and not $currentInput.hasClass('key')
                         $currentInput.html(defaultValue)
 
+            # refresh module description
+
+            $stateItem = $currentInput.parents('.state-item')
+            cmdName = $stateItem.attr('data-command')
+
+            currentDescCMDName = that.$cmdDsec.attr('data-command')
+            if cmdName and currentDescCMDName isnt cmdName
+                that.refreshDescription(cmdName)
+
         onStateIdClick: (event) ->
 
             that = this
@@ -545,7 +575,10 @@ define [ 'event',
             $stateIdElem = $(event.currentTarget)
             $stateItem = $stateIdElem.parents('.state-item')
 
+            $stateItemList = that.$stateList.find('.state-item')
+
             if $stateItem.hasClass('view')
+                $stateItemList.addClass('view')
                 $stateItem.removeClass('view')
             else
                 that.refreshStateView($stateItem)

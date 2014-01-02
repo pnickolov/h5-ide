@@ -4,3 +4,4 @@
 
 !stateeditor/lib/*.js
 stateeditor/lib/jquery_atwho.js
+stateeditor/lib/jquery.markdown.js

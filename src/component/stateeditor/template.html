@@ -5,6 +5,7 @@
 			<div class="state-remove">-</div>
 			<div class="state-add">+</div>
 			<div class="state-id">{{state_id}}</div>
+			<div class="state-drag">三</div>
 			<div class="state-view">
 				<div class="command-view-value"></div>
 				<div class="parameter-view-list">
@@ -103,36 +104,42 @@
 
 	{{#if type_line}}
 		<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_dict}}
 		<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_array}}
 		<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_bool}}
 		<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_text}}
 		<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}
 
 	{{#if type_state}}
 		<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+			<div class="parameter-name">{{para_name}}</div>
 			<div class="parameter-value">{{para_value}}</div>
 		</div>
 	{{/if}}

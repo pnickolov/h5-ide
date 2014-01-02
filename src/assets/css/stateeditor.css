@@ -190,6 +190,7 @@ body {
 	width: 150px;
 	margin-left: 40px;
 	margin-top: -39px;
+	margin-left: 69px;
 }
 
 #state-editor .parameter-list {
@@ -198,16 +199,16 @@ body {
 	width: 100%;
 	max-width: 500px;
 	display: inline;
-	margin-left: 41px;
+	margin-left: 69px;
 }
 
-#state-editor .parameter-item {
+#state-editor .parameter-list .parameter-item {
 	width: 100%;
 	overflow: auto;
 	margin-top: 4px;
 }
 
-#state-editor .parameter-name {
+#state-editor .parameter-list .parameter-name {
 	float: left;
 	padding: 5px;
 	max-width: 100px;
@@ -216,13 +217,13 @@ body {
 	width: 100%;
 }
 
-#state-editor .parameter-value {
+#state-editor .parameter-list .parameter-value {
 	float: left;
 	width: 100%;
 	max-width: 309px;
 }
 
-#state-editor .parameter-container {
+#state-editor .parameter-list .parameter-container {
 	float: left;
 	width: 100%;
 	max-width: 350px;
@@ -230,7 +231,7 @@ body {
 	margin-left: 10px;
 }
 
-#state-editor .parameter-item.dict .parameter-value {
+#state-editor .parameter-list .parameter-item.dict .parameter-value {
 	width: 147px;
 	margin-right: 5px;
 }
@@ -314,6 +315,14 @@ body {
 
 #state-editor .parameter-view-list .parameter-item {
 	float: left;
+}
+
+#state-editor .parameter-view-list .parameter-value {
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+
 	max-width: 100px;
 	min-height: 12px;
 	display: inline;
@@ -324,13 +333,17 @@ body {
 	background-color: #ddd;
 	margin-right: 10px;
 	min-width: 100px;
+
+	float: left;
 }
 
-#state-editor .parameter-view-list .parameter-value {
-	-o-text-overflow: ellipsis;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+#state-editor .parameter-view-list .parameter-name {
+	float: left;
+	padding: 5px;
+	/*max-width: 100px;*/
+	background-color: #ddd;
+	margin-top: 2px;
+	width: 80px;
 }
 
 #state-editor .parameter-view-list .parameter-item.disabled {
@@ -369,6 +382,17 @@ body {
 	background-color: #66f;
 	color: #fff;
 	cursor: pointer;
+}
+
+#state-editor .state-drag {
+	float: left;
+	margin-top: 5px;
+	margin-right: 15px;
+	/*background-color: #ddd;*/
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	color: #aaa;
 }
 
 #state-editor .state-id:hover {

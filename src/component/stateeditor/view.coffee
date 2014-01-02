@@ -45,6 +45,9 @@ define [ 'event',
 
             # hide autocomplete when click document
             $(document).on('mousedown', that.onDocumentMouseDown)
+            $('#state-editor').on('scroll', () ->
+                $('.atwho-view').hide()
+            )
 
             compStateData = that.compData.state
             stateObj = that.loadStateData(compStateData)
@@ -115,7 +118,7 @@ define [ 'event',
             # state item sortable
             that.$stateList.dragsort({
                 itemSelector: '.state-item',
-                dragSelector: '.state-id',
+                dragSelector: '.state-drag',
                 dragBetween: true,
                 placeHolderTemplate: '<div class="state-item state-placeholder"></div>',
                 dragEnd: () ->
@@ -608,6 +611,10 @@ define [ 'event',
 
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)
+
+
+            $stateItemList = that.$stateList.find('.state-item')
+            $stateItemList.addClass('view')
 
             $newStateItem.removeClass('view')
             $cmdValueItem.focus()

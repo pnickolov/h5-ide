@@ -1892,12 +1892,14 @@ MC.canvas = {
 
 		$.each($canvas.group(), function (key, item)
 		{
-			coordinate = item.position();
-			size = item.size();
+			group_item = $canvas(item.id);
+			
+			coordinate = group_item.position();
+			size = group_item.size();
 
 			if (
 				node_id !== key &&
-				$.inArray(item.type, group_parent_type) > -1 &&
+				$.inArray(group_item.type, group_parent_type) > -1 &&
 				(
 					coordinate[0] <= start_x &&
 					coordinate[0] + size[0] >= start_x

@@ -86,6 +86,7 @@ require.config {
 		'UI.canvg'         : 'ui/common/UI.canvg'
 		'UI.sortable'      : 'ui/common/jquery.sortable'
 		'UI.parsley'       : 'ui/common/UI.parsley'
+		'UI.errortip'      : 'ui/common/UI.errortip'
 
 		#jquery plugin
 		'hoverIntent'        : 'ui/common/jquery.hoverIntent.minified'
@@ -342,7 +343,11 @@ require.config {
 			deps       : [ 'jquery' ]
 
 		'UI.parsley'   :
+			deps       : [ 'jquery', 'UI.errortip' ]
+
+		'UI.errortip'   :
 			deps       : [ 'jquery' ]
+
 
 		'bootstrap-carousel':
 			deps	   : [ 'jquery' ]

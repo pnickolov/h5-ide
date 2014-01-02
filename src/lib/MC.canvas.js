@@ -3534,7 +3534,11 @@ MC.canvas.event.dragable = {
 				// 	// )
 				)
 				{
-				 	target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), coordinate.x, coordinate.y);
+					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+					{
+						this.move(coordinate.x, coordinate.y);
+						this.reConnect();
+					});
 				// 	//MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
 
 				// 	// target_item.position(coordinate.x, coordinate.y);
@@ -3743,8 +3747,12 @@ MC.canvas.event.dragable = {
 					// )
 				)
 				{
+					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
+					{
+						this.move(coordinate.x, coordinate.y);
+						this.reConnect();
+					});
 
-					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), coordinate.x, coordinate.y);
 					//target_item.changeParent('xxxx', x, y);
 
 					// target_item.position(coordinate.x, coordinate.y);

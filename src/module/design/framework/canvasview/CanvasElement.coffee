@@ -104,6 +104,13 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     return false
 
+  # Update Lines
+  CanvasElement.prototype.reConnect = ()->
+    for cn in Design.instance().component( this.id ).connections()
+      if cn.get("lineType")
+        cn.draw()
+    null
+
   CanvasElement.prototype.select = ()->
     ide_event.trigger ide_event.OPEN_PROPERTY, this.type, this.id
     MC.canvas.select( this.id )

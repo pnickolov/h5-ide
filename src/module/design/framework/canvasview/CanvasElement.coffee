@@ -33,6 +33,10 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     this.$el
 
+  CanvasElement.prototype.move = ( x, y )->
+    MC.canvas.move( this.element(), x, y )
+
+
   CanvasElement.prototype.size = ( w, h )->
 
     component = Design.instance().component( this.id )
@@ -56,7 +60,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
       height : h
     }
 
-    CanvasManager.size document.getElementById( this.id ), w, h, oldw, oldh
+    CanvasManager.size this.element(), w, h, oldw, oldh
     null
 
 
@@ -82,7 +86,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
       y : y
     }
 
-    MC.canvas.position( document.getElementById( @id ), x, y )
+    MC.canvas.position( this.element(), x, y )
     null
 
 

@@ -18,12 +18,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # component( uid ) : ResourceModel
         description : returns a resource model of uid
 
-    # getAZ( azName ) : AzModel
-        description : returns a AzModel, if the azModel doesn't exist, it will be created.
-
-    # createConnection( p1U, p1N, p2U, p2N ) : ConnectionModel
-        description : returns a ConnectionModel for the connection.
-
     # serialize() : Object
         description : returns a Plain JS Object that is indentical to JSON data.
 
@@ -471,16 +465,5 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
 
   DesignImpl.prototype.serializeLayout = ()->
-
-  DesignImpl.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
-    C = Design.modelClassForPorts( port1, port2 )
-
-    console.assert( C, "Cannot found Class for type: #{type}" )
-
-    comp1 = @component( p1Uid )
-    comp2 = @component( p2Uid )
-
-    if C.isConnectable( comp1, comp2 )
-      new C( comp1, comp2 )
 
   Design

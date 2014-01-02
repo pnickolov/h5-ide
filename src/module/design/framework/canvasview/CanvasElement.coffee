@@ -179,12 +179,12 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     this.parent
 
-  CanvasElement.prototype.changeParent = ( parentId, x, y )->
+  CanvasElement.prototype.changeParent = ( parentId, execCB )->
 
     if parentId is "canvas" then parentId = ""
 
     if this.parentId is parentId
-      MC.canvas.move( document.getElementById(@id), x, y )
+      execCB.call( this )
       return false
 
     parent = Design.instance().component( parentId )
@@ -204,7 +204,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     else if res is true
       parent.addChild( child )
-      MC.canvas.move( document.getElementById(@id), x, y )
+      execCB.call( this )
       return true
 
     return false

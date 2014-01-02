@@ -5,8 +5,9 @@
 define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/acl.html',
-         'event'
-], ( PropertyView, template, acl_template, ide_event ) ->
+         'event',
+         "Design"
+], ( PropertyView, template, acl_template, ide_event, Design ) ->
 
     template     = Handlebars.compile template
     acl_template = Handlebars.compile acl_template
@@ -136,7 +137,8 @@ define [ '../base/view',
 
                     $('#cidr-remove').click () ->
                         $('#svg_canvas').trigger('CANVAS_NODE_SELECTED', '')
-                        ide_event.trigger ide_event.DELETE_COMPONENT, subnetUID, 'group'
+                        Design.instance().component( subnetUID ).remove()
+
                         MC.aws.aws.disabledAllOperabilityArea(false)
                         modal.close()
             else

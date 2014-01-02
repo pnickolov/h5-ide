@@ -214,12 +214,12 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             #     null
 
             # type : "node", "group", "line"
-            ide_event.onLongListen ide_event.DELETE_COMPONENT, ( component_id, type, not_force ) ->
-                model.deleteObject null, {
-                    id    : component_id
-                    type  : type
-                    force : not not_force
-                }
+            # ide_event.onLongListen ide_event.DELETE_COMPONENT, ( component_id, type, not_force ) ->
+            #     model.deleteObject null, {
+            #         id    : component_id
+            #         type  : type
+            #         force : not not_force
+            #     }
 
             ide_event.onLongListen ide_event.CANVAS_UPDATE_APP_RESOURCE, () ->
 

@@ -1584,7 +1584,7 @@ MC.canvas = {
 
 			$.each(connection_stack, function (index, value)
 			{
-				$canvas.connection( value ).reConnect();
+				$canvas( value ).reConnect();
 				//data = $canvas.connection( key );//layout_connection_data[ key ];
 
 				// connection_target_id = [];

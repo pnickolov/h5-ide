@@ -592,12 +592,14 @@ define [ 'event',
             that.refreshStateId()
 
         validate: () ->
-            $contentEditable = @$stateList.find '[contenteditable="true"]'
+            $contentEditable = @$stateList.find '[contenteditable="true"]:visible, [type="input"]'
 
             result = true
             $contentEditable.each ->
                 if $( @ ).parent( '[contenteditable="true"]' ).size()
                     return true
+
+
 
                 res = $( @ )
                     .data( 'value', MC.forge.other.getPlainTxt $( @ ) )
@@ -634,6 +636,10 @@ define [ 'event',
                 stateId = $stateItem.attr('data-id')
 
                 moduleObj = that.cmdModuleMap[cmdName]
+
+                #empty module direct return
+                if not moduleObj
+                    return
 
                 stateObj[stateId] = {
                     module: moduleObj.module,

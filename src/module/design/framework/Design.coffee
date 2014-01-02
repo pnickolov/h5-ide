@@ -351,6 +351,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   Design.instance = ()-> @__instance
   Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
+  Design.modelClassForPorts = ( port1, port2 )->
+    if port1 < port2
+      type = port1 + ">" + port2
+    else
+      type = port2 + ">" + port1
+
+    @__modelClassMap[ type ]
 
   DesignImpl.prototype.get = ( key )-> @["__"+key]
 
@@ -478,19 +485,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   DesignImpl.prototype.serializeLayout = ()->
 
   DesignImpl.prototype.createConnection = ( p1Uid, port1, p2Uid, port2 )->
-    if port1 < port2
-      p1Comp = @component( p1Uid )
-      p2Comp = @component( p2Uid )
-      type = port1 + "<" + port2
-    else
-      p1Comp = @component( p2Uid )
-      p2Comp = @component( p1Uid )
-      type = port2 + "<" + port1
-
-    C = Design.modelClassForType( type )
+    C = Design.modelClassForPorts( port1, port2 )
 
     console.assert( C, "Cannot found Class for type: #{type}" )
 
-    new C( p1Comp, p2Comp )
+    new C( @component( p1Uid ), @component( p2Uid ) )
 
   Design

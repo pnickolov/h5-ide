@@ -239,7 +239,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     isDesignAwake : ()-> Design.instance() is @__design
 
-    isRemoved   : ()-> !!@__design
+    isRemoved   : ()-> !@__design
     isRemovable : () -> true
     isReparentable : ()-> true
 

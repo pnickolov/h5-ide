@@ -30,6 +30,12 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     remove()
       description : remove the connection from two resources.
+
+
+    ++ Class Method ++
+
+    isConnectable()
+      description : This method is used to determine if user can create a line between two resources.
   ###
 
   connectionDraw = ()->
@@ -207,6 +213,8 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       Design.registerModelClass protoProps.type, child
 
       child
+
+    isConnectable : ( comp1, comp2 )-> true
   }
 
   ConnectionModel

@@ -62,6 +62,12 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     this.ports
 
+  CanvasElement.prototype.isConnectable = ( fromPort, toId, toPort )->
+    design = Design.instance()
+
+    C = Design.modelClassForPorts( fromPort, toPort )
+    C and C.isConnectable( design.component(@id), design.component(toId) )
+
   CanvasElement.prototype.remove = ()->
     comp = Design.instance().component( this.id )
     if comp.isRemoved() then return

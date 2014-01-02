@@ -1507,6 +1507,11 @@ MC.canvas = {
 		return true;
 	},
 
+	move: function ()
+	{
+
+	},
+
 	position: function (node, x, y)
 	{
 		x = x > 0 ? x : 0;
@@ -1842,7 +1847,7 @@ MC.canvas = {
 		};
 	},
 
-	isBlank: function (type, target_id, target_type, start_x, start_y, width, height)
+	isBlank: function (target_id, target_type, node_type, start_x, start_y, width, height)
 	{
 		var //children = MC.canvas_data.layout.component[ type ],
 			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
@@ -1852,7 +1857,7 @@ MC.canvas = {
 			coordinate,
 			size;
 
-		if (type === 'group')
+		if (node_type === 'group')
 		{
 			end_x = start_x + width;
 			end_y = start_y + height;
@@ -3457,8 +3462,7 @@ MC.canvas.event.dragable = {
 						coordinate.x = 5;
 					}
 				}
-
-				if (group_type !== 'AWS.VPC.VPC')
+				else
 				{
 					if (coordinate.y <= 2)
 					{
@@ -3564,9 +3568,9 @@ MC.canvas.event.dragable = {
 
 				isBlank =
 					MC.canvas.isBlank(
-						'group',
 						target_id,
 						group_type,
+						'group',
 						coordinate.x,
 						coordinate.y,
 						group_size[0],
@@ -4574,9 +4578,9 @@ MC.canvas.event.siderbarDrag = {
 					{
 						if (
 							MC.canvas.isBlank(
-								'group',
 								target_id,
 								target_type,
+								'group',
 								// Enlarge a little bit to make the drop place correctly.
 								coordinate.x - 1,
 								coordinate.y - 1,

@@ -154,11 +154,11 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 model.changeParent event, option.src_node || option.src_group, option.tgt_parent
                 null
 
-            #listen CANVAS_OBJECT_DELETE
-            view.on 'CANVAS_OBJECT_DELETE', ( event, option ) ->
-                model.deleteObject event, option
-                ide_event.trigger ide_event.CANVAS_DELETE_OBJECT
-                null
+            # #listen CANVAS_OBJECT_DELETE
+            # view.on 'CANVAS_OBJECT_DELETE', ( event, option ) ->
+            #     model.deleteObject event, option
+            #     ide_event.trigger ide_event.CANVAS_DELETE_OBJECT
+            #     null
 
             #listen CANVAS_LINE_CREATE
             view.on 'CANVAS_LINE_CREATE', ( event, option ) ->

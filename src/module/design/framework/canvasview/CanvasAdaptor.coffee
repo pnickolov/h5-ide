@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
+define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_event, lang )->
 
   Design = null
 
@@ -102,6 +102,36 @@ define [ "./CanvasElement", "event" ], ( CanvasElement, ide_event )->
 
     SHOW_PROPERTY_PANEL : ()->
       ide_event.trigger ide_event.OPEN_PROPERTY
+      null
+
+    CANVAS_PLACE_OVERLAP : () ->
+      notification 'warning', lang.ide.CVS_MSG_WARN_COMPONENT_OVERLAP, false
+      null
+
+    CANVAS_ZOOMED_DROP_ERROR : ()->
+      notification 'warning', lang.ide.CVS_MSG_ERR_ZOOMED_DROP_ERROR
+      null
+
+    CANVAS_PLACE_NOT_MATCH : ()->
+      res_type = constant.AWS_RESOURCE_TYPE
+      l = lang.ide
+
+      switch comp_type
+        when res_type.AWS_EBS_Volume  then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when res_type.AWS_VPC_Subnet  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
+
+        when res_type.AWS_EC2_Instance
+          if Design.instance().typeIsVpc()
+            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
+          else
+            info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_AZ
+
+        when res_type.AWS_VPC_NetworkInterface  then info = l.CVS_MSG_WARN_NOTMATCH_ENI
+        when res_type.AWS_VPC_RouteTable        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
+        when res_type.AWS_ELB                   then info = l.CVS_MSG_WARN_NOTMATCH_ELB
+        when res_type.AWS_VPC_CustomerGateway   then info = l.CVS_MSG_WARN_NOTMATCH_CGW
+
+      notification 'warning', info , false
       null
   }
 

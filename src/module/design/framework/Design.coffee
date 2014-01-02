@@ -417,37 +417,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-  # DesignImpl.prototype.getAZ = ( azName, x, y , width, height )->
-  #   AzModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone )
-
-  #   allAzs = AzModel.allObjects()
-  #   for az in allAzs
-  #     if az.get("name") is azName
-  #       return az
-
-  #   # Retrieve AZ's layout info from layoutData
-  #   if @groupLayoutData
-  #     for uid, layout of @groupLayoutData
-  #       if layout.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone and layout.name is azName
-  #         attr =
-  #           id     : uid
-  #           name   : azName
-  #           x      : layout.coordinate[0]
-  #           y      : layout.coordinate[1]
-  #           width  : layout.size[0]
-  #           height : layout.size[1]
-
-  #   if not attr
-  #     attr = {
-  #       name   : azName
-  #       x      : x
-  #       y      : y
-  #       width  : width
-  #       height : height
-  #     }
-
-  #   new AzModel( attr )
-
   DesignImpl.prototype.serialize = ()->
 
     json_data   = {}
@@ -489,6 +458,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     console.assert( C, "Cannot found Class for type: #{type}" )
 
-    new C( @component( p1Uid ), @component( p2Uid ) )
+    comp1 = @component( p1Uid )
+    comp2 = @component( p2Uid )
+
+    if C.isConnectable( comp1, comp2 )
+      new C( comp1, comp2 )
 
   Design

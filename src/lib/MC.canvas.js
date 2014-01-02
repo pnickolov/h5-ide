@@ -3566,7 +3566,7 @@ MC.canvas.event.dragable = {
 				}
 			}
 
-			if (target_type === 'group')
+			if (node_type === 'group')
 			{
 				var coordinate = MC.canvas.pixelToGrid(
 						shadow_offset.left - canvas_offset.left,

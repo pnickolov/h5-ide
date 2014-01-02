@@ -2807,8 +2807,7 @@ MC.canvas.asgList = {
 		$('#asgList-wrap .selected').removeClass('selected');
 
 		target.addClass('selected');
-
-		$canvas.trigger('CANVAS_ASG_SELECTED', target.data('id'));
+		$canvas( target.data('id') ).select();
 
 		return false;
 	}
@@ -3373,7 +3372,7 @@ MC.canvas.event.dragable = {
 				if (
 					coordinate.x > 0 &&
 					coordinate.y > 0 &&
-					match_place.is_matched &&
+					match_place.is_matched // &&
 					// Disallow Instance to ASG
 					// !(
 					// 	parentGroup &&

@@ -16,8 +16,8 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
       this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 
-      this.parentId   = component.parent()
-      this.parentId   = if this.parent then "" else this.parentId.id
+      this.parentId = component.parent()
+      this.parentId = if this.parent then "" else this.parentId.id
 
     this
 
@@ -90,6 +90,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
         comp = Design.instance().component( theID )
         if comp and not comp.isRemoved()
           comp.remove()
+          ide_event.trigger ide_event.OPEN_PROPERTY
 
     else if res.error
       # Error
@@ -98,6 +99,7 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     else if res is true
       # Do remove
       comp.remove()
+      ide_event.trigger ide_event.OPEN_PROPERTY
       return true
 
     return false
@@ -160,14 +162,21 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
     this.parent
 
-  CanvasElement.prototype.append = ( child )->
-    if this.type isnt "group"
+  CanvasElement.prototype.changeParent = ( parentId, x, y )->
+
+    if parentId is "canvas" then parentId = ""
+
+    if this.parentId = parentId
+      this.position( x, y )
       return false
 
-    if _.isString( child )
-      childComp = Design.instance().component( if _.isString( child ) then child else child.id )
-      if not childComp
-        return false
+    parent = Design.instance().component( parentId )
+    if not parent
+      console.warn( "Cannot find parent when changing parent" )
+      return false
+
+    child = Design.instance().component( this.id )
+    res   = child.isReparentable( parent )
 
     parentComp = Design.instance().component( this.id )
     res = childComp.isReparentable( parentComp )
@@ -177,8 +186,8 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
       notification "error", res
 
     else if res is true
-      # Do remove
-      parentComp.addChild( child )
+      parent.addChild( child )
+      this.position( x, y )
       return true
 
     return false
@@ -186,12 +195,6 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
   CanvasElement.prototype.children = ()->
     _.map Design.instance().component( this.id ).children() || [], ( c )->
         new CanvasElement( c )
-
-  CanvasElement.prototype.trigger = ( event )->
-    # TODO :
-    $("#svg_canvas").trigger event, @id
-    return this
-
 
   CanvasElement.line = ( component )->
     this.id   = component.id

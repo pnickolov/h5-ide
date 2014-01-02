@@ -286,6 +286,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       null
   }
 
-  Design.on "deserialized", Model.updateSgLines
+  Design.on Design.EVENT.Deserialized, Model.updateSgLines
 
   Model

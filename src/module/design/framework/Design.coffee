@@ -96,6 +96,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     AppView : "appview"
   }
 
+  Design.EVENT = {
+    AddResource    : "ADD_RESOURCE"
+    RemoveResource : "REMOVE_RESOURCE"
+
+    Deserialized : "DESERIALIZED"
+  }
+
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
@@ -197,7 +204,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     ####################
     # Broadcast event
     ####################
-    Design.trigger "deserialized"
+    Design.trigger Design.EVENT.Deserialized
     null
 
   ### Private Interface ###
@@ -216,9 +223,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   DesignImpl.prototype.cacheComponent = ( id, comp )->
     if not comp
+      comp = @__componentMap
       delete @__componentMap[ id ]
       delete @__canvasGroups[ id ]
       delete @__canvasNodes[ id ]
+      Design.trigger Design.EVENT.AddResource, comp
     else
       @__componentMap[ id ] = comp
 
@@ -230,6 +239,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
           @__canvasLines[ id ] = comp
         else
           @__canvasNodes[ id ] = comp
+
+      Design.trigger Design.EVENT.RemoveResource, comp
     null
 
 

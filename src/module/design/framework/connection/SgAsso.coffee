@@ -64,7 +64,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       null
   }
 
-  Design.on "deserialized", ()->
+  Design.on Design.EVENT.Deserialized, ()->
     # After the design is deserialized, we update all resource's label at once.
     updateMap = {}
     for asso in SgAsso.allObjects()

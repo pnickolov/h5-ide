@@ -221,6 +221,10 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
   CanvasElement.line.prototype.portName = ( targetId )->
     Design.instance().component( this.id ).port( targetId, "name" )
 
+  CanvasElement.line.prototype.reConnect = ()->
+    Design.instance().component( this.id ).draw()
+    null
+
   CanvasElement.line.prototype.select = ()->
     MC.canvas.select( this.id )
     ide_event.trigger ide_event.OPEN_PROPERTY, Design.instance().component( this.id ).type, this.id

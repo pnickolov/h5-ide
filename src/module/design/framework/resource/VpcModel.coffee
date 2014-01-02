@@ -111,8 +111,10 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       else if dhcp is "default"
         vpc.get("dhcp").setNone()
       else
-        vpc.set("dhcp", resolve( MC.extractID( dhcp ) ) )
+        oldDhcp = vpc.get("dhcp")
+        if oldDhcp then oldDhcp.remove()
 
+        vpc.set( "dhcp", resolve( MC.extractID(dhcp) ) )
       null
   }
 

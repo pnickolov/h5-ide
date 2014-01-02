@@ -155,8 +155,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # Deserialize normal resources
     @component = resolveDeserialize
     for uid, comp of json_data
-      recursiveCheck = {}
-      resolveDeserialize uid
+
+      # If the resource is resolveFirst, it means it will create a resource component
+      # in the preDeserialize, meaning that its deserialize will not be called. Thus
+      # we directly call the deserialize() of the resource here.
+      if Design.__resolveFirstMap[ comp.type ] is true
+        recursiveCheck = { uid : true }
+        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
+      else
+        recursiveCheck = {}
+        resolveDeserialize uid
 
 
     # Give a chance for resources to create connection between each others.

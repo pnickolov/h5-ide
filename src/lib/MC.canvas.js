@@ -4699,7 +4699,7 @@ MC.canvas.event.groupResize = {
 					'target': group,
 					'originalTarget': group[0],
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
-					'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
+					//'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
 					'originalY': event.pageY,
 					'originalWidth': group_offset.width,
@@ -4745,7 +4745,7 @@ MC.canvas.event.groupResize = {
 			max_left = event_data.originalWidth * scale_ratio - group_min_padding,
 			top = Math.ceil((event.pageY - event_data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event_data.originalHeight * scale_ratio - group_min_padding,
-			label_offset = event_data.label_offset,
+			//label_offset = event_data.label_offset,
 			prop,
 			key;
 
@@ -4857,7 +4857,7 @@ MC.canvas.event.groupResize = {
 			node_minY = [],
 			node_maxX = [],
 			node_maxY = [],
-			component_size = MC.canvas.COMPONENT_SIZE,
+			//component_size = MC.canvas.COMPONENT_SIZE,
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = event_data.parentGroup,
 			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],

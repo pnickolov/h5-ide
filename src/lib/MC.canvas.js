@@ -1884,11 +1884,14 @@ MC.canvas = {
 		return isBlank;
 	},
 
-	parentGroup: function (node_id, node_type, start_x, start_y, end_x, end_y)
+	parentGroup: function (node_id, target_type, start_x, start_y, end_x, end_y)
 	{
 		var //groups = MC.canvas_data.layout.component.group,
-			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ node_type ],
-			matched;
+			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ target_type ],
+			matched = null,
+			group_item,
+			coordinate,
+			size;
 
 		$.each($canvas.group(), function (key, item)
 		{

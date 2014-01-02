@@ -64,15 +64,25 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
   $canvas.add = ( type, attributes, coordinate )->
     Model = Design.modelClassForType type
-    m = new Model({
-      x : coordinate.x
-      y : coordinate.y
-      parent : Design.__instance.component( attributes.groupUId )
-    })
+    attributes.x = coordinate.x
+    attributes.y = coordinate.y
+    attributes.parent = Design.__instance.component( attributes.groupUId )
+    delete attributes.groupUId
+
+    m = new Model( attributes )
     return { id : m.id }
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
     Design.instance().createConnection( p1, p1Name, p2, p2Name )
+    C = Design.modelClassForPorts( port1, port2 )
+
+    console.assert( C, "Cannot found Class for type: #{type}" )
+
+    comp1 = @component( p1Uid )
+    comp2 = @component( p2Uid )
+
+    if C.isConnectable( comp1, comp2 )
+      new C( comp1, comp2 )
     null
 
   $canvas.connection = ( uid )->

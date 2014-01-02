@@ -34,21 +34,55 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
     this.$el
 
   CanvasElement.prototype.size = ( w, h )->
+
+    component = Design.instance().component( this.id )
+
     if (w is undefined or w is null) and (h is undefined or h is null)
       attr = Design.instance().component( this.id ).attributes
       return [ attr.width, attr.height ]
 
-    if @nodeType is "group"
-      CanvasManager.resize( this.id, w, h )
+    if @nodeType isnt "group" then return
+
+    oldw = component.attributes.width
+    oldh = component.attributes.height
+
+    if w is null or w is undefined then w = oldw
+    if h is null or h is undefined then h = oldh
+
+    if w is oldw and h is oldh then return
+
+    component.set {
+      width  : w
+      height : h
+    }
+
+    CanvasManager.size document.getElementById( compUid ), w, h, oldw, oldh
     null
 
 
   CanvasElement.prototype.position = ( x, y )->
+
+    component = Design.instance().component( this.id )
+
     if (x is undefined or x is null) and (y is undefined or y is null)
-      attr = Design.instance().component( this.id ).attributes
+      attr = component.attributes
       return [ attr.x, attr.y ]
 
-    CanvasManager.move( this.id, x, y )
+    # Update data, svg
+    oldx = component.attributes.x
+    oldy = component.attributes.y
+
+    if x is null or x is undefined then x = oldx
+    if y is null or y is undefined then y = oldy
+
+    if x is oldx and y is oldy then return
+
+    component.set {
+      x : x
+      y : y
+    }
+
+    MC.canvas.position( document.getElementById( @id ), x, y )
     null
 
 

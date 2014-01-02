@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_event, lang )->
+define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasElement, ide_event, lang, constant )->
 
   Design = null
 
@@ -41,7 +41,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_
   $canvas.node = ()->
     nodes = []
 
-    for comp in Design.__instance.__canvasNodes
+    for id, comp of Design.__instance.__canvasNodes
       if not comp.isVisual or comp.isVisual()
         nodes.push( new CanvasElement( comp ) )
     nodes
@@ -59,7 +59,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_
     console.assert( _.isString( event ), "Invalid parameter : event " )
 
     if CanvasEvent[event]
-      CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments) )
+      CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments, 1) )
     null
 
   $canvas.add = ( type, attributes, coordinate )->
@@ -117,11 +117,11 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js' ], ( CanvasElement, ide_
       notification 'warning', lang.ide.CVS_MSG_ERR_ZOOMED_DROP_ERROR
       null
 
-    CANVAS_PLACE_NOT_MATCH : ()->
+    CANVAS_PLACE_NOT_MATCH : ( param )->
       res_type = constant.AWS_RESOURCE_TYPE
       l = lang.ide
 
-      switch comp_type
+      switch param.type
         when res_type.AWS_EBS_Volume  then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
         when res_type.AWS_VPC_Subnet  then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
 

@@ -80,24 +80,6 @@ define [], ()->
       else
         element.attr( attr, value )
 
-    move : ( compUid, x, y ) ->
-
-      component = Design.instance().component compUid
-
-      oldx = component.attributes.x
-      oldy = component.attributes.y
-
-      if x is null or x is undefined then x = oldx
-      if y is null or y is undefined then y = oldy
-
-      if x is oldx and y is oldy then return
-
-      component.set "x", x
-      component.set "y", y
-
-      @position document.getElementById( compUid ), x, y
-      null
-
     resize : ( compUid, w, h ) ->
 
       component = Design.instance().component compUid

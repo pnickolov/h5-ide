@@ -174,17 +174,14 @@ define [], ()->
           child.setAttribute("x", w - pad)
           child.setAttribute("y", h - pad)
 
-    position : ( node, x, y )->
+    position : ( node, x, y, updateLine )->
+      MC.canvas.position( ( if node.length then node[0] else node ), x, y )
 
-      # Update Svg ( might move to MC.canvas.js though )
-      if node.length then node = node[0]
-
-      MC.canvas.position( node, x, y )
-
-      # Update Lines
-      for cn in Design.instance().component( node.id ).connections()
-        if cn.get("lineType")
-          cn.draw()
+      if updateLine isnt false
+        # Update Lines
+        for cn in Design.instance().component( node.id ).connections()
+          if cn.get("lineType")
+            cn.draw()
       null
 
     drawLine : ( connection )->

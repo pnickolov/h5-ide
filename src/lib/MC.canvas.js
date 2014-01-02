@@ -5518,16 +5518,7 @@ MC.canvas.event.keyEvent = function (event)
 			MC.canvas.volume.close();
 			$.each($canvas.selected_node(), function (index, id)
 			{
-				selected_node = $('#' + id);
-
-				if (selected_node.data('class') !== 'AWS.VPC.VPC')
-				{
-					//trigger event when delete component
-					$canvas.trigger("CANVAS_OBJECT_DELETE", {
-						'id': id,
-						'type': selected_node.data('type')
-					});
-				}
+				$canvas( id ).remove()
 			});
 			$canvas.selected_node().length = 0;
 

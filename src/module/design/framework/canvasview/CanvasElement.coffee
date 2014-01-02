@@ -64,7 +64,9 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
 
   CanvasElement.prototype.remove = ()->
     comp = Design.instance().component( this.id )
-    res  = comp.isRemovable()
+    if comp.isRemoved() then return
+
+    res = comp.isRemovable()
 
     if _.isString( res )
       # Confirmation
@@ -77,9 +79,10 @@ define [ "CanvasManager", "event" ], ( CanvasManager, ide_event )->
       }
       modal template, true
       theID = this.id
+
       $("#canvas-op-confirm").one "click", ()->
         comp = Design.instance().component( theID )
-        if comp
+        if comp and not comp.isRemoved()
           comp.remove()
 
     else if res.error

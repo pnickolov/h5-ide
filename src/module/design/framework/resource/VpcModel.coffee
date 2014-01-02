@@ -21,6 +21,8 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
         @attributes.dhcp = new DhcpModel()
         null
 
+    isRemovable : ()-> false # VPC is always undeletable
+
     isDefaultTenancy : ()-> @get("tenancy") isnt "dedicated"
 
     setTenancy : ( tenancy )->

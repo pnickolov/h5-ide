@@ -235,16 +235,11 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       newName
 
     hasAppResource : ()->
-        region = MC.canvas_data.region
-        resourceId = @get("appId")
-        if MC.data.resource_list[region][resourceId]
-          return true
-
-        return false
+      !!MC.data.resource_list[ Design.instnace().region() ][ @get("appId") ]
 
     isDesignAwake : ()-> Design.instance() is @__design
 
-
+    isRemoved   : ()-> !!@__design
     isRemovable : () -> true
     isReparentable : ()-> true
 

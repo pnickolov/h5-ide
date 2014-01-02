@@ -3608,7 +3608,10 @@ MC.canvas.event.dragable = {
 							node_data = layout_group_data[ item.id ];
 						}
 
-						$canvas(item.id).position(node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
+						var node_item = $canvas( item.id ),
+							node_coordinate = node_item.position();
+
+						node_item.position(node_coordinate[0] + group_offsetX, node_coordinate[1] + group_offsetY);
 
 						//MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 
@@ -3674,7 +3677,7 @@ MC.canvas.event.dragable = {
 						if (igw_gateway[0])
 						{
 							igw_item = $canvas(igw_gateway.attr('id'));
-							igw_top = igw_item.coordinate[1] + group_offsetY;
+							igw_top = igw_item.position()[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							igw_item.position(group_left - 4, igw_top);
@@ -3685,7 +3688,7 @@ MC.canvas.event.dragable = {
 						if (vgw_gateway[0])
 						{
 							vgw_item = $canvas(vgw_gateway.attr('id'));
-							vgw_top = vgw_item.coordinate[1] + group_offsetY;
+							vgw_top = vgw_item.position()[1] + group_offsetY;
 
 							// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 							vgw_item.position(group_left + group_width - 4, vgw_top);
@@ -5445,6 +5448,8 @@ MC.canvas.event.clearSelected = function (event)
 
 	// Empty selected_node
 	$canvas.selected_node().length = 0;
+
+	return true;
 };
 
 MC.canvas.event.clickBlank = function (event)

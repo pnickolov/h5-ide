@@ -295,11 +295,23 @@
 }
 
 .line-elb-sg {
+	-webkit-transform: translate(0,0);
+	-moz-transform: translate(0,0);
+	transform: translate(0,0);
 	stroke: #0973f6;
 }
 
 .line-elb-sg.view-hover {
+	-webkit-transform: translate(0.5px,0.5px);
+	-moz-transform: translate(0.5px,0.5px);
+	transform: translate(0.5px,0.5px);
 	stroke-width: 3px;
+}
+
+.line-elb-sg.selected {
+	-webkit-transform: translate(0,0);
+	-moz-transform: translate(0,0);
+	transform: translate(0,0);
 }
 
 .line-rtb-target {

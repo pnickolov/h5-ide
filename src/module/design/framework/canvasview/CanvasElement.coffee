@@ -212,6 +212,21 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         }
     cns
 
+  CanvasElement.prototype.asgExpand = ( parentId, x, y )->
+    # This method contains some logic to determine if the ASG is expandab
+    comp   = Design.instance().component( @id )
+    target = Design.instance().component(parentId)
+    if target and comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      ExpandedAsgModel = Design.modelClassForType( "ExpandedAsg" )
+      res = new ExpandedAsgModel({
+        x : x
+        y : y
+        originalAsg : comp
+        parent : target
+      })
+
+    return !!(res and res.id)
+
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
       this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null

@@ -25,12 +25,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       cachedAmi : null
 
     constructor : ( attr, option )->
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
-
       # Create an embed eni
-      if option.createEni isnt false and vpc
-        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
-        @setEmbedEni( new EniModel({}, { instance: this }) )
+      if Design.instance().typeIsVpc()
+        if not ( option and option.createEni is false )
+          EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
+          @setEmbedEni( new EniModel({}, { instance: this }) )
 
       ComplexResModel.call( this, attr, option )
 

@@ -289,7 +289,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       # Trigger Design RemoveResource Event here.
       # Because only at this time, the resource is fully removed.
-      Design.trigger Design.EVENT.AddResource, this
+      Design.trigger Design.EVENT.RemoveResource, this
       null
 
 

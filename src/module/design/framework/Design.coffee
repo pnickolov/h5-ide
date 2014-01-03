@@ -381,6 +381,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__modelClassMap[ type ]
 
   DesignImpl.prototype.get = ( key )-> @attributes[key]
+  DesignImpl.prototype.set = ( key, value )->
+    @attributes[key] = value
+    null
 
   DesignImpl.prototype.region = ()-> @.__region
   DesignImpl.prototype.mode   = ()->

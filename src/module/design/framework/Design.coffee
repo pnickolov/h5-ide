@@ -95,10 +95,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   }
 
   Design.EVENT = {
+    # Events that will trigger using Design.trigger
     AddResource    : "ADD_RESOURCE"
     RemoveResource : "REMOVE_RESOURCE"
+    Deserialized   : "DESERIALIZED"
 
-    Deserialized : "DESERIALIZED"
+    # Events that will trigger using Design.instance().trigger
+    ResourceUpdated : "RESOURCE_UPDATED"
   }
 
 
@@ -493,4 +496,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   DesignImpl.prototype.serializeLayout = ()->
 
+
+  _.extend DesignImpl.prototype, Backbone.Events
   Design

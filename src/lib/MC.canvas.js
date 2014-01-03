@@ -1532,7 +1532,7 @@ MC.canvas = {
 			target_item.position(x, y);
 			target_item.reConnect();
 
-			target_item.position(x, y);
+			//target_item.position(x, y);
 
 			$.each(group_child, function (index, item)
 			{

@@ -128,7 +128,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
           association : acl.getAssoCount()
         }
 
-        if acl.get("isDefault")
+        if acl.isDefault()
           defaultACL = aclObj
         else
           networkAcls.splice( _.sortedIndex( networkAcls, aclObj, "name" ), 0, aclObj )

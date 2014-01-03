@@ -32,8 +32,8 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         a.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
 
       sgs.sort ( a_sg, b_sg )->
-        if a_sg.get("isDefault") then return -1
-        if b_sg.get("isDefault") then return 1
+        if a_sg.isDefault() then return -1
+        if b_sg.isDefault() then return 1
 
         a_nm = a_sg.get("name")
         b_nm = b_sg.get("name")

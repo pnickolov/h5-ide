@@ -26,7 +26,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     color       : "#f26c4f"
 
     defaults :
-      isDefault   : false
       description : ""
 
     initialize : ()->
@@ -35,6 +34,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     isElbSg    : ()-> @get "isElbSg"
     setAsElbSg : ()-> @set "isElbSg", true
+
+    isDefault : ()-> @attributes.name is "DefaultSG"
 
     createIpTarget : ( ipAddress )->
       ipTarget = new SgIpTarget( ipAddress )
@@ -153,7 +154,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     generateColor : ()->
       # The first color is always for DefaultSG
-      if @get("isDefault") then return "#" + MC.canvas.SG_COLORS[0]
+      if @isDefault() then return "#" + MC.canvas.SG_COLORS[0]
 
       usedColor = {}
       for sg in Model.allObjects()
@@ -178,7 +179,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
   }, {
 
     getDefaultSg : ()->
-      _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
+      _.find Model.allObjects(), ( obj )-> obj.isDefault()
 
     # This method will try to draw a line if the leftRes connects to rightRes
     # If rightRes is undefined, it will try to redraw sgLine for leftRes
@@ -253,7 +254,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         id    : data.uid
         appId : data.resource.GroupId
 
-        isDefault   : data.name is "DefaultSG"
         description : data.resource.GroupDescription
       })
 

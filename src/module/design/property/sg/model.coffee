@@ -44,7 +44,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 # Meaning it is a newly created SG. So the input should be editable
                 inputReadOnly = component.get("appId")
 
-            if inputReadOnly or component.get("isDefault")
+            if inputReadOnly or component.isDefault()
                 @set 'nameReadOnly', true
             if inputReadOnly
                 @set 'descReadOnly', true

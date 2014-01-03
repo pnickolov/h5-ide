@@ -22,7 +22,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             @set {
                 uid          : uid
-                isDefault    : aclObj.get("isDefault")
+                isDefault    : aclObj.isDefault()
                 name         : aclObj.get("name")
                 rules        : null
                 associations : _.sortBy assos, name

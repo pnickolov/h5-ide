@@ -27,7 +27,7 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
           association : acl.getAssoCount()
         }
 
-        if acl.get("isDefault")
+        if acl.isDefault()
           defaultACL = aclObj
           aclObj.isDefault = true
         else

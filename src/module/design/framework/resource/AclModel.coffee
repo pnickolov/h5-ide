@@ -38,12 +38,13 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
 
     defaults : ()->
       {
-        isDefault : false
-        rules     : []
+        rules : []
       }
 
+    isDefault : ()-> @attributes.name is "DefaultACL"
+
     remove : ()->
-      console.assert( not this.get("isDefault"), "Cannot delete DefaultACL" )
+      console.assert( not this.isDefault(), "Cannot delete DefaultACL" )
 
       # When remove an acl, attach all its subnet to DefaultACL
       defaultAcl = Model.getDefaultAcl()
@@ -78,7 +79,7 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
           break
 
       if theRule.number is "32767" then return false
-      if @get("isDefault") and theRule.number is "100" then return false
+      if @get.isDefault() and theRule.number is "100" then return false
 
       @set "rules", rules.slice(0).splice( idx, 1 )
       true
@@ -92,14 +93,13 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
     resolveFirst : true
 
     getDefaultAcl : ()->
-      _.find Model.allObjects(), ( obj )-> obj.get("isDefault")
+      _.find Model.allObjects(), ( obj )-> obj.isDefault()
 
     preDeserialize : ( data, layout_data )->
       new Model({
-        id        : data.uid
-        name      : data.name
-        rules     : formatRules( data.resource.EntrySet )
-        isDefault : data.name is "DefaultACL"
+        id    : data.uid
+        name  : data.name
+        rules : formatRules( data.resource.EntrySet )
       })
 
       null

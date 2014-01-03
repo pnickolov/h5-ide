@@ -36,8 +36,11 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       if option and option.instance
         @__embedInstance = option.instance
 
-      if attributes.ips and attributes.ips.length is 0
-        @attributes.ips.push( new IpObject() )
+      if !attributes.ips
+        attributes.ips = []
+
+      if attributes.ips.length is 0
+        attributes.ips.push( new IpObject() )
 
       ComplexResModel.call this, attributes, option
       null

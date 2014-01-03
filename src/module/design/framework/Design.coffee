@@ -43,6 +43,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Design.fixJson( json_data, layout_data )
 
     design.deserialize( json_data, layout_data )
+    design.save( json_data, layout_data )
     design
 
 
@@ -417,6 +418,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       func.call( context, comp )
     null
 
+  DesignImpl.prototype.save = ()->
+
+    # Quick Impl to make process work.
+    if arguments.length >= 2
+      this.attributes.component = arguments[0]
+      this.attributes.layout    = arguments[1]
+    null
+
+  DesignImpl.prototype.isModified = ()-> true
+
   DesignImpl.prototype.getCost = ()->
     costList = []
     totalFee = 0
@@ -439,6 +450,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
   DesignImpl.prototype.serialize = ()->
+
+    ######################
+    # Quick Impl
+    return this.attributes
+    ######################
 
     json_data   = {}
 

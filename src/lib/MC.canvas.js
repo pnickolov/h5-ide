@@ -718,7 +718,8 @@ MC.canvas = {
 	{
 		switch (port_id)
 		{
-			case 'rtb-src':
+			case 'rtb-src-top':
+			case 'rtb-src-bottom':
 				mid_y = point.y;
 				break;
 
@@ -736,15 +737,16 @@ MC.canvas = {
 	{
 		switch (port_id)
 		{
-			case 'rtb-tgt': //for start
+			case 'rtb-tgt-left':
+			case 'rtb-tgt-right':
 			case 'elb-assoc':
 			case 'elb-sg-in':
 			case 'elb-sg-out':
-				if (point.connectionAngle === 0)
+				if (point.angle === 0)
 				{//left port
 					mid_x = point.x + 4;
 				}
-				else if (point.connectionAngle === 180)
+				else if (point.angle === 180)
 				{//right port
 					mid_x = point.x - 4;
 				}

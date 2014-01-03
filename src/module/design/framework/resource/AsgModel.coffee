@@ -240,13 +240,19 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       return true
 
     remove : ()->
+      # Remove ExpandedAsg
       for asg in @get("expandedList")
         asg.off() # Need to off() first, because we are listening to expandedAsg.
         asg.remove()
 
+      # Remove Policies
       for p in @get("policies")
         p.off()
         p.remove()
+
+      # Remove Notification
+      if @get("notification")
+        @get("notification").remove()
       null
 
     __addExpandedAsg : ( expandedAsg )->

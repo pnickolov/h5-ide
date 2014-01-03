@@ -53,12 +53,15 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
           @setEmbedEni( new EniModel({}, { instance: this }) )
 
-
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
       if vpc and not vpc.isDefaultTenancy()
         @setTenancy( "dedicated" )
 
+      #listen state update event
+      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
+
       null
+
 
     setCount : ( count )->
       @set "count", count

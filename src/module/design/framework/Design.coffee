@@ -101,7 +101,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
-    ResourceUpdated : "RESOURCE_UPDATED"
+    AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
   }
 
 

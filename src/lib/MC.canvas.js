@@ -1921,7 +1921,7 @@ MC.canvas = {
 			size = item.size();
 
 			if (
-				node_id !== key &&
+				node_id !== item.id &&
 				item.type !== 'AWS.VPC.InternetGateway' &&
 				item.type !== 'AWS.VPC.VPNGateway' &&
 				(
@@ -4062,7 +4062,7 @@ MC.canvas.event.drawConnection = {
 					group_coordinate[1] + group_size[1] > coordinate.y
 				)
 				{
-					match_node = document.getElementById( key );
+					match_node = document.getElementById( item.id );
 
 					return false;
 				}
@@ -5444,7 +5444,7 @@ MC.canvas.event.keyEvent = function (event)
 				return false;
 			}
 
-			$.each($canvas.node(), function (index, id)
+			$.each($canvas.node(), function (index, item)
 			{
 				if (item.id === current_node_id)
 				{

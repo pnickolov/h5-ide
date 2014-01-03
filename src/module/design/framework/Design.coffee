@@ -393,11 +393,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     console.warn("Better not to use Design.instance().mode() directly.")
     this.__mode
 
-  DesignImpl.prototype.type   = ()->
-    console.warn("Better not to use Design.instance().type() directly.")
-    this.__type
-
-
+  DesignImpl.prototype.type   = ()-> this.__type
   DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit

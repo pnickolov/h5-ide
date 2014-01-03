@@ -14,9 +14,11 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
 
         # 'required', 'stateAllowed'
         command: ( val, param, elem, represent ) ->
+            map = param.dataMap
+
             if not @required val
                 return 'Command Name is required.'
-            if not @stateAllowed val
+            if not @stateAllowed val, map
                 return "State #{param.command} isn't supported."
             null
 
@@ -27,7 +29,7 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
 
         # sub validators [ return true or false ]
         required: ( val ) ->
-            @notnull val and @notblank val
+            @notnull( val ) and @notblank( val )
 
         notnull: ( val ) ->
             val.length > 0
@@ -38,8 +40,8 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
         isBool: ( val ) ->
             _.isBoolean val
 
-        stateAllowed: ( val ) ->
-            val in Helper.getAllowCommands( val )
+        stateAllowed: ( val, map ) ->
+            val in Helper.getAllowCommands( map )
 
 
 

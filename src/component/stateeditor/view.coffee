@@ -696,8 +696,8 @@ define [ 'event',
 
 
         saveStateData: () ->
-            # if not @submitValidate()
-                # return false
+            if not @submitValidate()
+                return false
 
             that = this
 
@@ -1130,7 +1130,7 @@ define [ 'event',
             newContent = $('<div/>').text(content).html()
             newContent = newContent.replace(/\n/igm, '<br>')
             newContent = newContent.replace(/\t/igm, '<span class="Apple-tab-span" style="white-space:pre"> </span>')
-            
+
             $inputElem.html(newContent)
 
             null

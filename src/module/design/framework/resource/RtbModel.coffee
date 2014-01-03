@@ -9,6 +9,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       y        : 5
       width    : 8
       height   : 8
+      implicit : false
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
     newNameTmpl : "RT-"

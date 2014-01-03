@@ -32,6 +32,21 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       description : remove the connection from two resources.
 
 
+
+    ++ Class Attributes ++
+
+    type :
+      description : A string to identify the Class
+
+    portDefs :
+      description : Ports defination for a visual line
+
+    manyToOne :
+      description : A type string.
+      When C ( connection ) between A ( TYPEA ) and B ( TYPEB ) is created. If manyToOne is TYPEA, then previous A <=> TYPEB connection will be removed.
+
+
+
     ++ Class Method ++
 
     isConnectable()
@@ -93,9 +108,19 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         return this
 
 
+      # If oneToMany is defined. Then one of the component of this connection should be
+      # checked.
+      if @manyToOne
+        comp = @getTarget( @manyToOne )
+        if comp
+          for cn in comp.connections( @type )
+            cn.remove()
+
+
       @__port1Comp.connect_base this
       if @__port1Comp isnt @__port2Comp
         @__port2Comp.connect_base this
+
 
       # Draw in the end
       if @draw then @draw()

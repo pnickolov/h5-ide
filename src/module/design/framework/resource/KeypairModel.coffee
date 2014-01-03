@@ -3,15 +3,10 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
   KeypairUsage = ConnectionModel.extend {
     type : "KeypairUsage"
-
-    initialize : ()->
-      # Remove other KpUsage when this usage is created
-      target = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-      for i in target.connections( "KeypairUsage" )
-        if i isnt this
-          i.remove()
-      null
+    manyToOne : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
   }
+
+
 
   KeypairModel = ComplexResModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair

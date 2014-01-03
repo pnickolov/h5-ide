@@ -41,25 +41,16 @@ define [ "constant",
 
       null
 
-
     setAcl : ( uid )->
       new AclAsso( this, Design.instance().component( uid ) )
       null
 
-    connect : ( connection ) ->
-
+    disconnect : ( connection )->
       if connection.type is "RTB_Asso"
-        # Remove previous association if there's any
-        for cn in @connections( "RTB_Asso" )
-          if cn isnt connection
-            cn.remove()
+        # When an RtbAsso is disconnected create a connection between this subnet and
+        RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+        new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
-      else if connection.type is "ACL_Asso"
-        # Remove previous association if there's any
-        for cn in @connections( "ACL_Asso" )
-          if cn isnt connection
-            cn.remove()
-      null
 
     isRemovable : ()->
       if @connections("ElbSubnetAsso")
@@ -107,18 +98,6 @@ define [ "constant",
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
 
     deserialize : ( data, layout_data, resolve )->
-
-      # RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-
-      # # If we don't have a mainRT yet, then we don't deserialize this data
-      # if not RtbModel.getMainRouteTable()
-      #   return
-
-      # AclModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
-
-      # # If we don't have a DefaultAcl yet, then we don't deserialzie this data
-      # if not AclModel.getDefaultAcl()
-      #   return
 
       new Model({
 

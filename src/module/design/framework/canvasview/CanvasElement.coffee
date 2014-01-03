@@ -163,6 +163,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
           comp.remove()
           ide_event.trigger ide_event.OPEN_PROPERTY
 
+        modal.close()
+
     else if res.error
       # Error
       notification "error", res.error
@@ -231,9 +233,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     child = Design.instance().component( this.id )
     res   = child.isReparentable( parent )
-
-    parentComp = Design.instance().component( this.id )
-    res = childComp.isReparentable( parentComp )
 
     if _.isString( res )
       # Error

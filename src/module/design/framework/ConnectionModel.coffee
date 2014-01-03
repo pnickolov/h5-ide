@@ -41,9 +41,9 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
     portDefs :
       description : Ports defination for a visual line
 
-    manyToOne :
+    oneToMany :
       description : A type string.
-      When C ( connection ) between A ( TYPEA ) and B ( TYPEB ) is created. If manyToOne is TYPEA, then previous A <=> TYPEB connection will be removed.
+      When C ( connection ) between A ( TYPEA ) and B ( TYPEB ) is created. If oneToMany is TYPEA, then previous B <=> TYPEA connection will be removed.
 
 
 
@@ -110,11 +110,11 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
       # If oneToMany is defined. Then one of the component of this connection should be
       # checked.
-      if @manyToOne
-        comp = @getTarget( @manyToOne )
-        if comp
-          for cn in comp.connections( @type )
-            cn.remove()
+      if @oneToMany
+        console.assert( @oneToMany is @port1Comp().type or @oneToMany is @port2Comp().type, "Invalid oneToMany parameter" )
+        comp = @getOtherTarget( @oneToMany )
+        for cn in comp.connections( @type )
+          cn.remove()
 
 
       @__port1Comp.connect_base this

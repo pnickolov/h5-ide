@@ -3,7 +3,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
 
   KeypairUsage = ConnectionModel.extend {
     type : "KeypairUsage"
-    manyToOne : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
   }
 
 

@@ -677,8 +677,8 @@ define [ 'event',
 
 
         saveStateData: () ->
-            if not @submitValidate()
-                return false
+            # if not @submitValidate()
+                # return false
 
             that = this
 
@@ -1096,13 +1096,7 @@ define [ 'event',
                     if tagName is 'br'
                         resultStr += '\n'
 
-<<<<<<< HEAD
                     null
-=======
-                brStr = new Array(brTagNum).join('\n')
-
-                resultStr += brStr
->>>>>>> origin/feature/state-editor
 
             resultStr = ''
 

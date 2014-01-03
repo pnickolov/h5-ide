@@ -4333,7 +4333,7 @@ MC.canvas.event.siderbarDrag = {
 					if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 					{
 						vpc_id = $('.AWS-VPC-VPC').attr('id');
-						vpc_data = MC.canvas_data.layout.component.group[ vpc_id ];
+						vpc_item = $canvas(vpc_id);// MC.canvas_data.layout.component.group[ vpc_id ];
 						vpc_coordinate = vpc_data.position();
 						vpc_size = vpc_data.size();
 

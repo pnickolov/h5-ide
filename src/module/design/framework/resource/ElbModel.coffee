@@ -62,7 +62,7 @@ define [ "CanvasManager",
       if vpc
         vpc.addChild( @ )
 
-      @draw()
+      @draw(true)
       null
 
     remove : ()->

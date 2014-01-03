@@ -16,7 +16,7 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
       if vpc
         vpc.addChild( @ )
 
-      @draw()
+      @draw(true)
       null
 
     isRemovable : ()->

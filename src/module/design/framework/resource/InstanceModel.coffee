@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, Design, constant, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -59,9 +59,22 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
-      @draw()
+      @draw(true)
       null
 
+    isReparentable : ( newParent )->
+      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if newParent.parent() isnt @parent().parent()
+          check = true
+      else
+        check = true
+
+      # If changing the parent results in changing Instance's AZ, then
+      # We need to check if there's connected Eni to this Instance.
+      if check and @connectionTargets("EniAttachment").length > 0
+        return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+
+      true
 
     setCount : ( count )->
       @set "count", count

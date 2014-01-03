@@ -21,7 +21,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       if vpc
         vpc.addChild( @ )
 
-      @draw()
+      @draw(true)
       null
 
     isRemovable : ()->

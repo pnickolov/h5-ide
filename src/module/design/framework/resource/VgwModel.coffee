@@ -14,7 +14,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
     initialize : ()->
       VpcModel.theVPC().addChild( this )
 
-      @draw()
+      @draw(true)
       null
 
     draw : ( isCreate )->

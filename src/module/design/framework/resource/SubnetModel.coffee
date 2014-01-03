@@ -22,7 +22,7 @@ define [ "constant",
 
     initialize : ()->
       # Draw the node
-      @draw()
+      @draw(true)
 
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )

@@ -75,7 +75,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
-      @draw()
+      @draw(true)
       null
 
     amiIconUrl : ()->

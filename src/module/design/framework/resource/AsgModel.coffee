@@ -10,9 +10,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       if TopicModel.allObjects().length is 0
         new TopicModel()
 
-      #listen state update event
-      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
-
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -58,6 +55,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
+
+      #listen state update event
+      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
+
       null
 
     amiIconUrl : ()->

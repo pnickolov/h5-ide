@@ -36,10 +36,10 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       if option and option.instance
         @__embedInstance = option.instance
 
-      ComplexResModel.call this, attributes, option
-
-      if @get("ips").length is 0
+      if attributes.ips and attributes.ips.length is 0
         @attributes.ips.push( new IpObject() )
+
+      ComplexResModel.call this, attributes, option
       null
 
     # isVisual() is used by CanavasAdaptor to determine this is a node is visually

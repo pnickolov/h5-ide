@@ -56,6 +56,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   CanvasAdaptor.setDesign( Design )
 
 
+  noop = ()->
+
+
   DesignImpl = ( options )->
     @__componentMap = {}
     @__canvasNodes  = {}
@@ -101,6 +104,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
     that = @
+
+    # Disable triggering event when Design is deserializing
+    _old_design_trigger_ = Design.trigger
+    Design.trigger = noop
+
 
     # A helper function to let each resource to get its dependency
     resolveDeserialize = ( uid )->
@@ -198,6 +206,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     ####################
     # Broadcast event
     ####################
+    # Restore Design.trigger
+    Design.trigger = _old_design_trigger_
     Design.trigger Design.EVENT.Deserialized
     null
 

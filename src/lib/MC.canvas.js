@@ -3216,7 +3216,7 @@ MC.canvas.event.dragable = {
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
 					'originalTarget': event.target,
-					'component_size': target_item.size(),
+					'size': target_item.size(),
 					'grid_width': MC.canvas.GRID_WIDTH,
 					'grid_height': MC.canvas.GRID_HEIGHT,
 					'scale_ratio': $canvas.scale(),
@@ -3236,7 +3236,7 @@ MC.canvas.event.dragable = {
 			target_id = event_data.target[0].id,
 			target_type = event_data.target_type,
 			node_type = event_data.node_type,
-			component_size = event_data.component_size,
+			size = event_data.size,
 			grid_width = event_data.grid_width,
 			grid_height = event_data.grid_height,
 			scale_ratio = event_data.scale_ratio,
@@ -3250,8 +3250,8 @@ MC.canvas.event.dragable = {
 				node_type,
 				coordinate.x,
 				coordinate.y,
-				component_size[0],
-				component_size[1]
+				size[0],
+				size[1]
 			);
 
 		if (
@@ -3319,7 +3319,7 @@ MC.canvas.event.dragable = {
 				layout_node_data = $canvas.node(),
 
 				scale_ratio = $canvas.scale(),
-				component_size,
+				size,
 				match_place,
 				coordinate,
 				clone_node,
@@ -3327,7 +3327,7 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'node')
 			{
-				component_size = event_data.component_size;
+				size = event_data.size;
 
 				coordinate = MC.canvas.pixelToGrid(
 					shadow_offset.left - canvas_offset.left,
@@ -3340,8 +3340,8 @@ MC.canvas.event.dragable = {
 					node_type,
 					coordinate.x,
 					coordinate.y,
-					component_size[0],
-					component_size[1]
+					size[0],
+					size[1]
 				);
 
 				parentGroup = MC.canvas.parentGroup(
@@ -3349,8 +3349,8 @@ MC.canvas.event.dragable = {
 					target_type,
 					coordinate.x,
 					coordinate.y,
-					coordinate.x + component_size[0],
-					coordinate.y + component_size[1]
+					coordinate.x + size[0],
+					coordinate.y + size[1]
 				);
 
 				if (

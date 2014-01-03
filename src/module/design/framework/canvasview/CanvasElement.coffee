@@ -225,7 +225,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         parent : target
       })
 
-    return !!(res and res.id)
+    if res and res.id
+      return true
+
+    notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), target.get("name")
+
+    return false
 
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined

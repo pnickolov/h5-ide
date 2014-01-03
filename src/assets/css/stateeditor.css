@@ -410,7 +410,7 @@ body {
 }
 
 #state-editor .state-item:first-child .state-add{
-	
+
 }
 
 #state-editor .state-id {
@@ -490,4 +490,9 @@ body {
 	width: 100px;
 	height: 100px;
 	background: none;
+}
+
+.parsley-error[contenteditable="true"] {
+	border: 1px solid #ec3c38 !important;
+	background-color: #fad6cf !important;
 }

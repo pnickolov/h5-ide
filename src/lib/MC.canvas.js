@@ -4111,8 +4111,9 @@ MC.canvas.event.drawConnection = {
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
 				*/
+
 				//line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
-				$canvas.connect(from_node, port_name, to_node, to_port_name);
+				$canvas.connect(from_node.attr('id'), port_name, to_node.attr('id'), to_port_name);
 
 				// trigger event when connect two port
 				//$canvas.trigger("CANVAS_LINE_CREATE", line_id);

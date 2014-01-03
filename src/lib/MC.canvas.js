@@ -4319,10 +4319,10 @@ MC.canvas.event.siderbarDrag = {
 				match_place,
 				default_group_size,
 				new_node,
-				vpc_id,
-				vpc_data,
+				vpc_item,
 				vpc_coordinate,
-				areaChild;
+				areaChild,
+				new_node_id;
 
 			if (coordinate.x > 0 && coordinate.y > 0)
 			{
@@ -4332,8 +4332,7 @@ MC.canvas.event.siderbarDrag = {
 
 					if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 					{
-						vpc_id = $('.AWS-VPC-VPC').attr('id');
-						vpc_item = $canvas(vpc_id);// MC.canvas_data.layout.component.group[ vpc_id ];
+						vpc_item = $canvas( $('.AWS-VPC-VPC').attr('id') );
 						vpc_coordinate = vpc_item.position();
 						vpc_size = vpc_item.size();
 
@@ -4375,11 +4374,11 @@ MC.canvas.event.siderbarDrag = {
 						{
 							node_option.groupUId = match_place.target;
 
-							new_node = $canvas.add(target_type, node_option, coordinate);
+							new_node_id = $canvas.add(target_type, node_option, coordinate);
 
-							if (new_node)
+							if (new_node_id)
 							{
-								MC.canvas.select(new_node.id);
+								MC.canvas.select(new_node_id);
 							}
 						}
 						else
@@ -4439,11 +4438,11 @@ MC.canvas.event.siderbarDrag = {
 						{
 							node_option.groupUId = match_place.target;
 
-							new_node = $canvas.add(target_type, node_option, coordinate);
+							new_node_id = $canvas.add(target_type, node_option, coordinate);
 							if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
 							{
 								//has no vpc
-								MC.canvas.select(new_node.id);
+								MC.canvas.select(new_node_id);
 							}
 						}
 						else

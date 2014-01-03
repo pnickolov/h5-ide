@@ -319,8 +319,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
             #re-draw connection
             MC.canvas_data.layout.connection = {}
-            MC.canvas.initLine()
-            MC.canvas.reDrawSgLine()
+            #MC.canvas.initLine()
+            #MC.canvas.reDrawSgLine()
 
             #update property panel
             uid = MC.canvas_property.selected_node[0]

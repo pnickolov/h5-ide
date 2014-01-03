@@ -5330,40 +5330,6 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-			if (type === 'AWS.VPC.Subnet')
-			{
-				port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
-
-				event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
-
-				event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
-
-				// $.each($canvas( group_id ).connection(), function (i, value)
-				// {
-				// 	$('#' + value.line).show();
-				// });
-
-				// Re-draw group connections
-				// layout_connection_data = MC.canvas.data.get('layout.connection');
-				// node_connections = layout_group_data[ group_id ].connection || {};
-
-				// $.each($canvas( group_id ).connection(), function (index, value)
-				// {
-				// 	line_connection = layout_connection_data[ value.line ];
-
-				// 	MC.canvas.connect(
-				// 		$('#' + group_id), line_connection['target'][ group_id ],
-				// 		$('#' + value.target), line_connection['target'][ value.target ],
-				// 		{'line_uid': value['line']}
-				// 	);
-				// });
-
-				//$canvas( group_id ).reConnect();
-				//var group_node = $canvas( group_id );
-
-				group_node.reConnect();
-			}
-
 			var group_node = $canvas( group_id );
 
 			group_node.position(group_left, group_top);
@@ -5406,6 +5372,40 @@ MC.canvas.event.groupResize = {
 				'x': label_coordinate[0],
 				'y': label_coordinate[1]
 			});
+		}
+
+		if (type === 'AWS.VPC.Subnet')
+		{
+			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
+
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
+
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
+
+			// $.each($canvas( group_id ).connection(), function (i, value)
+			// {
+			// 	$('#' + value.line).show();
+			// });
+
+			// Re-draw group connections
+			// layout_connection_data = MC.canvas.data.get('layout.connection');
+			// node_connections = layout_group_data[ group_id ].connection || {};
+
+			// $.each($canvas( group_id ).connection(), function (index, value)
+			// {
+			// 	line_connection = layout_connection_data[ value.line ];
+
+			// 	MC.canvas.connect(
+			// 		$('#' + group_id), line_connection['target'][ group_id ],
+			// 		$('#' + value.target), line_connection['target'][ value.target ],
+			// 		{'line_uid': value['line']}
+			// 	);
+			// });
+
+			//$canvas( group_id ).reConnect();
+			//var group_node = $canvas( group_id );
+
+			group_node.reConnect();
 		}
 
 		// Show label

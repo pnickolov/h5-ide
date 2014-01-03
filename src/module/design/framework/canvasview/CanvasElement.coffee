@@ -266,9 +266,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     MC.canvas.select( this.id )
     ide_event.trigger ide_event.OPEN_PROPERTY, Design.instance().component( this.id ).type, this.id
 
-  CanvasElement.line.prototype.remove   = CanvasElement.prototype.remove
-  CanvasElement.line.prototype.element  = CanvasElement.prototype.element
-  CanvasElement.line.prototype.$element = CanvasElement.prototype.$element
+  CanvasElement.line.prototype.remove      = CanvasElement.prototype.remove
+  CanvasElement.line.prototype.isRemovable = CanvasElement.prototype.isRemovable
+  CanvasElement.line.prototype.element     = CanvasElement.prototype.element
+  CanvasElement.line.prototype.$element    = CanvasElement.prototype.$element
 
   CanvasElement.setDesign = ( design )->
     Design = design

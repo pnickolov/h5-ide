@@ -9,7 +9,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
       if TopicModel.allObjects().length is 0
         new TopicModel()
-
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -39,6 +38,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   }
 
 
+
+
+
   ExpandedAsgModel = ComplexResModel.extend {
 
     type : "ExpandedAsg"
@@ -65,6 +67,23 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       lc = @get("originalAsg").get("lc")
 
       if lc then lc.iconUrl() else "ide/ami/ami-not-available.png"
+
+    disconnect : ( cn )->
+      if cn.type isnt "ElbAmiAsso" then return
+
+      asg = @get("originalAsg")
+      expandedList = asg.get("expandedList")
+      # Need to temperory detach ExpandedAsg from original asg's expandedList
+      # Because, we are going to remove originalAsg's LC's connection.
+      # Which will affect all the expandedList
+      expandedList.splice( expandedList.indexOf(@), 1 )
+
+      ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
+      lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ))
+      lcAsso.remove()
+
+      expandedList.push( @ )
+      null
 
     draw : ( isCreate )->
 
@@ -162,6 +181,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   }
 
 
+
+
+
+
   Model = GroupModel.extend {
 
     defaults : ()->
@@ -226,9 +249,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     addScalingPolicy : ( policy )->
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )
-
-      for elb in @get("lc").connectionTargets("ElbAmiAsso")
-          @updateExpandedAsgAsso( elb, true )
       null
 
     __removeScalingPolicy : ( policy )->

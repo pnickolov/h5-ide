@@ -256,6 +256,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       @get("policies").splice( @get("policies").indexOf(policy), 1 )
       null
 
+    # Use this method to see if Asg's healthCheckType is EC2 or not.
+    # Do not use `@get("healthCheckType") is "EC2"`
     isEC2HealthCheckType : ()->
       lc = @get("lc")
       if lc and lc.connections("ElbAmiAsso").length and @get("healthCheckType") is "ELB"

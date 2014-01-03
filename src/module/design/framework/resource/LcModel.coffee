@@ -36,6 +36,8 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
     disconnect : ( cn )->
       if cn.type is "ElbAmiAsso" and @parent()
+        # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
+        # Because user might just want to asso another Elb right after disconnected.
         @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB), true )
       null
 

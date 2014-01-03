@@ -4334,8 +4334,8 @@ MC.canvas.event.siderbarDrag = {
 					{
 						vpc_id = $('.AWS-VPC-VPC').attr('id');
 						vpc_item = $canvas(vpc_id);// MC.canvas_data.layout.component.group[ vpc_id ];
-						vpc_coordinate = vpc_data.position();
-						vpc_size = vpc_data.size();
+						vpc_coordinate = vpc_item.position();
+						vpc_size = vpc_item.size();
 
 						node_option.groupUId = vpc_id;
 

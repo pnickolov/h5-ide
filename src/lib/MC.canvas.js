@@ -1607,7 +1607,9 @@ MC.canvas = {
 			if (target_type === 'AWS.VPC.Subnet' || target_type === 'AWS.AutoScaling.Group')
 			{
 				//MC.canvas.reConnect(target_id);
-				$canvas(target_id).reConnect();
+				//$canvas(target_id).reConnect();
+
+				target_item.reConnect();
 			}
 
 			if (target_type === 'AWS.VPC.VPC')
@@ -1684,6 +1686,11 @@ MC.canvas = {
 
 		return true;
 	},
+
+	// size: function (node, x, y, width, height)
+	// {
+
+	// },
 
 	remove: function (node)
 	{
@@ -5335,11 +5342,11 @@ MC.canvas.event.groupResize = {
 			group_node.position(group_left, group_top);
 			group_node.size(group_width, group_height);
 
-			//group_node.updateResizer(group_width, group_height);
+			//MC.canvas.updateResizer(group_node, group_width, group_height);
 
 			//MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
 			//MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
-			//MC.canvas.updateResizer(parent, group_width, group_height);
+			MC.canvas.updateResizer(parent, group_width, group_height);
 		}
 		else
 		{

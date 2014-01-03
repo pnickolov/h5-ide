@@ -1668,7 +1668,7 @@ MC.canvas = {
 			matched,
 			size;
 
-		$.each($canvas.node(), function (key, item)
+		$.each($canvas.node(), function (index, item)
 		{
 			node_coordinate = item.position();
 			size = item.size();
@@ -1681,7 +1681,7 @@ MC.canvas = {
 				node_coordinate[1] + size[1] >= coordinate.y
 			)
 			{
-				matched = document.getElementById( key );
+				matched = document.getElementById( item.id );
 
 				return false;
 			}
@@ -4114,7 +4114,6 @@ MC.canvas.event.drawConnection = {
 					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
 				}
 				*/
-
 				//line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
 				$canvas.connect(from_node, port_name, to_node, to_port_name);
 

@@ -214,6 +214,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       Backbone.Model.call this, attributes, options
 
+      # Trigger Design AddResource Event here.
+      # Because only at this time, the resource is fully created.
+      Design.trigger Design.EVENT.AddResource, comp
+
       this
 
     getNewName : ()->
@@ -282,6 +286,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       this.off()
 
       this.__design = null
+
+      # Trigger Design RemoveResource Event here.
+      # Because only at this time, the resource is fully removed.
+      Design.trigger Design.EVENT.AddResource, comp
       null
 
 

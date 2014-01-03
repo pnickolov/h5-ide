@@ -221,7 +221,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       delete @__componentMap[ id ]
       delete @__canvasGroups[ id ]
       delete @__canvasNodes[ id ]
-      Design.trigger Design.EVENT.AddResource, comp
     else
       @__componentMap[ id ] = comp
 
@@ -233,8 +232,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
           @__canvasLines[ id ] = comp
         else
           @__canvasNodes[ id ] = comp
-
-      Design.trigger Design.EVENT.RemoveResource, comp
     null
 
 

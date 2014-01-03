@@ -164,6 +164,14 @@ body {
 	opacity: 1.0 !important;
 }
 
+#state-editor .line:hover {
+	opacity: 1.0 !important;
+}
+
+#state-editor .line {
+	cursor: pointer !important;
+}
+
 #state-editor .editable-area.line:hover {
 	opacity: 1.0 !important;
 }

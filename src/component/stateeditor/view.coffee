@@ -211,19 +211,35 @@ define [ 'event',
 
                 if paraType is 'dict'
 
-                    $keyInput = $paraItem.find('.parameter-dict-item:first-child .key')
-                    $valueInput = $paraItem.find('.parameter-dict-item:first-child .value')
+                    $paraDictItems = $paraItem.find('.parameter-dict-item')
 
-                    keyValue = $keyInput.text()
-                    valueValue = $valueInput.text()
+                    paraValueAry = []
+                    _.each $paraDictItems, (paraDictItem) ->
+                        $paraDictItem = $(paraDictItem)
+                        $keyInput = $paraDictItem.find('.key')
+                        $valueInput = $paraDictItem.find('.value')
+                        keyValue = $keyInput.text()
+                        valueValue = $valueInput.text()
+                        if keyValue and valueValue
+                            paraValueAry.push(keyValue + ':' + valueValue)
+                        if keyValue and not valueValue
+                            paraValueAry.push(keyValue)
+                        null
 
-                    paraValue = keyValue + '=' + valueValue
+                    paraValue = paraValueAry.join(', ')
 
                 else if paraType is 'array'
 
-                    $valueInput = $paraItem.find('.parameter-value:first-child')
-                    valueValue = $valueInput.text()
-                    paraValue = valueValue
+                    $valueInputs = $paraItem.find('.parameter-value')
+
+                    paraValueAry = []
+                    _.each $valueInputs, (valueInput) ->
+                        $valueInput = $(valueInput)
+                        valueValue = $valueInput.text()
+                        if valueValue
+                            paraValueAry.push(valueValue)
+                    
+                    paraValue = paraValueAry.join(', ')
 
                 else if paraType in ['line', 'text', 'bool', 'state']
 

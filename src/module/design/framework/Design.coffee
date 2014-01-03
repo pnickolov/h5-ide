@@ -456,36 +456,36 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     return this.attributes
     ######################
 
-    json_data   = {}
+    # json_data   = {}
 
-    connections = []
-    mockArray   = []
+    # connections = []
+    # mockArray   = []
 
-    # ResourceModel can only add json component.
-    for uid, comp of @__componentMap
-      if comp.node_line
-        connections.push comp
-        continue
+    # # ResourceModel can only add json component.
+    # for uid, comp of @__componentMap
+    #   if comp.node_line
+    #     connections.push comp
+    #     continue
 
-      json = comp.serialize()
-      if not json
-        continue
+    #   json = comp.serialize()
+    #   if not json
+    #     continue
 
-      # Make json to be an array
-      if not _.isArray( json )
-        mockArray[0] = json
-        json = mockArray
+    #   # Make json to be an array
+    #   if not _.isArray( json )
+    #     mockArray[0] = json
+    #     json = mockArray
 
-      for j in json
-        console.assert( j.uid, "Serialized JSON data has no uid." )
-        console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
-        json_data[ j.uid ] = j
+    #   for j in json
+    #     console.assert( j.uid, "Serialized JSON data has no uid." )
+    #     console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
+    #     json_data[ j.uid ] = j
 
-    # Connection
-    for c in connections
-      c.serialize( json_data )
+    # # Connection
+    # for c in connections
+    #   c.serialize( json_data )
 
-    json_data
+    # json_data
 
 
   DesignImpl.prototype.serializeLayout = ()->

@@ -243,7 +243,7 @@ define [ 'event',
                         valueValue = $valueInput.text()
                         if valueValue
                             paraValueAry.push(valueValue)
-                    
+
                     paraValue = paraValueAry.join(', ')
 
                 else if paraType in ['line', 'text', 'bool', 'state']
@@ -655,13 +655,17 @@ define [ 'event',
 
         submitValidate: () ->
             $contentEditable = @$stateList.find '[contenteditable="true"]'
-
+            that = this
             result = true
             $contentEditable.each ->
                 if $( @ ).parent( '[contenteditable="true"]' ).size()
                     return true
 
-                res = validate @
+                value = @getPlainTxt @
+                param = that.getParaObjByInput @
+
+
+                res = validate value, param, @
 
                 if not res and result
                     result = false
@@ -932,20 +936,54 @@ define [ 'event',
             if not $parentElem.length and not $currentElem.hasClass('editable-area')
                 $('.editable-area').blur()
 
-        getParaObjByInput: (inputElem) ->
+        getRepresent: ( inputElem ) ->
+            $input = $ inputElem
+            $stateItem = inputElem.closest '.state-item'
+            $stateToolbar = $stateItem.prev '.state-toolbar'
+
+            if $input.hasClass 'command-value'
+                represent = $stateToolbar.find '.command-view-value'
+            else
+                $paraItem = $input.closest('.parameter-item')
+                paramName = $paraItem.data('paraName')
+
+                represent = $stateToolbar.find "[data-para-#{paramName}]"
+
+            represent
+
+
+
+        getParaObjByInput: ( inputElem ) ->
 
             that = this
-            $inputElem = $(inputElem)
-            $paraItem = $inputElem.parents('.parameter-item')
-            $stateItem = $paraItem.parents('.state-item')
+            $inputElem = $ inputElem
+            retVal = {}
 
-            paraName = $paraItem.attr('data-para-name')
-            cmdName = $stateItem.attr('data-command')
+            if $inputElem.hasClass 'command-value'
+                type = 'command'
+                retVal =
+                    type: type
+                    dataMap: that.cmdParaObjMap
+            else
+                type = 'parameter'
 
-            currentParaMap = that.cmdParaObjMap[cmdName]
-            paraObj = currentParaMap[paraName]
+                $paraItem = $inputElem.closest('.parameter-item')
+                $stateItem = $paraItem.closest('.state-item')
 
-            return paraObj
+                paramName = $paraItem.data('paraName')
+                command = $stateItem.data('command')
+
+                currentParaMap = that.cmdParaObjMap[command]
+                params = currentParaMap[paramName]
+
+                retVal =
+                    type: type
+                    command: command
+                    paramName: paramName
+                    params: params
+                    dataMap: that.cmdParaObjMap
+
+            retVal
 
         getPlainTxt: (inputElem) ->
 
@@ -954,7 +992,7 @@ define [ 'event',
             resultStr = ''
 
             $conentElemAry.each (index, item) ->
-                
+
                 $item  = $(item)
                 $item.each(index, values) ->
                     $values = $(values)
@@ -1058,7 +1096,13 @@ define [ 'event',
                     if tagName is 'br'
                         resultStr += '\n'
 
+<<<<<<< HEAD
                     null
+=======
+                brStr = new Array(brTagNum).join('\n')
+
+                resultStr += brStr
+>>>>>>> origin/feature/state-editor
 
             resultStr = ''
 

@@ -13,7 +13,6 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
             attr        = component.toJSON()
             attr.uid    = uid
             attr.isVpc  = Design.instance().typeIsVpc()
-            attr.is_elb = true
 
             # Format ping
             pingArr  = component.getHealthCheckTarget()

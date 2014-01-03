@@ -18,11 +18,17 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 				if parent_model.isSGListReadOnly
 					readonly = parent_model.isSGListReadOnly()
 
+			resource_id = parent_model.get("uid")
+			resource = design.component( resource_id )
 
-			isELBParent   = parent_model.get 'is_elb'
-			isStackParent = parent_model.get 'is_stack'
-			resource      = design.component( parent_model.get("uid") )
-			resource_id   = if resource then resource.id else ""
+			if resource
+				isELBParent   = resource.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+				isStackParent = false
+				resource_id   = resource.id
+			else
+				isELBParent   = false
+				isStackParent = true
+				resource_id   = ""
 
 			sg_list  = []
 

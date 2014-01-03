@@ -13,8 +13,6 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             this.set 'id', elb_uid
 
-            this.set 'is_elb', true
-
             myElbComponent = MC.canvas_data.component[ elb_uid ]
 
             appData = MC.data.resource_list[ MC.canvas_data.region ]

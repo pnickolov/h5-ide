@@ -407,9 +407,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Design.__instance = @
     @
 
-  DesignImpl.prototype.component = ( uid )->
-    console.assert( @__componentMap[ uid ], "Cannot find component in Design of id : #{uid}" )
-    @__componentMap[ uid ]
+  DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
 
   DesignImpl.prototype.eachComponent = ( func, context )->
     console.assert( _.isFunction(func), "User must pass in a function for Design.instance().eachCOmponent()" )

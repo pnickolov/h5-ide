@@ -1,4 +1,4 @@
-define [ "CanvasManager", "event", "constant" ], ( CanvasManager, ide_event, constant )->
+define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasManager, ide_event, constant, lang )->
 
   Design = null
 

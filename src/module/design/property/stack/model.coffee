@@ -15,12 +15,11 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
     init : () ->
 
       @set {
-        name     : MC.canvas_data.name.replace(/\s+/g, '')
-        id       : MC.canvas_data.id
-        type     : typeMap[ Design.instance().type() ]
-        region   : constant.REGION_SHORT_LABEL[ Design.instance().region() ]
-        is_stack : true # Use by sglist_main to determine this is Stack Property Model
-        isApp    : @isApp
+        name   : MC.canvas_data.name.replace(/\s+/g, '')
+        id     : MC.canvas_data.id
+        type   : typeMap[ Design.instance().type() ]
+        region : constant.REGION_SHORT_LABEL[ Design.instance().region() ]
+        isApp  : @isApp
       }
 
       @getNetworkACL()

@@ -498,4 +498,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
 
   _.extend DesignImpl.prototype, Backbone.Events
+  DesignImpl.prototype.on = ( event )->
+    if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
+      return
+
+    Backbone.Events.on.apply( this, arguments )
+
   Design

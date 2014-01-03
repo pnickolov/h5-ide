@@ -42,10 +42,8 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   }, {
     isConnectable : ( p1Comp, p2Comp )->
-      if p1Comp.parent() isnt p2Comp.parent()
-        return false
-
-      true
+      # Instance and Eni should be in the same subnet or az
+      p1Comp.parent() is p2Comp.parent()
   }
 
   C

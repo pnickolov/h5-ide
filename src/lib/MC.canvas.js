@@ -4972,7 +4972,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					igw_item.position(group_left - 4, igw_top);
 
-					vgw_gateway.reConnect();
+					igw_item.reConnect();
 				}
 
 				if (vgw_gateway[0])

@@ -4953,16 +4953,13 @@ MC.canvas.event.groupResize = {
 		{
 			if (type === 'AWS.VPC.VPC')
 			{
-				//layout_connection_data = MC.canvas.data.get('layout.connection');
-
 				igw_gateway = $('.AWS-VPC-InternetGateway');
 				vgw_gateway = $('.AWS-VPC-VPNGateway');
 
 				if (igw_gateway[0])
 				{
 					igw_item = $canvas(igw_gateway[0].id);
-					//igw_gateway_id = igw_gateway[0].id;
-					//igw_gateway_data = layout_node_data[ igw_gateway_id ];
+
 					igw_top = igw_item.position()[1];
 
 					if (igw_top > group_top + group_height - 8)
@@ -4978,14 +4975,13 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					igw_item.position(group_left - 4, igw_top);
 
-					MC.canvas.reConnect(igw_gateway_id);
+					vgw_gateway.reConnect();
 				}
 
 				if (vgw_gateway[0])
 				{
 					vgw_item = $canvas(vgw_gateway[0].id);
-					//vgw_gateway_id = vgw_gateway[0].id;
-					//vgw_gateway_data = layout_node_data[ vgw_gateway_id ];
+
 					vgw_top = vgw_item.position()[1];
 
 					if (vgw_top > group_top + group_height - 8)
@@ -5001,7 +4997,7 @@ MC.canvas.event.groupResize = {
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
 					vgw_gateway.position(group_left + group_width - 4, vgw_top);
 
-					MC.canvas.reConnect(vgw_gateway_id);
+					vgw_gateway.reConnect();
 				}
 			}
 

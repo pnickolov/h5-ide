@@ -76,6 +76,10 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
     hasPrimaryEip : ()->
       @get("ips")[0].hasEip
 
+    hasEip : ()->
+      @get("ips").some ( ip )->
+        ip.hasEip
+
     subnetCidr : ()->
       parent = @parent()
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet

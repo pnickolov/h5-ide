@@ -14,11 +14,13 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     init : () ->
 
+      design = Design.instance()
+
       @set {
-        name   : MC.canvas_data.name.replace(/\s+/g, '')
-        id     : MC.canvas_data.id
-        type   : typeMap[ Design.instance().type() ]
-        region : constant.REGION_SHORT_LABEL[ Design.instance().region() ]
+        name   : design.get("name").replace(/\s+/g, '')
+        id     : design.get("id")
+        type   : typeMap[ design.type() ]
+        region : constant.REGION_SHORT_LABEL[ design.region() ]
         isApp  : @isApp
       }
 

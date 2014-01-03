@@ -46,27 +46,27 @@ define [ 'constant',
 			null
 
 
-		filterConnection : ( event, option ) ->
+		# filterConnection : ( event, option ) ->
 
-			# Normalize the from port and to port
-			# If we have port "aaa" and port "aba"
-			# Then port "aaa" is always "from port"
-			# because "aaa" < "aba"
-			if option.from_port > option.to_port
-				option =
-					from      : option.to
-					to        : option.from
-					from_port : option.to_port
-					to_port   : option.from_port
+		# 	# Normalize the from port and to port
+		# 	# If we have port "aaa" and port "aba"
+		# 	# Then port "aaa" is always "from port"
+		# 	# because "aaa" < "aba"
+		# 	if option.from_port > option.to_port
+		# 		option =
+		# 			from      : option.to
+		# 			to        : option.from
+		# 			from_port : option.to_port
+		# 			to_port   : option.from_port
 
-			components = MC.canvas_data.component
+		# 	components = MC.canvas_data.component
 
-			if option.from_port is "eni-attach" and option.to_port is "instance-attach"
-				if components[ option.from ].resource.AvailabilityZone isnt components[ option.to ].resource.Placement.AvailabilityZone
-					event.preventDefault()
-					return null
+		# 	if option.from_port is "eni-attach" and option.to_port is "instance-attach"
+		# 		if components[ option.from ].resource.AvailabilityZone isnt components[ option.to ].resource.Placement.AvailabilityZone
+		# 			event.preventDefault()
+		# 			return null
 
-			null
+		# 	null
 
 		# An object is about to be dropped. Test if the object can be dropped
 		beforeDrop : ( event, src_node, tgt_parent ) ->
@@ -934,41 +934,41 @@ define [ 'constant',
 			ide_event.trigger ide_event.ENABLE_RESOURCE_ITEM, constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone, filter
 			null
 
-		beforeDel_Subnet : ( component ) ->
-			for key, value of MC.canvas_data.component
-				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
-					continue
+		# beforeDel_Subnet : ( component ) ->
+		# 	for key, value of MC.canvas_data.component
+		# 		if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_ELB
+		# 			continue
 
-				for sb in value.resource.Subnets
-					if sb.indexOf( component.uid ) != -1
-						return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
+		# 		for sb in value.resource.Subnets
+		# 			if sb.indexOf( component.uid ) != -1
+		# 				return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
-		deleteR_Subnet : ( component ) ->
+		# deleteR_Subnet : ( component ) ->
 
-			# Delete All Associated ACL
-			_.each MC.canvas_data.component, (compObj) ->
-				compType = compObj.type
-				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
-					MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
-				null
+		# 	# Delete All Associated ACL
+		# 	_.each MC.canvas_data.component, (compObj) ->
+		# 		compType = compObj.type
+		# 		if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+		# 			MC.aws.acl.removeAssociationFromACL component.uid, compObj.uid
+		# 		null
 
-			# Delete route table connection
-			for key, value of MC.canvas_data.component
-				if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					continue
+		# 	# Delete route table connection
+		# 	for key, value of MC.canvas_data.component
+		# 		if value.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+		# 			continue
 
-				if not value.resource.AssociationSet.length
-					continue
+		# 		if not value.resource.AssociationSet.length
+		# 			continue
 
-				if "" + value.resource.AssociationSet[0].Main is 'true'
-					continue
+		# 		if "" + value.resource.AssociationSet[0].Main is 'true'
+		# 			continue
 
-				for i, index in value.resource.AssociationSet
-					if i.SubnetId.indexOf( component.uid ) != -1
-						value.resource.AssociationSet.splice index, 1
-						return
+		# 		for i, index in value.resource.AssociationSet
+		# 			if i.SubnetId.indexOf( component.uid ) != -1
+		# 				value.resource.AssociationSet.splice index, 1
+		# 				return
 
-			null
+		# 	null
 
 		deleteLine : ( option ) ->
 			me = this

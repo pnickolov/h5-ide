@@ -27,7 +27,16 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     #check re-render
                     view.reRender()
                     #
-                    if type is 'OPEN_STACK' or type is 'OPEN_APP'
+                    if type is 'NEW_STACK'
+
+                        # create MC.canvas_data
+                        MC.canvas_data =
+                            id       : result
+                            name     : tab_name
+                            region   : region_name
+                            platform : current_platform
+
+                    else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
                         #compact components
                         if type is 'OPEN_STACK'
@@ -73,7 +82,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         else
                             component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
                             layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
-
 
                     else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 

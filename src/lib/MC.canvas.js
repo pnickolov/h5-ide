@@ -5264,23 +5264,15 @@ MC.canvas.event.clearList = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	var connection = $canvas(this.id).connection();
+	var connection = $canvas(this.id).connection(),
+		stack = [];
 
-	if (event.type === 'mouseenter')
+	$.each(connection, function (i, item)
 	{
-		$.each(connection, function (i, item)
-		{
-			Canvon('#' + item.line).addClass('view-hover');
-		});
-	}
+		stack.push('#' + item.line);
+	});
 
-	if (event.type === 'mouseleave')
-	{
-		$.each(connection, function (i, item)
-		{
-			Canvon('#' + item.line).removeClass('view-hover');
-		});
-	}
+	Canvon(stack.join(','))[event.type === 'mouseenter' ? 'addClass' : 'removeClass']('view-hover');
 
 	return true;
 };

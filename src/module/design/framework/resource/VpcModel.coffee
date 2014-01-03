@@ -19,7 +19,9 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
     initialize : ()->
       if not @attributes.dhcp
         @attributes.dhcp = new DhcpModel()
-        null
+
+      @draw()
+      null
 
     isRemovable : ()-> false # VPC is always undeletable
 

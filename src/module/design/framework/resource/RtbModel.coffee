@@ -20,6 +20,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       vpc = VpcModel.theVPC()
       if vpc
         vpc.addChild( @ )
+
+      @draw()
       null
 
     isRemovable : ()->

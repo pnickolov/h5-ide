@@ -61,6 +61,8 @@ define [ "CanvasManager",
       vpc = VpcModel.theVPC()
       if vpc
         vpc.addChild( @ )
+
+      @draw()
       null
 
     remove : ()->

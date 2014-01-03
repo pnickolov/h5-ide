@@ -18,6 +18,9 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       @on "destroy", @tryReconnect
 
+      @draw()
+      null
+
     tryReconnect : ()->
       # When remove attachment, see if we need to connect sgline between eni and ami
       ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance

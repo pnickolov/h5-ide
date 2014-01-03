@@ -60,6 +60,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
+      @draw()
       null
 
 

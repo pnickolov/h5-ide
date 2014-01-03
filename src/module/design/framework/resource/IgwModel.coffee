@@ -13,6 +13,8 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
 
     initialize : ()->
       VpcModel.theVPC().addChild( this )
+
+      @draw()
       null
 
     isRemovable : ()->

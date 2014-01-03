@@ -11,7 +11,7 @@
 MC.canvas_data = {};
 
 // Variable for current tab
-MC.canvas_property = {};
+// MC.canvas_property = {};
 
 MC.canvas = {
 	getState: function ()
@@ -1881,7 +1881,7 @@ MC.canvas = {
 		$.each($canvas.group(), function (key, item)
 		{
 			group_item = $canvas(item.id);
-			
+
 			coordinate = group_item.position();
 			size = group_item.size();
 
@@ -2015,9 +2015,6 @@ MC.canvas.layout = {
 
 		$('#svg_canvas').attr( attr );
 		$('#canvas_container').css( attr );
-
-		// todo : remove
-		MC.canvas_property = $.extend(true, {}, MC.canvas.STACK_PROPERTY);
 
 		return true;
 	},
@@ -5299,8 +5296,6 @@ MC.canvas.event.clearSelected = function (event)
 	Canvon('#svg_canvas .selected').removeClass('selected');
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
-
-	//MC.canvas_property.selected_node = [];
 
 	// Empty selected_node
 	$canvas.selected_node().length = 0;

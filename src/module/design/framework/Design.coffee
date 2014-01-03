@@ -70,10 +70,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__mode   = options.mode
     @__region = options.region
 
-    # TODO : QuickFix
-    for key, value of MC.canvas_data
-      if key is "component" or key is "layout" then continue
-      @["__" + key] = value
+    # Merge MC.canvas_data
+    @attributes = $.extend {}, MC.canvas_data
+    delete @attributes.component
+    delete @attributes.layout
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw   = false
@@ -379,7 +379,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     @__modelClassMap[ type ]
 
-  DesignImpl.prototype.get = ( key )-> @["__"+key]
+  DesignImpl.prototype.get = ( key )-> @attributes[key]
 
   DesignImpl.prototype.region = ()-> @.__region
   DesignImpl.prototype.mode   = ()->

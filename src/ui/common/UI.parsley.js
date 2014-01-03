@@ -613,7 +613,8 @@
             ipaddress: '^[0-9]*$|^[0-9][0-9./]+$',
             domain: '^[a-zA-Z0-9]+[a-zA-Z0-9.-]*$',
             digits: '^[0-9]*$',
-            ascii: '^[\x00-\x7F]*$'
+            ascii: '^[\x00-\x7F]*$',
+            number: '^-?[0-9]*$|^-?[0-9]+\\.[0-9]*$'
           };
 
           vlidateType = this.options.type;
@@ -625,7 +626,7 @@
           var delayHandlerFactory = function(origin, context, times) {
             var getResult = function(val) {
               return that.Validator.validators[ 'regexp' ]( val, regExp, that );
-            }
+            };
 
             return function( e ) {
                 // run specify times
@@ -642,35 +643,29 @@
                 if ( !result ) {
                   $( context ).val( origin ).parsley( 'validate' );
                 }
-              }
+              };
 
-            }
-
-          // Disable context menu
-          this.$element.on('contextmenu', function( e ) {
-            return false;
-          });
-
-          // Handle drag
-          this.$element.on('dragenter', function( e ) {
-            var origin = $( this ).val();
-            var delayHandler = delayHandlerFactory( origin, this, 1 )
-            $(this).one( 'mouseup mousedown keydown keyup blur', delayHandler );
-          });
-
-
-          // Handle keydown
-          var keydownHandler = function(e) {
-            var origin = $( this ).val();
-            var delayHandler = Util.runOnceInSametime( delayHandlerFactory( origin, this, 1 ) );
-            $(this).one( 'keyup blur', delayHandler );
           };
 
+          // Handle paste and drop
+          this.$element.on( 'drop paste', function( e ) {
+            var origin = $( this ).val();
+            var delayHandler = delayHandlerFactory( origin, this, 1 );
+            setTimeout( delayHandler, 1 );
+          });
 
-          this.$element.on( 'keydown', keydownHandler);
+          // Handle Chinese
+          var keydownHandler = function(e) {
+            if ( e.which === 229 ) {
+              var origin = $( this ).val();
+              var delayHandler = delayHandlerFactory( origin, this, 1 );
+              $( this ).one( 'keyup', delayHandler );
+              return false;
+            }
+          };
 
           // Handle keypress( main )
-          var keypressHandler = function(e) {
+          var ignoreHandler = function(e) {
             var inputChar, isLegal;
             // control key green light
             if (e.which in controlCodeList) return true;
@@ -686,7 +681,8 @@
             if ( !isLegal ) return false;
           };
 
-          this.$element.on( 'keypress', keypressHandler);
+          this.$element.on( 'keypress', ignoreHandler );
+          this.$element.on( 'keydown', keydownHandler );
 
         }
 

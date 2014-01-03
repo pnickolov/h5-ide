@@ -17,8 +17,6 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           return
 
       @on "destroy", @tryReconnect
-
-      @draw()
       null
 
     tryReconnect : ()->

@@ -55,6 +55,20 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       height      : 13
       originalAsg : null
 
+    constructor : ( attributes, options )->
+      console.assert( attributes.parent and attributes.originalAsg, "Invalid parameter for expanding asg" )
+
+      # If the originalAsg has been expanded to the same parent.
+      # Then we do not create the ExpandAsg
+      for expanded in attributes.originalAsg.get("expandedList")
+        if expanded.parent is attributes.parent
+          return
+
+      # Call Superclass's consctructor to finish creating the ExpandAsg
+      ComplexResModel.call( this, attributes, options )
+      null
+
+
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
 

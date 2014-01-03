@@ -1886,7 +1886,7 @@ MC.canvas = {
 			size = group_item.size();
 
 			if (
-				node_id !== key &&
+				node_id !== item.id &&
 				$.inArray(group_item.type, group_parent_type) > -1 &&
 				(
 					coordinate[0] <= start_x &&
@@ -1899,7 +1899,7 @@ MC.canvas = {
 				)
 			)
 			{
-				matched = document.getElementById( key );
+				matched = document.getElementById( item.id );
 
 				//return false;
 			}

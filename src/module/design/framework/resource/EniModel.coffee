@@ -1,5 +1,5 @@
 
-define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant" ], ( ServergroupModel, CanvasManager, Design, SgAsso, EniAttachment, constant )->
+define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ServergroupModel, CanvasManager, Design, SgAsso, EniAttachment, constant, lang )->
 
   ###
   IpObject is used to represent an ip in Eni
@@ -44,6 +44,13 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
       ComplexResModel.call this, attributes, option
       null
+
+
+    isReparentable : ()->
+      if @connectionTargets( "EniAttachment" ).length > 0
+        return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+
+      return false
 
     # isVisual() is used by CanavasAdaptor to determine this is a node is visually
     # in the canvas.

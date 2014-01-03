@@ -163,6 +163,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
           comp.remove()
           ide_event.trigger ide_event.OPEN_PROPERTY
 
+        modal.close()
+
     else if res.error
       # Error
       notification "error", res.error
@@ -210,6 +212,26 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         }
     cns
 
+  CanvasElement.prototype.asgExpand = ( parentId, x, y )->
+    # This method contains some logic to determine if the ASG is expandab
+    comp   = Design.instance().component( @id )
+    target = Design.instance().component(parentId)
+    if target and comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      ExpandedAsgModel = Design.modelClassForType( "ExpandedAsg" )
+      res = new ExpandedAsgModel({
+        x : x
+        y : y
+        originalAsg : comp
+        parent : target
+      })
+
+    if res and res.id
+      return true
+
+    notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), target.get("name")
+
+    return false
+
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
       this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null
@@ -231,9 +253,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     child = Design.instance().component( this.id )
     res   = child.isReparentable( parent )
-
-    parentComp = Design.instance().component( this.id )
-    res = childComp.isReparentable( parentComp )
 
     if _.isString( res )
       # Error

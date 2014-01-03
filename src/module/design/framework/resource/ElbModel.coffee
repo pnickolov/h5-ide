@@ -310,18 +310,17 @@ define [ "CanvasManager",
       ElbAmiAsso    = Design.modelClassForType( "ElbAmiAsso" )
       ElbSubnetAsso = Design.modelClassForType( "ElbSubnetAsso" )
 
-      # Elb <=> Subnet
+      # Elb <=> Sg
       for sg in data.resource.SecurityGroups || []
         new SgAsso( elb, resolve( MC.extractID(sg) ) )
+
+      # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
+      for sb in data.resource.Subnets || []
+        new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []
         new ElbAmiAsso( elb, resolve( MC.extractID(ami.InstanceId) ) )
-
-      # Elb <=> Subnet
-      for sb in data.resource.Subnets || []
-        new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
-
       null
 
     postDeserialize : ( data, layout_data )->

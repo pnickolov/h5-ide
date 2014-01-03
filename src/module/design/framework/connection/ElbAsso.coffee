@@ -1,8 +1,8 @@
 
-define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, ConnectionModel, lang )->
+define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( constant, ConnectionModel, lang, Design )->
 
   # Elb <==> Subnet
-  ConnectionModel.extend {
+  ElbSubnetAsso = ConnectionModel.extend {
 
     type : "ElbSubnetAsso"
 
@@ -46,7 +46,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
   }
 
   # Elb <==> Ami
-  ConnectionModel.extend {
+  ElbAmiAsso = ConnectionModel.extend {
 
     type : "ElbAmiAsso"
 
@@ -82,6 +82,31 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
           type      : "ExpandedAsg"
       }
     ]
+
+    initialize : ()->
+      if not Design.instance().typeIsVpc() then return
+
+      # When an Elb is connected to an Instance. Make sure the Instance's AZ has at least one subnet connects to Elb
+
+      ami = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+
+      subnet = ami
+      while true
+        subnet = subnet.parent()
+        if not subnet then return
+        if subnet.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          break
+
+      connectedSbs = elb.connectionTargets("ElbSubnetAsso")
+
+      for sb in subnet.parent().children()
+        if connectedSbs.indexOf( sb ) isnt -1
+          # Found a subnet in this AZ that is connected to the Elb, do nothing
+          return
+
+      new ElbSubnetAsso( subnet, elb )
+      null
   }
 
   null

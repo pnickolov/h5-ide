@@ -24,6 +24,7 @@ define [ 'event',
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
+            'click .state-desc-toggle': 'onDescToggleClick'
 
         initialize: () ->
 
@@ -790,7 +791,7 @@ define [ 'event',
 
                     renderParaObj = {
                         para_name: paraModelName,
-                        para_disabled: false,
+                        para_disabled: true,
                         required: paraModelRequired
                     }
 
@@ -871,11 +872,14 @@ define [ 'event',
             that = this
             stateData = that.saveStateData()
 
+            $currentElem = $('#xxxxx')
+            console.log(that.getPlainText($currentElem[0]))
+
             if stateData
 
                 that.compData.state = stateData
 
-                that.closedPopup()
+                # that.closedPopup()
 
             # localStorage[ 'state_data' ] = JSON.stringify data
 
@@ -898,6 +902,19 @@ define [ 'event',
                 $paraItem.addClass('disabled')
 
             null
+
+        onDescToggleClick: (event) ->
+
+            that = this
+
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            if $descPanel.is(':visible')
+                $stateEditor.addClass('full')
+                $descPanel.hide()
+            else
+                $stateEditor.removeClass('full')
+                $descPanel.show()
 
         onDocumentMouseDown: (event) ->
 
@@ -923,19 +940,18 @@ define [ 'event',
 
             return paraObj
 
-        getPlainTxt : ->
-            console.log 'getPlainTxt', $ '#xxxxx'
+        getPlainTxt: (inputElem) ->
 
-            $dom        = $ '#xxxxx'
-            $conent_arr = $dom.children()
-            new_str     = ''
+            $inputElem = $(inputElem)
+            $conentElemAry = $inputElem.children()
+            resultStr = ''
 
-            $conent_arr.each ( index, item ) ->
-                $item  = $ item
-
-                $item.each ( index, values ) ->
-                    $values = $ values
-                    new_str += $values.html().replace( /<span>/igm, '' )
+            $conentElemAry.each (index, item) ->
+                
+                $item  = $(item)
+                $item.each(index, values) ->
+                    $values = $(values)
+                    resultStr += $values.html().replace( /<span>/igm, '' )
                                              .replace( /<\/span>/igm, '' )
                                              .replace( /<span contenteditable="true">/igm, '' )
                                              .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
@@ -943,10 +959,7 @@ define [ 'event',
                                              .replace( /&gt;/igm, '>' )
                                              .replace( /<br>/igm, '\n' )
                                              .replace( /&nbsp;/igm, ' ' )
-
-            console.log 'new_str', new_str
-            localStorage[ 'new_str' ] = new_str
-            new_str
+            resultStr
 
         setPlainTxt : ( str ) ->
             console.log 'setPlainTxt', str
@@ -958,6 +971,63 @@ define [ 'event',
 
             console.log 'new_str', new_str
             new_str
+
+        getPlainText: (inputElem) ->
+
+            $inputElem = $(inputElem)
+
+            blockMap = {
+                address:1,
+                blockquote:1,
+                center:1,
+                dir:1,
+                div:1,
+                dl:1,
+                fieldset:1,
+                form:1,
+                h1:1,
+                h2:1,
+                h3:1,
+                h4:1,
+                h5:1,
+                h6:1,
+                hr:1,
+                isindex:1,
+                menu:1,
+                noframes:1,
+                ol:1,
+                p:1,
+                pre:1,
+                table:1,
+                ul:1
+            }
+
+            resultStr = ''
+
+            htmlContent = $inputElem.contents()
+            _.each htmlContent, (elemItem, idx) ->
+
+                $elemItem = $(elemItem)
+                tagName = elemItem.nodeName.toLowerCase()
+                elemText = $elemItem.text()
+
+                if tagName is '#text'
+                    resultStr += elemText
+
+                if blockMap[tagName]
+                    if idx isnt 0
+                        resultStr += '\n'
+                    resultStr += elemText
+
+                brTagNum = $elemItem.find('br').length
+
+                brStr = new Array(brTagNum).join('\n')
+                
+                resultStr += brStr
+
+                null
+
+            return resultStr
 
     }
 

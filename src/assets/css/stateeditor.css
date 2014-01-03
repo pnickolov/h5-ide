@@ -79,6 +79,21 @@ body {
 	float: left;
 }
 
+#state-editor.full {
+	width: auto;
+	float: none;
+}
+
+#state-description {
+	width: 255px;
+	height: 480px;
+	float: left;
+	border-bottom: 1px #000 solid;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 10px;
+}
+
 #state-editor::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
 	background-color: #F5F5F5;
@@ -94,16 +109,6 @@ body {
 #state-editor ::selection {
 	background: #4495d3;
 	color: #fcfcfc;
-}
-
-#state-description {
-	width: 255px;
-	height: 480px;
-	float: left;
-	border-bottom: 1px #000 solid;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	padding: 10px;
 }
 
 #state-description::-webkit-scrollbar-track {
@@ -127,6 +132,26 @@ body {
 	margin-right: 14px;
 	margin-top: 14px;
 	cursor: pointer;
+}
+
+#state-editor-model .modal-toolbar {
+	list-style: none;
+	position: absolute;
+	margin-top: -39px;
+	right: 50px;
+}
+
+#state-editor-model .modal-toolbar li {
+	width: 30px;
+	height: 30px;
+	background-color: #eee;
+	float: left;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+#state-editor-model .modal-toolbar li:hover {
+	background-color: #ccc;
 }
 
 /* *************************************** state item */

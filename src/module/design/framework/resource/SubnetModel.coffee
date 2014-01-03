@@ -5,7 +5,8 @@ define [ "constant",
          "CanvasManager",
          "../connection/RtbAsso",
          "../connection/AclAsso",
-], ( constant, Design, GroupModel, CanvasManager, RtbAsso, AclAsso )->
+         "i18n!nls/lang.js"
+], ( constant, Design, GroupModel, CanvasManager, RtbAsso, AclAsso, lang )->
 
   Model = GroupModel.extend {
 
@@ -59,6 +60,10 @@ define [ "constant",
           if cn isnt connection
             cn.remove()
       null
+
+    isRemovable : ()->
+      if @connections("ElbSubnetAsso")
+        return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
 
     draw : ( isCreate )->

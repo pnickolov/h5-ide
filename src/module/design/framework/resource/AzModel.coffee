@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant" ], ( GroupModel, CanvasManager, VpcModel, constant )->
+define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, CanvasManager, VpcModel, constant, lang )->
 
   Model = GroupModel.extend {
 
@@ -16,6 +16,10 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant" ], ( GroupMo
       if vpc
         vpc.addChild( @ )
       null
+
+    isRemovable : ()->
+      # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
+      sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
 
     draw : ( isCreate ) ->
 

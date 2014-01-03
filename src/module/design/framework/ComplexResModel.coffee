@@ -81,7 +81,6 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       # Remove connection
       connections = this.attributes.__connections
       if connections
-        console.debug "ComplexResModel.remove, Removing Connections"
         for c in connections
           c.remove( { reason : this } )
 

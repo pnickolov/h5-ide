@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant )->
+define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -20,6 +20,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       if vpc
         vpc.addChild( @ )
       null
+
+    isRemovable : ()->
+      if @get("main")
+        return { error : sprintf( lang.ide.CVS_MSG_ERR_DEL_MAIN_RT, @get("name") ) }
+
+      true
 
     setMain : ()->
       if @get("main") then return

@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constant" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant )->
+define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, VpcModel, Design, constant, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -14,6 +14,20 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
     initialize : ()->
       VpcModel.theVPC().addChild( this )
       null
+
+    isRemovable : ()->
+      # Deleting IGW when ELB/EIP in VPC, should show error
+      ElbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      cannotDel = ElbModel.allObjects().some ( elb )-> not elb.get("internal")
+
+      if not cannotDel
+        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        cannotDel = EniModel.allObjects().some ( eni )-> eni.hasEip()
+
+      if cannotDel
+        return { error : lang.ide.CVS_CFM_DEL_IGW }
+
+      true
 
     draw : ( isCreate )->
 

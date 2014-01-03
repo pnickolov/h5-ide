@@ -34,6 +34,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     this.$el
 
   CanvasElement.prototype.move = ( x, y )->
+    pos = @position()
+    if pos.x is x and pos.y is y then return
+
     MC.canvas.move( this.element(), x, y )
 
 
@@ -60,7 +63,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       height : h
     }
 
-    CanvasManager.size this.element(), w, h, oldw, oldh
+    # CanvasManager.size this.element(), w, h, oldw, oldh
     null
 
 

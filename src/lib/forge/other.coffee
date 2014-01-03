@@ -411,28 +411,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		new_str
 
-	getPlainTxt = ( $dom ) ->
-		#console.log 'getPlainTxt', $dom
-
-		$dom.html().replace( /<span>/igm, '' )
-								 .replace( /<\/span>/igm, '' )
-								 .replace( /<span .*?>/igm, '' )
-								 .replace( /&lt;/igm, '<' )
-								 .replace( /&gt;/igm, '>' )
-								 .replace( /<br>/igm, '\n' )
-								 .replace( /&nbsp;/igm, ' ' )
-
-
-	setPlainTxt = ( str ) ->
-		console.log 'setPlainTxt', str
-
-		new_str = str.replace( /</igm, '&lt;' )
-					 .replace( />/igm, '&gt;' )
-					 .replace( /\n/igm, '<br>' )
-					 .replace( /\s+/igm, '&nbsp;' )
-
-		console.log 'new_str', new_str
-		new_str
 
 	#public
 	isCurrentTab       : isCurrentTab
@@ -473,5 +451,3 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	addSENameUIDList   : addSENameUIDList
 	filterStateData    : filterStateData
 	convertUID         : convertUID
-	getPlainTxt        : getPlainTxt
-	setPlainTxt        : setPlainTxt

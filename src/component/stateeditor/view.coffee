@@ -239,7 +239,7 @@ define [ 'event',
                         valueValue = $valueInput.text()
                         if valueValue
                             paraValueAry.push(valueValue)
-                    
+
                     paraValue = paraValueAry.join(', ')
 
                 else if paraType in ['line', 'text', 'bool', 'state']
@@ -657,7 +657,7 @@ define [ 'event',
                 if $( @ ).parent( '[contenteditable="true"]' ).size()
                     return true
 
-                value = MC.forge.other.getPlainTxt @
+                value = @getPlainTxt @
                 param = that.getParaObjByInput @
 
 
@@ -985,7 +985,7 @@ define [ 'event',
             resultStr = ''
 
             $conentElemAry.each (index, item) ->
-                
+
                 $item  = $(item)
                 $item.each(index, values) ->
                     $values = $(values)
@@ -1060,7 +1060,7 @@ define [ 'event',
                 brTagNum = $elemItem.find('br').length
 
                 brStr = new Array(brTagNum).join('\n')
-                
+
                 resultStr += brStr
 
                 null

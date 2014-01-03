@@ -13,7 +13,7 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
         # main validators [ return null or message ]
 
         # 'required', 'stateAllowed'
-        command: ( val, param, elem ) ->
+        command: ( val, param, elem, represent ) ->
             if not @required val
                 return 'Command Name is required.'
             if not @stateAllowed val
@@ -22,7 +22,7 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
 
 
 
-        parameter: ( value, param, elem ) ->
+        parameter: ( value, param, elem, represent ) ->
 
 
         # sub validators [ return true or false ]
@@ -50,20 +50,26 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
 
     Action =
 
-        displayError: ( msg, elem ) ->
+        displayError: ( msg, elem, represent ) ->
+            if represent
+                elem = represent
+
             errortip.createError msg, elem
 
-        clearError: ( elem ) ->
+        clearError: ( elem, represent ) ->
+            if represent
+                elem = represent
+
             if errortip.hasError elem
                 errortip.removeError elem
 
     # Interface
-    validate = ( value, param, elem ) ->
-        res = Validator[ param.type ] value, param, elem
+    validate = ( value, param, elem, represent ) ->
+        res = Validator[ param.type ] value, param, elem, represent
         if res
-            Action.displayError res, elem
+            Action.displayError res, elem, represent
         else
-            Action.clearError elem
+            Action.clearError elem, represent
 
         res
 

@@ -653,24 +653,43 @@ define [ 'event',
 
             that.refreshStateId()
 
-        submitValidate: () ->
-            $contentEditable = @$stateList.find '[contenteditable="true"]'
+        submitValidate: ( element ) ->
             that = this
-            result = true
-            $contentEditable.each ->
-                if $( @ ).parent( '[contenteditable="true"]' ).size()
+
+            doValidate = ( elem ) ->
+                if $( elem ).parent( '[contenteditable="true"]' ).size()
                     return true
 
-                value = @getPlainTxt @
-                param = that.getParaObjByInput @
+                value = that.getPlainText elem
+                param = that.getParaObjByInput elem
+                represent = null
+
+                if $( elem ).is ':hidden'
+                    represent = that.getRepresent elem
+
+                validate value, param, elem, represent
+
+            validateFailed = ( e ) ->
+                result = doValidate e.currentTarget
+                if result
+                    $( e.currentTarget ).off 'keyup.validate'
+
+            bindValidateFailed = ( elem ) ->
+                $( elem ).on 'keyup.validate', validateFailed
 
 
-                res = validate value, param, @
 
-                if not res and result
-                    result = false
+            if element
+                result = doValidate element
+            else
+                $contentEditable = @$stateList.find '[contenteditable="true"]'
+                elems = $contentEditable.toArray()
+                result = _.every elems, ( e ) ->
+                    result = doValidate e
+                    if not result
+                        bindValidateFailed e
 
-                true
+                    result
 
 
             result
@@ -938,7 +957,7 @@ define [ 'event',
 
         getRepresent: ( inputElem ) ->
             $input = $ inputElem
-            $stateItem = inputElem.closest '.state-item'
+            $stateItem = $input.closest '.state-item'
             $stateToolbar = $stateItem.prev '.state-toolbar'
 
             if $input.hasClass 'command-value'
@@ -1116,5 +1135,7 @@ define [ 'event',
 
             null
     }
+
+
 
     return StateEditorView

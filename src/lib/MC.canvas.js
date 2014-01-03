@@ -1717,7 +1717,7 @@ MC.canvas = {
 				}
 			],
 			canvas_size = $canvas.size(),
-			match_option = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ target_type ],
+			match_option = MC.canvas.MATCH_PLACEMENT[ $canvas.platform() ][ target_type ],
 			ignore_stack = [],
 			match = [],
 			result = {},
@@ -1872,7 +1872,7 @@ MC.canvas = {
 
 	parentGroup: function (node_id, target_type, start_x, start_y, end_x, end_y)
 	{
-		var group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ target_type ],
+		var group_parent_type = MC.canvas.MATCH_PLACEMENT[ $canvas.platform() ][ target_type ],
 			matched = null,
 			group_item,
 			coordinate,
@@ -3104,7 +3104,7 @@ MC.canvas.event.dragable = {
 				svg_canvas = $('#svg_canvas'),
 				canvas_offset = $canvas.offset(),
 				canvas_body = $('#canvas_body'),
-				platform = MC.canvas_data.platform,
+				platform = $canvas.platform(),
 				currentTarget = $(event.target),
 				shadow,
 				target_group_type,
@@ -4152,7 +4152,7 @@ MC.canvas.event.siderbarDrag = {
 				canvas_offset = $canvas.offset(),
 				target_type = target.data('type'),
 				node_type = target.data('component-type'),
-				platform = MC.canvas_data.platform,
+				platform = $canvas.platform(),
 				shadow,
 				clone_node,
 				default_width,

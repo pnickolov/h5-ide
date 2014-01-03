@@ -14,6 +14,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     else
       new CanvasElement( component, quick )
 
+  $canvas.platform = ()-> Design.instance().type()
+
   $canvas.size = ( w, h )->
     if Design.__instance
       return Design.__instance.canvas.size( w, h )
@@ -73,7 +75,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     return { id : m.id }
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
-    Design.instance().createConnection( p1, p1Name, p2, p2Name )
     C = Design.modelClassForPorts( port1, port2 )
 
     console.assert( C, "Cannot found Class for type: #{type}" )

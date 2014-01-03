@@ -40,6 +40,12 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         name : "eni-attach"
         type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
+  }, {
+    isConnectable : ( p1Comp, p2Comp )->
+      if p1Comp.parent() isnt p2Comp.parent()
+        return false
+
+      true
   }
 
   C

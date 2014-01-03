@@ -104,7 +104,18 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     design = Design.instance()
 
     C = Design.modelClassForPorts( fromPort, toPort )
-    C and C.isConnectable( design.component(@id), design.component(toId) )
+
+    if not C then return false
+
+    p1Comp = design.component(@id)
+    p2Comp = design.component(toId)
+
+    # Don't allow connect to an resource that is already connected.
+    for t in p1Comp.connectionTargets( C.prototype.type )
+      if t is p2Comp
+        return false
+
+    C.isConnectable( p1Comp, p2Comp ) isnt false
 
   CanvasElement.prototype.isRemovable = ()->
     res = Design.instance().component( @id ).isRemovable()

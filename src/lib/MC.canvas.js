@@ -945,153 +945,182 @@ MC.canvas = {
 		);
 	},
 
-  route2 : function ( start, end )
-  {
-        //add by xjimmy, connection algorithm (xjimmy's algorithm)
-    var controlPoints = [],
-      start0 = {},
-      end0   = {},
-      //start.x >= end.x
-      start_0_90    = false,
-      end_0_90      = false,
-      start_180_270 = false,
-      end_180_270   = false,
-      //start.x<end.x
-      start_0_270  = false,
-      end_0_270    = false,
-      start_90_180 = false,
-      end_90_180   = false;
+	route2: function (start, end)
+	{
+		//add by xjimmy, connection algorithm (xjimmy's algorithm)
+		var controlPoints = [],
+			start0 = {},
+			end0 = {},
+			//start.x >= end.x
+			start_0_90 = false,
+			end_0_90 = false,
+			start_180_270 = false,
+			end_180_270 = false,
+			//start.x<end.x
+			start_0_270 = false,
+			end_0_270 = false,
+			start_90_180 = false,
+			end_90_180 = false;
 
 
-    //first and last point
-    $.extend(true, start0, start);
-    $.extend(true, end0, end);
+		//first and last point
+		$.extend(true, start0, start);
+		$.extend(true, end0, end);
 
-    if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x-start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
-    {
-        //add pad to start and end
-        MC.canvas._addPad(start, 0);
-        MC.canvas._addPad(end, 0);
-    }
+		if (Math.sqrt(Math.pow(end0.y - start0.y, 2) + Math.pow(end0.x - start0.x, 2)) > MC.canvas.PORT_PADDING * 2)
+		{
+			//add pad to start and end
+			MC.canvas._addPad(start, 0);
+			MC.canvas._addPad(end, 0);
+		}
 
-    MC.canvas._addPad(start, 0);
-    MC.canvas._addPad(end, 0);
+		MC.canvas._addPad(start, 0);
+		MC.canvas._addPad(end, 0);
 
-    //ensure start.y>=end.y
-    if (start.y < end.y) {
-        var tmp = start;
-        start = end;
-        end   = tmp;
-        var tmp0 = start0;
-        start0 = end0;
-        end0   = tmp0;
-    }
+		//ensure start.y>=end.y
+		if (start.y < end.y)
+		{
+			var tmp = start;
+			start = end;
+			end = tmp;
+			var tmp0 = start0;
+			start0 = end0;
+			end0 = tmp0;
+		}
 
-    if (start.x >= end.x)
-    {
-      start_0_90    = start.angle === 0   || start.angle === 90;
-      end_0_90      = end.angle   === 0   || end.angle   === 90;
-      start_180_270 = start.angle === 180 || start.angle === 270;
-      end_180_270   = end.angle   === 180 || end.angle   === 270;
-    } else
-    {
-      //start.x<end.x
-      start_0_270  = start.angle === 0  || start.angle === 270;
-      end_0_270    = end.angle   === 0  || end.angle   === 270;
-      start_90_180 = start.angle === 90 || start.angle === 180;
-      end_90_180   = end.angle   === 90 || end.angle   === 180;
-    }
+		if (start.x >= end.x)
+		{
+			start_0_90 = start.angle === 0 || start.angle === 90;
+			end_0_90 = end.angle === 0 || end.angle === 90;
+			start_180_270 = start.angle === 180 || start.angle === 270;
+			end_180_270 = end.angle === 180 || end.angle === 270;
+		}
+		else
+		{
+			//start.x<end.x
+			start_0_270 = start.angle === 0 || start.angle === 270;
+			end_0_270 = end.angle === 0 || end.angle === 270;
+			start_90_180 = start.angle === 90 || start.angle === 180;
+			end_90_180 = end.angle === 90 || end.angle === 180;
+		}
 
-    //1.start point
-    controlPoints.push( start0 );
-    controlPoints.push( start );
+		//1.start point
+		controlPoints.push(start0);
+		controlPoints.push(start);
 
-    //2.control point
-    if (
-        (start_0_90 && end_0_90) || (start_90_180 && end_90_180)
-    )
-    {
-      //A
-      controlPoints.push({ x: start.x, y: end.y });
-    } else if (
-      (start_180_270 && end_180_270) || (start_0_270 && end_0_270)
-    )
-    {
-      //B
-      controlPoints.push({ x: end.x, y: start.y });
-    } else if (
-      (start_0_90 && end_180_270) || (start_90_180 && end_0_270)
-    )
-    {
-      //C
-      mid_y = Math.round( (start.y + end.y) / 2 );
-      if ( (end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB" ) && end.type !== start.type)
-      {
-          if (Math.abs(mid_y - end.y) > 5)
-          {
-              mid_y = MC.canvas._adjustMidY(end.name, mid_y, end, 1);
-          }
-      }
-      else if ( (start.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB" ) && end.type !== start.type)
-      {
-          if (Math.abs(start.y - mid_y) > 5)
-          {
-              mid_y = MC.canvas._adjustMidY(start.name, mid_y, start, -1);
-          }
-      }
-      controlPoints.push({ x: start.x, y: mid_y });
-      controlPoints.push({ x: end.x,   y: mid_y });
-    } else if (
-      (start_180_270 && end_0_90) || (start_0_270 && end_90_180)
-    )
-    {
-      //D
-      mid_x = Math.round( (start.x + end.x) / 2 );
-      if ( (end.type === 'AWS.VPC.RouteTable' || end.type === 'AWS.ELB' ) && end.type !== start.type)
-      {
-          if (Math.abs(start.x - mid_x) > 5)
-          {
-              mid_x = MC.canvas._adjustMidX(end.name, mid_x, start, 1);
-          }
-      }
-      else if (start.type === 'AWS.VPC.RouteTable' && end.type !== start.type)
-      {
-          if (Math.abs(mid_x - end.x) > 5)
-          {
-              if (end.type === 'AWS.VPC.InternetGateway' || end.type === 'AWS.VPC.VPNGateway')
-              {
-                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
-              }
-              else
-              {
-                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
-              }
-          }
-      }
-      else if (start.type === 'AWS.ELB' && end.type !== start.type)
-      {
-          if (Math.abs(mid_x - end.x) > 5)
-          {
-              if (end.type === 'AWS.EC2.Instance' || end.type === 'AWS.VPC.Subnet' || end.type === 'AWS.AutoScaling.Group' || end.type === 'AWS.AutoScaling.LaunchConfiguration' )
-              {
-                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
-              }
-              else
-              {
-                  mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
-              }
-          }
-      }
-      controlPoints.push({ x: mid_x, y: start.y });
-      controlPoints.push({ x: mid_x, y: end.y });
-    }
+		//2.control point
+		if (
+			(start_0_90 && end_0_90) || (start_90_180 && end_90_180)
+		)
+		{
+			//A
+			controlPoints.push(
+			{
+				x: start.x,
+				y: end.y
+			});
+		}
+		else if (
+			(start_180_270 && end_180_270) || (start_0_270 && end_0_270)
+		)
+		{
+			//B
+			controlPoints.push(
+			{
+				x: end.x,
+				y: start.y
+			});
+		}
+		else if (
+			(start_0_90 && end_180_270) || (start_90_180 && end_0_270)
+		)
+		{
+			//C
+			mid_y = Math.round((start.y + end.y) / 2);
+			if ((end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
+			{
+				if (Math.abs(mid_y - end.y) > 5)
+				{
+					mid_y = MC.canvas._adjustMidY(end.name, mid_y, end, 1);
+				}
+			}
+			else if ((start.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
+			{
+				if (Math.abs(start.y - mid_y) > 5)
+				{
+					mid_y = MC.canvas._adjustMidY(start.name, mid_y, start, -1);
+				}
+			}
+			controlPoints.push(
+			{
+				x: start.x,
+				y: mid_y
+			});
+			controlPoints.push(
+			{
+				x: end.x,
+				y: mid_y
+			});
+		}
+		else if (
+			(start_180_270 && end_0_90) || (start_0_270 && end_90_180)
+		)
+		{
+			//D
+			mid_x = Math.round((start.x + end.x) / 2);
+			if ((end.type === 'AWS.VPC.RouteTable' || end.type === 'AWS.ELB') && end.type !== start.type)
+			{
+				if (Math.abs(start.x - mid_x) > 5)
+				{
+					mid_x = MC.canvas._adjustMidX(end.name, mid_x, start, 1);
+				}
+			}
+			else if (start.type === 'AWS.VPC.RouteTable' && end.type !== start.type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					if (end.type === 'AWS.VPC.InternetGateway' || end.type === 'AWS.VPC.VPNGateway')
+					{
+						mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
+					}
+				}
+			}
+			else if (start.type === 'AWS.ELB' && end.type !== start.type)
+			{
+				if (Math.abs(mid_x - end.x) > 5)
+				{
+					if (end.type === 'AWS.EC2.Instance' || end.type === 'AWS.VPC.Subnet' || end.type === 'AWS.AutoScaling.Group' || end.type === 'AWS.AutoScaling.LaunchConfiguration')
+					{
+						mid_x = MC.canvas._adjustMidX(start.name, mid_x, end, -1);
+					}
+					else
+					{
+						mid_x = MC.canvas._adjustMidX(start.name, mid_x, start, -1);
+					}
+				}
+			}
+			controlPoints.push(
+			{
+				x: mid_x,
+				y: start.y
+			});
+			controlPoints.push(
+			{
+				x: mid_x,
+				y: end.y
+			});
+		}
 
-    //3.end point
-    controlPoints.push( end );
-    controlPoints.push( end0 );
+		//3.end point
+		controlPoints.push(end);
+		controlPoints.push(end0);
 
-    return controlPoints;
-    },
+		return controlPoints;
+	},
 
 	// by xjimmy
 	genPath: function (from_port, to_port, from_port_offset, to_port_offset, canvas_offset, scale_ratio, connection_option)
@@ -1187,36 +1216,26 @@ MC.canvas = {
 
 			from_item = $canvas(from_uid),
 			to_item = $canvas(to_uid),
-			//layout_component_data = MC.canvas_data.layout.component,
-			//layout_node_data = layout_component_data.node,
-			from_node_type = from_item.nodeType,//from_node.data('type'),
-			to_node_type = to_item.nodeType,//to_node.data('type'),
-			//from_data = layout_component_data[ from_node_type ][ from_uid ],
-			//to_data = layout_component_data[ to_node_type ][ to_uid ],
+
+			from_node_type = from_item.nodeType,
+			to_node_type = to_item.nodeType,
+
 			from_type = from_item.type,
 			to_type = to_item.type,
-			//layout_connection_data = MC.canvas_data.layout.connection,
+
 			connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
 			//connection_target_data = {},
 			scale_ratio = $canvas.scale(),
-			//controlPoints = [],
+
 			direction,
-			//layout_connection_data,
-			//line_data_target,
+
 			from_port,
 			to_port,
 			from_port_offset,
 			to_port_offset,
-			//from_node_connection_data,
-			//to_node_connection_data,
-			//is_connected,
+
 			port_direction,
-			// startX,
-			// startY,
-			// endX,
-			// endY,
-			// start0,
-			// end0,
+
 			dash_style,
 			path,
 			svg_line;
@@ -1439,37 +1458,6 @@ MC.canvas = {
 		return true;
 	},
 
-	// reConnect: function (node_id)
-	// {
-	// 	var node = $('#' + node_id),
-	// 		node_connections = MC.canvas_data.layout.component[ node.data('type') ][ node_id ].connection || {},
-	// 		layout_connection_data = MC.canvas_data.layout.connection,
-	// 		line_target;
-
-	// 	$.each(node_connections, function (index, value)
-	// 	{
-	// 		try
-	// 		{
-	// 			line_target = layout_connection_data[ value.line ][ 'target' ];
-
-	// 			MC.canvas.connect(
-	// 				// From
-	// 				node_id, line_target[ node_id ],
-	// 				// To
-	// 				value.target, line_target[ value.target ],
-	// 				// Line
-	// 				{'line_uid': value['line']}
-	// 			);
-	// 		}
-	// 		catch(error)
-	// 		{
-	// 			console.error('[MC.canvas.reConnect] create connection error');
-	// 		}
-	// 	});
-
-	// 	return true;
-	// },
-
 	select: function (id)
 	{
 		var item = $canvas(id),
@@ -1532,8 +1520,6 @@ MC.canvas = {
 		{
 			group_child = MC.canvas.groupChild(node);
 
-			//console.info(group_child);
-
 			group_coordinate = target_item.position();
 
 			group_size = target_item.size();
@@ -1545,28 +1531,15 @@ MC.canvas = {
 			target_item.reConnect();
 
 			target_item.position(x, y);
-			//MC.canvas.position(event_data.target[0], coordinate.x, coordinate.y);
 
 			$.each(group_child, function (index, item)
 			{
 				child_type = item.getAttribute('data-type');
 
-				// if (child_type === 'node')
-				// {
-				// 	node_data = layout_node_data[ item.id ];
-				// }
-
-				// if (child_type === 'group')
-				// {
-				// 	node_data = layout_group_data[ item.id ];
-				// }
-
 				var node_item = $canvas( item.id ),
 					node_coordinate = node_item.position();
 
 				node_item.position(node_coordinate[0] + group_offsetX, node_coordinate[1] + group_offsetY);
-
-				//MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
 
 				// Re-draw group connection
 				if (
@@ -1585,30 +1558,11 @@ MC.canvas = {
 			$.each(connection_stack, function (index, value)
 			{
 				$canvas( value ).reConnect();
-				//data = $canvas.connection( key );//layout_connection_data[ key ];
-
-				// connection_target_id = [];
-
-				// $.each(data.target, function (key, value)
-				// {
-				// 	connection_target_id.push(key);
-				// });
-
-				// MC.canvas.connect(
-				// 	connection_target_id[0],
-				// 	data.target[ connection_target_id[0] ],
-				// 	connection_target_id[1],
-				// 	data.target[ connection_target_id[1] ],
-				// 	key
-				// );
 			});
 
 			// Re-draw group connection
 			if (target_type === 'AWS.VPC.Subnet' || target_type === 'AWS.AutoScaling.Group')
 			{
-				//MC.canvas.reConnect(target_id);
-				//$canvas(target_id).reConnect();
-
 				target_item.reConnect();
 			}
 
@@ -1663,10 +1617,6 @@ MC.canvas = {
 		var transformVal = node.transform.baseVal,
 			translateVal;
 
-		//MC.canvas_data.layout.component[ node.getAttribute('data-type') ][ node.id ].coordinate = [x, y];
-
-		//$canvas( node.id ).position(x, y);
-
 		if (transformVal.numberOfItems === 1)
 		{
 			/* MC.canvas.GRID_WIDTH = 10 */
@@ -1697,118 +1647,6 @@ MC.canvas = {
 		$(node).remove();
 
 		return true;
-		// var node_id = node.id,
-		// 	target = $(node),
-		// 	target_type = target.data('type'),
-		// 	node_type = target.data('class');
-
-		// if (target_type === 'line')
-		// {
-		// 	var line_data = MC.canvas.data.get('layout.connection.' + node_id),
-		// 		layout_component_data = MC.canvas.data.get('layout.component'),
-		// 		target_connection,
-		// 		target_node,
-		// 		new_connection_data;
-
-		// 	$.each(line_data.target, function (target_id, target_port)
-		// 	{
-		// 		target_node = $('#' + target_id);
-		// 		target_node_type = target_node.data('type');
-		// 		target_connection = layout_component_data[ target_node_type ][ target_id ].connection;
-		// 		new_connection_data = [];
-
-		// 		$.each(target_connection, function (i, option)
-		// 		{
-		// 			if (option.line !== node_id)
-		// 			{
-		// 				new_connection_data.push(option);
-		// 			}
-		// 		});
-
-		// 		MC.canvas.data.set('layout.component.' + target_node_type + '.' + target_id + '.connection', new_connection_data);
-		// 	});
-
-		// 	MC.canvas.data.delete('layout.connection.' + node_id);
-		// }
-
-		// if (target_type === 'node')
-		// {
-		// 	var	layout_component_data = MC.canvas.data.get('layout.component'),
-		// 		//layout_connection_data = MC.canvas.data.get('layout.connection'),
-		// 		line_layer = document.getElementById('line_layer'),
-		// 		connections = layout_component_data.node[ node_id ].connection,
-		// 		target_node_type,
-		// 		new_connection_data,
-		// 		connection_data,
-		// 		connected_data;
-
-		// 	$.each(connections, function (index, value)
-		// 	{
-		// 		connection_data = layout_connection_data[ value.line ];
-		// 		new_connection_data = [];
-
-		// 		line_layer.removeChild(document.getElementById( value.line ));
-
-		// 		$.each(connection_data.target, function (key, item)
-		// 		{
-		// 			if (key !== node_id)
-		// 			{
-		// 				connected_node = key;
-		// 			}
-		// 		});
-
-		// 		target_node_type = $('#' + connected_node).data('type');
-		// 		connected_data = layout_component_data[ target_node_type ][ connected_node ].connection;
-
-		// 		$.each(connected_data, function (i, option)
-		// 		{
-		// 			if (option.line !== value.line && option.target !== node_id)
-		// 			{
-		// 				new_connection_data.push(option);
-		// 			}
-		// 		});
-
-		// 		MC.canvas.data.set('layout.component.' + target_node_type + '.' + connected_node + '.connection', new_connection_data);
-		// 		MC.canvas.data.delete('layout.connection.' + value.line);
-		// 	});
-
-		// 	MC.canvas.data.delete('layout.component.' + target_type + '.' + node_id);
-		// 	//MC.canvas.data.delete('component.' + node_id);
-		// }
-
-		// if (target_type === 'group')
-		// {
-		// 	var group_child = MC.canvas.groupChild(node),
-		// 		group_data = MC.canvas.data.get('layout.component.group.' + node_id);
-
-		// 	if (
-		// 		(
-		// 			node_type === 'AWS.VPC.Subnet' ||
-		// 			(
-		// 				node_type === 'AWS.AutoScaling.Group' &&
-		// 				group_data.originalId !== ""
-		// 			)
-		// 		)
-		// 		&& group_data.connection.length > 0
-		// 	)
-		// 	{
-		// 		$.each(group_data.connection, function (index, data)
-		// 		{
-		// 			MC.canvas.remove(document.getElementById(data.line));
-		// 		});
-		// 	}
-
-		// 	$.each(group_child, function (index, item)
-		// 	{
-		// 		MC.canvas.remove(item);
-		// 	});
-
-		// 	MC.canvas.data.delete('layout.component.group.' + node_id);
-		// }
-
-		// target.remove();
-
-		// return true;
 	},
 
 	pixelToGrid: function (x, y)
@@ -2032,8 +1870,7 @@ MC.canvas = {
 
 	parentGroup: function (node_id, target_type, start_x, start_y, end_x, end_y)
 	{
-		var //groups = MC.canvas_data.layout.component.group,
-			group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ target_type ],
+		var group_parent_type = MC.canvas.MATCH_PLACEMENT[ MC.canvas_data.platform ][ target_type ],
 			matched = null,
 			group_item,
 			coordinate,
@@ -2071,8 +1908,7 @@ MC.canvas = {
 
 	areaChild: function (node_id, target_type, start_x, start_y, end_x, end_y)
 	{
-		var //group_data = $canvas.group(),//groups[ node_id ],
-			group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
+		var group_weight = MC.canvas.GROUP_WEIGHT[ target_type ],
 			matched = [],
 			coordinate,
 			size;
@@ -3281,7 +3117,6 @@ MC.canvas.event.dragable = {
 				else
 				{
 					MC.canvas.event.clearSelected();
-					//MC.canvas.select(this.id);
 
 					$canvas(this.id).select();
 				}
@@ -3351,7 +3186,7 @@ MC.canvas.event.dragable = {
 					'canvas_body': canvas_body,
 					'target_type': target_type,
 					'node_type': node_type,
-					'vpc_data': $canvas($('.AWS-VPC-VPC').attr('id')),//MC.canvas.data.get('layout.component.group.' + $('.AWS-VPC-VPC').attr('id')),
+					'vpc_data': $canvas($('.AWS-VPC-VPC').attr('id')),
 					'shadow': shadow,
 					'offsetX': event.pageX - target_offset.left + canvas_offset.left,
 					'offsetY': event.pageY - target_offset.top + canvas_offset.top,
@@ -3382,7 +3217,7 @@ MC.canvas.event.dragable = {
 					'originalPageX': event.pageX,
 					'originalPageY': event.pageY,
 					'originalTarget': event.target,
-					'component_size': target_item.size(),//node_type === 'node' ? MC.canvas.COMPONENT_SIZE[ node_type ] : MC.canvas.data.get('layout.component.group.' + target[0].id + '.size'),
+					'component_size': target_item.size(),
 					'grid_width': MC.canvas.GRID_WIDTH,
 					'grid_height': MC.canvas.GRID_HEIGHT,
 					'scale_ratio': $canvas.scale(),
@@ -3483,8 +3318,7 @@ MC.canvas.event.dragable = {
 				canvas_offset = $canvas.offset(),
 				shadow_offset = Canvon(event_data.shadow).offset(),
 				layout_node_data = $canvas.node(),
-				//layout_connection_data = MC.canvas.data.get('layout.connection'),
-				//BEFORE_DROP_EVENT = $.Event("CANVAS_BEFORE_DROP"),
+
 				scale_ratio = $canvas.scale(),
 				component_size,
 				match_place,
@@ -3494,7 +3328,7 @@ MC.canvas.event.dragable = {
 
 			if (node_type === 'node')
 			{
-				component_size = event_data.component_size;// event.MC.canvas.COMPONENT_SIZE[ node_class ];
+				component_size = event_data.component_size;
 
 				coordinate = MC.canvas.pixelToGrid(
 					shadow_offset.left - canvas_offset.left,
@@ -3544,30 +3378,6 @@ MC.canvas.event.dragable = {
 						this.move(coordinate.x, coordinate.y);
 						this.reConnect();
 					});
-				// 	//MC.canvas.position(document.getElementById(target_id), coordinate.x, coordinate.y);
-
-				// 	// target_item.position(coordinate.x, coordinate.y);
-
-				// 	// target_item.reConnect();
-
-				// 	//MC.canvas.reConnect(target_id);
-
-				// 	// $canvas.trigger("CANVAS_NODE_CHANGE_PARENT", {
-				// 	// 	'src_node': target_id,
-				// 	// 	'tgt_parent': parentGroup ? parentGroup.id : ''
-				// 	// });
-
-				// 	//MC.canvas.select(target_id);
-
-				// 	//$canvas(target_id).select();
-				// }
-				// else if (
-				// 	parentGroup &&
-				// 	parentGroup.getAttribute('data-class') === 'AWS.AutoScaling.Group' &&
-				// 	target_type === 'AWS.EC2.Instance'
-				// )
-				// {
-				// 	notification('warning', 'Launch Configuration can only be created by using AMI from Resource Panel.');
 				}
 			}
 
@@ -3679,7 +3489,7 @@ MC.canvas.event.dragable = {
 				{
 					parent_item = $canvas(parentGroup.id);
 					parent_data = layout_group_data[ parentGroup.id ];
-					parent_coordinate = parent_item.position();//parent_data.coordinate;
+					parent_coordinate = parent_item.position();
 					parent_size = parent_item.size();
 
 					if (parent_coordinate[0] + group_padding > coordinate.x)
@@ -3745,11 +3555,6 @@ MC.canvas.event.dragable = {
 							isBlank
 						)
 					)
-					// &&
-					// (
-					// 	$canvas.trigger(BEFORE_DROP_EVENT, {'src_node': target_id, 'tgt_parent': parentGroup ? parentGroup.id : ''}) &&
-					// 	!BEFORE_DROP_EVENT.isDefaultPrevented()
-					// )
 				)
 				{
 					target_item.changeParent((parentGroup ? parentGroup.id : 'canvas'), function ()
@@ -3757,123 +3562,6 @@ MC.canvas.event.dragable = {
 						this.move(coordinate.x, coordinate.y);
 						this.reConnect();
 					});
-
-					//target_item.changeParent('xxxx', x, y);
-
-					// target_item.position(coordinate.x, coordinate.y);
-					// //MC.canvas.position(event_data.target[0], coordinate.x, coordinate.y);
-
-					// $.each(event_data.groupChild, function (index, item)
-					// {
-					// 	child_type = item.getAttribute('data-type');
-
-					// 	if (child_type === 'node')
-					// 	{
-					// 		node_data = layout_node_data[ item.id ];
-					// 	}
-
-					// 	if (child_type === 'group')
-					// 	{
-					// 		node_data = layout_group_data[ item.id ];
-					// 	}
-
-					// 	var node_item = $canvas( item.id ),
-					// 		node_coordinate = node_item.position();
-
-					// 	node_item.position(node_coordinate[0] + group_offsetX, node_coordinate[1] + group_offsetY);
-
-					// 	//MC.canvas.position(item, node_data.coordinate[0] + group_offsetX, node_data.coordinate[1] + group_offsetY);
-
-					// 	// Re-draw group connection
-					// 	if (
-					// 		node_data.type === 'AWS.VPC.Subnet' ||
-					// 		node_data.type === 'AWS.AutoScaling.Group' ||
-					// 		child_type === 'node'
-					// 	)
-					// 	{
-					// 		$.each(node_data.connection, function (i, data)
-					// 		{
-					// 			connection_stack[ data.line ] = true;
-					// 		});
-					// 	}
-					// });
-
-					// $.each(connection_stack, function (key, value)
-					// {
-					// 	data = layout_connection_data[ key ];
-
-					// 	connection_target_id = [];
-
-					// 	$.each(data.target, function (key, value)
-					// 	{
-					// 		connection_target_id.push(key);
-					// 	});
-
-					// 	MC.canvas.connect(
-					// 		connection_target_id[0],
-					// 		data.target[ connection_target_id[0] ],
-					// 		connection_target_id[1],
-					// 		data.target[ connection_target_id[1] ],
-					// 		key
-					// 	);
-					// });
-
-					// // Re-draw group connection
-					// if (group_type === 'AWS.VPC.Subnet' || group_type === 'AWS.AutoScaling.Group')
-					// {
-					// 	//MC.canvas.reConnect(target_id);
-					// 	$canvas(target_id).reConnect();
-					// }
-
-					// var group_left = coordinate.x,
-					// 	group_top = coordinate.y,
-					// 	group_width = group_size[0],
-					// 	group_height = group_size[1],
-					// 	igw_gateway,
-					// 	igw_gateway_id,
-					// 	igw_gateway_data,
-					// 	igw_top,
-					// 	vgw_gateway,
-					// 	vgw_gateway_id,
-					// 	vgw_gateway_data,
-					// 	vgw_top;
-
-					// if (group_type === 'AWS.VPC.VPC')
-					// {
-					// 	igw_gateway = $('.AWS-VPC-InternetGateway');
-					// 	vgw_gateway = $('.AWS-VPC-VPNGateway');
-
-					// 	if (igw_gateway[0])
-					// 	{
-					// 		igw_item = $canvas(igw_gateway.attr('id'));
-					// 		igw_top = igw_item.position()[1] + group_offsetY;
-
-					// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					// 		igw_item.position(group_left - 4, igw_top);
-
-					// 		igw_item.reConnect();
-					// 	}
-
-					// 	if (vgw_gateway[0])
-					// 	{
-					// 		vgw_item = $canvas(vgw_gateway.attr('id'));
-					// 		vgw_top = vgw_item.position()[1] + group_offsetY;
-
-					// 		// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					// 		vgw_item.position(group_left + group_width - 4, vgw_top);
-
-					// 		vgw_item.reConnect();
-					// 	}
-					// }
-
-					// // after change node to another group,trigger event
-					// $canvas.trigger("CANVAS_GROUP_CHANGE_PARENT", {
-					// 	'src_group': target_id,
-					// 	'tgt_parent': parentGroup ? parentGroup.id : ''
-					// });
-
-					// //MC.canvas.select(target_id);
-					// $canvas(target_id).select();
 				}
 				else if (!isBlank)
 				{
@@ -4844,7 +4532,7 @@ MC.canvas.event.groupResize = {
 				// 	line_layer.removeChild(document.getElementById( value.line ));
 				// });
 				//
-				//console.info(parent_item.connection());
+
 				$.each(parent_item.connection(), function (i, value)
 				{
 					//group_connection.push( value.line );
@@ -5021,8 +4709,6 @@ MC.canvas.event.groupResize = {
 			group_left = Math.round(((parent_offset.left - canvas_offset.left) * scale_ratio + offsetX) / grid_width),
 			group_top = Math.round(((parent_offset.top - canvas_offset.top) * scale_ratio + offsetY) / grid_height),
 
-			// layout_node_data = MC.canvas_data.layout.component.node,
-			// layout_group_data = MC.canvas_data.layout.component.group,
 			canvas_size = $canvas.size(),
 			node_minX = [],
 			node_minY = [],
@@ -5888,9 +5574,8 @@ MC.canvas.event.keyEvent = function (event)
 			)
 			{
 				target_item.position(coordinate.x, coordinate.y);
-				//MC.canvas.position(target[0], coordinate.x, coordinate.y);
 
-				MC.canvas.reConnect(target_id);
+				target_item.reConnect();
 			}
 
 			return false;

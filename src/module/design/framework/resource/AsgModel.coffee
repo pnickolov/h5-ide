@@ -1,5 +1,5 @@
 
-define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManager", "Design", "constant" ], ( ResourceModel, ComplexResModel, GroupModel, CanvasManager, Design, constant )->
+define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManager", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, CanvasManager, Design, constant, lang )->
 
   NotificationModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -222,6 +222,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     newNameTmpl : "asg"
+
+    isReparentable : ( newParent )->
+      for expand in @get("expandedList")
+        if expand.parent() is newParent
+          return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.get("name")
+      true
 
     addChild : ( lc )->
       oldLc = @get("lc")

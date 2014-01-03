@@ -41,6 +41,9 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       # Listen child's removal
       child.once "destroy", @removeChild, @
+
+      # Trigger child's callback
+      if child.onParentChanged then child.onParentChanged()
       null
 
     removeChild : ( child )->

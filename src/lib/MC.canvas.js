@@ -4992,9 +4992,9 @@ MC.canvas.event.groupResize = {
 					}
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					vgw_gateway.position(group_left + group_width - 4, vgw_top);
+					vgw_item.position(group_left + group_width - 4, vgw_top);
 
-					vgw_gateway.reConnect();
+					vgw_item.reConnect();
 				}
 			}
 

@@ -2523,7 +2523,7 @@ MC.canvas.volume = {
 	{
 		var target = $(event.data.target),
 			target_component_type = target.data('component-type'),
-			node_option = target.data('option'),
+			node_option = target.data('option') || {},
 			bubble_box = $('#volume-bubble-box'),
 			original_node_volume_data,
 			new_volume_name,
@@ -4313,7 +4313,7 @@ MC.canvas.event.siderbarDrag = {
 				target_type = target.data('type'),
 				canvas_offset = $canvas.offset(),
 				shadow_offset = event.data.shadow.position(),
-				node_option = target.data('option'),
+				node_option = target.data('option') || {},
 				coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 				component_size,
 				match_place,

@@ -61,15 +61,6 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
         port2 :
           name      : "instance-sg"
           direction : "horizontal"
-          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-      }
-      {
-        port1 :
-          name : "elb-sg-out"
-          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
-        port2 :
-          name      : "instance-sg"
-          direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
       }
       {
@@ -77,7 +68,16 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
           name : "elb-sg-out"
           type : constant.AWS_RESOURCE_TYPE.AWS_ELB
         port2 :
-          name      : "instance-sg"
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      }
+      {
+        port1 :
+          name : "elb-sg-out"
+          type : constant.AWS_RESOURCE_TYPE.AWS_ELB
+        port2 :
+          name      : "launchconfig-sg"
           direction : "horizontal"
           type      : "ExpandedAsg"
       }

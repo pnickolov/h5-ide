@@ -139,8 +139,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
           # left port(blue)
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-instance-sg-left'
-            'class'      : 'port port-blue port-instance-sg port-instance-sg-left'
+            'id'         : @id + '_port-launchconfig-sg-left'
+            'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
             'transform'  : 'translate(25, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'launchconfig-sg'
@@ -151,8 +151,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
           # right port(blue)
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-instance-sg-right'
-            'class'      : 'port port-blue port-instance-sg port-instance-sg-right'
+            'id'         : @id + '_port-launchconfig-sg-right'
+            'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
             'transform'  : 'translate(95, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'launchconfig-sg'

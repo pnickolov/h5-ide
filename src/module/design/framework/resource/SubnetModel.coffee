@@ -86,6 +86,10 @@ define [ "constant",
           'id'         : @id + '_port-subnet-assoc-out'
           'transform'  : 'translate(' + portX + ', ' + portY + ')'
           'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
+          'data-name'     : 'subnet-assoc-out'
+          'data-position' : 'right'
+          'data-type'     : 'association'
+          'data-direction': 'out'
         }) )
 
         $('#subnet_layer').append node

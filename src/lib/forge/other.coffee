@@ -1,6 +1,67 @@
 define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#############################
+	#  canvas
+	#############################
+
+	canvasData = () ->
+
+		# new design flow
+		# data = $.extend true, {}, Design.instance().serialize()
+
+		# old design flow
+		data = $.extend true, {}, MC.canvas_data
+
+		data : ->
+			console.log 'canvasData:data'
+			data
+
+		save : ( data ) ->
+			console.log 'canvasData:save', data
+
+			# new design flow
+			# Design.instance().save data
+
+			# old design flow
+			MC.canvas_data = $.extend true, {}, data
+
+		set : ( key, value ) ->
+			console.log 'canvasData:set', key, value
+
+			# new design flow
+			# Design.instance().set key, value
+
+			# old design flow
+			MC.canvas_data[ key ] = value
+
+		get : ( key ) ->
+			console.log 'canvasData:get', key
+
+			# new design flow
+			# Design.instance().get key
+
+			# old design flow
+			data[ key ]
+
+		isModified : ->
+			console.log 'canvasData:isModified', key
+			Design.instance().isModified()
+
+		origin : ( origin_data ) ->
+
+			if _.isEmpty origin_data
+
+				# get
+				console.log 'canvasData:get origin', MC.data.origin_canvas_data
+				$.extend true, {}, MC.data.origin_canvas_data
+
+			else
+
+				# set
+				console.log 'canvasData:set origin', origin_data
+				MC.data.origin_canvas_data = $.extend true, {}, origin_data
+
+	#############################
 	#  core
 	#############################
 
@@ -17,15 +78,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			i++
 
 		str
-
-	getCanvasData = () ->
-		console.log 'getCanvasData'
-
-		# new design flow
-		#$.extend true, {}, Design.instance().serialize()
-
-		# old design flow
-		$.extend true, {}, MC.canvas_data
 
 	isCurrentTab = ( tab_id ) ->
 		console.log 'isCurrentTab', tab_id
@@ -290,7 +342,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		unmanaged_vpc_list
 
 	#public
-	getCanvasData      : getCanvasData
+	canvasData         : canvasData
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
 	setCurrentTabId	   : setCurrentTabId

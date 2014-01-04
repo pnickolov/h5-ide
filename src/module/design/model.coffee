@@ -38,10 +38,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 else
                     #TO-DO
 
-                # new design flow
-                MC.canvas_data  = MC.forge.other.getCanvasData()
                 #
-                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
+
+                # old design flow
+                #ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
+
+                # new design flow
+                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.forge.other.canvasData().get( 'id' )
 
                 null
 
@@ -51,11 +54,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 app_id = result.param[4][0]
 
-                # new design flow
-                MC.canvas_data  = MC.forge.other.getCanvasData()
-
                 # update canvas_data when on current tab
-                if app_id == MC.canvas_data.id
+
+                # old design flow
+                #if app_id == MC.canvas_data.id
+
+                # new design flow
+                if app_id == MC.forge.other.canvasData().get( 'id' )
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
 
@@ -88,7 +93,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #############################
 
         addTab : ( tab_id, snapshot, data, property_panel, origin_data, origin_ta_valid, design_model ) ->
-            console.log 'add'
+            console.log 'addTab'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
@@ -147,18 +152,24 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
-            MC.canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData().save data
+
             null
 
         getCanvasData : () ->
             console.log 'getCanvasData'
             #MC.canvas_data
 
-            # new design flow
-            #$.extend true, {}, Design.instance().serialize()
-
             # old design flow
-            $.extend true, {}, MC.canvas_data
+            #$.extend true, {}, MC.canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData().data()
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
@@ -167,12 +178,23 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         setOriginData : ( data ) ->
             console.log 'setOriginData'
-            MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData().origin data
+
             null
 
         getOriginData :  ->
             console.log 'getOriginData'
-            $.extend true, {}, MC.data.origin_canvas_data
+
+            # old design flow
+            #$.extend true, {}, MC.data.origin_canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData().origin()
 
         setTAValidation : ( data ) ->
             console.log 'setTAValidation'
@@ -208,6 +230,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #############################
 
         describeInstancesOfASG : (region) ->
+            console.log 'describeInstancesOfASG', region
 
             comp_layout   = MC.canvas.data.get('layout.component.group')
             comp_data     = MC.canvas.data.get('component')
@@ -274,10 +297,11 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
             ami_list = []
 
-            # new design flow
-            MC.canvas_data  = MC.forge.other.getCanvasData()
+            # old design flow
+            #_.each MC.canvas_data.component, (compObj) ->
 
-            _.each MC.canvas_data.component, (compObj) ->
+            # new design flow
+            _.each MC.forge.other.canvasData().get( 'component' ), (compObj) ->
 
                 if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                     imageId = compObj.resource.ImageId
@@ -310,12 +334,16 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             region          = result.param[3]
             resource_source = result.resolved_data
 
-            # new design flow
-            MC.canvas_data  = MC.forge.other.getCanvasData()
-
             if resource_source
+
                 #clear old app data in MC.data.resource_list
-                MC.forge.app.clearResourceInCache MC.canvas_data
+
+                # old design flow
+                #MC.forge.app.clearResourceInCache MC.canvas_data
+
+                # new design flow
+                MC.forge.app.clearResourceInCache MC.forge.other.canvasData().data()
+
                 #cache new app data
                 MC.aws.aws.cacheResource resource_source, region, false
                 #
@@ -343,12 +371,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             if uid
                 MC.canvas.select uid
 
+            # re-set origin_data
+
+            # old design flow
+            #@setOriginData MC.canvas_data
 
             # new design flow
-            MC.canvas_data = MC.forge.other.getCanvasData()
-
-            # re-set origin_data
-            @setOriginData MC.canvas_data
+            @setOriginData MC.forge.other.canvasData().data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource

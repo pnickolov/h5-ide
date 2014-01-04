@@ -1,5 +1,5 @@
 #############################
-#  View Mode for navigation
+#  View Mode for tabbar
 #############################
 
 define [ 'MC', 'stack_model', 'app_model', 'backbone', 'event' ], ( MC, stack_model, app_model, ide_event ) ->

@@ -508,7 +508,13 @@ define [ 'MC', 'event',
             ide_event.trigger ide_event.OPEN_PROPERTY
 
             # 5. Create backup point
-            MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+            # old design flow
+            #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData().origin MC.canvas_data
+
             null
 
         clickSaveEditApp : (event)->

@@ -3411,6 +3411,8 @@ MC.canvas.event.dragable = {
 				{
 					MC.canvas.event.clearSelected();
 					MC.canvas.select(this.id);
+
+					MC.canvas.event.nodeState(this.id);
 				}
 
 				return false;

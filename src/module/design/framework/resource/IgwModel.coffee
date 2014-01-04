@@ -24,7 +24,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
       cannotDel = ElbModel.allObjects().some ( elb )-> not elb.get("internal")
 
       if not cannotDel
-        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+        EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
         cannotDel = EniModel.allObjects().some ( eni )-> eni.hasEip()
 
       if cannotDel

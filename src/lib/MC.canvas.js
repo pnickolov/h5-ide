@@ -3763,16 +3763,11 @@ MC.canvas.event.drawConnection = {
 				parent_item = $canvas(node_id),
 				parent_type = parent_item.type,
 
-				//layout_component_data = MC.canvas_data.layout.component,
-				//layout_connection_data = MC.canvas_data.layout.connection,
-				//layout_node_data = layout_component_data[ parent_type ],
-				//node_connections = layout_node_data[ node_id ].connection,
 				position = target.data('position'),
 				port_type = target.data('type'),
 				port_name = target.data('name'),
 				connection_option = MC.canvas.CONNECTION_OPTION[ parent_type ],
 				scale_ratio = $canvas.scale(),
-				//CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
 				offset = {},
 				port_position_offset = 8 / scale_ratio,
 				node_connection = parent_item.connection(),
@@ -4025,8 +4020,7 @@ MC.canvas.event.drawConnection = {
 			from_node = event.data.originalTarget,
 			port_name = event.data.port_name,
 			from_type = from_node.data('class'),
-			// CHECK_CONNECTABLE_EVENT = $.Event("CHECK_CONNECTABLE_EVENT"),
-			//layout_group_data,
+
 			to_node,
 			port_name,
 			to_port_name,
@@ -4099,27 +4093,7 @@ MC.canvas.event.drawConnection = {
 
 			if (!from_node.is(to_node) && to_port_name !== undefined)
 			{
-				// No need to trigger CHECK_CONNECTABLE_EVENT
-				// Because the error handling has been implemented
-				// in line creation.
-
-				/*
-				svg_canvas.trigger(CHECK_CONNECTABLE_EVENT, [from_node.attr('id'), port_name, to_node.attr('id'), to_port_name]);
-
-				if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
-				{
-					line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
-
-					// trigger event when connect two port
-					svg_canvas.trigger("CANVAS_LINE_CREATE", line_id);
-				}
-				*/
-
-				//line_id = MC.canvas.connect(from_node, port_name, to_node, to_port_name);
 				$canvas.connect(from_node.attr('id'), port_name, to_node.attr('id'), to_port_name);
-
-				// trigger event when connect two port
-				//$canvas.trigger("CANVAS_LINE_CREATE", line_id);
 			}
 		}
 

@@ -19,9 +19,19 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
-    initialize : ()->
-      KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
-      KpModel.getDefaultKP().assignTo( this )
+    initialize : ( attr, option )->
+      # Draw before create SgAsso
+      @draw(true)
+
+      if not ( option and option.isCreate is false )
+        # Default Kp
+        KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+        KpModel.getDefaultKP().assignTo( this )
+
+        # Default Sg
+        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        new SgAsso( defaultSg, this )
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
@@ -146,7 +156,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      model = new Model( attr )
+      model = new Model( attr, { isCreate : false } )
 
 
       # Create Volume for

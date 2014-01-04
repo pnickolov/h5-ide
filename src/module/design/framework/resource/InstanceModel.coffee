@@ -4,6 +4,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
   Model = ComplexResModel.extend {
 
     type    : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    newNameTmpl : "host"
     defaults :
       x      : 2
       y      : 2
@@ -25,9 +26,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       cachedAmi : null
 
     initialize : ( attr, option )->
-      # Create an embed eni
+
 
       if not ( option and option.isCreate is false )
+
+        # Draw before creating SgAsso
+        @draw(true)
         #create mode => no option or option.isCreate==true
 
         #assign DefaultKP
@@ -52,6 +56,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
           @setEmbedEni( new EniModel({}, { instance: this }) )
 
+      else
+        @draw( true )
+
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
       if vpc and not vpc.isDefaultTenancy()
         @setTenancy( "dedicated" )
@@ -59,7 +66,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
-      @draw(true)
       null
 
     isReparentable : ( newParent )->

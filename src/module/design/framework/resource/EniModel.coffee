@@ -31,20 +31,32 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       height   : 9
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+    newNameTmpl : "eni"
 
     constructor : ( attributes, option )->
+
       if option and option.instance
         @__embedInstance = option.instance
 
       if !attributes.ips
         attributes.ips = []
-
       if attributes.ips.length is 0
         attributes.ips.push( new IpObject() )
 
       ComplexResModel.call this, attributes, option
-      null
 
+    initialize : ( attributes, option )->
+      option = option || {}
+
+      # Draw first then create SgAsso
+      @draw( true )
+
+      if option.isCreate isnt false and not option.instance
+        # DefaultSg
+        defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        new SgAsso( defaultSg, this )
+      null
 
     isReparentable : ()->
       if @connectionTargets( "EniAttachment" ).length > 0
@@ -84,16 +96,18 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       null
 
     setPrimaryEip : ( toggle )->
+      if not @attachedInstance() then return
+
       @get("ips")[0].hasEip = toggle
       @draw()
       null
 
     hasPrimaryEip : ()->
+      if not @attachedInstance() then return false
       @get("ips")[0].hasEip
 
     hasEip : ()->
-      @get("ips").some ( ip )->
-        ip.hasEip
+      @get("ips").some ( ip )-> ip.hasEip
 
     subnetCidr : ()->
       parent = @parent() or @embedInstance().parent()
@@ -393,8 +407,9 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         }) )
 
 
-      if embed
-        option = { instance : instance }
+      option = { isCreate : false }
+      if embed then option.instance = instance
+
       eni = new Model( attr, option )
 
 

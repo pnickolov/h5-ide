@@ -71,10 +71,10 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         cns = Design.modelClassForType( @type ).allObjects()
         for cn in cns
           if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
-            console.warn "Found existing connection #{@type} of ", p1Comp, p2Comp
+            console.info "Found existing connection #{@type} of ", [p1Comp, p2Comp]
             return cn
           if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
-            console.warn "Found existing connectoin #{@type} of ", p1Comp, p2Comp
+            console.info "Found existing connectoin #{@type} of ", [p1Comp, p2Comp]
             return cn
 
       if @portDefs

@@ -158,6 +158,16 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
     ]
+  }, {
+    isConnectable : ( p1Comp, p2Comp )->
+      tag = p1Comp.type + ">" + p2Comp.type
+      if tag.indexOf( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ) isnt -1 and tag.indexOf( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ) isnt -1
+
+        for attach in p1Comp.connectionTargets("EniAttachment")
+          if attach is p2Comp
+            return "The Network Interface is attached to the instance. No need to connect them by security group rule."
+
+      true
   }
 
   SgRuleLine

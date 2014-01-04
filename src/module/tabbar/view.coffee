@@ -148,6 +148,19 @@ define [ 'event',
                 @directCloseTab tab_id
                 return
 
+            # new design flow
+            #is_changed = true
+            #if MC.data.current_tab_id is tab_id
+            #    is_changed = MC.forge.other.canvasData().isModified()
+            #else
+            #    is_changed  = MC.tab[ tab_id ].design_model.isModified()
+            #
+            #if is_changed
+            #    @directCloseTab tab_id
+            #else
+            #    modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+
+            # old design flow
             # stack app check _.isEqual
             if MC.data.current_tab_id is tab_id
                 data        = $.extend true, {}, MC.canvas_data

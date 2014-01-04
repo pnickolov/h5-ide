@@ -187,8 +187,8 @@ define [ 'event',
             $paraItemList = $paraListElem.find('.parameter-item')
 
             $cmdValueElem = $stateItem.find('.state-edit .command-value')
-            cmdValue = $cmdValueElem.text()
-            $cmdViewValueElem.text(cmdValue)
+            cmdValue = that.getPlainText($cmdValueElem)
+            that.setPlainText($cmdViewValueElem, cmdValue)
 
             paraListViewRenderAry = []
 
@@ -223,8 +223,8 @@ define [ 'event',
                         $paraDictItem = $(paraDictItem)
                         $keyInput = $paraDictItem.find('.key')
                         $valueInput = $paraDictItem.find('.value')
-                        keyValue = $keyInput.text()
-                        valueValue = $valueInput.text()
+                        keyValue = that.getPlainText($keyInput)
+                        valueValue = that.getPlainText($valueInput)
                         if keyValue and valueValue
                             paraValueAry.push(keyValue + ':' + valueValue)
                         if keyValue and not valueValue
@@ -240,7 +240,7 @@ define [ 'event',
                     paraValueAry = []
                     _.each $valueInputs, (valueInput) ->
                         $valueInput = $(valueInput)
-                        valueValue = $valueInput.text()
+                        valueValue = that.getPlainText($valueInput)
                         if valueValue
                             paraValueAry.push(valueValue)
 
@@ -249,7 +249,7 @@ define [ 'event',
                 else if paraType in ['line', 'text', 'bool', 'state']
 
                     $valueInput = $paraItem.find('.parameter-value')
-                    valueValue = $valueInput.text()
+                    valueValue = that.getPlainText($valueInput)
                     paraValue = valueValue
 
                 viewRenderObj.para_value = paraValue
@@ -495,8 +495,8 @@ define [ 'event',
                 $keyInput = $currentDictItemElem.find('.key')
                 $valueInput = $currentDictItemElem.find('.value')
 
-                keyInputValue = $keyInput.text()
-                valueInputValue = $valueInput.text()
+                keyInputValue = that.getPlainText($keyInput)
+                valueInputValue = that.getPlainText($valueInput)
 
                 if keyInputValue or valueInputValue
                     newDictItemHTML = that.paraDictListTpl({
@@ -520,7 +520,7 @@ define [ 'event',
                 inputElemAry = $(itemElem).find('.parameter-value')
                 isAllInputEmpty = true
                 _.each inputElemAry, (inputElem) ->
-                    if $(inputElem).text()
+                    if that.getPlainText(inputElem)
                         isAllInputEmpty = false
                     null
                 if isAllInputEmpty and idx isnt allInputElemAry.length - 1
@@ -543,7 +543,7 @@ define [ 'event',
 
                 $currentArrayInputContainer = $currentInputElem.parents('.parameter-container')
 
-                currentInput = $currentInputElem.text()
+                currentInput = that.getPlainText($currentInputElem)
 
                 if currentInput
                     newArrayItemHTML = that.paraArrayListTpl({
@@ -556,11 +556,13 @@ define [ 'event',
 
             # remove empty array item
 
+            that = this
+
             $currentInputElem = $(event.currentTarget)
             $currentArrayItemContainer = $currentInputElem.parents('.parameter-container')
             allInputElemAry = $currentArrayItemContainer.find('.parameter-value')
             _.each allInputElemAry, (itemElem, idx) ->
-                inputValue = $(itemElem).text()
+                inputValue = that.getPlainText(itemElem)
                 if not inputValue and idx isnt allInputElemAry.length - 1
                     $(itemElem).remove()
                 null
@@ -575,7 +577,7 @@ define [ 'event',
 
             if $currentInput.hasClass('parameter-value')
 
-                currentValue = $currentInput.text()
+                currentValue = that.getPlainText($currentInput)
 
                 paraObj = that.getParaObj($currentInput)
 
@@ -743,7 +745,7 @@ define [ 'event',
                         $paraItem.hasClass('state')
 
                             $paraInput = $paraItem.find('.parameter-value')
-                            paraValue = $paraInput.text()
+                            paraValue = that.getPlainText($paraInput)
 
                     else if $paraItem.hasClass('dict')
 
@@ -756,8 +758,8 @@ define [ 'event',
                             $keyInput = $dictItem.find('.key')
                             $valueInput = $dictItem.find('.value')
 
-                            keyValue = $keyInput.text()
-                            valueValue = $valueInput.text()
+                            keyValue = that.getPlainText($keyInput)
+                            valueValue = that.getPlainText($valueInput)
 
                             if keyValue
                                 dictObj[keyValue] = valueValue
@@ -774,7 +776,7 @@ define [ 'event',
                         _.each $arrayItemList, (arrayItem) ->
 
                             $arrayItem = $(arrayItem)
-                            arrayValue = $arrayItem.text()
+                            arrayValue = that.getPlainText($arrayItem)
 
                             arrayObj.push(arrayValue)
 
@@ -1064,74 +1066,78 @@ define [ 'event',
 
             $inputElem = $(inputElem)
 
-            blockMap = {
-                address:1,
-                blockquote:1,
-                center:1,
-                dir:1,
-                div:1,
-                dl:1,
-                dt:1,
-                dd:1,
-                fieldset:1,
-                form:1,
-                h1:1,
-                h2:1,
-                h3:1,
-                h4:1,
-                h5:1,
-                h6:1,
-                hr:1,
-                isindex:1,
-                menu:1,
-                noframes:1,
-                ol:1,
-                p:1,
-                pre:1,
-                table:1,
-                ul:1
-            }
+            return $inputElem.val()
 
-            getStr = (htmlElem) ->
+            # blockMap = {
+            #     address:1,
+            #     blockquote:1,
+            #     center:1,
+            #     dir:1,
+            #     div:1,
+            #     dl:1,
+            #     dt:1,
+            #     dd:1,
+            #     fieldset:1,
+            #     form:1,
+            #     h1:1,
+            #     h2:1,
+            #     h3:1,
+            #     h4:1,
+            #     h5:1,
+            #     h6:1,
+            #     hr:1,
+            #     isindex:1,
+            #     menu:1,
+            #     noframes:1,
+            #     ol:1,
+            #     p:1,
+            #     pre:1,
+            #     table:1,
+            #     ul:1
+            # }
 
-                $htmlElem = $(htmlElem)
+            # getStr = (htmlElem) ->
 
-                htmlContent = $htmlElem.contents()
+            #     $htmlElem = $(htmlElem)
 
-                _.each htmlContent, (elemItem, idx) ->
+            #     htmlContent = $htmlElem.contents()
 
-                    $elemItem = $(elemItem)
-                    tagName = elemItem.nodeName.toLowerCase()
-                    elemText = $elemItem.text()
+            #     _.each htmlContent, (elemItem, idx) ->
 
-                    if tagName is '#text'
-                        resultStr += elemText
-                    else
-                        getStr(elemItem)
+            #         $elemItem = $(elemItem)
+            #         tagName = elemItem.nodeName.toLowerCase()
+            #         elemText = $elemItem.text()
 
-                    if blockMap[tagName] and elemText
-                        resultStr += '\n'
+            #         if tagName is '#text'
+            #             resultStr += elemText
+            #         else
+            #             getStr(elemItem)
 
-                    if tagName is 'br'
-                        resultStr += '\n'
+            #         # if blockMap[tagName] and elemText
+            #         #     resultStr += '\n'
 
-                    null
+            #         if tagName is 'br'
+            #             resultStr += '\n'
 
-            resultStr = ''
+            #         null
 
-            getStr(inputElem)
+            # resultStr = ''
 
-            return resultStr
+            # getStr(inputElem)
+
+            # return resultStr
 
         setPlainText: (inputElem, content) ->
 
             $inputElem = $(inputElem)
 
-            newContent = $('<div/>').text(content).html()
-            newContent = newContent.replace(/\n/igm, '<br>')
-            newContent = newContent.replace(/\t/igm, '<span class="Apple-tab-span" style="white-space:pre"> </span>')
+            $inputElem.val(content)
 
-            $inputElem.html(newContent)
+            # newContent = $('<div/>').text(content).html()
+            # newContent = newContent.replace(/\n/igm, '<br>')
+            # newContent = newContent.replace(/\t/igm, '<span class="Apple-tab-span" style="white-space:pre"> </span>')
+            
+            # $inputElem.html(newContent)
 
             null
     }

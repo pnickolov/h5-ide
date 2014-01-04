@@ -16,8 +16,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
       this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 
-      this.parentId = component.parent()
-      this.parentId = if this.parent then "" else this.parentId.id
+      p = component.parent()
+      this.parentId = if p then p.id else ""
 
     this
 

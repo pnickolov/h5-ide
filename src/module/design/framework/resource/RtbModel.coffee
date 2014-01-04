@@ -69,13 +69,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
 
       # No connection found, create a new one.
       if not connection
-        connection = new Route( this, Design.instance().component( targetId ) )
-        # Set propagating
-        if propagating
-          connection.setPropagate true
+        connection = new Route( this, component, { routes : [r] } )
+      else
+        # Add the route to the connection
+        connection.addRoute( r )
 
-      # Add the route to the connection
-      connection.addRoute( r )
+      # Set propagating
+      connection.setPropagate propagating
+      null
 
     iconUrl : ()->
       if @get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"

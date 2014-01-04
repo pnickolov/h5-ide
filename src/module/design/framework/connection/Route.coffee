@@ -10,6 +10,14 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       dashLine : true
       routes   : []
 
+    initialize : ( attr, option )->
+      igw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )
+
+      if igw and not attr.routes
+        # By default add an "0.0.0.0/0" route for IGW
+        @get("routes").push "0.0.0.0/0"
+      null
+
     addRoute : ( route )->
       routes = @get("routes")
 

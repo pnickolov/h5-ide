@@ -129,8 +129,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             # ide_event.onLongListen ide_event.DELETE_LINE_TO_CANVAS, ( line_id ) ->
             #     MC.canvas.remove $("#" + line_id)[0]
 
-            ide_event.onLongListen ide_event.NEED_IGW, ( component )->
-                model.askToAddIGW()
+            # ide_event.onLongListen ide_event.NEED_IGW, ( component )->
+            #     model.askToAddIGW()
 
 
             #listen CANVAS_ZOOMED_DROP_ERROR
@@ -158,9 +158,9 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
             #listen CANVAS_NODE_CHANGE_PARENT
             #listen CANVAS_GROUP_CHANGE_PARENT
-            view.on 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->
-                model.changeParent event, option.src_node || option.src_group, option.tgt_parent
-                null
+            # view.on 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT', ( event, option ) ->
+            #     model.changeParent event, option.src_node || option.src_group, option.tgt_parent
+            #     null
 
             # #listen CANVAS_OBJECT_DELETE
             # view.on 'CANVAS_OBJECT_DELETE', ( event, option ) ->
@@ -180,18 +180,18 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             #     null
 
             #listen CANVAS_EIP_STATE_CHANGE
-            view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
-                model.setEip option.id, option.eip_state
+            # view.on 'CANVAS_EIP_STATE_CHANGE', ( event, option ) ->
+            #     model.setEip option.id, option.eip_state
 
-                # update eip tooltip
-                if (option.eip_state is 'on')
-                    MC.aws.eip.updateStackTooltip(option.id, true)
-                else
-                    MC.aws.eip.updateStackTooltip(option.id, false)
+            #     # update eip tooltip
+            #     if (option.eip_state is 'on')
+            #         MC.aws.eip.updateStackTooltip(option.id, true)
+            #     else
+            #         MC.aws.eip.updateStackTooltip(option.id, false)
 
-                ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
-                console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
-                null
+            #     ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+            #     console.log 'EIP STATE CHANGED: instance: ' + option.id + ', eip_state:' + option.eip_state
+            #     null
 
             #listen CANVAS_PLACE_NOT_MATCH
             # view.on 'CANVAS_PLACE_NOT_MATCH', (event, option) ->
@@ -229,14 +229,14 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             #         force : not not_force
             #     }
 
-            ide_event.onLongListen ide_event.CANVAS_UPDATE_APP_RESOURCE, () ->
+            # ide_event.onLongListen ide_event.CANVAS_UPDATE_APP_RESOURCE, () ->
 
-                console.log 'CANVAS_UPDATE_APP_RESOURCE'
-                #model.updateAppResource()
+            #     console.log 'CANVAS_UPDATE_APP_RESOURCE'
+            #     #model.updateAppResource()
 
-                null
+            #     null
 
-            null
+            # null
 
     unLoadModule = () ->
         #view.remove()

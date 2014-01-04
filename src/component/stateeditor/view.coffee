@@ -657,8 +657,8 @@ define [ 'event',
             that = this
 
             doValidate = ( elem ) ->
-                if $( elem ).parent( '[contenteditable="true"]' ).size()
-                    return true
+                #if $( elem ).parent( '[contenteditable="true"]' ).size()
+                #    return true
 
                 value = that.getPlainText elem
                 param = that.getParaObjByInput elem
@@ -682,8 +682,8 @@ define [ 'event',
             if element
                 result = doValidate element
             else
-                $contentEditable = @$stateList.find '[contenteditable="true"]'
-                elems = $contentEditable.toArray()
+                $editor= @$stateList.find '.editable-area'
+                elems = $editor.toArray()
                 result = _.every elems, ( e ) ->
                     result = doValidate e
                     if not result

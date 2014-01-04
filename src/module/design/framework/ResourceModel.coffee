@@ -300,6 +300,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     destroy : ()-> @remove()
 
     remove : ()->
+      if @isRemoved()
+        console.warn "The resource is already removed : ", this
+        return
+
       console.debug "Removing resource : #{@get('name')}", this
 
       # Clean up reference

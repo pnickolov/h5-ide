@@ -20,6 +20,16 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
       }
     ]
 
+    initialize : ()->
+      # Elb can only connect to one subnet in one az
+      newSubnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      az = newSubnet.parent()
+
+      for cn in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).connections( "ElbSubnetAsso" )
+        if cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).parent() is az
+          cn.remove()
+      null
+
     isRemovable : ()->
       elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
       subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
@@ -43,6 +53,14 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
       if connected then return true
 
       return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
+  }, {
+    isConnectable : ( comp1, comp2 )->
+      subnet = if comp1.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet then comp1 else comp2
+
+      if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
+        return true
+
+      lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
   }
 
   # Elb <==> Ami

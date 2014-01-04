@@ -72,8 +72,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
 
-      #listen state update event
-      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
+      #listen resource update event
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
       null
 

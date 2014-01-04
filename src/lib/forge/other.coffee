@@ -5,7 +5,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#############################
 
 	canvasData = () ->
-		console.log 'canvasData'
 
 		# new design flow
 		# data = $.extend true, {}, Design.instance().serialize()
@@ -14,9 +13,11 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		data = $.extend true, {}, MC.canvas_data
 
 		data : ->
+			console.log 'canvasData:data'
 			data
 
 		save : ( data ) ->
+			console.log 'canvasData:save', data
 
 			# new design flow
 			# Design.instance().save data
@@ -25,6 +26,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			MC.canvas_data = $.extend true, {}, data
 
 		set : ( key, value ) ->
+			console.log 'canvasData:set', key, value
 
 			# new design flow
 			# Design.instance().set key, value
@@ -33,6 +35,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			MC.canvas_data[ key ] = value
 
 		get : ( key ) ->
+			console.log 'canvasData:get', key
 
 			# new design flow
 			# Design.instance().get key
@@ -41,6 +44,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			data[ key ]
 
 		isModified : ->
+			console.log 'canvasData:isModified', key
 			Design.instance().isModified()
 
 		origin : ( origin_data ) ->
@@ -48,13 +52,13 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			if _.isEmpty origin_data
 
 				# get
-				console.log 'get origin', MC.data.origin_canvas_data
+				console.log 'canvasData:get origin', MC.data.origin_canvas_data
 				$.extend true, {}, MC.data.origin_canvas_data
 
 			else
 
 				# set
-				console.log 'set origin', origin_data
+				console.log 'canvasData:set origin', origin_data
 				MC.data.origin_canvas_data = $.extend true, {}, origin_data
 
 	#############################

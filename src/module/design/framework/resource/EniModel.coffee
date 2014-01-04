@@ -96,7 +96,8 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         ip.hasEip
 
     subnetCidr : ()->
-      parent = @parent()
+      parent = @parent() or @embedInstance().parent()
+
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         cidr = parent.get("cidr")
       else

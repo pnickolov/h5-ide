@@ -92,8 +92,12 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     new Design( component, layout, options )
                     # new design flow
 
-                    #
-                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+                    # old design flow
+                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # new design flow
+                    MC.forge.other.canvasData().origin MC.canvas_data
+
                     #
                     MC.ta.list = []
 
@@ -118,8 +122,13 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 MC.aws.eni.updateServerGroupState MC.canvas_data.id
                 #update deleted resource style
                 MC.forge.app.updateDeletedResourceState MC.canvas_data
-                #
-                MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
+
+                # old design flow
+                #MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
+
+                # new design flow
+                MC.forge.other.canvasData().origin MC.canvas_data
+
                 #
                 null
 

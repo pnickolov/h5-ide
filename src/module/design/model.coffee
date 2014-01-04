@@ -88,7 +88,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #############################
 
         addTab : ( tab_id, snapshot, data, property_panel, origin_data, origin_ta_valid, design_model ) ->
-            console.log 'add'
+            console.log 'addTab'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
@@ -173,12 +173,23 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         setOriginData : ( data ) ->
             console.log 'setOriginData'
-            MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.data.origin_canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData().origin data
+
             null
 
         getOriginData :  ->
             console.log 'getOriginData'
-            $.extend true, {}, MC.data.origin_canvas_data
+
+            # old design flow
+            #$.extend true, {}, MC.data.origin_canvas_data
+
+            # new design flow
+            MC.forge.other.canvasData().origin()
 
         setTAValidation : ( data ) ->
             console.log 'setTAValidation'

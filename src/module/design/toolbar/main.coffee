@@ -61,8 +61,13 @@ define [ 'jquery',
                     model.saveStack MC.canvas.layout.save()
                     #compact and update canvas
                     MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                    #
-                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # old design flow
+                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # new design flow
+                    MC.forge.other.canvasData().origin MC.canvas_data
+
                 catch err
                     msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
                     view.notify 'error', msg

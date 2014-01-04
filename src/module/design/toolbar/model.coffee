@@ -107,8 +107,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #temp
                     MC.canvas_data.id = new_id
                     MC.canvas_data.key = key
-                    #
-                    MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # old design flow
+                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
+
+                    # new design flow
+                    MC.forge.other.canvasData().origin MC.canvas_data
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 

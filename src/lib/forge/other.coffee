@@ -49,7 +49,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 				# get
 				console.log 'get origin', MC.data.origin_canvas_data
-				MC.data.origin_canvas_data
+				$.extend true, {}, MC.data.origin_canvas_data
 
 			else
 

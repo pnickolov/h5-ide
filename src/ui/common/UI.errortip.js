@@ -170,50 +170,59 @@
 
   };
 
-  var createError = function( message, criminal, hash ) {
-    if ( !hash )
-      hash = genHash()
+  var manager = {
+    createError: function( message, criminal, hash ) {
+      if ( !hash )
+        hash = genHash()
 
-    var errorList = $( errorsWrapper )
-                        .attr( 'id', hash )
-                        .addClass( errorListClass );
+      var errorList = $( errorsWrapper )
+                          .attr( 'id', hash )
+                          .addClass( errorListClass );
 
-    var content = $( errorElem ).html( message );
-    errorList.append( content );
+      var content = $( errorElem ).html( message );
+      errorList.append( content );
 
-    $( criminal ).after( errorList )
-                 .addClass( errorClass );
-  };
-
-  var removeError = function( criminalOrHash ) {
-    var criminal, error;
-    // hash
-    if ( Object.prototype.toString.call( criminalOrHash ) === '[object String]' ) {
-      error = $( '#' + criminalOrHash );
-      criminal = error.prev();
-
-    } else { //criminal
-      criminal = criminalOrHash;
-      error = criminal.next();
+      $( criminal ).after( errorList )
+                   .addClass( errorClass );
     }
 
-    criminal.removeClass( errorClass );
-    if ( isErrorList( error ) ) {
-      error.remove();
+    , changeError: function( message, criminal ) {
+      var $error = findError( $( criminal ) );
+      $error.find( 'li' ).text( message );
     }
 
-  };
+    , removeError: function( criminalOrHash ) {
+      var $criminal, $error;
+      // hash
+      if ( Object.prototype.toString.call( criminalOrHash ) === '[object String]' ) {
+        $error = $( '#' + criminalOrHash );
+        $criminal = $error.prev();
 
-  var hasError = function( criminal ) {
-    return $( criminal ).hasClass( errorClass );
-  };
+      } else { //criminal
+        $criminal = $( criminalOrHash );
+        $error = findError( $criminal );
+      }
+
+      $criminal.removeClass( errorClass );
+      if ( isErrorList( $error ) ) {
+        purge( $error.attr( 'id' ) )
+      }
+
+    }
+
+    , hasError: function( criminal ) {
+      return $( criminal ).hasClass( errorClass );
+    }
+  }
+
+
+
 
   errortip.first = first;
   errortip.purge = purge;
 
-  errortip.createError = createError;
-  errortip.removeError = removeError;
-  errortip.hasError = hasError;
+  // Extend Management Methods to Interface
+  $.extend( errortip, manager );
 
   window.errortip = errortip;
 

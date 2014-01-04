@@ -18,14 +18,26 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		str
 
-	getCanvasData = () ->
-		console.log 'getCanvasData'
+	canvasData = () ->
+		console.log 'canvasData'
 
 		# new design flow
-		#$.extend true, {}, Design.instance().serialize()
+		# data = $.extend true, {}, Design.instance().serialize()
 
 		# old design flow
-		$.extend true, {}, MC.canvas_data
+		data = $.extend true, {}, MC.canvas_data
+
+		data : ->
+			data
+
+		id   : ->
+			data.id
+
+		name : ->
+			data.name
+
+		save : ( data ) ->
+			MC.canvas_data = $.extend true, {}, data
 
 	isCurrentTab = ( tab_id ) ->
 		console.log 'isCurrentTab', tab_id
@@ -290,7 +302,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		unmanaged_vpc_list
 
 	#public
-	getCanvasData      : getCanvasData
+	canvasData         : canvasData
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
 	setCurrentTabId	   : setCurrentTabId

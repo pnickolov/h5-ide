@@ -39,7 +39,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                     #TO-DO
 
                 # new design flow
-                MC.canvas_data  = MC.forge.other.getCanvasData()
+                MC.canvas_data  = MC.forge.other.canvasData().data()
                 #
                 ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
 
@@ -52,7 +52,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 app_id = result.param[4][0]
 
                 # new design flow
-                MC.canvas_data  = MC.forge.other.getCanvasData()
+                MC.canvas_data  = MC.forge.other.canvasData().data()
 
                 # update canvas_data when on current tab
                 if app_id == MC.canvas_data.id
@@ -147,7 +147,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         setCanvasData : ( data ) ->
             console.log 'setCanvasData'
-            MC.canvas_data = $.extend true, {}, data
+
+            # old design flow
+            #MC.canvas_data = $.extend true, {}, data
+
+            # new design flow
+            MC.forge.other.canvasData().save data
+
             null
 
         getCanvasData : () ->
@@ -158,7 +164,8 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #$.extend true, {}, Design.instance().serialize()
 
             # old design flow
-            $.extend true, {}, MC.canvas_data
+            #$.extend true, {}, MC.canvas_data
+            MC.forge.other.canvasData().data()
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
@@ -275,7 +282,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             ami_list = []
 
             # new design flow
-            MC.canvas_data  = MC.forge.other.getCanvasData()
+            MC.canvas_data  = MC.forge.other.canvasData().data()
 
             _.each MC.canvas_data.component, (compObj) ->
 
@@ -311,7 +318,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             resource_source = result.resolved_data
 
             # new design flow
-            MC.canvas_data  = MC.forge.other.getCanvasData()
+            MC.canvas_data  = MC.forge.other.canvasData().data()
 
             if resource_source
                 #clear old app data in MC.data.resource_list
@@ -345,7 +352,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
 
             # new design flow
-            MC.canvas_data = MC.forge.other.getCanvasData()
+            MC.canvas_data = MC.forge.other.canvasData().data()
 
             # re-set origin_data
             @setOriginData MC.canvas_data

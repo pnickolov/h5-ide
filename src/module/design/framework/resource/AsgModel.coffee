@@ -259,12 +259,21 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       null
 
     updateExpandedAsgAsso : ( elb, isRemove )->
+
+      if @attributes.expandedList.length is 0 then return
+
+      # Temperory clear expandList. So that removing ElbAmiAsso will not trigger
+      # this method again.
+      old_expandList = @attributes.expandedList
+      @attributes.expandedList = []
+
       ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
 
-      for i in @get("expandedList")
+      for i in old_expandList
         asso = new ElbAsso( i, elb )
         if isRemove then asso.remove()
 
+      @attributes.expandList = old_expandList
       null
 
     addScalingPolicy : ( policy )->

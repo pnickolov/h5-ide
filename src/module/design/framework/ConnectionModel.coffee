@@ -28,8 +28,9 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
     connectsTo : ( id )
       description : returns true if this connection connects to resource of id
 
-    remove()
-      description : remove the connection from two resources.
+    remove( option )
+      description : remove the connection from two resources. Optional parameter `option` will be passed.
+      `option.reason` will provided when the connection is removed due to one of its target is being removed.
 
 
 

@@ -1,6 +1,63 @@
 define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#############################
+	#  canvas
+	#############################
+
+	canvasData = () ->
+		console.log 'canvasData'
+
+		# new design flow
+		# data = $.extend true, {}, Design.instance().serialize()
+
+		# old design flow
+		data = $.extend true, {}, MC.canvas_data
+
+		data : ->
+			data
+
+		save : ( data ) ->
+
+			# new design flow
+			# Design.instance().save data
+
+			# old design flow
+			MC.canvas_data = $.extend true, {}, data
+
+		set : ( key, value ) ->
+
+			# new design flow
+			# Design.instance().set key, value
+
+			# old design flow
+			MC.canvas_data[ key ] = value
+
+		get : ( key ) ->
+
+			# new design flow
+			# Design.instance().get key
+
+			# old design flow
+			data[ key ]
+
+		isModified : ->
+			Design.instance().isModified()
+
+		origin : ( origin_data ) ->
+
+			if _.isEmpty origin_data
+
+				# get
+				console.log 'get origin', MC.data.origin_canvas_data
+				MC.data.origin_canvas_data
+
+			else
+
+				# set
+				console.log 'set origin', origin_data
+				MC.data.origin_canvas_data = $.extend true, {}, origin_data
+
+	#############################
 	#  core
 	#############################
 
@@ -17,27 +74,6 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			i++
 
 		str
-
-	canvasData = () ->
-		console.log 'canvasData'
-
-		# new design flow
-		# data = $.extend true, {}, Design.instance().serialize()
-
-		# old design flow
-		data = $.extend true, {}, MC.canvas_data
-
-		data : ->
-			data
-
-		id   : ->
-			data.id
-
-		name : ->
-			data.name
-
-		save : ( data ) ->
-			MC.canvas_data = $.extend true, {}, data
 
 	isCurrentTab = ( tab_id ) ->
 		console.log 'isCurrentTab', tab_id

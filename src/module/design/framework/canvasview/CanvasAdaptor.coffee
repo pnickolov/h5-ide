@@ -151,6 +151,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
         when res_type.AWS_VPC_RouteTable        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
         when res_type.AWS_ELB                   then info = l.CVS_MSG_WARN_NOTMATCH_ELB
         when res_type.AWS_VPC_CustomerGateway   then info = l.CVS_MSG_WARN_NOTMATCH_CGW
+        when res_type.AWS_AutoScaling_Group     then info = "Asg must be dragged to a subnet."
 
       notification 'warning', info , false
       null

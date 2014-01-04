@@ -512,6 +512,8 @@ define [ 'event',
 
             # remove empty dict item
 
+            that = this
+
             $currentInputElem = $(event.currentTarget)
 
             $currentDictItemContainer = $currentInputElem.parents('.parameter-container')
@@ -1066,7 +1068,15 @@ define [ 'event',
 
             $inputElem = $(inputElem)
 
-            return $inputElem.val()
+            result = ''
+            content = $inputElem.val()
+
+            if $inputElem.hasClass('line')
+                result = content.split('\n')[0]
+            else
+                result = content
+
+            return result
 
             # blockMap = {
             #     address:1,

@@ -50,7 +50,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     ++ Class Method ++
 
-    isConnectable()
+    isConnectable( comp1, comp2 )
       description : This method is used to determine if user can create a line between two resources.
   ###
 
@@ -100,7 +100,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
 
       # Call super constructor
-      ResourceModel.call(this, attr)
+      ResourceModel.call(this, attr, option)
 
 
       # The line wants to destroy itslef after init

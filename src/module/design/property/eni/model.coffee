@@ -22,18 +22,24 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 				isAppEdit       : @isAppEdit
 				isGroupMode     : @isGroupMode
 				attached        : component.connections("EniAttachment").length > 0
-				ips             : component.getIpArray()
 			}
 
-			data.ips[0].unDeletable = true
-
-			if @isAppEdit
-				data.ips[0].editable = false
-
 			@set data
+			@getIpList()
 
 			if @isAppEdit
 				@getEniGroup( uid )
+			null
+
+		getIpList : ()->
+			ips = Design.instance().component( @get("uid") ).getIpArray()
+
+			ips[0].unDeletable = true
+
+			if @isAppEdit
+				ips[0].editable = false
+
+			@set "ips", ips
 			null
 
 		setEniDesc : ( value ) ->

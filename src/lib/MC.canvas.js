@@ -5166,11 +5166,7 @@ MC.canvas.event.ctrlMove = {
 
 MC.canvas.event.EIPstatus = function ()
 {
-	$canvas.trigger("CANVAS_EIP_STATE_CHANGE", {
-		'id': this.parentNode.id,
-		'eip_state': this.getAttribute('data-eip-state')
-	});
-
+	$canvas( this.parentNode.id ).toggleEip()
 	return false;
 };
 

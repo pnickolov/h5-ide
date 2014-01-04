@@ -76,6 +76,22 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       true
 
+    setPrimaryEip : ( toggle )->
+      eni = @getEmbedEni()
+      if eni
+        eni.setPrimaryEip( toggle )
+      else
+        @set("hasEip", toggle)
+
+      @draw()
+
+    hasPrimaryEip : ()->
+      eni = @getEmbedEni()
+      if eni
+        eni.hasPrimaryEip()
+      else
+        @get("hasEip")
+
     setCount : ( count )->
       @set "count", count
 
@@ -227,7 +243,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           }),
 
           # Eip
-          Canvon.image( "", 53, 47, 12, 14).attr({'class':'eip-status'}),
+          Canvon.image( "", 53, 47, 12, 14).attr({
+            'id': @id + "_eip_status"
+            'class':'eip-status'
+          }),
 
           # Child number
           Canvon.group().append(
@@ -320,9 +339,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       MC.canvas.update( @id, "text", "hostname", @get("name") )
 
       # Update EIP
-      eni = @getEmbedEni()
-      if eni
-        CanvasManager.update node.children(".eip-status"), @getEmbedEni().eipIconUrl(), "href"
+      CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
+
       # TODO : Update Instance status
 
   }, {

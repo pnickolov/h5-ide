@@ -285,6 +285,24 @@ define [], ()->
 
         document.getElementById( "line_layer" ).appendChild( svg_line[0] )
       null
+
+      updateEip : ( node, toggle )->
+        if node.length then node = node[0]
+
+        if toggle
+          tootipStr = 'Associate Elastic IP to primary IP'
+          imgUrl    = 'ide/icon/eip-on.png'
+        else
+          tootipStr = 'Detach Elastic IP from primary IP'
+          imgUrl    = 'ide/icon/eip-off.png'
+
+        node.setAttribute "data-tooltip", tootipStr
+        node.setAttribute "tooltip", tootipStr
+
+        this.update( node, imgUrl, "href" )
+
+        null
+
   }
 
   CanvasManager

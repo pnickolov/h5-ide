@@ -212,6 +212,20 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         }
     cns
 
+  CanvasElement.prototype.toggleEip = ()->
+    comp = Design.instance().component( this.id )
+    if not comp.setPrimaryEip then return
+
+    toggle = !comp.hasPrimaryEip()
+
+    comp.setPrimaryEip( toggle )
+
+    if toggle
+      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
+
+    ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+    null
+
   CanvasElement.prototype.asgExpand = ( parentId, x, y )->
     # This method contains some logic to determine if the ASG is expandab
     comp   = Design.instance().component( @id )

@@ -83,6 +83,11 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         @get("ips").length = ipCount
       null
 
+    setPrimaryEip : ( toggle )->
+      @get("ips")[0].hasEip = toggle
+      @draw()
+      null
+
     hasPrimaryEip : ()->
       @get("ips")[0].hasEip
 
@@ -218,12 +223,6 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
       "ide/icon/eni-canvas-#{state}.png"
 
-    eipIconUrl : ()->
-      if @hasPrimaryEip()
-        'ide/icon/eip-on.png'
-      else
-        'ide/icon/eip-off.png'
-
     draw : ( isCreate )->
 
       if @embedInstance()
@@ -247,7 +246,10 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         })
 
         node.append(
-          Canvon.image( "", 44,37,12,14 ).attr({'class':'eip-status'}),
+          Canvon.image( "", 44,37,12,14 ).attr({
+            'id': @id + "_eip_status"
+            'class':'eip-status'
+          }),
 
           # Left Port
           Canvon.path(MC.canvas.PATH_D_PORT2).attr({
@@ -332,7 +334,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         CanvasManager.toggle numberGroup, false
 
       # Update EIP
-      CanvasManager.update node.children(".eip-status"), @eipIconUrl(), "href"
+      CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
 
   }, {
 
@@ -342,13 +344,16 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
       # deserialize EIP
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-        eni      = resolve( MC.extractID( data.resource.NetworkInterfaceId ) )
-        eipIndex = data.resource.PrivateIpAddress.split(".")[3]
-        ipObj    = eni.get("ips")[ eipIndex ]
+        if data.resource.InstanceId
+          resolve( MC.extractID( data.resource.InstanceId ) ).setPrimaryEip( true )
+        else
+          eni      = resolve( MC.extractID( data.resource.NetworkInterfaceId ) )
+          eipIndex = data.resource.PrivateIpAddress.split(".")[3]
+          ipObj    = eni.get("ips")[ eipIndex ]
 
-        # Update IpObject's Eip status.
-        ipObj.hasEip = true
-        ipObj.eipId  = data.uid
+          # Update IpObject's Eip status.
+          ipObj.hasEip = true
+          ipObj.eipId  = data.uid
         return
 
 

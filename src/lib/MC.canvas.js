@@ -4319,6 +4319,7 @@ MC.canvas.event.siderbarDrag = {
 				match_place,
 				default_group_size,
 				new_node,
+				vpc_id,
 				vpc_item,
 				vpc_coordinate,
 				areaChild,
@@ -4332,7 +4333,7 @@ MC.canvas.event.siderbarDrag = {
 
 					if (target_type === 'AWS.VPC.InternetGateway' || target_type === 'AWS.VPC.VPNGateway')
 					{
-						var vpc_id = $('.AWS-VPC-VPC').attr('id')
+						vpc_id = $('.AWS-VPC-VPC').attr('id');
 						vpc_item = $canvas( vpc_id );
 						vpc_coordinate = vpc_item.position();
 						vpc_size = vpc_item.size();
@@ -4440,6 +4441,7 @@ MC.canvas.event.siderbarDrag = {
 							node_option.groupUId = match_place.target;
 
 							new_node_id = $canvas.add(target_type, node_option, coordinate);
+							
 							if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
 							{
 								//has no vpc

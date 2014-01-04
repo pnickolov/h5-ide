@@ -8,6 +8,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
       y        : 0
       width    : 8
       height   : 8
+      name     : "Internet-gateway"
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 

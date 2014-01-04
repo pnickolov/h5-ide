@@ -25,7 +25,7 @@ define [ '../base/view',
         render     : () ->
             @$el.html( template( @model.attributes ) )
 
-            @refreshIPList()
+            @refreshIpList()
 
             $("#prop-appedit-eni-list").html list_template @model.attributes
 
@@ -44,7 +44,7 @@ define [ '../base/view',
                 return
 
             @model.addIp()
-            @refreshIPList()
+            @refreshIpList()
             null
 
         setEip : ( event ) ->
@@ -86,7 +86,7 @@ define [ '../base/view',
             @model.setIp $target.index(), ip, autoAssign
             null
 
-        refreshIPList : ( event ) ->
+        refreshIpList : ( event ) ->
             $( '#property-eni-list' ).html( MC.template.propertyIpList( @model.attributes.ips ) )
             @updateIPAddBtnState()
 

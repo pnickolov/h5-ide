@@ -10,6 +10,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       height   : 10
       bgpAsn   : ""
 
+    newNameTmpl : "customer-gateway-"
+
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
     isDynamic : ()->

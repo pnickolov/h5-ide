@@ -3599,6 +3599,8 @@ MC.canvas.event.dragable = {
 
 				MC.canvas.select( target_id );
 				MC.canvas.volume.close();
+
+				MC.canvas.event.nodeState(target_id);
 			}
 		}
 		else
@@ -5495,6 +5497,8 @@ MC.canvas.event.ctrlMove = {
 			'mousemove': MC.canvas.event.ctrlMove.mousemove,
 			'mouseup': MC.canvas.event.ctrlMove.mouseup
 		});
+
+		return false;
 	}
 };
 
@@ -5626,6 +5630,8 @@ MC.canvas.event.clearSelected = function (event)
 
 	Canvon('#svg_canvas .view-show').removeClass('view-show');
 
+	$('#node-state-wrap').remove();
+
 	MC.canvas_property.selected_node = [];
 };
 
@@ -5638,6 +5644,46 @@ MC.canvas.event.clickBlank = function (event)
 	}
 
 	return true;
+};
+
+MC.canvas.event.nodeState = function (id)
+{
+	var canvas_status = MC.canvas.getState(),
+		target = $('#' + id),
+		target_type = target.data('class'),
+		offset = target[0].getBoundingClientRect(),
+		canvas_offset = $('#svg_canvas').offset();
+
+	if (
+		(
+			canvas_status === 'stack' ||
+			canvas_status === 'appedit'
+		)
+		&&
+		(
+			target_type === 'AWS.EC2.Instance' ||
+			target_type === 'AWS.AutoScaling.LaunchConfiguration'
+		)
+	)
+	{
+		$('#canvas_container').append( MC.template.nodeState() );
+
+		$('#node-state-wrap')
+			.css({
+				'left': offset.left - canvas_offset.left + offset.width + 5,
+				'top': offset.top - canvas_offset.top
+			})
+
+			.on('mousedown', function (event)
+			{
+				event.stopImmediatePropagation();
+
+				console.info(id);
+				//stateeditor.loadModule(MC.canvas_data, id);
+
+				return false;
+			});
+	}
 };
 
 MC.canvas.keypressed = [];

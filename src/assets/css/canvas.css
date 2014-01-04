@@ -1153,3 +1153,48 @@
 .volume-status-error{
 	fill: red;
 }
+
+#node-state-wrap {
+	background-image: -ms-linear-gradient(top, #666666 0%, #000000 100%);
+	background-image: -moz-linear-gradient(top, #666666 0%, #000000 100%);
+	background-image: -o-linear-gradient(top, #666666 0%, #000000 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #666666), color-stop(1, #000000));
+	background-image: -webkit-linear-gradient(top, #666666 0%, #000000 100%);
+	background-image: linear-gradient(to bottom, #666666 0%, #000000 100%);
+
+	border-radius: 2px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	z-index: 60;
+	height: 25px;
+
+	cursor: pointer;
+}
+
+#node-state-wrap:hover {
+	background-image: -ms-linear-gradient(top, #888888 0%, #000000 100%);
+	background-image: -moz-linear-gradient(top, #888888 0%, #000000 100%);
+	background-image: -o-linear-gradient(top, #888888 0%, #000000 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #888888), color-stop(1, #000000));
+	background-image: -webkit-linear-gradient(top, #888888 0%, #000000 100%);
+	background-image: linear-gradient(to bottom, #888888 0%, #000000 100%);
+}
+
+#node-state-icon {
+	width: 10px;
+	height: 10px;
+	display: block;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	background: #fff;
+	border-radius: 5px;
+}
+
+#node-state-number {
+	margin-left: 25px;
+	padding: 7px;
+	color: #fff;
+	font-size: 12px;
+	display: block;
+}

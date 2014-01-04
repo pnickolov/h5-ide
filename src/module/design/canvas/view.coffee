@@ -84,9 +84,9 @@ define [ 'event', 'canvas_layout', 'constant',
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
 
             # stateeditor modal
-            if component and component.type in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
+            # if component and component.type in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
 
-                stateeditor.loadModule(MC.canvas_data, uid)
+            #     stateeditor.loadModule(MC.canvas_data, uid)
 
             null
 

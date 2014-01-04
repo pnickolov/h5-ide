@@ -82,9 +82,15 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     comp1 = Design.instance().component( p1 )
     comp2 = Design.instance().component( p2 )
 
-    if C.isConnectable( comp1, comp2 )
+    res = C.isConnectable( comp1, comp2 )
+
+    if _.isString( res )
+      notification "error", res
+    else if res is true
       new C( comp1, comp2 )
-    null
+      return true
+
+    false
 
   $canvas.connection = ( uid )->
     if uid
@@ -108,7 +114,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       return lineArray.uid
     else
       return lineArray
-
 
   # CanvasEvent is used to deal with the event that will trigger by MC.canvas.js
   CanvasEvent = {

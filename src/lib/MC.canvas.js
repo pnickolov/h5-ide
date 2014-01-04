@@ -1503,6 +1503,8 @@ MC.canvas = {
 			target_type = target_item.type,
 			node_type = target_item.nodeType,
 
+			connection_stack = [],
+
 			group_child,
 			group_coordinate,
 			group_offsetX,
@@ -1510,7 +1512,8 @@ MC.canvas = {
 
 			group_size,
 
-			connection_stack = [];
+			node_item,
+			node_coordinate;
 
 		if (node_type === 'node')
 		{
@@ -1538,8 +1541,8 @@ MC.canvas = {
 			{
 				child_type = item.getAttribute('data-type');
 
-				var node_item = $canvas( item.id ),
-					node_coordinate = node_item.position();
+				node_item = $canvas( item.id );
+				node_coordinate = node_item.position();
 
 				node_item.position(node_coordinate[0] + group_offsetX, node_coordinate[1] + group_offsetY);
 

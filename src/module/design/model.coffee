@@ -37,6 +37,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 else
                     #TO-DO
+
+                # new design flow
+                MC.canvas_data  = MC.forge.other.getCanvasData()
                 #
                 ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
 
@@ -47,6 +50,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 console.log 'APP_INFO_RETURN'
 
                 app_id = result.param[4][0]
+
+                # new design flow
+                MC.canvas_data  = MC.forge.other.getCanvasData()
 
                 # update canvas_data when on current tab
                 if app_id == MC.canvas_data.id
@@ -258,12 +264,6 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         getAppResourcesService : ( region, app_id )->
             console.log 'getAppResourcesService', region, app_id
-            #me = this
-            #current_tab = ''
-
-            #app_name = MC.forge.app.getNameById app_id
-            #notification 'info', sprintf lang.ide.TOOL_MSG_INFO_APP_REFRESH_START, app_name
-
             app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
@@ -273,6 +273,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             me = this
 
             ami_list = []
+
+            # new design flow
+            MC.canvas_data  = MC.forge.other.getCanvasData()
 
             _.each MC.canvas_data.component, (compObj) ->
 
@@ -307,6 +310,9 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             region          = result.param[3]
             resource_source = result.resolved_data
 
+            # new design flow
+            MC.canvas_data  = MC.forge.other.getCanvasData()
+
             if resource_source
                 #clear old app data in MC.data.resource_list
                 MC.forge.app.clearResourceInCache MC.canvas_data
@@ -315,12 +321,17 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #
                 @describeInstancesOfASG region
 
+            # old design flow
             #update instance icon of app
             MC.aws.instance.updateStateIcon app_id
             MC.aws.asg.updateASGCount app_id
             MC.aws.eni.updateServerGroupState app_id
             #update deleted resource style
             MC.forge.app.updateDeletedResourceState MC.canvas_data
+            # old design flow
+
+            # new design flow
+            #Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             #re-draw connection
             MC.canvas_data.layout.connection = {}
@@ -331,6 +342,10 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             uid = $canvas.selected_node()[0]
             if uid
                 MC.canvas.select uid
+
+
+            # new design flow
+            MC.canvas_data = MC.forge.other.getCanvasData()
 
             # re-set origin_data
             @setOriginData MC.canvas_data

@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, ConnectionModel, lang )->
 
   # Elb <==> Subnet
   ConnectionModel.extend {
@@ -19,6 +19,30 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           type : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
       }
     ]
+
+    isRemovable : ()->
+      elb    = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+      subnet = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+
+      # 1. Find out if any child of this subnet connects to the elb
+      elbTargets = elb.connectionTargets( "ElbAmiAsso" )
+      for child in subnet.children()
+        if elbTargets.indexOf( child ) isnt -1
+          connected = true
+          break
+
+      if not connected then return true
+
+      # 2. Find out if there's other subnet in my az connects to the elb
+      connected = false
+      for sb in elb.connectionTargets( "ElbSubnetAsso" )
+        if sb.parent() is subnet.parent()
+          connected = true
+          break
+
+      if connected then return true
+
+      return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
   }
 
   # Elb <==> Ami

@@ -95,10 +95,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   }
 
   Design.EVENT = {
+    # Events that will trigger using Design.trigger
     AddResource    : "ADD_RESOURCE"
     RemoveResource : "REMOVE_RESOURCE"
+    Deserialized   : "DESERIALIZED"
 
-    Deserialized : "DESERIALIZED"
+    # Events that will trigger using Design.instance().trigger
+    AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
   }
 
 
@@ -381,17 +384,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__modelClassMap[ type ]
 
   DesignImpl.prototype.get = ( key )-> @attributes[key]
+  DesignImpl.prototype.set = ( key, value )->
+    @attributes[key] = value
+    null
 
   DesignImpl.prototype.region = ()-> @.__region
   DesignImpl.prototype.mode   = ()->
     console.warn("Better not to use Design.instance().mode() directly.")
     this.__mode
 
-  DesignImpl.prototype.type   = ()->
-    console.warn("Better not to use Design.instance().type() directly.")
-    this.__type
-
-
+  DesignImpl.prototype.type   = ()-> this.__type
   DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
@@ -456,38 +458,46 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     return this.attributes
     ######################
 
-    json_data   = {}
+    # json_data   = {}
 
-    connections = []
-    mockArray   = []
+    # connections = []
+    # mockArray   = []
 
-    # ResourceModel can only add json component.
-    for uid, comp of @__componentMap
-      if comp.node_line
-        connections.push comp
-        continue
+    # # ResourceModel can only add json component.
+    # for uid, comp of @__componentMap
+    #   if comp.node_line
+    #     connections.push comp
+    #     continue
 
-      json = comp.serialize()
-      if not json
-        continue
+    #   json = comp.serialize()
+    #   if not json
+    #     continue
 
-      # Make json to be an array
-      if not _.isArray( json )
-        mockArray[0] = json
-        json = mockArray
+    #   # Make json to be an array
+    #   if not _.isArray( json )
+    #     mockArray[0] = json
+    #     json = mockArray
 
-      for j in json
-        console.assert( j.uid, "Serialized JSON data has no uid." )
-        console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
-        json_data[ j.uid ] = j
+    #   for j in json
+    #     console.assert( j.uid, "Serialized JSON data has no uid." )
+    #     console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
+    #     json_data[ j.uid ] = j
 
-    # Connection
-    for c in connections
-      c.serialize( json_data )
+    # # Connection
+    # for c in connections
+    #   c.serialize( json_data )
 
-    json_data
+    # json_data
 
 
   DesignImpl.prototype.serializeLayout = ()->
+
+
+  _.extend DesignImpl.prototype, Backbone.Events
+  DesignImpl.prototype.on = ( event )->
+    if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
+      return
+
+    Backbone.Events.on.apply( this, arguments )
 
   Design

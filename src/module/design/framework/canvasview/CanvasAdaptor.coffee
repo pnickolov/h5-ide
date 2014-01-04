@@ -75,12 +75,12 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     return { id : m.id }
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
-    C = Design.modelClassForPorts( port1, port2 )
+    C = Design.modelClassForPorts( p1Name, p2Name )
 
-    console.assert( C, "Cannot found Class for type: #{type}" )
+    console.assert( C, "Cannot found Class for type: #{p1Name}>#{p2Name}" )
 
-    comp1 = @component( p1Uid )
-    comp2 = @component( p2Uid )
+    comp1 = Design.instance().component( p1 )
+    comp2 = Design.instance().component( p2 )
 
     if C.isConnectable( comp1, comp2 )
       new C( comp1, comp2 )

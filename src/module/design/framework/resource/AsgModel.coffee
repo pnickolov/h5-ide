@@ -9,7 +9,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
       if TopicModel.allObjects().length is 0
         new TopicModel()
-
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -39,6 +38,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   }
 
 
+
+
+
   ExpandedAsgModel = ComplexResModel.extend {
 
     type : "ExpandedAsg"
@@ -53,14 +55,49 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       height      : 13
       originalAsg : null
 
+    constructor : ( attributes, options )->
+      console.assert( attributes.parent and attributes.originalAsg, "Invalid parameter for expanding asg" )
+
+      # If the originalAsg has been expanded to the same parent.
+      # Then we do not create the ExpandAsg
+      for expanded in attributes.originalAsg.get("expandedList")
+        if expanded.parent is attributes.parent
+          return
+
+      # Call Superclass's consctructor to finish creating the ExpandAsg
+      ComplexResModel.call( this, attributes, options )
+      null
+
+
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
+
+      #listen state update event
+      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
+
       null
 
     amiIconUrl : ()->
       lc = @get("originalAsg").get("lc")
 
       if lc then lc.iconUrl() else "ide/ami/ami-not-available.png"
+
+    disconnect : ( cn )->
+      if cn.type isnt "ElbAmiAsso" then return
+
+      asg = @get("originalAsg")
+      expandedList = asg.get("expandedList")
+      # Need to temperory detach ExpandedAsg from original asg's expandedList
+      # Because, we are going to remove originalAsg's LC's connection.
+      # Which will affect all the expandedList
+      expandedList.splice( expandedList.indexOf(@), 1 )
+
+      ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
+      lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ))
+      lcAsso.remove()
+
+      expandedList.push( @ )
+      null
 
     draw : ( isCreate )->
 
@@ -158,6 +195,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   }
 
 
+
+
+
+
   Model = GroupModel.extend {
 
     defaults : ()->
@@ -222,9 +263,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     addScalingPolicy : ( policy )->
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )
-
-      for elb in @get("lc").connectionTargets("ElbAmiAsso")
-          @updateExpandedAsgAsso( elb, true )
       null
 
     __removeScalingPolicy : ( policy )->
@@ -232,6 +270,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       @get("policies").splice( @get("policies").indexOf(policy), 1 )
       null
 
+    # Use this method to see if Asg's healthCheckType is EC2 or not.
+    # Do not use `@get("healthCheckType") is "EC2"`
     isEC2HealthCheckType : ()->
       lc = @get("lc")
       if lc and lc.connections("ElbAmiAsso").length and @get("healthCheckType") is "ELB"
@@ -240,13 +280,19 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       return true
 
     remove : ()->
+      # Remove ExpandedAsg
       for asg in @get("expandedList")
         asg.off() # Need to off() first, because we are listening to expandedAsg.
         asg.remove()
 
+      # Remove Policies
       for p in @get("policies")
         p.off()
         p.remove()
+
+      # Remove Notification
+      if @get("notification")
+        @get("notification").remove()
       null
 
     __addExpandedAsg : ( expandedAsg )->

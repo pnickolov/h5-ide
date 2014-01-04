@@ -26,15 +26,42 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
     initialize : ( attr, option )->
       # Create an embed eni
-      if Design.instance().typeIsVpc()
-        if not ( option and option.createEni is false )
+
+      if not ( option and option.isCreate is false )
+        #create mode => no option or option.isCreate==true
+
+        #assign DefaultKP
+        KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+        defaultKp = KpModel.getDefaultKP()
+        if defaultKp
+          defaultKp.assignTo( this )
+        else
+          console.error "No DefaultKP found when initialize InstanceModel"
+
+        if Design.instance().typeIsClassic()
+          #assign DefaultSG
+          SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+          defaultSg = SgModel.getDefaultSg()
+          if defaultSg
+            SgAsso = Design.modelClassForType( "SgAsso" )
+            new SgAsso( this, defaultSg )
+          else
+            console.error "No DefaultSG found when initialize InstanceModel"
+
+        else if Design.instance().typeIsVpc()
+          #create eni0
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
           @setEmbedEni( new EniModel({}, { instance: this }) )
 
-        vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
-        if vpc and not vpc.isDefaultTenancy()
-          @setTenancy( "dedicated" )
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      if vpc and not vpc.isDefaultTenancy()
+        @setTenancy( "dedicated" )
+
+      #listen state update event
+      Design.instance().on Design.EVENT.AwsResourceUpdated, _.bind( @draw, @ )
+
       null
+
 
     setCount : ( count )->
       @set "count", count
@@ -323,7 +350,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       else
         attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
-      model = new Model( attr, { createEni : false } )
+      model = new Model( attr, { isCreate : false } ) # isCreate=false when deserialize
 
       # Add Keypair
       resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )

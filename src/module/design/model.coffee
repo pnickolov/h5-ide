@@ -323,7 +323,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.canvas.reDrawSgLine()
 
             #update property panel
-            uid = MC.canvas_property.selected_node[0]
+            uid = $canvas.selected_node()[0]
             if uid
                 MC.canvas.select uid
 

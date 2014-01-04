@@ -147,6 +147,11 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         getCanvasData : () ->
             console.log 'getCanvasData'
             #MC.canvas_data
+
+            # new design flow
+            #$.extend true, {}, Design.instance().serialize()
+
+            # old design flow
             $.extend true, {}, MC.canvas_data
 
         setPropertyPanel : ( property_panel ) ->

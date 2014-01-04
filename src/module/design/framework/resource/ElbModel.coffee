@@ -47,7 +47,7 @@ define [ "CanvasManager",
 
       ComplexResModel.call this, attr, option
 
-      if dontCreateSg isnt true
+      if dontCreateSg isnt true and Design.isntance().typeIsClassic()
         sg = new SgModel({
           name : @get("name")+"-sg"
           description : "Automatically created SG for load-balancer"

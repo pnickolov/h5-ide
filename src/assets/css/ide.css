@@ -3275,26 +3275,19 @@ a.sidebar-hider {
 }
 
 .resource-list > li {
-	display: inline-block;
-	position: relative;
 	float: left;
 }
 
 .resource-item {
-	width: 70px;
-	margin: 0 8px 8px 0;
+	width: 60px;
+	margin: 0 5px 7px 0;
 	border-radius: 4px;
 	cursor: pointer;
 	padding: 5px;
-	box-sizing: border-box;
 
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
-}
-
-.firefox .resource-item {
-	width: 60px;
 }
 
 .resource-item:hover {

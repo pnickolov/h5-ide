@@ -79,10 +79,15 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
 
     remove : ()->
       # Remove connection
-      connections = this.attributes.__connections
-      if connections
-        for c in connections
-          c.remove( { reason : this } )
+      reason = { reason : this }
+      cns    = @attributes.__connections
+
+      if cns
+        while cns.length
+          # Removing connection of this Resource might cause other connections of this
+          # resource get removed. So, we always check if the connection is not empty.
+          cns[ cns.length - 1 ].remove( reason )
+          cns.length = cns.length - 1
 
       # Remove element in SVG
       if @draw

@@ -1578,18 +1578,18 @@ define [ 'constant',
 
 
 		#after drag component from resource panel to canvas
-		_findMainRT : () ->
-			resource_type = constant.AWS_RESOURCE_TYPE
-			for key, value of MC.canvas_data.component
-					if value.type isnt resource_type.AWS_VPC_RouteTable
-						continue
+		# _findMainRT : () ->
+		# 	resource_type = constant.AWS_RESOURCE_TYPE
+		# 	for key, value of MC.canvas_data.component
+		# 			if value.type isnt resource_type.AWS_VPC_RouteTable
+		# 				continue
 
-					if not value.resource.AssociationSet.length
-						continue
+		# 			if not value.resource.AssociationSet.length
+		# 				continue
 
-					if "" + value.resource.AssociationSet[0].Main is 'true'
-						return key
-			null
+		# 			if "" + value.resource.AssociationSet[0].Main is 'true'
+		# 				return key
+		# 	null
 
 		createComponent : ( event, uid ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
@@ -1630,48 +1630,48 @@ define [ 'constant',
 						subnetUID = subnetUIDRef.split('.')[0].slice(1)
 						MC.aws.subnet.updateAllENIIPList(subnetUID, true)
 
-				when resource_type.AWS_ELB
-					MC.aws.elb.init(uid)
+				# when resource_type.AWS_ELB
+				# 	MC.aws.elb.init(uid)
 
-				when resource_type.AWS_VPC_InternetGateway
-					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
+				# when resource_type.AWS_VPC_InternetGateway
+					# ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 					# Automatically connect IGW and main RT
 					# Coommented out, because we don't need to add the route anymore.
 					# line_id = MC.canvas.connect uid, "igw-tgt", this._findMainRT(), 'rtb-tgt'
 					# this.createLine null, line_id
 
-				when resource_type.AWS_VPC_VPNGateway
-					ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
+				# when resource_type.AWS_VPC_VPNGateway
+					# ide_event.trigger ide_event.DISABLE_RESOURCE_ITEM, componentType
 
-				when resource_type.AWS_VPC_Subnet
-					# Connect to main RT
-					line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
+				# when resource_type.AWS_VPC_Subnet
+				# 	# Connect to main RT
+				# 	line_id = MC.canvas.connect uid, "subnet-assoc-out", this._findMainRT(), 'rtb-src'
 
-					# Associate to default acl
-					defaultACLComp = MC.aws.acl.getDefaultACL()
-					MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
+				# 	# Associate to default acl
+				# 	defaultACLComp = MC.aws.acl.getDefaultACL()
+				# 	MC.aws.acl.addAssociationToACL uid, defaultACLComp.uid
 
-					# select subnet
-					if MC.canvas_data.component[uid].autoCreate
-						MC.canvas.select(uid)
-						delete MC.canvas_data.component[uid].autoCreate
+				# 	# select subnet
+				# 	if MC.canvas_data.component[uid].autoCreate
+				# 		MC.canvas.select(uid)
+				# 		delete MC.canvas_data.component[uid].autoCreate
 
-				when resource_type.AWS_AutoScaling_Group
-					if MC.canvas_data.layout.component.group[uid].originalId
-						asg_comp = MC.canvas_data.component[MC.canvas_data.layout.component.group[uid].originalId]
-						if asg_comp and asg_comp.resource.LoadBalancerNames.length > 0
-							$.each asg_comp.resource.LoadBalancerNames, (idx, loadbalancername)->
-								lb_uid = loadbalancername.split('.')[0].slice(1)
-								MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
+				# when resource_type.AWS_AutoScaling_Group
+				# 	if MC.canvas_data.layout.component.group[uid].originalId
+				# 		asg_comp = MC.canvas_data.component[MC.canvas_data.layout.component.group[uid].originalId]
+				# 		if asg_comp and asg_comp.resource.LoadBalancerNames.length > 0
+				# 			$.each asg_comp.resource.LoadBalancerNames, (idx, loadbalancername)->
+				# 				lb_uid = loadbalancername.split('.')[0].slice(1)
+				# 				MC.canvas.connect($("#"+lb_uid), 'elb-sg-out', $("#"+uid), 'launchconfig-sg')
 
-			if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
-				ide_event.trigger ide_event.REDRAW_SG_LINE
+			# if componentType in [resource_type.AWS_AutoScaling_Group, resource_type.AWS_VPC_NetworkInterface, resource_type.AWS_EC2_Instance, resource_type.AWS_ELB]
+			# 	ide_event.trigger ide_event.REDRAW_SG_LINE
 
 			#update sg color label when create component(instance, elb, eni)
-			if componentType in [resource_type.AWS_EC2_Instance, resource_type.AWS_ELB, resource_type.AWS_VPC_NetworkInterface]
-				MC.aws.sg.updateSGColorLabel uid
+			# if componentType in [resource_type.AWS_EC2_Instance, resource_type.AWS_ELB, resource_type.AWS_VPC_NetworkInterface]
+			# 	MC.aws.sg.updateSGColorLabel uid
 
-			console.log "Morris : #{componentType}"
+			# console.log "Morris : #{componentType}"
 
 		# setEip : ( uid, state ) ->
 

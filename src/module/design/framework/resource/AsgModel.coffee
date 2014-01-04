@@ -361,7 +361,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 21, 0, 22, 21).attr({
             'class'        : 'asg-resource-dragger tooltip'
             'data-tooltip' : 'Expand the group by drag-and-drop in other availability zone.'
-            'id'           : @id + '_asg_resource_dragger'
           }),
 
           # prompt
@@ -391,8 +390,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
         @__drawExpandedAsg()
 
-
-      CanvasManager.toggle( node.children(".prompt_text"), !@get("lc") )
+      hasLC = !!@get("lc")
+      CanvasManager.toggle( node.children(".prompt_text"), !hasLC )
+      CanvasManager.toggle( node.children(".asg-resource-dragger"), hasLC )
       null
 
   }, {

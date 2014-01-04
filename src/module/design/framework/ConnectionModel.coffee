@@ -178,6 +178,8 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     remove : ( option )->
 
+      if @isRemoved() then return
+
       if option and option.reason
         # If the connection is removed because a resource is removed, that resource's disconnect will not be called
         if @__port1Comp isnt option.reason

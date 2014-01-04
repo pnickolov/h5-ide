@@ -75,7 +75,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         connection.addRoute( r )
 
       # Set propagating
-      connection.setPropagate propagating
+      if propagating isnt undefined
+        connection.setPropagate propagating
       null
 
     iconUrl : ()->

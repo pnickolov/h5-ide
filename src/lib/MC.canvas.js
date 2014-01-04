@@ -3,7 +3,7 @@
 #* MC.canvas
 #* Description: Canvas logic core
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 

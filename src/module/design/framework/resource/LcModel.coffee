@@ -19,6 +19,11 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
+    initialize : ()->
+      KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      KpModel.getDefaultKP().assignTo( this )
+      null
+
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
 
     iconUrl : ()->

@@ -65,14 +65,22 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     null
 
   $canvas.add = ( type, attributes, coordinate )->
-    Model = Design.modelClassForType type
     attributes.x = coordinate.x
     attributes.y = coordinate.y
-    attributes.parent = Design.__instance.component( attributes.groupUId )
+    parent = Design.__instance.component( attributes.groupUId )
+
+    attributes.parent = parent
     delete attributes.groupUId
 
+    if parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+      attributes.x = parent.x() + 2
+      attributes.y = parent.y() + 3
+      type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+
+    Model = Design.modelClassForType type
+
     m = new Model( attributes )
-    return { id : m.id }
+    return m.id
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
     C = Design.modelClassForPorts( p1Name, p2Name )

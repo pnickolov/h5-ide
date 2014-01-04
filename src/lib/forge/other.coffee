@@ -18,14 +18,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 		str
 
-    getCanvasData : () ->
-        console.log 'getCanvasData'
+	getCanvasData = () ->
+		console.log 'getCanvasData'
 
-        # new design flow
-        #$.extend true, {}, Design.instance().serialize()
+		# new design flow
+		#$.extend true, {}, Design.instance().serialize()
 
-        # old design flow
-        $.extend true, {}, MC.canvas_data
+		# old design flow
+		$.extend true, {}, MC.canvas_data
 
 	isCurrentTab = ( tab_id ) ->
 		console.log 'isCurrentTab', tab_id

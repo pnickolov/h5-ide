@@ -1,6 +1,9 @@
 
 define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
+  __detailExtend = Backbone.Model.extend
+
+  ### env:dev ###
   __checkEventOnUsage = ( protoProps )->
     ### jshint -W083 ###
     for propName, prop of protoProps
@@ -18,6 +21,39 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         break
     ### jshint +W083 ###
     null
+
+  __detailExtend = ( protoProps, staticProps )->
+    ### jshint -W061 ###
+
+    parent = this
+
+    funcName = protoProps.type.replace(/\./g, "_")
+    childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
+
+    if protoProps and protoProps.hasOwnProperty "constructor"
+      cstr = protoProps.constructor
+    else
+      cstr = ()-> return parent.apply( this, arguments )
+
+    child = childSpawner( cstr )
+
+    _.extend(child, parent, staticProps);
+
+    funcName = "PROTO_" + funcName
+    prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
+
+    Surrogate = prototypeSpawner( child )
+    Surrogate.prototype = parent.prototype
+    child.prototype = new Surrogate()
+
+    if protoProps
+      _.extend(child.prototype, protoProps)
+
+    child.__super__ = parent.prototype
+    ### jshint +W061 ###
+
+    child
+  ### env:dev:end ###
 
   ###
     -------------------------------
@@ -264,7 +300,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     destroy : ()-> @remove()
 
     remove : ()->
-      console.debug "Removing #{@type} resource : #{@get('name')}", this
+      console.debug "Removing resource : #{@get('name')}", this
 
       # Clean up reference
       design = Design.instance()
@@ -357,7 +393,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       protoProps.classId = _.uniqueId("dfc_")
 
       # Create subclass
-      subClass = Backbone.Model.extend.call( this, protoProps, staticProps )
+      subClass = __detailExtend.call( this, protoProps, staticProps )
 
       # Register this class, so that Design knows this class can handle resources.
       if not handleTypes then handleTypes = protoProps.type

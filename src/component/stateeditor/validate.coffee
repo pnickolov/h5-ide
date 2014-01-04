@@ -14,6 +14,7 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
 
         # 'required', 'stateAllowed'
         command: ( val, param, elem, represent ) ->
+            val = Helper.trim val
             map = param.dataMap
 
             if not @required val
@@ -49,6 +50,8 @@ define [ 'jquery', 'underscore', 'MC', 'UI.errortip' ], () ->
     Helper =
         getAllowCommands: ( map ) ->
             _.keys map
+        trim: ( val ) ->
+            $.trim val
 
     Action =
 

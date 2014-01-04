@@ -101,7 +101,6 @@ define [ 'underscore', 'backbone' ], () ->
         #APPEDIT_UPDATE_ERROR  : 'APPEDIT_UPDATE_ERROR'
 
         # User Input Change Event
-        NEED_IGW               : 'NEED_IGW'
         ENABLE_RESOURCE_ITEM   : 'ENABLE_RESOURCE_ITEM'
         DISABLE_RESOURCE_ITEM  : 'DISABLE_RESOURCE_ITEM'
 

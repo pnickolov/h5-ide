@@ -66,7 +66,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             # Trigger an event to tell canvas that we want an IGW
             if not value and Design.instance().typeIsVpc()
-                ide_event.trigger ide_event.NEED_IGW
+                Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
             null
 
         setElbCrossAZ : ( value )->

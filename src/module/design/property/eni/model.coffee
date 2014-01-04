@@ -47,6 +47,9 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 		attachEip : ( eip_index, attach ) ->
 			Design.instance().component( @get("uid") ).setIp( eip_index, null, null, attach )
 			this.attributes.ips[ eip_index ].hasEip = attach
+
+			if attach
+				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
 			null
 
 		removeIp : ( index ) ->

@@ -68,6 +68,26 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
 
   }, {
 
+    tryCreateIgw : ()->
+      if Model.allObjects().length > 0 then return
+
+      notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG
+      resource_type = constant.AWS_RESOURCE_TYPE
+
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
+      igwW = Model.prototype.defaults.width
+      igwH = Model.prototype.defaults.height
+      vpcX = vpc.x()
+      vpcY = vpc.y()
+      vpcH = vpc.height()
+
+      new IgwModel({
+        x : vpcX - igwW / 2
+        y : vpcY + ( vpcH - igwH ) / 2
+      })
+      null
+
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
     deserialize : ( data, layout_data, resolve )->

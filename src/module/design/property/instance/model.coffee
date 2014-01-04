@@ -141,6 +141,9 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 		attachEip : ( eip_index, attach ) ->
 			Design.instance().component( @get("uid") ).getEmbedEni().setIp( eip_index, null, null, attach )
 			@attributes.eni.ips[ eip_index ].hasEip = attach
+
+			if attach
+				Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
 			null
 
 		removeIp : ( index ) ->

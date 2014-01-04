@@ -54,11 +54,22 @@ define [ "constant",
         RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
         new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
+    isReparentable : ( newParent )->
+      for child in @children()
+        if child.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and child.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          continue
+
+        for attach in child.connectionTargets( "EniAttachment" )
+          if attach.parent() isnt this
+            return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+
+      true
 
     isRemovable : ()->
-      if @connections("ElbSubnetAsso")
+      if @connections("ElbSubnetAsso").length > 0
         return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
+      true
 
     draw : ( isCreate )->
 

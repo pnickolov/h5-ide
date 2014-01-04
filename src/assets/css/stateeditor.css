@@ -166,6 +166,18 @@ body {
 	margin-bottom: 30px;
 }
 
+/* *************************************** ace editor */
+
+#state-editor .ace_hidden-cursors {
+    opacity: 0;
+}
+#state-editor .ace_scroller {
+    margin-top: 3px;
+}
+#state-editor .ace_autocomplete .ace_scroller {
+    margin-top: 0px;
+}
+
 /* *************************************** editable-area */
 
 #state-editor .editable-area {
@@ -173,7 +185,7 @@ body {
 	border: 1px solid #bbb;
 	width: 100%;
 	outline: 0px solid transparent;
-	padding: 4px;
+	padding: 5px;
 	margin-bottom: 5px;
 	margin-right: 5px;
 }
@@ -192,7 +204,7 @@ body {
 #state-editor .editable-area.line {
 	white-space: nowrap !important;
 	display: inline !important;
-	height: 16px !important;
+	height: 15px !important;
 	line-height: 17px !important;
 	padding-top: 3px !important;
 	overflow: hidden !important;
@@ -212,14 +224,14 @@ body {
 	opacity: 1.0 !important;
 }
 
-#state-editor .editable-area.line br {
+/*#state-editor .editable-area.line br {
 	display: none !important;
 }
 
 #state-editor .editable-area.line * {
 	display: inline !important;
 	white-space: nowrap !important;
-}
+}*/
 
 #state-editor .editable-area.text {
 	height: 200px;

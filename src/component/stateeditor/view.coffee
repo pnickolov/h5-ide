@@ -26,9 +26,9 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
 
-            'paste .editable-area': 'onPasteInput'
-            'drop .editable-area': 'onPasteInput'
-            'blur .editable-area': 'onBlurInput'
+            # 'paste .editable-area': 'onPasteInput'
+            # 'drop .editable-area': 'onPasteInput'
+            # 'blur .editable-area': 'onBlurInput'
 
         initialize: () ->
 
@@ -188,7 +188,7 @@ define [ 'event',
 
             $cmdValueElem = $stateItem.find('.state-edit .command-value')
             cmdValue = that.getPlainText($cmdValueElem)
-            that.setPlainText($cmdViewValueElem, cmdValue)
+            $cmdViewValueElem.text(cmdValue)
 
             paraListViewRenderAry = []
 
@@ -289,21 +289,26 @@ define [ 'event',
             cmdNameAry = _.keys(that.cmdParaMap)
 
             cmdNameAry = _.map cmdNameAry, (value, i) ->
-                return {'name': value}
+                return {
+                    'name': value,
+                    'value': value
+                }
 
-            $cmdValueItem.atwho({
-                at: '',
-                tpl: that.paraCompleteItemHTML
-                data: cmdNameAry,
-                onSelected: (value) ->
-                    $that = $(this)
-                    $stateItem = $that.parents('.state-item')
-                    $stateItem.attr('data-command', value)
-                    that.refreshDescription(value)
-                    $paraListElem = $stateItem.find('.parameter-list')
-                    that.refreshParaList($paraListElem, value)
-                    that.refreshStateView($stateItem)
-            })
+            # $cmdValueItem.atwho({
+            #     at: '',
+            #     tpl: that.paraCompleteItemHTML
+            #     data: cmdNameAry,
+            #     onSelected: (value) ->
+            #         $that = $(this)
+            #         $stateItem = $that.parents('.state-item')
+            #         $stateItem.attr('data-command', value)
+            #         that.refreshDescription(value)
+            #         $paraListElem = $stateItem.find('.parameter-list')
+            #         that.refreshParaList($paraListElem, value)
+            #         that.refreshStateView($stateItem)
+            # })
+
+            that.initCodeEditor($cmdValueItem[0], cmdNameAry)
 
         bindParaListEvent: ($paraListElem, currentCMD) ->
 
@@ -351,45 +356,57 @@ define [ 'event',
                     data: that.refObjAry
                 }
 
-                if paraOptionAry
-                    $valueInput.atwho({
-                        at: '',
-                        tpl: that.paraCompleteItemHTML
-                        data: paraOptionAry
-                    })
+                # if paraOptionAry
+                #     that.initCodeEditor($valueInput[0], paraOptionAry)
+                    # $valueInput.atwho({
+                    #     at: '',
+                    #     tpl: that.paraCompleteItemHTML
+                    #     data: paraOptionAry
+                    # })
 
-                $keyInput.atwho(atwhoOption)
-                $valueInput.atwho(atwhoOption)
+                that.initCodeEditor($keyInput[0], that.refObjAry)
+                that.initCodeEditor($valueInput[0], that.refObjAry)
+                # $keyInput.atwho(atwhoOption)
+                # $valueInput.atwho(atwhoOption)
 
             else if paraType in ['line', 'text', 'array', 'state']
                 $inputElem = $paraItem.find('.parameter-value')
 
-                if paraOptionAry
-                    $inputElem.atwho({
-                        at: '',
-                        tpl: that.paraCompleteItemHTML
-                        data: paraOptionAry
-                    })
+                that.initCodeEditor($inputElem[0], paraOptionAry)
 
-                $inputElem.atwho({
-                    at: '@',
-                    tpl: that.paraCompleteItemHTML
-                    data: that.refObjAry
-                })
+                # if paraOptionAry
+                    # $inputElem.atwho({
+                    #     at: '',
+                    #     tpl: that.paraCompleteItemHTML
+                    #     data: paraOptionAry
+                    # })
+
+                # $inputElem.atwho({
+                #     at: '@',
+                #     tpl: that.paraCompleteItemHTML
+                #     data: that.refObjAry
+                # })
 
             else if paraType is 'bool'
                 $inputElem = $paraItem.find('.parameter-value')
-                $inputElem.atwho({
-                    at: '',
-                    tpl: that.paraCompleteItemHTML
-                    data: [{
-                        name: 'true',
-                        value: 'true'
-                    }, {
-                        name: 'false',
-                        value: 'false'
-                    }]
-                })
+                that.initCodeEditor($inputElem[0], [{
+                    name: 'true',
+                    value: 'true'
+                }, {
+                    name: 'false',
+                    value: 'false'
+                }])
+                # $inputElem.atwho({
+                #     at: '',
+                #     tpl: that.paraCompleteItemHTML
+                #     data: [{
+                #         name: 'true',
+                #         value: 'true'
+                #     }, {
+                #         name: 'false',
+                #         value: 'false'
+                #     }]
+                # })
 
         refreshDescription: (cmdName) ->
 
@@ -586,7 +603,7 @@ define [ 'event',
                 if paraObj and paraObj.default isnt undefined
                     defaultValue = String(paraObj.default)
                     if not currentValue and defaultValue and not $currentInput.hasClass('key')
-                        $currentInput.html(defaultValue)
+                        that.setPlainText($currentInput, defaultValue)
 
             # refresh module description
 
@@ -957,7 +974,66 @@ define [ 'event',
             $parentElem = $currentElem.parents('.editable-area')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area')
-                $('.editable-area').blur()
+                editor = $('.editable-area').data('editor')
+                editor.blur()
+
+        initCodeEditor: (editorElem, dataAry) ->
+
+            that = this
+            $editorElem = $(editorElem)
+            editor = ace.edit(editorElem)
+            langTools = ace.require("ace/ext/language_tools")
+            # editor.setTheme("ace/theme/monokai")
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                maxLines: 1,
+                showGutter: false,
+                highlightGutterLine: false,
+                showPrintMargin: false,
+                highlightActiveLine: false,
+                highlightSelectedWord: false
+            })
+            editor.renderer.setPadding(4)
+            editor.setBehavioursEnabled(false)
+            editor.commands.on("afterExec", (e) ->
+                # currentValue = editor.getValue()
+                # if e.command.name is "insertstring" and /^@$/.test(e.args)
+                #      editor.execCommand("startAutocomplete")
+                # if e.command.name is "backspace"
+                    # editor.execCommand("startAutocomplete")
+                if e.command.name is "autocomplete_confirm"
+
+                    if $editorElem.hasClass('command-value')
+                        value = e.args
+                        $stateItem = $editorElem.parents('.state-item')
+                        $stateItem.attr('data-command', value)
+                        that.refreshDescription(value)
+                        $paraListElem = $stateItem.find('.parameter-list')
+                        that.refreshParaList($paraListElem, value)
+                        that.refreshStateView($stateItem)
+                    
+            )
+            editor.on("focus", (e) ->
+                currentValue = editor.getValue()
+                # if not currentValue
+                editor.execCommand("startAutocomplete")
+            )
+            langTools.addCompleter({
+                getCompletions: (editor, session, pos, prefix, callback) ->
+                    if dataAry and dataAry.length
+                        callback(null, dataAry.map((ea) ->
+                            return {
+                                name: ea.name,
+                                value: ea.value,
+                                score: ea.value,
+                                meta: "command"
+                            }
+                        ))
+                    else
+                        callback(null, [])
+            })
+
+            $editorElem.data('editor', editor)
 
         getRepresent: ( inputElem ) ->
             $input = $ inputElem
@@ -973,8 +1049,6 @@ define [ 'event',
                 represent = $stateItem.find ".state-toolbar [data-para-#{paramName}]"
 
             represent
-
-
 
         getParaObjByInput: ( inputElem ) ->
 
@@ -1014,148 +1088,18 @@ define [ 'event',
 
             retVal
 
-        getPlainTxt: (inputElem) ->
-
-            $inputElem = $(inputElem)
-            $conentElemAry = $inputElem.children()
-            resultStr = ''
-
-            $conentElemAry.each (index, item) ->
-
-                $item  = $(item)
-                $item.each(index, values) ->
-                    $values = $(values)
-                    resultStr += $values.html().replace( /<span>/igm, '' )
-                                             .replace( /<\/span>/igm, '' )
-                                             .replace( /<span contenteditable="true">/igm, '' )
-                                             .replace( /<span contenteditable="true" class="atwho-view-flag atwho-view-flag-@">/igm, '' )
-                                             .replace( /&lt;/igm, '<' )
-                                             .replace( /&gt;/igm, '>' )
-                                             .replace( /<br>/igm, '\n' )
-                                             .replace( /&nbsp;/igm, ' ' )
-            resultStr
-
-        setPlainTxt : ( str ) ->
-            console.log 'setPlainTxt', str
-
-            new_str = str.replace( /</igm, '&lt;' )
-                         .replace( />/igm, '&gt;' )
-                         .replace( /\n/igm, '<br>' )
-                         .replace( /\s+/igm, '&nbsp;' )
-
-            console.log 'new_str', new_str
-            new_str
-
-        onPasteInput: (event) ->
-
-            that = this
-
-            inputElem = event.currentTarget
-            $inputElem = $(inputElem)
-
-            setTimeout(() ->
-                allElem = $inputElem.find('*:not(span.Apple-tab-span)')
-                $(allElem).removeAttr('style')
-                # textContent = that.getPlainText($inputElem)
-                # that.setPlainText(inputElem, textContent)
-            , 1)
-
-        onBlurInput: (event) ->
-
-            that = this
-
-            inputElem = event.currentTarget
-            $inputElem = $(inputElem)
-
-            textContent = that.getPlainText($inputElem)
-            that.setPlainText(inputElem, textContent)
-
         getPlainText: (inputElem) ->
 
             $inputElem = $(inputElem)
-
-            result = ''
-            content = $inputElem.val()
-
-            if $inputElem.hasClass('line')
-                result = content.split('\n')[0]
-            else
-                result = content
-
-            return result
-
-            # blockMap = {
-            #     address:1,
-            #     blockquote:1,
-            #     center:1,
-            #     dir:1,
-            #     div:1,
-            #     dl:1,
-            #     dt:1,
-            #     dd:1,
-            #     fieldset:1,
-            #     form:1,
-            #     h1:1,
-            #     h2:1,
-            #     h3:1,
-            #     h4:1,
-            #     h5:1,
-            #     h6:1,
-            #     hr:1,
-            #     isindex:1,
-            #     menu:1,
-            #     noframes:1,
-            #     ol:1,
-            #     p:1,
-            #     pre:1,
-            #     table:1,
-            #     ul:1
-            # }
-
-            # getStr = (htmlElem) ->
-
-            #     $htmlElem = $(htmlElem)
-
-            #     htmlContent = $htmlElem.contents()
-
-            #     _.each htmlContent, (elemItem, idx) ->
-
-            #         $elemItem = $(elemItem)
-            #         tagName = elemItem.nodeName.toLowerCase()
-            #         elemText = $elemItem.text()
-
-            #         if tagName is '#text'
-            #             resultStr += elemText
-            #         else
-            #             getStr(elemItem)
-
-            #         # if blockMap[tagName] and elemText
-            #         #     resultStr += '\n'
-
-            #         if tagName is 'br'
-            #             resultStr += '\n'
-
-            #         null
-
-            # resultStr = ''
-
-            # getStr(inputElem)
-
-            # return resultStr
+            editor = $inputElem.data('editor')
+            return editor.getValue()
 
         setPlainText: (inputElem, content) ->
 
             $inputElem = $(inputElem)
+            editor = $inputElem.data('editor')
+            editor.setValue(content)
 
-            $inputElem.val(content)
-
-            # newContent = $('<div/>').text(content).html()
-            # newContent = newContent.replace(/\n/igm, '<br>')
-            # newContent = newContent.replace(/\t/igm, '<span class="Apple-tab-span" style="white-space:pre"> </span>')
-
-            # $inputElem.html(newContent)
-
-            null
     }
 
 

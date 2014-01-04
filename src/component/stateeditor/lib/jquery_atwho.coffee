@@ -32,7 +32,7 @@
       this.listen()
 
     controller: (at) ->
-      @controllers[@alias_maps[at] || at || @current_flag || '']
+      @controllers[@alias_maps[at] || at || @current_flag]
 
     set_context_for: (at) ->
       @current_flag = at
@@ -69,15 +69,7 @@
 
     dispatch: ->
       $.map @controllers, (c) =>
-        data = c.get_opt('data')
-        content = c.content()
-        haveComplete = false
-        _.each data, (dataObj) ->
-          if dataObj.name is content and content
-            haveComplete = true
-          null
-        if not haveComplete
-          this.set_context_for c.at if c.look_up()
+        this.set_context_for c.at if c.look_up()
 
     on_keyup: (e) ->
       switch e.keyCode
@@ -105,7 +97,7 @@
         when KEY_CODE.DOWN
           e.preventDefault()
           view.next()
-        when KEY_CODE.ENTER
+        when KEY_CODE.TAB, KEY_CODE.ENTER
           return if not view.visible()
           e.preventDefault()
           view.choose()
@@ -187,17 +179,15 @@
     catch_query: ->
       content = this.content()
       caret_pos = @$inputor.caret('pos')
-      subtext = content.slice(0, caret_pos)
+      subtext = content.slice(0,caret_pos)
 
       query = this.callbacks("matcher").call(this, @at, subtext, this.get_opt('start_with_space'))
       if typeof query is "string" and query.length <= this.get_opt('max_len', 20)
         start = caret_pos - query.length
-        if not caret_pos
-          start = 0
         end = start + query.length
-        @pos = query.length
+        @pos = start
         query = {'text': query.toLowerCase(), 'head_pos': start, 'end_pos': end}
-        # this.trigger "matched", [@at, query.text]
+        this.trigger "matched", [@at, query.text]
       else
         @view.hide()
 
@@ -207,26 +197,17 @@
     #
     # @return [Hash] the offset which look likes this: {top: y, left: x, bottom: bottom}
     rect: ->
-      c = @$inputor.caret('offset', @pos)
+      return if not c = @$inputor.caret('offset', @pos - 1)
       c = (@cur_rect ||= c) || c if @$inputor.attr('contentEditable') == 'true'
       scale_bottom = if document.selection then 0 else 2
-      leftPos = 0
-      if @at then leftPos = c.left
-      else
-        leftPos = @$inputor.offset().left
-        topPos = @$inputor.offset().top
-        c = {
-          top: topPos,
-          height: @$inputor.height() + 6,
-          bottom: topPos
-        }
-      {left: leftPos, top: c.top, bottom: c.top + c.height + scale_bottom}
+      {left: c.left, top: c.top, bottom: c.top + c.height + scale_bottom}
 
     reset_rect: ->
       @cur_rect = null if @$inputor.attr('contentEditable') == 'true'
 
     mark_range: ->
-      @range = this.get_range() || this.get_ie_range()
+      @range = this.get_range()
+      @ie_range = this.get_ie_range()
 
     clear_range: ->
       @range = null
@@ -235,7 +216,7 @@
       @range || (window.getSelection().getRangeAt(0) if window.getSelection)
 
     get_ie_range: ->
-      @range || (document.selection.createRange() if document.selection)
+      @ie_range || (document.selection.createRange() if document.selection)
 
     insert_content_for: ($li) ->
       data_value = $li.data('value')
@@ -254,11 +235,8 @@
 
       if $inputor.attr('contentEditable') == 'true'
         class_name = "atwho-view-flag atwho-view-flag-#{this.get_opt('alias') || @at}"
-        if this.get_opt('at')
-          content_node = "#{content}<span contenteditable='true'>&nbsp;<span>"
-        else
-          content_node = "#{content}"
-        insert_node = "<span contenteditable='true' class='#{class_name}'>#{content_node}</span>"
+        content_node = "#{content}<span contenteditable='false'>&nbsp;<span>"
+        insert_node = "<span contenteditable='false' class='#{class_name}'>#{content_node}</span>"
         $insert_node = $(insert_node).data('atwho-data-item', $li.data('item-data'))
         if document.selection
           $insert_node = $("<span contenteditable='true'></span>").html($insert_node)
@@ -269,20 +247,13 @@
         content = '' + content
         source = $inputor.val()
         start_str = source.slice 0, Math.max(@query.head_pos - @at.length, 0)
-        suffixStr = ""
-        if this.get_opt('at')
-          suffixStr = "#{source.slice @query['end_pos'] || 0}"
-        text = "#{start_str}#{content}#{suffixStr}"
+        text = "#{start_str}#{content} #{source.slice @query['end_pos'] || 0}"
         $inputor.val text
-        $inputor.caret 'pos',start_str.length + content.length
+        $inputor.caret 'pos',start_str.length + content.length + 1
       else if range = this.get_range()
         pos = range.startOffset - (@query.end_pos - @query.head_pos) - @at.length
-        if this.get_opt('at')
-          range.setStart(range.endContainer, Math.max(pos,0))
-          range.setEnd(range.endContainer, range.endOffset)
-        else
-          range.setStart(range.endContainer, 0)
-          range.setEnd(range.endContainer, Math.max($inputor.text().length, 0))
+        range.setStart(range.endContainer, Math.max(pos,0))
+        range.setEnd(range.endContainer, range.endOffset)
         range.deleteContents()
         range.insertNode($insert_node[0])
         range.collapse(false)
@@ -294,7 +265,7 @@
         #       to make it work batter.
         # REF:  http://stackoverflow.com/questions/15535933/ie-html1114-error-with-custom-cleditor-button?answertab=votes#tab-top
         range.moveStart('character', @query.end_pos - @query.head_pos - @at.length)
-        range.pasteHTML($insert_node[0])
+        range.pasteHTML(content_node)
         range.collapse(false)
         range.select()
       $inputor.focus()
@@ -311,11 +282,7 @@
     # Searching!
     look_up: ->
       return if not (query = this.catch_query())
-      _callback = (data) ->
-        if data and data.length > 0
-          this.render_view data
-        else
-          @view.hide()
+      _callback = (data) -> if data and data.length > 0 then this.render_view data else @view.hide()
       @model.query query.text, $.proxy(_callback, this)
       query
 
@@ -437,33 +404,15 @@
       next = cur.next()
       next = @$el.find('li:first') if not next.length
       next.addClass 'cur'
-      this.adjustScroll()
 
     prev: ->
       cur = @$el.find('.cur').removeClass('cur')
       prev = cur.prev()
       prev = @$el.find('li:last') if not prev.length
       prev.addClass 'cur'
-      this.adjustScroll()
-
-    adjustScroll: ->
-      container = @$el.find('.atwho-view-ul')
-      cur = container.find('.cur')
-      heightDelta = cur.outerHeight()
-      containerHeight = container.height()
-      offsetTop = cur[0].offsetTop
-      upperBound = container.scrollTop()
-      lowerBound = upperBound + containerHeight - heightDelta
-      if (offsetTop < upperBound)
-          container.scrollTop(offsetTop)
-      else if (offsetTop > lowerBound)
-          container.scrollTop(offsetTop - containerHeight + heightDelta)
 
     show: ->
-      if @context.get_opt('at')
-        $('.atwho-view').hide()
-      if not this.visible()
-        @$el.show()
+      @$el.show() if not this.visible()
       this.reposition(rect) if rect = @context.rect()
 
     hide: (time) ->
@@ -533,14 +482,11 @@
     # @return [String | null] Matched result.
     matcher: (flag, subtext, should_start_with_space) ->
       # escape RegExp
-      subtext = subtext.replace(/\u00a0/g, ' ')
       flag = flag.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
       flag = '(?:^|\\s)' + flag if should_start_with_space
-      # regexp = new RegExp flag+'([A-Za-z0-9_\+\-\{\}]*)$','gi'
-      regexp = new RegExp flag + '([\\w\\d\\{\\}\\.\\ ]*)$', 'gi'
+      regexp = new RegExp flag+'([A-Za-z0-9_\+\-]*)$|'+flag+'([^\\x00-\\xff]*)$','gi'
       match = regexp.exec subtext
-      # if match then match[2] || match[1] else null
-      if match then match[1] else null
+      if match then match[2] || match[1] else null
 
     # ---------------------
 
@@ -604,7 +550,7 @@
     # @return [String] highlighted string.
     highlighter: (li, query) ->
       return li if not query
-      regexp = new RegExp(">\\s*([\\w\\d\\{\\}\\.\\ ]*)(" + query.replace("+","\\+") + ")([\\w\\d\\{\\}\\.\\ ]*)\\s*<", 'ig')
+      regexp = new RegExp(">\\s*(\\w*)(" + query.replace("+","\\+") + ")(\\w*)\\s*<", 'ig')
       li.replace regexp, (str, $1, $2, $3) -> '> '+$1+'<strong>' + $2 + '</strong>'+$3+' <'
 
     # What to do before inserting item's value into inputor.
@@ -662,7 +608,7 @@
     result || this
 
   $.fn.atwho.default =
-    at: ''
+    at: undefined
     alias: undefined
     data: null
     tpl: "<li data-value='${atwho-at}${name}'>${name}</li>"

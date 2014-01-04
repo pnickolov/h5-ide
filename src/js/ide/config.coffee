@@ -158,6 +158,8 @@ require.config {
 		'jquery_caret'       : 'component/stateeditor/lib/jquery_caret'
 		'jquery_atwho'       : 'component/stateeditor/lib/jquery_atwho'
 		'jquery_markdown'    : 'component/stateeditor/lib/jquery_markdown'
+		'ace'                : 'component/stateeditor/lib/ace/ace'
+		'ace_ext_language_tools' : 'component/stateeditor/lib/ace/ext-language_tools'
 		'stateeditor'        : 'component/stateeditor/main'
 		'stateeditor_view'   : 'component/stateeditor/view'
 		'stateeditor_model'  : 'component/stateeditor/model'
@@ -414,6 +416,9 @@ require.config {
 
 		'jquery_markdown' :
 			deps       : [ 'jquery', 'MC' ]
+
+		'ace_ext_language_tools' :
+			deps       : [ 'ace' ]
 
 		'stateeditor'  :
 			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]

@@ -2,7 +2,7 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', 'UI.modal', 'jquery_caret', 'jquery_atwho', 'jquery_markdown' ], ( ide_event ) ->
+define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_caret', 'jquery_atwho', 'jquery_markdown' ], ( ide_event ) ->
 
     #private
     loadModule = ( canvas_data, uid ) ->

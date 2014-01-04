@@ -58,11 +58,19 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         new SgAsso( defaultSg, this )
       null
 
-    isReparentable : ()->
-      if @connectionTargets( "EniAttachment" ).length > 0
+    isReparentable : ( newParent )->
+      if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        if newParent.parent() isnt @parent().parent()
+          check = true
+      else
+        check = true
+
+      # If changing the parent results in changing Instance's AZ, then
+      # We need to check if there's connected Eni to this Instance.
+      if check and @connectionTargets("EniAttachment").length > 0
         return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 
-      return false
+      true
 
     # isVisual() is used by CanavasAdaptor to determine this is a node is visually
     # in the canvas.

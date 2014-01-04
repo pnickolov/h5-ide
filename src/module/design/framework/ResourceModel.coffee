@@ -37,7 +37,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     child = childSpawner( cstr )
 
-    _.extend(child, parent, staticProps);
+    _.extend(child, parent, staticProps)
 
     funcName = "PROTO_" + funcName
     prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )

@@ -54,11 +54,34 @@ define [ "constant",
         RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
         new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
+    isReparentable : ( newParent )->
+      for child in @children()
+        if child.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and child.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          continue
+
+        for attach in child.connectionTargets( "EniAttachment" )
+          if attach.parent() isnt this
+            return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+
+      true
 
     isRemovable : ()->
-      if @connections("ElbSubnetAsso")
+      if @connections("ElbSubnetAsso").length > 0
         return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 
+      true
+
+    onParentChanged : ()->
+      # When subnet is moved to another AZ. If this subnet connects to an Elb, which connects to target AZ's subnet. Then disconnect from the Elb.
+      elbAsso = @connections("ElbSubnetAsso")[0]
+      if not elbAsso then return
+
+      for sb in elbAsso.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB).connectionTargets("ElbSubnetAsso")
+        if sb.parent() is @parent()
+          # Disconnect
+          elbAsso.remove()
+          return
+      null
 
     draw : ( isCreate )->
 

@@ -20,8 +20,10 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
       null
 
     isRemovable : ()->
-      # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
-      sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
+      if @children().length > 0
+        # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
+        return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
+      true
 
     draw : ( isCreate ) ->
 

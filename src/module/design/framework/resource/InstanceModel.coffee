@@ -82,6 +82,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       true
 
+    connect : ( cn )->
+      if cn.type is "EniAttachment"
+        # Disable auto assign public ip when connects to another eni.
+        eni = @getEmbedEni()
+        if eni then eni.set("assoPublicIp", false)
+
     setPrimaryEip : ( toggle )->
       eni = @getEmbedEni()
       if eni
@@ -127,6 +133,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         return MC.data.config[ Design.instance().region() ].instance_type[ t[0] ][ t[1] ]
 
       return null
+
+    getMaxEniCount : ()->
+      config = @getInstanceTypeConfig()
+      if config then config = config.eni
+
+      config or 16
 
 
     isEbsOptimizedEnabled : ()->

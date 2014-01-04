@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, ConnectionModel, lang )->
 
   C = ConnectionModel.extend {
 
@@ -43,8 +43,40 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
   }, {
     isConnectable : ( p1Comp, p2Comp )->
-      # Instance and Eni should be in the same subnet or az
-      p1Comp.parent() is p2Comp.parent()
+      p1p = p1Comp.parent()
+      p2p = p2Comp.parent()
+      if p1p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        p1p = p1p.parent()
+        p2p = p2p.parent()
+
+      # Instance and Eni should be in the same az
+      if p1p isnt p2p then return false
+
+      # If instance has automaticAssignPublicIp. Then ask the user to comfirm
+      if p1Comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        instance = p1Comp
+        eni      = p2Comp
+      else
+        instance = p2Comp
+        eni      = p1Comp
+
+
+      maxEniCount = instance.getMaxEniCount()
+      # Instance have an embed eni
+      if instance.connections( "EniAttachment" ).length + 1 >= maxEniCount
+        return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
+
+
+      if instance.getEmbedEni().get("assoPublicIp") is true
+        return {
+          confirm : MC.template.modalAttachingEni({
+            host : instance.get("name")
+            eni  : eni.get("name")
+          })
+          action  : "Attach and Remove Public IP"
+        }
+
+      true
   }
 
   C

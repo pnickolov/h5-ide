@@ -97,6 +97,11 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     else if res is true
       new C( comp1, comp2 )
       return true
+    else if res is false
+      return false
+    else if res.confirm
+      modal MC.template.modalCanvasConfirm( res ), true
+      $("#canvas-op-confirm").one "click", ()-> new C( comp1, comp2 )
 
     false
 

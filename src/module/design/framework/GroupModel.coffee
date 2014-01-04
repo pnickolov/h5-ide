@@ -7,8 +7,6 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
     type       : "Framework_G"
 
     remove : ()->
-      console.debug "GroupModel.remove, Removing Children"
-
       # Remove children
       if @attributes.__children
         for child in @attributes.__children

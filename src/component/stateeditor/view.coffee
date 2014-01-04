@@ -666,16 +666,13 @@ define [ 'event',
 
                 value = that.getPlainText elem
                 param = that.getParaObjByInput elem
-                represent = null
-
-                if $( elem ).is ':hidden'
-                    represent = that.getRepresent elem
+                represent = that.getRepresent elem
 
                 validate value, param, elem, represent
 
             validateFailed = ( e ) ->
                 result = doValidate e.currentTarget
-                if result
+                if not result
                     $( e.currentTarget ).off 'keyup.validate'
 
             bindValidateFailed = ( elem ) ->
@@ -688,10 +685,13 @@ define [ 'event',
             else
                 $editor= @$stateList.find '.editable-area'
                 elems = $editor.toArray()
-                result = _.every elems, ( e ) ->
-                    result = doValidate e
-                    if not result
+                result = true
+                _.each elems, ( e ) ->
+                    res = doValidate e
+                    if res
                         bindValidateFailed e
+                        if result
+                            result = false
 
                     result
 
@@ -962,15 +962,15 @@ define [ 'event',
         getRepresent: ( inputElem ) ->
             $input = $ inputElem
             $stateItem = $input.closest '.state-item'
-            $stateToolbar = $stateItem.prev '.state-toolbar'
+            #$stateToolbar = $stateItem.prev '.state-toolbar'
 
             if $input.hasClass 'command-value'
-                represent = $stateToolbar.find '.command-view-value'
+                represent = $stateItem.find '.state-toolbar .command-view-value'
             else
                 $paraItem = $input.closest('.parameter-item')
                 paramName = $paraItem.data('paraName')
 
-                represent = $stateToolbar.find "[data-para-#{paramName}]"
+                represent = $stateItem.find ".state-toolbar [data-para-#{paramName}]"
 
             represent
 
@@ -997,13 +997,19 @@ define [ 'event',
                 command = $stateItem.data('command')
 
                 currentParaMap = that.cmdParaObjMap[command]
-                params = currentParaMap[paramName]
+                constraint = currentParaMap[paramName]
+
+                if $inputElem.hasClass 'key'
+                    subType = 'key'
+                else if $inputElem.hasClass 'value'
+                    subType = 'value'
 
                 retVal =
                     type: type
+                    subType: subType
                     command: command
                     paramName: paramName
-                    params: params
+                    constraint: constraint
                     dataMap: that.cmdParaObjMap
 
             retVal
@@ -1146,7 +1152,7 @@ define [ 'event',
             # newContent = $('<div/>').text(content).html()
             # newContent = newContent.replace(/\n/igm, '<br>')
             # newContent = newContent.replace(/\t/igm, '<span class="Apple-tab-span" style="white-space:pre"> </span>')
-            
+
             # $inputElem.html(newContent)
 
             null

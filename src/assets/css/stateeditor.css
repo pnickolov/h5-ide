@@ -492,7 +492,7 @@ body {
 	background: none;
 }
 
-.parsley-error[contenteditable="true"] {
+.parsley-error {
 	border: 1px solid #ec3c38 !important;
 	background-color: #fad6cf !important;
 }

@@ -33,6 +33,9 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
     connectionTargets : ( typeString )->
         description : The same as connections, except the array holds targets connceted to this.
 
+    onParentChanged : ()->
+        description : If this method is defined, it will be called after the Model's parent is changed.
+
   ###
 
   ComplexResModel = ResourceModel.extend {

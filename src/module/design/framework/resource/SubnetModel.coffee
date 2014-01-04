@@ -71,6 +71,18 @@ define [ "constant",
 
       true
 
+    onParentChanged : ()->
+      # When subnet is moved to another AZ. If this subnet connects to an Elb, which connects to target AZ's subnet. Then disconnect from the Elb.
+      elbAsso = @connections("ElbSubnetAsso")[0]
+      if not elbAsso then return
+
+      for sb in elbAsso.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB).connectionTargets("ElbSubnetAsso")
+        if sb.parent() is @parent()
+          # Disconnect
+          elbAsso.remove()
+          return
+      null
+
     draw : ( isCreate )->
 
       label = "#{@get('name')} (#{ @get('cidr')})"

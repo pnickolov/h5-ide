@@ -24,9 +24,6 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
     isRemovable   : ()->
         description : When user press delete key in canvas, canvas will ask if the object can be removed. If isRemovable returns a string, it will treat it as a warning, if the string starts with '!', it is a infomation for not allowing the user to delete
 
-    isConnectable : ( targetComp, selfPort, targetPort )->
-        description : When user wants to connect a target. This method will be called
-
     connections : ( typeString )->
         description : returns an array of connections. Can be filter by typeString
 
@@ -68,8 +65,6 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       if @draw and Design.instance().shouldDraw()
         @draw true
       null
-
-    isConnectable : ( targetComp, selfPort, targetPort )-> false
 
     setName : ( name )->
       if @get("name") is name

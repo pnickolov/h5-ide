@@ -21,6 +21,8 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
 
       # Remove from old parent
       oldParent = child.parent()
+      if oldParent is this then return
+
       if oldParent
         oldParent.removeChild( child )
 

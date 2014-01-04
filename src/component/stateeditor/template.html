@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div class="state-edit">
-			<textarea class="command-value editable-area line" contenteditable="true">{{cmd_value}}</textarea>
+			<input class="command-value editable-area line">{{cmd_value}}</input>
 			<div class="parameter-list">
 				{{> state-template-para-list}}
 			</div>
@@ -32,7 +32,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<textarea class="parameter-value editable-area line" contenteditable="true">{{para_value}}</textarea>
+				<input class="parameter-value editable-area line">{{para_value}}</input>
 			</div>
 		</div>
 	{{/if}}
@@ -68,7 +68,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<textarea class="parameter-value editable-area line" contenteditable="true">{{para_value}}</textarea>
+				<input class="parameter-value editable-area line">{{para_value}}</input>
 			</div>
 		</div>
 	{{/if}}
@@ -80,7 +80,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<textarea class="parameter-value editable-area text" contenteditable="true" id="xxxxx">{{para_value}}</textarea>
+				<textarea class="parameter-value editable-area text" id="xxxxx">{{para_value}}</textarea>
 			</div>
 		</div>
 	{{/if}}
@@ -92,7 +92,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<textarea class="parameter-value editable-area line" contenteditable="true">{{para_value}}</textarea>
+				<input class="parameter-value editable-area line">{{para_value}}</input>
 			</div>
 		</div>
 	{{/if}}
@@ -149,14 +149,14 @@
 <!-- state-template-para-dict-item -->
 {{#each para_value}}
 	<div class="parameter-dict-item">
-		<textarea class="parameter-value editable-area line key" contenteditable="true">{{key}}</textarea>
-		<textarea class="parameter-value editable-area line value" contenteditable="true">{{value}}</textarea>
+		<input class="parameter-value editable-area line key">{{key}}</input>
+		<input class="parameter-value editable-area line value">{{value}}</input>
 	</div>
 {{/each}}
 
 <!-- state-template-para-array-item -->
 {{#each para_value}}
-	<textarea class="parameter-value editable-area line" contenteditable="true">{{this}}</textarea>
+	<input class="parameter-value editable-area line">{{this}}</input>
 {{/each}}
 
 <!-- state-template-editor-modal -->

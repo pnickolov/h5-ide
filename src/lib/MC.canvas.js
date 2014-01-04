@@ -4049,7 +4049,7 @@ MC.canvas.event.drawConnection = {
 			$.each($canvas.group(), function (key, item)
 			{
 				group_coordinate = item.position();
-				group_size = item.size;
+				group_size = item.size();
 
 				if (
 					item.type === 'AWS.VPC.Subnet' &&

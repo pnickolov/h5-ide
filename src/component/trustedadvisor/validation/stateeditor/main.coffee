@@ -31,8 +31,19 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
 
         ret
 
+
+    # Main Check
+    _checkState = ( state, data ) ->
+        errs = []
+
+        errs = errs.concat checkComponentExist( state, data )
+
+        errs
+
+    ########## Public Method ##########
+
     # Sub Check
-    _checkComponentExist = ( obj, data ) ->
+    checkComponentExist = ( obj, data ) ->
         errs = []
 
         if _.isString obj
@@ -44,26 +55,19 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
             for ref in refs
                 component = Design.instance().component( ref.uid )
                 if not component
-                    tip = _getCompTip data.type, data.name, data.stateId, ref.ref
-                    TAError = _buildTAErr tip, data.uid, ref.uid
+                    if data
+                        tip = _getCompTip data.type, data.name, data.stateId, ref.ref
+                        TAError = _buildTAErr tip, data.uid, ref.uid
 
-                    errs.push TAError
+                        errs.push TAError
+                    else
+                        errs.push 'error'
 
         else
             for key, value of obj
-                errs = errs.concat _checkComponentExist value, data
+                errs = errs.concat checkComponentExist value, data
 
         errs
-
-    # Main Check
-    _checkState = ( state, data ) ->
-        errs = []
-
-        errs = errs.concat _checkComponentExist( state, data )
-
-        errs
-
-    ########## Public Method ##########
 
     isStateValid = ( uid ) ->
         component = Design.instance().component( uid )
@@ -88,4 +92,7 @@ define [ 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( constant, MC,
         errs
 
 
+    _.extend isStateValid, checkComponentExist
+
     isStateValid
+

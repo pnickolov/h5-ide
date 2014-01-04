@@ -1,13 +1,12 @@
-define [ 'MC', 'constant', 'underscore' ], ( MC, constant, _ ) ->
+define [ 'MC', 'constant', 'underscore', 'Design' ], ( MC, constant, _, Design ) ->
 
 	#private
 	getVPCUID = () ->
-		vpcUID = ''
-		_.each MC.canvas_data.layout.component.group, (groupObj, groupUID) ->
-			if groupObj.type is 'AWS.VPC.VPC'
-				vpcUID = groupUID
-				return false
-		return vpcUID
+		vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+		if vpc
+			vpc.id
+		else
+			null
 
 	updateAllSubnetCIDR = (vpcCIDR, oldVPCCIDR) ->
 

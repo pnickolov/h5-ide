@@ -71,7 +71,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     if type is 'NEW_STACK'
 
-                        options.type = Design.MODE.Stack
+                        #options.type = Design.MODE.Stack
 
                         # platform is classic
                         if options.type is Design.TYPE.Classic or options.type is Design.TYPE.DefaultVpc

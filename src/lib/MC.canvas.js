@@ -4441,7 +4441,7 @@ MC.canvas.event.siderbarDrag = {
 							node_option.groupUId = match_place.target;
 
 							new_node_id = $canvas.add(target_type, node_option, coordinate);
-							
+
 							if (!(MC.aws.vpc.getVPCUID() && target_type === "AWS.EC2.AvailabilityZone"))
 							{
 								//has no vpc
@@ -4559,7 +4559,6 @@ MC.canvas.event.groupResize = {
 					'target': group,
 					'originalTarget': group[0],
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
-					//'label_offset': MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 					'originalX': event.pageX,
 					'originalY': event.pageY,
 					'originalWidth': group_offset.width,
@@ -4571,7 +4570,6 @@ MC.canvas.event.groupResize = {
 					'offsetX': event.pageX - canvas_offset.left,
 					'offsetY': event.pageY - canvas_offset.top,
 					'direction': $(target).data('direction'),
-					//'group_border': parseInt(group.css('stroke-width'), 10) * 2,
 					'group_type': type,
 					'scale_ratio': scale_ratio,
 					'group_min_padding': MC.canvas.GROUP_MIN_PADDING,
@@ -4598,14 +4596,12 @@ MC.canvas.event.groupResize = {
 			target = event_data.originalTarget,
 			direction = event_data.direction,
 			type = event_data.group_type,
-			//group_border = event_data.group_border,
 			scale_ratio = event_data.scale_ratio,
 			group_min_padding = event_data.group_min_padding,
 			left = Math.ceil((event.pageX - event_data.originalLeft) / 10) * 10 * scale_ratio,
 			max_left = event_data.originalWidth * scale_ratio - group_min_padding,
 			top = Math.ceil((event.pageY - event_data.originalTop) / 10) * 10 * scale_ratio,
 			max_top = event_data.originalHeight * scale_ratio - group_min_padding,
-			//label_offset = event_data.label_offset,
 			prop,
 			key;
 
@@ -4719,6 +4715,8 @@ MC.canvas.event.groupResize = {
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = event_data.parentGroup,
 			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
+			group_node,
+			group_coordinate,
 			layout_connection_data,
 			parent_data,
 			parent_size,
@@ -4771,28 +4769,6 @@ MC.canvas.event.groupResize = {
 		$.each(event_data.group_child, function (index, item)
 		{
 			item = $canvas( item.id );
-
-			// if (item.nodeType === 'node')
-			// {
-			// 	item_size = item.size();
-			// 	item_coordinate = item.position();
-
-			// 	node_minX.push(item_coordinate[0]);
-			// 	node_minY.push(item_coordinate[1]);
-			// 	node_maxX.push(item_coordinate[0] + item_size[0]);
-			// 	node_maxY.push(item_coordinate[1] + item_size[1]);
-			// }
-
-			// if (item.nodeType === 'group')
-			// {
-			// 	item_size = item.size();
-			// 	item_coordinate = item.position();
-
-			// 	node_minX.push(item_coordinate[0]);
-			// 	node_minY.push(item_coordinate[1]);
-			// 	node_maxX.push(item_coordinate[0] + item_size[0]);
-			// 	node_maxY.push(item_coordinate[1] + item_size[1]);
-			// }
 
 			item_size = item.size();
 			item_coordinate = item.position();
@@ -5020,15 +4996,11 @@ MC.canvas.event.groupResize = {
 				'y': label_coordinate[1]
 			});
 
-			var group_node = $canvas( group_id );
+			group_node = $canvas( group_id );
 
 			group_node.position(group_left, group_top);
 			group_node.size(group_width, group_height);
 
-			//MC.canvas.updateResizer(group_node, group_width, group_height);
-
-			//MC.canvas.data.set('layout.component.group.' + group_id + '.coordinate', [group_left, group_top]);
-			//MC.canvas.data.set('layout.component.group.' + group_id + '.size', [group_width, group_height]);
 			MC.canvas.updateResizer(parent, group_width, group_height);
 		}
 		else
@@ -5036,8 +5008,8 @@ MC.canvas.event.groupResize = {
 			group_width = Math.round(event_data.originalWidth * scale_ratio / 10);
 			group_height = Math.round(event_data.originalHeight * scale_ratio / 10);
 
-			var group_node = $canvas( group_id ),
-				group_coordinate = group_node.position();
+			group_node = $canvas( group_id );
+			group_coordinate = group_node.position();
 
 			if (type === 'AWS.VPC.Subnet')
 			{
@@ -5071,29 +5043,6 @@ MC.canvas.event.groupResize = {
 			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
 
 			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
-
-			// $.each($canvas( group_id ).connection(), function (i, value)
-			// {
-			// 	$('#' + value.line).show();
-			// });
-
-			// Re-draw group connections
-			// layout_connection_data = MC.canvas.data.get('layout.connection');
-			// node_connections = layout_group_data[ group_id ].connection || {};
-
-			// $.each($canvas( group_id ).connection(), function (index, value)
-			// {
-			// 	line_connection = layout_connection_data[ value.line ];
-
-			// 	MC.canvas.connect(
-			// 		$('#' + group_id), line_connection['target'][ group_id ],
-			// 		$('#' + value.target), line_connection['target'][ value.target ],
-			// 		{'line_uid': value['line']}
-			// 	);
-			// });
-
-			//$canvas( group_id ).reConnect();
-			//var group_node = $canvas( group_id );
 
 			group_node.reConnect();
 		}
@@ -5169,7 +5118,8 @@ MC.canvas.event.ctrlMove = {
 
 MC.canvas.event.EIPstatus = function ()
 {
-	$canvas( this.parentNode.id ).toggleEip()
+	$canvas( this.parentNode.id ).toggleEip();
+
 	return false;
 };
 
@@ -5178,8 +5128,6 @@ MC.canvas.event.selectLine = function (event)
 	if (event.which === 1)
 	{
 		MC.canvas.event.clearSelected();
-
-		//MC.canvas.select(this.id);
 
 		$canvas(this.id).select();
 	}
@@ -5201,7 +5149,6 @@ MC.canvas.event.selectNode = function (event)
 		}
 
 		MC.canvas.event.clearSelected();
-		//MC.canvas.select(this.id);
 
 		$canvas(this.id).select();
 	}
@@ -5226,8 +5173,6 @@ MC.canvas.event.appMove = function (event)
 		}
 		else
 		{
-			//MC.canvas.select( this.id );
-
 			target.select();
 		}
 	}
@@ -5428,7 +5373,6 @@ MC.canvas.event.keyEvent = function (event)
 				index = 0,
 				current_index,
 				next_node;
-				//clone_node;
 
 			if ($canvas(current_node_id).nodeType !== 'node')
 			{
@@ -5460,8 +5404,6 @@ MC.canvas.event.keyEvent = function (event)
 
 			MC.canvas.event.clearSelected();
 
-			//MC.canvas.select(next_node.attr('id'));
-
 			$canvas(next_node.attr('id')).select();
 
 			return false;
@@ -5485,11 +5427,10 @@ MC.canvas.event.keyEvent = function (event)
 				node_type = target_item.nodeType,
 				target_type = target_item.type,
 				coordinate = target_item.position(),
-				//target_data = MC.canvas.data.get('layout.component.' + target_type + '.' + target_id),
-				canvas_size = $canvas.size(),//MC.canvas.data.get('layout.size'),
+				canvas_size = $canvas.size(),
 				scale_ratio = $canvas.scale(),
 				coordinate = {'x': coordinate[0], 'y': coordinate[1]},
-				component_size = target_item.size(),//MC.canvas.COMPONENT_SIZE[ node_type ],
+				component_size = target_item.size(),
 				match_place,
 				vpc_id,
 				vpc_item,

@@ -4,8 +4,9 @@
 
 define [ '../base/view',
          'text!./template/stack.html',
-         'text!./template/app.html'
-], ( PropertyView, template, app_template ) ->
+         'text!./template/app.html',
+         "component/sgrule/SGRulePopup"
+], ( PropertyView, template, app_template, SGRulePopup ) ->
 
     template     = Handlebars.compile template
     app_template = Handlebars.compile app_template
@@ -25,8 +26,8 @@ define [ '../base/view',
             "Security Group Rule"
 
         onEditRule : ( event ) ->
-            this.trigger "EDIT_RULE"
-            null
+            new SGRulePopup( @model.get("uid") )
+            false
 
     }
 

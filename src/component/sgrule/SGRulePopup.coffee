@@ -1,8 +1,8 @@
-#############################
-#  View Mode for component/sgrule
-#############################
+####################################
+#  pop-up for component/sgrule module
+####################################
 
-define [ 'constant', "Design", 'backbone' ], ( constant, Design ) ->
+define [ 'constant', "Design", './view', "backbone" ], ( constant, Design, View ) ->
 
   SGRulePopupModel = Backbone.Model.extend {
 
@@ -84,4 +84,10 @@ define [ 'constant', "Design", 'backbone' ], ( constant, Design ) ->
       null
   }
 
-  return SGRulePopupModel
+  SGRulePopup = ( line_id )->
+    model = new SGRulePopupModel({ uid : line_id })
+    view  = new View()
+    view.model = model
+    view.render()
+
+  SGRulePopup

@@ -232,10 +232,6 @@ define [ 'event',
                 # hide
                 $panel.addClass  'hiden'
                 $canvas.addClass 'left-hiden'
-
-            console.log '$item.attr("class")   = ' + $item.attr   'class'
-            console.log '$panel.attr("class")  = ' + $panel.attr  'class'
-            console.log '$canvas.attr("class") = ' + $canvas.attr 'class'
             null
 
         updateResourceState : ( type ) ->

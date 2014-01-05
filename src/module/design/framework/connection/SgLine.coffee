@@ -1,12 +1,11 @@
 
-define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( constant, ConnectionModel, SGRulePopup )->
 
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
 
-    initialize : ()->
+    initialize : ( attributes, option )->
       console.assert( @port1Comp() isnt @port2Comp(), "Sgline should connect to different resources." )
-
 
       # If Eni is attached to Ami, then hide sg line
       ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
@@ -16,6 +15,15 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           if e is eni
             @setDestroyAfterInit()
             return
+
+
+      # If the line is created by the user, we should a popup dialog to let
+      # user add sgrule. And then immediately remove the sgline
+      if option and option.createByUser
+        new SGRulePopup( this.id )
+        @setDestroyAfterInit()
+        return
+
 
       # Only show sg line for inbound rules of elb
       # If the target is elb and the elb is internet-facing, don't show sgline

@@ -2,13 +2,10 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ 'text!./template.html',
-         'text!./delete.html',
-         'i18n!nls/lang.js',
-         'event'
-], ( template, delete_template, lang, ide_event ) ->
+define [ 'text!./template.html', 'i18n!nls/lang.js'], ( template, lang ) ->
 
-    template        = Handlebars.compile template
+    template = Handlebars.compile template
+
     SGRulePopupView = Backbone.View.extend {
 
         events    :
@@ -120,12 +117,12 @@ define [ 'text!./template.html',
           $sidebar = $("#sgRuleCreateSidebar").html( MC.template.groupedSgRuleList( @model.attributes ) )
           $("#sgRuleCreateCount").text("(#{ruleCount})")
 
-          rule_count = $sidebar.find("li").length
-          $modal     = this.$el.find('#modal-box')
+          $modal   = this.$el.find('#modal-box')
+          $sidebar = $sidebar.closest(".sg-rule-create-sidebar")
 
           isShown = $sidebar.hasClass "shown"
 
-          if rule_count is 0
+          if ruleCount is 0
             if isShown
               $sidebar.removeClass( "shown" ).animate({ left : "0" })
               $modal.animate({left:'-=100px'}, 300)

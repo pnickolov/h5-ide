@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( constant, ConnectionModel, lang, Design )->
+define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "component/sgrule/SGRulePopup" ], ( constant, ConnectionModel, lang, Design, SGRulePopup )->
 
   # Elb <==> Subnet
   ElbSubnetAsso = ConnectionModel.extend {
@@ -28,6 +28,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
       for cn in @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB ).connections( "ElbSubnetAsso" )
         if cn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).parent() is az
           cn.remove()
+
       null
 
     isRemovable : ()->
@@ -101,11 +102,14 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design" ], ( con
       }
     ]
 
-    initialize : ()->
+    initialize : ( attibutes, option )->
       if not Design.instance().typeIsVpc() then return
 
-      # When an Elb is connected to an Instance. Make sure the Instance's AZ has at least one subnet connects to Elb
+      # If the line is created by user, show a popup to let user to add sg
+      if option and option.createByUser
+        new SGRulePopup( this.id )
 
+      # When an Elb is connected to an Instance. Make sure the Instance's AZ has at least one subnet connects to Elb
       ami = @getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 

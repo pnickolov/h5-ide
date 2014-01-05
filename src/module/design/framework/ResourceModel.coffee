@@ -257,7 +257,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       this
 
     getNewName : ()->
-      if not @newNameTmpl then return ""
+      if not @newNameTmpl
+        newName = if @defaults then @defaults.name
+        return newName or ""
 
       myKinds = Design.modelClassForType( @type ).allObjects()
       base = myKinds.length + 1

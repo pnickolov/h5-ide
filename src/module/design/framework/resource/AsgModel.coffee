@@ -68,6 +68,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       ComplexResModel.call( this, attributes, options )
       null
 
+    # Override connections / connectionTargets for "SgAsso"
+    connections : ( type )->
+      context = if type is "SgAsso" then @getLc() else this
+      ComplexResModel.prototype.connections.call( context, type )
+
+    connectionTargets : ( type )->
+      context = if type is "SgAsso" then @getLc() else this
+      ComplexResModel.prototype.connectionTargets.call( context, type )
 
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
@@ -77,6 +85,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       @draw(true)
       null
+
+    getLc : ()-> @attributes.originalAsg.get("lc")
 
     amiIconUrl : ()->
       lc = @get("originalAsg").get("lc")
@@ -264,16 +274,16 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       # Temperory clear expandList. So that removing ElbAmiAsso will not trigger
       # this method again.
-      old_expandList = @attributes.expandedList
+      old_expandedList = @attributes.expandedList
       @attributes.expandedList = []
 
       ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
 
-      for i in old_expandList
+      for i in old_expandedList
         asso = new ElbAsso( i, elb )
         if isRemove then asso.remove()
 
-      @attributes.expandList = old_expandList
+      @attributes.expandedList = old_expandedList
       null
 
     addScalingPolicy : ( policy )->

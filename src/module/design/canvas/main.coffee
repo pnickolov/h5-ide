@@ -9,9 +9,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
         #
         require [ './module/design/canvas/view',
-                  './module/design/canvas/model',
-                  './component/sgrule/main'
-        ], ( View, model, sgrule_main ) ->
+                  './module/design/canvas/model'
+        ], ( View, model ) ->
 
             #view
             view = new View()
@@ -215,13 +214,13 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             # view.on 'CANVAS_ASG_SELECTED', ( event, uid ) ->
             #     ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_instance', uid
 
-            model.on 'SHOW_SG_LIST', ( line_id ) ->
-                sgrule_main.loadModule line_id, 'delete'
-                null
+            # model.on 'SHOW_SG_LIST', ( line_id ) ->
+            #     sgrule_main.loadModule line_id, 'delete'
+            #     null
 
-            model.on 'CREATE_SG_CONNECTION', ( line_id ) ->
-                sgrule_main.loadModule line_id
-                null
+            # model.on 'CREATE_SG_CONNECTION', ( line_id ) ->
+            #     sgrule_main.loadModule line_id
+            #     null
 
             # #after delete object complete
             # model.on 'DELETE_OBJECT_COMPLETE', () ->

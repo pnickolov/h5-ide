@@ -27,8 +27,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
     initialize : ( attr, option )->
 
-
-      if not ( option and option.isCreate is false )
+      if option and option.createByUser
 
         # Draw before creating SgAsso
         @draw(true)
@@ -399,7 +398,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
-      model = new Model( attr, { isCreate : false } ) # isCreate=false when deserialize
+      model = new Model( attr )
 
       # Add Keypair
       resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )

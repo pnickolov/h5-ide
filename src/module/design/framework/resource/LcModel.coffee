@@ -23,7 +23,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       # Draw before create SgAsso
       @draw(true)
 
-      if not ( option and option.isCreate is false )
+      if option and option.createByUser
         # Default Kp
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         KpModel.getDefaultKP().assignTo( this )
@@ -156,7 +156,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      model = new Model( attr, { isCreate : false } )
+      model = new Model( attr )
 
 
       # Create Volume for

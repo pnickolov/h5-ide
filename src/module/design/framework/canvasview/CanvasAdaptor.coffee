@@ -2,6 +2,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
   Design = null
 
+  DefaultCreateOption = { createByUser : true }
+
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
     component = Design.__instance.component(id)
@@ -79,7 +81,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     Model = Design.modelClassForType type
 
-    m = new Model( attributes )
+    m = new Model( attributes, DefaultCreateOption )
     return m.id
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
@@ -95,13 +97,14 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     if _.isString( res )
       notification "error", res
     else if res is true
-      new C( comp1, comp2 )
+      new C( comp1, comp2, undefined, DefaultCreateOption )
       return true
     else if res is false
       return false
     else if res.confirm
       modal MC.template.modalCanvasConfirm( res ), true
-      $("#canvas-op-confirm").one "click", ()-> new C( comp1, comp2 )
+      $("#canvas-op-confirm").one "click", ()->
+        new C( comp1, comp2, undefined, DefaultCreateOption )
 
     false
 

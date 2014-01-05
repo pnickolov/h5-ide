@@ -51,7 +51,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       # Draw first then create SgAsso
       @draw( true )
 
-      if option.isCreate isnt false and not option.instance
+      if option.createByUser and not option.instance
         # DefaultSg
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
@@ -415,9 +415,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         }) )
 
 
-      option = { isCreate : false }
-      if embed then option.instance = instance
-
+      if embed then option = { instance : instance }
       eni = new Model( attr, option )
 
 

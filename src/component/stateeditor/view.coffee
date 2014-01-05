@@ -67,6 +67,7 @@ define [ 'event',
             that.cmdParaObjMap = that.model.get('cmdParaObjMap')
             that.cmdModuleMap = that.model.get('cmdModuleMap')
             that.moduleCMDMap = that.model.get('moduleCMDMap')
+            that.langTools = ace.require("ace/ext/language_tools")
             that.refObjAry = [{
                 name: '{host1.privateIP}',
                 value: '{host1.privateIP}'
@@ -308,7 +309,9 @@ define [ 'event',
             #         that.refreshStateView($stateItem)
             # })
 
-            that.initCodeEditor($cmdValueItem[0], cmdNameAry)
+            that.initCodeEditor($cmdValueItem[0], {
+                focus: cmdNameAry
+            })
 
         bindParaListEvent: ($paraListElem, currentCMD) ->
 
@@ -356,23 +359,29 @@ define [ 'event',
                     data: that.refObjAry
                 }
 
-                # if paraOptionAry
-                #     that.initCodeEditor($valueInput[0], paraOptionAry)
-                    # $valueInput.atwho({
-                    #     at: '',
-                    #     tpl: that.paraCompleteItemHTML
-                    #     data: paraOptionAry
-                    # })
+                if paraOptionAry
+                    that.initCodeEditor($valueInput[0], {
+                        focus: that.refObjAry
+                    })
 
-                that.initCodeEditor($keyInput[0], that.refObjAry)
-                that.initCodeEditor($valueInput[0], that.refObjAry)
+                that.initCodeEditor($keyInput[0], {})
+
+                that.initCodeEditor($valueInput[0], {
+                    at: that.refObjAry
+                })
                 # $keyInput.atwho(atwhoOption)
                 # $valueInput.atwho(atwhoOption)
 
             else if paraType in ['line', 'text', 'array', 'state']
                 $inputElem = $paraItem.find('.parameter-value')
 
-                that.initCodeEditor($inputElem[0], paraOptionAry)
+                if not $inputElem.length
+                    $inputElem = $paraItem.nextAll('.parameter-value')
+
+                that.initCodeEditor($inputElem[0],  {
+                    focus: paraOptionAry,
+                    at: that.refObjAry
+                })
 
                 # if paraOptionAry
                     # $inputElem.atwho({
@@ -389,13 +398,15 @@ define [ 'event',
 
             else if paraType is 'bool'
                 $inputElem = $paraItem.find('.parameter-value')
-                that.initCodeEditor($inputElem[0], [{
-                    name: 'true',
-                    value: 'true'
-                }, {
-                    name: 'false',
-                    value: 'false'
-                }])
+                that.initCodeEditor($inputElem[0],  {
+                    focus: [{
+                        name: 'true',
+                        value: 'true'
+                    }, {
+                        name: 'false',
+                        value: 'false'
+                    }]
+                })
                 # $inputElem.atwho({
                 #     at: '',
                 #     tpl: that.paraCompleteItemHTML
@@ -522,8 +533,8 @@ define [ 'event',
                             value: ''
                         }]
                     })
-                    $currentDictItemContainer.append(newDictItemHTML)
-                    that.bindParaItemEvent($currentDictItemContainer, paraObj)
+                    $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
+                    that.bindParaItemEvent($dictItemElem, paraObj)
 
         onDictInputBlur: (event) ->
 
@@ -568,8 +579,8 @@ define [ 'event',
                     newArrayItemHTML = that.paraArrayListTpl({
                         para_value: ['']
                     })
-                    $currentArrayInputContainer.append(newArrayItemHTML)
-                    that.bindParaItemEvent($currentArrayInputContainer, paraObj)
+                    $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
+                    that.bindParaItemEvent($arrayItemElem, paraObj)
 
         onArrayInputBlur: (event) ->
 
@@ -974,35 +985,66 @@ define [ 'event',
             $parentElem = $currentElem.parents('.editable-area')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area')
-                editor = $('.editable-area').data('editor')
-                editor.blur()
+                $allEditableArea = $('.editable-area')
+                _.each $allEditableArea, (editableArea) ->
+                    $editableArea = $(editableArea)
+                    editor = $editableArea.data('editor')
+                    if editor then editor.blur()
+                    null
 
-        initCodeEditor: (editorElem, dataAry) ->
+        initCodeEditor: (editorElem, hintObj) ->
 
             that = this
+
+            if not editorElem then return
+
             $editorElem = $(editorElem)
             editor = ace.edit(editorElem)
-            langTools = ace.require("ace/ext/language_tools")
+            $editorElem.data('editor', editor)
+
+            editor.hintObj = hintObj
+
+            # config editor
+
             # editor.setTheme("ace/theme/monokai")
+            editor.renderer.setPadding(4)
+            editor.setBehavioursEnabled(false)
+
+            # single/mutil line editor
+            editorSingleLine = false
+            maxLines = undefined
+            if $editorElem.hasClass('line')
+                maxLines = 1
+                editorSingleLine = true
+
             editor.setOptions({
                 enableBasicAutocompletion: true,
-                maxLines: 1,
+                maxLines: maxLines,
                 showGutter: false,
                 highlightGutterLine: false,
                 showPrintMargin: false,
                 highlightActiveLine: false,
-                highlightSelectedWord: false
+                highlightSelectedWord: false,
+                enableSnippets: false,
+                singleLine: editorSingleLine
             })
-            editor.renderer.setPadding(4)
-            editor.setBehavioursEnabled(false)
-            editor.commands.on("afterExec", (e) ->
-                # currentValue = editor.getValue()
-                # if e.command.name is "insertstring" and /^@$/.test(e.args)
-                #      editor.execCommand("startAutocomplete")
-                # if e.command.name is "backspace"
-                    # editor.execCommand("startAutocomplete")
-                if e.command.name is "autocomplete_confirm"
 
+            editor.commands.on("afterExec", (e) ->
+
+                thatEditor = e.editor
+                currentValue = thatEditor.getValue()
+                hintDataAryMap = thatEditor.hintObj
+
+                if e.command.name is "insertstring"
+                    if /^@$/.test(e.args) and hintDataAryMap['at']
+                        that.setEditorCompleter(thatEditor, hintDataAryMap['at'])
+                        thatEditor.execCommand("startAutocomplete")
+
+                if e.command.name in ["backspace"] and hintDataAryMap['focus']
+                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'])
+                    thatEditor.execCommand("startAutocomplete")
+
+                if e.command.name is "autocomplete_confirm"
                     if $editorElem.hasClass('command-value')
                         value = e.args
                         $stateItem = $editorElem.parents('.state-item')
@@ -1011,14 +1053,20 @@ define [ 'event',
                         $paraListElem = $stateItem.find('.parameter-list')
                         that.refreshParaList($paraListElem, value)
                         that.refreshStateView($stateItem)
-                    
             )
-            editor.on("focus", (e) ->
-                currentValue = editor.getValue()
-                # if not currentValue
-                editor.execCommand("startAutocomplete")
+
+            editor.on("focus", (e, thatEditor) ->
+
+                hintDataAryMap = thatEditor.hintObj
+                currentValue = thatEditor.getValue()
+                if not currentValue and hintDataAryMap['focus']
+                    that.setEditorCompleter(thatEditor, hintDataAryMap['focus'])
+                    thatEditor.execCommand("startAutocomplete")
             )
-            langTools.addCompleter({
+
+        setEditorCompleter: (editor, dataAry) ->
+
+            editor.completers = [{
                 getCompletions: (editor, session, pos, prefix, callback) ->
                     if dataAry and dataAry.length
                         callback(null, dataAry.map((ea) ->
@@ -1031,9 +1079,9 @@ define [ 'event',
                         ))
                     else
                         callback(null, [])
-            })
+            }]
 
-            $editorElem.data('editor', editor)
+            null
 
         getRepresent: ( inputElem ) ->
             $input = $ inputElem
@@ -1092,13 +1140,17 @@ define [ 'event',
 
             $inputElem = $(inputElem)
             editor = $inputElem.data('editor')
-            return editor.getValue()
+
+            if editor
+                return editor.getValue()
+            else
+                return ''
 
         setPlainText: (inputElem, content) ->
 
             $inputElem = $(inputElem)
             editor = $inputElem.data('editor')
-            editor.setValue(content)
+            if editor then editor.setValue(content)
 
     }
 

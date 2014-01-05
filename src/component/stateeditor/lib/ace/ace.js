@@ -2304,8 +2304,11 @@ var Editor = function(renderer, session) {
     };
     this.insert = function(text) {
 
-        var lines = text.split(/\r\n|\r|\n/);
-        text = lines[0];
+        // single line editor limit
+        if (this.getOption('singleLine')) {
+            var lines = text.split(/\r\n|\r|\n/);
+            text = lines[0];
+        }
 
         var session = this.session;
         var mode = session.getMode();
@@ -3312,6 +3315,7 @@ config.defineOptions(Editor.prototype, "editor", {
     fontFamily: "renderer",
     maxLines: "renderer",
     minLines: "renderer",
+    singleLine: "renderer",
     scrollPastEnd: "renderer",
     fixedWidthGutter: "renderer",
 
@@ -13803,6 +13807,12 @@ config.defineOptions(VirtualRenderer.prototype, "renderer", {
             this.updateFull();
         }
     },
+    singleLine: {
+        set: function(val) {
+            this.updateFull();
+        },
+        initialValue: false
+    },
     scrollPastEnd: {
         set: function(val) {
             val = +val || 0;
@@ -15610,8 +15620,6 @@ var Editor = require("./editor").Editor;
         return text;
     };
     this.onPaste = function(text) {
-
-        text = text.split(/\r\n|\r|\n/)[0];
 
         if (this.$readOnly)
             return;

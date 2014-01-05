@@ -73,6 +73,10 @@ exports.addCompleter = function(completer) {
     completers.push(completer);
 };
 
+exports.setCompleter = function(completer) {
+    completers = [completer]
+};
+
 var expandSnippet = {
     name: "expandSnippet",
     exec: function(editor) {

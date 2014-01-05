@@ -134,6 +134,17 @@ body {
 	cursor: pointer;
 }
 
+#state-editor-body .state-cancel {
+	background-color: #0f0;
+	width: 50px;
+	padding: 10px;
+	text-align: center;
+	float: right;
+	margin-right: 14px;
+	margin-top: 14px;
+	cursor: pointer;
+}
+
 #state-editor-model .modal-toolbar {
 	list-style: none;
 	position: absolute;
@@ -171,8 +182,8 @@ body {
 #state-editor .ace_hidden-cursors {
     opacity: 0;
 }
-#state-editor .ace_scroller {
-    margin-top: 3px;
+#state-editor .ace_content {
+    padding-top: 3px;
 }
 #state-editor .ace_autocomplete .ace_scroller {
     margin-top: 0px;
@@ -234,7 +245,7 @@ body {
 }*/
 
 #state-editor .editable-area.text {
-	height: 200px;
+	height: 150px !important;
 	line-height: 20px;
 	overflow: auto;
 }

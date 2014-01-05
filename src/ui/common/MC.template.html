@@ -72,20 +72,6 @@
 	</div>
 </div>
 
-<!-- canvasOpConfirm -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{content}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="canvas-op-confirm" class="btn btn-{{color}}">{{proceed}}</button>
-		<button class="btn modal-close btn-silver">{{cancel}}</button>
-	</div>
-</div>
-
 <!-- modalToolbar -->
 <div style="width:700px">
 	<div class="modal-header">
@@ -653,27 +639,54 @@ Additional Notes and Questions
 <!-- sgRuleList -->
 {{#each this}}
 {{#if ../deletable}}
-<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
 {{else}}
-<li>
+<li class="sg-create-rule-item">
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
-	<span {{#if color}}class="sg-color" style="background-color:{{color}}"{{/if}}></span>
-	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{relation}}</div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>
+	{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}
+	{{relation}}</div>
 </div>
 <div class="rule-list-row">
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
 	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
 </div>
-{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip="Remove rule"></a>{{/if}}
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
 </li>{{/each}}
 
 <!-- groupedSgRuleList -->
 {{#each groups}}
 <h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
-<ul>{{{content}}}</ul>
+<ul class="sg-rule-list">{{{content}}}</ul>
 {{/each}}
+
+<!-- groupedSgRuleListDelConfirm -->
+Following rule(s) will be deleted from its(their) security group:</div>
+<article class="scroll-wrap delete-sgrule-dialog">
+<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scroll-content">
+{{#each this}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul class="sg-rule-list">{{{content}}}</ul>
+{{/each}}
+</div>
+</article>
+
+<!-- canvasOpConfirm -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{{content}}}</div>
+		</div> </div>
+	</div>
+	<div class="modal-footer">
+		<button id="canvas-op-confirm" class="btn modal-close btn-red">{{i18n 'CFM_BTN_DELETE'}}</button>
+		<button class="btn modal-close btn-silver">{{i18n 'CFM_BTN_CANCEL'}}</button>
+	</div>
+</div>
 
 <!-- propertyIpList -->
 {{#each this}}

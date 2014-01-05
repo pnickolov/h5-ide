@@ -45,12 +45,25 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       null
 
+    isRemovable : ()->
+      SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
+      allRuleSets = SgRuleSetModel.getRelatedSgRuleSets @port1Comp(), @port2Comp()
+
+      groups = SgRuleSetModel.getGroupedObjFromRuleSets( allRuleSets )
+
+      # Show the list of the sgrules that this line represent
+      for group in groups
+        group.content = MC.template.sgRuleList( group.rules )
+
+      MC.template.groupedSgRuleListDelConfirm( groups )
+
 
     type : "SgRuleLine"
 
     defaults :
       lineType : "sg"
       dashLine : true
+      name     : "Security Group Rule"
 
     portDefs : [
 

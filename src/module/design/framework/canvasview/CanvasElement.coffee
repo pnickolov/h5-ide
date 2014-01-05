@@ -148,11 +148,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     if _.isString( res )
       # Confirmation
       template = MC.template.canvasOpConfirm {
-        operation : sprintf lang.ide.CVS_CFM_DEL, comp_name
-        content   : res
-        color     : "red"
-        proceed   : lang.ide.CFM_BTN_DELETE
-        cancel    : lang.ide.CFM_BTN_CANCEL
+        title   : sprintf lang.ide.CVS_CFM_DEL, comp_name
+        content : res
       }
       modal template, true
       theID = this.id
@@ -162,8 +159,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         if comp and not comp.isRemoved()
           comp.remove()
           ide_event.trigger ide_event.OPEN_PROPERTY
-
-        modal.close()
+        null
 
     else if res.error
       # Error

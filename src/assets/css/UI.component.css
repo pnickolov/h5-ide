@@ -1066,11 +1066,8 @@ textarea {
 }
 
 .modal-text-wraper {
-	display: table;
-	min-height: 100px;
-	width: 390px;
-	position: absolute;
-	overflow: hidden;
+	display    : table;
+	min-height : 100px;
 }
 
 .modal-center-align-helper {
@@ -1079,10 +1076,9 @@ textarea {
 }
 
 .modal-text-major {
-	font-size: 16px;
-	color: #666;
-	margin-bottom: 10px;
-	/*font-weight: bold;*/
+	font-size     : 16px;
+	color         : #666;
+	margin-bottom : 10px;
 }
 
 .modal-text-minor {

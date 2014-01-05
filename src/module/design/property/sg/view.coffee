@@ -5,21 +5,19 @@
 define [ '../base/view',
          'text!./template/stack.html',
          'text!./template/app.html',
-         'text!./template/rule_item.html',
          'constant',
          'i18n!nls/lang.js'
-], ( PropertyView, template, app_template, rule_item_template, constant, lang ) ->
+], ( PropertyView, template, app_template, constant, lang ) ->
 
     template           = Handlebars.compile template
     app_template       = Handlebars.compile app_template
-    rule_item_template = Handlebars.compile rule_item_template
 
     SgView = PropertyView.extend {
 
         events   :
             #for sg rule
             'click #sg-add-rule-icon' : 'showCreateRuleModal'
-            'click .rule-remove-icon' : 'removeRulefromList'
+            'click .sg-rule-delete'   : 'removeRulefromList'
 
             #for sg detail
             'change #securitygroup-name'           : 'setSGName'
@@ -31,7 +29,8 @@ define [ '../base/view',
             tpl = if @model.isReadOnly then app_template else template
 
             @$el.html tpl @model.attributes
-            $('#sg-rule-list').html rule_item_template( @model.attributes )
+
+            @refreshSgruleList()
 
             $('#property-second-title').html('<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name") )
 
@@ -44,6 +43,11 @@ define [ '../base/view',
             , 200
 
             @model.get "name"
+
+        refreshSgruleList : ()->
+            rules = @model.attributes.rules
+            rules.deletable = @model.attributes.ruleEditable
+            $('#sg-rule-list').html MC.template.sgRuleList( rules )
 
         showCreateRuleModal : (event) ->
             # get sg list
@@ -105,7 +109,7 @@ define [ '../base/view',
 
         sortSgRule : ( event ) ->
             @model.sortSGRule( $(event.target).find('.selected').attr('data-id') )
-            $('#sg-rule-list').html rule_item_template( @model.attributes )
+            @refreshSgruleList()
             null
 
         removeRulefromList: (event) ->
@@ -123,7 +127,7 @@ define [ '../base/view',
             $("#rule-count").text ruleCount
 
             @model.removeRule rule
-            null
+            false
 
         saveSgModal : ( event ) ->
 
@@ -215,7 +219,7 @@ define [ '../base/view',
                 # the rule exist
                 notification 'warning', lang.ide.PROP_WARN_SG_RULE_EXIST
             else
-                $("#sg-rule-list").html rule_item_template @model.attributes
+                @refreshSgruleList()
                 modal.close()
     }
 

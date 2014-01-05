@@ -4,9 +4,8 @@ define [ "constant",
          "../GroupModel",
          "CanvasManager",
          "../connection/RtbAsso",
-         "../connection/AclAsso",
          "i18n!nls/lang.js"
-], ( constant, Design, GroupModel, CanvasManager, RtbAsso, AclAsso, lang )->
+], ( constant, Design, GroupModel, CanvasManager, RtbAsso, lang )->
 
   Model = GroupModel.extend {
 
@@ -30,6 +29,7 @@ define [ "constant",
 
       # Connect to the DefaultACL automatically
       Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      AclAsso = Design.modelClassForType( "AclAsso" )
       new AclAsso( this, Acl.getDefaultAcl() )
       null
 
@@ -45,6 +45,7 @@ define [ "constant",
       null
 
     setAcl : ( uid )->
+      AclAsso = Design.modelClassForType( "AclAsso" )
       new AclAsso( this, Design.instance().component( uid ) )
       null
 

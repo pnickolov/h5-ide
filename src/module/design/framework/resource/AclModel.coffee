@@ -1,5 +1,13 @@
 
-define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexResModel, AclAsso, constant )->
+define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResModel, ConnectionModel, constant )->
+
+  # AclAsso represent a connection between a subnet and a networkacl
+  AclAsso = ConnectionModel.extend {
+    type : "AclAsso"
+    oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+  }
+
+
 
   formatRules = ( JsonRuleEntrySet )->
 
@@ -29,7 +37,6 @@ define [ "../ComplexResModel", "../connection/AclAsso", "constant" ], ( ComplexR
           rule.port = r.PortRange.From + "-" + r.PortRange.To
 
       rule
-
 
   Model = ComplexResModel.extend {
 

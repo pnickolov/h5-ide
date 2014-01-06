@@ -48,6 +48,9 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         owner.attributes.volumeList.push( this )
       else
         owner.attributes.volumeList = [ this ]
+
+      null
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume

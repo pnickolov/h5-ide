@@ -9,23 +9,20 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
     initialize : ()->
 
       design = Design.instance()
-      cnn = design.component( @get("uid") )
 
       @set "isClassic", design.typeIsClassic() or design.typeIsDefaultVpc()
 
+      port1 = @get("port1")
+      port2 = @get("port2")
+
       # Get sg of each port
       if @get( "isClassic" )
-        port1 = cnn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-        if port1
-          port1 = port1.getElbSg().get("name")
-          port2 = cnn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
-        else
-          port1 = cnn.port1Comp()
-          port2 = cnn.port2Comp()
+        if port1.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+          port1 = port1.get("name")
+        else if port2.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+          port1 = port2.get("name")
+          port2 = @get("port1")
 
-      else
-        port1 = cnn.port1Comp()
-        port2 = cnn.port2Comp()
 
       if _.isString port1
         @set "owner", { name : port1 }
@@ -51,7 +48,7 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
 
       # Get all the sgrules
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
-      allRuleSets = SgRuleSetModel.getRelatedSgRuleSets cnn.port1Comp(), cnn.port2Comp()
+      allRuleSets = SgRuleSetModel.getRelatedSgRuleSets @get("port1"), @get("port2")
 
       @set "groups", SgRuleSetModel.getGroupedObjFromRuleSets( allRuleSets )
       null
@@ -85,7 +82,9 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
   }
 
   SGRulePopup = ( line_id )->
-    model = new SGRulePopupModel({ uid : line_id })
+    cnn = Design.instance().component( line_id )
+
+    model = new SGRulePopupModel({ port1 : cnn.port1Comp(), port2 : cnn.port2Comp() })
     view  = new View()
     view.model = model
     view.render()

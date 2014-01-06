@@ -4484,28 +4484,17 @@ MC.canvas.event.groupResize = {
 
 			if (type === 'AWS.VPC.Subnet')
 			{
-				parent.find('.port').hide();
+				//parent.find('.port').hide();
 
 				// Re-draw group connection
-				// node_connections = MC.canvas.data.get('layout.component.group.' + parent.attr('id') + '.connection') || {};
-
-				// $.each(node_connections, function (index, value)
-				// {
-				// 	line_layer.removeChild(document.getElementById( value.line ));
-				// });
-				//
-
 				$.each(parent_item.connection(), function (i, value)
 				{
-					//group_connection.push( value.line );
-
-					//$('#' + value.line).hide();
 					line_layer.removeChild(document.getElementById( value.line ));
 				});
 			}
 
 			// Hide label
-			parent.find('.group-label').hide();
+			parent.find('.group-label, .port').hide();
 
 			$(document.body).append('<div id="overlayer" style="cursor: ' + $(event.target).css('cursor') + '"></div>');
 

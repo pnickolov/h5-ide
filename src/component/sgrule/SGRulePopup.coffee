@@ -2,7 +2,7 @@
 #  pop-up for component/sgrule module
 ####################################
 
-define [ 'constant', "Design", './view', "backbone" ], ( constant, Design, View ) ->
+define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, Design, View ) ->
 
   SGRulePopupModel = Backbone.Model.extend {
 

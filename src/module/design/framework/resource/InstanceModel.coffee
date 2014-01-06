@@ -246,12 +246,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({'class':'volume-image'}),
-          # Volume Label
-          Canvon.text( 35, 56, "0" ).attr({
-            'class' : 'node-label volume-number'
-            'value' : 0
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({
+            'id': @id + "_volume_status"
+            'class':'volume-image'
           }),
+          # Volume Label
+          Canvon.text( 35, 56, "" ).attr({'class':'node-label volume-number'}),
           # Volume Hotspot
           Canvon.rectangle(21, 44, 29, 24).attr({
             'data-target-id' : @id
@@ -342,6 +342,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         node = $( document.getElementById( @id ) )
 
+        # update label
+        CanvasManager.update node.children(".node-label-name"), @get("name")
+
       # Update Server number
       numberGroup = node.children(".server-number-group")
       if @get("count") > 1
@@ -352,8 +355,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         CanvasManager.toggle node.children(".port-instance-rtb"), true
         CanvasManager.toggle numberGroup, false
 
-      # update label
-      MC.canvas.update( @id, "text", "hostname", @get("name") )
+      volumeCount = if @get("volumeList") then @get("volumeList").length else 0
+      CanvasManager.update node.children(".volume-number"), volumeCount
 
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()

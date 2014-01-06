@@ -96,11 +96,8 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           # Volume Image
           Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 31, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
           # Volume Label
-          Canvon.text( 45, 56, "0" ).attr({
-            'id'    : @id + '_volume_number'
-            'class' : 'node-label volume-number'
-            'value' : 0
-          }),
+          Canvon.text( 45, 56, "" ).attr({'class':'node-label volume-number'}),
+
           # Volume Hotspot
           Canvon.rectangle(31, 44, 29, 24).attr({
             'data-target-id' : @id
@@ -136,6 +133,16 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         # Move the node to right place
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
+
+      else
+        node = $( document.getElementById( @id ) )
+
+        # Node Label
+        CanvasManager.update node.children(".node-label-name"), @get("name")
+
+      # Volume Number
+      volumeCount = if @get("volumeList") then @get("volumeList").length else 0
+      CanvasManager.update node.children(".volume-number"), volumeCount
 
   }, {
 

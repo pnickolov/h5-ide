@@ -938,21 +938,17 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </article>
 
 <!-- instanceVolume -->
-<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{this.length}}</span>)</div>
 <div id="instance_volume_wrap" class="scroll-wrap">
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-	<div class="bubble-content scroll-content">
-		<ul id="instance_volume_list" class="clearfix">
-			{{#each list}}
-			<li>
-				<a href="#" id="{{volume_id}}" class="{{#if snapshotId}}snapshot_item{{else}}volume_item{{/if}}{{ is_deleted }}" data-json="{{json}}">
-					<span class="volume_name">{{name}}</span>
-					<span class="volume_size">{{size}}GB</span>
-				</a>
-			</li>
-			{{/each}}
-		</ul>
-	</div>
+	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">
+		{{#each this}}<li>
+			<a href="#" id="{{id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
+			</a>
+		</li>{{/each}}
+	</ul>
 </div>
 
 <!-- asgList -->

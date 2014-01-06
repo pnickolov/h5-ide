@@ -242,6 +242,18 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     return false
 
+  CanvasElement.prototype.volume = ()->
+    vl = []
+    for v in Design.instance().component( @id ).get("volumeList") or vl
+      vl.push {
+        deleted    : not v.hasAppResource()
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+      }
+
+    vl
+
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
       this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null

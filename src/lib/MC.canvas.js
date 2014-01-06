@@ -2115,14 +2115,9 @@ MC.canvas.volume = {
 			var target = $(node),
 				canvas_container = $('#canvas_container'),
 				canvas_offset = canvas_container.offset(),
-				component_data = MC.canvas.data.get('component'),
 				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
-				target_data = component_data[ node_uid ],
-				data = {'list': []},
 				coordinate = {},
-				is_deleted = '',
-				node_volume_data,
-				volume_id,
+				data,
 				width,
 				height,
 				target_offset,
@@ -2132,68 +2127,9 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			if (target_data.type === 'AWS.AutoScaling.LaunchConfiguration')
-			{
-				node_volume_data = target_data.resource.BlockDeviceMapping;
+			data = $canvas( node_uid ).volume()
 
-				$.each(node_volume_data, function (index, item)
-				{
-					volume_id = node_uid + '_volume_' + item.DeviceName.replace('/dev/', '');
-
-					data.list.push({
-						'volume_id': volume_id,
-						'name': item.DeviceName,
-						'size': item.Ebs.VolumeSize,
-						'snapshotId': item.Ebs.SnapshotId,
-						'json': JSON.stringify({
-							'instance_id': node_uid,
-							'id': volume_id,
-							'name': item.DeviceName,
-							'snapshotId': item.Ebs.SnapshotId,
-							'volumeSize': item.Ebs.VolumeSize
-						})
-					});
-				});
-			}
-			else
-			{
-				node_volume_data = MC.canvas.getState() === 'app' ?
-					MC.forge.stack.getVolumeList(node_uid) :
-					target_data.resource.BlockDeviceMapping;
-
-				$.each(node_volume_data, function (index, item)
-				{
-					volume_id = item.replace('#', '');
-					volume_data = component_data[ volume_id ];
-
-					if (MC.forge && MC.forge.app && MC.forge.app.getResourceById)
-					{
-						comp_vol = MC.forge.app.getResourceById(volume_id);
-						is_deleted = (comp_vol === null ? ' deleted' : '');
-					}
-
-					data.list.push({
-						'is_deleted' : is_deleted,
-						'volume_id': volume_id,
-						'name': volume_data.name,
-						'size': volume_data.resource.Size,
-						'snapshotId': volume_data.resource.SnapshotId,
-						'json': JSON.stringify({
-							'instance_id': node_uid,
-							'id': volume_id,
-							'name': volume_data.name,
-							'snapshotId': volume_data.resource.SnapshotId,
-							'volumeSize': volume_data.resource.Size
-						})
-					});
-				});
-			}
-
-			data.volumeLength = node_volume_data.length;
-
-			$('#volume-bubble-content').html(
-				MC.template.instanceVolume( data )
-			);
+			$('#volume-bubble-content').html( MC.template.instanceVolume(data) );
 
 			target_offset = target[0].getBoundingClientRect();
 			target_width = target_offset.width;

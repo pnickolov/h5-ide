@@ -148,7 +148,7 @@ define [ 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.error
             if param.constraint.required and not @required val
                 result = 'line value is required'
 
-            else if not @isBool val, true
+            else if not ( @isBool( val ) or @isStringBool( val, true ) )
                 result = "invalid boolean value: \"#{val}\""
 
             result
@@ -165,8 +165,13 @@ define [ 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.error
         notblank: ( val ) ->
             'string' is typeof val and '' isnt val.replace( /^\s+/g, '' ).replace( /\s+$/g, '' )
 
-        isBool: ( val, allowEmpty ) ->
-            _.isBoolean val or allowEmpty and val is ''
+        isBool: ( val ) ->
+            _.isBoolean val
+
+        isStringBool: ( val, allowEmpty ) ->
+             /^(true|false)$/i.test val or allowEmpty and val is ''
+
+
 
 
 

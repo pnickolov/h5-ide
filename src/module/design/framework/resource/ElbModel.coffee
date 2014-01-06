@@ -156,7 +156,7 @@ define [ "CanvasManager",
       else
         # Hide Sg Line when set to internal
         for line in @connections("SgRuleLine")
-          line.remove()
+          line.remove( this )
       null
 
     getCost : ( priceMap, currency )->

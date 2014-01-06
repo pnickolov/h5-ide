@@ -69,13 +69,10 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       if not option or option.detectDuplicate isnt false
         # Detect if we have already created the same connection between p1Comp, p2Comp
         cns = Design.modelClassForType( @type ).allObjects()
-        for cn in cns
-          if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
-            console.info "Found existing connection #{@type} of ", [p1Comp, p2Comp]
-            return cn
-          if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
-            console.info "Found existing connectoin #{@type} of ", [p1Comp, p2Comp]
-            return cn
+        cn = Design.modelClassForType( @type ).findExisting( p1Comp, p2Comp )
+        if cn
+          console.info "Found existing connection #{@type} of ", [p1Comp, p2Comp]
+          return cn
 
       if @portDefs
 
@@ -105,7 +102,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
       # The line wants to destroy itslef after init
       if @__destroyAfterInit
-        @remove()
+        @remove( this )
         return this
 
 
@@ -180,17 +177,14 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
       if @isRemoved() then return
 
-      if option and option.reason
-        # If the connection is removed because a resource is removed, that resource's disconnect will not be called
-        if @__port1Comp isnt option.reason
-          @__port1Comp.disconnect_base( this )
-        if @__port1Comp isnt @__port2Comp and @__port2Comp isnt option.reason
-          @__port2Comp.disconnect_base( this )
+      reason = if option then option.reason
+      reason = reason or null
 
-      else
-        @__port1Comp.disconnect_base( this )
-        if @__port1Comp isnt @__port2Comp
-          @__port2Comp.disconnect_base( this )
+      # If the connection is removed because a resource is removed, that resource's disconnect will not be called
+      if @__port1Comp isnt reason
+        @__port1Comp.disconnect_base( this, reason )
+      if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
+        @__port2Comp.disconnect_base( this, reason )
 
       # Remove element in SVG, if the line implements draw
       if @draw
@@ -198,6 +192,15 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       null
 
   }, {
+
+    findExisting : ( p1Comp, p2Comp )->
+      for cn in @allObjects()
+        if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
+          return cn
+        if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
+          return cn
+      null
+
     extend : ( protoProps, staticProps )->
 
       tags = []

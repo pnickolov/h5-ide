@@ -49,39 +49,31 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       count
 
     connect : ( cn )->
-
-      # Don't modify SgLine when Design is not ready for drawing
-      if not Design.instance().shouldDraw() then return
-
       if cn.type is "SgAsso"
         @vlineAdd( cn.getOtherTarget( @ ) )
 
-      else if cn.type is "SgRuleSet"
-
-        # Only when this SG is the port1Comp(), we do update.
-        # Otherwise, we might update twice when the SgRuleSet is created.
-        if cn.port1Comp() is @
-           # SgIpTarget has no visual line.
-          if cn.port2Comp().type isnt "SgIpTarget"
-            @vlineAddBatch( cn.port2Comp() )
+      # Unlike disconnecting from SgRuleSet,
+      # at the time when a SgRuleSet is created, there is no rule inside
+      # the SgRuleSet. Which means we cannot determine if we need to
+      # add SgRuleLine at this time.
+      # So we let SgRuleSet to call SgModel.vlineAddBatch() when first rule is inserted.
       null
 
     disconnect : ( cn )->
-
-      # Don't modify SgLine when Design is not ready for drawing
-      if not Design.instance().shouldDraw() then return
-
       if cn.type is "SgAsso"
-        @vlineRemove( cn.getOtherTarget( @ ) )
+        @vlineRemove( cn.getOtherTarget( @ ), undefined, cn )
 
       else if cn.type is "SgRuleSet"
 
-        if cn.port1Comp is @
+        if cn.port1Comp() is @
           if cn.port2Comp().type isnt "SgIpTarget"
-            @vlineRemoveBatch( cn.port2Comp() )
+            @vlineRemoveBatch( cn.port2Comp(), cn )
       null
 
     vlineAdd : ( resource )->
+      # Don't modify SgLine when Design is not ready for drawing
+      if not Design.instance().shouldDraw() then return
+
       connectedResMap = {}
       # Get all the resources that will connect to SG.
       for sg in @getVisualConnectedSg()
@@ -98,6 +90,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     vlineAddBatch : ( otherSg )->
 
+      if not Design.instance().shouldDraw() then return
+
       # Do not add visual line for self reference rule
       if otherSg is @ then return
 
@@ -110,7 +104,9 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       null
 
-    vlineRemove : ( resource, possibleAffectedRes )->
+    vlineRemove : ( resource, possibleAffectedRes, reason )->
+
+      if not Design.instance().shouldDraw() then return
 
       # Get a list of target resources that might need to update.
       if not possibleAffectedRes
@@ -132,14 +128,17 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       # Try remove all the resources connectable to this SG
       for res in possibleAffectedRes
         if not connectableMap[ res.id ] and res isnt resource
-            (new SgLine(resource, res)).remove()
+          cn = SgLine.findExisting( resource, res )
+          if cn then cn.remove( reason )
       null
 
-    vlineRemoveBatch : ( otherSg )->
+    vlineRemoveBatch : ( otherSg, reason )->
+      if not Design.instance().shouldDraw() then return
+
       possibleAffectedRes = otherSg.connectionTargets( "SgAsso" )
 
       for resource in @connectionTargets( "SgAsso" )
-        @vlineRemove( resource, possibleAffectedRes )
+        @vlineRemove( resource, possibleAffectedRes, reason )
       null
 
     # Get the collections of SG, which will have visual lines to this SG
@@ -201,7 +200,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
           for otherSg in sg.connectionTargets("SgRuleSet")
 
-            rightResArr = rightResArr.concat otherSg.connectionTargets("SgAsso")
+            rightResArr = _.union rightResArr, otherSg.connectionTargets("SgAsso")
 
         for rightRes in rightResArr
           if leftRes isnt rightRes

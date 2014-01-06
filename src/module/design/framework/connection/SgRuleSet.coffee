@@ -128,6 +128,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         console.warn( "Ignoring setting outbound rule in Classic Mode " )
         return
 
+      shouldDrawSgLine = @get("in1").length + @get("in2").length + @get("out1").length + @get("out2").length is 0
+
       # Ensure valid protocol and port
       rule = {
         protocol : rawRule.protocol
@@ -170,6 +172,17 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           portion.push rule
           @set portionName, portion
 
+
+
+      if shouldDrawSgLine
+        # Check SgModel.connect() to see why we draw the SgLine here, instead of
+        # drawing SgLine in SgModel.connect()
+
+        # Only need to ask one SgModel to draw the line.
+        p1 = @port1Comp()
+        p2 = @port2Comp()
+        if p1 isnt p2 and p1.type isnt "SgIpTarget" and p2.type isnt "SgIpTarget"
+          p1.vlineAddBatch( p2 )
       null
 
     # For SG1 <=> SG2

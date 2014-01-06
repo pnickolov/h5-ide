@@ -13,8 +13,8 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
     connect : ( ConnectionModel ) -> [FORCE]
         description : connect is called when a connection is created, subclass should override it to do its own logic.
 
-    disconnect : ( ConnectionModel )-> [FORCE]
-        description : disconnect is called when a connection is removed, subclass should override it to do its own logic.
+    disconnect : ( ConnectionModel, reason )->
+        description : disconnect is called when a connection is removed, subclass should override it to do its own logic. `reason` if not null, it will point to an model, which is the cause to remove the connection.
 
 
     draw : ( isNewlyCreated : Boolean ) ->
@@ -106,7 +106,7 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
         @connect( connection )
       null
 
-    disconnect_base : ( connection )->
+    disconnect_base : ( connection, reason )->
       connections = @get "__connections"
       # Directly remove the connection without triggering anything changed.
       # But I'm not sure if this will affect undo/redo
@@ -118,7 +118,7 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       connections.splice( connections.indexOf( connection ), 1 )
 
       if @disconnect
-        @disconnect( connection )
+        @disconnect( connection, reason )
       null
 
 

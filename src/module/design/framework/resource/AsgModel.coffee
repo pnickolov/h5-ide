@@ -305,6 +305,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         if isRemove then sgline.silentRemove()
 
       @attributes.expandedList = old_expandedList
+      null
 
     addScalingPolicy : ( policy )->
       @get("policies").push( policy )

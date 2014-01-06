@@ -10,7 +10,7 @@ define [], ()->
       null
 
     remove : ( element )->
-      MC.canvas.remove( element )
+      if element then MC.canvas.remove( element )
       null
 
     removeClass : ( element, theClass )->

@@ -4147,31 +4147,23 @@ MC.canvas.event.siderbarDrag = {
 			{
 				size = MC.canvas.GROUP_DEFAULT_SIZE[ target_type ];
 
-				shadow
-					.css({
-						'top': event.pageY - 50,
-						'left': event.pageX - 50,
-						'width': size[0] * MC.canvas.GRID_WIDTH,
-						'height': size[1] * MC.canvas.GRID_HEIGHT
-					})
-					.addClass(target_type.replace(/\./ig, '-'))
-					.show();
+				shadow.addClass(target_type.replace(/\./ig, '-'));
 			}
 			else
 			{
 				clone_node = target.find('.resource-icon').clone();
 				shadow.append(clone_node);
 				size = MC.canvas.COMPONENT_SIZE[ target_type ];
-
-				shadow
-					.css({
-						'top': event.pageY - 50,
-						'left': event.pageX - 50,
-						'width': size[0] * MC.canvas.GRID_WIDTH,
-						'height': size[1] * MC.canvas.GRID_HEIGHT
-					})
-					.show();
 			}
+
+			shadow
+				.css({
+					'top': event.pageY - 50,
+					'left': event.pageX - 50,
+					'width': size[0] * MC.canvas.GRID_WIDTH,
+					'height': size[1] * MC.canvas.GRID_HEIGHT
+				})
+				.show();
 
 			if (target_type === 'AWS.EC2.EBS.Volume')
 			{
@@ -4202,14 +4194,6 @@ MC.canvas.event.siderbarDrag = {
 
 				if (target_group_type)
 				{
-					// $.each(target_group_type, function (index, item)
-					// {
-					// 	if (item !== 'Canvas')
-					// 	{
-					// 		Canvon('.' + item.replace(/\./ig, '-')).addClass('dropable-group');
-					// 	}
-					// });
-
 					Canvon('.' + target_group_type.join(',').replace(/\./ig, '-').replace(/,/ig, ',.')).addClass('dropable-group');
 				}
 

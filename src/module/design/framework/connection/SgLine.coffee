@@ -112,6 +112,16 @@ define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( c
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
         port2 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : "ExpandedAsg"
+      }
+      {
+        port1 :
+          name      : "instance-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        port2 :
           name      : "elb-sg-in"
           type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
@@ -132,6 +142,16 @@ define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( c
           name      : "launchconfig-sg"
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        port2 :
+          name      : "eni-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+      }
+      {
+        port1 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : "ExpandedAsg"
         port2 :
           name      : "eni-sg"
           direction : "horizontal"
@@ -164,6 +184,16 @@ define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( c
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         port2 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : "ExpandedAsg"
+      }
+      {
+        port1 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        port2 :
           name      : "elb-sg-in"
           type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
       }
@@ -174,6 +204,15 @@ define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( c
           name      : "launchconfig-sg"
           direction : "horizontal"
           type      : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        port2 :
+          name      : "elb-sg-in"
+          type      : constant.AWS_RESOURCE_TYPE.AWS_ELB
+      }
+      {
+        port1 :
+          name      : "launchconfig-sg"
+          direction : "horizontal"
+          type      : "ExpandedAsg"
         port2 :
           name      : "elb-sg-in"
           type      : constant.AWS_RESOURCE_TYPE.AWS_ELB

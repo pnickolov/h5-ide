@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( constant, ConnectionModel, SGRulePopup )->
+define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule/SGRulePopup" ], ( constant, ConnectionModel, ResourceModel, SGRulePopup )->
 
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
@@ -64,6 +64,27 @@ define [ "constant", "../ConnectionModel", "component/sgrule/SGRulePopup" ], ( c
         group.content = MC.template.sgRuleList( group.rules )
 
       MC.template.groupedSgRuleListDelConfirm( groups )
+
+
+
+    # If reason is not falsy, the sgline is removed by us, not by user.
+    # If the sgline is removed by use, we need to remove all the rules
+    # that are represented by this line.
+    remove : ( reason )->
+      if reason then return
+
+      SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
+      for rs in SgRuleSetModel.getRelatedSgRuleSets( @port1Comp(), @port2Comp() )
+        rs.remove()
+      null
+
+
+
+    # This method is used by Asg to remove its expanded asg's sgline.
+    silentRemove : ()->
+      CanvasManager.remove( document.getElementById( @id ) )
+      ResourceModel.remove.apply( this, arguments )
+      null
 
 
     type : "SgRuleLine"

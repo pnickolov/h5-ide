@@ -40,6 +40,7 @@ define [ 'event', 'canvas_layout', 'constant',
                 .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
                 .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
                 .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT CANVAS_OBJECT_DELETE CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
+                .on( 'STATE_ICON_CLICKED',          '#svg_canvas', this.openStateEditor )
 
         render   : ( template ) ->
             console.log 'canvas render'
@@ -83,11 +84,6 @@ define [ 'event', 'canvas_layout', 'constant',
 
             ide_event.trigger ide_event.OPEN_PROPERTY, type, uid
 
-            # stateeditor modal
-            # if component and component.type in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
-
-            #     stateeditor.loadModule(MC.canvas_data, uid)
-
             null
 
         showASGVolumeProperty : ( event, uid ) ->
@@ -108,6 +104,14 @@ define [ 'event', 'canvas_layout', 'constant',
         showPropertyPanel : ->
             console.log 'showPropertyPanel'
             ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
+            null
+
+        openStateEditor : ( event, uid ) ->
+
+            compObj = MC.canvas_data.component[uid]
+            compType = compObj.type
+            if compObj and compType in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
+                stateeditor.loadModule(MC.canvas_data, uid)
             null
 
     }

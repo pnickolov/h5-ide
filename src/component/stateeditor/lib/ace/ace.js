@@ -9588,12 +9588,12 @@ var BackgroundTokenizer = function(tokenizer, editor) {
         this.states.splice(this.currentLine, this.states.length);
 
         this.stop();
-        this.running = setTimeout(this.$worker, 700);
+        this.running = setTimeout(this.$worker, 0);
     };
     
     this.scheduleStart = function() {
         if (!this.running)
-            this.running = setTimeout(this.$worker, 700);
+            this.running = setTimeout(this.$worker, 0);
     }
 
     this.$updateOnChange = function(delta) {
@@ -14308,7 +14308,7 @@ var Text = function(parentEl) {
         var self = this;
         this.$pollSizeChangesTimer = setInterval(function() {
             self.checkForSizeChanges();
-        }, 500);
+        }, 0);
     };
 
     this.$fontStyles = {

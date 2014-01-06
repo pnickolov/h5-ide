@@ -201,6 +201,10 @@ body {
 	margin-right: 5px;
 }
 
+#state-editor .editable-area.disabled {
+	opacity: 0.5 !important;
+}
+
 /*#state-editor .editable-area *:not(.Apple-tab-span) {
 	padding: 0;
 	margin: 0;
@@ -326,11 +330,11 @@ body {
 	-webkit-transform:rotate(-90deg);
 }
 
-#state-editor .parameter-item.disabled {
+/*#state-editor .parameter-item.disabled {
 	opacity: 0.3;
-}
+}*/
 
-#state-editor .state-edit .parameter-item.dict .parameter-dict-item:last-of-type:not(:only-of-type) {
+/*#state-editor .state-edit .parameter-item.dict .parameter-dict-item:last-of-type:not(:only-of-type) {
 	opacity: 0.4;
 }
 
@@ -344,7 +348,7 @@ body {
 
 #state-editor .state-edit .parameter-item.array .parameter-value:focus:last-of-type:not(:only-of-type) {
 	opacity: 1.0;
-}
+}*/
 
 /* *************************************** state view/edit */
 

@@ -5680,8 +5680,7 @@ MC.canvas.event.nodeState = function (id)
 			{
 				event.stopImmediatePropagation();
 
-				console.info(id);
-				//stateeditor.loadModule(MC.canvas_data, id);
+				$("#svg_canvas").trigger("STATE_ICON_CLICKED", id);
 
 				return false;
 			});

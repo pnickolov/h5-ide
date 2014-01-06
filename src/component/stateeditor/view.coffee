@@ -350,8 +350,6 @@ define [ 'event',
                     }
 
             if paraType is 'dict'
-                $keyInput = $paraItem.find('.key')
-                $valueInput = $paraItem.find('.value')
 
                 atwhoOption = {
                     at: '@',
@@ -359,42 +357,34 @@ define [ 'event',
                     data: that.refObjAry
                 }
 
-                if paraOptionAry
-                    that.initCodeEditor($valueInput[0], {
-                        focus: that.refObjAry
-                    })
+                _.each $paraItem, (paraDictItem) ->
 
-                that.initCodeEditor($keyInput[0], {})
+                    $paraDictItem = $(paraDictItem)
 
-                that.initCodeEditor($valueInput[0], {
-                    at: that.refObjAry
-                })
-                # $keyInput.atwho(atwhoOption)
-                # $valueInput.atwho(atwhoOption)
+                    $keyInputs = $paraDictItem.find('.key')
+                    $valueInputs = $paraDictItem.find('.value')
+
+                    _.each $keyInputs, (keyInput) ->
+                        that.initCodeEditor(keyInput, {})
+
+                    _.each $valueInputs, (valueInput) ->
+                        that.initCodeEditor(valueInput, {
+                            focus: paraOptionAry,
+                            at: that.refObjAry
+                        })
 
             else if paraType in ['line', 'text', 'array', 'state']
-                $inputElem = $paraItem.find('.parameter-value')
 
-                if not $inputElem.length
-                    $inputElem = $paraItem.nextAll('.parameter-value')
+                $inputElemAry = $paraItem.find('.parameter-value')
 
-                that.initCodeEditor($inputElem[0],  {
-                    focus: paraOptionAry,
-                    at: that.refObjAry
-                })
+                if not $inputElemAry.length
+                    $inputElemAry = $paraItem.nextAll('.parameter-value')
 
-                # if paraOptionAry
-                    # $inputElem.atwho({
-                    #     at: '',
-                    #     tpl: that.paraCompleteItemHTML
-                    #     data: paraOptionAry
-                    # })
-
-                # $inputElem.atwho({
-                #     at: '@',
-                #     tpl: that.paraCompleteItemHTML
-                #     data: that.refObjAry
-                # })
+                _.each $inputElemAry, (inputElem) ->
+                    that.initCodeEditor(inputElem,  {
+                        focus: paraOptionAry,
+                        at: that.refObjAry
+                    })
 
             else if paraType is 'bool'
                 $inputElem = $paraItem.find('.parameter-value')
@@ -407,17 +397,6 @@ define [ 'event',
                         value: 'false'
                     }]
                 })
-                # $inputElem.atwho({
-                #     at: '',
-                #     tpl: that.paraCompleteItemHTML
-                #     data: [{
-                #         name: 'true',
-                #         value: 'true'
-                #     }, {
-                #         name: 'false',
-                #         value: 'false'
-                #     }]
-                # })
 
         refreshDescription: (cmdName) ->
 
@@ -511,6 +490,10 @@ define [ 'event',
 
             $currentInputElem = $(event.currentTarget)
 
+            currentValue = that.getPlainText($currentInputElem)
+            if currentValue
+                $currentInputElem.removeClass('disabled')
+
             paraObj = that.getParaObj($currentInputElem)
 
             $currentDictItemElem = $currentInputElem.parent('.parameter-dict-item')
@@ -534,7 +517,10 @@ define [ 'event',
                         }]
                     })
                     $dictItemElem = $(newDictItemHTML).appendTo($currentDictItemContainer)
-                    that.bindParaItemEvent($dictItemElem, paraObj)
+                    $paraDictItem = $dictItemElem.nextAll('.parameter-dict-item')
+                    that.bindParaItemEvent($paraDictItem, paraObj)
+                    $paraValueAry = $paraDictItem.find('.parameter-value')
+                    $paraValueAry.addClass('disabled')
 
         onDictInputBlur: (event) ->
 
@@ -557,6 +543,11 @@ define [ 'event',
                     $(itemElem).remove()
                 null
 
+            newAllInputElemAry = $currentDictItemContainer.find('.parameter-dict-item')
+            if newAllInputElemAry.length is 1
+                newInputElemAry = $(itemElem).find('.parameter-value')
+                newInputElemAry.removeClass('disabled')
+
         onArrayInputChange: (event) ->
 
             # append new array item
@@ -564,6 +555,10 @@ define [ 'event',
             that = this
 
             $currentInputElem = $(event.currentTarget)
+
+            currentValue = that.getPlainText($currentInputElem)
+            if currentValue
+                $currentInputElem.removeClass('disabled')
 
             paraObj = that.getParaObj($currentInputElem)
 
@@ -580,6 +575,7 @@ define [ 'event',
                         para_value: ['']
                     })
                     $arrayItemElem = $(newArrayItemHTML).appendTo($currentArrayInputContainer)
+                    $arrayItemElem.addClass('disabled')
                     that.bindParaItemEvent($arrayItemElem, paraObj)
 
         onArrayInputBlur: (event) ->
@@ -711,7 +707,7 @@ define [ 'event',
             if element
                 result = doValidate element
             else
-                $editor= @$stateList.find '.editable-area'
+                $editor= @$stateList.find '.editable-area:not(".disabled")'
                 elems = $editor.toArray()
                 result = true
                 _.each elems, ( e ) ->
@@ -762,8 +758,8 @@ define [ 'event',
 
                     $paraItem = $(paraItem)
 
-                    if $paraItem.hasClass('disabled')
-                        return
+                    # if $paraItem.hasClass('disabled')
+                    #     return
 
                     paraName = $paraItem.attr('data-para-name')
 
@@ -941,7 +937,7 @@ define [ 'event',
 
                 that.compData.state = stateData
 
-                # that.closedPopup()
+                that.closedPopup()
 
             # localStorage[ 'state_data' ] = JSON.stringify data
 
@@ -1153,7 +1149,5 @@ define [ 'event',
             if editor then editor.setValue(content)
 
     }
-
-
 
     return StateEditorView

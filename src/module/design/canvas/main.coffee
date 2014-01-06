@@ -29,17 +29,28 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     if type is 'NEW_STACK'
 
                         # create MC.canvas_data
-                        MC.canvas_data =
-                            id       : result
-                            name     : tab_name
-                            region   : region_name
-                            platform : current_platform
+
+                        #MC.canvas_data =
+                        #    id       : result
+                        #    name     : tab_name
+                        #    region   : region_name
+                        #    platform : current_platform
+
+                        MC.forge.other.canvasData().set 'id'      , result
+                        MC.forge.other.canvasData().set 'name'    , tab_name
+                        MC.forge.other.canvasData().set 'region'  , region_name
+                        MC.forge.other.canvasData().set 'platform', current_platform
 
                     else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
                         #compact components
                         if type is 'OPEN_STACK'
-                            MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                            # old design flow
+                            #MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+
+                            # new design flow
+                            MC.forge.other.canvasData().save MC.forge.stack.compactServerGroup MC.forge.other.canvasData().data()
 
                         #### added by song, if the stack/app too old, unable to open ###
                         if MC.canvas_data.bad
@@ -52,25 +63,42 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         if Tabbar.current is 'appview'
 
                             # set MC.canvas_data
-                            MC.canvas_data = result.resolved_data[0]
+
+                            # old design flow
+                            #MC.canvas_data = result.resolved_data[0]
+
+                            # new design flow
+                            MC.forge.other.canvasData().save result.resolved_data[0]
 
                             # set ami layout
-                            MC.aws.ami.setLayout MC.canvas_data
+
+                            # old design flow
+                            #MC.aws.ami.setLayout MC.canvas_data
+
+                            # new design flow
+                            MC.aws.ami.setLayout MC.forge.other.canvasData().data()
 
                             # set analysis
-                            MC.canvas.analysis MC.canvas_data
 
-                        MC.aws.instance.updateStateIcon MC.canvas_data.id
+                            # old design flow
+                            #MC.canvas.analysis MC.canvas_data
 
-                    # new design flow
+                            # new design flow
+                            MC.canvas.analysis MC.forge.other.canvasData().data()
+
+                        # old design flow
+                        #MC.aws.instance.updateStateIcon MC.canvas_data.id
+
+                        # new design flow
+                        MC.aws.instance.updateStateIcon MC.forge.other.canvasData().get( 'id' )
+
+                    # new design flow +++++++++++++++++++++++++++
                     options =
                         type   : current_platform
                         mode   : Tabbar.current
                         region : region_name
 
                     if type is 'NEW_STACK'
-
-                        #options.type = Design.MODE.Stack
 
                         # platform is classic
                         if options.type is Design.TYPE.Classic or options.type is Design.TYPE.DefaultVpc
@@ -84,20 +112,24 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
-                        component = MC.canvas_data.component
-                        layout    = MC.canvas_data.layout
+                        # old design flow
+                        #component = MC.canvas_data.component
+                        #layout    = MC.canvas_data.layout
+
+                        # new design flow
+                        component  = MC.forge.other.canvasData().get( 'component' )
+                        layout     = MC.forge.other.canvasData().get( 'layout' )
 
                     MC.canvas.layout.init()
                     new Design( component, layout, options )
-                    # new design flow
+                    # new design flow +++++++++++++++++++++++++++
 
                     # old design flow
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     # new design flow
-                    MC.forge.other.canvasData().origin MC.canvas_data
+                    MC.forge.other.canvasData().origin MC.forge.other.canvasData().data()
 
-                    #
                     MC.ta.list = []
 
                 catch error
@@ -108,27 +140,48 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
             #listen RESTORE_CANVAS
             ide_event.onLongListen ide_event.RESTORE_CANVAS, () ->
                 console.log 'RESTORE_CANVAS'
-                #
+
                 view.render()
-                #
-                MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
+
+                # old design flow +++++++++++++++++++++++++++
+                #MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
                 #redraw
-                MC.canvas.layout.init()
+                #MC.canvas.layout.init()
                 #re set
                 #update instance icon of app
-                MC.aws.instance.updateStateIcon MC.canvas_data.id
-                MC.aws.asg.updateASGCount MC.canvas_data.id
-                MC.aws.eni.updateServerGroupState MC.canvas_data.id
+                #MC.aws.instance.updateStateIcon MC.canvas_data.id
+                #MC.aws.asg.updateASGCount MC.canvas_data.id
+                #MC.aws.eni.updateServerGroupState MC.canvas_data.id
                 #update deleted resource style
-                MC.forge.app.updateDeletedResourceState MC.canvas_data
+                #MC.forge.app.updateDeletedResourceState MC.canvas_data
+                # old design flow +++++++++++++++++++++++++++
+
+                # new design flow +++++++++++++++++++++++++++
+
+                # restore origin_canvas_data to MC.canvas_data
+                MC.forge.other.canvasData().save MC.forge.other.canvasData().origin()
+
+                # set options component layout
+                options    =
+                    type   : MC.forge.other.canvasData().get( 'platform'  )
+                    mode   : Tabbar.current
+                    region : MC.forge.other.canvasData().get( 'region'    )
+
+                component  = MC.forge.other.canvasData().get( 'component' )
+                layout     = MC.forge.other.canvasData().get( 'layout'    )
+
+                # create Design
+                MC.canvas.layout.init()
+                new Design( component, layout, options )
+
+                # new design flow +++++++++++++++++++++++++++
 
                 # old design flow
                 #MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
 
                 # new design flow
-                MC.forge.other.canvasData().origin MC.canvas_data
+                MC.forge.other.canvasData().origin MC.forge.other.canvasData().data()
 
-                #
                 null
 
             # ide_event.onLongListen ide_event.CREATE_LINE_TO_CANVAS, ( from_node, from_target_port, to_node, to_target_port, line_option ) ->

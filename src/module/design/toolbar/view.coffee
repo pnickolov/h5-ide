@@ -321,7 +321,14 @@ define [ 'MC', 'event',
                 console.log 'clickDeleteIcon'
                 modal.close()
 
-                ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+                # old design flow
+                #ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                # new design flow
+                region  = MC.forge.other.canvasData().get 'region'
+                id      = MC.forge.other.canvasData().get 'id'
+                name    = MC.forge.other.canvasData().get 'name'
+                ide_event.trigger ide_event.DELETE_STACK, region, id, name
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'

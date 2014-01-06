@@ -684,16 +684,16 @@ var returnTrue = function () {return true},
 					{
 						content = node.textContent.trim();
 
-						// switch (content)
-						// {
-						// 	case 'true':
-						// 		content = true;
-						// 		break;
+						switch (content.toLowerCase())
+						{
+							case 'true':
+								content = true;
+								break;
 
-						// 	case 'false':
-						// 		content = false;
-						// 		break;
-						// }
+							case 'false':
+								content = false;
+								break;
+						}
 
 						if (result[ node.nodeName ] instanceof Array)
 						{

@@ -10,6 +10,7 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
 
     Setup =
         before: () ->
+
         after: () ->
 
     Validator =
@@ -34,6 +35,8 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
 
             if @[ param.constraint.type ]
                 result = @[ param.constraint.type ]( val, param, elem, represent )
+            if not result
+                result = @componentExist val
 
             result
 
@@ -91,6 +94,22 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
 
             result
 
+        componentExist: ( val ) ->
+            refs = Helper.getRefName val
+
+            names = ""
+
+            for ref in refs
+                if not Helper.nameExist ref.name
+                    names = names + ref.name + ", "
+                    continue
+
+            if names
+                names.slice 0, -2
+                return "Reference #{names} don't exist."
+
+            null
+
 
 
         # sub validators [ return true or false ]
@@ -107,7 +126,8 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
             _.isBoolean val
 
         isStringBool: ( val, allowEmpty ) ->
-             /^(true|false)$/i.test val or allowEmpty and val is ''
+            /^(true|false)$/i.test val or allowEmpty and val is ''
+
 
 
 
@@ -123,8 +143,28 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
     Helper =
         getAllowCommands: ( map ) ->
             _.keys map
+
         trim: ( val ) ->
             $.trim val
+
+        nameExist: ( name ) ->
+            for uid, component of MC.canvas_data.component
+                if component.name is name
+                    return true
+            false
+
+        getRefName: ( val ) ->
+
+            reg = constant.REGEXP.stateEditorOriginReference
+
+            ret = []
+
+            while ( resArr = reg.exec val ) isnt null
+                ret.push { name: resArr[ 1 ], ref: resArr[ 0 ] }
+
+            ret
+
+
 
     Action =
 

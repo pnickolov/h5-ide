@@ -23,6 +23,7 @@ define [ 'event',
             'click .state-toolbar .state-add': 'onStateAddClick'
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
+            'click .state-cancel': 'onStateCancelClick'
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
 
@@ -169,7 +170,7 @@ define [ 'event',
                 })
 
             # create new array input box
-            $lastArrayInputList = $stateItemList.find('.parameter-item.array .parameter-value')
+            $lastArrayInputList = $stateItemList.find('.parameter-item.array .parameter-value:last')
             _.each $lastArrayInputList, (lastArrayInput) ->
                 that.onArrayInputChange({
                     currentTarget: lastArrayInput
@@ -545,7 +546,7 @@ define [ 'event',
 
             newAllInputElemAry = $currentDictItemContainer.find('.parameter-dict-item')
             if newAllInputElemAry.length is 1
-                newInputElemAry = $(itemElem).find('.parameter-value')
+                newInputElemAry = $(newAllInputElemAry[0]).find('.parameter-value')
                 newInputElemAry.removeClass('disabled')
 
         onArrayInputChange: (event) ->
@@ -758,8 +759,8 @@ define [ 'event',
 
                     $paraItem = $(paraItem)
 
-                    # if $paraItem.hasClass('disabled')
-                    #     return
+                    if $paraItem.hasClass('disabled')
+                        return
 
                     paraName = $paraItem.attr('data-para-name')
 
@@ -772,6 +773,10 @@ define [ 'event',
 
                             $paraInput = $paraItem.find('.parameter-value')
                             paraValue = that.getPlainText($paraInput)
+
+                            if $paraItem.hasClass('bool')
+                                if paraValue is 'true' then paraValue = true
+                                else paraValue = false
 
                     else if $paraItem.hasClass('dict')
 
@@ -804,7 +809,8 @@ define [ 'event',
                             $arrayItem = $(arrayItem)
                             arrayValue = that.getPlainText($arrayItem)
 
-                            arrayObj.push(arrayValue)
+                            if arrayValue
+                                arrayObj.push(arrayValue)
 
                             null
 
@@ -856,13 +862,15 @@ define [ 'event',
 
                     if paraValue is undefined and not paraModelRequired
                         renderParaObj.para_disabled = true
+                    else
+                        renderParaObj.para_disabled = false
 
                     renderParaValue = null
                     if paraModelType in ['line', 'text', 'bool', 'state']
 
-                        renderParaValue = paraValue
+                        renderParaValue = String(paraValue)
 
-                        if not paraValue
+                        if not paraValue and paraModelType isnt 'bool'
                             renderParaValue = ''
 
                     else if paraModelType is 'dict'
@@ -903,8 +911,8 @@ define [ 'event',
                         if paraObj1.required and not paraObj2.required
                             return false
 
-                        if paraObj1.required is paraObj2.required
-                            if paraObj1.para_name > paraObj1.para_name
+                        if paraObj1.required is paraObj2.required and paraObj1.required is false
+                            if paraObj1.para_name < paraObj2.para_name
                                 return false
 
                         return true
@@ -946,6 +954,11 @@ define [ 'event',
 
             # that.refreshStateList(renderData)
             # that.refreshStateViewList(renderData)
+
+        onStateCancelClick: (event) ->
+
+            that = this
+            that.closedPopup()
 
         onParaRemoveClick: (event) ->
 

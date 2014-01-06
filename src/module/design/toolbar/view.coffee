@@ -333,7 +333,12 @@ define [ 'MC', 'event',
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
             #ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
+
+            # old design flow
+            #ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
+
+            # new design flow
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.forge.other.canvasData().get( 'region' ), null
 
         clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'

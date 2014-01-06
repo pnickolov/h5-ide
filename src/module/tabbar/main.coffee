@@ -301,7 +301,7 @@ define [ 'jquery', 'event', 'base_main',
 
                 console.log obj
 
-                ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, region_name, obj.data, null
+                ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, region_name, obj.data, obj.data.resolved_data[0].platform
                 ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'visualization', tab_id
 
                 null

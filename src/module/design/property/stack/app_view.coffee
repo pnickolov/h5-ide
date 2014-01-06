@@ -23,7 +23,7 @@ define [ '../base/view',
             if MC.canvas.getState() isnt 'appview'
                 "App - " + @model.attributes.name
             else
-                str = '<header class="property-sidebar-title sidebar-title truncate" id="property-title">Visualization - '+@model.attributes.property_detail.vpcid+'<i class="icon-info tooltip property-header-info" data-tooltip="Currently you can rearrange the layout of visualisation and export it as PNG image file. Future version will include the feature to import VPC resource as an app. "></i></header>'
+                str = '<header class="property-sidebar-title sidebar-title truncate" id="property-title">Visualization - '+@model.attributes.vpcid+'<i class="icon-info tooltip property-header-info" data-tooltip="Currently you can rearrange the layout of visualisation and export it as PNG image file. Future version will include the feature to import VPC resource as an app. "></i></header>'
                 $('#property-title').html(str)
 
 

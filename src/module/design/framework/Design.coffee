@@ -110,7 +110,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     that = @
 
     # Disable triggering event when Design is deserializing
-    _old_design_trigger_ = Design.trigger
     Design.trigger = noop
 
 
@@ -211,7 +210,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # Broadcast event
     ####################
     # Restore Design.trigger
-    Design.trigger = _old_design_trigger_
+    Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null
 

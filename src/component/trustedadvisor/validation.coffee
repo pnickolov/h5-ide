@@ -163,4 +163,6 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
     validComp : validComp
     validAll  : validAll
     validRun  : validRun
+    state     : validation_main.state
+
 

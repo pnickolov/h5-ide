@@ -2,71 +2,9 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( constant, lang ) ->
+define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( validationTA, constant, lang ) ->
 
-
-    # TA Component temporary begin
-    TA = (() ->
-        _componentTipMap =
-            'AWS.EC2.Instance': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE
-            'AWS.AutoScaling.Group': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG
-
-        _getCompTip = ( compType, str1, str2, str100 ) ->
-            tip = _componentTipMap[ arguments[ 0 ] ]
-
-            arguments[ 0 ] = tip
-
-            sprintf.apply @, arguments
-
-
-        _buildTAErr = ( tip, uid, refUid ) ->
-
-            level   : constant.TA.ERROR
-            info    : tip
-            uid     : "#{uid}:#{refUid}"
-
-        # return  Array
-        _findReference = ( str ) ->
-            reg = constant.REGEXP.stateEditorReference
-            ret = []
-
-            while ( resArr = reg.exec str ) isnt null
-                ret.push { uid: resArr[ 1 ], ref: resArr[ 0 ] }
-
-            ret
-
-
-        checkComponentExist = ( obj, data ) ->
-            errs = []
-
-            if _.isString obj
-                if obj.length is 0
-                    return errs
-
-                refs = _findReference obj
-
-                for ref in refs
-                    component = Design.instance().component( ref.uid )
-                    if not component
-                        if data
-                            tip = _getCompTip data.type, data.name, data.stateId, ref.ref
-                            TAError = _buildTAErr tip, data.uid, ref.uid
-
-                            errs.push TAError
-                        else
-                            errs.push 'error'
-
-            else
-                for key, value of obj
-                    errs = errs.concat checkComponentExist value, data
-
-            errs
-
-        checkComponentExist: checkComponentExist
-        )()
-
-    # TA Component temporary end
-
+    TA = validationTA.state
 
     Message = {}
 

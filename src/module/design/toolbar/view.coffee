@@ -263,7 +263,12 @@ define [ 'MC', 'event',
             true
 
         clickDuplicateIcon : (event) ->
-            name     = MC.canvas_data.name
+
+            # old design flow
+            #name     = MC.canvas_data.name
+
+            # new design flow
+            name      = MC.forge.other.canvasData().get 'name'
 
             # set default name
             new_name = MC.aws.aws.getDuplicateName(name)
@@ -283,15 +288,28 @@ define [ 'MC', 'event',
                 else
                     modal.close()
 
-                    region  = MC.canvas_data.region
-                    id      = MC.canvas_data.id
-                    name    = MC.canvas_data.name
+                    # old design flow +++++++++++++++++++++++++++
+                    #region  = MC.canvas_data.region
+                    #id      = MC.canvas_data.id
+                    #name    = MC.canvas_data.name
 
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    #setTimeout () ->
+                    #    ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                    #, 500
+                    # old design flow +++++++++++++++++++++++++++
+
+                    # new design flow +++++++++++++++++++++++++++
+                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
 
                     setTimeout () ->
-                        ide_event.trigger ide_event.DUPLICATE_STACK, MC.canvas_data.region, MC.canvas_data.id, new_name, MC.canvas_data.name
+                        region  = MC.forge.other.canvasData().get 'region'
+                        id      = MC.forge.other.canvasData().get 'id'
+                        name    = MC.forge.other.canvasData().get 'name'
+                        ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
                     , 500
+                    # new design flow +++++++++++++++++++++++++++
 
             true
 

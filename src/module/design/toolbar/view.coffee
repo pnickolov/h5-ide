@@ -189,8 +189,13 @@ define [ 'MC', 'event',
         clickSaveIcon : ->
             console.log 'clickSaveIcon'
 
-            name = MC.canvas_data.name
-            id = MC.canvas_data.id
+            # old design flow
+            #name = MC.canvas_data.name
+            #id = MC.canvas_data.id
+
+            # new design flow
+            name = MC.forge.other.canvasData().get 'name'
+            id   = MC.forge.other.canvasData().get 'id'
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
@@ -213,7 +218,11 @@ define [ 'MC', 'event',
                     if MC.aws.aws.checkStackName id, new_name
                         modal.close()
 
-                        MC.canvas_data.name = new_name
+                        # old design flow
+                        #MC.canvas_data.name = new_name
+
+                        # new design flow
+                        MC.forge.other.canvasData().set 'name', new_name
 
                         # #expand components
                         # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
@@ -222,12 +231,21 @@ define [ 'MC', 'event',
                         # #compact and update canvas
                         # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
 
-                        ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                        # old design flow
+                        #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                        # new design flow
+                        ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
 
                         true
 
             else
-                MC.canvas_data.name = name
+
+                # old design flow
+                #MC.canvas_data.name = name
+
+                # new design flow
+                MC.forge.other.canvasData().set 'name', name
 
                 # #expand components
                 # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
@@ -236,7 +254,11 @@ define [ 'MC', 'event',
                 # #compact and update canvas
                 # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
 
-                ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                # old design flow
+                #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                # new design flow
+                ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
 
             true
 

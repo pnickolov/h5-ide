@@ -13,10 +13,12 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_caret', 
             # add test
             MC.forge.other.addSEList canvas_data
 
-            compData = canvas_data.component[uid]
+            allCompData = canvas_data.component
+            compData = allCompData[uid]
 
             model = new Model({
-                compData: compData
+                compData: compData,
+                allCompData: allCompData
             })
             view  = new View({
                 model: model

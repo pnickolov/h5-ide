@@ -10,12 +10,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 
 		defaults: {
 			cmdParaMap: null,
-			lookupDataAry: null,
-			compData: null
+			compData: null,
+			allCompData: null
 		},
 
 		initialize: () ->
 
+			that = this
+
+			# generate module autocomplete data
 			cmdAry = []
 			cmdParaMap = {}
 			cmdParaObjMap = {}
@@ -59,23 +62,40 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 					return true
 				null
 
-			# init command
 			cmdAry = cmdAry.sort (val1, val2) ->
 				return val1 < val2
 			cmdAry = cmdAry.reverse()
 
-			console.log(cmdAry)
-			console.log(cmdParaMap)
+			# generate resource attr autocomplete data
+			allCompData = that.get('allCompData')
+			resAttrDataAry = that.genResAttrList(allCompData)
 
-			lookupDataAry = _.map cmdAry, (elem, idx) ->
-				value: elem
-				data: elem
+			# for view
+			that.set('cmdParaMap', cmdParaMap)
+			that.set('cmdParaObjMap', cmdParaObjMap)
+			that.set('cmdModuleMap', cmdModuleMap)
+			that.set('moduleCMDMap', moduleCMDMap)
+			that.set('resAttrDataAry', resAttrDataAry)
 
-			this.set('cmdParaMap', cmdParaMap)
-			this.set('cmdParaObjMap', cmdParaObjMap)
-			this.set('lookupDataAry', lookupDataAry)
-			this.set('cmdModuleMap', cmdModuleMap)
-			this.set('moduleCMDMap', moduleCMDMap)
+		genResAttrList: (compData) ->
+
+			compList = _.values(compData)
+			resultAry = []
+			if compList and not _.isEmpty(compList) and _.isArray(compList)
+				_.each compList, (compObj) ->
+					compName = compObj.name
+					keyList = _.keys(compObj.resource)
+					if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
+						_.each keyList, (attrName) ->
+							completeStr = '{' + compName + '.' + attrName + '}'
+							resultAry.push({
+								name: completeStr,
+								value: completeStr
+							})
+						null
+					null
+
+			return resultAry
 
 	}
 

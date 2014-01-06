@@ -27,10 +27,6 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
 
-            # 'paste .editable-area': 'onPasteInput'
-            # 'drop .editable-area': 'onPasteInput'
-            # 'blur .editable-area': 'onBlurInput'
-
         initialize: () ->
 
             this.compileTpl()
@@ -69,21 +65,8 @@ define [ 'event',
             that.cmdModuleMap = that.model.get('cmdModuleMap')
             that.moduleCMDMap = that.model.get('moduleCMDMap')
             that.langTools = ace.require("ace/ext/language_tools")
-            that.refObjAry = [{
-                name: '{host1.privateIP}',
-                value: '{host1.privateIP}'
-            }, {
-                name: '{host1.keyName}',
-                value: '{host1.keyName}'
-            }, {
-                name: '{host2.instanceId}',
-                value: '{host1.instanceId}'
-            }, {
-                name: '{host2.instanceId}',
-                value: '{host1.instanceId}'
-            }]
+            that.refObjAry = that.model.get('resAttrDataAry')
             that.compData = that.model.get('compData')
-            # that.refObjAry = JSON.parse(localStorage['state_editor_list'])
 
         compileTpl: () ->
 
@@ -295,20 +278,6 @@ define [ 'event',
                     'name': value,
                     'value': value
                 }
-
-            # $cmdValueItem.atwho({
-            #     at: '',
-            #     tpl: that.paraCompleteItemHTML
-            #     data: cmdNameAry,
-            #     onSelected: (value) ->
-            #         $that = $(this)
-            #         $stateItem = $that.parents('.state-item')
-            #         $stateItem.attr('data-command', value)
-            #         that.refreshDescription(value)
-            #         $paraListElem = $stateItem.find('.parameter-list')
-            #         that.refreshParaList($paraListElem, value)
-            #         that.refreshStateView($stateItem)
-            # })
 
             that.initCodeEditor($cmdValueItem[0], {
                 focus: cmdNameAry
@@ -683,6 +652,7 @@ define [ 'event',
             that.refreshStateId()
 
         submitValidate: ( element ) ->
+
             that = this
 
             doValidate = ( elem ) ->
@@ -723,8 +693,8 @@ define [ 'event',
 
             result
 
-
         saveStateData: () ->
+
             if not @submitValidate()
                 return false
 
@@ -928,32 +898,12 @@ define [ 'event',
 
         onStateSaveClick: (event) ->
 
-            # test getPlainTxt
-            #@getPlainTxt()
-            #@setPlainTxt localStorage[ 'new_str' ]
-
             that = this
             stateData = that.saveStateData()
 
-            $currentElem = $('#xxxxx')
-            text = that.getPlainText($currentElem[0])
-            console.log(text)
-
-            that.setPlainText($currentElem, text)
-
             if stateData
-
                 that.compData.state = stateData
-
                 that.closedPopup()
-
-            # localStorage[ 'state_data' ] = JSON.stringify data
-
-            # renderData = that.loadStateData(data)
-            # console.log(renderData)
-
-            # that.refreshStateList(renderData)
-            # that.refreshStateViewList(renderData)
 
         onStateCancelClick: (event) ->
 

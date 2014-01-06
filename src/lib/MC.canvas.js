@@ -4484,8 +4484,6 @@ MC.canvas.event.groupResize = {
 
 			if (type === 'AWS.VPC.Subnet')
 			{
-				//parent.find('.port').hide();
-
 				// Re-draw group connection
 				$.each(parent_item.connection(), function (i, value)
 				{
@@ -5158,15 +5156,14 @@ MC.canvas.event.clearList = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	var connection = $canvas(this.id).connection(),
-		stack = [];
+	var stack = [];
 
-	$.each(connection, function (i, item)
+	$.each($canvas(this.id).connection(), function (i, item)
 	{
 		stack.push('#' + item.line);
 	});
 
-	Canvon(stack.join(','))[event.type === 'mouseenter' ? 'addClass' : 'removeClass']('view-hover');
+	Canvon( stack.join(',') )[ event.type === 'mouseenter' ? 'addClass' : 'removeClass' ]( 'view-hover' );
 
 	return true;
 };

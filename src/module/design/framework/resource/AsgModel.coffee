@@ -286,6 +286,26 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       @attributes.expandedList = old_expandedList
       null
 
+    updateExpandedAsgSgLine : ( sgTarget, isRemove ) ->
+
+      if @attributes.expandedList.length is 0 then return
+
+      # Temperory clear expandList. So that removing ElbAmiAsso will not trigger
+      # this method again.
+      old_expandedList = @attributes.expandedList
+      @attributes.expandedList = []
+
+      SgLine = Design.modelClassForType( "SgRuleLine" )
+
+      createOption = { createByUser : false }
+      removeReason = { reason : sgTarget }
+
+      for i in old_expandedList
+        sgline = new SgLine( i, sgTarget, createOption )
+        if isRemove then sgline.silentRemove()
+
+      @attributes.expandedList = old_expandedList
+
     addScalingPolicy : ( policy )->
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )

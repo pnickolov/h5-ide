@@ -45,15 +45,25 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         return "ide/ami/" + ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
 
     connect : ( cn )->
-      if cn.type is "ElbAmiAsso" and @parent()
-        @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB) )
+      if @parent()
+        if cn.type is "ElbAmiAsso"
+          @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB) )
+
+        if cn.type is "SgRuleLine"
+          # Create duplicate sgline for each expanded asg
+          @parent().updateExpandedAsgSgLine( cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ) )
+
       null
 
     disconnect : ( cn )->
-      if cn.type is "ElbAmiAsso" and @parent()
-        # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
-        # Because user might just want to asso another Elb right after disconnected.
-        @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB), true )
+      if @parent()
+        if cn.type is "ElbAmiAsso"
+          # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
+          # Because user might just want to asso another Elb right after disconnected.
+          @parent().updateExpandedAsgAsso( cn.getTarget(constant.AWS_RESOURCE_TYPE.AWS_ELB), true )
+      else
+        if cn.type is "SgRuleLine"
+          @parent().updateExpandedAsgSgLine( cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ), true )
       null
 
     getAmi                : InstanceModel.prototype.getAmi

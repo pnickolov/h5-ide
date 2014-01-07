@@ -460,7 +460,11 @@ define [ 'MC', 'event',
             console.log 'clickConvertCloudFormation'
             me = this
 
-            ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+            # old design flow
+            #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+            # new design flow
+            ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             null
 
@@ -476,7 +480,12 @@ define [ 'MC', 'event',
                 file_content = JSON.stringify cf_json
                 $( '#tpl-download' ).attr {
                     'href'      : "data://application/json;," + file_content,
-                    'download'  : MC.canvas_data.name + '.json',
+
+                    # old design flow
+                    #'download'  : MC.canvas_data.name + '.json',
+
+                    # new design flow
+                    'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
                 }
                 $('#tpl-download').on 'click', { target : this }, (event) ->
                     console.log 'clickExportJSONIcon'

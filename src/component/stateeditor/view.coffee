@@ -16,8 +16,12 @@ define [ 'event',
             'closed': 'closedPopup'
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
+            
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
+            'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
+            'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
+
             'focus .editable-area': 'onFocusInput'
             'click .state-toolbar .state-id': 'onStateIdClick'
             'click .state-toolbar .state-add': 'onStateAddClick'
@@ -40,22 +44,29 @@ define [ 'event',
             that = this
 
             # show modal
-            modal that.editorModalTpl(), false
-            @setElement $( '#state-editor-model' ).closest '#modal-wrap'
-            that.$stateList = that.$el.find('.state-list')
-            that.$cmdDsec = $('#state-description')
+            modal that.editorModalTpl({
+                res_name: that.resName
+            }), false
 
-            # hide autocomplete when click document
-            $(document).on('mousedown', that.onDocumentMouseDown)
-            $('#state-editor').on('scroll', () ->
-                $('.atwho-view').hide()
-            )
+            setTimeout(() ->
 
-            compStateData = that.compData.state
-            stateObj = that.loadStateData(compStateData)
-            that.refreshStateList(stateObj)
-            that.refreshStateViewList()
-            that.bindStateListSortEvent()
+                that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
+                that.$stateList = that.$el.find('.state-list')
+                that.$cmdDsec = $('#state-description')
+
+                # hide autocomplete when click document
+                $(document).on('mousedown', that.onDocumentMouseDown)
+                $('#state-editor').on('scroll', () ->
+                    $('.atwho-view').hide()
+                )
+
+                compStateData = that.model.getStateData()
+                stateObj = that.loadStateData(compStateData)
+                that.refreshStateList(stateObj)
+                that.refreshStateViewList()
+                that.bindStateListSortEvent()
+
+            , 1)
 
         initData: () ->
 
@@ -65,8 +76,10 @@ define [ 'event',
             that.cmdModuleMap = that.model.get('cmdModuleMap')
             that.moduleCMDMap = that.model.get('moduleCMDMap')
             that.langTools = ace.require("ace/ext/language_tools")
-            that.refObjAry = that.model.get('resAttrDataAry')
-            that.compData = that.model.get('compData')
+            that.resAttrDataAry = that.model.get('resAttrDataAry')
+            that.resStateDataAry = that.model.get('resStateDataAry')
+
+            that.resName = that.model.getResName()
 
         compileTpl: () ->
 
@@ -152,11 +165,15 @@ define [ 'event',
                     currentTarget: lastDictInput
                 })
 
-            # create new array input box
-            $lastArrayInputList = $stateItemList.find('.parameter-item.array .parameter-value:last')
-            _.each $lastArrayInputList, (lastArrayInput) ->
+            # create new array/state input box
+            $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
+            $lastStateInputListAry = $stateItemList.find('.parameter-item.state .parameter-value:last').toArray()
+
+            $lastInputListAry = $lastArrayInputListAry.concat($lastStateInputListAry)
+
+            _.each $lastInputListAry, (lastInput) ->
                 that.onArrayInputChange({
-                    currentTarget: lastArrayInput
+                    currentTarget: lastInput
                 })
 
         refreshStateView: ($stateItem) ->
@@ -218,7 +235,7 @@ define [ 'event',
 
                     paraValue = paraValueAry.join(', ')
 
-                else if paraType is 'array'
+                else if paraType in ['array', 'state']
 
                     $valueInputs = $paraItem.find('.parameter-value')
 
@@ -324,7 +341,7 @@ define [ 'event',
                 atwhoOption = {
                     at: '@',
                     tpl: that.paraCompleteItemHTML
-                    data: that.refObjAry
+                    data: that.resAttrDataAry
                 }
 
                 _.each $paraItem, (paraDictItem) ->
@@ -340,10 +357,10 @@ define [ 'event',
                     _.each $valueInputs, (valueInput) ->
                         that.initCodeEditor(valueInput, {
                             focus: paraOptionAry,
-                            at: that.refObjAry
+                            at: that.resAttrDataAry
                         })
 
-            else if paraType in ['line', 'text', 'array', 'state']
+            else if paraType in ['line', 'text', 'array']
 
                 $inputElemAry = $paraItem.find('.parameter-value')
 
@@ -351,9 +368,28 @@ define [ 'event',
                     $inputElemAry = $paraItem.nextAll('.parameter-value')
 
                 _.each $inputElemAry, (inputElem) ->
-                    that.initCodeEditor(inputElem,  {
+                    that.initCodeEditor(inputElem, {
                         focus: paraOptionAry,
-                        at: that.refObjAry
+                        at: that.resAttrDataAry
+                    })
+
+            else if paraType is 'state'
+
+                $inputElemAry = $paraItem.find('.parameter-value')
+
+                if not $inputElemAry.length
+                    $inputElemAry = $paraItem.nextAll('.parameter-value')
+
+                haveAtDataAry = _.map that.resStateDataAry, (stateRefObj) ->
+                    return {
+                        name: '@' + stateRefObj.name,
+                        value: '@' + stateRefObj.value
+                    }
+
+                _.each $inputElemAry, (inputElem) ->
+                    that.initCodeEditor(inputElem, {
+                        focus: haveAtDataAry,
+                        at: that.resStateDataAry
                     })
 
             else if paraType is 'bool'
@@ -402,14 +438,14 @@ define [ 'event',
 
                 newParaObj['type_' + paraObj.type] = true
 
-                if paraObj.type in ['line', 'text', 'bool', 'state']
+                if paraObj.type in ['line', 'text', 'bool']
                     newParaObj.para_value = ''
                 else if paraObj.type is 'dict'
                     newParaObj.para_value = [{
                         key: '',
                         value: ''
                     }]
-                else if paraObj.type is 'array'
+                else if paraObj.type in ['array', 'state']
                     newParaObj.para_value = ['']
 
                 newParaAry.push(newParaObj)
@@ -601,8 +637,21 @@ define [ 'event',
             $stateItemList = that.$stateList.find('.state-item')
 
             if $stateItem.hasClass('view')
+
+                # remove other item view
+                _.each $stateItemList, (otherStateItem) ->
+                    $otherStateItem = $(otherStateItem)
+                    if not $stateItem.is($otherStateItem) and not $stateItem.hasClass('view')
+                        that.refreshStateView($otherStateItem)
+                    null
+
                 $stateItemList.addClass('view')
                 $stateItem.removeClass('view')
+
+                # refresh description
+                cmdName = $stateItem.attr('data-command')
+                if cmdName
+                    that.refreshDescription(cmdName)
             else
                 that.refreshStateView($stateItem)
                 $stateItem.addClass('view')
@@ -702,7 +751,7 @@ define [ 'event',
 
             $stateItemList = that.$stateList.find('.state-item')
 
-            stateObj = {}
+            stateObjAry = []
 
             _.each $stateItemList, (stateItem, idx) ->
 
@@ -717,7 +766,8 @@ define [ 'event',
                 if not moduleObj
                     return
 
-                stateObj[stateId] = {
+                stateItemObj = {
+                    stateid: String(idx + 1),
                     module: moduleObj.module,
                     parameter: {}
                 }
@@ -738,15 +788,18 @@ define [ 'event',
 
                     if $paraItem.hasClass('line') or
                         $paraItem.hasClass('bool') or
-                        $paraItem.hasClass('text') or
-                        $paraItem.hasClass('state')
+                        $paraItem.hasClass('text')
 
                             $paraInput = $paraItem.find('.parameter-value')
                             paraValue = that.getPlainText($paraInput)
 
                             if $paraItem.hasClass('bool')
-                                if paraValue is 'true' then paraValue = true
-                                else paraValue = false
+                                if paraValue is 'true'
+                                    paraValue = true
+                                else if paraValue is 'false'
+                                    paraValue = false
+                                else
+                                    paraValue = ''
 
                     else if $paraItem.hasClass('dict')
 
@@ -769,7 +822,7 @@ define [ 'event',
 
                         paraValue = dictObj
 
-                    else if $paraItem.hasClass('array')
+                    else if $paraItem.hasClass('array') or $paraItem.hasClass('state')
 
                         $arrayItemList = $paraItem.find('.parameter-value')
                         arrayObj = []
@@ -786,15 +839,17 @@ define [ 'event',
 
                         paraValue = arrayObj
 
-                    stateObj[stateId]['parameter'][paraName] = paraValue
+                    stateItemObj['parameter'][paraName] = paraValue
 
                     null
 
+                stateObjAry.push(stateItemObj)
+
                 null
 
-            return stateObj
+            return stateObjAry
 
-        loadStateData: (stateObj) ->
+        loadStateData: (stateObjAry) ->
 
             that = this
 
@@ -802,12 +857,13 @@ define [ 'event',
                 state_list: []
             }
 
-            _.each stateObj, (state, stateId) ->
+            _.each stateObjAry, (state, idx) ->
 
                 cmdName = that.moduleCMDMap[state.module]
                 paraModelObj = that.cmdParaObjMap[cmdName]
 
                 paraListObj = state.parameter
+                stateId = state.stateid
 
                 stateRenderObj = {
                     state_id: stateId,
@@ -836,12 +892,15 @@ define [ 'event',
                         renderParaObj.para_disabled = false
 
                     renderParaValue = null
-                    if paraModelType in ['line', 'text', 'bool', 'state']
+                    if paraModelType in ['line', 'text', 'bool']
 
                         renderParaValue = String(paraValue)
 
-                        if not paraValue and paraModelType isnt 'bool'
+                        if not paraValue
                             renderParaValue = ''
+
+                        if paraModelType is 'bool' and paraValue is false
+                            renderParaValue = 'false'
 
                     else if paraModelType is 'dict'
 
@@ -861,7 +920,7 @@ define [ 'event',
                                 value: ''
                             }]
 
-                    else if paraModelType is 'array'
+                    else if paraModelType in ['array', 'state']
 
                         renderParaValue = []
                         _.each paraValue, (paraValueStr) ->
@@ -902,7 +961,7 @@ define [ 'event',
             stateData = that.saveStateData()
 
             if stateData
-                that.compData.state = stateData
+                that.model.setStateData(stateData)
                 that.closedPopup()
 
         onStateCancelClick: (event) ->

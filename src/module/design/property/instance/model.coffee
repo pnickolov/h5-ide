@@ -164,14 +164,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			Design.instance().component( @get("uid") ).getEmbedEni().isValidIp( ip )
 
 		canAddIP : ()->
-			instance = Design.instance().component( @get("uid") )
-			eni   = instance.getEmbedEni()
-			maxIp = eni.maxIpCount()
-
-			if @get("eni").ips.length < maxIp
-				return true
-
-			sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
+			Design.instance().component( @get("uid") ).getEmbedEni().canAddIp()
 
 		setIp : ( idx, ip, autoAssign )->
 			Design.instance().component( @get("uid") ).setIp( idx, ip, autoAssign )

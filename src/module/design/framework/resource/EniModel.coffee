@@ -230,6 +230,30 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       @set( "ips", ips )
       null
 
+    canAddIp : ()->
+      instance = @attachedInstance()
+      if not instance then return false
+
+      maxIp = @maxIpCount()
+      ips   = @get("ips")
+
+      if ips.length >= maxIp
+        return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
+
+      subent = if @embedInstance() then @embedInstance().parent() else @parent()
+
+      result = true
+      # Add an fake item to see if there's an error in subnet
+      ips.push( { ip : "fake" } )
+
+      if not subent.isCidrEnoughForIps()
+        result = "Ip count limit has reached in #{subnet.get('name')}"
+
+      # Remove the fake item
+      ips.length = ips.length - 1
+
+      result
+
     connect : ( connection )->
       if connection.type is "EniAttachment" then @draw()
       null

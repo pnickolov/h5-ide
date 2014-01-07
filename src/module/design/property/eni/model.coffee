@@ -134,18 +134,8 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 			Design.instance().component( @get("uid") ).isValidIp( ip )
 
 		canAddIP : ()->
+			Design.instance().component( @get("uid") ).canAddIp()
 
-			eni   = Design.instance().component( @get("uid") )
-			maxIp = eni.maxIpCount()
-
-			if @get("ips").length < maxIp
-				return true
-
-			instance = eni.attachedInstance()
-			if not instance
-				return null
-
-			sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
 		setIp : ( idx, ip, autoAssign )->
 			Design.instance().component( @get("uid") ).setIp( idx, ip, autoAssign )

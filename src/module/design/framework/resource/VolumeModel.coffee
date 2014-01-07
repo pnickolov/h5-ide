@@ -38,6 +38,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       if oldOwner
         vl = oldOwner.attributes.volumeList
         vl.splice( vl.indexOf(this), 1 )
+        oldOwner.draw()
 
       @attributes.owner = owner
 
@@ -45,6 +46,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         owner.attributes.volumeList.push( this )
       else
         owner.attributes.volumeList = [ this ]
+
+      owner.draw()
 
       null
 

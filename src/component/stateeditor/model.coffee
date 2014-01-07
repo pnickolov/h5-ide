@@ -9,7 +9,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 	StateEditorModel = Backbone.Model.extend {
 
 		defaults: {
-			cmdParaMap: null,
 			compData: null,
 			allCompData: null
 		},
@@ -140,7 +139,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 
 			that = this
 			compData = that.get('compData')
-			imageId = resource.ImageId
+			imageId = compData.resource.ImageId
 			imageObj = MC.data.dict_ami[imageId]
 
 			osPlatform = null

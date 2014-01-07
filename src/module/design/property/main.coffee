@@ -41,6 +41,10 @@ define [ 'event',
 		view = new View()
 		view.render()
 
+		ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
+			view.forceShow()
+			null
+
 		# Setup view / PropertyBaseView / PropertyBaseModule events.
 		PropertyBaseView.event.on PropertyBaseView.event.FORCE_SHOW, () ->
 			view.forceShow()
@@ -60,12 +64,7 @@ define [ 'event',
 			null
 
 		#listen OPEN_PROPERTY
-		ide_event.onLongListen ide_event.SHOW_PROPERTY_PANEL, () ->
-			console.log 'SHOW_PROPERTY_PANEL'
-			view.showPropertyPanel()
-
-		#listen OPEN_PROPERTY
-		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid ) ->
+		ide_event.onLongListen ide_event.OPEN_PROPERTY, ( type, uid, force ) ->
 
 			view.load()
 
@@ -110,6 +109,8 @@ define [ 'event',
 			try
 				PropertyBaseModule.load type, uid, tab_type
 				view.afterLoad()
+
+				if force then view.forceShow()
 			catch error
 				### env:dev ###
 				throw error

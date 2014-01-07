@@ -143,7 +143,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       null
 
     SHOW_PROPERTY_PANEL : ()->
-      ide_event.trigger ide_event.OPEN_PROPERTY
+      ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
       null
 
     CANVAS_PLACE_OVERLAP : () ->
@@ -152,6 +152,10 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     CANVAS_ZOOMED_DROP_ERROR : ()->
       notification 'warning', lang.ide.CVS_MSG_ERR_ZOOMED_DROP_ERROR
+      null
+
+    CANVAS_SAVE : ()->
+      ide_event.trigger ide_event.CANVAS_SAVE
       null
 
     CANVAS_PLACE_NOT_MATCH : ( param )->

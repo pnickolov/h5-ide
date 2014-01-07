@@ -129,7 +129,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
     getInstanceTypeConfig : ()->
       t = @get("instanceType").split(".")
       if t.length >= 2
-        return MC.data.config[ Design.instance().region() ].instance_type[ t[0] ][ t[1] ]
+        config = MC.data.config[ Design.instance().region() ]
+        if config and config.instance_type
+          return config.instance_type[ t[0] ][ t[1] ]
 
       return null
 

@@ -98,9 +98,12 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       return 1
 
     limitIpAddress : ()->
-      ipCount = @maxIpCount()
-      if @get("ips").length > ipCount
-        @get("ips").length = ipCount
+      # Only limit the ip when we have instance config
+      instance = @attachedInstance()
+      if instance and instance.getInstanceTypeConfig()
+        ipCount = @maxIpCount()
+        if @get("ips").length > ipCount
+          @get("ips").length = ipCount
       null
 
     setPrimaryEip : ( toggle )->

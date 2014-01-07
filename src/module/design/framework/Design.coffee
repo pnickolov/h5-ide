@@ -340,6 +340,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
         checkedMap.otherResource[ a.id ] = a
 
     checkedMap
+
+  Design.debug.selectedComp = ()->
+    Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
   ### env:dev:end ###
 
   ### Private Interface End ###

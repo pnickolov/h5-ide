@@ -51,13 +51,13 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
     constructor : ( attributes, options )->
 
       if attributes and attributes.parent
-        p = attributes.parent
+        attributes.__parent = attributes.parent
         delete attributes.parent
 
       ResourceModel.call this, attributes, options
 
-      if p
-        p.addChild( this )
+      if attributes.__parent
+        attributes.__parent.addChild( this )
       null
 
     initialize : ()->

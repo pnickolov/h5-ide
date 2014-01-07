@@ -2114,22 +2114,22 @@ MC.canvas.volume = {
 		{
 			var target = $(node),
 				canvas_container = $('#canvas_container'),
-				canvas_offset = canvas_container.offset(),
-				node_uid    = node.id.replace(/_[0-9]*$/ig, ''),
-				coordinate = {},
+				canvas_offset = $canvas.offset(),
+				node_uid = node.id.replace(/_[0-9]*$/ig, ''),
 				data,
 				width,
 				height,
 				target_offset,
 				target_width,
-				target_height;
+				target_height,
+				bubble_box;
 
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			data = $canvas( node_uid ).volume()
-
-			$('#volume-bubble-content').html( MC.template.instanceVolume(data) );
+			$('#volume-bubble-content').html(
+				MC.template.instanceVolume( $canvas( node_uid ).volume() )
+			);
 
 			target_offset = target[0].getBoundingClientRect();
 			target_width = target_offset.width;
@@ -2138,14 +2138,13 @@ MC.canvas.volume = {
 			width = bubble_box.width();
 			height = bubble_box.height();
 
-			coordinate.left = target_offset.left + target_width + 15 - canvas_offset.left;
-			bubble_box.addClass('bubble-left');
-
-			coordinate.top = target_offset.top - canvas_offset.top - ((height - target_height) / 2);
-
 			bubble_box
+				.addClass('bubble-left')
 				.data('target-id', node_uid)
-				.css(coordinate)
+				.css({
+					'left': target_offset.left + target_width + 15 - canvas_offset.left,
+					'top': target_offset.top - canvas_offset.top - ((height - target_height) / 2)
+				})
 				.show();
 
 			if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
@@ -2492,24 +2491,30 @@ MC.canvas.volume = {
 			else
 			{
 				data_option = target.data('option');
-				data_option['instance_id'] = target_id;
-				new_volume = $canvas.add('AWS.EC2.EBS.Volume', data_option, {});
+				// data_option['instance_id'] = target_id;
+				// new_volume = $canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
-				if (new_volume === null)
+				console.info(target_id, data_option);
+
+				volume_id = $canvas(target_id).addVolume(data_option);
+
+				console.info(volume_id);
+
+				if (volume_id === null)
 				{
 					event.data.action = 'cancel';
 				}
 				else
 				{
-					if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
-					{
-						volume_id = new_volume;
-					}
-					else
-					{
-						volume_id = new_volume.id;
-						//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
-					}
+					// if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+					// {
+					// 	volume_id = new_volume;
+					// }
+					// else
+					// {
+					// 	volume_id = new_volume.id;
+					// 	//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+					// }
 				}
 			}
 

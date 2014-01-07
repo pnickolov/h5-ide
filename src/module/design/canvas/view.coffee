@@ -20,7 +20,7 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
                 #app_id = MC.canvas_data.id
 
                 # new design flow
-                app_id = MC.forge.other.canvasData().get 'id'
+                app_id = MC.forge.other.canvasData.get 'id'
 
                 #update resource state
                 MC.aws.instance.updateStateIcon app_id
@@ -31,7 +31,7 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
                 #MC.forge.app.updateDeletedResourceState MC.canvas_data
 
                 # new design flow
-                MC.forge.app.updateDeletedResourceState MC.forge.other.canvasData().data()
+                MC.forge.app.updateDeletedResourceState MC.forge.other.canvasData.data()
 
                 null
 
@@ -76,7 +76,7 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
             #component = MC.canvas_data.component[uid]
 
             # new design flow
-            component = MC.forge.other.canvasData().data().component[uid]
+            component = MC.forge.other.canvasData.data().component[uid]
             if component
                 if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
                     # In AppEdit, newly created instance/eni will make forge_app.existing_app_resource return false.
@@ -92,7 +92,7 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
                 #layout_data = MC.canvas_data.layout.component.group[uid]
 
                 # new design flow
-                layout_data = MC.forge.other.canvasData().data().component.group[uid]
+                layout_data = MC.forge.other.canvasData.data().component.group[uid]
                 if layout_data and layout_data.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group and layout_data.originalId
                         uid = layout_data.originalId
 

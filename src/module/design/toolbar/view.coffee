@@ -194,8 +194,8 @@ define [ 'MC', 'event',
             #id = MC.canvas_data.id
 
             # new design flow
-            name = MC.forge.other.canvasData().get 'name'
-            id   = MC.forge.other.canvasData().get 'id'
+            name = MC.forge.other.canvasData.get 'name'
+            id   = MC.forge.other.canvasData.get 'id'
 
             if not name
                 notification 'warning', lang.ide.PROP_MSG_WARN_NO_STACK_NAME
@@ -222,7 +222,7 @@ define [ 'MC', 'event',
                         #MC.canvas_data.name = new_name
 
                         # new design flow
-                        MC.forge.other.canvasData().set 'name', new_name
+                        MC.forge.other.canvasData.set 'name', new_name
 
                         # #expand components
                         # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
@@ -235,7 +235,7 @@ define [ 'MC', 'event',
                         #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                         # new design flow
-                        ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
+                        ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
                         true
 
@@ -245,7 +245,7 @@ define [ 'MC', 'event',
                 #MC.canvas_data.name = name
 
                 # new design flow
-                MC.forge.other.canvasData().set 'name', name
+                MC.forge.other.canvasData.set 'name', name
 
                 # #expand components
                 # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
@@ -258,7 +258,7 @@ define [ 'MC', 'event',
                 #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
 
                 # new design flow
-                ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
+                ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             true
 
@@ -268,7 +268,7 @@ define [ 'MC', 'event',
             #name     = MC.canvas_data.name
 
             # new design flow
-            name      = MC.forge.other.canvasData().get 'name'
+            name      = MC.forge.other.canvasData.get 'name'
 
             # set default name
             new_name = MC.aws.aws.getDuplicateName(name)
@@ -301,12 +301,12 @@ define [ 'MC', 'event',
                     # old design flow +++++++++++++++++++++++++++
 
                     # new design flow +++++++++++++++++++++++++++
-                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData().data()
+                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
                     setTimeout () ->
-                        region  = MC.forge.other.canvasData().get 'region'
-                        id      = MC.forge.other.canvasData().get 'id'
-                        name    = MC.forge.other.canvasData().get 'name'
+                        region  = MC.forge.other.canvasData.get 'region'
+                        id      = MC.forge.other.canvasData.get 'id'
+                        name    = MC.forge.other.canvasData.get 'name'
                         ide_event.trigger ide_event.DUPLICATE_STACK, region, id, new_name, name
                     , 500
                     # new design flow +++++++++++++++++++++++++++
@@ -325,9 +325,9 @@ define [ 'MC', 'event',
                 #ide_event.trigger ide_event.DELETE_STACK, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
 
                 # new design flow
-                region  = MC.forge.other.canvasData().get 'region'
-                id      = MC.forge.other.canvasData().get 'id'
-                name    = MC.forge.other.canvasData().get 'name'
+                region  = MC.forge.other.canvasData.get 'region'
+                id      = MC.forge.other.canvasData.get 'id'
+                name    = MC.forge.other.canvasData.get 'name'
                 ide_event.trigger ide_event.DELETE_STACK, region, id, name
 
         clickNewStackIcon : ->
@@ -338,7 +338,7 @@ define [ 'MC', 'event',
             #ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null
 
             # new design flow
-            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.forge.other.canvasData().get( 'region' ), null
+            ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.forge.other.canvasData.get( 'region' ), null
 
         clickZoomInIcon : ( event ) ->
             console.log 'clickZoomInIcon'
@@ -379,7 +379,7 @@ define [ 'MC', 'event',
             #$("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
 
             # new design flow
-            $("#modal-wrap").data("uid", MC.forge.other.canvasData().get( 'id' )).find("#btn-confirm").hide()
+            $("#modal-wrap").data("uid", MC.forge.other.canvasData.get( 'id' )).find("#btn-confirm").hide()
             $("#modal-wrap").find(".modal-body").css({padding:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
@@ -396,7 +396,7 @@ define [ 'MC', 'event',
                 #'download'  : MC.canvas_data.name + '.json',
 
                 # new design flow
-                'download'  : MC.forge.other.canvasData().get( 'name' ) + '.json',
+                'download'  : MC.forge.other.canvasData.get( 'name' ) + '.json',
             }
             $( '#json-content' ).val file_content
 
@@ -410,7 +410,7 @@ define [ 'MC', 'event',
                 return
 
             # new design flow
-            name = MC.forge.other.canvasData().get( 'name' )
+            name = MC.forge.other.canvasData.get( 'name' )
 
             if not blob
                 $("#modal-wrap").find("#btn-confirm").show().attr({
@@ -587,7 +587,7 @@ define [ 'MC', 'event',
             #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
             # new design flow
-            MC.forge.other.canvasData().origin MC.canvas_data
+            MC.forge.other.canvasData.origin MC.canvas_data
 
             null
 

@@ -36,10 +36,10 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         #    region   : region_name
                         #    platform : current_platform
 
-                        MC.forge.other.canvasData().set 'id'      , result
-                        MC.forge.other.canvasData().set 'name'    , tab_name
-                        MC.forge.other.canvasData().set 'region'  , region_name
-                        MC.forge.other.canvasData().set 'platform', current_platform
+                        MC.forge.other.canvasData.set 'id'      , result
+                        MC.forge.other.canvasData.set 'name'    , tab_name
+                        MC.forge.other.canvasData.set 'region'  , region_name
+                        MC.forge.other.canvasData.set 'platform', current_platform
 
                     else if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
@@ -50,7 +50,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             #MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
 
                             # new design flow
-                            MC.forge.other.canvasData().save MC.forge.stack.compactServerGroup MC.forge.other.canvasData().data()
+                            MC.forge.other.canvasData.save MC.forge.stack.compactServerGroup MC.forge.other.canvasData.data()
 
                         #### added by song, if the stack/app too old, unable to open ###
                         if MC.canvas_data.bad
@@ -68,7 +68,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             #MC.canvas_data = result.resolved_data[0]
 
                             # new design flow
-                            MC.forge.other.canvasData().save result.resolved_data[0]
+                            MC.forge.other.canvasData.save result.resolved_data[0]
 
                             # set ami layout
 
@@ -76,7 +76,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             #MC.aws.ami.setLayout MC.canvas_data
 
                             # new design flow
-                            MC.aws.ami.setLayout MC.forge.other.canvasData().data()
+                            MC.aws.ami.setLayout MC.forge.other.canvasData.data()
 
                             # set analysis
 
@@ -84,13 +84,13 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                             #MC.canvas.analysis MC.canvas_data
 
                             # new design flow
-                            MC.canvas.analysis MC.forge.other.canvasData().data()
+                            MC.canvas.analysis MC.forge.other.canvasData.data()
 
                         # old design flow
                         #MC.aws.instance.updateStateIcon MC.canvas_data.id
 
                         # new design flow
-                        MC.aws.instance.updateStateIcon MC.forge.other.canvasData().get( 'id' )
+                        MC.aws.instance.updateStateIcon MC.forge.other.canvasData.get( 'id' )
 
                     # new design flow +++++++++++++++++++++++++++
                     options =
@@ -117,8 +117,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         #layout    = MC.canvas_data.layout
 
                         # new design flow
-                        component  = MC.forge.other.canvasData().get( 'component' )
-                        layout     = MC.forge.other.canvasData().get( 'layout' )
+                        component  = MC.forge.other.canvasData.get( 'component' )
+                        layout     = MC.forge.other.canvasData.get( 'layout' )
 
                     MC.canvas.layout.init()
                     new Design( component, layout, options )
@@ -128,7 +128,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     # new design flow
-                    MC.forge.other.canvasData().origin MC.forge.other.canvasData().data()
+                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                     MC.ta.list = []
 
@@ -159,16 +159,16 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 # new design flow +++++++++++++++++++++++++++
 
                 # restore origin_canvas_data to MC.canvas_data
-                MC.forge.other.canvasData().save MC.forge.other.canvasData().origin()
+                MC.forge.other.canvasData.save MC.forge.other.canvasData.origin()
 
                 # set options component layout
                 options    =
-                    type   : MC.forge.other.canvasData().get( 'platform'  )
+                    type   : MC.forge.other.canvasData.get( 'platform'  )
                     mode   : Tabbar.current
-                    region : MC.forge.other.canvasData().get( 'region'    )
+                    region : MC.forge.other.canvasData.get( 'region'    )
 
-                component  = MC.forge.other.canvasData().get( 'component' )
-                layout     = MC.forge.other.canvasData().get( 'layout'    )
+                component  = MC.forge.other.canvasData.get( 'component' )
+                layout     = MC.forge.other.canvasData.get( 'layout'    )
 
                 # create Design
                 MC.canvas.layout.init()
@@ -180,7 +180,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 #MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
 
                 # new design flow
-                MC.forge.other.canvasData().origin MC.forge.other.canvasData().data()
+                MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                 null
 

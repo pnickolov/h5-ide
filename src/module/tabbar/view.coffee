@@ -151,7 +151,7 @@ define [ 'event',
             # new design flow
             #is_changed = true
             #if MC.data.current_tab_id is tab_id
-            #    is_changed = MC.forge.other.canvasData().isModified()
+            #    is_changed = MC.forge.other.canvasData.isModified()
             #else
             #    is_changed  = MC.tab[ tab_id ].design_model.isModified()
             #

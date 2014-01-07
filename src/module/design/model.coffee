@@ -44,7 +44,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.canvas_data.id
 
                 # new design flow
-                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.forge.other.canvasData().get( 'id' )
+                ide_event.trigger ide_event.SWITCH_MAIN if app_id == MC.forge.other.canvasData.get( 'id' )
 
                 null
 
@@ -60,7 +60,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #if app_id == MC.canvas_data.id
 
                 # new design flow
-                if app_id == MC.forge.other.canvasData().get( 'id' )
+                if app_id == MC.forge.other.canvasData.get( 'id' )
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
 
@@ -157,7 +157,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.canvas_data = $.extend true, {}, data
 
             # new design flow
-            MC.forge.other.canvasData().save data
+            MC.forge.other.canvasData.save data
 
             null
 
@@ -169,7 +169,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #$.extend true, {}, MC.canvas_data
 
             # new design flow
-            MC.forge.other.canvasData().data()
+            MC.forge.other.canvasData.data()
 
         setPropertyPanel : ( property_panel ) ->
             console.log 'setPropertyPanel'
@@ -183,7 +183,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.data.origin_canvas_data = $.extend true, {}, data
 
             # new design flow
-            MC.forge.other.canvasData().origin data
+            MC.forge.other.canvasData.origin data
 
             null
 
@@ -194,7 +194,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #$.extend true, {}, MC.data.origin_canvas_data
 
             # new design flow
-            MC.forge.other.canvasData().origin()
+            MC.forge.other.canvasData.origin()
 
         setTAValidation : ( data ) ->
             console.log 'setTAValidation'
@@ -301,7 +301,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #_.each MC.canvas_data.component, (compObj) ->
 
             # new design flow
-            _.each MC.forge.other.canvasData().get( 'component' ), (compObj) ->
+            _.each MC.forge.other.canvasData.get( 'component' ), (compObj) ->
 
                 if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
                     imageId = compObj.resource.ImageId
@@ -342,7 +342,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #MC.forge.app.clearResourceInCache MC.canvas_data
 
                 # new design flow
-                MC.forge.app.clearResourceInCache MC.forge.other.canvasData().data()
+                MC.forge.app.clearResourceInCache MC.forge.other.canvasData.data()
 
                 #cache new app data
                 MC.aws.aws.cacheResource resource_source, region, false
@@ -377,7 +377,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #@setOriginData MC.canvas_data
 
             # new design flow
-            @setOriginData MC.forge.other.canvasData().data()
+            @setOriginData MC.forge.other.canvasData.data()
 
             # delete current origin_resource
             MC.tab[ app_id ].origin_resource = null if MC.tab and MC.tab[ app_id ] and MC.tab[ app_id ].origin_resource

@@ -4,16 +4,17 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	#  canvas
 	#############################
 
-	canvasData = () ->
-
-		# new design flow
-		# data = $.extend true, {}, Design.instance().serialize()
-
-		# old design flow
-		data = $.extend true, {}, MC.canvas_data
+	canvasData = {
 
 		data : ->
 			console.log 'canvasData:data'
+
+			# new design flow
+			# data = $.extend true, {}, Design.instance().serialize()
+
+			# old design flow
+			data = $.extend true, {}, MC.canvas_data
+
 			data
 
 		save : ( data ) ->
@@ -41,7 +42,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			# Design.instance().get key
 
 			# old design flow
-			data[ key ]
+			MC.canvas_data[ key ]
 
 		isModified : ->
 			console.log 'canvasData:isModified', key
@@ -60,6 +61,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 				# set
 				console.log 'canvasData:set origin', origin_data
 				MC.data.origin_canvas_data = $.extend true, {}, origin_data
+
+	}
 
 	#############################
 	#  core

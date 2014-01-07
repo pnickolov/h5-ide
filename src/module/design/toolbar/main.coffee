@@ -21,7 +21,7 @@ define [ 'jquery',
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
-                console.log MC.forge.other.canvasData().data()
+                console.log MC.forge.other.canvasData.data()
                 #
                 model.setFlag tab_id, type
                 #
@@ -46,7 +46,7 @@ define [ 'jquery',
 
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 setTimeout () ->
-                    console.log 'SWITCH_TAB toolbar id:' + MC.forge.other.canvasData().get 'id'
+                    console.log 'SWITCH_TAB toolbar id:' + MC.forge.other.canvasData.get 'id'
                     model.setTabFlag(true)
                 , 500
 
@@ -66,15 +66,15 @@ define [ 'jquery',
                     # old design flow +++++++++++++++++++++++++++
 
                     # new design flow +++++++++++++++++++++++++++
-                    MC.forge.other.canvasData().save MC.forge.other.canvasData().data()
-                    model.saveStack MC.forge.other.canvasData().data()
+                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data()
+                    model.saveStack MC.forge.other.canvasData.data()
                     # new design flow +++++++++++++++++++++++++++
 
                     # old design flow
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     # new design flow
-                    MC.forge.other.canvasData().origin MC.forge.other.canvasData().data()
+                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                 catch err
                     msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
@@ -189,7 +189,7 @@ define [ 'jquery',
                                 #data = $.extend true, {}, MC.canvas_data
 
                                 # new design flow
-                                data  = MC.forge.other.canvasData().data()
+                                data  = MC.forge.other.canvasData.data()
 
                                 app_name = $('.modal-input-value').val()
                                 # set app name
@@ -206,7 +206,7 @@ define [ 'jquery',
                                 #MC.data.app_list[MC.canvas_data.region].push app_name
 
                                 # new design flow
-                                region = MC.forge.other.canvasData().get 'region'
+                                region = MC.forge.other.canvasData.get 'region'
                                 MC.data.app_list[ region ].push app_name
 
                                 modal.close()

@@ -4826,6 +4826,10 @@ a.action-link:hover {
 	font-size: 12px;
 }
 
+.cost-estimation-table th, .cost-estimation-table td {
+	padding : 5px;
+}
+
 .cost-counter {
 	color: #999;
 }

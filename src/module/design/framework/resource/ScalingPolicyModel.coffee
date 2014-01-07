@@ -14,6 +14,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       sendNotification : false
 
       alarmData      : {
+        namespace          : "AWS/AutoScaling"
         metricName         : "CPUUtilization"
         comparisonOperator : ">="
         evaluationPeriods  : "2"
@@ -24,6 +25,31 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         appId              : ""
       }
 
+    getCost : ( priceMap, currency )->
+
+      alarmData = @get("alarmData")
+
+      period = parseInt( alarmData.period, 10 )
+      if not ( period <= 300 and alarmData.namespace is "AWS/AutoScaling" )
+        return null
+
+      for p in priceMap.cloudwatch.types
+        if p.ec2Monitoring
+          fee = parseFloat( p.ec2Monitoring[ currency], 10 ) || 0
+          break
+
+      if fee
+        asgSize = if Design.instance().modeIsStack() then @__asg.get("minSize") else @__asg.get("capacity")
+
+        fee = Math.round(fee / 7 * 100) / 100
+
+        return {
+          resource    : @get("name") + "-alarm"
+          type        : "CloudWatch"
+          fee         : fee
+          formatedFee : fee + "/mo"
+        }
+      null
   }, {
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy, constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch ]
@@ -33,14 +59,15 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
 
         alarmData = {
-          name  : data.name
-          appId : data.resource.AlarmArn
+          name               : data.name
+          appId              : data.resource.AlarmArn
           comparisonOperator : data.resource.ComparisonOperator
           evaluationPeriods  : data.resource.EvaluationPeriods
           metricName         : data.resource.MetricName
           period             : data.resource.Period
           statistic          : data.resource.Statistic
           threshold          : data.resource.Threshold
+          namespace          : data.resource.Namespace
           unit               : data.resource.Unit
         }
 
@@ -86,7 +113,9 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           adjustmentType : data.resource.AdjustmentType
         })
 
-        resolve( MC.extractID( data.resource.AutoScalingGroupName) ).addScalingPolicy( policy )
+        asg = resolve( MC.extractID( data.resource.AutoScalingGroupName) )
+        asg.addScalingPolicy( policy )
+        policy.__asg = asg
       null
   }
 

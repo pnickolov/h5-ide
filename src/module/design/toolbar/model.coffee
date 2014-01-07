@@ -60,8 +60,14 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #update key
                     key = result.resolved_data.key
-                    if key isnt MC.canvas_data.key
-                        MC.canvas_data.key = key
+
+                    # old design flow
+                    #if key isnt MC.canvas_data.key
+                    #    MC.canvas_data.key = key
+
+                    # new design flow
+                    if key isnt MC.forge.other.canvasData.get( 'key' )
+                        MC.forge.other.canvasData.set 'key', key
                         data.key = key
 
                     #call save png
@@ -105,14 +111,20 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #     stack_id: new_id
 
                     #temp
-                    MC.canvas_data.id = new_id
-                    MC.canvas_data.key = key
+
+                    # old design flow
+                    #MC.canvas_data.id = new_id
+                    #MC.canvas_data.key = key
+
+                    # new design flow
+                    MC.forge.other.canvasData.set 'id',  new_id
+                    MC.forge.other.canvasData.set 'key', key
 
                     # old design flow
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     # new design flow
-                    MC.forge.other.canvasData.origin MC.canvas_data
+                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
 
@@ -126,11 +138,21 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     #call save png
                     _.delay () ->
-                        me.savePNG true, MC.canvas_data
+
+                        # old design flow
+                        #me.savePNG true, MC.canvas_data
+
+                        # new design flow
+                        me.savePNG true, MC.forge.other.canvasData.data()
                     , 500
 
                     #set toolbar flag
-                    me.setFlag id, 'CREATE_STACK', MC.canvas_data
+
+                    # old design flow
+                    #me.setFlag id, 'CREATE_STACK', MC.canvas_data
+
+                    # new design flow
+                    me.setFlag id, 'CREATE_STACK', MC.forge.other.canvasData.data()
 
                     new_id
 
@@ -224,7 +246,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 region  = result.param[3]
                 id      = result.param[4]
-                name    = MC.canvas_data.name
+
+                # old design flow
+                #name    = MC.canvas_data.name
+
+                # new design flow
+                name    = MC.forge.other.canvasData.get 'name'
 
                 cf_data = me.get 'cf_data'
                 if not cf_data
@@ -354,13 +381,29 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         setFlag : (id, flag, value) ->
             me = this
 
+            # new design flow
+            name  = MC.forge.other.canvasData.get 'name'
+            state = MC.forge.other.canvasData.get 'state'
+
             if flag is 'NEW_STACK'
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
+                # old design flow
+                #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
+                # new design flow
+                item_state_map[id] = {'name': name, 'is_run':true, 'is_duplicate':false, 'is_delete':false, 'is_zoomin':false, 'is_zoomout':true}
+
                 is_tab = true
 
             else if flag is 'OPEN_STACK'
                 id = id.resolved_data[0].id
-                item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
+                # old design flow
+                #item_state_map[id] = {'name':MC.canvas_data.name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
+                # new design flow
+                item_state_map[id] = {'name':name, 'is_run':true, 'is_duplicate':true, 'is_delete':true, 'is_zoomin':false, 'is_zoomout':true}
+
                 is_tab = true
 
             else if flag is 'SAVE_STACK'
@@ -392,9 +435,16 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 is_running = false
                 is_pending = false
 
-                if MC.canvas_data.state == constant.APP_STATE.APP_STATE_STOPPED
+                # old design flow
+                #if MC.canvas_data.state == constant.APP_STATE.APP_STATE_STOPPED
+                #    is_running = false
+                #else if MC.canvas_data.state == constant.APP_STATE.APP_STATE_RUNNING
+                #    is_running = true
+
+                # new design flow
+                if state == constant.APP_STATE.APP_STATE_STOPPED
                     is_running = false
-                else if MC.canvas_data.state == constant.APP_STATE.APP_STATE_RUNNING
+                else if state == constant.APP_STATE.APP_STATE_RUNNING
                     is_running = true
                 else
                     is_running = false
@@ -402,16 +452,30 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 id = id.resolved_data[0].id
                 item_state_map[id] = {
-                    'name'                  : MC.canvas_data.name,
-                    'state'                 : MC.canvas_data.state,
+
+                    # old design flow
+                    #'name'                  : MC.canvas_data.name,
+                    #'state'                 : MC.canvas_data.state,
+
+                    # new design flow
+                    'name'                  : name,
+                    'state'                 : state,
+
                     'is_running'            : is_running,
                     'is_pending'            : is_pending,
                     'is_zoomin'             : false,
                     'is_zoomout'            : true,
                     'is_app_updating'       : false,
-                    'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
-                    'is_asg'                : me.isAutoScaling(MC.canvas_data),
-                    'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+
+                    # old design flow
+                    #'has_instance_store_ami': me.isInstanceStore(MC.canvas_data),
+                    #'is_asg'                : me.isAutoScaling(MC.canvas_data),
+                    #'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
+
+                    # new design flow
+                    'has_instance_store_ami': me.isInstanceStore(MC.forge.other.canvasData.data()),
+                    'is_asg'                : me.isAutoScaling(MC.forge.other.canvasData.data()),
+                    'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
 
                 is_tab = true
@@ -460,7 +524,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 if id of item_state_map
                     item_state_map[id].is_app_updating = value
 
-            if id == MC.canvas_data.id and is_tab
+
+            # old design flow
+            #if id == MC.canvas_data.id and is_tab
+
+            # new design flow
+            if id == MC.forge.other.canvasData.get( 'id' ) and is_tab
                 me.set 'item_flags', item_state_map[id]
 
                 if id.indexOf('app-') == 0
@@ -474,7 +543,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             is_tab = flag
 
             if flag
-                id = MC.canvas_data.id
+
+                # old design flow
+                #id = MC.canvas_data.id
+
+                # new design flow
+                id = MC.forge.other.canvasData.get 'id'
 
                 rid = k for k,v of item_state_map when id == k
 
@@ -537,7 +611,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             null
 
         updateApp : ( is_update )->
-            @setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
+
+            # old design flow
+            #@setFlag MC.canvas_data.id, 'UPDATE_APP', is_update
+
+            # new design flow
+            @setFlag MC.forge.other.canvasData.get( 'id' ), 'UPDATE_APP', is_update
+
             null
 
         #zoomin
@@ -551,7 +631,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if $canvas.scale() <= 1
                 flag = false
 
-            me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+            # old design flow
+            #me.setFlag MC.canvas_data.id, 'ZOOMIN_STACK', flag
+
+            # new design flow
+            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMIN_STACK', flag
 
         #zoomout
         zoomOut : () ->
@@ -564,7 +648,11 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             if $canvas.scale() >= 1.6
                 flag = false
 
-            me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
+            # old design flow
+            #me.setFlag MC.canvas_data.id, 'ZOOMOUT_STACK', flag
+
+            # new design flow
+            me.setFlag MC.forge.other.canvasData.get( 'id' ), 'ZOOMOUT_STACK', flag
 
         savePNG : (is_thumbnail, data) ->
             console.log 'savePNG, is_thumbnail = ' + is_thumbnail
@@ -587,7 +675,12 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else
                     #window.removeEventListener 'message', callback
             window.addEventListener 'message', callback
-            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
+
+            # old design flow
+            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
+
+            # new design flow
+            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
             #
             phantom_data =
                 'origin_host': window.location.origin,
@@ -618,10 +711,22 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             MC.canvas.exportPNG $("#svg_canvas"), {
                 isExport   : true
                 createBlob : true
-                name       : MC.canvas_data.name
-                id         : MC.canvas_data.id
+
+                # old design flow
+                #name       : MC.canvas_data.name
+                #id         : MC.canvas_data.id
+
+                # new design flow
+                name       : MC.forge.other.canvasData.get( 'name' )
+                id         : MC.forge.other.canvasData.get( 'id' )
+
                 onFinish : ( data ) ->
-                    if ( data.id is MC.canvas_data.id )
+
+                    # old design flow
+                    #if ( data.id is MC.canvas_data.id )
+
+                    # new design flow
+                    if ( data.id is MC.forge.other.canvasData.get( 'id' ) )
                         me.trigger 'SAVE_PNG_COMPLETE', data.image, data.id, data.blob
             }
             null
@@ -992,7 +1097,13 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         convertCloudformation : () ->
             me = this
 
-            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
+            # old design flow
+            #stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id
+
+            # new design flow
+            id     = MC.forge.other.canvasData.get( 'id' )
+            region = MC.forge.other.canvasData.get( 'region' )
+            stack_model.export_cloudformation { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, id
             # stack_service.export_cloudformation {sender:me}, $.cookie( 'usercode' ), $.cookie( 'session_id' ), MC.canvas_data.region, MC.canvas_data.id, ( forge_result ) ->
 
             #     if !forge_result.is_error

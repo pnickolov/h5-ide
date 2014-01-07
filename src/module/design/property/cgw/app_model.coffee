@@ -6,27 +6,30 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
     CGWAppModel = PropertyModel.extend {
 
-        init : ( cgw_uid )->
+        init : ( uid )->
 
           # cgw assignment
-          myCGWComponent = MC.canvas_data.component[ cgw_uid ]
+          myCGWComponent = Design.instance().component( uid )
 
           appData = MC.data.resource_list[ MC.canvas_data.region ]
 
-          cgw = appData[ myCGWComponent.resource.CustomerGatewayId ]
+          cgw = appData[ myCGWComponent.get 'CustomerGatewayId' ]
           if not cgw
             return false
 
           cgw = $.extend true, {}, cgw
-          cgw.name = myCGWComponent.name
+          cgw.name = myCGWComponent.get 'name'
 
           # vpn assignment
           vpn_id = null
           # get vpn id
-          _.each MC.canvas_data.component, ( c ) ->
-            if c.type is 'AWS.VPC.VPNConnection' and c.resource.CustomerGatewayId is "@#{cgw_uid}.resource.CustomerGatewayId"
-              vpn_id = c.resource.VpnConnectionId
+          allVPN = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection ).allObjects()
+
+          for vpn in allVPN
+            if vpn.get 'CustomerGatewayId' is "@#{uid}.resource.CustomerGatewayId"
+              vpn_id = vpn.get 'VpnConnectionId'
               return
+
 
           # get vpn
           if appData[ vpn_id ]
@@ -61,11 +64,11 @@ define [ '../base/model' ], ( PropertyModel ) ->
                 item.stateColor = twoStateColorMap[item.status]
                 item
 
-          this.set {
+          this.set
             name : cgw.name
             cgw  : cgw
             vpn  : vpn
-          }
+
           null
     }
 

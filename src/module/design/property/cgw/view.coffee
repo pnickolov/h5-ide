@@ -18,8 +18,8 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
             "blur #property-cgw-ip"     : 'onBlurIP'
 
         render     : () ->
-            @$el.html template @model.attributes
-            @model.attributes.name
+            @$el.html template @model.toJSON()
+            @model.get 'name'
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')

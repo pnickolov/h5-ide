@@ -136,10 +136,20 @@ define [ 'MC', 'event',
 
             else
                 # set app name
-                $('.modal-input-value').val MC.canvas_data.name
+
+                # old design flow
+                #$('.modal-input-value').val MC.canvas_data.name
+
+                # new design flow
+                $('.modal-input-value').val MC.forge.other.canvasData.get 'name'
 
                 # set total fee
-                copy_data = $.extend( true, {}, MC.canvas_data )
+
+                # old design flow
+                #copy_data = $.extend( true, {}, MC.canvas_data )
+
+                # new design flow
+                copy_data = MC.forge.other.canvasData.data()
                 cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
@@ -166,7 +176,11 @@ define [ 'MC', 'event',
                         notification 'warning', lang.ide.PROP_MSG_WARN_INVALID_APP_NAME
                         return
 
-                    process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+                    # old design flow
+                    #process_tab_name = 'process-' + MC.canvas_data.region + '-' + app_name
+
+                    # new design flow
+                    process_tab_name = 'process-' + MC.forge.other.canvasData.get( 'region' ) + '-' + app_name
 
                     # delete F5 old process
                     obj = MC.forge.other.getProcess process_tab_name
@@ -182,7 +196,11 @@ define [ 'MC', 'event',
                     $('#btn-confirm').attr 'disabled', true
                     $('.modal-close').attr 'disabled', true
 
-                    ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+                    # old design flow
+                    #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
+
+                    # new design flow
+                    ide_event.trigger ide_event.SAVE_STACK, MC.forge.other.canvasData.data()
 
             true
 
@@ -224,12 +242,14 @@ define [ 'MC', 'event',
                         # new design flow
                         MC.forge.other.canvasData.set 'name', new_name
 
+                        # old design flow +++++++++++++++++++++++++++
                         # #expand components
                         # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
                         # #save stack
                         # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                         # #compact and update canvas
                         # MC.canvas_data = MC.forge.stack.compactServerGroup json_data
+                        # old design flow +++++++++++++++++++++++++++
 
                         # old design flow
                         #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
@@ -247,12 +267,14 @@ define [ 'MC', 'event',
                 # new design flow
                 MC.forge.other.canvasData.set 'name', name
 
+                # old design flow +++++++++++++++++++++++++++
                 # #expand components
                 # MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
                 # #save stack
                 # ide_event.trigger ide_event.SAVE_STACK, MC.canvas.layout.save()
                 # #compact and update canvas
                 # MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
+                # old design flow +++++++++++++++++++++++++++
 
                 # old design flow
                 #ide_event.trigger ide_event.SAVE_STACK, MC.canvas_data
@@ -332,7 +354,6 @@ define [ 'MC', 'event',
 
         clickNewStackIcon : ->
             console.log 'clickNewStackIcon'
-            #ide_event.trigger ide_event.ADD_STACK_TAB, MC.canvas_data.region
 
             # old design flow
             #ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, MC.canvas_data.region, null

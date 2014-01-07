@@ -84,6 +84,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     Model = Design.modelClassForType type
 
     m = new Model( attributes, DefaultCreateOption )
+    if m.id then $canvas( m.id, true ).select()
     return m.id
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->
@@ -99,15 +100,17 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     if _.isString( res )
       notification "error", res
     else if res is true
-      new C( comp1, comp2, undefined, DefaultCreateOption )
+      c = new C( comp1, comp2, undefined, DefaultCreateOption )
+      $canvas( c.id, true ).select()
       return true
     else if res is false
       return false
     else if res.confirm
       modal MC.template.modalCanvasConfirm( res ), true
       $("#canvas-op-confirm").one "click", ()->
-        new C( comp1, comp2, undefined, DefaultCreateOption )
-
+        c = new C( comp1, comp2, undefined, DefaultCreateOption )
+        if c.id then $canvas( c.id, true ).select()
+        null
     false
 
   $canvas.connection = ( uid )->

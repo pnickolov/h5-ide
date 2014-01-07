@@ -2481,7 +2481,7 @@ MC.canvas.volume = {
 			target_id = bubble_box.data('target-id');
 			target_node = $('#' + target_id);
 			target_offset = target_node[0].getBoundingClientRect();
-			target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
+			//target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping');
 
 			if (event.data.action === 'move')
 			{

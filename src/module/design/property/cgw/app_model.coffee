@@ -23,9 +23,9 @@ define [ '../base/model' ], ( PropertyModel ) ->
           # vpn assignment
           vpn_id = null
           # get vpn id
-          allVPN = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection ).allObjects()
+          allVpn = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection ).allObjects()
 
-          for vpn in allVPN
+          for vpn in allVpn
             if vpn.get 'CustomerGatewayId' is "@#{uid}.resource.CustomerGatewayId"
               vpn_id = vpn.get 'VpnConnectionId'
               return

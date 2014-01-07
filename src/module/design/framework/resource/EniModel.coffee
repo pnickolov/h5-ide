@@ -255,7 +255,11 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       result
 
     connect : ( connection )->
-      if connection.type is "EniAttachment" then @draw()
+      if connection.type is "EniAttachment"
+        # When the instance is attached to an eni
+        # See if the instance allows eni to have that much of ips.
+        @limitIpAddress()
+        @draw()
       null
 
     disconnect : ( connection )->

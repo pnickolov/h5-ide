@@ -298,8 +298,16 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     attribute = attribute || {}
     attribute.owner = Design.instance().component( this.id )
     VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-    volume = new VolumeModel( attribute )
-    !!volume.id
+    v = new VolumeModel( attribute )
+    if v.id
+      return {
+        deleted    : not v.hasAppResource()
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+      }
+    else
+      return false
 
   CanvasElement.instance.prototype.removeVolume = ( volumeId )->
     Design.instance().component( volumeId ).remove()

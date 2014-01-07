@@ -41,10 +41,42 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
       @set {
         uid        : uid
         name       : subnet_component.get("name")
-        CIDR       : subnet_component.get("cidr")
         networkACL : networkACLs
       }
+
+      @getCidr()
       null
+
+    getCidr : ()->
+      subnet = Design.instance().component( @get("uid") )
+      subnetCidr = subnet.get("cidr")
+
+      # Split CIDR into two parts
+      cidrDivAry = @genCIDRDivAry( subnet.parent().parent().get("cidr"), subnetCidr )
+      @set "CIDRPrefix", cidrDivAry[0]
+      @set "CIDR", if subnetCidr then cidrDivAry[1] else ""
+      null
+
+
+    genCIDRDivAry : (vpcCIDR, subnetCIDR) ->
+      if not subnetCIDR then subnetCIDR = vpcCIDR
+
+      vpcSuffix = Number(vpcCIDR.split('/')[1])
+
+      subnetIPAry = subnetCIDR.split('/')
+      subnetSuffix = Number(subnetIPAry[1])
+
+      subnetAddrAry = subnetIPAry[0].split('.')
+
+      if vpcSuffix > 23
+        resultPrefix = subnetAddrAry[0] + '.' + subnetAddrAry[1] + '.' + subnetAddrAry[2] + '.'
+        resultSuffix = subnetAddrAry[3] + '/' + subnetSuffix
+      else
+        resultPrefix = subnetAddrAry[0] + '.' + subnetAddrAry[1] + '.'
+        resultSuffix = subnetAddrAry[2] + '.' + subnetAddrAry[3] + '/' + subnetSuffix
+
+      return [resultPrefix, resultSuffix]
+
 
     createAcl : ()->
       ACLModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
@@ -63,6 +95,10 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
     setACL : ( acl_uid ) ->
       Design.instance().component( @get("uid") ).setAcl( acl_uid )
       null
+
+    isValidCidr : ( cidr )->
+      Design.instance().component( @get("uid") ).isValidCidr( cidr )
+
   }
 
   new SubnetModel()

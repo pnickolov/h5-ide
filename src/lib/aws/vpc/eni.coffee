@@ -1,13 +1,13 @@
 define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
-	#private
-	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
-
-		_addZeroToLeftStr = (str, n) ->
+	_addZeroToLeftStr = (str, n) ->
 			count = n - str.length + 1
 			strAry = _.map [1...count], () ->
 				return '0'
 			str = strAry.join('') + str
+
+	#private
+	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
 
 		cutAry = ipCidr.split('/')
 		ipAddr = cutAry[0]
@@ -399,13 +399,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
 			null
 
-	getAvailableIPCountInCIDR = (ipCidr, filter) ->
-
-		_addZeroToLeftStr = (str, n) ->
-			count = n - str.length + 1
-			strAry = _.map [1...count], () ->
-				return '0'
-			str = strAry.join('') + str
+	getAvailableIPCountInCIDR = (ipCidr) ->
 
 		cutAry = ipCidr.split('/')
 		ipAddr = cutAry[0]
@@ -425,7 +419,8 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
 		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
 
-		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		# availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - 5
 		if availableIPCount < 0
 			availableIPCount = 0
 
@@ -442,7 +437,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	# 		# count eni ip
 	# 		if compObj.type is 'AWS.VPC.NetworkInterface'
-				
+
 	# 			currentSubnetUIDRef = compObj.resource.SubnetId
 	# 			currentAZName = compObj.resource.AvailabilityZone
 	# 			if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or

@@ -27,40 +27,11 @@ define [ '../base/view',
             'click .sg-list-delete-btn' : 'deleteAcl'
 
         render : () ->
-            # Should not touch model's data
-            data = $.extend true, {}, this.model.attributes
+            @$el.html template @model.attributes
+            @refreshACLList()
+            @forceShow()
 
-            subnetUID  = data.uid
-            subnetName = data.name
-
-            if subnetUID
-
-                vpcComp = MC.aws.subnet.getVPC(subnetUID)
-                vpcCIDR = vpcComp.resource.CidrBlock
-
-                focusCIDR = false
-                isInVPCCIDR = MC.aws.subnet.isInVPCCIDR(vpcCIDR, data.CIDR)
-                if MC.aws.subnet.isSubnetConflictInVPC(subnetUID) or !isInVPCCIDR
-                    focusCIDR = true
-                    if !isInVPCCIDR
-                        data.CIDR = vpcCIDR
-
-                # Split CIDR into two parts
-                cidrDivAry = MC.aws.subnet.genCIDRDivAry(vpcCIDR, data.CIDR)
-                data.CIDRPrefix = cidrDivAry[0]
-                data.CIDR = cidrDivAry[1]
-
-                @$el.html template data
-                this.refreshACLList()
-
-                if focusCIDR
-                    MC.canvas.update subnetUID, 'text', 'label', subnetName + ' ()'
-                    @forceShow()
-                    $('#property-cidr-block').val('').focus()
-            else
-                @$el.html template data
-
-            data.name
+            @model.attributes.name
 
         onChangeName : ( event ) ->
             target = $ event.currentTarget
@@ -76,75 +47,50 @@ define [ '../base/view',
             null
 
         onFocusCIDR : ( event ) ->
-
-            MC.aws.aws.disabledAllOperabilityArea(true)
-
+            @disabledAllOperabilityArea( true )
             null
 
-
         onBlurCIDR : ( event ) ->
-
-            that = this
-
-            mainContent = ''
-            descContent = ''
-
-            subnetUID = that.model.get('uid')
-            vpcComp = MC.aws.subnet.getVPC(subnetUID)
-            vpcCIDR = vpcComp.resource.CidrBlock
-
             # if blank
             cidrPrefix = $("#property-cidr-prefix").html()
             cidrSuffix = $("#property-cidr-block").val()
             subnetCIDR = cidrPrefix + cidrSuffix
 
             removeInfo = 'Remove Subnet'
-            haveError = true
+
             if !cidrSuffix
-                mainContent = 'CIDR block is required.'
-                descContent = 'Please provide a subset of IP ranges of this VPC.'
+                mainContent = "CIDR block is required."
+                descContent = "Please provide a subset of IP ranges of this VPC."
             else if !MC.validate 'cidr', subnetCIDR
-                mainContent = subnetCIDR + ' is not a valid form of CIDR block.'
-                descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
-            else if !MC.aws.subnet.isInVPCCIDR(vpcCIDR, subnetCIDR)
-                mainContent = subnetCIDR + ' conflicts with VPC CIDR.'
-                descContent = 'Subnet CIDR block should be a subset of VPC\'s.'
-            else if MC.aws.subnet.isSubnetConflictInVPC(subnetUID, subnetCIDR)
-                mainContent = subnetCIDR + ' conflicts with other subnet.'
-                descContent = 'Please choose a CIDR block not conflicting with existing subnet.'
-            else if MC.aws.subnet.isConnectToELB subnetUID
-                cidrNum = Number(cidrSuffix.split('/')[1])
-                if cidrNum > 27
-                    mainContent = 'The subnet is attached with a load balancer. The CIDR mask must be smaller than /27.'
-                    descContent = ''
-                    removeInfo = ''
-                else
-                    haveError = false
+                mainContent = "#{subnetCIDR} is not a valid form of CIDR block."
+                descContent = "Please provide a valid IP range. For example, 10.0.0.1/24."
             else
-                haveError = false
+                error = @model.isValidCidr( subnetCIDR )
+                if error isnt true
+                    mainContent = error.error
+                    descContent = error.detail
+                    if error.shouldRemove is false
+                        removeInfo = ""
 
-            if haveError
-                dialog_template = MC.template.setupCIDRConfirm {
-                    main_content : mainContent,
-                    desc_content : descContent
+            if mainContent
+                that = this
+
+                modal MC.template.setupCIDRConfirm({
+                    main_content   : mainContent
+                    desc_content   : descContent
                     remove_content : removeInfo
-                }
+                })
 
-                modal dialog_template, false, () ->
-
-                    $('.modal-close').click () ->
-                        $('#property-cidr-block').focus()
-
-                    $('#cidr-remove').click () ->
-                        $canvas.clearSelected()
-                        Design.instance().component( subnetUID ).remove()
-
-                        MC.aws.aws.disabledAllOperabilityArea(false)
-                        modal.close()
+                $('.modal-close').click () -> $('#property-cidr-block').focus()
+                $('#cidr-remove').click () ->
+                    $canvas.clearSelected()
+                    Design.instance().component( that.model.get("uid") ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
             else
                 @model.setCIDR subnetCIDR
+                @disabledAllOperabilityArea(false)
 
-                MC.aws.aws.disabledAllOperabilityArea(false)
 
         createAcl : ()->
             @trigger "OPEN_ACL", @model.createAcl()

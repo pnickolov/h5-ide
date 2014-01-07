@@ -375,7 +375,11 @@ define [ 'MC', 'event',
         clickExportPngIcon : ->
             modal MC.template.exportPNG { 'title' : 'Export PNG', 'confirm' : 'Download' , 'color' : 'blue' }, false
 
-            $("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
+            # old design flow
+            #$("#modal-wrap").data("uid", MC.canvas_data.id).find("#btn-confirm").hide()
+
+            # new design flow
+            $("#modal-wrap").data("uid", MC.forge.other.canvasData().get( 'id' )).find("#btn-confirm").hide()
             $("#modal-wrap").find(".modal-body").css({padding:"12px 20px", "max-height":"420px",overflow:"hidden",background:"none"})
 
             this.trigger 'TOOLBAR_EXPORT_PNG_CLICK'
@@ -387,7 +391,12 @@ define [ 'MC', 'event',
             #this.trigger 'TOOLBAR_EXPORT_MENU_CLICK'
             $( '#btn-confirm' ).attr {
                 'href'      : "data://text/plain;, " + file_content,
-                'download'  : MC.canvas_data.name + '.json',
+
+                # old design flow
+                #'download'  : MC.canvas_data.name + '.json',
+
+                # new design flow
+                'download'  : MC.forge.other.canvasData().get( 'name' ) + '.json',
             }
             $( '#json-content' ).val file_content
 
@@ -400,14 +409,27 @@ define [ 'MC', 'event',
             if $("#modal-wrap").data("uid") isnt uid
                 return
 
+            # new design flow
+            name = MC.forge.other.canvasData().get( 'name' )
+
             if not blob
                 $("#modal-wrap").find("#btn-confirm").show().attr({
                     'href'     : base64_image
-                    'download' : MC.canvas_data.name + '.png'
+
+                    # old design flow
+                    #'download' : MC.canvas_data.name + '.png'
+
+                    # new design flow
+                    'download' : name + '.png'
                 })
             else
                 $("#modal-wrap").find("#btn-confirm").show().click ()->
-                    download( blob, MC.canvas_data.name + ".png" )
+
+                    # old design flow
+                    #download( blob, MC.canvas_data.name + ".png" )
+
+                    # new design flow
+                    download( blob, name + ".png" )
 
             $( '.modal-body' ).html( "<img style='max-height:100%;display:inline-block' src='#{base64_image}' />" ).css({
                 "background":"none"

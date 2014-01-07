@@ -2499,21 +2499,23 @@ MC.canvas.volume = {
 
 				console.info(target_id, data_option);
 
-				volume_id = $canvas(target_id).addVolume(data_option);
+				volume_item = $canvas(target_id).addVolume(data_option);
 
-				if (volume_id)
+				console.info(volume_item);
+
+				if (volume_item)
 				{
 					data_json = JSON.stringify({
 						'instance_id': target_id,
-						'id': volume_id,
-						'name': data_option.name,
-						'snapshotId': data_option.snapshotId,
-						'volumeSize': data_option.volumeSize
+						'id': volume_id
+						//'name': data_option.name,
+						//'snapshotId': data_option.snapshotId,
+						//'volumeSize': data_option.volumeSize
 					});
 
-					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+					volume_type = (data_option && data_option.snapshotId) ? 'snapshot_item' : 'volume_item';
 
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
 
 					// if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
 					// {
@@ -2521,7 +2523,7 @@ MC.canvas.volume = {
 					// }
 
 					$('#instance_volume_number').text(
-						$canvas( node_uid ).volume().length
+						$canvas( target_id ).volume().length
 					);
 
 					//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
@@ -2562,10 +2564,10 @@ MC.canvas.volume = {
 					} else {
 						data_json = JSON.stringify({
 							'instance_id': target_id,
-							'id': volume_id,
-							'name': new_volume_name,
-							'snapshotId': data_option.snapshotId,
-							'volumeSize': data_option.volumeSize
+							'id': volume_id
+							// 'name': new_volume_name,
+							// 'snapshotId': data_option.snapshotId,
+							// 'volumeSize': data_option.volumeSize
 						});
 
 						volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';

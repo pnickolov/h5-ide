@@ -2,27 +2,28 @@
 #  View Mode for design/property/elb
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     ElbAppModel = PropertyModel.extend {
 
         defaults :
             'id'  : null
 
-        init : ( elb_uid )->
+        init : ( uid )->
 
-            this.set 'id', elb_uid
+            this.set 'id', uid
 
-            myElbComponent = MC.canvas_data.component[ elb_uid ]
+            myElbComponent = Design.instance().component( uid )
+
 
             appData = MC.data.resource_list[ MC.canvas_data.region ]
-            elb     = appData[ myElbComponent.resource.LoadBalancerName ]
+            elb     = appData[ myElbComponent.get 'LoadBalancerName' ]
 
             if not elb
                 return false
 
             elb = $.extend true, {}, elb
-            elb.name = myElbComponent.name
+            elb.name = myElbComponent.get 'name'
 
 
             elb.isInternet = elb.Scheme == "internet-facing"
@@ -31,7 +32,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
 
             # Cross Zone
-            crossZone = myElbComponent.resource.CrossZoneLoadBalancing
+            crossZone = myElbComponent.get 'CrossZoneLoadBalancing'
             if crossZone is 'true'
                 elb.CrossZone = 'Enabled'
             else
@@ -67,7 +68,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if MC.aws.aws.checkDefaultVPC()
                 defaultVPC = true
 
-            if defaultVPC or MC.canvas_data.component[elb_uid].resource.VpcId
+            if defaultVPC or myElbComponent.get 'VpcId'
                 this.set 'have_vpc', true
             else
                 this.set 'have_vpc', false
@@ -75,9 +76,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb.distribution = []
 
             subnetMap = {}
-            for uid, comp of MC.canvas_data.component
-                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                    subnetMap[ comp.resource.SubnetId ] = comp.name
+
+            allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
+            for subnet in allSubnet
+                subnetMap[ subnet.id ] = subnet.get 'name'
+
 
             $.each elb.AvailabilityZones.member, (i, zone_name) ->
               tmp = {}
@@ -133,7 +137,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
 
             @set elb
-            @set "componentUid", myElbComponent.uid
+            @set "componentUid", myElbComponent.id
 
         getSGList : () ->
 
@@ -151,7 +155,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             #     sgAry = resourceCompObj.resource.SecurityGroupId
 
             uid = this.get 'id'
-            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
+            sgAry = Design.instance().component( uid ).get 'SecurityGroups'
 
             sgUIDAry = []
             _.each sgAry, (value) ->

@@ -242,23 +242,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     return false
 
-  CanvasElement.prototype.volume = ()->
-    vl = []
-    for v in Design.instance().component( @id ).get("volumeList") or vl
-      vl.push {
-        deleted    : not v.hasAppResource()
-        name       : v.get("name")
-        snapshotId : v.get("snapshotId")
-        size       : v.get("volumeSize")
-      }
-
-    vl
-
-  CanvasElement.prototype.addVolume = ()->
-    Volume = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-    volume = new Volume()
-    volume.id
-
   CanvasElement.prototype.parent  = ()->
     if this.parent is undefined
       this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null
@@ -296,6 +279,38 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     _.map Design.instance().component( this.id ).children() || [], ( c )->
         new CanvasElement( c )
 
+  CanvasElement.instance = ( component, quick )->
+    CanvasElement.call( this, component, quick )
+
+  CanvasElement.instance.prototype.volume = ()->
+    vl = []
+    for v in Design.instance().component( @id ).get("volumeList") or vl
+      vl.push {
+        deleted    : not v.hasAppResource()
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+      }
+
+    vl
+
+  CanvasElement.instance.prototype.addVolume = ( attribute )->
+    attribute.owner = Design.instance().component( this.id )
+    VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+    volume = new VolumeModel( attribute )
+    !!volume.id
+
+  CanvasElement.instance.prototype.removeVolume = ( volumeId )->
+    Design.instance().component( volumeId ).remove()
+    null
+
+  CanvasElement.instance.prototype.moveVolume = ( volumeId, targetId )->
+    design = Design.instance()
+    design.component( volumeId ).attachTo( design.component(targetId) )
+    null
+
+  $.extend CanvasElement.instance.prototype, CanvasElement.prototype
+
   CanvasElement.line = ( component )->
     this.id   = component.id
     this.type = component.get("lineType")
@@ -311,6 +326,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
   CanvasElement.line.prototype.select = ()->
     MC.canvas.select( this.id )
     ide_event.trigger ide_event.OPEN_PROPERTY, Design.instance().component( this.id ).type, this.id
+
 
   CanvasElement.line.prototype.remove      = CanvasElement.prototype.remove
   CanvasElement.line.prototype.isRemovable = CanvasElement.prototype.isRemovable

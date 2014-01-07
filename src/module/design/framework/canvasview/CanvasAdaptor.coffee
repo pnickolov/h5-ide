@@ -13,6 +13,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     if component.node_line
       new CanvasElement.line( component )
+    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      new CanvasElement.instance( component, quick )
     else
       new CanvasElement( component, quick )
 
@@ -66,9 +68,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       CanvasEvent[event].apply( this, Array.prototype.slice.call(arguments, 1) )
     null
 
-  $canvas.add = ( type, attributes, coordinate )->
-    attributes.x = coordinate.x
-    attributes.y = coordinate.y
+  $canvas.add = ( type, attributes, pos )->
+
+    attributes = $.extend { x : pos.x, y : pos.y }, attributes
     parent = Design.__instance.component( attributes.groupUId )
 
     attributes.parent = parent

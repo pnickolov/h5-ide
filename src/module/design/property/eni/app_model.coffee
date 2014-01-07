@@ -10,13 +10,15 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
           group          = []
           myEniComponent = Design.instance().component( uid )
-          appData        = MC.data.resource_list[ MC.canvas_data.region ]
+          appData        = MC.data.resource_list[ Design.instance().region() ]
 
           if @isGroupMode
 
-            for uid, component of MC.canvas_data.component
-              if component.serverGroupUid is myEniComponent.serverGroupUid
-                group.push component
+            allEni = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).allObjects()
+
+            for eni in allEni
+              if eni.get 'serverGroupUid' is myEniComponent.get 'serverGroupUid'
+                group.push eni
 
           else
             group.push myEniComponent
@@ -24,14 +26,14 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
           formated_group = []
           for eni_comp in group
-            eni = $.extend true, {}, appData[ eni_comp.resource.NetworkInterfaceId ]
+            eni = $.extend true, {}, appData[ eni_comp.get 'NetworkInterfaceId' ]
 
             for i in eni.privateIpAddressesSet.item
               i.primary = i.primary is true
 
-            eni.id              = eni_comp.resource.NetworkInterfaceId
-            eni.name            = eni_comp.name
-            eni.idx             = parseInt( eni_comp.name.split("-")[1], 10 )
+            eni.id              = eni_comp.get 'NetworkInterfaceId'
+            eni.name            = eni_comp.get 'name'
+            eni.idx             = parseInt( eni_comp.get( 'name' ).split("-")[1], 10 )
             eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
 
             formated_group.push eni
@@ -42,7 +44,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
             @set 'group',       _.sortBy formated_group, 'idx'
             @set 'readOnly',    true
             @set 'isGroupMode', true
-            @set 'name',        myEniComponent.name
+            @set 'name',        myEniComponent.get 'name'
           else
             eni = formated_group[0]
 
@@ -56,7 +58,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
         getSGList : () ->
 
             uid = this.get 'id'
-            sgAry = MC.canvas_data.component[uid].resource.GroupSet
+            sgAry = Design.instance().component( uid ).get 'GroupSet'
 
             sgUIDAry = []
             _.each sgAry, (value) ->

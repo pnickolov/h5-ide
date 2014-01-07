@@ -50,6 +50,8 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
 
     constructor : ( attributes, options )->
 
+      # Need to assign parent to attribute first,
+      # Because initialize() might need it.
       if attributes and attributes.parent
         attributes.__parent = attributes.parent
         delete attributes.parent
@@ -57,6 +59,8 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       ResourceModel.call this, attributes, options
 
       if attributes.__parent
+        # Reset __parent here, so that addChild() can succeed
+        @attributes.__parent = null
         attributes.__parent.addChild( this )
       null
 

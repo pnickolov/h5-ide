@@ -2302,40 +2302,42 @@ MC.canvas.volume = {
 		{
 			var bubble_box = $('#volume-bubble-box'),
 				target_id = bubble_box.data('target-id'),
-				target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
+				//target_volume_data = MC.canvas.data.get('component.' + target_id + '.resource.BlockDeviceMapping'),
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id'),
 				volumeList;
 
-			target_volume_data.splice(
-				target_volume_data.indexOf(
-					'#' + volume_id
-				), 1
-			);
+			// target_volume_data.splice(
+			// 	target_volume_data.indexOf(
+			// 		'#' + volume_id
+			// 	), 1
+			// );
 
-			$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
+			//$('#instance_volume_number, #' + target_id + '_volume_number').text(target_volume_data.length);
 
-			document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+			//document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
-			MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+			//MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 
-			if (target_node.data('class') === 'AWS.EC2.Instance')
-			{
-				volumeList = MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+			// if (target_node.data('class') === 'AWS.EC2.Instance')
+			// {
+			// 	volumeList = MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
 
-				if (volumeList)
-				{
-					$.each(volumeList, function (index, value)
-					{
-						MC.canvas.data.delete('component.' + value);
-					});
+			// 	if (volumeList)
+			// 	{
+			// 		$.each(volumeList, function (index, value)
+			// 		{
+			// 			MC.canvas.data.delete('component.' + value);
+			// 		});
 
-					delete MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
-				}
+			// 		delete MC.canvas_data.layout.component.node[ target_id ].volumeList[ volume_id ];
+			// 	}
 
-				MC.canvas.data.delete('component.' + volume_id);
-			}
+			// 	MC.canvas.data.delete('component.' + volume_id);
+			// }
+			
+			$canvas(volume_id).remove();
 
 			$('#' + volume_id).parent().remove();
 
@@ -2357,7 +2359,7 @@ MC.canvas.volume = {
 				target_offset = target.offset(),
 				canvas_offset = $canvas.offset(),
 				node_type = target.data('type'),
-				target_component_type = target.data('component-type'),
+				//target_component_type = target.data('component-type'),
 				state = MC.canvas.getState(),
 				shadow,
 				clone_node;
@@ -2365,7 +2367,7 @@ MC.canvas.volume = {
 			if (
 				state === 'app' ||
 				state === 'appview' ||
-				$('#' + target.data('json')['instance_id']).data('class') === 'AWS.AutoScaling.LaunchConfiguration'
+				$canvas( target.data('json')['instance_id'] ).type === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{
 				MC.canvas.volume.select.call( $('#' + this.id )[0] );
@@ -2401,7 +2403,8 @@ MC.canvas.volume = {
 				'action': 'move'
 			});
 
-			MC.canvas.volume.select.call( $('#' + this.id )[0] );
+			//MC.canvas.volume.select.call( $('#' + this.id )[0] );
+			$canvas( this.id ).select();
 
 			return false;
 		}
@@ -2460,7 +2463,7 @@ MC.canvas.volume = {
 	mouseup: function (event)
 	{
 		var target = $(event.data.target),
-			target_component_type = target.data('component-type'),
+			//target_component_type = target.data('component-type'),
 			node_option = target.data('option') || {},
 			bubble_box = $('#volume-bubble-box'),
 			original_node_volume_data,
@@ -2498,8 +2501,6 @@ MC.canvas.volume = {
 
 				volume_id = $canvas(target_id).addVolume(data_option);
 
-				console.info(volume_id);
-
 				if (volume_id)
 				{
 					data_json = JSON.stringify({
@@ -2519,7 +2520,9 @@ MC.canvas.volume = {
 					// 	target_volume_data.push('#' + volume_id);
 					// }
 
-					//$('#instance_volume_number').text(target_volume_data.length);
+					$('#instance_volume_number').text(
+						$canvas( node_uid ).volume().length
+					);
 
 					//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 

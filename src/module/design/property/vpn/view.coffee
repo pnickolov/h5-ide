@@ -10,6 +10,7 @@ define [ '../base/view',
 
     VPNView = PropertyView.extend {
         events   :
+            "BEFORE_REMOVE_ROW #property-vpn-ips" : 'beforeRemoveIP'
             "REMOVE_ROW #property-vpn-ips" : 'removeIP'
             "ADD_ROW #property-vpn-ips"    : 'addIP'
 
@@ -24,6 +25,15 @@ define [ '../base/view',
         addIP : ()->
             $("#property-vpn-ips input").last().focus()
             null
+
+        beforeRemoveIP : ( event )->
+            # If user delete the an non empty ip and it's the only one, prevent it.
+            if event.value
+                nonEmptyInputs = $("#property-vpn-ips").find("input").filter ()-> this.value.length > 0
+                if nonEmptyInputs.length < 2
+                    event.preventDefault()
+            null
+
 
         removeIP : (event, ip) ->
             if not ip

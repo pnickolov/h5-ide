@@ -141,7 +141,7 @@ define [ 'constant',
                 # if is sg property, do not set title
                 resUID = @model.get 'uid'
                 if resUID
-                    resComp = MC.canvas_data.component[resUID]
+                    resComp = Design.instance().component(resUID)
                     if resComp and resComp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
                         return null
 

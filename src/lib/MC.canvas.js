@@ -2648,73 +2648,75 @@ MC.canvas.asgList = {
 				canvas_offset = $canvas.offset();
 
 			// Prepare data
-			var uid     = MC.extractID( target_id );
-			var layout  = MC.canvas_data.layout.component.node[ uid ];
-			if (!layout) {
-				return;
-			}
-			var lc_comp = MC.canvas_data.component[ layout.groupUId ];
-			var appData = MC.data.resource_list[ MC.canvas_data.region ];
-			var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
+			// var uid     = MC.extractID( target_id );
+			// var layout  = MC.canvas_data.layout.component.node[ uid ];
+			// if (!layout) {
+			// 	return;
+			// }
+			// var lc_comp = MC.canvas_data.component[ layout.groupUId ];
+			// var appData = MC.data.resource_list[ MC.canvas_data.region ];
+			// var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
 
-			if ( !asgData ) {
-				return true;
-			}
+			// if ( !asgData ) {
+			// 	return true;
+			// }
 
+			// // var statusMap = {
+			// // 	"Pending"     : "orange",
+			// // 	"Quarantined" : "orange",
+			// // 	"InService"   : "green",
+			// // 	"Terminating" : "red",
+			// // 	"Terminated"  : "red"
+			// // };
 			// var statusMap = {
-			// 	"Pending"     : "orange",
-			// 	"Quarantined" : "orange",
-			// 	"InService"   : "green",
-			// 	"Terminating" : "red",
-			// 	"Terminated"  : "red"
+			// 	   "pending"       : "yellow"
+			// 	 , "stopping"      : "yellow"
+			// 	 , "shutting-down" : "yellow"
+			// 	 , "running"       : "green"
+			// 	 , "stopped"       : "orange"
+			// 	 , "terminated"    : "red"
+			// 	 , "unknown"       : "grey"
 			// };
-			var statusMap = {
-				   "pending"       : "yellow"
-				 , "stopping"      : "yellow"
-				 , "shutting-down" : "yellow"
-				 , "running"       : "green"
-				 , "stopped"       : "orange"
-				 , "terminated"    : "red"
-				 , "unknown"       : "grey"
-			};
 
 
-			var temp_data = {
-				name      : lc_comp.name,
-				instances : []
-			};
+			// var temp_data = {
+			// 	name      : lc_comp.name,
+			// 	instances : []
+			// };
 
-			lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
-			temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
+			// lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
+			// temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
 
-			if ( layout ) {
-				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
-			}
+			// if ( layout ) {
+			// 	temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
+			// }
 
-			var instances = asgData.Instances.member,
-				state = null;
-			if ( instances )
-			{
-				for ( var i = 0, l = instances.length; i < l; ++i ) {
-					//get instance state
-					if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
-						state = MC.aws.instance.getInstanceState( instances[i].InstanceId );
-					}
-					if (!state){
-						state = 'unknown';
-					}
+			// var instances = asgData.Instances.member,
+			// 	state = null;
+			// if ( instances )
+			// {
+			// 	for ( var i = 0, l = instances.length; i < l; ++i ) {
+			// 		//get instance state
+			// 		if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+			// 			state = MC.aws.instance.getInstanceState( instances[i].InstanceId );
+			// 		}
+			// 		if (!state){
+			// 			state = 'unknown';
+			// 		}
 
-					temp_data.instances.push({
-							id     : instances[i].InstanceId
-						//, color : statusMap[ instances[i].LifecycleState ]
-						//, state : instances[i].LifecycleState
-						, color : statusMap[state]
-						, state : state
-					});
-				}
-			}
+			// 		temp_data.instances.push({
+			// 				id     : instances[i].InstanceId
+			// 			//, color : statusMap[ instances[i].LifecycleState ]
+			// 			//, state : instances[i].LifecycleState
+			// 			, color : statusMap[state]
+			// 			, state : state
+			// 		});
+			// 	}
+			// }
 
-			$('#canvas_container').append( MC.template.asgList( temp_data ) );
+			$('#canvas_container').append(
+				MC.template.asgList( $canvas( target_id ).list() )
+			);
 
 			$('#asgList-wrap')
 				.on('click', '.asgList-item', MC.canvas.asgList.select)
@@ -2788,54 +2790,56 @@ MC.canvas.instanceList = {
 				return false;
 			}
 
-			var uid     = MC.extractID( target_id ),
-			    layout  = MC.canvas_data.layout.component.node[ uid ];
+			// var uid     = MC.extractID( target_id ),
+			//     layout  = MC.canvas_data.layout.component.node[ uid ];
 
-			var temp_data = {
-				  instances : []
-				, name      : "Server Group List"
-			};
-			var statusMap = {
-				"pending"       : "yellow"
-				 , "stopping"      : "yellow"
-				 , "shutting-down" : "yellow"
-				 , "running"       : "green"
-				 , "stopped"       : "orange"
-				 , "terminated"    : "red"
-				 , "unknown"       : "grey"
-			};
+			// var temp_data = {
+			// 	  instances : []
+			// 	, name      : "Server Group List"
+			// };
+			// var statusMap = {
+			// 	"pending"       : "yellow"
+			// 	 , "stopping"      : "yellow"
+			// 	 , "shutting-down" : "yellow"
+			// 	 , "running"       : "green"
+			// 	 , "stopped"       : "orange"
+			// 	 , "terminated"    : "red"
+			// 	 , "unknown"       : "grey"
+			// };
 
-			if ( layout ) {
-				temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
-			}
+			// if ( layout ) {
+			// 	temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
+			// }
 
-			for ( var i = 0; i < layout.instanceList.length; ++i ) {
+			// for ( var i = 0; i < layout.instanceList.length; ++i ) {
 
-				var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
-					state = null,
-					instance_data = null;
-				temp_data.name = inst_comp.serverGroupName;
+			// 	var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
+			// 		state = null,
+			// 		instance_data = null;
+			// 	temp_data.name = inst_comp.serverGroupName;
 
-				//get instance state
-				if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
-					state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
-				}
+			// 	//get instance state
+			// 	if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
+			// 		state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
+			// 	}
 
-				if (!state){
-					state = 'unknown';
-				}
+			// 	if (!state){
+			// 		state = 'unknown';
+			// 	}
 
-				temp_data.instances.push( {
-					  color : statusMap[ state ]
-					, id     : inst_comp.uid
-					, volume : inst_comp.resource.BlockDeviceMapping.length
-					, name   : inst_comp.name
-					, state  : state
-					, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''
-				} );
-			}
+			// 	temp_data.instances.push( {
+			// 		  color : statusMap[ state ]
+			// 		, id     : inst_comp.uid
+			// 		, volume : inst_comp.resource.BlockDeviceMapping.length
+			// 		, name   : inst_comp.name
+			// 		, state  : state
+			// 		, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''
+			// 	} );
+			// }
 
-			$('#canvas_container').append( MC.template.instanceList( temp_data ) );
+			$('#canvas_container').append(
+				MC.template.instanceList( $canvas( target_id ).list() )
+			);
 
 			$('#instanceList-wrap')
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)

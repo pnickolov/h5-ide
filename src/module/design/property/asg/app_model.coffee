@@ -24,7 +24,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     getASGData : ( arn )->
 
-        resource_list = MC.data.resource_list[MC.canvas_data.region]
+        resource_list = MC.data.resource_list[Design.instance().region()]
 
         asg_data = resource_list[ arn ]
 

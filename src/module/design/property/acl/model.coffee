@@ -89,7 +89,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             component = Design.instance().component( uid )
 
-            aclObj = MC.data.resource_list[MC.canvas_data.region][ component.get 'NetworkAclId' ]
+            aclObj = MC.data.resource_list[Design.instance().region()][ component.get 'NetworkAclId' ]
             aclObj.name = component.get 'name'
 
             aclObj.rule_number = 0

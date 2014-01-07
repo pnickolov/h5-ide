@@ -11,7 +11,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
           # cgw assignment
           myCGWComponent = Design.instance().component( uid )
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
+          appData = MC.data.resource_list[ Design.instance().region() ]
 
           cgw = appData[ myCGWComponent.get 'CustomerGatewayId' ]
           if not cgw

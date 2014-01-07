@@ -16,7 +16,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             myElbComponent = Design.instance().component( uid )
 
 
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
             elb     = appData[ myElbComponent.get 'LoadBalancerName' ]
 
             if not elb
@@ -95,7 +95,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                     $.each elb.Subnets.member, (j, subnet_id) ->
 
-                        if MC.data.resource_list[MC.canvas_data.region][subnet_id].availabilityZone == zone_name
+                        if MC.data.resource_list[Design.instance().region()][subnet_id].availabilityZone == zone_name
 
                             tmp.subnet = subnetMap[ subnet_id ]
 
@@ -122,7 +122,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             $.each elb.instance_state, ( i, instance ) ->
 
-                zone = MC.data.resource_list[MC.canvas_data.region][instance.InstanceId].placement.availabilityZone
+                zone = MC.data.resource_list[Design.instance().region()][instance.InstanceId].placement.availabilityZone
 
                 $.each elb.distribution, ( j, az_detail ) ->
 

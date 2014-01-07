@@ -6,10 +6,10 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
     EniAppModel = PropertyModel.extend {
 
-        init : ( eni_uid )->
+        init : ( uid )->
 
           group          = []
-          myEniComponent = MC.canvas_data.component[ eni_uid ]
+          myEniComponent = Design.instance().component( uid )
           appData        = MC.data.resource_list[ MC.canvas_data.region ]
 
           if @isGroupMode
@@ -48,7 +48,7 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
             eni.readOnly    = true
             eni.isGroupMode = false
-            eni.id          = eni_uid
+            eni.id          = uid
             @set eni
 
           null

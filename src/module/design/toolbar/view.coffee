@@ -611,7 +611,12 @@ define [ 'MC', 'event',
 
         clickRefreshApp         : (event) ->
             console.log 'toolbar clickRefreshApp'
-            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
+
+            # old design flow
+            #ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.canvas_data.region, MC.canvas_data.id
+
+            # new design flow
+            ide_event.trigger ide_event.UPDATE_APP_RESOURCE, MC.forge.other.canvasData.get( 'region' ), MC.forge.other.canvasData.get( 'id' )
 
         #############################
         #  app edit

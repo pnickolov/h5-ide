@@ -46,7 +46,7 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       @set("cidr", cidr)
       @draw()
 
-      null
+      true
 
     draw : ( isCreate )->
 

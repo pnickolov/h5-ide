@@ -28,20 +28,20 @@
 				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
 			</div>
 		</section>
+		{{#if instance_type.length}}
 		<section class="property-control-group">
 			<label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
-				<ul class="dropdown">
-					{{#each instance_type}}
+				<ul class="dropdown"> {{#each instance_type}}
 					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
 						<div class="main truncate">{{main}}</div>
 						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
 					</li>
-					{{/each}}
-				</ul>
+				{{/each}} </ul>
 			</div>
 		</section>
+		{{/if}}
 		<section class="property-control-group" {{#unless can_set_ebs}}style="display:none;"{{/unless}}>
 			<div class="checkbox">
 				<input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebsOptimized}}checked="checked"{{/if}} name="ebs-optimized" />

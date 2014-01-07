@@ -14,7 +14,7 @@
 				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
 			</div>
 		</section>
-		{{#if instance_type}}
+		{{#if instance_type.length}}
 		<section class="property-control-group">
 			<label class="left">{{i18n "PROP_INSTANCE_TYPE"}}</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">

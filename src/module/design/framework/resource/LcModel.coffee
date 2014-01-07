@@ -1,6 +1,8 @@
 
 define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js' ], ( ComplexResModel, InstanceModel, CanvasManager, Design, constant, VolumeModel, lang )->
 
+  emptyArray = []
+
   Model = ComplexResModel.extend {
 
     defaults :
@@ -35,6 +37,13 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+
+    remove : ()->
+      # Remove attached volumes
+      for v in @get("volumeList") or emptyArray
+        v.remove()
+
+      null
 
     iconUrl : ()->
       ami = MC.data.dict_ami[ @get 'imageId' ] || @get("cachedAmi")

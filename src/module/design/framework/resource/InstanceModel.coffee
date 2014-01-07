@@ -1,6 +1,8 @@
 
 define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, Design, constant, lang )->
 
+  emptyArray = []
+
   Model = ComplexResModel.extend {
 
     type    : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
@@ -203,6 +205,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
     remove : ()->
       this.__mainEni.remove()
+
+      # Remove attached volumes
+      for v in @get("volumeList") or emptyArray
+        v.remove()
+      null
 
     setEmbedEni : ( eni )->
       this.__mainEni = eni

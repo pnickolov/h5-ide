@@ -41,6 +41,12 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       null
 
+    remove : ()->
+      # Remove reference in owner
+      vl = @attributes.owner.get("volumeList")
+      vl.splice( vl.indexOf(this), 1 )
+      null
+
     attachTo : ( owner )->
       if not owner then return
       if owner is @attributes.owner then return

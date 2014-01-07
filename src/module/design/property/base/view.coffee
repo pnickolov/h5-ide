@@ -97,8 +97,7 @@ define [ 'constant',
             @setElement $new_panel
             @render()
 
-            $emptyInput = $("#property-first-panel").find("input").filter ()-> !this.value.length
-            $emptyInput.focus()
+            @focusImportantInput()
             null
 
         _loadAsSub : ( subPanelID ) ->
@@ -123,11 +122,8 @@ define [ 'constant',
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.
             # this.setElment this.$el.children().eq(0)  # # # Not sure if this is necessary.
-
-            setTimeout ()->
-                $emptyInput = $("#property-second-panel .property-content").find("input").filter ()-> !this.value.length
-                $emptyInput.focus()
-            , 200
+            that = this
+            setTimeout (()-> that.focusImportantInput()), 200
             null
 
         _render : () ->
@@ -155,6 +151,15 @@ define [ 'constant',
             else
                 return result
 
+            null
+
+        focusImportantInput : ()->
+            $emptyInput = @$el.find("input[data-empty-remove]").filter ()->
+                !this.value.length
+            if $emptyInput.length
+                @forceShow()
+                $emptyInput.focus()
+                @disabledAllOperabilityArea( true )
             null
     }
 

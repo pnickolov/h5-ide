@@ -19,15 +19,6 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
 
         render     : () ->
             @$el.html template @model.attributes
-
-            # find empty inputbox and focus
-            inputElem = $('#property-cgw-ip')
-            inputValue = inputElem.val()
-            if !inputValue
-                MC.aws.aws.disabledAllOperabilityArea(true)
-                $(inputElem).focus()
-                @forceShow()
-
             @model.attributes.name
 
         onChangeRouting : () ->
@@ -62,17 +53,11 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
                 $('#property-cgw-ip').blur()
 
         onFocusIP : ( event ) ->
-            MC.aws.aws.disabledAllOperabilityArea(true)
+            @disabledAllOperabilityArea(true)
             null
 
         onBlurIP : ( event ) ->
 
-            that = this
-
-            mainContent = ''
-            descContent = ''
-
-            cgwUID = this.model.get 'uid'
             ipAddr = $('#property-cgw-ip').val()
 
             haveError = true
@@ -80,36 +65,36 @@ define [ '../base/view', 'text!./template/stack.html', 'event', 'constant', "Des
                 mainContent = 'IP Address is required.'
                 descContent = 'Please provide a IP Address of this Customer Gateway.'
             else if !MC.validate 'ipv4', ipAddr
-                mainContent = ipAddr + ' is not a valid IP Address.'
+                mainContent = "#{ipAddr} is not a valid IP Address."
                 descContent = 'Please provide a valid IP Address. For example, 192.168.1.1.'
             else if !MC.aws.eni.isPublicIPAddress(ipAddr)
-                mainContent = 'IP Address ' + ipAddr + ' is invalid for customer gateway.'
+                mainContent = "IP Address #{ipAddr} is invalid for customer gateway."
                 descContent = "The address must be static and can't be behind a device performing network address translation (NAT)."
             else
                 haveError = false
 
-            if haveError
-                dialog_template = MC.template.setupCIDRConfirm {
-                    remove_content : 'Remove Customer Gateway',
-                    main_content : mainContent,
-                    desc_content : descContent
-                }
-                modal dialog_template, false, () ->
-
-                    $('.modal-close').click () ->
-                        $('#property-cgw-ip').focus()
-
-                    $('#cidr-remove').click () ->
-                        $canvas.clearSelected()
-                        Design.instance().component( cgwUID ).remove()
-
-                        MC.aws.aws.disabledAllOperabilityArea(false)
-                        modal.close()
-            else
+            if not haveError
                 @model.setIP event.target.value
+                @disabledAllOperabilityArea( false )
+                return
 
-                MC.aws.aws.disabledAllOperabilityArea(false)
-                # $('#property-cidr-block').blur()
+            dialog_template = MC.template.setupCIDRConfirm {
+                remove_content : 'Remove Customer Gateway'
+                main_content : mainContent
+                desc_content : descContent
+            }
+
+            that = this
+            modal dialog_template, false, () ->
+
+                $('.modal-close').click () -> $('#property-cgw-ip').focus()
+
+                $('#cidr-remove').click () ->
+                    $canvas.clearSelected()
+                    Design.instance().component( that.model.get("uid") ).remove()
+
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
     }
 
     new CGWView()

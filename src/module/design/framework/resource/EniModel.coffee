@@ -402,8 +402,6 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
         ips : []
 
-        parent : resolve( MC.extractID(data.resource.SubnetId) )
-
         x : if embed then 0 else layout_data.coordinate[0]
         y : if embed then 0 else layout_data.coordinate[1]
       }
@@ -415,7 +413,11 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         }) )
 
 
-      if embed then option = { instance : instance }
+      if embed
+        option = { instance : instance }
+      else
+        attr.parent = resolve( MC.extractID(data.resource.SubnetId) )
+
       eni = new Model( attr, option )
 
 

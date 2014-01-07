@@ -295,6 +295,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     vl
 
   CanvasElement.instance.prototype.addVolume = ( attribute )->
+    attribute = attribute || {}
     attribute.owner = Design.instance().component( this.id )
     VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
     volume = new VolumeModel( attribute )

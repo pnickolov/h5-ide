@@ -68,6 +68,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__canvasLines  = {}
     @__canvasGroups = {}
     @__classCache   = {}
+    @__backup       = {}
 
     @__mode = options.mode
 
@@ -397,17 +398,29 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     null
 
   DesignImpl.prototype.save = ( component_data, layout_data )->
+    @__backup.name = @attributes.name
+
     # Quick Impl to make process work.
     if component_data and layout_data
-      @attributes.component = component_data
-      @attributes.layout    = layout_data
+      @__backup.component = component_data
+      @__backup.layout    = layout_data
     else
       newData = @serialize()
-      @attributes.component = newData
-      @attributes.layout    = layout_data
+      @__backup.component = newData.component
+      @__backup.layout    = newData.layout
     null
 
-  DesignImpl.prototype.isModified = ()-> true
+  DesignImpl.prototype.isModified = ()->
+    if @__backup.name isnt @attributes.name
+      return false
+
+    newData = @serialize()
+
+    if _.isEqual( @__backup.component, newData.component )
+      if _.isEqual( @__backup.layout, newData.layout )
+        return false
+
+    true
 
   DesignImpl.prototype.getCost = ()->
     costList = []
@@ -434,7 +447,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     ######################
     # Quick Impl
-    return this.attributes
+    newData = $.extend {}, @attributes
+    newData.component = @__backup.component
+    newData.layout    = @__backup.layout
+    return newData
     ######################
 
     # json_data   = {}

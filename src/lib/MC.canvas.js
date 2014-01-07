@@ -2521,9 +2521,9 @@ MC.canvas.volume = {
 
 					$('#instance_volume_number').text(target_volume_data.length);
 
-					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+					//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 
-					document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+					//document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
 					//MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
 

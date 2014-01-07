@@ -30,7 +30,11 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             null
 
         setCIDR : ( newCIDR ) ->
-            Design.instance().component( @get("uid") ).setCIDR( newCIDR )
+            if Design.instance().component( @get("uid") ).setCIDR( newCIDR )
+                this.attributes.cidr = newCIDR
+                return true
+
+            false
 
         setTenancy : ( tenancy ) ->
             Design.instance().component( @get("uid") ).setTenancy( tenancy )

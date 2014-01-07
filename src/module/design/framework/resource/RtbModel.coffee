@@ -179,6 +179,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
 
       rtb = new Model({
         id   : data.uid
+        appId: data.resource.RouteTableId
         name : data.name
         main : !!asso_main
         x    : layout_data.coordinate[0]

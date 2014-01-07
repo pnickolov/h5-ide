@@ -23,58 +23,38 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
         render     : () ->
             @$el.html template @model.attributes
-
-            # find empty inputbox and focus
-            me = this
-            inputElemAry = $('.ip-main-input')
-            haveZeroItem = false
-            _.each inputElemAry, (inputElem, inputIdx) ->
-                inputValue = $(inputElem).val()
-                # if (inputValue.indexOf('/0') isnt -1 and inputIdx > 1)
-                if haveZeroItem and inputValue.indexOf('/0') isnt -1
-                    $(inputElem).val('')
-                    inputValue = ''
-                if !inputValue
-                    MC.aws.aws.disabledAllOperabilityArea(true)
-                    me.forceShow()
-                    $(inputElem).focus()
-                if inputValue.indexOf('/0') isnt -1
-                    haveZeroItem = true
-                null
-
             @model.attributes.title
 
         processParsley: ( event ) ->
             $( event.currentTarget )
             .find( 'input' )
             .last()
+            .focus()
             .removeClass( 'parsley-validated' )
             .removeClass( 'parsley-error' )
             .next( '.parsley-error-list' )
             .remove()
+            null
 
 
         beforeRemoveIp : ( event ) ->
 
-            vals = _.reduce $( event.currentTarget ).children(), ( v, child )->
-                if child.value then v + 1 else v
-            , 0
+            $nonEmptyInputs = $( event.currentTarget ).find("input").filter ()->
+                this.value.length
 
             # If we only have valid item and user is trying to remove it.
             # prevent deletion
-            if vals <= 1 and event.value
+            if $nonEmptyInputs.length <= 1 and event.value
                 return false
 
             null
 
         removeIp : ( event ) ->
-
             $target = $(event.currentTarget)
-            ref = $target.attr("data-ref")
 
-            newIps = _.map $target.children(), ( child )-> child.value
+            newIps  = _.map $target.find("input"), ( input )-> input.value
 
-            @model.setRoutes ref, newIps
+            @model.setRoutes $target.attr("data-ref"), _.uniq( newIps )
             null
 
         changeName : ( event ) ->
@@ -100,86 +80,61 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                 $(event.currentTarget).blur()
 
         onFocusCIDR : ( event ) ->
-            MC.aws.aws.disabledAllOperabilityArea(true)
+            @disabledAllOperabilityArea(true)
             null
 
         onBlurCIDR : ( event ) ->
 
             inputElem = $(event.currentTarget)
             inputValue = inputElem.val()
+            parentElem = inputElem.closest(".multi-input")
 
-            parentElem = inputElem.parents('.multi-input')
-            gwType = parentElem.attr('data-type')
-            gwUIDRef = parentElem.attr('data-ref')
-            gwUID = gwUIDRef.slice(1).split('.')[0]
+            dataRef = parentElem.attr("data-ref")
 
-            allCidrAry = []
-            repeatFlag = false
-            allZeroCidrCount = 0
-            allCidrInputElemAry = inputElem.parents('.option-group').find('.ip-main-input')
-            _.each allCidrInputElemAry, (inputElem) ->
-                cidrValue = $(inputElem).val()
-                if cidrValue.indexOf('/0') isnt -1
-                    allZeroCidrCount++
-                if !((inputValue.indexOf('/0') isnt -1) and ($(inputElem).parent('.ipt-wrapper').index() is 0))
-                    if cidrValue isnt inputValue
-                        allCidrAry.push(cidrValue)
-                    else
-                        if repeatFlag then allCidrAry.push(cidrValue)
-                        if !repeatFlag then repeatFlag = true
+            ips = []
+            parentElem.find("input").each ()->
+                if this.value then ips.push this.value
                 null
 
-            haveError = true
+            allCidrAry = _.uniq( ips )
+
             if !inputValue
-                mainContent = 'CIDR block is required.'
-                descContent = 'Please provide a IP ranges for this route.'
+                if inputElem.closest('.multi-ipt-row').siblings().length == 0
+                    mainContent = 'CIDR block is required.'
+                    descContent = 'Please provide a IP ranges for this route.'
             else if !MC.validate 'cidr', inputValue
-                mainContent = inputValue + ' is not a valid form of CIDR block.'
+                mainContent = "#{inputValue} is not a valid form of CIDR block."
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
-            else if (!MC.aws.rtb.isNotCIDRConflict(inputValue, allCidrAry) or allZeroCidrCount > 1)
-                mainContent = inputValue + ' conflicts with other route.'
-                descContent = 'Please choose a CIDR block not conflicting with existing route.'
-            else
-                haveError = false
+            # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
+            else if inputValue isnt "0.0.0.0/0"
+                for cidr in allCidrAry
+                    if cidr isnt inputValue and cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
+                        mainContent = "#{inputValue} conflicts with other route."
+                        descContent = 'Please choose a CIDR block not conflicting with existing route.'
+                        break
 
-            if haveError
-                brotherElemAry = inputElem.parents('.multi-ipt-row').prev('.multi-ipt-row')
-                if brotherElemAry.length isnt 0
-                    MC.aws.aws.disabledAllOperabilityArea(false)
-                    # return
+            if not mainContent
+                @model.setRoutes dataRef, allCidrAry
+                @disabledAllOperabilityArea(false)
+                return
 
-                dialog_template = MC.template.setupCIDRConfirm {
-                    remove_content : 'Remove Route',
-                    main_content : mainContent,
-                    desc_content : descContent
-                }
-                modal dialog_template, false, () ->
+            dialog_template = MC.template.setupCIDRConfirm {
+                remove_content : 'Remove Route'
+                main_content : mainContent
+                desc_content : descContent
+            }
 
-                    $('.modal-close').click () ->
-                        inputElem.focus()
+            that = this
+            modal dialog_template, false, () ->
 
-                    $('#cidr-remove').click () ->
-                        connectionAry = MC.canvas_data.layout.component.node[gwUID].connection
-                        connectionObj = null
-                        _.each connectionAry, (conObj) ->
-                            if conObj.port in ['eni-rtb', 'igw-tgt', 'vgw-tgt', 'instance-rtb']
-                                connectionObj = conObj
-                            null
-                        if connectionObj
-                            lineUID = connectionObj.line
-                            rtUID = connectionObj.target
-                            $("#svg_canvas").trigger("CANVAS_OBJECT_DELETE", {
-                                'id': lineUID,
-                                'type': 'line'
-                            })
-                        MC.aws.aws.disabledAllOperabilityArea(false)
-                        modal.close()
-            else
-                data = event.target.parentNode.parentNode.parentNode.dataset
-                children = event.target.parentNode.parentNode.parentNode.children
+                $('.modal-close').click () -> inputElem.focus()
 
-                @model.setRoutes data, children
-                MC.aws.aws.disabledAllOperabilityArea(false)
+                $('#cidr-remove').click () ->
+                    $canvas.clearSelected()
+                    Design.instance().component( dataRef ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
+
 
             null
 

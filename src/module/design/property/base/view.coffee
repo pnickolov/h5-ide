@@ -55,6 +55,17 @@ define [ 'constant',
             PropertyView.event.trigger PropertyView.event.FORCE_SHOW
             null
 
+        disabledAllOperabilityArea : ( disabled ) ->
+            if disabled
+                if $("resource-panel").children(".disabled-event-layout").length
+                    return
+                divTmpl = '<div class="disabled-event-layout"></div>'
+                $('#resource-panel').append(divTmpl)
+                $('#canvas').append(divTmpl)
+                $('#tabbar-wrapper').append(divTmpl)
+            else
+                $('.disabled-event-layout').remove()
+
         checkDupName : ( $input, type )->
             if not $input.length
                 $input = $( $input )
@@ -85,6 +96,9 @@ define [ 'constant',
 
             @setElement $new_panel
             @render()
+
+            $emptyInput = $("#property-first-panel").find("input").filter ()-> !this.value.length
+            $emptyInput.focus()
             null
 
         _loadAsSub : ( subPanelID ) ->
@@ -109,6 +123,11 @@ define [ 'constant',
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.
             # this.setElment this.$el.children().eq(0)  # # # Not sure if this is necessary.
+
+            setTimeout ()->
+                $emptyInput = $("#property-second-panel .property-content").find("input").filter ()-> !this.value.length
+                $emptyInput.focus()
+            , 200
             null
 
         _render : () ->

@@ -87,12 +87,10 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
         appInit : ( uid ) ->
 
-            component = MC.canvas_data.component[uid]
+            component = Design.instance().component( uid )
 
-            aclObj = MC.data.resource_list[MC.canvas_data.region][ component.resource.NetworkAclId ]
-            aclObj.name = component.name
-
-            #aclObj.vpc_id = MC.canvas_data.component[aclObj.resource.vpcId.split('.')[0][1...]].resource.VpcId
+            aclObj = MC.data.resource_list[MC.canvas_data.region][ component.get 'NetworkAclId' ]
+            aclObj.name = component.get 'name'
 
             aclObj.rule_number = 0
             aclObj.asso_number = 0
@@ -149,16 +147,14 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
                 aclObj.asso_number = aclObj.associationSet.item.length
 
+                allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
                 $.each aclObj.associationSet.item, (i, asso) ->
+                    for subnet in allSubnet
+                        subnetMap[ subnet.id ] = subnet.get 'name'
+                        if subnet.id is asso.subnetId
+                            asso.subnetDisplay = subnet.get 'name' + '(' + subnet.get 'CidrBlock' + ')'
 
-                    $.each MC.canvas_data.component, ( i, comp ) ->
-
-                        if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet and comp.resource.SubnetId == asso.subnetId
-
-                            asso.subnetDisplay = comp.name + '(' + comp.resource.CidrBlock + ')'
-
-
-                        null
 
             if aclObj.associationSet and aclObj.associationSet.item
 

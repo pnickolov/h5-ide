@@ -43,6 +43,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Design.fixJson( json_data, layout_data )
 
     design.deserialize( json_data, layout_data )
+
+    # TODO : don't pass in parameters
     design.save( json_data, layout_data )
     design
 
@@ -67,9 +69,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__canvasGroups = {}
     @__classCache   = {}
 
-    @__type   = options.type
-    @__mode   = options.mode
-    @__region = options.region
+    @__mode = options.mode
 
     # Merge MC.canvas_data
     @attributes = $.extend {}, MC.canvas_data
@@ -364,22 +364,22 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @attributes[key] = value
     null
 
-  DesignImpl.prototype.region = ()-> @.__region
+  DesignImpl.prototype.region = ()-> @.attributes.region
   DesignImpl.prototype.mode   = ()->
     console.warn("Better not to use Design.instance().mode() directly.")
-    this.__mode
+    @__mode
 
-  DesignImpl.prototype.type   = ()-> this.__type
-  DesignImpl.prototype.modeIsStack   = ()-> this.__mode == Design.MODE.Stack
-  DesignImpl.prototype.modeIsApp     = ()-> this.__mode == Design.MODE.App
-  DesignImpl.prototype.modeIsAppEdit = ()-> this.__mode == Design.MODE.AppEdit
+  DesignImpl.prototype.modeIsStack   = ()-> @__mode == Design.MODE.Stack
+  DesignImpl.prototype.modeIsApp     = ()-> @__mode == Design.MODE.App
+  DesignImpl.prototype.modeIsAppEdit = ()-> @__mode == Design.MODE.AppEdit
   DesignImpl.prototype.setMode = (m)->
-    this.__mode = m
+    @__mode = m
     null
 
-  DesignImpl.prototype.typeIsClassic    = ()-> this.__type == Design.TYPE.Classic
-  DesignImpl.prototype.typeIsDefaultVpc = ()-> this.__type == Design.TYPE.DefaultVpc
-  DesignImpl.prototype.typeIsVpc        = ()-> this.__type == Design.TYPE.Vpc or this.__type is Design.TYPE.CustomVpc
+  DesignImpl.prototype.type             = ()-> @attributes.platform
+  DesignImpl.prototype.typeIsClassic    = ()-> @attributes.platform == Design.TYPE.Classic
+  DesignImpl.prototype.typeIsDefaultVpc = ()-> @attributes.platform == Design.TYPE.DefaultVpc
+  DesignImpl.prototype.typeIsVpc        = ()-> @attributes.platform == Design.TYPE.Vpc or @attributes.platform is Design.TYPE.CustomVpc
 
   DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
   DesignImpl.prototype.use = ()->
@@ -396,12 +396,15 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       func.call( context, comp )
     null
 
-  DesignImpl.prototype.save = ()->
-
+  DesignImpl.prototype.save = ( component_data, layout_data )->
     # Quick Impl to make process work.
-    if arguments.length >= 2
-      this.attributes.component = arguments[0]
-      this.attributes.layout    = arguments[1]
+    if component_data and layout_data
+      @attributes.component = component_data
+      @attributes.layout    = layout_data
+    else
+      newData = @serialize()
+      @attributes.component = newData
+      @attributes.layout    = layout_data
     null
 
   DesignImpl.prototype.isModified = ()-> true
@@ -410,7 +413,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     costList = []
     totalFee = 0
 
-    feeMap = MC.data.config[ @__region ]
+    feeMap = MC.data.config[ @region() ]
 
     if feeMap and feeMap.price
       priceMap = feeMap.price
@@ -466,11 +469,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # json_data
 
 
-  DesignImpl.prototype.serializeLayout = ()->
-
-
   _.extend DesignImpl.prototype, Backbone.Events
   DesignImpl.prototype.on = ( event )->
+    # Do nothing for AwsResourceUpdated if it's in stack mode.
     if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
       return
 

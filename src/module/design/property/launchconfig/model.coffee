@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypair_model, constant ) ->
+define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyModel, keypair_model, constant, Design ) ->
 
   LaunchConfigModel = PropertyModel.extend {
 
@@ -34,7 +34,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
         username = $.cookie "usercode"
         session  = $.cookie "session_id"
 
-        keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
+        keypair_model.download {sender:@}, username, session, Design.instance().region(), keypairname
         null
 
 
@@ -149,7 +149,7 @@ define [ '../base/model', 'keypair_model', 'constant' ], ( PropertyModel, keypai
       true
 
     getAppLaunch : ( uid ) ->
-      lc_data   = MC.data.resource_list[MC.canvas_data.region][ @lc.get 'LaunchConfigurationARN' ]
+      lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'LaunchConfigurationARN' ]
 
       this.set 'name', @lc.get 'name'
       this.set 'lc',   lc_data

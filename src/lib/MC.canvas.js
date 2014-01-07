@@ -2127,8 +2127,17 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
+			volume_list = $canvas( node_uid ).volume();
+
+			$.each(volume_list, function (i, item)
+			{
+				item.instance_id = node_uid;
+			});
+
+			console.info(volume_list);
+
 			$('#volume-bubble-content').html(
-				MC.template.instanceVolume( $canvas( node_uid ).volume() )
+				MC.template.instanceVolume( volume_list )
 			);
 
 			target_offset = target[0].getBoundingClientRect();
@@ -2239,7 +2248,7 @@ MC.canvas.volume = {
 		$(document).on('keyup', MC.canvas.volume.remove);
 
 		//dispatch event when select volume node
-		if ($('#' + $('#volume-bubble-box').data('target-id')).data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+		if ($canvas($('#volume-bubble-box').data('target-id')).type === 'AWS.AutoScaling.LaunchConfiguration')
 		{
 			$canvas.trigger("CANVAS_ASG_VOLUME_SELECTED", this.id);
 		}
@@ -2367,7 +2376,7 @@ MC.canvas.volume = {
 			if (
 				state === 'app' ||
 				state === 'appview' ||
-				$canvas( target.data('json')['instance_id'] ).type === 'AWS.AutoScaling.LaunchConfiguration'
+				$canvas( target.data('instance') ).type === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{
 				MC.canvas.volume.select.call( $('#' + this.id )[0] );
@@ -2497,42 +2506,29 @@ MC.canvas.volume = {
 				// data_option['instance_id'] = target_id;
 				// new_volume = $canvas.add('AWS.EC2.EBS.Volume', data_option, {});
 
-				console.info(target_id, data_option);
-
 				volume_item = $canvas(target_id).addVolume(data_option);
 
 				console.info(volume_item);
 
 				if (volume_item)
 				{
-					data_json = JSON.stringify({
-						'instance_id': target_id,
-						'id': volume_id
-						//'name': data_option.name,
-						//'snapshotId': data_option.snapshotId,
-						//'volumeSize': data_option.volumeSize
-					});
+					// data_json = JSON.stringify({
+					// 	'instance_id': target_id,
+					// 	'id': volume_item.id
+					// 	//'name': data_option.name,
+					// 	//'snapshotId': data_option.snapshotId,
+					// 	//'volumeSize': data_option.volumeSize
+					// });
 
-					volume_type = (data_option && data_option.snapshotId) ? 'snapshot_item' : 'volume_item';
+					volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
 
-					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
-
-					// if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
-					// {
-					// 	target_volume_data.push('#' + volume_id);
-					// }
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_item.id +'" data-instance="' + target_id + '" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
 
 					$('#instance_volume_number').text(
 						$canvas( target_id ).volume().length
 					);
-
-					//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-
-					//document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
-
-					//MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
-
-					//MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+					
+					$canvas( volume_item.id ).select();
 				}
 
 				if (volume_id === null)

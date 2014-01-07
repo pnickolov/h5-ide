@@ -943,7 +943,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">
 		{{#each this}}<li>
-			<a href="#" id="{{id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
+			<a href="#" id="{{id}}" data-instance="{{instance_id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
 				<span class="volume_name">{{name}}</span>
 				<span class="volume_size">{{size}}GB</span>
 			</a>

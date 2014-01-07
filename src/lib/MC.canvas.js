@@ -2500,6 +2500,36 @@ MC.canvas.volume = {
 
 				console.info(volume_id);
 
+				if (volume_id)
+				{
+					data_json = JSON.stringify({
+						'instance_id': target_id,
+						'id': volume_id,
+						'name': data_option.name,
+						'snapshotId': data_option.snapshotId,
+						'volumeSize': data_option.volumeSize
+					});
+
+					volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
+
+					$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
+
+					// if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
+					// {
+					// 	target_volume_data.push('#' + volume_id);
+					// }
+
+					$('#instance_volume_number').text(target_volume_data.length);
+
+					MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+
+					document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+
+					//MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
+
+					//MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+				}
+
 				if (volume_id === null)
 				{
 					event.data.action = 'cancel';
@@ -2576,35 +2606,6 @@ MC.canvas.volume = {
 						}
 					}
 				}
-			}
-			else if (!event.data.action)
-			{
-				data_json = JSON.stringify({
-					'instance_id': target_id,
-					'id': volume_id,
-					'name': data_option.name,
-					'snapshotId': data_option.snapshotId,
-					'volumeSize': data_option.volumeSize
-				});
-
-				volume_type = data_option.snapshotId ? 'snapshot_item' : 'volume_item';
-
-				$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '" data-json=\'' + data_json + '\'><span class="volume_name">' + data_option.name + '</span><span class="volume_size">' + data_option.volumeSize + 'GB</span></a></li>');
-
-				if ( MC.canvas.data.get('component.' + target_id).type === 'AWS.EC2.Instance')
-				{
-					target_volume_data.push('#' + volume_id);
-				}
-
-				$('#instance_volume_number').text(target_volume_data.length);
-
-				MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-
-				document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
-
-				MC.canvas.data.set('component.' + target_id + '.resource.BlockDeviceMapping', target_volume_data);
-
-				MC.canvas.volume.select.call( document.getElementById( volume_id ) );
 			}
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));

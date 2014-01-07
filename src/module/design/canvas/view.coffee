@@ -41,9 +41,6 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
                 .on( 'CANVAS_ASG_VOLUME_SELECTED',  '#svg_canvas', this.showASGVolumeProperty )
                 .on( 'CANVAS_INSTANCE_SELECTED',    '#svg_canvas', this.showInstanceProperty )
                 .on( 'CANVAS_ENI_SELECTED',         '#svg_canvas', this.showEniProperty )
-                .on( 'CANVAS_LINE_SELECTED',        '#svg_canvas', this.lineSelected )
-                .on( 'CANVAS_SAVE',                 '#svg_canvas', this, this.save )
-                .on( 'SHOW_PROPERTY_PANEL',         '#svg_canvas', this, @showPropertyPanel )
                 .on( 'CANVAS_NODE_CHANGE_PARENT CANVAS_GROUP_CHANGE_PARENT  CANVAS_LINE_CREATE CANVAS_COMPONENT_CREATE CANVAS_EIP_STATE_CHANGE CANVAS_BEFORE_DROP CANVAS_PLACE_NOT_MATCH CANVAS_PLACE_OVERLAP CANVAS_ASG_SELECTED CANVAS_ZOOMED_DROP_ERROR CANVAS_BEFORE_ASG_EXPAND CHECK_CONNECTABLE_EVENT ',   '#svg_canvas', _.bind( this.route, this ) )
 
         render : () ->
@@ -101,31 +98,9 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
             console.log 'showProperty, uid = ' + uid
             ide_event.trigger ide_event.OPEN_PROPERTY, 'component_asg_volume', uid
 
-        lineSelected : ( event, line_id ) ->
-            ide_event.trigger ide_event.OPEN_PROPERTY, 'component', line_id
-
         route : ( event, option ) ->
             # Dispatch the event to model
             this.trigger event.type, event, option
-
-        save : () ->
-            #save by ctrl+s
-            ide_event.trigger ide_event.CANVAS_SAVE
-
-        showPropertyPanel : ->
-            console.log 'showPropertyPanel'
-            ide_event.trigger ide_event.SHOW_PROPERTY_PANEL
-            null
-
-        deleteObject : ( event, option ) ->
-
-            # In AppEdit mode, we use a different method collection to deal with deleting object.
-            # See if we need to hackjack the deleteResMap / beforeDeleteResMap here
-            hijack = MC.canvas.getState() is "appedit"
-
-            resource = Design.instance().component( option.id )
-            if not resource then return
-            resource.remove()
     }
 
     return CanvasView

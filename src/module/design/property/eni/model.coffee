@@ -66,7 +66,7 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 
 			group          = []
 			myEniComponent = MC.canvas_data.component[ eni_uid ]
-			appData        = MC.data.resource_list[ MC.canvas_data.region ]
+			appData        = MC.data.resource_list[ Design.instance().region() ]
 
 			for uid, component of MC.canvas_data.component
 				if component.serverGroupUid is myEniComponent.serverGroupUid

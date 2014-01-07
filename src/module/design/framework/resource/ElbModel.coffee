@@ -314,9 +314,10 @@ define [ "CanvasManager",
       for sg in data.resource.SecurityGroups || []
         new SgAsso( elb, resolve( MC.extractID(sg) ) )
 
-      # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
-      for sb in data.resource.Subnets || []
-        new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
+      if Design.instance().typeIsVpc()
+        # Elb <=> Subnet ( ElbSubnetAsso must created before ElbAmiAsso )
+        for sb in data.resource.Subnets || []
+          new ElbSubnetAsso( elb, resolve( MC.extractID(sb)  ) )
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []

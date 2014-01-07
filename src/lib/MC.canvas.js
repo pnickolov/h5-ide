@@ -2519,7 +2519,7 @@ MC.canvas.volume = {
 					// 	target_volume_data.push('#' + volume_id);
 					// }
 
-					$('#instance_volume_number').text(target_volume_data.length);
+					//$('#instance_volume_number').text(target_volume_data.length);
 
 					//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
 

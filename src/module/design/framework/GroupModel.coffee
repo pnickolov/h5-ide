@@ -9,7 +9,11 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
     remove : ()->
       # Remove children
       if @attributes.__children
-        for child in @attributes.__children
+        # Need to copy the __children first.
+        # Because when we removes a child, the child might just remove another child
+        # Since the remove() will do nothing if the child is removed, so we can
+        # remove() a child multiple times.
+        for child in @attributes.__children.splice(0)
           child.off "destroy", @removeChild, @
           child.remove()
       null

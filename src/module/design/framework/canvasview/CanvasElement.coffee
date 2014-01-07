@@ -290,6 +290,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         name       : v.get("name")
         snapshotId : v.get("snapshotId")
         size       : v.get("volumeSize")
+        id         : v.id
       }
 
     vl

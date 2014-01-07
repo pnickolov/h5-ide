@@ -6,9 +6,6 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     defaults :
       #ownerType  : '' #'instance'|'lc'
       owner      : null #instance model | lc model
-      #servergroup
-      serverGroupUid  : ''
-      serverGroupName : ''
       #common
       deviceName : ''
       volumeSize : 1
@@ -68,11 +65,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       attr =
         id         : data.uid
         name       : data.name
-        #ownerType  : 'instance'
         owner      : instance
-        #servergroup
-        serverGroupUid  : data.serverGroupUid
-        serverGroupName : data.serverGroupName
         #resource property
         deviceName : attachment.Device
         volumeSize : data.resource.Size

@@ -2580,8 +2580,8 @@ MC.canvas.volume = {
 							$canvas(target_id).moveVolume(volume_id, original_node_id)
 						)
 						{
-							MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
-							document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
+							//MC.canvas.update(target_id, 'text', 'volume_number', target_volume_data.length);
+							//document.getElementById(target_id + '_volume_number').setAttribute('value', target_volume_data.length);
 
 							// target_az = MC.canvas.data.get('component.' + target_id + '.resource.Placement.AvailabilityZone');
 
@@ -2591,7 +2591,9 @@ MC.canvas.volume = {
 							// MC.canvas.data.set('component.' + volume_id + '.resource.AvailabilityZone', target_az);
 							// MC.canvas.data.set('component.' + volume_id + '.resource.AttachmentSet.InstanceId', '@' + target_id + '.resource.InstanceId');
 
-							MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+							//MC.canvas.volume.select.call( document.getElementById( volume_id ) );
+							$canvas(volume_id).select();
+
 
 							// Update original data
 							// original_node_id = data_option.instance_id;
@@ -2603,9 +2605,9 @@ MC.canvas.volume = {
 
 							// MC.canvas.data.set('component.' + original_node_id + '.resource.BlockDeviceMapping', original_node_volume_data);
 
-							MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
+							//MC.canvas.update(original_node_id, 'text', 'volume_number', original_node_volume_data.length);
 
-							document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length);
+							//document.getElementById(original_node_id + '_volume_number').setAttribute('value', target_volume_data.length);
 						}
 					}
 				}

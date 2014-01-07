@@ -555,8 +555,15 @@ define [ 'MC', 'event',
             else
                 target = $( '#main-toolbar' )
                 $('#btn-confirm').on 'click', { target : this }, (event) ->
-                    #me.trigger 'TOOLBAR_START_CLICK', MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
-                    ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # old design flow
+                    #ide_event.trigger ide_event.START_APP, MC.canvas_data.region, MC.canvas_data.id, MC.canvas_data.name
+
+                    # new design flow
+                    region  = MC.forge.other.canvasData.get 'region'
+                    id      = MC.forge.other.canvasData.get 'id'
+                    name    = MC.forge.other.canvasData.get 'name'
+                    ide_event.trigger ide_event.START_APP, region, id, name
                     modal.close()
 
         clickTerminateApp : (event) ->

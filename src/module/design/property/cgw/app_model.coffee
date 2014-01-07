@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
     CGWAppModel = PropertyModel.extend {
 

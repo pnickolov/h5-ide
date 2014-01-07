@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
     EniAppModel = PropertyModel.extend {
 

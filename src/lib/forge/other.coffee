@@ -45,7 +45,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			MC.canvas_data[ key ]
 
 		isModified : ->
-			console.log 'canvasData:isModified', key
+			console.log 'canvasData:isModified'
 			Design.instance().isModified()
 
 		origin : ( origin_data ) ->

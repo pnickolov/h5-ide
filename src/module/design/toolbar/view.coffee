@@ -646,7 +646,7 @@ define [ 'MC', 'event',
             #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
             # new design flow
-            MC.forge.other.canvasData.origin MC.canvas_data
+            MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
             null
 
@@ -663,20 +663,36 @@ define [ 'MC', 'event',
 
             else
                 # check changes
-                diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
 
-                if diff_data.isChanged
+                # old design flow
+                #diff_data = MC.aws.aws.getChanges(MC.canvas_data, MC.data.origin_canvas_data)
+                #if diff_data.isChanged
+
+                # new design flow
+                diff_data = MC.aws.aws.getChanges MC.forge.other.canvasData.data(), MC.forge.other.canvasData.origin()
+
+                if MC.forge.other.canvasData.isModified()
 
                     state    = null
                     platform = 'vpc'
                     info     = lang.ide.TOOL_POP_BODY_APP_UPDATE_VPC
 
                     # set state
-                    if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+
+                    # old design flow
+                    #if MC.canvas_data.state is constant.APP_STATE.APP_STATE_RUNNING
+
+                    # new design flow
+                    if MC.forge.other.canvasData.get( 'state' ) is constant.APP_STATE.APP_STATE_RUNNING
                         state = constant.APP_STATE.APP_STATE_RUNNING
 
                     # set platform and info
-                    if MC.canvas_data.platform is "ec2-classic"
+
+                    # old design flow
+                    #if MC.canvas_data.platform is "ec2-classic"
+
+                    # new design flow
+                    if MC.forge.other.canvasData.get( 'platform' ) is "ec2-classic"
                         platform = 'ec2'
                         info = lang.ide.TOOL_POP_BODY_APP_UPDATE_EC2
 
@@ -699,10 +715,15 @@ define [ 'MC', 'event',
         clickCancelEditApp : ->
             console.log 'clickCancelEditApp'
 
-            data        = $.extend true, {}, MC.canvas_data
-            origin_data = $.extend true, {}, MC.data.origin_canvas_data
+            # old design flow +++++++++++++++++++++++++++
+            #data        = $.extend true, {}, MC.canvas_data
+            #origin_data = $.extend true, {}, MC.data.origin_canvas_data
 
-            if _.isEqual( data, origin_data )
+            #if _.isEqual( data, origin_data )
+            # old design flow +++++++++++++++++++++++++++
+
+            # new design flow
+            if not MC.forge.other.canvasData.isModified()
                 @appedit2App()
             else
                 modal MC.template.cancelAppEdit2App(), true
@@ -759,7 +780,12 @@ define [ 'MC', 'event',
             console.log 'appUpdating'
 
             # 1. event.data.trigger 'xxxxx'
-            event.data.trigger 'APP_UPDATING', MC.canvas_data
+
+            # old design flow
+            #event.data.trigger 'APP_UPDATING', MC.canvas_data
+
+            # new design flow
+            event.data.trigger 'APP_UPDATING', MC.forge.other.canvasData.data()
 
             # 2. close modal
             modal.close()

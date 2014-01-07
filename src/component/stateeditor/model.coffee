@@ -22,6 +22,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 			osPlatform = platformInfo.osPlatform
 			osPlatformDistro = platformInfo.osPlatformDistro
 
+			if osPlatformDistro
+				that.set('supportedPlatform', true)
+			else
+				that.set('supportedPlatform', false)
+
 			moduleData = {}
 
 			if osPlatform is 'linux'

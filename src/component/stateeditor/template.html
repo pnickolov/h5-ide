@@ -173,6 +173,7 @@
 
 	<div id="state-editor-body" class="scroll-content">
 		<div id="state-editor" spellcheck="false">
+			{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
 			<div class="state-list"></div>
 		</div>
 		<div id="state-description" data-command=""></div>

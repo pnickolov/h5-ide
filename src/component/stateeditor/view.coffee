@@ -45,7 +45,8 @@ define [ 'event',
 
             # show modal
             modal that.editorModalTpl({
-                res_name: that.resName
+                res_name: that.resName,
+                supported_platform: that.supportedPlatform
             }), false
 
             setTimeout(() ->
@@ -80,6 +81,7 @@ define [ 'event',
             that.resStateDataAry = that.model.get('resStateDataAry')
 
             that.resName = that.model.getResName()
+            that.supportedPlatform = that.model.get('supportedPlatform')
 
         compileTpl: () ->
 

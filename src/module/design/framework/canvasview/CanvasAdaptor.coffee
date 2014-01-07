@@ -56,9 +56,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     _.map Design.__instance.__canvasGroups, ( comp )->
       new CanvasElement( comp )
 
-  $canvas.clearSelect = ()->
+  $canvas.clearSelected = ()->
     MC.canvas.event.clearSelected()
-    ide_event.trigger OPEN_PROPERTY
+    ide_event.trigger ide_event.OPEN_PROPERTY
     null
 
   $canvas.trigger = ( event )->

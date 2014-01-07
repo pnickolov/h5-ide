@@ -185,15 +185,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       instance_type_list = MC.aws.ami.getInstanceType( @getAmi() )
 
       if not instance_type_list
-        return [{
-          main     : ''
-          ecu      : ''
-          core     : ''
-          mem      : ''
-          name     : ''
-          selected : false
-          hide     : true
-        }]
+        return []
 
       tenancy      = @isDefaultTenancy()
       instanceType = @get("instanceType")

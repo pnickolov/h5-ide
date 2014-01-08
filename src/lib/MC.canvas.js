@@ -3549,12 +3549,6 @@ MC.canvas.event.dragable = {
 			scale_ratio = $canvas.scale(),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top);
 
-		// MC.canvas.position(target[0], layout_node_data[ target_id ].coordinate[0], coordinate.y);
-
-		// MC.canvas.reConnect(target_id);
-
-		// MC.canvas.select(target_id);
-
 		target_item.position(undefined, coordinate.y);
 
 		target_item.reConnect();
@@ -3628,18 +3622,6 @@ MC.canvas.event.dragable = {
 			asg_item.asgExpand(match_place.target, coordinate.x, coordinate.y);
 
 			asg_item.select();
-			// var new_node = $canvas.add(target_type, {
-			// 	'name': MC.canvas.data.get('component')[target_id].name,
-			// 	'groupUId': match_place.target,
-			// 	'originalId': target_id
-			// }, coordinate);
-
-			// if (new_node)
-			// {
-			// 	//MC.canvas.select(new_node.id);
-
-			// 	$canvas(new_node.id).select();
-			// }
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');
@@ -3756,113 +3738,6 @@ MC.canvas.event.drawConnection = {
 					{
 						$('.' + type.replace(/\./ig, '-') + ':not(#' + node_id + ')').each(function (index, item)
 						{
-							// if (value.relation === 'unique')
-							// {
-							// 	is_connected = false;
-
-							// 	target_item = $canvas( item.id );
-							// 	//target_data = layout_node_data[ item.id ];
-
-							// 	target_connection_option = MC.canvas.CONNECTION_OPTION[ target_item.type ][ parent_type ];
-
-							// 	if ($.type(target_connection_option) !== 'array')
-							// 	{
-							// 		target_connection_option = [target_connection_option];
-							// 	}
-
-							// 	$.each(target_connection_option, function (index, option)
-							// 	{
-							// 		if (option.from === value.to)
-							// 		{
-							// 			$.each(target_item.connection(), function (index, data)
-							// 			{
-							// 				if (option.relation === 'unique')
-							// 				{
-							// 					if (data.port === option.from)
-							// 					{
-							// 						is_connected = true;
-							// 					}
-							// 				}
-							// 				else
-							// 				{
-							// 					if (data.port === value.to && data.target === node_id)
-							// 					{
-							// 						is_connected = true;
-							// 					}
-							// 				}
-							// 			});
-							// 		}
-							// 	});
-
-							// 	$.each(node_connection, function (index, data)
-							// 	{
-							// 		if (data.port === value.from)
-							// 		{
-							// 			is_connected = true;
-							// 		}
-							// 	});
-
-							// 	if (is_connected)
-							// 	{
-							// 		return;
-							// 	}
-							// }
-							// if (value.relation === 'multiple')
-							// {
-							// 	is_connected = false;
-
-							// 	target_item = $canvas( item.id );
-							// 	//target_data = layout_component_data[ item.getAttribute('data-type') ][ item.id ];
-							// 	//console.info(target_connection_option, target_item.type, parent_type);
-							// 	target_connection_option = MC.canvas.CONNECTION_OPTION[ target_item.type ][ parent_type ];
-
-							// 	if ($.type(target_connection_option) !== 'array')
-							// 	{
-							// 		target_connection_option = [target_connection_option];
-							// 	}
-
-							// 	$.each(target_connection_option, function (index, option)
-							// 	{
-							// 		if (option.from === value.to)
-							// 		{
-							// 			$.each(target_item.connection(), function (index, data)
-							// 			{
-							// 				if (option.relation === 'unique')
-							// 				{
-							// 					if (data.port === option.from)
-							// 					{
-							// 						is_connected = true;
-							// 					}
-							// 				}
-							// 				else
-							// 				{
-							// 					//$canvas.connection()
-							// 					line_data = $canvas.connection( data.line );
-
-							// 					if (line_data.target[node_id] === value.from && data.target === node_id)
-							// 					//if (data.port === value.to && data.target === node_id)
-							// 					{
-							// 						is_connected = true;
-							// 					}
-							// 				}
-							// 			});
-							// 		}
-							// 	});
-
-							// 	// if (is_connected)
-							// 	// {
-							// 	// 	return;
-							// 	// }
-							// }
-
-							// $canvas.trigger(CHECK_CONNECTABLE_EVENT, {
-							// 	from: node_id,
-							// 	to: item.id,
-							// 	from_port: value.from,
-							// 	to_port: value.to
-							// });
-
-							//if (!CHECK_CONNECTABLE_EVENT.isDefaultPrevented())
 							if (parent_item.isConnectable(value.from, item.id, value.to))
 							{
 								target_node = this;

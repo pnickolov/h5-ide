@@ -61,6 +61,12 @@ define [ 'event',
             if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 # reset key
                 @trigger 'CANCAL_CREDENTIAL'
+
+                if @state is 'welcome'
+                    $( '#awscredentials-submit' ).text 'Loading...'
+                    $( '#awscredentials-skip' ).hide()
+                    $( '#AWSCredential-welcome-img' ).hide()
+
             else
                 @trigger 'CLOSE_POPUP'
             null
@@ -83,6 +89,11 @@ define [ 'event',
                 if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                     # reset key
                     @trigger 'CANCAL_CREDENTIAL'
+
+                    if @state is 'welcome'
+                        $( '#awscredentials-submit' ).text 'Loading...'
+                        $( '#awscredentials-skip' ).hide()
+                        $( '#AWSCredential-welcome-img' ).hide()
                 else
                     # close modal
                     @onDone()
@@ -434,18 +445,9 @@ define [ 'event',
                     $('#AWSCredential-info-wrap').hide()
                     $('#aws-credential-update-account-id').text me.model.attributes.account_id
                     $('.AWSCredentials-nochange-warn').hide()
-                    # check whether there are stopped/running/processing app
-                    num = 0
-                    for r in constant.REGION_KEYS
-                        num++ for app in MC.data.app_list[r]
-                    if num>0
-                        $('.AWSCredentials-account-update').hide()
-                        $('.AWSCredentials-account-update').attr('disabled', true)
-                        $('.AWSCredentials-nochange-warn').show()
 
-                    else
-                        $('.AWSCredentials-account-update').show()
-                        $('.AWSCredentials-account-update').attr('disabled', false)
+                    $('.AWSCredentials-account-update').show()
+                    $('.AWSCredentials-account-update').attr('disabled', false)
 
                     if @state is 'welcome'
                         $( '#awscredentials-skip' ).hide()
@@ -471,6 +473,21 @@ define [ 'event',
                     #clear key
                     $('#aws-credential-access-key').val(' ')
                     $('#aws-credential-secret-key').val(' ')
+
+                    # check whether there are stopped/running/processing app
+                    num = 0
+                    for r in constant.REGION_KEYS
+                        num++ for app in MC.data.app_list[r]
+                    if num>0
+                        $( '#aws-credential-account-id' ).attr 'disabled', true
+                        $( '#awscredentials-remove' ).hide()
+                    else
+                        $( '#aws-credential-account-id' ).attr 'disabled', false
+                        $( '#awscredentials-remove' ).show()
+
+                    if me.model.attributes.account_id is 'demo_account'
+                        $('#aws-credential-account-id').val ' '
+                        $( '#aws-credential-account-id' ).attr 'disabled', false
 
                 else if flag is 'on_submit'
 

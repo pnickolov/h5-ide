@@ -67,8 +67,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     design.deserialize( json_data, layout_data )
 
-    # TODO : don't pass in parameters
     design.save( json_data, layout_data )
+
     design
 
 
@@ -205,8 +205,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
         ModelClass.postDeserialize( comp, layout_data[uid] )
+    null
 
-
+  DesignImpl.prototype.finishDeserialization = ()->
     ####################
     # Draw after deserialization
     ####################
@@ -224,7 +225,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     for comp in lines
       comp.draw( true )
-
 
     ####################
     # Broadcast event

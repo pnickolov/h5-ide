@@ -11,6 +11,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       new TopicModel({
         id    : data.uid
         appId : data.resource.TopicArn
+        name  : data.resource.DisplayName or data.resource.Name
       })
       null
   }

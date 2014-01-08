@@ -6,17 +6,15 @@ define [ "Design", "./ResourceModel" ], ( Design, ResourceModel )->
 
   Model = ResourceModel.extend {
 
+    serialize : ()->
+      { component : $.extend( true, {}, @get("data") ) }
+
   }, {
 
     handleTypes : ["AWS.EC2.Tag", "AWS.AutoScaling.Tag"]
 
     deserialize : ( data )->
-
-      new Model( {
-        id   : data.id
-        data : data
-      } )
-
+      new Model({ id : data.id, data : data })
       null
   }
 

@@ -45,6 +45,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       # Remove reference in owner
       vl = @attributes.owner.get("volumeList")
       vl.splice( vl.indexOf(this), 1 )
+      @attributes.owner.draw()
       null
 
     getCost : ( priceMap, currency, force )->

@@ -2237,25 +2237,25 @@ MC.canvas.volume = {
 		return false;
 	},
 
-	select: function ()
+	select: function (id)
 	{
 		MC.canvas.event.clearSelected();
 
 		$('#instance_volume_list').find('.selected').removeClass('selected');
 
-		$(this).addClass('selected');
+		$('#' + id).addClass('selected');
 
 		$(document).on('keyup', MC.canvas.volume.remove);
 
 		//dispatch event when select volume node
-		if ($canvas($('#volume-bubble-box').data('target-id')).type === 'AWS.AutoScaling.LaunchConfiguration')
-		{
-			$canvas.trigger("CANVAS_ASG_VOLUME_SELECTED", this.id);
-		}
-		else
-		{
-			$canvas.trigger("CANVAS_NODE_SELECTED", this.id);
-		}
+		// if ($canvas($('#volume-bubble-box').data('target-id')).type === 'AWS.AutoScaling.LaunchConfiguration')
+		// {
+		// 	$canvas.trigger("CANVAS_ASG_VOLUME_SELECTED", this.id);
+		// }
+		// else
+		// {
+		// 	$canvas.trigger("CANVAS_NODE_SELECTED", this.id);
+		// }
 
 		return false;
 	},
@@ -2512,6 +2512,7 @@ MC.canvas.volume = {
 
 				if (volume_item)
 				{
+
 					// data_json = JSON.stringify({
 					// 	'instance_id': target_id,
 					// 	'id': volume_item.id
@@ -2531,7 +2532,7 @@ MC.canvas.volume = {
 					$canvas( volume_item.id ).select();
 				}
 
-				if (volume_id === null)
+				if (volume_item.id === null)
 				{
 					event.data.action = 'cancel';
 				}

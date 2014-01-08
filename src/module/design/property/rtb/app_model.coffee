@@ -2,7 +2,7 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     RTBAppModel = PropertyModel.extend {
 
@@ -24,10 +24,11 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           null
 
         findComonentNameByAWSId: ( awsId, awsIdKey )->
-          for id, component of MC.canvas_data.component
+          Design.instance().eachComponent ( component )->
             for key in awsIdKey
-              if component.resource and component.resource[ key ] is awsId
-                return component.name
+              if component.get key is awsId
+                return component.get 'name'
+          , @
 
 
         init : ( rtb_uid )->
@@ -37,12 +38,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
           if connection
               data = {}
               for uid, value of connection.target
-                  component = MC.canvas_data.component[ uid ]
-                  if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                      data.subnet = component.name
+                  component = Design.instance().component( uid )
+                  if component.get 'type' is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+                      data.subnet = component.get 'name'
                       has_subnet = true
-                  else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                      data.rtb  = component.name
+                  else if component.get 'type' is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+                      data.rtb  = component.get 'name'
                       rtb_uid = uid
 
               if has_subnet
@@ -50,18 +51,16 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                   this.set 'name', 'Subnet-RT Association'
                   return
 
-          components = MC.canvas_data.component
+          myRTBComponent = Design.instance().component( rtb_uid )
 
-          myRTBComponent = components[ rtb_uid ]
-
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
-          rtb     = appData[ myRTBComponent.resource.RouteTableId ]
+          appData = MC.data.resource_list[ Design.instance().region() ]
+          rtb     = appData[ myRTBComponent.get 'RouteTableId' ]
 
           if not rtb
             return false
 
           rtb = $.extend true, {}, rtb
-          rtb.name = myRTBComponent.name
+          rtb.name = myRTBComponent.get 'name'
 
           if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main == "true"
             rtb.main = "Yes"

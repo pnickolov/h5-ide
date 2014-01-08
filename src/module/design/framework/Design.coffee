@@ -49,25 +49,45 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   ###
 
-  Design = ( json_data, layout_data, options )->
+  Design = ( canvas_data, options )->
 
-    design = (new DesignImpl( options )).use()
+    ###########################
+    # Compability code
+    ###########################
+    if arguments.length == 3
+      canvas_data = MC.canvas_data
+      options     = arguments[2]
+
+    json_data   = canvas_data.component
+    layout_data = canvas_data.layout
+
+    # Delete these two attributes before copying canvas_data.
+    delete canvas_data.component
+    delete canvas_data.layout
+
+    design = (new DesignImpl( $.extend( true, {}, canvas_data ), options )).use()
     design.canvas = new CanvasAdaptor( layout_data.size )
 
-    json_data   = $.extend true, {}, json_data
+    canvas_data.component = json_data
+    canvas_data.layout    = layout_data
+
     if layout_data.component
-      layout_data = $.extend true, {}, layout_data.component.node, layout_data.component.group
-    else
-      layout_data = {}
+      layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
+
 
     ###########################
     # Quick fix Boolean value in JSON, might removed latter
     ###########################
     Design.fixJson( json_data, layout_data )
 
+
+    ###########################
+    # Deserialize
+    ###########################
     design.deserialize( json_data, layout_data )
 
-    design.save( json_data, layout_data )
+    if options.autoFinish isnt false
+      design.finishDeserialization()
 
     design
 
@@ -78,10 +98,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   Design.__instance        = null
 
 
-  noop = ()->
-
-
-  DesignImpl = ( options )->
+  DesignImpl = ( canvas_data, options )->
     @__componentMap = {}
     @__canvasNodes  = {}
     @__canvasLines  = {}
@@ -92,13 +109,14 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__mode = options.mode
 
     # Merge MC.canvas_data
-    @attributes = $.extend {}, MC.canvas_data
-    delete @attributes.component
-    delete @attributes.layout
+    @attributes = canvas_data
 
     # Disable drawing for deserializing, delay it until everything is deserialized
     @__shoulddraw   = false
     null
+
+
+  noop = ()->
 
 
   Design.TYPE = {
@@ -232,6 +250,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # Restore Design.trigger
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
+
+    @save()
     null
 
   ### Private Interface ###

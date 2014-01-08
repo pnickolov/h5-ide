@@ -95,7 +95,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     # new design flow +++++++++++++++++++++++++++
                     options =
                         type   : current_platform
-                        mode   : Tabbar.current
+                        mode   : if Tabbar.current is 'new' then Design.MODE.Stack else Tabbar.current
                         region : region_name
 
                     if type is 'NEW_STACK'

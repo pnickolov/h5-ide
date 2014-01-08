@@ -302,6 +302,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     v = new VolumeModel( attribute )
     if v.id
       return {
+        id         : v.id
         deleted    : not v.hasAppResource()
         name       : v.get("name")
         snapshotId : v.get("snapshotId")

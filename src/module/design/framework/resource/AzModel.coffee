@@ -37,6 +37,19 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
       else
         CanvasManager.update( $( document.getElementById( @id ) ).children("text"), @get("name") )
 
+    serialize : ()->
+      layout =
+        size       : [ @width(), @height() ]
+        coordinate : [ @x(), @y() ]
+        type       : @type
+        name       : @get("name")
+        uid        : @id
+
+      if @parent()
+        layout.groupUId = @parent().id
+
+      { layout : layout }
+
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
 

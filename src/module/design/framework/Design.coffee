@@ -515,9 +515,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
         json = mockArray
 
       for j in json
-        console.assert( j.component and j.component.uid, "Serialized JSON data has no uid." )
-        console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
-        component_data[ j.component.uid ] = j.component
+        if j.component
+          console.assert( j.component.uid, "Serialized JSON data has no uid." )
+          console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
+          component_data[ j.component.uid ] = j.component
 
         if j.layout
           layout_data[ j.layout.uid ] = j.layout

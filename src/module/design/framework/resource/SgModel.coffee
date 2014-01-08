@@ -38,7 +38,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     isDefault : ()-> @attributes.name is "DefaultSG"
 
     createIpTarget : ( ipAddress )->
-      ipTarget = new SgIpTarget( ipAddress )
+      ipTarget = new SgTargetModel( ipAddress )
       ipTarget
 
 

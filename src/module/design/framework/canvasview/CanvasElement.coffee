@@ -332,8 +332,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     design = Design.instance()
     volume = design.component( volumeId )
     result = volume.attachTo( design.component( @id ) )
-    if result
-      return true
+    if !result
+      return false
     else
       return $canvas( @id, true ).volume( volumeId )
     null

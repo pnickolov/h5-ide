@@ -61,6 +61,12 @@ define [ 'event',
             if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                 # reset key
                 @trigger 'CANCAL_CREDENTIAL'
+
+                if @state is 'welcome'
+                    $( '#awscredentials-submit' ).text 'Loading...'
+                    $( '#awscredentials-skip' ).hide()
+                    $( '#AWSCredential-welcome-img' ).hide()
+
             else
                 @trigger 'CLOSE_POPUP'
             null
@@ -83,6 +89,11 @@ define [ 'event',
                 if MC.forge.cookie.getCookieByName('has_cred') isnt 'true'
                     # reset key
                     @trigger 'CANCAL_CREDENTIAL'
+
+                    if @state is 'welcome'
+                        $( '#awscredentials-submit' ).text 'Loading...'
+                        $( '#awscredentials-skip' ).hide()
+                        $( '#AWSCredential-welcome-img' ).hide()
                 else
                     # close modal
                     @onDone()

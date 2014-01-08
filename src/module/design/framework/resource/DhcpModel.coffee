@@ -1,5 +1,5 @@
 
-define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
+define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel, Design )->
 
   configNameMap = {
     "domain-name"          : "domainName"
@@ -8,6 +8,13 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
     "netbios-name-servers" : "netbiosServers"
     "netbios-node-type"    : "netbiosType"
   }
+
+  revertArray = ( array )->
+    newArray = []
+    for i in array
+      newArray.push({ Value : i })
+
+    newArray
 
   formatConfigSet = ( configSet )->
     config = {
@@ -56,6 +63,51 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
     setDefault : ()-> @set "dhcpType", "default"
     setCustom  : ()-> @set "dhcpType", ""
 
+    serialize : ()->
+
+      attr = @attributes
+
+      if attr.dhcpType isnt "" then return
+
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
+      configs = []
+
+      component =
+        name : attr.name
+        type : @type
+        uid  : @id
+        resource :
+          DhcpOptionsId        : attr.appId
+          VpcId                : "@#{vpc.id}.resource.VpcId"
+          DhcpConfigurationSet : configs
+
+
+      if attr.domainName
+        configs.push({ Key : "domain-name", ValueSet :[{ Value : attr.domainName }] })
+
+      if attr.ntpServers.length
+        configs.push({
+          Key : "ntp-servers"
+          ValueSet : revertArray( attr.ntpServers )
+        })
+
+      if attr.netbiosServers.length
+        configs.push({
+          Key : "netbios-name-servers"
+          ValueSet : revertArray( attr.netbiosServers )
+        })
+
+      if attr.domainServers.length or attr.amazonDNS
+        values = revertArray( attr.domainServers )
+        if attr.amazonDNS then values.splice( 0, 0, {Value:"AmazonProvidedDNS"} )
+        configs.push({ Key : "domain-name-servers", ValueSet : values })
+
+      if attr.netbiosType
+        configs.push({ Key : "netbios-node-type", ValueSet:[{ Value : attr.netbiosType }] })
+
+      { component : component }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_DhcpOptions
@@ -64,7 +116,8 @@ define [ "constant", "../ResourceModel"  ], ( constant, ResourceModel )->
 
       attr = if data.resource.DhcpConfigurationSet then formatConfigSet( data.resource.DhcpConfigurationSet ) else {}
 
-      attr.id = data.uid
+      attr.id    = data.uid
+      attr.appId = data.resource.DhcpOptionsId
 
       new Model( attr )
       null

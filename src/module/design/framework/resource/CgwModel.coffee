@@ -55,6 +55,25 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         # Update label
         CanvasManager.update node.children(".node-label"), @get("name")
 
+    serialize : ()->
+      layout =
+        uid        : @id
+        groupUId   : @parent().id
+        coordinate : [ @x(), @y() ]
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          CustomerGatewayId : @get("appId")
+          BgpAsn            : @get("bgpAsn")
+          State             : "available"
+          Type              : "ipsec.1"
+          IpAddress         : @get("ip")
+
+      { component : component, layout : layout }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway

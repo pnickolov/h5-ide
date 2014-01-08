@@ -182,7 +182,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   CanvasElement.prototype.select = ()->
     ide_event.trigger ide_event.OPEN_PROPERTY, this.type, this.id
-    MC.canvas.select( this.id )
+    if this.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+      MC.canvas.volume.select( this.id )
+    else
+      MC.canvas.select( this.id )
     true
 
   CanvasElement.prototype.show = ()->

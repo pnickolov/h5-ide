@@ -190,11 +190,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         x    : layout_data.coordinate[0]
         y    : layout_data.coordinate[1]
 
-        RouteTableId  : data.resource.RouteTableId
-        VpcId         : data.resource.VpcId
-        RouteSet      : data.resource.RouteSet
-        AssociationSet: data.resource.AssociationSet
-
+        appID  : data.resource.RouteTableId
 
       })
 

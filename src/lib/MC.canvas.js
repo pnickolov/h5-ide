@@ -2545,9 +2545,7 @@ MC.canvas.volume = {
 
 				if (event.data.instance_id !== target_id)
 				{
-					volume_item = $canvas(target_id).moveVolume(volume_id, event.data.instance_id);
-
-					console.info( target_id, volume_id, event.data.instance_id, volume_item );
+					volume_item = $canvas(target_id).moveVolume(volume_id);
 
 					if (volume_item)
 					{

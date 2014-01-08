@@ -128,7 +128,12 @@ define [ 'i18n!nls/lang.js',
 
                     # filter nat ami when in classic style
                     quickstart_amis = []
-                    if MC.canvas_data.platform is 'ec2-classic'
+
+                    # old design flow
+                    #if MC.canvas_data.platform is 'ec2-classic'
+
+                    # new design flow
+                    if MC.forge.other.canvasData.get( 'platform' ) is 'ec2-classic'
                         quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                     else
                         quickstart_amis =  ami_list
@@ -385,7 +390,11 @@ define [ 'i18n!nls/lang.js',
 
                     $.each res.item, ( idx, value ) ->
 
-                        $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+                        # old design flow
+                        #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                        # new design flow
+                        $.each MC.forge.other.canvasData.data().layout.component.group, ( i, zone ) ->
 
                             if zone.name == value.zoneName
 
@@ -419,7 +428,12 @@ define [ 'i18n!nls/lang.js',
 
                             $.each res.item, ( idx, value ) ->
 
-                                $.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                                # old design flow
+                                #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
+
+                                # new design flow
+                                $.each MC.forge.other.canvasData.data().layout.component.group, ( i, zone ) ->
 
                                     if zone.name == value.zoneName
 
@@ -478,7 +492,12 @@ define [ 'i18n!nls/lang.js',
 
                 # filter nat ami when in classic style
                 quickstart_amis = []
-                if MC.canvas_data.platform is 'ec2-classic'
+
+                # old design flow
+                #if MC.canvas_data.platform is 'ec2-classic'
+
+                # new design flow
+                if MC.forge.other.canvasData.get( 'platform' ) is 'ec2-classic'
                     quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                 else
                     quickstart_amis =  ami_list
@@ -534,7 +553,11 @@ define [ 'i18n!nls/lang.js',
 
             stack_ami_list = []
 
-            _.map MC.canvas_data.component, (value)->
+            # old design flow
+            #_.map MC.canvas_data.component, (value)->
+
+            # new design flow
+            _.map MC.forge.other.canvasData.get( 'component' ), (value)->
 
                 if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
 
@@ -642,7 +665,11 @@ define [ 'i18n!nls/lang.js',
 
             isUsed = false
 
-            $.each MC.canvas_data.component, ( key, comp ) ->
+            # old design flow
+            #$.each MC.canvas_data.component, ( key, comp ) ->
+
+            # new design flow
+            $.each MC.forge.other.canvasData.get( 'component' ), ( key, comp ) ->
 
                 if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
 
@@ -656,7 +683,11 @@ define [ 'i18n!nls/lang.js',
 
             isUsed = false
 
-            $.each MC.canvas_data.component, ( key, comp ) ->
+            # old design flow
+            #$.each MC.canvas_data.component, ( key, comp ) ->
+
+            # new design flow
+            $.each MC.forge.other.canvasData.get( 'component' ), ( key, comp ) ->
 
                 if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
 

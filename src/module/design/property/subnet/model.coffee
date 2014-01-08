@@ -35,8 +35,8 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
 
         null
 
-      console.assert( defaultACL, "Cannot find DefaultACL" )
-      networkACLs.splice( 0, 0, defaultACL )
+      if defaultACL
+        networkACLs.splice( 0, 0, defaultACL )
 
       @set {
         uid        : uid

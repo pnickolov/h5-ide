@@ -137,30 +137,11 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
         null
 
-      console.assert( defaultACL, "Cannot find DefaultACL" )
-      networkAcls.splice( 0, 0, defaultACL )
+      if defaultACL
+        networkAcls.splice( 0, 0, defaultACL )
 
       @set "networkAcls", networkAcls
       null
-
-    # getCost : ()->
-
-
-    #   me = this
-
-    #   copy_data = $.extend( true, {}, MC.canvas_data )
-    #   if MC.canvas.getState() is 'appview'
-
-    #     result = MC.aws.aws.getCost copy_data
-
-    #   else
-
-    #     result = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
-
-    #   me.set 'cost_list', result.cost_list
-    #   me.set 'total_fee', result.total_fee
-    #   null
-
   }
 
   new StackModel()

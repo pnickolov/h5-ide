@@ -57,6 +57,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       # If the target is an ENI, and it's embeded.
       # We connect to its Instance
       component = Design.instance().component( targetId )
+
+      # component might be null, because the targetId is not UUID
+      # This happens in deserializing `Resource Import` data.
+      if not component then return
+
       if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.embedInstance()
         component = component.embedInstance()
 

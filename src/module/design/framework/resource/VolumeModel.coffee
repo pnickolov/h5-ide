@@ -74,7 +74,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           return {
             resource    : owner.get("name") + " - " + @get("name")
             type        : @get("volumeSize") + "G"
-            fee         : fee * parseInt( @get("volumeSize") )
+            fee         : fee * @get("volumeSize")
             formatedFee : fee + "/GB/mo"
           }
       null

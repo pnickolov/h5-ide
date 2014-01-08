@@ -363,6 +363,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   Design.debug.selectedComp = ()->
     Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
+
+  window.ds = ()->
+    console.log( Design.instance().serialize( false ) )
+    null
   ### env:dev:end ###
 
   ### Private Interface End ###
@@ -508,8 +512,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       newData.component = component_data
       newData.layout    = layout_data
     else
-      newData.component = __backup.component
-      newData.layout    = __backup.layout
+      newData.component = @__backup.component
+      newData.layout    = @__backup.layout
     newData
 
 

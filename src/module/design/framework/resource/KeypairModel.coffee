@@ -37,6 +37,18 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
         if a.name is b.name then return 0
         if a.name < b.name then return -1
 
+
+    serialize : ()->
+      {
+        component :
+          name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            KeyFingerprint : ""
+            KeyName        : @get("name")
+      }
+
   }, {
     getDefaultKP : ()->
       _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
@@ -45,7 +57,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({
         id   : data.uid
-        name : data.name
+        name : data.resource.KeyName or data.name
       })
       null
   }

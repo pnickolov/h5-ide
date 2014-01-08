@@ -214,6 +214,26 @@ define [ "constant",
       else
         CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
 
+    serialize : ()->
+
+      layout =
+        size       : [ @width(), @height() ]
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          VpcId     : @parent().parent().id
+          SubnetId  : @get("appId")
+          CidrBlock : @get("cidr")
+          AvailableIpAddressCount : ""
+
+      { component : component, layout : layout }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet

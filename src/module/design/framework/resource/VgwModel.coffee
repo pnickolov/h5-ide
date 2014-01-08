@@ -64,6 +64,31 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+
+    serialize : ()->
+
+      layout =
+        size       : [ @width(), @height() ]
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          State            : "available"
+          Type             : "ipsec.1"
+          VpnGatewayId     : @get("appId")
+          AvailabilityZone : ""
+          Attachments      : [{
+            State : "attached"
+            VpcId : "@#{@parent().id}.resource.VpcId"
+          }]
+
+      { component : component, layout : layout }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway

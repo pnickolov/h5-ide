@@ -221,6 +221,15 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
   Canvas.setDesign = ( design )->
     Design = design
     CanvasElement.setDesign( design )
+
+    # Wire Design Event here
+
+    Design.on Design.EVENT.RemoveResource, ( resource )->
+      # If removing a selected item, show stack property panel.
+      selected = $canvas.selected_node()[0]
+      if selected and selected.id is resource.id
+        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+        null
     null
 
   Canvas

@@ -191,6 +191,10 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         CanvasManager.remove( document.getElementById( @id ) )
       null
 
+    serialize : ()->
+      # Most of the connection don't have to implement serialize()
+      null
+
   }, {
 
     findExisting : ( p1Comp, p2Comp )->

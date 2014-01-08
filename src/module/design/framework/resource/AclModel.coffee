@@ -1,6 +1,10 @@
 
 define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResModel, ConnectionModel, constant )->
 
+  __emptyIcmp      = { Code : "", Type : "" }
+  __emptyPortRange = { From : "", To : "" }
+
+
   # AclAsso represent a connection between a subnet and a networkacl
   AclAsso = ConnectionModel.extend {
     type : "AclAsso"
@@ -26,10 +30,10 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
         port     : ""
       }
 
-      # For ICMP rule, port will be "IcmpTypeCode.Code/IcmTypeCode.Type"
+      # For ICMP rule, port will be "IcmTypeCode.Type/IcmpTypeCode.Code"
 
       if r.Protocol is "1" and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type
-        rule.port = r.IcmpTypeCode.Code + "/" + r.IcmpTypeCode.Type
+        rule.port = r.IcmpTypeCode.Type + "/" + r.IcmpTypeCode.Code
       else if r.PortRange.From and r.PortRange.To
         if r.PortRange.From is r.PortRange.To
           rule.port = r.PortRange.From
@@ -95,7 +99,51 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     getAssoCount : ()-> @connections().length
 
     serialize : ()->
+      vpcId = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
 
+      assoSet = []
+      ruleSet = []
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          AssociationSet : assoSet
+          Default        : @isDefault()
+          EntrySet       : ruleSet
+          NetworkAclId   : @get("appId")
+          RouteTableId   : ""
+          VpcId          : "@{#vpcId}.resource.VpcId"
+
+      for sb in @connectionTargets( "AclAsso" )
+        assoSet.push {
+          NetworkAclAssociationId : ""
+          NetworkAclId : ""
+          SubnetId: "@#{sb.id}.resource.SubnetId"
+        }
+
+      for rule in @get("rules")
+        r = {
+          Egress       : rule.egress
+          Protocol     : rule.protocol
+          RuleAction   : rule.action
+          RuleNumber   : rule.number
+          CidrBlock    : rule.cidr
+          IcmpTypeCode : __emptyIcmp
+          PortRange    : __emptyPortRange
+        }
+
+        if rule.protocol is "1"
+          port = rule.port.split("/")
+          r.IcmpTypeCode = { Code : port[1], Type : port[0] }
+        else if rule.port
+          port = ( rule.port + "-" + rule.port ).split("-")
+          r.PortRange = { From : port[0], To : port[1] }
+
+        ruleSet.push r
+
+      { component : component }
 
   }, {
 
@@ -109,6 +157,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       new Model({
         id    : data.uid
         name  : data.name
+        appId : data.resource.App
         rules : formatRules( data.resource.EntrySet )
       })
 

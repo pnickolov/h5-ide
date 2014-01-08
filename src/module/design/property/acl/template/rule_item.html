@@ -11,7 +11,7 @@
       <span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}'>{{cidr}}</span>
     </div>
     <div class="rule-list-row">
-      <span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}'>{{protocol}}</span>
+      <div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}'>{{protocol}}</span></div>
       <div class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PORT" }}'>{{port}}</div>
     </div>
     {{#unless readOnly}}<a class="icon-remove rule-remove-icon tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_REMOVE_RULE" }}'></a>{{/unless}}

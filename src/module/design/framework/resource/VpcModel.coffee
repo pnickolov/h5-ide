@@ -84,6 +84,29 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
 
       return subnetCidrAry
 
+    serialize : ()->
+      console.assert( @get("tenancy") is "default" or @get("tenancy") is "dedicated", "Invalid value for Vpc.attributes.tenancy" )
+
+      layout =
+        size       : [ @width(), @height() ]
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          EnableDnsSupport   : @get("dnsSupport")
+          InstanceTenancy    : @get("tenancy")
+          EnableDnsHostnames : @get("dnsHostnames")
+          State              : ""
+          DhcpOptionsId      : "@#{@get('dhcp').id}.resource.DhcpOptionsId"
+          VpcId              : @get("appId")
+          CidrBlock          : @get("cidr")
+          IsDefault          : false
+
+      { component : component, layout : layout }
 
   }, {
 

@@ -77,10 +77,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   Design.__resolveFirstMap = {}
   Design.__instance        = null
 
-  # Inject dependency, so that CanvasManager/CanvasAdaptor won't require Design.js
-  CanvasManager.setDesign( Design )
-  CanvasAdaptor.setDesign( Design )
-
 
   noop = ()->
 
@@ -472,46 +468,49 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-  DesignImpl.prototype.serialize = ()->
+  DesignImpl.prototype.serialize = ( noMock )->
 
-    ######################
-    # Quick Impl
+    component_data = {}
+    layout_data    = {}
+
+    connections = []
+    mockArray   = []
+
+    # ResourceModel can only add json component.
+    for uid, comp of @__componentMap
+      if comp.node_line
+        connections.push comp
+        continue
+
+      json = comp.serialize()
+      if not json then continue
+
+      # Make json to be an array
+      if not _.isArray( json )
+        mockArray[0] = json
+        json = mockArray
+
+      for j in json
+        console.assert( j.component and j.component.uid, "Serialized JSON data has no uid." )
+        console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
+        component_data[ j.component.uid ] = j.component
+
+        if j.layout
+          layout_data[ j.layout.uid ] = j.layout
+
+    # Connection
+    for c in connections
+      c.serialize( component_data, layout_data )
+
     newData = $.extend {}, @attributes
-    newData.component = @__backup.component
-    newData.layout    = @__backup.layout
-    return newData
-    ######################
 
-    # json_data   = {}
-
-    # connections = []
-    # mockArray   = []
-
-    # # ResourceModel can only add json component.
-    # for uid, comp of @__componentMap
-    #   if comp.node_line
-    #     connections.push comp
-    #     continue
-
-    #   json = comp.serialize()
-    #   if not json
-    #     continue
-
-    #   # Make json to be an array
-    #   if not _.isArray( json )
-    #     mockArray[0] = json
-    #     json = mockArray
-
-    #   for j in json
-    #     console.assert( j.uid, "Serialized JSON data has no uid." )
-    #     console.assert( not json_data[ j.uid ], "ResourceModel cannot modify existing JSON data." )
-    #     json_data[ j.uid ] = j
-
-    # # Connection
-    # for c in connections
-    #   c.serialize( json_data )
-
-    # json_data
+    if noMock is false
+      newData.component = component_data
+      newData.layout    = layout_data
+    else
+      newData.component = __backup.component
+      newData.layout    = __backup.layout
+    newData
 
 
   _.extend DesignImpl.prototype, Backbone.Events
@@ -521,5 +520,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       return
 
     Backbone.Events.on.apply( this, arguments )
+
+
+  # Inject dependency, so that CanvasManager/CanvasAdaptor won't require Design.js
+  CanvasManager.setDesign( Design )
+  CanvasAdaptor.setDesign( Design )
+
 
   Design

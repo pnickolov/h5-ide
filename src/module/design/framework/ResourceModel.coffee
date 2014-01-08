@@ -296,7 +296,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
 
     serialize : ()->
-      console.error "Class '#{@type}' doesn't implement serialize"
+      console.warn "Class '#{@type}' doesn't implement serialize"
       null
 
     destroy : ()-> @remove()

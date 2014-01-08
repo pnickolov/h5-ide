@@ -169,7 +169,7 @@ define [ '../base/view',
 
             else if protocol is 'all'
                 protocol = '-1'
-                port     = '0-65535'
+                port     = ''
 
 
             @model.addAclRule {

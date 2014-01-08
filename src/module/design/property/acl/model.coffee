@@ -33,7 +33,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             null
 
         getRules : ()->
-            rules = Design.instance().component( @get("uid") ).get("rules").slice(0)
+            rules = $.extend true, [], Design.instance().component( @get("uid") ).get("rules")
 
             isDefault = @get("isDefault")
 

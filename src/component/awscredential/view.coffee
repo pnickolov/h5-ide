@@ -474,6 +474,10 @@ define [ 'event',
                         $( '#aws-credential-account-id' ).attr 'disabled', false
                         $( '#awscredentials-remove' ).show()
 
+                    if me.model.attributes.account_id is 'demo_account'
+                        $('#aws-credential-account-id').val ' '
+                        $( '#aws-credential-account-id' ).attr 'disabled', false
+
                 else if flag is 'on_submit'
 
                     $('#AWSCredential-form').hide()

@@ -94,6 +94,9 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     getRuleCount : ()-> @get("rules").length
     getAssoCount : ()-> @connections().length
 
+    serialize : ()->
+
+
   }, {
 
     handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl

@@ -37,15 +37,26 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
 
       null
 
-    setCIDR : ( cidr )->
+    setCidr : ( cidr )->
 
-      # TODO : Update all subnet's cidr
-      if not MC.aws.vpc.updateAllSubnetCIDR( cidr, @get("cidr") )
-        return false
+      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+      shouldUpdateSubnetCidr = false
+      subnetCidrAry = _.map subnets, ( sb )->
+        subnetCidr = sb.get("cidr")
+        if not MC.aws.subnet.isInVPCCIDR( cidr, subnetCidr )
+          shouldUpdateSubnetCidr = true
+        subnetCidr
+
+      # Update all subnet's cidr
+      if shouldUpdateSubnetCidr
+        subnetCidrAry = @generateSubnetCidr( cidr, subnetCidrAry )
+        if not subnetCidrAry then return false
+
+        for sb, idx in subnets
+          sb.setCidr( subnetCidrAry[idx] )
 
       @set("cidr", cidr)
       @draw()
-
       true
 
     draw : ( isCreate )->
@@ -61,6 +72,18 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
 
       else
         CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
+
+    generateSubnetCidr : ( newCidr, subnetCidrAry )->
+
+      subnetCidrAry = MC.aws.subnet.autoAssignSimpleCIDR( newCidr, subnetCidrAry, @get("cidr") )
+      if not subnetCidrAry.length
+        subnetCidrAry = MC.aws.subnet.autoAssignAllCIDR( newCidr, subnets.length )
+
+      if subnetCidrAry.length != subnets.length
+        return null
+
+      return subnetCidrAry
+
 
   }, {
 

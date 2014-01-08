@@ -89,8 +89,8 @@ define [ '../base/model', 'constant', "Design" ], ( PropertyModel, constant, Des
       Design.instance().component( acl_uid ).remove()
       null
 
-    setCIDR : ( cidr ) ->
-      Design.instance().component( @get("uid") ).setCIDR( cidr )
+    setCidr : ( cidr ) ->
+      Design.instance().component( @get("uid") ).setCidr( cidr )
 
     setACL : ( acl_uid ) ->
       Design.instance().component( @get("uid") ).setAcl( acl_uid )

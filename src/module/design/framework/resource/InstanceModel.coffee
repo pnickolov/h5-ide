@@ -14,9 +14,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       height : 9
 
       #servergroup
-      serverGroupUid  : ''
-      serverGroupName : ''
-      count           : 1
+      count  : 1
 
       imageId      : ''
       tenancy      : 'default'
@@ -414,13 +412,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       attr =
         id    : data.uid
-        name  : data.name
+        name  : data.serverGroupName or data.name
         appId : data.resource.InstanceId
-
-        #servergroup
-        serverGroupUid  : data.serverGroupUid
-        serverGroupName : data.serverGroupName
-        count           : data.number
+        count : data.number
 
         imageId      : data.resource.ImageId
         tenancy      : data.resource.Placement.Tenancy

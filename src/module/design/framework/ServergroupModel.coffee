@@ -7,8 +7,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
     appIdKey : "InstanceId"
 
     groupMembers : ()->
-      if @__groupMembers then return @__groupMembers
-      @__groupMembers = []
+      if not @__groupMembers then @__groupMembers = []
       return @__groupMembers
 
   }, {

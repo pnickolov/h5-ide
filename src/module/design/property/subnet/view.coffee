@@ -88,7 +88,7 @@ define [ '../base/view',
                     that.disabledAllOperabilityArea(false)
                     modal.close()
             else
-                @model.setCIDR subnetCIDR
+                @model.setCidr subnetCIDR
                 @disabledAllOperabilityArea(false)
 
 

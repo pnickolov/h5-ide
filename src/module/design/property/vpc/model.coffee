@@ -29,8 +29,8 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             @set data
             null
 
-        setCIDR : ( newCIDR ) ->
-            if Design.instance().component( @get("uid") ).setCIDR( newCIDR )
+        setCidr : ( newCIDR ) ->
+            if Design.instance().component( @get("uid") ).setCidr( newCIDR )
                 this.attributes.cidr = newCIDR
                 return true
 

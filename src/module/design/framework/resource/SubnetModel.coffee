@@ -36,15 +36,11 @@ define [ "constant",
       new AclAsso( this, Acl.getDefaultAcl() )
       null
 
-    setCIDR : ( cidr )->
-
-      # TODO : Update all Eni's IP
-      #if not MC.aws.vpc.updateAllSubnetCIDR( cidr, @get("cidr") )
-      #  return false
-
+    setCidr : ( cidr )->
+      # No need to update eni ip, because the ip is autoassign at
+      # the time we serialize()
       @set("cidr", cidr)
       @draw()
-
       null
 
     setAcl : ( uid )->

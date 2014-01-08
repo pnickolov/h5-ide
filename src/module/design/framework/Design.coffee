@@ -12,17 +12,40 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # instance() : Design
         description : returns the currently used Design object.
 
+    # modelClassForType( typeString ) : Class
+        description : returns an Class for the specified typeString.
+
+    # debug() :
+        description : prints all the resource in the console.
+
+    # debug.selectedComp() :
+        description : prints the selected resouorce in console.
+
 
     ++ Object Method ++
 
     # component( uid ) : ResourceModel
         description : returns a resource model of uid
 
+    # eachComponent( iterator ) :
+        description : the iterator will execute with all the components.
+
+    # use() :
+        description : make the design object to be Design.instance()
+
+    # save( component_data, layout_data ) :
+        description : save the data, so that isModified() will use the saved data.
+
+    # isModified() : Boolean
+        description : returns true if the stack is modified since last save.
+
     # serialize() : Object
         description : returns a Plain JS Object that is indentical to JSON data.
 
-    # serializeLayout() : Object
-        description : returns a Plain JS Object that is indentical to Layout data.
+    # getCost() : Array
+        description : return an array of cost object to represent the cost of the stack.
+
+
 
   ###
 

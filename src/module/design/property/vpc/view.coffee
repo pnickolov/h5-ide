@@ -93,8 +93,9 @@ define [ '../base/view',
             cidr = target.val()
 
             if target.parsley 'validate'
-                if not @model.setCIDR cidr
+                if not @model.setCidr cidr
                     target.val( @model.get("cidr") )
+                    notification "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
             null
 
         onChangeTenancy : ( event, newValue ) ->

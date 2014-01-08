@@ -2,6 +2,7 @@
 define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
   __detailExtend = Backbone.Model.extend
+  __emptyObj     = {}
 
   ### env:dev ###
   __checkEventOnUsage = ( protoProps )->
@@ -248,7 +249,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       design.classCacheForCid( this.classId ).push( this )
       design.cacheComponent( attributes.id, this )
 
-      Backbone.Model.call this, attributes, options
+      Backbone.Model.call( this, attributes, options || __emptyObj )
 
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.

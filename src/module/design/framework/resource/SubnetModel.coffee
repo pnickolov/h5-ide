@@ -19,21 +19,22 @@ define [ "constant",
       height : 17
       cidr   : ""
 
-    initialize : ()->
+    initialize : ( attributes, option )->
       if not @attributes.cidr
         @attributes.cidr = @generateCidr()
 
       # Draw the node
       @draw(true)
 
-      # Connect to the MainRT automatically
-      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-      new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
+      if option.createByUser
+        # Connect to the MainRT automatically
+        RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+        new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
-      # Connect to the DefaultACL automatically
-      Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
-      AclAsso = Design.modelClassForType( "AclAsso" )
-      new AclAsso( this, Acl.getDefaultAcl() )
+        # Connect to the DefaultACL automatically
+        Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+        AclAsso = Design.modelClassForType( "AclAsso" )
+        new AclAsso( this, Acl.getDefaultAcl() )
       null
 
     setCidr : ( cidr )->
@@ -242,9 +243,10 @@ define [ "constant",
 
       new Model({
 
-        id   : data.uid
-        name : data.name
-        cidr : data.resource.CidrBlock
+        id    : data.uid
+        name  : data.name
+        appId : data.resource.SubnetId
+        cidr  : data.resource.CidrBlock
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

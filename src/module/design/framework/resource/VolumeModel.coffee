@@ -80,8 +80,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       null
 
     attachTo : ( owner )->
-      if not owner then return
-      if owner is @attributes.owner then return
+      if not owner then return false
+      if owner is @attributes.owner then return false
 
       oldOwner = @attributes.owner
       if oldOwner
@@ -97,9 +97,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         owner.attributes.volumeList = [ this ]
 
       owner.draw()
-
-      null
-
+      true
 
     getDeviceName : (owner)->
 

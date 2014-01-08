@@ -189,6 +189,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         main : !!asso_main
         x    : layout_data.coordinate[0]
         y    : layout_data.coordinate[1]
+
+        RouteTableId  : data.resource.RouteTableId
+        VpcId         : data.resource.VpcId
+        RouteSet      : data.resource.RouteSet
+        AssociationSet: data.resource.AssociationSet
+
+
       })
 
       # When creating a new VPC stack, the data has no id.

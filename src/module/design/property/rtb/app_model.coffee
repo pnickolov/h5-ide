@@ -54,7 +54,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
           myRTBComponent = Design.instance().component( rtb_uid )
 
           appData = MC.data.resource_list[ Design.instance().region() ]
-          rtb     = appData[ myRTBComponent.get 'RouteTableId' ]
+          rtb     = appData[ myRTBComponent.get 'appId' ]
 
           if not rtb
             return false

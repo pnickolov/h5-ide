@@ -58,7 +58,7 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
 
       ResourceModel.call this, attributes, options
 
-      if attributes.__parent
+      if attributes and attributes.__parent
         # Reset __parent here, so that addChild() can succeed
         @attributes.__parent = null
         attributes.__parent.addChild( this )

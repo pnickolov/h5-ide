@@ -328,14 +328,14 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     Design.instance().component( volumeId ).remove()
     null
 
-  CanvasElement.instance.prototype.moveVolume = ( volumeId, targetId )->
+  CanvasElement.instance.prototype.moveVolume = ( volumeId )->
     design = Design.instance()
     volume = design.component( volumeId )
-    result = volume.attachTo( design.component(targetId) )
+    result = volume.attachTo( design.component( @id ) )
     if result
       return true
     else
-      return $canvas( targetId, true ).volume( volumeId )
+      return $canvas( @id, true ).volume( volumeId )
     null
 
   $.extend CanvasElement.instance.prototype, CanvasElement.prototype

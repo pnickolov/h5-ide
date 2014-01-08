@@ -470,7 +470,6 @@ define [ 'event',
 
                 currentStateId = idx + 1
                 $stateItem = $(stateItem)
-                $stateItem.attr('data-id', currentStateId)
                 $stateItem.find('.state-id').text(currentStateId)
 
                 null
@@ -665,13 +664,14 @@ define [ 'event',
             $currentElem = $(event.currentTarget)
             $stateItem = $currentElem.parents('.state-item')
 
-            stateId = Number($stateItem.attr('data-id'))
+            stateIdStr = $stateItem.find('.state-id').text()
+            stateId = Number(stateIdStr)
 
             newStateId = ++stateId
 
             newStateHTML = that.stateListTpl({
                 state_list: [{
-                    state_id: newStateId
+                    state_id_show: newStateId
                 }]
             })
 
@@ -755,12 +755,20 @@ define [ 'event',
 
             stateObjAry = []
 
+            newOldStateIdMap = {}
+
             _.each $stateItemList, (stateItem, idx) ->
 
                 $stateItem = $(stateItem)
 
                 cmdName = $stateItem.attr('data-command')
-                stateId = $stateItem.attr('data-id')
+
+                # stateId = $stateItem.find('data-id')
+                # for state item sort
+                newStateId = $stateItem.find('.state-id').text()
+                oldStateId = $stateItem.attr('data-id')
+                if oldStateId and newStateId isnt oldStateId
+                    newOldStateIdMap[oldStateId] = newStateId
 
                 moduleObj = that.cmdModuleMap[cmdName]
 
@@ -848,6 +856,9 @@ define [ 'event',
                 stateObjAry.push(stateItemObj)
 
                 null
+
+            # update all state id ref
+            that.updateStateIdBySort(newOldStateIdMap)
 
             return stateObjAry
 
@@ -1171,6 +1182,15 @@ define [ 'event',
             $inputElem = $(inputElem)
             editor = $inputElem.data('editor')
             if editor then editor.setValue(content)
+
+        updateStateIdBySort: (newOldStateIdMap) ->
+
+            that = this
+
+            _.each newOldStateIdMap, (newStateId, oldStateId) ->
+                oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
+                newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
+                that.model.updateAllStateRef(oldStateIdRef, newStateIdRef)
 
     }
 

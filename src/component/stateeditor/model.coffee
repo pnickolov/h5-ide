@@ -3,7 +3,8 @@
 #############################
 
 define [ 'backbone', 'jquery', 'underscore', 'MC',
-		 './component/stateeditor/lib/data'
+		 './component/stateeditor/lib/data',
+		 './component/stateeditor/lib/data1'
 ], () ->
 
 	StateEditorModel = Backbone.Model.extend {
@@ -163,6 +164,35 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 				osPlatformDistro: osPlatformDistro
 			}
 
+		updateAllStateRef: (oldRef, newRef) ->
+
+			that = this
+			allCompData = that.get('allCompData')
+			moduleCMDMap = that.get('moduleCMDMap')
+			cmdParaObjMap = that.get('cmdParaObjMap')
+			_.each allCompData, (compObj) ->
+				stateObj = compObj.state
+				if stateObj and stateObj.length > 0
+					_.each stateObj, (stateItemObj) ->
+						paraObj = stateItemObj.parameter
+						moduleName = stateItemObj.module
+						cmdName = moduleCMDMap[moduleName]
+						if not cmdName then return
+						paraModelObj = cmdParaObjMap[cmdName]
+						if not paraModelObj then return
+						_.each paraObj, (paraValue, paraName) ->
+							paraType = paraModelObj[paraName]['type']
+							if paraType is 'state'
+								newParaValue = _.map paraValue, (stateRef) ->
+									if stateRef is oldRef
+										return newRef
+									return stateRef
+								paraObj[paraName] = newParaValue
+							null
+						null
+				null
+			null
+
 		setStateData: (stateData) ->
 
 			that = this
@@ -184,6 +214,54 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 			if compData and compData.name
 				return compData.name
 			return ''
+
+			# compList = _.values(compData)
+			# resAttrDataAry = []
+			# resStateDataAry = []
+
+			# if compList and not _.isEmpty(compList) and _.isArray(compList)
+
+			# 	_.each compList, (compObj) ->
+
+			# 		compName = compObj.name
+					
+			# 		# find all attr
+			# 		keyList = _.keys(compObj.resource)
+			# 		if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
+			# 			_.each keyList, (attrName) ->
+			# 				completeStr = '{' + compName + '.' + attrName + '}'
+			# 				resAttrDataAry.push({
+			# 					name: completeStr,
+			# 					value: completeStr
+			# 				})
+			# 			null
+
+		# genResAttrList: () ->
+
+		# 	that = this
+
+		# 	compAttrModelObj = data1
+		# 	compTypeMap = constant.AWS_RESOURCE_TYPE
+
+		# 	_.each compAttrModelObj, (value, key) ->
+
+		# 		# if key is component type
+		# 		supportType = compTypeMap[key]
+		# 		if supportType
+
+		# 			autoCompStr = ''
+
+		# 			# find all this type's comp
+		# 			_.each allCompData, (compData, uid) ->
+		# 				compName = compData.name
+		# 				compType = compData.type
+		# 				if compType is supportType
+		# 				autoCompStr += (compName + '.') # host1
+		# 				null
+
+		# 			_.each value, (levelComp, levelCompName) ->
+		# 				autoCompStr += levelCompName
+
 	}
 
 	return StateEditorModel

@@ -2134,8 +2134,6 @@ MC.canvas.volume = {
 				item.instance_id = node_uid;
 			});
 
-			console.info(volume_list);
-
 			$('#volume-bubble-content').html(
 				MC.template.instanceVolume( volume_list )
 			);
@@ -2547,15 +2545,15 @@ MC.canvas.volume = {
 
 				if (event.data.instance_id !== target_id)
 				{
-					//new_volume_name = MC.aws.ebs.getDeviceName(target_id, volume_id);
-
 					volume_item = $canvas(target_id).moveVolume(volume_id, event.data.instance_id);
+
+					console.info( target_id, volume_id, event.data.instance_id, volume_item );
 
 					if (volume_item)
 					{
 						volume_type = volume_item.snapshotId ? 'snapshot_item' : 'volume_item';
 
-						$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.volumeSize + 'GB</span></a></li>');
+						$('#instance_volume_list').append('<li><a href="javascript:void(0)" id="' + volume_id +'" class="' + volume_type + '"><span class="volume_name">' + volume_item.name + '</span><span class="volume_size">' + volume_item.size + 'GB</span></a></li>');
 
 						$('#instance_volume_number').text(
 							$canvas( target_id ).volume().length

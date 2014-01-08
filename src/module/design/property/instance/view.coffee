@@ -37,7 +37,9 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
-            @refreshIPList()
+            
+            if Design.instance().typeIsVpc()
+                @refreshIPList()
 
             @model.attributes.name
 

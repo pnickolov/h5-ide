@@ -66,6 +66,26 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
 
+    serialize : ()->
+
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          InternetGatewayId : @get("appId")
+          AttachmentSet     : [{
+            State : "available"
+            VpcId : "@#{@parent().id}.resource.VpcId"
+          }]
+
+      { component : component, layout : layout }
+
   }, {
 
     tryCreateIgw : ()->

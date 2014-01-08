@@ -58,7 +58,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
     serialize : ()->
       layout =
         uid        : @id
-        groupUId   : @parent().id
         coordinate : [ @x(), @y() ]
 
       component =

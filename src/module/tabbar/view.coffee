@@ -148,31 +148,33 @@ define [ 'event',
                 @directCloseTab tab_id
                 return
 
-            # new design flow
-            #is_changed = true
+            # old design flow +++++++++++++++++++++++++++
+            # stack app check _.isEqual
             #if MC.data.current_tab_id is tab_id
-            #    is_changed = MC.forge.other.canvasData.isModified()
+            #    data        = $.extend true, {}, MC.canvas_data
+            #    origin_data = $.extend true, {}, MC.data.origin_canvas_data
             #else
-            #    is_changed  = MC.tab[ tab_id ].design_model.isModified()
+            #    data        = $.extend true, {}, MC.tab[ tab_id ].data
+            #    origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
             #
-            #if is_changed
+            #if _.isEqual( data, origin_data )
             #    @directCloseTab tab_id
             #else
             #    modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+            # old design flow +++++++++++++++++++++++++++
 
-            # old design flow
-            # stack app check _.isEqual
+            # new design flow +++++++++++++++++++++++++++
+            is_changed = true
             if MC.data.current_tab_id is tab_id
-                data        = $.extend true, {}, MC.canvas_data
-                origin_data = $.extend true, {}, MC.data.origin_canvas_data
+                is_changed = MC.forge.other.canvasData.isModified()
             else
-                data        = $.extend true, {}, MC.tab[ tab_id ].data
-                origin_data = $.extend true, {}, MC.tab[ tab_id ].origin_data
+                is_changed  = MC.tab[ tab_id ].design_model.isModified()
 
-            if _.isEqual( data, origin_data )
+            if not is_changed
                 @directCloseTab tab_id
             else
                 modal MC.template.closeTabRestriction { 'tab_name' : tab_name, 'tab_id' : tab_id }, true
+            # new design flow +++++++++++++++++++++++++++
 
             null
 

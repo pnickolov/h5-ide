@@ -47,6 +47,38 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       vl.splice( vl.indexOf(this), 1 )
       null
 
+    getCost : ( priceMap, currency, force )->
+      if not priceMap.ebs then return
+
+      owner = @get("owner")
+      if not owner
+        console.warning( "This volume has not attached to any ami, found when calc-ing cost :", this )
+        return
+
+      if not force and @get("owner").type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        return
+
+      standardType = @get("volumeType") is "standard"
+      for t in priceMap.ebs.types
+        if standardType
+          if t.ebsVols
+            volumePrices = t.ebsVols
+        else if t.ebsPIOPSVols
+          volumePrices = t.ebsPIOPSVols
+
+      if not volumePrices then return
+
+      for p in volumePrices
+        if p.unit is 'perGBmoProvStorage'
+          fee = p[currency]
+          return {
+            resource    : owner.get("name") + " - " + @get("name")
+            type        : @get("volumeSize") + "G"
+            fee         : fee * parseInt( @get("volumeSize") )
+            formatedFee : fee + "/GB/mo"
+          }
+      null
+
     attachTo : ( owner )->
       if not owner then return
       if owner is @attributes.owner then return

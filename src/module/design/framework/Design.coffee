@@ -435,7 +435,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       for uid, comp of @__componentMap
         if comp.getCost
           cost = comp.getCost( priceMap, currency )
-          if cost
+          if not cost then continue
+
+          if cost.length
+            for c in cost
+              totalFee += c.fee
+              costList.push c
+          else
             totalFee += cost.fee
             costList.push cost
 

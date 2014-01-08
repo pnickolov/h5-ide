@@ -239,6 +239,34 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.get("name")
       true
 
+    getCost : ( priceMap, currency )->
+      lc = @get("lc")
+      if not lc then return null
+
+      InstanceModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      lcPrice = InstanceModel.prototype.getCost.call( lc, priceMap, currency )
+      if not lcPrice then return null
+
+      if lcPrice.length then lcPrice = lcPrice[0]
+
+      lcPrice.resource = @get("name")
+      lcFee = lcPrice.fee
+
+      volumeList = lc.get("volumeList")
+      if volumeList and volumeList.length
+        for v in volumeList
+          vp = v.getCost( priceMap, currency, true )
+          if vp then lcFee += vp.fee
+
+      if lcPrice.fee isnt lcFee
+        lcPrice.resource += " (& volumes)"
+        lcPrice.fee = lcFee
+
+      lcPrice.type = @get("minSize")
+      lcPrice.fee *= parseInt( @get("minSize"), 10 )
+      lcPrice.formatedFee = lcPrice.fee + "/mo"
+      return lcPrice
+
     addChild : ( lc )->
       oldLc = @get("lc")
       if oldLc

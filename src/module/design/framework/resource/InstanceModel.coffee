@@ -69,6 +69,48 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
+    getCost : ( priceMap, currency )->
+      if not priceMap.instance then return null
+
+      ami = @getAmi() || @get("cachedAmi")
+      osType   = if ami then ami.osType else "linux-other"
+      osFamily = if ami then ami.osFamily else "linux"
+
+      instanceType = @get("instanceType").split(".")
+      unit = priceMap.instance.unit
+      fee  = priceMap.instance[ instanceType[0] ][ instanceType[1] ]
+      fee  = if fee then fee.onDemand
+      fee  = if fee then fee[ osFamily ]
+      fee  = if fee then fee[ currency ]
+
+      if not fee then return null
+
+      if unit is "perhr"
+        formatedFee = fee + "/hr"
+        fee *= 24 * 30
+      else
+        formatedFee = fee + "/mo"
+
+      priceObj =
+          resource    : @get("name")
+          type        : @get("instanceType")
+          fee         : fee
+          formatedFee : formatedFee
+
+      if @get("monitoring")
+        for t in priceMap.cloudwatch.types
+          if t.ec2Monitoring
+            fee = t.ec2Monitoring[ currency ]
+            cw_fee =
+              resource    : @get("name") + "-monitoring"
+              type        : "CloudWatch"
+              fee         : fee
+              formatedFee : fee + "/mo"
+
+            return [ priceObj, cw_fee ]
+
+      return priceObj
+
     isReparentable : ( newParent )->
       if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         if newParent.parent() isnt @parent().parent()

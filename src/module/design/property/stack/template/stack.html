@@ -70,8 +70,8 @@
 		<table class="table cost-estimation-table">
 			<thead> <tr>
 					<th>{{ i18n "PROP_STACK_COST_COL_RESOURCE" }}</th>
-					<th>{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
-					<th>{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
+          <th style="min-width:70px;">{{ i18n "PROP_STACK_COST_COL_SIZE_TYPE" }}</th>
+          <th style="min-width:60px;">{{ i18n "PROP_STACK_COST_COL_FEE" }}</th>
 			</tr> </thead>
 			<tbody> {{#each costList}}
         <tr> <td>{{resource}}</td> <td>{{type}}</td> <td>{{formatedFee}}</td> </tr>

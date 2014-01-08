@@ -4827,7 +4827,7 @@ a.action-link:hover {
 }
 
 .cost-estimation-table th, .cost-estimation-table td {
-	padding : 5px;
+	padding : 5px !important;
 }
 
 .cost-counter {

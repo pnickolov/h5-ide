@@ -41,7 +41,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       if fee
         asgSize = if Design.instance().modeIsStack() then @__asg.get("minSize") else @__asg.get("capacity")
 
-        fee = Math.round(fee / 7 * 100) / 100
+        fee = Math.round(fee / 7 * 1000) / 1000
 
         return {
           resource    : @get("name") + "-alarm"

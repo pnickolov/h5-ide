@@ -303,7 +303,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           # Eip
           Canvon.image( "", 53, 47, 12, 14).attr({
             'id': @id + "_eip_status"
-            'class':'eip-status'
+            'class':'eip-status tooltip'
           }),
 
           # Child number

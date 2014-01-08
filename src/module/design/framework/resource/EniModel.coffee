@@ -302,7 +302,7 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         node.append(
           Canvon.image( "", 44,37,12,14 ).attr({
             'id': @id + "_eip_status"
-            'class':'eip-status'
+            'class':'eip-status tooltip'
           }),
 
           # Left Port

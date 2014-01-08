@@ -285,7 +285,17 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
   CanvasElement.instance = ( component, quick )->
     CanvasElement.call( this, component, quick )
 
-  CanvasElement.instance.prototype.volume = ()->
+  CanvasElement.instance.prototype.volume = ( volume_id )->
+    if volume_id
+      v = Design.instance().component( volume_id )
+      return {
+        deleted    : not v.hasAppResource()
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+        id         : v.id
+      }
+
     vl = []
     for v in Design.instance().component( @id ).get("volumeList") or vl
       vl.push {

@@ -141,7 +141,7 @@ define [ '../base/model',
             if myInstanceComponent
                 instance_id = myInstanceComponent.resource.InstanceId
 
-            app_data = MC.data.resource_list[ MC.canvas_data.region ]
+            app_data = MC.data.resource_list[ Design.instance().region() ]
 
             if app_data[ instance_id ]
 
@@ -191,7 +191,7 @@ define [ '../base/model',
                     component = value
                     break
 
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
 
             if not appData[id]
                 # Use data inside networkInterfaceSet
@@ -215,7 +215,7 @@ define [ '../base/model',
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
+            keypair_model.download {sender:@}, username, session, Design.instance().region(), keypairname
             null
 
 
@@ -226,7 +226,7 @@ define [ '../base/model',
             session  = $.cookie "session_id"
 
             me = this
-            instance_model.GetPasswordData {sender:me}, username, session, MC.canvas_data.region, instance_id, key_data
+            instance_model.GetPasswordData {sender:me}, username, session, Design.instance().region(), instance_id, key_data
             null
 
 
@@ -267,7 +267,7 @@ define [ '../base/model',
             uid = this.get 'id'
 
             if uid.indexOf('i-') is 0
-                resList = MC.data.resource_list[MC.canvas_data.region]
+                resList = MC.data.resource_list[Design.instance().region()]
                 instanceComp = resList[uid]
                 instanceSGAry = instanceComp.groupSet.item
                 instanceUIDAry = _.map instanceSGAry, (sgObj) ->

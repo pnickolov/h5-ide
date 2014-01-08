@@ -309,7 +309,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     vl
 
   CanvasElement.instance.prototype.addVolume = ( attribute )->
-    attribute = attribute || {}
+    attribute = $.extend {}, attribute
     attribute.owner = Design.instance().component( this.id )
     VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
     v = new VolumeModel( attribute )
@@ -330,7 +330,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   CanvasElement.instance.prototype.moveVolume = ( volumeId, targetId )->
     design = Design.instance()
-    design.component( volumeId ).attachTo( design.component(targetId) )
+    volume = design.component( volumeId )
+    result = volume.attachTo( design.component(targetId) )
+    if result
+      return true
+    else
+      return $canvas( targetId, true ).volume( volumeId )
     null
 
   $.extend CanvasElement.instance.prototype, CanvasElement.prototype

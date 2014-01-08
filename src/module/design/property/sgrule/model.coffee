@@ -37,7 +37,7 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
 
             for k,v of target
 
-                if v is 'launchconfig-sg' and not MC.canvas_data.component[k]
+                if v is 'launchconfig-sg' and not Design.instance().component( k )
 
                     original_group_uid = MC.canvas_data.layout.component.group[k].originalId
 
@@ -135,7 +135,15 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
             # get app sg obj
             rules = []
 
-            permissions = [MC.canvas_data.component[sgUID].resource.IpPermissions, MC.canvas_data.component[sgUID].resource.IpPermissionsEgress]
+            sgModel = Design.instance().component( sgUID )
+
+            permissions = [
+
+                sgModel.get 'IpPermissions'
+                sgModel.get 'IpPermissionsEgress'
+
+            ]
+
 
             $.each permissions, (i, permission)->
 
@@ -183,8 +191,8 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
                     if rule.IpRanges.slice(0,1) is '@' and rule.IpRanges.split('.')[0].slice(1) in ref_sg_ids
 
                         currentSgUID = rule.IpRanges.split('.')[0][1...]
-                        sgColor = MC.aws.sg.getSGColor(currentSgUID)
-                        tmp_rule.connection = MC.canvas_data.component[currentSgUID].name
+                        sgColor = MC.aws.sg.getSGColor currentSgUID
+                        tmp_rule.connection = Design.instance().component( currentSgUID ).get 'name'
                         tmp_rule.ref_sg_color = sgColor
 
                         rules.push tmp_rule
@@ -196,9 +204,9 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
                         rules.push tmp_rule
 
             #get sg name
-            sgColor = MC.aws.sg.getSGColor(sgUID)
+            sgColor = MC.aws.sg.getSGColor sgUID
             sg_app_detail =
-                name : MC.canvas_data.component[sgUID].name
+                name : sgModel.get 'name'
                 rules : rules
                 sgColor : sgColor
 
@@ -223,15 +231,15 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
         _getAppSGInfo : (sgUID) ->
 
             # get app sg obj
-            currentRegion = MC.canvas_data.region
-            currentSGComp = MC.canvas_data.component[sgUID]
-            currentSGID   = currentSGComp.resource.GroupId
-            currentAppSG  = MC.data.resource_list[currentRegion][currentSGID]
+            currentRegion = Design.instance().region()
+            currentSGComp = Design.instance().component( sgUID )
+            currentSGID   = currentSGComp.get 'GroupId'
+            currentAppSG  = MC.data.resource_list[ currentRegion ][ currentSGID ]
 
             #get sg name
-            sgColor = MC.aws.sg.getSGColor(sgUID)
+            sgColor = MC.aws.sg.getSGColor sgUID
             sg_app_detail =
-                groupName : currentSGComp.name
+                groupName : currentSGComp.get 'name'
                 sgColor   : sgColor
                 rules     : MC.aws.sg.getAllRule currentAppSG
 

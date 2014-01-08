@@ -2079,6 +2079,29 @@ MC.canvas.layout = {
 				{
 					MC.canvas_property.default_acl = value.uid;
 				}
+
+				//patch: for assoc exist, but subnet not exist
+				if (value.type === "AWS.VPC.NetworkAcl")
+				{
+					assoc = value.resource.AssociationSet;
+					valid_assoc = [];
+					if (assoc && assoc.length>0)
+					{
+						$.each(assoc, function (idx, item)
+						{
+							subnetId=MC.extractID(item.SubnetId);
+							if (components[subnetId])
+							{
+								valid_assoc.push(item);
+							}
+						});
+						if (value.resource.AssociationSet.length != valid_assoc.length)
+						{
+							value.resource.AssociationSet = valid_assoc;
+							console.log("patch for NetworkAcl");
+						}
+					}
+				}
 			}
 			catch(error)
 			{

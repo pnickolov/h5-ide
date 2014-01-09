@@ -4246,7 +4246,7 @@ MC.canvas.event.groupResize = {
 					'group_min_padding': MC.canvas.GROUP_MIN_PADDING,
 					'parentGroup': MC.canvas.parentGroup(
 						parent.attr('id'),
-						parent_item.type,
+						type,
 						Math.ceil(group_left / grid_width),
 						Math.ceil(group_top / grid_height),
 						Math.ceil((group_offset.left + group_offset.width) / grid_width),
@@ -4266,7 +4266,7 @@ MC.canvas.event.groupResize = {
 		var event_data = event.data,
 			target = event_data.originalTarget,
 			direction = event_data.direction,
-			type = event_data.group_type,
+			//type = event_data.group_type,
 			scale_ratio = event_data.scale_ratio,
 			group_min_padding = event_data.group_min_padding,
 			left = Math.ceil((event.pageX - event_data.originalLeft) / 10) * 10 * scale_ratio,
@@ -4690,7 +4690,6 @@ MC.canvas.event.groupResize = {
 
 			group_node.position(group_coordinate[0], group_coordinate[1]);
 			group_node.size(group_width, group_height);
-			group_node.reConnect();
 
 			//parent.attr('transform', event_data.originalTranslate);
 
@@ -4701,27 +4700,25 @@ MC.canvas.event.groupResize = {
 			// 	'height': event_data.originalHeight * scale_ratio
 			// });
 
-			// group_title.attr({
-			// 	'x': label_coordinate[0],
-			// 	'y': label_coordinate[1]
-			// });
+			//group_node.reConnect();
+
+			MC.canvas.updateResizer(parent, group_width, group_height);
 		}
+
+		parent.find('.group-label, .port').show();
 
 		if (type === 'AWS.VPC.Subnet')
 		{
 			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')');//.show();
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')');
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')');//.show();
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')');
 
-			group_node.reConnect();
+			//group_node.reConnect();
 		}
 
-		// Show label
-		//group_title.show();
-
-		parent.find('.group-label, .port').show();
+		group_node.reConnect();
 
 		$('#overlayer').remove();
 
@@ -6222,6 +6219,7 @@ MC.canvas.analysis = function ( data )
 
 		console.info(node);
 		$canvas( node.id ).position( node.coordinate[0], node.coordinate[1] );
+		console.info(node.coordinate);
 
 		if (node.size !== undefined)
 		{

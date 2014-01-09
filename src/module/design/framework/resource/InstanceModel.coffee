@@ -476,10 +476,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         azName = p.get("name")
 
       component =
-        type  : @type
-        uid   : @id
-        name  : @get("name")
-        index : 0
+        type   : @type
+        uid    : @id
+        name   : @get("name")
+        index  : 0
         number : @get("count")
         serverGroupName : @get("name")
         resource :

@@ -505,6 +505,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         subnets = []
         azs = _.map subnets, (az)-> az.get("name")
 
+      if @get("lc")
+        lcId = "@#{@get('lc').id}.resource.LaunchConfigurationName"
+      else
+        lcId = ""
+
       component =
         uid  : @id
         name : @get("name")
@@ -524,7 +529,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           TerminationPolicies    : @get("terminationPolicies")
           AutoScalingGroupName   : @get("name")
           DesiredCapacity        : @get("capacity")
-          LaunchConfigurationName : "@#{@get('lc').id}.resource.LaunchConfigurationName"
+          LaunchConfigurationName : lcId
           EnabledMetrics                 : [{ Metric : "", Granularity : "" }]
           Instances                      : []
           SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]

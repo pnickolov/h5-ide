@@ -6,19 +6,21 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
     initialize : ()->
       # Ensure there's a SNS_Topic
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
-      if TopicModel.allObjects().length is 0
-        new TopicModel()
+      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+      null
+
+    isUsed : ()->
+      @get("instanceLaunch") or @get("instanceLaunchError") or @get("instanceTerminate") or @get("instanceTerminateError") or @get("test")
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
     typeMap : {
-      "autoscaling:EC2_INSTANCE_LAUNCH" : "instanceLaunch"
-      "autoscaling:EC2_INSTANCE_LAUNCH_ERROR" : "instanceLaunchError"
-      "autoscaling:EC2_INSTANCE_TERMINATE" : "instanceTerminate"
+      "autoscaling:EC2_INSTANCE_LAUNCH"          : "instanceLaunch"
+      "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"    : "instanceLaunchError"
+      "autoscaling:EC2_INSTANCE_TERMINATE"       : "instanceTerminate"
       "autoscaling:EC2_INSTANCE_TERMINATE_ERROR" : "instanceTerminateError"
-      "autoscaling:TEST_NOTIFICATION" : "test"
+      "autoscaling:TEST_NOTIFICATION"            : "test"
     }
 
     deserialize : ( data, layout_data, resolve ) ->

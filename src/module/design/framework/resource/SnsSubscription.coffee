@@ -24,6 +24,12 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+    ensureExistence : ()->
+      if @allObjects().length = 0
+        new TopicModel()
+      null
+
     deserialize : ( data, layout_data, resolve ) ->
       new TopicModel({
         id    : data.uid

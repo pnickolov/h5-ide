@@ -67,7 +67,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
     constructor : ( p1Comp, p2Comp, attr, option ) ->
 
       ### env:dev ###
-      # console.assert( p1Comp and p2Comp and p1Comp.isTypeof( "Framework_R") and p2Comp.isTypeof( "Framework_R" ), "Invalid components when creating an connection : ", [ p1Comp, p2Comp ] )
+      console.assert( p1Comp and p2Comp and p1Comp.isTypeof( "Framework_R") and p2Comp.isTypeof( "Framework_R" ), "Invalid components when creating an connection : ", [ p1Comp, p2Comp ] )
       ### env:dev:end ###
 
       if not p1Comp or not p2Comp
@@ -194,9 +194,6 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
         @__port2Comp.disconnect_base( this, reason )
 
-      @__port1Comp = null
-      @__port2Comp = null
-
       # Remove element in SVG, if the line implements draw
       if @draw
         CanvasManager.remove( document.getElementById( @id ) )
@@ -207,7 +204,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       null
 
     isRemoved : ()->
-      if not @__port1Comp or not @__port2Comp or @__port1Comp.isRemoved() or @__port1Comp.isRemoved()
+      if @__port1Comp.isRemoved() or @__port1Comp.isRemoved()
         console.warn( "One or two targets of the connection has been removed, yet the connection is not removed : ", this )
         return true
 

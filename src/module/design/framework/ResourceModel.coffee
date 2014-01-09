@@ -291,7 +291,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       while c
         if c.type is type
           return true
-        c = c.constructor.__super__
+        c = c.__proto__
 
       return false
 

@@ -37,12 +37,12 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 				MC.canvas.display( eni, 'eni-number-group', false )
 				MC.canvas.display( eni, 'port-eni-rtb', true )
 
-	canSetEbsOptimized = ( instance_attr ) ->
+	canSetEbsOptimized = ( instance ) ->
 
-		if not EbsMap.hasOwnProperty instance_attr.InstanceType
+		if not EbsMap.hasOwnProperty instance.get 'InstanceType'
 			return false
 
-		if instance_attr.rootDeviceType is "instance-store"
+		if instance.get( 'cachedAmi' ).rootDeviceType is "instance-store"
 			return false
 
 		return true

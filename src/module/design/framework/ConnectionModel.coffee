@@ -67,7 +67,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
     constructor : ( p1Comp, p2Comp, attr, option ) ->
 
       ### env:dev ###
-      console.assert( p1Comp and p2Comp and p1Comp.isTypeof( "Framework_R") and p2Comp.isTypeof( "Framework_R" ), "Invalid components when creating an connection : ", [ p1Comp, p2Comp ] )
+      # console.assert( p1Comp and p2Comp and p1Comp.isTypeof( "Framework_R") and p2Comp.isTypeof( "Framework_R" ), "Invalid components when creating an connection : ", [ p1Comp, p2Comp ] )
       ### env:dev:end ###
 
       if not p1Comp or not p2Comp

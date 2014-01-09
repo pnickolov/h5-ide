@@ -92,6 +92,14 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
         coordinate : [ @x(), @y() ]
         uid        : @id
 
+      dhcp = @get("dhcp")
+      if dhcp.isNone()
+        dhcp = "default"
+      else if dhcp.isDefault()
+        dhcp = ""
+      else
+        dhcp = "@#{dhcp.id}.resource.DhcpOptionsId"
+
       component =
         name : @get("name")
         type : @type
@@ -101,7 +109,7 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
           InstanceTenancy    : @get("tenancy")
           EnableDnsHostnames : @get("dnsHostnames")
           State              : ""
-          DhcpOptionsId      : "@#{@get('dhcp').id}.resource.DhcpOptionsId"
+          DhcpOptionsId      : dhcp
           VpcId              : @get("appId")
           CidrBlock          : @get("cidr")
           IsDefault          : false

@@ -265,7 +265,7 @@ define [ "CanvasManager",
       layout =
         coordinate : [ @x(), @y() ]
         uid        : @id
-        groupUId   : @parent().id
+        groupUId   : if @parent() then @parent().id else ""
 
       hcTarget = @get("healthCheckTarget")
       if hcTarget.indexOf("TCP") isnt -1 or hcTarget.indexOf("SSL") isnt -1
@@ -315,7 +315,7 @@ define [ "CanvasManager",
           ListenerDescriptions : listeners
           HealthCheck :
             Interval               : @get("healthCheckInterval")
-            Target                 : target
+            Target                 : hcTarget
             Timeout                : @get("healthCheckTimeout")
             HealthyThreshold       : @get("healthyThreshold")
             UnhealthyThreshold     : @get("unHealthyThreshold")

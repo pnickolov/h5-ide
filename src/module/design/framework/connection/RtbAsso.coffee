@@ -25,7 +25,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       rtb_data = components[ rtb.id ]
 
-      rtb_data.reosurce.AssociationSet.push {
+      rtb_data.resource.AssociationSet.push {
         SubnetId: "@#{sb.id}.resource.SubnetId"
         RouteTableId : ""
         Main : false

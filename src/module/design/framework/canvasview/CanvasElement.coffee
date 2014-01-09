@@ -68,12 +68,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     if w is null or w is undefined then w = oldw
     if h is null or h is undefined then h = oldh
 
-    if w is oldw and h is oldh then return
-
-    component.set {
-      width  : w
-      height : h
-    }
+    # Only if the data is changed, we update data.
+    # But either way, we still need to update svg.
+    if w isnt oldw or h isnt oldh
+      component.set {
+        width  : w
+        height : h
+      }
 
     el = @element()
     if el then MC.canvas.groupSize( el, w, h )

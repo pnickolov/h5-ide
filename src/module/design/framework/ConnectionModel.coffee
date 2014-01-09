@@ -186,6 +186,9 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
         @__port2Comp.disconnect_base( this, reason )
 
+      @__port1Comp = null
+      @__port2Comp = null
+
       # Remove element in SVG, if the line implements draw
       if @draw
         CanvasManager.remove( document.getElementById( @id ) )
@@ -195,6 +198,12 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       # Most of the connection don't have to implement serialize()
       null
 
+    isRemoved : ()->
+      if not @__port1Comp or not @__port2Comp or @__port1Comp.isRemoved() or @__port1Comp.isRemoved()
+        console.warn( "One or two targets of the connection has been removed, yet the connection is not removed : ", this )
+        return true
+
+      return ConnectionModel.__super__.isRemoved.call( this )
   }, {
 
     findExisting : ( p1Comp, p2Comp )->

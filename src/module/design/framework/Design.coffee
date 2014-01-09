@@ -502,6 +502,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     # ResourceModel can only add json component.
     for uid, comp of @__componentMap
+      if comp.isRemoved()
+        console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
+        continue
+
       if comp.node_line
         connections.push comp
         continue

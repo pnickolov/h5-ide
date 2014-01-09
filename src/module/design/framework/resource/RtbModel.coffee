@@ -227,8 +227,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         x    : layout_data.coordinate[0]
         y    : layout_data.coordinate[1]
 
-        appID  : data.resource.RouteTableId
-
       })
 
       # When creating a new VPC stack, the data has no id.

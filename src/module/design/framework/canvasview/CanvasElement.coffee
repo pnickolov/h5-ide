@@ -101,7 +101,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       y : y
     }
 
-    MC.canvas.position( this.element(), x, y )
+    el = this.element()
+    if el then MC.canvas.position( el, x, y )
     null
 
 

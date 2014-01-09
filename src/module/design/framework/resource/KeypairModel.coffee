@@ -11,6 +11,9 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
   KeypairModel = ComplexResModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
 
+    defaults :
+      fingerprint : ""
+
     remove : ()->
       # When a keypair is removed, make all usage to be DefaultKP
       defaultKp = KeypairModel.getDefaultKP()
@@ -45,7 +48,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           type : @type
           uid  : @id
           resource :
-            KeyFingerprint : ""
+            KeyFingerprint : @get("fingerprint")
             KeyName        : @get("name")
       }
 
@@ -56,8 +59,9 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({
-        id   : data.uid
-        name : data.resource.KeyName or data.name
+        id          : data.uid
+        name        : data.resource.KeyName or data.name
+        fingerprint : data.resource.KeyFingerprint
       })
       null
   }

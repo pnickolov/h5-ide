@@ -66,6 +66,14 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     constructor : ( p1Comp, p2Comp, attr, option ) ->
 
+      ### env:dev ###
+      console.assert( p1Comp and p2Comp and p1Comp.isTypeof( "Framework_R") and p2Comp.isTypeof( "Framework_R" ), "Invalid components when creating an connection : ", [ p1Comp, p2Comp ] )
+      ### env:dev:end ###
+
+      if not p1Comp or not p2Comp
+        console.warn( "Connection of #{@type} is not created, because invalid targets :", [ p1Comp, p2Comp ] )
+        return
+
       if not option or option.detectDuplicate isnt false
         # Detect if we have already created the same connection between p1Comp, p2Comp
         cns = Design.modelClassForType( @type ).allObjects()

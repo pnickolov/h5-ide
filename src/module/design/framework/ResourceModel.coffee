@@ -286,14 +286,18 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     isRemovable : () -> true
     isReparentable : ()-> true
 
+    ### env:dev ###
     isTypeof : ( type )->
       c = this
       while c
         if c.type is type
           return true
+        ### jshint -W103 ###
         c = c.__proto__
+        ### jshint +W103 ###
 
       return false
+    ### env:dev:end ###
 
 
     serialize : ()->

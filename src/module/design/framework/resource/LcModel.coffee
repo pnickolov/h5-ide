@@ -167,7 +167,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         layout.rootDeviceType = ami.rootDeviceType
 
 
-      kp = @connectionTargets("KeypairUsage")[0]
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )->
         "@#{sg.id}.resource.GroupId"
 
@@ -192,9 +191,9 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           LaunchConfigurationARN   : @get("appId")
           InstanceMonitoring       : @get("monitoring")
           ImageId                  : @get("imageId")
-          EbsOptimized             : @get("ebsOptimized")
+          EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          KeyName                  : "@#{kp.id}.resource.KeyName"
+          KeyName                  : ""
           SecurityGroups           : sgarray
           SpotPrice                : ""
           LaunchConfigurationName  : @get("name")

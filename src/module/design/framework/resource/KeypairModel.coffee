@@ -4,6 +4,12 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
   KeypairUsage = ConnectionModel.extend {
     type : "KeypairUsage"
     oneToMany : constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+
+    serialize : ( components )->
+      kp = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
+      otherTarget = @getOtherTarget( kp )
+
+      components[ otherTarget.id ].resource.KeyName = "@#{kp.id}.resource.KeyName"
   }
 
 

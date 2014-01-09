@@ -446,6 +446,72 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
+    serialize : ()->
+
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      ami = @getAmi() || @get("cachedAmi")
+      if ami
+        layout.osType         = ami.osType
+        layout.architecture   = ami.architecture
+        layout.rootDeviceType = ami.rootDeviceType
+
+
+      blockDevice = _.map @get("volumeList") or emptyArray, ( v )-> "#" + v.id
+
+      vpcId = subnetId = azName = tenancy = ""
+
+      p = @parent()
+      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        subnetId = p.id
+        azName = p.parent().get("name")
+        vpc = p.parent().parent()
+        vpcId = vpc.id
+        if vpc.isDefaultTenancy()
+          tenancy = "dedicated"
+      else
+        azName = p.get("name")
+
+      component =
+        type  : @type
+        uid   : @id
+        name  : @get("name")
+        index : 0
+        number : @get("count")
+        serverGroupName : @get("name")
+        resource :
+          UserData : {
+            Base64Encoded : false
+            Data : @get("userData")
+          }
+          BlockDeviceMapping : blockDevice
+          Placement : {
+            GroupName : ""
+            Tenancy : if tenancy is "dedicated" then "dedicated" else ""
+            AvailabilityZone : azName
+          }
+          InstanceId            : @get("appId")
+          ImageId               : @get("imageId")
+          KeyName               : ""
+          EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
+          VpcId                 : vpcId
+          SubnetId              : subnetId
+          Monitoring            : if @get("monitoring") then "enabled" else "disabled"
+          NetworkInterface      : []
+          InstanceType          : @get("instanceType")
+          DisableApiTermination : false
+          RamdiskId             : ""
+          ShutdownBehavior      : "terminate"
+          KernelId              : ""
+          SecurityGroup         : []
+          SecurityGroupId       : []
+          PrivateIpAddress      : ""
+
+      { component : component, layout : layout }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance

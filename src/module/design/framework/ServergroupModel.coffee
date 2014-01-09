@@ -4,7 +4,6 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
   ServergroupModel = ComplexResModel.extend {
 
     type     : "Framework_Servergroup"
-    appIdKey : "InstanceId"
 
     groupMembers : ()->
       if not @__groupMembers then @__groupMembers = []
@@ -18,7 +17,7 @@ define [ "Design", "./ComplexResModel" ], ( Design, ComplexResModel )->
         resource = resolve( data.serverGroupUid )
         resource.groupMembers().push {
           id    : data.uid
-          appId : data.resource[ appIdKey ]
+          appId : data.resource[ @appIdKey ]
         }
         return true
 

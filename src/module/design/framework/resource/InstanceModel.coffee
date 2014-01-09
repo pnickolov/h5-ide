@@ -5,8 +5,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
   Model = ComplexResModel.extend {
 
-    type    : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    type        : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
     newNameTmpl : "host"
+
     defaults :
       x      : 2
       y      : 2
@@ -407,6 +408,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    appIdKey    : "InstanceId"
 
     deserialize : ( data, layout_data, resolve )->
 

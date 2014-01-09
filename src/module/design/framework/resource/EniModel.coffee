@@ -394,6 +394,8 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
 
+    appIdKey    : "NetworkInterfaceId"
+
     deserialize : ( data, layout_data, resolve )->
 
       # deserialize EIP

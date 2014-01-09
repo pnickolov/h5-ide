@@ -111,9 +111,9 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
         appInit : ( sg_uid ) ->
 
             # get sg obj
-            currentRegion = MC.canvas_data.region
-            currentSGComp = MC.canvas_data.component[sg_uid]
-            currentSGID = currentSGComp.resource.GroupId
+            currentRegion = Design.instance().region()
+            currentSGComp = Design.instance().component( sg_uid )
+            currentSGID = currentSGComp.get 'GroupId'
             currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
 
             members = MC.aws.sg.getAllRefComp sg_uid
@@ -123,7 +123,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             #get sg name
             sg_app_detail =
                 uid         : sg_uid
-                name        : currentSGComp.name
+                name        : currentSGComp.get 'name'
                 groupName   : currentAppSG.groupName
                 description : currentAppSG.groupDescription
                 groupId     : currentAppSG.groupId

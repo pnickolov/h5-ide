@@ -166,12 +166,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         layout.architecture   = ami.architecture
         layout.rootDeviceType = ami.rootDeviceType
 
-        layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
-        attr.cachedAmi = {
-          osType         : layout_data.osType
-          architecture   : layout_data.architecture
-          rootDeviceType : layout_data.rootDeviceType
-        }
 
       kp = @connectionTargets("KeypairUsage")[0]
       sgarray = _.map @connectionTargets("SgAsso"), ( sg )->

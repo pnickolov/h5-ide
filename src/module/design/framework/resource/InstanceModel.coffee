@@ -68,6 +68,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
+    getAvailabilityZone : ()->
+      p = @parent()
+      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        return p.parent()
+      else
+        return p
+
     getCost : ( priceMap, currency )->
       if not priceMap.instance then return null
 

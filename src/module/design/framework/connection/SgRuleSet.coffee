@@ -273,6 +273,47 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       @removeRawRule( owner, ruleObj.direction, ruleObj )
       null
 
+    serialize : ( components )->
+      sg1 = @port1Comp()
+      sg2 = @port2Comp()
+
+      sg1Ref = "@#{sg1.id}.resource.GroupId"
+      sg2Ref = if sg2.type is "SgIpTarget" then sg2.get("name") else "@#{sg2.id}.resource.GroupId"
+
+      portions = [
+        {
+          ary    : @get("in1")
+          owner  : components[ sg1.id ].resource.IpPermissions
+          target : sg2Ref
+        }
+        {
+          ary    : @get("out1")
+          owner  : components[ sg1.id ].resource.IpPermissionsEgress
+          target : sg2Ref
+        }]
+
+      if sg2.type isnt "SgIpTarget" and sg1 isnt sg2
+        portions.push {
+          ary    : @get("in2")
+          owner  : components[ sg2.id ].resource.IpPermissions
+          target : sg1Ref
+        }
+        portions.push {
+          ary    : @get("out2")
+          owner  : components[ sg2.id ].resource.IpPermissionsEgress
+          target : sg1Ref
+        }
+
+      for portion in portions
+        for rule in portion.ary
+          portion.owner.push {
+            FromPort   : rule.fromPort
+            ToPort     : if rule.toPort then rule.toPort else rule.fromPort
+            IpRanges   : portion.target
+            IpProtocol : if rule.protocol is "all" then "-1" else rule.protocol
+          }
+      null
+
   }, {
 
     getResourceSgRuleSets : ( resource )->

@@ -175,6 +175,26 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       color
 
+    serialize : ()->
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      if vpc
+        vpcId = "@#{vpc.id}.resource.VpcId"
+
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          Default          : @isDefault()
+          GroupId          : @get("appId")
+          GroupName        : @get("name")
+          GroupDescription : @get("description")
+          OwnerId          : ""
+          VpcId            : vpcId or ""
+          IpPermissions       : []
+          IpPermissionsEgress : []
+
+      { component : component }
   }, {
 
     getDefaultSg : ()->

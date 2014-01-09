@@ -29,7 +29,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       vgw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
       cgw = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
 
-      if not cgw.isDynamic()
+      if cgw.isDynamic()
         routes = []
       else
         routes = _.map @get("routes"), ( r )->
@@ -40,7 +40,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
           }
 
       component_data[ @id ] =
-        name : @get("name")
+        name : "VPN"
         type : @type
         uid  : @id
         resource :

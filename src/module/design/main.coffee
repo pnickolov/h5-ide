@@ -92,6 +92,11 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                             console.log 'current tab inexistence', type, tab_id, region_name, result, current_platform
                             return
 
+                        if type is 'NEW_STACK'
+
+                            #set MC.canvas_data
+                            model.setCanvasData {}
+
                         if type in [ 'OPEN_STACK', 'OPEN_APP' ]
 
                             #set MC.canvas_data

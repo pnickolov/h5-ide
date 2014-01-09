@@ -6,14 +6,25 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	canvasData = {
 
-		data : ->
-			console.log 'canvasData:data'
+		init : ( data ) ->
+			console.log 'canvasData:init'
+			MC.canvas_data = $.extend true, {}, data
 
-			# new design flow
-			# data = $.extend true, {}, Design.instance().serialize()
+		data : ( is_origin = false ) ->
+			console.log 'canvasData:data', is_origin
 
-			# old design flow
-			data = $.extend true, {}, MC.canvas_data
+			if is_origin
+
+				# old design flow
+				data = $.extend true, {}, MC.canvas_data
+
+			else
+
+				# new design flow
+				# data = $.extend true, {}, Design.instance().serialize()
+
+				# old design flow
+				data = $.extend true, {}, MC.canvas_data
 
 			data
 

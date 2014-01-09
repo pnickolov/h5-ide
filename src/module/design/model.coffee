@@ -157,7 +157,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             #MC.canvas_data = $.extend true, {}, data
 
             # new design flow
-            MC.forge.other.canvasData.save data
+            MC.forge.other.canvasData.init data
 
             null
 

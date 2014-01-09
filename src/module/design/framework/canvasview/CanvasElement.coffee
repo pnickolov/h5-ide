@@ -2,6 +2,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   Design = null
 
+  # This TypeMap is used to transform an ResourceModel's type into another type.
+  # Because Different Kinds of ResourceModel might be treated as the same kind by canvas.
+  # One example is : for canvas, "ExpandedAsg" and "AWS.AutoScaling.Group" are both "AWS.AutoScaling.Group"
+  CanvasElementTypeMap = {
+    "ExpandedAsg" : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+  }
+
   ###
   CanvasElement is intent to be an adaptor for MC.canvas.js to use ResourceModel.
   But in the future, this class can be upgrade to ResourceModel's view on canvas.
@@ -12,9 +19,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     this.id = component.id
 
     if quick isnt true
-      this.type = @element().getAttribute("data-class") or component.type
+      if CanvasElementTypeMap[ component.type ]
+        this.type = CanvasElementTypeMap[ component.type ]
+      else
+        this.type = component.type
 
-      this.nodeType   = if component.node_group is true then "group" else if component.node_line then "line" else "node"
+      this.nodeType = if component.node_group is true then "group" else if component.node_line then "line" else "node"
 
       p = component.parent()
       this.parentId = if p then p.id else ""

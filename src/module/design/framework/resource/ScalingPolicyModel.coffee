@@ -8,7 +8,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       cooldown       : ""
       minAdjustStep  : ""
       adjustment     : "-1"
-      adjustmentType : ""
+      adjustmentType : "ChangeInCapacity"
 
       state            : "ALARM"
       sendNotification : false
@@ -53,9 +53,63 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     serialize : ()->
 
+      if not @__asg
+        console.warn "ScalingPolicy has no attached asg when serializing."
+        return
+
+      policy =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          ScalingAdjustment    : @get("adjustment")
+          PolicyName           : @get("name")
+          PolicyARN            : @get("appId")
+          MinAdjustmentStep    : @get("minAdjustStep")
+          Cooldown             : @get("cooldown")
+          AutoScalingGroupName : "@#{@__asg}.resource.AutoScalingGroupName"
+          AdjustmentType       : @get("adjustmentType")
+
+
+      alarmData = @get("alarmData")
+
+      act_alarm = act_insuffi = act_ok = []
+      action_arry = [ "@#{@id}.resource.PolicyARN" ]
+
       if @get("sendNotification")
         # Ensure there's a SNS_Topic
         topic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+        action_arry.push "@#{@topic}.resource.TopicArn"
+
+      if @get("state") is "ALARM"
+        act_alarm = action_arry
+      else if @get("state") is "INSUFFICIANT_DATA"
+        act_insuffi = action_arry
+      else
+        act_ok = action_arry
+
+      alarm =
+        name : @get("name") + "-alarm"
+        type : constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
+        uid  : alarmData.id or MC.guid()
+        resource :
+          AlarmArn  : alarmData.appId
+          AlarmName : @get("name") + "-alarm"
+          ComparisonOperator : alarmData.comparisonOperator
+          EvaluationPeriods  : alarmData.evaluationPeriods
+          MetricName         : alarmData.metricName
+          Namespace          : alarmData.namespace
+          Period             : alarmData.period
+          Statistic          : alarmData.statistic
+          Threshold          : alarmData.threshold
+          Unit               : alarmData.unit
+          Dimensions         : [{
+            name  : "AutoScalingGroupName"
+            value : "@#{@__asg}.resource.AutoScalingGroupName"
+          }]
+          AlarmActions            : act_alarm
+          InsufficientDataActions : act_insuffi
+          OKAction                : act_ok
 
       null
 
@@ -68,6 +122,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       if data.type is constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
 
         alarmData = {
+          id                 : data.uid
           name               : data.name
           appId              : data.resource.AlarmArn
           comparisonOperator : data.resource.ComparisonOperator
@@ -113,7 +168,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       else
         policy = new Model({
           id    : data.uid
-          name  : data.name
+          name  : data.resource.PolicyName or data.name
           appId : data.resource.PolicyARN
 
           cooldown       : data.resource.Cooldown

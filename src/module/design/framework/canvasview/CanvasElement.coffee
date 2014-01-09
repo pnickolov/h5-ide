@@ -75,7 +75,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       height : h
     }
 
-    # CanvasManager.size this.element(), w, h, oldw, oldh
+    el = @element()
+    if el then MC.canvas.groupSize( el, w, h )
     null
 
 

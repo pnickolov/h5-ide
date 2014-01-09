@@ -42,7 +42,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       component_data[ @id ] =
         name : @get("name")
         type : @type
-        id   : @id
+        uid  : @id
         resource :
           CustomerGatewayConfiguration : ""
           CustomerGatewayId : "@#{cgw.id}.resource.CustomerGatewayId"

@@ -20,9 +20,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       {
         component :
-          name : ""
-          type : @type
-          id   : @id
+          name     : ""
+          type     : @type
+          uid      : @id
           resource :
             AutoScalingGroupName : "@#{@get("asg").id}.resource.AutoScalingGroupName"
             TopicARN : "@#{topic.id}.resource.TopicArn"

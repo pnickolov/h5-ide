@@ -45,6 +45,41 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
 
       @set "propagate", propagate
 
+    serialize : ( components )->
+      rtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      otherTarget = @getOtherTarget( rtb )
+
+      rtb_data = components[ rtb.id ]
+
+      if @get("propagate")
+        rtb_data.resource.PropagatingVgwSet.push "@#{otherTarget.id}.resource.VpnGatewayId"
+
+      r_temp = {
+        Origin : ""
+        InstanceId : ""
+        NetworkInterfaceId : ""
+        State : ""
+        GatewayId : ""
+        InstanceOwnerId : ""
+      }
+
+      id_temp = "@#{otherTarget.id}.resource."
+
+      if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        r_temp.NetworkInterfaceId = id_temp + "NetworkInterfaceId"
+      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
+        r_temp.GatewayId = id_temp + "InternetGatewayId"
+      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
+        r_temp.GatewayId = id_temp + "VpnGatewayId"
+      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        r_temp.NetworkInterfaceId = "@#{otherTarget.getEmbedEni().id}.resource.NetworkInterfaceId"
+
+      for r in @get("routes")
+        d = { "DestinationCidrBlock" : r }
+        rtb_data.resource.RouteSet.push $.extend( d, r_temp )
+
+      null
+
     portDefs : [
       {
         port1 :

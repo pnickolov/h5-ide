@@ -18,6 +18,20 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         name      : "rtb-src"
         direction : "vertical"
         type      : constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+
+    serialize : ( components )->
+      sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      rtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+
+      rtb_data = components[ rtb.id ]
+
+      rtb_data.reosurce.AssociationSet.push {
+        SubnetId: "@#{sb.id}.resource.SubnetId"
+        RouteTableId : ""
+        Main : false
+        RouteTableAssociationId : ""
+      }
+      null
   }
 
   C

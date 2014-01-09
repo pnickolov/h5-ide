@@ -168,6 +168,43 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         # Update Image
         CanvasManager.update node.children("image"), @iconUrl(), "href"
 
+    serialize : ()->
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        reosurce :
+          PropagatingVgwSet : []
+          RouteTableId      : @get("appId")
+          VpcId             : "@#{@parent().id}.resource.VpcId"
+          AssociationSet    : []
+          RouteSet          : [{
+            Origin               : "CreateRouteTable"
+            DestinationCidrBlock : "10.0.0.0/16"
+            InstanceId           : ""
+            NetworkInterfaceId   : ""
+            State                : "active"
+            GatewayId            : "local"
+            InstanceOwnerId      : ""
+
+          }]
+
+      if @get("main")
+        component.reosurce.AssociationSet.push {
+          SubnetId: ""
+          RouteTableId : ""
+          Main : true
+          RouteTableAssociationId : ""
+        }
+
+      layout =
+        size       : [ @width(), @height() ]
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      { component : component, layout : layout }
+
   }, {
 
     getMainRouteTable : ()->

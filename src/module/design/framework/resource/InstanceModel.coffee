@@ -368,7 +368,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             })
           )
 
-        if not Design.instance().modeIsStack()
+        if not Design.instance().modeIsStack() and @.get("appId")
           # instance-state
           node.append(
             Canvon.circle(68, 15, 5,{}).attr({
@@ -383,9 +383,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       else
         node = $( document.getElementById( @id ) )
-
         # update label
         CanvasManager.update node.children(".node-label-name"), @get("name")
+
+        # Update Instance State in app
+        if not Design.instance().modeIsStack() and @.get("appId")
+          @_updateState()
 
 
       # Update Server number
@@ -403,10 +406,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
-
-      # Update Instance State in app
-      if Design.instance().modeIsApp()
-          @_updateState()
 
       null
 

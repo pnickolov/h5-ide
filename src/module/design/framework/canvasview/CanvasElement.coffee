@@ -31,7 +31,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     this
 
-  CanvasElement.prototype.getModel = ()-> Design.instance.component( @id )
+  CanvasElement.prototype.getModel = ()-> Design.instance().component( @id )
 
   CanvasElement.prototype.element = ()->
     if not this.el

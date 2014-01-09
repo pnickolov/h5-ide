@@ -510,6 +510,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       else
         lcId = ""
 
+      if @get("lc")
+        elbs = @get("lc").connectionTargets( "ElbAsso" )
+        if elbs.length
+          healthCheckType = @get("healthCheckType")
+          elbArray = _.map elbs, ( elb )-> "@#{elb.id}.resource.LoadBalancerName"
+      else
+        healthCheckType = "EC2"
+
       component =
         uid  : @id
         name : @get("name")
@@ -518,13 +526,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           PlacementGroup : ""
           AvailabilityZones : azs
           VPCZoneIdentifier : subnets
-          LoadBalancerNames : _.map @connectionTargets("ElbAsso"), ( elb )->
-            "@#{elb.id}.resource.LoadBalancerName"
+          LoadBalancerNames : elbArray or []
           AutoScalingGroupARN : @get("appId")
           DefaultCooldown        : @get("cooldown")
           MinSize                : @get("minSize")
           MaxSize                : @get("maxSize")
-          HealthCheckType        : @get("healthCheckType")
+          HealthCheckType        : healthCheckType
           HealthCheckGracePeriod : @get("healthCheckGracePeriod")
           TerminationPolicies    : @get("terminationPolicies")
           AutoScalingGroupName   : @get("name")

@@ -37,11 +37,6 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     addSubscription : ( data ) ->
 
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
-
-      if TopicModel.allObjects().length == 0
-        new TopicModel()
-
       SubscriptionModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
 
       subs = @get("subscription")

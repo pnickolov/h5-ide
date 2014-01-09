@@ -4,13 +4,31 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
   NotificationModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
 
-    initialize : ()->
-      # Ensure there's a SNS_Topic
-      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
-      null
-
     isUsed : ()->
       @get("instanceLaunch") or @get("instanceLaunchError") or @get("instanceTerminate") or @get("instanceTerminateError") or @get("test")
+
+    serialize : ()->
+      if not @isUsed() or not @get("asg")
+        return
+
+      # Ensure there's a SNS_Topic
+      topic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+
+      notifies = []
+      for key, name of NotificationModel.typeMap
+        if @get(name) then notifies.push( key )
+
+      {
+        component :
+          name : ""
+          type : @type
+          id   : @id
+          resource :
+            AutoScalingGroupName : "@#{@get("asg").id}.resource.AutoScalingGroupName"
+            TopicARN : "@#{topic.id}.resource.TopicArn"
+            NotificationType : notifies
+      }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration
@@ -36,6 +54,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       asg = resolve( MC.extractID( data.resource.AutoScalingGroupName ) )
       if asg
         asg.set("notification", notify)
+        notify.set("asg", asg)
       null
   }
 
@@ -294,6 +313,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       if n
         n.set( data )
       else
+        data.asg = this
         n = new NotificationModel( data )
         @set("notification", n)
       null

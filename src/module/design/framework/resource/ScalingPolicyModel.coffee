@@ -50,6 +50,15 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           formatedFee : fee + "/mo"
         }
       null
+
+    serialize : ()->
+
+      if @get("sendNotification")
+        # Ensure there's a SNS_Topic
+        topic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+
+      null
+
   }, {
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy, constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch ]

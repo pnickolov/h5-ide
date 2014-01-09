@@ -92,11 +92,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       else
         policy = Design.instance().component( policy_detail.uid )
         policy.set policy_detail
-
-
-      # sendNotification, ensure there's a sns topic
-      if policy_detail.sendNotification
-        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
       null
   }
 

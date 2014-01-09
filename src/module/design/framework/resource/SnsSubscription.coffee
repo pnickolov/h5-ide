@@ -42,7 +42,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
     ensureExistence : ()->
       if @allObjects().length is 0
         new TopicModel()
-      null
+      @allObjects()[0]
 
     deserialize : ( data, layout_data, resolve ) ->
       new TopicModel({
@@ -59,6 +59,8 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
     type : constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
 
     serialize : ()->
+      topic = TopicModel.ensureExistence()
+
       {
         component :
           name : ""
@@ -69,7 +71,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
             Endpoint        : @get("endpoint")
             Protocol        : @get("protocol")
             SubscriptionArn : @get("appId")
-            TopicArn        : "@#{TopicModel.allObjects()[0].id}.resource.TopicArn"
+            TopicArn        : "@#{topic.id}.resource.TopicArn"
       }
 
   }, {

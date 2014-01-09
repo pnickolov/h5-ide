@@ -53,11 +53,9 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       ntpServers     : []
       netbiosServers : []
 
-    isNone : ()->
-      @attributes.dhcpType is "none"
-
-    isDefault : ()->
-      @attributes.dhcpType is "default"
+    isNone     : ()-> @attributes.dhcpType is "none"
+    isDefault  : ()-> @attributes.dhcpType is "default"
+    isCustom   : ()-> @attributes.dhcpType is ""
 
     setNone    : ()-> @set "dhcpType", "none"
     setDefault : ()-> @set "dhcpType", "default"
@@ -65,13 +63,13 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
 
     serialize : ()->
 
-      attr = @attributes
-
-      if attr.dhcpType isnt "" then return
+      if not @isCustom()
+        return
 
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
 
       configs = []
+      attr    = @attributes
 
       component =
         name : attr.name

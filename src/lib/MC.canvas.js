@@ -6092,10 +6092,10 @@ MC.canvas.analysis = function ( data )
 
 			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (current_index, id)
 			{
-				resources[ id ].coordinate = [
+				$canvas( id ).position(
 					(current_index + 1) * ROUTE_TABLE_SIZE[0] + ((current_index + 1) * ROUTE_TABLE_MARGIN) + ROUTE_TABLE_START_LEFT,
 					ROUTE_TABLE_START_TOP
-				];
+				);
 			});
 		}
 	}
@@ -6173,20 +6173,20 @@ MC.canvas.analysis = function ( data )
 		{
 			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
 			{
-				resources[ id ].coordinate = [
+				$canvas( id ).position(
 					ELB_START_LEFT + (current_index * 10) + (current_index * 10),
 					max_first_height + 5
-				];
+				);
 			});
 		}
 		else
 		{
 			$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
 			{
-				resources[ id ].coordinate = [
+				$canvas( id ).position(
 					ELB_START_LEFT,
 					elb_stack[ 0 ].coordinate[ 0 ] + (elb_stack[ 0 ].size[ 1 ] / 2 - 5) + current_index * 10
-				];
+				);
 			});
 		}
 	}
@@ -6244,50 +6244,59 @@ MC.canvas.analysis = function ( data )
 	{
 		var VPC_max_width = 0,
 			VPC_max_height = 0,
-			layout_data = data.layout.component,
+			//layout_data = data.layout.component,
 			ignore_type = ['AWS.VPC.CustomerGateway', 'AWS.VPC.InternetGateway', 'AWS.VPC.VPNGateway'],
-			component_size,
+			coordinate,
+			size,
 			group_size,
 			item_type;
 
-		$.each(layout_data.node, function (i, item)
+		$.each($canvas.node(), function (i, item)
 		{
+			coordinate = item.position();
+			size = item.size();
+
 			if ($.inArray(item.type, ignore_type) === -1)
 			{
-				component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
+				//component_size = MC.canvas.COMPONENT_SIZE[ item.type ];
 
-				if (item.coordinate[0] + component_size[0] > VPC_max_width)
+				if (coordinate[0] + size[0] > VPC_max_width)
 				{
-					VPC_max_width = item.coordinate[0] + component_size[0];
+					VPC_max_width = coordinate[0] + size[0];
 				}
 
-				if (item.coordinate[1] + component_size[1] > VPC_max_height)
+				if (coordinate[1] + size[1] > VPC_max_height)
 				{
-					VPC_max_height = item.coordinate[1] + component_size[1];
+					VPC_max_height = coordinate[1] + size[1];
 				}
 			}
 		});
 
-		$.each(layout_data.group, function (i, item)
+		$.each($canvas.group(), function (i, item)
 		{
-			group_size = item.size;
+			coordinate = item.position();
+			size = item.size();
 
 			if (item.type !== 'AWS.AutoScaling.Group')
 			{
-				if (item.coordinate[0] + group_size[0] > VPC_max_width)
+				if (coordinate[0] + size[0] > VPC_max_width)
 				{
-					VPC_max_width = item.coordinate[0] + group_size[0];
+					VPC_max_width = coordinate[0] + size[0];
 				}
 
-				if (item.coordinate[1] + group_size[1] > VPC_max_height)
+				if (coordinate[1] + size[1] > VPC_max_height)
 				{
-					VPC_max_height = item.coordinate[1] + group_size[1];
+					VPC_max_height = coordinate[1] + size[1];
 				}
 			}
 		});
 
-		layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
-		layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+		// layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
+		// layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+		$canvas( layout.id ).size(
+			 VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT,
+			 VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM
+		);
 	}
 
 	VPCsize();
@@ -6297,18 +6306,18 @@ MC.canvas.analysis = function ( data )
 	// IGW & VGW
 	if (resource_stack[ 'AWS.VPC.InternetGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS.VPC.InternetGateway' ][ 0 ] ].coordinate = [
+		$canvas( resource_stack[ 'AWS.VPC.InternetGateway' ][ 0 ] ).position(
 			layout.coordinate[0] - 4,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
-		];
+		);
 	}
 
 	if (resource_stack[ 'AWS.VPC.VPNGateway' ] !== undefined)
 	{
-		resources[ resource_stack[ 'AWS.VPC.VPNGateway' ][ 0 ] ].coordinate = [
+		$canvas( resource_stack[ 'AWS.VPC.VPNGateway' ][ 0 ] ).position(
 			layout.coordinate[0] + layout.size[0] - 4,
 			layout.coordinate[1] + (layout.size[1] / 2) - 4
-		];
+		);
 	}
 
 	// CGW
@@ -6316,10 +6325,10 @@ MC.canvas.analysis = function ( data )
 	{
 		$.each(resource_stack[ 'AWS.VPC.CustomerGateway' ], function (i, item)
 		{
-			resources[ item ].coordinate = [
+			$canvas( item ).position(
 				layout.coordinate[0] + layout.size[0] + 8,
 				layout.coordinate[1] + (i * 11) + (layout.size[1] / 2) - 5
-			];
+			);
 		});
 	}
 
@@ -6327,10 +6336,10 @@ MC.canvas.analysis = function ( data )
 	var canvas_width = layout.size[ 0 ] + 80,
 		canvas_height = layout.size[ 1 ] + 50;
 
-	MC.canvas_data.layout.size = [
+	$canvas.size(
 		canvas_width < 180 ? 180 : canvas_width,
 		canvas_height < 150 ? 150 : canvas_height
-	];
+	);
 
 	console.info(layout);
 

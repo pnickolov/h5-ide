@@ -6,7 +6,8 @@ define [ '../base/model',
 	'../instance/model'
 	'constant',
 	'i18n!nls/lang.js'
-], ( PropertyModel, instance_model, constant, lang ) ->
+	'Design'
+], ( PropertyModel, instance_model, constant, lang, Design ) ->
 
 	ServerGroupModel = PropertyModel.extend {
 
@@ -15,10 +16,10 @@ define [ '../base/model',
 			@set 'uid', uid
 			@set 'readOnly', not @isAppEdit
 
-			myInstanceComponent = MC.canvas_data.component[ uid ]
+			myInstanceComponent = Design.instance().component( uid )
 
 			# Find out AMI
-			ami_id = myInstanceComponent.resource.ImageId
+			ami_id = myInstanceComponent.get 'ImageId'
 			ami    = MC.data.dict_ami[ ami_id ] || MC.canvas_data.layout.component.node[ uid ]
 
 			if ami
@@ -33,32 +34,23 @@ define [ '../base/model',
 				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
 
 			# Find out Instance Type
-			tenancy = myInstanceComponent.resource.Placement.Tenancy isnt 'dedicated'
-			instance_type_list = @getInstanceTypeList( ami, tenancy, myInstanceComponent.resource.InstanceType )
+			tenancy = myInstanceComponent.get 'tenancy' isnt 'dedicated'
+			instance_type_list = @getInstanceTypeList( ami, tenancy, myInstanceComponent.get 'InstanceType' )
 
 			# Ebs Optimized
 			@set 'instance_type', instance_type_list
-			@set 'ebs_optimized', "" + myInstanceComponent.resource.EbsOptimized is "true"
+			@set 'ebs_optimized', "" + myInstanceComponent.get 'EbsOptimized' is "true"
 			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent
 
 
-			# If the ami is linked to route table, cannot set server group
-			for comp_uid, comp of MC.canvas_data.component
-				if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-					continue
+		 	routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
 
-				found = false
-				for route in comp.resource.RouteSet
-					if route.InstanceId.indexOf( uid ) isnt -1
-						@set 'number_disable', true
-						found = true
-						break
-				if found
-					break
+		 	if routeCount
+		 		@set 'number_disable', true
 
 
-			@set 'number', myInstanceComponent.number
-			@set 'name',   myInstanceComponent.serverGroupName
+			@set 'number', myInstanceComponent.get 'count'
+			@set 'name',   myInstanceComponent.get 'name'
 
 			@getGroupList()
 			@getEni()
@@ -84,23 +76,22 @@ define [ '../base/model',
 
 		setCount : ( count ) ->
 			uid = @get( 'uid' )
-			MC.canvas_data.component[ uid ].number = count
+			Design.instance().component( uid ).setCount  count
 
 			@getGroupList()
 
-			# Update canvas's Instance and Eni count
-			MC.aws.instance.updateCount( uid, count )
 			null
 
 		getGroupList : ()->
 
 			uid = @get( 'uid' )
 
-			component   = MC.canvas_data.component[ uid ]
-			app_data    = MC.data.resource_list[ MC.canvas_data.region ]
+			component   = Design.instance().component( uid )
+			app_data    = MC.data.resource_list[ Design.instance().region() ]
+			count      = component.get 'count'
 
-			if "" + component.number is "1"
-				instance_id = component.resource.InstanceId
+			if "" + count is "1"
+				instance_id = component.get 'appId'
 				instance    = app_data[ instance_id ]
 				if not instance
 					@set "group",  {
@@ -118,7 +109,7 @@ define [ '../base/model',
 			else
 				old_components   = MC.data.origin_canvas_data.component
 				old_server_count = old_components[ uid ].number
-				groupname_prefix = component.serverGroupName + "-"
+				groupname_prefix = component.get 'name' + "-"
 
 				group = []
 
@@ -136,24 +127,24 @@ define [ '../base/model',
 
 				group = _.sortBy group, "idx"
 
-				if component.number != old_server_count
-					group.increment = component.number - old_server_count
+				if count != old_server_count
+					group.increment = count - old_server_count
 					if group.increment > 0
 						group.increment = "+" + group.increment
 
-					if component.number < old_server_count
-						for idx in [component.number..old_server_count-1]
+					if count < old_server_count
+						for idx in [count..old_server_count-1]
 							group[ idx ].isOld = true
 
 					else
-						for idx in [old_server_count..component.number-1]
+						for idx in [old_server_count..count-1]
 							group.push {
 								name  : groupname_prefix + idx
 								isNew : true
 								state : "Unknown"
 							}
 
-						attr = if component.number < old_server_count then "isOld" else "isNew"
+						attr = if count < old_server_count then "isOld" else "isNew"
 
 				@set "group", group
 			null

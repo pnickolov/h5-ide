@@ -387,6 +387,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         # update label
         CanvasManager.update node.children(".node-label-name"), @get("name")
 
+
       # Update Server number
       numberGroup = node.children(".server-number-group")
       if @get("count") > 1
@@ -403,7 +404,48 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
 
-      # TODO : Update Instance status
+      # Update Instance State in app
+      if Design.instance().modeIsApp()
+          @_updateState()
+
+      null
+
+
+    _updateState : ()->
+
+      if !Design.instance().modeIsApp()
+        console.warn '[_updateState] this method should be use in app view'
+        return null
+
+      # Check icon
+      if $("#" + @id + "_instance-state").length is 0
+        console.error '[_updateState] can not found "#' + @id + '_instance-state"'
+        return null
+
+      # Init icon to unknown state
+      Canvon($("#" + @id)).removeClass "deleted"
+
+      # Get instance state
+      instance_data = MC.data.resource_list[ Design.instance().region() ][ @.get("appId") ]
+      if instance_data
+        instanceState = instance_data.instanceState.name
+        Canvon($("#" + @id)).addClass "deleted"  if instanceState is "terminated"
+      else
+        #instance data not found, or maybe instance already terminated
+        instanceState = "unknown"
+        #Canvon("#" + @id).addClass "deleted"
+
+      #update icon state and tooltip
+      $("#" + @id + "_instance-state").attr({
+        "class"       : "instance-state tooltip"
+      })
+
+      Canvon( "#" + @id + "_instance-state" )
+      .addClass( "instance-state-" + instanceState + " instance-state-" + Design.instance().mode() )
+      .data( 'tooltip', instanceState )
+      .attr( 'data-tooltip', instanceState )
+
+      null
 
   }, {
 

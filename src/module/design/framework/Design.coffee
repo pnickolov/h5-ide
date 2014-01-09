@@ -51,13 +51,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   Design = ( canvas_data, options )->
 
-    ###########################
-    # Compability code
-    ###########################
-    if arguments.length == 3
-      canvas_data = MC.canvas_data
-      options     = arguments[2]
-
     json_data   = canvas_data.component
     layout_data = canvas_data.layout
 

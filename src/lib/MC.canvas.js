@@ -1642,10 +1642,17 @@ MC.canvas = {
 		return true;
 	},
 
-	// size: function (node, x, y, width, height)
-	// {
+	groupSize: function (node, width, height)
+	{
+		$(node).find('.group').attr({
+			'width': width,
+			'height': height,
+			'x': 0,
+			'y': 0
+		});
 
-	// },
+		return true;
+	},
 
 	remove: function (node)
 	{
@@ -4219,7 +4226,7 @@ MC.canvas.event.groupResize = {
 				}, {
 					'parent': parent,
 					'resizer': target,
-					'group_title': parent.find('.group-label'),
+					//'group_title': parent.find('.group-label'),
 					'target': group,
 					'originalTarget': group[0],
 					'group_child': MC.canvas.groupChild(target.parentNode.parentNode),
@@ -4354,7 +4361,7 @@ MC.canvas.event.groupResize = {
 			parent = event_data.parent,
 			target = event_data.target,
 			type = event_data.group_type,
-			group_title = event_data.group_title,
+			//group_title = event_data.group_title,
 			direction = event_data.direction,
 			parent_offset = parent[0].getBoundingClientRect(),
 			canvas_offset = event_data.canvas_offset,
@@ -4378,7 +4385,7 @@ MC.canvas.event.groupResize = {
 
 			group_padding = MC.canvas.GROUP_PADDING,
 			parentGroup = event_data.parentGroup,
-			label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
+			//label_coordinate = MC.canvas.GROUP_LABEL_COORDINATE[ type ],
 			group_node,
 			group_coordinate,
 			layout_connection_data,
@@ -4641,24 +4648,24 @@ MC.canvas.event.groupResize = {
 				}
 			}
 
-			parent.attr('transform',
-				'translate(' +
-					group_left * 10 + ',' +
-					group_top * 10 +
-				')'
-			);
+			// parent.attr('transform',
+			// 	'translate(' +
+			// 		group_left * 10 + ',' +
+			// 		group_top * 10 +
+			// 	')'
+			// );
 
-			target.attr({
-				'x': 0,
-				'y': 0,
-				'width': group_width * 10,
-				'height': group_height * 10
-			});
+			// target.attr({
+			// 	'x': 0,
+			// 	'y': 0,
+			// 	'width': group_width * 10,
+			// 	'height': group_height * 10
+			// });
 
-			group_title.attr({
-				'x': label_coordinate[0],
-				'y': label_coordinate[1]
-			});
+			// group_title.attr({
+			// 	'x': label_coordinate[0],
+			// 	'y': label_coordinate[1]
+			// });
 
 			group_node = $canvas( group_id );
 
@@ -4675,44 +4682,46 @@ MC.canvas.event.groupResize = {
 			group_node = $canvas( group_id );
 			group_coordinate = group_node.position();
 
-			if (type === 'AWS.VPC.Subnet')
-			{
-				event_data.group_port[0].show();
-				event_data.group_port[1].show();
-			}
+			// if (type === 'AWS.VPC.Subnet')
+			// {
+			// 	event_data.group_port[0].show();
+			// 	event_data.group_port[1].show();
+			// }
 
 			group_node.position(group_coordinate[0], group_coordinate[1]);
-
+			group_node.size(group_width, group_height);
 			group_node.reConnect();
 
-			parent.attr('transform', event_data.originalTranslate);
+			//parent.attr('transform', event_data.originalTranslate);
 
-			target.attr({
-				'x': 0,
-				'y': 0,
-				'width': event_data.originalWidth * scale_ratio,
-				'height': event_data.originalHeight * scale_ratio
-			});
+			// target.attr({
+			// 	'x': 0,
+			// 	'y': 0,
+			// 	'width': event_data.originalWidth * scale_ratio,
+			// 	'height': event_data.originalHeight * scale_ratio
+			// });
 
-			group_title.attr({
-				'x': label_coordinate[0],
-				'y': label_coordinate[1]
-			});
+			// group_title.attr({
+			// 	'x': label_coordinate[0],
+			// 	'y': label_coordinate[1]
+			// });
 		}
 
 		if (type === 'AWS.VPC.Subnet')
 		{
 			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
 
-			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')').show();
+			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')');//.show();
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')').show();
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')');//.show();
 
 			group_node.reConnect();
 		}
 
 		// Show label
-		group_title.show();
+		//group_title.show();
+
+		parent.find('.group-label, .port').show();
 
 		$('#overlayer').remove();
 

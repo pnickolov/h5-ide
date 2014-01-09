@@ -40,7 +40,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
 
     ensureExistence : ()->
-      if @allObjects().length = 0
+      if @allObjects().length is 0
         new TopicModel()
       null
 

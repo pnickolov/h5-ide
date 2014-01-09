@@ -56,7 +56,10 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.forge.other.canvasData.init result.resolved_data[0]
 
                         # set autoFinish = false
-                        options[ 'autoFinish' ] = false
+                        options.autoFinish = false
+
+                        # set svg
+                        MC.canvas.layout.init()
 
                         # create Design object
                         dd = new Design MC.forge.other.canvasData.data(true), options

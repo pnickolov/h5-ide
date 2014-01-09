@@ -12,7 +12,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       serverGroupUid  : ''
       ##serverGroupName : ''
       #common
-      deviceName : ''
+      #deviceName : ''
       volumeSize : 1
       snapshotId : ''
       #extend for instance
@@ -24,7 +24,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 
 
-    constructor : ( attributes )->
+    constructor : ( attributes, options )->
 
       owner = attributes.owner
       delete attributes.owner
@@ -32,12 +32,11 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       if !attributes.name
         #create volume
         attributes.name = @getDeviceName( owner )
-        attributes.deviceName = attributes.name
 
       if attributes.name
         ComplexResModel.call this, attributes
 
-        @attachTo( owner )
+        @attachTo( owner, options )
 
       null
 
@@ -80,7 +79,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           }
       null
 
-    attachTo : ( owner )->
+    attachTo : ( owner, options )->
       if not owner then return false
       if owner is @attributes.owner then return false
 
@@ -92,9 +91,11 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       @attributes.owner = owner
 
-      #generate new deviceName
-      @attributes.name = @getDeviceName( owner )
-      @attributes.deviceName = @attributes.name
+      if not (options and options.noNeedGenName)
+        #generate new deviceName
+        @attributes.name = @getDeviceName( owner )
+        if !@attributes.name
+          return false
 
       if owner.attributes.volumeList
         owner.attributes.volumeList.push( this )
@@ -170,7 +171,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         serverGroupUid  : data.serverGroupUid
         ##serverGroupName : data.serverGroupName
         #resource property
-        deviceName : attachment.Device
+        #deviceName : attachment.Device
         volumeSize : data.resource.Size
         snapshotId : data.resource.SnapshotId
         volumeType : data.resource.VolumeType
@@ -178,7 +179,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         appId      : data.resource.VolumeId
 
 
-      model = new Model attr
+      model = new Model attr, {noNeedGenName:true}
 
       null
   }

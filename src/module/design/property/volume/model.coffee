@@ -54,11 +54,11 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
             if res.owner.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
             #volume of lc
                 volume_detail =
-                    isWin       : res.deviceName[0] != '/'
+                    isWin       : res.name[0] != '/'
                     isLC        : true
                     volume_size : res.volumeSize
                     snapshot_id : res.snapshotId
-                    name        : res.deviceName
+                    name        : res.name
 
                 if volume_detail.isWin
                     volume_detail.editName = volume_detail.name.slice(-1)
@@ -71,12 +71,12 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                 volume_detail =
                     isLC        : false
-                    isWin       : res.deviceName[0] != '/'
+                    isWin       : res.name[0] != '/'
                     isStandard  : res.volumeType is 'standard'
                     iops        : res.iops
                     volume_size : res.volumeSize
                     snapshot_id : res.snapshotId
-                    name        : res.deviceName
+                    name        : res.name
 
                 if volume_detail.isWin
                     volume_detail.editName = volume_detail.name.slice(-1)

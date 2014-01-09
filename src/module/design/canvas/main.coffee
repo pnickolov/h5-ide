@@ -45,18 +45,21 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.forge.other.canvasData.set 'component', {}
                         MC.forge.other.canvasData.set 'layout'   , {}
 
+                    # init options
+                    options =
+                        mode : if Tabbar.current is 'new' then Design.MODE.Stack else Tabbar.current
+
                     # resource import
                     if Tabbar.current is 'appview'
 
                         # set MC.canvas_data
                         MC.forge.other.canvasData.init result.resolved_data[0]
 
-                        options =
-                            mode       : Tabbar.current
-                            autoFinish : false
+                        # set autoFinish = false
+                        options[ 'autoFinish' ] = false
 
                         # create Design object
-                        dd = new Design( MC.forge.other.canvasData.data(true), options )
+                        dd = new Design MC.forge.other.canvasData.data(true), options
 
                         # set ami layout
                         MC.aws.ami.setLayout MC.forge.other.canvasData.data(true)
@@ -70,16 +73,11 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     # 'NEW_STACK', 'OPEN_STACK', 'OPEN_APP' without 'appview'
                     else
 
-                        # new design flow +++++++++++++++++++++++++++
-                        options =
-                            mode : if Tabbar.current is 'new' then Design.MODE.Stack else Tabbar.current
-
                         # set svg
                         MC.canvas.layout.init()
 
                         # create Design object
-                        new Design( MC.forge.other.canvasData.data(true), options )
-                        # new design flow +++++++++++++++++++++++++++
+                        new Design MC.forge.other.canvasData.data(true), options
 
                         # old design flow
                         MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()

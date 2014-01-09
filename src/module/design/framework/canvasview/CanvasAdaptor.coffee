@@ -113,9 +113,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
         null
     false
 
-  $canvas.connection = ( uid )->
-    if uid
-      cache = { uid : Design.__instance.component( uid ) }
+  $canvas.connection = ( line_uid )->
+    if line_uid
+      cache = { uid : Design.__instance.component( line_uid ) }
     else
       cache = Design.__instance.__canvasLines
 
@@ -131,7 +131,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       lineArray[ uid ] = l
 
 
-    if uid
+    if line_uid
       return lineArray.uid
     else
       return lineArray

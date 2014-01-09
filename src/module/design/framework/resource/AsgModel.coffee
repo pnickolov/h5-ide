@@ -210,6 +210,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         CanvasManager.update( node.children(".node-label"), lcLabel )
         CanvasManager.update( node.children(".ami-icon"), @amiIconUrl(), "href" )
 
+    serialize : ()->
+      layout =
+        uid  : @id
+        type : @type
+        groupUId   : @parent().id
+        originalId : @get("originalAsg").id
+        coordinate : [ @x(), @y() ]
+
+      { layout : layout }
 
   }, {
 
@@ -476,6 +485,54 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       CanvasManager.toggle( node.children(".asg-resource-dragger"), hasLC )
       null
 
+    serialize : ()->
+      layout =
+        uid  : @id
+        type : @type
+        groupUId   : @parent().id
+        originalId : ""
+        coordinate : [ @x(), @y() ]
+
+      subnets = [ @parent() ]
+      for expand in @get("expandedList")
+        subnets.push expand.parent()
+      subnets = _.uniq subnets
+
+      if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        azs = _.uniq( _.map subnets, (sb)-> sb.parent().get("name") )
+        subnets = _.map subnets, (sb)-> "@#{sb.id}.resource.SubnetId"
+      else
+        subnets = []
+        azs = _.map subnets, (az)-> az.get("name")
+
+      component =
+        uid  : @id
+        name : @get("name")
+        type : @type
+        resource :
+          PlacementGroup : ""
+          AvailabilityZones : azs
+          VPCZoneIdentifier : subnets
+          LoadBalancerNames : _.map @connectionTargets("ElbAsso"), ( elb )->
+            "@#{elb.id}.resource.LoadBalancerName"
+          AutoScalingGroupARN : @get("appId")
+          DefaultCooldown        : @get("cooldown")
+          MinSize                : @get("minSize")
+          MaxSize                : @get("maxSize")
+          HealthCheckType        : @get("healthCheckType")
+          HealthCheckGracePeriod : @get("healthCheckGracePeriod")
+          TerminationPolicies    : @get("terminationPolicies")
+          AutoScalingGroupName   : @get("name")
+          DesiredCapacity        : @get("capacity")
+          LaunchConfigurationName : "@#{@get('lc').id}.resource.LaunchConfigurationName"
+          EnabledMetrics                 : [{ Metric : "", Granularity : "" }]
+          Instances                      : []
+          SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]
+          ShouldDecrementDesiredCapacity : ""
+
+
+      { component : component, layout : layout }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
@@ -490,6 +547,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         parent : resolve( MC.extractID( layout_data.groupUId ) )
 
         cooldown               : data.resource.DefaultCooldown
+        capacity               : data.resource.DesiredCapacity
         minSize                : data.resource.MinSize
         maxSize                : data.resource.MaxSize
         healthCheckType        : data.resource.HealthCheckType

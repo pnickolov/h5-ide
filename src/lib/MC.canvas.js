@@ -5799,7 +5799,7 @@ MC.canvas.analysis = function ( data )
 						node = node.children[ 0 ];
 					}
 
-					node_connection = resources[ node.id ].connection;
+					node_connection = resources[ node.id ].connection();
 
 					if (node_connection)
 					{

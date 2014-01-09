@@ -92,6 +92,10 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       @attributes.owner = owner
 
+      #generate new deviceName
+      @attributes.name = @getDeviceName( owner )
+      @attributes.deviceName = @attributes.name
+
       if owner.attributes.volumeList
         owner.attributes.volumeList.push( this )
       else

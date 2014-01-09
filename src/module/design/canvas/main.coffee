@@ -42,8 +42,19 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.forge.other.canvasData.set 'name'     , tab_name
                         MC.forge.other.canvasData.set 'region'   , region_name
                         MC.forge.other.canvasData.set 'platform' , current_platform
-                        MC.forge.other.canvasData.set 'component', {}
-                        MC.forge.other.canvasData.set 'layout'   , {}
+
+                        # platform is classic
+                        if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT
+
+                        # platform is vpc
+                        else
+                            component = $.extend true, {}, MC.canvas.DESIGN_INIT_DATA_VPC
+                            layout    = MC.canvas.DESIGN_INIT_LAYOUT_VPC
+
+                        MC.forge.other.canvasData.set 'component', component
+                        MC.forge.other.canvasData.set 'layout'   , layout
 
                     # init options
                     options =
@@ -68,7 +79,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.aws.ami.setLayout MC.forge.other.canvasData.data(true)
 
                         # set analysis
-                        MC.canvas.analysis MC.forge.other.canvasData.data(true)
+                        MC.canvas.analysis()
 
                         # init Design
                         dd.finishDeserialization()

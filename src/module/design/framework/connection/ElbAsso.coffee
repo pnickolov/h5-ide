@@ -54,6 +54,14 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       if connected then return true
 
       return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
+
+    serialize : ( components )->
+      sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+
+      components[ elb.id ].resource.Subnets.push "@#{sb.id}.resource.SubnetId"
+      null
+
   }, {
     isConnectable : ( comp1, comp2 )->
       subnet = if comp1.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet then comp1 else comp2
@@ -128,6 +136,16 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
           return
 
       new ElbSubnetAsso( subnet, elb )
+      null
+
+    serialize : ( components )->
+      instance = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      if not instance then return
+      elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
+
+      components[ elb.id ].resource.Instances.push {
+        InstanceId : "@#{sb.id}.resource.InstanceId"
+      }
       null
   }
 

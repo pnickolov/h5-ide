@@ -6,7 +6,7 @@ define [ "CanvasManager",
          "../ComplexResModel",
          "./VpcModel",
          "./SgModel",
-         "../connection/SgAsso",
+         "../connection/SgAsso"
          "../connection/ElbAsso"
 ], ( CanvasManager, Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
 
@@ -176,6 +176,15 @@ define [ "CanvasManager",
           formatedFee : fee + "/hr"
         }
 
+    getAvailabilityZones : ()->
+      if Design.instance().typeIsVpc()
+        azs = _.map @connectionTargets("ElbSubnetAsso"), ( subnet )->
+          subnet.parent().get("name")
+
+        return _.uniq azs
+      else
+        return @get("AvailabilityZones")
+
     draw : ( isCreate )->
 
       if isCreate
@@ -252,6 +261,95 @@ define [ "CanvasManager",
       # Toggle left port
       CanvasManager.toggle node.children(".port-elb-sg-in"), @get("internal")
 
+    serialize : ()->
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      hcTarget = @get("healthCheckTarget")
+      if hcTarget.indexOf("TCP") isnt -1 or hcTarget.indexOf("SSL") isnt -1
+        # If target is TCP or SSL, remove path.
+        hcTarget = hcTarget.split("/")[0]
+
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+
+      listeners = []
+      if @get("sslCert")
+        sslcertId = "@#{@get('sslCert').id}.resource.ServerCertificateMetadata.Arn"
+      else
+        sslcertId = ""
+
+      for l in @get("listeners")
+        if l.protocol is "SSL" or l.protocol is "HTTPS"
+          id = sslcertId
+        else
+          id = ""
+
+        listeners.push {
+          PolicyNames : ""
+          Listener :
+            LoadBalancerPort : l.port
+            Protocol         : l.protocol
+            InstanceProtocol : l.instanceProtocol
+            InstancePort     : l.instancePort
+            SSLCertificateId : id
+        }
+
+      component =
+        type : @type
+        uid  : @id
+        name : @get("name")
+        resource :
+          AvailabilityZones : @getAvailabilityZones()
+          Subnets : []
+          CanonicalHostedZoneNameID : ""
+          CanonicalHostedZoneName : ""
+          Instances : []
+          CrossZoneLoadBalancing : @get("crossZone")
+          VpcId                  : if vpc then "@#{vpc.id}.resource.VpcId"
+          LoadBalancerName       : @get("name")
+          SecurityGroups : _.map @connectionTargets("SgAsso"), ( sg )->
+            "@#{sg.id}.resource.GroupId"
+          Scheme : if @get("internal") then "internal" else "internet-facing"
+          ListenerDescriptions : listeners
+          HealthCheck :
+            Interval               : @get("healthCheckInterval")
+            Target                 : target
+            Timeout                : @get("healthCheckTimeout")
+            HealthyThreshold       : @get("healthyThreshold")
+            UnhealthyThreshold     : @get("unHealthyThreshold")
+          DNSName : ""
+          Policies: {
+              LBCookieStickinessPolicies : [{ PolicyName : "", CookieExpirationPeriod : "" }]
+              AppCookieStickinessPolicies : [{ PolicyName : "", CookieName : ""}]
+              OtherPolicies : []
+            }
+          BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
+          SourceSecurityGroup : { OwnerAlias : "", GroupName : "" }
+
+      json_object = { component : component, layout : layout }
+
+      if @get("sslCert")
+        ssl = @get("sslCert")
+        sslComponent =
+          uid : ssl.id
+          type : "AWS.IAM.ServerCertificate"
+          name : ssl.get("name")
+          resource :
+            PrivateKey : ssl.get("key")
+            CertificateBody : ssl.get("body")
+            CertificateChain : ssl.get("chain")
+            ServerCertificateMetadata :
+              ServerCertificateName : ssl.get("name")
+              Arn : ssl.get("arn")
+              ServerCertificateId : ""
+              UploadDate : ""
+              Path : ""
+        return [ json_object, { component : sslComponent } ]
+      else
+        return json_object
+
   }, {
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_ELB, constant.AWS_RESOURCE_TYPE.AWS_IAM_ServerCertificate ]
@@ -265,7 +363,7 @@ define [ "CanvasManager",
           name  : data.name
           body  : data.resource.CertificateBody
           chain : data.resource.CertificateChain
-          key   : data.resource.PrivaterKey
+          key   : data.resource.PrivateKey
           arn   : data.resource.ServerCertificateMetadata.Arn
         })
         return

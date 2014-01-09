@@ -9,6 +9,19 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
   AclAsso = ConnectionModel.extend {
     type : "AclAsso"
     oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+
+    serialize : ( components )->
+      sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+      acl = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+
+      acl_data =
+
+      components[ acl.id ].resource.AssociationSet.push {
+        NetworkAclAssociationId : ""
+        NetworkAclId : ""
+        SubnetId: "@#{sb.id}.resource.SubnetId"
+      }
+      null
   }
 
 
@@ -101,7 +114,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     serialize : ()->
       vpcId = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
 
-      assoSet = []
       ruleSet = []
 
       component =
@@ -109,19 +121,12 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
         type : @type
         uid  : @id
         resource :
-          AssociationSet : assoSet
+          AssociationSet : []
           Default        : @isDefault()
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
           RouteTableId   : ""
           VpcId          : "@{#vpcId}.resource.VpcId"
-
-      for sb in @connectionTargets( "AclAsso" )
-        assoSet.push {
-          NetworkAclAssociationId : ""
-          NetworkAclId : ""
-          SubnetId: "@#{sb.id}.resource.SubnetId"
-        }
 
       for rule in @get("rules")
         r = {

@@ -1645,8 +1645,8 @@ MC.canvas = {
 	groupSize: function (node, width, height)
 	{
 		$(node).find('.group').attr({
-			'width': width,
-			'height': height,
+			'width': width * 10,
+			'height': height * 10,
 			'x': 0,
 			'y': 0
 		});

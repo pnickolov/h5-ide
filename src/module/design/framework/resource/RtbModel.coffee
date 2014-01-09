@@ -173,7 +173,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         name : @get("name")
         type : @type
         uid  : @id
-        reosurce :
+        resource :
           PropagatingVgwSet : []
           RouteTableId      : @get("appId")
           VpcId             : "@#{@parent().id}.resource.VpcId"
@@ -190,7 +190,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
           }]
 
       if @get("main")
-        component.reosurce.AssociationSet.push {
+        component.resource.AssociationSet.push {
           SubnetId: ""
           RouteTableId : ""
           Main : true

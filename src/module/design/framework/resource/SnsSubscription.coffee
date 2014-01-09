@@ -7,6 +7,20 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       name : "sns-topic"
 
     serialize : ()->
+
+      ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
+      for sp in ScalingPolicyModel.allObjects()
+        if sp.get("sendNotification")
+          useTopic = true
+          break
+
+      if not useTopic
+        useTopic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration ).allObjects().length > 0
+
+      if not useTopic
+        console.debug( "Nothing needs the sns-topic, so the sns-topic is not serialized" )
+        return
+
       n = @get("name")
 
       {

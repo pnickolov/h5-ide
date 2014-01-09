@@ -1527,7 +1527,7 @@ dom.importCssString("\
     text-shadow: 0 0 0.01em;\
 }\
 .ace_autocomplete {\
-    width: 180px;\
+    width: 230px;\
     z-index: 200000;\
     background: #fbfbfb;\
     color: #444;\

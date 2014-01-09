@@ -2,10 +2,10 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'backbone', 'jquery', 'underscore', 'MC',
+define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 		 './component/stateeditor/lib/data',
 		 './component/stateeditor/lib/data1'
-], () ->
+], (MC, constant) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -87,54 +87,15 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 
 			# generate resource attr autocomplete data
 			allCompData = that.get('allCompData')
-			that.genResAttrAndStateList(allCompData)
+
+			that.genStateRefList(allCompData)
+			that.genAttrRefList(allCompData)
 
 			# for view
 			that.set('cmdParaMap', cmdParaMap)
 			that.set('cmdParaObjMap', cmdParaObjMap)
 			that.set('cmdModuleMap', cmdModuleMap)
 			that.set('moduleCMDMap', moduleCMDMap)
-
-		genResAttrAndStateList: (compData) ->
-
-			that = this
-
-			compList = _.values(compData)
-			resAttrDataAry = []
-			resStateDataAry = []
-
-			if compList and not _.isEmpty(compList) and _.isArray(compList)
-
-				_.each compList, (compObj) ->
-
-					compName = compObj.name
-					
-					# find all attr
-					keyList = _.keys(compObj.resource)
-					if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
-						_.each keyList, (attrName) ->
-							completeStr = '{' + compName + '.' + attrName + '}'
-							resAttrDataAry.push({
-								name: completeStr,
-								value: completeStr
-							})
-						null
-
-					# find all state
-					stateAry = compObj.state
-					if stateAry and _.isArray(stateAry)
-						_.each stateAry, (stateObj, idx) ->
-							stateNumStr = String(idx + 1)
-							stateRefStr = '{' + compName + '.state.' + stateNumStr + '}'
-							resStateDataAry.push({
-								name: stateRefStr,
-								value: stateRefStr
-							})
-
-					null
-
-			that.set('resAttrDataAry', resAttrDataAry)
-			that.set('resStateDataAry', resStateDataAry)
 
 		getResPlatformInfo: () ->
 
@@ -198,6 +159,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 			that = this
 			compData = that.get('compData')
 			compData.state = stateData
+			MC.canvas.event.nodeState(compData.uid)
 
 		getStateData: () ->
 
@@ -215,52 +177,123 @@ define [ 'backbone', 'jquery', 'underscore', 'MC',
 				return compData.name
 			return ''
 
-			# compList = _.values(compData)
-			# resAttrDataAry = []
-			# resStateDataAry = []
+		genStateRefList: (compData) ->
 
-			# if compList and not _.isEmpty(compList) and _.isArray(compList)
+			that = this
 
-			# 	_.each compList, (compObj) ->
+			compList = _.values(compData)
+			resStateDataAry = []
 
-			# 		compName = compObj.name
+			if compList and not _.isEmpty(compList) and _.isArray(compList)
+
+				_.each compList, (compObj) ->
+
+					compName = compObj.name
 					
-			# 		# find all attr
-			# 		keyList = _.keys(compObj.resource)
-			# 		if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
-			# 			_.each keyList, (attrName) ->
-			# 				completeStr = '{' + compName + '.' + attrName + '}'
-			# 				resAttrDataAry.push({
-			# 					name: completeStr,
-			# 					value: completeStr
-			# 				})
-			# 			null
+					# find all attr
+					# keyList = _.keys(compObj.resource)
+					# if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
+					# 	_.each keyList, (attrName) ->
+					# 		completeStr = '{' + compName + '.' + attrName + '}'
+					# 		resAttrDataAry.push({
+					# 			name: completeStr,
+					# 			value: completeStr
+					# 		})
+					# 	null
 
-		# genResAttrList: () ->
+					# find all state
+					stateAry = compObj.state
+					if stateAry and _.isArray(stateAry)
+						_.each stateAry, (stateObj, idx) ->
+							stateNumStr = String(idx + 1)
+							stateRefStr = '{' + compName + '.state.' + stateNumStr + '}'
+							resStateDataAry.push({
+								name: stateRefStr,
+								value: stateRefStr
+							})
 
-		# 	that = this
+					null
 
-		# 	compAttrModelObj = data1
-		# 	compTypeMap = constant.AWS_RESOURCE_TYPE
+			that.set('resStateDataAry', resStateDataAry)
 
-		# 	_.each compAttrModelObj, (value, key) ->
+		genAttrRefList: (allCompData) ->
 
-		# 		# if key is component type
-		# 		supportType = compTypeMap[key]
-		# 		if supportType
+			that = this
 
-		# 			autoCompStr = ''
+			autoCompList = []
 
-		# 			# find all this type's comp
-		# 			_.each allCompData, (compData, uid) ->
-		# 				compName = compData.name
-		# 				compType = compData.type
-		# 				if compType is supportType
-		# 				autoCompStr += (compName + '.') # host1
-		# 				null
+			compAttrModelObj = data1
+			# compTypeMap = constant.AWS_RESOURCE_TYPE
 
-		# 			_.each value, (levelComp, levelCompName) ->
-		# 				autoCompStr += levelCompName
+			_.each allCompData, (compData, uid) ->
+
+				compName = compData.name
+				compType = compData.type
+
+				# replace instance default eni name to instance name
+				if compType is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+					if compData.resource.Attachment.DeviceIndex in ['0', 0]
+						return
+						# instanceRef = compData.resource.Attachment.InstanceId
+						# if instanceRef
+						# 	instanceUID = MC.extractID(instanceRef)
+						# 	if instanceUID
+						# 		compName = allCompData[instanceUID].name
+
+				supportType = compType.replace(/\./ig, '_')
+
+				# found supported type
+				attrList = compAttrModelObj[supportType]
+				if attrList
+
+					_.each attrList, (isArray, attrName) ->
+
+						autoCompStr = (compName + '.') # host1.
+
+						if attrName is '__array'
+							return
+						else
+							autoCompStr += attrName
+
+						autoCompList.push(autoCompStr)
+
+						if isArray
+
+							if supportType is 'AWS_AutoScaling_Group'
+								if attrName in ['AvailabilityZones']
+									azAry = compData.resource.AvailabilityZones
+									if azAry.length > 1
+										_.each azAry, (azName, idx) ->
+											autoCompList.push(autoCompStr + '[' + idx + ']')
+											null
+
+							if supportType is 'AWS_VPC_NetworkInterface'
+								if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
+									ipObjAry = compData.resource.PrivateIpAddressSet
+									if ipObjAry.length > 1
+										_.each ipObjAry, (ipObj, idx) ->
+											autoCompList.push(autoCompStr + '[' + idx + ']')
+											null
+
+							if supportType is 'AWS_ELB'
+								if attrName in ['AvailabilityZones']
+									azAry = compData.resource.AvailabilityZones
+									if azAry.length > 1
+										_.each azAry, (azName, idx) ->
+											autoCompList.push(autoCompStr + '[' + idx + ']')
+											null
+
+						null
+
+				null
+
+			resAttrDataAry = _.map autoCompList, (autoCompStr) ->
+				attrRef = "{#{autoCompStr}}"
+				return {
+					name: attrRef,
+					value: attrRef
+				}
+			that.set('resAttrDataAry', resAttrDataAry)
 
 	}
 

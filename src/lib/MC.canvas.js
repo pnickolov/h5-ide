@@ -5668,7 +5668,17 @@ MC.canvas.event.nodeState = function (id)
 		)
 	)
 	{
-		$('#canvas_container').append( MC.template.nodeState() );
+		var compData = MC.canvas_data.component[id];
+		var stateAry = compData.state;
+		var stateNum = 0;
+		if (stateAry && _.isArray(stateAry)) {
+			stateNum = stateAry.length;
+		}
+		$('#canvas_container').append( MC.template.nodeState({
+			state_num: stateNum
+		}) );
+
+		$('#node-state-number').text(stateNum);
 
 		$('#node-state-wrap')
 			.css({

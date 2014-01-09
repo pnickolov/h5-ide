@@ -351,7 +351,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
             # old design flow
             #update instance icon of app
-            MC.aws.instance.updateStateIcon app_id
+            #MC.aws.instance.updateStateIcon app_id
             MC.aws.asg.updateASGCount app_id
             MC.aws.eni.updateServerGroupState app_id
             #update deleted resource style
@@ -359,7 +359,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             # old design flow
 
             # new design flow
-            #Design.instance().trigger Design.EVENT.AwsResourceUpdated
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             #re-draw connection
             MC.canvas_data.layout.connection = {}

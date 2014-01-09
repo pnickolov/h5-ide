@@ -68,6 +68,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
+    getAvailabilityZone : ()->
+      p = @parent()
+      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        return p.parent()
+      else
+        return p
+
     getCost : ( priceMap, currency )->
       if not priceMap.instance then return null
 
@@ -368,7 +375,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             })
           )
 
-        if not Design.instance().modeIsStack()
+        if not Design.instance().modeIsStack() and @.get("appId")
           # instance-state
           node.append(
             Canvon.circle(68, 15, 5,{}).attr({
@@ -383,9 +390,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       else
         node = $( document.getElementById( @id ) )
-
         # update label
         CanvasManager.update node.children(".node-label-name"), @get("name")
+
+        # Update Instance State in app
+        if not Design.instance().modeIsStack() and @.get("appId")
+          @_updateState()
+
 
       # Update Server number
       numberGroup = node.children(".server-number-group")
@@ -403,7 +414,110 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
 
-      # TODO : Update Instance status
+      null
+
+
+    _updateState : ()->
+
+      if !Design.instance().modeIsApp()
+        console.warn '[_updateState] this method should be use in app view'
+        return null
+
+      # Check icon
+      if $("#" + @id + "_instance-state").length is 0
+        console.error '[_updateState] can not found "#' + @id + '_instance-state"'
+        return null
+
+      # Init icon to unknown state
+      Canvon($("#" + @id)).removeClass "deleted"
+
+      # Get instance state
+      instance_data = MC.data.resource_list[ Design.instance().region() ][ @.get("appId") ]
+      if instance_data
+        instanceState = instance_data.instanceState.name
+        Canvon($("#" + @id)).addClass "deleted"  if instanceState is "terminated"
+      else
+        #instance data not found, or maybe instance already terminated
+        instanceState = "unknown"
+        #Canvon("#" + @id).addClass "deleted"
+
+      #update icon state and tooltip
+      $("#" + @id + "_instance-state").attr({
+        "class"       : "instance-state tooltip"
+      })
+
+      Canvon( "#" + @id + "_instance-state" )
+      .addClass( "instance-state-" + instanceState + " instance-state-" + Design.instance().mode() )
+      .data( 'tooltip', instanceState )
+      .attr( 'data-tooltip', instanceState )
+
+      null
+
+    serialize : ()->
+
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+
+      ami = @getAmi() || @get("cachedAmi")
+      if ami
+        layout.osType         = ami.osType
+        layout.architecture   = ami.architecture
+        layout.rootDeviceType = ami.rootDeviceType
+
+
+      blockDevice = _.map @get("volumeList") or emptyArray, ( v )-> "#" + v.id
+
+      vpcId = subnetId = azName = tenancy = ""
+
+      p = @parent()
+      if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        subnetId = p.id
+        azName = p.parent().get("name")
+        vpc = p.parent().parent()
+        vpcId = vpc.id
+        if vpc.isDefaultTenancy()
+          tenancy = "dedicated"
+      else
+        azName = p.get("name")
+
+      component =
+        type   : @type
+        uid    : @id
+        name   : @get("name")
+        index  : 0
+        number : @get("count")
+        serverGroupName : @get("name")
+        resource :
+          UserData : {
+            Base64Encoded : false
+            Data : @get("userData")
+          }
+          BlockDeviceMapping : blockDevice
+          Placement : {
+            GroupName : ""
+            Tenancy : if tenancy is "dedicated" then "dedicated" else ""
+            AvailabilityZone : azName
+          }
+          InstanceId            : @get("appId")
+          ImageId               : @get("imageId")
+          KeyName               : ""
+          EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
+          VpcId                 : vpcId
+          SubnetId              : subnetId
+          Monitoring            : if @get("monitoring") then "enabled" else "disabled"
+          NetworkInterface      : []
+          InstanceType          : @get("instanceType")
+          DisableApiTermination : false
+          RamdiskId             : ""
+          ShutdownBehavior      : "terminate"
+          KernelId              : ""
+          SecurityGroup         : []
+          SecurityGroupId       : []
+          PrivateIpAddress      : ""
+
+      { component : component, layout : layout }
 
   }, {
 

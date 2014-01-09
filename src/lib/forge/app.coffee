@@ -69,6 +69,9 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 					delete resource_list[comp.resource[res_key]]
 
+					if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+						resource_list[comp.resource[res_key]]=null
+
 				null
 
 		null

@@ -148,6 +148,36 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         return deviceName
 
+    serialize : () ->
+      owner = @get("owner")
+      number = if owner then owner.get("count") else 1
+
+      # Does nothing for LC.
+      if owner and owner.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        return
+
+      {
+        component :
+          uid             : @id
+          type            : @type
+          name            : @get("name")
+          serverGroupUid  : @id
+          serverGroupName : @get("name")
+          number          : number or 1
+          index           : 0
+          resource :
+            VolumeId   : @get("appId")
+            Size       : @get("volumeSize")
+            SnapshotId : @get("snapshotId")
+            Iops       : @get("iops")
+            AvailabilityZone : if owner then owner.getAvailabilityZone() else ""
+            AttachmentSet :
+              VolumeId            : @get("appId")
+              InstanceId          : "@#{owner.id}.resource.InstanceId"
+              Device              : @get("name")
+              DeleteOnTermination : true
+      }
+
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume

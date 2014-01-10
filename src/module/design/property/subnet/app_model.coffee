@@ -18,7 +18,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             subnet      = $.extend true, {}, subnet
             subnet.name = mySubnetComponent.get 'name'
-            subnet.acl  = this.getACL uid
+            subnet.acl  = this.getACL( uid ).toJSON()
             subnet.uid  = uid
 
             # Get RouteTable ID

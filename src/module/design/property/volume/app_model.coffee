@@ -2,29 +2,29 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
     VolumeAppModel = PropertyModel.extend {
 
-        init : ( volume_uid )->
+        init : ( uid )->
 
           me = this
 
-          myVolumeComponent = MC.canvas_data.component[ volume_uid ]
+          myVolumeComponent = Design.instance().component( uid )
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
+          appData = MC.data.resource_list[ Design.instance().region() ]
 
-          if volume_uid.indexOf('_') > 0
+          if uid.indexOf('_') > 0
 
-                tmp = volume_uid.split('_')
+                tmp = uid.split('_')
 
                 realuid = tmp[0]
 
                 device_name = tmp[2]
 
-                lc_comp = MC.canvas_data.component[realuid]
+                lc_comp = Design.instance().component( uid )
 
-                lc_block_device = MC.data.resource_list[MC.canvas_data.region][lc_comp.resource.LaunchConfigurationARN].BlockDeviceMappings.member
+                lc_block_device = MC.data.resource_list[ Design.instance().region() ][ lc_comp.get 'appId' ].BlockDeviceMappings.member
 
                 $.each lc_block_device, ( i, block ) ->
 
@@ -32,20 +32,20 @@ define [ '../base/model' ], ( PropertyModel ) ->
 
                         volume_detail = $.extend true, {}, block
 
-                        volume_detail.uid = volume_uid
+                        volume_detail.uid = uid
 
                         volume_detail.isLC = true
 
-                        volume_detail.name = "Volume of " + lc_comp.name
+                        volume_detail.name = "Volume of " + lc_comp.get 'name'
 
                         me.set volume_detail
 
                         return false
           else
 
-            volume = $.extend true, {}, appData[ myVolumeComponent.resource.VolumeId ]
-            volume.name = myVolumeComponent.name
-            volume.IOPS = myVolumeComponent.resource.Iops
+            volume = $.extend true, {}, appData[ myVolumeComponent.get 'appId' ]
+            volume.name = myVolumeComponent.get 'name'
+            volume.IOPS = myVolumeComponent.get 'iops'
             volume.isLC = false
 
           this.set volume

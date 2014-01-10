@@ -27,11 +27,12 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     view.reRender()
 
                     #### added by song, if the stack/app too old, unable to open ###
-                    if MC.canvas_data.bad
-                        notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
-                        ide_event.trigger ide_event.SWITCH_MAIN
-                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
-                        return
+                    if type in [ 'OPEN_STACK', 'OPEN_APP' ]
+                        if MC.forge.other.canvasData.get 'bad'
+                            notification 'error', lang.ide.IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB, true
+                            ide_event.trigger ide_event.SWITCH_MAIN
+                            ide_event.trigger ide_event.CLOSE_DESIGN_TAB, tab_name if tab_name
+                            return
                     #### added by song, if the stack/app too old, unable to open ###
 
                     # new stack

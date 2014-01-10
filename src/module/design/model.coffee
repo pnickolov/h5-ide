@@ -357,20 +357,26 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #
                 @describeInstancesOfASG region
 
-            # old design flow
+            # old design flow +++++++++++++++++++++++++++
             #update instance icon of app
             #MC.aws.instance.updateStateIcon app_id
-            MC.aws.asg.updateASGCount app_id
-            MC.aws.eni.updateServerGroupState app_id
+            #MC.aws.asg.updateASGCount app_id
+            #MC.aws.eni.updateServerGroupState app_id
             #update deleted resource style
-            MC.forge.app.updateDeletedResourceState MC.canvas_data
-            # old design flow
+            #MC.forge.app.updateDeletedResourceState MC.canvas_data
+            # old design flow +++++++++++++++++++++++++++
 
             # new design flow
             Design.instance().trigger Design.EVENT.AwsResourceUpdated
 
             #re-draw connection
-            MC.canvas_data.layout.connection = {}
+
+            # old design flow
+            #MC.canvas_data.layout.connection = {}
+
+            # new design flow
+            MC.forge.other.canvasData.set 'layout', 'connection' : {}
+
             #MC.canvas.initLine()
             #MC.canvas.reDrawSgLine()
 

@@ -243,26 +243,23 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         describeInstancesOfASG : (region) ->
             console.log 'describeInstancesOfASG', region
 
-            comp_layout   = MC.canvas.data.get('layout.component.group')
-            comp_data     = MC.canvas.data.get('component')
             instance_ids = []
 
-
             try
-                #find ASG in comp_layout
-                _.map comp_layout, ( value, id ) ->
 
-                    if value.type == constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                asg_list = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
 
-                        asg_arn         = if comp_data[id] then comp_data[id].resource.AutoScalingGroupARN else null
-                        asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
-                        instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
+                _.map asg_list, ( asg, idx ) ->
 
-                        #find instance in ASG
-                        if instance_memeber
-                            _.map instance_memeber, (ins, i) ->
-                                instance_ids.push ins.InstanceId
-                                null
+                    asg_arn         = asg.get( "appId" )
+                    asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
+                    instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
+
+                    #find instance in ASG
+                    if instance_memeber
+                        _.map instance_memeber, (ins, i) ->
+                            instance_ids.push ins.InstanceId
+                            null
                     null
 
                 ######

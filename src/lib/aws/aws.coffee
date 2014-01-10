@@ -232,7 +232,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                             res.osType = MC.aws.ami.getOSType res
 
                         if not res.osFamily
-                            res.osFamily = MC.aws.aws.getOSFamily(res.osType)
+                            res.osFamily = MC.aws.aws.getOSFamily(res.osType, res)
 
                         MC.data.dict_ami[res.imageId] = res
                         MC.data.resource_list[region][res.imageId] = res
@@ -438,7 +438,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 osType = osFamily = ''
                 try
                     osType = data.layout.component.node[item.uid].osType
-                    osFamily = if 'osFamily' of data.layout.component.node[item.uid] and data.layout.component.node[item.uid].osFamily then data.layout.component.node[item.uid].osFamily else  me.getOSFamily(osType)
+                    osFamily = data.layout.component.node[item.uid].osFamily
+                    # get osFamily from cached data
+                    if not osFamily
+                        imgId = data.component[item.uid].resource.ImageId
+                        if 'osFamily' of MC.data.dict_ami[imgId]
+                            osFamily = MC.data.dict_ami[imgId].osFamily
                 catch e
                     continue
 
@@ -496,7 +501,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     osType = osFamily = ''
                     try
                         osType = data.layout.component.node[config_uid].osType
-                        osFamily = if 'osFamily' of data.layout.component.node[config_uid] and data.layout.component.node[config_uid].osFamily then data.layout.component.node[config_uid].osFamily else  me.getOSFamily(osType)
+                        osFamily = data.layout.component.node[config_uid].osFamily
+                        # get osFamily from cached data
+                        if not osFamily
+                            imgId = data.component[config_uid].resource.ImageId
+                            if 'osFamily' of MC.data.dict_ami[imgId]
+                                osFamily = MC.data.dict_ami[imgId].osFamily
                     catch e
                         continue
 
@@ -776,7 +786,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
 
         {'isChanged':isChanged, 'changes':changes}
 
-    getOSFamily = (osType) ->
+    getOSFamily = (osType, ami) ->
         me = this
 
         osFamily = 'linux'
@@ -784,8 +794,23 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         if osType
             if constant.OS_TYPE_MAPPING[osType]
                 osFamily = constant.OS_TYPE_MAPPING[osType]
-            else if osType in constant.WINDOWS
+
+            if osType in constant.WINDOWS
                 osFamily = 'mswin'
+
+                try
+                    if ami
+                        sql_web_pattern = /sql.*?web.*?/
+                        sql_standerd_pattern = /sql.*?standard.*?/
+
+                        if ( 'name' of ami and ami.name.toLowerCase().match(sql_web_pattern) ) or ( 'description' of ami and ami.description.toLowerCase().match(sql_web_pattern) ) or ( 'imageLocation' of ami and ami.imageLocation.toLowerCase().match(sql_web_pattern) )
+                            osFamily = 'mswinSQLWeb'
+
+                        else if ( 'name' of ami and ami.name.toLowerCase().match(sql_standerd_pattern) ) or ( 'description' of ami and ami.description.toLowerCase().match(sql_standerd_pattern) ) or ( 'imageLocation' of ami and ami.imageLocation.toLowerCase().match(sql_standerd_pattern) )
+                            osFamily = 'mswinSQL'
+
+                catch error
+                    console.info error
 
         osFamily
 

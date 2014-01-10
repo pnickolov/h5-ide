@@ -242,9 +242,11 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           deviceName : volume.DeviceName
           snapshotId : volume.Ebs.SnapshotId
           volumeSize : volume.Ebs.VolumeSize
+          owner      : model
+
         _opt =
           isForLC : true
-          owner   : model
+
         new VolumeModel(_attr, _opt)
 
       # Asso SG

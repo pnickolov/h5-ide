@@ -1,4 +1,4 @@
-define [ 'MC', 'constant' ], ( MC, constant ) ->
+define [ 'MC', 'constant', 'Design' ], ( MC, constant, Design ) ->
 
 
 	getNameById = ( app_id ) ->
@@ -59,7 +59,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 	#clear data in MC.data.resource_list for app
 	clearResourceInCache = ( canvas_data ) ->
 
-		resource_list = MC.data.resource_list[Design.instance().region()]
+		resource_list = MC.data.resource_list[ Design.instance().region() ]
 		if resource_list
 			$.each canvas_data.component, (uid, comp) ->
 
@@ -85,7 +85,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 		if canvas_data and canvas_data.component and MC.data.resource_list
 
-			resource_list = MC.data.resource_list[Design.instance().region()]
+			resource_list = MC.data.resource_list[ Design.instance().region() ]
 			resource_type_list = [ "AWS.ELB", "AWS.VPC.VPC", "AWS.VPC.Subnet", "AWS.VPC.InternetGateway", "AWS.AutoScaling.Group" ]
 			resource_type_list = resource_type_list.concat ["AWS.VPC.RouteTable", "AWS.VPC.VPNGateway", "AWS.VPC.CustomerGateway", "AWS.AutoScaling.LaunchConfiguration" ]
 			#resource_type_list = resource_type_list.concat [ "AWS.EC2.Instance", "AWS.EC2.EBS.Volume", "AWS.VPC.NetworkInterface" ]
@@ -137,7 +137,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 	getResourceById = ( id ) ->
 
-		resource_list = MC.data.resource_list[Design.instance().region()]
+		resource_list = MC.data.resource_list[ Design.instance().region() ]
 		comp = Design.instance().serialize()['component'][id]
 
 		res_key = constant.AWS_RESOURCE_KEY[comp.type]

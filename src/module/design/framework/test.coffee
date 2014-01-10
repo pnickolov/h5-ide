@@ -24,7 +24,10 @@ define [ 'Design',
          './resource/VgwModel',
          './resource/SnsSubscription',
          './resource/ScalingPolicyModel',
-         './resource/CertificateModel'
+         './resource/CertificateModel',
+         "./util/deserializeVisitor/JsonFixer",
+         "./util/deserializeVisitor/EipMerge",
+         "./util/serializeVisitor/EniIpVisitor"
 
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->
 

@@ -239,6 +239,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       # Assign new name
       if not attributes.name
         attributes.name = @getNewName()
+        if not attributes.name then delete attributes.name
 
       # Remember current design object
       # So that later, we can check if this object's design is showing
@@ -250,6 +251,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       design.cacheComponent( attributes.id, this )
 
       Backbone.Model.call( this, attributes, options || __emptyObj )
+
+      if not @attributes.name then @attributes.name = ""
 
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.

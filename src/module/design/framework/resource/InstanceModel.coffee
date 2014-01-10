@@ -54,7 +54,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         if Design.instance().typeIsVpc()
           #create eni0
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
-          @setEmbedEni( new EniModel({}, { instance: this }) )
+          @setEmbedEni( new EniModel({ name : "eni0" }, { instance: this }) )
 
       else
         @draw( true )
@@ -67,6 +67,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
       null
+
+    groupMembers : ()->
+      if not @__groupMembers then @__groupMembers = []
+      return @__groupMembers
 
     getAvailabilityZone : ()->
       p = @parent()
@@ -453,22 +457,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
-    serialize : ()->
-
-      layout =
-        coordinate : [ @x(), @y() ]
-        uid        : @id
-        groupUId   : @parent().id
-
-      ami = @getAmi() || @get("cachedAmi")
-      if ami
-        layout.osType         = ami.osType
-        layout.architecture   = ami.architecture
-        layout.rootDeviceType = ami.rootDeviceType
-
-
-      blockDevice = _.map @get("volumeList") or emptyArray, ( v )-> "#" + v.id
-
+    generateJSON : ()->
       vpcId = subnetId = azName = tenancy = ""
 
       p = @parent()
@@ -485,16 +474,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       component =
         type   : @type
         uid    : @id
-        name   : @get("name")
+        name   : @get("name") + "-1"
         index  : 0
         number : @get("count")
+        serverGroupUid  : @id
         serverGroupName : @get("name")
         resource :
           UserData : {
             Base64Encoded : false
             Data : @get("userData")
           }
-          BlockDeviceMapping : blockDevice
+          BlockDeviceMapping : []
           Placement : {
             GroupName : ""
             Tenancy : if tenancy is "dedicated" then "dedicated" else ""
@@ -517,14 +507,112 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           SecurityGroupId       : []
           PrivateIpAddress      : ""
 
-      { component : component, layout : layout }
+      component
+
+    serialize : ()->
+
+      allResourceArray = []
+
+      ami    = @getAmi() || @get("cachedAmi")
+      layout =
+        coordinate : [ @x(), @y() ]
+        uid        : @id
+        groupUId   : @parent().id
+      if ami
+        layout.osType         = ami.osType
+        layout.architecture   = ami.architecture
+        layout.rootDeviceType = ami.rootDeviceType
+
+      # Add this instance' layout first.
+      allResourceArray.push( { layout : layout } )
+
+      # Generate instance member.
+      instances = [ @generateJSON() ]
+      i = instances.length
+      while i < @get("count")
+        member = $.extend true, {}, instances[0]
+        member.name  = @get("name") + "-" + (i+1)
+        member.index = i
+        memberObj = @groupMembers()[ instances.length - 1 ]
+        if memberObj
+          member.uid      = memberObj.id
+          member.resource.InstanceId = memberObj.appId
+        else
+          member.uid    = MC.guid()
+          member.resource.InstanceId = ""
+
+        # In non-VPC type, we should add Eip For instance
+        if @get("hasEip") and not Design.instance().typeIsVpc()
+          eipData = memberObj.eipData || {}
+          allResourceArray.push {
+            component : {
+              uid   : eipData.id or MC.guid()
+              type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+              index : i
+              resource :
+                Domain : "standard"
+                InstanceId         : "@#{memberData.id}.resource.InstanceId"
+                AllocationId       : eipData.allocationId or ""
+                NetworkInterfaceId : ""
+                PrivateIpAddress   : ""
+            }
+          }
+
+        ++i
+        instances.push( member )
+
+      # Generate Volume
+      serverGroupOption = { number : instances.length, instanceId : "" }
+      volumeModels = @get("volumeList") || emptyArray
+      eniModels    = [ @getEmbedEni() ]
+      for attach in @connections("EniAttachment")
+        eniModels[ attach.get("index") ] = attach.getOtherTarget( this )
+
+      volumes = []
+      enis    = []
+      for instance, idx in instances
+
+        serverGroupOption.instanceId = instance.uid
+
+        for volume in volumeModels
+          v = volume.generateJSON( idx, serverGroupOption )
+          instance.resource.BlockDeviceMapping.push( "#"+ v.uid )
+          volumes.push( v )
+
+        for eni, eniIdx in eniModels
+          # The generate JSON might be something like : [ EniObject, EipObject, EipObject ]
+          enis = enis.concat eni.generateJSON( idx, serverGroupOption, eniIdx )
+
+      for res in instances.concat( volumes ).concat( enis )
+        allResourceArray.push( { component : res } )
+
+      return allResourceArray
 
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-    appIdKey    : "InstanceId"
 
     deserialize : ( data, layout_data, resolve )->
+
+      # deserialize EIP
+      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+        # We only handle Eip attached to Instance here.
+        # Because deserializeVisitor/EipMerge has already merged Eip to Eni.PrivateIpAddressSet.
+        if data.resource.InstanceId
+          resolve( MC.extractID( data.resource.InstanceId ) ).setPrimaryEip( true, data )
+        return
+
+
+
+      # Compact instance for servergroup
+      if data.serverGroupUid and data.serverGroupUid isnt data.uid
+        resolve( data.serverGroupUid ).groupMembers[data.index] = {
+          id      : data.uid
+          appId   : data.resource.InstanceId
+          eipData : data.resource.EipResource
+        }
+        return
+
 
       attr =
         id    : data.uid
@@ -541,6 +629,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+
+      if data.resource.EipResource
+        attr.hasEip  = true
+        attr.eipData = {
+          id : data.resource.EipResource.uid
+          allocationId : data.resource.EipResource.AllocationId
+        }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
         attr.cachedAmi = {

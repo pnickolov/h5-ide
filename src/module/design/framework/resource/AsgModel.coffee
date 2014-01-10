@@ -510,13 +510,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       else
         lcId = ""
 
+      healthCheckType = "EC2"
       if @get("lc")
         elbs = @get("lc").connectionTargets( "ElbAsso" )
         if elbs.length
           healthCheckType = @get("healthCheckType")
           elbArray = _.map elbs, ( elb )-> "@#{elb.id}.resource.LoadBalancerName"
-      else
-        healthCheckType = "EC2"
 
       component =
         uid  : @id

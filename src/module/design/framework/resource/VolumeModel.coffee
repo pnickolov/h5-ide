@@ -8,9 +8,6 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       name       : ''
       #ownerType  : '' #'instance'|'lc'
       owner      : null #instance model | lc model
-      #servergroup
-      serverGroupUid  : ''
-      ##serverGroupName : ''
       #common
       #deviceName : ''
       volumeSize : 1
@@ -39,6 +36,10 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         @attachTo( owner, options )
 
       null
+
+    groupMembers : ()->
+      if not @__groupMembers then @__groupMembers = []
+      return @__groupMembers
 
     remove : ()->
       # Remove reference in owner
@@ -148,41 +149,67 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         return deviceName
 
-    serialize : () ->
-      owner = @get("owner")
-      number = if owner then owner.get("count") else 1
+    generateJSON : ( index, serverGroupOption )->
 
-      # Does nothing for LC.
-      if owner and owner.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-        return
+      console.assert( not serverGroupOption or serverGroupOption.instanceId isnt undefined, "Invalid serverGroupOption" )
+
+      member = if index > 0 then @groupMembers()[ index - 1 ] else null
+
+      if member
+        uid   = member.id
+        appId = member.appId
+      else
+        uid   = if index is 0 then @id else MC.guid()
+        appId = @get("appId")
+
+      instanceId = if serverGroupOption.id then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""
+
+      owner = @get("owner")
 
       {
-        component :
-          uid             : @id
-          type            : @type
-          name            : @get("name")
-          serverGroupUid  : @id
-          serverGroupName : @get("name")
-          number          : number or 1
-          index           : 0
-          resource :
-            VolumeId   : @get("appId")
-            Size       : @get("volumeSize")
-            SnapshotId : @get("snapshotId")
-            Iops       : @get("iops")
-            AvailabilityZone : if owner then owner.getAvailabilityZone() else ""
-            AttachmentSet :
-              VolumeId            : @get("appId")
-              InstanceId          : "@#{owner.id}.resource.InstanceId"
-              Device              : @get("name")
-              DeleteOnTermination : true
+        uid             : uid
+        type            : @type
+        name            : @get("name")
+        serverGroupUid  : @id
+        serverGroupName : @get("name")
+        index           : index
+        number          : serverGroupOption.number or 1
+        resource :
+          VolumeId   : @get("appId")
+          Size       : @get("volumeSize")
+          SnapshotId : @get("snapshotId")
+          Iops       : @get("iops")
+          AvailabilityZone : if owner then owner.getAvailabilityZone() else ""
+          AttachmentSet :
+            VolumeId            : @get("appId")
+            InstanceId          : instanceId
+            Device              : @get("name")
+            DeleteOnTermination : true
       }
+
+
+    serialize : () ->
+      # Does not serialize Volume for LC.
+      # And instance will do serialization for Volume.
+      # So if a volume is attached, it should not be serialized.
+      if @get("owner") then return
+
+      { component : @generateJSON( 0, { number : 1 } ) }
 
   }, {
 
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 
     deserialize : ( data, layout_data, resolve )->
+
+      # Compact volume for servergroup
+      if data.serverGroupUid and data.serverGroupUid isnt data.uid
+        resolve( data.serverGroupUid ).groupMembers[data.index] = {
+          id    : data.uid
+          appId : data.resource.VolumeId
+        }
+        return
+
 
       #instance which volume attached
       if data.resource.AttachmentSet
@@ -193,13 +220,9 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         return null
 
       attr =
-        id         : data.uid
-        name       : data.name
-        #ownerType  : 'instance'
-        owner      : instance
-        #servergroup
-        serverGroupUid  : data.serverGroupUid
-        ##serverGroupName : data.serverGroupName
+        id    : data.uid
+        name  : data.name
+        owner : instance
         #resource property
         #deviceName : attachment.Device
         volumeSize : data.resource.Size

@@ -5,18 +5,55 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
     type : "EniAttachment"
 
-    initialize : ()->
+    defaults :
+      lineType : "attachment"
+      index : 1
+
+    initialize : ( attributes )->
 
       # If Eni is attached to Ami, then hide sg line
       ami = @getTarget constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
       eni = @getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-      for e in ami.connectionTargets( "EniAttachment" )
-        if e is eni
-          @setDestroyAfterInit()
-          return
+      for sgline in eni.connections( "SgRuleLine" )
+        if sgline.getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ) is ami
+          sgline.remove()
+          break
 
       @on "destroy", @tryReconnect
+
+      # Calc the new index of this EniAttachment.
+      if attributes and attributes.index
+        # The EniAttachment has a specified index ( This happens when the Eni is deserializing )
+        @ensureAttachmentOrder()
+      else
+        # Newly created EniAttachment has the last index.
+        @attributes.index = ami.connectionTargets( "EniAttachment" ).length + 1
+      null
+
+    ensureAttachmentOrder : ()->
+      ami = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      attachments = ami.connections( "EniAttachment" )
+
+      for attach in attachments
+        # If we found duplicated index, we just reassign all attachement index.
+        if attach isnt this and attach.attributes.index is this.attributes.index
+          for attach, idx in attachments
+            attach.attributes.index = idx + 1
+            attach.getOtherTarget( ami ).updateName()
+          return
+
+      newArray = attachments.sort (a, b)-> a.attributes.index - b.attributes.index
+      if attachments.indexOf( this ) isnt newArray.indexOf( this )
+        # The index of this line has changed. Modified ami's connection array.
+        # So that ami.connections("EniAttachment") will always return an sorted EniAttachments.
+        amiConnections = []
+        for cnn in ami.get("__connections")
+          if cnn.type isnt "EniAttachment"
+            amiConnections.push cnn
+
+        ami.attributes.__connections = amiConnections.concat newArray
+
       null
 
     tryReconnect : ()->
@@ -29,8 +66,18 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
 
       null
 
-    defaults :
-      lineType : "attachment"
+    remove : ()->
+      # When this EniAttachment is removed, we need to update all the Eni's name.
+      attachments = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).connections("EniAttachment")
+
+      startIdx = attachments.indexOf( this )+1
+      while startIdx < attachments.length
+        attach = attachments[ startIdx ]
+        attach.attributes.index -= 1
+        attach.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ).updateName()
+        ++startIdx
+
+      null
 
     portDefs :
       port1 :

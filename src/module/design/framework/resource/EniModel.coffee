@@ -1,5 +1,5 @@
 
-define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ServergroupModel, CanvasManager, Design, SgAsso, EniAttachment, constant, lang )->
+define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, CanvasManager, Design, SgAsso, EniAttachment, constant, lang )->
 
   ###
   IpObject is used to represent an ip in Eni
@@ -8,22 +8,23 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
     if not attr then attr = {}
 
     this.hasEip     = attr.hasEip or false
-    this.eipId      = attr.eipId  or ""
     this.autoAssign = if attr.autoAssign isnt undefined then attr.autoAssign else true
     this.ip         = attr.ip or ""
+    this.eipData    = attr.eipData or {}
     null
 
 
   ###
   Defination of EniModel
   ###
-  Model = ServergroupModel.extend {
+  Model = ComplexResModel.extend {
 
     defaults : ()->
       sourceDestCheck : true
       description     : ""
       ips             : []
       assoPublicIp    : false
+      name            : "eni"
 
       x        : 0
       y        : 0
@@ -31,7 +32,6 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       height   : 9
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-    newNameTmpl : "eni"
 
     constructor : ( attributes, option )->
 
@@ -57,6 +57,28 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
       null
+
+    groupMembers : ()->
+      if not @__groupMembers then @__groupMembers = []
+      return @__groupMembers
+
+    updateName : ()->
+      oldName = @attributes.name
+
+      instance = @embedInstance()
+      if instance
+        @attributes.name = "eni0"
+      else
+        attachment = @connections( "EniAttachment" )[0]
+        if attachment
+          @attributes.name = "eni" + attachment.get("index")
+        else
+          @attributes.name = "eni"
+
+      if @attributes.name isnt oldName
+        @draw()
+      null
+
 
     isReparentable : ( newParent )->
       if newParent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
@@ -262,11 +284,14 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         # When the instance is attached to an eni
         # See if the instance allows eni to have that much of ips.
         @limitIpAddress()
+        @updateName()
         @draw()
       null
 
     disconnect : ( connection )->
-      if connection.type is "EniAttachment" then @draw()
+      if connection.type is "EniAttachment"
+        @attributes.name = "eni"
+        @draw()
       null
 
     iconUrl : ()->
@@ -390,34 +415,167 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
 
+    generateJSON : ( index, servergroupOption, eniIndex )->
+
+      resources = [{}]
+
+      ips = []
+      if index is 0
+        memberData = {
+          id    : @id
+          appId : @get("appId")
+          ips   : @get("ips")
+        }
+      else
+        memberData = @groupMembers()[ index ]
+        if not memberData
+          memberData = {
+            id              : MC.guid()
+            appId           : ""
+            forceAutoAssign : true
+            ips             : @get("ips")
+          }
+
+      # When we generate IPs for serverGroupMember.
+      # We need to create as much as `ServerGroup Eni's IP count`
+      # But we also need to fill in IP/EIP data of ServerGroup Member Enis.
+      for ipObj, idx in @get("ips")
+
+        ipObj = memberData.ips[ idx ]
+        if servergroupOption.number > 1 or memberData.forceAutoAssign
+          autoAssign = true
+        else
+          autoAssign = ipObj.autoAssign
+
+        ips.push {
+          PrivateIpAddress : if memberData.forceAutoAssign then "x.x.x.x" else ipObj.ip
+          AutoAssign       : autoAssign
+          Primary          : false
+        }
+
+        if ipObj.hasEip
+          if forceAutoAssign
+            eip = {}
+          else
+            eip = ipObj.eipData || {}
+
+          resource.push {
+            uid   : eip.id or MC.guid()
+            type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+            index : eniIndex
+            resource :
+              Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
+              InstanceId         : ""
+              AllocationId       : eip.allocationId or ""
+              NetworkInterfaceId : "@#{memberData.id}.resource.NetworkInterfaceId"
+              PrivateIpAddress   : "@#{memberData.id}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+
+          }
+      ips[0].Primary = true
+
+
+      sgTarget = if @embedInstance() then @embedInstance() else @
+
+      securitygroups = _.map sgTarget.connectionTargets("SgAsso"), ( sg )->
+        {
+          GroupName : "@#{sg.id}.resource.GroupName"
+          GroupId   : "@#{sg.id}.resource.GroupId"
+        }
+
+      instanceId = if servergroupOption.instanceId then "@#{servergroupOption.instanceId}.resource.InstanceId" else ""
+
+      if @embedInstance()
+        subnet = @embedInstance().parent()
+      else
+        subnet = @parent()
+
+      component =
+        index           : index
+        uid             : memberData.id
+        type            : @type
+        name            : @get("name") + "-" + (index+1)
+        serverGroupUid  : @id
+        serverGroupName : @get("name")
+        number          : servergroupOption.number or 1
+        resource :
+          SourceDestCheck    : @get("sourceDestCheck")
+          Description        : @get("description")
+          NetworkInterfaceId : memberData.appId
+
+          AvailabilityZone : subnet.parent().get("name")
+          VpcId            : "@#{subnet.parent().parent().id}.resource.VpcId"
+          SubnetId         : "@#{subnet.id}.resource.SubnetId"
+
+          PrivateIpAddressSet : ips
+          GroupSet   : securitygroups
+          Attachment :
+            InstnaceId   : instanceId
+            DeviceIndex  : eniIndex or "1"
+            AttachmentId : ""
+            AttachTime   : ""
+
+          SecondPriIpCount : ""
+          MacAddress       : ""
+          RequestId        : ""
+          RequestManaged   : ""
+          OwnerId          : ""
+          PrivateIpAddress : ""
+
+      resources[0] = component
+      resources
+
+    serialize : ()->
+      # Eni does not serialize data by itself.
+      # Eni is serialized by instance, because instance might be a server-group
+      # And Eni's IP is assign in serializeVistor/SubnetVisitor
+
+      # Here, we only serialize layout
+      res = null
+      if not @embedInstance()
+        layout =
+          coordinate : [ @x(), @y() ]
+          uid        : @id
+          groupUId   : @parent().id
+
+        if res is null then res = {}
+        res.layout = layout
+
+      if not @attachedInstance()
+        if res is null then res = {}
+        res.component = @generateJSON( 0, { number : 1 }, 0 )[0]
+
+      res
+
   }, {
 
-    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface, constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP ]
-
-    appIdKey    : "NetworkInterfaceId"
+    handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ]
 
     deserialize : ( data, layout_data, resolve )->
 
-      # deserialize EIP
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-        if data.resource.InstanceId
-          resolve( MC.extractID( data.resource.InstanceId ) ).setPrimaryEip( true )
-        else
-          eni      = resolve( MC.extractID( data.resource.NetworkInterfaceId ) )
-          eipIndex = data.resource.PrivateIpAddress.split(".")[3]
-          ipObj    = eni.get("ips")[ eipIndex ]
+      # deserialize ServerGroup Member Eni
+      if data.serverGroupUid and data.serverGroupUid isnt data.uid
+        memberData = {
+          id    : data.uid
+          appId : data.resource.VolumeId
+          ips   : []
+        }
+        for ip in data.resource.PrivateIpAddressSet || []
+          ipObj = new IpObject({
+            autoAssign : ip.AutoAssign
+            ip         : ip.PrivateIpAddress
+          })
+          if ip.EipResource
+            ipObj.eipData =
+              id           : ip.EipResource.uid
+              allocationId : ip.EipResource.AllocationId
+          memberData.ips.push( ipObj )
 
-          # Update IpObject's Eip status.
-          ipObj.hasEip = true
-          ipObj.eipId  = data.uid
+        resolve( data.serverGroupUid ).groupMembers[data.index] = memberData
         return
+
 
 
       # deserialize Eni
-      # First, try to deserialize it by ServergroupModel
-      if ServergroupModel.tryDeserialize( data, layout_data, resolve )
-        return
-
       # See if it's embeded eni
       attachment = data.resource.Attachment
       embed      = attachment and attachment.DeviceIndex is "0"
@@ -426,7 +584,6 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
       # Create
       attr = {
         id    : data.uid
-        name  : data.serverGroupName || data.name
         appId : data.resource.NetworkInterfaceId
 
         description     : data.resource.Description
@@ -439,14 +596,21 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         y : if embed then 0 else layout_data.coordinate[1]
       }
 
+
       for ip in data.resource.PrivateIpAddressSet || []
-        attr.ips.push( new IpObject({
+        ipObj = new IpObject({
           autoAssign : ip.AutoAssign
           ip         : ip.PrivateIpAddress
-        }) )
+        })
+        if ip.EipResource
+          ipObj.eipData =
+            id           : ip.EipResource.uid
+            allocationId : ip.EipResource.AllocationId
+        attr.ips.push( ipObj )
 
 
       if embed
+        attr.name = "eni0"
         option = { instance : instance }
       else
         attr.parent = resolve( MC.extractID(data.resource.SubnetId) )
@@ -465,7 +629,8 @@ define [ "../ServergroupModel", "CanvasManager", "Design", "../connection/SgAsso
         if embed
           instance.setEmbedEni( eni ) # Need to add it to instance
         else
-          new EniAttachment( eni, instance )
+          eniIndex = if attachment and attachment.DeviceIndex then attachment.DeviceIndex else 1
+          new EniAttachment( eni, instance, { index : eniIndex * 1 } )
       null
   }
 

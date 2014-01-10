@@ -67,13 +67,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     if layout_data.component
       layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
 
-
-    ###########################
-    # Quick fix Boolean value in JSON, might removed latter
-    ###########################
-    Design.fixJson( json_data, layout_data )
-
-
     ###########################
     # Deserialize
     ###########################
@@ -86,9 +79,11 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
 
   _.extend( Design, Backbone.Events )
-  Design.__modelClassMap   = {}
-  Design.__resolveFirstMap = {}
-  Design.__instance        = null
+  Design.__modelClassMap       = {}
+  Design.__resolveFirstMap     = {}
+  Design.__serializeVisitors   = []
+  Design.__deserializeVisitors = []
+  Design.__instance            = null
 
 
   DesignImpl = ( canvas_data, options )->
@@ -137,6 +132,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
+
+    # Let visitor to fix JSON before it get deserialized.
+    for devistor in Design.__deserializeVisitors
+      devistor( json_data, layout_data )
 
     that = @
 
@@ -281,67 +280,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     null
 
 
-  Design.fixJson = ( data, layout_data )->
-
-    azMap = {}
-    azArr = []
-
-    for uid, comp of layout_data
-
-      # Generate Component for AZ
-      if comp.type is "AWS.EC2.AvailabilityZone"
-        azArr.push {
-          uid  : uid
-          type : "AWS.EC2.AvailabilityZone"
-          name : comp.name
-        }
-
-        azMap[ comp.name ] = "@#{uid}.name"
-
-      # Generate Component for expanded Asg
-      else if comp.type is "AWS.AutoScaling.Group"
-        if comp.originalId
-          data[ uid ] = {
-            type : "ExpandedAsg"
-            uid  : uid
-          }
-
-    # Fix AZ reference and Change Boolean value
-    checkObj = ( obj )->
-      for attr, d of obj
-        if _.isString( d )
-          if d is "true"
-            obj[ attr ] = true
-          else if d is "false"
-            obj[ attr ] = false
-
-          else if azMap[ d ] # Change azName to id
-            obj[ attr ] = azMap[ d]
-
-        else if _.isArray( d )
-          for dd, idx in d
-            if _.isObject( dd )
-              checkObj( dd )
-            if _.isString( dd )
-              if d is "true"
-                d[ idx ] = true
-              else if d is "false"
-                d[ idx ] = false
-
-              else if azMap[ d ] # Change azName to id
-                d[ idx ] = azMap[ d]
-
-        else if _.isObject( d )
-          checkObj( d )
-      null
-
-    for uid, comp of data
-      checkObj( comp )
-
-    for az in azArr
-      data[ az.uid ] = az
+  Design.registerSerializeVisitor = ( func )->
+    @__serializeVisitors.push func
     null
 
+  Design.registerDeserializeVisitor = ( func )->
+    @__deserializeVisitors.push func
+    null
 
   ### env:dev ###
   Design.debug = ()->
@@ -524,15 +469,14 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     for c in connections
       c.serialize( component_data, layout_data )
 
-    newData = $.extend {}, @attributes
 
-    if noMock is false
-      newData.component = component_data
-      newData.layout    = layout_data
-    else
-      newData.component = @__backup.component
-      newData.layout    = @__backup.layout
-    newData
+    # At this point, we allow each ModelClass to have full privilege to modify
+    # the component data. This is necessary for ModelClass that wants to work on
+    # many components at once. ( One use-case is Subnet would like to assign IPs. )
+    for visitor in Design.__serializeVisitors
+      visitor( component_data, layout_data )
+
+    $.extend( { component : component_data, layout : layout_data }, @attributes )
 
 
   _.extend DesignImpl.prototype, Backbone.Events

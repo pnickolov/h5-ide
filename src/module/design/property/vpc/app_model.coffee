@@ -10,13 +10,13 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
           myVPCComponent = Design.instance().component( vpc_uid )
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
-          vpc     = appData[ myVPCComponent.get("appId") ]
+          appData = MC.data.resource_list[ Design.instance().region() ]
+          vpc     = appData[ myVPCComponent.get 'appId' ]
 
           if not vpc then return false
 
           vpc = $.extend true, {}, vpc
-          vpc.name = myVPCComponent.get("name")
+          vpc.name = myVPCComponent.get 'name'
 
           TYPE_RTB = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
           TYPE_ACL = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl

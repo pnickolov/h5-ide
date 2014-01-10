@@ -204,6 +204,24 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
 
       targets
 
+
+    #update deleted resource style
+    updateState : ()->
+
+      if !Design.instance().modeIsApp()
+        console.warn '[updateState] this method should be use in app view'
+        return null
+
+      Canvon($("#" + @id)).removeClass "deleted"
+
+      # Get resource data
+      res_data = MC.data.resource_list[ Design.instance().region() ][ @.get("appId") ]
+      if !res_data
+        Canvon("#" + @id).addClass "deleted"
+
+      null
+
+
     parent : ()-> @attributes.__parent || null
     x      : ()-> @attributes.x || 0
     y      : ()-> @attributes.y || 0

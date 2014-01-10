@@ -56,6 +56,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     groupMembers : ()->
@@ -414,6 +416,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
+
+      # Update Resource State in app view
+      if not Design.instance().modeIsStack() and @.get("appId")
+        @updateState()
+
+      null
+
 
     generateJSON : ( index, servergroupOption, eniIndex )->
 

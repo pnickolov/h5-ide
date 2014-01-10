@@ -22,6 +22,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         vpc.addChild( @ )
 
       @draw(true)
+
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()->
@@ -167,6 +169,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
 
         # Update Image
         CanvasManager.update node.children("image"), @iconUrl(), "href"
+
+      # Update Resource State in app view
+      if not Design.instance().modeIsStack() and @.get("appId")
+        @updateState()
+
+      null
+
 
     serialize : ()->
       component =

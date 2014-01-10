@@ -14,6 +14,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
+    initialize : ()->
+      #listen resource update event
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
+      null
+
     isDynamic : ()->
       !!@get("bgpAsn")
 
@@ -54,6 +59,16 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
         node = $( document.getElementById( @id ) )
         # Update label
         CanvasManager.update node.children(".node-label"), @get("name")
+
+      # Update Resource State in app view
+      if not Design.instance().modeIsStack() and @.get("appId")
+        @updateState()
+
+      null
+
+
+ 
+
 
     serialize : ()->
       layout =

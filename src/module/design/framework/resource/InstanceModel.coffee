@@ -424,12 +424,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
     _updateState : ()->
 
       if !Design.instance().modeIsApp()
-        console.warn '[_updateState] this method should be use in app view'
+        console.warn '[InstanceModel._updateState] this method should be use in app view'
         return null
 
       # Check icon
       if $("#" + @id + "_instance-state").length is 0
-        console.error '[_updateState] can not found "#' + @id + '_instance-state"'
+        console.error '[InstanceModel._updateState] can not found "#' + @id + '_instance-state"'
         return null
 
       # Init icon to unknown state
@@ -443,7 +443,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         #instance data not found, or maybe instance already terminated
         instanceState = "unknown"
-        #Canvon("#" + @id).addClass "deleted"
+        Canvon("#" + @id).addClass "deleted"
 
       #update icon state and tooltip
       $("#" + @id + "_instance-state").attr({

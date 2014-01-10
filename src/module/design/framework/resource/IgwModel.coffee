@@ -16,6 +16,8 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
       VpcModel.theVPC().addChild( this )
 
       @draw(true)
+
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()->
@@ -65,6 +67,14 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
         # Move the node to right place
         $("#node_layer").append node
         CanvasManager.position node, @x(), @y()
+
+
+      # Update Resource State in app view
+      if not Design.instance().modeIsStack() and @.get("appId")
+        @updateState()
+
+      null
+
 
     serialize : ()->
 

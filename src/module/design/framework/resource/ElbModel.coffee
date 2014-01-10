@@ -63,6 +63,10 @@ define [ "CanvasManager",
         vpc.addChild( @ )
 
       @draw(true)
+
+      #listen resource update event
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
+
       null
 
     remove : ()->
@@ -260,6 +264,15 @@ define [ "CanvasManager",
 
       # Toggle left port
       CanvasManager.toggle node.children(".port-elb-sg-in"), @get("internal")
+
+
+      # Update Resource State in app view
+      if not Design.instance().modeIsStack() and @.get("appId")
+        @updateState()
+
+      null
+
+
 
     serialize : ()->
       layout =

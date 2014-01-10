@@ -101,9 +101,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     initialize : ()->
       @get("originalAsg").__addExpandedAsg( this )
 
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
-
       @draw(true)
       null
 
@@ -262,6 +259,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     newNameTmpl : "asg"
+
+    initialize : ()->
+      #listen resource update event
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
+      null
+
 
     isReparentable : ( newParent )->
       for expand in @get("expandedList")

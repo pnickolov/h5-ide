@@ -241,7 +241,7 @@ define [ "constant",
 
     deserialize : ( data, layout_data, resolve )->
 
-      new Model({
+      new Model {
 
         id    : data.uid
         name  : data.name
@@ -254,7 +254,7 @@ define [ "constant",
         height : layout_data.size[1]
 
         parent : resolve( MC.extractID(data.resource.AvailabilityZone) )
-      })
+      }, { createByUser: true }
 
       null
   }

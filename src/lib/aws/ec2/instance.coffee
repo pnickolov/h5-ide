@@ -66,7 +66,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 		if MC.data.resource_list
 
-			instance_data = MC.data.resource_list[Design.instance.get('region')][instance_id]
+			instance_data = MC.data.resource_list[Design.instance().region()][instance_id]
 
 			if instance_data
 
@@ -117,7 +117,7 @@ define [ 'constant', 'MC' ], ( constant, MC ) ->
 
 				if comp.type is "AWS.EC2.Instance" and comp.serverGroupUid is server_group_uid
 					instance_id = comp.resource.InstanceId
-					instance_data = MC.data.resource_list[Design.instance.get('region')][instance_id]
+					instance_data = MC.data.resource_list[Design.instance().region()][instance_id]
 					if instance_id and instance_data and instance_data.instanceState.name isnt 'terminated' and instance_data.instanceState.name isnt 'shutting-down'
 						#instance existed
 						instance_list.push comp.resource.InstanceId

@@ -516,7 +516,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					else
 						#single ENI node
 						eni_id = comp.resource.NetworkInterfaceId
-						eni_data = MC.data.resource_list[Design.instance.get('region')][eni_id]
+						eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 						if eni_data
 							Canvon('#' + uid).removeClass 'deleted'
 						else
@@ -536,7 +536,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 				if comp.type is "AWS.VPC.NetworkInterface" and comp.serverGroupUid is server_group_uid
 					eni_id = comp.resource.NetworkInterfaceId
-					eni_data = MC.data.resource_list[Design.instance.get('region')][eni_id]
+					eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 					if eni_id and eni_data
 						#eni existed
 						eni_list.push comp.resource.NetworkInterfaceId
@@ -547,7 +547,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	getENIById = ( eni_id ) ->
 
-		eni_data = MC.data.resource_list[Design.instance.get('region')][eni_id]
+		eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 
 		#return
 		eni_data

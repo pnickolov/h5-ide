@@ -35,11 +35,15 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 			enabledSG    = {}
 			enabledSGArr = []
 
+			SgAssoModel = Design.modelClassForType( "SgAsso" )
+
 			## ## ## Get All SG
 			for sg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).allObjects()
 				# Ignore ElbSG if the property panel is not stack/elb
 				if sg.isElbSg() and not ( isELBParent or isStackParent )
 					continue
+
+				sgChecked = !!SgAssoModel.findExisting( sg, resource )
 
 				needShow = isStackParent or ( not readonly ) or sgChecked
 				if not needShow

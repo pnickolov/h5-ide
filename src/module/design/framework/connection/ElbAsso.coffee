@@ -144,7 +144,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
       components[ elb.id ].resource.Instances.push {
-        InstanceId : "@#{sb.id}.resource.InstanceId"
+        InstanceId : "@#{instance.id}.resource.InstanceId"
       }
       null
   }

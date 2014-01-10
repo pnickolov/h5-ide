@@ -2315,6 +2315,10 @@ MC.canvas.volume = {
 			$('#' + volume_id).parent().remove();
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+			
+			$('#instance_volume_number').text(
+				$canvas( target_id ).volume().length
+			);
 
 			$canvas.trigger("CANVAS_NODE_SELECTED", "");
 

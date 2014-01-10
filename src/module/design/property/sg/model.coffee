@@ -113,7 +113,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             # get sg obj
             currentRegion = Design.instance().region()
             currentSGComp = Design.instance().component( sg_uid )
-            currentSGID = currentSGComp.get 'GroupId'
+            currentSGID = currentSGComp.get 'appId'
             currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
 
             members = MC.aws.sg.getAllRefComp sg_uid

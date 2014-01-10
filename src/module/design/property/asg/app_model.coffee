@@ -20,7 +20,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         @set data
 
-        @getASGData asg_comp.get 'AutoScalingGroupARN'
+        @getASGData asg_comp.get 'appId'
 
     getASGData : ( arn )->
 

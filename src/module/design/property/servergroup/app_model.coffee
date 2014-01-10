@@ -43,10 +43,10 @@ define [ '../base/model',
 			@set 'can_set_ebs',   MC.aws.instance.canSetEbsOptimized myInstanceComponent
 
 
-		 	routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
+			routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
 
-		 	if routeCount
-		 		@set 'number_disable', true
+			if routeCount
+				@set 'number_disable', true
 
 
 			@set 'number', myInstanceComponent.get 'count'

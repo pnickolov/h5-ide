@@ -34,35 +34,41 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         init : ( rtb_uid )->
 
           # uid might be a line connecting RTB and other resource
-          connection = MC.canvas_data.layout.connection[ rtb_uid ]
-          if connection
-              data = {}
-              for uid, value of connection.target
-                  component = Design.instance().component( uid )
-                  if component.get 'type' is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                      data.subnet = component.get 'name'
-                      has_subnet = true
-                  else if component.get 'type' is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                      data.rtb  = component.get 'name'
-                      rtb_uid = uid
+          rtbOrConn = Design.instance().component( rtb_uid )
 
-              if has_subnet
-                  this.set 'association', data
-                  this.set 'name', 'Subnet-RT Association'
-                  return
+          if rtbOrConn.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable #routeTable
+            routeTable = rtbOrConn
 
-          myRTBComponent = Design.instance().component( rtb_uid )
+          else # connection
+            data = {}
+            connectedTo = rtbOrConn.getOtherTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+            routeTable = rtbOrConn.getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+
+            if connectedTo.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+              data.subnet = connectedTo.get 'name'
+              has_subnet = true
+
+
+            data.rtb  = routeTable.get 'name'
+            rtb_uid = routeTable.id
+
+            if has_subnet
+              this.set 'association', data
+              this.set 'name', 'Subnet-RT Association'
+              return
+
+
 
           appData = MC.data.resource_list[ Design.instance().region() ]
-          rtb     = appData[ myRTBComponent.get 'appId' ]
+          rtb     = appData[ routeTable.get 'appId' ]
 
           if not rtb
             return false
 
           rtb = $.extend true, {}, rtb
-          rtb.name = myRTBComponent.get 'name'
+          rtb.name = routeTable.get 'name'
 
-          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main == "true"
+          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main is true
             rtb.main = "Yes"
           else
             rtb.main = "No"

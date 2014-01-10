@@ -2,7 +2,7 @@
 #  View Mode for design/property/subnet
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     SubnetAppModel = PropertyModel.extend {
 

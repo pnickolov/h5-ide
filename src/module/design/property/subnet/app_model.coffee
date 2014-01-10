@@ -6,31 +6,28 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
     SubnetAppModel = PropertyModel.extend {
 
-        init : ( subnet_uid )->
+        init : ( uid )->
 
-            mySubnetComponent = MC.canvas_data.component[ subnet_uid ]
+            mySubnetComponent = Design.instance().component( uid )
 
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
-            subnet  = appData[ mySubnetComponent.resource.SubnetId ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
+            subnet  = appData[ mySubnetComponent.get 'appId' ]
 
             if not subnet
                 return false
 
             subnet      = $.extend true, {}, subnet
-            subnet.name = mySubnetComponent.name
-            subnet.acl  = this.getACL subnet_uid
-            subnet.uid  = subnet_uid
+            subnet.name = mySubnetComponent.get 'name'
+            subnet.acl  = this.getACL uid
+            subnet.uid  = uid
 
             # Get RouteTable ID
-            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-            for key, value of MC.canvas_data.component
-                if value.type == ACL_TYPE
 
-                    for i in value.resource.AssociationSet
-                        if i.SubnetId.indexOf( subnet_uid ) != -1
-                            linkedRT = value.resource.RouteTableId
-                        if i.Main == "true"
-                            defaultRT = value.resource.RouteTableId
+            routeTable = mySubnetComponent.connectionTargets( 'RTB_Route' )[ 0 ]
+
+            linkedRT = routeTable.get 'appId'
+            if routeTable.get 'main'
+                defaultRT = routeTable.get 'appId'
 
             subnet.routeTable = if linkedRT then linkedRT else defaultRT
 
@@ -39,23 +36,14 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         getACL : ( uid ) ->
 
-            ACL_TYPE = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
+            component = Design.instance().component( uid )
 
-            for id, component of MC.canvas_data.component
-                if component.type == ACL_TYPE
-                    acl =
-                        uid    : component.uid
-                        rule   : component.resource.EntrySet.length
-                        name   : component.name
-                        association : component.resource.AssociationSet.length
+            acl = mySubnetComponent.connectionTargets( 'ACL_Asso' )[ 0 ]
+            linkedACL = acl
 
-                    for asscn in component.resource.AssociationSet
-                        if asscn.SubnetId.indexOf( uid ) != -1
-                            linkedACL = acl
-                            break
+            if acl.isDefault
+                defaultACL = acl
 
-                    if component.name == "DefaultACL"
-                        defaultACL = acl
 
             if linkedACL then linkedACL else defaultACL
     }

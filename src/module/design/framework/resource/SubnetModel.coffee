@@ -26,15 +26,15 @@ define [ "constant",
       # Draw the node
       @draw(true)
 
-      if option.createByUser
-        # Connect to the MainRT automatically
-        RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
-        new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
+      # Connect to the MainRT automatically
+      RtbModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
+      new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
 
-        # Connect to the DefaultACL automatically
-        Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
-        AclAsso = Design.modelClassForType( "AclAsso" )
-        new AclAsso( this, Acl.getDefaultAcl() )
+      # Connect to the DefaultACL automatically
+      Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
+      AclAsso = Design.modelClassForType( "AclAsso" )
+      new AclAsso( this, Acl.getDefaultAcl() )
+
       null
 
     setCidr : ( cidr )->
@@ -254,7 +254,7 @@ define [ "constant",
         height : layout_data.size[1]
 
         parent : resolve( MC.extractID(data.resource.AvailabilityZone) )
-      }, { createByUser: true }
+      }
 
       null
   }

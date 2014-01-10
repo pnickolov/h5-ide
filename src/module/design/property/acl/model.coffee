@@ -89,7 +89,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
             component = Design.instance().component( uid )
 
-            aclObj = MC.data.resource_list[Design.instance().region()][ component.get 'NetworkAclId' ]
+            aclObj = MC.data.resource_list[Design.instance().region()][ component.get 'appId' ]
             aclObj.name = component.get 'name'
 
             aclObj.rule_number = 0
@@ -151,7 +151,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
                 $.each aclObj.associationSet.item, (i, asso) ->
                     for subnet in allSubnet
-                        subnetMap[ subnet.id ] = subnet.get 'name'
+                        #subnetMap[ subnet.id ] = subnet.get 'name'
                         if subnet.id is asso.subnetId
                             asso.subnetDisplay = subnet.get 'name' + '(' + subnet.get 'CidrBlock' + ')'
 

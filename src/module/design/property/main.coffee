@@ -83,7 +83,7 @@ define [ 'event',
 				component = design.component( uid )
 				if not component then return
 
-				if design.modeIsApp() and !component.hasAppResource()
+				if design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
 					type = 'Missing_Resource'
 			else
 				type = "Stack"

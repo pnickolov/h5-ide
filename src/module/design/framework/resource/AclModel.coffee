@@ -162,7 +162,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       new Model({
         id    : data.uid
         name  : data.name
-        appId : data.resource.App
+        appId : data.resource.NetworkAclId
         rules : formatRules( data.resource.EntrySet )
       })
 

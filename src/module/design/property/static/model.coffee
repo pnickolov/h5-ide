@@ -36,7 +36,7 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
           vpc = appData[ vpcId ]
           if vpc then vpcId += " (#{vpc.cidrBlock})"
 
-          @set "id", gatewayId
+          @set "id", id
           @set "vpc", vpcId
 
         null

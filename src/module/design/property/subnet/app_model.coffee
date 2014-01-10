@@ -23,7 +23,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             # Get RouteTable ID
 
-            routeTable = mySubnetComponent.connectionTargets( 'RTB_Route' )[ 0 ]
+            routeTable = mySubnetComponent.connectionTargets( 'RTB_Asso' )[ 0 ]
 
             linkedRT = routeTable.get 'appId'
             if routeTable.get 'main'
@@ -38,10 +38,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             component = Design.instance().component( uid )
 
-            acl = mySubnetComponent.connectionTargets( 'ACL_Asso' )[ 0 ]
+            acl = component.connectionTargets( 'AclAsso' )[ 0 ]
             linkedACL = acl
 
-            if acl.isDefault
+            if acl.isDefault()
                 defaultACL = acl
 
 

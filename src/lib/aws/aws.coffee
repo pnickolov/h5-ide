@@ -438,7 +438,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                 osType = osFamily = ''
                 try
                     osType = data.layout.component.node[item.uid].osType
-                    osFamily = me.getOSFamily(osType)
+                    osFamily = if 'osFamily' of data.layout.component.node[item.uid] and data.layout.component.node[item.uid].osFamily then data.layout.component.node[item.uid].osFamily else  me.getOSFamily(osType)
                 catch e
                     continue
 
@@ -779,13 +779,11 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     getOSFamily = (osType) ->
         me = this
 
-        osFamily = ''
+        osFamily = 'linux'
 
         if osType
             if constant.OS_TYPE_MAPPING[osType]
                 osFamily = constant.OS_TYPE_MAPPING[osType]
-            else if osType in constant.LINUX
-                osFamily = 'linux'
             else if osType in constant.WINDOWS
                 osFamily = 'mswin'
 

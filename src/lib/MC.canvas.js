@@ -121,67 +121,67 @@ MC.canvas = {
 		return true;
 	},
 
-	updateInstanceState: function ()
-	{
-		var comp_data = MC.canvas.data.get('component'),
-			instance_id,
-			instance_data;
+	// data : function ()
+	// {
+	// 	var comp_data = MC.canvas.data.get('component'),
+	// 		instance_id,
+	// 		instance_data;
 
-		$.each( comp_data, function(uid, comp)
-		{
-			if (comp.type === "AWS.EC2.Instance")
-			{
+	// 	$.each( comp_data, function(uid, comp)
+	// 	{
+	// 		if (comp.type === "AWS.EC2.Instance")
+	// 		{
 
-				if (comp.number > 1 && comp.index === 0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
-				{//update state of ServerGroup
-					MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
-				}
+	// 			if (comp.number > 1 && comp.index === 0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
+	// 			{//update state of ServerGroup
+	// 				MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
+	// 			}
 
-				instance_id = comp.resource.InstanceId;
+	// 			instance_id = comp.resource.InstanceId;
 
-				if (instance_id){
-				//instance in app
-					instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
-					if ( $('#' + uid + '_instance-state').length  === 1)
-					{
-						//remove deleted first
-						Canvon( $('#' + uid ) ).removeClass('deleted');
+	// 			if (instance_id){
+	// 			//instance in app
+	// 				instance_data = MC.data.resource_list[MC.canvas.data.get('region')][instance_id];
+	// 				if ( $('#' + uid + '_instance-state').length  === 1)
+	// 				{
+	// 					//remove deleted first
+	// 					Canvon( $('#' + uid ) ).removeClass('deleted');
 
-						if ( instance_data )
-						{//instance data exist
-							$('#' + uid + '_instance-state').attr({
-								'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
-								'data-tooltip' : instance_data.instanceState.name
-							});
+	// 					if ( instance_data )
+	// 					{//instance data exist
+	// 						$('#' + uid + '_instance-state').attr({
+	// 							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
+	// 							'data-tooltip' : instance_data.instanceState.name
+	// 						});
 
-							//add delete class to terminated instance
-							if (instance_data.instanceState.name === 'terminated' ){
-								Canvon( $('#' + uid ) ).addClass('deleted');
-							}
+	// 						//add delete class to terminated instance
+	// 						if (instance_data.instanceState.name === 'terminated' ){
+	// 							Canvon( $('#' + uid ) ).addClass('deleted');
+	// 						}
 
-						}
-						else
-						{//instance data not found, or instance terminated
-							$('#' + uid + '_instance-state').attr({
-								'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
-								'data-tooltip': 'unknown'
-							});
-							Canvon('#' + uid).addClass('deleted');
-						}
-					}
-					else
-					{
-						//no instance svg node found
-					}
-				}
-				else
-				{//instance in stack
+	// 					}
+	// 					else
+	// 					{//instance data not found, or instance terminated
+	// 						$('#' + uid + '_instance-state').attr({
+	// 							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
+	// 							'data-tooltip': 'unknown'
+	// 						});
+	// 						Canvon('#' + uid).addClass('deleted');
+	// 					}
+	// 				}
+	// 				else
+	// 				{
+	// 					//no instance svg node found
+	// 				}
+	// 			}
+	// 			else
+	// 			{//instance in stack
 
-				}
-			}
+	// 			}
+	// 		}
 
-		});
-	},
+	// 	});
+	// },
 
 	resize: function (target, type)
 	{
@@ -2061,58 +2061,58 @@ MC.canvas.layout = {
 	// }
 };
 
-MC.canvas.data = {
-	get: function (key)
-	{
-		var context = MC.canvas_data,
-			namespaces = key.split('.'),
-			last = namespaces.pop(),
-			i = 0,
-			length = namespaces.length,
-			context;
+// MC.canvas.data = {
+// 	get: function (key)
+// 	{
+// 		var context = MC.canvas_data,
+// 			namespaces = key.split('.'),
+// 			last = namespaces.pop(),
+// 			i = 0,
+// 			length = namespaces.length,
+// 			context;
 
-		for (; i < length; i++)
-		{
-			context = context[ namespaces[ i ] ];
-		}
+// 		for (; i < length; i++)
+// 		{
+// 			context = context[ namespaces[ i ] ];
+// 		}
 
-		return context[ last ];
-	},
+// 		return context[ last ];
+// 	},
 
-	set: function (key, value)
-	{
-		var context = MC.canvas_data,
-			namespaces = key.split('.'),
-			last = namespaces.pop(),
-			i = 0,
-			length = namespaces.length,
-			context;
+// 	set: function (key, value)
+// 	{
+// 		var context = MC.canvas_data,
+// 			namespaces = key.split('.'),
+// 			last = namespaces.pop(),
+// 			i = 0,
+// 			length = namespaces.length,
+// 			context;
 
-		for (; i < length; i++)
-		{
-			context = context[ namespaces[ i ] ];
-		}
+// 		for (; i < length; i++)
+// 		{
+// 			context = context[ namespaces[ i ] ];
+// 		}
 
-		return context[ last ] = value;
-	},
+// 		return context[ last ] = value;
+// 	},
 
-	delete: function (key)
-	{
-		var context = MC.canvas_data,
-			namespaces = key.split('.'),
-			last = namespaces.pop(),
-			i = 0,
-			length = namespaces.length,
-			context;
+// 	delete: function (key)
+// 	{
+// 		var context = MC.canvas_data,
+// 			namespaces = key.split('.'),
+// 			last = namespaces.pop(),
+// 			i = 0,
+// 			length = namespaces.length,
+// 			context;
 
-		for (; i < length; i++)
-		{
-			context = context[ namespaces[ i ] ];
-		}
+// 		for (; i < length; i++)
+// 		{
+// 			context = context[ namespaces[ i ] ];
+// 		}
 
-		delete context[ last ];
-	}
-};
+// 		delete context[ last ];
+// 	}
+// };
 
 MC.canvas.volume = {
 	bubble: function (node)

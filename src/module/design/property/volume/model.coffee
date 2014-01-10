@@ -86,7 +86,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             # Snapshot
             if volume_detail.snapshot_id
-                snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
+                snapshot_list = MC.data.config[Design.instance().get('region')].snapshot_list
                 if snapshot_list and snapshot_list.item
                     for item in snapshot_list.item
                         if item.snapshotId is volume_detail.snapshot_id

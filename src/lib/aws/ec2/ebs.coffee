@@ -3,8 +3,8 @@ define [ 'MC' ], ( MC) ->
 	#get valid deviceName for Volume
 	getDeviceName = (uid,volume_id) ->
 
-		comp_data 	= MC.canvas.data.get("component")[uid]
-		region 		= MC.canvas.data.get("region")
+		comp_data 	= Design.instance().serialize()["component"][uid]
+		region 		= Design.instance().get('region')
 		image_id 	= (if comp_data then comp_data.resource.ImageId else "")
 		ami_info 	= (if MC.data.config[region].ami then MC.data.config[region].ami[image_id] else null)
 		device_list	= []

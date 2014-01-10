@@ -138,8 +138,8 @@ define [ 'i18n!nls/lang.js',
                     else
                         quickstart_amis =  ami_list
 
-                    console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                    if region_name == MC.canvas.data.get('region')
+                    console.log 'get quistart ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().get('region')
+                    if region_name == Design.instance().get('region')
                         me.set 'quickstart_ami', quickstart_amis
 
                     #cache config data for current region
@@ -218,8 +218,8 @@ define [ 'i18n!nls/lang.js',
                         MC.data.config[region_name].my_ami = result.resolved_data
 
 
-                    console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                    if region_name == MC.canvas.data.get('region')
+                    console.log 'get my ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().get('region')
+                    if region_name == Design.instance().get('region')
                         me.set 'my_ami', my_ami_list
 
                 else
@@ -260,8 +260,8 @@ define [ 'i18n!nls/lang.js',
                             value.favorite = true
 
 
-                    console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                    if region_name == MC.canvas.data.get('region')
+                    console.log 'get community ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().get('region')
+                    if region_name == Design.instance().get('region')
                         me.set 'community_ami', community_ami_list
 
                 else
@@ -304,8 +304,8 @@ define [ 'i18n!nls/lang.js',
                     null
 
 
-                console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                if region_name == MC.canvas.data.get('region')
+                console.log 'get favorite ami: -> data region: ' + region_name + ', stack region: ' + Design.instance().get('region')
+                if region_name == Design.instance().get('region')
                     me.set 'favorite_ami', legalData
 
                 #cache favorite_ami
@@ -441,8 +441,8 @@ define [ 'i18n!nls/lang.js',
 
                                         null
 
-                        console.log 'get az: -> data region: ' + region_name + ', stack region: ' + MC.canvas.data.get('region')
-                        if region_name == MC.canvas.data.get('region')
+                        console.log 'get az: -> data region: ' + region_name + ', stack region: ' + Design.instance().get('region')
+                        if region_name == Design.instance().get('region')
                             me.set 'availability_zone', res
 
                         #cache az to MC.data.config[region_name].zone

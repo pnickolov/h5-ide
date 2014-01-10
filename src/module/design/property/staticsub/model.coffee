@@ -23,7 +23,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             @set "name", uid
             # If this uid is snapshot uid
-            snapshot_list = MC.data.config[MC.canvas.data.get('region')].snapshot_list
+            snapshot_list = MC.data.config[Design.instance().get('region')].snapshot_list
             if snapshot_list and snapshot_list.item
                 for item in snapshot_list.item
                     if item.snapshotId is uid

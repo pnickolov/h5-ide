@@ -61,8 +61,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 # new design flow
                 if app_id == MC.forge.other.canvasData.get( 'id' )
+
+                    # set data
                     @setCanvasData result.resolved_data[ 0 ]
                     @setOriginData result.resolved_data[ 0 ]
+
+                    # save design_model
+                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data()
 
                 # update MC.Tab[app_id]
                 else
@@ -142,7 +147,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
+
+            # set data
             MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+
+            # set Design
+            MC.tab[ tab_id ].design_model.save data
+
             null
 
         updateAppTabOriginDate : ( data, tab_id ) ->

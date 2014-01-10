@@ -496,7 +496,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
                     osType = osFamily = ''
                     try
                         osType = data.layout.component.node[config_uid].osType
-                        osFamily = me.getOSFamily(osType)
+                        osFamily = if 'osFamily' of data.layout.component.node[item.uid] and data.layout.component.node[item.uid].osFamily then data.layout.component.node[item.uid].osFamily else  me.getOSFamily(osType)
                     catch e
                         continue
 

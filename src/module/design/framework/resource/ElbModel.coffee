@@ -309,8 +309,10 @@ define [ "CanvasManager",
           CrossZoneLoadBalancing : @get("crossZone")
           VpcId                  : if vpc then "@#{vpc.id}.resource.VpcId"
           LoadBalancerName       : @get("name")
-          SecurityGroups : _.map @connectionTargets("SgAsso"), ( sg )->
-            "@#{sg.id}.resource.GroupId"
+          SecurityGroups         : ( _.map @connectionTargets("SgAsso"), ( sg ) ->
+                                      "@#{sg.id}.resource.GroupId"
+          )
+
           Scheme : if @get("internal") then "internal" else "internet-facing"
           ListenerDescriptions : listeners
           HealthCheck :

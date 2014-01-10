@@ -2195,7 +2195,7 @@ MC.canvas.volume = {
 				}
 				else
 				{
-					MC.canvas.select( target_uid );
+					$canvas( target_uid ).select();
 
 					return false;
 				}
@@ -2342,7 +2342,7 @@ MC.canvas.volume = {
 				$canvas( target.data('instance') ).type === 'AWS.AutoScaling.LaunchConfiguration'
 			)
 			{
-				MC.canvas.volume.select.call( $('#' + this.id )[0] );
+				$canvas( this.id ).select();
 
 				return false;
 			}
@@ -2459,7 +2459,7 @@ MC.canvas.volume = {
 			if (event.data.action === 'move')
 			{
 				volume_id = target.attr('id');
-				data_option = target.data('json');
+				//data_option = target.data('json');
 			}
 			else
 			{
@@ -2481,22 +2481,22 @@ MC.canvas.volume = {
 					$canvas( volume_item.id ).select();
 				}
 
-				if (volume_item.id === null)
-				{
-					event.data.action = 'cancel';
-				}
-				else
-				{
-					// if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
-					// {
-					// 	volume_id = new_volume;
-					// }
-					// else
-					// {
-					// 	volume_id = new_volume.id;
-					// 	//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
-					// }
-				}
+				// if (volume_item.id === null)
+				// {
+				// 	event.data.action = 'cancel';
+				// }
+				// else
+				// {
+				// 	// if (target_node.data('class') === 'AWS.AutoScaling.LaunchConfiguration')
+				// 	// {
+				// 	// 	volume_id = new_volume;
+				// 	// }
+				// 	// else
+				// 	// {
+				// 	// 	volume_id = new_volume.id;
+				// 	// 	//data_option.name = MC.canvas.data.get('component.' + volume_id + '.name');
+				// 	// }
+				// }
 			}
 
 			if (event.data.action === 'move')

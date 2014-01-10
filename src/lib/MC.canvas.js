@@ -141,7 +141,7 @@ MC.canvas = {
 
 	// 			if (instance_id){
 	// 			//instance in app
-	// 				instance_data = MC.data.resource_list[Design.instance().get('region')][instance_id];
+	// 				instance_data = MC.data.resource_list[Design.instance().region()][instance_id];
 	// 				if ( $('#' + uid + '_instance-state').length  === 1)
 	// 				{
 	// 					//remove deleted first

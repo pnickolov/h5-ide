@@ -4,7 +4,7 @@ define [ 'MC' ], ( MC) ->
 	getDeviceName = (uid,volume_id) ->
 
 		comp_data 	= Design.instance().serialize()["component"][uid]
-		region 		= Design.instance().get('region')
+		region 		= Design.instance().region()
 		image_id 	= (if comp_data then comp_data.resource.ImageId else "")
 		ami_info 	= (if MC.data.config[region].ami then MC.data.config[region].ami[image_id] else null)
 		device_list	= []

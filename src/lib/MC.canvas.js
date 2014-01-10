@@ -5296,16 +5296,12 @@ MC.canvas.analysis = function ( data )
 		'type': 'AWS.VPC.VPC'
 	};
 
-	var elb_connection;
-
 	// ELB connected children
 	if (resource_stack[ 'AWS.ELB' ] !== undefined)
 	{
 		$.each(resource_stack[ 'AWS.ELB' ], function (current_index, id)
 		{
-			elb_connection = $canvas( id ).connection();
-
-			$.each(elb_connection, function (i, item)
+			$.each($canvas( id ).connection(), function (i, item)
 			{
 				if (item.port === 'elb-sg-out')
 				{
@@ -5668,10 +5664,10 @@ MC.canvas.analysis = function ( data )
 				}
 			});
 
-			// normal_instance.sort(function (a, b)
-			// {
-			// 	return MC.canvas_data.component[ a.id ].name.localeCompare( MC.canvas_data.component[ b.id ].name );
-			// });
+			normal_instance.sort(function (a, b)
+			{
+				return $canvas( a.id ).getModel().attributes.name.localeCompare( $canvas( b.id ).getModel().attributes.name );
+			});
 		}
 
 		if (normal_instance.length > 0)
@@ -5807,7 +5803,7 @@ MC.canvas.analysis = function ( data )
 						{
 							if (resources[ data.target ].type === 'AWS.ELB')
 							{
-								elb_type = component_data[ data.target ].resource.Scheme;
+								elb_type = $canvas( data.target ).getModel().attributes.internal ? 'internal' : 'internet-facing';
 
 								if (elb_type === 'internet-facing')
 								{
@@ -6050,10 +6046,10 @@ MC.canvas.analysis = function ( data )
 
 		if (resource_stack[ 'AWS.VPC.RouteTable' ].length > 0)
 		{
-			// resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
-			// {
-			// 	return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
-			// });
+			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
+			{
+				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+			});
 
 			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)
 			{
@@ -6166,7 +6162,10 @@ MC.canvas.analysis = function ( data )
 	{
 		resource_stack[ 'AWS.ELB' ].sort(function (a, b)
 		{
-			return component_data[ b ].resource.Scheme.localeCompare( component_data[ a ].resource.Scheme );
+			a = $canvas( a ).getModel().attributes.internal ? 'internal' : 'internet-facing';
+			b = $canvas( b ).getModel().attributes.internal ? 'internal' : 'internet-facing';
+
+			return b.localeCompare( a );
 		});
 
 		if (elb_stack.length > 1)

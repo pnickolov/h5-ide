@@ -17,9 +17,9 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             'click #set-main-rt'              : 'setMainRT'
             'change .propagation'             : 'changePropagation'
 
-            "focus .ip-main-input"      : 'onFocusCIDR'
-            "keypress .ip-main-input"   : 'onPressCIDR'
-            "blur .ip-main-input"       : 'onBlurCIDR'
+            "focus .ipt-wrapper .input"      : 'onFocusCIDR'
+            "keypress .ipt-wrapper .input"   : 'onPressCIDR'
+            "blur .ipt-wrapper .input"       : 'onBlurCIDR'
 
         render     : () ->
             @$el.html template @model.attributes

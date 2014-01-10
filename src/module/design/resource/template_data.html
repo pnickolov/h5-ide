@@ -71,11 +71,11 @@
 					<div class="resource-icon resource-icon-rt"></div>
 					<div class="resource-label">{{ i18n "RES_LBL_NEW_RTB" }}</div>
 				</li>
-				<li class="tooltip resource-item {{#if igwIsUsed}}resource-disabled{{/if}}" {{#if igwIsUsed}}data-enable="false"{{/if}}data-tooltip='{{#if igwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_IGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_IGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.InternetGateway">
+				<li class="tooltip resource-item {{#if igwIsUsed}}resource-disabled{{/if}}" {{#if igwIsUsed}}data-enable="false"{{/if}}data-tooltip='{{#if igwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_IGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_IGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.InternetGateway" data-option='{"name":"Internet-gateway"}'>
 					<div class="resource-icon resource-icon-igw"></div>
 					<div class="resource-label">{{ i18n "RES_LBL_NEW_IGW" }}</div>
 				</li>
-				<li class="tooltip resource-item {{#if vgwIsUsed}}resource-disabled{{/if}}" {{#if vgwIsUsed}}data-enable="false"{{/if}} data-tooltip='{{#if vgwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_VGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_VGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.VPNGateway">
+				<li class="tooltip resource-item {{#if vgwIsUsed}}resource-disabled{{/if}}" {{#if vgwIsUsed}}data-enable="false"{{/if}} data-tooltip='{{#if vgwIsUsed}} {{ i18n "RES_TIP_DRAG_HAS_VGW" }} {{else}} {{ i18n "RES_TIP_DRAG_NEW_VGW" }} {{/if}}' data-component-type="node" data-type="AWS.VPC.VPNGateway" data-option='{"name":"VPN-gateway"}'>
 					<div class="resource-icon resource-icon-vgw"></div>
 					<div class="resource-label">{{ i18n "RES_LBL_NEW_VGW" }}</div>
 				</li>

@@ -75,11 +75,7 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
                 result = 'text value is required'
 
             else
-                result = TA.checkComponentExist val
-                if result.length
-                    result = "resource not exist"
-                else
-                    result = null
+                result = @componentExist val
 
             result
 

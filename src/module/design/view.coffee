@@ -9,7 +9,9 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
         el          : '#tab-content-design'
 
         events      :
-            'click .btn-ta-valid' : 'statusbarClick'
+            'click .btn-ta-valid' : 'statusBarTAClick'
+            'click .btn-state-success' : 'statusBarStateSuccessClick'
+            'click .btn-state-failed' : 'statusBarStateFailedClick'
 
         render   : () ->
             console.log 'design render'
@@ -62,8 +64,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 MC.data.current_tab_type = null
             null
 
-        statusbarClick : ( event ) ->
-            console.log 'statusbarClick'
+        statusBarTAClick : ( event ) ->
+            console.log 'statusbarTAClick'
             btnDom = $(event.currentTarget)
             currentText = 'Validate'
             btnDom.text('Validating...')
@@ -74,6 +76,16 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 #status = _.last $(event.currentTarget).attr( 'class' ).split '-'
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
             , 50
+
+        statusBarStateSuccessClick : ( event ) ->
+            setTimeout () ->
+                require [ 'state_status' ], ( statestatus_main ) -> statestatus_main.loadModule 'success', null
+            , 0
+
+        statusBarStateFailedClick : ( event ) ->
+            setTimeout () ->
+                require [ 'state_status' ], ( statestatus_main ) -> statestatus_main.loadModule 'failed', null
+            , 0
 
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type

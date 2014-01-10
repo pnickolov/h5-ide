@@ -125,9 +125,13 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 				osPlatformDistro: osPlatformDistro
 			}
 
-		updateAllStateRef: (oldRef, newRef) ->
+		updateAllStateRef: (originOldRef, originNewRef) ->
 
 			that = this
+
+			oldRef = that.replaceParaNameToUID(originOldRef)
+			newRef = that.replaceParaNameToUID(originNewRef)
+
 			allCompData = that.get('allCompData')
 			moduleCMDMap = that.get('moduleCMDMap')
 			cmdParaObjMap = that.get('cmdParaObjMap')
@@ -177,29 +181,26 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 				return compData.name
 			return ''
 
-		genStateRefList: (compData) ->
+		genStateRefList: (allCompData) ->
 
 			that = this
 
-			compList = _.values(compData)
+			compList = _.values(allCompData)
 			resStateDataAry = []
+
+			compData = that.get('compData')
+			currentCompUID = compData.uid
 
 			if compList and not _.isEmpty(compList) and _.isArray(compList)
 
 				_.each compList, (compObj) ->
 
+					compUID = compObj.uid
+
+					if currentCompUID is compUID
+						return
+
 					compName = compObj.name
-					
-					# find all attr
-					# keyList = _.keys(compObj.resource)
-					# if keyList and not _.isEmpty(keyList) and _.isArray(keyList) and not _.isEmpty(compName)
-					# 	_.each keyList, (attrName) ->
-					# 		completeStr = '{' + compName + '.' + attrName + '}'
-					# 		resAttrDataAry.push({
-					# 			name: completeStr,
-					# 			value: completeStr
-					# 		})
-					# 	null
 
 					# find all state
 					stateAry = compObj.state
@@ -228,6 +229,7 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 			_.each allCompData, (compData, uid) ->
 
 				compName = compData.name
+				compUID = compData.uid
 				compType = compData.type
 
 				# replace instance default eni name to instance name
@@ -249,13 +251,18 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 					_.each attrList, (isArray, attrName) ->
 
 						autoCompStr = (compName + '.') # host1.
+						autoCompRefStr = (compUID + '.') # uid.
 
 						if attrName is '__array'
 							return
 						else
 							autoCompStr += attrName
+							autoCompRefStr += attrName
 
-						autoCompList.push(autoCompStr)
+						autoCompList.push({
+							name: autoCompStr,
+							value: autoCompRefStr
+						})
 
 						if isArray
 
@@ -264,7 +271,10 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
-											autoCompList.push(autoCompStr + '[' + idx + ']')
+											autoCompList.push({
+												name: autoCompStr + '[' + idx + ']',
+												value: autoCompRefStr + '[' + idx + ']'
+											})
 											null
 
 							if supportType is 'AWS_VPC_NetworkInterface'
@@ -272,7 +282,10 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 									ipObjAry = compData.resource.PrivateIpAddressSet
 									if ipObjAry.length > 1
 										_.each ipObjAry, (ipObj, idx) ->
-											autoCompList.push(autoCompStr + '[' + idx + ']')
+											autoCompList.push({
+												name: autoCompStr + '[' + idx + ']',
+												value: autoCompRefStr + '[' + idx + ']'
+											})
 											null
 
 							if supportType is 'AWS_ELB'
@@ -280,21 +293,77 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 									azAry = compData.resource.AvailabilityZones
 									if azAry.length > 1
 										_.each azAry, (azName, idx) ->
-											autoCompList.push(autoCompStr + '[' + idx + ']')
+											autoCompList.push({
+												name: autoCompStr + '[' + idx + ']',
+												value: autoCompRefStr + '[' + idx + ']'
+											})
 											null
 
 						null
 
 				null
 
-			resAttrDataAry = _.map autoCompList, (autoCompStr) ->
-				attrRef = "{#{autoCompStr}}"
+			resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 				return {
-					name: attrRef,
-					value: attrRef
+					name: "{#{autoCompObj.name}}"
+					value: "{#{autoCompObj.name}}"
 				}
 			that.set('resAttrDataAry', resAttrDataAry)
 
+		replaceParaUIDToName: (paraValue) ->
+
+			that = this
+
+			allCompData = that.get('allCompData')
+
+			refRegex = /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})(\.(\w+(\[\d+\])*))+\}/g
+			uidRegex = /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/
+			refMatchAry = paraValue.match(refRegex)
+
+			newParaValue = paraValue
+
+			_.each refMatchAry, (refMatchStr) ->
+
+				uidMatchAry = refMatchStr.match(/[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/)
+				resUID = uidMatchAry[0]
+				resName = allCompData[resUID].name
+				newRefStr = refMatchStr.replace(resUID, resName)
+				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+				null
+
+			return newParaValue
+
+		replaceParaNameToUID: (paraValue) ->
+
+			that = this
+
+			allCompData = that.get('allCompData')
+
+			refRegex = /@\{(\w|\-)+(\.(\w+(\[\d+\])*))+\}/g
+			refMatchAry = paraValue.match(refRegex)
+
+			newParaValue = paraValue
+
+			_.each refMatchAry, (refMatchStr) ->
+
+				resName = refMatchStr.replace('@{', '').split('.')[0]
+				resUID = that.getUIDByResName(resName)
+				newUIDStr = refMatchStr.replace(resName, resUID)
+				newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+				null
+
+			return newParaValue
+
+		getUIDByResName: (resName) ->
+
+			that = this
+			allCompData = that.get('allCompData')
+			resultUID = ''
+			_.each allCompData, (resObj, uid) ->
+				if resObj.name is resName
+					resultUID = uid
+				null
+			return resultUID
 	}
 
 	return StateEditorModel

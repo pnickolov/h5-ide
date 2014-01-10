@@ -6702,11 +6702,15 @@ summary:focus {
 	padding-left: 10px;
 }
 
-.btn-ta-valid {
+.statusbar-btn-list {
+
+}
+
+.statusbar-btn-list .statusbar-btn {
 	text-align        : center;
 	float             : right;
 	cursor            : pointer;
-	width             : 80px;
+	padding           : 0 10px;
 	color             : #eee;
 	border            : none;
 	border-radius     : 0;
@@ -6715,7 +6719,7 @@ summary:focus {
 	/*text-decoration : underline;*/
 }
 
-.btn-ta-valid:hover {
+.statusbar-btn-list .statusbar-btn:hover {
 	background-color: rgba(0,0,0,.2);
 	color: #fff;
 }

@@ -30,6 +30,7 @@ define [ 'event',
             'click .state-cancel': 'onStateCancelClick'
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
+            'click .state-log-toggle': 'onLogToggleClick'
 
         initialize: () ->
 
@@ -811,6 +812,9 @@ define [ 'event',
                                 else
                                     paraValue = ''
 
+                            if $paraItem.hasClass('line') or $paraItem.hasClass('text')
+                                paraValue = that.model.replaceParaNameToUID(paraValue)
+
                     else if $paraItem.hasClass('dict')
 
                         $dictItemList = $paraItem.find('.parameter-dict-item')
@@ -826,6 +830,7 @@ define [ 'event',
                             valueValue = that.getPlainText($valueInput)
 
                             if keyValue
+                                valueValue = that.model.replaceParaNameToUID(valueValue)
                                 dictObj[keyValue] = valueValue
 
                             null
@@ -843,6 +848,7 @@ define [ 'event',
                             arrayValue = that.getPlainText($arrayItem)
 
                             if arrayValue
+                                arrayValue = that.model.replaceParaNameToUID(arrayValue)
                                 arrayObj.push(arrayValue)
 
                             null
@@ -915,10 +921,15 @@ define [ 'event',
                         if paraModelType is 'bool' and paraValue is false
                             renderParaValue = 'false'
 
+                        if paraModelType in ['line', 'text']
+                            renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
+
                     else if paraModelType is 'dict'
 
                         renderParaValue = []
                         _.each paraValue, (paraValueStr, paraKey) ->
+
+                            paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
 
                             renderParaValue.push({
                                 key: paraKey
@@ -937,10 +948,11 @@ define [ 'event',
 
                         renderParaValue = []
                         _.each paraValue, (paraValueStr) ->
+                            paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
                             renderParaValue.push(paraValueStr)
                             null
 
-                        if not paraValue
+                        if not paraValue or not paraValue.length
                             renderParaValue = ['']
 
                     renderParaObj.para_value = renderParaValue
@@ -1002,12 +1014,29 @@ define [ 'event',
 
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
             if $descPanel.is(':visible')
                 $stateEditor.addClass('full')
                 $descPanel.hide()
             else
                 $stateEditor.removeClass('full')
+                $logPanel.hide()
                 $descPanel.show()
+
+        onLogToggleClick: (event) ->
+
+            that = this
+
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
+            if $logPanel.is(':visible')
+                $stateEditor.addClass('full')
+                $logPanel.hide()
+            else
+                $stateEditor.removeClass('full')
+                $descPanel.hide()
+                $logPanel.show()
 
         onDocumentMouseDown: (event) ->
 

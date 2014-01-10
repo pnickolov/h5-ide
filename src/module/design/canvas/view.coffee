@@ -110,7 +110,7 @@ define [ 'event', 'canvas_layout', 'constant',
 
             compObj = MC.canvas_data.component[uid]
             compType = compObj.type
-            if compObj and compType in [ constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ]
+            if compObj and compType in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
                 stateeditor.loadModule(MC.canvas_data, uid)
             null
 

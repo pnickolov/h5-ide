@@ -286,6 +286,12 @@ require.config {
 		'MC.canvas.constant':
 			deps       : [ 'MC.canvas' ]
 
+		'forge_handle' :
+			deps       : [ 'Design' ]
+
+		'aws_handle'   :
+			deps       : [ 'Design' ]
+
 		#############################################
 		# UI
 		#############################################

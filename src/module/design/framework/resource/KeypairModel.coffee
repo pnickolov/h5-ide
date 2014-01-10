@@ -10,6 +10,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       otherTarget = @getOtherTarget( kp )
 
       components[ otherTarget.id ].resource.KeyName = "@#{kp.id}.resource.KeyName"
+      null
   }
 
 

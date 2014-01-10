@@ -38,8 +38,14 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
                     vpn_id = comp.resource.VpnConnectionId
                     break
 
+            cgw = Design.instance().component( cgw_uid )
+
+            vpn = cgw.connectionTargets( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection )[ 0 ]
+
+            vpn_id = vpn.id
+
             # get vpn
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
 
             vpn = _.extend {}, appData[ vpn_id ]
 

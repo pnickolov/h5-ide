@@ -17,7 +17,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
 
             appData = MC.data.resource_list[ Design.instance().region() ]
-            elb     = appData[ myElbComponent.get 'LoadBalancerName' ]
+            elb     = appData[ myElbComponent.get 'appId' ]
 
             if not elb
                 return false
@@ -26,10 +26,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             elb.name = myElbComponent.get 'name'
 
 
-            elb.isInternet = elb.Scheme == "internet-facing"
-            elb.HealthCheck.protocol = elb.HealthCheck.Target.split(":")[0]
-            elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
-            elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
+            elb.isInternet = elb.Scheme is 'internet-facing'
+            elb.HealthCheck.protocol = elb.HealthCheck.Target.split( ':' )[ 0 ]
+            elb.HealthCheck.port     = elb.HealthCheck.Target.split( ':' )[ 1 ].split( '/' )[ 0 ]
+            elb.HealthCheck.path     = elb.HealthCheck.Target.split( '/' )[ 1 ]
 
             # Cross Zone
             crossZone = myElbComponent.get 'CrossZoneLoadBalancing'
@@ -39,8 +39,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                 elb.CrossZone = 'Disabled'
 
             # DNS
-            elb.AAAADNSName = "ipv6." + elb.DNSName
-            elb.ADNSName    = "dualstack." + elb.DNSName
+            elb.AAAADNSName = "ipv6.#{elb.DNSName}"
+            elb.ADNSName    = "dualstack.#{elb.DNSName}"
 
 
             elb.listenerDisplay = []

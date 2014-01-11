@@ -361,7 +361,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     list = CanvasElement.prototype.list.call( this )
     instance = Design.instance().component( this.id )
     list.background = instance.iconUrl()
-    list.volume     = instance.volume()
+    list.volume     = (instance.get("volumeList") || []).length
     list
 
   CanvasElement.instance.prototype.addVolume = ( attribute )->

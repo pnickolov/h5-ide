@@ -1,73 +1,35 @@
+<!-- statestatus-template-modal -->
+<div class="modal-header">
+	<h3>State Overview</h3>
+	<i class="modal-close">×</i>
+</div>
+<div class="modal-body">
+	<div class="modal-state-statusbar">
+	</div>
+</div>
+
+<!-- statestatus-template-status-content -->
 <div class="state-status-content">
-	<div class="scroll-wrap scroll-wrap-validation" style="height:300px;">
+	<div class="scroll-wrap scroll-wrap-validation" style="height:200px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
 			<ul class="state-status-list">
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
-				<li class="state-status-item">
-					<div class="state-status-item-icon"></div>
-					<div class="state-status-item-info">
-						<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-						<div class="state-status-item-time">State log will update after change is applied.</div>
-					</div>
-					<div class="state-status-item-detail"></div>
-				</li>
+				{{> statestatus-template-status-item}}
 			</ul>
 		</div>
 	</div>
 </div>
+
+<!-- statestatus-template-status-item -->
+{{#each state_statuses}}
+	<li class="state-status-item">
+		<div class="state-status-item-icon"></div>
+		<div class="state-status-item-info">
+			<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
+			<div class="state-status-item-time">State log will update after change is applied.</div>
+		</div>
+		<div class="state-status-item-detail"></div>
+	</li>
+{{/each}}
+
+<!-- template end -->

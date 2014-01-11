@@ -90,6 +90,7 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 
 			that.genStateRefList(allCompData)
 			that.genAttrRefList(allCompData)
+			that.genStateLogData()
 
 			# for view
 			that.set('cmdParaMap', cmdParaMap)
@@ -364,6 +365,33 @@ define [ 'MC', 'constant', 'backbone', 'jquery', 'underscore',
 					resultUID = uid
 				null
 			return resultUID
+
+		genStateLogData: () ->
+
+			that = this
+
+			logData = {
+				app_id: "",
+				res_id: "",
+				logs: [
+					{
+						state_id: "1",
+						time: "2013-12-13"
+						stdout: "asddsa\nserer",
+						stderr: "grewgwe\n\nwerewrewr"
+					},
+					{
+						state_id: "2",
+						time: "2013-12-14"
+						stdout: "feweg\nserewsrewrewr",
+						stderr: "gerwew\ngewg"
+					}
+				]
+			}
+
+			logAry = logData.logs
+
+			that.set('stateLogDataAry', logAry)
 	}
 
 	return StateEditorModel

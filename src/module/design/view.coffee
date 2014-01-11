@@ -10,8 +10,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
         events      :
             'click .btn-ta-valid' : 'statusBarTAClick'
-            'click .btn-state-success' : 'statusBarStateSuccessClick'
-            'click .btn-state-failed' : 'statusBarStateFailedClick'
+            'click .btn-state' : 'statusBarStateClick'
 
         render   : () ->
             console.log 'design render'
@@ -77,14 +76,9 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
             , 50
 
-        statusBarStateSuccessClick : ( event ) ->
+        statusBarStateClick : ( event ) ->
             setTimeout () ->
                 require [ 'state_status' ], ( statestatus_main ) -> statestatus_main.loadModule 'success', null
-            , 0
-
-        statusBarStateFailedClick : ( event ) ->
-            setTimeout () ->
-                require [ 'state_status' ], ( statestatus_main ) -> statestatus_main.loadModule 'failed', null
             , 0
 
         updateStatusbar : ( type, level ) ->

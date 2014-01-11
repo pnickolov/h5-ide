@@ -54,6 +54,7 @@ define [ 'event',
 
                 that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
                 that.$stateList = that.$el.find('.state-list')
+                that.$stateLogList = that.$el.find('.state-log-list')
                 that.$cmdDsec = $('#state-description')
 
                 # hide autocomplete when click document
@@ -67,6 +68,7 @@ define [ 'event',
                 that.refreshStateList(stateObj)
                 that.refreshStateViewList()
                 that.bindStateListSortEvent()
+                that.refreshStateLogList()
 
             , 1)
 
@@ -102,6 +104,7 @@ define [ 'event',
             paraViewListHTML = htmlMap['state-template-para-view-list']
             paraDictItemHTML = htmlMap['state-template-para-dict-item']
             paraArrayItemHTML = htmlMap['state-template-para-array-item']
+            stateLogItemHTML = htmlMap['state-template-log-item']
             paraCompleteItemHTML = '<li data-value="${atwho-at}${name}">${name}</li>'
 
             this.stateListTpl = Handlebars.compile(stateListHTML)
@@ -110,12 +113,20 @@ define [ 'event',
             Handlebars.registerPartial('state-template-para-view-list', paraViewListHTML)
             Handlebars.registerPartial('state-template-para-dict-item', paraDictItemHTML)
             Handlebars.registerPartial('state-template-para-array-item', paraArrayItemHTML)
+            Handlebars.registerPartial('state-template-log-item', stateLogItemHTML)
 
+            # Handlebars helper
+            Handlebars.registerHelper('nl2br', (text) ->
+                nl2br = (text + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
+                return new Handlebars.SafeString(nl2br)
+            )
+
+            this.editorModalTpl = Handlebars.compile(editorModalHTML)
             this.paraListTpl = Handlebars.compile(paraListHTML)
             this.paraViewListTpl = Handlebars.compile(paraViewListHTML)
             this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
             this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
-            this.editorModalTpl = Handlebars.compile(editorModalHTML)
+            this.stateLogItemTpl = Handlebars.compile(stateLogItemHTML)
 
         bindStateListSortEvent: () ->
 
@@ -1220,6 +1231,27 @@ define [ 'event',
                 oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
                 newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
                 that.model.updateAllStateRef(oldStateIdRef, newStateIdRef)
+
+        refreshStateLogList: () ->
+
+            that = this
+            stateLogDataAry = that.model.get('stateLogDataAry')
+
+            stateLogViewAry = []
+            _.each stateLogDataAry, (logObj) ->
+                stateLogViewAry.push({
+                    state_id: "State #{logObj.state_id}",
+                    log_time: logObj.time,
+                    stdout: logObj.stdout,
+                    stderr: logObj.stderr
+                })
+                null
+
+            renderHTML = that.stateLogItemTpl({
+                state_logs: stateLogViewAry
+            })
+
+            that.$stateLogList.html(renderHTML)
 
     }
 

@@ -2183,7 +2183,8 @@ MC.canvas.volume = {
 			if (MC.canvas.getState() === 'app')
 			{
 				if (
-					$('#' + target_id + '_instance-number').text() * 1 === 1 ||
+					//$('#' + target_id + '_instance-number').text() * 1 === 1 ||
+					$canvas( target_id ).list().length === 0 ||
 					target.hasClass('instanceList-item-volume')
 				)
 				{

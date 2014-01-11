@@ -8,23 +8,23 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
 
     LCAppView = PropertyView.extend {
 
-        events   :
-            "click #property-app-keypair" : "downloadKeypair"
+        events:
+            "click #property-app-keypair": "downloadKeypair"
 
-        kpModalClosed : false
+        kpModalClosed: false
 
-        render : () ->
-            @$el.html template @model.attributes
-            @model.attributes.name
+        render: () ->
+            @$el.html template @model.toJSON()
+            @model.toJSON()
 
-        downloadKeypair : ( event ) ->
+        downloadKeypair: ( event ) ->
             keypair = $( event.currentTarget ).html()
-            @model.downloadKP(keypair)
+            @model.downloadKP( keypair )
 
             modal MC.template.modalDownloadKP { name  : keypair }
 
             me = this
-            $('#modal-wrap').on "closed", ()->
+            $('#modal-wrap').on "closed", () ->
                 me.kpModalClosed = true
                 null
 
@@ -32,7 +32,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
 
             false
 
-        updateKPModal : ( data ) ->
+        updateKPModal: ( data ) ->
             if not data
                 modal.close()
                 return
@@ -46,7 +46,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
             $("#keypair-rdp").hide()
 
             $("#keypair-kp-linux" )
-                .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent(data) )
+                .attr("href", "data://text/plain;charset=utf8," + encodeURIComponent data )
                 .attr("download", $("#keypair-name").text() + ".pem" )
 
             $("#keypair-private-key").val( data )

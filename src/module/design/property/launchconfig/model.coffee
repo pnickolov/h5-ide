@@ -54,6 +54,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
       if @isApp
         @getAppLaunch( uid )
+        @set 'keyName', @lc.getKeyName()
         return
 
       null

@@ -451,6 +451,10 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     is_pending = true
 
                 id = id.resolved_data[0].id
+
+                # new design flow
+                data = MC.forge.other.canvasData.data()
+
                 item_state_map[id] = {
 
                     # old design flow
@@ -473,8 +477,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
 
                     # new design flow
-                    'has_instance_store_ami': me.isInstanceStore(MC.forge.other.canvasData.data()),
-                    'is_asg'                : me.isAutoScaling(MC.forge.other.canvasData.data()),
+                    'has_instance_store_ami': me.isInstanceStore(data),
+                    'is_asg'                : me.isAutoScaling(data),
                     'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
 
@@ -680,7 +684,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
             #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.canvas_data )) else JSON.stringify(data)
 
             # new design flow
-            json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
+            #json_data = if MC.data.current_tab_id.split( '-' )[0] is 'app' then JSON.stringify(MC.forge.stack.compactServerGroup( MC.forge.other.canvasData.data() )) else JSON.stringify(data)
+            json_data = JSON.stringify data
             #
             phantom_data =
                 'origin_host': window.location.origin,

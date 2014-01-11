@@ -147,10 +147,11 @@ define [ 'MC', 'event',
 
                 # old design flow
                 #copy_data = $.extend( true, {}, MC.canvas_data )
+                #cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
 
                 # new design flow
-                copy_data = MC.forge.other.canvasData.data()
-                cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
+                cost = MC.aws.aws.getCost MC.forge.other.canvasData.data()
+
                 $('#label-total-fee').find("b").text("$#{cost.total_fee}")
 
                 #

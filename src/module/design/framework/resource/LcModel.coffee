@@ -79,6 +79,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       null
 
     getAmi                : InstanceModel.prototype.getAmi
+    getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
 

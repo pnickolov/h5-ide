@@ -79,18 +79,53 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         return p
 
+    getDetailedOSFamily : ()->
+      ami = @getAmi() || @get("cachedAmi")
+      if not ami or not ami.osType or not ami.osFamily
+        console.warn "Cannot find ami infomation for instance :", this
+        return "linux"
+
+      osType   = ami.osType
+      osFamily = ami.osFamily
+
+      if constant.OS_TYPE_MAPPING[osType]
+        osFamily = constant.OS_TYPE_MAPPING[osType]
+
+      if osType in constant.WINDOWS
+        osFamily = 'mswin'
+
+        sql_web_pattern = /sql.*?web.*?/
+        sql_standerd_pattern = /sql.*?standard.*?/
+
+        name        = ami.name or ""
+        desc        = ami.description or ""
+        imgLocation = ami.imageLocation or ""
+
+        if name.match( sql_web_pattern ) or desc.match( sql_web_pattern ) or imgLocation.match( sql_web_pattern )
+          osFamily = 'mswinSQLWeb'
+        else if name.match( sql_standerd_pattern ) or desc.match( sql_standerd_pattern ) or imgLocation.match( sql_standerd_pattern )
+          osFamily = 'mswinSQL'
+
+      osFamily
+
+
     getCost : ( priceMap, currency )->
       if not priceMap.instance then return null
 
       ami = @getAmi() || @get("cachedAmi")
       osType   = if ami then ami.osType else "linux-other"
-      osFamily = if ami then ami.osFamily else "linux"
+      osFamily = @getDetailedOSFamily()
 
       instanceType = @get("instanceType").split(".")
       unit = priceMap.instance.unit
       fee  = priceMap.instance[ instanceType[0] ][ instanceType[1] ]
       fee  = if fee then fee.onDemand
-      fee  = if fee then fee[ osFamily ]
+
+      if fee
+        if fee[ osFamily ] is undefined and osFamily.indexOf("mswin") is 0
+          osFamily = "mswin"
+        fee = fee[osFamily]
+
       fee  = if fee then fee[ currency ]
 
       if not fee then return null
@@ -107,6 +142,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           fee         : fee
           formatedFee : formatedFee
 
+      servergroupCount = @get("count") or 1
+
+      if servergroupCount > 1
+        priceObj.resource += "   ( x#{servergroupCount})"
+        fee *= servergroupCount
+
       if @get("monitoring")
         for t in priceMap.cloudwatch.types
           if t.ec2Monitoring
@@ -114,7 +155,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             cw_fee =
               resource    : @get("name") + "-monitoring"
               type        : "CloudWatch"
-              fee         : fee
+              fee         : fee * servergroupCount
               formatedFee : fee + "/mo"
 
             return [ priceObj, cw_fee ]

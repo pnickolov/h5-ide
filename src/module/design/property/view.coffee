@@ -101,7 +101,7 @@ define [ 'event',
 
             $toggle.toggleClass("expand")
 
-            stackId = MC.canvas_data.id
+            stackId = Design.instance().get("id")
             if !@propertyHeadStateMap[stackId]
                 @propertyHeadStateMap[stackId] = {}
 

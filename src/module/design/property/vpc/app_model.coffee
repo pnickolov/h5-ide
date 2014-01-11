@@ -21,21 +21,15 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
           TYPE_RTB = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
           TYPE_ACL = constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
-          # Get Main Route Table and Default ACL
-          # TODO ( Update this code ):
-          ############################
-          # for key, value of MC.canvas_data.component
-          #   if value.type == TYPE_RTB
-          #     if value.resource.AssociationSet[0] && value.resource.AssociationSet[0].Main == "true"
-          #       vpc.mainRTB = value.resource.RouteTableId
-          #       if vpc.defaultACL
-          #         break
-          #   else if value.type == TYPE_ACL
-          #     if value.resource.Default == "true"
-          #       vpc.defaultACL = value.resource.NetworkAclId
-          #       if vpc.mainRTB
-          #         break
-          ############################
+          RtbModel = Design.modelClassForType( TYPE_RTB )
+          AclModel = Design.modelClassForType( TYPE_ACL )
+
+          vpc.mainRTB = RtbModel.getMainRouteTable()
+          if vpc.mainRTB
+            vpc.mainRTB = vpc.mainRTB.get("appId")
+          vpc.defaultACL = AclModel.getDefaultAcl()
+          if vpc.defaultACL
+            vpc.defaultACL = vpc.defaultACL.get("appId")
 
           if vpc.dhcpOptionsId
             if not appData[ vpc.dhcpOptionsId ]

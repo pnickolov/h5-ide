@@ -108,7 +108,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
               else
                 tmp.subnet = null
 
-              $.each MC.data.config[MC.canvas_data.region].zone.item, (i, zone) ->
+              $.each MC.data.config[Design.instance().region()].zone.item, (i, zone) ->
 
                 if zone.zoneName == zone_name and zone.zoneState == 'available'
 
@@ -134,7 +134,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                     return false
 
-            elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
+            elb.isclassic = Design.instance().typeIsClassic()
 
             @set elb
             @set "componentUid", myElbComponent.id

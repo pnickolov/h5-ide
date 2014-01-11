@@ -154,33 +154,6 @@ define [ 'constant',
 			# Return false to do nothing, since we have done them already
 			false
 
-		doCreateLine : ( line_id ) ->
-
-			line_option = MC.canvas.lineTarget line_id
-
-			if line_option.length != 2
-				return
-
-			console.info line_option[0].uid + ',' + line_option[0].port + " | " + line_option[1].uid + ',' + line_option[1].port
-
-			portMap = {}
-			for obj in line_option
-				portMap[ obj.port ] = obj.uid
-
-
-			if not (MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC and (portMap['elb-sg-in'] or portMap['elb-sg-out']))
-
-				# # Prevent SG Rule create from AMI to attached ENI
-				# eni_comp = MC.canvas_data.component[ portMap["eni-sg"] ]
-				# if eni_comp and eni_comp.resource.Attachment and eni_comp.resource.Attachment.InstanceId.indexOf( portMap["instance-sg"] ) isnt -1
-				# 	return "The Network Interface is attached to the instance. No need to connect them by security group rule."
-
-				for key, value of portMap
-					if key.indexOf('sg') >= 0
-						this.trigger 'CREATE_SG_CONNECTION', line_id
-						break
-			null
-
 		createComponent : ( event, uid ) ->
 			resource_type = constant.AWS_RESOURCE_TYPE
 

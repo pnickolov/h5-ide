@@ -34,6 +34,8 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
+
+      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
@@ -141,6 +143,16 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
             'data-type'     : 'sg'
             'data-direction': 'out'
           })
+
+          # Child number
+          Canvon.group().append(
+            Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
+            Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
+          ).attr({
+            'id'      : @id + "_instance-number-group"
+            'class'   : 'instance-number-group'
+            "display" : "none"
+          })
         )
 
         # Move the node to right place
@@ -156,6 +168,17 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       # Volume Number
       volumeCount = if @get("volumeList") then @get("volumeList").length else 0
       CanvasManager.update node.children(".volume-number"), volumeCount
+
+      # In app mode, show number
+      if not Design.instance().modeIsStack() and @parent()
+        data = MC.data.resource_list[ Design.instance().region() ][ @parent().get("appId") ]
+        numberGroup = node.children(".instance-number-group")
+        if data and data.Instances and data.Instances.member and data.Instances.member.length > 1
+          CanvasManager.toggle numberGroup, true
+          CanvasManager.update numberGroup.children("text"), data.Instances.member.length
+        else
+          CanvasManager.toggle numberGroup, false
+      null
 
     serialize : ()->
 

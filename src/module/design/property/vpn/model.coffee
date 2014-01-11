@@ -13,7 +13,7 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
             cgw = vpn.getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway )
 
             if @isApp
-                @getAppData( cgw, vgw )
+                @getAppData( vpn.get("appId") )
 
             else
                 @set {
@@ -29,25 +29,11 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
             Design.instance().component( @get("uid") ).set("routes", ipset)
             null
 
-        getAppData : ( cgw_uid, vgw_uid )->
-            # vpn assignment
-            vpn_id = null
-            # get vpn id
-            for uid, comp of MC.canvas_data.component
-                if comp.type is 'AWS.VPC.VPNConnection' and comp.resource.CustomerGatewayId is "@#{cgw_uid}.resource.CustomerGatewayId"
-                    vpn_id = comp.resource.VpnConnectionId
-                    break
-
-            cgw = Design.instance().component( cgw_uid )
-
-            vpn = cgw.connectionTargets( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNConnection )[ 0 ]
-
-            vpn_id = vpn.id
-
+        getAppData : ( vpnAppId )->
             # get vpn
             appData = MC.data.resource_list[ Design.instance().region() ]
 
-            vpn = _.extend {}, appData[ vpn_id ]
+            vpn = $.extend true, {}, appData[ vpnAppId ]
 
             # # JSON detail
             # config =

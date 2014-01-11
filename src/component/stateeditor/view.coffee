@@ -69,6 +69,7 @@ define [ 'event',
                 that.refreshStateViewList()
                 that.bindStateListSortEvent()
                 that.refreshStateLogList()
+                that.refreshDescription()
 
             , 1)
 
@@ -421,17 +422,22 @@ define [ 'event',
         refreshDescription: (cmdName) ->
 
             that = this
-            moduleObj = that.cmdModuleMap[cmdName]
 
             descMarkdown = ''
-            if moduleObj.reference
-                descMarkdown = moduleObj.reference['en']
+            
+            if cmdName
+                moduleObj = that.cmdModuleMap[cmdName]
+                if moduleObj.reference
+                    descMarkdown = moduleObj.reference['en']
+                that.$cmdDsec.attr('data-command', cmdName)
+            else
+                descMarkdown = 'Get Started with Conﬁguration Manager Conﬁguration manager is blah blah blah... You can use following command...'
 
             descHTML = ''
             if descMarkdown
                 descHTML = $.markdown(descMarkdown)
 
-            that.$cmdDsec.html(descHTML).attr('data-command', cmdName)
+            that.$cmdDsec.html(descHTML)
 
             null
 

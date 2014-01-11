@@ -638,3 +638,19 @@ body {
 .state-status-content .state-status-item-detail:hover {
 	background-color: #00f;
 }
+
+.state-status-content .state-status-pedding-main {
+	margin-top: 65px;
+	color: #fff;
+	text-align: center;
+}
+
+.state-status-content .state-status-pedding-sub {
+	margin-top: 5px;
+	color: #aaa;
+	text-align: center;
+}
+
+.state-status-content .state-status-all-pedding {
+	display: none;
+}

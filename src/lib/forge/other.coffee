@@ -10,6 +10,10 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			console.log 'canvasData:init'
 			MC.canvas_data = $.extend true, {}, data
 
+		initSet : ( key, value ) ->
+			console.log 'canvasData:initSet', key, value
+			MC.canvas_data[ key ] = value
+
 		data : ( is_origin = false ) ->
 			console.log 'canvasData:data', is_origin
 
@@ -44,12 +48,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			console.log 'canvasData:set', key, value
 
 			# when Design.instance() is null explain 'NEW_STACK' state
-			if _.isEmpty Design.instance()
-
-				# old design flow
-				MC.canvas_data[ key ] = value
-
-			else
+			if not _.isEmpty Design.instance()
 
 				# new design flow
 				Design.instance().set key, value

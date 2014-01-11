@@ -149,11 +149,10 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
                 allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
 
-                $.each aclObj.associationSet.item, (i, asso) ->
+                _.each aclObj.associationSet.item, ( asso ) ->
                     for subnet in allSubnet
-                        #subnetMap[ subnet.id ] = subnet.get 'name'
-                        if subnet.id is asso.subnetId
-                            asso.subnetDisplay = subnet.get 'name' + '(' + subnet.get 'CidrBlock' + ')'
+                        if subnet.get( 'appId' ) is asso.subnetId
+                            asso.subnetDisplay = "#{subnet.get 'name'}(#{subnet.get 'cidr'})"
 
 
             if aclObj.associationSet and aclObj.associationSet.item

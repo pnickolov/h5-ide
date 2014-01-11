@@ -38,6 +38,9 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
 
+    getKeyName : () ->
+      @connectionTargets( 'KeypairUsage' )[ 0 ].get 'name'
+
     remove : ()->
       # Remove attached volumes
       for v in @get("volumeList") or emptyArray
@@ -221,6 +224,8 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         monitoring   : data.resource.InstanceMonitoring
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
+
+        createdTime   : data.resource.CreatedTime
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

@@ -212,7 +212,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       MC.canvas.volume.select( this.id )
     else
       MC.canvas.select( this.id )
-    return true
 
     true
 

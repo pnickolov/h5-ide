@@ -13,9 +13,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         data =
           uid        : uid
           name       : asg_comp.get 'name'
-          minSize    : asg_comp.get 'MinSize'
-          maxSize    : asg_comp.get 'MaxSize'
-          capacity   : asg_comp.get 'DesiredCapacity'
+          minSize    : asg_comp.get 'minSize'
+          maxSize    : asg_comp.get 'maxSize'
+          capacity   : asg_comp.get 'capacity'
           isEditable : @isAppEdit
 
         @set data

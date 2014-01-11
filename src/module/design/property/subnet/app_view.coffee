@@ -13,7 +13,7 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
 
         render     : () ->
             @$el.html template @model.toJSON()
-            @setTitle @model.toJSON()
+            @setTitle @model.get 'name'
             null
 
         showACLDetail : ( event ) ->

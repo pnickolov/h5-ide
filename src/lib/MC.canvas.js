@@ -2670,21 +2670,21 @@ MC.canvas.asgList = {
 };
 
 MC.canvas.instanceList = {
-	add: function (data)
-	{
-		$('#instanceList').append(
-			MC.template.instanceListItem(data)
-		);
+	// add: function (data)
+	// {
+	// 	$('#instanceList').append(
+	// 		MC.template.instanceListItem(data)
+	// 	);
 
-		return true;
-	},
+	// 	return true;
+	// },
 
-	remove: function (id)
-	{
-		$('#' + id).parent().remove();
+	// remove: function (id)
+	// {
+	// 	$('#' + id).parent().remove();
 
-		return true;
-	},
+	// 	return true;
+	// },
 
 	show: function (event)
 	{
@@ -2755,21 +2755,21 @@ MC.canvas.instanceList = {
 };
 
 MC.canvas.eniList = {
-	add: function (data)
-	{
-		$('#eniList').append(
-			MC.template.eniListItem(data)
-		);
+	// add: function (data)
+	// {
+	// 	$('#eniList').append(
+	// 		MC.template.eniListItem(data)
+	// 	);
 
-		return true;
-	},
+	// 	return true;
+	// },
 
-	remove: function (id)
-	{
-		$('#' + id).parent().remove();
+	// remove: function (id)
+	// {
+	// 	$('#' + id).parent().remove();
 
-		return true;
-	},
+	// 	return true;
+	// },
 
 	show: function (event)
 	{
@@ -2782,57 +2782,56 @@ MC.canvas.eniList = {
 			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
-				canvas_offset = $canvas.offset();
+				canvas_offset = $canvas.offset(),
+				list = $canvas( target_id ).list();
 
-			if ($('#' + target_id + '_eni-number').text() * 1 === 1)
+			if (list.length === 0)
 			{
-				MC.canvas.select( target_id );
-
 				$canvas(target_id).select();
 
 				return false;
 			}
 
-			var uid      = MC.extractID( target_id ),
-			    layout   = MC.canvas_data.layout.component.node[ uid ],
-			    eni_comp = MC.canvas_data.component[ uid ];
+			// var uid      = MC.extractID( target_id ),
+			//     layout   = MC.canvas_data.layout.component.node[ uid ],
+			//     eni_comp = MC.canvas_data.component[ uid ];
 
-			var temp_data = {
-				  enis : []
-				, name : eni_comp.serverGroupName
-				, eip  : layout.eniList.length === layout.eipList.length
-			};
+			// var temp_data = {
+			// 	  enis : []
+			// 	, name : eni_comp.serverGroupName
+			// 	, eip  : layout.eniList.length === layout.eipList.length
+			// };
 
-			// if ( eni_comp.resource.Attachment && eni_comp.resource.Attachment.InstanceId ) {
-			// 	var ins_comp = MC.canvas_data.component[ MC.extractID( eni_comp.resource.Attachment.InstanceId ) ];
-			// 	if ( ins_comp.serverGroupName ) {
-			// 		temp_data.name += " - " + ins_comp.serverGroupName;
+			// // if ( eni_comp.resource.Attachment && eni_comp.resource.Attachment.InstanceId ) {
+			// // 	var ins_comp = MC.canvas_data.component[ MC.extractID( eni_comp.resource.Attachment.InstanceId ) ];
+			// // 	if ( ins_comp.serverGroupName ) {
+			// // 		temp_data.name += " - " + ins_comp.serverGroupName;
+			// // 	}
+			// // }
+
+			// for ( var i = 0, l = layout.eniList.length; i < l; ++i )
+			// {
+			// 	var is_deleted = '',
+			// 		found_eni = null;
+
+			// 	var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
+
+			// 	//get eni
+			// 	if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
+			// 		found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
 			// 	}
+			// 	if (found_eni === undefined){
+			// 		is_deleted = " deleted";
+			// 	}
+
+			// 	temp_data.enis.push({
+			// 		'id'   : eni_comp.uid,
+			// 		'name' : eni_comp.resource.NetworkInterfaceId,
+			// 		'is_deleted' : is_deleted
+			// 	});
 			// }
 
-			for ( var i = 0, l = layout.eniList.length; i < l; ++i )
-			{
-				var is_deleted = '',
-					found_eni = null;
-
-				var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
-
-				//get eni
-				if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
-					found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
-				}
-				if (found_eni === undefined){
-					is_deleted = " deleted";
-				}
-
-				temp_data.enis.push({
-					'id'   : eni_comp.uid,
-					'name' : eni_comp.resource.NetworkInterfaceId,
-					'is_deleted' : is_deleted
-				});
-			}
-
-			$('#canvas_container').append( MC.template.eniList( temp_data ) );
+			$('#canvas_container').append( MC.template.eniList( list ) );
 
 			$('#eniList-wrap')
 				.on('click', '.eniList-item', MC.canvas.eniList.select)

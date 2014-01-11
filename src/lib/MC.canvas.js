@@ -4836,12 +4836,14 @@ MC.canvas.event.clearList = function (event)
 
 MC.canvas.event.nodeHover = function (event)
 {
-	var stack = [];
+	var connection = $canvas(this.id).connection(),
+		stack = [],
+		length = connection.length;
 
-	$.each($canvas(this.id).connection(), function (i, item)
+	while ( length-- )
 	{
-		stack.push('#' + item.line);
-	});
+		stack[ length ] = '#' + connection[ length ].line;
+	}
 
 	Canvon( stack.join(',') )[ event.type === 'mouseenter' ? 'addClass' : 'removeClass' ]( 'view-hover' );
 

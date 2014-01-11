@@ -25,6 +25,9 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         isApp  : @isApp
       }
 
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
+      if vpc then @set "vpcid", vpc.get("appId")
+
       @getNetworkACL()
 
       if @isApp

@@ -14,10 +14,11 @@
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group"></div>
 
-	{{#if networkAcls}}
-	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{#if networkAcls}}{{networkAcls.length}}{{else}}0{{/if}})</span></div>
-	<div class="option-group stack-property-acl-list"></div>
-	{{/if}}
+  {{#if networkAcls}}
+  <div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{networkAcls.length}})</span>
+  </div>
+  <div class="option-group"><ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul></div>
+  {{/if}}
 
 	<div class="option-group-head">{{ i18n "PROP_STACK_TIT_SNS" }}<span class="property-head-num-wrap">({{#if subscription}}{{subscription.length}}{{else}}0{{/if}})</span></div>
 	<div class="option-group">

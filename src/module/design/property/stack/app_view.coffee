@@ -14,7 +14,7 @@ define [ '../base/view',
     InstanceAppView = PropertyView.extend {
 
         events :
-            'click .stack-property-acl-list .edit'  : 'openEditAclPanel'
+            'click #stack-property-acl-list .edit' : 'openAcl'
 
         render     : () ->
             @$el.html template @model.attributes
@@ -28,11 +28,10 @@ define [ '../base/view',
 
 
         refreshACLList : () ->
-            if MC.aws.vpc.getVPCUID() or MC.aws.aws.checkDefaultVPC()
-                this.model.getNetworkACL()
-                $('.stack-property-acl-list').html acl_template this.model.attributes
+            this.model.getNetworkACL()
+            $('#stack-property-acl-list').html acl_template this.model.attributes
 
-        openEditAclPanel : ( event ) ->
+        openAcl : ( event ) ->
             @trigger "OPEN_ACL", $( event.currentTarget ).attr('acl-uid')
     }
 

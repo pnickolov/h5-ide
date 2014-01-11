@@ -150,9 +150,9 @@ define [ 'MC', 'event',
                 #cost = MC.aws.aws.getCost MC.forge.stack.compactServerGroup(copy_data)
 
                 # new design flow
-                cost = MC.aws.aws.getCost MC.forge.other.canvasData.data()
+                cost = Design.instance().getCost()
 
-                $('#label-total-fee').find("b").text("$#{cost.total_fee}")
+                $('#label-total-fee').find("b").text("$#{cost.totalFee}")
 
                 #
                 #$( '#modal-run-stack' ).find( 'summary' ).after MC.template.validationDialog()

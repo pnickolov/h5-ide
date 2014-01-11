@@ -24,7 +24,11 @@ define [ 'event',
                 return options.inverse this
 
             Handlebars.registerHelper 'emptyStr', ( v1 ) ->
-                if v1 then new Handlebars.SafeString v1 else '-'
+                if v1 in [ '', undefined, null ]
+                    '-'
+                else
+                    new Handlebars.SafeString v1
+
 
             Handlebars.registerHelper 'timeStr', ( v1 ) ->
                 d = new Date( v1 )

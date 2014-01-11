@@ -195,12 +195,25 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         cn.draw()
     null
 
-  CanvasElement.prototype.select = ()->
-    ide_event.trigger ide_event.OPEN_PROPERTY, this.type, this.id
+  CanvasElement.prototype.select = ( subId )->
+    type = this.type
+
+    if not subId and Design.instance().modeIsApp()
+      component = Design.instance().component( this.id )
+      if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        if component.get("count") > 1
+          type = "component_server_group"
+      else if this. type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+        if component.serverGroupCount() > 1
+          type = "component_eni_group"
+
+    ide_event.trigger ide_event.OPEN_PROPERTY, type, subId or this.id
     if this.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
       MC.canvas.volume.select( this.id )
     else
       MC.canvas.select( this.id )
+    return true
+
     true
 
   CanvasElement.prototype.show = ()->

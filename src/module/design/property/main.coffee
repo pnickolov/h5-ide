@@ -81,9 +81,7 @@ define [ 'event',
 			# If type is "component", type should be changed to ResourceModel's type
 			if uid
 				component = design.component( uid )
-				if not component then return
-
-				if design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
+				if component and design.modeIsApp() and component.get( 'appId' ) and not component.hasAppResource()
 					type = 'Missing_Resource'
 			else
 				type = "Stack"

@@ -982,11 +982,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<ul id="instanceList" class="clearfix">
 		{{#each this}}
 		<li>
-			<a href="#" class='instanceList-item {{deleted}}' id="{{../id}}_{{id}}" data-id="{{id}}">
+			<a href="#" class='instanceList-item {{deleted}}' id="{{id}}_{{@index}}" data-id="{{appId}}">
 				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
 				<span class="instanceList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
-				<div class="instanceList-item-volume" data-target-id="{{../id}}_{{id}}">
-					<span class="instanceList-item-number">{{../volume}}</span>
+				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+					<span class="instanceList-item-number">{{volume}}</span>
 				</div>
 				<span class="instanceList-item-label">{{name}}-{{@index}}</span>
 			</a>
@@ -997,7 +997,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 
 <!-- instanceListItem -->
 <li>
-	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
 		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
 		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
@@ -1016,7 +1016,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<ul id="eniList" class="clearfix">
 		{{#each this}}
 		<li>
-			<a href="#" class="eniList-item {{deleted}}" id="{{../id}}_{{id}}" data-id="{{id}}">
+			<a href="#" class="eniList-item {{deleted}}" id="{{id}}_{{@index}}" data-id="{{appId}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
 				<span class="eniList-item-label">{{appId}}</span>
 			</a>

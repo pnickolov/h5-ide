@@ -22,7 +22,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 				# new design flow
 				#data = $.extend true, {}, Design.instance().serialize()
-				Design.instance().serialize()
+				data  = Design.instance().serialize()
 
 				# old design flow
 				#data = $.extend true, {}, MC.canvas_data

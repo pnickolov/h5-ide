@@ -136,17 +136,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         formatedFee = fee + "/mo"
 
+      count = @get("count") or 1
+      name  = @get("name")
+      if count > 1
+        name += " (x#{count})"
+        fee  *= count
+
       priceObj =
-          resource    : @get("name")
+          resource    : name
           type        : @get("instanceType")
           fee         : fee
           formatedFee : formatedFee
-
-      servergroupCount = @get("count") or 1
-
-      if servergroupCount > 1
-        priceObj.resource += "   (x#{servergroupCount})"
-        fee *= servergroupCount
 
       if @get("monitoring")
         for t in priceMap.cloudwatch.types
@@ -155,7 +155,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             cw_fee =
               resource    : @get("name") + "-monitoring"
               type        : "CloudWatch"
-              fee         : fee * servergroupCount
+              fee         : fee * count
               formatedFee : fee + "/mo"
 
             return [ priceObj, cw_fee ]

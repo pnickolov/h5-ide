@@ -69,13 +69,18 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       if not volumePrices then return
 
+      count = @get("owner").get("count") or 1
+      name  = owner.get("name") + " - " + @get("name")
+      if count > 1
+        name += " (x#{count})"
+
       for p in volumePrices
         if p.unit is 'perGBmoProvStorage'
           fee = p[currency]
           return {
-            resource    : owner.get("name") + " - " + @get("name")
+            resource    : name
             type        : @get("volumeSize") + "G"
-            fee         : fee * @get("volumeSize")
+            fee         : fee * @get("volumeSize") * count
             formatedFee : fee + "/GB/mo"
           }
       null
@@ -227,7 +232,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       attr =
         id    : data.uid
-        name  : data.name
+        name  : data.serverGroupName or data.name
         owner : instance
         #resource property
         #deviceName : attachment.Device

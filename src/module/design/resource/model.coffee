@@ -3,9 +3,9 @@
 #############################
 
 define [ 'i18n!nls/lang.js',
-         'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model',
+         'ec2_service', 'ebs_model', 'aws_model', 'ami_model', 'favorite_model', 'MC', 'constant', 'event', 'subnet_model', 'Design',
          'backbone', 'jquery', 'underscore'
-], ( lang, ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model ) ->
+], ( lang, ec2_service, ebs_model, aws_model, ami_model, favorite_model, MC, constant, ide_event, subnet_model, Design ) ->
 
     #private
     ami_instance_type = null
@@ -662,40 +662,10 @@ define [ 'i18n!nls/lang.js',
                 @set 'favorite_ami', new_favorite_ami
 
         getIgwStatus : ->
-
-            isUsed = false
-
-            # old design flow
-            #$.each MC.canvas_data.component, ( key, comp ) ->
-
-            # new design flow
-            $.each MC.forge.other.canvasData.get( 'component' ), ( key, comp ) ->
-
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-
-                    isUsed = true
-
-                    return false
-
-            isUsed
+            !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).allObjects().length
 
         getVgwStatus : ->
-
-            isUsed = false
-
-            # old design flow
-            #$.each MC.canvas_data.component, ( key, comp ) ->
-
-            # new design flow
-            $.each MC.forge.other.canvasData.get( 'component' ), ( key, comp ) ->
-
-                if comp.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-
-                    isUsed = true
-
-                    return false
-
-            isUsed
+            !!Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway ).allObjects().length
 
         _checkRequireServiceCount : ( name ) ->
             console.log '_checkRequireServiceCount, name = ' + name

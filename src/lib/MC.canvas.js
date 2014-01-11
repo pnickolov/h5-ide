@@ -2316,7 +2316,7 @@ MC.canvas.volume = {
 			$('#' + volume_id).parent().remove();
 
 			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
-			
+
 			$('#instance_volume_number').text(
 				$canvas( target_id ).volume().length
 			);
@@ -2482,7 +2482,7 @@ MC.canvas.volume = {
 					$('#instance_volume_number').text(
 						$canvas( target_id ).volume().length
 					);
-					
+
 					$canvas( volume_item.id ).select();
 				}
 
@@ -2521,7 +2521,7 @@ MC.canvas.volume = {
 						$('#instance_volume_number').text(
 							$canvas( target_id ).volume().length
 						);
-						
+
 						$canvas( volume_item.id ).select();
 					}
 				}
@@ -2707,7 +2707,7 @@ MC.canvas.instanceList = {
 
 				return false;
 			}
-			
+
 			$('#canvas_container').append(
 				MC.template.instanceList( list )
 			);
@@ -2827,7 +2827,7 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$canvas( b$('#eniList-wrap').data('target-id') ).select( target.data('id') );
+		$canvas( $('#eniList-wrap').data('target-id') ).select( target.data('id') );
 
 		//$canvas.trigger('CANVAS_ENI_SELECTED', target.data('id'));
 

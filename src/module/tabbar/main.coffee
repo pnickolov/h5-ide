@@ -192,8 +192,15 @@ define [ 'jquery', 'event', 'base_main',
                 model.once 'GET_APP_COMPLETE', ( result ) ->
                     console.log 'GET_APP_COMPLETE'
                     console.log result
-                    ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
-                    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, result.resolved_data[0].state, tab_id
+
+                    # check result valid
+                    if MC.forge.other.isResultRight( result ) is true
+                        ide_event.trigger ide_event.SWITCH_TAB, 'OPEN_APP', tab_id, result.resolved_data[0].region, result, result.resolved_data[0].platform
+                        ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, result.resolved_data[0].state, tab_id
+
+                    else
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, result.param[4][0]
+
                 model.getAppInfo tab_id
 
                 ide_event.trigger ide_event.SWITCH_LOADING_BAR, tab_id

@@ -309,10 +309,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     resource_list = MC.data.resource_list[ Design.instance().region() ]
 
     list = [{
-      id    : id
-      appId : component.get("appId")
-      name  : name
-      is_deleted : !!resource_list[ component.get("appId") ]
+      id      : id
+      appId   : component.get("appId")
+      name    : name
+      deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
     }]
 
     list.id   = id
@@ -320,16 +320,19 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     for member, idx in component.groupMembers()
       list.push {
-        id    : member.id
-        name  : name
-        appId : member.appId
-        is_deleted : !!resource_list[ member.appId ]
+        id      : member.id
+        name    : name
+        appId   : member.appId
+        deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
       }
 
     list
 
   CanvasElement.instance = ( component, quick )->
     CanvasElement.call( this, component, quick )
+    null
+
+  $.extend CanvasElement.instance.prototype, CanvasElement.prototype
 
   CanvasElement.instance.prototype.volume = ( volume_id )->
     if volume_id
@@ -353,6 +356,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       }
 
     vl
+
+  CanvasElement.instance.prototype.list = ()->
+    list = CanvasElement.prototype.list.call( this )
+    instance = Design.instance().component( this.id )
+    list.background = instance.iconUrl()
+    list.volume     = instance.volume()
+    list
 
   CanvasElement.instance.prototype.addVolume = ( attribute )->
     attribute = $.extend {}, attribute
@@ -383,8 +393,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     else
       return $canvas( @id, true ).volume( volumeId )
     null
-
-  $.extend CanvasElement.instance.prototype, CanvasElement.prototype
 
   CanvasElement.line = ( component )->
     this.id   = component.id

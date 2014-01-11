@@ -562,7 +562,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
     createServerGroupMember : ( data )->
       memberData = {
         id    : data.uid
-        appId : data.resource.VolumeId
+        appId : data.resource.NetworkInterfaceId
         ips   : []
       }
       for ip in data.resource.PrivateIpAddressSet || []
@@ -582,7 +582,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       # deserialize ServerGroup Member Eni
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers()[data.index] = @createServerGroupMember(data)
+        resolve( data.serverGroupUid ).groupMembers()[data.index - 1] = @createServerGroupMember(data)
         return
 
 
@@ -666,7 +666,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       eni.remove()
 
       eniMember = @createServerGroupMember(data)
-      for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+      for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
         for m, idx in instance.groupMembers()
           if m.id is instanceId
             found = true

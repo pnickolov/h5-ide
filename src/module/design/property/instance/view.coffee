@@ -37,7 +37,7 @@ define [ '../base/view',
 
         render : () ->
             @$el.html template @model.attributes
-            
+
             if Design.instance().typeIsVpc()
                 @refreshIPList()
 
@@ -280,6 +280,9 @@ define [ '../base/view',
 
         # This function is used to display IP List
         refreshIPList : () ->
+            if not @model.attributes.eni
+                return
+
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
             @updateIPAddBtnState()
             null

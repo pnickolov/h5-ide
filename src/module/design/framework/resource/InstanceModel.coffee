@@ -607,7 +607,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       # Compact instance for servergroup
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers()[data.index] = {
+        resolve( data.serverGroupUid ).groupMembers()[data.index-1] = {
           id      : data.uid
           appId   : data.resource.InstanceId
           eipData : data.resource.EipResource

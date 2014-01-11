@@ -434,7 +434,8 @@ define [ "CanvasManager",
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []
-        new ElbAmiAsso( elb, resolve( MC.extractID(ami.InstanceId) ) )
+        instance = resolve( MC.extractID(ami.InstanceId) )
+        if instance then new ElbAmiAsso( elb, instance )
       null
 
     postDeserialize : ( data, layout_data )->

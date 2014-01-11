@@ -481,7 +481,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     # Quick Hack, save $canvas's size to layout
     layout_data.size = @canvas.sizeAry
 
-    $.extend( { component : component_data, layout : layout_data }, @attributes )
+    # Seems like some other place have call Design.instance().set("layout")
+    # So we assign component/layout at last
+    data = $.extend( {}, @attributes )
+    data.component = component_data
+    data.layout    = layout_data
+    data
 
 
   _.extend DesignImpl.prototype, Backbone.Events

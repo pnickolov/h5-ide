@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
+define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
 
     CGWAppModel = PropertyModel.extend {
 
@@ -13,7 +13,7 @@ define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
           appData = MC.data.resource_list[ Design.instance().region() ]
 
-          cgw = appData[ myCGWComponent.get 'CustomerGatewayId' ]
+          cgw = appData[ myCGWComponent.get 'appId' ]
           if not cgw
             return false
 

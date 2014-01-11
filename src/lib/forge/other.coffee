@@ -31,11 +31,13 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		save : ( data ) ->
 			console.log 'canvasData:save', data
 
-			# new design flow
-			Design.instance().save data
+			if not _.isEmpty Design.instance()
 
-			# old design flow
-			#MC.canvas_data = $.extend true, {}, data
+				# new design flow
+				Design.instance().save data
+
+				# old design flow
+				#MC.canvas_data = $.extend true, {}, data
 
 		set : ( key, value ) ->
 			console.log 'canvasData:set', key, value
@@ -54,15 +56,20 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		get : ( key ) ->
 			console.log 'canvasData:get', key
 
-			# new design flow
-			Design.instance().get key
+			if not _.isEmpty Design.instance()
 
-			# old design flow
-			#MC.canvas_data[ key ]
+				# new design flow
+				Design.instance().get key
+
+				# old design flow
+				#MC.canvas_data[ key ]
 
 		isModified : ->
 			console.log 'canvasData:isModified'
-			Design.instance().isModified()
+
+			if not _.isEmpty Design.instance()
+
+				Design.instance().isModified()
 
 		origin : ( origin_data ) ->
 

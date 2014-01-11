@@ -394,9 +394,9 @@ define [ 'i18n!nls/lang.js',
                         #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
                         # new design flow
-                        $.each MC.forge.other.canvasData.data().layout.component.group, ( i, zone ) ->
+                        $.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
 
-                            if zone.name == value.zoneName
+                            if zone.attributes.name == value.zoneName
 
                                 res.item[idx].isUsed = true
 
@@ -433,9 +433,9 @@ define [ 'i18n!nls/lang.js',
                                 #$.each MC.canvas_data.layout.component.group, ( i, zone ) ->
 
                                 # new design flow
-                                $.each MC.forge.other.canvasData.data().layout.component.group, ( i, zone ) ->
+                                $.each Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone ).allObjects(), ( i, zone ) ->
 
-                                    if zone.name == value.zoneName
+                                    if zone.attributes.name == value.zoneName
 
                                         res.item[idx].isUsed = true
 

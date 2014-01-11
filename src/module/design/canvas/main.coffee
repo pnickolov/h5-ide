@@ -128,7 +128,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 # new design flow +++++++++++++++++++++++++++
 
                 # restore origin_canvas_data to MC.canvas_data
-                MC.forge.other.canvasData.init MC.forge.other.canvasData.origin()
+                #MC.forge.other.canvasData.init MC.forge.other.canvasData.origin()
 
                 # set options component layout
                 options    =
@@ -138,7 +138,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 MC.canvas.layout.init()
 
                 # create Design object
-                new Design( MC.forge.other.canvasData.data(true), options )
+                new Design( MC.forge.other.canvasData.data(), options )
 
                 # new design flow +++++++++++++++++++++++++++
 

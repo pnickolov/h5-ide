@@ -2697,64 +2697,18 @@ MC.canvas.instanceList = {
 			var target = this.parentNode,
 				target_id = target.id,
 				target_offset = Canvon('#' + target_id).offset(),
-			   	canvas_offset = $canvas.offset();
+			   	canvas_offset = $canvas.offset(),
+			   	list = $canvas( target_id ).list();
 
-			if ($('#' + target_id + '_instance-number').text() * 1 === 1)
+			if (list.length === 0)
 			{
 				$canvas(target_id).select();
 
 				return false;
 			}
-
-			// var uid     = MC.extractID( target_id ),
-			//     layout  = MC.canvas_data.layout.component.node[ uid ];
-
-			// var temp_data = {
-			// 	  instances : []
-			// 	, name      : "Server Group List"
-			// };
-			// var statusMap = {
-			// 	"pending"       : "yellow"
-			// 	 , "stopping"      : "yellow"
-			// 	 , "shutting-down" : "yellow"
-			// 	 , "running"       : "green"
-			// 	 , "stopped"       : "orange"
-			// 	 , "terminated"    : "red"
-			// 	 , "unknown"       : "grey"
-			// };
-
-			// if ( layout ) {
-			// 	temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
-			// }
-
-			// for ( var i = 0; i < layout.instanceList.length; ++i ) {
-
-			// 	var inst_comp = MC.canvas_data.component[ layout.instanceList[ i ] ],
-			// 		state = null,
-			// 		instance_data = null;
-			// 	temp_data.name = inst_comp.serverGroupName;
-
-			// 	//get instance state
-			// 	if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
-			// 		state = MC.aws.instance.getInstanceState( inst_comp.resource.InstanceId );
-			// 	}
-
-			// 	if (!state){
-			// 		state = 'unknown';
-			// 	}
-
-			// 	temp_data.instances.push( {
-			// 		  color : statusMap[ state ]
-			// 		, id     : inst_comp.uid
-			// 		, volume : inst_comp.resource.BlockDeviceMapping.length
-			// 		, name   : inst_comp.name
-			// 		, state  : state
-			// 		, is_deleted : 'terminated|shutting-down|unknown'.indexOf(state) !== -1 ? ' deleted' : ''
-			// 	} );
-			// }
-
+			
 			$('#canvas_container').append(
-				MC.template.instanceList( $canvas( target_id ).list() )
+				MC.template.instanceList( list )
 			);
 
 			$('#instanceList-wrap')

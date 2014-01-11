@@ -478,6 +478,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     for visitor in Design.__serializeVisitors
       visitor( component_data, layout_data )
 
+    # Quick Hack, save $canvas's size to layout
+    layout_data.size = @canvas.sizeAry
+
     $.extend( { component : component_data, layout : layout_data }, @attributes )
 
 

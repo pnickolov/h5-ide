@@ -2713,6 +2713,7 @@ MC.canvas.instanceList = {
 			);
 
 			$('#instanceList-wrap')
+				.data('target-id', target.id)
 				.on('click', '.instanceList-item', MC.canvas.instanceList.select)
 				.css({
 					'top': target_offset.top - canvas_offset.top - 30,
@@ -2749,7 +2750,9 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		$canvas.trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
+		$canvas( $('#instanceList-wrap').data('target-id') ).select( target.data('id') );
+
+		//$canvas.trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 
 		return false;
 	}
@@ -2793,48 +2796,10 @@ MC.canvas.eniList = {
 				return false;
 			}
 
-			// var uid      = MC.extractID( target_id ),
-			//     layout   = MC.canvas_data.layout.component.node[ uid ],
-			//     eni_comp = MC.canvas_data.component[ uid ];
-
-			// var temp_data = {
-			// 	  enis : []
-			// 	, name : eni_comp.serverGroupName
-			// 	, eip  : layout.eniList.length === layout.eipList.length
-			// };
-
-			// // if ( eni_comp.resource.Attachment && eni_comp.resource.Attachment.InstanceId ) {
-			// // 	var ins_comp = MC.canvas_data.component[ MC.extractID( eni_comp.resource.Attachment.InstanceId ) ];
-			// // 	if ( ins_comp.serverGroupName ) {
-			// // 		temp_data.name += " - " + ins_comp.serverGroupName;
-			// // 	}
-			// // }
-
-			// for ( var i = 0, l = layout.eniList.length; i < l; ++i )
-			// {
-			// 	var is_deleted = '',
-			// 		found_eni = null;
-
-			// 	var eni_comp = MC.canvas_data.component[ layout.eniList[ i ] ];
-
-			// 	//get eni
-			// 	if (MC.aws && MC.aws.eni && MC.aws.eni.getENIById ){
-			// 		found_eni = MC.aws.eni.getENIById( eni_comp.resource.NetworkInterfaceId );
-			// 	}
-			// 	if (found_eni === undefined){
-			// 		is_deleted = " deleted";
-			// 	}
-
-			// 	temp_data.enis.push({
-			// 		'id'   : eni_comp.uid,
-			// 		'name' : eni_comp.resource.NetworkInterfaceId,
-			// 		'is_deleted' : is_deleted
-			// 	});
-			// }
-
 			$('#canvas_container').append( MC.template.eniList( list ) );
 
 			$('#eniList-wrap')
+				.data('target-id', target.id)
 				.on('click', '.eniList-item', MC.canvas.eniList.select)
 				.css({
 					'top': target_offset.top - canvas_offset.top - 30,
@@ -2862,7 +2827,9 @@ MC.canvas.eniList = {
 
 		target.addClass('selected');
 
-		$canvas.trigger('CANVAS_ENI_SELECTED', target.data('id'));
+		$canvas( b$('#eniList-wrap').data('target-id') ).select( target.data('id') );
+
+		//$canvas.trigger('CANVAS_ENI_SELECTED', target.data('id'));
 
 		return false;
 	}

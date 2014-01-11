@@ -565,7 +565,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Generate Volume
       serverGroupOption = { number : instances.length, instanceId : "" }
       volumeModels = @get("volumeList") || emptyArray
-      eniModels    = [ @getEmbedEni() ]
+      eniModels    = if @getEmbedEni() then [ @getEmbedEni() ] else []
       for attach in @connections("EniAttachment")
         eniModels[ attach.get("index") ] = attach.getOtherTarget( this )
 

@@ -982,6 +982,44 @@ var API_DATA_LIST = {
             "value"  : "null"
           }
         }
+      },
+      "status" : {
+        "method"  : "/state:status",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "app_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "log" : {
+        "method"  : "/state:log",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "app_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "res_id" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
       }
     }
   },
@@ -1361,6 +1399,19 @@ var API_DATA_LIST = {
             "value"  : "null"
           },
           "region_name" : {
+            "type"   : "String",
+            "value"  : "null"
+          }
+        }
+      },
+      "property" : {
+        "method"  : "/aws:property",
+        "param"   : {
+          "username" : {
+            "type"   : "String",
+            "value"  : "null"
+          },
+          "session_id" : {
             "type"   : "String",
             "value"  : "null"
           }

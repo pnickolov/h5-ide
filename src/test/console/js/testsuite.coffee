@@ -560,6 +560,24 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             state_model.once "STATE_MODULE_RETURN", ( forge_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, forge_result
 
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "state" && current_api == "status"
+            app_id = if $("#app_id").val() != "null" then $("#app_id").val() else null
+            app_id = if app_id != null and MC.isJSON(app_id)==true then JSON.parse app_id else app_id
+            #state.status
+            state_model.status {sender: state_model}, username, session_id, app_id
+            state_model.once "STATE_STATUS_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
+        if current_service.toLowerCase() == "forge" && current_resource.toLowerCase() == "state" && current_api == "log"
+            app_id = if $("#app_id").val() != "null" then $("#app_id").val() else null
+            app_id = if app_id != null and MC.isJSON(app_id)==true then JSON.parse app_id else app_id
+            res_id = if $("#res_id").val() != "null" then $("#res_id").val() else null
+            res_id = if res_id != null and MC.isJSON(res_id)==true then JSON.parse res_id else res_id
+            #state.log
+            state_model.log {sender: state_model}, username, session_id, app_id, res_id
+            state_model.once "STATE_LOG_RETURN", ( forge_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, forge_result
+
 
         ########## AutoScaling ##########
         if current_service.toLowerCase() == "autoscaling" && current_resource.toLowerCase() == "autoscaling" && current_api == "DescribeAdjustmentTypes"
@@ -718,6 +736,14 @@ define [ 'MC', 'session_model' ,'jquery', 'apiList', 'account_model', 'log_model
             aws_model.info {sender: aws_model}, username, session_id, region_name
             aws_model.once "AWS_INFO_RETURN", ( aws_result ) ->
                 resolveResult request_time, current_service, current_resource, current_api, aws_result
+
+        if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "property"
+
+            #aws.property
+            aws_model.property {sender: aws_model}, username, session_id
+            aws_model.once "AWS_PROPERTY_RETURN", ( aws_result ) ->
+                resolveResult request_time, current_service, current_resource, current_api, aws_result
+
 
         if current_service.toLowerCase() == "awsutil" && current_resource.toLowerCase() == "aws" && current_api == "resource"
             resources = if $("#resources").val() != "null" then $("#resources").val() else null

@@ -357,17 +357,17 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		#return vo
 
 		vpc_resource_layout_map = {
-			'AWS.EC2.AvailabilityZone'		: MC.canvas.AZ_JSON,
-			'AWS.EC2.Instance' 				: MC.canvas.INSTANCE_JSON,
-			'AWS.ELB' 						: MC.canvas.ELB_JSON,
-			'AWS.VPC.VPC' 					: MC.canvas.VPC_JSON,
-			'AWS.VPC.Subnet'				: MC.canvas.SUBNET_JSON,
-			'AWS.VPC.InternetGateway'		: MC.canvas.IGW_JSON,
-			'AWS.VPC.RouteTable'			: MC.canvas.ROUTETABLE_JSON,
-			'AWS.VPC.VPNGateway'			: MC.canvas.VGW_JSON,
-			'AWS.VPC.CustomerGateway'		: MC.canvas.CGW_JSON,
-			'AWS.VPC.NetworkInterface'		: MC.canvas.ENI_JSON,
-			'AWS.AutoScaling.Group'			: MC.canvas.ASG_JSON,
+			'AWS.EC2.AvailabilityZone'      : MC.canvas.AZ_JSON,
+			'AWS.EC2.Instance'              : MC.canvas.INSTANCE_JSON,
+			'AWS.ELB'                       : MC.canvas.ELB_JSON,
+			'AWS.VPC.VPC'                   : MC.canvas.VPC_JSON,
+			'AWS.VPC.Subnet'                : MC.canvas.SUBNET_JSON,
+			'AWS.VPC.InternetGateway'       : MC.canvas.IGW_JSON,
+			'AWS.VPC.RouteTable'            : MC.canvas.ROUTETABLE_JSON,
+			'AWS.VPC.VPNGateway'            : MC.canvas.VGW_JSON,
+			'AWS.VPC.CustomerGateway'       : MC.canvas.CGW_JSON,
+			'AWS.VPC.NetworkInterface'      : MC.canvas.ENI_JSON,
+			'AWS.AutoScaling.Group'         : MC.canvas.ASG_JSON,
 			'AWS.AutoScaling.LaunchConfiguration' : MC.canvas.ASL_LC_JSON
 		}
 
@@ -482,10 +482,10 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 
 				# if c.type not in ['AWS.VPC.NetworkInterface', 'AWS.AutoScaling.Group', 'AWS.AutoScaling.LaunchConfiguration']
 
-				# 	if c.type in ['AWS.VPC.Subnet', 'AWS.VPC.VPC']
-				# 		app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
-				# 	else
-				# 		app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
+				#   if c.type in ['AWS.VPC.Subnet', 'AWS.VPC.VPC']
+				#       app_json.layout.component.group[c.uid] = vpc_resource_layout_map[c.type].layout
+				#   else
+				#       app_json.layout.component.node[c.uid] = vpc_resource_layout_map[c.type].layout
 				layout = $.extend true, {}, vpc_resource_layout_map[c.type].layout
 
 				layout.uid = c.uid
@@ -711,6 +711,37 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	# end of parserStatResourceReturn
 
 
+
+
+	#///////////////// Parser for property return (need resolve) /////////////////
+	#private (resolve result to vo )
+	resolvePropertyResult = ( result ) ->
+		#resolve result
+		#TO-DO
+
+		#return vo
+		#TO-DO
+
+	#private (parser property return)
+	parserPropertyReturn = ( result, return_code, param ) ->
+
+		#1.resolve return_code
+		aws_result = result_vo.processAWSReturnHandler result, return_code, param
+
+		#2.resolve return_data when return_code is E_OK
+		if return_code == constant.RETURN_CODE.E_OK && !aws_result.is_error
+
+			resolved_data = resolvePropertyResult result
+
+			aws_result.resolved_data = resolved_data
+
+
+		#3.return vo
+		aws_result
+
+	# end of parserPropertyReturn
+
+
 	#############################################################
 
 	#def quickstart(self, username, session_id, region_name):
@@ -753,6 +784,12 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 		send_request "stat_resource", src, [ username, session_id, region_name, resources ], parserStatResourceReturn, callback
 		true
 
+	#def property(self, username, session_id):
+	property = ( src, username, session_id, callback ) ->
+		send_request "property", src, [ username, session_id ], parserPropertyReturn, callback
+		true
+
+
 	#############################################################
 	#public
 	quickstart                   : quickstart
@@ -763,4 +800,5 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	status                       : status
 	vpc_resource                 : vpc_resource
 	stat_resource                : stat_resource
+	property                     : property
 

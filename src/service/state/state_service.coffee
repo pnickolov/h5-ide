@@ -85,13 +85,84 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
 
     # end of parserModuleReturn
 
+
+    #///////////////// Parser for status return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveStatusResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser status return)
+    parserStatusReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveStatusResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserStatusReturn
+
+
+    #///////////////// Parser for log return (need resolve) /////////////////
+    #private (resolve result to vo )
+    resolveLogResult = ( result ) ->
+        #resolve result
+        #TO-DO
+
+        #return vo
+        #TO-DO
+
+    #private (parser log return)
+    parserLogReturn = ( result, return_code, param ) ->
+
+        #1.resolve return_code
+        forge_result = result_vo.processForgeReturnHandler result, return_code, param
+
+        #2.resolve return_data when return_code is E_OK
+        if return_code == constant.RETURN_CODE.E_OK && !forge_result.is_error
+
+            resolved_data = resolveLogResult result
+
+            forge_result.resolved_data = resolved_data
+
+
+        #3.return vo
+        forge_result
+
+    # end of parserLogReturn
+
+
+
     #def module(self, username, session_id):
     module = ( src, username, session_id, callback ) ->
         send_request "module", src, [ username, session_id ], parserModuleReturn, callback
         true
 
+    #def status(self, username, session_id, app_id):
+    status = ( src, username, session_id, app_id, callback ) ->
+        send_request "status", src, [ username, session_id, app_id ], parserStatusReturn, callback
+        true
+
+    #def log(self, username, session_id, app_id, res_id=None):
+    log = ( src, username, session_id, app_id, res_id=null, callback ) ->
+        send_request "log", src, [ username, session_id, app_id, res_id ], parserLogReturn, callback
+        true
 
     #############################################################
     #public
     module                       : module
+    status                       : status
+    log                          : log
 

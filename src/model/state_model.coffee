@@ -41,6 +41,52 @@ define [ 'backbone', 'underscore', 'state_service', 'base_model' ], ( Backbone, 
 
 
 
+        #status api (define function)
+        status : ( src, username, session_id, app_id ) ->
+
+            me = this
+
+            src.model = me
+
+            state_service.status src, username, session_id, app_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #status succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STATE_STATUS_RETURN', forge_result
+
+                else
+                #status failed
+
+                    console.log 'state.status failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+
+
+        #log api (define function)
+        log : ( src, username, session_id, app_id, res_id=null ) ->
+
+            me = this
+
+            src.model = me
+
+            state_service.log src, username, session_id, app_id, res_id, ( forge_result ) ->
+
+                if !forge_result.is_error
+                #log succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'STATE_LOG_RETURN', forge_result
+
+                else
+                #log failed
+
+                    console.log 'state.log failed, error is ' + forge_result.error_message
+                    me.pub forge_result
+
+
+
 
     }
 

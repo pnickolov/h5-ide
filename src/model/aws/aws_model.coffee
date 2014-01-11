@@ -204,6 +204,30 @@ define [ 'backbone', 'underscore', 'aws_service', 'base_model' ], ( Backbone, _,
 
 
 
+        #property api (define function)
+        property : ( src, username, session_id ) ->
+
+            me = this
+
+            src.model = me
+
+            aws_service.property src, username, session_id, ( aws_result ) ->
+
+                if !aws_result.is_error
+                #property succeed
+
+                    #dispatch event (dispatch event whenever login succeed or failed)
+                    if src.sender and src.sender.trigger then src.sender.trigger 'AWS_PROPERTY_RETURN', aws_result
+
+                else
+                #property failed
+
+                    console.log 'aws.property failed, error is ' + aws_result.error_message
+                    me.pub aws_result
+
+
+
+
     }
 
     #############################################################

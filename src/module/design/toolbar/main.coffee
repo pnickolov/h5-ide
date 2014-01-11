@@ -21,7 +21,6 @@ define [ 'jquery',
             #listen OPEN_DESIGN
             ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
                 console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
-                console.log MC.forge.other.canvasData.data()
                 #
                 model.setFlag tab_id, type
                 #

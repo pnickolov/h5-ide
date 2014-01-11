@@ -297,7 +297,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         hide     : not tenancy and value is "t1.micro"
 
     remove : ()->
-      this.__mainEni.remove()
+      if this.__mainEni
+        this.__mainEni.remove()
 
       # Remove attached volumes
       for v in @get("volumeList") or emptyArray

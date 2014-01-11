@@ -7,12 +7,13 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
     SgModel = PropertyModel.extend {
 
         init : ( uid ) ->
+            @component = component = Design.instance().component( uid )
 
             if @isReadOnly
                 @appInit uid
                 return
 
-            component = Design.instance().component( uid )
+
 
             rules = []
             for rule in component.connections("SgRuleSet")
@@ -112,9 +113,8 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
 
             # get sg obj
             currentRegion = Design.instance().region()
-            currentSGComp = Design.instance().component( sg_uid )
-            currentSGID = currentSGComp.get 'appId'
-            currentAppSG = MC.data.resource_list[currentRegion][currentSGID]
+            currentSGID = @component.get 'appId'
+            currentAppSG = MC.data.resource_list[ currentRegion ][ currentSGID ]
 
             members = MC.aws.sg.getAllRefComp sg_uid
 
@@ -123,7 +123,7 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             #get sg name
             sg_app_detail =
                 uid         : sg_uid
-                name        : currentSGComp.get 'name'
+                name        : @component.get 'name'
                 groupName   : currentAppSG.groupName
                 description : currentAppSG.groupDescription
                 groupId     : currentAppSG.groupId

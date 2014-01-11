@@ -25,16 +25,17 @@ define [ '../base/model', 'Design' ], ( PropertyModel, Design ) ->
 
 
           formated_group = []
+
           for eni_comp in group
-            eni = $.extend true, {}, appData[ eni_comp.get 'NetworkInterfaceId' ]
+            eni = $.extend true, {}, appData[ eni_comp.get 'appId' ]
 
             for i in eni.privateIpAddressesSet.item
               i.primary = i.primary is true
 
-            eni.id              = eni_comp.get 'NetworkInterfaceId'
+            eni.id              = eni_comp.get 'appId'
             eni.name            = eni_comp.get 'name'
-            eni.idx             = parseInt( eni_comp.get( 'name' ).split("-")[1], 10 )
-            eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
+            eni.idx             = parseInt eni_comp.get( 'name' ).split(' -' )[ 1 ], 10
+            eni.sourceDestCheck = if eni.sourceDestCheck is true then 'enabled' else 'isabled'
 
             formated_group.push eni
 

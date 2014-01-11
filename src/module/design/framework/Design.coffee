@@ -323,7 +323,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
 
   window.ds = ()->
-    console.log( Design.instance().serialize( false ) )
+    console.log( Design.instance().serialize() )
     null
   ### env:dev:end ###
 
@@ -430,7 +430,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-  DesignImpl.prototype.serialize = ( noMock )->
+  DesignImpl.prototype.serialize = ()->
+
+    console.debug "Design is serializing."
 
     component_data = {}
     layout_data    = {}

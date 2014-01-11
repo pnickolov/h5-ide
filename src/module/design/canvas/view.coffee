@@ -16,22 +16,14 @@ define [ "Design", 'text!./template.html', "event", "canvas_layout", "constant",
             this.listenTo ide_event, 'UPDATE_RESOURCE_STATE', ()->
                 canvas_layout.listen()
 
-                # old design flow
+                # old design flow +++++++++++++++++++++++++++
                 #app_id = MC.canvas_data.id
-
-                # new design flow
-                app_id = MC.forge.other.canvasData.get 'id'
-
                 #update resource state
-                MC.aws.instance.updateStateIcon app_id
-                MC.aws.asg.updateASGCount app_id
-                MC.aws.eni.updateServerGroupState app_id
-
-                # old design flow
+                #MC.aws.instance.updateStateIcon app_id
+                #MC.aws.asg.updateASGCount app_id
+                #MC.aws.eni.updateServerGroupState app_id
                 #MC.forge.app.updateDeletedResourceState MC.canvas_data
-
-                # new design flow
-                MC.forge.app.updateDeletedResourceState MC.forge.other.canvasData.data()
+                # old design flow +++++++++++++++++++++++++++
 
                 null
 

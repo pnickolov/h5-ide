@@ -24,12 +24,14 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 			else
 
-				# new design flow
-				#data = $.extend true, {}, Design.instance().serialize()
-				data  = Design.instance().serialize()
+				if not _.isEmpty Design.instance()
 
-				# old design flow
-				#data = $.extend true, {}, MC.canvas_data
+					# new design flow
+					#data = $.extend true, {}, Design.instance().serialize()
+					data  = Design.instance().serialize()
+
+					# old design flow
+					#data = $.extend true, {}, MC.canvas_data
 
 			data
 

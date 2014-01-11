@@ -384,7 +384,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
             Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
             Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
           ).attr({
-            'class'   : 'server-number-group'
+            'class'   : 'eni-number-group'
             'display' : "none"
           })
 
@@ -405,7 +405,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       # Update SeverGroup Count
       count = @serverGroupCount()
 
-      numberGroup = node.children(".server-number-group")
+      numberGroup = node.children(".eni-number-group")
       if count > 1
         CanvasManager.toggle node.children(".port-eni-rtb"), false
         CanvasManager.toggle numberGroup, true
@@ -559,27 +559,30 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ]
 
+    createServerGroupMember : ( data )->
+      memberData = {
+        id    : data.uid
+        appId : data.resource.VolumeId
+        ips   : []
+      }
+      for ip in data.resource.PrivateIpAddressSet || []
+        ipObj = new IpObject({
+          autoAssign : ip.AutoAssign
+          ip         : ip.PrivateIpAddress
+        })
+        if ip.EipResource
+          ipObj.eipData =
+            id           : ip.EipResource.uid
+            allocationId : ip.EipResource.AllocationId
+        memberData.ips.push( ipObj )
+
+      memberData
+
     deserialize : ( data, layout_data, resolve )->
 
       # deserialize ServerGroup Member Eni
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        memberData = {
-          id    : data.uid
-          appId : data.resource.VolumeId
-          ips   : []
-        }
-        for ip in data.resource.PrivateIpAddressSet || []
-          ipObj = new IpObject({
-            autoAssign : ip.AutoAssign
-            ip         : ip.PrivateIpAddress
-          })
-          if ip.EipResource
-            ipObj.eipData =
-              id           : ip.EipResource.uid
-              allocationId : ip.EipResource.AllocationId
-          memberData.ips.push( ipObj )
-
-        resolve( data.serverGroupUid ).groupMembers[data.index] = memberData
+        resolve( data.serverGroupUid ).groupMembers()[data.index] = @createServerGroupMember(data)
         return
 
 
@@ -640,6 +643,40 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         else
           eniIndex = if attachment and attachment.DeviceIndex then attachment.DeviceIndex else 1
           new EniAttachment( eni, instance, { index : eniIndex * 1 } )
+      null
+
+    postDeserialize : ( data, layout )->
+      # Previous version of IDE does not assign serverGroupUid for Embed Eni. Which results in that Eni is not store in groupMembers.
+
+      attach = data.resource.Attachment
+      if not attach then return
+
+
+      embed = attach.DeviceIndex is "0"
+      if not embed then return
+
+      design     = Design.instance()
+      instanceId = MC.extractID( attach.InstanceId )
+      instance   = design.component( instanceId )
+
+      if instance then return
+
+      eni = design.component( data.uid )
+      console.debug "Found embed eni which doesn't belong to any servergroup", eni
+      eni.remove()
+
+      eniMember = @createServerGroupMember(data)
+      for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+        for m, idx in instance.groupMembers()
+          if m.id is instanceId
+            found = true
+            break
+
+      if not found
+        console.warn "Cannot found instance server group for embed eni :", eni
+        return
+
+      instance.getEmbedEni().groupMembers()[ idx ] = eniMember
       null
   }
 

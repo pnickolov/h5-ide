@@ -976,19 +976,19 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <!-- instanceList -->
 <div id="instanceList-wrap">
 	<div id="instanceList-header">
-		<span id="instanceList-title">{{name}}</span>
+		<span id="instanceList-title">{{this.name}}</span>
 		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
 	</div>
 	<ul id="instanceList" class="clearfix">
 		{{#each instances}}
 		<li>
-			<a href="#" class='instanceList-item{{ is_deleted }}' id="{{id}}_{{@index}}" data-id="{{id}}">
-				<i class="instanceList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}"></i>
+			<a href="#" class='instanceList-item{{ is_deleted }}' id="{{../id}}_{{id}}" data-id="{{id}}">
+				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
 				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
-				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
+				<div class="instanceList-item-volume" data-target-id="{{../id}}_{{id}}">
 					<span class="instanceList-item-number">{{volume}}</span>
 				</div>
-				<span class="instanceList-item-label">{{name}}</span>
+				<span class="instanceList-item-label">{{name}}-{{@index}}</span>
 			</a>
 		</li>
 		{{/each}}
@@ -1010,15 +1010,15 @@ Following rule(s) will be deleted from its(their) security group:</div>
 <!-- eniList -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
-		<span id="eniList-title">{{name}}</span>
+		<span id="eniList-title">{{this.[0].name}}</span>
 		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
 	</div>
 	<ul id="eniList" class="clearfix">
 		{{#each enis}}
 		<li>
-			<a href="#" class="eniList-item{{ is_deleted }}" id="{{id}}_{{@index}}" data-id="{{id}}">
+			<a href="#" class="eniList-item{{ is_deleted }}" id="{{../[0].id}}_{{id}}" data-id="{{id}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
-				<span class="eniList-item-label">{{name}}</span>
+				<span class="eniList-item-label">{{appId}}</span>
 			</a>
 		</li>
 		{{/each}}

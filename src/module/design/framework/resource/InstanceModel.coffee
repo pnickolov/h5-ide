@@ -323,7 +323,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
             Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
           ).attr({
-            'class'   : 'server-number-group'
+            'id'      : @id + "_instance-number-group"
+            'class'   : 'instance-number-group'
             "display" : "none"
           }),
 
@@ -403,7 +404,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
 
       # Update Server number
-      numberGroup = node.children(".server-number-group")
+      numberGroup = node.children(".instance-number-group")
       if @get("count") > 1
         CanvasManager.toggle node.children(".port-instance-rtb"), false
         CanvasManager.toggle numberGroup, true
@@ -606,7 +607,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       # Compact instance for servergroup
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers[data.index] = {
+        resolve( data.serverGroupUid ).groupMembers()[data.index] = {
           id      : data.uid
           appId   : data.resource.InstanceId
           eipData : data.resource.EipResource

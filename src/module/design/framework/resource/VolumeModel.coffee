@@ -204,7 +204,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       # Compact volume for servergroup
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers[data.index] = {
+        resolve( data.serverGroupUid ).groupMembers()[data.index] = {
           id    : data.uid
           appId : data.resource.VolumeId
         }

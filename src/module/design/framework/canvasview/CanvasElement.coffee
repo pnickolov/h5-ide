@@ -297,6 +297,37 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     _.map Design.instance().component( this.id ).children() || [], ( c )->
         new CanvasElement( c )
 
+  # Return an connection of serverGroupMember
+  CanvasElement.prototype.list = ()->
+    component = Design.instance().component( this.id )
+    members = component.groupMembers()
+    if members.length is 0 then return []
+
+    id   = component.id
+    name = component.get("name")
+
+    resource_list = MC.data.resource_list[ Design.instance().region() ]
+
+    list = [{
+      id    : id
+      appId : component.get("appId")
+      name  : name
+      is_deleted : !!resource_list[ component.get("appId") ]
+    }]
+
+    list.id   = id
+    list.name = name
+
+    for member, idx in component.groupMembers()
+      list.push {
+        id    : member.id
+        name  : name
+        appId : member.appId
+        is_deleted : !!resource_list[ member.appId ]
+      }
+
+    list
+
   CanvasElement.instance = ( component, quick )->
     CanvasElement.call( this, component, quick )
 
@@ -359,6 +390,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     this.id   = component.id
     this.type = component.get("lineType")
     @id
+
+
 
   CanvasElement.line.prototype.portName = ( targetId )->
     Design.instance().component( this.id ).port( targetId, "name" )

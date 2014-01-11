@@ -145,7 +145,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       servergroupCount = @get("count") or 1
 
       if servergroupCount > 1
-        priceObj.resource += "   ( x#{servergroupCount})"
+        priceObj.resource += "   (x#{servergroupCount})"
         fee *= servergroupCount
 
       if @get("monitoring")

@@ -1644,12 +1644,12 @@ MC.canvas = {
 
 	groupSize: function (node, width, height)
 	{
-		$(node).find('.group').attr({
-			'width': width * 10,
-			'height': height * 10,
-			'x': 0,
-			'y': 0
-		});
+		var group = node.getElementsByClassName('group')[0];
+
+		group.width.baseVal.value = width * 10;
+		group.height.baseVal.value = height * 10;
+		group.x.baseVal.value = 0;
+		group.y.baseVal.value = 0;
 
 		return true;
 	},
@@ -2309,7 +2309,7 @@ MC.canvas.volume = {
 				target_node = $('#' + target_id),
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id');
-			
+
 			$canvas(volume_id).remove();
 
 			$('#' + volume_id).parent().remove();

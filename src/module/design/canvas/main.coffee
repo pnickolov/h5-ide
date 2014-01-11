@@ -43,6 +43,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                         MC.forge.other.canvasData.set 'name'     , tab_name
                         MC.forge.other.canvasData.set 'region'   , region_name
                         MC.forge.other.canvasData.set 'platform' , current_platform
+                        MC.forge.other.canvasData.set 'version'  , '2013-09-04'
 
                         # platform is classic
                         if current_platform is Design.TYPE.Classic or current_platform is Design.TYPE.DefaultVpc

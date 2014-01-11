@@ -21,10 +21,10 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			else
 
 				# new design flow
-				# data = $.extend true, {}, Design.instance().serialize()
+				data = $.extend true, {}, Design.instance().serialize()
 
 				# old design flow
-				data = $.extend true, {}, MC.canvas_data
+				#data = $.extend true, {}, MC.canvas_data
 
 			data
 
@@ -32,28 +32,33 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			console.log 'canvasData:save', data
 
 			# new design flow
-			# Design.instance().save data
+			Design.instance().save data
 
 			# old design flow
-			MC.canvas_data = $.extend true, {}, data
+			#MC.canvas_data = $.extend true, {}, data
 
 		set : ( key, value ) ->
 			console.log 'canvasData:set', key, value
 
-			# new design flow
-			# Design.instance().set key, value
+			# when Design.instance() is null explain 'NEW_STACK' state
+			if _.isEmpty Design.instance()
 
-			# old design flow
-			MC.canvas_data[ key ] = value
+				# old design flow
+				MC.canvas_data[ key ] = value
+
+			else
+
+				# new design flow
+				Design.instance().set key, value
 
 		get : ( key ) ->
 			console.log 'canvasData:get', key
 
 			# new design flow
-			# Design.instance().get key
+			Design.instance().get key
 
 			# old design flow
-			MC.canvas_data[ key ]
+			#MC.canvas_data[ key ]
 
 		isModified : ->
 			console.log 'canvasData:isModified'

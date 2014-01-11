@@ -204,7 +204,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       # Compact volume for servergroup
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers()[data.index-1] = {
+        members = resolve( data.serverGroupUid ).groupMembers()
+        for m in members
+          if m.id is data.uid
+            console.debug "This volume servergroup member has already deserialized", data
+            return
+
+        members[data.index-1] = {
           id    : data.uid
           appId : data.resource.VolumeId
         }

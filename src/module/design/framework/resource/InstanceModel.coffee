@@ -636,19 +636,15 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
     deserialize : ( data, layout_data, resolve )->
 
-      # deserialize EIP
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-        # We only handle Eip attached to Instance here.
-        # Because deserializeVisitor/EipMerge has already merged Eip to Eni.PrivateIpAddressSet.
-        if data.resource.InstanceId
-          resolve( MC.extractID( data.resource.InstanceId ) ).setPrimaryEip( true, data )
-        return
-
-
-
       # Compact instance for servergroup
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers()[data.index-1] = {
+        members = resolve( data.serverGroupUid ).groupMembers()
+        for m in members
+          if m.id is data.uid
+            console.debug "This instance servergroup member has already deserialized", data
+            return
+
+        members[data.index-1] = {
           id      : data.uid
           appId   : data.resource.InstanceId
           eipData : data.resource.EipResource

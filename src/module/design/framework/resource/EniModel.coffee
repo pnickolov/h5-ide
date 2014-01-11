@@ -582,7 +582,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       # deserialize ServerGroup Member Eni
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
-        resolve( data.serverGroupUid ).groupMembers()[data.index - 1] = @createServerGroupMember(data)
+        members = resolve( data.serverGroupUid ).groupMembers()
+        for m in members
+          if m.id is data.uid
+            console.debug "This eni servergroup member has already deserialized", data
+            return
+
+        members[data.index - 1] = @createServerGroupMember(data)
         return
 
 

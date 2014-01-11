@@ -641,7 +641,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       if data.serverGroupUid and data.serverGroupUid isnt data.uid
         members = resolve( data.serverGroupUid ).groupMembers()
         for m in members
-          if m.id is data.uid
+          if m and m.id is data.uid
             console.debug "This instance servergroup member has already deserialized", data
             return
 

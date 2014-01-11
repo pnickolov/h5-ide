@@ -424,7 +424,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       null
 
 
-    generateJSON : ( index, servergroupOption, eniIndex )->
+    generateJSON : ( index, servergroupOption )->
 
       resources = [{}]
 
@@ -436,7 +436,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           ips   : @get("ips")
         }
       else
-        memberData = @groupMembers()[ index ]
+        memberData = @groupMembers()[ index - 1 ]
         if not memberData
           memberData = {
             id              : MC.guid()
@@ -471,7 +471,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           resource.push {
             uid   : eip.id or MC.guid()
             type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-            index : eniIndex
+            index : index
             resource :
               Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
               InstanceId         : ""
@@ -502,7 +502,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         index           : index
         uid             : memberData.id
         type            : @type
-        name            : @get("name") + "-" + (index+1)
+        name            : (servergroupOption.instanceName or "") + @get("name")
         serverGroupUid  : @id
         serverGroupName : @get("name")
         number          : servergroupOption.number or 1
@@ -519,7 +519,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           GroupSet   : securitygroups
           Attachment :
             InstnaceId   : instanceId
-            DeviceIndex  : eniIndex or "1"
+            DeviceIndex  : index or "1"
             AttachmentId : ""
             AttachTime   : ""
 

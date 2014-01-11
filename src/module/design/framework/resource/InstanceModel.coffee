@@ -514,10 +514,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         azName = p.get("name")
 
+      name = @get("name")
+      if @get("count") > 1 then name += "-0"
+
       component =
         type   : @type
         uid    : @id
-        name   : @get("name") + "-1"
+        name   : name
         index  : 0
         number : @get("count")
         serverGroupUid  : @id
@@ -569,12 +572,15 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Add this instance' layout first.
       allResourceArray.push( { layout : layout } )
 
+
+
+
       # Generate instance member.
       instances = [ @generateJSON() ]
       i = instances.length
       while i < @get("count")
         member = $.extend true, {}, instances[0]
-        member.name  = @get("name") + "-" + (i+1)
+        member.name  = @get("name") + "-" + i
         member.index = i
         memberObj = @groupMembers()[ instances.length - 1 ]
         if memberObj
@@ -604,6 +610,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         ++i
         instances.push( member )
 
+
+
       # Generate Volume
       serverGroupOption = { number : instances.length, instanceId : "" }
       volumeModels = @get("volumeList") || emptyArray
@@ -615,16 +623,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       enis    = []
       for instance, idx in instances
 
-        serverGroupOption.instanceId = instance.uid
+        serverGroupOption.instanceId   = instance.uid
+        serverGroupOption.instanceName = instance.name + "-"
 
         for volume in volumeModels
           v = volume.generateJSON( idx, serverGroupOption )
           instance.resource.BlockDeviceMapping.push( "#"+ v.uid )
           volumes.push( v )
 
-        for eni, eniIdx in eniModels
+        for eni in eniModels
           # The generate JSON might be something like : [ EniObject, EipObject, EipObject ]
-          enis = enis.concat eni.generateJSON( idx, serverGroupOption, eniIdx )
+          enis = enis.concat eni.generateJSON( idx, serverGroupOption )
 
       for res in instances.concat( volumes ).concat( enis )
         allResourceArray.push( { component : res } )

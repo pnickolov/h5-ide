@@ -434,6 +434,8 @@ define [ "CanvasManager",
 
       # Elb <=> Ami
       for ami in data.resource.Instances || []
+        # The instance might be servergroup member
+        # thus it cannot be resolved.
         instance = resolve( MC.extractID(ami.InstanceId) )
         if instance then new ElbAmiAsso( elb, instance )
       null

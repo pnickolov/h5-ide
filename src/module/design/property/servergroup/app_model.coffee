@@ -19,8 +19,7 @@ define [ '../base/model',
 			myInstanceComponent = Design.instance().component( uid )
 
 			# Find out AMI
-			ami_id = myInstanceComponent.get 'ImageId'
-			ami    = MC.data.dict_ami[ ami_id ] || MC.canvas_data.layout.component.node[ uid ]
+			ami = myInstanceComponent.getAmi() or myInstanceComponent.get("cachedAmi")
 
 			if ami
 				@set 'ami', {

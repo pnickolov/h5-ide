@@ -138,19 +138,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             @set elb
             @set "componentUid", myElbComponent.id
-
-        getSGList : () ->
-
-            uid = this.get 'id'
-            sgAry = Design.instance().component( uid ).get 'SecurityGroups'
-
-            sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
-
-            return sgUIDAry
     }
 
     new ElbAppModel()

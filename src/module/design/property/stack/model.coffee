@@ -81,15 +81,16 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getAppSubscription : () ->
 
-      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
+      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
       topic = TopicModel.allObjects()[0]
       if topic
+        topic_arn = topic.get("appId")
         @set 'snstopic', {
           name : topic.get("name")
-          arn  : topic.get("appId")
+          arn  : topic_arn
         }
 
-      subs = MC.data.resource_list[ Design().instance().region() ].Subscriptions
+      subs = MC.data.resource_list[ Design.instance().region() ].Subscriptions
       subscription = []
 
       if topic_arn and subs

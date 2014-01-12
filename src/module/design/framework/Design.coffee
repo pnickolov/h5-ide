@@ -96,7 +96,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     @__mode = options.mode
 
-    # Merge MC.canvas_data
+    # Merge canvas_data
     @attributes = canvas_data
 
     # Disable drawing for deserializing, delay it until everything is deserialized

@@ -81,19 +81,19 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
     getAppSubscription : () ->
 
-      for comp_uid, comp of MC.canvas_data.component
+      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+      allTopic = TopicModel and TopicModel.allObjects() or []
 
-        if comp.type is constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+      for topic in allTopic
+        topic_arn = topic.get 'appId'
 
-          topic_arn = comp.resource.TopicArn
+        @set 'snstopic', {
+          name : topic.get 'name'
+          arn  : topic_arn
+        }
+        break
 
-          @set 'snstopic', {
-            name : comp.resource.DisplayName
-            arn  : topic_arn
-          }
-          break
-
-      subs = MC.data.resource_list[MC.canvas_data.region].Subscriptions
+      subs = MC.data.resource_list[ Design.instance().region() ].Subscriptions
       subscription = []
 
       if topic_arn and subs

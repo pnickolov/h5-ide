@@ -48,6 +48,12 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       @attributes.owner.draw()
       null
 
+    genFullName: ( name ) ->
+      if @get( 'name' )[ 0 ] isnt '/'
+        'xvd' + name
+      else
+        '/dev/' + name
+
     getCost : ( priceMap, currency, force )->
       if not priceMap.ebs then return
 

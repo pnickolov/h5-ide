@@ -103,16 +103,17 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         setDeviceName : ( name ) ->
 
-            components = Design.instance().component
             uid        = @get "uid"
 
-            if not components( uid )
+            volume = Design.instance().component( uid )
+
+            if not volume
 
                 realuid     = uid.split '_'
                 device_name = realuid[ 2 ]
                 lcUid     = realuid[ 0 ]
 
-                lc = components( lcUid )
+                lc = Design.instance().component( lcUid )
 
                 volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
                 allVolume = volumeModel and volumeModel.allObjects() or []
@@ -121,13 +122,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     if v.get( 'owner' ) is lc
                         if v.get( 'name' ) is device_name
 
-                            if v.get( 'name' )[0] not '/'
-                                newDeviceName = 'xvd' + name
-                                newId = "#{realuid}_volume_xvd#{name}"
-
-                            else
-                                newDeviceName = '/dev/' + name
-                                newId = "#{realuid}_volume_#{name}"
+                            newDeviceName = volume.genFullName name
+                            newId = "#{realuid}_volume_#{name}"
 
                             v.set 'name', newDeviceName
 
@@ -142,15 +138,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             else
 
-                volume_comp = components[ uid ]
+                newDeviceName = volume.genFullName name
 
-                if volume_comp.get( 'name' )[ 0 ] not '/'
-                    newDeviceName = 'xvd' + name
-
-                else
-                    newDeviceName = '/dev/' + name
-
-                volume_comp.set 'name', newDeviceName
+                volume.set 'name', newDeviceName
 
                 MC.canvas.update uid, 'text', "volume_name", newDeviceName
 
@@ -159,101 +149,87 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             null
 
         setVolumeSize : ( value ) ->
-
-            components = MC.canvas_data.component
             uid        = @get "uid"
 
-            if not components[ uid ]
+            volume = Design.instance().component( uid )
+
+            if not volume
 
                 realuid     = uid.split('_')
                 device_name = realuid[2]
-                realuid     = realuid[0]
+                lcUid       = realuid[0]
 
-                for block in components[realuid].resource.BlockDeviceMapping
+                lc = Design.instance().component( lcUid )
 
-                    if block.DeviceName.indexOf(device_name) >= 0
+                volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                allVolume = volumeModel and volumeModel.allObjects() or []
 
-                        if block.DeviceName[0] != '/'
-                            block.Ebs.VolumeSize = value
-                        else
-                            block.Ebs.VolumeSize = value
+                for v in allVolume
+                    if v.get( 'owner' ) is lc
+                        if v.get( 'name' ) is device_name
+                            v.set 'volumeSize', value
+                            break
 
-                        break
 
             else
-                components[ uid ].resource.Size = value
+                volume.set 'volumeSize', value
 
             null
 
         setVolumeTypeStandard : () ->
-
             uid = @get "uid"
-            comp_res = MC.canvas_data.component[uid].resource
 
-            comp_res.VolumeType = 'standard'
-            comp_res.Iops = ''
-
-            null
+            volume = Design.instance().component( uid )
+            volume.set { 'volumeType': 'standard', 'iops': '' }
 
         setVolumeTypeIops : ( value ) ->
-
             uid = @get "uid"
-            comp_res = MC.canvas_data.component[uid].resource
 
-            comp_res.VolumeType = 'io1'
-            comp_res.Iops = value
-
-            null
+            volume = Design.instance().component( uid )
+            volume.set { 'volumeType': 'io1', 'iops': value }
 
         setVolumeIops : ( value )->
 
             uid = @get "uid"
-            MC.canvas_data.component[uid].resource.Iops = value
+            Design.instance().component( uid ).set 'iops', value
 
             null
 
-        isDuplicate : ( name ) ->
-
-            uid = @get "uid"
-            component = MC.canvas_data.component[ uid ]
-
-            if component
-                instanceId = component.resource.AttachmentSet.InstanceId
-                for comp_uid, comp of MC.canvas_data.component
-                    if comp_uid is uid
-                        continue
-
-                    if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-                        continue
-
-                    if comp.resource.AttachmentSet.InstanceId isnt instanceId
-                        continue
-
-                    if comp.name[0] != '/'
+        genFullName: ( name ) ->
+            if comp.name[0] != '/'
                         if comp.name == "xvd" + name
                             return true
                     else if comp.name.indexOf( name ) isnt -1
                         return true
 
-            else
+
+        isDuplicate : ( name ) ->
+
+            uid = @get "uid"
+
+            volume = Design.instance().component( uid )
+
+            volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+            allVolume = volumeModel and volumeModel.allObjects() or []
+
+            if not volume
                 realuid     = uid.split('_')
                 device_name = realuid[2]
-                realuid     = realuid[0]
+                lcUid       = realuid[0]
 
-                # First, test if the newly created name is not changed
-                # Because parsely might fires event even if the name is not changed.
-                if @attributes.volume_detail.editName is name
-                    return false
+                lc = Design.instance().component( lcUid )
 
-                for block in MC.canvas_data.component[realuid].resource.BlockDeviceMapping
+                for v in allVolume
+                    if v.get( 'owner' ) is lc
+                        volume = v
+                        break
 
-                    if block.DeviceName[0] != '/'
-                        if block.DeviceName == "xvd" + name
-                            return true
-                    else if block.DeviceName.indexOf( name ) isnt -1
-                        return true
+            _.some allVolume, ( v ) ->
+                fullName = v.genFullName name
+                if v isnt volume and v.get( 'name' ) is fullName
+                    true
 
-            return false
+
     }
 
     new VolumeModel()

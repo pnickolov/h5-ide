@@ -452,9 +452,6 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 id = id.resolved_data[0].id
 
-                # new design flow
-                data = MC.forge.other.canvasData.data()
-
                 item_state_map[id] = {
 
                     # old design flow
@@ -478,7 +475,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                     # new design flow
                     'has_instance_store_ami': me.isInstanceStore(),
-                    'is_asg'                : me.isAutoScaling(data),
+                    'is_asg'                : me.isAutoScaling(),
                     'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
 
@@ -1115,17 +1112,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
             #         console.log 'stack.export_cloudformation failed, error is ' + forge_result.error_message
 
-        isAutoScaling : (data) ->
-
-            is_asg = false
-
-            for uid of data.component
-                item = data.component[uid]
-                if item.type is 'AWS.AutoScaling.Group'
-                    is_asg = true
-
-            is_asg
-
+        isAutoScaling : () ->
+            !!Design.modelClassForType( "AWS.AutoScaling.Group" ).allObjects().length
     }
 
     model = new ToolbarModel()

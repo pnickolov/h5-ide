@@ -17,7 +17,7 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
 
           @set "readOnly", true
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
+          appData = MC.data.resource_list[ Design.instance().region() ]
           appId   = component.get("appId")
 
           data    = appData[ appId ]

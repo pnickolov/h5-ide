@@ -635,7 +635,6 @@ define [ 'MC', 'event',
             # 3. Toggle Toolbar Button
             @trigger "UPDATE_APP", true
 
-            MC.aws.eni.markAutoAssginFalse()
             MC.canvas.event.clearList()
 
             # 4. Trigger OPEN_PROPERTY

@@ -540,8 +540,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           ImageId               : @get("imageId")
           KeyName               : ""
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
-          VpcId                 : vpcId
-          SubnetId              : subnetId
+          VpcId                 : "@#{vpcId}.resource.VpcId"
+          SubnetId              : "@#{subnetId}.resource.SubnetId"
           Monitoring            : if @get("monitoring") then "enabled" else "disabled"
           NetworkInterface      : []
           InstanceType          : @get("instanceType")
@@ -631,9 +631,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           instance.resource.BlockDeviceMapping.push( "#"+ v.uid )
           volumes.push( v )
 
-        for eni in eniModels
+        for eni, eniIndex in eniModels
           # The generate JSON might be something like : [ EniObject, EipObject, EipObject ]
-          enis = enis.concat eni.generateJSON( idx, serverGroupOption )
+          enis = enis.concat eni.generateJSON( idx, serverGroupOption, eniIndex )
 
       for res in instances.concat( volumes ).concat( enis )
         allResourceArray.push( { component : res } )

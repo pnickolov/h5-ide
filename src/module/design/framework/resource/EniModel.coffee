@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
     this.hasEip     = attr.hasEip or false
     this.autoAssign = if attr.autoAssign isnt undefined then attr.autoAssign else true
-    this.ip         = attr.ip or ""
+    this.ip         = attr.ip or "x.x.x.x"
     this.eipData    = attr.eipData or {}
     null
 
@@ -174,7 +174,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           obj.suffix = prefixSuffixAry[1]
         else
           ipAry = ip.ip.split(".")
-          if prefixSuffixAry is "x.x"
+          if prefixSuffixAry[1] is "x.x"
             obj.suffix = ipAry[2] + "." + ipAry[3]
           else
             obj.suffix = ipAry[3]
@@ -185,14 +185,31 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       ips
 
+    # generate an realIp according to the cidr
+    getRealIp : ( ip, cidr )->
+      if not cidr then cidr = @subnetCidr()
+      prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
+
+      ipAry = ip.split(".")
+      if prefixSuffixAry[1] is "x.x"
+        realIp = prefixSuffixAry[0] + ipAry[2] + "." + ipAry[3]
+      else
+        realIp = prefixSuffixAry[0] + ipAry[3]
+
+      realIp
+
     isValidIp : ( ip )->
 
       if ip.indexOf("x") isnt -1
         return true
 
+      cidr = @subnetCidr()
+
       # Check for subnet
-      if not MC.aws.subnet.isIPInSubnet( ip, @subnetCidr() )
+      if not MC.aws.subnet.isIPInSubnet( ip, cidr )
         return 'This IP address conflicts with subnet’s IP range'
+
+      realNewIp = @getRealIp( ip, cidr )
 
       # Check for other eni's ip
       for eni in Model.allObjects()
@@ -201,7 +218,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           continue
 
         for ipObj in eni.attributes.ips
-          if ipObj.ip is ip and not ipObj.autoAssign
+          if ipObj.autoAssign then continue
+
+          # The ip is not necessary correct in Eni.get("ips")
+          realIp = eni.getRealIp( ipObj.ip )
+          if realIp is realNewIp
             if eni is this
               return 'This IP address conflicts with other IP'
             else
@@ -424,7 +445,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       null
 
 
-    generateJSON : ( index, servergroupOption )->
+    generateJSON : ( index, servergroupOption, eniIndex )->
 
       resources = [{}]
 
@@ -457,7 +478,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           autoAssign = ipObj.autoAssign
 
         ips.push {
-          PrivateIpAddress : if memberData.forceAutoAssign then "x.x.x.x" else ipObj.ip
+          PrivateIpAddress : if memberData.forceAutoAssign then "x.x.x.x" else @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign
           Primary          : false
         }
@@ -519,7 +540,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           GroupSet   : securitygroups
           Attachment :
             InstnaceId   : instanceId
-            DeviceIndex  : index or "1"
+            DeviceIndex  : eniIndex or "1"
             AttachmentId : ""
             AttachTime   : ""
 

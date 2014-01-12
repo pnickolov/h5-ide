@@ -63,7 +63,6 @@ define [ '../base/view',
 
             if target.parsley 'validate'
 
-                MC.aws.eni.updateAllInstanceENIIPToAutoAssign( @model.get 'uid' )
                 this.refreshIPList()
 
                 val = +target.val()
@@ -78,7 +77,7 @@ define [ '../base/view',
             if enable
                 $parent.find(".input-ip-wrap").removeClass("disabled")
                        .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1)
-                       .find(".input-ip").removeAttr("disabled")
+                       .find(".input-ip").prop("disabled", "")
 
             else
                 $parent.find(".input-ip-wrap").addClass("disabled")
@@ -227,7 +226,7 @@ define [ '../base/view',
                     if result isnt true
                         return result
 
-            for el in $("#property-eni-list").children().find("input")
+            for el in $("#property-network-list").children().find("input")
                 $(el).parsley "custom", { validator : valid, thisArg : el }
             null
 
@@ -275,7 +274,7 @@ define [ '../base/view',
             ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
             autoAssign = ip is "x" or ip is "x.x"
 
-            @model.setIp $target.index(), ip, autoAssign
+            @model.setIp $target.closest("li").index(), ip, autoAssign
             null
 
         # This function is used to display IP List
@@ -284,6 +283,8 @@ define [ '../base/view',
                 return
 
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
+
+            @validateIPList()
             @updateIPAddBtnState()
             null
 

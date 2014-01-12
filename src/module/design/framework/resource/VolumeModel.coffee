@@ -190,7 +190,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           Size       : @get("volumeSize")
           SnapshotId : @get("snapshotId")
           Iops       : @get("iops")
-          AvailabilityZone : if owner then owner.getAvailabilityZone() else ""
+          AvailabilityZone : if owner then owner.getAvailabilityZone().get("name") else ""
           AttachmentSet :
             VolumeId            : @get("appId")
             InstanceId          : instanceId

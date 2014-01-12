@@ -167,7 +167,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			Design.instance().component( @get("uid") ).getEmbedEni().canAddIp()
 
 		setIp : ( idx, ip, autoAssign )->
-			Design.instance().component( @get("uid") ).setIp( idx, ip, autoAssign )
+			Design.instance().component( @get("uid") ).getEmbedEni().setIp( idx, ip, autoAssign )
 			null
 	}
 

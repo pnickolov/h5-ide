@@ -83,7 +83,7 @@ define [ '../base/view',
             ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
             autoAssign = ip is "x" or ip is "x.x"
 
-            @model.setIp $target.index(), ip, autoAssign
+            @model.setIp $target.closest(".input-ip-item").index(), ip, autoAssign
             null
 
         refreshIpList : ( event ) ->

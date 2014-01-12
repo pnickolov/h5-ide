@@ -75,6 +75,8 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
 
     generateSubnetCidr : ( newCidr, subnetCidrAry )->
 
+      subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
       subnetCidrAry = MC.aws.subnet.autoAssignSimpleCIDR( newCidr, subnetCidrAry, @get("cidr") )
       if not subnetCidrAry.length
         subnetCidrAry = MC.aws.subnet.autoAssignAllCIDR( newCidr, subnets.length )

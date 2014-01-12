@@ -19,7 +19,8 @@ define [ '../base/model',
 			myInstanceComponent = Design.instance().component( uid )
 
 			# Find out AMI
-			ami = myInstanceComponent.getAmi() or myInstanceComponent.get("cachedAmi")
+			ami_id = myInstanceComponent.get("imageId")
+			ami    = myInstanceComponent.getAmi() or myInstanceComponent.get("cachedAmi")
 
 			if ami
 				@set 'ami', {

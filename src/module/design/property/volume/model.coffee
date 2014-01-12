@@ -2,7 +2,7 @@
 #  View Mode for design/property/volume
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     VolumeModel = PropertyModel.extend {
 
@@ -103,55 +103,58 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         setDeviceName : ( name ) ->
 
-            components = MC.canvas_data.component
+            components = Design.instance().component
             uid        = @get "uid"
 
-            if not components[ uid ]
+            if not components( uid )
 
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                realuid     = realuid[0]
+                realuid     = uid.split '_'
+                device_name = realuid[ 2 ]
+                lcUid     = realuid[ 0 ]
 
-                for block in components[realuid].resource.BlockDeviceMapping
+                lc = components( lcUid )
 
-                    if block.DeviceName.indexOf( device_name ) is -1
-                        continue
+                volumeModel = Design.modelClassForType constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+                allVolume = volumeModel and volumeModel.allObjects() or []
 
-                    if block.DeviceName[0] != '/'
-                        block.DeviceName = 'xvd' + name
-                        newId = "#{realuid}_volume_xvd#{name}"
+                for v in allVolume
+                    if v.get( 'owner' ) is lc
+                        if v.get( 'name' ) is device_name
 
-                    else
-                        block.DeviceName = '/dev/' + name
-                        newId = "#{realuid}_volume_#{name}"
+                            if v.get( 'name' )[0] not '/'
+                                newDeviceName = 'xvd' + name
+                                newId = "#{realuid}_volume_xvd#{name}"
 
-                    MC.canvas.update uid, 'text', "volume_name", block.DeviceName
-                    MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
-                    @attributes.volume_detail.name     = block.DeviceName
-                    @attributes.volume_detail.editName = name
+                            else
+                                newDeviceName = '/dev/' + name
+                                newId = "#{realuid}_volume_#{name}"
 
-                    @set 'uid', newId
+                            v.set 'name', newDeviceName
 
-                    break
+                            MC.canvas.update uid, 'text', "volume_name", newDeviceName
+                            MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
+                            @attributes.volume_detail.name     = newDeviceName
+                            @attributes.volume_detail.editName = name
+
+                            @set 'uid', newId
+
+                            break
 
             else
 
                 volume_comp = components[ uid ]
 
-                if volume_comp.resource.AttachmentSet.Device[0] != '/'
-                    device_name = 'xvd' + name
+                if volume_comp.get( 'name' )[ 0 ] not '/'
+                    newDeviceName = 'xvd' + name
 
                 else
-                    device_name = '/dev/' + name
+                    newDeviceName = '/dev/' + name
 
-                #serverGroupName
-                volume_comp.name = device_name
-                volume_comp.serverGroupName = device_name
+                volume_comp.set 'name', newDeviceName
 
-                MC.canvas.update uid, 'text', "volume_name", device_name
+                MC.canvas.update uid, 'text', "volume_name", newDeviceName
 
-                volume_comp.resource.AttachmentSet.Device = device_name
-                @attributes.volume_detail.name = device_name
+                @attributes.volume_detail.name = newDeviceName
 
             null
 

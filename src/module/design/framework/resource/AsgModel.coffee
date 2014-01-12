@@ -295,8 +295,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         lcPrice.resource += " (& volumes)"
         lcPrice.fee = lcFee
 
-      lcPrice.type = @get("minSize")
-      lcPrice.fee *= parseInt( @get("minSize"), 10 )
+      lcPrice.type = parseInt( @get("capacity") or @get("minSize"), 10 )
+      lcPrice.fee *= lcPrice.type
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 

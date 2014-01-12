@@ -65,24 +65,23 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 		getEniGroup : ( eni_uid ) ->
 
 			group          = []
-			myEniComponent = MC.canvas_data.component[ eni_uid ]
+			myEniComponent = Design.instance().component( eni_uid )
 			appData        = MC.data.resource_list[ Design.instance().region() ]
 
-			for uid, component of MC.canvas_data.component
-				if component.serverGroupUid is myEniComponent.serverGroupUid
-					group.push component
+			group = myEniComponent.groupMembers()
+			group.unshift myEniComponent.toJSON()
 
 
 			formated_group = []
-			for eni_comp in group
-				eni = $.extend true, {}, appData[ eni_comp.resource.NetworkInterfaceId ]
+			for index, eni_comp of group
+				eni = $.extend true, {}, appData[ eni_comp.appId ]
 
 				for i in eni.privateIpAddressesSet.item
 					i.primary = i.primary is true
 
-				eni.id              = eni_comp.resource.NetworkInterfaceId
-				eni.name            = eni_comp.name
-				eni.idx             = parseInt( eni_comp.name.split("-")[1], 10 )
+				eni.id              = eni_comp.appId
+				eni.name            = if eni_comp.name then "#{eni_comp.name}-0" else "#{myEniComponent.get 'name'}-#{index}"
+				eni.idx             = index
 				eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
 
 				formated_group.push eni
@@ -90,17 +89,20 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 			if formated_group.length > 1
 				formated_group = _.sortBy formated_group, 'idx'
 
-				if myEniComponent.resource.Attachment and myEniComponent.resource.Attachment.InstanceId
-					instance_comp = MC.canvas_data.component[ MC.extractID( myEniComponent.resource.Attachment.InstanceId ) ]
+				attachedInstance = myEniComponent.connectionTargets( 'EniAttachment' )[ 0 ]
 
-					if instance_comp and instance_comp.number isnt formated_group.length
-						formated_group.increment = instance_comp.number - formated_group.length
+				if attachedInstance
+					instance_comp = attachedInstance
+					instanceCount = attachedInstance.get( 'count' )
+
+					if instance_comp and instanceCount isnt formated_group.length
+						formated_group.increment = instanceCount - formated_group.length
 						if formated_group.increment > 0
 							formated_group.increment = "+" + formated_group.increment
 
-							name_template = myEniComponent.name.split("-")
+							name_template = myEniComponent.get( 'name' ).split( '-' )
 
-							for idx in [formated_group.length..instance_comp.number-1]
+							for idx in [ formated_group.length..instanceCount - 1 ]
 								name_template[1] = idx
 								formated_group.push {
 									name  : name_template.join("-")
@@ -109,7 +111,7 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 								}
 
 						else
-							for idx in [instance_comp.number..formated_group.length-1]
+							for idx in [ instanceCount..formated_group.length - 1 ]
 								formated_group[ idx ].isOld = true
 
 				@set 'group', formated_group

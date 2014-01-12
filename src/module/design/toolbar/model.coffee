@@ -477,7 +477,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #'is_production'         : if MC.canvas_data.usage isnt 'production' then false else true
 
                     # new design flow
-                    'has_instance_store_ami': me.isInstanceStore(data),
+                    'has_instance_store_ami': me.isInstanceStore(),
                     'is_asg'                : me.isAutoScaling(data),
                     'is_production'         : if MC.forge.other.canvasData.get( 'usage' ) isnt 'production' then false else true
                 }
@@ -1073,14 +1073,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
                             console.log 'app update failed'
 
-        isInstanceStore : (data) ->
-
-            is_instance_store = false
-
-            if 'property' of data and 'stoppable' of data.property and data.property.stoppable == false
-                is_instance_store = true
-
-            is_instance_store
+        isInstanceStore : () -> Design.instance().isStoppable()
 
         saveAppThumbnail  :   (flag, region, app_name, app_id) ->
             me = this

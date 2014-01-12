@@ -403,33 +403,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     true
 
-  DesignImpl.prototype.getCost = ()->
-    costList = []
-    totalFee = 0
-
-    feeMap = MC.data.config[ @region() ]
-
-    if feeMap and feeMap.price
-      priceMap = feeMap.price
-      currency = feeMap.price.currency || 'USD'
-
-      for uid, comp of @__componentMap
-        if comp.getCost
-          cost = comp.getCost( priceMap, currency )
-          if not cost then continue
-
-          if cost.length
-            for c in cost
-              totalFee += c.fee
-              costList.push c
-          else
-            totalFee += cost.fee
-            costList.push cost
-
-      costList = _.sortBy costList, "resource"
-
-    { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
-
   DesignImpl.prototype.serialize = ()->
 
     console.debug "Design is serializing."
@@ -478,15 +451,62 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     for visitor in Design.__serializeVisitors
       visitor( component_data, layout_data )
 
-    # Quick Hack, save $canvas's size to layout
-    layout_data.size = @canvas.sizeAry
 
     # Seems like some other place have call Design.instance().set("layout")
     # So we assign component/layout at last
     data = $.extend( {}, @attributes )
     data.component = component_data
     data.layout    = layout_data
+
+    # Quick Fix for some other property
+    # 1. save $canvas's size to layout
+    data.layout.size = @canvas.sizeAry
+    # 2. save stoppable to property
+    data.property.stoppable = @isStoppable()
+
     data
+
+
+  ########## General Business logics ############
+  DesignImpl.prototype.getCost = ()->
+    costList = []
+    totalFee = 0
+
+    feeMap = MC.data.config[ @region() ]
+
+    if feeMap and feeMap.price
+      priceMap = feeMap.price
+      currency = feeMap.price.currency || 'USD'
+
+      for uid, comp of @__componentMap
+        if comp.getCost
+          cost = comp.getCost( priceMap, currency )
+          if not cost then continue
+
+          if cost.length
+            for c in cost
+              totalFee += c.fee
+              costList.push c
+          else
+            totalFee += cost.fee
+            costList.push cost
+
+      costList = _.sortBy costList, "resource"
+
+    { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
+
+  ########## AWS Business logics ############
+  DesignImpl.prototype.isStoppable = ()->
+    # Previous version will set canvas_data.property.stoppable to false
+    # If the stack contains instance-stor ami.
+    InstanceModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+    LcModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration )
+    allObjects = InstanceModel.allObjects().concat LcModel.allObjects()
+    for comp in allObjects
+      ami = comp.getAmi() or comp.get("cachedAmi")
+      if ami and ami.rootDeviceType is 'instance-store'
+        return false
+    true
 
 
   _.extend DesignImpl.prototype, Backbone.Events

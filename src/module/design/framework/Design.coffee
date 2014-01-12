@@ -508,6 +508,16 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
         return false
     true
 
+  DesignImpl.prototype.clearResourceInCache = ()->
+    # module/design/model would like to clear all the data in the data.resource_list
+    resource_list = MC.data.resource_list[ @region() ]
+    if not resource_list then return
+
+    @eachComponent ()->
+      appId = @get("appId")
+      delete resource_list[ resource_list ]
+    console.debug "data.resource_list has been cleared", resource_list
+    null
 
   _.extend DesignImpl.prototype, Backbone.Events
   DesignImpl.prototype.on = ( event )->

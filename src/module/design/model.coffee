@@ -350,7 +350,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                 #MC.forge.app.clearResourceInCache MC.canvas_data
 
                 # new design flow
-                MC.forge.app.clearResourceInCache MC.forge.other.canvasData.data()
+                Design.instance().clearResourceInCache()
 
                 #cache new app data
                 MC.aws.aws.cacheResource resource_source, region, false

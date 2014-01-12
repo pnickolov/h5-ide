@@ -141,19 +141,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         getSGList : () ->
 
-            # resourceId = this.get 'id'
-
-            # # find stack by resource id
-            # resourceCompObj = null
-            # _.each MC.canvas_data.component, (compObj, uid) ->
-            #     if compObj.resource.InstanceId is resourceId
-            #         resourceCompObj = compObj
-            #     null
-
-            # sgAry = []
-            # if resourceCompObj
-            #     sgAry = resourceCompObj.resource.SecurityGroupId
-
             uid = this.get 'id'
             sgAry = Design.instance().component( uid ).get 'SecurityGroups'
 

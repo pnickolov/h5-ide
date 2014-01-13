@@ -489,7 +489,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           else
             eip = ipObj.eipData || {}
 
-          resource.push {
+          resources.push {
             uid   : eip.id or MC.guid()
             type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
             index : index

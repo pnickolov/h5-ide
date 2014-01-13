@@ -55,31 +55,16 @@ define [ 'jquery',
 
                 try
 
-                    # old design flow +++++++++++++++++++++++++++
-                    #expand components
-                    #MC.canvas_data = MC.forge.stack.expandServerGroup MC.canvas_data
-                    #save stack
-                    #model.saveStack MC.canvas.layout.save()
-                    #compact and update canvas
-                    #MC.canvas_data = MC.forge.stack.compactServerGroup MC.canvas_data
-                    # old design flow +++++++++++++++++++++++++++
-
                     # new design flow +++++++++++++++++++++++++++
-                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data()
-                    model.saveStack MC.forge.other.canvasData.data()
+                    MC.forge.other.canvasData.save   data
+                    model.saveStack                  data
+                    MC.forge.other.canvasData.origin data
                     # new design flow +++++++++++++++++++++++++++
-
-                    # old design flow
-                    #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
-
-                    # new design flow
-                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                 catch err
                     msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name
                     view.notify 'error', msg
 
-                #model.saveStack(data)
                 null
 
             #duplicate

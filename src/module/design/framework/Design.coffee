@@ -51,26 +51,21 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   Design = ( canvas_data, options )->
 
-    json_data   = canvas_data.component
-    layout_data = canvas_data.layout
+    design = (new DesignImpl( canvas_data, options )).use()
+    design.canvas = new CanvasAdaptor( canvas_data.layout.size )
 
-    # Delete these two attributes before copying canvas_data.
-    delete canvas_data.component
-    delete canvas_data.layout
-
-    design = (new DesignImpl( $.extend( true, {}, canvas_data ), options )).use()
-    design.canvas = new CanvasAdaptor( layout_data.size )
-
-    canvas_data.component = json_data
-    canvas_data.layout    = layout_data
-
-    if layout_data.component
-      layout_data = $.extend {}, layout_data.component.node, layout_data.component.group
 
     ###########################
     # Deserialize
     ###########################
-    design.deserialize( json_data, layout_data )
+    oldLayout = canvas_data.layout
+    # Merge node/group
+    if oldLayout.component
+      canvas_data.layout = $.extend {}, oldLayout.component.node, oldLayout.component.group
+
+    design.deserialize( canvas_data.component, canvas_data.layout )
+    canvas_data.layout = oldLayout
+
 
     if options.autoFinish isnt false
       design.finishDeserialization()
@@ -96,11 +91,12 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     @__mode = options.mode
 
-    # Merge canvas_data
-    @attributes = canvas_data
+    @attributes = {}
 
     # Disable drawing for deserializing, delay it until everything is deserialized
-    @__shoulddraw   = false
+    @__shoulddraw = false
+
+    @save( canvas_data )
     null
 
 
@@ -132,6 +128,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
+
+    console.debug "Deserializing data :", [json_data, layout_data]
 
     # Let visitor to fix JSON before it get deserialized.
     for devistor in Design.__deserializeVisitors
@@ -382,17 +380,27 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       func.call( context, comp )
     null
 
-  DesignImpl.prototype.save = ( component_data, layout_data )->
-    @__backup.name = @attributes.name
+  DesignImpl.prototype.save = ( canvas_data )->
 
-    # Quick Impl to make process work.
-    if component_data and layout_data
-      @__backup.component = component_data
-      @__backup.layout    = layout_data
+    if canvas_data
+      @__backup.component = canvas_data.component
+      @__backup.layout    = canvas_data.layout
+
+      # Delete these two attributes before copying canvas_data.
+      delete canvas_data.component
+      delete canvas_data.layout
+
+      @attributes = $.extend true, {}, canvas_data
+
+      canvas_data.component = @__backup.component
+      canvas_data.layout    = @__backup.layout
+
     else
       newData = @serialize()
       @__backup.component = newData.component
       @__backup.layout    = newData.layout
+
+    @__backup.name = @attributes.name
     null
 
   DesignImpl.prototype.isModified = ()->

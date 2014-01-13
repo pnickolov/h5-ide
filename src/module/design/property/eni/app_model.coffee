@@ -73,18 +73,6 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
 
           null
 
-        getSGList : () ->
-
-            uid = this.get 'id'
-            sgAry = Design.instance().component( uid ).get 'GroupSet'
-
-            sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.GroupId.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
-
-            return sgUIDAry
     }
 
     new EniAppModel()

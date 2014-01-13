@@ -115,8 +115,7 @@ define [ "Design", "CanvasManager", "./ResourceModel" ], ( Design, CanvasManager
       # Directly remove the connection without triggering anything changed.
       # But I'm not sure if this will affect undo/redo
 
-      console.assert( connections, "Disconnecting a resource, when the resource doesn't connect to anything." )
-
+      if not connections then return
       if connections.indexOf(connection) is -1 then return
 
       connections.splice( connections.indexOf( connection ), 1 )

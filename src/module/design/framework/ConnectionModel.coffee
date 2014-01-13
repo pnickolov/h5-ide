@@ -213,9 +213,9 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
 
     findExisting : ( p1Comp, p2Comp )->
       for cn in @allObjects()
-        if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp
+        if cn.port1Comp() is p1Comp and cn.port2Comp() is p2Comp and not cn.isRemoved()
           return cn
-        if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp
+        if cn.port2Comp() is p1Comp and cn.port1Comp() is p2Comp and not cn.isRemoved()
           return cn
       null
 

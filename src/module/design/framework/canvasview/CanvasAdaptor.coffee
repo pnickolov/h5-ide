@@ -105,6 +105,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     res = C.isConnectable( comp1, comp2 )
 
+    DefaultCreateOption = { createByUser : true }
+
     if _.isString( res )
       notification "error", res
     else if res is true

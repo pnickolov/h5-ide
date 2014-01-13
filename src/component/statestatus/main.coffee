@@ -2,7 +2,7 @@
 #  pop-up for component/statestatus module
 ####################################
 
-define ['jquery', 'event'], ($, ide_event) ->
+define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
     # Private
     loadModule = ( status ) ->
@@ -17,12 +17,8 @@ define ['jquery', 'event'], ($, ide_event) ->
 
     unLoadModule = ( view, model ) ->
 
-        view.off()
-        model.off()
-        view.undelegateEvents()
-
-        view  = null
-        model = null
+        view.remove()
+        model.destroy()
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
     # Public

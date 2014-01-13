@@ -14,6 +14,8 @@ define [ 'event'
 
         el: '#status-bar-modal'
 
+        template: {}
+
         events:
             'click .modal-close': 'closePopup'
 
@@ -23,23 +25,43 @@ define [ 'event'
 
         render: () ->
 
-            that = this
-            that.$statusModal = @$el
+            @$statusModal = @$el
 
-            that.$statusModal.html(that.statusModalTpl({}))
-            that.$statusModal.find('.modal-state-statusbar').html that.statusContentTpl({})
-            that.$stateStatusList = that.$statusModal.find('.state-status-list')
+            @$el.html @template.modal {}
+            @$('.modal-state-statusbar').html @template.content {}
+            @$stateStatusList = @$ '.state-status-list'
 
-            that.$statusModal.show()
-            that.refreshStateStatusList()
-            null
+            @renderItem()
+
+            @$el.show()
+
+            @
+
+        renderItem: () ->
+            @refreshStateStatusList()
+
+        renderStateBar: ( option ) ->
+            if _.isObject option
+                $stateBar = $ 'statusbar-btn'
+                if option.success
+                    $stateBar
+                        .find( '.state-success b' )
+                        .val option.success
+
+                if option.failed
+                    $stateBar
+                        .find( '.state-failed b' )
+                        .val option.failed
+
+
 
         compileTpl: () ->
 
             # generate template
             tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
-            tplHTMLAry = template.match(tplRegex)
+            tplHTMLAry = template.match tplRegex
             htmlMap = {}
+
             _.each tplHTMLAry, ( tplHTML ) ->
                 commentHead = tplHTML.split( '\n' )[ 0 ]
                 tplType = commentHead.replace( /(<!-- )|( -->)/g, '' )
@@ -52,9 +74,11 @@ define [ 'event'
 
             Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
 
-            this.statusModalTpl = Handlebars.compile stateStatusModalHTML
-            this.statusContentTpl = Handlebars.compile stateStatusContentHTML
-            this.statusItemTpl = Handlebars.compile stateStatusItemHTML
+            @template.modal     = Handlebars.compile stateStatusModalHTML
+            @template.content   = Handlebars.compile stateStatusContentHTML
+            @template.item      = Handlebars.compile stateStatusItemHTML
+
+            @template
 
         refreshStateStatusList: () ->
 
@@ -71,7 +95,7 @@ define [ 'event'
                 } )
                 null
 
-            renderHTML = that.statusItemTpl( {
+            renderHTML = that.template.item( {
                 state_statuses: stateStatusViewAry
             } )
 

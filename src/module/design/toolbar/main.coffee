@@ -19,8 +19,8 @@ define [ 'jquery',
             view.render()
 
             #listen OPEN_DESIGN
-            ide_event.onLongListen ide_event.OPEN_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
-                console.log 'toolbar:OPEN_DESIGN, region_name = ' + region_name + ', type = ' + type
+            ide_event.onLongListen ide_event.OPEN_SUB_DESIGN, ( region_name, type, current_platform, tab_name, tab_id ) ->
+                console.log 'toolbar:OPEN_SUB_DESIGN, region_name = ' + region_name + ', type = ' + type
                 #
                 model.setFlag tab_id, type
                 #

@@ -97,6 +97,8 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                     # init ta
                     MC.ta.list = []
 
+                # open sub design
+                ide_event.trigger ide_event.OPEN_SUB_DESIGN, region_name, type, current_platform, tab_name, result
 
                 null
 

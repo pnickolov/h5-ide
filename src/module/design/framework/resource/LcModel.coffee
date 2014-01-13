@@ -13,7 +13,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
       imageId      : ""
       ebsOptimized : false
-      instanceType : "t1.micro"
+      instanceType : "m1.small"
       monitoring   : false
       userData     : ""
       publicIp     : false
@@ -26,6 +26,9 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       @draw(true)
 
       if option and option.createByUser
+
+        @initInstanceType()
+
         # Default Kp
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         KpModel.getDefaultKP().assignTo( this )
@@ -83,6 +86,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     getAmi                : InstanceModel.prototype.getAmi
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType
+    initInstanceType      : InstanceModel.prototype.initInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
 
     draw : ( isCreate )->

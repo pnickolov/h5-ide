@@ -4,20 +4,19 @@
 
 define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
-    StateStatusModel = Backbone.Model.extend {
+    StateStatusModel = Backbone.Model.extend
 
         defaults :
             test: null
 
         initialize: () ->
 
-            that = this
-            that.genStateStatusData()
+            @genStateStatusData()
+
 
         genStateStatusData: () ->
 
-            that = this
-
+            # mock data
             statusData = {
                 app_id: "",
                 res_id: "",
@@ -31,14 +30,20 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         state_id: "2",
                         time: "2013-12-14",
                         result: "failed"
+                    },
+                    {
+                        state_id: "2",
+                        time: "2013-12-14",
+                        result: "failed"
                     }
+
                 ]
             }
 
             statusAry = statusData.statuses
 
-            that.set('stateStatusDataAry', statusAry)
+            @set 'stateStatusDataAry', statusAry
 
-    }
 
-    return StateStatusModel
+
+    StateStatusModel

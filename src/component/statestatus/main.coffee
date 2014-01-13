@@ -4,10 +4,10 @@
 
 define ['jquery', 'event'], ($, ide_event) ->
 
-    #private
-    loadModule = (status) ->
+    # Private
+    loadModule = ( status ) ->
 
-        require [ './component/statestatus/view', './component/statestatus/model' ], (View, Model) ->
+        require [ './component/statestatus/view', './component/statestatus/model' ], ( View, Model ) ->
 
             view  = new View()
             model = new Model()
@@ -15,7 +15,7 @@ define ['jquery', 'event'], ($, ide_event) ->
             view.model    = model
             view.render()
 
-    unLoadModule = (view, model) ->
+    unLoadModule = ( view, model ) ->
 
         view.off()
         model.off()
@@ -25,6 +25,6 @@ define ['jquery', 'event'], ($, ide_event) ->
         model = null
         #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
 
-    #public
+    # Public
     loadModule   : loadModule
     unLoadModule : unLoadModule

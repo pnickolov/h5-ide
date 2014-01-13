@@ -8,7 +8,7 @@
 */
 
 // JSON data for current tab
-MC.canvas_data = {};
+//MC.canvas_data = {};
 
 // Variable for current tab
 // MC.canvas_property = {};
@@ -120,68 +120,6 @@ MC.canvas = {
 
 		return true;
 	},
-
-	// data : function ()
-	// {
-	// 	var comp_data = MC.canvas.data.get('component'),
-	// 		instance_id,
-	// 		instance_data;
-
-	// 	$.each( comp_data, function(uid, comp)
-	// 	{
-	// 		if (comp.type === "AWS.EC2.Instance")
-	// 		{
-
-	// 			if (comp.number > 1 && comp.index === 0 && MC.aws && MC.aws.instance && MC.aws.instance.updateServerGroupState )
-	// 			{//update state of ServerGroup
-	// 				MC.aws.instance.updateServerGroupState(MC.canvas_data.id);
-	// 			}
-
-	// 			instance_id = comp.resource.InstanceId;
-
-	// 			if (instance_id){
-	// 			//instance in app
-	// 				instance_data = MC.data.resource_list[Design.instance().region()][instance_id];
-	// 				if ( $('#' + uid + '_instance-state').length  === 1)
-	// 				{
-	// 					//remove deleted first
-	// 					Canvon( $('#' + uid ) ).removeClass('deleted');
-
-	// 					if ( instance_data )
-	// 					{//instance data exist
-	// 						$('#' + uid + '_instance-state').attr({
-	// 							'class': 'instance-state tooltip instance-state-' + instance_data.instanceState.name + ' instance-state-' + MC.canvas.getState(),
-	// 							'data-tooltip' : instance_data.instanceState.name
-	// 						});
-
-	// 						//add delete class to terminated instance
-	// 						if (instance_data.instanceState.name === 'terminated' ){
-	// 							Canvon( $('#' + uid ) ).addClass('deleted');
-	// 						}
-
-	// 					}
-	// 					else
-	// 					{//instance data not found, or instance terminated
-	// 						$('#' + uid + '_instance-state').attr({
-	// 							'class': 'instance-state tooltip instance-state-unknown instance-state-' + MC.canvas.getState(),
-	// 							'data-tooltip': 'unknown'
-	// 						});
-	// 						Canvon('#' + uid).addClass('deleted');
-	// 					}
-	// 				}
-	// 				else
-	// 				{
-	// 					//no instance svg node found
-	// 				}
-	// 			}
-	// 			else
-	// 			{//instance in stack
-
-	// 			}
-	// 		}
-
-	// 	});
-	// },
 
 	resize: function (target, type)
 	{
@@ -1370,96 +1308,6 @@ MC.canvas = {
 		}
 	},
 
-	// createConnect: function (from_uid, from_target_port, to_uid, to_target_port)
-	// {
-	// 	var line_id = MC.guid(),
-
-	// 		COMPONENT_TYPE = MC.canvas.COMPONENT_TYPE,
-
-	// 		connection_target_data = {},
-
-	// 		layout_component_data = MC.canvas_data.layout.component,
-	// 		layout_node_data = layout_component_data.node,
-	// 		layout_connection_data = MC.canvas_data.layout.connection,
-
-	// 		from_node_class = layout_component_data.node[ from_uid ] ? 'node' : 'group',
-	// 		to_node_class = layout_component_data.node[ to_uid ] ? 'node' : 'group',
-
-	// 		from_data = layout_component_data[ from_node_class ][ from_uid ],
-	// 		to_data = layout_component_data[ to_node_class ][ to_uid ],
-
-	// 		from_type = from_data.type,
-	// 		to_type = to_data.type,
-
-	// 		connection_option = MC.canvas.CONNECTION_OPTION[ from_type ][ to_type ],
-
-	// 		from_node_connection_data = from_data.connection || [],
-	// 		to_node_connection_data = to_data.connection || [];
-
-	// 	if (connection_option)
-	// 	{
-	// 		if ($.type(connection_option) === 'array')
-	// 		{
-	// 			$.each(connection_option, function (index, item)
-	// 			{
-	// 				if (
-	// 					item.from === from_target_port &&
-	// 					item.to === to_target_port
-	// 				)
-	// 				{
-	// 					connection_option = item;
-	// 				}
-	// 			});
-	// 		}
-	// 	}
-
-	// 	$.each(from_node_connection_data, function (key, value)
-	// 	{
-	// 		var line_data = layout_connection_data[ value[ 'line' ] ];
-
-	// 		if (line_data)
-	// 		{
-	// 			line_data_target = line_data.target;
-	// 			if (
-	// 				line_data_target[ from_uid ] === from_target_port &&
-	// 				line_data_target[ to_uid ] === to_target_port
-	// 			)
-	// 			{
-	// 				is_connected = true;
-
-	// 				return false;
-	// 			}
-	// 		}
-	// 	});
-
-	// 	from_node_connection_data.push({
-	// 		'target': to_uid,
-	// 		'port': from_target_port,
-	// 		'line': line_id
-	// 	});
-
-	// 	to_node_connection_data.push({
-	// 		'target': from_uid,
-	// 		'port': to_target_port,
-	// 		'line': line_id
-	// 	});
-
-	// 	MC.canvas_data.layout.component[ from_node_class ][ from_uid ].connection = from_node_connection_data;
-	// 	MC.canvas_data.layout.component[ to_node_class ][ to_uid ].connection = to_node_connection_data;
-
-	// 	connection_target_data[ from_uid ] = from_target_port;
-	// 	connection_target_data[ to_uid ] = to_target_port;
-
-	// 	MC.canvas_data.layout.connection[ line_id ] = {
-	// 		'target': connection_target_data,
-	// 		'auto': true,
-	// 		'point': [],
-	// 		'type': connection_option.type
-	// 	};
-
-	// 	return true;
-	// },
-
 	select: function (id)
 	{
 		var item = $canvas(id),
@@ -1994,22 +1842,6 @@ MC.canvas = {
 			coordinate[ 1 ] + size[ 1 ]
 		);
 	}
-
-	// lineTarget: function (line_id)
-	// {
-	// 	var data = MC.canvas_data.layout.connection[ line_id ].target,
-	// 		result = [];
-
-	// 	$.each(data, function (key, value)
-	// 	{
-	// 		result.push({
-	// 			'uid': key,
-	// 			'port': value
-	// 		});
-	// 	});
-
-	// 	return result;
-	// }
 };
 
 MC.canvas.layout = {
@@ -2028,37 +1860,6 @@ MC.canvas.layout = {
 
 		return true;
 	}
-
-	// save: function ()
-	// {
-	// 	// var data = $.extend(true, {}, MC.canvas_data);
-
-	// 	// if (data.layout.component.node)
-	// 	// {
-	// 	// 	$.each(data.layout.component.node, function (id, data)
-	// 	// 	{
-	// 	// 		if  (data.connection)
-	// 	// 		{
-	// 	// 			data.connection = [];
-	// 	// 		}
-	// 	// 	});
-	// 	// }
-
-	// 	// if (data.layout.component.group)
-	// 	// {
-	// 	// 	$.each(data.layout.component.group, function (id, data)
-	// 	// 	{
-	// 	// 		if  (data.connection)
-	// 	// 		{
-	// 	// 			data.connection = [];
-	// 	// 		}
-	// 	// 	});
-	// 	// }
-
-	// 	// delete data.layout.connection;
-
-	// 	// return data;
-	// }
 };
 
 // MC.canvas.data = {
@@ -2565,73 +2366,6 @@ MC.canvas.asgList = {
 				target_id = target.id,
 				target_offset = Canvon(target).offset(),
 				canvas_offset = $canvas.offset();
-
-			// Prepare data
-			// var uid     = MC.extractID( target_id );
-			// var layout  = MC.canvas_data.layout.component.node[ uid ];
-			// if (!layout) {
-			// 	return;
-			// }
-			// var lc_comp = MC.canvas_data.component[ layout.groupUId ];
-			// var appData = MC.data.resource_list[ MC.canvas_data.region ];
-			// var asgData = appData[ lc_comp.resource.AutoScalingGroupARN ];
-
-			// if ( !asgData ) {
-			// 	return true;
-			// }
-
-			// // var statusMap = {
-			// // 	"Pending"     : "orange",
-			// // 	"Quarantined" : "orange",
-			// // 	"InService"   : "green",
-			// // 	"Terminating" : "red",
-			// // 	"Terminated"  : "red"
-			// // };
-			// var statusMap = {
-			// 	   "pending"       : "yellow"
-			// 	 , "stopping"      : "yellow"
-			// 	 , "shutting-down" : "yellow"
-			// 	 , "running"       : "green"
-			// 	 , "stopped"       : "orange"
-			// 	 , "terminated"    : "red"
-			// 	 , "unknown"       : "grey"
-			// };
-
-
-			// var temp_data = {
-			// 	name      : lc_comp.name,
-			// 	instances : []
-			// };
-
-			// lc_comp = MC.canvas_data.component[ MC.extractID( lc_comp.resource.LaunchConfigurationName ) ]
-			// temp_data.volume = lc_comp ? lc_comp.resource.BlockDeviceMapping.length : 0
-
-			// if ( layout ) {
-			// 	temp_data.background = [layout.osType, layout.architecture, layout.rootDeviceType].join(".");
-			// }
-
-			// var instances = asgData.Instances.member,
-			// 	state = null;
-			// if ( instances )
-			// {
-			// 	for ( var i = 0, l = instances.length; i < l; ++i ) {
-			// 		//get instance state
-			// 		if (MC.aws && MC.aws.instance && MC.aws.instance.getInstanceState ){
-			// 			state = MC.aws.instance.getInstanceState( instances[i].InstanceId );
-			// 		}
-			// 		if (!state){
-			// 			state = 'unknown';
-			// 		}
-
-			// 		temp_data.instances.push({
-			// 				id     : instances[i].InstanceId
-			// 			//, color : statusMap[ instances[i].LifecycleState ]
-			// 			//, state : instances[i].LifecycleState
-			// 			, color : statusMap[state]
-			// 			, state : state
-			// 		});
-			// 	}
-			// }
 
 			$('#canvas_container').append(
 				MC.template.asgList( $canvas( target_id ).list() )
@@ -5701,7 +5435,7 @@ MC.canvas.analysis = function ( data )
 			isInternetELBconnected,
 			isInternalELBconnected,
 
-			layout_component_data = MC.canvas_data.
+			//layout_component_data = MC.canvas_data.
 
 			elb_type,
 			item_connection;
@@ -5976,7 +5710,7 @@ MC.canvas.analysis = function ( data )
 		{
 			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
 			{
-				return MC.canvas_data.component[ a ].name.localeCompare( MC.canvas_data.component[ b ].name );
+				return $canvas( a.id ).getModel().attributes.name.localeCompare( $canvas( b.id ).getModel().attributes.name );
 			});
 
 			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)

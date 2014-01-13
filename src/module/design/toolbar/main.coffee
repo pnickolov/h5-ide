@@ -128,7 +128,7 @@ define [ 'jquery',
                 console.log 'design_toolbar APP_2_APPEDIT'
 
                 if _.isObject data
-                    data = MC.forge.stack.expandServerGroup data
+                    #data = MC.forge.stack.expandServerGroup data
                     model.saveApp(data)
                 else
                     console.log 'current is not object, data is ' + data

@@ -357,7 +357,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 21, 44, 29, 24 ).attr({
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 21, 44, 29, 24 ).attr({
             'id': @id + "_volume_status"
             'class':'volume-image'
           }),
@@ -473,6 +473,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       volumeCount = if @get("volumeList") then @get("volumeList").length else 0
       CanvasManager.update node.children(".volume-number"), volumeCount
+      if volumeCount > 0
+        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
+      else
+        volumeImage = 'ide/icon/instance-volume-not-attached.png'
+      CanvasManager.update node.children(".volume-image"), volumeImage, "href"
 
       # Update EIP
       CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()

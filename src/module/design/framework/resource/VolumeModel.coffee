@@ -173,7 +173,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         uid   = if index is 0 then @id else MC.guid()
         appId = @get("appId")
 
-      instanceId = if serverGroupOption.id then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""
+      instanceId = if serverGroupOption.instanceId then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""
 
       owner = @get("owner")
 

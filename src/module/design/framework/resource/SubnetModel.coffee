@@ -228,10 +228,11 @@ define [ "constant",
         type : @type
         uid  : @id
         resource :
-          VpcId     : @parent().parent().id
-          SubnetId  : @get("appId")
-          CidrBlock : @get("cidr")
           AvailableIpAddressCount : ""
+          AvailabilityZone : @parent().get("name")
+          VpcId            : @parent().parent().id
+          SubnetId         : @get("appId")
+          CidrBlock        : @get("cidr")
 
       { component : component, layout : layout }
 
@@ -253,7 +254,7 @@ define [ "constant",
         width  : layout_data.size[0]
         height : layout_data.size[1]
 
-        parent : resolve( MC.extractID(data.resource.AvailabilityZone) )
+        parent : resolve( layout_data.groupUId )
       }
 
       null

@@ -540,7 +540,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           GroupSet   : securitygroups
           Attachment :
             InstnaceId   : instanceId
-            DeviceIndex  : eniIndex or "1"
+            DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
             AttachmentId : ""
             AttachTime   : ""
 
@@ -689,6 +689,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       if instance then return
 
       eni = design.component( data.uid )
+      if not eni then return
+
       console.debug "Found embed eni which doesn't belong to any servergroup", eni
       eni.remove()
 

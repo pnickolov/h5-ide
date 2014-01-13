@@ -252,7 +252,9 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
       Backbone.Model.call( this, attributes, options || __emptyObj )
 
-      if not @attributes.name then @attributes.name = ""
+      # Initialize name/appId to empty string
+      if not @attributes.name  then @attributes.name  = ""
+      if not @attributes.appId then @attributes.appId = ""
 
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.

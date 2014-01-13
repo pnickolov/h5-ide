@@ -816,6 +816,7 @@ textarea {
 }
 
 .scrollbar-veritical-thumb {
+	top: 0;
 	width: 8px;
 	-webkit-transition: height 0.2s, opacity .2s;
 	-moz-transition: height 0.2s, opacity .2s;
@@ -824,6 +825,7 @@ textarea {
 }
 
 .scrollbar-horizontal-thumb {
+	left: 0;
 	height: 8px;
 	-webkit-transition: width 0.2s, opacity .2s;
 	-moz-transition: width 0.2s, opacity .2s;

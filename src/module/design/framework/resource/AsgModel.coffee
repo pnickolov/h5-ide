@@ -260,14 +260,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
     newNameTmpl : "asg"
 
-    initialize : ()->
-      @draw( true )
-
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
-      null
-
-
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
         if expand.parent() is newParent

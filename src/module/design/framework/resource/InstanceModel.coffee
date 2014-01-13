@@ -20,7 +20,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       imageId      : ''
       tenancy      : 'default'
       ebsOptimized : false
-      instanceType : "t1.micro"
+      instanceType : "m1.small"
       monitoring   : false
       userData     : ""
 
@@ -29,6 +29,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
     initialize : ( attr, option )->
 
       if option and option.createByUser
+
+        @initInstanceType()
 
         # Draw before creating SgAsso
         @draw(true)
@@ -62,9 +64,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
       if vpc and not vpc.isDefaultTenancy()
         @setTenancy( "dedicated" )
-
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
       null
 
@@ -108,6 +107,19 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       osFamily
 
+    initInstanceType : ()->
+      ami = @getAmi()
+      if ami and ami.instance_type
+        instance_type = ami.instance_type.replace(/\s/g, "").split(",")
+        for i in instance_type
+          # Do not return t1.micro, because if vpc is dedicated, the instance
+          # should be m1.small
+          if i isnt "t1.micro"
+            type = i
+            break
+
+      @attributes.instanceType = type || "m1.small"
+      null
 
     getCost : ( priceMap, currency )->
       if not priceMap.instance then return null

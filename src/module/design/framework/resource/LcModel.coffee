@@ -13,7 +13,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
       imageId      : ""
       ebsOptimized : false
-      instanceType : ""
+      instanceType : "m1.small"
       monitoring   : false
       userData     : ""
       publicIp     : false
@@ -26,6 +26,9 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       @draw(true)
 
       if option and option.createByUser
+
+        @initInstanceType()
+
         # Default Kp
         KpModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
         KpModel.getDefaultKP().assignTo( this )
@@ -34,8 +37,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
@@ -83,6 +84,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     getAmi                : InstanceModel.prototype.getAmi
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
     setInstanceType       : InstanceModel.prototype.setInstanceType
+    initInstanceType      : InstanceModel.prototype.initInstanceType
     isEbsOptimizedEnabled : InstanceModel.prototype.isEbsOptimizedEnabled
 
     draw : ( isCreate )->

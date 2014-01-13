@@ -102,22 +102,25 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                             #set MC.canvas_data
                             model.setCanvasData result.resolved_data[0]
 
-                        if type is 'OPEN_APP'
-
-                            if Tabbar.current isnt 'appview'
-                                #get all resource data for app
-                                model.getAppResourcesService region_name, tab_id
-
                         if type is 'OPEN_STACK'
-
-                            #get all not exist ami data for stack
-                            model.getAllNotExistAmiInStack region_name, tab_id
+                            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
 
                         #when NEW_STACK result is tab_id
                         ide_event.trigger ide_event.OPEN_DESIGN, region_name, type, current_platform, tab_id, result
 
                         # Instead of posting a ide_event.OPEN_DESIGN to let property panel to figure it out what to do, here directly tells it to open a stack property.
                         ide_event.trigger ide_event.OPEN_PROPERTY, "component", ""
+
+                        if type is 'OPEN_STACK'
+
+                            #get all not exist ami data for stack
+                            model.getAllNotExistAmiInStack region_name, tab_id
+
+                        if type is 'OPEN_APP'
+
+                            if Tabbar.current isnt 'appview'
+                                #get all resource data for app
+                                model.getAppResourcesService region_name, tab_id
 
                     # setting app state
                     if type in [ 'OPEN_APP', 'OLD_APP' ]

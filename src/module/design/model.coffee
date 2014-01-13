@@ -300,8 +300,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             app_model.resource { sender : this }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, app_id
 
         getAllNotExistAmiInStack : ( region, tab_id )->
-
-            ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
+            console.log 'getAllNotExistAmiInStack', region, tab_id
 
             me = this
 

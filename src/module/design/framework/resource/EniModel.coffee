@@ -56,8 +56,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     groupMembers : ()->
@@ -691,7 +689,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       eni = design.component( data.uid )
       if not eni then return
 
-      console.debug "Found embed eni which doesn't belong to any servergroup", eni
+      console.debug "Found embed eni which doesn't belong to visible instance, it might be embed eni of an servergroup member", eni
       eni.remove()
 
       eniMember = @createServerGroupMember(data)

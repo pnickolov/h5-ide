@@ -46,9 +46,6 @@ define [ "CanvasManager",
 
       @draw(true)
 
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
-
       if option.createByUser and Design.instance().typeIsVpc()
         sg = new SgModel({
           name : @get("name")+"-sg"

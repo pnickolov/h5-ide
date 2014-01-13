@@ -22,8 +22,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         vpc.addChild( @ )
 
       @draw(true)
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()->

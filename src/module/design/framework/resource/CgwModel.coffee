@@ -14,11 +14,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
-    initialize : ()->
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
-      null
-
     isDynamic : ()->
       !!@get("bgpAsn")
 
@@ -67,7 +62,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
       null
 
 
- 
+
 
 
     serialize : ()->

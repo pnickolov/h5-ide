@@ -1604,7 +1604,8 @@ MC.canvas = {
 
 				$.each(group_child, function (index, item)
 				{
-					if (item.getAttribute('data-type') === 'group')
+					if ($canvas( item.id ).nodeType === 'group')
+					//if (item.getAttribute('data-type') === 'group')
 					{
 						ignore_stack.push(item.id);
 					}

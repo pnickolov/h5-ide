@@ -5153,8 +5153,6 @@ MC.canvas.analysis = function ( data )
 
 	absPosition( layout, 0, 0 );
 
-	console.info("absPosition");
-
 	function positionSubnetChild(node)
 	{
 		var stack = {},
@@ -5683,8 +5681,6 @@ MC.canvas.analysis = function ( data )
 		positionChild( layout );
 	}
 
-	console.info("positionChild");
-
 	// VPC padding
 	if (layout.children)
 	{
@@ -5694,8 +5690,6 @@ MC.canvas.analysis = function ( data )
 			item.coordinate[1] += VPC_PADDING_TOP;
 		});
 	}
-
-	console.info( layout );
 
 	// RouteTable
 	if (resource_stack[ 'AWS.VPC.RouteTable' ] !== undefined)
@@ -5762,8 +5756,6 @@ MC.canvas.analysis = function ( data )
 			});
 		}
 	}
-
-	console.info(" RT ");
 
 	// Add AZ margin for ELB
 	var elb_stack = layout.children,
@@ -5857,8 +5849,6 @@ MC.canvas.analysis = function ( data )
 		}
 	}
 
-	console.info("ELB");
-
 	function absPosition(node, x, y)
 	{
 		var coordinate = node.coordinate;
@@ -5877,15 +5867,11 @@ MC.canvas.analysis = function ( data )
 
 	absPosition( layout, 0, 0 );
 
-	console.info("absPosition");
-
 	function updateLayoutData(node)
 	{
 		var resource = resources[ node.id ];
 
-		console.info(node);
 		$canvas( node.id ).position( node.coordinate[0], node.coordinate[1] );
-		console.info(node.coordinate);
 
 		if (node.size !== undefined)
 		{
@@ -5903,8 +5889,6 @@ MC.canvas.analysis = function ( data )
 	}
 
 	updateLayoutData( layout );
-
-	console.info("updateLayoutData");
 
 	function VPCsize()
 	{
@@ -5967,8 +5951,6 @@ MC.canvas.analysis = function ( data )
 
 	VPCsize();
 
-	console.info( "VPCsize" );
-
 	// IGW & VGW
 	if (resource_stack[ 'AWS.VPC.InternetGateway' ] !== undefined)
 	{
@@ -6006,8 +5988,6 @@ MC.canvas.analysis = function ( data )
 		canvas_width < 180 ? 180 : canvas_width,
 		canvas_height < 150 ? 150 : canvas_height
 	);
-
-	console.info(layout);
 
 	return true;
 };

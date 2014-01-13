@@ -81,9 +81,14 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       # If the originalAsg has been expanded to the same parent.
       # Then we do not create the ExpandAsg
-      for expanded in attributes.originalAsg.get("expandedList")
-        if expanded.parent is attributes.parent
-          return
+      list = [ attributes.originalAsg ].concat( attributes.originalAsg.get("expandedList") )
+      for expanded in list
+        if attributes.parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+          if attributes.parent.parent() is expanded.parent().parent()
+            return
+        else
+          if attributes.parent is expanded.parent()
+            return
 
       # Call Superclass's consctructor to finish creating the ExpandAsg
       ComplexResModel.call( this, attributes, options )

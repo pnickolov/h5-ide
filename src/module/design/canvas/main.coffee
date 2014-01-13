@@ -73,6 +73,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     # create Design object
                     dd = new Design MC.forge.other.canvasData.data(true), options
+                    console.log 'new Design Create Complete'
 
                     # set analysis
                     MC.canvas.analysis()
@@ -88,6 +89,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     # create Design object
                     new Design MC.forge.other.canvasData.data(true), options
+                    console.log 'new Design Create Complete'
 
                     # old design flow
                     MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
@@ -131,6 +133,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                 # create Design object
                 new Design( MC.forge.other.canvasData.data(), options )
+                console.log 'new Design Create Complete'
 
                 # new design flow +++++++++++++++++++++++++++
 

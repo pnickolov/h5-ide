@@ -294,10 +294,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           volumeSize : volume.Ebs.VolumeSize
           owner      : model
 
-        _opt =
-          isForLC : true
-
-        new VolumeModel(_attr, _opt)
+        new VolumeModel(_attr, {})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

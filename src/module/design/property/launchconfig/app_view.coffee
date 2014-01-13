@@ -14,8 +14,9 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
         kpModalClosed: false
 
         render: () ->
-            @$el.html template @model.toJSON()
-            @model.toJSON()
+            data = @model.toJSON()
+            @$el.html template data
+            data.name
 
         downloadKeypair: ( event ) ->
             keypair = $( event.currentTarget ).html()

@@ -8,9 +8,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
     loadModule = () ->
 
         #
-        require [ './module/design/canvas/view',
-                  './module/design/canvas/model'
-        ], ( View, model ) ->
+        require [ './module/design/canvas/view' ], ( View ) ->
 
             #view
             view = new View()
@@ -75,9 +73,6 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
 
                     # create Design object
                     dd = new Design MC.forge.other.canvasData.data(true), options
-
-                    # set ami layout
-                    MC.aws.ami.setLayout MC.forge.other.canvasData.data(true)
 
                     # set analysis
                     MC.canvas.analysis()

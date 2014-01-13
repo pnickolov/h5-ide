@@ -484,7 +484,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         }
 
         if ipObj.hasEip
-          if forceAutoAssign
+          if memberData.forceAutoAssign
             eip = {}
           else
             eip = ipObj.eipData || {}

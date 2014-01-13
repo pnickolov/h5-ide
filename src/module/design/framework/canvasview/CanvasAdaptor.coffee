@@ -2,8 +2,6 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
   Design = null
 
-  DefaultCreateOption = { createByUser : true }
-
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id )->
     component = Design.__instance.component(id)
@@ -83,8 +81,18 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     Model = Design.modelClassForType type
 
-    m = new Model( attributes, DefaultCreateOption )
-    if m.id then $canvas( m.id, true ).select()
+    createOption = { createByUser : true }
+    m = new Model( attributes, createOption )
+
+    ####
+    # Quick hack to allow user to select another item,
+    # instead of the newly created one.
+    ####
+    if createOption.selectId
+      $canvas( createOption.selectId, true ).select()
+    else if m.id
+      $canvas( m.id, true ).select()
+
     return m.id
 
   $canvas.connect = ( p1, p1Name, p2, p2Name )->

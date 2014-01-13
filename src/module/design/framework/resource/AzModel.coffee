@@ -11,10 +11,19 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
       width  : 21
       height : 21
 
-    initialize : ()->
+    initialize : ( attribute, option )->
       vpc = VpcModel.theVPC()
       if vpc
         vpc.addChild( @ )
+
+      if option.createByUser and Design.instance().typeIsVpc()
+        SubnetModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
+        m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
+        ####
+        # Quick hack to allow user to select another item,
+        # instead of the newly created one.
+        ####
+        option.selectId = m.id
 
       @draw(true)
       null

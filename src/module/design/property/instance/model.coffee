@@ -16,6 +16,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 			attr.can_set_ebs    = component.isEbsOptimizedEnabled()
 			attr.instance_type  = component.getInstanceTypeList()
 			attr.tenancy        = component.isDefaultTenancy()
+			attr.displayCount   = attr.count - 1
 
 			eni = component.getEmbedEni()
 			attr.number_disable = eni and eni.connections('RTB_Route').length > 0

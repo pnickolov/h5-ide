@@ -72,7 +72,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
           return true
 
     defaultScalingPolicyName : () ->
-      count = Design.instance().component( @get("uid") ).get("policies").length + 1
+      count = Design.instance().component( @get("uid") ).get("policies").length
       "#{@attributes.name}-policy-#{count}"
 
     getPolicy : ( uid )->

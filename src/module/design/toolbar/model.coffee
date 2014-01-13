@@ -1070,7 +1070,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             #ide_event.trigger ide_event.APPEDIT_2_APP, tab_name
                             console.log 'app update failed'
 
-        isInstanceStore : () -> Design.instance().isStoppable()
+        isInstanceStore : () -> !Design.instance().isStoppable()
 
         saveAppThumbnail  :   (flag, region, app_name, app_id) ->
             me = this

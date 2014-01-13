@@ -40,6 +40,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
+    isDefaultTenancy : ()-> true
 
     getKeyName : () ->
       @connectionTargets( 'KeypairUsage' )[ 0 ].get 'name'

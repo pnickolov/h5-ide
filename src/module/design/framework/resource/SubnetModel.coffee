@@ -32,8 +32,10 @@ define [ "constant",
 
       # Connect to the DefaultACL automatically
       Acl = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
-      AclAsso = Design.modelClassForType( "AclAsso" )
-      new AclAsso( this, Acl.getDefaultAcl() )
+      defaultAcl = Acl.getDefaultAcl()
+      if defaultAcl
+        AclAsso = Design.modelClassForType( "AclAsso" )
+        new AclAsso( this, defaultAcl )
 
       null
 

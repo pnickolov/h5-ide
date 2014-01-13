@@ -67,7 +67,7 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
                     @setOriginData result.resolved_data[ 0 ]
 
                     # save design_model
-                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data()
+                    MC.forge.other.canvasData.save MC.forge.other.canvasData.data(true)
 
                 # update MC.Tab[app_id]
                 else

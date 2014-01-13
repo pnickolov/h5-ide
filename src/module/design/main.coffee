@@ -102,12 +102,6 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                             #set MC.canvas_data
                             model.setCanvasData result.resolved_data[0]
 
-                        if type is 'OPEN_APP'
-
-                            if Tabbar.current isnt 'appview'
-                                #get all resource data for app
-                                model.getAppResourcesService region_name, tab_id
-
                         if type is 'OPEN_STACK'
                             ide_event.trigger ide_event.SWITCH_WAITING_BAR, null, true
 
@@ -121,6 +115,12 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
 
                             #get all not exist ami data for stack
                             model.getAllNotExistAmiInStack region_name, tab_id
+
+                        if type is 'OPEN_APP'
+
+                            if Tabbar.current isnt 'appview'
+                                #get all resource data for app
+                                model.getAppResourcesService region_name, tab_id
 
                     # setting app state
                     if type in [ 'OPEN_APP', 'OLD_APP' ]

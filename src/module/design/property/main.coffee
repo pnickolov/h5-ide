@@ -88,7 +88,7 @@ define [ 'event',
 
 
 			# Get current model of design
-			if design.modeIsApp()
+			if design.modeIsApp() or design.modeIsAppView()
 				tab_type = PropertyBaseModule.TYPE.App
 
 			else if design.modeIsStack()

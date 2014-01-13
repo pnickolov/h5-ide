@@ -358,6 +358,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
   DesignImpl.prototype.modeIsStack   = ()-> @__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()-> @__mode == Design.MODE.App
+  DesignImpl.prototype.modeIsAppView = ()-> @__mode == Design.MODE.AppView
   DesignImpl.prototype.modeIsAppEdit = ()-> @__mode == Design.MODE.AppEdit
   DesignImpl.prototype.setMode = (m)->
     @__mode = m

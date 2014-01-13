@@ -5715,7 +5715,7 @@ MC.canvas.analysis = function ( data )
 		{
 			resource_stack[ 'AWS.VPC.RouteTable' ].sort(function (a, b)
 			{
-				return $canvas( a.id ).getModel().attributes.name.localeCompare( $canvas( b.id ).getModel().attributes.name );
+				return $canvas( a ).getModel().attributes.name.localeCompare( $canvas( b ).getModel().attributes.name );
 			});
 
 			$.each(resource_stack[ 'AWS.VPC.RouteTable' ], function (index, id)

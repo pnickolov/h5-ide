@@ -5,6 +5,9 @@ define [ "Design", "constant" ], ( Design, constant )->
 
   Design.registerDeserializeVisitor ( data, layout_data )->
 
+    # Only fix json in stack mode
+    if not Design.instance().modeIsStack() then return
+
     for uid, comp of data
       if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
         if comp.name is "DefaultKP"

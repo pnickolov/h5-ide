@@ -216,7 +216,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     serialize : ()->
       layout =
         uid  : @id
-        type : @type
+        type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
         groupUId   : @parent().id
         originalId : @get("originalAsg").id
         coordinate : [ @x(), @y() ]
@@ -520,7 +520,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       healthCheckType = "EC2"
       if @get("lc")
-        elbs = @get("lc").connectionTargets( "ElbAsso" )
+        elbs = @get("lc").connectionTargets( "ElbAmiAsso" )
         if elbs.length
           healthCheckType = @get("healthCheckType")
           elbArray = _.map elbs, ( elb )-> "@#{elb.id}.resource.LoadBalancerName"

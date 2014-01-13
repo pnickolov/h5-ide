@@ -55,11 +55,14 @@ define [ 'jquery',
 
                 try
 
-                    # new design flow +++++++++++++++++++++++++++
+                    # save Design
                     MC.forge.other.canvasData.save   data
-                    model.saveStack                  data
+
+                    # save origin_data
                     MC.forge.other.canvasData.origin data
-                    # new design flow +++++++++++++++++++++++++++
+
+                    # save db
+                    model.saveStack                  data
 
                 catch err
                     msg = sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, data.name

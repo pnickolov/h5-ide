@@ -272,15 +272,15 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
         listenStateStatusList: () ->
 
             MC.data.websocket.collection.status.find().fetch()
-            
+
             query = MC.data.websocket.collection.status.find()
 
             handle = query.observeChanges {
                 added: (idx, statusData) ->
-                    ide_event.trigger 'STATE_STATUS_DATA_UPDATE', 'add', idx, statusData
+                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData
 
-                changed: (idx, statusData) ->
-                    ide_event.trigger 'STATE_STATUS_DATA_UPDATE', 'change', idx, statusData
+                #changed: (idx, statusData) ->
+                #    ide_event.trigger 'STATE_STATUS_DATA_UPDATE', 'change', idx, statusData
             }
 
             null

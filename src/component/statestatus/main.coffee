@@ -12,6 +12,8 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
             view  = new View()
             model = new Model()
 
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, model.listenStateStatusUpdate
+
             view.model    = model
             view.render()
 
@@ -19,7 +21,7 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
         view.remove()
         model.destroy()
-        #ide_event.offListen ide_event.<EVENT_TYPE>, <function name>
+        ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
 
     # Public
     loadModule   : loadModule

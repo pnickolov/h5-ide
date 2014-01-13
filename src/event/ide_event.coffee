@@ -179,6 +179,10 @@ define [ 'underscore', 'backbone' ], () ->
         UPDATE_APP_RESOURCE    : 'UPDATE_APP_RESOURCE'
         UPDATE_APP_INFO        : 'UPDATE_APP_INFO'
 
+        UPDATE_STATE_STATUS_DATA  :  'STATE_STATUS_DATA_UPDATE'
+
+
+
         constructor : ->
             _.extend this, Backbone.Events
 

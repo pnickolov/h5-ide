@@ -14,16 +14,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             that = this
 
             @genStateStatusData()
-            @listenStateStatusList()
 
-            ide_event.onLongListen 'STATE_STATUS_DATA_UPDATE', (type, idx, statusData) ->
-                that.listenStateStatusList(type, idx, statusData)
-                null
+            @stateItemModel = Backbone.Model.extend {
+
+            }
+
 
         genStateStatusData: () ->
 
             # mock data
-            statusData = {
+            getStateData = () ->
                 app_id: "",
                 res_id: "",
                 statuses: [
@@ -44,13 +44,14 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     }
 
                 ]
-            }
 
-            statusAry = statusData.statuses
+            statusDatas = [ getStateData(), getStateData(), getStateData() ]
+
+            statusAry = getStateData().statuses
 
             @set 'stateStatusDataAry', statusAry
 
-        listenStateStatusList: (type, idx, statusData) ->
+        listenStateStatusUpdate: ( type, idx, statusData ) ->
 
             console.log(statusData)
 

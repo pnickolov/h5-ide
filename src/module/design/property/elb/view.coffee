@@ -140,7 +140,7 @@ define [ '../base/view',
             $selectbox.children(":first-child").addClass("selected")
             $selectbox.prev(".selection").text("HTTP")
             $('#elb-property-listener-list').append $li
-            null
+            return false
 
         updateListener : ( $li )->
             obj = {
@@ -323,7 +323,7 @@ define [ '../base/view',
             @model.removeListener( $li.index() )
             $li.remove()
             @updateCertView()
-            null
+            return false
 
         listenerCertChanged : ( event ) ->
             @model.setCert {

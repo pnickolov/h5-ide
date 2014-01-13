@@ -120,7 +120,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         console.assert( @oneToMany is @port1Comp().type or @oneToMany is @port2Comp().type, "Invalid oneToMany parameter" )
         comp = @getOtherTarget( @oneToMany )
         for cn in comp.connections( @type )
-          cn.remove()
+          cn.remove( this )
 
 
       @__port1Comp.connect_base this

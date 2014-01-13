@@ -49,21 +49,6 @@ define [ "constant",
       new AclAsso( this, Design.instance().component( uid ) )
       null
 
-    disconnect : ( connection )->
-      if connection.type is "RTB_Asso"
-        TYPE_RTB = constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-        oldRtb = connection.getTarget( TYPE_RTB )
-        # When an RtbAsso is disconnected create a connection between this subnet and mainRtb
-        RtbModel = Design.modelClassForType( TYPE_RTB )
-        newRtb = RtbModel.getMainRouteTable()
-
-        # If the user disconnect the subent <=> mainRtb,
-        # we must pass in { detectDuplicate : false } to disable ConnectionManager
-        # to find duplicate connection, because at this time, the disconnecting
-        # connection is not considered "Removed".
-        new RtbAsso( this, newRtb, { implicit : true }, { detectDuplicate : oldRtb isnt newRtb } )
-      null
-
     isReparentable : ( newParent )->
       for child in @children()
         if child.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and child.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface

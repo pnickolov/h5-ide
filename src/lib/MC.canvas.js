@@ -1385,11 +1385,9 @@ MC.canvas = {
 			target_item.position(x, y);
 			target_item.reConnect();
 
-			//target_item.position(x, y);
-
 			$.each(group_child, function (index, item)
 			{
-				child_type = item.getAttribute('data-type');
+				//child_type = item.getAttribute('data-type');
 
 				node_item = $canvas( item.id );
 				node_coordinate = node_item.position();
@@ -1427,14 +1425,18 @@ MC.canvas = {
 					group_top = y,
 					group_width = group_size[0],
 					group_height = group_size[1],
+
 					igw_gateway,
-					igw_gateway_id,
-					igw_gateway_data,
-					igw_top,
+					igw_item,
+					//igw_gateway_id,
+					//igw_gateway_data,
+					//igw_top,
+
 					vgw_gateway,
-					vgw_gateway_id,
-					vgw_gateway_data,
-					vgw_top;
+					vgw_item;
+					//vgw_gateway_id,
+					//vgw_gateway_data,
+					//vgw_top;
 
 				igw_gateway = $('.AWS-VPC-InternetGateway');
 				vgw_gateway = $('.AWS-VPC-VPNGateway');
@@ -1442,10 +1444,10 @@ MC.canvas = {
 				if (igw_gateway[0])
 				{
 					igw_item = $canvas(igw_gateway.attr('id'));
-					igw_top = igw_item.position()[1] + group_offsetY;
+					//igw_top = igw_item.position()[1] + group_offsetY;
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					igw_item.position(group_left - 4, igw_top);
+					igw_item.position(group_left - 4, igw_item.position()[1] + group_offsetY);
 
 					igw_item.reConnect();
 				}
@@ -1453,10 +1455,10 @@ MC.canvas = {
 				if (vgw_gateway[0])
 				{
 					vgw_item = $canvas(vgw_gateway.attr('id'));
-					vgw_top = vgw_item.position()[1] + group_offsetY;
+					//vgw_top = vgw_item.position()[1] + group_offsetY;
 
 					// MC.canvas.COMPONENT_SIZE[0] / 2 = 4
-					vgw_item.position(group_left + group_width - 4, vgw_top);
+					vgw_item.position(group_left + group_width - 4, vgw_item.position()[1] + group_offsetY);
 
 					vgw_item.reConnect();
 				}

@@ -167,7 +167,7 @@ define [ '../base/view',
                         errorMsg    = 'Please provide a valid Application ARN'
 
                     when "email"
-                        placeholder = "exmaple@acme.com"
+                        placeholder = "example@acme.com"
                         type        = 'email'
                         errorMsg    = 'Please provide a valid email address'
 

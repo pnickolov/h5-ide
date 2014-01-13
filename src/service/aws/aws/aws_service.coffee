@@ -716,11 +716,8 @@ define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_
 	#///////////////// Parser for property return (need resolve) /////////////////
 	#private (resolve result to vo )
 	resolvePropertyResult = ( result ) ->
-		#resolve result
-		#TO-DO
-
-		#return vo
-		#TO-DO
+		
+		return result
 
 	#private (parser property return)
 	parserPropertyReturn = ( result, return_code, param ) ->

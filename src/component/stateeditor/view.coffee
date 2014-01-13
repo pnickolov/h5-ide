@@ -23,7 +23,8 @@ define [ 'event',
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
 
             'focus .editable-area': 'onFocusInput'
-            'click .state-toolbar .state-id': 'onStateIdClick'
+            # 'click .state-toolbar .state-id': 'onStateIdClick'
+            'click .state-toolbar': 'onStateToolbarClick'
             'click .state-toolbar .state-add': 'onStateAddClick'
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
@@ -646,34 +647,39 @@ define [ 'event',
             if cmdName and currentDescCMDName isnt cmdName
                 that.refreshDescription(cmdName)
 
-        onStateIdClick: (event) ->
+        onStateToolbarClick: (event) ->
 
             that = this
 
-            $stateIdElem = $(event.currentTarget)
-            $stateItem = $stateIdElem.parents('.state-item')
+            $stateToolbarElem = $(event.target)
 
-            $stateItemList = that.$stateList.find('.state-item')
+            if not ($stateToolbarElem.hasClass('state-drag') or
+                    $stateToolbarElem.hasClass('state-add') or
+                    $stateToolbarElem.hasClass('state-remove'))
 
-            if $stateItem.hasClass('view')
+                $stateItem = $stateToolbarElem.parents('.state-item')
 
-                # remove other item view
-                _.each $stateItemList, (otherStateItem) ->
-                    $otherStateItem = $(otherStateItem)
-                    if not $stateItem.is($otherStateItem) and not $stateItem.hasClass('view')
-                        that.refreshStateView($otherStateItem)
-                    null
+                $stateItemList = that.$stateList.find('.state-item')
 
-                $stateItemList.addClass('view')
-                $stateItem.removeClass('view')
+                if $stateItem.hasClass('view')
 
-                # refresh description
-                cmdName = $stateItem.attr('data-command')
-                if cmdName
-                    that.refreshDescription(cmdName)
-            else
-                that.refreshStateView($stateItem)
-                $stateItem.addClass('view')
+                    # remove other item view
+                    _.each $stateItemList, (otherStateItem) ->
+                        $otherStateItem = $(otherStateItem)
+                        if not $stateItem.is($otherStateItem) and not $stateItem.hasClass('view')
+                            that.refreshStateView($otherStateItem)
+                        null
+
+                    $stateItemList.addClass('view')
+                    $stateItem.removeClass('view')
+
+                    # refresh description
+                    cmdName = $stateItem.attr('data-command')
+                    if cmdName
+                        that.refreshDescription(cmdName)
+                else
+                    that.refreshStateView($stateItem)
+                    $stateItem.addClass('view')
 
         onStateAddClick: (event) ->
 

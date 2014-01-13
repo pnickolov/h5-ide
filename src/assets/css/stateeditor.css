@@ -459,6 +459,11 @@ body {
 	background-color: #ccc;
 	padding: 5px;
 	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+#state-editor .state-toolbar:hover {
+	background-color: #ddd;
 }
 
 #state-editor .state-item:first-child .state-remove{

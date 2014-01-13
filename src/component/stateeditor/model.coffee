@@ -18,6 +18,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 			that = this
 
+			moduleDataObj = MC.data.state.module
+
 			platformInfo = that.getResPlatformInfo()
 			osPlatform = platformInfo.osPlatform
 			osPlatformDistro = platformInfo.osPlatformDistro
@@ -30,11 +32,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			moduleData = {}
 
 			if osPlatform is 'linux'
-				moduleData = data.linux
+				moduleData = moduleDataObj.linux
 			else if osPlatform is 'windows'
-				moduleData = data.windows
+				moduleData = moduleDataObj.windows
 
-			moduleData = _.extend(moduleData, data.general)
+			moduleData = _.extend(moduleData, moduleDataObj.general)
 
 			# generate module autocomplete data
 			cmdAry = []
@@ -224,7 +226,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 			autoCompList = []
 
-			compAttrModelObj = data1
+			awsPropertyData = MC.data.state.aws_property
+
 			# compTypeMap = constant.AWS_RESOURCE_TYPE
 
 			_.each allCompData, (compData, uid) ->
@@ -246,7 +249,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 				supportType = compType.replace(/\./ig, '_')
 
 				# found supported type
-				attrList = compAttrModelObj[supportType]
+				attrList = awsPropertyData[supportType]
 				if attrList
 
 					_.each attrList, (isArray, attrName) ->

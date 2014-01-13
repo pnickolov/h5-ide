@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, state_model, constant ) ->
+define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, state_model, aws_model, constant ) ->
 
     stack_region_list = []
 
@@ -252,9 +252,22 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'constant', 'ba
             me.on 'STATE_MODULE_RETURN', ( result ) ->
 
                 if !result.is_error
-                    # MC.data.state.module = result.resolved_data
-                else
-                    null
+                    MC.data.state.module = result.resolved_data
+
+                null
+
+        getStateAWSProperty: () ->
+
+            me = this
+
+            aws_model.property { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' )
+
+            me.on 'AWS_PROPERTY_RETURN', ( result ) ->
+
+                if !result.is_error
+                    MC.data.state.aws_property = result.resolved_data
+
+                null
 
     }
 

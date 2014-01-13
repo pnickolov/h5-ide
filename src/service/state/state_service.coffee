@@ -60,11 +60,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #///////////////// Parser for module return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveModuleResult = ( result ) ->
-        #resolve result
-        #TO-DO
 
-        #return vo
-        #TO-DO
+        return result
 
     #private (parser module return)
     parserModuleReturn = ( result, return_code, param ) ->
@@ -89,11 +86,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #///////////////// Parser for status return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveStatusResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        
+        return result
 
     #private (parser status return)
     parserStatusReturn = ( result, return_code, param ) ->
@@ -118,11 +112,8 @@ define [ 'MC', 'constant', 'result_vo' ], ( MC, constant, result_vo ) ->
     #///////////////// Parser for log return (need resolve) /////////////////
     #private (resolve result to vo )
     resolveLogResult = ( result ) ->
-        #resolve result
-        #TO-DO
-
-        #return vo
-        #TO-DO
+        
+        return result
 
     #private (parser log return)
     parserLogReturn = ( result, return_code, param ) ->

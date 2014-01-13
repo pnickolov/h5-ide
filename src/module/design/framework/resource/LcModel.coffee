@@ -13,7 +13,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
       imageId      : ""
       ebsOptimized : false
-      instanceType : ""
+      instanceType : "t1.micro"
       monitoring   : false
       userData     : ""
       publicIp     : false

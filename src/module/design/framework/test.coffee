@@ -25,7 +25,6 @@ define [ 'Design',
          './resource/SnsSubscription',
          './resource/StorageModel',
          './resource/ScalingPolicyModel',
-         './resource/CertificateModel',
          "./util/deserializeVisitor/JsonFixer",
          "./util/deserializeVisitor/EipMerge",
          "./util/serializeVisitor/EniIpVisitor"

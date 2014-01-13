@@ -2,7 +2,7 @@
 #  View Mode for navigation
 #############################
 
-define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'constant', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, state_model, aws_model, constant ) ->
+define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'constant', 'event', 'backbone', 'jquery', 'underscore' ], ( app_model, stack_model, ec2_model, state_model, aws_model, constant, ide_event ) ->
 
     stack_region_list = []
 
@@ -268,6 +268,22 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                     MC.data.state.aws_property = result.resolved_data
 
                 null
+
+        listenStateStatusList: () ->
+
+            MC.data.websocket.collection.status.find().fetch()
+            
+            query = MC.data.websocket.collection.status.find()
+
+            handle = query.observeChanges {
+                added: (idx, statusData) ->
+                    ide_event.trigger 'STATE_STATUS_DATA_UPDATE', 'add', idx, statusData
+
+                changed: (idx, statusData) ->
+                    ide_event.trigger 'STATE_STATUS_DATA_UPDATE', 'change', idx, statusData
+            }
+
+            null
 
     }
 

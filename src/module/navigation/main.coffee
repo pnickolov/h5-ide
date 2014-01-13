@@ -69,8 +69,11 @@ define [ 'jquery',
             #model
             model.appListService()
             model.stackListService()
+
+            #state
             model.getStateModule()
             model.getStateAWSProperty()
+            model.listenStateStatusList()
 
             ide_event.onLongListen ide_event.UPDATE_APP_LIST, ( flag, ids ) ->
                 console.log 'UPDATE_APP_LIST'

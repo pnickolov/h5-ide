@@ -11,8 +11,14 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         initialize: () ->
 
+            that = this
+
             @genStateStatusData()
             @listenStateStatusList()
+
+            ide_event.onLongListen 'STATE_STATUS_DATA_UPDATE', (type, idx, statusData) ->
+                that.listenStateStatusList(type, idx, statusData)
+                null
 
         genStateStatusData: () ->
 
@@ -44,18 +50,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             @set 'stateStatusDataAry', statusAry
 
-        listenStateStatusList = () ->
+        listenStateStatusList: (type, idx, statusData) ->
 
-            MC.data.websocket.collection.status.find().fetch()
-            query = MC.data.websocket.collection.status.find()
-            handle = query.observeChanges {
-
-                added   : (idx, dag) ->
-                    alert(dag)
-
-                changed : (idx, dag) ->
-                    alert(dag)
-            }
+            console.log(statusData)
 
             null
 

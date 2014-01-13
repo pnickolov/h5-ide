@@ -104,9 +104,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       ComplexResModel.prototype.connectionTargets.call( context, type )
 
     initialize : ()->
-      @get("originalAsg").__addExpandedAsg( this )
-
+      # Draw must be call first
       @draw(true)
+
+      @get("originalAsg").__addExpandedAsg( this )
       null
 
     getLc : ()-> @attributes.originalAsg.get("lc")
@@ -415,6 +416,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
       for elb in @get("lc").connectionTargets( "ElbAmiAsso" )
         new ElbAsso( elb, expandedAsg )
+
+      # Connect other sglilne to expandedAsg
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      for sgTarget in @get("lc").connectionTargets( "SgAsso" )
+        new SgAsso( expandedAsg, sgTarget )
       null
 
     __onExpandedAsgRemove : ( target )->

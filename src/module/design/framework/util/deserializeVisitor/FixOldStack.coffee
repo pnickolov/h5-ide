@@ -48,5 +48,7 @@ define [ "Design", "constant" ], ( Design, constant )->
         }
       }
 
+    null
+
   null
 

@@ -213,13 +213,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
     setCount : ( count )->
       @set "count", count
 
-      # Remove route to Embed Eni
-      route = @getEmbedEni().connections('RTB_Route')[0]
-      if route then route.remove()
+      if count > 1
+        # Remove route to Embed Eni ( Embed Eni routes is conencted to instance )
+        route = @connections('RTB_Route')[0]
+        if route then route.remove()
 
       # Update my self and connected Eni
       @draw()
       for eni in @connectionTargets("EniAttachment")
+        if count > 1
+          for c in eni.connections("RTB_Route")
+            c.remove()
         eni.draw()
       null
 

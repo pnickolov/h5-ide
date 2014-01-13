@@ -148,11 +148,13 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         updateAppTabDate : ( data, tab_id ) ->
             console.log 'updateAppTabDate'
 
-            # set data
-            MC.tab[ tab_id ].data = $.extend( true, {}, data ) if MC.tab[ tab_id ]
+            if MC.tab[ tab_id ]
 
-            # set Design
-            MC.tab[ tab_id ].design_model.save data
+                # set data
+                MC.tab[ tab_id ].data = $.extend( true, {}, data )
+
+                # set Design
+                MC.tab[ tab_id ].design_model.save data
 
             null
 

@@ -539,7 +539,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups
           Attachment :
-            InstnaceId   : instanceId
+            InstanceId   : instanceId
             DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
             AttachmentId : ""
             AttachTime   : ""

@@ -26,10 +26,18 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     color       : "#f26c4f"
 
     defaults :
-      description : ""
+      description : "Custom Security Group"
 
     initialize : ()->
       @color = @generateColor()
+
+      # Automatically add an outbound rule to 0.0.0.0/0
+      attr =
+        fromPort : "0"
+        toPort   : "65535"
+        protocol : "-1"
+
+      (new SgRuleSet( this, @createIpTarget("0.0.0.0/0") )).addRawRule( this.id, SgRuleSet.DIRECTION.OUT, attr )
       null
 
     isElbSg    : ()-> @get "isElbSg"
@@ -37,10 +45,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     isDefault : ()-> @attributes.name is "DefaultSG"
 
-    createIpTarget : ( ipAddress )->
-      ipTarget = new SgTargetModel( ipAddress )
-      ipTarget
-
+    createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
 
     ruleCount : ()->
       count = 0

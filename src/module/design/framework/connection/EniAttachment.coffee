@@ -92,6 +92,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
     isConnectable : ( p1Comp, p2Comp )->
       p1p = p1Comp.parent()
       p2p = p2Comp.parent()
+
       if p1p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         p1p = p1p.parent()
         p2p = p2p.parent()
@@ -106,6 +107,10 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, Con
       else
         instance = p2Comp
         eni      = p1Comp
+
+
+      # Eni can only be attached to an instance.
+      if eni.connections("EniAttachment").length > 0 then return false
 
 
       maxEniCount = instance.getMaxEniCount()

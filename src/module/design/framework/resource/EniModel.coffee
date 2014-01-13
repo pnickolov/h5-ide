@@ -56,8 +56,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     groupMembers : ()->

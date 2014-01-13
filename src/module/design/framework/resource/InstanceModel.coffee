@@ -65,9 +65,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       if vpc and not vpc.isDefaultTenancy()
         @setTenancy( "dedicated" )
 
-      #listen resource update event
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
-
       null
 
     groupMembers : ()->

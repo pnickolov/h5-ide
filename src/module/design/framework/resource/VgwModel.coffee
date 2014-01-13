@@ -16,8 +16,6 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
       VpcModel.theVPC().addChild( this )
 
       @draw(true)
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     draw : ( isCreate )->

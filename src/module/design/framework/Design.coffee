@@ -97,6 +97,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__shoulddraw = false
 
     @save( canvas_data )
+
+    @on Design.EVENT.AwsResourceUpdated, @onAwsResourceUpdated
     null
 
 
@@ -520,6 +522,18 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       if ami and ami.rootDeviceType is 'instance-store'
         return false
     true
+
+  DesignImpl.prototype.onAwsResourceUpdated = ()->
+    ######
+    # Quick Hack to redraw all the node when resource is updated.
+    # Should find a better way to handle this.
+    ######
+    if @modeIsStack() then return
+    for uid, comp of @__componentMap
+      if comp.node_line or comp.node_group then continue
+      if comp.draw
+        comp.draw()
+    null
 
   DesignImpl.prototype.clearResourceInCache = ()->
     # module/design/model would like to clear all the data in the data.resource_list

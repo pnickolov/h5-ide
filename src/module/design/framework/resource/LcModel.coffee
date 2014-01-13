@@ -37,8 +37,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         defaultSg = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
         new SgAsso( defaultSg, this )
-
-      @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null
 
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }

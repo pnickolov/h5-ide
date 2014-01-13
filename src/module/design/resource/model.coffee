@@ -133,7 +133,7 @@ define [ 'i18n!nls/lang.js',
                     #if MC.canvas_data.platform is 'ec2-classic'
 
                     # new design flow
-                    if MC.forge.other.canvasData.get( 'platform' ) is 'ec2-classic'
+                    if Design.instance().typeIsClassic()
                         quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                     else
                         quickstart_amis =  ami_list
@@ -228,7 +228,7 @@ define [ 'i18n!nls/lang.js',
                     console.log 'EC2_AMI_DESC_IMAGES_RETURN:'
 
                     if result.resolved_data
-                        _.map result.resolved_data.item, (value)->
+                        _.map result.resolved_data, (value)->
 
                             #cache ami item in stack to MC.data.dict_ami
                             value.osType = MC.aws.ami.getOSType value
@@ -497,7 +497,7 @@ define [ 'i18n!nls/lang.js',
                 #if MC.canvas_data.platform is 'ec2-classic'
 
                 # new design flow
-                if MC.forge.other.canvasData.get( 'platform' ) is 'ec2-classic'
+                if Design.instance().typeIsClassic()
                     quickstart_amis.push i for i in ami_list when i.name.indexOf('ami-vpc-nat') < 0
                 else
                     quickstart_amis =  ami_list
@@ -553,25 +553,15 @@ define [ 'i18n!nls/lang.js',
 
             stack_ami_list = []
 
-            # old design flow
-            #_.map MC.canvas_data.component, (value)->
+            dict_ami = MC.data.dict_ami
+            if not dict_ami then return
 
-            # new design flow
-            _.map MC.forge.other.canvasData.get( 'component' ), (value)->
+            for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+                if not dict_ami[ instance.get("imageId") ]
+                    stack_ami_list.push instance.get("imageId")
 
-                if value.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-                    if MC.data.dict_ami
-
-                        if not MC.data.dict_ami[value.resource.ImageId]
-
-                            if value.resource.ImageId not in stack_ami_list
-
-                                stack_ami_list.push value.resource.ImageId
-
-
-            if stack_ami_list.length !=0
-                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, stack_ami_list
+            if stack_ami_list.length != 0
+                ami_model.DescribeImages { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region_name, _.uniq( stack_ami_list )
 
         describeCommunityAmiService : ( region_name, name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage ) ->
 

@@ -15,17 +15,43 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             @genStateStatusData()
 
-            @stateItemModel = Backbone.Model.extend {
-
-            }
+            @initData()
 
 
+        initData: () ->
+            stateList = MC.data.websocket.collection.status.find().fetch()
+
+            collection = new Backbone.Collection()
+
+            collection.comparator = 'time'
+            console.log stateList
+
+            for state in stateList
+
+                for status in state.statuses
+                    data =
+                        appId   : state.app_id
+                        resId   : state.res_id
+                        stateId : status.state_id
+                        time    : status.time
+                        result  : status.result
+
+
+                    collection.add new Backbone.Model data
+
+            @set 'items', collection
+
+
+        # Mock Api
         genStateStatusData: () ->
+
+            uuid = () ->
+                Math.random().toString().slice 2, 10
 
             # mock data
             getStateData = () ->
-                app_id: "",
-                res_id: "",
+                app_id: uuid(),
+                res_id: uuid(),
                 statuses: [
                     {
                         state_id: "1",
@@ -51,9 +77,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             @set 'stateStatusDataAry', statusAry
 
+
         listenStateStatusUpdate: ( type, idx, statusData ) ->
 
-            console.log(statusData)
+
 
             null
 

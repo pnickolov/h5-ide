@@ -23,22 +23,39 @@ define [ 'event'
 
             @compileTpl()
 
+            parent = @
+            @itemView = Backbone.View.extend
+                tagName: 'li'
+                className: 'state-status-item'
+                template: parent.template.item
+                render: () ->
+                    @$el.html @template @model.toJSON()
+                    @
+
+
         render: () ->
 
             @$statusModal = @$el
 
             @$el.html @template.modal {}
-            @$('.modal-state-statusbar').html @template.content {}
+            @$( '.modal-state-statusbar' ).html @template.content {}
             @$stateStatusList = @$ '.state-status-list'
 
-            @renderItem()
+            @renderAllItem()
 
             @$el.show()
 
             @
 
-        renderItem: () ->
-            @refreshStateStatusList()
+        renderAllItem: () ->
+            @model.get( 'items' ).each @renderItem, this
+
+
+        renderItem: ( model ) ->
+            view = new @itemView model: model
+            @$stateStatusList.append view.render().el
+
+
 
         renderStateBar: ( option ) ->
             if _.isObject option
@@ -72,13 +89,16 @@ define [ 'event'
             stateStatusContentHTML = htmlMap[ 'statestatus-template-status-content' ]
             stateStatusItemHTML = htmlMap[ 'statestatus-template-status-item' ]
 
-            Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
+            #Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
 
             @template.modal     = Handlebars.compile stateStatusModalHTML
             @template.content   = Handlebars.compile stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
 
             @template
+
+
+
 
         refreshStateStatusList: () ->
 
@@ -102,12 +122,10 @@ define [ 'event'
             that.$stateStatusList.html renderHTML
 
         closePopup : ->
-
-            that = this
-            if that.$statusModal.html()
-                that.$statusModal.empty()
-                that.trigger 'CLOSE_POPUP'
-                that.$statusModal.hide()
+            if @$statusModal.html()
+                @$statusModal.empty()
+                @trigger 'CLOSE_POPUP'
+                @$statusModal.hide()
 
 
     StateStatusView

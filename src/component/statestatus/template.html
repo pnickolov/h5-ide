@@ -14,7 +14,6 @@
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
 			<ul class="state-status-list">
-				{{> statestatus-template-status-item}}
 			</ul>
 			<div class="state-status-all-pedding">
 				<div class="state-status-pedding-main">All states are pending.</div>
@@ -25,19 +24,18 @@
 </div>
 
 <!-- statestatus-template-status-item -->
-{{#each state_statuses}}
-	<li class="state-status-item">
-		<div class="state-status-item-icon">
-			<i class="icon-state-failed"></i>
-		</div>
-		<div class="state-status-item-info">
-			<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-			<div class="state-status-item-time">State log will update after change is applied.</div>
-		</div>
-		<div class="state-status-item-detail">
-			<i class="icon-btn"></i>
-		</div>
-	</li>
-{{/each}}
+<li class="state-status-item">
+	<div class="state-status-item-icon">
+		<i class="icon-state-failed"></i>
+	</div>
+	<div class="state-status-item-info">
+		<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
+		<div class="state-status-item-time">State log will update after change is applied.</div>
+	</div>
+	<div class="state-status-item-detail">
+		<i class="icon-btn"></i>
+	</div>
+</li>
+
 
 <!-- template end -->

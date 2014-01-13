@@ -52,11 +52,11 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                     if tab_id.split( '-' )[0] not in [ 'process' ]
                         model.addTab tab_id,
                                      view.html(),
+                                     model.getDesignModel(),
                                      model.getCanvasData(),
-                                     property_main.snapshot(),
                                      model.getOriginData(),
-                                     model.getTAValidation(),
-                                     model.getDesignModel()
+                                     property_main.snapshot(),
+                                     model.getTAValidation()
 
                 catch error
                   console.log 'ADD_TAB_DATA error, current tab id is ' + tab_id

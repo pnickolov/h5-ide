@@ -97,16 +97,16 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
         #  tab
         #############################
 
-        addTab : ( tab_id, snapshot, data, property_panel, origin_data, origin_ta_valid, design_model ) ->
+        addTab : ( tab_id, snapshot, design_model, data, origin_data, property_panel, origin_ta_valid ) ->
             console.log 'addTab'
 
             MC.tab[ tab_id ] =
                 'snapshot'        : snapshot
-                'data'            : data
-                'property_panel'  : property_panel
-                'origin_data'     : origin_data
-                'origin_ta_valid' : origin_ta_valid
                 'design_model'    : design_model
+                'data'            : data
+                'origin_data'     : origin_data
+                'property_panel'  : property_panel
+                'origin_ta_valid' : origin_ta_valid
 
             null
 
@@ -136,12 +136,12 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
             ide_event.trigger ide_event.SWITCH_WAITING_BAR
             #
             @set 'snapshot',      MC.tab[ tab_id ].snapshot
+            @setDesignModel       $.extend true, {}, MC.tab[ tab_id ].design_model
             @setCanvasData        MC.tab[ tab_id ].data
             @setOriginData        MC.tab[ tab_id ].origin_data
             @setCurrentResource   MC.tab[ tab_id ].origin_resource if MC.tab[ tab_id ].origin_resource
-            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             @setPropertyPanel     MC.tab[ tab_id ].property_panel
-            @setDesignModel       $.extend true, {}, MC.tab[ tab_id ].design_model
+            @setTAValidation      MC.tab[ tab_id ].origin_ta_valid
             #
             null
 

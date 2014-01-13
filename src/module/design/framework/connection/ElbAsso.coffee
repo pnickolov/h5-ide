@@ -143,9 +143,10 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       if not instance then return
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
-      components[ elb.id ].resource.Instances.push {
-        InstanceId : "@#{instance.id}.resource.InstanceId"
-      }
+      instanceArray = components[ elb.id ].resource.Instances
+
+      for i in instance.getRealGroupMemberIds()
+        instanceArray.push { InstanceId : "@#{i}.resource.InstanceId" }
       null
   }
 

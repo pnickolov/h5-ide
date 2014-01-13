@@ -66,10 +66,10 @@ define [], ()->
       if node.length then node = node[0]
 
       if toggle
-        tootipStr = 'Associate Elastic IP to primary IP'
+        tootipStr = 'Detach Elastic IP from primary IP'
         imgUrl    = 'ide/icon/eip-on.png'
       else
-        tootipStr = 'Detach Elastic IP from primary IP'
+        tootipStr = 'Associate Elastic IP to primary IP'
         imgUrl    = 'ide/icon/eip-off.png'
 
       node.setAttribute "data-tooltip", tootipStr
@@ -95,7 +95,10 @@ define [], ()->
           element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
       else if attr is "tooltip"
         element.data("tooltip", value).attr("data-tooltip", value)
-        CanvasManager.addClass( element, "tooltip" )
+        if value
+          CanvasManager.addClass( element, "tooltip" )
+        else
+          CanvasManager.removeClass( element, "tooltip" )
       else if attr is "color"
         element.attr("style", "fill:#{value}")
       else

@@ -185,6 +185,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
     # generate an realIp according to the cidr
     getRealIp : ( ip, cidr )->
+      if ip is "x.x.x.x" then return ip
+
       if not cidr then cidr = @subnetCidr()
       prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
 
@@ -442,10 +444,39 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       null
 
+    ensureEnoughMember : ()->
+      instance = @attachedInstance()
+      if not instance then return
+
+      count = instance.get("count") - 1
+
+      ipTemplate = @get("ips")
+
+      while @groupMembers().length < count
+        ips = []
+        for ip, idx in ipTemplate
+          ips.push {
+            hasEip     : ipTemplate[ idx ].hasEip
+            autoAssign : true
+            ip         : "x.x.x.x"
+            eipData    : { id : MC.guid() }
+          }
+
+        @groupMembers().push {
+          id              : MC.guid()
+          appId           : ""
+          forceAutoAssign : true
+          ips             : ips
+        }
+
+      null
+
 
     generateJSON : ( index, servergroupOption, eniIndex )->
 
       resources = [{}]
+
+      @ensureEnoughMember()
 
       ips = []
       if index is 0
@@ -456,13 +487,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         }
       else
         memberData = @groupMembers()[ index - 1 ]
-        if not memberData
-          memberData = {
-            id              : MC.guid()
-            appId           : ""
-            forceAutoAssign : true
-            ips             : @get("ips")
-          }
 
       # When we generate IPs for serverGroupMember.
       # We need to create as much as `ServerGroup Eni's IP count`
@@ -470,22 +494,19 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       for ipObj, idx in @get("ips")
 
         ipObj = memberData.ips[ idx ]
-        if servergroupOption.number > 1 or memberData.forceAutoAssign
+        if servergroupOption.number > 1
           autoAssign = true
         else
           autoAssign = ipObj.autoAssign
 
         ips.push {
-          PrivateIpAddress : if memberData.forceAutoAssign then "x.x.x.x" else @getRealIp( ipObj.ip )
+          PrivateIpAddress : @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign
           Primary          : false
         }
 
         if ipObj.hasEip
-          if memberData.forceAutoAssign
-            eip = {}
-          else
-            eip = ipObj.eipData || {}
+          eip = ipObj.eipData
 
           resources.push {
             uid   : eip.id or MC.guid()

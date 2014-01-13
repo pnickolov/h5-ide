@@ -56,10 +56,11 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
       for ch, idx in $(res_node).children(".node-sg-color-group").children()
         if idx < sgs.length
           CanvasManager.update( ch, sgs[idx].color, "color" )
-          CanvasManager.addClass( ch, "tooltip")
+          CanvasManager.update( ch, sgs[idx].get("name"), "tooltip" )
+
         else
           CanvasManager.update( ch, "none", "color" )
-          CanvasManager.removeClass( ch, "tooltip" )
+          CanvasManager.update( ch, "", "tooltip" )
 
       null
   }

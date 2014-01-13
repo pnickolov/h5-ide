@@ -141,7 +141,7 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
         rule.fromPort = "0"
         rule.toPort   = "65535"
 
-      if rule.fromPort is rule.toPort
+      if rule.fromPort is rule.toPort and rule.protocol isnt "icmp"
         rule.toPort   = ""
 
 

@@ -30,7 +30,12 @@ define [ "CanvasManager",
         healthCheckTimeout  : "5"
 
         # Listener
-        listeners : []
+        listeners : [ {
+          port             : "80"
+          protocol         : "HTTP"
+          instanceProtocol : "HTTP"
+          instancePort     : "80"
+        } ]
 
         # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
         AvailabilityZones : []

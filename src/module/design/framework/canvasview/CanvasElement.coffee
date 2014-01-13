@@ -321,21 +321,31 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     resource_list = MC.data.resource_list[ Design.instance().region() ]
 
-    list = [{
-      id      : id
-      appId   : component.get("appId")
-      name    : name
-      deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
-    }]
+    ###
+    # Quick hack for Lc
+    ###
+    if component.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-    list.id   = id
-    list.name = name
+      list = [{
+        id      : id
+        appId   : component.get("appId")
+        name    : name
+        deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
+      }]
+
+      list.id   = id
+      list.name = name
+    else
+      list = []
+      list.id   = component.parent().id
+      list.name = component.parent().get("name")
 
     for member, idx in component.groupMembers()
       list.push {
         id      : member.id
         name    : name
         appId   : member.appId
+        state   : member.state || ""
         deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
       }
 
@@ -367,6 +377,25 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         size       : v.get("volumeSize")
         id         : v.id
       }
+
+    vl
+
+  CanvasElement.instance.prototype.listVolume = ( appId )->
+    vl = []
+    resource_list = MC.data.resource_list[Design.instance().region()]
+    if not resource_list then return vl
+
+    data = MC.data.resource_list[Design.instance().region()][ appId ]
+    if data and data.blockDeviceMapping and data.blockDeviceMapping.item
+      for v in data.blockDeviceMapping.item
+        volume = resource_list[ v.ebs.volumeId ]
+
+        vl.push {
+          name       : v.deviceName
+          snapshotId : volume.snapshotId || ""
+          size       : volume.size
+          id         : volume.volumeId
+        }
 
     vl
 

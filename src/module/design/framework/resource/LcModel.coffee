@@ -42,6 +42,24 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     isRemovable : ()-> { error : lang.ide.CVS_MSG_ERR_DEL_LC }
     isDefaultTenancy : ()-> true
 
+    # Use by CanvasElement
+    groupMembers : ()->
+      resource_list = MC.data.resource_list[ Design.instance().region() ]
+      if not resource_list then return []
+
+      resource = resource_list[ @parent().get("appId") ]
+
+      if resource and resource.Instances and resource.Instances.member
+        amis = []
+        for i in resource.Instances.member
+          amis.push {
+            id    : i.InstanceId
+            appId : i.InstanceId
+            state : i.HealthStatus
+          }
+
+      amis || []
+
     getKeyName : () ->
       @connectionTargets( 'KeypairUsage' )[ 0 ].get 'name'
 

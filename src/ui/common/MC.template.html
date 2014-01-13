@@ -958,11 +958,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
-		{{#each instances}}
+		{{#each this}}
 		<li>
 			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
-				<i class="asgList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}" ></i>
-				<span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
+				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
 				<div class="asgList-item-volume" data-target-id={{id}}>
 					<span class="asgList-item-number">{{../volume}}</span>
 				</div>

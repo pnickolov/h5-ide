@@ -102,36 +102,26 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'create stack successfully'
 
                     new_id = result.resolved_data.id
-                    key = result.resolved_data.key
-
-                    # track
-                    # analytics.track "Saved Stack",
-                    #     stack_name: data.name,
-                    #     stack_region: data.region,
-                    #     stack_id: new_id
-
-                    #temp
-
-                    # old design flow
-                    #MC.canvas_data.id = new_id
-                    #MC.canvas_data.key = key
-
-                    # new design flow
-                    MC.forge.other.canvasData.set 'id',  new_id
-                    MC.forge.other.canvasData.set 'key', key
+                    key    = result.resolved_data.key
 
                     # old design flow
                     #MC.data.origin_canvas_data = $.extend true, {}, MC.canvas_data
 
                     # new design flow
-                    MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
+
+                    # set new id and key
+                    MC.forge.other.canvasData.set 'id',  new_id
+                    MC.forge.other.canvasData.set 'key', key
+
+                    # get data
+                    data = MC.forge.other.canvasData.data()
+
+                    # set origin
+                    MC.forge.other.canvasData.origin data
 
                     me.trigger 'TOOLBAR_HANDLE_SUCCESS', 'CREATE_STACK', name
-
                     ide_event.trigger ide_event.UPDATE_STACK_LIST, 'NEW_STACK', [new_id]
-
                     ide_event.trigger ide_event.UPDATE_DESIGN_TAB, new_id, name + ' - stack'
-
                     ide_event.trigger ide_event.UPDATE_STATUS_BAR_SAVE_TIME
 
                     MC.data.stack_list[region].push {'id':new_id, 'name':name}
@@ -143,7 +133,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                         #me.savePNG true, MC.canvas_data
 
                         # new design flow
-                        me.savePNG true, MC.forge.other.canvasData.data()
+                        me.savePNG true, data
                     , 500
 
                     #set toolbar flag
@@ -152,7 +142,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     #me.setFlag id, 'CREATE_STACK', MC.canvas_data
 
                     # new design flow
-                    me.setFlag id, 'CREATE_STACK', MC.forge.other.canvasData.data()
+                    me.setFlag id, 'CREATE_STACK', data
 
                     new_id
 

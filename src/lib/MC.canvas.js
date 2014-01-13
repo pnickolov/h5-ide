@@ -1387,8 +1387,6 @@ MC.canvas = {
 
 			$.each(group_child, function (index, item)
 			{
-				//child_type = item.getAttribute('data-type');
-
 				node_item = $canvas( item.id );
 				node_coordinate = node_item.position();
 
@@ -1428,15 +1426,9 @@ MC.canvas = {
 
 					igw_gateway,
 					igw_item,
-					//igw_gateway_id,
-					//igw_gateway_data,
-					//igw_top,
 
 					vgw_gateway,
 					vgw_item;
-					//vgw_gateway_id,
-					//vgw_gateway_data,
-					//vgw_top;
 
 				igw_gateway = $('.AWS-VPC-InternetGateway');
 				vgw_gateway = $('.AWS-VPC-VPNGateway');
@@ -2410,22 +2402,6 @@ MC.canvas.asgList = {
 };
 
 MC.canvas.instanceList = {
-	// add: function (data)
-	// {
-	// 	$('#instanceList').append(
-	// 		MC.template.instanceListItem(data)
-	// 	);
-
-	// 	return true;
-	// },
-
-	// remove: function (id)
-	// {
-	// 	$('#' + id).parent().remove();
-
-	// 	return true;
-	// },
-
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -2498,22 +2474,6 @@ MC.canvas.instanceList = {
 };
 
 MC.canvas.eniList = {
-	// add: function (data)
-	// {
-	// 	$('#eniList').append(
-	// 		MC.template.eniListItem(data)
-	// 	);
-
-	// 	return true;
-	// },
-
-	// remove: function (id)
-	// {
-	// 	$('#' + id).parent().remove();
-
-	// 	return true;
-	// },
-
 	show: function (event)
 	{
 		event.stopImmediatePropagation();
@@ -2934,7 +2894,7 @@ MC.canvas.event.dragable = {
 					group_offsetY,
 					matched_child,
 					child_data,
-					child_type,
+					//child_type,
 					isBlank;
 
 				if (group_type === 'AWS.VPC.VPC')

@@ -47,13 +47,13 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       # 2. Find out if there's other subnet in my az connects to the elb
       connected = false
       for sb in elb.connectionTargets( "ElbSubnetAsso" )
-        if sb.parent() is subnet.parent()
+        if sb isnt subnet and sb.parent() is subnet.parent()
           connected = true
           break
 
       if connected then return true
 
-      return lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2
+      return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
 
     serialize : ( components )->
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )

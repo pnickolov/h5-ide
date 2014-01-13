@@ -112,7 +112,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
       vpcY = vpc.y()
       vpcH = vpc.height()
 
-      new IgwModel({
+      new Model({
         x : vpcX - igwW / 2
         y : vpcY + ( vpcH - igwH ) / 2
       })

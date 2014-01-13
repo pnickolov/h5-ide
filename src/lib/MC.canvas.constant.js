@@ -952,7 +952,6 @@ var constant_data = {
 		},
 		RTB : {
 			type     : "AWS.VPC.RouteTable",
-			name     : "RT-0",
 			resource : {
 				PropagatingVgwSet : [],
 				RouteSet          : [{

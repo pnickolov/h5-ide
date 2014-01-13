@@ -1340,6 +1340,8 @@ MC.canvas = {
 			Canvon(clone.find('.port')).addClass('view-show');
 		}
 
+		$canvas.selected_node().length = 0;
+
 		$canvas.selected_node().push( id );
 
 		return true;

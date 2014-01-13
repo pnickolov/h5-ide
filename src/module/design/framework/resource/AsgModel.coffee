@@ -252,7 +252,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       cooldown : 300
       capacity : 1
-      mixSize  : 1
+      minSize  : 1
       maxSize  : 2
 
       healthCheckGracePeriod : 300

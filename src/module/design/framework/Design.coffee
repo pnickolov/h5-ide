@@ -157,6 +157,10 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
       component_data = json_data[ uid ]
 
+      if not component_data
+        console.error "Unknown uid for resolving component :", uid, json_data
+        return
+
       ModelClass = Design.modelClassForType( component_data.type )
       if not ModelClass
         console.warn "We do not support deserializing resource of type : #{component_data.type}"

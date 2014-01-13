@@ -126,7 +126,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
           RouteTableId   : ""
-          VpcId          : "@{#vpcId}.resource.VpcId"
+          VpcId          : "@#{vpcId}.resource.VpcId"
 
       for rule in @get("rules")
         r = {

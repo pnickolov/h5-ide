@@ -325,8 +325,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
 
   window.ds = ()->
-    console.log( Design.instance().serialize() )
-    null
+    data = Design.instance().serialize()
+    console.log( data )
+    return JSON.stringify( data )
   ### env:dev:end ###
 
   ### Private Interface End ###

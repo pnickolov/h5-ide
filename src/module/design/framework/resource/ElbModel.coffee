@@ -40,38 +40,38 @@ define [ "CanvasManager",
 
     newNameTmpl : "load-balancer-"
 
-    constructor : ( attr, option )->
-
-      dontCreateSg = attr.dontCreateSg
-      delete attr.dontCreateSg
-
-      ComplexResModel.call this, attr, option
-
-      if dontCreateSg isnt true and Design.instance().typeIsClassic()
-        sg = new SgModel({
-          name : @get("name")+"-sg"
-          description : "Automatically created SG for load-balancer"
-        })
-        sg.setAsElbSg()
-        @__elbSg = sg
-
-      null
-
-    initialize : ()->
+    initialize : ( attr, option )->
       vpc = VpcModel.theVPC()
-      if vpc
-        vpc.addChild( @ )
+      if vpc then vpc.addChild( @ )
 
       @draw(true)
 
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
 
+      if option.createByUser and Design.instance().typeIsVpc()
+        sg = new SgModel({
+          name : @get("name")+"-sg"
+          description : "Automatically created SG for load-balancer"
+        })
+        sg.setAsElbSg()
+        @__elbSg = sg
+        SgAssoModel = Design.modelClassForType( "SgAsso" )
+        new SgAssoModel( this, sg )
       null
 
     remove : ()->
       sslCert = @get("sslCert")
       if sslCert then sslCert.remove()
+
+      # Remove my elb sg, if the sg is not used by anyone.
+      if @__elbSg
+        for i in @__elbSg.connectionTargets( "SgAsso" )
+          if i isnt this
+            cannotDelete = true
+        if not cannotDelete
+          @__elbSg.remove()
+      null
 
     getElbSg : ()-> @__elbSg
 
@@ -388,8 +388,6 @@ define [ "CanvasManager",
         id    : data.uid
         name  : data.name
         appId : data.resource.LoadBalancerName
-
-        dontCreateSg : true
 
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing

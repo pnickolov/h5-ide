@@ -5,13 +5,13 @@ define [ "Design", "constant" ], ( Design, constant )->
 
   Design.registerDeserializeVisitor ( data, layout_data )->
 
-    for i in data
-      if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
-        if data.name is "DefaultKP"
+    for uid, comp of data
+      if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair
+        if comp.name is "DefaultKP"
           foundKP = true
           if foundSG then break
-      else if data.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-        if data.name is "DefaultSG"
+      else if comp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
+        if comp.name is "DefaultSG"
           foundSG = true
           if foundKP then break
 

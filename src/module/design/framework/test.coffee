@@ -27,6 +27,7 @@ define [ 'Design',
          './resource/ScalingPolicyModel',
          "./util/deserializeVisitor/JsonFixer",
          "./util/deserializeVisitor/EipMerge",
+         "./util/deserializeVisitor/FixOldStack",
          "./util/serializeVisitor/EniIpVisitor"
 
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->

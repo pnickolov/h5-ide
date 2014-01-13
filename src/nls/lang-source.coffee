@@ -2692,7 +2692,7 @@ module.exports =
       zh: "正在连接AWS账号"
 
     HEAD_TIP_AWS_ACCOUNT_ID:
-      en: "Your AWS account number is shown in the upper-left area of your browser window when you're logged into your AWS Account. e.g., 123456789000"
+      en: "Your AWS account number is shown in the upper-left area of your browser window when you are logged into your AWS Account. e.g., 123456789000"
       zh: "当您登陆到您的AWS账号时，您的AWS账号编号将显示在您浏览器窗口的左上角区域。 比如123456789000"
 
     HEAD_TIP_ACCOUNT_ACCESS_KEY:

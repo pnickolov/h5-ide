@@ -5,7 +5,7 @@
 define [ 'event',
          'text!./reconnect_template.html'
          'backbone', 'jquery', 'handlebars',
-         'UI.modal', 'UI.parsley'
+         'UI.modal'
 ], ( ide_event, reconnect_template ) ->
 
     ReConnectView = Backbone.View.extend {
@@ -24,6 +24,8 @@ define [ 'event',
 
         reConnectOK        : ->
             console.log 'reConnectOK'
+            $( '#reconnect-ok' ).prop 'disabled', true
+
             this.trigger 'RE_LOGIN', $( '#input-demo' ).val()
 
         reConnectClose     : ->
@@ -32,17 +34,27 @@ define [ 'event',
 
         keyupPassword      : ( event )  ->
             console.log 'changePassword'
-            if event.target.value then $( '#reconnect-ok' ).removeAttr 'disabled' else  $( '#reconnect-ok' ).attr 'disabled', true
+
+            if event.currentTarget.value.length
+                if event.which is 13
+                    @reConnectOK()
+                else
+                    $( '#reconnect-ok' ).removeAttr 'disabled'
+            else
+                $( '#reconnect-ok' ).attr 'disabled', true
+
 
         invalid            : () ->
             console.log 'invalid'
-            $( '#input-demo' ).parsley 'custom',
-                validator: () ->
-                    return 'Authentication failed.'
-                now: true
+            notification 'error', 'Authentication failed.'
+            $( '#reconnect-ok' ).prop 'disabled', false
+
+            $( '#input-demo' )
+                .addClass( 'parsley-error' )
+                .one 'keyup', ()->
+                    $( @ ).removeClass 'parsley-error'
 
 
-            $( '#input-demo' ).parsley 'validate'
 
         close              : ->
             console.log 'closedReConnectPopup'

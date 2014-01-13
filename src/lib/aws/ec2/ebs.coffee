@@ -6,7 +6,7 @@ define [ 'MC' ], ( MC) ->
 		comp_data 	= Design.instance().serialize()["component"][uid]
 		region 		= Design.instance().region()
 		image_id 	= (if comp_data then comp_data.resource.ImageId else "")
-		ami_info 	= (if MC.data.config[region].ami then MC.data.config[region].ami[image_id] else null)
+		ami_info 	= (if (MC.data.config[region].ami and MC.data.config[region].ami[image_id]) then MC.data.config[region].ami[image_id] else MC.data.dict_ami[image_id])
 		device_list	= []
 		device_name = null #result
 

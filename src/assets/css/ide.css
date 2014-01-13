@@ -7027,7 +7027,7 @@ summary:focus {
 .global-region-status-list h5 [class^="icon-app-type-"],
 .global-region-status-list h5 [class*=" icon-app-type-"]  {
 	position: absolute;
-	right: 12px;
+	right: 0px;
 }
 
 /* App Useage: Confirm Terminate App for Production */

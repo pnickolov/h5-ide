@@ -101,6 +101,9 @@ define [ 'jquery', 'handlebars',
 		#login return handler (dispatch from service/session/session_model)
 		session_model.once 'SESSION_LOGIN_RETURN', ( forge_result ) ->
 
+			# 500
+			MC.forge.other.verify500 forge_result
+
 			if !forge_result.is_error
 				#login succeed
 

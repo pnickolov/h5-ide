@@ -200,6 +200,20 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		else
 			return undefined
 
+	verify500 = ( result, is_test = false ) ->
+		console.log 'verify500', result, result.return_code
+
+		# add test
+		if is_test
+			result.is_error = true
+			result.return_code = -1
+
+		# verify
+		if result and result.return_code is -1
+			window.location.href = "500.html"
+
+		return
+
 	#############################
 	#  process
 	#############################
@@ -376,6 +390,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 	setCurrentTabId	   : setCurrentTabId
 	searchStackAppById : searchStackAppById
 	processType        : processType
+	verify500          : verify500
 
 	addProcess         : addProcess
 	getProcess         : getProcess

@@ -268,7 +268,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         return newName or ""
 
       myKinds = Design.modelClassForType( @type ).allObjects()
-      base = myKinds.length + 1
+      base = myKinds.length
       while true
         newName = @newNameTmpl + base
         same    = false

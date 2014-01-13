@@ -261,6 +261,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     newNameTmpl : "asg"
 
     initialize : ()->
+      @draw( true )
+
       #listen resource update event
       @listenTo Design.instance(), Design.EVENT.AwsResourceUpdated, @draw
       null

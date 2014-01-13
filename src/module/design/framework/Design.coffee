@@ -454,7 +454,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     # Seems like some other place have call Design.instance().set("layout")
     # So we assign component/layout at last
-    data = $.extend( {}, @attributes )
+    data = $.extend( { property : {} }, @attributes )
     data.component = component_data
     data.layout    = layout_data
 

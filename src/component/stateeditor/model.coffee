@@ -373,28 +373,40 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 			that = this
 
-			logData = {
-				app_id: "",
-				res_id: "",
-				logs: [
-					{
-						state_id: "1",
-						time: "2013-12-13"
-						stdout: "asddsa\nserer",
-						stderr: "grewgwe\n\nwerewrewr"
-					},
-					{
-						state_id: "2",
-						time: "2013-12-14"
-						stdout: "feweg\nserewsrewrewr",
-						stderr: "gerwew\ngewg"
-					}
-				]
-			}
+			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app', 'test_res_3'
 
-			logAry = logData.logs
+			that.on 'STATE_LOG_RETURN', ( result ) ->
 
-			that.set('stateLogDataAry', logAry)
+				if !result.is_error
+
+					logDataAry = result.resolved_data
+
+					if logDataAry and logDataAry[0]
+
+						logData = logDataAry[0]
+
+						# {
+						# 	app_id: "",
+						# 	res_id: "",
+						# 	logs: [
+						# 		{
+						# 			state_id: "1",
+						# 			time: "2013-12-13"
+						# 			stdout: "asddsa\nserer",
+						# 			stderr: "grewgwe\n\nwerewrewr"
+						# 		},
+						# 		{
+						# 			state_id: "2",
+						# 			time: "2013-12-14"
+						# 			stdout: "feweg\nserewsrewrewr",
+						# 			stderr: "gerwew\ngewg"
+						# 		}
+						# 	]
+						# }
+
+						logAry = logData.logs
+
+						that.set('stateLogDataAry', logAry)
 	}
 
 	return StateEditorModel

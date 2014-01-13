@@ -45,6 +45,8 @@ define ['Meteor', 'underscore'], ( Meteor, _ ) ->
 
 				'app'				:	new Meteor.Collection "app"
 
+				'status'			:	new Meteor.Collection "status"
+
 			}
 
 		# add a callback to specific state, true or false and a callback or nothing just return websocket status

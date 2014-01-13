@@ -516,6 +516,27 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       null
 
+    getRealGroupMemberIds : ()->
+      @ensureEnoughMember()
+
+      c = @get("count")
+      members = [ this.id ]
+
+      for mem in @groupMembers()
+        if members.length >= c then break
+        members.push mem.id
+
+      members
+
+    ensureEnoughMember : ()->
+      totalCount = @get("count") - 1
+      while @groupMembers().length < totalCount
+        @groupMembers().push {
+          id    : MC.guid()
+          appId : ""
+        }
+      null
+
     generateJSON : ()->
       vpcId = subnetId = azName = tenancy = ""
 
@@ -593,22 +614,18 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       allResourceArray.push( { layout : layout } )
 
 
-
-
       # Generate instance member.
       instances = [ @generateJSON() ]
       i = instances.length
+      @ensureEnoughMember()
+
       while i < @get("count")
         member = $.extend true, {}, instances[0]
         member.name  = @get("name") + "-" + i
         member.index = i
         memberObj = @groupMembers()[ instances.length - 1 ]
-        if memberObj
-          member.uid      = memberObj.id
-          member.resource.InstanceId = memberObj.appId
-        else
-          member.uid    = MC.guid()
-          member.resource.InstanceId = ""
+        member.uid      = memberObj.id
+        member.resource.InstanceId = memberObj.appId
 
         # In non-VPC type, we should add Eip For instance
         if @get("hasEip") and not Design.instance().typeIsVpc()

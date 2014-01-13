@@ -160,17 +160,32 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         return deviceName
 
+    ensureEnoughMember : ()->
+      if not @get("owner") then return
+
+      totalCount = @get("owner").get("count")
+      if not totalCount then return
+
+      totalCount -= 1
+      while @groupMembers().length < totalCount
+        @groupMembers().push {
+          id    : MC.guid()
+          appId : ""
+        }
+      null
+
     generateJSON : ( index, serverGroupOption )->
 
       console.assert( not serverGroupOption or serverGroupOption.instanceId isnt undefined, "Invalid serverGroupOption" )
 
-      member = if index > 0 then @groupMembers()[ index - 1 ] else null
+      @ensureEnoughMember()
 
-      if member
+      if index > 0
+        member = @groupMembers()[ index - 1 ]
         uid   = member.id
         appId = member.appId
       else
-        uid   = if index is 0 then @id else MC.guid()
+        uid   = @id
         appId = @get("appId")
 
       instanceId = if serverGroupOption.instanceId then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""

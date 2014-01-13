@@ -251,18 +251,16 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
                 asg_list = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
 
-                _.map asg_list, ( asg, idx ) ->
+                for asg in asg_list
 
-                    asg_arn         = asg.get( "appId" )
-                    asg_res          = if asg_arn then MC.data.resource_list[region][asg_arn] else null
+                    asg_arn = asg.get( "appId" )
+                    asg_res = MC.data.resource_list[region][asg_arn]
+
                     instance_memeber = if asg_res and asg_res.Instances then asg_res.Instances.member else null
 
                     #find instance in ASG
-                    if instance_memeber
-                        _.map instance_memeber, (ins, i) ->
-                            instance_ids.push ins.InstanceId
-                            null
-                    null
+                    for ins in instance_memeber || []
+                        instance_ids.push ins.InstanceId
 
                 ######
                 src = {}
@@ -306,20 +304,16 @@ define [ 'Design', 'MC', 'event', 'constant', 'app_model', 'stack_model', 'insta
 
             ami_list = []
 
-            # old design flow
-            #_.each MC.canvas_data.component, (compObj) ->
+            amiArray = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+            amiArray = amiArray.concat Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ).allObjects()
 
-            # new design flow
-            _.each MC.forge.other.canvasData.get( 'component' ), (compObj) ->
+            for ami in amiArray
+                imageId = ami.get("imageId")
+                if not MC.data.dict_ami[ imageId ]
+                    ami_list.push( imageId )
 
-                if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance  or compObj.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-                    imageId = compObj.resource.ImageId
-                    if imageId and !MC.data.dict_ami[imageId]
-                        ami_list.push imageId
-
-                null
             if ami_list.length
-                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, ami_list
+                stack_model.get_not_exist_ami { sender : me }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), region, _.uniq( ami_list )
 
         returnAppState : ( type, state ) ->
             console.log 'returnAppState', type, state

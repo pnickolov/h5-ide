@@ -505,14 +505,18 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-        subnetId = p.id
-        azName = p.parent().get("name")
-        vpc = p.parent().parent()
-        vpcId = vpc.id
+        azName   = p.parent().get("name")
+        subnetId = "@#{p.id}.resource.SubnetId"
+        vpc      = p.parent().parent()
+        vpcId    = "@#{vpc.id}.resource.VpcId"
+
         if vpc.isDefaultTenancy()
           tenancy = "dedicated"
+
       else
         azName = p.get("name")
+
+
 
       name = @get("name")
       if @get("count") > 1 then name += "-0"
@@ -540,8 +544,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           ImageId               : @get("imageId")
           KeyName               : ""
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
-          VpcId                 : "@#{vpcId}.resource.VpcId"
-          SubnetId              : "@#{subnetId}.resource.SubnetId"
+          VpcId                 : vpcId
+          SubnetId              : subnetId
           Monitoring            : if @get("monitoring") then "enabled" else "disabled"
           NetworkInterface      : []
           InstanceType          : @get("instanceType")

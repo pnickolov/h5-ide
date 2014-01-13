@@ -58,7 +58,6 @@ require.config {
         #stack service
         'state_service'   : 'service/state/state_service'
 
-
         #aws service
         'aws_service'   : 'service/aws/aws/aws_service'
 

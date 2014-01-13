@@ -238,62 +238,6 @@ define [ '../base/model',
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]
 
-        getSGList : () ->
-
-            sgUIDAry = []
-            uid = this.get 'id'
-
-            if uid.indexOf('i-') is 0
-                resList = MC.data.resource_list[ Design.instance().region() ]
-                instanceComp = resList[uid]
-                instanceSGAry = instanceComp.groupSet.item
-                instanceUIDAry = _.map instanceSGAry, (sgObj) ->
-                    sgId = sgObj.groupId
-                    # find sg uid
-                    sgUID = ''
-
-                    SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
-                    allSg = SgModel and SgModel.allObjects() or []
-
-                    for sg in allSg
-                        if sg.get 'appId' is sgId
-                            sgUID = sg.id
-                            break
-
-
-                    sgUID
-
-                sgUIDAry = instanceUIDAry
-
-            else
-
-                if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
-                    defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
-                    eniUID = defaultENIComp.uid
-
-                    eni = Design.instance().component( eniUID )
-
-                    sgArr = eni.connectionTargets 'SgAsso'
-
-                    sgUIDAry = []
-                    _.each sgAry, ( value ) ->
-                        sgUID = value.get( 'appId' ).slice(1).split('.')[0]
-                        sgUIDAry.push sgUID
-                        null
-
-                else
-                    instance = Design.instance().component( uid )
-                    ### TODO
-                    sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
-
-                    sgUIDAry = []
-                    _.each sgAry, (value) ->
-                        sgUID = value.slice(1).split('.')[0]
-                        sgUIDAry.push sgUID
-                        null
-                    ###
-
-            return sgUIDAry
 
         getEni : () ->
 

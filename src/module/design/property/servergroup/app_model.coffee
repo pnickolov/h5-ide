@@ -149,7 +149,6 @@ define [ '../base/model',
 			null
 
 
-		getSGList        : instance_model.getSGList
 		assignSGToComp   : instance_model.assignSGToComp
 		unAssignSGToComp : instance_model.unAssignSGToComp
 

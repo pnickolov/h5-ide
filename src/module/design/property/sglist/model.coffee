@@ -140,6 +140,10 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 		createNewSG : ()->
 			SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
 			model = new SgModel()
+			component = Design.instance().component( @parent_model.get("uid") )
+			if component
+				SgAsso = Design.modelClassForType("SgAsso")
+				new SgAsso( model, component )
 			model.id
 
 	}

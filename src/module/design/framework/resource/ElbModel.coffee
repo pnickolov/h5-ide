@@ -65,12 +65,15 @@ define [ "CanvasManager",
       if sslCert then sslCert.remove()
 
       # Remove my elb sg, if the sg is not used by anyone.
-      if @__elbSg
-        for i in @__elbSg.connectionTargets( "SgAsso" )
-          if i isnt this
-            cannotDelete = true
-        if not cannotDelete
-          @__elbSg.remove()
+      for elbSg in @.connectionTargets( "SgAsso" )
+        if elbSg.isElbSg()
+          cannotDelete = false
+          for elb in elbSg.connectionTargets("SgAsso")
+            if elb isnt this
+              cannotDelete = true
+              break
+          if not cannotDelete
+            elbSg.remove()
       null
 
     getElbSg : ()-> @__elbSg

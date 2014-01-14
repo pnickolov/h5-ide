@@ -73,7 +73,8 @@ define [], ()->
         imgUrl    = 'ide/icon/eip-off.png'
 
       node.setAttribute "data-tooltip", tootipStr
-      node.setAttribute "tooltip", tootipStr
+
+      $( node ).data("tooltip", tootipStr)
 
       this.update( node, imgUrl, "href" )
 

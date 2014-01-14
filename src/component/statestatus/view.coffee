@@ -21,8 +21,8 @@ define [ 'event'
 
         initialize: () ->
             @items = @model.get( 'items' )
+            @listenTo @items, 'add', @renderItem
             @listenTo @model, 'change:items', @renderAllItem
-            #@listenTo @items, 'add', @renderItem
             #@listenTo @items, 'remove', @
 
             @compileTpl()

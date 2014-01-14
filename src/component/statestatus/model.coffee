@@ -9,17 +9,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         defaults :
             test: null
 
-        diff: new Backbone.Model()
-
-        resetDiff: () ->
-            @diff.clear()
-
-        setDiff: ( attr, value ) ->
-            if @diff.has attr
-                @diff.get( attr ).push value
-            else
-                @diff.set attr, [ value ]
-
         initialize: () ->
             @collection = new (@customCollection())
             #@set 'items', @collection
@@ -34,16 +23,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             Backbone.Collection.extend
                 comparator: ( model ) ->
                     - model.get( 'time' )
-                initialize: () ->
-                    @on 'remove', ( model ) ->
-                        parent.setDiff 'remove', model
-                    @on 'add', ( model ) ->
-                        parent.setDiff 'add', model
-                    @on 'change', ( model ) ->
-                        parent.setDiff 'change', model
-
-        flush: () ->
-            _.each @diff.attributes, ( attr ) ->
 
         genId: ( resId, stateId ) ->
             "#{resId}|#{stateId}"
@@ -123,8 +102,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         listenStateStatusUpdate: ( type, idx, statusData ) ->
             collection = @dispose statusData
             #diff = @diff collection, @get 'items'
-            @collection.set @dispose( stateList ).models
-            @set 'items', @collection
+            @collection.add @dispose( stateList ).models
+            #@set 'items', @collection
 
             null
 

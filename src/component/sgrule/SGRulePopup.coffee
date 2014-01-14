@@ -24,18 +24,19 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
           port2 = @get("port1")
 
 
-      if _.isString port1
-        @set "owner", { name : port1 }
-      else
-        map = ( sg )->
-          {
-            uid   : sg.id
-            color : sg.color
-            name  : sg.get("name")
-          }
+      map = ( sg )->
+        {
+          uid   : sg.id
+          color : sg.color
+          name  : sg.get("name")
+        }
 
-        @set "owner",    _.map port1.connectionTargets( "SgAsso" ), map
-        @set "relation", _.map port2.connectionTargets( "SgAsso" ), map
+      @set "relation", _.map port2.connectionTargets( "SgAsso" ), map
+
+      if _.isString port1
+        @set "owner", { name : port1, uid : @get("port1").id }
+      else
+        @set "owner", _.map port1.connectionTargets( "SgAsso" ), map
 
 
       @updateGroupList()

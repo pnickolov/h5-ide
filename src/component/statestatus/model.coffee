@@ -40,6 +40,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     collection.add new Backbone.Model data
 
             @set 'items', collection
+            
 
         getUidByResId: (resId) ->
             
@@ -56,14 +57,16 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             instanceIdASGUIDMap = {}
             $.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
-                if resObj.AutoScalingGroupName
+                if resObj and resObj.AutoScalingGroupName and resObj.Instances
                     $.each resObj.Instances.member, (idx, instanceObj) ->
                         instanceId = instanceObj.InstanceId
                         asgUID = asgNameUIDMap[resObj.AutoScalingGroupName]
                         instanceIdASGNameMap[instanceId] = asgUID
 
             resUID = ''
+            resCompObj = null
             compAry = _.keys(MC.canvas_data.component)
+            loopCount = 0
             $.each MC.canvas_data.component, (idx, compObj) ->
 
                 compType = compObj.type
@@ -73,14 +76,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     instanceId = compObj.resource.InstanceId
                     if instanceId is resId
                         resUID = compUID
+                        resCompObj = compObj
                         return false
 
-                if (idx is compAry.length - 1) and not resUID
+                if (loopCount is compAry.length - 1) and not resUID
                     asgUID = instanceIdASGNameMap[resId]
                     if asgUID
-                        resUID = asgUID
+                        resCompObj = MC.canvas_data.component[asgUID]
 
-            return resUID
+                loopCount++
+
+            return resCompObj
 
         # Mock Api
         genStateStatusData: () ->

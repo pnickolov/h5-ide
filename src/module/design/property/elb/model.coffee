@@ -12,7 +12,7 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
             attr        = component.toJSON()
             attr.uid    = uid
-            attr.isVpc  = Design.instance().typeIsVpc()
+            attr.isVpc  = not Design.instance().typeIsClassic()
 
             # Format ping
             pingArr  = component.getHealthCheckTarget()

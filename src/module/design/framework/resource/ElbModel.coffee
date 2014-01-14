@@ -51,7 +51,7 @@ define [ "CanvasManager",
 
       @draw(true)
 
-      if option.createByUser and Design.instance().typeIsVpc()
+      if option.createByUser and not Design.instance().typeIsClassic()
         sg = new SgModel({
           name : @get("name")+"-sg"
           description : "Automatically created SG for load-balancer"

@@ -8,6 +8,8 @@ define [ '../base/view',
          'i18n!nls/lang.js'
 ], ( PropertyView, template, list_template, lang ) ->
 
+    noop = ()-> null
+
     template = Handlebars.compile template
     list_template = Handlebars.compile list_template
 
@@ -77,8 +79,7 @@ define [ '../base/view',
             ipItems = $('#property-eni-list .input-ip-item')
             $target = $( event.currentTarget )
 
-            if not $target.parsley 'validate'
-                return
+            if not @validateIpItem( $target ) then return
 
             ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
             autoAssign = ip is "x" or ip is "x.x"
@@ -89,15 +90,12 @@ define [ '../base/view',
         refreshIpList : ( event ) ->
             $( '#property-eni-list' ).html( MC.template.propertyIpList( @model.attributes.ips ) )
             @updateIPAddBtnState()
-
-            @validateIPList()
             null
 
-        validateIPList : () ->
-
+        validateIpItem : ( $item ) ->
             that = this
-            valid = ( val ) ->
-                validDOM         = $(this)
+            $item.parsley "custom", ( val ) ->
+                validDOM         = $item
                 inputValue       = validDOM.val()
                 inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
                 currentInputIP   = inputValuePrefix + inputValue
@@ -124,11 +122,11 @@ define [ '../base/view',
                     result = that.model.isValidIp( currentInputIP )
                     if result isnt true
                         return result
+                null
 
-            for el in $("#property-eni-list").children().find("input")
-                $(el).parsley "custom", { validator : valid, thisArg : el }
-            null
-
+            result = $item.parsley("validate")
+            $item.parsley("custom", noop)
+            return result
 
         updateIPAddBtnState : ( enabled ) ->
             if enabled is undefined

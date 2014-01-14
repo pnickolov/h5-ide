@@ -6,6 +6,8 @@ define [ '../base/view',
          'text!./template/stack.html',
          'i18n!nls/lang.js' ], ( PropertyView, template, lang ) ->
 
+    noop = ()-> null
+
     template =  Handlebars.compile template
 
     InstanceView = PropertyView.extend {
@@ -194,11 +196,11 @@ define [ '../base/view',
 
             return false
 
-        validateIPList : () ->
+        validateIpItem : ( $item ) ->
 
             that = this
-            valid = ( val ) ->
-                validDOM         = $(this)
+            $item.parsley "custom", ( val ) ->
+                validDOM         = $item
                 inputValue       = validDOM.val()
                 inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
                 currentInputIP   = inputValuePrefix + inputValue
@@ -226,9 +228,9 @@ define [ '../base/view',
                     if result isnt true
                         return result
 
-            for el in $("#property-network-list").children().find("input")
-                $(el).parsley "custom", { validator : valid, thisArg : el }
-            null
+            result = $item.parsley("validate")
+            $item.parsley("custom", noop)
+            return result
 
         addIp : () ->
             if $("#instance-ip-add").hasClass("disabled")
@@ -268,8 +270,7 @@ define [ '../base/view',
             ipItems = $('#property-network-list .input-ip-item')
             $target = $( event.currentTarget )
 
-            if not $target.parsley 'validate'
-                return
+            if not @validateIpItem( $target ) then return
 
             ip = $target.siblings( ".input-ip-prefix" ).text() + $target.val()
             autoAssign = ip is "x" or ip is "x.x"
@@ -284,7 +285,6 @@ define [ '../base/view',
 
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
 
-            @validateIPList()
             @updateIPAddBtnState()
             null
 

@@ -22,6 +22,7 @@ define [ 'event'
         initialize: () ->
 
             @compileTpl()
+            @registerHelper()
 
             parent = @
             @itemView = Backbone.View.extend
@@ -39,7 +40,6 @@ define [ 'event'
 
             @$el.html @template.modal {}
             @$( '.modal-state-statusbar' ).html @template.content {}
-            @$stateStatusList = @$ '.state-status-list'
 
             @renderAllItem()
 
@@ -51,9 +51,12 @@ define [ 'event'
             @model.get( 'items' ).each @renderItem, this
 
 
-        renderItem: ( model ) ->
+        renderItem: ( model, index ) ->
+            if index is 0
+                @$( '.scroll-content' ).html '<ul class="state-status-list"></ul>'
+
             view = new @itemView model: model
-            @$stateStatusList.append view.render().el
+            @$( '.state-status-list' ).append view.render().el
 
 
 
@@ -71,6 +74,9 @@ define [ 'event'
                         .val option.failed
 
 
+        registerHelper: () ->
+            Handlebars.registerHelper 'UTC', ( text ) ->
+                new Handlebars.SafeString new Date( text ).toUTCString()
 
         compileTpl: () ->
 

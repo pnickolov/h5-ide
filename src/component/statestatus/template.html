@@ -13,8 +13,10 @@
 	<div class="scroll-wrap scroll-wrap-validation" style="height:200px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
-			<ul class="state-status-list">
-			</ul>
+			<dl class="state-status-pending">
+				<dt>All states are pending.</dt>
+				<dd>A message will show here when a state succeeds or fials.</dd>
+			</dl>
 			<div class="state-status-all-pedding">
 				<div class="state-status-pedding-main">All states are pending.</div>
 				<div class="state-status-pedding-sub">A message will show here when a state succeeds or fails.</div>
@@ -30,7 +32,7 @@
 	</div>
 	<div class="state-status-item-info">
 		<div class="state-status-item-desc">host1 's state 32 has failed is updated.</div>
-		<div class="state-status-item-time">State log will update after change is applied.</div>
+		<div class="state-status-item-time">{{UTC time}}</div>
 	</div>
 	<div class="state-status-item-detail">
 		<i class="icon-btn"></i>

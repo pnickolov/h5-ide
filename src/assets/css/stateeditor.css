@@ -686,6 +686,23 @@ body {
 	font-weight: normal;
 }
 
+.state-status-pending {
+	text-align: center;
+	padding-top: 54px;
+}
+
+.state-status-pending dt {
+	color: #c4d6d6;
+	padding-bottom: 25px;
+}
+
+.state-status-pending dd {
+	color: #a9a9a9;
+	padding-bottom: 25px;
+}
+
+
+
 
 
 

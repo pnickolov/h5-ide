@@ -70,7 +70,7 @@ define [ 'jquery',
             model.appListService()
             model.stackListService()
 
-            #state
+            #state not belong to navigation
             model.getStateModule()
             model.getStateAWSProperty()
             model.listenStateStatusList()

@@ -244,6 +244,7 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
             null
 
         getStateModule: () ->
+            console.log 'getStateModule'
 
             me = this
 
@@ -254,9 +255,13 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                 if !result.is_error
                     MC.data.state.module = result.resolved_data
 
+                    # push IDE_AVAILABLE
+                    ide_event.trigger ide_event.IDE_AVAILABLE
+
                 null
 
         getStateAWSProperty: () ->
+            console.log 'getStateAWSProperty'
 
             me = this
 
@@ -266,6 +271,9 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
 
                 if !result.is_error
                     MC.data.state.aws_property = result.resolved_data
+
+                    # push IDE_AVAILABLE
+                    ide_event.trigger ide_event.IDE_AVAILABLE
 
                 null
 

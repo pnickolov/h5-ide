@@ -16,6 +16,8 @@ define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
 								}, comp
 						else
 							null
+					getState: () ->
+						MC.canvas_data.state
 				}
 
 

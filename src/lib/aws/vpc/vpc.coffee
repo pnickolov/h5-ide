@@ -120,15 +120,7 @@ define [ 'MC', 'constant', 'underscore', 'Design' ], ( MC, constant, _, Design )
 		return subnetObj
 
 	getAZSubnetForDefaultVPC = (azName) ->
-
-		currentRegion = MC.canvas_data.region
-		accountData = MC.data.account_attribute[currentRegion]
-
-		defaultSubnetObj = accountData.default_subnet
-
-		subnetObj = defaultSubnetObj[azName]
-
-		return subnetObj
+		MC.data.account_attribute[ Design.instance().region() ].default_subnet[ azName ]
 
 	generateComponentForDefaultVPC = () ->
 

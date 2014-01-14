@@ -188,6 +188,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       if ip is "x.x.x.x" then return ip
 
       if not cidr then cidr = @subnetCidr()
+      if not cidr then return ip
+
       prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
 
       ipAry = ip.split(".")

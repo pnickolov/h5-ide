@@ -5775,6 +5775,12 @@ a.action-link:hover {
 	margin-bottom: 15px;
 }
 
+
+.dl-horizontal.dl-region-type .endpoint.truncate {
+	width: 180px;
+	display: block;
+}
+
 /* run stack */
 
 #modal-run-stack .modal-body {

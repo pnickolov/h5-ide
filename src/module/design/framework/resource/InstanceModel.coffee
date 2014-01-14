@@ -281,7 +281,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       # Well, LC borrows setInstanceType of Instance,
       # but LC doesn't have getEmbedEni
-      if @getEmbedEni
+      if @getEmbedEni and not Design.instance().typeIsClassic()
         # Eni's IP address count is limited by instanceType
         enis = @connectionTargets("EniAttachment")
         enis.push( @getEmbedEni() )

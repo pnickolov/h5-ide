@@ -131,7 +131,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       else
         #set deviceName
         deviceName = null
-        if ami_info.virtualizationType isnt "hvm"
+        if ami_info.osType isnt "windows"
           deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         else
           deviceName = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
@@ -155,7 +155,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           notification "warning", "Attached volume has reached instance limit.", false
           return null
 
-        if ami_info.virtualizationType isnt "hvm"
+        if ami_info.osType isnt "windows"
           deviceName = "/dev/sd" + deviceName[0]
         else
           deviceName = "xvd" + deviceName[0]

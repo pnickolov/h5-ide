@@ -72,7 +72,7 @@ define [ 'MC', 'constant' ], ( MC, constant ) ->
 
 				currentTypeData = currentTypeData[key]
 			else
-				if ami.virtualizationType == 'hvm'
+				if ami.osType == 'windows'
 					currentTypeData = currentTypeData.windows
 				else
 					currentTypeData = currentTypeData.linux

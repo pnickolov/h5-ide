@@ -67,19 +67,19 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           PolicyARN            : @get("appId")
           MinAdjustmentStep    : @get("minAdjustStep")
           Cooldown             : @get("cooldown")
-          AutoScalingGroupName : "@#{@__asg}.resource.AutoScalingGroupName"
+          AutoScalingGroupName : @__asg.createRef( "AutoScalingGroupName" )
           AdjustmentType       : @get("adjustmentType")
 
 
       alarmData = @get("alarmData")
 
       act_alarm = act_insuffi = act_ok = []
-      action_arry = [ "@#{@id}.resource.PolicyARN" ]
+      action_arry = [ @createRef( "PolicyARN") ]
 
       if @get("sendNotification")
         # Ensure there's a SNS_Topic
-        topic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
-        action_arry.push "@#{@topic}.resource.TopicArn"
+        TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
+        action_arry.push( TopicModel.ensureExistence().createRef( "TopicArn" ) )
 
       if @get("state") is "ALARM"
         act_alarm = action_arry
@@ -105,7 +105,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           Unit               : alarmData.unit
           Dimensions         : [{
             name  : "AutoScalingGroupName"
-            value : "@#{@__asg}.resource.AutoScalingGroupName"
+            value : @__asg.createRef( "AutoScalingGroupName" )
           }]
           AlarmActions            : act_alarm
           InsufficientDataActions : act_insuffi

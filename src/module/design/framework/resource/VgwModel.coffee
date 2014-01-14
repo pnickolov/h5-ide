@@ -90,7 +90,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
           AvailabilityZone : ""
           Attachments      : [{
             State : "attached"
-            VpcId : "@#{@parent().id}.resource.VpcId"
+            VpcId : @parent().createRef( "VpcId" )
           }]
 
       { component : component, layout : layout }

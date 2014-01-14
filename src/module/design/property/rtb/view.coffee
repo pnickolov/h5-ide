@@ -93,10 +93,19 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
 
             ips = []
             parentElem.find("input").each ()->
-                if this.value then ips.push this.value
+                if this isnt event.currentTarget and this.value
+                    ips.push this.value
                 null
 
             allCidrAry = _.uniq( ips )
+            parentElem.closest("li").siblings().each ()->
+                otherGroupIps = []
+                $(this).find("input").each ()->
+                    if this.value then otherGroupIps.push this.value
+                    null
+                allCidrAry = allCidrAry.concat _.uniq( otherGroupIps )
+                null
+
 
             if !inputValue
                 if inputElem.closest('.multi-ipt-row').siblings().length == 0
@@ -108,13 +117,15 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else if inputValue isnt "0.0.0.0/0"
                 for cidr in allCidrAry
-                    if cidr isnt inputValue and cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
+                    if cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
                         mainContent = "#{inputValue} conflicts with other route."
                         descContent = 'Please choose a CIDR block not conflicting with existing route.'
                         break
 
             if not mainContent
-                @model.setRoutes dataRef, allCidrAry
+                if inputValue then ips.push inputValue
+
+                @model.setRoutes dataRef, _.uniq( ips )
                 @disabledAllOperabilityArea(false)
                 return
 

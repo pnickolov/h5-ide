@@ -52,7 +52,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       rtb_data = components[ rtb.id ]
 
       if @get("propagate")
-        rtb_data.resource.PropagatingVgwSet.push "@#{otherTarget.id}.resource.VpnGatewayId"
+        rtb_data.resource.PropagatingVgwSet.push otherTarget.createRef( "VpnGatewayId" )
 
       r_temp = {
         Origin : ""
@@ -63,16 +63,20 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         InstanceOwnerId : ""
       }
 
-      id_temp = "@#{otherTarget.id}.resource."
+      TYPE = constant.AWS_RESOURCE_TYPE
 
-      if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-        r_temp.NetworkInterfaceId = id_temp + "NetworkInterfaceId"
-      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway
-        r_temp.GatewayId = id_temp + "InternetGatewayId"
-      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway
-        r_temp.GatewayId = id_temp + "VpnGatewayId"
-      else if otherTarget.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-        r_temp.NetworkInterfaceId = "@#{otherTarget.getEmbedEni().id}.resource.NetworkInterfaceId"
+      switch otherTarget.type
+        when TYPE.AWS_VPC_NetworkInterface
+          r_temp.NetworkInterfaceId = otherTarget.createRef( "NetworkInterfaceId" )
+
+        when TYPE.AWS_VPC_InternetGateway
+          r_temp.GatewayId = otherTarget.createRef( "InternetGatewayId" )
+
+        when TYPE.AWS_VPC_VPNGateway
+          r_temp.GatewayId = otherTarget.createRef( "VpnGatewayId" )
+
+        when TYPE.AWS_EC2_Instance
+          r_temp.NetworkInterfaceId = otherTarget.getEmbedEni().createRef( "NetworkInterfaceId" )
 
       for r in @get("routes")
         d = { "DestinationCidrBlock" : r }

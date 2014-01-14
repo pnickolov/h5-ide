@@ -45,14 +45,14 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
         uid  : @id
         resource :
           CustomerGatewayConfiguration : ""
-          CustomerGatewayId : "@#{cgw.id}.resource.CustomerGatewayId"
+          CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
           Options           : { StaticRoutesOnly : true }
           State             : ""
           Type              : "ipsec.1"
           Routes            : routes
           VgwTelemetry      : __vgwTelemetry
           VpnConnectionId   : @get("appId")
-          VpnGatewayId      : "@#{vgw.id}.resource.VpnGatewayId"
+          VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
 
       null
 

@@ -215,8 +215,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         layout.rootDeviceType = ami.rootDeviceType
 
 
-      sgarray = _.map @connectionTargets("SgAsso"), ( sg )->
-        "@#{sg.id}.resource.GroupId"
+      sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
       blockDevice = []
       for volume in @get("volumeList") or emptyArray
@@ -249,6 +248,10 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           IamInstanceProfile       : ""
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")
+          #reserved
+          CreatedTime              : ""
+          RamdiskId                : ""
+
 
       { component : component, layout : layout }
 

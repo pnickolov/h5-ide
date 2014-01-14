@@ -24,8 +24,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           type     : @type
           uid      : @id
           resource :
-            AutoScalingGroupName : "@#{@get("asg").id}.resource.AutoScalingGroupName"
-            TopicARN : "@#{topic.id}.resource.TopicArn"
+            AutoScalingGroupName : @get("asg").createRef( "AutoScalingGroupName" )
+            TopicARN : topic.createRef( "TopicArn" )
             NotificationType : notifies
       }
 
@@ -508,13 +508,13 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         azs = _.uniq( _.map subnets, (sb)-> sb.parent().get("name") )
-        subnets = _.map subnets, (sb)-> "@#{sb.id}.resource.SubnetId"
+        subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
       else
         subnets = []
         azs = _.map subnets, (az)-> az.get("name")
 
       if @get("lc")
-        lcId = "@#{@get('lc').id}.resource.LaunchConfigurationName"
+        lcId = @get('lc').createRef( "LaunchConfigurationName" )
       else
         lcId = ""
 
@@ -523,7 +523,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         elbs = @get("lc").connectionTargets( "ElbAmiAsso" )
         if elbs.length
           healthCheckType = @get("healthCheckType")
-          elbArray = _.map elbs, ( elb )-> "@#{elb.id}.resource.LoadBalancerName"
+          elbArray = _.map elbs, ( elb )-> elb.createRef( "LoadBalancerName" )
 
       component =
         uid  : @id
@@ -548,7 +548,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           Instances                      : []
           SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]
           ShouldDecrementDesiredCapacity : ""
-
+          #reserved
+          CreatedTime : ""
+          InstanceId  : ""
+          Status      : ""
+          Tags        : ""
 
       { component : component, layout : layout }
 

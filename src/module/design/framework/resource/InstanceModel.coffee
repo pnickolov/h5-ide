@@ -279,11 +279,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       if not @isEbsOptimizedEnabled()
         @set("ebsOptimized", false)
 
-      # Eni's IP address count is limited by instanceType
-      enis = @connectionTargets("EniAttachment")
-      enis.push( @getEmbedEni() )
-      for eni in enis
-        eni.limitIpAddress()
+      # Well, LC borrows setInstanceType of Instance,
+      # but LC doesn't have getEmbedEni
+      if @getEmbedEni
+        # Eni's IP address count is limited by instanceType
+        enis = @connectionTargets("EniAttachment")
+        enis.push( @getEmbedEni() )
+        for eni in enis
+          eni.limitIpAddress()
       null
 
     setTenancy : ( tenancy )->
@@ -548,9 +551,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         azName   = p.parent().get("name")
-        subnetId = "@#{p.id}.resource.SubnetId"
+        subnetId = p.createRef( "SubnetId" )
         vpc      = p.parent().parent()
-        vpcId    = "@#{vpc.id}.resource.VpcId"
+        vpcId    = vpc.createRef( "VpcId" )
 
         if vpc.isDefaultTenancy()
           tenancy = "dedicated"
@@ -598,6 +601,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           SecurityGroup         : []
           SecurityGroupId       : []
           PrivateIpAddress      : ""
+        #reserved
+        state    : ""
+        software : {}
 
       component
 
@@ -642,7 +648,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
               index : i
               resource :
                 Domain : "standard"
-                InstanceId         : "@#{memberData.id}.resource.InstanceId"
+                InstanceId         : @createRef( "InstanceId", memberData.id )
                 AllocationId       : eipData.allocationId or ""
                 NetworkInterfaceId : ""
                 PrivateIpAddress   : ""

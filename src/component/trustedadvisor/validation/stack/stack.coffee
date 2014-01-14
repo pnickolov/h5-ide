@@ -22,7 +22,8 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'stack_service', 'ami_se
 			if !callback
 				callback = () ->
 
-			validData = $.extend true, {}, MC.canvas_data
+			validData = Design.instance().serialize()
+
 			if MC.aws.aws.checkDefaultVPC()
 				validData.component = MC.aws.vpc.generateComponentForDefaultVPC()
 

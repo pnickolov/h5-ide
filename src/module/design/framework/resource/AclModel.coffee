@@ -14,12 +14,10 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
       acl = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
-      acl_data =
-
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : ""
         NetworkAclId : ""
-        SubnetId: "@#{sb.id}.resource.SubnetId"
+        SubnetId: sb.createRef( "SubnetId" )
       }
       null
   }
@@ -62,7 +60,23 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
     defaults : ()->
       {
-        rules : []
+        rules : [{
+          action   : "deny"
+          cidr     : "0.0.0.0/0"
+          egress   : true
+          id       : _.uniqueId( "aclrule_" )
+          number   : "32767"
+          port     : ""
+          protocol : "-1"
+        }, {
+          action   : "deny"
+          cidr     : "0.0.0.0/0"
+          egress   : false
+          id       : _.uniqueId( "aclrule_" )
+          number   : "32767"
+          port     : ""
+          protocol : "-1"
+        }]
       }
 
     isDefault : ()-> @attributes.name is "DefaultACL"
@@ -112,7 +126,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     getAssoCount : ()-> @connections().length
 
     serialize : ()->
-      vpcId = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
 
       ruleSet = []
 
@@ -126,7 +140,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
           RouteTableId   : ""
-          VpcId          : "@#{vpcId}.resource.VpcId"
+          VpcId          : vpc.createRef( "VpcId" )
 
       for rule in @get("rules")
         r = {

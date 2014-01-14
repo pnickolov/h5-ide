@@ -9,7 +9,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       kp = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_KeyPair )
       otherTarget = @getOtherTarget( kp )
 
-      components[ otherTarget.id ].resource.KeyName = "@#{kp.id}.resource.KeyName"
+      components[ otherTarget.id ].resource.KeyName = kp.createRef( "KeyName" )
       null
   }
 

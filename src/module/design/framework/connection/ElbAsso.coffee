@@ -59,7 +59,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
       elb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_ELB )
 
-      components[ elb.id ].resource.Subnets.push "@#{sb.id}.resource.SubnetId"
+      components[ elb.id ].resource.Subnets.push sb.createRef( "SubnetId" )
       null
 
   }, {
@@ -146,7 +146,7 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       instanceArray = components[ elb.id ].resource.Instances
 
       for i in instance.getRealGroupMemberIds()
-        instanceArray.push { InstanceId : "@#{i}.resource.InstanceId" }
+        instanceArray.push { InstanceId : @createRef( "InstanceId", i ) }
       null
   }
 

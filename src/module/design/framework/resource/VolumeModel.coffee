@@ -59,7 +59,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       owner = @get("owner")
       if not owner
-        console.warning( "This volume has not attached to any ami, found when calc-ing cost :", this )
+        console.warn( "This volume has not attached to any ami, found when calc-ing cost :", this )
         return
 
       if not force and @get("owner").type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
@@ -188,7 +188,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         uid   = @id
         appId = @get("appId")
 
-      instanceId = if serverGroupOption.instanceId then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""
+      instanceId = @createRef( "InstanceId", "serverGroupOption.instanceId" )
 
       owner = @get("owner")
 
@@ -211,6 +211,11 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
             InstanceId          : instanceId
             Device              : @get("name")
             DeleteOnTermination : true
+            #reserved
+            AttachTime  : ""
+            Status      : ""
+            VolumeType  : "standard"
+
       }
 
 

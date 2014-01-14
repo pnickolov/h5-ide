@@ -127,8 +127,16 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
 
             ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
                 console.log 'canvas:UPDATE_APP_STATE', type, id
+
+                # include XXXING
                 if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
-                    MC.forge.other.canvasData.set 'state', type
+
+                    if MC.data.current_tab_id is id
+                        MC.forge.other.canvasData.set 'state', type
+                    else
+                        # TO DO
+
+                null
 
     unLoadModule = () ->
         #view.remove()

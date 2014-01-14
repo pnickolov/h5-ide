@@ -56,7 +56,7 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
           uid  : @id
           resource :
             KeyFingerprint : @get("fingerprint")
-            KeyName        : @get("name")
+            KeyName        : @get("appId")
       }
 
   }, {
@@ -67,7 +67,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({
         id          : data.uid
-        name        : data.resource.KeyName or data.name
+        name        : data.name
+        appId       : data.resource.KeyName
         fingerprint : data.resource.KeyFingerprint
       })
       null

@@ -17,6 +17,8 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       volumeType : 'standard'
       iops       : ''
 
+      supportAppEdit : true
+
 
     type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
 

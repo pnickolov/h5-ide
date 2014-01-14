@@ -153,6 +153,19 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     comp = Design.instance().component( this.id )
     if comp.isRemoved() then return
 
+
+    # # #
+    # Quick Hack for supporting AppEdit
+    # Ask the component if it supports AppEdit Mode
+    #
+    if Design.instance().modeIsAppEidt() and not comp.get("supportAppEdit")
+      notification "error", "This operation is not supported yet."
+      return
+    #
+    # #
+    # # #
+
+
     res = @isRemovable()
     comp_name = comp.get("name")
 
@@ -253,6 +266,17 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     null
 
   CanvasElement.prototype.asgExpand = ( parentId, x, y )->
+    # # #
+    # Quick Hack for supporting AppEdit
+    # Ask the component if it supports AppEdit Mode
+    #
+    if Design.instance().modeIsAppEidt() and not comp.get("supportAppEdit")
+      notification "error", "This operation is not supported yet."
+      return
+    #
+    # #
+    # # #
+
     # This method contains some logic to determine if the ASG is expandab
     comp   = Design.instance().component( @id )
     target = Design.instance().component(parentId)
@@ -280,6 +304,16 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     this.parent
 
   CanvasElement.prototype.changeParent = ( parentId, execCB )->
+
+    # # #
+    # Quick Hack for supporting AppEdit
+    # Ask the component if it supports AppEdit Mode
+    #
+      notification "error", "This operation is not supported yet."
+      return
+    #
+    # #
+    # # #
 
     if parentId is "canvas" then parentId = ""
 

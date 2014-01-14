@@ -26,6 +26,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       cachedAmi : null
 
+      supportAppEdit : true
+
     initialize : ( attr, option )->
 
       if option and option.createByUser

@@ -83,6 +83,9 @@ define [ 'event',
                     that.refreshStateLogList()
                     that.showLogListLoading(false)
                 )
+
+                if that.showLogPanel
+                    that.showLogPanel()
                 
             , 1)
 
@@ -100,7 +103,16 @@ define [ 'event',
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
 
-            that.readOnlyMode = true
+            currentState = that.model.get('currentState')
+            currentAppState = that.model.get('currentAppState')
+
+            if currentState is 'app'
+                that.readOnlyMode = true
+            else if currentState is 'stack'
+                that.showLogPanel = false
+
+            if currentAppState is 'stoped'
+                alert(1)
 
         compileTpl: () ->
 
@@ -1077,6 +1089,17 @@ define [ 'event',
                 $descPanel.hide()
                 $logPanel.show()
 
+        showLogPanel: () ->
+
+            that = this
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
+            $stateEditor.removeClass('full')
+            $descPanel.hide()
+            $logPanel.show()
+            null
+
         onDocumentMouseDown: (event) ->
 
             that = this
@@ -1268,6 +1291,9 @@ define [ 'event',
             that = this
             stateLogDataAry = that.model.get('stateLogDataAry')
 
+            if not (stateLogDataAry and stateLogDataAry.length)
+                that.showLogListLoading(false, true)
+
             stateLogViewAry = []
             _.each stateLogDataAry, (logObj) ->
                 utcTimeStr = (new Date(logObj.time)).toUTCString()
@@ -1308,7 +1334,7 @@ define [ 'event',
             $closeBtn = that.$editorModal.find('.state-close')
             $closeBtn.show()
 
-        showLogListLoading: (show) ->
+        showLogListLoading: (loadShow, infoShow) ->
 
             that = this
 
@@ -1317,7 +1343,7 @@ define [ 'event',
             $logList = $logPanel.find('.state-log-list')
             $logInfo = $logPanel.find('.state-log-info')
 
-            if show
+            if loadShow
 
                 $loadText.show()
                 $logInfo.hide()
@@ -1326,8 +1352,13 @@ define [ 'event',
             else
 
                 $loadText.hide()
-                $logInfo.hide()
-                $logList.show()
+
+                if infoShow
+                    $logInfo.show()
+                    $logList.hide()
+                else
+                    $logInfo.hide()
+                    $logList.show()
 
     }
 

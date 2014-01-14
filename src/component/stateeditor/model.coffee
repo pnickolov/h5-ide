@@ -11,7 +11,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 		defaults: {
 			compData: null,
-			allCompData: null
+			allCompData: null,
+			stateLogDataAry: []
 		},
 
 		initialize: () ->
@@ -98,6 +99,18 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			that.set('cmdParaObjMap', cmdParaObjMap)
 			that.set('cmdModuleMap', cmdModuleMap)
 			that.set('moduleCMDMap', moduleCMDMap)
+
+			# Diffrent view
+			currentState = MC.canvas.getState()
+			if currentState is 'stack'
+				that.set('currentState', 'stack')
+			else if currentState is 'app'
+				that.set('currentState', 'app')
+			else if currentState is 'appedit'
+				that.set('currentState', 'appedit')
+
+			if MC.canvas_data.state is 'Stoped'
+				that.set('currentAppState', 'stoped')
 
 		getResPlatformInfo: () ->
 

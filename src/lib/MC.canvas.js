@@ -206,6 +206,8 @@ MC.canvas = {
 	zoomIn: function ()
 	{
 		var canvas_size = $canvas.size(),
+			$canvas_body = $('#canvas_body'),
+		  newClass = "",
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio > 1)
@@ -216,7 +218,8 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
+			newClass = $canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "") + "zoomlevel_" + ("" + scale_ratio).replace(".", "_");
+			$canvas_body.attr("class", newClass);
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,
@@ -241,6 +244,8 @@ MC.canvas = {
 	zoomOut: function ()
 	{
 		var canvas_size = $canvas.size(),
+		  $canvas_body = $('#canvas_body'),
+		  newClass = "",
 			scale_ratio = $canvas.scale();
 
 		if (scale_ratio < 1.6)
@@ -251,7 +256,8 @@ MC.canvas = {
 
 			$('#svg_canvas')[0].setAttribute('viewBox', '0 0 ' + MC.canvas.GRID_WIDTH * canvas_size[0] + ' ' + MC.canvas.GRID_HEIGHT * canvas_size[1]);
 
-			$('#canvas_body').css('background-image', 'url("./assets/images/ide/grid_x' + scale_ratio + '.png")');
+			newClass = $.trim($canvas_body.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "")) + " zoomlevel_" + ("" + scale_ratio).replace(".", "_");
+			$canvas_body.attr("class", newClass);
 
 			$('#canvas_container, #canvas_body').css({
 				'width': canvas_size[0] * MC.canvas.GRID_WIDTH / scale_ratio,

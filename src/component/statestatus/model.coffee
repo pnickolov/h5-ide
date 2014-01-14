@@ -45,6 +45,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         flush: () ->
             _.each @diff.attributes, ( attr ) ->
 
+        genId: ( resId, stateId ) ->
+            "#{resId}|#{stateId}"
 
         dispose: ( stateList ) ->
             collection = new Backbone.Collection()
@@ -53,13 +55,18 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                 for status in state.statuses
                     #if status.result isnt 'failed'
                     #    continue
+                    state.res_id = 'i-8b56ad95'
+                    component = @getUidByResId( state.res_id )
+                    if not component
+                        continue
                     data =
-                        id      : "#{state.res_id}|#{status.state_id}"
+                        id      : @genId state.res_id, status.state_id
+                        uid     : component.uid
                         appId   : state.app_id
                         resId   : state.res_id
-                        uid     : @getUidByResId state.res_id
-                        time    : status.time
                         stateId : status.state_id
+                        name    : component.name
+                        time    : status.time
                         result  : status.result
 
 
@@ -68,7 +75,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             collection
 
         getUidByResId: (resId) ->
-            
+
             asgNameUIDMap = {}
             instanceIdASGNameMap = {}
             $.each MC.canvas_data.component, (idx, compObj) ->
@@ -120,5 +127,17 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             @set 'items', @collection
 
             null
+
+        listenStateEditorUpdate: ( data ) ->
+            resId = data.resUID
+            stateIds = data.stateIds
+
+            for stateId in stateIds
+                id = @genId resId, stateId
+                @collection.get( id ).set 'updated', true
+
+            null
+
+
 
     StateStatusModel

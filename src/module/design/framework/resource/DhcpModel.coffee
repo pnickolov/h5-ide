@@ -77,7 +77,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
         uid  : @id
         resource :
           DhcpOptionsId        : attr.appId
-          VpcId                : "@#{vpc.id}.resource.VpcId"
+          VpcId                : vpc.createRef( "VpcId" )
           DhcpConfigurationSet : configs
 
 

@@ -226,7 +226,7 @@ define [ "constant",
         resource :
           AvailableIpAddressCount : ""
           AvailabilityZone : @parent().get("name")
-          VpcId            : "@#{@parent().parent().id}.resource.VpcId"
+          VpcId            : @parent().parent().createRef( "VpcId" )
           SubnetId         : @get("appId")
           CidrBlock        : @get("cidr")
 

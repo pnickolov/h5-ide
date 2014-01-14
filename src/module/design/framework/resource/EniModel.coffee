@@ -516,8 +516,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
               Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
               InstanceId         : ""
               AllocationId       : eip.allocationId or ""
-              NetworkInterfaceId : "@#{memberData.id}.resource.NetworkInterfaceId"
-              PrivateIpAddress   : "@#{memberData.id}.resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress"
+              NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
+              PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
 
           }
       ips[0].Primary = true
@@ -527,11 +527,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       securitygroups = _.map sgTarget.connectionTargets("SgAsso"), ( sg )->
         {
-          GroupName : "@#{sg.id}.resource.GroupName"
-          GroupId   : "@#{sg.id}.resource.GroupId"
+          GroupName : sg.createRef( "GroupName" )
+          GroupId   : sg.createRef( "GroupId" )
         }
 
-      instanceId = if servergroupOption.instanceId then "@#{servergroupOption.instanceId}.resource.InstanceId" else ""
+      instanceId = @createRef( "InstanceId", servergroupOption.instanceId )
 
       if @embedInstance()
         subnet = @embedInstance().parent()
@@ -552,8 +552,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           NetworkInterfaceId : memberData.appId
 
           AvailabilityZone : subnet.parent().get("name")
-          VpcId            : "@#{subnet.parent().parent().id}.resource.VpcId"
-          SubnetId         : "@#{subnet.id}.resource.SubnetId"
+          VpcId            : subnet.parent().parent().createRef( "VpcId" )
+          SubnetId         : subnet.createRef( "SubnetId" )
 
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups

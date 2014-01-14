@@ -89,7 +89,7 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
           InternetGatewayId : @get("appId")
           AttachmentSet     : [{
             State : "available"
-            VpcId : "@#{@parent().id}.resource.VpcId"
+            VpcId : @parent().createRef( "VpcId" )
           }]
 
       { component : component, layout : layout }

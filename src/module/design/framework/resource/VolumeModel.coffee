@@ -188,7 +188,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         uid   = @id
         appId = @get("appId")
 
-      instanceId = if serverGroupOption.instanceId then "@#{serverGroupOption.instanceId}.resource.InstanceId" else ""
+      instanceId = @createRef( "InstanceId", "serverGroupOption.instanceId" )
 
       owner = @get("owner")
 

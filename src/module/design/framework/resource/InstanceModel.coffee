@@ -548,9 +548,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         azName   = p.parent().get("name")
-        subnetId = "@#{p.id}.resource.SubnetId"
+        subnetId = p.createRef( "SubnetId" )
         vpc      = p.parent().parent()
-        vpcId    = "@#{vpc.id}.resource.VpcId"
+        vpcId    = vpc.createRef( "VpcId" )
 
         if vpc.isDefaultTenancy()
           tenancy = "dedicated"
@@ -642,7 +642,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
               index : i
               resource :
                 Domain : "standard"
-                InstanceId         : "@#{memberData.id}.resource.InstanceId"
+                InstanceId         : @createRef( "InstanceId", memberData.id )
                 AllocationId       : eipData.allocationId or ""
                 NetworkInterfaceId : ""
                 PrivateIpAddress   : ""

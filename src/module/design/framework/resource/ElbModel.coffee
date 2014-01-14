@@ -294,7 +294,7 @@ define [ "CanvasManager",
 
       listeners = []
       if @get("sslCert")
-        sslcertId = "@#{@get('sslCert').id}.resource.ServerCertificateMetadata.Arn"
+        sslcertId = @get('sslCert').createRef("ServerCertificateMetadata.Arn")
       else
         sslcertId = ""
 
@@ -314,6 +314,8 @@ define [ "CanvasManager",
             SSLCertificateId : id
         }
 
+      sgs = _.map @connectionTargets("SgAsso"), ( sg ) -> sg.createRef( "GroupId" )
+
       component =
         type : @type
         uid  : @id
@@ -325,11 +327,9 @@ define [ "CanvasManager",
           CanonicalHostedZoneName : ""
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
-          VpcId                  : if vpc then "@#{vpc.id}.resource.VpcId"
+          VpcId                  : if vpc then vpc.createRef( "VpcId" ) else ""
           LoadBalancerName       : @get("name")
-          SecurityGroups         : ( _.map @connectionTargets("SgAsso"), ( sg ) ->
-                                      "@#{sg.id}.resource.GroupId"
-          )
+          SecurityGroups         : sgs
 
           Scheme : if @get("internal") then "internal" else "internet-facing"
           ListenerDescriptions : listeners

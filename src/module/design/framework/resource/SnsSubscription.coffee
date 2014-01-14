@@ -75,7 +75,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
             Endpoint        : @get("endpoint")
             Protocol        : @get("protocol")
             SubscriptionArn : @get("appId")
-            TopicArn        : "@#{topic.id}.resource.TopicArn"
+            TopicArn        : TopicModel.ensureExistence().createRef( "TopicArn" )
       }
 
   }, {

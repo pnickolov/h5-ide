@@ -277,8 +277,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       sg1 = @port1Comp()
       sg2 = @port2Comp()
 
-      sg1Ref = "@#{sg1.id}.resource.GroupId"
-      sg2Ref = if sg2.type is "SgIpTarget" then sg2.get("name") else "@#{sg2.id}.resource.GroupId"
+      sg1Ref = sg1.createRef( "GroupId" )
+      sg2Ref = if sg2.type is "SgIpTarget" then sg2.get("name") else sg2.createRef( "GroupId" )
 
       portions = [
         {

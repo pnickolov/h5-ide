@@ -100,7 +100,7 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       else if dhcp.isDefault()
         dhcp = ""
       else
-        dhcp = "@#{dhcp.id}.resource.DhcpOptionsId"
+        dhcp = dhcp.createRef( "DhcpOptionsId" )
 
       component =
         name : @get("name")

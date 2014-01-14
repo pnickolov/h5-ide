@@ -344,6 +344,19 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       Design.trigger Design.EVENT.RemoveResource, this
       null
 
+    createRef : ( refName, isResourceNS, id )->
+      if _.isString( isResourceNS )
+        id = isResourceNS
+        isResourceNS = true
+
+      id = id or @id
+      if not id then return ""
+
+      if isResourceNS isnt false
+        "@#{id}.resource.#{refName}"
+      else
+        "@#{id}.#{refName}"
+
 
     listenTo : ( other, event, callback )->
       # Override Backbone.Events.listenTo.

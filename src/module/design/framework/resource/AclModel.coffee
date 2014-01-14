@@ -19,7 +19,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : ""
         NetworkAclId : ""
-        SubnetId: "@#{sb.id}.resource.SubnetId"
+        SubnetId: sb.createRef( "SubnetId" )
       }
       null
   }
@@ -112,7 +112,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     getAssoCount : ()-> @connections().length
 
     serialize : ()->
-      vpcId = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC().id
+      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
 
       ruleSet = []
 
@@ -126,7 +126,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
           RouteTableId   : ""
-          VpcId          : "@#{vpcId}.resource.VpcId"
+          VpcId          : vpc.createRef( "VpcId" )
 
       for rule in @get("rules")
         r = {

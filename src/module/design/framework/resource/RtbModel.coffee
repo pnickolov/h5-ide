@@ -183,7 +183,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
         resource :
           PropagatingVgwSet : []
           RouteTableId      : @get("appId")
-          VpcId             : "@#{@parent().id}.resource.VpcId"
+          VpcId             : @parent().createRef( "VpcId" )
           AssociationSet    : []
           RouteSet          : [{
             Origin               : "CreateRouteTable"

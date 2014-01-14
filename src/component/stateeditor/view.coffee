@@ -16,7 +16,7 @@ define [ 'event',
             'closed': 'closedPopup'
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
-            
+
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
             'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
@@ -90,7 +90,7 @@ define [ 'event',
                 if currentState is 'stack'
                     $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                     $logPanelToggle.hide()
-                
+
             , 1)
 
         initData: () ->
@@ -458,7 +458,7 @@ define [ 'event',
             that = this
 
             descMarkdown = ''
-            
+
             if cmdName
                 moduleObj = that.cmdModuleMap[cmdName]
                 if moduleObj.reference
@@ -802,10 +802,10 @@ define [ 'event',
             result
 
         saveStateData: () ->
-
+            ### validate will be done later
             if not @submitValidate()
                 return false
-
+            ###
             that = this
 
             $stateItemList = that.$stateList.find('.state-item')

@@ -106,25 +106,8 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
             ide_event.onLongListen ide_event.RESTORE_CANVAS, () ->
                 console.log 'RESTORE_CANVAS'
 
+                # re render
                 view.render()
-
-                # old design flow +++++++++++++++++++++++++++
-                #MC.canvas_data = $.extend( true, {}, MC.data.origin_canvas_data )
-                #redraw
-                #MC.canvas.layout.init()
-                #re set
-                #update instance icon of app
-                #MC.aws.instance.updateStateIcon MC.canvas_data.id
-                #MC.aws.asg.updateASGCount MC.canvas_data.id
-                #MC.aws.eni.updateServerGroupState MC.canvas_data.id
-                #update deleted resource style
-                #MC.forge.app.updateDeletedResourceState MC.canvas_data
-                # old design flow +++++++++++++++++++++++++++
-
-                # new design flow +++++++++++++++++++++++++++
-
-                # restore origin_canvas_data to MC.canvas_data
-                #MC.forge.other.canvasData.init MC.forge.other.canvasData.origin()
 
                 # set options component layout
                 options    =
@@ -136,11 +119,6 @@ define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant 
                 # create Design object
                 new Design( MC.forge.other.canvasData.origin(), options )
                 console.log 'new Design Create Complete'
-
-                # new design flow +++++++++++++++++++++++++++
-
-                # old design flow
-                #MC.data.origin_canvas_data = $.extend( true, {}, MC.canvas_data )
 
                 # new design flow
                 MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()

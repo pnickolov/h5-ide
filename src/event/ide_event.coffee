@@ -186,11 +186,11 @@ define [ 'underscore', 'backbone' ], () ->
         constructor : ->
             _.extend this, Backbone.Events
 
-        onListen : ( type ,callback ) ->
-            this.once type, callback
+        onListen : ( type, callback, context ) ->
+            this.once type, callback, context
 
-        onLongListen : ( type ,callback ) ->
-            this.on type, callback
+        onLongListen : ( type, callback, context ) ->
+            this.on type, callback, context
 
         offListen : ( type, function_name ) ->
             if function_name then this.off type, function_name else this.off type

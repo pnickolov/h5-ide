@@ -13,8 +13,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             that = this
 
-            @genStateStatusData()
-
             @initData()
 
 
@@ -32,6 +30,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     data =
                         appId   : state.app_id
                         resId   : state.res_id
+                        uid     : @getUidByResId state.res_id
                         stateId : status.state_id
                         time    : status.time
                         result  : status.result
@@ -40,7 +39,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                     collection.add new Backbone.Model data
 
             @set 'items', collection
-            
 
         getUidByResId: (resId) ->
             
@@ -87,42 +85,6 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                 loopCount++
 
             return resCompObj
-
-        # Mock Api
-        genStateStatusData: () ->
-
-            uuid = () ->
-                Math.random().toString().slice 2, 10
-
-            # mock data
-            getStateData = () ->
-                app_id: uuid(),
-                res_id: uuid(),
-                statuses: [
-                    {
-                        state_id: "1",
-                        time: "2013-12-13",
-                        result: "success"
-                    },
-                    {
-                        state_id: "2",
-                        time: "2013-12-14",
-                        result: "failed"
-                    },
-                    {
-                        state_id: "2",
-                        time: "2013-12-14",
-                        result: "failed"
-                    }
-
-                ]
-
-            statusDatas = [ getStateData(), getStateData(), getStateData() ]
-
-            statusAry = getStateData().statuses
-
-            @set 'stateStatusDataAry', statusAry
-
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
 

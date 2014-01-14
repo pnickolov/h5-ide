@@ -28,6 +28,7 @@ define [ 'Design',
          "./util/deserializeVisitor/JsonFixer",
          "./util/deserializeVisitor/EipMerge",
          "./util/deserializeVisitor/FixOldStack",
+         "./util/serializeVisitor/ThumbnailShim",
          "./util/serializeVisitor/EniIpVisitor"
 
 ], ( Design, ResourceModel, ComplexResModel, GroupModel, ConnectionModel, EniAttachment, VPNConnection, InstanceModel, EniModel )->

@@ -5,7 +5,19 @@ define [ "Design", "constant" ], ( Design, constant )->
   # when deserializing.
 
   prepareEniData = ( uid, eniArray )->
-    subnetCid = Design.instance().component( uid ).get("cidr")
+    subnet = Design.instance().component( uid )
+
+    if subnet
+      subnetCid = subnet.get("cidr")
+    else
+      # DefaultVpc
+      defaultSubnet = MC.aws.vpc.getAZSubnetForDefaultVPC( uid )
+      if defaultSubnet
+        subnetCid = defaultSubnet.cidrBlock
+
+    if not subnetCid
+      console.error "Cannot found cidr when assigning Eni Ip"
+      return
 
     ipSet        = []
     reserveIpSet = []
@@ -52,9 +64,11 @@ define [ "Design", "constant" ], ( Design, constant )->
     # 1. collect all Eni and classify them by its subnet
     for uid, comp of components
       if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-        array = subnetEnisMap[ comp.resource.SubnetId ]
+        key = comp.resource.SubnetId || comp.resource.AvailabilityZone
+
+        array = subnetEnisMap[ key ]
         if not array
-          array = subnetEnisMap[ comp.resource.SubnetId ] = []
+          array = subnetEnisMap[ key ] = []
 
         array.splice( _.sortedIndex( array, comp, "name" ), 0, comp )
 
@@ -62,7 +76,8 @@ define [ "Design", "constant" ], ( Design, constant )->
     for uid, eniArray of subnetEnisMap
       uid  = MC.extractID( uid )
       data = prepareEniData( uid, eniArray )
-      generateIpForEnis( data )
+      if data
+        generateIpForEnis( data )
 
     null
 

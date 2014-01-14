@@ -148,7 +148,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         cidr = parent.get("cidr")
       else
-        cidr = MC.aws.vpc.getAZSubnetForDefaultVPC( parent.get("name") )
+        defaultSubnet = MC.aws.vpc.getAZSubnetForDefaultVPC( parent.get("name") )
+        if defaultSubnet
+          cidr = defaultSubnet.cidrBlock
 
       cidr
 

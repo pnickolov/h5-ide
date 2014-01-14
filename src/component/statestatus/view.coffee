@@ -41,6 +41,7 @@ define [ 'event'
             @$el.html @template.modal {}
             @$( '.modal-state-statusbar' ).html @template.content {}
 
+
             @renderAllItem()
 
             @$el.show()
@@ -48,15 +49,27 @@ define [ 'event'
             @
 
         renderAllItem: () ->
-            @model.get( 'items' ).each @renderItem, this
+            items = @model.get( 'items' )
+            # test
+            appStoped = Design.instance().getState() is 'Stopped'
+
+            if items.length and not appStoped
+                @renderContainer()
+                items.each @renderItem, this
+
+            else
+                @renderPending()
+
+        renderContainer: () ->
+            @$( '.scroll-content' ).html @template.container
 
 
         renderItem: ( model, index ) ->
-            if index is 0
-                @$( '.scroll-content' ).html '<ul class="state-status-list"></ul>'
-
             view = new @itemView model: model
             @$( '.state-status-list' ).append view.render().el
+
+        renderPending: () ->
+            @$( '.scroll-content' ).html @template.pending
 
 
 
@@ -95,11 +108,18 @@ define [ 'event'
             stateStatusContentHTML = htmlMap[ 'statestatus-template-status-content' ]
             stateStatusItemHTML = htmlMap[ 'statestatus-template-status-item' ]
 
+            pending = htmlMap[ 'statestatus-template-status-pending' ]
+            container = htmlMap[ 'statestatus-template-status-item-container' ]
+
             #Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
 
             @template.modal     = Handlebars.compile stateStatusModalHTML
             @template.content   = Handlebars.compile stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
+
+            @template.pending      = pending
+            @template.container = container
+
 
             @template
 

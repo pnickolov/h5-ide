@@ -41,6 +41,9 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             @set 'items', collection
 
+        getUidByResId: ( resId ) ->
+
+
 
         # Mock Api
         genStateStatusData: () ->

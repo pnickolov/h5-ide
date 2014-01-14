@@ -290,8 +290,6 @@ define [ "CanvasManager",
         # If target is TCP or SSL, remove path.
         hcTarget = hcTarget.split("/")[0]
 
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
-
       listeners = []
       if @get("sslCert")
         sslcertId = @get('sslCert').createRef("ServerCertificateMetadata.Arn")
@@ -316,18 +314,22 @@ define [ "CanvasManager",
 
       sgs = _.map @connectionTargets("SgAsso"), ( sg ) -> sg.createRef( "GroupId" )
 
+      # In defaultVpc, the subnet is created
+      subnets = _.map @connectionTargets( "ElbAmiAsso" ), ( ami )-> ami.getSubnetRef()
+      subnets = _.uniq( subnets )
+
       component =
         type : @type
         uid  : @id
         name : @get("name")
         resource :
           AvailabilityZones : @getAvailabilityZones()
-          Subnets : []
+          Subnets : subnets
           CanonicalHostedZoneNameID : ""
           CanonicalHostedZoneName : ""
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
-          VpcId                  : if vpc then vpc.createRef( "VpcId" ) else ""
+          VpcId                  : @getVpcRef()
           LoadBalancerName       : @get("name")
           SecurityGroups         : sgs
 

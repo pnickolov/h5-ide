@@ -548,15 +548,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       null
 
     generateJSON : ()->
-      vpcId = subnetId = azName = tenancy = ""
+      azName = tenancy = ""
 
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         azName   = p.parent().get("name")
-        subnetId = p.createRef( "SubnetId" )
         vpc      = p.parent().parent()
-        vpcId    = vpc.createRef( "VpcId" )
-
         if vpc.isDefaultTenancy()
           tenancy = "dedicated"
 
@@ -591,8 +588,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           ImageId               : @get("imageId")
           KeyName               : ""
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
-          VpcId                 : vpcId
-          SubnetId              : subnetId
+          VpcId                 : @getVpcRef()
+          SubnetId              : @getSubnetRef()
           Monitoring            : if @get("monitoring") then "enabled" else "disabled"
           NetworkInterface      : []
           InstanceType          : @get("instanceType")
@@ -725,6 +722,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         monitoring   : data.resource.Monitoring isnt "disabled"
         userData     : data.resource.UserData.Data
 
+        parent : resolve( layout_data.groupUId )
+
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
 
@@ -741,11 +740,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           architecture   : layout_data.architecture
           rootDeviceType : layout_data.rootDeviceType
         }
-
-      if data.resource.SubnetId
-        attr.parent = resolve( MC.extractID( data.resource.SubnetId ) )
-      else
-        attr.parent = resolve( MC.extractID( data.resource.Placement.AvailabilityZone ) )
 
       model = new Model( attr )
 

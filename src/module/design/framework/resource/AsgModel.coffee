@@ -511,8 +511,12 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         azs = _.uniq( _.map subnets, (sb)-> sb.parent().get("name") )
         subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
       else
-        subnets = []
-        azs = _.map subnets, (az)-> az.get("name")
+        azs = _.uniq( _.map subnets, (az)-> az.get("name") )
+        newSubnets = []
+        for sb in subnets
+          sbRef = sb.getSubnetRef()
+          if sbRef then newSubnets.push sbRef
+        subnets = newSubnets
 
       if @get("lc")
         lcId = @get('lc').createRef( "LaunchConfigurationName" )

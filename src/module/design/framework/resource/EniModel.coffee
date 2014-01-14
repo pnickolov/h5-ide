@@ -544,7 +544,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       instanceId = @createRef( "InstanceId", servergroupOption.instanceId )
 
-      subnetId = vpcId = az = ""
+      az = ""
 
       if @embedInstance()
         parent = @embedInstance().parent()
@@ -572,8 +572,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           NetworkInterfaceId : memberData.appId
 
           AvailabilityZone : az
-          VpcId            : vpcId
-          SubnetId         : subnetId
+          VpcId            : parent.getVpcRef()
+          SubnetId         : parent.getSubnetRef()
 
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups

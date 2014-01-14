@@ -64,7 +64,11 @@ define [ "Design", "constant" ], ( Design, constant )->
     # 1. collect all Eni and classify them by its subnet
     for uid, comp of components
       if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-        key = comp.resource.SubnetId || comp.resource.AvailabilityZone
+
+        if comp.resource.SubnetId and comp.resource.SubnetId[0] is "@"
+          key = comp.resource.SubnetId
+        else
+          key = comp.resource.AvailabilityZone
 
         array = subnetEnisMap[ key ]
         if not array

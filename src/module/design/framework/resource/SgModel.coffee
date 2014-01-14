@@ -181,8 +181,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       color
 
     serialize : ()->
-      vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
-
       component =
         name : @get("name")
         type : @type
@@ -193,7 +191,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
           GroupName        : @get("name")
           GroupDescription : @get("description")
           OwnerId          : ""
-          VpcId            : if vpc then vpc.createRef( "VpcId" ) else ""
+          VpcId            : @getVpcRef()
           IpPermissions       : []
           IpPermissionsEgress : []
 

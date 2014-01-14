@@ -542,10 +542,19 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
       instanceId = @createRef( "InstanceId", servergroupOption.instanceId )
 
+      subnetId = vpcId = az = ""
+
       if @embedInstance()
-        subnet = @embedInstance().parent()
+        parent = @embedInstance().parent()
       else
-        subnet = @parent()
+        parent = @parent()
+
+      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        subnetId = parent.createRef( "SubnetId" )
+        vpcId    = parent.parent().parent().createRef( "VpcId" )
+        az       = parent.parent().get("name")
+      else
+        az = parent.get("name")
 
       component =
         index           : index
@@ -560,9 +569,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           Description        : @get("description")
           NetworkInterfaceId : memberData.appId
 
-          AvailabilityZone : subnet.parent().get("name")
-          VpcId            : subnet.parent().parent().createRef( "VpcId" )
-          SubnetId         : subnet.createRef( "SubnetId" )
+          AvailabilityZone : az
+          VpcId            : vpcId
+          SubnetId         : subnetId
 
           PrivateIpAddressSet : ips
           GroupSet   : securitygroups
@@ -686,7 +695,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         attr.name = "eni0"
         option = { instance : instance }
       else
-        attr.parent = resolve( MC.extractID(data.resource.SubnetId) )
+        attr.parent = resolve( layout_data.groupUId )
 
       eni = new Model( attr, option )
 

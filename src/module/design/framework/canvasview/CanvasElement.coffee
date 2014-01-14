@@ -158,7 +158,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEidt() and not comp.get("supportAppEdit")
+    if Design.instance().modeIsAppEdit() and not comp.get("supportAppEdit")
       notification "error", "This operation is not supported yet."
       return
     #

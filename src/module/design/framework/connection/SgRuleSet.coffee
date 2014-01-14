@@ -339,6 +339,19 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
     getRelatedSgRuleSets : ( res1, res2 )->
 
       res1SgMap = {}
+
+      # In classic, every elb associates to SgIpTarget( "amazon-elb/amazon-elb-sg" )
+      if Design.instance().typeIsClassic()
+        if res2.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+          res1 = temp
+          res1 = res2
+          res2 = temp
+
+        if res1.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+          SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+          amazon_elb_sg = SgModel.getClassicElbSg()
+          res1SgMap[ amazon_elb_sg.id ] = true
+
       # Find out res1's RuleSets
       for sg in res1.connectionTargets("SgAsso")
         res1SgMap[ sg.id ] = true
@@ -371,7 +384,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
       tempMap = {}
 
       for ruleset in rulesetArray
-        if ruleset.getTarget( "SgIpTarget" ) then return
+        ipTarget = ruleset.getTarget( "SgIpTarget" )
+        if not ipTarget.isClassicElbSg() then continue
 
         comp = ruleset.port1Comp()
         id   = comp.id

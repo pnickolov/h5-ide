@@ -109,7 +109,7 @@ define [ 'text!./template.html', 'i18n!nls/lang.js'], ( template, lang ) ->
         updateSidebar : () ->
 
           ruleCount = 0
-          for group in @model.attributes.groups
+          for group in @model.attributes.groups || []
             ruleCount += group.rules.length
             group.rules.deletable = true
             group.content = MC.template.sgRuleList( group.rules )

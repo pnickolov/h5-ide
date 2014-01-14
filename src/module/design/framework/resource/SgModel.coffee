@@ -17,6 +17,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         name : ip
       }
       this
+
+    isClassicElbSg : ()-> @attributes.name is "amazon-elb/amazon-elb-sg"
   }
 
   Model = ComplexResModel.extend {
@@ -198,6 +200,8 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       { component : component }
   }, {
+
+    getClassicElbSg : ()-> new SgTargetModel( "amazon-elb/amazon-elb-sg" )
 
     getDefaultSg : ()->
       _.find Model.allObjects(), ( obj )-> obj.isDefault()

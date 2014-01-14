@@ -10,7 +10,7 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
 
       design = Design.instance()
 
-      @set "isClassic", design.typeIsClassic() or design.typeIsDefaultVpc()
+      @set "isClassic", design.typeIsClassic()
 
       port1 = @get("port1")
       port2 = @get("port2")
@@ -59,12 +59,17 @@ define [ 'constant', "Design", './SGRulePopupView', "backbone" ], ( constant, De
       targetComp   = Design.instance().component( data.target )
       relationComp = Design.instance().component( data.relation )
 
+      if targetComp.type is constant.AWS_RESOURCE_TYPE.AWS_ELB
+        # We create a mock sg for ElbSg in Classic.
+        SgModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup )
+        targetComp = SgModel.getClassicElbSg()
+
       SgRuleSetModel = Design.modelClassForType( "SgRuleSet" )
       sgRuleSet      = new SgRuleSetModel( targetComp, relationComp )
 
       count = if @get("isClassic") then 1 else 2
 
-      if @get("isClassic") and targetComp.isElbSg()
+      if @get("isClassic")
         # Don't add sgrule to ElbSg in classic mode
         sgRuleSet.addRawRule( data.relation, "inbound", data )
       else

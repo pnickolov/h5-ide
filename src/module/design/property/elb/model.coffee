@@ -44,10 +44,13 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 azArr = AzModel.allPossibleAZ()
                 for az in azArr
-                    if attr.AvailabilityZones.indexOf( az.name ) isnt -1
+                    if connectedAzMap[ az.name ]
+                        az.disabled = connectedAzMap[ az.name ]
                         az.selected = true
+                    else
+                        az.disabled = false
+                        az.selected = attr.AvailabilityZones.indexOf( az.name ) isnt -1
 
-                    az.disabled    = connectedAzMap[ az.name ]
                     az.displayName = az.name.replace reg, replaceFunc
                     az.displayName = az.displayName[0].toUpperCase() + az.displayName.substr(1)
 

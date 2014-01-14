@@ -2,7 +2,7 @@
 #  Controller for design/canvas module
 ####################################
 
-define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
+define [ 'event', 'i18n!nls/lang.js', 'constant' ], ( ide_event, lang, constant ) ->
 
     #private
     loadModule = () ->
@@ -146,6 +146,11 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
                 null
+
+            ide_event.onLongListen ide_event.UPDATE_APP_STATE, ( type, id ) ->
+                console.log 'canvas:UPDATE_APP_STATE', type, id
+                if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]
+                    MC.forge.other.canvasData.set 'state', type
 
     unLoadModule = () ->
         #view.remove()

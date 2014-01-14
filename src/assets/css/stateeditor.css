@@ -145,29 +145,32 @@ body {
 	background-color: #a4a4a4;
 }
 
-#state-editor-body .state-save, .state-cancel, .state-close {
-	background-color: #0f0;
-	width: 50px;
-	padding: 10px;
-	text-align: center;
-	float: right;
-	margin-right: 14px;
-	margin-top: 14px;
-	cursor: pointer;
-}
-
 #state-editor-body .state-close {
 	display: none;
 }
 
-#state-editor-model .modal-toolbar {
-	list-style: none;
-	position: absolute;
-	margin-top: -39px;
-	right: 50px;
+#state-editor-body .state-save,
+#state-editor-body .state-cancel {
+	margin-right: 14px;
+	margin-top: 14px;
 }
 
-#state-editor-model .modal-toolbar li {
+#state-editor-model .modal-sidebar-toggle {
+	list-style: none;
+	position: absolute;
+	margin-top: -49px;
+	right: 145px;
+}
+
+.modal-sidebar-toggle li {
+	height: 49px;
+	background: rgba(0,0,0,.2);
+	width: 50px;
+	float: left;
+	cursor: pointer;
+}
+
+/*#state-editor-model .modal-toolbar li {
 	width: 30px;
 	height: 30px;
 	background-color: #eee;
@@ -178,7 +181,7 @@ body {
 
 #state-editor-model .modal-toolbar li:hover {
 	background-color: #ccc;
-}
+}*/
 
 /* *************************************** state item */
 

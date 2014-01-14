@@ -50,6 +50,14 @@ define [ 'event',
 			view.forceShow()
 			null
 
+		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL_IMM, () ->
+			view.immShowSecondPanel()
+			null
+
+		PropertyBaseModule.event.on PropertyBaseModule.event.HIDE_SUB_PANEL, ()->
+			view.immHideSecondPanel()
+			null
+
 		PropertyBaseView.event.on PropertyBaseView.event.OPEN_SUBPANEL, () ->
 			view.showSecondPanel()
 			null

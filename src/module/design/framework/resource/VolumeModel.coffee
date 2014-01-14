@@ -188,7 +188,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         uid   = @id
         appId = @get("appId")
 
-      instanceId = @createRef( "InstanceId", "serverGroupOption.instanceId" )
+      instanceId = @createRef( "InstanceId", serverGroupOption.instanceId )
 
       owner = @get("owner")
 
@@ -211,11 +211,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
             InstanceId          : instanceId
             Device              : @get("name")
             DeleteOnTermination : true
-            #reserved
-            AttachTime  : ""
-            Status      : ""
-            VolumeType  : "standard"
-
+          VolumeType  : @get("volumeType")
       }
 
 

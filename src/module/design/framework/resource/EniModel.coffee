@@ -503,6 +503,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           PrivateIpAddress : @getRealIp( ipObj.ip )
           AutoAssign       : autoAssign
           Primary          : false
+          #reserved
+          Association      :
+            InstanceId        : ""
+            AssociationID     : ""
+            PublicDnsName     : ""
+            IpOwnerId         : ""
+            PublicIp          : ""
+            AllocationID      : ""
         }
 
         if ipObj.hasEip
@@ -518,7 +526,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
               PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
-
           }
       ips[0].Primary = true
 
@@ -569,6 +576,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           RequestManaged   : ""
           OwnerId          : ""
           PrivateIpAddress : ""
+
+          AssociatePublicIpAddress : @get("assoPublicIp")
+          #reserved
+          PrivateDnsName     : ""
+          Status             : ""
+
 
       resources[0] = component
       resources

@@ -648,6 +648,9 @@ define [ 'MC', 'event',
             # new design flow
             MC.forge.other.canvasData.origin MC.forge.other.canvasData.data()
 
+            # 6. set Design mode
+            Design.instance().setMode Design.MODE.AppEdit
+
             null
 
         clickSaveEditApp : (event)->

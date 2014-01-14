@@ -134,7 +134,7 @@ define [ 'event', 'MC', 'i18n!nls/lang.js' ], (ide_event, MC, lang ) ->
                 MC.canvas.layout.init()
 
                 # create Design object
-                new Design( MC.forge.other.canvasData.data(), options )
+                new Design( MC.forge.other.canvasData.origin(), options )
                 console.log 'new Design Create Complete'
 
                 # new design flow +++++++++++++++++++++++++++

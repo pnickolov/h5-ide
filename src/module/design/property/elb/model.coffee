@@ -36,7 +36,11 @@ define [ '../base/model', "event", "Design", 'constant' ], ( PropertyModel, ide_
 
                 connectedAzMap = {}
                 for ami in component.connectionTargets("ElbAmiAsso")
-                    connectedAzMap[ ami.parent().get("name") ] = true
+                    if ami.parent().type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+                        az = ami.parent().parent()
+                    else
+                        az = ami.parent()
+                    connectedAzMap[ az.get("name") ] = true
 
                 reg = /-[\w]/g
                 replaceFunc = (g)-> " " + g[1].toUpperCase()

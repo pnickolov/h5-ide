@@ -279,11 +279,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       if not @isEbsOptimizedEnabled()
         @set("ebsOptimized", false)
 
-      # Eni's IP address count is limited by instanceType
-      enis = @connectionTargets("EniAttachment")
-      enis.push( @getEmbedEni() )
-      for eni in enis
-        eni.limitIpAddress()
+      # Well, LC borrows setInstanceType of Instance,
+      # but LC doesn't have getEmbedEni
+      if @getEmbedEni
+        # Eni's IP address count is limited by instanceType
+        enis = @connectionTargets("EniAttachment")
+        enis.push( @getEmbedEni() )
+        for eni in enis
+          eni.limitIpAddress()
       null
 
     setTenancy : ( tenancy )->

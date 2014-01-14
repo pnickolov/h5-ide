@@ -20,19 +20,29 @@ define [ 'event'
             'click .modal-close': 'closePopup'
 
         initialize: () ->
+            @items = @model.get( 'items' )
+            @listenTo @model, 'change:items', @renderAllItem
+            #@listenTo @items, 'add', @renderItem
+            #@listenTo @items, 'remove', @
 
             @compileTpl()
             @registerHelper()
 
+            @itemView = @customView()
+
+        customView: () ->
             parent = @
-            @itemView = Backbone.View.extend
+            Backbone.View.extend
                 tagName: 'li'
                 className: 'state-status-item'
                 template: parent.template.item
+
+                initialize: () ->
+                    @listenTo @model, 'change', @render
+
                 render: () ->
                     @$el.html @template @model.toJSON()
                     @
-
 
         render: () ->
 
@@ -49,7 +59,7 @@ define [ 'event'
             @
 
         renderAllItem: () ->
-            items = @model.get( 'items' )
+            items = @items
             # test
             appStoped = Design.instance().getState() is 'Stopped'
 
@@ -92,7 +102,6 @@ define [ 'event'
                 new Handlebars.SafeString new Date( text ).toUTCString()
 
         compileTpl: () ->
-
             # generate template
             tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
             tplHTMLAry = template.match tplRegex
@@ -111,8 +120,6 @@ define [ 'event'
             pending = htmlMap[ 'statestatus-template-status-pending' ]
             container = htmlMap[ 'statestatus-template-status-item-container' ]
 
-            #Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
-
             @template.modal     = Handlebars.compile stateStatusModalHTML
             @template.content   = Handlebars.compile stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
@@ -120,32 +127,7 @@ define [ 'event'
             @template.pending      = pending
             @template.container = container
 
-
             @template
-
-
-
-
-        refreshStateStatusList: () ->
-
-            that = this
-            stateStatusDataAry = that.model.get( 'stateStatusDataAry' )
-
-            stateStatusViewAry = []
-            _.each stateStatusDataAry, ( statusObj ) ->
-                stateStatusViewAry.push( {
-                    # state_id: "State #{logObj.state_id}",
-                    # log_time: logObj.time,
-                    # stdout: logObj.stdout,
-                    # stderr: logObj.stderr
-                } )
-                null
-
-            renderHTML = that.template.item( {
-                state_statuses: stateStatusViewAry
-            } )
-
-            that.$stateStatusList.html renderHTML
 
         closePopup : ->
             if @$statusModal.html()

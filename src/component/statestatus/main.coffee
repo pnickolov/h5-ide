@@ -9,12 +9,11 @@ define [ 'jquery', 'event' ], ( $, ide_event ) ->
 
         require [ './component/statestatus/view', './component/statestatus/model' ], ( View, Model ) ->
 
-            view  = new View()
             model = new Model()
+            view  = new View model: model
 
             ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, model.listenStateStatusUpdate
 
-            view.model    = model
             view.render()
 
     unLoadModule = ( view, model ) ->

@@ -9,36 +9,63 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
         defaults :
             test: null
 
+        diff: new Backbone.Model()
+
+        resetDiff: () ->
+            @diff.clear()
+
+        setDiff: ( attr, value ) ->
+            if @diff.has attr
+                @diff.get( attr ).push value
+            else
+                @diff.set attr, [ value ]
+
         initialize: () ->
+            @collection = new (@customCollection())
+            #@set 'items', @collection
 
-            that = this
-
-            @initData()
-
-
-        initData: () ->
             stateList = MC.data.websocket.collection.status.find().fetch()
+            @collection.set @dispose( stateList ).models
+            @set 'items', @collection
+            @
 
+        customCollection: () ->
+            parent = @
+            Backbone.Collection.extend
+                comparator: ( model ) ->
+                    - model.get( 'time' )
+                initialize: () ->
+                    @on 'remove', ( model ) ->
+                        parent.setDiff 'remove', model
+                    @on 'add', ( model ) ->
+                        parent.setDiff 'add', model
+                    @on 'change', ( model ) ->
+                        parent.setDiff 'change', model
+
+        flush: () ->
+            _.each @diff.attributes, ( attr ) ->
+
+
+        dispose: ( stateList ) ->
             collection = new Backbone.Collection()
-
-            collection.comparator = 'time'
-            console.log stateList
-
             for state in stateList
 
                 for status in state.statuses
+                    #if status.result isnt 'failed'
+                    #    continue
                     data =
+                        id      : "#{state.res_id}|#{status.state_id}"
                         appId   : state.app_id
                         resId   : state.res_id
                         uid     : @getUidByResId state.res_id
-                        stateId : status.state_id
                         time    : status.time
+                        stateId : status.state_id
                         result  : status.result
 
 
                     collection.add new Backbone.Model data
 
-            @set 'items', collection
+            collection
 
         getUidByResId: (resId) ->
             
@@ -87,8 +114,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             return resCompObj
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
-
-
+            collection = @dispose statusData
+            #diff = @diff collection, @get 'items'
+            @collection.set @dispose( stateList ).models
+            @set 'items', @collection
 
             null
 

@@ -4,7 +4,7 @@
 
   <div class="acl-rule-details">
     <div class="rule-list-row">
-      <div href="#" class="acl-rule-allow-cb tooltip icon-{{action}}" data-tooltip='{{#ifCond action "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
+      <div class="acl-rule-allow-cb tooltip icon-{{action}}" data-tooltip='{{#ifCond action "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
       {{#if egress}}<span class="icon-outbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}'></span>
       {{else}}<span class="icon-inbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_INBOUND" }}}'></span>
       {{/if}}

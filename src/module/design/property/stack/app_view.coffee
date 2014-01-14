@@ -32,7 +32,8 @@ define [ '../base/view',
             $('#stack-property-acl-list').html acl_template this.model.attributes
 
         openAcl : ( event ) ->
-            @trigger "OPEN_ACL", $( event.currentTarget ).attr('acl-uid')
+            @trigger "OPEN_ACL", $(event.currentTarget).closest("li").attr("data-uid")
+            null
     }
 
     new InstanceAppView()

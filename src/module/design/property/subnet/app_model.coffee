@@ -18,7 +18,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             subnet      = $.extend true, {}, subnet
             subnet.name = mySubnetComponent.get 'name'
-            subnet.acl  = this.getACL( uid ).toJSON()
+            subnet.acl  = this.getACL( uid )
             subnet.uid  = uid
 
             # Get RouteTable ID
@@ -36,16 +36,15 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         getACL : ( uid ) ->
 
-            component = Design.instance().component( uid )
+            acl = Design.instance().component( uid ).connectionTargets( 'AclAsso' )[0]
+            if not acl then return null
 
-            acl = component.connectionTargets( 'AclAsso' )[ 0 ]
-            linkedACL = acl
-
-            if acl.isDefault()
-                defaultACL = acl
-
-
-            if linkedACL then linkedACL else defaultACL
+            {
+                id          : acl.id
+                name        : acl.get("name")
+                rule        : acl.getRuleCount()
+                association : acl.getAssoCount()
+            }
     }
 
     new SubnetAppModel()

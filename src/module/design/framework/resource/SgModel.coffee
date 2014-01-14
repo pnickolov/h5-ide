@@ -28,16 +28,17 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     defaults :
       description : "Custom Security Group"
 
-    initialize : ()->
+    initialize : ( attributes, option )->
       @color = @generateColor()
 
-      # Automatically add an outbound rule to 0.0.0.0/0
-      attr =
-        fromPort : "0"
-        toPort   : "65535"
-        protocol : "-1"
+      if not (option and option.isDeserialize)
+        # Automatically add an outbound rule to 0.0.0.0/0
+        attr =
+          fromPort : "0"
+          toPort   : "65535"
+          protocol : "-1"
 
-      (new SgRuleSet( this, @createIpTarget("0.0.0.0/0") )).addRawRule( this.id, SgRuleSet.DIRECTION.OUT, attr )
+        (new SgRuleSet( this, @createIpTarget("0.0.0.0/0") )).addRawRule( this.id, SgRuleSet.DIRECTION.OUT, attr )
       null
 
     isElbSg    : ()-> @get "isElbSg"
@@ -275,7 +276,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         appId : data.resource.GroupId
 
         description : data.resource.GroupDescription
-      })
+      }, { isDeserialize : true} )
 
       rules = []
       if data.resource.IpPermissions

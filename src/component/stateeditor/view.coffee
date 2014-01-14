@@ -85,6 +85,11 @@ define [ 'event',
 
                 if that.showLogPanel
                     that.showLogPanel()
+
+                currentState = that.model.get('currentState')
+                if currentState is 'stack'
+                    $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+                    $logPanelToggle.hide()
                 
             , 1)
 
@@ -1045,7 +1050,7 @@ define [ 'event',
                 otherCompareStateData = null
 
                 if that.originCompStateData and stateData
-                    
+
                     if that.originCompStateData.length > stateData.length
                         compareStateData = stateData
                         otherCompareStateData = that.originCompStateData
@@ -1099,13 +1104,21 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             if $descPanel.is(':visible')
                 $stateEditor.addClass('full')
                 $descPanel.hide()
+                $descPanelToggle.removeClass('active')
             else
                 $stateEditor.removeClass('full')
                 $logPanel.hide()
                 $descPanel.show()
+                $descPanelToggle.addClass('active')
+
+            $logPanelToggle.removeClass('active')
 
         onLogToggleClick: (event) ->
 
@@ -1114,13 +1127,21 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             if $logPanel.is(':visible')
                 $stateEditor.addClass('full')
                 $logPanel.hide()
+                $logPanelToggle.removeClass('active')
             else
                 $stateEditor.removeClass('full')
                 $descPanel.hide()
                 $logPanel.show()
+                $logPanelToggle.addClass('active')
+
+            $descPanelToggle.removeClass('active')
 
         showLogPanel: () ->
 
@@ -1128,9 +1149,17 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             $stateEditor.removeClass('full')
             $descPanel.hide()
             $logPanel.show()
+
+            $logPanelToggle.addClass('active')
+            $descPanelToggle.removeClass('active')
+
             null
 
         onDocumentMouseDown: (event) ->

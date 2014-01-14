@@ -297,7 +297,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       lcPrice.type = parseInt( @get("capacity") or @get("minSize"), 10 )
       lcPrice.fee *= lcPrice.type
-      lcPrice.fee  = Math.round(lcPrice * 100) / 100
+      lcPrice.fee  = Math.round(lcPrice.fee * 100) / 100
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 

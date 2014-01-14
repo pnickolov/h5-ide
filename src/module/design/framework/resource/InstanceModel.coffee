@@ -601,6 +601,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           SecurityGroup         : []
           SecurityGroupId       : []
           PrivateIpAddress      : ""
+        #reserved
+        state    : ""
+        software : {}
 
       component
 

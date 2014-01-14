@@ -347,6 +347,8 @@ define [ "CanvasManager",
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
           SourceSecurityGroup : { OwnerAlias : "", GroupName : "" }
+          #reserved
+          CreatedTime  : ""
 
       json_object = { component : component, layout : layout }
 

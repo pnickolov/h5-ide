@@ -548,7 +548,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           Instances                      : []
           SuspendedProcesses             : [ ProcessName: "", SuspensionReason : "" ]
           ShouldDecrementDesiredCapacity : ""
-
+          #reserved
+          CreatedTime : ""
+          InstanceId  : ""
+          Status      : ""
+          Tags        : ""
 
       { component : component, layout : layout }
 

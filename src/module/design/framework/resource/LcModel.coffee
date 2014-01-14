@@ -248,6 +248,10 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           IamInstanceProfile       : ""
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")
+          #reserved
+          CreatedTime              : ""
+          RamdiskId                : ""
+
 
       { component : component, layout : layout }
 

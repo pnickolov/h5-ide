@@ -14,8 +14,6 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
       acl = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
-      acl_data =
-
       components[ acl.id ].resource.AssociationSet.push {
         NetworkAclAssociationId : ""
         NetworkAclId : ""
@@ -62,7 +60,23 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
 
     defaults : ()->
       {
-        rules : []
+        rules : [{
+          action   : "deny"
+          cidr     : "0.0.0.0/0"
+          egress   : true
+          id       : _.uniqueId( "aclrule_" )
+          number   : "32767"
+          port     : ""
+          protocol : "-1"
+        }, {
+          action   : "deny"
+          cidr     : "0.0.0.0/0"
+          egress   : false
+          id       : _.uniqueId( "aclrule_" )
+          number   : "32767"
+          port     : ""
+          protocol : "-1"
+        }]
       }
 
     isDefault : ()-> @attributes.name is "DefaultACL"

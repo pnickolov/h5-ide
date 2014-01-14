@@ -1034,7 +1034,8 @@ textarea {
 	z-index: 80;
 }
 
-.modal-header .modal-close {
+.modal-header .modal-close,
+.modal-header .btn-modal-close {
 	position: absolute;
 	right: 10px;
 	top: 14px;
@@ -1044,7 +1045,8 @@ textarea {
 	line-height: 20px;
 }
 
-.modal-header .modal-close:hover {
+.modal-header .modal-close:hover,
+.modal-header .btn-modal-close:hover {
 	color: #fff;
 }
 

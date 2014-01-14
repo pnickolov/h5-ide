@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ 'text!./template.html', 'i18n!nls/lang.js'], ( template, lang ) ->
+define [ 'text!./template.html', 'i18n!nls/lang.js', "Design" ], ( template, lang, Design ) ->
 
     template = Handlebars.compile template
 
@@ -14,6 +14,7 @@ define [ 'text!./template.html', 'i18n!nls/lang.js'], ( template, lang ) ->
           'OPTION_CHANGE #sg-create-proto'   : 'onProtocolChange'
           'click .sg-rule-delete'            : 'deleteRule'
           'OPTION_CHANGE #sg-proto-icmp-sel' : 'onICMPChange'
+          "click .btn-modal-close"           : 'onModalClose'
 
         render : () ->
 
@@ -130,6 +131,18 @@ define [ 'text!./template.html', 'i18n!nls/lang.js'], ( template, lang ) ->
             if not isShown
               $sidebar.addClass( "shown" ).animate({ left : "-200px" })
               $modal.animate({left:'+=100px'}, 300)
+
+        onModalClose : ()->
+          lineId = @model.get("lineId")
+          component = Design.instance().component( lineId )
+          if component
+            $canvas( lineId ).select()
+          else
+            $canvas.clearSelected()
+
+          modal.close()
+
+          return false
 
         extractRuleData : ( event ) ->
 

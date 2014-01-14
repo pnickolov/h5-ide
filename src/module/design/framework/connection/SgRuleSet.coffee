@@ -385,7 +385,8 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       for ruleset in rulesetArray
         ipTarget = ruleset.getTarget( "SgIpTarget" )
-        if not ipTarget.isClassicElbSg() then continue
+        if ipTarget and not ipTarget.isClassicElbSg()
+          continue
 
         comp = ruleset.port1Comp()
         id   = comp.id

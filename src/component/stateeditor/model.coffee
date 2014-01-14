@@ -404,6 +404,14 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 						if callback
 
 							callback()
+
+		getCurrentResUID: () ->
+
+			that = this
+			compData = that.get('compData')
+			currentCompUID = compData.uid
+			return currentCompUID
+
 	}
 
 	return StateEditorModel

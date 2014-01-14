@@ -5541,6 +5541,8 @@ MC.canvas.event.selectNode = function (event)
 
 		MC.canvas.event.clearSelected();
 		MC.canvas.select(this.id);
+
+		MC.canvas.event.nodeState(this.id);
 	}
 
 	return false;
@@ -5659,6 +5661,7 @@ MC.canvas.event.nodeState = function (id)
 	if (
 		(
 			canvas_status === 'stack' ||
+			canvas_status === 'app' ||
 			canvas_status === 'appedit'
 		)
 		&&
@@ -5674,6 +5677,11 @@ MC.canvas.event.nodeState = function (id)
 		if (stateAry && _.isArray(stateAry)) {
 			stateNum = stateAry.length;
 		}
+
+		if ((canvas_status === 'app') && !stateNum) {
+			return;
+		}
+
 		$('#canvas_container').append( MC.template.nodeState({
 			state_num: stateNum
 		}) );

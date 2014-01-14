@@ -66,8 +66,7 @@ define [ 'event',
                     $('.atwho-view').hide()
                 )
 
-                compStateData = that.model.getStateData()
-                stateObj = that.loadStateData(compStateData)
+                stateObj = that.loadStateData(that.originCompStateData)
                 that.refreshStateList(stateObj)
                 that.refreshStateViewList()
                 that.bindStateListSortEvent()
@@ -99,6 +98,7 @@ define [ 'event',
             that.langTools = ace.require("ace/ext/language_tools")
             that.resAttrDataAry = that.model.get('resAttrDataAry')
             that.resStateDataAry = that.model.get('resStateDataAry')
+            that.originCompStateData = that.model.getStateData()
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
@@ -1037,7 +1037,40 @@ define [ 'event',
             stateData = that.saveStateData()
 
             if stateData
+
                 that.model.setStateData(stateData)
+
+                # compare
+                compareStateData = null
+                otherCompareStateData = null
+
+                if that.originCompStateData and stateData
+                    
+                    if that.originCompStateData.length > stateData.length
+                        compareStateData = stateData
+                        otherCompareStateData = that.originCompStateData
+                    else
+                        compareStateData = that.originCompStateData
+                        otherCompareStateData = stateData
+
+                    changeAry = []
+
+                    _.each compareStateData, (stateObj, idx) ->
+                        originStateObjStr = JSON.stringify(stateObj)
+                        currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
+                        if originStateObjStr isnt currentStateObjStr
+                            changeAry.push(stateObj.stateid)
+                        null
+
+                    resUID = that.model.getCurrentResUID()
+                    changeObj = {
+                        resUID: resUID,
+                        stateIds: changeAry
+                    }
+
+                    if changeAry.length
+                        ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+
                 that.closedPopup()
 
         onStateCancelClick: (event) ->

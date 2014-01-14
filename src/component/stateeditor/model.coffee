@@ -92,7 +92,6 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 			that.genStateRefList(allCompData)
 			that.genAttrRefList(allCompData)
-			that.genStateLogData()
 
 			# for view
 			that.set('cmdParaMap', cmdParaMap)
@@ -369,44 +368,29 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 				null
 			return resultUID
 
-		genStateLogData: () ->
+		genStateLogData: (callback) ->
 
 			that = this
 
-			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app', 'test_res_3'
+			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app'
 
 			that.on 'STATE_LOG_RETURN', ( result ) ->
 
 				if !result.is_error
 
-					logDataAry = result.resolved_data
+					statusDataAry = result.resolved_data
 
-					if logDataAry and logDataAry[0]
+					if statusDataAry and statusDataAry[0]
 
-						logData = logDataAry[0]
+						statusObj = statusDataAry[0]
 
-						# {
-						# 	app_id: "",
-						# 	res_id: "",
-						# 	logs: [
-						# 		{
-						# 			state_id: "1",
-						# 			time: "2013-12-13"
-						# 			stdout: "asddsa\nserer",
-						# 			stderr: "grewgwe\n\nwerewrewr"
-						# 		},
-						# 		{
-						# 			state_id: "2",
-						# 			time: "2013-12-14"
-						# 			stdout: "feweg\nserewsrewrewr",
-						# 			stderr: "gerwew\ngewg"
-						# 		}
-						# 	]
-						# }
-
-						logAry = logData.logs
+						logAry = statusObj.logs
 
 						that.set('stateLogDataAry', logAry)
+
+						if callback
+
+							callback()
 	}
 
 	return StateEditorModel

@@ -29,6 +29,7 @@ define [ 'event',
             'click .state-toolbar .state-remove': 'onStateRemoveClick'
             'click .state-save': 'onStateSaveClick'
             'click .state-cancel': 'onStateCancelClick'
+            'click .state-close': 'onStateCancelClick'
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
@@ -54,8 +55,9 @@ define [ 'event',
             setTimeout(() ->
 
                 that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
-                that.$stateList = that.$el.find('.state-list')
-                that.$stateLogList = that.$el.find('.state-log-list')
+                that.$editorModal = that.$el
+                that.$stateList = that.$editorModal.find('.state-list')
+                that.$stateLogList = that.$editorModal.find('.state-log-list')
                 that.$cmdDsec = $('#state-description')
 
                 # hide autocomplete when click document
@@ -69,9 +71,19 @@ define [ 'event',
                 that.refreshStateList(stateObj)
                 that.refreshStateViewList()
                 that.bindStateListSortEvent()
-                that.refreshStateLogList()
+
+                if that.readOnlyMode
+                    that.setEditorReadOnlyMode()
+
                 that.refreshDescription()
 
+                # refresh state log
+                that.showLogListLoading(true)
+                that.model.genStateLogData(() ->
+                    that.refreshStateLogList()
+                    that.showLogListLoading(false)
+                )
+                
             , 1)
 
         initData: () ->
@@ -87,6 +99,8 @@ define [ 'event',
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
+
+            that.readOnlyMode = true
 
         compileTpl: () ->
 
@@ -174,23 +188,25 @@ define [ 'event',
 
                 null
 
-            # create new dict input box
-            $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
-            _.each $lastDictInputList, (lastDictInput) ->
-                that.onDictInputChange({
-                    currentTarget: lastDictInput
-                })
+            if not that.readOnlyMode
 
-            # create new array/state input box
-            $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
-            $lastStateInputListAry = $stateItemList.find('.parameter-item.state .parameter-value:last').toArray()
+                # create new dict input box
+                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
+                _.each $lastDictInputList, (lastDictInput) ->
+                    that.onDictInputChange({
+                        currentTarget: lastDictInput
+                    })
 
-            $lastInputListAry = $lastArrayInputListAry.concat($lastStateInputListAry)
+                # create new array/state input box
+                $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
+                $lastStateInputListAry = $stateItemList.find('.parameter-item.state .parameter-value:last').toArray()
 
-            _.each $lastInputListAry, (lastInput) ->
-                that.onArrayInputChange({
-                    currentTarget: lastInput
-                })
+                $lastInputListAry = $lastArrayInputListAry.concat($lastStateInputListAry)
+
+                _.each $lastInputListAry, (lastInput) ->
+                    that.onArrayInputChange({
+                        currentTarget: lastInput
+                    })
 
         refreshStateView: ($stateItem) ->
 
@@ -1079,6 +1095,9 @@ define [ 'event',
 
             that = this
 
+            if that.readOnlyMode
+                return
+
             if not editorElem then return
 
             $editorElem = $(editorElem)
@@ -1227,7 +1246,7 @@ define [ 'event',
             if editor
                 return editor.getValue()
             else
-                return ''
+                return $inputElem.text()
 
         setPlainText: (inputElem, content) ->
 
@@ -1251,9 +1270,10 @@ define [ 'event',
 
             stateLogViewAry = []
             _.each stateLogDataAry, (logObj) ->
+                utcTimeStr = (new Date(logObj.time)).toUTCString()
                 stateLogViewAry.push({
                     state_id: "State #{logObj.state_id}",
-                    log_time: logObj.time,
+                    log_time: utcTimeStr,
                     stdout: logObj.stdout,
                     stderr: logObj.stderr
                 })
@@ -1264,6 +1284,50 @@ define [ 'event',
             })
 
             that.$stateLogList.html(renderHTML)
+
+        setEditorReadOnlyMode: () ->
+
+            that = this
+
+            # editableAreaAry = that.$stateList.find('.editable-area')
+            # _.each editableAreaAry, (editableArea) ->
+            #     $editableArea = $(editableArea)
+            #     editor = $editableArea.data('editor')
+            #     if editor
+            #         editor.setReadOnly(true)
+            #     null
+
+            that.$stateList.find('.state-drag').hide()
+            that.$stateList.find('.state-add').hide()
+            that.$stateList.find('.state-remove').hide()
+            that.$stateList.find('.parameter-remove').hide()
+
+            $saveCancelBtn = that.$editorModal.find('.state-save, .state-cancel')
+            $saveCancelBtn.hide()
+
+            $closeBtn = that.$editorModal.find('.state-close')
+            $closeBtn.show()
+
+        showLogListLoading: (show) ->
+
+            that = this
+
+            $logPanel = $('#state-log')
+            $loadText = $logPanel.find('.state-log-loading')
+            $logList = $logPanel.find('.state-log-list')
+            $logInfo = $logPanel.find('.state-log-info')
+
+            if show
+
+                $loadText.show()
+                $logInfo.hide()
+                $logList.hide()
+
+            else
+
+                $loadText.hide()
+                $logInfo.hide()
+                $logList.show()
 
     }
 

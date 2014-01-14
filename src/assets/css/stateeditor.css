@@ -144,7 +144,7 @@ body {
 	background-color: #a4a4a4;
 }
 
-#state-editor-body .state-save {
+#state-editor-body .state-save, .state-cancel, .state-close {
 	background-color: #0f0;
 	width: 50px;
 	padding: 10px;
@@ -155,15 +155,8 @@ body {
 	cursor: pointer;
 }
 
-#state-editor-body .state-cancel {
-	background-color: #0f0;
-	width: 50px;
-	padding: 10px;
-	text-align: center;
-	float: right;
-	margin-right: 14px;
-	margin-top: 14px;
-	cursor: pointer;
+#state-editor-body .state-close {
+	display: none;
 }
 
 #state-editor-model .modal-toolbar {
@@ -596,6 +589,12 @@ body {
 	position: absolute;
 	top: 50%;
 	text-align: center;
+	display: none;
+}
+
+#state-log .state-log-loading {
+	text-align: center;
+	margin-top: 235px;
 	display: none;
 }
 

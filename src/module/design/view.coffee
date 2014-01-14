@@ -128,12 +128,13 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
             # hide
             if Tabbar.current in [ 'app', 'appview' ]
-                $( '#main-statusbar' ).hide()
-                $( '#canvas' ).css 'bottom', 0
+                $( '#main-statusbar .btn-ta-valid' ).hide()
+                $( '#main-statusbar .btn-state' ).show()
 
             # show
             else
-                $( '#main-statusbar' ).show()
+                $( '#main-statusbar .btn-state' ).hide()
+                $( '#main-statusbar .btn-ta-valid' ).show()
 
             if Tabbar.current is 'appedit'
                 $( '#canvas' ).css 'bottom', 24

@@ -192,7 +192,13 @@ define [ "CanvasManager",
 
         return _.uniq azs
       else
-        return @get("AvailabilityZones")
+        azs = _.map @connectionTargets("ElbAmiAsso"), ( ami )->
+          if ami.parent().type is constant.AWS_RESOURCE_TYPE.AWS_EC2_AvailabilityZone
+            return ami.parent().get("name")
+          else
+            return ami.parent().parent().get("name")
+
+        return _.uniq azs.concat( @get("AvailabilityZones") )
 
     draw : ( isCreate )->
 
@@ -314,9 +320,12 @@ define [ "CanvasManager",
 
       sgs = _.map @connectionTargets("SgAsso"), ( sg ) -> sg.createRef( "GroupId" )
 
-      # In defaultVpc, the subnet is created
-      subnets = _.map @connectionTargets( "ElbAmiAsso" ), ( ami )-> ami.getSubnetRef()
-      subnets = _.uniq( subnets )
+      if Design.instance().typeIsClassic()
+        subnets = []
+      else
+        # In defaultVpc, the subnet is created
+        subnets = _.map @connectionTargets( "ElbAmiAsso" ), ( ami )-> ami.getSubnetRef()
+        subnets = _.uniq( subnets )
 
       component =
         type : @type

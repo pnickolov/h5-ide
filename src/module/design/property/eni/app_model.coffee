@@ -48,7 +48,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             if appData[ eni_comp.appId ]
               eni = $.extend true, {}, appData[ eni_comp.appId ]
             else
-              eni = {}
+              eni = { privateIpAddressesSet : { item : [] } }
 
             for i in eni.privateIpAddressesSet.item
               i.primary = i.primary is true

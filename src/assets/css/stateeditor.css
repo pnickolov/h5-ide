@@ -605,10 +605,11 @@ body {
 }
 
 #state-log .state-log-item-status {
-	color: #f00;
+	color: #1b1;
 	float: right;
-	margin-top: -20px;
+	margin-top: -12px;
 	right: 30px;
+	font-size: 10px;
 }
 
 #state-log .state-log-item-detail {
@@ -739,3 +740,6 @@ body {
 	padding-bottom: 25px;
 }
 
+#status-bar-modal .modal-header h3 {
+	cursor: default;
+}

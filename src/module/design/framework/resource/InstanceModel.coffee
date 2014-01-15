@@ -791,6 +791,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       # Add Keypair
       resolve( MC.extractID( data.resource.KeyName ) ).assignTo( model )
+
+      # Associate Sg in classic mode
+      if Design.instance().typeIsClassic() and data.resource.SecurityGroup
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        for groupId in data.resource.SecurityGroup
+          new SgAsso( model, resolve( MC.extractID( groupId ) ) )
+
       null
 
 

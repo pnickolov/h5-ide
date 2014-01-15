@@ -34,7 +34,8 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                 for status in state.statuses
                     #if status.result isnt 'failed'
                     #    continue
-                    state.res_id = 'i-8b56ad95'
+                    # test
+                    state.res_id = 'i-db6284c5'
                     component = @getUidByResId( state.res_id )
                     if not component
                         continue
@@ -113,7 +114,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
             for stateId in stateIds
                 id = @genId resId, stateId
-                @collection.get( id ).set 'updated', true
+                @collection.get( id ) and @collection.get( id ).set 'updated', true
 
             null
 

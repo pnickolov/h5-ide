@@ -26,7 +26,7 @@ define [ 'jquery', 'event', './component/statestatus/view', './component/statest
 
         view.remove()
         model.destroy()
-        ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
+        ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA, model.listenStateStatusUpdate
         ide_event.offListen 'STATE_EDITOR_DATA_UPDATE'
 
 

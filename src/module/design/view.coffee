@@ -124,7 +124,16 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
         renderStateBar: ( stateList ) ->
             succeed = failed = 0
+
+            if not _.isArray stateList
+                stateList = [ stateList ]
+
             for state in stateList
+                ### temp
+                if state.app_id isnt MC.canvas_data.id
+                    continue
+                ###
+
                 for status in state.statuses
                     if status.result is 'success'
                         succeed++
@@ -152,17 +161,19 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 @renderStateBar stateList
 
                 ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, ( type, idx, statusData ) ->
-                    @renderStateBar statusData
+                    stateList = MC.data.websocket.collection.status.find().fetch()
+                    @renderStateBar stateList
+                , @
 
             # show
             else
                 $( '#main-statusbar .btn-state' ).hide()
                 $( '#main-statusbar .btn-ta-valid' ).show()
+                ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
 
             if Tabbar.current is 'appedit'
                 $( '#canvas' ).css 'bottom', 24
 
-            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
 
             null
 

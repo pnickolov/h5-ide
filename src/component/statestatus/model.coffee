@@ -6,17 +6,12 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     StateStatusModel = Backbone.Model.extend
 
-        defaults :
-            test: null
-
         initialize: () ->
             @collection = new (@customCollection())
-            #@set 'items', @collection
 
             stateList = MC.data.websocket.collection.status.find().fetch()
             @collection.set @dispose( stateList ).models
             @set 'items', @collection
-            @
 
         customCollection: () ->
             parent = @
@@ -29,12 +24,21 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
         dispose: ( stateList ) ->
             collection = new Backbone.Collection()
+
+            if not _.isArray stateList
+                stateList = [ stateList ]
+
             for state in stateList
 
                 for status in state.statuses
-                    #if status.result isnt 'failed'
-                    #    continue
-                    # test
+
+                    ### temp
+                    if status.result isnt 'failed'
+                        continue
+                    if state.app_id isnt MC.canvas_data.id
+                        continue
+                    ###
+
                     state.res_id = 'i-db6284c5'
                     component = @getUidByResId( state.res_id )
                     if not component
@@ -102,15 +106,13 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 loopCount++
 
-            return {
-                parentComp: parentComp,
-                selfComp: selfComp
-            }
+            parent: parentComp,
+            self  : selfComp
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
             collection = @dispose statusData
             #diff = @diff collection, @get 'items'
-            @collection.add @dispose( stateList ).models
+            @collection.add collection.models
             #@set 'items', @collection
 
             null

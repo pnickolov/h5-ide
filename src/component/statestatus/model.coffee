@@ -76,29 +76,36 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         instanceIdASGNameMap[instanceId] = asgUID
 
             resUID = ''
-            resCompObj = null
+            parentComp = null
+            selfComp = null
             compAry = _.keys(MC.canvas_data.component)
             loopCount = 0
             $.each MC.canvas_data.component, (idx, compObj) ->
 
                 compType = compObj.type
                 compUID = compObj.uid
+                groupUID = compObj.serverGroupUid
 
                 if compType is 'AWS.EC2.Instance'
                     instanceId = compObj.resource.InstanceId
                     if instanceId is resId
                         resUID = compUID
-                        resCompObj = compObj
+                        if groupUID and groupUID isnt compUID
+                            parentComp = MC.canvas_data.component[groupUID]
+                        selfComp = compObj
                         return false
 
                 if (loopCount is compAry.length - 1) and not resUID
                     asgUID = instanceIdASGNameMap[resId]
                     if asgUID
-                        resCompObj = MC.canvas_data.component[asgUID]
+                        parentComp = MC.canvas_data.component[asgUID]
 
                 loopCount++
 
-            return resCompObj
+            return {
+                parentComp: parentComp,
+                selfComp: selfComp
+            }
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
             collection = @dispose statusData

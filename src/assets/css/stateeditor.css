@@ -150,12 +150,11 @@ body {
 	padding: 0;
 }
 
-#state-editor-body .state-close {
+#state-editor-model .state-close {
 	display: none;
 }
 
-#state-editor-body .state-save,
-#state-editor-body .state-cancel {
+#state-editor-model .state-save, .state-cancel {
 	margin-right: 14px;
 	margin-top: 14px;
 }
@@ -742,4 +741,13 @@ body {
 
 #status-bar-modal .modal-header h3 {
 	cursor: default;
+}
+
+/* state resource select */
+#state-editor-model .state-editor-res-select {
+	color: #ccc;
+	right: 307px;
+	width: 120px;
+	top: 12px;
+	position: absolute;
 }

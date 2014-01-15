@@ -163,6 +163,9 @@
 <div style="width:900px;height:610px;" id="state-editor-model">
 	<div class="modal-header">
 		<h3>Conﬁguration Manager of {{res_name}}</h3>
+		<div class="selectbox state-editor-res-select">
+			{{> state-template-res-select}}
+		</div>
 		<i class="modal-close">&times;</i>
 	</div>
 
@@ -197,6 +200,14 @@
 			<div class="state-close btn btn-silver">Close</div>
 		</div>
 </div>
+
+<!-- state-template-res-select -->
+<div class="selection">{{res_selects.0.res_name}}</div>
+<ul class="dropdown" tabindex="-1">
+	{{#each res_selects}}
+		<li class="item {{#unless @index}}selected{{/unless}}" data-id="{{res_id}}">{{res_name}}</li>
+	{{/each}}
+</ul>
 
 <!-- state-template-log-item -->
 {{#each state_logs}}

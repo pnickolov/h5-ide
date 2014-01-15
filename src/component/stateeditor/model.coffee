@@ -100,6 +100,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			that.set('cmdModuleMap', cmdModuleMap)
 			that.set('moduleCMDMap', moduleCMDMap)
 
+			groupResSelectData = that.getGroupResSelectData()
+			that.set('groupResSelectData', groupResSelectData)
+
 			# Diffrent view
 			currentState = MC.canvas.getState()
 			if currentState is 'stack'
@@ -383,7 +386,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 				null
 			return resultUID
 
-		genStateLogData: (callback) ->
+		genStateLogData: (res_id, callback) ->
 
 			that = this
 
@@ -399,7 +402,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 						statusObj = statusDataAry[0]
 
-						logAry = statusObj.logs
+						logAry = statusObj.statuses
 
 						that.set('stateLogDataAry', logAry)
 
@@ -414,6 +417,70 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			currentCompUID = compData.uid
 			return currentCompUID
 
+		getGroupResSelectData: () ->
+
+			that = this
+			compData = that.get('compData')
+			allCompData = that.get('allCompData')
+
+			originGroupUID = ''
+			originCompUID = compData.uid
+			if compData.type is 'AWS.EC2.Instance'
+				originGroupUID = compData.serverGroupUid
+
+			dataAry = []
+
+			_.each allCompData, (compObj) ->
+
+				compType = compObj.type
+				compUID = compObj.uid
+
+				if compType is 'AWS.EC2.Instance' and compData.type is compType
+
+					currentGroupUID = compObj.serverGroupUid
+
+					if compUID is originCompUID
+						resId = compObj.resource.InstanceId
+
+						# resName = compObj.serverGroupName
+						# if not resName
+						resName = compObj.name
+
+						dataAry.push({
+							res_id: resId,
+							res_name: resName
+						})
+					else if (originGroupUID and currentGroupUID and compUID isnt originGroupUID and currentGroupUID is originGroupUID)
+						resId = compObj.resource.InstanceId
+						dataAry.push({
+							res_id: resId,
+							res_name: compObj.name
+						})
+				null
+
+				if compType is 'AWS.AutoScaling.Group' and compData.type is 'AWS.AutoScaling.LaunchConfiguration'
+
+					asgName = compObj.resource.AutoScalingGroupName
+					lsgUID = MC.extractID(compObj.resource.LaunchConfigurationName)
+
+					if lsgUID is originCompUID
+
+						# find asg name's all instance
+						$.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
+							if resObj and resObj.AutoScalingGroupName and resObj.Instances
+								if resObj.AutoScalingGroupName is asgName
+									$.each resObj.Instances.member, (idx, instanceObj) ->
+										instanceId = instanceObj.InstanceId
+										dataAry.push({
+											res_id: instanceId,
+											res_name: instanceId
+										})
+
+				null
+
+			# console.log(dataAry)
+
+			return dataAry
 	}
 
 	return StateEditorModel

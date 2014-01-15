@@ -34,6 +34,8 @@ define [ 'event',
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
 
+            'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
+
         initialize: () ->
 
             this.compileTpl()
@@ -77,11 +79,10 @@ define [ 'event',
                 that.refreshDescription()
 
                 # refresh state log
-                that.showLogListLoading(true)
-                that.model.genStateLogData(() ->
-                    that.refreshStateLogList()
-                    that.showLogListLoading(false)
-                )
+                $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+                that.onResSelectChange({
+                    target: $resSelectElem[0]
+                })
 
                 if that.showLogPanel
                     that.showLogPanel()
@@ -90,6 +91,8 @@ define [ 'event',
                 if currentState is 'stack'
                     $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                     $logPanelToggle.hide()
+
+                that.initResSelect()
 
             , 1)
 
@@ -103,6 +106,7 @@ define [ 'event',
             that.langTools = ace.require("ace/ext/language_tools")
             that.resAttrDataAry = that.model.get('resAttrDataAry')
             that.resStateDataAry = that.model.get('resStateDataAry')
+            that.groupResSelectData = that.model.get('groupResSelectData')
             that.originCompStateData = that.model.getStateData()
 
             that.resName = that.model.getResName()
@@ -138,6 +142,7 @@ define [ 'event',
             paraDictItemHTML = htmlMap['state-template-para-dict-item']
             paraArrayItemHTML = htmlMap['state-template-para-array-item']
             stateLogItemHTML = htmlMap['state-template-log-item']
+            stateResSelectHTML = htmlMap['state-template-res-select']
             paraCompleteItemHTML = '<li data-value="${atwho-at}${name}">${name}</li>'
 
             this.stateListTpl = Handlebars.compile(stateListHTML)
@@ -147,6 +152,7 @@ define [ 'event',
             Handlebars.registerPartial('state-template-para-dict-item', paraDictItemHTML)
             Handlebars.registerPartial('state-template-para-array-item', paraArrayItemHTML)
             Handlebars.registerPartial('state-template-log-item', stateLogItemHTML)
+            Handlebars.registerPartial('state-template-res-select', stateResSelectHTML)
 
             # Handlebars helper
             Handlebars.registerHelper('nl2br', (text) ->
@@ -160,6 +166,17 @@ define [ 'event',
             this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
             this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
             this.stateLogItemTpl = Handlebars.compile(stateLogItemHTML)
+            this.stateResSelectTpl = Handlebars.compile(stateResSelectHTML)
+
+        initResSelect: () ->
+
+            that = this
+
+            resSelectHTML = that.stateResSelectTpl({
+                res_selects: that.groupResSelectData
+            })
+            $resSelect = that.$editorModal.find('.state-editor-res-select')
+            $resSelect.html(resSelectHTML)
 
         bindStateListSortEvent: () ->
 
@@ -1421,6 +1438,19 @@ define [ 'event',
                 else
                     $logInfo.hide()
                     $logList.show()
+
+        onResSelectChange: (event) ->
+
+            that = this
+
+            selectedResId = $(event.target).find('.selected').attr('data-id')
+
+            # refresh state log
+            that.showLogListLoading(true)
+            that.model.genStateLogData(selectedResId, () ->
+                that.refreshStateLogList()
+                that.showLogListLoading(false)
+            )
 
     }
 

@@ -12,7 +12,7 @@ define [ "Design", "constant", 'lib/forge/app' ], ( Design, constant, forge_app 
 			parent_model = @parent_model
 
 			readonly = false
-			if design.modeIsApp()
+			if design.modeIsApp() or design.modeIsAppView()
 				readonly = true
 			else if design.modeIsAppEdit()
 				if parent_model.isSGListReadOnly

@@ -140,6 +140,7 @@ define [ '../base/view',
             $selectbox.children(":first-child").addClass("selected")
             $selectbox.prev(".selection").text("HTTP")
             $('#elb-property-listener-list').append $li
+            @updateListener( $li )
             return false
 
         updateListener : ( $li )->

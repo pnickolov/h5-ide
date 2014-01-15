@@ -23,11 +23,11 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         console.debug( "Nothing needs the sns-topic, so the sns-topic is not serialized" )
         return
 
-      n = @get("name")
+      n = "SnsTopic"
 
       {
         component :
-          name : "SnsTopic"
+          name : n
           type : @type
           uid  : @id
           resource :

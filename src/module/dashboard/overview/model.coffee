@@ -844,6 +844,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                 null
 
+
             if parse_sub_info
                 parse_sub_info = '"sub_info":[' + parse_sub_info
                 parse_sub_info = parse_sub_info.substring 0, parse_sub_info.length - 2
@@ -925,14 +926,14 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     if value != null
 
-                        if $.type(value) == 'string'
+                        if _.isString( value ) or _.isBoolean( value )
 
                             tmp.push ( '\\"<dt>' + key + ': </dt><dd>' + value + '</dd>\\"')
 
                         else
                             tmp.push me._genBubble value, title, false
 
-                parse_sub_info = tmp.join(', ')
+                parse_sub_info = tmp.join(',')
 
                 if entry
 
@@ -975,7 +976,7 @@ define [ 'MC', 'event', 'constant', 'vpc_model',
 
                     if value != null
 
-                        if $.type(value) == 'string'
+                        if _.isString( value ) or _.isBoolean( value )
 
                             is_str = true
 

@@ -285,7 +285,7 @@ define [ 'event',
         myAmiRender : () ->
             console.log 'myAmiRender'
             console.log this.model.attributes.my_ami
-            if !this.model.attributes.my_ami
+            if !@model.attributes.my_ami or _.isNumber @model.attributes.my_ami
                 $( '.my-ami-list' ).html ''
                 return
             $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes

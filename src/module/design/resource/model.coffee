@@ -530,7 +530,7 @@ define [ 'i18n!nls/lang.js',
             me = this
 
             #init
-            me.set 'my_ami', {}
+            me.set 'my_ami' , Math.round(+new Date())
 
             #if demo account, not request api
             if MC.forge.cookie.getCookieByName( 'account_id' ) is 'demo_account'

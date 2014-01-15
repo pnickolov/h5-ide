@@ -19,7 +19,7 @@ define [ "CanvasManager",
         width    : 9
         height   : 9
 
-        internal  : true
+        internal  : if Design.instance().typeIsClassic() then false else true
         crossZone : false
 
         # HealthCheck

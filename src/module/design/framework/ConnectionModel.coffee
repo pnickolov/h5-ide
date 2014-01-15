@@ -74,6 +74,11 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         console.warn( "Connection of #{@type} is not created, because invalid targets :", [ p1Comp, p2Comp ] )
         return
 
+      ###
+      # We must allow self-reference connection to be created.
+      # Because SgModel would need that.
+      ###
+
       if not option or option.detectDuplicate isnt false
         # Detect if we have already created the same connection between p1Comp, p2Comp
         cns = Design.modelClassForType( @type ).allObjects()

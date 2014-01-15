@@ -4,7 +4,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
   Model = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
 
-    defualts : ()->
+    defaults : ()->
       cooldown       : ""
       minAdjustStep  : ""
       adjustment     : "-1"
@@ -14,6 +14,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       sendNotification : false
 
       alarmData      : {
+        id                 : MC.guid()
         namespace          : "AWS/AutoScaling"
         metricName         : "CPUUtilization"
         comparisonOperator : ">="
@@ -24,6 +25,11 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         unit               : ""
         appId              : ""
       }
+
+    constructor : ( attribute, option )->
+      defaults  = this.defaults()
+      attribute.alarmData = $.extend defaults.alarmData, attribute.alarmData
+      ResourceModel.call( this, attribute, option )
 
     getCost : ( priceMap, currency )->
 
@@ -91,7 +97,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       alarm =
         name : @get("name") + "-alarm"
         type : constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-        uid  : alarmData.id or MC.guid()
+        uid  : alarmData.id
         resource :
           AlarmArn  : alarmData.appId
           AlarmName : @get("name") + "-alarm"
@@ -111,7 +117,15 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           InsufficientDataActions : act_insuffi
           OKAction                : act_ok
 
-      null
+          ActionEnabled : ""
+          AlarmConfigurationUpdatedTimestamp : ""
+          AlarmDescription : ""
+          StateReason : ""
+          StateReasonData : ""
+          StateUpdateTimestamp : ""
+          StateValue : ""
+
+      [ { component : policy }, { component : alarm } ]
 
   }, {
 

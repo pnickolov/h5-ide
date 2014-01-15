@@ -372,6 +372,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       null
 
     addScalingPolicy : ( policy )->
+      policy.__asg = this
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )
       null

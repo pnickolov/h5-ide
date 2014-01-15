@@ -1,5 +1,5 @@
 
-define [ 'event', 'MC', 'underscore' ], ( ide_event, MC ) ->
+define [ 'event', 'MC', 'Design', 'underscore' ], ( ide_event, MC, Design ) ->
 
 	########## Functional Method ##########
 

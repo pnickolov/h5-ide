@@ -60,9 +60,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
       amis || []
 
-    getKeyName : () ->
-      @connectionTargets( 'KeypairUsage' )[ 0 ].get 'name'
-
     remove : ()->
       # Remove attached volumes
       for v in @get("volumeList") or emptyArray

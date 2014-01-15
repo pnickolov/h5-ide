@@ -35,12 +35,20 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
       if not (option and option.isDeserialize)
         # Automatically add an outbound rule to 0.0.0.0/0
-        attr =
-          fromPort : "0"
-          toPort   : "65535"
-          protocol : "-1"
+        if @isElbSg()
+          direction = SgRuleSet.DIRECTION.IN
+          attr =
+            fromPort : "22"
+            toPort   : ""
+            protocol : "tcp"
+        else
+          direction = SgRuleSet.DIRECTION.OUT
+          attr =
+            fromPort : "0"
+            toPort   : "65535"
+            protocol : "-1"
 
-        (new SgRuleSet( this, @createIpTarget("0.0.0.0/0") )).addRawRule( this.id, SgRuleSet.DIRECTION.OUT, attr )
+        (new SgRuleSet( this, @createIpTarget("0.0.0.0/0") )).addRawRule( this.id, direction, attr )
       null
 
     isElbSg    : ()-> @get "isElbSg"

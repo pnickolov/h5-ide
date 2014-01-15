@@ -53,10 +53,10 @@ define [ "CanvasManager",
 
       if option.createByUser and not Design.instance().typeIsClassic()
         sg = new SgModel({
-          name : @get("name")+"-sg"
+          name        : @get("name")+"-sg"
+          isElbSg     : true
           description : "Automatically created SG for load-balancer"
         })
-        sg.setAsElbSg()
         @__elbSg = sg
         SgAssoModel = Design.modelClassForType( "SgAsso" )
         new SgAssoModel( this, sg )

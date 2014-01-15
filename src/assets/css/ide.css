@@ -4150,7 +4150,8 @@ a.sidebar-hider {
 	cursor     : pointer;
 }
 
-li:hover > .rule-remove-icon {
+li:hover > .rule-remove-icon,
+.acl-rule-details:hover .rule-remove-icon {
 	display: block;
 	color: #666;
 }

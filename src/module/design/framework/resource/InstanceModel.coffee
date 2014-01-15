@@ -63,10 +63,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         @draw( true )
 
+      # Always setTenancy to insure we don't have micro type for dedicated.
+      tenancy = @get("tenancy")
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
-      if vpc and not vpc.isDefaultTenancy()
-        @setTenancy( "dedicated" )
+      if vpc and not vpc.isDefaultTenancy() then tenancy = "dedicated"
 
+      @setTenancy( "dedicated" )
       null
 
     groupMembers : ()->
@@ -295,7 +297,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       @set "tenancy", tenancy
 
       if tenancy is "dedicated" and @get("instanceType") is "t1.micro"
-        @setInstanceType "m1.small"
+        @initInstanceType()
       null
 
     getInstanceTypeList : ()->

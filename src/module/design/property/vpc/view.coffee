@@ -16,7 +16,7 @@ define [ '../base/view',
             if ipt.value
                 result.push ipt.value
 
-        if result.length == 0 then null else result
+        result
 
     updateAmazonCB = () ->
         rowLength = $( "#property-domain-server" ).children().length

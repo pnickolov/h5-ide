@@ -560,7 +560,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       else
         azName = p.get("name")
 
-
+      kp = @connectionTargets( "KeypairUsage" )[0]
+      kp = if kp then kp.createRef( "KeyName" ) else ""
 
       name = @get("name")
       if @get("count") > 1 then name += "-0"
@@ -586,7 +587,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           }
           InstanceId            : @get("appId")
           ImageId               : @get("imageId")
-          KeyName               : ""
+          KeyName               : kp
           EbsOptimized          : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           VpcId                 : @getVpcRef()
           SubnetId              : @getSubnetRef()

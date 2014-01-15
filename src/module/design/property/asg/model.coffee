@@ -72,7 +72,10 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
           return true
 
     defaultScalingPolicyName : () ->
-      count = Design.instance().component( @get("uid") ).get("policies").length
+      component = Design.instance().component( @get("uid") )
+      if component.type is "ExpandedAsg"
+        component = component.get("originalAsg")
+      count = component.get("policies").length
       "#{@attributes.name}-policy-#{count}"
 
     getPolicy : ( uid )->
@@ -80,6 +83,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     setPolicy : ( policy_detail ) ->
       asg = Design.instance().component( @get("uid") )
+      if asg.type is "ExpandedAsg"
+        asg = asg.get('originalAsg')
 
       if policy_detail.sendNotification
         Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()

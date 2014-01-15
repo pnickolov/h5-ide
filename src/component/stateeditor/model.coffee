@@ -185,7 +185,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			that = this
 			compData = that.get('compData')
 			if compData and compData.state
-				return compData.state
+				if _.isArray(compData.state)
+					return compData.state
+
 			return null
 
 		getResName: () ->

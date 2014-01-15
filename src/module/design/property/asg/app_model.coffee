@@ -157,7 +157,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         uid = @get 'uid'
 
-        Design.instance().component( uid ).set( "MinSize", value )
+        Design.instance().component( uid ).set( "minSize", value )
 
         null
 
@@ -165,7 +165,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         uid = @get 'uid'
 
-        Design.instance().component( uid ).set( "MaxSize", value )
+        Design.instance().component( uid ).set( "maxSize", value )
 
         null
 
@@ -173,7 +173,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         uid = @get 'uid'
 
-        Design.instance().component( uid ).set( "DesiredCapacity", value )
+        Design.instance().component( uid ).set( "capacity", value )
 
         null
 

@@ -52,7 +52,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             eni.id              = eni_comp.appId
             eni.name            = if eni_comp.name then "#{eni_comp.name}-0" else "#{myEniComponent.get 'name'}-#{memberIndex or index}"
             eni.idx             = memberIndex or index
-            eni.sourceDestCheck = if eni.sourceDestCheck is true then 'enabled' else 'isabled'
+            eni.sourceDestCheck = if eni.sourceDestCheck then 'enabled' else 'disabled'
 
             formated_group.push eni
 

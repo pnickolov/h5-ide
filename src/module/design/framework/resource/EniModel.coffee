@@ -108,7 +108,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
     serverGroupCount : ()->
       instance = @attachedInstance()
-      if instance then instance.get("count") else 1
+      if instance
+        count = instance.get("count")
+      count || 1
 
     maxIpCount : ()->
       instance = @attachedInstance()

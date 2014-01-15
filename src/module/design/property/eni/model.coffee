@@ -64,63 +64,61 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 
 		getEniGroup : ( eni_uid ) ->
 
-			group          = []
-			myEniComponent = Design.instance().component( eni_uid )
-			appData        = MC.data.resource_list[ Design.instance().region() ]
+			eniComp       = Design.instance().component( eni_uid )
+			resource_list = MC.data.resource_list[ Design.instance().region() ]
+			appData       = resource_list[ eniComp.get("appId") ]
+			name          = eniComp.get("name")
 
-			group = myEniComponent.groupMembers()
-			group.unshift myEniComponent.toJSON()
+			group = [{
+				appId  : eniComp.get("appId")
+				name   : name + "-0"
+				desc   : eniComp.get("description")
+				status : if appData then appData.status else "Unknown"
+				sourceDestCheck : if eniComp.get("sourceDestCheck") then "enabled" else "disabled"
+			}]
 
+			count = eniComp.serverGroupCount()
 
-			formated_group = []
-			for index, eni_comp of group
-				eni = $.extend true, {}, appData[ eni_comp.appId ]
-
-				for i in eni.privateIpAddressesSet.item
-					i.primary = i.primary is true
-
-				eni.id              = eni_comp.appId
-				eni.name            = if eni_comp.name then "#{eni_comp.name}-0" else "#{myEniComponent.get 'name'}-#{index}"
-				eni.idx             = index
-				eni.sourceDestCheck = if eni.sourceDestCheck then "enabled" else "disabled"
-
-				formated_group.push eni
-
-			if formated_group.length > 1
-				formated_group = _.sortBy formated_group, 'idx'
-
-				attachedInstance = myEniComponent.connectionTargets( 'EniAttachment' )[ 0 ]
-
-				if attachedInstance
-					instance_comp = attachedInstance
-					instanceCount = attachedInstance.get( 'count' )
-
-					if instance_comp and instanceCount isnt formated_group.length
-						formated_group.increment = instanceCount - formated_group.length
-						if formated_group.increment > 0
-							formated_group.increment = "+" + formated_group.increment
-
-							name_template = myEniComponent.get( 'name' ).split( '-' )
-
-							for idx in [ formated_group.length..instanceCount - 1 ]
-								name_template[1] = idx
-								formated_group.push {
-									name  : name_template.join("-")
-									isNew : true
-									state : "Unknown"
-								}
-
-						else
-							for idx in [ instanceCount..formated_group.length - 1 ]
-								formated_group[ idx ].isOld = true
-
-				@set 'group', formated_group
+			if eniComp.groupMembers().length > count - 1
+				members = eniComp.groupMembers().slice(0, count - 1)
 			else
-				@set 'group', formated_group[0]
+				members = eniComp.groupMembers()
+
+			for member, index in members
+				# There might be many objects in members.
+				# But they might not be real. Because they might not have appId
+				group.push {
+					name   : name + "-" + (index+1)
+					appId  : member.appId
+					status : if appData[ member.appId ] then appData[ member.appId ].status else "Unknown"
+					isNew  : not member.appId
+					isOld  : member.appId and ( index + 1 >= count )
+				}
+
+			while group.length < count
+				group.push {
+					name   : name + "-" + group.length
+					isNew  : true
+					status : "Unknown"
+				}
+
+			existingLength = 0
+			for eni, idx in eniComp.groupMembers()
+				if not eni.appId
+					existingLength = idx
+					break
+			existingLength += 1
+
+			if group.length > 1
+				@set 'group', group
+				if existingLength > count
+					group.increment = "-" + ( existingLength - count )
+				else if existingLength < count
+					group.increment = "+" + ( count - existingLength )
+			else
+				@set 'group', group[0]
 
 			@set 'readOnly', false
-
-
 			null
 
 		addIp : () ->

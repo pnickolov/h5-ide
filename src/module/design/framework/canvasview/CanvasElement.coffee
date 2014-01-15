@@ -211,13 +211,19 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
   CanvasElement.prototype.select = ( subId )->
     type = this.type
 
-    if not subId and Design.instance().modeIsApp()
+    if not subId
       component = Design.instance().component( this.id )
-      if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-        if component.get("count") > 1
+
+      if Design.instance().modeIsApp()
+        if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and component.get("count") > 1
           type = "component_server_group"
-      else if this. type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-        if component.serverGroupCount() > 1
+        if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.serverGroupCount() > 1
+          type = "component_eni_group"
+
+      else if Design.instance().modeIsAppEdit()
+        if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          type = "component_server_group"
+        if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
           type = "component_eni_group"
 
     ide_event.trigger ide_event.OPEN_PROPERTY, type, subId or this.id

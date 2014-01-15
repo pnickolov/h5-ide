@@ -413,7 +413,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     if Design.instance().modeIsApp() then return false
 
     if @__backup.name isnt @attributes.name
-      return false
+      return true
 
     newData = @serialize()
 

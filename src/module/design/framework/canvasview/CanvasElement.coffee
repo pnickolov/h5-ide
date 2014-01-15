@@ -311,6 +311,12 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   CanvasElement.prototype.changeParent = ( parentId, execCB )->
 
+    if parentId is "canvas" then parentId = ""
+
+    if this.parentId is parentId
+      execCB.call( this )
+      return false
+
     # # #
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
@@ -321,12 +327,6 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     #
     # #
     # # #
-
-    if parentId is "canvas" then parentId = ""
-
-    if this.parentId is parentId
-      execCB.call( this )
-      return false
 
     parent = Design.instance().component( parentId )
     if not parent

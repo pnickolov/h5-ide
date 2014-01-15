@@ -32,11 +32,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
             elb.HealthCheck.path     = elb.HealthCheck.Target.split( '/' )[ 1 ]
 
             # Cross Zone
-            crossZone = myElbComponent.get 'CrossZoneLoadBalancing'
-            if crossZone is 'true'
-                elb.CrossZone = 'Enabled'
-            else
-                elb.CrossZone = 'Disabled'
+            elb.CrossZone = if myElbComponent.get('crossZone') then "Enabled" else "Disabled"
 
             # DNS
             elb.AAAADNSName = "ipv6.#{elb.DNSName}"

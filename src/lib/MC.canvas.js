@@ -4581,7 +4581,7 @@ MC.canvas.event.keyEvent = function (event)
 
 	if ($('#modal-wrap')[0] != null)
 	{
-		return false;
+		return true;
 	}
 
 	if (

@@ -85,8 +85,10 @@ define [ "CanvasManager",
         return
 
       @set "name", name
-      # Update Elb's Sg's Name
-      @__elbSg.set( "name", name+"-sg" )
+
+      if @__elbSg
+        # Update Elb's Sg's Name
+        @__elbSg.set( "name", name+"-sg" )
 
       if @draw then @draw()
       null

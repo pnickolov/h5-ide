@@ -6306,13 +6306,12 @@ MC.canvas.exportPNG = function ( $svg_canvas_element, data )
 		MC.canvas.exportPNG.fixSVG( children[i], removeArray );
 	}
 	// Remove unnecessary elements
-	if ( removeArray[i].remove ) {
-		for ( i = 0; i < removeArray.length; ++i ) {
-			removeArray[i].remove();
-		}
-	} else {
-		for ( i = 0; i < removeArray.length; ++i ) {
-			removeArray[i].parentNode.removeChild( removeArray[i] );
+	for ( i = 0; i < removeArray.length; ++i ) {
+		var ref = removeArray[i];
+		if ( ref.remove ) {
+			ref.remove();
+		} else {
+			ref.parentNode.removeChild( ref );
 		}
 	}
 

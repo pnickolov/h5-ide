@@ -579,6 +579,17 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       name = @get("name")
       if @get("count") > 1 then name += "-0"
 
+      securitygroups   = []
+      securitygroupsId = []
+      if Design.instance().typeIsClassic()
+        # In Vpc, Sg is written in Eni's JSON, not in Instance's JSON
+        for sg in @connectionTargets("SgAsso")
+          securitygroups.push( sg.createRef( "GroupName" ) )
+          securitygroupsId.push( sg.createRef( "GroupId" ) )
+      else
+
+
+
       component =
         type   : @type
         uid    : @id
@@ -611,8 +622,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           RamdiskId             : ""
           ShutdownBehavior      : "terminate"
           KernelId              : ""
-          SecurityGroup         : []
-          SecurityGroupId       : []
+          SecurityGroup         : securitygroups
+          SecurityGroupId       : securitygroupsId
           PrivateIpAddress      : ""
         #reserved
         state    : ""

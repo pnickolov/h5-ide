@@ -696,9 +696,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           ip         : ip.PrivateIpAddress
         })
         if ip.EipResource
+          ipObj.hasEip  = true
           ipObj.eipData =
             id           : ip.EipResource.uid
-            allocationId : ip.EipResource.AllocationId
+            allocationId : ip.EipResource.resource.AllocationId
         attr.ips.push( ipObj )
 
 

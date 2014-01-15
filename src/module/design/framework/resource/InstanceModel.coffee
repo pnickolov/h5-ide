@@ -627,7 +627,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         uid   : eipData.id
         type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
         index : 0
-        name  : ""
+        name  : "EIP"
         resource :
           Domain : "standard"
           InstanceId         : @createRef( "InstanceId", instanceId )

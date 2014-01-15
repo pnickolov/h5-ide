@@ -76,8 +76,14 @@ define [], ()->
 
       if Design.instance().modeIsApp()
         resource_list = MC.data.resource_list[ Design.instance().region() ]
-        if toggle
-          tootipStr = resource_list[ targetModel.get("appId") ].ipAddress || ""
+        res = resource_list[ targetModel.get("appId") ]
+        if toggle and res
+          if res.privateIpAddressesSet and res.privateIpAddressesSet.item and res.privateIpAddressesSet.item.length
+            res = res.privateIpAddressesSet.item[0]
+            if res.association and res.association
+              tootipStr = res.association.publicIp || ""
+          else
+            tootipStr = res.ipAddress || ""
         else
           tootipStr = ""
 

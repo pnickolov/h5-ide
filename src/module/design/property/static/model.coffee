@@ -37,6 +37,7 @@ define [ "module/design/property/base/model", "Design", "constant" ], ( Property
           if vpc then vpcId += " (#{vpc.cidrBlock})"
 
           @set "id", id
+          @set "appId", component.get("appId")
           @set "vpc", vpcId
 
         null

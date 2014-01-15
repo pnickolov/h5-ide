@@ -139,6 +139,8 @@ define [ 'constant', 'event', 'ta_conf', './validation/main', './validation/resu
 
     validAll = ->
 
+        MC.canvas_data = Design.instance().serialize()
+
         _init()
 
         _validComponents()

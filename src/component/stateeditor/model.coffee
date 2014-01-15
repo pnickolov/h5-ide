@@ -347,9 +347,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 				uidMatchAry = refMatchStr.match(/[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/)
 				resUID = uidMatchAry[0]
-				resName = allCompData[resUID].name
-				newRefStr = refMatchStr.replace(resUID, resName)
-				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+				if allCompData[resUID]
+					resName = allCompData[resUID].name
+					newRefStr = refMatchStr.replace(resUID, resName)
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
 				null
 
 			return newParaValue
@@ -369,8 +371,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 				resName = refMatchStr.replace('@{', '').split('.')[0]
 				resUID = that.getUIDByResName(resName)
-				newUIDStr = refMatchStr.replace(resName, resUID)
-				newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+				if resUID
+					newUIDStr = refMatchStr.replace(resName, resUID)
+					newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
 				null
 
 			return newParaValue
@@ -389,6 +392,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 		genStateLogData: (res_id, callback) ->
 
 			that = this
+
+			appId = MC.canvas_data.id
+			resId = res_id
 
 			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app'
 

@@ -150,13 +150,13 @@ body {
 	padding: 0;
 }
 
-#state-editor-model .state-close {
-	display: none;
-}
-
-#state-editor-model .state-save, .state-cancel {
+#state-editor-model .state-save, .state-cancel, .state-close {
 	margin-right: 14px;
 	margin-top: 14px;
+}
+
+#state-editor-model .state-close{
+	display: none;
 }
 
 #state-editor-model .modal-sidebar-toggle {

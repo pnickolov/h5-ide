@@ -78,16 +78,20 @@ define [ 'event',
 
                 that.refreshDescription()
 
+                currentState = that.model.get('currentState')
+
                 # refresh state log
                 $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-                that.onResSelectChange({
-                    target: $resSelectElem[0]
-                })
+                if currentState is 'stack'
+                    $resSelectElem.hide()
+                else
+                    that.onResSelectChange({
+                        target: $resSelectElem[0]
+                    })
 
                 if that.showLogPanel
                     that.showLogPanel()
-
-                currentState = that.model.get('currentState')
+                
                 if currentState is 'stack'
                     $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                     $logPanelToggle.hide()
@@ -1376,9 +1380,11 @@ define [ 'event',
             stateLogViewAry = []
             _.each stateLogDataAry, (logObj) ->
                 utcTimeStr = (new Date(logObj.time)).toUTCString()
+                stateStatus = logObj.result
                 stateLogViewAry.push({
                     state_id: "State #{logObj.state_id}",
                     log_time: utcTimeStr,
+                    state_status: stateStatus,
                     stdout: logObj.stdout,
                     stderr: logObj.stderr
                 })

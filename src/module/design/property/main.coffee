@@ -118,9 +118,7 @@ define [ 'event',
 
 				if force then view.forceShow()
 			catch error
-				### env:dev ###
-				throw error
-				### env:dev:end ###
+				console.error error
 
 			null
 

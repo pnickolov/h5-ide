@@ -288,7 +288,10 @@ define [ 'event', 'backbone' ], ( ide_event, Backbone )->
         procName = "init#{property.type}"
         if property[ procName ]
             property.uid = componentUid
-            property[ procName ].call property, componentUid
+            result = property[ procName ].call property, componentUid
+            if result is false
+                # The property cannot init. Default to use Stack property.
+                return
         else
             # The property cannot init. Default to use Stack property.
             return

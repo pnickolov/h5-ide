@@ -28,7 +28,7 @@ define [ '../base/main',
 
         ideEvents : ideEvents
 
-        handleTypes : "Stack"
+        handleTypes : [ "Stack", "default" ]
 
         onUnloadSubPanel : ( id )->
 

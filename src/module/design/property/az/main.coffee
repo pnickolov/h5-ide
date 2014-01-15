@@ -49,6 +49,12 @@ define [ '../base/main', './model', './view', 'constant', 'event' ], ( PropertyM
 
 
         initStack : ()->
+            # Quick hack.
+            # In AppEdit, AZ's property will be opened.
+            # Throw an error to do nothing.
+            if Design.instance().modeIsAppEdit()
+                throw "Cannot open az property panel in AppEdit mode."
+
             @model = model
             @view  = view
             null

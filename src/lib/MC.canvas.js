@@ -4783,7 +4783,7 @@ MC.canvas.event.keyEvent = function (event)
 				vpc_size = vpc_item.size();
 
 				match_place.is_matched =
-					coordinate.y <= vpc_coordinate[1] + vpc_size.size[1] - component_size[1] &&
+					coordinate.y <= vpc_coordinate[1] + vpc_size[1] - component_size[1] &&
 					coordinate.y >= vpc_coordinate[1];
 			}
 			else

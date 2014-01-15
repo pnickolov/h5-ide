@@ -518,11 +518,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         }
 
         if ipObj.hasEip
+          # Create Eip Component
           eip = ipObj.eipData
 
           resources.push {
             uid   : eip.id or MC.guid()
             type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+            name  : "EIP"
             index : index
             resource :
               Domain : if Design.instance().typeIsVpc() then "vpc" else "standard"
@@ -530,6 +532,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
               AllocationId       : eip.allocationId or ""
               NetworkInterfaceId : @createRef( "NetworkInterfaceId", memberData.id )
               PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
+              NetworkInterfaceOwnerId : ""
+              AllowReassociation      : ""
+              AssociationId           : ""
+              PublicIp                : ""
           }
       ips[0].Primary = true
 

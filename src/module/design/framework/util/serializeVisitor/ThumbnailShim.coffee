@@ -30,7 +30,6 @@ define [ "Design", "constant" ], ( Design, constant )->
       node  : nodes
       group : groups
     }
-    console.log( layout )
     null
 
   null

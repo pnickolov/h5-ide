@@ -276,14 +276,18 @@ define [ 'event',
         quickstartAmiRender : () ->
             console.log 'quickstartAmiRender'
             console.log this.model.attributes.quickstart_ami
-            return if !this.model.attributes.quickstart_ami
+            if !this.model.attributes.quickstart_ami
+                $( '.quickstart-ami-list' ).html ''
+                return
             $( '.quickstart-ami-list' ).html this.quickstart_ami_tmpl this.model.attributes
             null
 
         myAmiRender : () ->
             console.log 'myAmiRender'
             console.log this.model.attributes.my_ami
-            return if !this.model.attributes.my_ami
+            if !this.model.attributes.my_ami
+                $( '.my-ami-list' ).html ''
+                return
             $( '.my-ami-list' ).html this.my_ami_tmpl this.model.attributes
             null
 

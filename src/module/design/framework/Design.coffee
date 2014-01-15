@@ -552,7 +552,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     @eachComponent ()->
       appId = @get("appId")
-      delete resource_list[ resource_list ]
+      delete resource_list[ appId ]
     console.debug "data.resource_list has been cleared", resource_list
     null
 

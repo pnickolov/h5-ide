@@ -402,7 +402,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     if volume_id
       v = Design.instance().component( volume_id )
       return {
-        deleted    : not v.hasAppResource()
+        deleted    : if not v.hasAppResource() then "deleted" else ""
         name       : v.get("name")
         snapshotId : v.get("snapshotId")
         size       : v.get("volumeSize")
@@ -412,7 +412,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     vl = []
     for v in Design.instance().component( @id ).get("volumeList") or vl
       vl.push {
-        deleted    : not v.hasAppResource()
+        deleted    : if not v.hasAppResource() then "deleted" else ""
         name       : v.get("name")
         snapshotId : v.get("snapshotId")
         size       : v.get("volumeSize")
@@ -430,13 +430,23 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
         volume = resource_list[ v.ebs.volumeId ]
-
-        vl.push {
-          name       : v.deviceName
-          snapshotId : volume.snapshotId || ""
-          size       : volume.size
-          id         : volume.volumeId
-        }
+        if volume
+          #volume exist
+          vl.push {
+            name       : v.deviceName
+            snapshotId : volume.snapshotId || ""
+            size       : volume.size
+            id         : volume.volumeId
+          }
+        else
+          #volume not exist
+          vl.push {
+            name       : v.deviceName
+            snapshotId : v.SnapshotId || ""
+            size       : v.Size
+            id         : v.VolumeId
+            deleted    : "deleted"
+          }
 
     vl
 

@@ -209,7 +209,7 @@ define [ '../base/model',
             if data.status == "in-use"
                 data.isInUse = true
 
-            data.sourceDestCheck = if data.sourceDestCheck is "true" then "enabled" else "disabled"
+            data.sourceDestCheck = if data.sourceDestCheck then "enabled" else "disabled"
 
             for i in data.privateIpAddressesSet.item
                 i.primary = i.primary == true

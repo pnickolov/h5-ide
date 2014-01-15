@@ -442,7 +442,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         CanvasManager.toggle numberGroup, false
 
       # Update EIP
-      CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
+      CanvasManager.updateEip node.children(".eip-status"), @
 
       # Update Resource State in app view
       if not Design.instance().modeIsStack() and @.get("appId")

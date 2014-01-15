@@ -2492,7 +2492,7 @@ MC.canvas.instanceList = {
 
 		target.addClass('selected');
 
-		//$canvas( $('#instanceList-wrap').data('target-id') ).select( target.data('id') );
+		$canvas( $('#instanceList-wrap').data('target-id') ).select( target.data('id') );
 
 		//$canvas.trigger('CANVAS_INSTANCE_SELECTED', target.data('id'));
 

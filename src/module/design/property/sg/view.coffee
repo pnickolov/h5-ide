@@ -217,7 +217,7 @@ define [ '../base/view',
 
             rule = {
                 protocol  : protocol_type
-                direction : sg_direction
+                direction : sg_direction || "inbound"
                 fromPort  : ""
                 toPort    : ""
             }

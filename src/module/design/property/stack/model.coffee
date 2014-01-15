@@ -73,11 +73,12 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
     getSubscription : () ->
 
       SubscriptionModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription )
-      AsgNotifyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration )
+      TopicModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic )
 
       subs = _.map SubscriptionModel.allObjects(), ( sub )-> sub.toJSON()
       @set "subscription", subs
-      @set "has_asg", AsgNotifyModel.allObjects().length > 0
+      @set "has_asg", TopicModel.isTopicNeeded()
+      null
 
     getAppSubscription : () ->
 

@@ -6,14 +6,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
     serialize : ()->
 
-      ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
-      for sp in ScalingPolicyModel.allObjects()
-        if sp.get("sendNotification")
-          useTopic = true
-          break
-
-      if not useTopic
-        useTopic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration ).allObjects().length > 0
+      useTopic = TopicModel.isTopicNeeded()
 
       if not useTopic
         useTopic = SubscriptionModel.allObjects().length > 0
@@ -42,6 +35,21 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   }, {
     handleTypes : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+
+    isTopicNeeded : ()->
+      ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
+      for sp in ScalingPolicyModel.allObjects()
+        if sp.get("sendNotification")
+          useTopic = true
+          break
+
+      if not useTopic
+        for n in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration ).allObjects()
+          if n.isUsed()
+            useTopic = true
+            break
+
+      useTopic
 
     ensureExistence : ()->
       if @allObjects().length is 0

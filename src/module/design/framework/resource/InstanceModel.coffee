@@ -556,7 +556,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         azName   = p.parent().get("name")
         vpc      = p.parent().parent()
-        if vpc.isDefaultTenancy()
+        if not vpc.isDefaultTenancy()
           tenancy = "dedicated"
 
       else

@@ -51,7 +51,9 @@ define [ 'event'
 
             @renderAllItem()
 
-            $( '#status-bar-modal' ).html @el
+            $( '#status-bar-modal' )
+                .html( @el )
+                .show()
 
             @
 
@@ -77,22 +79,6 @@ define [ 'event'
 
         renderPending: () ->
             @$( '.scroll-content' ).html @template.pending
-
-
-
-        renderStateBar: ( option ) ->
-            if _.isObject option
-                $stateBar = $ 'statusbar-btn'
-                if option.success
-                    $stateBar
-                        .find( '.state-success b' )
-                        .val option.success
-
-                if option.failed
-                    $stateBar
-                        .find( '.state-failed b' )
-                        .val option.failed
-
 
         registerHelper: () ->
             Handlebars.registerHelper 'UTC', ( text ) ->
@@ -127,6 +113,7 @@ define [ 'event'
             @template
 
         closePopup : ->
+            $( '#status-bar-modal' ).hide()
             @trigger 'CLOSE_POPUP'
 
 

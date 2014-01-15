@@ -7,22 +7,22 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
     StateStatusModel = Backbone.Model.extend
 
         initialize: () ->
-            @collection = new (@customCollection())
+            @collection = new ( @__customCollection() )
 
             stateList = MC.data.websocket.collection.status.find().fetch()
-            @collection.set @dispose( stateList ).models
+            @collection.set @__dispose( stateList ).models
             @set 'items', @collection
 
-        customCollection: () ->
+        __customCollection: () ->
             parent = @
             Backbone.Collection.extend
                 comparator: ( model ) ->
                     - model.get( 'time' )
 
-        genId: ( resId, stateId ) ->
+        __genId: ( resId, stateId ) ->
             "#{resId}|#{stateId}"
 
-        dispose: ( stateList ) ->
+        __dispose: ( stateList ) ->
             collection = new Backbone.Collection()
 
             if not _.isArray stateList
@@ -39,26 +39,43 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         continue
                     ###
 
-                    state.res_id = 'i-db6284c5'
-                    component = @getUidByResId( state.res_id )
-                    if not component
-                        continue
                     data =
-                        id      : @genId state.res_id, status.state_id
-                        uid     : component.uid
+                        id      : @__genId state.res_id, status.state_id
                         appId   : state.app_id
                         resId   : state.res_id
                         stateId : status.state_id
-                        name    : component.name
                         time    : status.time
                         result  : status.result
+
+
+                    _.extend data, @__extendComponent data.resId
 
 
                     collection.add new Backbone.Model data
 
             collection
 
-        getUidByResId: (resId) ->
+        __extendComponent: ( resId ) ->
+            extend = {}
+            component = @__getUidByResId resId
+
+            # ServerGroup or ASG
+            if component.parent
+                # ServerGroup
+                if component.self
+                    extend.name = component.self.name
+                # ASG
+                else
+                    extend.parent = component.parent.name
+                    extend.name = resId
+
+            else if component.self
+                extend.name = component.self.name
+
+            extend
+
+
+        __getUidByResId: (resId) ->
 
             asgNameUIDMap = {}
             instanceIdASGNameMap = {}
@@ -110,7 +127,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             self  : selfComp
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
-            collection = @dispose statusData
+            collection = @__dispose statusData
             #diff = @diff collection, @get 'items'
             @collection.add collection.models
             #@set 'items', @collection
@@ -122,7 +139,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             stateIds = data.stateIds
 
             for stateId in stateIds
-                id = @genId resId, stateId
+                id = @__genId resId, stateId
                 @collection.get( id ) and @collection.get( id ).set 'updated', true
 
             null

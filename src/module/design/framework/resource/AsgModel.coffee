@@ -537,7 +537,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         resource :
           PlacementGroup : ""
           AvailabilityZones : azs
-          VPCZoneIdentifier : subnets
+          VPCZoneIdentifier : subnets.join(",")
           LoadBalancerNames : elbArray or []
           AutoScalingGroupARN : @get("appId")
           DefaultCooldown        : @get("cooldown")

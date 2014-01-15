@@ -3,7 +3,9 @@ define [ "Design", "constant" ], ( Design, constant )->
 
   # FixOldStack is used to insert DefaultKP and DefaultSG if they're missing
 
-  Design.registerDeserializeVisitor ( data, layout_data )->
+  Design.registerDeserializeVisitor ( data, layout_data, version )->
+
+    if version >= "2014-01-15" then return
 
     # Only fix json in stack mode
     if not Design.instance().modeIsStack() then return

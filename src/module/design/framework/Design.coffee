@@ -134,8 +134,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     console.debug "Deserializing data :", [json_data, layout_data]
 
     # Let visitor to fix JSON before it get deserialized.
+    version = @get("version")
     for devistor in Design.__deserializeVisitors
-      devistor( json_data, layout_data )
+      devistor( json_data, layout_data, version )
 
     that = @
 
@@ -461,24 +462,29 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       c.serialize( component_data, layout_data )
 
 
-    # At this point, we allow each ModelClass to have full privilege to modify
-    # the component data. This is necessary for ModelClass that wants to work on
-    # many components at once. ( One use-case is Subnet would like to assign IPs. )
-    for visitor in Design.__serializeVisitors
-      visitor( component_data, layout_data )
-
-
     # Seems like some other place have call Design.instance().set("layout")
     # So we assign component/layout at last
     data = $.extend( { property : {} }, @attributes )
     data.component = component_data
     data.layout    = layout_data
 
+
+
+    # At this point, we allow each ModelClass to have full privilege to modify
+    # the component data. This is necessary for ModelClass that wants to work on
+    # many components at once. ( One use-case is Subnet would like to assign IPs. )
+    version = data.version
+    for visitor in Design.__serializeVisitors
+      visitor( component_data, layout_data, version )
+
+
     # Quick Fix for some other property
     # 1. save $canvas's size to layout
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
     data.property.stoppable = @isStoppable()
+
+    data.version = "2014-01-15"
 
     data
 

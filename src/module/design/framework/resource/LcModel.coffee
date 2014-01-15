@@ -130,7 +130,10 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 31, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 31, 44, 29, 24 ).attr({
+              'id': @id + '_volume_status'
+              'class':'volume-image'
+            }),
           # Volume Label
           Canvon.text( 45, 56, "" ).attr({'class':'node-label volume-number'}),
 

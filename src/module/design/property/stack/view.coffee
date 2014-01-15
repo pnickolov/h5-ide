@@ -88,7 +88,7 @@ define [ '../base/view',
             for sub in snslist_data
                 $clone = $template.clone().removeClass("hide").appendTo $list
 
-                $clone.data "uid", sub.uid
+                $clone.attr "data-uid", sub.id
                 $clone.find(".protocol").html sub.protocol
                 $clone.find(".endpoint").html sub.endpoint
 
@@ -99,7 +99,7 @@ define [ '../base/view',
         delSNS : ( event ) ->
 
             $li = $(event.currentTarget).closest("li")
-            uid = $li.data("uid")
+            uid = $li.attr("data-uid")
             $li.remove()
 
             @updateSNSList $("#property-sub-list").children(":not(.hide)"), true
@@ -109,8 +109,8 @@ define [ '../base/view',
         editSNS : ( event ) ->
             $sub_li = $( event.currentTarget ).closest("li")
             data =
-                title : "Edit"
-                uid   : $sub_li.data("uid")
+                title    : "Edit"
+                uid      : $sub_li.attr("data-uid")
                 protocol : $sub_li.find(".protocol").text()
                 endpoint : $sub_li.find(".endpoint").text()
 
@@ -139,7 +139,7 @@ define [ '../base/view',
             #       endpoint : "123@abc.com"
             if !data
                 data =
-                    protocol : "Email"
+                    protocol : "email"
                     title    : "Add"
 
             modal sub_template data
@@ -148,8 +148,8 @@ define [ '../base/view',
 
             # Setup the protocol
             $modal.find(".dropdown").find(".item").each ()->
-                if $(this).text() is data.protocol
-                    $(this).addClass("selected")
+                if $(this).data("id") is data.protocol
+                    $(this).addClass("selected").parent().siblings().text( $(this).text() )
 
             # Setup the endpoint
             updateEndpoint = ( protocol ) ->
@@ -216,7 +216,7 @@ define [ '../base/view',
 
                 if endPoint.parsley 'validate'
                     data =
-                        uid : $modal.data("uid")
+                        uid      : $modal.attr("data-uid")
                         protocol : $modal.find(".selected").data("id")
                         endpoint : endPoint.val()
 

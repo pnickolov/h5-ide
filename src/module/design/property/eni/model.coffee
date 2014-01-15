@@ -90,7 +90,7 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 				group.push {
 					name   : name + "-" + (index+1)
 					appId  : member.appId
-					status : if appData[ member.appId ] then appData[ member.appId ].status else "Unknown"
+					status : if resource_list[ member.appId ] then resource_list[ member.appId ].status else "Unknown"
 					isNew  : not member.appId
 					isOld  : member.appId and ( index + 1 >= count )
 				}
@@ -104,8 +104,9 @@ define [ '../base/model', 'constant', "Design", "event", 'i18n!nls/lang.js'  ], 
 
 			existingLength = 0
 			for eni, idx in eniComp.groupMembers()
-				if not eni.appId
-					existingLength = idx
+				if eni.appId
+					existingLength = idx + 1
+				else
 					break
 			existingLength += 1
 

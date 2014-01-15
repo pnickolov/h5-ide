@@ -326,6 +326,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Remove attached volumes
       for v in @get("volumeList") or emptyArray
         v.remove()
+
+      # In AppEdit Mode, we need to delete all eni associated to this Instance.
+      if Design.instance().modeIsAppEdit()
+        for eni in @connectionTargets("EniAttachment")
+          eni.remove()
       null
 
     setEmbedEni : ( eni )->

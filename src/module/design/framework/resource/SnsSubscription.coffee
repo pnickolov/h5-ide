@@ -16,18 +16,20 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         useTopic = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration ).allObjects().length > 0
 
       if not useTopic
-        console.debug( "Nothing needs the sns-topic, but it has appId, so it's still serialized", this )
+        useTopic = SubscriptionModel.allObjects().length > 0
+
+      if not useTopic
         useTopic = !!@get("appId")
 
       if not useTopic
-        console.debug( "Nothing needs the sns-topic, so the sns-topic is not serialized" )
+        console.debug( "Sns Topic is not serialized, because nothing use it and it doesn't have appId." )
         return
 
-      n = @get("name")
+      n = "sns-topic"
 
       {
         component :
-          name : "SnsTopic"
+          name : n
           type : @type
           uid  : @id
           resource :

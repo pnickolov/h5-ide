@@ -67,7 +67,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
           sub_list.splice idx, 1
           break
 
-      Design.instance.component(uid).remove()
+      Design.instance().component(uid).remove()
       null
 
     getSubscription : () ->

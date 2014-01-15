@@ -60,9 +60,6 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
       amis || []
 
-    getKeyName : () ->
-      @connectionTargets( 'KeypairUsage' )[ 0 ].get 'name'
-
     remove : ()->
       # Remove attached volumes
       for v in @get("volumeList") or emptyArray
@@ -130,7 +127,10 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
           # Volume Image
-          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-active.png' , 31, 44, 29, 24 ).attr({'id': @id + '_volume_status'}),
+          Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 31, 44, 29, 24 ).attr({
+              'id': @id + '_volume_status'
+              'class':'volume-image'
+            }),
           # Volume Label
           Canvon.text( 45, 56, "" ).attr({'class':'node-label volume-number'}),
 
@@ -189,6 +189,11 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       # Volume Number
       volumeCount = if @get("volumeList") then @get("volumeList").length else 0
       CanvasManager.update node.children(".volume-number"), volumeCount
+      if volumeCount > 0
+        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
+      else
+        volumeImage = 'ide/icon/instance-volume-not-attached.png'
+      CanvasManager.update node.children(".volume-image"), volumeImage, "href"
 
       # In app mode, show number
       if not Design.instance().modeIsStack() and @parent()

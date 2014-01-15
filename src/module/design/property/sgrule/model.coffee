@@ -7,9 +7,6 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
     SGRuleModel = PropertyModel.extend {
 
         init : ( line_id ) ->
-            if @isApp
-                @getAppDispSGList line_id
-                return
 
             connection = Design.instance().component( line_id )
             if not connection then return
@@ -19,8 +16,9 @@ define [ '../base/model', "Design" ], ( PropertyModel, Design ) ->
             allRuleSets = SgRuleSetModel.getRelatedSgRuleSets( connection.port1Comp(), connection.port2Comp() )
 
             @set {
-                uid    : line_id
-                groups : SgRuleSetModel.getGroupedObjFromRuleSets( allRuleSets )
+                uid      : line_id
+                groups   : SgRuleSetModel.getGroupedObjFromRuleSets( allRuleSets )
+                readOnly : @isApp
             }
             null
     }

@@ -1,15 +1,18 @@
 <article>
-
-  <section class="property-control-group">{{ i18n "PROP_SGRULE_DESCRIPTION" }}</section>
+  <section class="property-info" style="margin-top:0;">
+    <div class="property-control-group">{{ i18n "PROP_SGRULE_DESCRIPTION" }}</div>
+  </section>
 
 	{{#each groups}}
   <div class="property-group-head truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</div>
   <ul class="property-group sg-rule-list property-list">{{{ruleListTpl}}}</ul>
   {{/each}}
 
+  {{#unless readOnly}}
   <div class="tac property-control-group">
     <button class="btn" id="sg-edit-rule-button" style="width:180px;"><i class="icon-edit icon-label"></i>{{ i18n "PROP_SGRULE_BTN_EDIT_RULE" }}</button>
   </div>
+  {{/unless}}
 
 </article>
 

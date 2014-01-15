@@ -13,11 +13,9 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
         region_name = result.param[3]
         keypairname = result.param[4]
 
-        curr_keypairname = me.get("lc")
-
         # The user has closed the dialog
         # Do nothing
-        if curr_keypairname.KeyName isnt keypairname
+        if me.get("keyName") isnt keypairname
             return
 
         ###
@@ -54,7 +52,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
 
       if @isApp
         @getAppLaunch( uid )
-        @set 'keyName', @lc.getKeyName()
+        @set 'keyName', @lc.connectionTargets( 'KeypairUsage' )[ 0 ].get("appId")
         return
 
       null
@@ -152,6 +150,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
     getAppLaunch : ( uid ) ->
       lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'LaunchConfigurationARN' ]
 
+      this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'
       this.set 'lc',   lc_data
       this.set 'uid',  uid

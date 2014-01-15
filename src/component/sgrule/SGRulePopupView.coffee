@@ -211,9 +211,12 @@ define [ 'text!./template.html', 'i18n!nls/lang.js', "Design" ], ( template, lan
               if ports.length >= 2 then rule.toPort = ports[1].trim()
 
             when "icmp"
-              rule.fromPort = $("#sg-proto-icmp-sel").find(".selected").attr("data-id")
+              portValue = $("#sg-proto-icmp-sel").find(".selected").attr("data-id")
+              rule.fromPort = portValue
               if portValue is "3" or portValue is "5" or portValue is "11" or portValue is "12"
                 rule.toPort = $("#sg-proto-input-sub-#{portValue}").find(".selected").attr("data-id")
+              else
+                rule.toPort = "-1"
 
             when "custom"
               rule.protocol = portValue

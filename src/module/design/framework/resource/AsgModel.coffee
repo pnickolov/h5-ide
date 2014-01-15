@@ -209,7 +209,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       else
         node = $( document.getElementById( @id ) )
 
-        CanvasManager.update( node.children(".asg-title"), label )
+        CanvasManager.update( node.children(".group-label"), label )
         CanvasManager.update( node.children(".node-label"), lcLabel )
         CanvasManager.update( node.children(".ami-icon"), @amiIconUrl(), "href" )
 
@@ -364,13 +364,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       removeReason = { reason : sgTarget }
 
       for i in old_expandedList
-        sgline = new SgLine( i, sgTarget, createOption )
-        if isRemove then sgline.silentRemove()
+        if i isnt sgTarget
+          sgline = new SgLine( i, sgTarget, createOption )
+          if isRemove then sgline.silentRemove()
 
       @attributes.expandedList = old_expandedList
       null
 
     addScalingPolicy : ( policy )->
+      policy.__asg = this
       @get("policies").push( policy )
       @listenTo( policy, "destroy", @__removeScalingPolicy )
       null
@@ -486,8 +488,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       else
         node = $( document.getElementById( @id ) )
-
+        CanvasManager.update( node.children(".group-label"), @get("name") )
         @__drawExpandedAsg()
+
 
       hasLC = !!@get("lc")
       CanvasManager.toggle( node.children(".prompt_text"), !hasLC )

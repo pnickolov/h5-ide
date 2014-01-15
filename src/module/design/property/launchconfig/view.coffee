@@ -104,7 +104,7 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : "<p class='modal-text-major'>Are you sure you want to delete #{$li.text()}</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
+                    body    : "<p class='modal-text-major'>Are you sure to delete #{$li.text()}?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->

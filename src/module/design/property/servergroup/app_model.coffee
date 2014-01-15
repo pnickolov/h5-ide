@@ -90,7 +90,7 @@ define [ '../base/model',
 				group.push {
 					name   : name + "-" + (index+1)
 					appId  : member.appId
-					status : if appData[ member.appId ] then appData[ member.appId ].instanceState.name else "Unknown"
+					status : if resource_list[ member.appId ] then resource_list[ member.appId ].instanceState.name else "Unknown"
 					isNew  : not member.appId
 					isOld  : member.appId and ( index + 1 >= count )
 				}
@@ -104,13 +104,15 @@ define [ '../base/model',
 
 			existingLength = 0
 			for eni, idx in comp.groupMembers()
-				if not eni.appId
-					existingLength = idx
+				if eni.appId
+					existingLength = idx + 1
+				else
 					break
 			existingLength += 1
 
 			if group.length > 1
 				@set 'group', group
+
 				if existingLength > count
 					group.increment = "-" + ( existingLength - count )
 				else if existingLength < count

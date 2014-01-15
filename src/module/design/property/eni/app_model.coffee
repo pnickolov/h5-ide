@@ -44,7 +44,11 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
           formated_group = []
 
           for index, eni_comp of group
-            eni = $.extend true, {}, appData[ eni_comp.appId ]
+
+            if appData[ eni_comp.appId ]
+              eni = $.extend true, {}, appData[ eni_comp.appId ]
+            else
+              eni = {}
 
             for i in eni.privateIpAddressesSet.item
               i.primary = i.primary is true

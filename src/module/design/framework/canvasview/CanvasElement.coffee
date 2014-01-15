@@ -220,7 +220,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.serverGroupCount() > 1
           type = "component_eni_group"
 
-      else if Design.instance().modeIsAppEdit()
+      else if Design.instance().modeIsAppEdit() and component.get("appId")
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
           type = "component_server_group"
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface

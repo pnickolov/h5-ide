@@ -167,11 +167,11 @@
 	</div>
 
 	<ul class="modal-sidebar-toggle">
+		<li class="state-desc-toggle active icon-info"></li>
 		<li class="state-log-toggle"></li>
-		<li class="state-desc-toggle active"></li>
 	</ul>
 
-	<div id="state-editor-body" class="scroll-content">
+	<div id="state-editor-body" class="scroll-content modal-body clearfix">
 		<div id="state-editor" spellcheck="false">
 			{{#unless supported_platform}}<div class="state-warning">The AMI's distro cannot be recognised. Some commands may not apply to this AMI.</div>{{/unless}}
 			<div class="state-list"></div>
@@ -190,12 +190,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="state-bottom modal-footer">
+	</div>
+	<div class="state-bottom modal-footer">
 			<div class="state-save btn btn-blue">Save</div>
 			<div class="state-cancel btn btn-silver">Cancel</div>
 			<div class="state-close btn btn-silver">Close</div>
 		</div>
-	</div>
 </div>
 
 <!-- state-template-log-item -->

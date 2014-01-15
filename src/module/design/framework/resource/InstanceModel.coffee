@@ -204,6 +204,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         eni.setPrimaryEip( toggle )
       else
         @set("hasEip", toggle)
+        if toggle
+          if not @attributes.eipData
+            @attributes.eipData = {}
+          if not @attributes.eipData.id
+            @attributes.eipData.id = MC.guid()
 
       @draw()
 
@@ -492,7 +497,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       CanvasManager.update node.children(".volume-image"), volumeImage, "href"
 
       # Update EIP
-      CanvasManager.updateEip node.children(".eip-status"), @hasPrimaryEip()
+      CanvasManager.updateEip node.children(".eip-status"), @
 
       null
 
@@ -549,8 +554,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       totalCount = @get("count") - 1
       while @groupMembers().length < totalCount
         @groupMembers().push {
-          id    : MC.guid()
-          appId : ""
+          id      : MC.guid()
+          appId   : ""
+          eipData : { id : MC.guid() }
         }
       null
 
@@ -614,6 +620,26 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       component
 
+    createEipJson : ( eipData, instanceId )->
+      instanceId = instanceId or this.id
+
+      {
+        uid   : eipData.id
+        type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
+        index : 0
+        name  : ""
+        resource :
+          Domain : "standard"
+          InstanceId         : @createRef( "InstanceId", instanceId )
+          AllocationId       : eipData.allocationId or ""
+          NetworkInterfaceId : ""
+          PrivateIpAddress   : ""
+          AllowReassociation      : ""
+          AssociationId           : ""
+          NetworkInterfaceOwnerId : ""
+          PublicIp                : ""
+      }
+
     serialize : ()->
 
       allResourceArray = []
@@ -637,6 +663,12 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       i = instances.length
       @ensureEnoughMember()
 
+      # In non-VPC type, we should add Eip For instance
+      if @get("hasEip") and not Design.instance().typeIsVpc()
+        allResourceArray.push {
+          component : @createEipJson( @get("eipData") )
+        }
+
       while i < @get("count")
         member = $.extend true, {}, instances[0]
         member.name  = @get("name") + "-" + i
@@ -647,20 +679,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
         # In non-VPC type, we should add Eip For instance
         if @get("hasEip") and not Design.instance().typeIsVpc()
-          eipData = memberObj.eipData || {}
-          allResourceArray.push {
-            component : {
-              uid   : eipData.id or MC.guid()
-              type  : constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP
-              index : i
-              resource :
-                Domain : "standard"
-                InstanceId         : @createRef( "InstanceId", memberData.id )
-                AllocationId       : eipData.allocationId or ""
-                NetworkInterfaceId : ""
-                PrivateIpAddress   : ""
-            }
-          }
+          eip = @createEipJson( memberObj.eipData, memberObj.id )
+          eip.index = i
+          allResourceArray.push { component : eip }
 
         ++i
         instances.push( member )
@@ -709,10 +730,16 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
             console.debug "This instance servergroup member has already deserialized", data
             return
 
+        if data.resource.EipResource
+          eipData = {
+            id : data.resource.EipResource.uid
+            allocationId : data.resource.EipResource.resource.AllocationId
+          }
+
         members[data.index-1] = {
           id      : data.uid
           appId   : data.resource.InstanceId
-          eipData : data.resource.EipResource
+          eipData : eipData || { id : MC.guid() }
         }
         return
 
@@ -739,7 +766,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         attr.hasEip  = true
         attr.eipData = {
           id : data.resource.EipResource.uid
-          allocationId : data.resource.EipResource.AllocationId
+          allocationId : data.resource.EipResource.resource.AllocationId
         }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType

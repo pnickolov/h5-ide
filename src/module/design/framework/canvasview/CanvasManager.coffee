@@ -62,8 +62,10 @@ define [], ()->
 
       return this
 
-    updateEip : ( node, toggle )->
+    updateEip : ( node, targetModel )->
       if node.length then node = node[0]
+
+      toggle = targetModel.hasPrimaryEip()
 
       if toggle
         tootipStr = 'Detach Elastic IP from primary IP'
@@ -71,6 +73,13 @@ define [], ()->
       else
         tootipStr = 'Associate Elastic IP to primary IP'
         imgUrl    = 'ide/icon/eip-off.png'
+
+      if Design.instance().modeIsApp()
+        resource_list = MC.data.resource_list[ Design.instance().region() ]
+        if toggle
+          tootipStr = resource_list[ targetModel.get("appId") ].ipAddress || ""
+        else
+          tootipStr = ""
 
       node.setAttribute "data-tooltip", tootipStr
 

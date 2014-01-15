@@ -7,6 +7,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
     isUsed : ()->
       @get("instanceLaunch") or @get("instanceLaunchError") or @get("instanceTerminate") or @get("instanceTerminateError") or @get("test")
 
+    initialize : ()->
+      Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+      null
+
     serialize : ()->
       if not @isUsed() or not @get("asg")
         return

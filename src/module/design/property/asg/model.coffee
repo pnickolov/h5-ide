@@ -81,6 +81,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
     setPolicy : ( policy_detail ) ->
       asg = Design.instance().component( @get("uid") )
 
+      if policy_detail.sendNotification
+        Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic ).ensureExistence()
+
       if not policy_detail.uid
         PolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
         policy = new PolicyModel( policy_detail )

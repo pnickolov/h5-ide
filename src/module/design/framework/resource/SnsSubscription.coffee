@@ -62,6 +62,10 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
   SubscriptionModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_SNS_Subscription
 
+    initialize : ()->
+      TopicModel.ensureExistence()
+      null
+
     serialize : ()->
       topic = TopicModel.ensureExistence()
 

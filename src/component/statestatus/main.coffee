@@ -2,22 +2,24 @@
 #  pop-up for component/statestatus module
 ####################################
 
-define [ 'jquery', 'event' ], ( $, ide_event ) ->
+define [ 'jquery', 'event', './component/statestatus/view', './component/statestatus/model' ], ( $, ide_event, View, Model ) ->
 
     # Private
     loadModule = ( status ) ->
 
-        require [ './component/statestatus/view', './component/statestatus/model' ], ( View, Model ) ->
+        model = new Model()
+        view  = new View model: model
 
-            model = new Model()
-            view  = new View model: model
+        view.on 'CLOSE_POPUP', () ->
+            @unLoadModule view, model
+        , @
 
-            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, model.listenStateStatusUpdate, model
-            ide_event.onLongListen 'STATE_EDITOR_DATA_UPDATE', model.listenStateEditorUpdate, model
+        ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, model.listenStateStatusUpdate, model
+        ide_event.onLongListen 'STATE_EDITOR_DATA_UPDATE', model.listenStateEditorUpdate, model
 
-            view.render()
-            # test
-            window.ide_event = ide_event
+        view.render()
+        # test
+        window.ide_event = ide_event
 
     unLoadModule = ( view, model ) ->
 

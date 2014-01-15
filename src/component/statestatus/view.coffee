@@ -12,8 +12,6 @@ define [ 'event'
 
     StateStatusView = Backbone.View.extend
 
-        el: '#status-bar-modal'
-
         template: {}
 
         events:
@@ -48,13 +46,12 @@ define [ 'event'
 
             @$statusModal = @$el
 
-            @$el.html @template.modal {}
-            @$( '.modal-state-statusbar' ).html @template.content {}
-
+            @$el.html @template.modal
+            @$( '.modal-state-statusbar' ).html @template.content
 
             @renderAllItem()
 
-            @$el.show()
+            $( '#status-bar-modal' ).html @el
 
             @
 
@@ -120,8 +117,8 @@ define [ 'event'
             pending = htmlMap[ 'statestatus-template-status-pending' ]
             container = htmlMap[ 'statestatus-template-status-item-container' ]
 
-            @template.modal     = Handlebars.compile stateStatusModalHTML
-            @template.content   = Handlebars.compile stateStatusContentHTML
+            @template.modal     = stateStatusModalHTML
+            @template.content   = stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
 
             @template.pending      = pending
@@ -130,10 +127,7 @@ define [ 'event'
             @template
 
         closePopup : ->
-            if @$statusModal.html()
-                @$statusModal.empty()
-                @trigger 'CLOSE_POPUP'
-                @$statusModal.hide()
+            @trigger 'CLOSE_POPUP'
 
 
     StateStatusView

@@ -3,8 +3,6 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
   TopicModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
-    defaults :
-      name : "sns-topic"
 
     serialize : ()->
 
@@ -29,7 +27,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       {
         component :
-          name : n
+          name : "SnsTopic"
           type : @type
           uid  : @id
           resource :
@@ -67,7 +65,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       {
         component :
-          name : ""
+          name : "SnsSubscription"
           type : @type
           uid  : @id
           resource :

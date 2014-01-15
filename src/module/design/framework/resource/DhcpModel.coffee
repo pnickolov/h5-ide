@@ -72,7 +72,7 @@ define [ "constant", "../ResourceModel", "Design"  ], ( constant, ResourceModel,
       attr    = @attributes
 
       component =
-        name : attr.name
+        name : "DhcpOption"
         type : @type
         uid  : @id
         resource :

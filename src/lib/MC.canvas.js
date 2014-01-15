@@ -4579,7 +4579,7 @@ MC.canvas.event.keyEvent = function (event)
 {
 	var canvas_status = MC.canvas.getState();
 
-	if ($('#modal-wrap')[0] !== null)
+	if ($('#modal-wrap')[0] != null)
 	{
 		return false;
 	}

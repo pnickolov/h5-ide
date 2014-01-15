@@ -382,12 +382,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       list.name = component.parent().get("name")
 
     for member, idx in component.groupMembers()
+      instance_data = MC.data.resource_list[ Design.instance().get('region') ][ member.appId ]
       list.push {
         id      : member.id
         name    : name
         appId   : member.appId
-        state   : member.state || ""
-        deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
+        state   : if instance_data then instance_data.instanceState.name  else "unknown"
+        deleted : if not Design.instance().modeIsStack() and not resource_list[ component.get("appId") ] then " deleted" else ""
       }
 
     list

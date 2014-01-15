@@ -688,8 +688,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
 
       for ip in data.resource.PrivateIpAddressSet || []
+        autoAssign = if Design.instance().modeIsStack() then ip.autoAssign else false
         ipObj = new IpObject({
-          autoAssign : ip.AutoAssign
+          autoAssign : autoAssign
           ip         : ip.PrivateIpAddress
         })
         if ip.EipResource

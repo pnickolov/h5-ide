@@ -550,8 +550,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     resource_list = MC.data.resource_list[ @region() ]
     if not resource_list then return
 
-    @eachComponent ()->
-      appId = @get("appId")
+    @eachComponent ( comp )->
+      appId = comp.get("appId")
       delete resource_list[ appId ]
     console.debug "data.resource_list has been cleared", resource_list
     null

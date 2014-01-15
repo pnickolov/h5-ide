@@ -283,7 +283,10 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       newName
 
     hasAppResource : ()->
-      !!@get("appId") and MC.data.resource_list[ Design.instance().region() ][ @get("appId") ]
+      if not Design.instance().modeIsStack() and @.get("appId")
+        !!@get("appId") and MC.data.resource_list[ Design.instance().region() ][ @get("appId") ]
+      else
+        true
 
     isDesignAwake : ()-> Design.instance() is @__design
 

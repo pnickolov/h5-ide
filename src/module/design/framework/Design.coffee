@@ -409,6 +409,9 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     null
 
   DesignImpl.prototype.isModified = ()->
+
+    if Design.instance().modeIsApp() then return false
+
     if @__backup.name isnt @attributes.name
       return false
 

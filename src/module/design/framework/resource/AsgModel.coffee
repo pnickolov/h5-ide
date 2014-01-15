@@ -20,7 +20,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       {
         component :
-          name     : ""
+          name     : "SnsNotification"
           type     : @type
           uid      : @id
           resource :

@@ -763,6 +763,9 @@ define [ 'MC', 'event',
             # 8. Hide status bar validation
             ide_event.trigger ide_event.HIDE_STATUS_BAR
 
+            # 9. set Design mode
+            Design.instance().setMode Design.MODE.App
+
             null
 
         saveSuccess2App : ( tab_id, region ) ->

@@ -364,8 +364,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       removeReason = { reason : sgTarget }
 
       for i in old_expandedList
-        sgline = new SgLine( i, sgTarget, createOption )
-        if isRemove then sgline.silentRemove()
+        if i isnt sgTarget
+          sgline = new SgLine( i, sgTarget, createOption )
+          if isRemove then sgline.silentRemove()
 
       @attributes.expandedList = old_expandedList
       null

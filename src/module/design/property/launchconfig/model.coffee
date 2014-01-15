@@ -152,6 +152,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
     getAppLaunch : ( uid ) ->
       lc_data   = MC.data.resource_list[Design.instance().region()][ @lc.get 'LaunchConfigurationARN' ]
 
+      this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'
       this.set 'lc',   lc_data
       this.set 'uid',  uid

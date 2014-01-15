@@ -10,7 +10,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
     this.hasEip     = attr.hasEip or false
     this.autoAssign = if attr.autoAssign isnt undefined then attr.autoAssign else true
     this.ip         = attr.ip or "x.x.x.x"
-    this.eipData    = attr.eipData or {}
+    this.eipData    = attr.eipData or { id : MC.guid() }
     null
 
 

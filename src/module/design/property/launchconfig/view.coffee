@@ -38,12 +38,10 @@ define [ '../base/view', 'text!./template/stack.html', 'event' ], ( PropertyView
             target = $ event.currentTarget
             name = target.val()
 
-            id = @model.get 'uid'
-            MC.validate.preventDupname target, id, name, 'LaunchConfiguration'
-
-            if target.parsley 'validate'
+            if @checkDupName( target, "LaunchConfiguration" )
                 @model.setName name
                 @setTitle name
+            null
 
         instanceTypeSelect : ( event, value )->
 

@@ -68,7 +68,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       vpc = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_VPC ).theVPC()
       if vpc and not vpc.isDefaultTenancy() then tenancy = "dedicated"
 
-      @setTenancy( "dedicated" )
+      @setTenancy( tenancy )
       null
 
     groupMembers : ()->

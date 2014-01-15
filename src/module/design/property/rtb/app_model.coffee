@@ -6,30 +6,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
     RTBAppModel = PropertyModel.extend {
 
-        targetMap :
-          gatewayId: [ 'InternetGatewayId', 'VpnGatewayId' ]
-          instanceId: [ 'InstanceId' ]
-
         processTarget : ( rtb )->
           console.log rtb
           rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) =>
-            if item.gatewayId is 'local'
-              item.target = item.gatewayId
-            else
-              for mapKey, map of @targetMap
-                if item[ mapKey ]
-                  item.target = @findComonentNameByAWSId( item[ mapKey ], map )
-                  break
+            item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
+
+            if item.target isnt "local"
+              Design.instance().eachComponent ( component )->
+                if component.get("appId") is item.target
+                  item.target = component.get("name")
+                  return
+                null
+
             item
           null
-
-        findComonentNameByAWSId: ( awsId, awsIdKey )->
-          Design.instance().eachComponent ( component )->
-            for key in awsIdKey
-              if component.get key is awsId
-                return component.get 'name'
-          , @
-
 
         init : ( rtb_uid )->
 

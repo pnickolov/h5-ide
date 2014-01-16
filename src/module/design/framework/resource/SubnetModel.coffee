@@ -65,7 +65,7 @@ define [ "constant",
     isRemovable : ()->
       # If Elb connects to an subnet, and the subnet is not the only subnet in its parent. Then the subnet cannot be removed.
       if @connections("ElbSubnetAsso").length > 0
-        for child in @parent.children()
+        for child in @parent().children()
           if child isnt @ and child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
             return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
 

@@ -210,9 +210,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   CanvasElement.prototype.select = ( subId )->
     type = this.type
+    component = Design.instance().component( this.id )
 
     if not subId
-      component = Design.instance().component( this.id )
 
       if Design.instance().modeIsApp()
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and component.get("count") > 1
@@ -225,6 +225,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
           type = "component_server_group"
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
           type = "component_eni_group"
+
+    else
+      if this.type  is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and component.get("appId")
+        type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+
 
     ide_event.trigger ide_event.OPEN_PROPERTY, type, subId or this.id
     if this.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume

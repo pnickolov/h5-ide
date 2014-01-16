@@ -198,6 +198,9 @@ define [ 'aws_model', 'ami_model'
                             # reload app
                             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'RELOAD_APP', app_name, region, app_id
 
+                            # update navgation
+                            ide_event.trigger ide_event.UPDATE_APP_LIST, 'RUN_STACK', [ app_id ]
+
                             #ide_event.trigger ide_event.PROCESS_RUN_SUCCESS, app_id, region
                             #ide_event.trigger ide_event.DELETE_TAB_DATA, tab_name
                             #ide_event.trigger ide_event.UPDATE_APP_LIST, null

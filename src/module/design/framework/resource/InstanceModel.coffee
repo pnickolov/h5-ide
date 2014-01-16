@@ -704,6 +704,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         instances.push( member )
 
 
+      layout.instanceList = _.map instances, ( ami )-> ami.uid
+
 
       # Generate Volume
       serverGroupOption = { number : instances.length, instanceId : "" }

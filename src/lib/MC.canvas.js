@@ -5933,8 +5933,9 @@ MC.canvas.analysis = function ( data )
 			}
 		});
 
-		// layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
-		// layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+		layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
+		layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
+		
 		$canvas( layout.id ).size(
 			 VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT,
 			 VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM

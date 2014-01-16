@@ -136,6 +136,7 @@ define [ '../base/model',
         init : ( instance_id )->
 
             @set 'id', instance_id
+            @set 'uid', instance_id
 
             myInstanceComponent = Design.instance().component( instance_id )
 

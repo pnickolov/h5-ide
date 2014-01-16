@@ -24,27 +24,13 @@
         <div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
         <ul class="dropdown" tabindex="-1">
           <li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
-          <li class="item" data-id="source/destination">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
+          <li class="item" data-id="relation">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
           <li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
         </ul>
       </div>
     </div>
 
-    <ul class="sg-rule-list property-list" id="sg-rule-list">
-      {{#each rules}}
-      <li data-inbound="true" data-protocol="{{ipProtocol}}" data-direction="{{direction}}" data-iprange="{{ipRanges}}">
-      <div class="rule-list-row">
-          <div class="icon-{{direction}} tooltip" data-tooltip="{{direction}}"></div>
-          <span class="sg-color" style="background-color:{{sgColor}}"></span>
-          <div class='rule-source tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{ipRanges}}</div>
-      </div>
-      <div class="rule-list-row">
-          <span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}'>{{ipProtocol}}</span>
-          <div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{dispPort}}</div>
-      </div>
-      </li>
-      {{/each}}
-    </ul>
+    <ul class="sg-rule-list property-list" id="sg-rule-list"></ul>
   </div>
 
   <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_MEMBER" }}
@@ -52,9 +38,7 @@
   </div>
   <div class="option-group">
     <ul class="sg-member-list property-list">
-      {{#each members}}
-      <li class="sg-member-name">{{name}}</li>
-      {{/each}}
+      {{#each members}} <li class="sg-member-name">{{this}}</li> {{/each}}
     </ul>
   </div>
 </article>

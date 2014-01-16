@@ -13,14 +13,12 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 @appInit uid
                 return
 
-
-
             rules = []
             for rule in component.connections("SgRuleSet")
                 rules = rules.concat( rule.toPlainObjects( uid ) )
 
-            members = _.map component.connections("SgAsso"), ( asso )->
-                asso.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup ).get("name")
+            members = _.map component.connectionTargets("SgAsso"), ( sgTarget )->
+                sgTarget.get("name")
 
             @set {
                 uid          : uid
@@ -116,14 +114,18 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
             currentSGID = @component.get 'appId'
             currentAppSG = MC.data.resource_list[ currentRegion ][ currentSGID ]
 
-            members = MC.aws.sg.getAllRefComp sg_uid
+            rules = []
+            for rule in @component.connections("SgRuleSet")
+                rules = rules.concat( rule.toPlainObjects( sg_uid ) )
 
-            rules = MC.aws.sg.getAllRule currentAppSG, true
+            members = _.map @component.connectionTargets("SgAsso"), ( sgTarget )->
+                sgTarget.get('name')
 
             #get sg name
             sg_app_detail =
                 uid         : sg_uid
                 name        : @component.get 'name'
+                color       : @component.color
                 groupName   : currentAppSG.groupName
                 description : currentAppSG.groupDescription
                 groupId     : currentAppSG.groupId
@@ -133,6 +135,8 @@ define [ '../base/model', "Design", 'constant', 'event'  ], ( PropertyModel, Des
                 rules       : rules
 
             @set sg_app_detail
+
+            @sortSGRule()
             null
 
     }

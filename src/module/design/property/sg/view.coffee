@@ -29,8 +29,7 @@ define [ '../base/view',
             tpl = if @model.isReadOnly then app_template else template
 
             @$el.html tpl @model.toJSON()
-            if not @model.isReadOnly
-                @refreshSgruleList()
+            @refreshSgruleList()
 
             $('#property-second-title').html('<span class="sg-color sg-color-header" style="background-color:' + @model.get("color") + '" ></span>' + @model.get("name") )
 
@@ -108,41 +107,9 @@ define [ '../base/view',
             null
 
         sortSgRule : ( event ) ->
-            if @model.isReadOnly
-                @sortSgRuleInApp event
-            else
-                @model.sortSGRule( $(event.target).find('.selected').attr('data-id') )
-                @refreshSgruleList()
+            @model.sortSGRule( $(event.target).find('.selected').attr('data-id') )
+            @refreshSgruleList()
             null
-
-        sortSgRuleInApp : ( event ) ->
-            $sgRuleList = $('#sg-rule-list')
-
-            sortType = $(event.target).find('.selected').attr('data-id')
-
-            $sortedItems = $ '#sg-rule-list li'
-
-            if sortType is 'direction'
-                $sortedItems = $sortedItems.sort @_sortDirection
-            else if sortType is 'source/destination'
-                $sortedItems = $sortedItems.sort @_sortSource
-            else if sortType is 'protocol'
-                $sortedItems = $sortedItems.sort @_sortProtocol
-
-            $sgRuleList.html $sortedItems
-
-        _sortDirection : ( a, b) ->
-            return $(a).attr('data-direction') >
-                $(b).attr('data-direction')
-
-        _sortProtocol : ( a, b) ->
-            return $(a).attr('data-protocol') >
-                $(b).attr('data-protocol')
-
-        _sortSource : ( a, b) ->
-            return $(a).attr('data-iprange') >
-                $(b).attr('data-iprange')
-
 
         removeRulefromList: (event) ->
             li_dom = $(event.target).closest('li')

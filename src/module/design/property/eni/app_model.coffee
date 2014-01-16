@@ -73,7 +73,9 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             eni.readOnly    = true
             eni.isGroupMode = false
             eni.id          = uid
+            eni.uid         = uid
             @set eni
+
 
           null
 

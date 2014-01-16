@@ -554,8 +554,13 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       appId = comp.get("appId")
       if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list[ appId ]
         #appId is asg, need delete instance in asg
-        for val,key in resource_list[ appId ].Instances.member
-          delete resource_list[ val.InstanceId ]
+        member = resource_list[ appId ].Instances
+        if member.member then member = member.member
+        for val,key in member
+          if _.isString( val )
+            delete resource_list[ val ]
+          else
+            delete resource_list[ val.InstanceId ]
       delete resource_list[ appId ]
 
     console.debug "data.resource_list has been cleared", resource_list

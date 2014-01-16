@@ -313,7 +313,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                 else    # force terminating the app
                     if !result.is_error      # success
                         me.setFlag id, 'TERMINATED_APP', region
-                        ide_event.trigger ide_event.TERMINATED_APP, name, id
+                        #ide_event.trigger ide_event.TERMINATED_APP, name, id
+                        ide_event.trigger ide_event.CLOSE_DESIGN_TAB, id
 
                         # remove the app name from app_list
                         if name in MC.data.app_list[region]

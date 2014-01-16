@@ -54,51 +54,51 @@ define [ 'event',
                 supported_platform: that.supportedPlatform
             }), false
 
-            setTimeout(() ->
+            # setTimeout(() ->
 
-                that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
-                that.$editorModal = that.$el
-                that.$stateList = that.$editorModal.find('.state-list')
-                that.$stateLogList = that.$editorModal.find('.state-log-list')
-                that.$cmdDsec = $('#state-description')
+            that.setElement $( '#state-editor-model' ).closest '#modal-wrap'
+            that.$editorModal = that.$el
+            that.$stateList = that.$editorModal.find('.state-list')
+            that.$stateLogList = that.$editorModal.find('.state-log-list')
+            that.$cmdDsec = $('#state-description')
 
-                # hide autocomplete when click document
-                $(document).on('mousedown', that.onDocumentMouseDown)
-                $('#state-editor').on('scroll', () ->
-                    $('.atwho-view').hide()
-                )
+            # hide autocomplete when click document
+            $(document).on('mousedown', that.onDocumentMouseDown)
+            $('#state-editor').on('scroll', () ->
+                $('.atwho-view').hide()
+            )
 
-                stateObj = that.loadStateData(that.originCompStateData)
-                that.refreshStateList(stateObj)
-                that.refreshStateViewList()
-                that.bindStateListSortEvent()
+            stateObj = that.loadStateData(that.originCompStateData)
+            that.refreshStateList(stateObj)
+            that.refreshStateViewList()
+            that.bindStateListSortEvent()
 
-                if that.readOnlyMode
-                    that.setEditorReadOnlyMode()
+            if that.readOnlyMode
+                that.setEditorReadOnlyMode()
 
-                that.refreshDescription()
+            that.refreshDescription()
 
-                currentState = that.model.get('currentState')
+            currentState = that.model.get('currentState')
 
-                # refresh state log
-                $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-                if currentState is 'stack'
-                    $resSelectElem.hide()
-                else
-                    that.onResSelectChange({
-                        target: $resSelectElem[0]
-                    })
+            # refresh state log
+            $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+            if currentState is 'stack'
+                $resSelectElem.hide()
+            else
+                that.onResSelectChange({
+                    target: $resSelectElem[0]
+                })
 
-                if that.showLogPanel
-                    that.showLogPanel()
-                
-                if currentState is 'stack'
-                    $logPanelToggle = that.$editorModal.find('.state-log-toggle')
-                    $logPanelToggle.hide()
+            if that.showLogPanel
+                that.showLogPanel()
+            
+            if currentState is 'stack'
+                $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+                $logPanelToggle.hide()
 
-                that.initResSelect()
+            that.initResSelect()
 
-            , 1)
+            # , 1)
 
         initData: () ->
 

@@ -1988,7 +1988,7 @@ MC.canvas.volume = {
 			bubble_box = $('#volume-bubble-box'),
 			target_id = target.data('target-id'),
 			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
-			volume_list = target.hasClass('instanceList-item-volume') ? $canvas( $('#instanceList-wrap').data('target-id') ).listVolume( target.parent().data('id') ) : $canvas(target_id).volume(),
+			volume_list = target.is('.instanceList-item-volume, .asgList-item-volume') ? $canvas( $('#instanceList-wrap').data('target-id') ).listVolume( target.parent().data('id') ) : $canvas(target_id).volume(),
 			volume_length = volume_list.length,
 			bubble_target_id;
 
@@ -1996,7 +1996,7 @@ MC.canvas.volume = {
 		{
 			if (MC.canvas.getState() === 'app')
 			{
-				if (target.hasClass('instanceList-item-volume'))
+				if (target.is('.instanceList-item-volume, .asgList-item-volume'))
 				{
 					MC.canvas.volume.bubble( target_id, target.parent().data('id') );
 
@@ -2052,7 +2052,7 @@ MC.canvas.volume = {
 			{
 				if (
 					MC.canvas.getState() === 'app' &&
-					target.hasClass('instanceList-item-volume')
+					target.is('.instanceList-item-volume, .asgList-item-volume')
 				)
 				{
 					MC.canvas.volume.bubble( target_id, target.parent().data('id') );
@@ -5935,7 +5935,7 @@ MC.canvas.analysis = function ( data )
 
 		layout.size[0] = VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT;
 		layout.size[1] = VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM;
-		
+
 		$canvas( layout.id ).size(
 			 VPC_max_width - layout.coordinate[0] + VPC_PADDING_RIGHT,
 			 VPC_max_height - layout.coordinate[1] + VPC_PADDING_BOTTOM

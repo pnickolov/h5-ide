@@ -45,7 +45,7 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 for status in state.statuses
 
-                    if status.result isnt 'failed'
+                    if status.result isnt 'failure'
                         continue
                     if state.app_id isnt MC.canvas_data.id
                         continue

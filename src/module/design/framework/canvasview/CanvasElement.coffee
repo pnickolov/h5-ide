@@ -367,10 +367,16 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     ###
     if component.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
+      state = ""
+      if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        instance_data = MC.data.resource_list[ Design.instance().get('region') ][ component.get("appId") ]
+        state = if instance_data then instance_data.instanceState.name  else "unknown"
+
       list = [{
         id      : id
-        appId   : component.get("appId")
         name    : name
+        appId   : component.get("appId")
+        state   : state
         deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
       }]
 

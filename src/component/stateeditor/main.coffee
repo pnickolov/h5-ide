@@ -11,7 +11,7 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_caret', 
         require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
 
             # add test
-            MC.forge.other.addSEList canvas_data
+            # MC.forge.other.addSEList canvas_data
 
             allCompData = canvas_data.component
             compData = allCompData[uid]

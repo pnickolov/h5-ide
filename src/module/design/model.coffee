@@ -335,6 +335,8 @@ define [ 'MC', 'event', 'constant', 'app_model', 'stack_model', 'instance_servic
             #
             console.log 'set app.resource end'
 
+
+
     }
 
     model = new DesignModel()

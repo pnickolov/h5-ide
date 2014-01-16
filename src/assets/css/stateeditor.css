@@ -75,9 +75,10 @@ body {
 	height: 460px;
 	overflow-y: scroll;
 	border-bottom: 1px #000 solid;
-	width: 915px;
+	width: 655px;
 	float: left;
 	height: 500px;
+	background: #fff;
 }
 
 #state-editor.full {
@@ -85,19 +86,20 @@ body {
 	float: none;
 }
 
+
 #state-description, #state-log {
+	width: 225px;
 	height: 480px;
 	float: left;
 	border-bottom: 1px #000 solid;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	padding: 10px;
-	width: 295px;
 }
 
 #state-log {
 	display: none;
-	width: 315px;
+	width: 245px;
 	height: 500px;
 	padding: 0;
 	background-color: #000;
@@ -144,29 +146,60 @@ body {
 	background-color: #a4a4a4;
 }
 
-#state-editor-body .state-save, .state-cancel, .state-close {
-	background-color: #0f0;
-	width: 50px;
-	padding: 10px;
-	text-align: center;
-	float: right;
-	margin-right: 14px;
-	margin-top: 14px;
-	cursor: pointer;
+#state-editor-body {
+	padding: 0;
 }
 
-#state-editor-body .state-close {
+#state-editor-model .state-save, .state-cancel, .state-close {
+	margin-right: 14px;
+	margin-top: 14px;
+}
+
+#state-editor-model .state-close{
 	display: none;
 }
 
-#state-editor-model .modal-toolbar {
+#state-editor-model .modal-sidebar-toggle {
 	list-style: none;
 	position: absolute;
-	margin-top: -39px;
-	right: 50px;
+	margin-top: -49px;
+	right: 195px;
 }
 
-#state-editor-model .modal-toolbar li {
+.modal-sidebar-toggle li {
+	height: 49px;
+	/*background: rgba(0,0,0,.2);*/
+	width: 50px;
+	float: left;
+	cursor: pointer;
+	transition: background .2s;
+	-webkit-transition: background .2s;
+	color: #ddd;
+
+}
+
+.modal-sidebar-toggle li {
+	border-left: 1px solid #303030;
+}
+
+.modal-sidebar-toggle li.active,
+.modal-sidebar-toggle li.active:hover {
+	background: #333;
+	color: #f0f0f0;
+}
+
+.modal-sidebar-toggle li:hover {
+	background: rgba(0,0,0,.1);
+	color: #eee;
+}
+
+.state-desc-toggle.icon-info {
+	font-size: 24px;
+	line-height: 52px;
+	text-align: center;
+}
+
+/*#state-editor-model .modal-toolbar li {
 	width: 30px;
 	height: 30px;
 	background-color: #eee;
@@ -177,7 +210,7 @@ body {
 
 #state-editor-model .modal-toolbar li:hover {
 	background-color: #ccc;
-}
+}*/
 
 /* *************************************** state item */
 
@@ -305,7 +338,7 @@ body {
 	float: left;
 	padding: 5px;
 	max-width: 100px;
-	background-color: #ddd;
+	/*background-color: #ddd;*/
 	margin-top: 2px;
 	width: 100%;
 }
@@ -436,7 +469,7 @@ body {
 	/*max-width: 100px;*/
 	background-color: #ddd;
 	margin-top: 2px;
-	width: 80px;
+	width: auto;
 }
 
 #state-editor .parameter-view-list .parameter-item.disabled {
@@ -571,10 +604,11 @@ body {
 }
 
 #state-log .state-log-item-status {
-	color: #f00;
+	color: #1b1;
 	float: right;
-	margin-top: -20px;
+	margin-top: -12px;
 	right: 30px;
+	font-size: 10px;
 }
 
 #state-log .state-log-item-detail {
@@ -600,6 +634,11 @@ body {
 
 #state-log .state-log-title {
 	font-weight: bold;
+}
+
+.state-bottom {
+	border-top: 1px solid #cfcfcf;
+	background: #eee;
 }
 
 /* *************************************** statebar state status */
@@ -700,13 +739,15 @@ body {
 	padding-bottom: 25px;
 }
 
+#status-bar-modal .modal-header h3 {
+	cursor: default;
+}
 
-
-
-
-
-
-
-
-
-
+/* state resource select */
+#state-editor-model .state-editor-res-select {
+	color: #ccc;
+	right: 307px;
+	width: 120px;
+	top: 12px;
+	position: absolute;
+}

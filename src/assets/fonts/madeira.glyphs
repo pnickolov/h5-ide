@@ -1,7 +1,4 @@
 {
-DisplayStrings = (
-""
-);
 copyright = MedeiraCloud;
 date = "2013-08-14 04:12:41 +0000";
 familyName = "MadeiraIcon";
@@ -4540,6 +4537,47 @@ width = 960;
 }
 );
 unicode = F149;
+},
+{
+glyphname = uniF14A;
+lastChange = "2014-01-07 17:14:24 +0800";
+layers = (
+{
+layerId = "EAE21ECE-B6C3-4A45-AE76-37E4E2404B22";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"0 -60 LINE",
+"960 -60 LINE",
+"960 120 LINE",
+"0 120 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 300 LINE",
+"960 300 LINE",
+"960 480 LINE",
+"0 480 LINE"
+);
+},
+{
+closed = 1;
+nodes = (
+"0 660 LINE",
+"960 660 LINE",
+"960 840 LINE",
+"0 840 LINE"
+);
+}
+);
+width = 960;
+}
+);
+unicode = F14A;
 }
 );
 gridLength = 60;

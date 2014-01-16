@@ -22,9 +22,9 @@ define [ 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', '
             map = param.dataMap
 
             if not @required val
-                return 'Command Name is required.'
+                return 'Command name is required.'
             if not @stateAllowed val, map
-                return "State \"#{val}\" isn't supported."
+                return "Command \"#{val}\" is not supported."
             null
 
 

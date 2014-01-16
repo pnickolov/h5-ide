@@ -16,7 +16,7 @@ define [ 'event',
             'closed': 'closedPopup'
             'keyup .parameter-item.dict .parameter-value': 'onDictInputChange'
             'blur .parameter-item.dict .parameter-value': 'onDictInputBlur'
-            
+
             'keyup .parameter-item.array .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.array .parameter-value': 'onArrayInputBlur'
             'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
@@ -33,6 +33,8 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
+
+            'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
         initialize: () ->
 
@@ -66,8 +68,7 @@ define [ 'event',
                     $('.atwho-view').hide()
                 )
 
-                compStateData = that.model.getStateData()
-                stateObj = that.loadStateData(compStateData)
+                stateObj = that.loadStateData(that.originCompStateData)
                 that.refreshStateList(stateObj)
                 that.refreshStateViewList()
                 that.bindStateListSortEvent()
@@ -77,16 +78,26 @@ define [ 'event',
 
                 that.refreshDescription()
 
+                currentState = that.model.get('currentState')
+
                 # refresh state log
-                that.showLogListLoading(true)
-                that.model.genStateLogData(() ->
-                    that.refreshStateLogList()
-                    that.showLogListLoading(false)
-                )
+                $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+                if currentState is 'stack'
+                    $resSelectElem.hide()
+                else
+                    that.onResSelectChange({
+                        target: $resSelectElem[0]
+                    })
 
                 if that.showLogPanel
                     that.showLogPanel()
                 
+                if currentState is 'stack'
+                    $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+                    $logPanelToggle.hide()
+
+                that.initResSelect()
+
             , 1)
 
         initData: () ->
@@ -99,6 +110,8 @@ define [ 'event',
             that.langTools = ace.require("ace/ext/language_tools")
             that.resAttrDataAry = that.model.get('resAttrDataAry')
             that.resStateDataAry = that.model.get('resStateDataAry')
+            that.groupResSelectData = that.model.get('groupResSelectData')
+            that.originCompStateData = that.model.getStateData()
 
             that.resName = that.model.getResName()
             that.supportedPlatform = that.model.get('supportedPlatform')
@@ -133,6 +146,7 @@ define [ 'event',
             paraDictItemHTML = htmlMap['state-template-para-dict-item']
             paraArrayItemHTML = htmlMap['state-template-para-array-item']
             stateLogItemHTML = htmlMap['state-template-log-item']
+            stateResSelectHTML = htmlMap['state-template-res-select']
             paraCompleteItemHTML = '<li data-value="${atwho-at}${name}">${name}</li>'
 
             this.stateListTpl = Handlebars.compile(stateListHTML)
@@ -142,6 +156,7 @@ define [ 'event',
             Handlebars.registerPartial('state-template-para-dict-item', paraDictItemHTML)
             Handlebars.registerPartial('state-template-para-array-item', paraArrayItemHTML)
             Handlebars.registerPartial('state-template-log-item', stateLogItemHTML)
+            Handlebars.registerPartial('state-template-res-select', stateResSelectHTML)
 
             # Handlebars helper
             Handlebars.registerHelper('nl2br', (text) ->
@@ -155,6 +170,17 @@ define [ 'event',
             this.paraDictListTpl = Handlebars.compile(paraDictItemHTML)
             this.paraArrayListTpl = Handlebars.compile(paraArrayItemHTML)
             this.stateLogItemTpl = Handlebars.compile(stateLogItemHTML)
+            this.stateResSelectTpl = Handlebars.compile(stateResSelectHTML)
+
+        initResSelect: () ->
+
+            that = this
+
+            resSelectHTML = that.stateResSelectTpl({
+                res_selects: that.groupResSelectData
+            })
+            $resSelect = that.$editorModal.find('.state-editor-res-select')
+            $resSelect.html(resSelectHTML)
 
         bindStateListSortEvent: () ->
 
@@ -453,7 +479,7 @@ define [ 'event',
             that = this
 
             descMarkdown = ''
-            
+
             if cmdName
                 moduleObj = that.cmdModuleMap[cmdName]
                 if moduleObj.reference
@@ -797,10 +823,10 @@ define [ 'event',
             result
 
         saveStateData: () ->
-
+            ### validate will be done later
             if not @submitValidate()
                 return false
-
+            ###
             that = this
 
             $stateItemList = that.$stateList.find('.state-item')
@@ -1037,7 +1063,40 @@ define [ 'event',
             stateData = that.saveStateData()
 
             if stateData
+
                 that.model.setStateData(stateData)
+
+                # compare
+                compareStateData = null
+                otherCompareStateData = null
+
+                if that.originCompStateData and stateData
+
+                    if that.originCompStateData.length > stateData.length
+                        compareStateData = stateData
+                        otherCompareStateData = that.originCompStateData
+                    else
+                        compareStateData = that.originCompStateData
+                        otherCompareStateData = stateData
+
+                    changeAry = []
+
+                    _.each compareStateData, (stateObj, idx) ->
+                        originStateObjStr = JSON.stringify(stateObj)
+                        currentStateObjStr = JSON.stringify(otherCompareStateData[idx])
+                        if originStateObjStr isnt currentStateObjStr
+                            changeAry.push(stateObj.stateid)
+                        null
+
+                    resUID = that.model.getCurrentResUID()
+                    changeObj = {
+                        resUID: resUID,
+                        stateIds: changeAry
+                    }
+
+                    if changeAry.length
+                        ide_event.trigger 'STATE_EDITOR_DATA_UPDATE', changeObj
+
                 that.closedPopup()
 
         onStateCancelClick: (event) ->
@@ -1066,13 +1125,21 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             if $descPanel.is(':visible')
                 $stateEditor.addClass('full')
                 $descPanel.hide()
+                $descPanelToggle.removeClass('active')
             else
                 $stateEditor.removeClass('full')
                 $logPanel.hide()
                 $descPanel.show()
+                $descPanelToggle.addClass('active')
+
+            $logPanelToggle.removeClass('active')
 
         onLogToggleClick: (event) ->
 
@@ -1081,13 +1148,21 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             if $logPanel.is(':visible')
                 $stateEditor.addClass('full')
                 $logPanel.hide()
+                $logPanelToggle.removeClass('active')
             else
                 $stateEditor.removeClass('full')
                 $descPanel.hide()
                 $logPanel.show()
+                $logPanelToggle.addClass('active')
+
+            $descPanelToggle.removeClass('active')
 
         showLogPanel: () ->
 
@@ -1095,9 +1170,17 @@ define [ 'event',
             $stateEditor = $('#state-editor')
             $descPanel = $('#state-description')
             $logPanel = $('#state-log')
+
+            $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
+            $logPanelToggle = that.$editorModal.find('.state-log-toggle')
+
             $stateEditor.removeClass('full')
             $descPanel.hide()
             $logPanel.show()
+
+            $logPanelToggle.addClass('active')
+            $descPanelToggle.removeClass('active')
+
             null
 
         onDocumentMouseDown: (event) ->
@@ -1297,9 +1380,11 @@ define [ 'event',
             stateLogViewAry = []
             _.each stateLogDataAry, (logObj) ->
                 utcTimeStr = (new Date(logObj.time)).toUTCString()
+                stateStatus = logObj.result
                 stateLogViewAry.push({
                     state_id: "State #{logObj.state_id}",
                     log_time: utcTimeStr,
+                    state_status: stateStatus,
                     stdout: logObj.stdout,
                     stderr: logObj.stderr
                 })
@@ -1359,6 +1444,19 @@ define [ 'event',
                 else
                     $logInfo.hide()
                     $logList.show()
+
+        onResSelectChange: (event) ->
+
+            that = this
+
+            selectedResId = $(event.target).find('.selected').attr('data-id')
+
+            # refresh state log
+            that.showLogListLoading(true)
+            that.model.genStateLogData(selectedResId, () ->
+                that.refreshStateLogList()
+                that.showLogListLoading(false)
+            )
 
     }
 

@@ -2,7 +2,7 @@
 #  View(UI logic) for design
 #############################
 
-define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant, lang ) ->
+define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/lang.js', 'state_status', 'backbone', 'jquery', 'handlebars' ], ( ide_event, template, constant, lang, stateStatusMain ) ->
 
     DesignView = Backbone.View.extend {
 
@@ -10,7 +10,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
 
         events      :
             'click .btn-ta-valid' : 'statusBarTAClick'
-            'click .btn-state' : 'statusBarStateClick'
+            'click .btn-state' : 'statusBarClick'
 
         render   : () ->
             console.log 'design render'
@@ -20,6 +20,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             this.trigger 'DESIGN_COMPLETE'
             #
             $( '#main-statusbar' ).html MC.template.statusbar()
+
 
         listen   : ( model ) ->
             #set this.model
@@ -76,10 +77,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 require [ 'component/trustedadvisor/main' ], ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
             , 50
 
-        statusBarStateClick : ( event ) ->
-            setTimeout () ->
-                require [ 'state_status' ], ( statestatus_main ) -> statestatus_main.loadModule 'success', null
-            , 0
+        statusBarClick : ( event ) ->
+            stateStatusMain.loadModule()
 
         updateStatusbar : ( type, level ) ->
             console.log 'updateStatusbar, level = ' + level + ', type = ' + type
@@ -123,6 +122,33 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
             #
             null
 
+        renderStateBar: ( stateList ) ->
+            succeed = failed = 0
+
+            if not _.isArray stateList
+                stateList = [ stateList ]
+
+            for state in stateList
+                ### temp
+                if state.app_id isnt MC.canvas_data.id
+                    continue
+                ###
+
+                for status in state.statuses
+                    if status.result is 'success'
+                        succeed++
+                    else if status.result is 'failed'
+                        failed++
+
+            $stateBar = $ '.statusbar-btn'
+            $stateBar
+                .find( '.state-success b' )
+                .text succeed
+
+            $stateBar
+                .find( '.state-failed b' )
+                .text failed
+
         hideStatusbar :  ->
             console.log 'hideStatusbar'
 
@@ -131,13 +157,23 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 $( '#main-statusbar .btn-ta-valid' ).hide()
                 $( '#main-statusbar .btn-state' ).show()
 
+                stateList = MC.data.websocket.collection.status.find().fetch()
+                @renderStateBar stateList
+
+                ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, ( type, idx, statusData ) ->
+                    stateList = MC.data.websocket.collection.status.find().fetch()
+                    @renderStateBar stateList
+                , @
+
             # show
             else
                 $( '#main-statusbar .btn-state' ).hide()
                 $( '#main-statusbar .btn-ta-valid' ).show()
+                ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
 
             if Tabbar.current is 'appedit'
                 $( '#canvas' ).css 'bottom', 24
+
 
             null
 

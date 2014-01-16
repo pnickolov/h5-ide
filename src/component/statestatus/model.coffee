@@ -6,30 +6,41 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
     StateStatusModel = Backbone.Model.extend
 
-        defaults :
-            test: null
-
         initialize: () ->
+            @collection = new ( @__customCollection() )
 
-            that = this
-
-            @genStateStatusData()
-
-            @initData()
-
-
-        initData: () ->
             stateList = MC.data.websocket.collection.status.find().fetch()
+            @collection.set @__dispose( stateList ).models
+            @set 'items', @collection
 
+        __customCollection: () ->
+            parent = @
+            Backbone.Collection.extend
+                comparator: ( model ) ->
+                    - model.get( 'time' )
+
+        __genId: ( resId, stateId ) ->
+            "#{resId}|#{stateId}"
+
+        __dispose: ( stateList ) ->
             collection = new Backbone.Collection()
 
-            collection.comparator = 'time'
-            console.log stateList
+            if not _.isArray stateList
+                stateList = [ stateList ]
 
             for state in stateList
 
                 for status in state.statuses
+
+                    ### temp
+                    if status.result isnt 'failed'
+                        continue
+                    if state.app_id isnt MC.canvas_data.id
+                        continue
+                    ###
+
                     data =
+                        id      : @__genId state.res_id, status.state_id
                         appId   : state.app_id
                         resId   : state.res_id
                         stateId : status.state_id
@@ -37,13 +48,35 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         result  : status.result
 
 
+                    _.extend data, @__extendComponent data.resId
+
+
                     collection.add new Backbone.Model data
 
-            @set 'items', collection
-            
+            collection
 
-        getUidByResId: (resId) ->
-            
+        __extendComponent: ( resId ) ->
+            extend = {}
+            component = @__getUidByResId resId
+
+            # ServerGroup or ASG
+            if component.parent
+                # ServerGroup
+                if component.self
+                    extend.name = component.self.name
+                # ASG
+                else
+                    extend.parent = component.parent.name
+                    extend.name = resId
+
+            else if component.self
+                extend.name = component.self.name
+
+            extend
+
+
+        __getUidByResId: (resId) ->
+
             asgNameUIDMap = {}
             instanceIdASGNameMap = {}
             $.each MC.canvas_data.component, (idx, compObj) ->
@@ -64,70 +97,53 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
                         instanceIdASGNameMap[instanceId] = asgUID
 
             resUID = ''
-            resCompObj = null
+            parentComp = null
+            selfComp = null
             compAry = _.keys(MC.canvas_data.component)
             loopCount = 0
             $.each MC.canvas_data.component, (idx, compObj) ->
 
                 compType = compObj.type
                 compUID = compObj.uid
+                groupUID = compObj.serverGroupUid
 
                 if compType is 'AWS.EC2.Instance'
                     instanceId = compObj.resource.InstanceId
                     if instanceId is resId
                         resUID = compUID
-                        resCompObj = compObj
+                        if groupUID and groupUID isnt compUID
+                            parentComp = MC.canvas_data.component[groupUID]
+                        selfComp = compObj
                         return false
 
                 if (loopCount is compAry.length - 1) and not resUID
                     asgUID = instanceIdASGNameMap[resId]
                     if asgUID
-                        resCompObj = MC.canvas_data.component[asgUID]
+                        parentComp = MC.canvas_data.component[asgUID]
 
                 loopCount++
 
-            return resCompObj
-
-        # Mock Api
-        genStateStatusData: () ->
-
-            uuid = () ->
-                Math.random().toString().slice 2, 10
-
-            # mock data
-            getStateData = () ->
-                app_id: uuid(),
-                res_id: uuid(),
-                statuses: [
-                    {
-                        state_id: "1",
-                        time: "2013-12-13",
-                        result: "success"
-                    },
-                    {
-                        state_id: "2",
-                        time: "2013-12-14",
-                        result: "failed"
-                    },
-                    {
-                        state_id: "2",
-                        time: "2013-12-14",
-                        result: "failed"
-                    }
-
-                ]
-
-            statusDatas = [ getStateData(), getStateData(), getStateData() ]
-
-            statusAry = getStateData().statuses
-
-            @set 'stateStatusDataAry', statusAry
-
+            parent: parentComp,
+            self  : selfComp
 
         listenStateStatusUpdate: ( type, idx, statusData ) ->
-
-
+            collection = @__dispose statusData
+            #diff = @diff collection, @get 'items'
+            @collection.add collection.models
+            #@set 'items', @collection
 
             null
+
+        listenStateEditorUpdate: ( data ) ->
+            resId = data.resUID
+            stateIds = data.stateIds
+
+            for stateId in stateIds
+                id = @__genId resId, stateId
+                @collection.get( id ) and @collection.get( id ).set 'updated', true
+
+            null
+
+
 
     StateStatusModel

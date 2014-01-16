@@ -100,6 +100,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			that.set('cmdModuleMap', cmdModuleMap)
 			that.set('moduleCMDMap', moduleCMDMap)
 
+			groupResSelectData = that.getGroupResSelectData()
+			that.set('groupResSelectData', groupResSelectData)
+
 			# Diffrent view
 			currentState = MC.canvas.getState()
 			if currentState is 'stack'
@@ -185,7 +188,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			that = this
 			compData = that.get('compData')
 			if compData and compData.state
-				return compData.state
+				if _.isArray(compData.state)
+					return compData.state
+
 			return null
 
 		getResName: () ->
@@ -342,9 +347,11 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 				uidMatchAry = refMatchStr.match(/[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/)
 				resUID = uidMatchAry[0]
-				resName = allCompData[resUID].name
-				newRefStr = refMatchStr.replace(resUID, resName)
-				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+				if allCompData[resUID]
+					resName = allCompData[resUID].name
+					newRefStr = refMatchStr.replace(resUID, resName)
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
 				null
 
 			return newParaValue
@@ -364,8 +371,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 				resName = refMatchStr.replace('@{', '').split('.')[0]
 				resUID = that.getUIDByResName(resName)
-				newUIDStr = refMatchStr.replace(resName, resUID)
-				newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+				if resUID
+					newUIDStr = refMatchStr.replace(resName, resUID)
+					newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
 				null
 
 			return newParaValue
@@ -381,9 +389,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 				null
 			return resultUID
 
-		genStateLogData: (callback) ->
+		genStateLogData: (res_id, callback) ->
 
 			that = this
+
+			appId = MC.canvas_data.id
+			resId = res_id
 
 			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app'
 
@@ -397,13 +408,85 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 						statusObj = statusDataAry[0]
 
-						logAry = statusObj.logs
+						logAry = statusObj.statuses
 
 						that.set('stateLogDataAry', logAry)
 
 						if callback
 
 							callback()
+
+		getCurrentResUID: () ->
+
+			that = this
+			compData = that.get('compData')
+			currentCompUID = compData.uid
+			return currentCompUID
+
+		getGroupResSelectData: () ->
+
+			that = this
+			compData = that.get('compData')
+			allCompData = that.get('allCompData')
+
+			originGroupUID = ''
+			originCompUID = compData.uid
+			if compData.type is 'AWS.EC2.Instance'
+				originGroupUID = compData.serverGroupUid
+
+			dataAry = []
+
+			_.each allCompData, (compObj) ->
+
+				compType = compObj.type
+				compUID = compObj.uid
+
+				if compType is 'AWS.EC2.Instance' and compData.type is compType
+
+					currentGroupUID = compObj.serverGroupUid
+
+					if compUID is originCompUID
+						resId = compObj.resource.InstanceId
+
+						# resName = compObj.serverGroupName
+						# if not resName
+						resName = compObj.name
+
+						dataAry.push({
+							res_id: resId,
+							res_name: resName
+						})
+					else if (originGroupUID and currentGroupUID and compUID isnt originGroupUID and currentGroupUID is originGroupUID)
+						resId = compObj.resource.InstanceId
+						dataAry.push({
+							res_id: resId,
+							res_name: compObj.name
+						})
+				null
+
+				if compType is 'AWS.AutoScaling.Group' and compData.type is 'AWS.AutoScaling.LaunchConfiguration'
+
+					asgName = compObj.resource.AutoScalingGroupName
+					lsgUID = MC.extractID(compObj.resource.LaunchConfigurationName)
+
+					if lsgUID is originCompUID
+
+						# find asg name's all instance
+						$.each MC.data.resource_list[MC.canvas_data.region], (idx, resObj) ->
+							if resObj and resObj.AutoScalingGroupName and resObj.Instances
+								if resObj.AutoScalingGroupName is asgName
+									$.each resObj.Instances.member, (idx, instanceObj) ->
+										instanceId = instanceObj.InstanceId
+										dataAry.push({
+											res_id: instanceId,
+											res_name: instanceId
+										})
+
+				null
+
+			# console.log(dataAry)
+
+			return dataAry
 	}
 
 	return StateEditorModel

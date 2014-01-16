@@ -12,44 +12,53 @@ define [ 'event'
 
     StateStatusView = Backbone.View.extend
 
-        el: '#status-bar-modal'
-
         template: {}
 
         events:
             'click .modal-close': 'closePopup'
 
         initialize: () ->
+            @items = @model.get( 'items' )
+            @listenTo @items, 'add', @renderItem
+            @listenTo @model, 'change:items', @renderAllItem
+            #@listenTo @items, 'remove', @
 
             @compileTpl()
             @registerHelper()
 
+            @itemView = @customView()
+
+        customView: () ->
             parent = @
-            @itemView = Backbone.View.extend
+            Backbone.View.extend
                 tagName: 'li'
                 className: 'state-status-item'
                 template: parent.template.item
+
+                initialize: () ->
+                    @listenTo @model, 'change', @render
+
                 render: () ->
                     @$el.html @template @model.toJSON()
                     @
-
 
         render: () ->
 
             @$statusModal = @$el
 
-            @$el.html @template.modal {}
-            @$( '.modal-state-statusbar' ).html @template.content {}
-
+            @$el.html @template.modal
+            @$( '.modal-state-statusbar' ).html @template.content
 
             @renderAllItem()
 
-            @$el.show()
+            $( '#status-bar-modal' )
+                .html( @el )
+                .show()
 
             @
 
         renderAllItem: () ->
-            items = @model.get( 'items' )
+            items = @items
             # test
             appStoped = Design.instance().getState() is 'Stopped'
 
@@ -71,28 +80,11 @@ define [ 'event'
         renderPending: () ->
             @$( '.scroll-content' ).html @template.pending
 
-
-
-        renderStateBar: ( option ) ->
-            if _.isObject option
-                $stateBar = $ 'statusbar-btn'
-                if option.success
-                    $stateBar
-                        .find( '.state-success b' )
-                        .val option.success
-
-                if option.failed
-                    $stateBar
-                        .find( '.state-failed b' )
-                        .val option.failed
-
-
         registerHelper: () ->
             Handlebars.registerHelper 'UTC', ( text ) ->
                 new Handlebars.SafeString new Date( text ).toUTCString()
 
         compileTpl: () ->
-
             # generate template
             tplRegex = /(\<!-- (.*) --\>)(\n|\r|.)*?(?=\<!-- (.*) --\>)/ig
             tplHTMLAry = template.match tplRegex
@@ -111,47 +103,18 @@ define [ 'event'
             pending = htmlMap[ 'statestatus-template-status-pending' ]
             container = htmlMap[ 'statestatus-template-status-item-container' ]
 
-            #Handlebars.registerPartial 'statestatus-template-status-item', stateStatusItemHTML
-
-            @template.modal     = Handlebars.compile stateStatusModalHTML
-            @template.content   = Handlebars.compile stateStatusContentHTML
+            @template.modal     = stateStatusModalHTML
+            @template.content   = stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
 
             @template.pending      = pending
             @template.container = container
 
-
             @template
 
-
-
-
-        refreshStateStatusList: () ->
-
-            that = this
-            stateStatusDataAry = that.model.get( 'stateStatusDataAry' )
-
-            stateStatusViewAry = []
-            _.each stateStatusDataAry, ( statusObj ) ->
-                stateStatusViewAry.push( {
-                    # state_id: "State #{logObj.state_id}",
-                    # log_time: logObj.time,
-                    # stdout: logObj.stdout,
-                    # stderr: logObj.stderr
-                } )
-                null
-
-            renderHTML = that.template.item( {
-                state_statuses: stateStatusViewAry
-            } )
-
-            that.$stateStatusList.html renderHTML
-
         closePopup : ->
-            if @$statusModal.html()
-                @$statusModal.empty()
-                @trigger 'CLOSE_POPUP'
-                @$statusModal.hide()
+            $( '#status-bar-modal' ).hide()
+            @trigger 'CLOSE_POPUP'
 
 
     StateStatusView

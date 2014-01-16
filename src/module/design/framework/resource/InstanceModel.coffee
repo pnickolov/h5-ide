@@ -481,10 +481,16 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       # Update Server number
       numberGroup = node.children(".instance-number-group")
       if @get("count") > 1
+        Canvon( $("#" + @id + "_instance-state") ).removeClass('instance-state')
+        MC.canvas.display( @id, "instance-state", false )
+        #
         CanvasManager.toggle node.children(".port-instance-rtb"), false
         CanvasManager.toggle numberGroup, true
         CanvasManager.update numberGroup.children("text"), @get("count")
       else
+        Canvon( $("#" + @id + "_instance-state") ).addClass('instance-state')
+        MC.canvas.display( @id, "instance-state", true )
+        #
         CanvasManager.toggle node.children(".port-instance-rtb"), true
         CanvasManager.toggle numberGroup, false
 

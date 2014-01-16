@@ -20,13 +20,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
         @set data
 
-        @getASGData asg_comp.get 'appId'
-
-    getASGData : ( arn )->
-
         resource_list = MC.data.resource_list[Design.instance().region()]
 
-        asg_data = resource_list[ arn ]
+        asg_data = resource_list[ asg_comp.get( 'appId' ) ]
 
         if not asg_data
             return false
@@ -35,6 +31,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         @set 'awsResName', asg_data.AutoScalingGroupName
         @set 'arn', asg_data.AutoScalingGroupARN
         @set 'createTime', asg_data.CreatedTime
+
         if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
             @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
@@ -48,13 +45,9 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         policies = []
         cloudWatchPolicyMap = {}
 
-        SPModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
-
-        allSP = SPModel and SPModel.allObjects() or []
-
-        for sp in allSP
+        for sp in asg_comp.get("policies")
             comp_uid = sp.id
-            policy_data = resource_list[ sp.get 'PolicyARN' ]
+            policy_data = resource_list[ sp.get 'appId' ]
             if not policy_data
                 continue
 
@@ -68,9 +61,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
             #cloudWatchPolicyMap[ "#{comp.get 'name'}-alarm" ] = policy
 
-            cloudWatch = sp.getFromStorage( constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch ).first()
-
-            alarm_data  = resource_list[ cloudWatch.get 'AlarmArn' ]
+            alarm_data  = resource_list[ sp.get("alarmData").appId ]
             actions_arr = [ alarm_data.InsufficientDataActions, alarm_data.OKActions, alarm_data.AlarmActions ]
             trigger_arr = [ 'INSUFFICIANT_DATA', 'OK', 'ALARM' ]
 

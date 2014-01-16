@@ -985,7 +985,8 @@ var Autocomplete = function() {
             
             var rect = editor.container.getBoundingClientRect();
             pos.top += rect.top + 8 - renderer.layerConfig.offset;
-            pos.left += rect.left;
+            pos.left += rect.width;
+            // pos.left = $('.ace_focus .ace_text-input').offset().left
             // pos.left += renderer.$gutterLayer.gutterWidth;
 
             this.popup.show(pos, lineHeight);

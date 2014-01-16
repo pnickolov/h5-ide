@@ -109,7 +109,7 @@ define [ 'event',
             that.moduleCMDMap = that.model.get('moduleCMDMap')
 
             that.langTools = ace.require('ace/ext/language_tools')
-            that.resRefHighLight = ace.require('ace/model/res-ref')
+            that.Tokenizer = ace.require("ace/tokenizer").Tokenizer
 
             that.resAttrDataAry = that.model.get('resAttrDataAry')
             that.resStateDataAry = that.model.get('resStateDataAry')
@@ -1240,6 +1240,16 @@ define [ 'event',
                 enableSnippets: false,
                 singleLine: editorSingleLine
             })
+
+            tk = new that.Tokenizer({
+                'start': [{
+                    token: 'string',
+                    regex: '@\\{(\\w|\\-)+(\\.(\\w+(\\[\\d+\\])*))+\\}'
+                }]
+            })
+            editor.session.$mode.$tokenizer = tk
+            editor.session.bgTokenizer.setTokenizer(tk)
+            editor.renderer.updateText()
 
             editor.commands.on("afterExec", (e) ->
 

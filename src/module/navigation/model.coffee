@@ -287,8 +287,8 @@ define [ 'app_model', 'stack_model', 'ec2_model', 'state_model', 'aws_model', 'c
                 added: (idx, statusData) ->
                     ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData
 
-                changed: (idx, statusData) ->
-                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'change', idx, statusData
+                changed: ( newDocument, oldDocument ) ->
+                    ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'change', newDocument, oldDocument
             }
 
             null

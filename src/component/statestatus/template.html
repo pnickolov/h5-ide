@@ -10,27 +10,27 @@
 
 <!-- statestatus-template-status-content -->
 <div class="state-status-content">
+
 	<div class="scroll-wrap scroll-wrap-validation" style="height:200px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
-
+			<div class="update-tip"></div>
+			<div class="status-item"></div>
 		</div>
 	</div>
 </div>
 
 <!-- statestatus-template-status-item -->
-<li class="state-status-item">
-	<div class="state-status-item-icon">
-		<i class="icon-state-failed"></i>
-	</div>
-	<div class="state-status-item-info">
-		<div class="state-status-item-desc">{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s>{{else}}has failed{{/if}} is updated.</div>
-		<div class="state-status-item-time">{{UTC time}}</div>
-	</div>
-	<div class="state-status-item-detail">
-		<i class="icon-btn"></i>
-	</div>
-</li>
+<div class="state-status-item-icon">
+	<i class="icon-state-failed"></i>
+</div>
+<div class="state-status-item-info">
+	<div class="state-status-item-desc">{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s>{{else}}has failed{{/if}} is updated.</div>
+	<div class="state-status-item-time">{{UTC time}}</div>
+</div>
+<div class="state-status-item-detail">
+	<i class="icon-btn"></i>
+</div>
 
 <!-- statestatus-template-status-pending -->
 <dl class="state-status-pending">
@@ -40,5 +40,10 @@
 
 <!-- statestatus-template-status-item-container -->
 <ul class="state-status-list"></ul>
+
+<!-- statestatus-template-status-update -->
+<div class="state-status-update">
+	{{this}} states has updated status.
+</div>
 
 <!-- template end -->

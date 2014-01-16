@@ -10,14 +10,27 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             @collection = new ( @__customCollection() )
 
             stateList = MC.data.websocket.collection.status.find().fetch()
-            @collection.set @__dispose( stateList ).models
+            @collection.set @__dispose( stateList ).models, silent: true
             @set 'items', @collection
+            @set 'new', []
+            #test
+
+        __collectNew: ( model ) ->
+            origins = @get( 'new' )
+            @set 'new', @get( 'new' ).concat model
+            @
+
+        flushNew: () ->
+            @set 'new', []
 
         __customCollection: () ->
             parent = @
             Backbone.Collection.extend
                 comparator: ( model ) ->
                     - model.get( 'time' )
+                initialize: ->
+                    @on 'add', parent.__collectNew, parent
+
 
         __genId: ( resId, stateId ) ->
             "#{resId}|#{stateId}"
@@ -126,10 +139,11 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
             parent: parentComp,
             self  : selfComp
 
-        listenStateStatusUpdate: ( type, idx, statusData ) ->
-            collection = @__dispose statusData
+        listenStateStatusUpdate: ( type, newDoc , oldDoc ) ->
+            collection = @__dispose newDoc
             #diff = @diff collection, @get 'items'
             @collection.add collection.models
+
             #@set 'items', @collection
 
             null

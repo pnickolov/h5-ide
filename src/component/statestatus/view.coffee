@@ -15,12 +15,13 @@ define [ 'event'
         template: {}
 
         events:
-            'click .modal-close': 'closePopup'
+            'click .modal-close'        : 'closePopup'
+            'click .state-status-update': 'renderNew'
 
         initialize: () ->
             @items = @model.get( 'items' )
-            @listenTo @items, 'add', @renderItem
             @listenTo @model, 'change:items', @renderAllItem
+            @listenTo @model, 'change:new', @renderUpdate
             #@listenTo @items, 'remove', @
 
             @compileTpl()
@@ -57,6 +58,19 @@ define [ 'event'
 
             @
 
+        renderUpdate: ( model ) ->
+            newCount = model.get( 'new' ).length
+
+            if newCount
+                @$( '.update-tip' ).html @template.update newCount
+
+            scrollbar.scrollTo @$( '.scroll-wrap' ), 'top': 0
+
+        renderNew: () ->
+            @model.flushNew()
+            @$( '.update-tip' ).html ''
+            @renderAllItem()
+
         renderAllItem: () ->
             items = @items
             # test
@@ -70,7 +84,7 @@ define [ 'event'
                 @renderPending()
 
         renderContainer: () ->
-            @$( '.scroll-content' ).html @template.container
+            @$( '.status-item' ).html @template.container
 
 
         renderItem: ( model, index ) ->
@@ -78,7 +92,7 @@ define [ 'event'
             @$( '.state-status-list' ).append view.render().el
 
         renderPending: () ->
-            @$( '.scroll-content' ).html @template.pending
+            @$( '.status-item' ).html @template.pending
 
         registerHelper: () ->
             Handlebars.registerHelper 'UTC', ( text ) ->
@@ -99,6 +113,7 @@ define [ 'event'
             stateStatusModalHTML = htmlMap[ 'statestatus-template-modal' ]
             stateStatusContentHTML = htmlMap[ 'statestatus-template-status-content' ]
             stateStatusItemHTML = htmlMap[ 'statestatus-template-status-item' ]
+            stateStatusUpdateHTML = htmlMap[ 'statestatus-template-status-update' ]
 
             pending = htmlMap[ 'statestatus-template-status-pending' ]
             container = htmlMap[ 'statestatus-template-status-item-container' ]
@@ -106,6 +121,7 @@ define [ 'event'
             @template.modal     = stateStatusModalHTML
             @template.content   = stateStatusContentHTML
             @template.item      = Handlebars.compile stateStatusItemHTML
+            @template.update    = Handlebars.compile stateStatusUpdateHTML
 
             @template.pending      = pending
             @template.container = container

@@ -743,6 +743,15 @@ body {
 	cursor: default;
 }
 
+#status-bar-modal .state-status-update {
+	color: #5D5D5D;
+	background-color: #FFED00;
+	text-align: center;
+	padding-top: 5px;
+	height: 20px;
+	cursor: pointer;
+}
+
 /* state resource select */
 #state-editor-model .state-editor-res-select {
 	color: #ccc;

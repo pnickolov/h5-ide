@@ -435,6 +435,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     data = MC.data.resource_list[Design.instance().region()][ appId ]
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
+        if data.rootDeviceName is v.deviceName
+          continue
         volume = resource_list[ v.ebs.volumeId ]
         if volume
           #volume exist

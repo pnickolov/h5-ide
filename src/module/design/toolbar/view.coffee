@@ -766,6 +766,9 @@ define [ 'MC', 'event',
             # 9. set Design mode
             Design.instance().setMode Design.MODE.App
 
+            # 10. re push AwsResourceUpdated
+            Design.instance().trigger Design.EVENT.AwsResourceUpdated
+
             null
 
         saveSuccess2App : ( tab_id, region ) ->

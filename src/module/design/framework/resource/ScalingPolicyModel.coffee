@@ -178,9 +178,9 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         sendNotification = false
         for i in refArray
           if not i then continue
-          if i.indexOf("PolicyARN")
+          if i.indexOf("PolicyARN") != -1
             policy = resolve( MC.extractID(i) )
-          else if i.indexOf("TopicArn")
+          else if i.indexOf("TopicArn") != -1
             sendNotification = true
 
         policy.set {

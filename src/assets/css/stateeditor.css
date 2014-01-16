@@ -221,7 +221,7 @@ body {
 #state-editor .state-item {
 	overflow: auto;
 	float: none;
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 }
 
 #state-editor .state-warning {
@@ -492,12 +492,24 @@ body {
 	background-color: #ddd;
 }
 
-#state-editor .state-item:first-child .state-remove{
+/*#state-editor .state-item:first-child .state-remove {
 	display: none;
+}*/
+
+#state-editor .state-item:first-child .state-add {
+
 }
 
-#state-editor .state-item:first-child .state-add{
+#state-editor .state-item-add {
+	cursor: pointer;
+	background-color: #eee;
+	line-height: 45px;
+	height: 45px;
+	text-align: center;
+}
 
+#state-editor .state-item-add:hover {
+	background-color: #ddd;
 }
 
 #state-editor .state-id {

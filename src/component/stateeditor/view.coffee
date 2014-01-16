@@ -33,6 +33,7 @@ define [ 'event',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
+            'click .state-item-add': 'onStateItemAddClick'
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
@@ -78,6 +79,8 @@ define [ 'event',
 
             that.refreshDescription()
 
+            that.initResSelect()
+
             currentState = that.model.get('currentState')
 
             # refresh state log
@@ -95,8 +98,6 @@ define [ 'event',
             if currentState is 'stack'
                 $logPanelToggle = that.$editorModal.find('.state-log-toggle')
                 $logPanelToggle.hide()
-
-            that.initResSelect()
 
             # , 1)
 
@@ -761,6 +762,41 @@ define [ 'event',
             $stateItem.after(newStateHTML)
 
             $newStateItem = $stateItem.next()
+
+            $cmdValueItem = $newStateItem.find('.command-value')
+            that.bindCommandEvent($cmdValueItem)
+
+
+            $stateItemList = that.$stateList.find('.state-item')
+            $stateItemList.addClass('view')
+
+            $newStateItem.removeClass('view')
+            $cmdValueItem.focus()
+
+            that.refreshStateId()
+
+        onStateItemAddClick: (event) ->
+
+            that = this
+            
+            $stateItem = that.$stateList.find('.state-item:last')
+
+            newStateId = 1
+
+            if $stateItem.length
+
+                stateIdStr = $stateItem.find('.state-id').text()
+                stateId = Number(stateIdStr)
+
+                newStateId = ++stateId
+
+            newStateHTML = that.stateListTpl({
+                state_list: [{
+                    state_id_show: newStateId
+                }]
+            })
+
+            $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
             $cmdValueItem = $newStateItem.find('.command-value')
             that.bindCommandEvent($cmdValueItem)

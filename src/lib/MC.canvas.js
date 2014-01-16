@@ -2141,17 +2141,19 @@ MC.canvas.volume = {
 				target_offset = target_node[0].getBoundingClientRect(),
 				volume_id = $('#instance_volume_list').find('.selected').attr('id');
 
-			$canvas(volume_id).remove();
+			if ( $canvas(volume_id).remove() )
+			{
+				$('#' + volume_id).parent().remove();
 
-			$('#' + volume_id).parent().remove();
+				bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
 
-			bubble_box.css('top',  target_offset.top - $('#canvas_container').offset().top - ((bubble_box.height() - target_offset.height) / 2));
+				$('#instance_volume_number').text(
+					$canvas( target_id ).volume().length
+				);
 
-			$('#instance_volume_number').text(
-				$canvas( target_id ).volume().length
-			);
+				$canvas.trigger("CANVAS_NODE_SELECTED", "");
 
-			$canvas.trigger("CANVAS_NODE_SELECTED", "");
+			}
 
 			$(document).off('keyup', MC.canvas.volume.remove);
 

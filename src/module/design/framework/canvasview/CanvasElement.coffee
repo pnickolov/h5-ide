@@ -160,9 +160,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEdit() and not comp.get("supportAppEdit")
-      notification "error", "This operation is not supported yet."
-      return
+    if Design.instance().modeIsAppEdit()
+      if ( comp.get("owner") and comp.get("owner").type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ) or not comp.get("supportAppEdit")
+        notification "error", "This operation is not supported yet."
+        return false
     #
     # #
     # # #

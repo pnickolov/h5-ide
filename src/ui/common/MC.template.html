@@ -757,7 +757,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 							<li class="selected item" data-id="tcp">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</li>
 							<li class="item" data-id="udp">{{ i18n "POP_SGRULE_PROTOCOL_UDP" }}</li>
 							<li class="item" data-id="icmp">{{ i18n "POP_SGRULE_PROTOCOL_ICMP" }}</li>
-							{{#if isclassic}}
+							{{#if isClassic}}
 							{{else}}
 							<li class="item" data-id="custom">{{ i18n "POP_SGRULE_PROTOCOL_CUSTOM" }}</li>
 							<li class="item" data-id="all">{{ i18n "POP_SGRULE_PROTOCOL_ALL" }}</li>
@@ -866,12 +866,14 @@ Following rule(s) will be deleted from its(their) security group:</div>
 					</ul>
 				</div>
 
-				<div class="sg-protocol-option-input" id="sg-protocol-custom">
-					<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
-				</div>
-				<div class="sg-protocol-option-input" id="sg-protocol-all">
-					Port Range:<span>0-65535</span>
-				</div>
+				{{#unless isClassic}}
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				{{/unless}}
 			</div>
 		</div>
 	</div>

@@ -2033,6 +2033,16 @@ MC.canvas.volume = {
 				}
 			}
 
+			if (
+				MC.canvas.getState() === 'appedit' &&
+				$canvas(target_id).type === 'AWS.AutoScaling.LaunchConfiguration'
+			)
+			{
+				$canvas( target_uid ).select();
+
+				return false;
+			}
+
 			if (volume_length > 0)
 			{
 				MC.canvas.volume.bubble(target_id);

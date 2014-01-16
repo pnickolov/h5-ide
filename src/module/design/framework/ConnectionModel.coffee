@@ -116,6 +116,7 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       # The line wants to destroy itslef after init
       if @__destroyAfterInit
         @remove( this )
+        this.id = ""
         return this
 
 

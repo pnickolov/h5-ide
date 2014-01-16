@@ -111,7 +111,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       notification "error", res
     else if res is true
       c = new C( comp1, comp2, undefined, DefaultCreateOption )
-      $canvas( c.id, true ).select()
+      if c.id
+        $canvas( c.id, true ).select()
       return true
     else if res is false
       return false

@@ -1919,7 +1919,7 @@ MC.canvas.layout = {
 // };
 
 MC.canvas.volume = {
-	bubble: function (id, node_id)
+	bubble: function (id, node_id, volume_type)
 	{
 		if (!$('#volume-bubble-box')[0])
 		{
@@ -1937,7 +1937,7 @@ MC.canvas.volume = {
 			canvas_container.append('<div id="volume-bubble-box"><div class="arrow"></div><div id="volume-bubble-content"></div></div>');
 			bubble_box = $('#volume-bubble-box');
 
-			volume_list = $('#instanceList-wrap')[0] != null ? $canvas( $('#instanceList-wrap').data('target-id') ).listVolume( node_id ) : $canvas( id ).volume();
+			volume_list = volume_type ? $canvas( $('#' + volume_type + '-wrap').data('target-id') ).listVolume( node_id ) : $canvas( id ).volume();
 
 			$.each(volume_list, function (i, item)
 			{
@@ -1948,7 +1948,7 @@ MC.canvas.volume = {
 				MC.template.instanceVolume( volume_list )
 			);
 
-			if ($('#instanceList-wrap')[0] != null)
+			if (volume_type)
 			{
 				target_offset = target.offset();
 				target_width = target.width();
@@ -1988,7 +1988,13 @@ MC.canvas.volume = {
 			bubble_box = $('#volume-bubble-box'),
 			target_id = target.data('target-id'),
 			target_uid = target_id.replace(/_[0-9]*$/ig, ''),
-			volume_list = target.is('.instanceList-item-volume, .asgList-item-volume') ? $canvas( $('#instanceList-wrap').data('target-id') ).listVolume( target.parent().data('id') ) : $canvas(target_id).volume(),
+
+			volume_type =
+				target.hasClass('instanceList-item-volume') ? 'instanceList' :
+				target.hasClass('asgList-item-volume') ? 'asgList' : null,
+
+			volume_list = volume_type ? $canvas( $('#' + volume_type + '-wrap').data('target-id') ).listVolume( target.parent().data('id') ) : $canvas(target_id).volume(),
+
 			volume_length = volume_list.length,
 			bubble_target_id;
 
@@ -1996,9 +2002,9 @@ MC.canvas.volume = {
 		{
 			if (MC.canvas.getState() === 'app')
 			{
-				if (target.is('.instanceList-item-volume, .asgList-item-volume'))
+				if (volume_type)
 				{
-					MC.canvas.volume.bubble( target_id, target.parent().data('id') );
+					MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
 
 					return false;
 				}
@@ -2052,10 +2058,10 @@ MC.canvas.volume = {
 			{
 				if (
 					MC.canvas.getState() === 'app' &&
-					target.is('.instanceList-item-volume, .asgList-item-volume')
+					volume_type
 				)
 				{
-					MC.canvas.volume.bubble( target_id, target.parent().data('id') );
+					MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
 				}
 				else
 				{
@@ -2396,6 +2402,7 @@ MC.canvas.asgList = {
 			);
 
 			$('#asgList-wrap')
+				.data('target-id', target.id)
 				.on('click', '.asgList-item', MC.canvas.asgList.select)
 				.css({
 					'top': target_offset.top - canvas_offset.top - 30,

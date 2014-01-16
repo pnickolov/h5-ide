@@ -40,7 +40,7 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
 
-            if Design.instance().typeIsVpc()
+            if not Design.instance().typeIsClassic()
                 @refreshIPList()
 
             @model.attributes.name

@@ -34,6 +34,29 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
       true
 
+    isCidrEnoughForIps : ( cidr )->
+
+      if not cidr
+        defaultSubnet = MC.aws.vpc.getAZSubnetForDefaultVPC( @get("name") )
+        if defaultSubnet
+          cidr = defaultSubnet.cidrBlock
+        else
+          return true
+
+      ipCount = 0
+      for child in @children()
+        if child.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+          eni = child.getEmbedEni()
+        else if child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
+          eni = child
+        else
+          continue
+
+        ipCount += eni.get("ips").length
+
+      maxIpCount = MC.aws.eni.getAvailableIPCountInCIDR( cidr )
+      maxIpCount >= ipCount
+
     draw : ( isCreate ) ->
 
       if isCreate

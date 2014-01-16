@@ -771,8 +771,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            if flag isnt 'RUN_STACK'
-                me.setFlag id, 'PENDING_APP', region
+            #if flag isnt 'RUN_STACK'
+            #    me.setFlag id, 'PENDING_APP', region
+            #    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
             if !result.is_error
 
@@ -796,13 +797,27 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
 
                 #me.trigger 'TOOLBAR_REQUEST_FAILED', flag, name
 
-                if flag isnt 'RUN_STACK'
-                    me.setFlag id, 'STOPPED_APP', region
-
-                else
+                if flag is 'RUN_STACK'
+                #    me.setFlag id, 'STOPPED_APP', region
+                #
+                #else
                     # remove the app name from app_list
                     if name in MC.data.app_list[region]
                         MC.data.app_list[region].splice MC.data.app_list[region].indexOf(name), 1
+
+                # push UPDATE_APP_STATE
+                if item_state_map[id].is_running is true
+                    state = constant.APP_STATE.APP_STATE_RUNNING
+                    icon  = 'running'
+                else
+                    state = constant.APP_STATE.APP_STATE_STOPPED
+                    icon  = 'stopped'
+                ide_event.trigger ide_event.UPDATE_APP_STATE, state, id
+
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, icon, id
+
+                # push UPDATE_APP_LIST
+                ide_event.trigger ide_event.UPDATE_APP_LIST, null, [ id ]
 
         #reqHandle : (flag, id, name, req, dag) ->
         reqHandle : (idx, dag) ->
@@ -891,8 +906,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                                     $('#modal-cancel').click () ->
                                         me.setFlag id, 'STOPPED_APP', region
 
-                            else
-                                me.setFlag id, 'STOPPED_APP', region
+                            #else
+                            #    me.setFlag id, 'STOPPED_APP', region
 
                         when constant.OPS_STATE.OPS_STATE_DONE
 

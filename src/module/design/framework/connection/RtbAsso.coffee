@@ -25,6 +25,9 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
       null
 
     serialize : ( components )->
+      # Do nothing if the line is implicit
+      if @get("implicit") then return
+
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
       rtb = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable )
 

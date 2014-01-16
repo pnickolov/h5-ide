@@ -16,6 +16,13 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
             @setDestroyAfterInit()
             return
 
+      # Hide sglist between lc and expandedasg
+      expandAsg = @getTarget "ExpandedAsg"
+      lc        = @getTarget constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
+        @setDestroyAfterInit()
+        return
+
 
       # If the line is created by the user, we should a popup dialog to let
       # user add sgrule. And then immediately remove the sgline

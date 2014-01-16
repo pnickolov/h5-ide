@@ -136,7 +136,7 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         else
           deviceName = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 
-        $.each ami_info.blockDeviceMapping, (key, value) ->
+        $.each ami_info.blockDeviceMapping || [], (key, value) ->
           if key.slice(0, 4) is "/dev/"
             k = key.slice(-1)
             index = deviceName.indexOf(k)

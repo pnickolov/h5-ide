@@ -390,10 +390,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     for member, idx in component.groupMembers()
       
       state = ""
-      if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+      if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         instance_data = MC.data.resource_list[ Design.instance().get('region') ][ member.appId ]
         state = if instance_data then instance_data.instanceState.name  else "unknown"
-      
+
       list.push {
         id      : member.id
         name    : name

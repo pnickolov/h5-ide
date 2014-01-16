@@ -34,7 +34,8 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       }
 
   }, {
-    handleTypes : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+    handleTypes  : constant.AWS_RESOURCE_TYPE.AWS_SNS_Topic
+    resolveFirst : true
 
     isTopicNeeded : ()->
       ScalingPolicyModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy )
@@ -56,12 +57,16 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         new TopicModel()
       @allObjects()[0]
 
-    deserialize : ( data, layout_data, resolve ) ->
+    preDeserialize : ( data, layout_data ) ->
       new TopicModel({
         id    : data.uid
         appId : data.resource.TopicArn
         name  : data.resource.DisplayName or data.resource.Name
       })
+      null
+
+    deserialize : ()->
+      # Does nothing
       null
   }
 

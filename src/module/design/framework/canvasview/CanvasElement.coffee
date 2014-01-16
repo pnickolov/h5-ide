@@ -465,14 +465,24 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
             id         : volume.volumeId
           }
         else
-          #volume not exist
-          vl.push {
-            name       : v.deviceName
-            snapshotId : v.SnapshotId || ""
-            size       : v.Size
-            id         : v.VolumeId
-            deleted    : "deleted"
-          }
+          if @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+            #in asg,volume data maybe delay
+            vl.push {
+              name       : v.deviceName
+              snapshotId : v.ebs.snapshotId || ""
+              size       : ""
+              id         : v.ebs.volumeId
+            }
+          else
+            #volume not exist
+            vl.push {
+              name       : v.deviceName
+              snapshotId : v.ebs.snapshotId || ""
+              size       : ""
+              id         : v.ebs.volumeId
+              deleted    : "deleted"
+            }
+
 
     vl
 

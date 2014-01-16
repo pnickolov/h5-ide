@@ -199,7 +199,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       if not Design.instance().modeIsStack() and @parent()
         data = MC.data.resource_list[ Design.instance().region() ][ @parent().get("appId") ]
         numberGroup = node.children(".instance-number-group")
-        if data and data.Instances and data.Instances.member and data.Instances.member.length > 1
+        if data and data.Instances and data.Instances.member and data.Instances.member.length > 0
           CanvasManager.toggle numberGroup, true
           CanvasManager.update numberGroup.children("text"), data.Instances.member.length
         else

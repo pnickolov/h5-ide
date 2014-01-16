@@ -18,17 +18,15 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         console.debug( "Sns Topic is not serialized, because nothing use it and it doesn't have appId." )
         return
 
-      n = "sns-topic"
-
       {
         component :
-          name : n
+          name : "sns-topic"
           type : @type
           uid  : @id
           resource :
             DeliveryPolicy : ""
-            DisplayName    : n
-            Name           : n
+            DisplayName    : @get("name")
+            Name           : @get("name")
             Policy         : ""
             TopicArn       : @get("appId")
       }

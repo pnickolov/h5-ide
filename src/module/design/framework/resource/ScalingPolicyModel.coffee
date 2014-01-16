@@ -15,6 +15,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
       alarmData      : {
         id                 : MC.guid()
+        alarmName          : ""
         namespace          : "AWS/AutoScaling"
         metricName         : "CPUUtilization"
         comparisonOperator : ">="
@@ -37,6 +38,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         namespace : "AWS/AutoScaling"
         unit      : ""
         appId     : @attributes.alarmData.appId
+        alarmName : @attributes.alarmData.alarmName
       }, alarmData
       null
 
@@ -110,7 +112,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         uid  : alarmData.id
         resource :
           AlarmArn  : alarmData.appId
-          AlarmName : @get("name") + "-alarm"
+          AlarmName : alarmData.alarmName or ( @get("name") + "-alarm" )
           ComparisonOperator : alarmData.comparisonOperator
           EvaluationPeriods  : alarmData.evaluationPeriods
           MetricName         : alarmData.metricName
@@ -148,6 +150,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
         alarmData = {
           id                 : data.uid
           name               : data.name
+          alarmName          : data.resource.AlarmName
           appId              : data.resource.AlarmArn
           comparisonOperator : data.resource.ComparisonOperator
           evaluationPeriods  : data.resource.EvaluationPeriods

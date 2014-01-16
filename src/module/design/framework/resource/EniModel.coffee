@@ -684,7 +684,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         description     : data.resource.Description
         sourceDestCheck : data.resource.SourceDestCheck
         assoPublicIp    : data.resource.AssociatePublicIpAddress
-        attachmentId    : data.resource.AttachmentId
+        attachmentId    : if attachment then attachment.AttachmentId else ""
 
         ips : []
 

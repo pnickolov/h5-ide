@@ -203,7 +203,6 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
 
         asg = resolve( MC.extractID( data.resource.AutoScalingGroupName) )
         asg.addScalingPolicy( policy )
-        policy.__asg = asg
       null
   }
 

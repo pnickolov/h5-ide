@@ -1022,7 +1022,7 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                     console.log 'not support request state:' + req_state
 
             if state
-                console.log 'UPDATE_APP_STATE, state:' + state + ', data:' + data
+                console.log 'toolbar:UPDATE_APP_STATE', state, data
 
                 # set flag
                 data.flag_list.flag = flag

@@ -88,9 +88,9 @@
     </li>
     {{/each}}
   </ul>
-  {{#if have_vpc}}
+  {{#unless isclassic}}
   <div class="option-group-head">{{i18n "PROP_ELB_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
   <div class="option-group sg-group">Loading...</div>
-  {{/if}}
+  {{/unless}}
 
 </article>

@@ -12,6 +12,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
         init : ( uid )->
 
             this.set 'id', uid
+            this.set 'uid', uid
 
             myElbComponent = Design.instance().component( uid )
 
@@ -53,21 +54,8 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                   null
 
-            if elb.Subnets
-
-              elb.isClassic = false
-
-            else
-              elb.isClassic = true
-
-            defaultVPC = false
-            if MC.aws.aws.checkDefaultVPC()
-                defaultVPC = true
-
-            if defaultVPC or myElbComponent.get 'VpcId'
-                this.set 'have_vpc', true
-            else
-                this.set 'have_vpc', false
+            elb.isclassic  = Design.instance().typeIsClassic()
+            elb.defaultVPC = Design.instance().typeIsDefaultVpc()
 
             elb.distribution = []
 
@@ -129,8 +117,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     az_detail.total_instance += 1
 
                     return false
-
-            elb.isclassic = Design.instance().typeIsClassic()
 
             @set elb
             @set "componentUid", myElbComponent.id

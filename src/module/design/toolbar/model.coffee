@@ -952,7 +952,8 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
                             app_list.push item.id
 
                         if app_list
-                            ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
+                            if flag isnt 'RUN_STACK'
+                                ide_event.trigger ide_event.UPDATE_APP_LIST, flag, app_list
                         else
                             ide_event.trigger ide_event.UPDATE_APP_LIST
 

@@ -4371,11 +4371,11 @@ MC.canvas.event.groupResize = {
 
 		if (type === 'AWS.VPC.Subnet')
 		{
-			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 13;
+			port_top = (group_height * MC.canvas.GRID_HEIGHT / 2) - 5;
 
-			event_data.group_port[0].attr('transform', 'translate(-10, ' + port_top + ')');
+			event_data.group_port[0].attr('transform', 'translate(-12, ' + port_top + ')');
 
-			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 2) + ', ' + port_top + ')');
+			event_data.group_port[1].attr('transform', 'translate(' + (group_width * MC.canvas.GRID_WIDTH + 4) + ', ' + port_top + ')');
 
 			//group_node.reConnect();
 		}

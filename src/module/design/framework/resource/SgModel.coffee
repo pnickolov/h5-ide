@@ -29,6 +29,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     defaults :
       description : "Custom Security Group"
+      groupName   : ""
 
     initialize : ( attributes, option )->
       @color = @generateColor()
@@ -199,7 +200,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         resource :
           Default          : @isDefault()
           GroupId          : @get("appId")
-          GroupName        : @get("name")
+          GroupName        : @get("groupName") or @get("name")
           GroupDescription : @get("description")
           OwnerId          : ""
           VpcId            : @getVpcRef()
@@ -283,9 +284,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     deserialize : ( data, layout_data, resolve )->
 
       group = new Model({
-        name  : data.name
-        id    : data.uid
-        appId : data.resource.GroupId
+        name      : data.name
+        id        : data.uid
+        appId     : data.resource.GroupId
+        groupName : data.resource.GroupName
 
         description : data.resource.GroupDescription
       }, { isDeserialize : true} )

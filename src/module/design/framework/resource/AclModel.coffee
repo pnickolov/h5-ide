@@ -10,12 +10,15 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     type : "AclAsso"
     oneToMany : constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl
 
+    defaults :
+      associationId : ""
+
     serialize : ( components )->
       sb  = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet )
       acl = @getTarget( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkAcl )
 
       components[ acl.id ].resource.AssociationSet.push {
-        NetworkAclAssociationId : ""
+        NetworkAclAssociationId : @get("associationId")
         NetworkAclId : ""
         SubnetId: sb.createRef( "SubnetId" )
       }
@@ -186,7 +189,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
       acl = resolve( data.uid )
 
       for asso in data.resource.AssociationSet
-        new AclAsso( acl, resolve( MC.extractID(asso.SubnetId) ) )
+        new AclAsso( acl, resolve( MC.extractID(asso.SubnetId) ), { associationId : asso.NetworkAclAssociationId } )
       null
   }
 

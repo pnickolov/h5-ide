@@ -655,9 +655,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           NetworkInterfaceId : ""
           PrivateIpAddress   : ""
           AllowReassociation      : ""
-          AssociationId           : ""
+          AssociationId           : eipData.associationId or ""
           NetworkInterfaceOwnerId : ""
-          PublicIp                : ""
+          PublicIp                : eipData.publicIp or ""
       }
 
     serialize : ()->
@@ -754,8 +754,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
         if data.resource.EipResource
           eipData = {
-            id : data.resource.EipResource.uid
-            allocationId : data.resource.EipResource.resource.AllocationId
+            id            : data.resource.EipResource.uid
+            allocationId  : data.resource.EipResource.resource.AllocationId
+            associationId : data.resource.EipResource.resource.AssociationId
+            publicIp      : data.resource.EipResource.resource.PublicIp
           }
 
         members[data.index-1] = {

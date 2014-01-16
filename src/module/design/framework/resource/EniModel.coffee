@@ -537,8 +537,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
               PrivateIpAddress   : @createRef( "PrivateIpAddressSet.#{idx}.PrivateIpAddress", memberData.id )
               NetworkInterfaceOwnerId : ""
               AllowReassociation      : ""
-              AssociationId           : ""
-              PublicIp                : ""
+              AssociationId           : eip.associationId or ""
+              PublicIp                : eip.publicIp or ""
           }
       ips[0].Primary = true
 
@@ -702,8 +702,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         if ip.EipResource
           ipObj.hasEip  = true
           ipObj.eipData =
-            id           : ip.EipResource.uid
-            allocationId : ip.EipResource.resource.AllocationId
+            id            : ip.EipResource.uid
+            allocationId  : ip.EipResource.resource.AllocationId
+            associationId : ip.EipResource.resource.AssociationId
+            publicIp      : ip.EipResource.resource.PublicIp
         attr.ips.push( ipObj )
 
 

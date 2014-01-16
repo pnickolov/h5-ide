@@ -552,7 +552,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
     @eachComponent ( comp )->
       appId = comp.get("appId")
-      if appId and appId.indexOf(":autoScalingGroup:")>0
+      if appId and appId.indexOf(":autoScalingGroup:")>0 and resource_list[ appId ]
         #appId is asg, need delete instance in asg
         for val,key in resource_list[ appId ].Instances.member
           delete resource_list[ val.InstanceId ]

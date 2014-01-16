@@ -107,7 +107,10 @@ define [ 'event',
             that.cmdParaObjMap = that.model.get('cmdParaObjMap')
             that.cmdModuleMap = that.model.get('cmdModuleMap')
             that.moduleCMDMap = that.model.get('moduleCMDMap')
-            that.langTools = ace.require("ace/ext/language_tools")
+
+            that.langTools = ace.require('ace/ext/language_tools')
+            that.resRefHighLight = ace.require('ace/model/res-ref')
+
             that.resAttrDataAry = that.model.get('resAttrDataAry')
             that.resStateDataAry = that.model.get('resStateDataAry')
             that.groupResSelectData = that.model.get('groupResSelectData')
@@ -1211,6 +1214,7 @@ define [ 'event',
             $editorElem.data('editor', editor)
 
             editor.hintObj = hintObj
+            editor.getSession().setMode(that.resRefHighLight)
 
             # config editor
 

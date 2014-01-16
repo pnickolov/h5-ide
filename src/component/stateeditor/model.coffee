@@ -396,7 +396,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			appId = MC.canvas_data.id
 			resId = res_id
 
-			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), 'test_app'
+			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), appId, resId
 
 			that.on 'STATE_LOG_RETURN', ( result ) ->
 
@@ -409,6 +409,9 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 						statusObj = statusDataAry[0]
 
 						logAry = statusObj.statuses
+
+						if not (logAry and _.isArray(logAry))
+							logAry = []
 
 						that.set('stateLogDataAry', logAry)
 

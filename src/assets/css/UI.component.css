@@ -1312,11 +1312,10 @@ textarea {
 /* Notification */
 #notification_wrap {
 	color      : #FFF;
-	overflow   : auto;
 	position   : fixed;
 	top        : 0;
 	width      : 100%;
-	height     : auto;
+	height     : 0;
 	text-align : center;
 	z-index    : 100;
 }

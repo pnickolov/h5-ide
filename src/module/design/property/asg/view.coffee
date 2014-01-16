@@ -211,7 +211,7 @@ define [ '../base/view',
             $li.find(".name").html data.name
             $li.find(".asg-p-metric").html  metric
             $li.find(".asg-p-eval").html    data.alarmData.comparisonOperator + " " + data.alarmData.threshold + unit
-            $li.find(".asg-p-periods").html data.alarmData.evaluationPeriods + "x" + data.alarmData.period + "s"
+            $li.find(".asg-p-periods").html data.alarmData.evaluationPeriods + "x" + Math.round( data.alarmData.period / 60 ) + "m"
             $li.find(".asg-p-trigger").html( data.state ).attr("class", "asg-p-trigger asg-p-tag asg-p-trigger-" + data.state )
             $li.find(".asg-p-adjust").html  data.adjustment + " " + data.adjustmentType
 
@@ -265,7 +265,7 @@ define [ '../base/view',
                     minAdjustStep : 1
                     alarmData : {
                         evaluationPeriods : 2
-                        period : 300
+                        period : 5
                     }
 
             data.noSNS = not this.model.attributes.has_sns_sub
@@ -368,7 +368,7 @@ define [ '../base/view',
             data =
                 uid              : $("#property-asg-policy").data("uid")
                 name             : $("#asg-policy-name").val()
-                cooldown         : $("#asg-policy-cooldown").val()
+                cooldown         : $("#asg-policy-cooldown").val() * 60
                 minAdjustStep    : $("#asg-policy-step").val()
                 adjustment       : $("#asg-policy-adjust").val()
                 adjustmentType   : $("#asg-policy-adjust-type .selected").data("id")
@@ -378,7 +378,7 @@ define [ '../base/view',
                 alarmData : {
                     metricName         : $("#asg-policy-metric .selected").data("id")
                     comparisonOperator : $("#asg-policy-eval .selected").data("id")
-                    period             : $("#asg-policy-second").val()
+                    period             : $("#asg-policy-second").val() * 60
                     evaluationPeriods  : $("#asg-policy-periods").val()
                     statistic          : $("#asg-policy-statistics .selected").data("id")
                     threshold          : $("#asg-policy-threshold").val()

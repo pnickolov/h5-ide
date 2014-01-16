@@ -82,7 +82,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           PolicyName           : @get("name")
           PolicyARN            : @get("appId")
           MinAdjustmentStep    : @get("minAdjustStep")
-          Cooldown             : @get("cooldown")
+          Cooldown             : Math.round( @get("cooldown") / 60 ) * 60
           AutoScalingGroupName : @__asg.createRef( "AutoScalingGroupName" )
           AdjustmentType       : @get("adjustmentType")
 
@@ -115,7 +115,7 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
           EvaluationPeriods  : alarmData.evaluationPeriods
           MetricName         : alarmData.metricName
           Namespace          : alarmData.namespace
-          Period             : alarmData.period
+          Period             : Math.round( alarmData.period / 60 ) * 60
           Statistic          : alarmData.statistic
           Threshold          : alarmData.threshold
           Unit               : alarmData.unit

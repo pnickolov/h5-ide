@@ -2151,6 +2151,10 @@ module.exports =
       en: "Seconds"
       zh: "秒"
 
+    PROP_ASG_UNIT_MINS:
+      en: "Minutes"
+      zh: "分"
+
     PROP_ASG_HEALTH_CHECK_TYPE:
       en: "Health Check Type"
       zh: "健康度检查类型"
@@ -2312,8 +2316,8 @@ module.exports =
       zh: "周期"
 
     PROP_ASG_ADD_POLICY_SECONDS:
-      en: "seconds, enter ALARM state."
-      zh: "秒时，进入警报状态"
+      en: "minutes, enter ALARM state."
+      zh: "分时，进入警报状态"
 
     PROP_ASG_ADD_POLICY_START_SCALING:
       en: "Start scaling activity when in"

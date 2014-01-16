@@ -7,10 +7,11 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
   IpObject = ( attr )->
     if not attr then attr = {}
 
-    this.hasEip     = attr.hasEip or false
-    this.autoAssign = if attr.autoAssign isnt undefined then attr.autoAssign else true
-    this.ip         = attr.ip or "x.x.x.x"
-    this.eipData    = attr.eipData or { id : MC.guid() }
+    this.hasEip       = attr.hasEip or false
+    this.autoAssign   = if attr.autoAssign isnt undefined then attr.autoAssign else true
+    this.ip           = attr.ip or "x.x.x.x"
+    this.eipData      = attr.eipData or { id : MC.guid() }
+    this.fixedIpInApp = attr.fixedIpInApp or false
     null
 
 
@@ -159,20 +160,20 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
     getIpArray : ()->
 
       cidr            = @subnetCidr()
-      editable        = @serverGroupCount() is 1
+      isServergroup   = @serverGroupCount() > 1
       prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix( cidr )
       ips             = []
 
       for ip, idx in @get("ips")
 
         obj = {
-          hasEip     : ip.hasEip
-          autoAssign : ip.autoAssign
-          editable   : editable
-          prefix     : prefixSuffixAry[0]
+          hasEip       : ip.hasEip
+          autoAssign   : ip.autoAssign
+          editable     : not ( isServergroup or ip.fixedIpInApp )
+          prefix       : prefixSuffixAry[0]
         }
 
-        if obj.autoAssign
+        if obj.autoAssign or isServergroup
           obj.suffix = prefixSuffixAry[1]
         else
           ipAry = ip.ip.split(".")
@@ -641,8 +642,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       }
       for ip in data.resource.PrivateIpAddressSet || []
         ipObj = new IpObject({
-          autoAssign : ip.AutoAssign
-          ip         : ip.PrivateIpAddress
+          autoAssign   : ip.AutoAssign
+          ip           : ip.PrivateIpAddress
+          fixedIpInApp : Design.instance().modeIsApp()
         })
         if ip.EipResource
           ipObj.eipData =
@@ -692,8 +694,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       for ip in data.resource.PrivateIpAddressSet || []
         autoAssign = if Design.instance().modeIsStack() then ip.autoAssign else false
         ipObj = new IpObject({
-          autoAssign : autoAssign
-          ip         : ip.PrivateIpAddress
+          autoAssign   : autoAssign
+          ip           : ip.PrivateIpAddress
+          fixedIpInApp : Design.instance().modeIsApp()
         })
         if ip.EipResource
           ipObj.hasEip  = true

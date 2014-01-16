@@ -3,10 +3,10 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
   Design = null
 
   ### $canvas is a adaptor for MC.canvas.js ###
-  $canvas = ( id )->
+  $canvas = ( id, defaultType )->
     component = Design.__instance.component(id)
     if not component
-      component = { id : id }
+      component = { id : id, type : defaultType }
       quick = true
 
     if component.node_line

@@ -124,6 +124,7 @@ define [ 'event', 'i18n!nls/lang.js',
 
         initialize: ->
             $( document.body ).on 'click', 'div.nav-region-group a', @gotoRegion
+            $( document.body ).on 'click', '#dashboard-global',      @gotoRegion
             # work for dashboard and toolbar
             $( document.body ).on 'keyup', '#confirm-app-name', @confirmAppName
 
@@ -161,6 +162,7 @@ define [ 'event', 'i18n!nls/lang.js',
             @$el.find( selector ).html @loading_failed
 
         switchRegion: ( event ) ->
+            console.log 'switchRegion'
             target = $ event.currentTarget
             region = target.data 'region'
             current_region = region if region isnt 'global'
@@ -318,9 +320,11 @@ define [ 'event', 'i18n!nls/lang.js',
             ide_event.trigger ide_event.OPEN_DESIGN_TAB, 'NEW_STACK', null, $target.data( 'region' ) or current_region, null
 
         gotoRegion: ( event ) ->
+            console.log 'gotoRegion'
             if event is Object event
                 $target = $ event.currentTarget
                 region = ( $target.attr 'id' ) || ( $target.data 'regionName' )
+                region = region.replace 'dashboard-global', 'global'
             else
                 region = event
 

@@ -174,8 +174,8 @@ define [ 'jquery', 'event', 'MC', 'base_main', 'vpc_model' ], ( $, ide_event, MC
                 console.log 'NAVIGATION_TO_DASHBOARD_REGION'
                 if result is 'global'
                     ide_event.trigger ide_event.RETURN_OVERVIEW_TAB
-                else
-                    view.trigger 'RETURN_REGION_TAB', result
+                #else
+                #    view.trigger 'RETURN_REGION_TAB', result
                 null
 
             # switch region tab

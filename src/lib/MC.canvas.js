@@ -2178,7 +2178,7 @@ MC.canvas.volume = {
 			)
 			{
 				//MC.canvas.volume.select(this.id);
-				$canvas( this.id ).select();
+				$canvas( this.id, 'AWS.EC2.EBS.Volume' ).select();
 
 				return false;
 			}
@@ -2314,7 +2314,7 @@ MC.canvas.volume = {
 						$canvas( target_id ).volume().length
 					);
 
-					$canvas( volume_item.id ).select();
+					$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 				}
 
 				// if (volume_item.id === null)
@@ -2353,7 +2353,7 @@ MC.canvas.volume = {
 							$canvas( target_id ).volume().length
 						);
 
-						$canvas( volume_item.id ).select();
+						$canvas( volume_item.id, 'AWS.EC2.EBS.Volume' ).select();
 					}
 				}
 			}

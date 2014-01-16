@@ -18,7 +18,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     this.id = component.id
 
-    if quick isnt true
+    if quick is true
+      this.type = component.type
+    else
       if CanvasElementTypeMap[ component.type ]
         this.type = CanvasElementTypeMap[ component.type ]
       else
@@ -393,7 +395,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
       list.name = component.parent().get("name")
 
     for member, idx in component.groupMembers()
-      
+
       state = ""
       if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         instance_data = MC.data.resource_list[ Design.instance().get('region') ][ member.appId ]

@@ -43,7 +43,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design' ], ( PropertyMod
       data.uid = uid
       @set data
 
-      @set "displayAssociatePublicIp", Design.instance().typeIsVpc()
+      @set "displayAssociatePublicIp", not Design.instance().typeIsClassic()
       @set "monitorEnabled", @isMonitoringEnabled()
       @set "can_set_ebs", @lc.isEbsOptimizedEnabled()
       @getInstanceType()

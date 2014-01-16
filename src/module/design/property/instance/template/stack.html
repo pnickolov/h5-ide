@@ -130,7 +130,6 @@
 			</div>
 			<label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
 		</section>
-		{{#unless defaultVpc}}
 		<section class="property-control-group">
 			<div class="checkbox">
 				<input id="property-instance-public-ip" type="checkbox" {{#if multi_enis}}disabled="disabled"{{/if}} {{#if eni.assoPublicIp}}checked="checked" {{/if}} value="None" name="property-instance-public-ip" />
@@ -138,7 +137,6 @@
 			</div>
 			<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
 		</section>
-		{{/unless}}
 		<section class="property-control-group">
 			<div class="network-list-wrap">
 				<div class="network-list-header clearfix">

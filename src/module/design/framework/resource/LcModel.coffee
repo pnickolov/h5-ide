@@ -5,7 +5,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
   Model = ComplexResModel.extend {
 
-    defaults :
+    defaults : ()->
       x        : 0
       y        : 0
       width    : 9
@@ -16,7 +16,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       instanceType : "m1.small"
       monitoring   : false
       userData     : ""
-      publicIp     : false
+      publicIp     : Design.instance().typeIsDefaultVpc()
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"

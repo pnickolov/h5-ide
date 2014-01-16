@@ -58,7 +58,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         if not Design.instance().typeIsClassic()
           #create eni0
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
-          @setEmbedEni( new EniModel({ name : "eni0" }, { instance: this }) )
+          @setEmbedEni( new EniModel({
+            name : "eni0"
+            assoPublicIp : Design.instance().typeIsDefaultVpc()
+          }, { instance: this }) )
 
       else
         @draw( true )

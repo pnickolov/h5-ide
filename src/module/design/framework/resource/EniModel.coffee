@@ -567,9 +567,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       else
         az = parent.get("name")
 
-      assoPublicIp = @get("assoPublicIp")
-      if Design.instance().typeIsDefaultVpc() and @embedInstance()
-        assoPublicIp = true
 
       component =
         index           : index
@@ -603,7 +600,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           OwnerId          : ""
           PrivateIpAddress : ""
 
-          AssociatePublicIpAddress : assoPublicIp
+          AssociatePublicIpAddress : @get("assoPublicIp")
           #reserved
           PrivateDnsName     : ""
           Status             : ""

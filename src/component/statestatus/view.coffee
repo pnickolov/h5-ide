@@ -67,9 +67,9 @@ define [ 'event'
             scrollbar.scrollTo @$( '.scroll-wrap' ), 'top': 0
 
         renderNew: () ->
-            @model.flushNew()
-            @$( '.update-tip' ).html ''
+            @$( '.update-tip div' ).hide()
             @renderAllItem()
+            @model.flushNew()
 
         renderAllItem: () ->
             items = @items
@@ -83,13 +83,20 @@ define [ 'event'
             else
                 @renderPending()
 
-        renderContainer: () ->
-            @$( '.status-item' ).html @template.container
-
-
         renderItem: ( model, index ) ->
             view = new @itemView model: model
-            @$( '.state-status-list' ).append view.render().el
+            view.render()
+            view.$el.hide()
+            @$( '.state-status-list' ).append view.el
+
+            if model in @model.get 'new'
+                _.defer ->
+                    view.$el.fadeIn 300
+            else
+                view.$el.show()
+
+        renderContainer: () ->
+            @$( '.status-item' ).html @template.container
 
         renderPending: () ->
             @$( '.status-item' ).html @template.pending

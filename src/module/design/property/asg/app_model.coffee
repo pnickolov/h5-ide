@@ -57,7 +57,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                 step       : policy_data.MinAdjustmentStep
                 cooldown   : policy_data.Cooldown
                 name       : policy_data.PolicyName
-                arn        : sp.get 'PolicyARN'
+                arn        : sp.get 'appId'
 
             #cloudWatchPolicyMap[ "#{comp.get 'name'}-alarm" ] = policy
 
@@ -76,11 +76,11 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
                     # So that view can show cloudwatch info.
                     policy.arn = ""
 
-                    policy.evaluation = alarm_data.ComparisonOperator
+                    policy.evaluation = sp.get("alarmData").comparisonOperator
                     policy.metric     = alarm_data.MetricName
                     policy.notify     = actions.length is 2
-                    policy.preriods   = alarm_data.EvaluationPeriods
-                    policy.second     = alarm_data.Period
+                    policy.periods    = alarm_data.EvaluationPeriods
+                    policy.minute     = Math.round( alarm_data.Period / 60 )
                     policy.statistics = alarm_data.Statistic
                     policy.threshold  = alarm_data.Threshold
                     policy.trigger    = trigger_arr[ idx ]

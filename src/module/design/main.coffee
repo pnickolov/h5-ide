@@ -202,13 +202,13 @@ define [ 'i18n!nls/lang.js', 'constant', './module/design/framework/test' ], ( l
                 if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_updated
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'UPDATING_SUCCESS', id
 
-                # changed
-                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
-                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
-
                 # changed fail
                 else if MC.process[ id ].flag_list and MC.process[ id ].flag_list.is_failed
                     ide_event.trigger ide_event.SHOW_DESIGN_OVERLAY, 'CHANGED_FAIL', id
+
+                # changed
+                else if type in [ constant.APP_STATE.APP_STATE_RUNNING, constant.APP_STATE.APP_STATE_STOPPED, constant.APP_STATE.APP_STATE_TERMINATED ]
+                    ide_event.trigger ide_event.HIDE_DESIGN_OVERLAY
 
                 # changing
                 else if type in [ constant.APP_STATE.APP_STATE_STARTING, constant.APP_STATE.APP_STATE_STOPPING, constant.APP_STATE.APP_STATE_TERMINATING, constant.APP_STATE.APP_STATE_UPDATING ]

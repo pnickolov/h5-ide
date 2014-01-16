@@ -21,6 +21,12 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
 
+    constructor : ( attr, option )->
+      if option and option.createByUser and attr.parent.get("lc")
+          return
+
+      ComplexResModel.call( this, attr, option )
+
     initialize : ( attr, option )->
       # Draw before create SgAsso
       @draw(true)

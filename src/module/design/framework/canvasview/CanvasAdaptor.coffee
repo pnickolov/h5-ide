@@ -74,10 +74,13 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     attributes.parent = parent
     delete attributes.groupUId
 
-    if parent and parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-      attributes.x = parent.x() + 2
-      attributes.y = parent.y() + 3
-      type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    if parent
+      if parent.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        attributes.x = parent.x() + 2
+        attributes.y = parent.y() + 3
+        type = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+      else if parent.type is "ExpandedAsg"
+        return false
 
     Model = Design.modelClassForType type
 

@@ -590,7 +590,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           Attachment :
             InstanceId   : instanceId
             DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
-            AttachmentId : ""
+            AttachmentId : @get("attachmentId") or ""
             AttachTime   : ""
 
           SecondPriIpCount : ""
@@ -684,6 +684,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
         description     : data.resource.Description
         sourceDestCheck : data.resource.SourceDestCheck
         assoPublicIp    : data.resource.AssociatePublicIpAddress
+        attachmentId    : data.resource.AttachmentId
 
         ips : []
 

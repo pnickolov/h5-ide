@@ -248,7 +248,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           KeyName                  : ""
           SecurityGroups           : sgarray
           SpotPrice                : ""
-          LaunchConfigurationName  : @get("name")
+          LaunchConfigurationName  : @get("configName") or @get("name")
           KernelId                 : ""
           IamInstanceProfile       : ""
           InstanceType             : @get("instanceType")
@@ -277,6 +277,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         monitoring   : data.resource.InstanceMonitoring
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
+        configName   : data.resource.LaunchConfigurationName
 
         createdTime   : data.resource.CreatedTime
 

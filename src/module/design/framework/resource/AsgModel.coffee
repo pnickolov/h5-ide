@@ -553,7 +553,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           HealthCheckType        : healthCheckType
           HealthCheckGracePeriod : @get("healthCheckGracePeriod")
           TerminationPolicies    : @get("terminationPolicies")
-          AutoScalingGroupName   : @get("name")
+          AutoScalingGroupName   : @get("groupName") or @get("name")
           DesiredCapacity        : @get("capacity")
           LaunchConfigurationName : lcId
           EnabledMetrics                 : [{ Metric : "", Granularity : "" }]
@@ -588,6 +588,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         healthCheckType        : data.resource.HealthCheckType
         healthCheckGracePeriod : data.resource.HealthCheckGracePeriod
         terminationPolicies    : data.resource.TerminationPolicies
+        groupName              : data.resource.AutoScalingGroupName
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

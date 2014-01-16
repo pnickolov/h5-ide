@@ -344,7 +344,7 @@ define [ "CanvasManager",
           Instances : []
           CrossZoneLoadBalancing : @get("crossZone")
           VpcId                  : @getVpcRef()
-          LoadBalancerName       : @get("name")
+          LoadBalancerName       : @get("elbName") or @get("name")
           SecurityGroups         : sgs
 
           Scheme : if @get("internal") then "internal" else "internet-facing"
@@ -355,7 +355,7 @@ define [ "CanvasManager",
             Timeout                : @get("healthCheckTimeout")
             HealthyThreshold       : @get("healthyThreshold")
             UnhealthyThreshold     : @get("unHealthyThreshold")
-          DNSName : ""
+          DNSName : @get("dnsName") or ""
           Policies: {
               LBCookieStickinessPolicies : [{ PolicyName : "", CookieExpirationPeriod : "" }]
               AppCookieStickinessPolicies : [{ PolicyName : "", CookieName : ""}]
@@ -415,6 +415,8 @@ define [ "CanvasManager",
         internal  : data.resource.Scheme is 'internal'
         crossZone : !!data.resource.CrossZoneLoadBalancing
         listeners : []
+        dnsName   : data.resource.DNSName
+        elbName   : data.resource.LoadBalancerName
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

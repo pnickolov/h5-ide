@@ -55,7 +55,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         else
           console.error "No DefaultSG found when initialize InstanceModel"
 
-        if Design.instance().typeIsVpc()
+        if not Design.instance().typeIsClassic()
           #create eni0
           EniModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface )
           @setEmbedEni( new EniModel({ name : "eni0" }, { instance: this }) )

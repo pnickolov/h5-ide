@@ -198,9 +198,9 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
 
       if @get("main")
         component.resource.AssociationSet.push {
-          SubnetId: ""
+          Main         : "true" # Must be string.
+          SubnetId     : ""
           RouteTableId : ""
-          Main : true
           RouteTableAssociationId : ""
         }
 
@@ -224,7 +224,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
 
       if data.resource.AssociationSet
         if data.resource.AssociationSet[0]
-          asso_main = data.resource.AssociationSet[0].Main
+          asso_main = "" + data.resource.AssociationSet[0].Main is "true"
 
       rtb = new Model({
         id   : data.uid

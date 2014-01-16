@@ -31,6 +31,16 @@ define [ "../ResourceModel", "constant" ], ( ResourceModel, constant ) ->
       attribute.alarmData = $.extend defaults.alarmData, attribute.alarmData
       ResourceModel.call( this, attribute, option )
 
+    setAlarm : ( alarmData )->
+      @set "alarmData", $.extend {
+        id        : @attributes.alarmData.id
+        namespace : "AWS/AutoScaling"
+        unit      : ""
+        appId     : @attributes.alarmData.appId
+      }, alarmData
+      null
+
+
     getCost : ( priceMap, currency )->
 
       alarmData = @get("alarmData")

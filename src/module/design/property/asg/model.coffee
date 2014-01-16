@@ -99,7 +99,11 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
       else
         policy = Design.instance().component( policy_detail.uid )
+        alarmData = policy_detail.alarmData
+        policy.setAlarm( alarmData )
+        delete policy_detail.alarmData
         policy.set policy_detail
+        policy_detail.alarmData = alarmData
       null
   }
 

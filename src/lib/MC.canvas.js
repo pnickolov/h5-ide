@@ -2429,7 +2429,8 @@ MC.canvas.asgList = {
 		$('#asgList-wrap .selected').removeClass('selected');
 
 		target.addClass('selected');
-		$canvas( target.data('id') ).select();
+		$canvas( $('#asgList-wrap').data('target-id') ).select( target.data('id') );
+
 
 		return false;
 	}

@@ -332,7 +332,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         this.__mainEni.remove()
 
       # Remove attached volumes
-      for v in @get("volumeList") or emptyArray
+      for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
       # In AppEdit Mode, we need to delete all eni associated to this Instance.

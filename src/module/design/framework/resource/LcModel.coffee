@@ -62,7 +62,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
     remove : ()->
       # Remove attached volumes
-      for v in @get("volumeList") or emptyArray
+      for v in (@get("volumeList") or emptyArray).slice(0)
         v.remove()
 
       null

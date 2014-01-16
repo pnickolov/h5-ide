@@ -53,13 +53,17 @@ define [ "constant",
 
     isReparentable : ( newParent )->
       for child in @children()
-        if child.type isnt constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and child.type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-          continue
+        if child.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or child.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
 
-        for attach in child.connectionTargets( "EniAttachment" )
-          if attach.parent() isnt this
-            return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+          for attach in child.connectionTargets( "EniAttachment" )
+            if attach.parent() isnt this
+              return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
 
+        if child.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group or child.type is "ExpandedAsg"
+          if child.type is "ExpandedAsg"
+            child = child.get("originalAsg")
+          if child.getExpandAzs().indexOf( newParent ) != -1
+            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, child.get("name"), newParent.get("name")
       true
 
     isRemovable : ()->

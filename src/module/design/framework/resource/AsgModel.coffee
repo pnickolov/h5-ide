@@ -440,6 +440,29 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         asg.draw()
       null
 
+    getExpandSubnets : ()->
+      if @parent().type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        return []
+
+      subnets = [ @parent() ]
+      for expand in @get("expandedList")
+        subnets.push expand.parent()
+
+      _.uniq subnets
+
+    getExpandAzs : ()->
+      subnets = [ @parent() ]
+      for expand in @get("expandedList")
+        subnets.push expand.parent()
+      subnets = _.uniq subnets
+
+      if @parent().type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+        azs = _.uniq( _.map subnets, (sb)-> sb.parent() )
+      else
+        azs = subnets
+
+      azs
+
     draw : ( isCreate )->
 
       if isCreate

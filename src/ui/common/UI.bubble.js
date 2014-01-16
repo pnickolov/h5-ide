@@ -3,9 +3,9 @@
 #* Filename: UI.bubble
 #* Creator: Angel
 #* Description: UI.bubble
-#* Date: 20130823
+#* Date: 20140116
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 
@@ -25,6 +25,7 @@
 			data = target.data('bubble-data'),
 			bubble_box = $('#bubble-box'),
 			coordinate = {},
+			docElem = document.documentElement,
 			width,
 			height,
 			target_offset,
@@ -50,7 +51,7 @@
 			width = bubble_box.width();
 			height = bubble_box.height();
 
-			if (target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth)
+			if (target_offset.left + target_width + width - docElem.scrollLeft > window.innerWidth)
 			{
 				coordinate.left = target_offset.left - width - 15;
 				bubble_box.addClass('bubble-right');

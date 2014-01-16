@@ -302,7 +302,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           volumeSize : volume.Ebs.VolumeSize
           owner      : model
 
-        new VolumeModel(_attr, {})
+        new VolumeModel(_attr, {noNeedGenName:true})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

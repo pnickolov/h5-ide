@@ -324,10 +324,13 @@ define [ "CanvasManager",
 
       if Design.instance().typeIsClassic()
         subnets = []
-      else
-        # In defaultVpc, the subnet is created
+      else if Design.instance().typeIsDefaultVpc()
+        # In defaultVpc, there is not subnet component
         subnets = _.map @connectionTargets( "ElbAmiAsso" ), ( ami )-> ami.getSubnetRef()
         subnets = _.uniq( subnets )
+      else
+        subnets = _.map @connectionTargets( "ElbSubnetAsso" ), ( sb )-> sb.createRef("SubnetId")
+
 
       component =
         type : @type

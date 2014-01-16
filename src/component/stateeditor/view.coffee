@@ -353,8 +353,6 @@ define [ 'event',
 
                 that.bindCommandEvent($cmdValueItem)
 
-                that.bindParaListEvent($paraListItem, currentCMD)
-
                 null
 
         bindCommandEvent: ($cmdValueItem) ->
@@ -719,6 +717,10 @@ define [ 'event',
                 $stateItemList = that.$stateList.find('.state-item')
 
                 if $stateItem.hasClass('view')
+
+                    currentCMD = $stateItem.attr('data-command')
+                    $paraListItem = $stateItem.find('.parameter-list')
+                    that.bindParaListEvent($paraListItem, currentCMD)
 
                     # remove other item view
                     _.each $stateItemList, (otherStateItem) ->

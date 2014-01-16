@@ -205,6 +205,22 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     this.scaleAry     = 1
     this.lineStyle    = 2  # 0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
     this.selectedNode = []
+
+
+    # # #
+    # #
+    #
+    # Quick fix, might improve latter.
+    #
+    # #
+    # # #
+    attr =
+      'width' : this.sizeAry[0] * MC.canvas.GRID_WIDTH
+      'height': this.sizeAry[1] * MC.canvas.GRID_HEIGHT
+
+    $('#svg_canvas').attr( attr )
+    $('#canvas_container').css( attr )
+
     this
 
   Canvas.prototype.scale = ( ratio )->

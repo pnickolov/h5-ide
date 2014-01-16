@@ -76,12 +76,12 @@ define [ 'event'
             # test
             appStoped = Design.instance().getState() is 'Stopped'
 
-            if items.length and not appStoped
+            if appStoped
+                @renderPending()
+
+            if items.length
                 @renderContainer()
                 items.each @renderItem, this
-
-            else
-                @renderPending()
 
         renderItem: ( model, index ) ->
             view = new @itemView model: model

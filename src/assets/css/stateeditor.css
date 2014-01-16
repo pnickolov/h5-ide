@@ -764,6 +764,12 @@ body {
 	cursor: pointer;
 }
 
+#status-bar-modal .no-item {
+	padding-top: 79px;
+	color: #D3D6D6;
+	text-align: center;
+}
+
 /* state resource select */
 #state-editor-model .state-editor-res-select {
 	color: #ccc;

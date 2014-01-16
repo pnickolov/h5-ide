@@ -129,13 +129,15 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 stateList = [ stateList ]
 
             for state in stateList
+                ### develop
                 if state.app_id isnt MC.canvas_data.id
                     continue
+                ###
 
                 for status in state.statuses
                     if status.result is 'success'
                         succeed++
-                    else if status.result is 'failure'
+                    else if status.result is 'failed'
                         failed++
 
             $stateBar = $ '.statusbar-btn'
@@ -147,27 +149,41 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 .find( '.state-failed b' )
                 .text failed
 
+        loadStateStatusBar: ->
+            appStoped = Design.instance().getState() is 'Stopped'
+            if appStoped
+                return
+
+            $( '#main-statusbar .btn-state' ).show()
+            stateList = MC.data.websocket.collection.status.find().fetch()
+            @renderStateBar stateList
+
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, ( type, idx, statusData ) ->
+                stateList = MC.data.websocket.collection.status.find().fetch()
+                @renderStateBar stateList
+            , @
+
+        unloadStateStatusBar: ->
+            $( '#main-statusbar .btn-state' ).hide()
+            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
+
         hideStatusbar :  ->
             console.log 'hideStatusbar'
 
             # hide
             if Tabbar.current in [ 'app', 'appview' ]
                 $( '#main-statusbar .btn-ta-valid' ).hide()
-                $( '#main-statusbar .btn-state' ).show()
+                @loadStateStatusBar()
 
-                stateList = MC.data.websocket.collection.status.find().fetch()
-                @renderStateBar stateList
 
-                ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA, ( type, idx, statusData ) ->
-                    stateList = MC.data.websocket.collection.status.find().fetch()
-                    @renderStateBar stateList
-                , @
-
+            else if ( Tabbar.current is 'appedit' )
+                $( '#main-statusbar .btn-ta-valid' ).show()
+                @loadStateStatusBar()
             # show
             else
-                $( '#main-statusbar .btn-state' ).hide()
+
                 $( '#main-statusbar .btn-ta-valid' ).show()
-                ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA
+                @unloadStateStatusBar()
 
             if Tabbar.current is 'appedit'
                 $( '#canvas' ).css 'bottom', 24

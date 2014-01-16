@@ -15,7 +15,9 @@
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<div class="content_wrap scroll-content">
 			<div class="update-tip"></div>
-			<div class="status-item"></div>
+			<div class="status-item">
+				<p class="no-item">No failed item.</p>
+			</div>
 		</div>
 	</div>
 </div>
@@ -25,8 +27,12 @@
 	<i class="icon-state-failed"></i>
 </div>
 <div class="state-status-item-info">
-	<div class="state-status-item-desc">{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s>{{else}}has failed{{/if}} is updated.</div>
-	<div class="state-status-item-time">{{UTC time}}</div>
+	<div class="state-status-item-desc">
+		{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s>{{else}}has failed{{/if}} is updated.
+	</div>
+	<div class="state-status-item-time">
+		{{#if updated}}State log will update after change is applied.{{else}}{{UTC time}}{{/if}}
+	</div>
 </div>
 <div class="state-status-item-detail">
 	<i class="icon-btn"></i>
@@ -39,7 +45,8 @@
 </dl>
 
 <!-- statestatus-template-status-item-container -->
-<ul class="state-status-list"></ul>
+<ul class="state-status-list">
+</ul>
 
 <!-- statestatus-template-status-update -->
 <div class="state-status-update">

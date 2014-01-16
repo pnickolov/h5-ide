@@ -297,7 +297,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       # Create Volume for
       for volume in data.resource.BlockDeviceMapping || []
         _attr =
-          deviceName : volume.DeviceName
+          name       : volume.DeviceName
           snapshotId : volume.Ebs.SnapshotId
           volumeSize : volume.Ebs.VolumeSize
           owner      : model

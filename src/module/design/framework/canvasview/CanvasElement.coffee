@@ -229,9 +229,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
         if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
           type = "component_eni_group"
 
-      if this.type is "ExpandedAsg"
-        type  = constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-        subId = component.get("originalAsg").id
+      if this.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        if component.get("originalAsg")
+          subId = component.get("originalAsg").id
 
     else
       if this.type  is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and component.get("appId")

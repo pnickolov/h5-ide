@@ -49,10 +49,10 @@
 					<div class="selectbox elb-property-elb-protocol">
 						<div class="selection">{{protocol}}</div>
 						<ul class="dropdown">
-							<li class="item {{#ifCond protocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
-							<li class="item {{#ifCond protocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
-							<li class="item {{#ifCond protocol 'TCP'}}selected{{/ifCond}}">TCP</li>
-							<li class="item {{#ifCond protocol 'SSL'}}selected{{/ifCond}}">SSL</li>
+							<li data-id="HTTP" class="item {{#ifCond protocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
+							<li data-id="HTTPS" class="item {{#ifCond protocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
+							<li data-id="TCP" class="item {{#ifCond protocol 'TCP'}}selected{{/ifCond}}">TCP</li>
+							<li data-id="SSL" class="item {{#ifCond protocol 'SSL'}}selected{{/ifCond}}">SSL</li>
 						</ul>
 					</div>
 				</div>
@@ -68,10 +68,10 @@
 					<div class="selectbox elb-property-instance-protocol">
 						<div class="selection">{{instanceProtocol}}</div>
 						<ul class="dropdown">
-							<li class="item {{#ifCond protocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
-							<li class="item {{#ifCond protocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
-							<li class="item {{#ifCond protocol 'TCP'}}selected{{/ifCond}}">TCP</li>
-							<li class="item {{#ifCond protocol 'SSL'}}selected{{/ifCond}}">SSL</li>
+							<li data-id="HTTP" class="item {{#ifCond instanceProtocol 'HTTP'}}selected{{/ifCond}}">HTTP</li>
+							<li data-id="HTTPS" class="item {{#ifCond instanceProtocol 'HTTPS'}}selected{{/ifCond}}">HTTPS</li>
+							<li data-id="TCP" class="item {{#ifCond instanceProtocol 'TCP'}}selected{{/ifCond}}">TCP</li>
+							<li data-id="SSL" class="item {{#ifCond instanceProtocol 'SSL'}}selected{{/ifCond}}">SSL</li>
 						</ul>
 					</div>
 				</div>

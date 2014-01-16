@@ -156,36 +156,54 @@ define [ '../base/view',
             null
 
         protocolChanged : ( event )->
+
             $protocol = $( event.currentTarget )
-            protocol = $protocol.find(".selected").text()
-            port = if protocol is "HTTPS" or protocol is "SSL" then 443 else 80
-            $protocol.parent().siblings().find("input").val( port )
 
-            $otherSelected = $protocol.closest(".property-control-group").siblings().find("selectbox .selected")
-            otherProtocol = $otherSelected.text()
+            if event
+                thatElem = $(event.target)
+                value = thatElem.find('.selection').text()
+                if value
+                    portElem = null
+                    otherProtocolElem = null
+                    parentItemElem = thatElem.parents('.elb-property-listener')
+                    if thatElem.hasClass('elb-property-elb-protocol')
+                        portElem = parentItemElem.find('.elb-property-elb-port')
+                        otherProtocolElem = parentItemElem.find('.elb-property-instance-protocol')
+                    else
+                        portElem = parentItemElem.find('.elb-property-instance-port')
+                        otherProtocolElem = parentItemElem.find('.elb-property-elb-protocol')
+                    if value in ['HTTPS', 'SSL']
+                        portElem.val('443')
+                    else
+                        portElem.val('80')
 
-            layerMap =
-                'HTTP'  : 'application'
-                'HTTPS' : 'application'
-                'TCP'   : 'transport'
-                'SSL'   : 'transport'
-            switchMap =
-                'HTTP'  : 'TCP'
-                'HTTPS' : 'SSL'
-                'TCP'   : 'HTTP'
-                'SSL'   : 'HTTPS'
+                    # auto change protocol accord layers
+                    layerMap = {
+                        'HTTP': 'application',
+                        'HTTPS': 'application',
+                        'TCP': 'transport',
+                        'SSL': 'transport'
+                    }
+                    currentPtotocol = value
+                    otherProtocol = otherProtocolElem.find('.selection').text()
+                    if layerMap[currentPtotocol] isnt layerMap[otherProtocol]
+                        # diffrent layer
+                        otherProtocolElem.find('.selection').text(currentPtotocol)
+                        $allSelectItem = otherProtocolElem.find('.item')
+                        $allSelectItem.removeClass('selected')
+                        $selectProtocol = otherProtocolElem.find("[data-id=" + currentPtotocol + "]")
+                        $selectProtocol.addClass('selected')
 
-            if layerMap[ protocol ] isnt layerMap[ otherProtocol ]
-                newProtocol = switchMap[otherProtocol]
-                $otherProtocol = $otherSelected.removeClass(".selected").siblings().filter ()->
-                    $(this).text() is newProtocol
+                    if otherProtocolElem.hasClass('elb-property-elb-protocol')
+                        portElem = parentItemElem.find('.elb-property-elb-port')
+                    else
+                        portElem = parentItemElem.find('.elb-property-instance-port')
 
-                $otherProtocol.addClass("selected")
-                $otherProtocol.closest(".selectbox").children(".selection").text( newProtocol )
-
-                port = if newProtocol is "HTTPS" or newProtocol is "SSL" then 443 else 80
-                $otherProtocol.closest(".property-control-group").siblings().find("input").val( port )
-
+                    newOtherProtocol = otherProtocolElem.find('.selection').text()
+                    if newOtherProtocol in ['HTTPS', 'SSL']
+                        portElem.val('443')
+                    else
+                        portElem.val('80')
 
 
             @updateListener( $protocol.closest("li") )

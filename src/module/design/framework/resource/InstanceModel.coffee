@@ -570,7 +570,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
       null
 
     generateJSON : ()->
-      azName = tenancy = ""
+      azName  = ""
+      tenancy = @get("tenancy")
 
       p = @parent()
       if p.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet

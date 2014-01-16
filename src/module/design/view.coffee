@@ -129,10 +129,8 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 stateList = [ stateList ]
 
             for state in stateList
-                ### temp
                 if state.app_id isnt MC.canvas_data.id
                     continue
-                ###
 
                 for status in state.statuses
                     if status.result is 'success'

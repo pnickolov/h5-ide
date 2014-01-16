@@ -45,12 +45,10 @@ define [ 'backbone', 'jquery', 'underscore', 'MC' ], () ->
 
                 for status in state.statuses
 
-                    ### temp
                     if status.result isnt 'failed'
                         continue
                     if state.app_id isnt MC.canvas_data.id
                         continue
-                    ###
 
                     data =
                         id      : @__genId state.res_id, status.state_id

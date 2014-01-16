@@ -54,7 +54,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
                   null
 
-            elb.isclassic  = Design.instance().typeIsClassic()
+            elb.isClassic  = Design.instance().typeIsClassic()
             elb.defaultVPC = Design.instance().typeIsDefaultVpc()
 
             elb.distribution = []

@@ -143,6 +143,29 @@ define [ '../base/model',
             # The instance_id might be component uid or aws id
             if myInstanceComponent
                 instance_id = myInstanceComponent.get 'appId'
+            else
+                for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+                    if instance.get("appId") is instance_id
+                        @set "uid", instance.id
+                        found = true
+                        break
+                    else if instance.groupMembers
+                        for member in instance.groupMembers()
+                            if member and member.appId is instance_id
+                                @set "uid", instance.id
+                                found = true
+                                break
+                if not found
+                    resource_list = MC.data.resource_list[ Design.instance().region() ]
+                    for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+                        data = resource_list[ asg.get("appId") ]
+                        if not data then continue
+                        data = data.Instances
+                        if data.member then data = data.member
+                        for obj in data
+                            if obj is instance_id or obj.InstanceId is instance_id
+                                @set "uid", asg.get("lc").id
+                                break
 
             app_data = MC.data.resource_list[ Design.instance().region() ]
 

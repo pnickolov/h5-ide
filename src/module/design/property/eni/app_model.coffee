@@ -73,7 +73,7 @@ define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, const
             eni.readOnly    = true
             eni.isGroupMode = false
             eni.id          = uid
-            eni.uid         = uid
+            eni.uid         = if myEniComponent then myEniComponent.id else uid
             @set eni
 
 

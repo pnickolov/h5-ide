@@ -26,7 +26,7 @@
 {{#each parameter_list}}
 
 	{{#if type_line}}
-		<div class="parameter-item line {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item line {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
@@ -38,7 +38,7 @@
 	{{/if}}
 
 	{{#if type_dict}}
-		<div class="parameter-item dict {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item dict {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
@@ -50,7 +50,7 @@
 	{{/if}}
 
 	{{#if type_array}}
-		<div class="parameter-item array {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item array {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
@@ -62,7 +62,7 @@
 	{{/if}}
 
 	{{#if type_bool}}
-		<div class="parameter-item bool {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item bool {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
@@ -74,7 +74,7 @@
 	{{/if}}
 
 	{{#if type_text}}
-		<div class="parameter-item text {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item text {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}
@@ -86,7 +86,7 @@
 	{{/if}}
 
 	{{#if type_state}}
-		<div class="parameter-item state {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
+		<div class="parameter-item state {{#if required}}required{{else}}optional{{/if}} {{#if para_disabled}}disabled{{/if}}" data-para-name="{{para_name}}">
 			<div class="parameter-name">
 				{{#if required}}<span>*</span>{{else}}<div class="parameter-remove">-</div>{{/if}}
 				{{para_name}}

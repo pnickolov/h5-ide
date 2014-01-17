@@ -334,6 +334,10 @@ body {
 	margin-top: 4px;
 }
 
+#state-editor .parameter-list .parameter-item.disabled {
+	opacity: 0.3;
+}
+
 #state-editor .parameter-list .parameter-name {
 	float: left;
 	padding: 5px;

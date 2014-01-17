@@ -37,6 +37,8 @@ define [ 'event',
 
             'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
+            'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
+
         initialize: () ->
 
             this.compileTpl()
@@ -508,9 +510,14 @@ define [ 'event',
 
             _.each currentParaAry, (paraObj) ->
 
+                paraDisabled = false
+                if not paraObj.required
+                    paraDisabled = true
+
                 newParaObj = {
                     para_name: paraObj.name,
-                    required: paraObj.required
+                    required: paraObj.required,
+                    para_disabled: paraDisabled
                 }
 
                 newParaObj['type_' + paraObj.type] = true
@@ -1510,6 +1517,16 @@ define [ 'event',
                 that.refreshStateLogList()
                 that.showLogListLoading(false)
             )
+
+        onOptionalParaItemChange: (event) ->
+
+            that = this
+            $currentInputElem = $(event.currentTarget)
+            currentValue = that.getPlainText($currentInputElem)
+
+            if currentValue
+                $paraItem = $currentInputElem.parents('.parameter-item')
+                $paraItem.removeClass('disabled')
 
     }
 

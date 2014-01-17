@@ -194,6 +194,7 @@
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
           , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
+          , ascii:     "This value should be a valid ascii."
 
         }
       , notnull:        "This value should not be null."

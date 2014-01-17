@@ -148,27 +148,27 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
           }),
 
           # left port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-launchconfig-sg-left'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
-            'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'launchconfig-sg'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': 'in'
+            'data-x' : 10
+            'data-y' : 20
           }),
 
           # right port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-launchconfig-sg-right'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
-            'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'launchconfig-sg'
             'data-position' : 'right'
             'data-type'     : 'sg'
             'data-direction': 'out'
+            'data-x' : 80
+            'data-y' : 20
           })
 
           # Child number
@@ -184,7 +184,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
 
         # Move the node to right place
         $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       else
         node = $( document.getElementById( @id ) )

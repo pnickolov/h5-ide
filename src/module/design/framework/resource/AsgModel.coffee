@@ -176,27 +176,27 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
           Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'})
 
           # left port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-launchconfig-sg-left'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
-            'transform'  : 'translate(25, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'launchconfig-sg'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': 'in'
+            'data-x' : 25
+            'data-y' : 45
           }),
 
           # right port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-launchconfig-sg-right'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
-            'transform'  : 'translate(95, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'launchconfig-sg'
             'data-position' : 'right'
             'data-type'     : 'sg'
             'data-direction': 'out'
+            'data-x' : 95
+            'data-y' : 45
           })
 
         ).attr({
@@ -208,7 +208,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
         # Move the node to right place
         $("#asg_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       else
         node = $( document.getElementById( @id ) )

@@ -223,49 +223,49 @@ define [ "CanvasManager",
         if not design.typeIsClassic()
           node.append(
             # Left
-            Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'         : @id + '_port-elb-sg-in'
+            Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
               'class'      : 'port port-blue port-elb-sg-in'
-              'transform'  : 'translate(2, 30)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-angle' : MC.canvas.PORT_LEFT_ANGLE
               'data-name'     : 'elb-sg-in'
               'data-position' : 'left'
               'data-type'     : 'sg'
               'data-direction': "in"
+              'data-x' : 2
+              'data-y' : 35
             }),
             # Right gray
-            Canvon.path(MC.canvas.PATH_D_PORT).attr({
-              'id'         : @id + '_port-elb-assoc'
+            Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
               'class'      : 'port port-gray port-elb-assoc'
-              'transform'  : 'translate(79, 45)' + MC.canvas.PORT_RIGHT_ROTATE
               'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
               'data-name'     : 'elb-assoc'
               'data-position' : 'right'
               'data-type'     : 'association'
               'data-direction': 'out'
+              'data-x' : 79
+              'data-y' : 50
             })
           )
 
-          sgOutY = 15
+          sgOutY = 20
         else
-          sgOutY = 30
+          sgOutY = 35
 
         node.append(
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-elb-sg-out'
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-blue port-elb-sg-out'
-            'transform'  : 'translate(79, ' + sgOutY + ')' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'elb-sg-out'
             'data-position' : 'right'
             'data-type'     : 'sg'
             'data-direction': 'out'
+            'data-x' : 79
+            'data-y' : sgOutY
           })
         )
 
         # Move the node to right place
         $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       else
         node = $( document.getElementById( @id ) )

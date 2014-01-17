@@ -106,7 +106,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     }
 
     el = this.element()
-    if el then MC.canvas.position( el, x, y )
+    if el
+      el.setAttribute("data-x", x * 10)
+      el.setAttribute("data-y", y * 10)
+      MC.canvas.position( el, x, y )
     null
 
 

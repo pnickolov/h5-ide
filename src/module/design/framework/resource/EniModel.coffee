@@ -361,51 +361,51 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           }),
 
           # Left Port
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-eni-sg-left'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-eni-sg port-eni-sg-left'
-            'transform'  : 'translate(5, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'eni-sg'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': "in"
+            'data-x' : 10
+            'data-y' : 20
           }),
 
           # Left port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-eni-attach'
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-green port-eni-attach'
-            'transform'  : 'translate(8, 45)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'eni-attach'
             'data-position' : 'left'
             'data-type'     : 'attachment'
             'data-direction': "in"
+            'data-x' : 8
+            'data-y' : 50
           }),
 
           # Right port
-          Canvon.path(MC.canvas.PATH_D_PORT2).attr({
-            'id'         : @id + '_port-eni-sg-right'
+          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
             'class'      : 'port port-blue port-eni-sg port-eni-sg-right'
-            'transform'  : 'translate(75, 15)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'eni-sg'
             'data-position' : 'right'
             'data-type'     : 'sg'
             'data-direction': 'out'
+            'data-x' : 80
+            'data-y' : 20
           }),
 
           # Top port(blue)
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-eni-rtb'
+          Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
             'class'      : 'port port-blue port-eni-rtb'
-            'transform'  : 'translate(42, -1)' + MC.canvas.PORT_UP_ROTATE
             'data-angle' : MC.canvas.PORT_UP_ANGLE
             'data-name'     : 'eni-rtb'
             'data-position' : 'top'
             'data-type'     : 'sg'
             'data-direction': 'in'
+            'data-x' : 45
+            'data-y' : 0
           }),
 
           Canvon.group().append(
@@ -420,7 +420,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
 
         # Move the node to right place
         $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       else
         node = $( document.getElementById( @id ) )

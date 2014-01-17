@@ -36,33 +36,33 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
 
         node.append(
           # Left port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-vgw-tgt'
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-blue port-vgw-tgt'
-            'transform'  : 'translate(3, 30)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'vgw-tgt'
             'data-position' : 'left'
             'data-type'     : 'sg'
             'data-direction': 'in'
+            'data-x'        : 3
+            'data-y'        : 35
           }),
 
           # Right port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-vgw-vpn'
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-purple port-vgw-vpn'
-            'transform'  : 'translate(69, 30)' + MC.canvas.PORT_RIGHT_ROTATE
             'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
             'data-name'     : 'vgw-vpn'
             'data-position' : 'right'
             'data-type'     : 'vpn'
             'data-direction': 'out'
+            'data-x'        : 70
+            'data-y'        : 35
           })
         )
 
         # Move the node to right place
         $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       # Update Resource State in app view
       if not Design.instance().modeIsStack() and @.get("appId")

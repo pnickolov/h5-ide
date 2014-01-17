@@ -32,15 +32,15 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
         node.append(
           # Port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-cgw-vpn',
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
             'class'      : 'port port-purple port-cgw-vpn',
-            'transform'  : 'translate(6, 40)' + MC.canvas.PORT_RIGHT_ROTATE,
             'data-angle' : MC.canvas.PORT_LEFT_ANGLE
             'data-name'     : 'cgw-vpn'
             'data-position' : 'left'
             'data-type'     : 'vpn'
             'data-direction': 'in'
+            'data-x'        : 6
+            'data-y'        : 45
           }),
 
           Canvon.text(100, 95, MC.canvasName( @get("name") ) ).attr({'class': 'node-label'})
@@ -48,7 +48,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
         # Move the node to right place
         $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
+        CanvasManager.initNode node, @x(), @y()
 
       else
         node = $( document.getElementById( @id ) )

@@ -174,11 +174,48 @@ define [], ()->
           child.setAttribute("x", w - pad)
           child.setAttribute("y", h - pad)
 
+    setPoisition : ( node, x, y )->
+      transformVal = node.transform.baseVal
+
+      if (transformVal.numberOfItems is 1)
+        transformVal.getItem(0).setTranslate(x * 10, y * 10)
+      else
+        translateVal = node.ownerSVGElement.createSVGTransform()
+        translateVal.setTranslate(x * 10, y * 10)
+        transformVal.appendItem(translateVal)
+      null
+
     position : ( node, x, y, updateLine )->
       if node.length
         node = node[0]
 
+      node.setAttribute( "data-x", x * 10 )
+      node.setAttribute( "data-y", y * 10 )
+
       MC.canvas.position( node, x, y )
+      null
+
+    initNode : ( node, x, y )->
+      @position( node, x, y )
+      @setPortPosition( node )
+      null
+
+    setPortPosition : ( node )->
+      if node.length then node = node[0]
+      for child in node.children || node.childNodes
+        if child.tagName is "PATH" or child.tagName is "path"
+          x = child.getAttribute("data-x")
+          if x is null or x is undefined then continue
+          y = child.getAttribute("data-y")
+          if y is null or y is undefined then continue
+
+          @setPoisition( child, x / 10, y / 10)
+      null
+
+    _getPort : ( node, port1Class )->
+      for child in node.children || node.childNodes
+          if ( child.getAttribute("class") || "" ).indexOf( port1Class ) != -1
+            return child
       null
 
     drawLine : ( connection )->
@@ -188,17 +225,24 @@ define [], ()->
       type_to   = connection.port2Comp().type
       id_from   = connection.port1Comp().id
       id_to     = connection.port2Comp().id
-      node_from = document.getElementById( id_from )
-      node_to   = document.getElementById( id_to )
 
-      if not node_from or not node_to
+      item_from = document.getElementById( id_from )
+      item_to   = document.getElementById( id_to )
+
+      if not item_from or not item_to
         return
 
-      pos_from  = node_from.getBoundingClientRect()
-      pos_to    = node_to.getBoundingClientRect()
+      pos_from  = {
+        left : parseInt( item_from.getAttribute( "data-x" ), 10 ) || 0
+        top  : parseInt( item_from.getAttribute( "data-y" ), 10 ) || 0
+      }
+      pos_to  = {
+        left : parseInt( item_to.getAttribute( "data-x" ), 10 ) || 0
+        top  : parseInt( item_to.getAttribute( "data-y" ), 10 ) || 0
+      }
 
-      from_port = connection.port1("name")
-      to_port   = connection.port2("name")
+      from_port = "port-" + connection.port1("name")
+      to_port   = "port-" + connection.port2("name")
 
       dirn_from = connection.port1("direction")
       dirn_to   = connection.port2("direction")
@@ -211,72 +255,82 @@ define [], ()->
           from_port += "-right"
           to_port   += "-left"
 
-        node_from = document.getElementById( id_from + "_port-" + from_port )
-        node_to   = document.getElementById( id_to   + "_port-" + to_port   )
+        node_from = @_getPort( item_from, from_port )
+        node_to   = @_getPort( item_to,   to_port   )
 
         if not node_from or not node_to
           return
 
-        pos_from = node_from.getBoundingClientRect()
-        pos_to   = node_to.getBoundingClientRect()
+        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
+        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
+
+        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
+        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
 
       else if dirn_from
 
-        node_to = document.getElementById( id_to   + "_port-" + to_port   )
+        node_to = @_getPort( item_to, to_port )
         if not node_to
           return
 
-        pos_to  = node_to.getBoundingClientRect()
+        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
+        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
 
         if dirn_from is "vertical"
           from_port += if pos_to.top > pos_from.top then "-bottom" else "-top"
         else if dirn_from is "horizontal"
           from_port += if pos_to.left > pos_from.left then "-right" else "-left"
 
-        node_from = document.getElementById( id_from + "_port-" + from_port )
+        node_from = @_getPort( item_from, from_port )
         if not node_from
           return
-        pos_from  = node_from.getBoundingClientRect()
+        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
+        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
 
       else if dirn_to
-        node_from = document.getElementById( id_from + "_port-" + from_port )
+        node_from = @_getPort( item_from, from_port )
         if not node_from
           return
-        pos_from  = node_from.getBoundingClientRect()
+        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
+        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
 
         if dirn_to is "vertical"
           to_port += if pos_from.top > pos_to.top then "-bottom" else "-top"
         else if dirn_to is "horizontal"
           to_port += if pos_from.left > pos_to.left then "-right" else "-left"
 
-        node_to = document.getElementById( id_to + "_port-" + to_port )
+        node_to = @_getPort( item_to, to_port )
         if not node_to
           return
-        pos_to  = node_to.getBoundingClientRect()
+
+        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
+        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
 
       else
-        node_from = document.getElementById( id_from + "_port-" + from_port )
-        node_to   = document.getElementById( id_to   + "_port-" + to_port   )
+
+        node_from = @_getPort( item_from, from_port )
+        node_to   = @_getPort( item_to,   to_port   )
+
         if not node_from or not node_to
           return
 
-        pos_from = node_from.getBoundingClientRect()
-        pos_to   = node_to.getBoundingClientRect()
+        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10 ) or 0
+        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10 ) or 0
 
-      # Calculate port position
-      scale    = $canvas.scale()
-      pos_svg  = $canvas.offset()
+        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10 ) or 0
+        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10 ) or 0
+
 
       start0 =
-        x     : Math.floor(pos_from.left - pos_svg.left + pos_from.width  / 2) * scale
-        y     : Math.floor(pos_from.top  - pos_svg.top  + pos_from.height / 2) * scale
+        x     : pos_from.left
+        y     : pos_from.top
         angle : parseInt( node_from.getAttribute("data-angle"), 10 ) || 0
         type  : type_from
         name  : from_port
 
       end0 =
-        x     : Math.floor(pos_to.left - pos_svg.left + pos_to.width   / 2) * scale
-        y     : Math.floor(pos_to.top  - pos_svg.top  + pos_to.height  / 2) * scale
+        x     : pos_to.left
+        y     : pos_to.top
         angle : parseInt( node_to.getAttribute("data-angle"), 10 ) || 0
         type  : type_to
         name  : to_port

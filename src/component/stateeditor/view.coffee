@@ -1464,6 +1464,7 @@ define [ 'event',
             that.$stateList.find('.state-add').hide()
             that.$stateList.find('.state-remove').hide()
             that.$stateList.find('.parameter-remove').hide()
+            that.$editorModal.find('.state-item-add').hide()
 
             $saveCancelBtn = that.$editorModal.find('.state-save, .state-cancel')
             $saveCancelBtn.hide()

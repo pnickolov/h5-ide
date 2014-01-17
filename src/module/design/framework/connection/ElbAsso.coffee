@@ -38,6 +38,9 @@ define [ "constant", "../ConnectionModel", "i18n!nls/lang.js", "Design", "compon
       # 1. Find out if any child of this subnet connects to the elb
       elbTargets = elb.connectionTargets( "ElbAmiAsso" )
       for child in subnet.children()
+        if child.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+          child = child.get("lc")
+
         if elbTargets.indexOf( child ) isnt -1
           connected = true
           break

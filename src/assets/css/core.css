@@ -49,6 +49,14 @@
 	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
 }
 
+@font-face
+{
+	font-family: 'OxygenMono';
+	font-style: normal;
+	font-weight: 700;
+	src: local('OxygenMono'), local('OxygenMono-Regular'), url('../fonts/OxygenMono-Regular.ttf') format('ttf');
+}
+
 /* CSS reset */
 article,
 footer,

@@ -94,7 +94,7 @@ define [ 'event',
                     target: $resSelectElem[0]
                 })
 
-            if that.showLogPanel
+            if that.isShowLogPanel
                 that.showLogPanel()
             
             if currentState is 'stack'
@@ -127,8 +127,18 @@ define [ 'event',
 
             if currentState is 'app'
                 that.readOnlyMode = true
+                that.isShowLogPanel = true
+
+            if currentState is 'appedit'
+                that.readOnlyMode = false
+                that.isShowLogPanel = true
+                if that.groupResSelectData and that.groupResSelectData.length
+                    if not that.groupResSelectData[0].res_id
+                        that.isShowLogPanel = false
+
             else if currentState is 'stack'
-                that.showLogPanel = false
+                that.readOnlyMode = false
+                that.isShowLogPanel = false
 
             if currentAppState is 'stoped'
                 alert(1)
@@ -182,11 +192,23 @@ define [ 'event',
 
             that = this
 
-            resSelectHTML = that.stateResSelectTpl({
-                res_selects: that.groupResSelectData
-            })
             $resSelect = that.$editorModal.find('.state-editor-res-select')
-            $resSelect.html(resSelectHTML)
+
+            if that.groupResSelectData and that.groupResSelectData.length
+
+                resSelectHTML = that.stateResSelectTpl({
+                    res_selects: that.groupResSelectData
+                })
+                
+                $resSelect.html(resSelectHTML)
+
+                if that.groupResSelectData.length is 1
+
+                    $resSelect.hide()
+
+            else
+
+                $resSelect.hide()
 
         bindStateListSortEvent: () ->
 

@@ -396,6 +396,12 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			appId = MC.canvas_data.id
 			resId = res_id
 
+			if not (appId and resId)
+
+				that.set('stateLogDataAry', [])
+				callback()
+				return
+
 			state_model.log { sender : that }, $.cookie( 'usercode' ), $.cookie( 'session_id' ), appId, resId
 
 			that.on 'STATE_LOG_RETURN', ( result ) ->

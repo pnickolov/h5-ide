@@ -14948,7 +14948,7 @@ var Cursor = function(parentEl) {
         if (this.smoothBlinking)
             dom.removeCssClass(this.element, "ace_smooth-blinking");
         for (var i = this.cursors.length; i--; )
-            this.cursors[i].style.opacity = "";
+            // this.cursors[i].style.opacity = "";
 
         if (!this.isBlinking || !this.blinkInterval || !this.isVisible)
             return;
@@ -14961,14 +14961,14 @@ var Cursor = function(parentEl) {
         var blink = function(){
             this.timeoutId = setTimeout(function() {
                 for (var i = this.cursors.length; i--; ) {
-                    this.cursors[i].style.opacity = 0;
+                    // this.cursors[i].style.opacity = 0;
                 }
             }.bind(this), 0.6 * this.blinkInterval);
         }.bind(this);
 
         this.intervalId = setInterval(function() {
             for (var i = this.cursors.length; i--; ) {
-                this.cursors[i].style.opacity = "";
+                // this.cursors[i].style.opacity = "";
             }
             blink();
         }.bind(this), this.blinkInterval);

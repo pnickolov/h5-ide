@@ -2,7 +2,7 @@
 {{#each state_list}}
 	<div class="state-item view" data-command="{{cmd_value}}" data-id="{{state_id}}">
 		<div class="state-toolbar">
-			<div class="state-remove">-</div>
+			<div class="state-remove icon-remove"></div>
 			<div class="state-add">+</div>
 			<div class="state-id">{{#if state_id_show}}{{state_id_show}}{{else}}{{state_id}}{{/if}}</div>
 			<i class="state-drag icon-sort"></i>
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="state-edit">
+		<div class="state-edit clearfix">
 			<div class="command-value editable-area line">{{cmd_value}}</div>
 			<div class="parameter-list">
 				{{> state-template-para-list}}

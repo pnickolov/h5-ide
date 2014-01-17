@@ -2,68 +2,63 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     RTBAppModel = PropertyModel.extend {
-
-        targetMap :
-          gatewayId: [ 'InternetGatewayId', 'VpnGatewayId' ]
-          instanceId: [ 'InstanceId' ]
 
         processTarget : ( rtb )->
           console.log rtb
           rtb.routeSet.item = _.map rtb.routeSet.item, ( item ) =>
-            if item.gatewayId is 'local'
-              item.target = item.gatewayId
-            else
-              for mapKey, map of @targetMap
-                if item[ mapKey ]
-                  item.target = @findComonentNameByAWSId( item[ mapKey ], map )
-                  break
+            item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
+
+            if item.target isnt "local"
+              Design.instance().eachComponent ( component )->
+                if component.get("appId") is item.target
+                  item.target = component.get("name")
+                  return
+                null
+
             item
           null
-
-        findComonentNameByAWSId: ( awsId, awsIdKey )->
-          for id, component of MC.canvas_data.component
-            for key in awsIdKey
-              if component.resource and component.resource[ key ] is awsId
-                return component.name
-
 
         init : ( rtb_uid )->
 
           # uid might be a line connecting RTB and other resource
-          connection = MC.canvas_data.layout.connection[ rtb_uid ]
-          if connection
-              data = {}
-              for uid, value of connection.target
-                  component = MC.canvas_data.component[ uid ]
-                  if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                      data.subnet = component.name
-                      has_subnet = true
-                  else if component.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
-                      data.rtb  = component.name
-                      rtb_uid = uid
+          rtbOrConn = Design.instance().component( rtb_uid )
 
-              if has_subnet
-                  this.set 'association', data
-                  this.set 'name', 'Subnet-RT Association'
-                  return
+          if rtbOrConn.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable #routeTable
+            routeTable = rtbOrConn
 
-          components = MC.canvas_data.component
+          else # connection
+            data = {}
+            connectedTo = rtbOrConn.getOtherTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
+            routeTable = rtbOrConn.getTarget constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable
 
-          myRTBComponent = components[ rtb_uid ]
+            if connectedTo.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
+              data.subnet = connectedTo.get 'name'
+              has_subnet = true
 
-          appData = MC.data.resource_list[ MC.canvas_data.region ]
-          rtb     = appData[ myRTBComponent.resource.RouteTableId ]
+
+            data.rtb  = routeTable.get 'name'
+            rtb_uid = routeTable.id
+
+            if has_subnet
+              this.set 'association', data
+              this.set 'name', 'Subnet-RT Association'
+              return
+
+
+
+          appData = MC.data.resource_list[ Design.instance().region() ]
+          rtb     = appData[ routeTable.get 'appId' ]
 
           if not rtb
             return false
 
           rtb = $.extend true, {}, rtb
-          rtb.name = myRTBComponent.name
+          rtb.name = routeTable.get 'name'
 
-          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main == "true"
+          if rtb.associationSet and rtb.associationSet.item and rtb.associationSet.item[0] and rtb.associationSet.item[0].main is true
             rtb.main = "Yes"
           else
             rtb.main = "No"

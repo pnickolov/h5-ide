@@ -1,13 +1,13 @@
 define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
-	#private
-	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
-
-		_addZeroToLeftStr = (str, n) ->
+	_addZeroToLeftStr = (str, n) ->
 			count = n - str.length + 1
 			strAry = _.map [1...count], () ->
 				return '0'
 			str = strAry.join('') + str
+
+	#private
+	getAvailableIPInCIDR = (ipCidr, filter, maxNeedIPCount) ->
 
 		cutAry = ipCidr.split('/')
 		ipAddr = cutAry[0]
@@ -399,13 +399,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					MC.canvas_data.component[compObj.uid].resource.PrivateIpAddressSet = newENIIPAry
 			null
 
-	getAvailableIPCountInCIDR = (ipCidr, filter) ->
-
-		_addZeroToLeftStr = (str, n) ->
-			count = n - str.length + 1
-			strAry = _.map [1...count], () ->
-				return '0'
-			str = strAry.join('') + str
+	getAvailableIPCountInCIDR = (ipCidr) ->
 
 		cutAry = ipCidr.split('/')
 		ipAddr = cutAry[0]
@@ -425,7 +419,8 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 		ipAddrNumSuffixMin = parseInt ipAddrBinStrSuffixMin, 2
 		ipAddrNumSuffixMax = parseInt ipAddrBinStrSuffixMax, 2
 
-		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		# availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - filter.length - 5
+		availableIPCount = (ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1) - 5
 		if availableIPCount < 0
 			availableIPCount = 0
 
@@ -442,7 +437,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	# 		# count eni ip
 	# 		if compObj.type is 'AWS.VPC.NetworkInterface'
-				
+
 	# 			currentSubnetUIDRef = compObj.resource.SubnetId
 	# 			currentAZName = compObj.resource.AvailabilityZone
 	# 			if (!defaultVPCId and currentSubnetUIDRef is subnetUIDRefOrAZ) or
@@ -493,9 +488,9 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 			return null
 
-		if app_id and MC.canvas.data.get('id') == app_id
+		if app_id and Design.instance().get('id') == app_id
 
-			comp_data = MC.canvas.data.get("component")
+			comp_data = Design.instance().serialize()["component"]
 			eni_id = undefined
 			eni_data = undefined
 			$.each comp_data, (uid, comp) ->
@@ -521,7 +516,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 					else
 						#single ENI node
 						eni_id = comp.resource.NetworkInterfaceId
-						eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+						eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 						if eni_data
 							Canvon('#' + uid).removeClass 'deleted'
 						else
@@ -541,7 +536,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 				if comp.type is "AWS.VPC.NetworkInterface" and comp.serverGroupUid is server_group_uid
 					eni_id = comp.resource.NetworkInterfaceId
-					eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+					eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 					if eni_id and eni_data
 						#eni existed
 						eni_list.push comp.resource.NetworkInterfaceId
@@ -552,7 +547,7 @@ define [ 'MC', 'jquery' ], ( MC, $ ) ->
 
 	getENIById = ( eni_id ) ->
 
-		eni_data = MC.data.resource_list[MC.canvas.data.get('region')][eni_id]
+		eni_data = MC.data.resource_list[Design.instance().region()][eni_id]
 
 		#return
 		eni_data

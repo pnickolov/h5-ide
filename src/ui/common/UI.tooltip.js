@@ -3,9 +3,9 @@
 #* Filename: UI.tooltip
 #* Creator: Angel
 #* Description: UI.tooltip
-#* Date: 20130904
+#* Date: 20140115
 # **********************************************************
-# (c) Copyright 2013 Madeiracloud  All Rights Reserved
+# (c) Copyright 2014 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
 
@@ -16,6 +16,7 @@
 		var target = $(this),
 			content = $.trim(target.data('tooltip')),
 			tooltip_box = $('#tooltip_box'),
+			docElem = document.documentElement,
 			target_offset,
 			width,
 			height,
@@ -50,10 +51,10 @@
 			height = tooltip_box.height();
 
 			tooltip_box.css({
-				'left': target_offset.left + target_width + width - document.body.scrollLeft > window.innerWidth ?
+				'left': target_offset.left + target_width + width - docElem.scrollLeft > window.innerWidth ?
 					target_offset.left + target_width - width - 20 :
 					target_offset.left + 5,
-				'top': target_offset.top + target_height + height - document.body.scrollTop + 45 > window.innerHeight ?
+				'top': target_offset.top + target_height + height - docElem.scrollTop + 45 > window.innerHeight ?
 					target_offset.top - height - 15 :
 					target_offset.top + target_height + 8
 			});

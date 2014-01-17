@@ -382,15 +382,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
         appArray = _.flatten _.values MC.data.app_list
         not _.contains appArray, name
 
-    disabledAllOperabilityArea = (enabled) ->
-
-        if enabled
-            $('#resource-panel').append('<div class="disabled-event-layout"></div>')
-            $('#canvas').append('<div class="disabled-event-layout"></div>')
-            $('#tabbar-wrapper').append('<div class="disabled-event-layout"></div>')
-        else
-            $('.disabled-event-layout').remove()
-
     getDuplicateName = (stack_name) ->
 
         copy_name   = stack_name + "-copy-"
@@ -949,7 +940,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery' ], ( MC, constant, _, $ ) ->
     checkStackName              : checkStackName
     checkAppName                : checkAppName
     getDuplicateName            : getDuplicateName
-    disabledAllOperabilityArea  : disabledAllOperabilityArea
     getCost                     : getCost
     checkDefaultVPC             : checkDefaultVPC
     checkResource               : checkResource

@@ -12,12 +12,12 @@ define [ '../base/view', 'text!./template/app.html' ], ( PropertyView, template 
             "click .acl-sg-info-list .icon-btn-details" : 'showACLDetail'
 
         render     : () ->
-            @$el.html template @model.attributes
-            @setTitle @model.attributes.name
+            @$el.html template @model.toJSON()
+            @setTitle @model.get 'name'
             null
 
         showACLDetail : ( event ) ->
-            @trigger 'OPEN_ACL', $( event.currentTarget ).attr("data-uid")
+            @trigger 'OPEN_ACL', $( event.currentTarget ).data 'uid'
             null
     }
 

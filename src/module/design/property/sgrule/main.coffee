@@ -2,18 +2,11 @@
 #  Controller for design/property/sgrule module
 ####################################
 
-define [ '../base/main',
-         './model',
-         './view',
-         'component/sgrule/main'
-], ( PropertyModule, model, view, sgrule_main ) ->
-
-	view.on "EDIT_RULE", ( line_id ) ->
-		sgrule_main.loadModule( line_id )
+define [ '../base/main', './model', './view' ], ( PropertyModule, model, view ) ->
 
 	SgRuleModule = PropertyModule.extend {
 
-		handleTypes : /.+-sg/
+		handleTypes : [ "ElbAmiAsso", "SgRuleLine" ]
 
 		initStack : ()->
 			@model = model
@@ -33,4 +26,5 @@ define [ '../base/main',
 			@view  = view
 			null
 	}
+
 	null

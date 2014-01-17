@@ -90,8 +90,8 @@
         {{else}}
         <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{metric}}</span>
         <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{evaluation}} {{threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{second}}s</span>
-        <span class="asg-p-trigger asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
+        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{periods}}x{{minute}}m</span>
+        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{trigger}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{trigger}}</span>
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjusttype}}</span>
         {{/if}}
       </li>

@@ -495,12 +495,13 @@ textarea[readonly]  {
 }
 
 .prefix-input label {
-	font-size: 12px;
-	position: relative;
-	top: 1px;
-	left: 7px;
-	margin: 0 12px 0 0;
-	color: #999;
+	float       : left;
+	color       : #999;
+	font-size   : 12px;
+	width       : 20px;
+	text-align  : center;
+	line-height : 29px;
+	height      : 29px;
 }
 
 .prefix-input input {
@@ -815,6 +816,7 @@ textarea {
 }
 
 .scrollbar-veritical-thumb {
+	top: 0;
 	width: 8px;
 	-webkit-transition: height 0.2s, opacity .2s;
 	-moz-transition: height 0.2s, opacity .2s;
@@ -823,6 +825,7 @@ textarea {
 }
 
 .scrollbar-horizontal-thumb {
+	left: 0;
 	height: 8px;
 	-webkit-transition: width 0.2s, opacity .2s;
 	-moz-transition: width 0.2s, opacity .2s;
@@ -1031,7 +1034,8 @@ textarea {
 	z-index: 80;
 }
 
-.modal-header .modal-close {
+.modal-header .modal-close,
+.modal-header .btn-modal-close {
 	position: absolute;
 	right: 10px;
 	top: 14px;
@@ -1041,7 +1045,8 @@ textarea {
 	line-height: 20px;
 }
 
-.modal-header .modal-close:hover {
+.modal-header .modal-close:hover,
+.modal-header .btn-modal-close:hover {
 	color: #fff;
 }
 
@@ -1066,11 +1071,8 @@ textarea {
 }
 
 .modal-text-wraper {
-	display: table;
-	min-height: 100px;
-	width: 390px;
-	position: absolute;
-	overflow: hidden;
+	display    : table;
+	min-height : 100px;
 }
 
 .modal-center-align-helper {
@@ -1079,10 +1081,9 @@ textarea {
 }
 
 .modal-text-major {
-	font-size: 16px;
-	color: #666;
-	margin-bottom: 10px;
-	/*font-weight: bold;*/
+	font-size     : 16px;
+	color         : #666;
+	margin-bottom : 10px;
 }
 
 .modal-text-minor {
@@ -1311,11 +1312,10 @@ textarea {
 /* Notification */
 #notification_wrap {
 	color      : #FFF;
-	overflow   : auto;
 	position   : fixed;
 	top        : 0;
 	width      : 100%;
-	height     : auto;
+	height     : 0;
 	text-align : center;
 	z-index    : 100;
 }

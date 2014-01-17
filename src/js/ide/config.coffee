@@ -53,8 +53,6 @@ require.config {
 		#canvas
 		'MC.canvas'          : 'lib/MC.canvas'
 		'MC.canvas.constant' : 'lib/MC.canvas.constant'
-		'MC.canvas.add'      : 'lib/MC.canvas.add'
-		'MC.canvas.line'	 : 'lib/MC.canvas.line'
 
 		#############################################
 		# lib/aws logic handler
@@ -112,6 +110,12 @@ require.config {
 		'canvas_layout'      : 'js/ide/canvas_layout'
 
 		#############################################
+		# design model
+		#############################################
+		'Design'             : 'module/design/framework/Design'
+		'CanvasManager'      : 'module/design/framework/canvasview/CanvasManager'
+
+		#############################################
 		# module
 		#############################################
 		'base_main'          : 'module/base/base_main'
@@ -136,7 +140,7 @@ require.config {
 		'process_view'       : 'module/process/view'
 		'process_model'      : 'module/process/model'
 
-		'design'             : 'module/design/main'
+		'design_module'      : 'module/design/main'
 		'design_view'        : 'module/design/view'
 		'design_model'       : 'module/design/model'
 
@@ -282,11 +286,11 @@ require.config {
 		'MC.canvas.constant':
 			deps       : [ 'MC.canvas' ]
 
-		'MC.canvas.add':
-			deps       : [ 'MC.canvas.constant' ]
+		'forge_handle' :
+			deps       : [ 'Design' ]
 
-		'MC.canvas.line':
-			deps		: ['MC.canvas', 'MC.canvas.constant']
+		'aws_handle'   :
+			deps       : [ 'Design' ]
 
 		#############################################
 		# UI
@@ -353,14 +357,7 @@ require.config {
 			exports    : 'WS'
 
 		#############################################
-		# temp
-		#############################################
-
-		'canvas_layout':
-			deps       : [ 'MC.canvas', 'MC.canvas.add', 'MC.canvas.constant', 'canvon', 'MC.canvas.line' ]
-
-		#############################################
-		# module
+		# modules
 		#############################################
 
 		'header'       :
@@ -375,21 +372,12 @@ require.config {
 		'dashboard'    :
 			deps       : [ 'dashboard_view', 'dashboard_model', 'MC' ]
 
-		'design'       :
-			deps       : [ 'design_view', 'design_model', 'MC' ]
-
 		'process'      :
 			deps       : [ 'process_view', 'process_model', 'MC' ]
 
 		'main'         :
 			deps       : [ 'jquery' ]
 
-		#############################################
-		# component
-		#############################################
-
-		'unmanagedvpc' :
-			deps       : [ 'unmanagedvpc_view', 'unmanagedvpc_model', 'MC' ]
 
 }
 

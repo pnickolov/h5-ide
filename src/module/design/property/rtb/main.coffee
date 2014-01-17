@@ -22,7 +22,7 @@ define [ '../base/main',
 
     RTBModule = PropertyModule.extend {
 
-        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, /rtb-tgt/, /rtb-src/ ]
+        handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_RouteTable, "RTB_Route", "RTB_Asso" ]
 
         initStack : () ->
             @model = model

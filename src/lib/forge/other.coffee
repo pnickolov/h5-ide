@@ -1,6 +1,95 @@
 define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	#############################
+	#  canvas
+	#############################
+
+	canvasData = {
+
+		init : ( data ) ->
+			console.log 'canvasData:init'
+			MC.canvas_data = $.extend true, {}, data
+
+		initSet : ( key, value ) ->
+			console.log 'canvasData:initSet', key, value
+			MC.canvas_data[ key ] = value
+
+		data : ( is_origin = false ) ->
+			console.log 'canvasData:data', is_origin
+
+			if is_origin
+
+				# old design flow
+				data = $.extend true, {}, MC.canvas_data
+
+			else
+
+				if not _.isEmpty Design.instance()
+
+					# new design flow
+					#data = $.extend true, {}, Design.instance().serialize()
+					data  = Design.instance().serialize()
+
+					# old design flow
+					#data = $.extend true, {}, MC.canvas_data
+
+			data
+
+		save : ( data ) ->
+			console.log 'canvasData:save', data
+
+			if not _.isEmpty Design.instance()
+
+				# new design flow
+				Design.instance().save data
+
+				# old design flow
+				#MC.canvas_data = $.extend true, {}, data
+
+		set : ( key, value ) ->
+			console.log 'canvasData:set', key, value
+
+			# when Design.instance() is null explain 'NEW_STACK' state
+			if not _.isEmpty Design.instance()
+
+				# new design flow
+				Design.instance().set key, value
+
+		get : ( key ) ->
+			console.log 'canvasData:get', key
+
+			if not _.isEmpty Design.instance()
+
+				# new design flow
+				Design.instance().get key
+
+				# old design flow
+				#MC.canvas_data[ key ]
+
+		isModified : ->
+			console.log 'canvasData:isModified'
+
+			if not _.isEmpty Design.instance()
+
+				Design.instance().isModified()
+
+		origin : ( origin_data ) ->
+
+			if _.isEmpty origin_data
+
+				# get
+				console.log 'canvasData:get origin', MC.data.origin_canvas_data
+				$.extend true, {}, MC.data.origin_canvas_data
+
+			else
+
+				# set
+				console.log 'canvasData:set origin', origin_data
+				MC.data.origin_canvas_data = $.extend true, {}, origin_data
+
+	}
+
+	#############################
 	#  core
 	#############################
 
@@ -76,7 +165,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 
 	isResultRight = ( result ) ->
 		console.log 'isResultRight'
-		if result and not result.is_error and result.resolved_data and result.resolved_data.lenght > 0
+		if result and not result.is_error and result.resolved_data and result.resolved_data.length > 0
 			true
 		else if not result
 			'result_empty'
@@ -84,8 +173,8 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 			'result_error'
 		else if result and not result.is_error and not result.resolved_data
 			'resolved_data_empty'
-		else if result and not result.is_error and result.resolved_data and result.resolved_data.lenght = 0
-			'resolved_data_lenght'
+		else if result and not result.is_error and result.resolved_data and result.resolved_data.length = 0
+			'resolved_data_length'
 		else
 			'other_error'
 
@@ -295,6 +384,7 @@ define [ 'MC', 'constant', 'jquery', 'underscore' ], ( MC, constant ) ->
 		unmanaged_vpc_list
 
 	#public
+	canvasData         : canvasData
 	isCurrentTab       : isCurrentTab
 	isResultRight      : isResultRight
 	setCurrentTabId	   : setCurrentTabId

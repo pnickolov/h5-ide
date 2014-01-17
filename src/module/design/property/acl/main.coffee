@@ -16,8 +16,8 @@ define [ "../base/main",
 
         setupStack : () ->
             me = this
-            @model.on 'REFRESH_RULE_LIST', (value) ->
-                me.view.refreshRuleList value
+            @model.on 'REFRESH_RULE_LIST', () ->
+                me.view.refreshRuleList()
             null
 
         initStack : () ->

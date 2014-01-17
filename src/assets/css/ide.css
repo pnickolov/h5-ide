@@ -1997,19 +1997,25 @@ a {
 }
 
 .region-resource-thumbnail {
-	width           : 218px;
-	height          : 145px;
+	width           : 220px;
+	height          : 146px;
 	border-radius   : 5px 5px 0 0;
 	background      : #55626e url("../images/ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
-	background-size : 225px auto;
-	border          : 1px solid #55626e;
-	border-bottom   : none;
+	background-size : 220px auto;
 	overflow        : hidden;
 }
 
 .region-resource-thumbnail.app-thumbnail {
 	background: url("../images/ide/thumbnail-app-placehoder@2x.png") center center no-repeat;
 	background-size: 220px auto;
+}
+
+.blank-widget {
+	margin-top : 14px;
+	text-align : center;
+	padding    : 70px 0;
+	color      : #999;
+	background : #f8f8f8;
 }
 
 .region-resource-list-item.disabled {
@@ -2038,9 +2044,16 @@ a {
 }
 
 .region-resource-thumbnail img {
-	max-width : inherit;
-	width     : 220px;
-	height    : 145px;
+	max-width     : inherit;
+	height        : 145px;
+	border        : 1px solid #55626e;
+	border-radius : 4px;
+	width         : 100%;
+	background    : #fff;
+
+	-webkit-box-sizing : border-box;
+	   -moz-box-sizing : border-box;
+	        box-sizing : border-box;
 }
 
 
@@ -2377,15 +2390,16 @@ a {
 		width: 195px;
 	}
 
-	.region-resource-thumbnail {
-		width  : 193px;
-		height : 136px;
-
-		background-size: 193 auto;
+	.blank-widget {
+		margin-top : 15px;
+		padding : 65px 0;
 	}
 
-	.region-resource-thumbnail img {
-		width  : 197px;
+	.region-resource-thumbnail {
+		width  : 195px;
+		height : 137px;
+
+		background-size: 193 auto;
 	}
 
 	.region-resource-list > .scroll-wrap {
@@ -2615,14 +2629,6 @@ a {
 	right: 0;
 	top: 9px;
 	font-style: italic;
-}
-
-.blank-widget {
-	margin-top : 15px;
-	text-align : center;
-	padding    : 78px 0;
-	color      : #999;
-	background : #f8f8f8;
 }
 
 .dashboard-widget-body-table.blank-widget {
@@ -3269,26 +3275,19 @@ a.sidebar-hider {
 }
 
 .resource-list > li {
-	display: inline-block;
-	position: relative;
 	float: left;
 }
 
 .resource-item {
-	width: 70px;
-	margin: 0 8px 8px 0;
+	width: 60px;
+	margin: 0 5px 7px 0;
 	border-radius: 4px;
 	cursor: pointer;
 	padding: 5px;
-	box-sizing: border-box;
 
 	cursor: -moz-grab;
 	cursor: -webkit-grab;
 	cursor: grab;
-}
-
-.firefox .resource-item {
-	width: 60px;
 }
 
 .resource-item:hover {
@@ -4021,7 +4020,7 @@ a.sidebar-hider {
 	margin-right : 15px;
 	width        : 15px;
 	float        : left;
-	padding      : 15px 0;
+	padding      : 10px 0;
 }
 
 .acl-sg-info-list .col2 {
@@ -4123,55 +4122,36 @@ a.sidebar-hider {
 	box-shadow    : -1px 0 0 0 rgba(0,0,0,.5);
 }
 
-.sg-rule-list li {
-	height        : 40px;
-
-	position : relative;
-	display  : table;
-}
-
 .rule-list-row {
-	display: table-row;
-	height: 20px;
-	margin-top: 5px;
+	height : 20px;
 }
 
-.rule-list-row div {
-	display: table-cell;
+.rule-list-row .sg-color, .sg-color-rule-header.sg-color {
+	box-shadow : none;
 }
 
-.rule-list-row .rule-source {
-	float: left;
-	width: 180px;
+.rule-list-row > div {
+	float       : left;
+	width       : 65px;
+	line-height : 20px;
+	height      : 20px;
 }
 
-.rule-list-row .sg-rule-connnection {
-	float: left;
-	width: 98px;
-}
-
-.rule-list-row .rule-reference {
-	float: left;
-	width: 180px;
-}
-
-.rule-list-row div:first-child {
-	width: 65px;
+.rule-list-row .rule-reference, .rule-list-row .port {
+	width : 160px;
 }
 
 .rule-remove-icon {
-	display: none;
-/*	width: 15px;
-	height: 15px;*/
-	/*background-color: #eee;*/
-	position: absolute;
-	top: 50%;
-	margin-top: -6px;
-	right: 5px;
-	cursor: pointer;
+	display    : none;
+	position   : absolute;
+	top        : 50%;
+	margin-top : -6px;
+	right      : 5px;
+	cursor     : pointer;
 }
 
-li:hover .rule-remove-icon {
+li:hover > .rule-remove-icon,
+.acl-rule-details:hover .rule-remove-icon {
 	display: block;
 	color: #666;
 }
@@ -4672,49 +4652,39 @@ a.action-link:hover {
 /* written by song */
 
 /* elb listener set */
-#accordion-group-elb-property-listener-main .accordion-body {
-	padding: 0;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-main {
+.elb-property-listener {
 	border-bottom: 1px #292929 solid;
 }
 
-#accordion-group-elb-property-listener .accordion-body {
+.elb-property-listener .accordion-body {
 	padding: 0;
 	margin: 0;
 }
 
-#accordion-group-elb-property-listener .selectbox {
+.elb-property-listener .selectbox {
+	width: 130px !important;
+}
+
+.elb-property-listener .dropdown-toggle {
 	width: 130px;
 }
 
-#accordion-group-elb-property-listener .dropdown-toggle {
-	width: 130px;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-item-1 {
+.elb-property-listener-item-1 {
 	float: left;
 	width: 150px;
-	/*margin-left: 10px;*/
 }
 
-#accordion-group-elb-property-listener .elb-property-listener-item-2 {
+.elb-property-listener-item-2 {
 	float: left;
 	width: 50px;
 	margin-left: 10px;
 }
 
-#accordion-group-elb-property-listener input {
-	width: 40px;
-	/*margin-top: 10px;*/
+.elb-property-listener input {
+	width: 40px !important;
 }
 
-#accordion-group-elb-property-listener .left {
-	display: block;
-}
-
-#accordion-group-elb-property-listener .elb-property-listener-item-remove {
+.elb-property-listener-item-remove {
 	position : absolute;
 	right    : 0;
 
@@ -4730,7 +4700,7 @@ a.action-link:hover {
 	cursor : pointer;
 }
 
-#accordion-group-elb-property-listener .elb-property-listener-item-remove:hover {
+.elb-property-listener-item-remove:hover {
 	background-color: rgba(0,0,0,.1);
 	color: #F74A48;
 }
@@ -4741,7 +4711,29 @@ a.action-link:hover {
 	background: rgba(0,0,0,.1);
 }
 
-#elb-property-detail .elb-info-icon {
+.elb-pingpath-prefix {
+	position    : absolute;
+	height      : 31px;
+	line-height : 31px;
+	padding     : 0 0 0 8px;
+	top         : 1px;
+	left        : 0px;
+}
+
+#property-elb-health-path {
+	padding-left : 16px;
+	width : 212px;
+}
+
+#property-elb-health-path[disabled] {
+	color : transparent;
+}
+
+#property-elb-health-path[disabled] + .elb-pingpath-prefix {
+	display : none;
+}
+
+.elb-info-icon {
 	margin-top: 3px;
 	float: right;
 }
@@ -4833,6 +4825,10 @@ a.action-link:hover {
 
 .cost-estimation-table {
 	font-size: 12px;
+}
+
+.cost-estimation-table th, .cost-estimation-table td {
+	padding : 5px !important;
 }
 
 .cost-counter {
@@ -5046,7 +5042,7 @@ a.action-link:hover {
 	position : relative;
 }
 
-.sg-rule-create-done-wrap .modal-close {
+.sg-rule-create-done-wrap .btn-modal-close {
 	position : absolute;
 	right    : 10px;
 	bottom   : 10px;
@@ -5125,32 +5121,28 @@ a.action-link:hover {
 	box-shadow    : inset 0 1px 0 rgba(255,255,255,.04);
 }
 
-.sg-create-rule-item {
+.sg-create-rule-list .sg-create-rule-item {
 	border-bottom : 1px solid #333;
 	padding       : 5px 10px;
 	position      : relative;
 	background    : #414141;
+	font-size     : 12px;
 }
 
-.sidebar-wrap .sg-create-rule-item {
-	font-size : 12px;
-}
-
-.sidebar-wrap .sg-create-group {
+.sg-create-rule-list .sg-create-group {
 	width       : 194px;
 }
 
-.sidebar-wrap .rule-list-row .sg-color {
-	margin-top: 2px;
-}
-
-.sidebar-wrap .sg-color.sg-color-rule-header,
-#delete-rule-dialog .sg-color.sg-color-rule-header {
+.sg-create-rule-list .sg-color {
 	margin: 3px 5px;
 }
 
-.sg-create-rule-item .sg-rule-connection {
-	width: 113px;
+.sg-create-rule-list .rule-list-row .sg-color {
+	margin: 3px 3px 0 0;
+}
+
+.sg-create-rule-list .rule-reference {
+	width: 100px;
 }
 
 .sg-rule-col1 {
@@ -5160,10 +5152,11 @@ a.action-link:hover {
 	margin-right : 10px;
 }
 
-.sg-rule-delete {
+.sg-create-rule-item .sg-rule-delete {
 	position    : absolute;
 	right       : 10px;
-	bottom      : 16px;
+	top         : 50%;
+	margin-top  : -8px;
 	line-height : 16px;
 	color       : #999;
 	display     : none;
@@ -5194,28 +5187,35 @@ a.action-link:hover {
 
 /* Delete SG Rule Modal */
 
-.sg-list-wrap {
+.delete-sgrule-dialog {
 	max-height: 300px;
 	border-radius: 4px;
 }
 
-#delete-rule-dialog .sg-create-rule-item {
+.delete-sgrule-dialog .sg-create-rule-item {
 	background: #eee;
 	border-bottom: 1px solid #ddd;
+	padding : 5px 10px;
+	width   : 360px;
 }
 
-#delete-rule-dialog .sg-create-group {
+.delete-sgrule-dialog .sg-create-rule-item:last-child {
+	border-bottom: none;
+}
+
+.delete-sgrule-dialog .sg-create-group {
 	background  : #ccc;
 	border      : none;
 	color       : #666;
+	padding     : 2px 7px;
 }
 
-#delete-rule-dialog .sg-rule-connnection {
+.delete-sgrule-dialog .sg-create-group .sg-color {
+	margin-top : 3px;
+}
+
+.delete-sgrule-dialog .sg-rule-connnection {
 	width: 280px;
-}
-
-#delete-rule-dialog .sg-color {
-	box-shadow: none;
 }
 
 /* Notification Dropdown */
@@ -5774,6 +5774,12 @@ a.action-link:hover {
 
 .property-asg-notification-wrap > div:last-of-type {
 	margin-bottom: 15px;
+}
+
+
+.dl-horizontal.dl-region-type .endpoint.truncate {
+	width: 180px;
+	display: block;
 }
 
 /* run stack */

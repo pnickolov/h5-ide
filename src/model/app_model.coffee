@@ -53,15 +53,14 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
                 if !forge_result.is_error
                 #update succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'APP_UPDATE_RETURN', forge_result
-
                 else
                 #update failed
 
                     console.log 'app.update failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'APP_UPDATE_RETURN', forge_result
 
 
         #rename api (define function)
@@ -99,14 +98,14 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
                 if !forge_result.is_error
                 #terminate succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'APP_TERMINATE_RETURN', forge_result
-
                 else
                 #terminate failed
 
                     console.log 'app.terminate failed, error is ' + forge_result.error_message
                     me.pub forge_result
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'APP_TERMINATE_RETURN', forge_result
 
 
 
@@ -122,15 +121,14 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
                 if !forge_result.is_error
                 #start succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'APP_START_RETURN', forge_result
-
                 else
                 #start failed
 
                     console.log 'app.start failed, error is ' + forge_result.error_message
                     me.pub forge_result
 
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'APP_START_RETURN', forge_result
 
 
         #stop api (define function)
@@ -145,14 +143,14 @@ define [ 'backbone', 'underscore', 'app_service', 'base_model' ], ( Backbone, _,
                 if !forge_result.is_error
                 #stop succeed
 
-                    #dispatch event (dispatch event whenever login succeed or failed)
-                    if src.sender and src.sender.trigger then src.sender.trigger 'APP_STOP_RETURN', forge_result
-
                 else
                 #stop failed
 
                     console.log 'app.stop failed, error is ' + forge_result.error_message
                     me.pub forge_result
+
+                #dispatch event (dispatch event whenever login succeed or failed)
+                if src.sender and src.sender.trigger then src.sender.trigger 'APP_STOP_RETURN', forge_result
 
 
 

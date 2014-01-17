@@ -2,46 +2,42 @@
 #  View Mode for design/property/elb
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
     ElbAppModel = PropertyModel.extend {
 
         defaults :
             'id'  : null
 
-        init : ( elb_uid )->
+        init : ( uid )->
 
-            this.set 'id', elb_uid
+            this.set 'id', uid
+            this.set 'uid', uid
 
-            this.set 'is_elb', true
+            myElbComponent = Design.instance().component( uid )
 
-            myElbComponent = MC.canvas_data.component[ elb_uid ]
 
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
-            elb     = appData[ myElbComponent.resource.LoadBalancerName ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
+            elb     = appData[ myElbComponent.get 'appId' ]
 
             if not elb
                 return false
 
             elb = $.extend true, {}, elb
-            elb.name = myElbComponent.name
+            elb.name = myElbComponent.get 'name'
 
 
-            elb.isInternet = elb.Scheme == "internet-facing"
-            elb.HealthCheck.protocol = elb.HealthCheck.Target.split(":")[0]
-            elb.HealthCheck.port     = elb.HealthCheck.Target.split(":")[1].split("/")[0]
-            elb.HealthCheck.path     = elb.HealthCheck.Target.split("/")[1]
+            elb.isInternet = elb.Scheme is 'internet-facing'
+            elb.HealthCheck.protocol = elb.HealthCheck.Target.split( ':' )[ 0 ]
+            elb.HealthCheck.port     = elb.HealthCheck.Target.split( ':' )[ 1 ].split( '/' )[ 0 ]
+            elb.HealthCheck.path     = elb.HealthCheck.Target.split( '/' )[ 1 ]
 
             # Cross Zone
-            crossZone = myElbComponent.resource.CrossZoneLoadBalancing
-            if crossZone is 'true'
-                elb.CrossZone = 'Enabled'
-            else
-                elb.CrossZone = 'Disabled'
+            elb.CrossZone = if myElbComponent.get('crossZone') then "Enabled" else "Disabled"
 
             # DNS
-            elb.AAAADNSName = "ipv6." + elb.DNSName
-            elb.ADNSName    = "dualstack." + elb.DNSName
+            elb.AAAADNSName = "ipv6.#{elb.DNSName}"
+            elb.ADNSName    = "dualstack.#{elb.DNSName}"
 
 
             elb.listenerDisplay = []
@@ -58,28 +54,18 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                   null
 
-            if elb.Subnets
-
-              elb.isClassic = false
-
-            else
-              elb.isClassic = true
-
-            defaultVPC = false
-            if MC.aws.aws.checkDefaultVPC()
-                defaultVPC = true
-
-            if defaultVPC or MC.canvas_data.component[elb_uid].resource.VpcId
-                this.set 'have_vpc', true
-            else
-                this.set 'have_vpc', false
+            elb.isClassic  = Design.instance().typeIsClassic()
+            elb.defaultVPC = Design.instance().typeIsDefaultVpc()
 
             elb.distribution = []
 
             subnetMap = {}
-            for uid, comp of MC.canvas_data.component
-                if comp.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
-                    subnetMap[ comp.resource.SubnetId ] = comp.name
+
+            allSubnet = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()
+
+            for subnet in allSubnet
+                subnetMap[ subnet.id ] = subnet.get 'name'
+
 
             $.each elb.AvailabilityZones.member, (i, zone_name) ->
               tmp = {}
@@ -93,7 +79,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                     $.each elb.Subnets.member, (j, subnet_id) ->
 
-                        if MC.data.resource_list[MC.canvas_data.region][subnet_id].availabilityZone == zone_name
+                        if MC.data.resource_list[Design.instance().region()][subnet_id].availabilityZone == zone_name
 
                             tmp.subnet = subnetMap[ subnet_id ]
 
@@ -106,7 +92,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
               else
                 tmp.subnet = null
 
-              $.each MC.data.config[MC.canvas_data.region].zone.item, (i, zone) ->
+              $.each MC.data.config[Design.instance().region()].zone.item, (i, zone) ->
 
                 if zone.zoneName == zone_name and zone.zoneState == 'available'
 
@@ -120,7 +106,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
             $.each elb.instance_state, ( i, instance ) ->
 
-                zone = MC.data.resource_list[MC.canvas_data.region][instance.InstanceId].placement.availabilityZone
+                zone = MC.data.resource_list[Design.instance().region()][instance.InstanceId].placement.availabilityZone
 
                 $.each elb.distribution, ( j, az_detail ) ->
 
@@ -132,36 +118,8 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
                     return false
 
-            elb.isclassic = if MC.canvas_data.platform is MC.canvas.PLATFORM_TYPE.EC2_CLASSIC then true else false
-
             @set elb
-            @set "componentUid", myElbComponent.uid
-
-        getSGList : () ->
-
-            # resourceId = this.get 'id'
-
-            # # find stack by resource id
-            # resourceCompObj = null
-            # _.each MC.canvas_data.component, (compObj, uid) ->
-            #     if compObj.resource.InstanceId is resourceId
-            #         resourceCompObj = compObj
-            #     null
-
-            # sgAry = []
-            # if resourceCompObj
-            #     sgAry = resourceCompObj.resource.SecurityGroupId
-
-            uid = this.get 'id'
-            sgAry = MC.canvas_data.component[uid].resource.SecurityGroups
-
-            sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
-
-            return sgUIDAry
+            @set "componentUid", myElbComponent.id
     }
 
     new ElbAppModel()

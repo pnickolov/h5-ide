@@ -106,7 +106,8 @@ define [ '../base/view', 'text!./template/app.html', 'i18n!nls/lang.js' ], ( Pro
             if maxIPNum is currentIPNum
                 disabledBtn = true
 
-            instanceType = MC.canvas_data.component[instanceUID].resource.InstanceType
+            instanceType = Design.instance().component( instanceUID ).get 'instanceType'
+
             if disabledBtn
                 tooltipStr = sprintf(lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instanceType, maxIPNum)
                 $('#instance-ip-add').addClass('disabled').attr('data-tooltip', tooltipStr).data('tooltip', tooltipStr)

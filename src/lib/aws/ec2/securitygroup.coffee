@@ -350,7 +350,7 @@ define [ 'i18n!nls/lang.js', 'MC', 'constant' ], ( lang, MC, constant ) ->
 			"Groups": []
 			}
 
-		data = MC.canvas.data.get('component')
+		data = Design.instance().serialize()['component']
 
 		data[uid] = component_data
 

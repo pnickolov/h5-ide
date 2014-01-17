@@ -4,10 +4,10 @@
 <div class="option-group">
   <dl class="dl-vertical">
     <dt>{{i18n "PROP_INSTANCE_INSTANCE_ID"}}</dt>
-    <dd>{{group.id}}</dd>
+    <dd>{{group.appId}}</dd>
 
     <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
-    <dd><i class="status status-{{group.state}} icon-label"></i>{{group.state}}</dd>
+    <dd><i class="status status-{{group.status}} icon-label"></i>{{group.status}}</dd>
 
     <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
     <dd>{{timeStr group.launchTime}}</dd>
@@ -18,8 +18,8 @@
 <ul class="option-group property-list">
   {{#each group}}
     <li>
-      <i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{name}}
-      {{#if id}}<span class="subtitle">({{id}})</span>{{/if}}
+      <i class="status status-{{status}} icon-label tooltip" data-tooltip="{{status}}"></i>{{name}}
+      {{#if appId}}<span class="subtitle">({{appId}})</span>{{/if}}
       {{#if isNew}}<div class="subtitle subtitle-launch">Launch after applying updates</div>
       {{else}}{{#if isOld}}<div class="subtitle subtitle-terminate">Terminate after applying updates</div>{{/if}}
       {{/if}}

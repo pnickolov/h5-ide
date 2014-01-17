@@ -7,7 +7,9 @@ define [ '../base/model',
     'instance_model',
     'constant',
     'i18n!nls/lang.js'
-], ( PropertyModel, keypair_model, instance_model, constant, lang ) ->
+    'Design'
+
+], ( PropertyModel, keypair_model, instance_model, constant, lang, Design ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -17,7 +19,7 @@ define [ '../base/model',
         initialize : () ->
             me = this
 
-            @on 'EC2_KPDOWNLOAD_RETURN', ( result )->
+            @on 'EC2_KPDOWNLOAD_RETURN', ( result ) ->
 
                 region_name = result.param[3]
                 keypairname = result.param[4]
@@ -134,19 +136,43 @@ define [ '../base/model',
         init : ( instance_id )->
 
             @set 'id', instance_id
+            @set 'uid', instance_id
 
-            myInstanceComponent = MC.canvas_data.component[ instance_id ]
+            myInstanceComponent = Design.instance().component( instance_id )
 
             # The instance_id might be component uid or aws id
             if myInstanceComponent
-                instance_id = myInstanceComponent.resource.InstanceId
+                instance_id = myInstanceComponent.get 'appId'
+            else
+                for instance in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance ).allObjects()
+                    if instance.get("appId") is instance_id
+                        @set "uid", instance.id
+                        found = true
+                        break
+                    else if instance.groupMembers
+                        for member in instance.groupMembers()
+                            if member and member.appId is instance_id
+                                @set "uid", instance.id
+                                found = true
+                                break
+                if not found
+                    resource_list = MC.data.resource_list[ Design.instance().region() ]
+                    for asg in Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group ).allObjects()
+                        data = resource_list[ asg.get("appId") ]
+                        if not data then continue
+                        data = data.Instances
+                        if data.member then data = data.member
+                        for obj in data
+                            if obj is instance_id or obj.InstanceId is instance_id
+                                @set "uid", asg.get("lc").id
+                                break
 
-            app_data = MC.data.resource_list[ MC.canvas_data.region ]
+            app_data = MC.data.resource_list[ Design.instance().region() ]
 
             if app_data[ instance_id ]
 
                 instance = $.extend true, {}, app_data[ instance_id ]
-                instance.name = if myInstanceComponent then myInstanceComponent.name else instance_id
+                instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
 
                 # Possible value : running, stopped, pending...
                 instance.state = MC.capitalize instance.instanceState.name
@@ -186,12 +212,15 @@ define [ '../base/model',
             if not id
                 return null
 
-            for key, value of MC.canvas_data.component
-                if value.type == TYPE_ENI && value.resource.NetworkInterfaceId == id
-                    component = value
+            EniModel = Design.modelClassForType( TYPE_ENI )
+            allEni = EniModel and EniModel.allObjects() or []
+
+            for eni in allEni
+                if eni.get 'appId' is id
+                    component = eni
                     break
 
-            appData = MC.data.resource_list[ MC.canvas_data.region ]
+            appData = MC.data.resource_list[ Design.instance().region() ]
 
             if not appData[id]
                 # Use data inside networkInterfaceSet
@@ -200,11 +229,11 @@ define [ '../base/model',
                 # Use data inside appData
                 data = $.extend true, {}, appData[ id ]
 
-            data.name = if component then component.name else id
+            data.name = if component then component.get 'name' else id
             if data.status == "in-use"
                 data.isInUse = true
 
-            data.sourceDestCheck = if data.sourceDestCheck is "true" then "enabled" else "disabled"
+            data.sourceDestCheck = if data.sourceDestCheck then "enabled" else "disabled"
 
             for i in data.privateIpAddressesSet.item
                 i.primary = i.primary == true
@@ -215,7 +244,7 @@ define [ '../base/model',
             username = $.cookie "usercode"
             session  = $.cookie "session_id"
 
-            keypair_model.download {sender:@}, username, session, MC.canvas_data.region, keypairname
+            keypair_model.download {sender:@}, username, session, Design.instance().region(), keypairname
             null
 
 
@@ -226,175 +255,30 @@ define [ '../base/model',
             session  = $.cookie "session_id"
 
             me = this
-            instance_model.GetPasswordData {sender:me}, username, session, MC.canvas_data.region, instance_id, key_data
+            instance_model.GetPasswordData {sender:me}, username, session, Design.instance().region(), instance_id, key_data
             null
 
 
         getAMI : ( ami_id ) ->
             MC.data.dict_ami[ami_id]
 
-        getSGList : () ->
-
-            # resourceId = this.get 'id'
-
-            # # find stack by resource id
-            # resourceCompObj = null
-            # _.each MC.canvas_data.component, (compObj, uid) ->
-            #     if compObj.resource.InstanceId is resourceId
-            #         resourceCompObj = compObj
-            #     null
-
-            # sgAry = []
-            # if resourceCompObj
-            #     sgAry = resourceCompObj.resource.SecurityGroupId
-
-
-
-            # uid = this.get 'id'
-            # sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
-
-            # sgUIDAry = []
-            # _.each sgAry, (value) ->
-            #     sgUID = value.slice(1).split('.')[0]
-            #     sgUIDAry.push sgUID
-            #     null
-
-            # return sgUIDAry
-
-
-
-            sgUIDAry = []
-            uid = this.get 'id'
-
-            if uid.indexOf('i-') is 0
-                resList = MC.data.resource_list[MC.canvas_data.region]
-                instanceComp = resList[uid]
-                instanceSGAry = instanceComp.groupSet.item
-                instanceUIDAry = _.map instanceSGAry, (sgObj) ->
-                    sgId = sgObj.groupId
-                    # find sg uid
-                    sgUID = ''
-                    _.each MC.canvas_data.component, (compObj) ->
-                        if compObj.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
-                            if compObj.resource.GroupId is sgId
-                                sgUID = compObj.uid
-                        null
-                    return sgUID
-                sgUIDAry = instanceUIDAry
-
-            else
-
-                if MC.aws.vpc.getVPCUID() || MC.aws.aws.checkDefaultVPC()
-                    defaultENIComp = MC.aws.eni.getInstanceDefaultENI(uid)
-                    eniUID = defaultENIComp.uid
-
-                    sgAry = MC.canvas_data.component[eniUID].resource.GroupSet
-
-                    sgUIDAry = []
-                    _.each sgAry, (value) ->
-                        sgUID = value.GroupId.slice(1).split('.')[0]
-                        sgUIDAry.push sgUID
-                        null
-
-                else
-                    sgAry = MC.canvas_data.component[uid].resource.SecurityGroupId
-
-                    sgUIDAry = []
-                    _.each sgAry, (value) ->
-                        sgUID = value.slice(1).split('.')[0]
-                        sgUIDAry.push sgUID
-                        null
-
-            return sgUIDAry
 
         getEni : () ->
 
-            instance_id = this.get 'id'
+            instance = Design.instance().component( @get 'uid'  )
 
-            uid = null
+            eni = instance.getEmbedEni()
 
-            for key, value of MC.canvas_data.component
-
-                if value.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and value.resource.Attachment.InstanceId.split('.')[0].slice(1) is instance_id and value.resource.Attachment.DeviceIndex in [0, '0']
-
-                    uid = key
-
-            instanceUID = uid
-
-            defaultVPCId = MC.aws.aws.checkDefaultVPC()
-            if !MC.canvas_data.component[instance_id].resource.SubnetId and !defaultVPCId
+            if not eni
                 return
 
-            eni_detail = {}
+            eni_obj     = eni.toJSON()
+            eni_obj.ips = eni.getIpArray()
+            eni_obj.ips[0].unDeletable = true
 
-            eni_detail.eni_ips = []
-
-            eni_count = 0
-
-            subnetCIDR = ''
-            if defaultVPCId
-                subnetObj = MC.aws.vpc.getSubnetForDefaultVPC(instanceUID)
-                subnetCIDR = subnetObj.cidrBlock
-            else
-                subnetUID = MC.canvas_data.component[instance_id].resource.SubnetId.split('.')[0][1...]
-                subnetCIDR = MC.canvas_data.component[subnetUID].resource.CidrBlock
-
-            prefixSuffixAry = MC.aws.subnet.genCIDRPrefixSuffix(subnetCIDR)
-
-            _.map MC.canvas_data.component, ( val, key ) ->
-
-                if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_id and val.resource.Attachment.DeviceIndex == '0'
-
-                    eni_detail.description = val.resource.Description
-
-                    if val.resource.AssociatePublicIpAddress
-
-                        eni_detail.asso_public_ip = val.resource.AssociatePublicIpAddress
-                    else
-                        eni_detail.asso_public_ip = false
-
-                    eni_detail.sourceCheck = true if val.resource.SourceDestCheck == 'true' or val.resource.SourceDestCheck == true
-
-                    eni_detail.eni_ips = $.extend true, {}, val.resource.PrivateIpAddressSet
-
-                    $.each eni_detail.eni_ips, ( idx, ip_detail) ->
-
-                        ip_ref = '@' + val.uid + '.resource.PrivateIpAddressSet.' + idx + '.PrivateIpAddress'
-
-                        ip_detail.prefix = prefixSuffixAry[0]
-
-                        if ip_detail.AutoAssign is true or ip_detail.AutoAssign is 'true'
-                            ip_detail.suffix = prefixSuffixAry[1]
-                        else
-                            # subnetComp = MC.aws.eni.getSubnetComp(uid)
-                            # subnetCIDR = subnetComp.resource.CidrBlock
-                            ipAddress = ip_detail.PrivateIpAddress
-                            fixPrefixSuffixAry = MC.aws.eni.getENIDivIPAry(subnetCIDR, ipAddress)
-                            ip_detail.suffix = fixPrefixSuffixAry[1]
-
-                        $.each MC.canvas_data.component, ( comp_uid, comp ) ->
-
-                            if comp.type == constant.AWS_RESOURCE_TYPE.AWS_EC2_EIP and comp.resource.PrivateIpAddress == ip_ref
-
-                                ip_detail.has_eip = true
-
-                                return false
-                        eni_count += 1
-                        null
-                else if val.type == constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and (val.resource.Attachment.InstanceId.split ".")[0][1...] == instance_id
-
-                    eni_count += 1
-
-                null
-
-            if eni_count > 1
-
-                eni_detail.multi_enis = true
-
-            else
-                eni_detail.multi_enis = false
-
-            this.set 'eni_display', eni_detail
+            @set "eni", eni_obj
+            @set "multi_enis", instance.connections("EniAttachment").length > 0
+            null
 
     }
 

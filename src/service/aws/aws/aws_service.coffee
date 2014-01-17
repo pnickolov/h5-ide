@@ -10,11 +10,11 @@
 # (c)Copyright 2012 Madeiracloud  All Rights Reserved
 # ************************************************************************************
 
-define [ 'MC', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
+define [ 'MC', 'aws_handle', 'result_vo', 'constant', 'ebs_service', 'eip_service', 'instance_service'
 		 'keypair_service', 'securitygroup_service', 'elb_service', 'iam_service', 'acl_service'
 		 'customergateway_service', 'dhcp_service', 'eni_service', 'internetgateway_service', 'routetable_service'
 		 'autoscaling_service', 'cloudwatch_service', 'sns_service',
-		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, result_vo, constant, ebs_service, eip_service, instance_service
+		 'subnet_service', 'vpc_service', 'vpn_service', 'vpngateway_service', 'ec2_service', 'ami_service' ], (MC, aws_handle, result_vo, constant, ebs_service, eip_service, instance_service
 		 keypair_service, securitygroup_service, elb_service, iam_service, acl_service
 		 customergateway_service, dhcp_service, eni_service, internetgateway_service, routetable_service,
 		 autoscaling_service, cloudwatch_service, sns_service,

@@ -1,6 +1,6 @@
 MC.canvas = MC.canvas || {};
 
-//define([ 'i18n!nls/lang.js' ], function( lang ){
+define([ 'i18n!nls/lang.js' ], function( lang ){
 
 var constant_data = {
 
@@ -135,10 +135,10 @@ var constant_data = {
 	//LINE_STROKE_WIDTH: 2,
 
 	//constant for MC.canvas.add
-	PATH_D_PORT: "M 8 8 l -6 -6 l -2 0 l 0 12 l 2 0 l 6 -6 z", //triangle
-	PATH_D_PORT2: "M 10 8 l -6 -6 l -6 6 l 6 6 l 6 -6 z", //diamond
+	PATH_D_PORT  : "M8 5.5l-6 -5.5l-2 0 l0 11 l2 0z", //triangle
+	PATH_D_PORT2 : "M0 5.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z", //diamond
 
-	PATH_ASG_TITLE: "M 0 20 l 0 -15 a 5 5 0 0 1 5 -5 l 120 0 a 5 5 0 0 1 5 5 l 0 15 z",
+	PATH_ASG_TITLE: "M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z",
 
 
 	PORT_PADDING: 4, //port padding (to point of junction)
@@ -150,10 +150,10 @@ var constant_data = {
 	PORT_LEFT_ANGLE: 180, //left
 	PORT_DOWN_ANGLE: 270, //bottom
 
-	PORT_RIGHT_ROTATE: "", //port rotate
-	PORT_UP_ROTATE: ", rotate(90,0,8)",
-	PORT_LEFT_ROTATE: ", rotate(180,0,9)",
-	PORT_DOWN_ROTATE: ", rotate(270,0,8)",
+	PORT_RIGHT_ROTATE : "", //port rotate
+	PORT_UP_ROTATE    : ", rotate(90,4,5)",
+	PORT_LEFT_ROTATE  : ", rotate(180,4,5.5)",
+	PORT_DOWN_ROTATE  : ", rotate(270,4,5)",
 
 	COLOR_BLUE: '#6DAEFE',
 	COLOR_GREEN: '#12CD4F',
@@ -721,11 +721,7 @@ var constant_data = {
 	//local variable for stack
 	STACK_PROPERTY:
 	{
-		sg_list: [],
-		kp_list: {},
 		original_json: '',
-		SCALE_RATIO: 1,
-		LINE_STYLE: 2, //0:straight  1:elbow line(fold)  2:bezier q,  3:bezier qt
 		selected_node: []
 		//resource_list: [] //aws resource list by Describe* return
 	},
@@ -798,6 +794,173 @@ var constant_data = {
 				"length": null,
 				"action": "",
 				"due": null
+			}
+		}
+	},
+
+	DESIGN_INIT_LAYOUT:
+	{
+		size  : [240,240],
+	},
+
+	DESIGN_INIT_LAYOUT_VPC:
+	{
+		size  : [240,240],
+		component : {
+			group : {
+				VPC : {
+					coordinate : [5,3],
+					size       : [60,60]
+				}
+			},
+			node : {
+				RTB : {
+					coordinate : [50,5]
+				}
+			}
+		}
+
+	},
+
+	DESIGN_INIT_DATA:
+	{
+		KP : {
+			type : "AWS.EC2.KeyPair",
+			name : "DefaultKP",
+			resource : { KeyName : "DefaultKP" }
+		},
+		SG : {
+			type : "AWS.EC2.SecurityGroup",
+			name : "DefaultSG",
+			resource : {
+				IpPermissions: [{
+					IpProtocol : "tcp",
+					IpRanges   : "0.0.0.0/0",
+					FromPort   : "22",
+					ToPort     : "22",
+					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
+				}],
+				IpPermissionsEgress : [],
+				Default             : "true",
+				GroupName           : "DefaultSG",
+				GroupDescription    : 'Default Security Group'
+			}
+		}
+	},
+
+	DESIGN_INIT_DATA_VPC:
+	{
+		KP : {
+			type : "AWS.EC2.KeyPair",
+			name : "DefaultKP",
+			resource : { KeyName : "DefaultKP" }
+		},
+		SG : {
+			type : "AWS.EC2.SecurityGroup",
+			name : "DefaultSG",
+			resource : {
+				IpPermissions: [{
+					IpProtocol : "tcp",
+					IpRanges   : "0.0.0.0/0",
+					FromPort   : "22",
+					ToPort     : "22",
+					Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
+				}],
+				IpPermissionsEgress : [],
+				Default             : "true",
+				GroupName           : "DefaultSG",
+				GroupDescription    : 'Default Security Group'
+			}
+		},
+		ACL : {
+			"type": "AWS.VPC.NetworkAcl",
+			"name": "DefaultACL",
+			"resource": {
+				"RouteTableId": "",
+				"NetworkAclId": "",
+				"VpcId": "",
+				"Default": "true",
+				"EntrySet": [
+					{
+						"RuleAction": "allow",
+						"Protocol": "-1",
+						"CidrBlock": "0.0.0.0/0",
+						"Egress": "true",
+						"IcmpTypeCode": {
+							"Type": "",
+							"Code": ""
+						},
+						"PortRange": {
+							"To": "",
+							"From": ""
+						},
+						"RuleNumber": "100"
+					},
+					{
+						"RuleAction": "deny",
+						"Protocol": "-1",
+						"CidrBlock": "0.0.0.0/0",
+						"Egress": "true",
+						"IcmpTypeCode": {
+							"Type": "",
+							"Code": ""
+						},
+						"PortRange": {
+							"To": "",
+							"From": ""
+						},
+						"RuleNumber": "32767"
+					},
+					{
+						"RuleAction": "allow",
+						"Protocol": "-1",
+						"CidrBlock": "0.0.0.0/0",
+						"Egress": "false",
+						"IcmpTypeCode": {
+							"Type": "",
+							"Code": ""
+						},
+						"PortRange": {
+							"To": "",
+							"From": ""
+						},
+						"RuleNumber": "100"
+					},
+					{
+						"RuleAction": "deny",
+						"Protocol": "-1",
+						"CidrBlock": "0.0.0.0/0",
+						"Egress": "false",
+						"IcmpTypeCode": {
+							"Type": "",
+							"Code": ""
+						},
+						"PortRange": {
+							"To": "",
+							"From": ""
+						},
+						"RuleNumber": "32767"
+					}
+				],
+				"AssociationSet": []
+			}
+		},
+		VPC : {
+			type : "AWS.VPC.VPC",
+			name : "vpc",
+			resource : {}
+		},
+		RTB : {
+			type     : "AWS.VPC.RouteTable",
+			resource : {
+				PropagatingVgwSet : [],
+				RouteSet          : [{
+						State                : 'active',
+						Origin               : 'CreateRouteTable',
+						GatewayId            : 'local',
+						DestinationCidrBlock : '10.0.0.0/16'
+				}],
+				AssociationSet : [{Main:"true"}]
 			}
 		}
 	},
@@ -1771,4 +1934,4 @@ $.each(constant_data, function (key, value)
 	MC.canvas[ key ] = value;
 });
 
-//});
+});

@@ -2,30 +2,27 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
+define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Design ) ->
 
   ASGModel = PropertyModel.extend {
 
     init : ( uid ) ->
 
-        asg_comp = MC.canvas_data.component[uid]
+        asg_comp = Design.instance().component( uid )
 
         data =
           uid        : uid
-          name       : asg_comp.name
-          minSize    : asg_comp.resource.MinSize
-          maxSize    : asg_comp.resource.MaxSize
-          capacity   : asg_comp.resource.DesiredCapacity
+          name       : asg_comp.get 'name'
+          minSize    : asg_comp.get 'minSize'
+          maxSize    : asg_comp.get 'maxSize'
+          capacity   : asg_comp.get 'capacity'
           isEditable : @isAppEdit
 
         @set data
 
-        @getASGData( asg_comp.resource.AutoScalingGroupARN )
+        resource_list = MC.data.resource_list[Design.instance().region()]
 
-    getASGData : ( arn )->
-
-        resource_list = MC.data.resource_list[MC.canvas_data.region]
-        asg_data = resource_list[ arn ]
+        asg_data = resource_list[ asg_comp.get( 'appId' ) ]
 
         if not asg_data
             return false
@@ -34,6 +31,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         @set 'awsResName', asg_data.AutoScalingGroupName
         @set 'arn', asg_data.AutoScalingGroupARN
         @set 'createTime', asg_data.CreatedTime
+
         if asg_data.TerminationPolicies and asg_data.TerminationPolicies.member
             @set 'term_policy_brief', asg_data.TerminationPolicies.member.join(" > ")
 
@@ -47,11 +45,9 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
         policies = []
         cloudWatchPolicyMap = {}
 
-        for comp_uid, comp of MC.canvas_data.component
-            if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_ScalingPolicy
-                continue
-
-            policy_data = resource_list[ comp.resource.PolicyARN ]
+        for sp in asg_comp.get("policies")
+            comp_uid = sp.id
+            policy_data = resource_list[ sp.get 'appId' ]
             if not policy_data
                 continue
 
@@ -61,21 +57,11 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                 step       : policy_data.MinAdjustmentStep
                 cooldown   : policy_data.Cooldown
                 name       : policy_data.PolicyName
-                arn        : comp.resource.PolicyARN
+                arn        : sp.get 'appId'
 
-            cloudWatchPolicyMap[ comp.name + '-alarm' ] = policy
-            policies.push policy
+            #cloudWatchPolicyMap[ "#{comp.get 'name'}-alarm" ] = policy
 
-
-        for comp_uid, comp of MC.canvas_data.component
-            if comp.type isnt constant.AWS_RESOURCE_TYPE.AWS_CloudWatch_CloudWatch
-                continue
-
-            policy = cloudWatchPolicyMap[ comp.name ]
-            if not policy
-                continue
-
-            alarm_data  = resource_list[ comp.resource.AlarmArn ]
+            alarm_data  = resource_list[ sp.get("alarmData").appId ]
             actions_arr = [ alarm_data.InsufficientDataActions, alarm_data.OKActions, alarm_data.AlarmActions ]
             trigger_arr = [ 'INSUFFICIANT_DATA', 'OK', 'ALARM' ]
 
@@ -90,17 +76,19 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
                     # So that view can show cloudwatch info.
                     policy.arn = ""
 
-                    policy.evaluation = alarm_data.ComparisonOperator
+                    policy.evaluation = sp.get("alarmData").comparisonOperator
                     policy.metric     = alarm_data.MetricName
                     policy.notify     = actions.length is 2
-                    policy.preriods   = alarm_data.EvaluationPeriods
-                    policy.second     = alarm_data.Period
+                    policy.periods    = alarm_data.EvaluationPeriods
+                    policy.minute     = Math.round( alarm_data.Period / 60 )
                     policy.statistics = alarm_data.Statistic
                     policy.threshold  = alarm_data.Threshold
                     policy.trigger    = trigger_arr[ idx ]
 
-        @set 'policies', _.sortBy(policies, "name")
+            policies.push policy
 
+
+        @set 'policies', _.sortBy(policies, "name")
 
         # Get notifications
         notifications = resource_list.NotificationConfigurations
@@ -160,7 +148,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         uid = @get 'uid'
 
-        MC.canvas_data.component[uid].resource.MinSize = value
+        Design.instance().component( uid ).set( "minSize", value )
 
         null
 
@@ -168,7 +156,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         uid = @get 'uid'
 
-        MC.canvas_data.component[uid].resource.MaxSize = value
+        Design.instance().component( uid ).set( "maxSize", value )
 
         null
 
@@ -176,7 +164,7 @@ define [ '../base/model', 'constant' ], ( PropertyModel, constant ) ->
 
         uid = @get 'uid'
 
-        MC.canvas_data.component[uid].resource.DesiredCapacity = value
+        Design.instance().component( uid ).set( "capacity", value )
 
         null
 

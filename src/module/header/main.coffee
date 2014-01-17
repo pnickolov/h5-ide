@@ -72,7 +72,7 @@ define [ 'event',
             ide_event.onLongListen ide_event.SWITCH_TAB, () ->
                 #temp
                 setTimeout () ->
-                    console.log 'SWITCH_TAB header id:' + MC.canvas_data.id
+                    console.log 'SWITCH_TAB header id:' + MC.forge.other.canvasData.get 'id'
                     model.setFlag(false)
                     view.updateNotification()
                 , 500

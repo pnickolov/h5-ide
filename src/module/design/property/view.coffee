@@ -4,8 +4,9 @@
 
 define [ 'event',
          'text!./template.html'
+         'Design'
          'backbone', 'jquery', 'handlebars'
-], ( ide_event, template ) ->
+], ( ide_event, template, Design ) ->
 
     PropertyView = Backbone.View.extend {
 
@@ -24,7 +25,11 @@ define [ 'event',
                 return options.inverse this
 
             Handlebars.registerHelper 'emptyStr', ( v1 ) ->
-                if v1 then new Handlebars.SafeString v1 else '-'
+                if v1 in [ '', undefined, null ]
+                    '-'
+                else
+                    new Handlebars.SafeString v1
+
 
             Handlebars.registerHelper 'timeStr', ( v1 ) ->
                 d = new Date( v1 )
@@ -97,7 +102,7 @@ define [ 'event',
 
             $toggle.toggleClass("expand")
 
-            stackId = MC.canvas_data.id
+            stackId = Design.instance().get("id")
             if !@propertyHeadStateMap[stackId]
                 @propertyHeadStateMap[stackId] = {}
 
@@ -119,7 +124,7 @@ define [ 'event',
                     stackMap = @propertyHeadStateMap[stackId]
                     stackMap[ headCompUID ] = headExpandStateAry
 
-                    component = MC.canvas_data.component[headCompUID]
+                    component = Design.instance().component( headCompUID )
                     if component
                         stackMap[ component.type ] = headExpandStateAry
 
@@ -200,7 +205,7 @@ define [ 'event',
                 stackMap = @propertyHeadStateMap[stackId]
                 if stackMap
                     headExpandStateAry = stackMap[headCompUID]
-                    component = MC.canvas_data.component[headCompUID]
+                    component = Design.instance().component( headCompUID )
                     if not headExpandStateAry and component
                         headExpandStateAry = stackMap[ component.type ]
 
@@ -218,7 +223,7 @@ define [ 'event',
                 stateMap = @propertyHeadStateMap[stackId]
                 if stateMap
                     for compUID, stateAry of stateMap
-                        if MC.canvas_data.component[ compUID ]
+                        if Design.instance().component( compUID )
                             continue
                         if compUID is stackId or compUID.indexOf( 'i-' ) is 0
                             continue

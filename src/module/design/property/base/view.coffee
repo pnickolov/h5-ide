@@ -55,6 +55,35 @@ define [ 'constant',
             PropertyView.event.trigger PropertyView.event.FORCE_SHOW
             null
 
+        disabledAllOperabilityArea : ( disabled ) ->
+            if disabled
+                if $("resource-panel").children(".disabled-event-layout").length
+                    return
+                divTmpl = '<div class="disabled-event-layout"></div>'
+                $('#resource-panel').append(divTmpl)
+                $('#canvas').append(divTmpl)
+                $('#tabbar-wrapper').append(divTmpl)
+            else
+                $('.disabled-event-layout').remove()
+
+        checkDupName : ( $input, type )->
+            if not $input.length
+                $input = $( $input )
+
+            name = $input.val()
+
+            if not type then type = name
+
+            if name && !MC.validate( 'awsName',  name )
+                error = "This value should be a valid #{type} name."
+
+            if not error and @model.isNameDup( name )
+                error = "#{type} name \" #{name} \" is already in using. Please use another one."
+
+
+            $input.parsley 'custom', ()-> error
+            $input.parsley 'validate'
+
         _load : () ->
             # The module is loaded. Here we re-init the view.
 
@@ -67,6 +96,8 @@ define [ 'constant',
 
             @setElement $new_panel
             @render()
+
+            @focusImportantInput()
             null
 
         _loadAsSub : ( subPanelID ) ->
@@ -91,6 +122,8 @@ define [ 'constant',
             # Then switch to the wrapper of the content.
             # So that events are bound to the wrapper of the content.
             # this.setElment this.$el.children().eq(0)  # # # Not sure if this is necessary.
+            that = this
+            setTimeout (()-> that.focusImportantInput()), 200
             null
 
         _render : () ->
@@ -108,7 +141,7 @@ define [ 'constant',
                 # if is sg property, do not set title
                 resUID = @model.get 'uid'
                 if resUID
-                    resComp = MC.canvas_data.component[resUID]
+                    resComp = Design.instance().component(resUID)
                     if resComp and resComp.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_SecurityGroup
                         return null
 
@@ -118,6 +151,15 @@ define [ 'constant',
             else
                 return result
 
+            null
+
+        focusImportantInput : ()->
+            $emptyInput = @$el.find("input[data-empty-remove]").filter ()->
+                !this.value.length
+            if $emptyInput.length
+                @forceShow()
+                $emptyInput.focus()
+                @disabledAllOperabilityArea( true )
             null
     }
 

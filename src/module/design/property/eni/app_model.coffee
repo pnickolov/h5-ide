@@ -2,37 +2,61 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model' ], ( PropertyModel ) ->
+define [ '../base/model', 'Design', 'constant' ], ( PropertyModel, Design, constant ) ->
 
     EniAppModel = PropertyModel.extend {
 
-        init : ( eni_uid )->
+        init : ( uid )->
 
           group          = []
-          myEniComponent = MC.canvas_data.component[ eni_uid ]
-          appData        = MC.data.resource_list[ MC.canvas_data.region ]
+          myEniComponent = Design.instance().component( uid )
 
-          if @isGroupMode
+          if not myEniComponent
+            allEni = Design.modelClassForType( 'AWS.VPC.NetworkInterface' ).allObjects()
 
-            for uid, component of MC.canvas_data.component
-              if component.serverGroupUid is myEniComponent.serverGroupUid
-                group.push component
+            for e in allEni
+              if e.get( 'appId' ) is uid
+                myEniComponent = e
+                myEniComponentJSON = e.toJSON()
+                break
+              else
+                for mIndex, m of e.groupMembers()
+                  if m.appId is uid
+                    memberIndex = +mIndex + 1
+                    myEniComponent = e
+                    myEniComponentJSON = m
+                    break
 
           else
-            group.push myEniComponent
+            myEniComponentJSON = myEniComponent.toJSON()
+
+          appData        = MC.data.resource_list[ Design.instance().region() ]
+
+          if @isGroupMode
+            group = [ myEniComponentJSON ].concat myEniComponent.groupMembers()
+
+          else
+            group.push myEniComponentJSON
+
+
 
 
           formated_group = []
-          for eni_comp in group
-            eni = $.extend true, {}, appData[ eni_comp.resource.NetworkInterfaceId ]
+
+          for index, eni_comp of group
+
+            if appData[ eni_comp.appId ]
+              eni = $.extend true, {}, appData[ eni_comp.appId ]
+            else
+              eni = { privateIpAddressesSet : { item : [] } }
 
             for i in eni.privateIpAddressesSet.item
               i.primary = i.primary is true
 
-            eni.id              = eni_comp.resource.NetworkInterfaceId
-            eni.name            = eni_comp.name
-            eni.idx             = parseInt( eni_comp.name.split("-")[1], 10 )
-            eni.sourceDestCheck = if eni.sourceDestCheck is "true" then "enabled" else "disabled"
+            eni.id              = eni_comp.appId
+            eni.name            = if eni_comp.name then "#{eni_comp.name}-0" else "#{myEniComponent.get 'name'}-#{memberIndex or index}"
+            eni.idx             = memberIndex or index
+            eni.sourceDestCheck = if eni.sourceDestCheck then 'enabled' else 'disabled'
 
             formated_group.push eni
 
@@ -42,29 +66,19 @@ define [ '../base/model' ], ( PropertyModel ) ->
             @set 'group',       _.sortBy formated_group, 'idx'
             @set 'readOnly',    true
             @set 'isGroupMode', true
-            @set 'name',        myEniComponent.name
+            @set 'name',        myEniComponent.get 'name'
           else
             eni = formated_group[0]
 
             eni.readOnly    = true
             eni.isGroupMode = false
-            eni.id          = eni_uid
+            eni.id          = uid
+            eni.uid         = if myEniComponent then myEniComponent.id else uid
             @set eni
+
 
           null
 
-        getSGList : () ->
-
-            uid = this.get 'id'
-            sgAry = MC.canvas_data.component[uid].resource.GroupSet
-
-            sgUIDAry = []
-            _.each sgAry, (value) ->
-                sgUID = value.GroupId.slice(1).split('.')[0]
-                sgUIDAry.push sgUID
-                null
-
-            return sgUIDAry
     }
 
     new EniAppModel()

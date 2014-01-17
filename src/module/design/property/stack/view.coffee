@@ -15,10 +15,10 @@ define [ '../base/view',
 
     StackView = PropertyView.extend {
         events   :
-            'change #property-stack-name'                        : 'stackNameChanged'
-            'click .stack-property-acl-list .sg-list-delete-btn' : 'deleteNetworkAcl'
-            'click #stack-property-add-new-acl'                  : 'openCreateAclPanel'
-            'click .stack-property-acl-list .edit'               : 'openEditAclPanel'
+            'change #property-stack-name'          : 'stackNameChanged'
+
+            'click #stack-property-new-acl'        : 'createAcl'
+            'click #stack-property-acl-list .edit' : 'openAcl'
 
             'click #property-sub-list .icon-edit' : 'editSNS'
             'click #property-sub-list .icon-del'  : 'delSNS'
@@ -27,22 +27,16 @@ define [ '../base/view',
         render     : () ->
 
             @$el.html( template( @model.attributes ) )
-            @setTitle( "Stack - " + this.model.attributes.property_detail.name )
+            @setTitle( "Stack - #{@model.get('name')}" )
 
             @refreshACLList()
 
-
-            MC.canvas_data.name = MC.canvas_data.name.replace(/\s+/g, '')
-
-            $( '#property-stack-name' ).val(MC.canvas_data.name)
-
-            this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg, true
-
+            @updateSNSList @model.get("subscription"), true
             null
 
         stackNameChanged : () ->
             stackNameInput = $ '#property-stack-name'
-            stackId = @model.get( 'property_detail' ).id
+            stackId = @model.get( 'id' )
             name = stackNameInput.val()
 
             stackNameInput.parsley 'custom', ( val ) ->
@@ -57,68 +51,19 @@ define [ '../base/view',
                 @setTitle "Stack - " + name
             null
 
-        deleteNetworkAcl : (event) ->
-
-            that = this
-
-            $target = $(event.currentTarget)
-            aclUID = $target.attr('acl-uid')
-
-            associationNum = Number($target.attr('acl-association'))
-            aclName = $target.attr('acl-name')
-
-            # show dialog to confirm that delete acl
-            if associationNum
-                mainContent = 'Are you sure you want to delete ' + aclName + '?'
-                descContent = 'Subnets associated with ' + aclName + ' will use DefaultACL.'
-                dialog_template = MC.template.modalDeleteSGOrACL {
-                    title : 'Delete Network ACL',
-                    main_content : mainContent,
-                    desc_content : descContent
-                }
-                modal dialog_template, false, () ->
-                    $('#modal-confirm-delete').click () ->
-                        MC.aws.acl.addRelatedSubnetToDefaultACL(aclUID)
-                        delete MC.canvas_data.component[aclUID]
-                        that.refreshACLList()
-                        modal.close()
-
-            else
-                delete MC.canvas_data.component[aclUID]
-                that.refreshACLList()
-
         refreshACLList : () ->
-            this.model.getNetworkACL()
-            $('.stack-property-acl-list').html acl_template this.model.attributes
+            $('#stack-property-acl-list').html acl_template @model.attributes
 
-        openCreateAclPanel : ( event ) ->
-            aclUID = MC.guid()
-            aclObj = $.extend(true, {}, MC.canvas.ACL_JSON.data)
+        createAcl : ()->
+            @trigger "OPEN_ACL", @model.createAcl()
 
-            # remove 100's acl rule
-            entrySet = aclObj.resource.EntrySet
-            newEntrySet = _.filter entrySet, (aclRuleObj) ->
-                if aclRuleObj.RuleNumber in ['100', 100]
-                    return false
-                return true
-            aclObj.resource.EntrySet = newEntrySet
+        openAcl : ( event ) ->
+            @trigger "OPEN_ACL", $(event.currentTarget).closest("li").attr("data-uid")
+            null
 
-            aclObj.name = MC.aws.acl.getNewName()
-            aclObj.uid = aclUID
+        updateSNSList : ( snslist_data, textOnly ) ->
 
-            vpcUID = MC.aws.vpc.getVPCUID()
-            aclObj.resource.VpcId = '@' + vpcUID + '.resource.VpcId'
-
-            MC.canvas_data.component[aclUID] = aclObj
-
-            @trigger "OPEN_ACL", aclUID
-
-        openEditAclPanel : ( event ) ->
-            @trigger "OPEN_ACL", $( event.currentTarget ).attr('acl-uid')
-
-        updateSNSList : ( snslist_data, hasASG, textOnly ) ->
-
-            console.log "Morris updateSNSList", this.model.attributes
+            hasASG = @model.get("has_asg")
 
             # Hide all message
             $(".property-sns-info").children().hide()
@@ -143,7 +88,7 @@ define [ '../base/view',
             for sub in snslist_data
                 $clone = $template.clone().removeClass("hide").appendTo $list
 
-                $clone.data "uid", sub.uid
+                $clone.attr "data-uid", sub.id
                 $clone.find(".protocol").html sub.protocol
                 $clone.find(".endpoint").html sub.endpoint
 
@@ -154,23 +99,22 @@ define [ '../base/view',
         delSNS : ( event ) ->
 
             $li = $(event.currentTarget).closest("li")
-            uid = $li.data("uid")
+            uid = $li.attr("data-uid")
             $li.remove()
 
-            this.updateSNSList $("#property-sub-list").children(":not(.hide)"), this.model.attributes.has_asg, true
+            @updateSNSList $("#property-sub-list").children(":not(.hide)"), true
 
             @model.deleteSNS uid
-
 
         editSNS : ( event ) ->
             $sub_li = $( event.currentTarget ).closest("li")
             data =
-                title : "Edit"
-                uid   : $sub_li.data("uid")
+                title    : "Edit"
+                uid      : $sub_li.attr("data-uid")
                 protocol : $sub_li.find(".protocol").text()
                 endpoint : $sub_li.find(".endpoint").text()
 
-            this.openSNSModal event, data
+            @openSNSModal event, data
             null
 
         saveSNS : ( data ) ->
@@ -178,7 +122,7 @@ define [ '../base/view',
             if data.uid
                 # We are editing existing Subscription
                 # Update the related subscription's dom
-                $dom = $("#property-sub-list > li[data-uid='#{data.uid}']")
+                $dom = $("#property-sub-list").children("li[data-uid='#{data.uid}']")
                 $dom.find(".protocol").html( data.protocol )
                 $dom.find(".endpoint").html( data.endpoint )
 
@@ -186,7 +130,7 @@ define [ '../base/view',
 
             if !data.uid
                 # Update the list
-                this.updateSNSList this.model.attributes.subscription, this.model.attributes.has_asg
+                @updateSNSList @model.get("subscription")
 
         openSNSModal : ( event, data ) ->
             # data =
@@ -195,7 +139,7 @@ define [ '../base/view',
             #       endpoint : "123@abc.com"
             if !data
                 data =
-                    protocol : "Email"
+                    protocol : "email"
                     title    : "Add"
 
             modal sub_template data
@@ -204,45 +148,50 @@ define [ '../base/view',
 
             # Setup the protocol
             $modal.find(".dropdown").find(".item").each ()->
-                if $(this).text() is data.protocol
-                    $(this).addClass("selected")
+                if $(this).data("id") is data.protocol
+                    $(this).addClass("selected").parent().siblings().text( $(this).text() )
 
             # Setup the endpoint
             updateEndpoint = ( protocol ) ->
-                $input  = $(".property-asg-ep").removeClass("https http")
+                $input  = $(".property-asg-ep")#.removeClass("https http")
                 switch $modal.find(".selected").data("id")
 
                     when "sqs"
                         placeholder = "Amazon ARN"
-                        type = 'sqs'
-                        errorMsg = 'Please provide a valid Amazon SQS ARN'
+                        type        = 'sqs'
+                        errorMsg    = 'Please provide a valid Amazon SQS ARN'
 
                     when "arn"
                         placeholder = "Amazon ARN"
-                        type = 'arn'
-                        errorMsg = 'Please provide a valid Application ARN'
+                        type        = 'arn'
+                        errorMsg    = 'Please provide a valid Application ARN'
+
                     when "email"
-                        placeholder = "exmaple@acme.com"
-                        type = 'email'
-                        errorMsg = 'Please provide a valid email address'
+                        placeholder = "example@acme.com"
+                        type        = 'email'
+                        errorMsg    = 'Please provide a valid email address'
+
                     when "email-json"
                         placeholder = "example@acme.com"
-                        type = 'email'
-                        errorMsg = 'Please provide a valid email address'
+                        type        = 'email'
+                        errorMsg    = 'Please provide a valid email address'
+
                     when "sms"
                         placeholder = "e.g. 1-206-555-6423"
-                        type='usPhone'
-                        errorMsg = 'Please provide a valid phone number (currently only support US phone number)'
+                        type        = 'usPhone'
+                        errorMsg    = 'Please provide a valid phone number (currently only support US phone number)'
+
                     when "http"
-                        $input.addClass "http"
-                        placeholder = "www.example.com"
-                        type = 'http'
-                        errorMsg = 'Please provide a valid URL'
+                        #$input.addClass "http"
+                        placeholder = "http://www.example.com"
+                        type        = 'http'
+                        errorMsg    = 'Please provide a valid URL'
+
                     when "https"
-                        $input.addClass "https"
-                        placeholder = "www.example.com"
-                        type = 'https'
-                        errorMsg = 'Please provide a valid URL'
+                        #$input.addClass "https"
+                        placeholder = "https://www.example.com"
+                        type        = 'https'
+                        errorMsg    = 'Please provide a valid URL'
 
                 endPoint = $ '#property-asg-endpoint'
                 endPoint.attr "placeholder", placeholder
@@ -253,8 +202,6 @@ define [ '../base/view',
 
                 if endPoint.val().length
                     endPoint.parsley 'validate'
-
-
                 null
 
             updateEndpoint()
@@ -269,7 +216,7 @@ define [ '../base/view',
 
                 if endPoint.parsley 'validate'
                     data =
-                        uid : $modal.data("uid")
+                        uid      : $modal.attr("data-uid")
                         protocol : $modal.find(".selected").data("id")
                         endpoint : endPoint.val()
 
@@ -278,8 +225,6 @@ define [ '../base/view',
                     self.saveSNS data
 
                 null
-
-
     }
 
     new StackView()

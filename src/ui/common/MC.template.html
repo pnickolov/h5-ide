@@ -72,20 +72,6 @@
 	</div>
 </div>
 
-<!-- canvasOpConfirm -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{operation}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{content}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="canvas-op-confirm" class="btn btn-{{color}}">{{proceed}}</button>
-		<button class="btn modal-close btn-silver">{{cancel}}</button>
-	</div>
-</div>
-
 <!-- modalToolbar -->
 <div style="width:700px">
 	<div class="modal-header">
@@ -650,46 +636,83 @@ Additional Notes and Questions
 	</div>
 </div>
 
+<!-- sgRuleList -->
+{{#each this}}
+{{#if ../deletable}}
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+{{else}}
+<li class="sg-create-rule-item">
+{{/if}}
+<div class="rule-list-row">
+	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>
+	{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}
+	{{relation}}</div>
+</div>
+<div class="rule-list-row">
+	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
+	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
+</div>
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
+</li>{{/each}}
 
-<!-- sgListItem -->
-<li class="clearfix" data-sgid="000">
-	<div class="col1 sg-toggle-show-icon"></div>
-	<div class="col2">
-		<div class="col2-1">{{name}}</div>
-		<div class="col2-2">description</div>
-		<div class="col2-3">5 rules, 2 member</div>
+<!-- groupedSgRuleList -->
+{{#each groups}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul class="sg-rule-list">{{{content}}}</ul>
+{{/each}}
+
+<!-- groupedSgRuleListDelConfirm -->
+Following rule(s) will be deleted from its(their) security group:</div>
+<article class="scroll-wrap delete-sgrule-dialog">
+<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+<div class="scroll-content">
+{{#each this}}
+<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<ul class="sg-rule-list">{{{content}}}</ul>
+{{/each}}
+</div>
+</article>
+
+<!-- canvasOpConfirm -->
+<div style="width:420px">
+	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-body">
+		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+			<div class="modal-text-major">{{{content}}}</div>
+		</div> </div>
 	</div>
-	<div class="col3 sg-remove-item-icon tooltip" data-tooltip="Remove instance from SG"></div>
-</li>
+	<div class="modal-footer">
+		<button id="canvas-op-confirm" class="btn modal-close btn-red">{{i18n 'CFM_BTN_DELETE'}}</button>
+		<button class="btn modal-close btn-silver">{{i18n 'CFM_BTN_CANCEL'}}</button>
+	</div>
+</div>
 
-<!-- propertyIpListItem -->
+<!-- propertyIpList -->
+{{#each this}}
 <li class="input-ip-item">
-  <div class="name tooltip" data-tooltip="{{#if customizable}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{/if}}">
-    <label class="input-ip-wrap {{#unless customizable}}disabled{{/unless}}"><span class="input-ip-prefix">{{prefix}}</span>
-    <input type="text" class="input input-ip" value="{{suffix}}" {{#unless customizable}}disabled="disabled"{{else}}{{#if notEditable}}disabled="disabled"{{/if}}{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
+  <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
+    <label class="input-ip-wrap" for="propertyIpListItem-{{@index}}"><span class="input-ip-prefix">{{prefix}}</span>
+    <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$">
     </label>
   </div>
-
-  <div class="input-ip-eip-btn tooltip toggle-eip {{#if eip}} associated" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_4'}}"{{else}}" data-tooltip="{{i18n 'PROP_INSTANCE_IP_MSG_3'}}"{{/if}}></div><!--"-->
-
-  {{#if deletable}}<div class="icon-remove"></div>{{/if}}
+  <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP_INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_3'}}{{/if}}"></div>
+  {{#unless unDeletable}}<div class="icon-remove"></div>{{/unless}}
 </li>
+{{/each}}
 
 <!-- modalSGRule -->
 <div id="modal-sg-rule" data-bind="true">
 	<div class="modal-header">
-		{{#if isAdd}}
-		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3>
-		{{else}}
-		<h3>{{ i18n "POP_SGRULE_TITLE_EDIT" }}</h3>
-		{{/if}}
-		<i class="modal-close">&times;</i>
+		<h3>{{ i18n "POP_SGRULE_TITLE_ADD" }}</h3><i class="modal-close">&times;</i>
 	</div>
+
 	<div class="modal-body">
 		<div class="modal-control-group clearfix">
 			<label class="label-short">{{ i18n "POP_SGRULE_LBL_DIRECTION" }}</label>
+
 			<div id="sg-modal-direction">
-			{{#if isclassic}}
+			{{#if isClassic}}
 				<div class="modal-text-minor" style="margin-top:10px;"><i class="icon-inbound"></i>{{ i18n "POP_SGRULE_LBL_INBOUND" }}</div>
 			{{else}}
 			<div class="radio-group-horizontal">
@@ -718,7 +741,7 @@ Additional Notes and Questions
 				<ul class="dropdown">
 					<li class="item selected" data-id="custom">IP...</li>
 					{{#each sgList}}
-					<li class="item truncate" data-id="sg" data-sg-uid="{{sgUID}}">{{#if sgColor}}<span class="sg-color" style="background-color:{{sgColor}}"></span>{{/if}}{{sgName}}</li>
+					<li class="item truncate" data-id="sg" data-uid="{{id}}"><span class="sg-color" style="background-color:{{color}}"></span>{{name}}</li>
 					{{/each}}
 				</ul>
 			</div>
@@ -734,7 +757,7 @@ Additional Notes and Questions
 							<li class="selected item" data-id="tcp">{{ i18n "POP_SGRULE_PROTOCOL_TCP" }}</li>
 							<li class="item" data-id="udp">{{ i18n "POP_SGRULE_PROTOCOL_UDP" }}</li>
 							<li class="item" data-id="icmp">{{ i18n "POP_SGRULE_PROTOCOL_ICMP" }}</li>
-							{{#if isclassic}}
+							{{#if isClassic}}
 							{{else}}
 							<li class="item" data-id="custom">{{ i18n "POP_SGRULE_PROTOCOL_CUSTOM" }}</li>
 							<li class="item" data-id="all">{{ i18n "POP_SGRULE_PROTOCOL_ALL" }}</li>
@@ -843,12 +866,14 @@ Additional Notes and Questions
 					</ul>
 				</div>
 
-				<div class="sg-protocol-option-input" id="sg-protocol-custom">
-					<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
-				</div>
-				<div class="sg-protocol-option-input" id="sg-protocol-all">
-					Port Range:<span>0-65535</span>
-				</div>
+				{{#unless isClassic}}
+					<div class="sg-protocol-option-input" id="sg-protocol-custom">
+						<input class="input" name="protocol-custom-ranged" placeholder="1-255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
+					</div>
+					<div class="sg-protocol-option-input" id="sg-protocol-all">
+						Port Range:<span>0-65535</span>
+					</div>
+				{{/unless}}
 			</div>
 		</div>
 	</div>
@@ -915,77 +940,18 @@ Additional Notes and Questions
 </article>
 
 <!-- instanceVolume -->
-<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{volumeLength}}</span>)</div>
+<div class="bubble-head">Attached volume (<span id="instance_volume_number">{{this.length}}</span>)</div>
 <div id="instance_volume_wrap" class="scroll-wrap">
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-	<div class="bubble-content scroll-content">
-		<ul id="instance_volume_list" class="clearfix">
-			{{#each list}}
-			<li>
-				<a href="#" id="{{volume_id}}" class="{{#if snapshotId}}snapshot_item{{else}}volume_item{{/if}}{{ is_deleted }}" data-json="{{json}}">
-					<span class="volume_name">{{name}}</span>
-					<span class="volume_size">{{size}}GB</span>
-				</a>
-			</li>
-			{{/each}}
-		</ul>
-	</div>
+	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">
+		{{#each this}}<li>
+			<a href="#" id="{{id}}" data-instance="{{instance_id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
+				<span class="volume_name">{{name}}</span>
+				<span class="volume_size">{{size}}GB</span>
+			</a>
+		</li>{{/each}}
+	</ul>
 </div>
-
-<!-- elbPropertyListenerItem -->
-<div class="elb-property-listener-main">
-	{{#if Canremove}}<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="Remove listner"></div>{{/if}}
-	<div class="property-control-group clearfix elb-property-listener-item">
-		<div class="left elb-property-listener-item-1">
-			<label class="left">Load Balancer Protocol</label>
-			<div class="selectbox selectbox-mega elb-property-listener-elb-protocol-select">
-				<div class="selection">{{Protocol}}</div>
-				<ul class="dropdown">
-					<li class="item tooltip {{#ifCond Protocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip {{#ifCond Protocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip {{#ifCond Protocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip {{#ifCond Protocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
-				</ul>
-			</div>
-		</div>
-		<div class="left elb-property-listener-item-2">
-			<label class="left">Port</label>
-			<input class="input elb-property-listener-elb-port-input tooltip" data-tooltip="25, 80, 443 or 1024 - 65535" type="text" value="{{LoadBalancerPort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
-		</div>
-	</div>
-	<div class="property-control-group clearfix elb-property-listener-item">
-		<div class="left elb-property-listener-item-1">
-			<label class="left">Instance Protocol</label>
-			<div class="selectbox selectbox-mega elb-property-listener-instance-protocol-select">
-				<div class="selection">{{InstanceProtocol}}</div>
-				<ul class="dropdown">
-					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTP'}}selected{{/ifCond}}"><div class="main truncate">HTTP</div></li>
-					<li class="item tooltip {{#ifCond InstanceProtocol 'HTTPS'}}selected{{/ifCond}}"><div class="main truncate">HTTPS</div></li>
-					<li class="item tooltip {{#ifCond InstanceProtocol 'TCP'}}selected{{/ifCond}}"><div class="main truncate">TCP</div></li>
-					<li class="item tooltip {{#ifCond InstanceProtocol 'SSL'}}selected{{/ifCond}}"><div class="main truncate">SSL</div></li>
-				</ul>
-			</div>
-		</div>
-		<div class="left elb-property-listener-item-2">
-			<label class="left">Port</label>
-			<input class="input elb-property-listener-instance-port-input tooltip" data-tooltip="1 - 65535" type="text" value="{{InstancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
-		</div>
-	</div>
-</div>
-
-<!-- sgRuleItem -->
-<li data-inbound="true" data-protocol="{{rule.protocol}}" data-fromport="{{rule.fromport}}" data-toport="{{rule.toport}}" data-iprange="{{rule.ipranges}}" data-direction="{{rule.direction}}">
-	<div class="rule-list-row">
-		<div class='rule-direction-icon tooltip icon-{{rule.direction}}' data-tooltip="{{rule.direction}}"></div>
-		<div class='rule-reference'>{{rule.ipranges}}</div>
-
-	</div>
-	<div class="rule-list-row">
-		<div><span class="rule-protocol">{{rule.protocol}}</span></div>
-		<div class='rule-port' title="port message">{{rule.fromport}}-{{rule.toport}}</div>
-	</div>
-	<div class='rule-remove-icon tooltip icon-remove' data-tooltip="Remove rule"></div>
-</li>
 
 <!-- asgList -->
 <div id="asgList-wrap">
@@ -994,11 +960,11 @@ Additional Notes and Questions
 		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
 	</div>
 	<ul id="asgList" class="clearfix">
-		{{#each instances}}
+		{{#each this}}
 		<li>
 			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
-				<i class="asgList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}" ></i>
-				<span class="asgList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
+				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
 				<div class="asgList-item-volume" data-target-id={{id}}>
 					<span class="asgList-item-number">{{../volume}}</span>
 				</div>
@@ -1012,19 +978,19 @@ Additional Notes and Questions
 <!-- instanceList -->
 <div id="instanceList-wrap">
 	<div id="instanceList-header">
-		<span id="instanceList-title">{{name}}</span>
+		<span id="instanceList-title">{{this.name}}</span>
 		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
 	</div>
 	<ul id="instanceList" class="clearfix">
-		{{#each instances}}
+		{{#each this}}
 		<li>
-			<a href="#" class='instanceList-item{{ is_deleted }}' id="{{id}}_{{@index}}" data-id="{{id}}">
-				<i class="instanceList-item-status tooltip status status-{{color}}" data-tooltip="{{state}}"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
+			<a href="#" class='instanceList-item {{deleted}}' id="{{id}}_{{@index}}" data-id="{{appId}}">
+				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
+				<span class="instanceList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
 				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
-					<span class="instanceList-item-number">{{volume}}</span>
+					<span class="instanceList-item-number">{{../volume}}</span>
 				</div>
-				<span class="instanceList-item-label">{{name}}</span>
+				<span class="instanceList-item-label">{{name}}-{{@index}}</span>
 			</a>
 		</li>
 		{{/each}}
@@ -1033,7 +999,7 @@ Additional Notes and Questions
 
 <!-- instanceListItem -->
 <li>
-	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{id}}">
+	<a href="#" class="instanceList-item" id="{{id}}_{{@index}}" data-id="{{appId}}">
 		<i class="instanceList-item-status tooltip status status-{{status}}"></i>
 		<span class="instanceList-item-icon" style="background-image:url('./assets/images/ide/ami/{{../background}}.png')"></span>
 		<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
@@ -1046,15 +1012,15 @@ Additional Notes and Questions
 <!-- eniList -->
 <div id="eniList-wrap">
 	<div id="eniList-header">
-		<span id="eniList-title">{{name}}</span>
+		<span id="eniList-title">{{this.name}}</span>
 		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
 	</div>
 	<ul id="eniList" class="clearfix">
-		{{#each enis}}
+		{{#each this}}
 		<li>
-			<a href="#" class="eniList-item{{ is_deleted }}" id="{{id}}_{{@index}}" data-id="{{id}}">
+			<a href="#" class="eniList-item {{deleted}}" id="{{id}}_{{@index}}" data-id="{{appId}}">
 				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
-				<span class="eniList-item-label">{{name}}</span>
+				<span class="eniList-item-label">{{appId}}</span>
 			</a>
 		</li>
 		{{/each}}
@@ -1085,17 +1051,20 @@ Additional Notes and Questions
 </div>
 
 <!-- modalAttachingEni -->
-<div style="width:420px" class="attaching-eni">
-	<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-center-align-helper">
-			<p>{{host}} has been automatically assigned Public IP.</p>
-			<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
-			<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
-		</div>
+<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
+<div class="modal-body">
+	<div class="modal-center-align-helper">
+		<p>{{host}} has been automatically assigned Public IP.</p>
+		<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
+		<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
 	</div>
+</div>
+
+<!-- modalCanvasConfirm -->
+<div style="width:420px">
+	{{{confirm}}}
 	<div class="modal-footer">
-		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">Attach and Remove Public IP</button>
+		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">{{action}}</button>
 		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
@@ -1267,7 +1236,7 @@ Additional Notes and Questions
 			<div class="nutshell" style="display: none;">:<label></label></div>
 			<div class="validating">
 				<div class="loading-spinner loading-spinner-small"></div>
-				<p>Validating your App...</p>
+				<p>Validating your app...</p>
 			</div>
 		</div>
 

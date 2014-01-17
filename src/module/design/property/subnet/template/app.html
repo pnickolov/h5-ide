@@ -23,11 +23,12 @@
     </dl>
   </div>
 
+  {{#if acl}}
   <div class="option-group-head expand">{{ i18n "PROP_SUBNET_TIT_ASSOC_ACL" }}</div>
   <div class="option-group">
-    <ul class="acl-sg-info-list property-list">
+    <ul class="acl-sg-info-list property-list acl-info-list">
       <li>
-        <div class="col3 tooltip icon-btn-details" data-uid="{{acl.uid}}" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
+        <div class="col3 tooltip icon-btn-details" data-uid="{{acl.id}}" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
         <div class="col2">
           <div class="col2-1 truncate">{{acl.name}}</div>
           <div class="col2-2 truncate">{{acl.rule}} {{ i18n "PROP_SUBNET_ACL_LBL_RULE" }}, {{acl.association}} {{ i18n "PROP_SUBNET_ACL_LBL_ASSOC" }}</div>
@@ -35,4 +36,5 @@
       </li>
     </ul>
   </div>
+  {{/if}}
 </article>

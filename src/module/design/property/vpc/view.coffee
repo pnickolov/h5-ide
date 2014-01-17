@@ -16,7 +16,7 @@ define [ '../base/view',
             if ipt.value
                 result.push ipt.value
 
-        if result.length == 0 then null else result
+        result
 
     updateAmazonCB = () ->
         rowLength = $( "#property-domain-server" ).children().length
@@ -49,7 +49,7 @@ define [ '../base/view',
 
         render   : () ->
 
-            data = $.extend( true, {}, this.model.attributes )
+            data = @model.attributes
 
             selectedType = data.dhcp.netbiosType || 0
             data.dhcp.netbiosTypes = [
@@ -65,7 +65,7 @@ define [ '../base/view',
             updateAmazonCB()
             multiinputbox.update( $("#property-domain-server") )
 
-            @model.attributes.component.name
+            data.name
 
         processParsley: ( event ) ->
             $( event.currentTarget )
@@ -90,21 +90,24 @@ define [ '../base/view',
 
         onChangeCidr : ( event ) ->
             target = $ event.currentTarget
-            name = target.val()
+            cidr = target.val()
 
             if target.parsley 'validate'
-                this.model.setCIDR event.target.value
+                if not @model.setCidr cidr
+                    target.val( @model.get("cidr") )
+                    notification "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
+            null
 
         onChangeTenancy : ( event, newValue ) ->
-            this.model.setTenancy newValue
+            @model.setTenancy newValue
             null
 
         onChangeDnsSupport : ( event ) ->
-            this.model.setDnsSupport event.target.checked
+            @model.setDnsSupport event.target.checked
             null
 
         onChangeDnsHostname : ( event ) ->
-            this.model.setDnsHosts event.target.checked
+            @model.setDnsHosts event.target.checked
             null
 
         onRemoveDhcp : ( event ) ->
@@ -114,19 +117,7 @@ define [ '../base/view',
             $("#property-dhcp-desc").show()
             $("#property-dhcp-options").hide()
 
-            this.model.removeDhcp isDefault
-
-            # if noDhcp
-            #     this.notChangingDHCP = true
-            #     # User select none DHCP option.
-            #     # Need to reset everything here.
-            #     $("#property-dhcp-options .multi-ipt-row:not(:first-child)").remove()
-            #     $("#property-dhcp-options .multi-ipt-row .input").val("")
-            #     $("#property-dhcp-domain").val( this.model.defaultDomainName this.uid )
-            #     $("#property-amazon-dns").prop("checked", true)
-            #     $("#property-netbios-type .dropdown .item:first-child").click()
-            #     this.notChangingDHCP = false
-
+            @model.removeDhcp isDefault
             null
 
         onChangeAmazonDns : ( event ) ->
@@ -136,13 +127,15 @@ define [ '../base/view',
             $rows        = $inputbox.children()
             $inputbox.toggleClass "max", $rows.length >= allowRows
 
-            this.onChangeDhcpOptions event
+            @model.setAmazonDns useAmazonDns
             null
 
         onUseDHCP : ( event ) ->
             $("#property-dhcp-desc").hide()
             $("#property-dhcp-options").show()
-            this.onChangeDhcpOptions()
+
+            @model.useDhcp()
+            null
 
         onChangeDhcpOptions : ( event ) ->
 
@@ -154,7 +147,6 @@ define [ '../base/view',
             # Gather all the infomation to submit
             data =
                 domainName     : $("#property-dhcp-domain").val()
-                useAmazonDns   : $("#property-amazon-dns").is(":checked")
                 domainServers  : mapFilterInput "#property-domain-server .input"
                 ntpServers     : mapFilterInput "#property-ntp-server .input"
                 netbiosServers : mapFilterInput "#property-netbios-server .input"
@@ -162,7 +154,7 @@ define [ '../base/view',
 
             console.log "DHCP Options Changed", data
 
-            this.model.setDHCPOptions data
+            @model.setDHCPOptions data
             null
     }
 

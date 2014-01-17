@@ -772,9 +772,9 @@ define [ 'MC', 'backbone', 'jquery', 'underscore', 'event', 'stack_service', 'st
         handleRequest : (result, flag, region, id, name) ->
             me = this
 
-            #if flag isnt 'RUN_STACK'
+            if flag isnt 'RUN_STACK'
             #    me.setFlag id, 'PENDING_APP', region
-            #    ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
+                ide_event.trigger ide_event.UPDATE_DESIGN_TAB_ICON, 'pending', id
 
             if !result.is_error
 

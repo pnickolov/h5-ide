@@ -89,7 +89,15 @@ define [ '../base/view',
             @model.attributes.asg.AutoScalingGroupName
 
         setASGCoolDown : ( event ) ->
-            @model.setASGCoolDown event.target.value
+            $target = $ event.target
+
+            $target.parsley 'custom', ( val ) ->
+                if _.isNumber( +val ) and +val > 86400
+                    return 'Max value: 86400'
+                null
+
+            if $target.parsley 'validate'
+                @model.setASGCoolDown $target.val()
 
         setASGName : ( event ) ->
             target = $ event.currentTarget

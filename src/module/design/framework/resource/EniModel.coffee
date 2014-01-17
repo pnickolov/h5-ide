@@ -488,9 +488,10 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
       ips = []
       if index is 0
         memberData = {
-          id    : @id
-          appId : @get("appId")
-          ips   : @get("ips")
+          id           : @id
+          appId        : @get("appId")
+          ips          : @get("ips")
+          attachmentId : @get("attachmentId")
         }
       else
         memberData = @groupMembers()[ index - 1 ]
@@ -590,7 +591,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
           Attachment :
             InstanceId   : instanceId
             DeviceIndex  : if eniIndex is undefined then "1" else "" + eniIndex
-            AttachmentId : @get("attachmentId") or ""
+            AttachmentId : memberData.attachmentId or ""
             AttachTime   : ""
 
           SecondPriIpCount : ""
@@ -636,10 +637,13 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/SgAsso"
     handleTypes : [ constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface ]
 
     createServerGroupMember : ( data )->
+      attachment = data.resource.Attachment || {}
+
       memberData = {
-        id    : data.uid
-        appId : data.resource.NetworkInterfaceId
-        ips   : []
+        id           : data.uid
+        appId        : data.resource.NetworkInterfaceId
+        attachmentId : attachment.AttachmentId || ""
+        ips          : []
       }
       for ip in data.resource.PrivateIpAddressSet || []
         ipObj = new IpObject({

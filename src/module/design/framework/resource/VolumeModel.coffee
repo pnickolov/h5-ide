@@ -203,13 +203,13 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         index           : index
         number          : serverGroupOption.number or 1
         resource :
-          VolumeId   : @get("appId")
+          VolumeId   : appId || ""
           Size       : @get("volumeSize")
           SnapshotId : @get("snapshotId")
           Iops       : @get("iops")
           AvailabilityZone : if owner then owner.getAvailabilityZone().get("name") else ""
           AttachmentSet :
-            VolumeId            : @get("appId")
+            VolumeId            : appId || ""
             InstanceId          : instanceId
             Device              : @get("name")
             DeleteOnTermination : true

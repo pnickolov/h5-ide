@@ -1,5 +1,5 @@
 
-define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design, CanvasManager )->
+define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasElement" ], ( ResourceModel, Design, CanvasManager, CanvasElement )->
 
   ###
     -------------------------------
@@ -53,12 +53,6 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
     isConnectable( comp1, comp2 )
       description : This method is used to determine if user can create a line between two resources.
   ###
-
-  connectionDraw = ()->
-    if Design.instance().shouldDraw()
-      CanvasManager.drawLine( @ )
-    null
-
   ConnectionModel = ResourceModel.extend {
 
     node_line : true
@@ -200,9 +194,9 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
       if @__port1Comp isnt @__port2Comp and @__port2Comp isnt reason
         @__port2Comp.disconnect_base( this, reason )
 
-      # Remove element in SVG, if the line implements draw
-      if @draw
-        CanvasManager.remove( document.getElementById( @id ) )
+      # Try removing line element in SVG, if the line is visual
+      v = @getCanvasView()
+      if v then v.detach()
       null
 
     serialize : ()->
@@ -215,6 +209,23 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
         return true
 
       return ConnectionModel.__super__.isRemoved.call( this )
+
+    getCanvasView : ()->
+      if @__view is undefined
+        @__view = CanvasElement.createView( "Line", @ )
+      @__view
+
+    isVisual : ()->
+      # If we have portDefs, then it's considered to be visual line
+      !!@portDefs
+
+    draw : ( isCreate )->
+      if not @isVisual() or not Design.instance().shouldDraw() then return
+      v = @getCanvasView()
+      if v
+        v.draw( isCreate )
+      null
+
   }, {
 
     findExisting : ( p1Comp, p2Comp )->
@@ -243,22 +254,6 @@ define [ "./ResourceModel", "Design", "CanvasManager" ], ( ResourceModel, Design
           tags.push def.port1.name + ">" + def.port2.name
 
         if not protoProps.type then protoProps.type = tags[0]
-
-      # If we have portDefs, then it's considered to be visual line
-      # But the subclass can also set visual to false,
-      # to indicate this is not a visual line.
-      # If it's visual, insert a draw() into it.
-      if protoProps.portDefs and protoProps.defaults
-        ### env:dev ###
-        if protoProps.draw and protoProps.draw.toString().indexOf(".shouldDraw") is -1
-            console.error "Subclass of connection's draw() method does not check Design.instance().shouldDraw()"
-        ### env:dev:end ###
-
-        if _.result( protoProps, "defaults" ).visual is false
-          delete protoProps.draw
-        else if not protoProps.draw
-          protoProps.draw = connectionDraw
-
 
       child = ResourceModel.extend.call( this, protoProps, staticProps )
 

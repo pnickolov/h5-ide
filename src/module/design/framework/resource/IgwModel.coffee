@@ -32,48 +32,6 @@ define [ "../ComplexResModel", "CanvasManager", "./VpcModel", "Design", "constan
 
       true
 
-    draw : ( isCreate )->
-
-      if isCreate
-
-        design = Design.instance()
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image   : "ide/icon/igw-canvas.png"
-          imageX  : 10
-          imageY  : 16
-          imageW  : 60
-          imageH  : 46
-          label   : @get("name")
-        })
-
-        node.append(
-          # Port
-          Canvon.path(MC.canvas.PATH_PORT_LEFT).attr({
-            'class'      : 'port port-blue port-igw-tgt'
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'igw-tgt'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-            'data-x' : 78
-            'data-y' : 35
-          })
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.initNode node, @x(), @y()
-
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
-
     serialize : ()->
 
       layout =

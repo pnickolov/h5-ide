@@ -1,71 +1,89 @@
-define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasManager, ide_event, constant, lang )->
+define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.constant" ], ( CanvasManager, ide_event, constant, lang )->
 
   Design = null
 
-  # This TypeMap is used to transform an ResourceModel's type into another type.
-  # Because Different Kinds of ResourceModel might be treated as the same kind by canvas.
-  # One example is : for canvas, "ExpandedAsg" and "AWS.AutoScaling.Group" are both "AWS.AutoScaling.Group"
-  CanvasElementTypeMap = {
-    "ExpandedAsg" : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-  }
+  CanvasElementConstructors = {}
 
   ###
-  CanvasElement is intent to be an adaptor for MC.canvas.js to use ResourceModel.
-  But in the future, this class can be upgrade to ResourceModel's view on canvas.
+  # Canvas interface of CanvasElement
   ###
-
-  CanvasElement = ( component, quick )->
-
-    this.id = component.id
-
-    if quick is true
-      this.type = component.type
+  CanvasElement = ( model )->
+    @model = model
+    @type  = model.type
+    if model.node_group is true
+      @nodeType = "group"
+    else if model.node_line is true
+      @nodeType = "line"
     else
-      if CanvasElementTypeMap[ component.type ]
-        this.type = CanvasElementTypeMap[ component.type ]
-      else
-        this.type = component.type
-
-      this.nodeType = if component.node_group is true then "group" else if component.node_line then "line" else "node"
-
-      p = component.parent()
-      this.parentId = if p then p.id else ""
+      @nodeType = "node"
 
     this
 
-  CanvasElement.prototype.getModel = ()-> Design.instance().component( @id )
+  CanvasElement.extend = ( Child, ElementType )->
+    CanvasElementPrototype = ()-> null
 
-  CanvasElement.prototype.element = ()->
-    if not this.el
-      this.el = document.getElementById( this.id )
+    CanvasElementPrototype.prototype = this.prototype
 
-    this.el
+    Child.prototype = new CanvasElementPrototype()
+    Child.prototype.constructor = Child
+    Child.super = this.prototype
 
-  CanvasElement.prototype.$element = ()->
-    if not this.$el
-      this.$el = $( document.getElementById( this.id ) )
+    # Register ElementType so that we can create it.
+    CanvasElementConstructors[ ElementType ] = Child
+    null
 
-    this.$el
+  CanvasElement.createView = ( type, model )->
+    CEC = CanvasElementConstructors[ type ]
+    if CEC
+      new CEC( model )
+    else
+      null
+
+
+  ###
+  # CanvasElement Interface
+  ###
+  CanvasElement.prototype.getModel = ()-> @model
+
+  CanvasElement.prototype.element  = ()-> document.getElementById( @model.id )
+  CanvasElement.prototype.$element = ()-> $( document.getElementById( @model.id ) )
 
   CanvasElement.prototype.move = ( x, y )->
-    pos = @position()
-    if pos.x is x and pos.y is y then return
+    if x is @model.x() and y is @model.y() then return
+    MC.canvas.move( @element(), x, y )
 
-    MC.canvas.move( this.element(), x, y )
+  CanvasElement.prototype.position = ( x, y )->
 
+    oldx = @model.x()
+    oldy = @model.y()
+
+    if (x is undefined or x is null) and (y is undefined or y is null)
+      return [ oldx, oldy ]
+
+    # Update data, svg
+    if x is null or x is undefined then x = oldx
+    if y is null or y is undefined then y = oldy
+
+    if x is oldx and y is oldy then return
+
+    component.set { x : x, y : y }
+
+    el = this.element()
+    if el
+      MC.canvas.position( el, x, y )
+    null
 
   CanvasElement.prototype.size = ( w, h )->
 
     component = Design.instance().component( this.id )
 
+    oldw = @model.width()
+    oldh = @model.height()
+
     if (w is undefined or w is null) and (h is undefined or h is null)
-      attr = Design.instance().component( this.id ).attributes
-      return [ attr.width, attr.height ]
+      return [ oldw, oldh ]
 
-    if @nodeType isnt "group" then return
-
-    oldw = component.attributes.width
-    oldh = component.attributes.height
+    if not @model.node_group then return
 
     if w is null or w is undefined then w = oldw
     if h is null or h is undefined then h = oldh
@@ -73,65 +91,28 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     # Only if the data is changed, we update data.
     # But either way, we still need to update svg.
     if w isnt oldw or h isnt oldh
-      component.set {
-        width  : w
-        height : h
-      }
+      @model.set { width : w, height : h }
 
     el = @element()
     if el then MC.canvas.groupSize( el, w, h )
     null
 
-
-  CanvasElement.prototype.position = ( x, y )->
-
-    component = Design.instance().component( this.id )
-
-    if (x is undefined or x is null) and (y is undefined or y is null)
-      attr = component.attributes
-      return [ attr.x, attr.y ]
-
-    # Update data, svg
-    oldx = component.attributes.x
-    oldy = component.attributes.y
-
-    if x is null or x is undefined then x = oldx
-    if y is null or y is undefined then y = oldy
-
-    if x is oldx and y is oldy then return
-
-    component.set {
-      x : x
-      y : y
-    }
-
-    el = this.element()
-    if el
-      el.setAttribute("data-x", x * 10)
-      el.setAttribute("data-y", y * 10)
-      MC.canvas.position( el, x, y )
-    null
-
-
-  CanvasElement.prototype.offset = ()->
-    this.element().getBoundingClientRect()
+  CanvasElement.prototype.offset = ()-> @element().getBoundingClientRect()
 
   CanvasElement.prototype.port = ()->
-    if not this.ports
-      this.ports = _.map this.$element().children(".port"), ( el )->
-        el.getAttribute("data-name")
+    if not @ports
+      @ports = _.map @$element().children(".port"), ( el )-> el.getAttribute("data-name")
 
-    this.ports
+    @ports
 
   CanvasElement.prototype.isConnectable = ( fromPort, toId, toPort )->
-    design = Design.instance()
 
     C = Design.modelClassForPorts( fromPort, toPort )
 
     if not C then return false
 
-    p1Comp = design.component(@id)
-    p2Comp = design.component(toId)
+    p1Comp = @model
+    p2Comp = @model.design().component(toId)
 
     # Don't allow connect to an resource that is already connected.
     for t in p1Comp.connectionTargets( C.prototype.type )
@@ -141,12 +122,11 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     C.isConnectable( p1Comp, p2Comp ) isnt false
 
   CanvasElement.prototype.isRemovable = ()->
-    res = Design.instance().component( @id ).isRemovable()
+    res = @model.isRemovable()
     if res isnt true then return res
 
-    # If the object is ASG, we consider it as an node
-    # Doesn't check its children.
-    if @nodeType is "group" and @type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+    # Check children to see if they are deletable.
+    if @nodeType is "group"
       for ch in @children()
         res = ch.isRemovable()
         if res isnt true
@@ -155,16 +135,13 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     res
 
   CanvasElement.prototype.remove = ()->
-    comp = Design.instance().component( this.id )
-    if comp.isRemoved() then return
-
+    if @model.isRemoved() then return
 
     # # #
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEdit()
-      if ( comp.get("owner") and comp.get("owner").type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ) or not comp.get("supportAppEdit")
+    if Design.instance().modeIsAppEdit() and not @model.get("supportAppEdit")
         notification "error", "This operation is not supported yet."
         return false
     #
@@ -209,76 +186,36 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
   # Update Lines
   CanvasElement.prototype.reConnect = ()->
-    for cn in Design.instance().component( this.id ).connections()
-      if cn.get("lineType")
-        cn.draw()
+    for cn in @model.connections()
+      v = cn.getCanvasView()
+      if v then v.draw()
     null
 
-  CanvasElement.prototype.select = ( subId )->
-    type = this.type
-    component = Design.instance().component( this.id )
-
-    if not subId
-
-      if Design.instance().modeIsApp()
-        if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance and component.get("count") > 1
-          type = "component_server_group"
-        if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface and component.serverGroupCount() > 1
-          type = "component_eni_group"
-
-      else if Design.instance().modeIsAppEdit() and component.get("appId")
-        if this.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-          type = "component_server_group"
-        if this.type is constant.AWS_RESOURCE_TYPE.AWS_VPC_NetworkInterface
-          type = "component_eni_group"
-
-      if this.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-        if component.get("originalAsg")
-          subId = component.get("originalAsg").id
-
-    else
-      if this.type  is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration and component.get("appId")
-        type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-
-
-    ide_event.trigger ide_event.OPEN_PROPERTY, type, subId or this.id
-    if this.type is constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-      MC.canvas.volume.select( this.id )
-    else
-      MC.canvas.select( this.id )
-
+  CanvasElement.prototype.select = ()->
+    @doSelect( @model.type, @model.id, @model.id )
     true
 
-  CanvasElement.prototype.show = ()->
-    CanvasManager.toggle this.$element(), true
-    null
-
-  CanvasElement.prototype.hide = ()->
-    CanvasManager.toggle this.$element(), false
-    null
+  CanvasElement.prototype.doSelect = ( type, propertyId, canvasId )->
+    ide_event.trigger ide_event.OPEN_PROPERTY, type, propertyId
+    MC.canvas.select( canvasId )
 
   CanvasElement.prototype.connection = ()->
-    comp = Design.instance().component( this.id )
-    connections = comp.connections()
-
     cns = []
 
-    for cn in connections
+    for cn in @model.connections()
       if cn.get("lineType")
         cns.push {
           line   : cn.id
-          target : this.id
-          port   : cn.port( this.id, "name" )
+          target : @model.id
+          port   : cn.port( @model.id, "name" )
         }
     cns
 
   CanvasElement.prototype.toggleEip = ()->
-    comp = Design.instance().component( this.id )
-    if not comp.setPrimaryEip then return
+    console.assert( @model.setPrimaryEip, "The component doesn't support setting EIP" )
 
     toggle = !comp.hasPrimaryEip()
-
-    comp.setPrimaryEip( toggle )
+    @model.setPrimaryEip( toggle )
 
     if toggle
       Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway ).tryCreateIgw()
@@ -286,43 +223,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
     null
 
-  CanvasElement.prototype.asgExpand = ( parentId, x, y )->
-    # # #
-    # Quick Hack for supporting AppEdit
-    # Ask the component if it supports AppEdit Mode
-    #
-    if Design.instance().modeIsAppEdit() and not comp.get("supportAppEdit")
-      notification "error", "This operation is not supported yet."
-      return
-    #
-    # #
-    # # #
-
-    # This method contains some logic to determine if the ASG is expandab
-    comp   = Design.instance().component( @id )
-    target = Design.instance().component(parentId)
-    if target and comp.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-      ExpandedAsgModel = Design.modelClassForType( "ExpandedAsg" )
-      res = new ExpandedAsgModel({
-        x : x
-        y : y
-        originalAsg : comp
-        parent : target
-      })
-
-    if res and res.id
-      return true
-
-    targetName = if target.type is "AWS.EC2.AvailabilityZone" then target.get("name") else target.parent().get("name")
-    notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), targetName
-
-    return false
-
   CanvasElement.prototype.parent  = ()->
-    if this.parent is undefined
-      this.parent = if this.parentId then new CanvasElement( Design.instance().component( this.parentId ) ) else null
-
-    this.parent
+    p = @model.parent()
+    if p then p.getCanvasView() else null
 
   CanvasElement.prototype.changeParent = ( parentId, execCB )->
 
@@ -363,8 +266,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
     return false
 
   CanvasElement.prototype.children = ()->
-    _.map Design.instance().component( this.id ).children() || [], ( c )->
-        new CanvasElement( c )
+    _.map @model.children() || [], ( c )-> c.getCanvasView()
 
   # Return an connection of serverGroupMember
   CanvasElement.prototype.list = ()->
@@ -419,136 +321,138 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js" ], ( CanvasMan
 
     list
 
-  CanvasElement.instance = ( component, quick )->
-    CanvasElement.call( this, component, quick )
+
+
+
+
+  ###
+  # Helper functions for rendering and for model
+  ###
+  CanvasElement.prototype.portPosition = ( portName )-> this.portPosMap[ portName ]
+  CanvasElement.prototype.initNode = ( node, x, y )->
+    CanvasManager.position node, x, y
+
+    if node.length then node = node[0]
+    for child in node.children || node.childNodes
+      if child.tagName is "PATH" or child.tagName is "path"
+        name = child.getAttribute("data-alias") or child.getAttribute("data-name")
+        if name and this.portPosMap
+          pos = this.portPosMap[ name ]
+          CanvasManager.setPoisition( child, pos[0] / 10, pos[1] / 10 )
     null
 
-  $.extend CanvasElement.instance.prototype, CanvasElement.prototype
+  CanvasElement.prototype.createNode = ( option )->
+    # A helper function to create a SVG Element to represent a group
+    m = @model
 
-  CanvasElement.instance.prototype.volume = ( volume_id )->
-    if volume_id
-      v = Design.instance().component( volume_id )
-      return {
-        deleted    : if not v.hasAppResource() then "deleted" else ""
-        name       : v.get("name")
-        snapshotId : v.get("snapshotId")
-        size       : v.get("volumeSize")
-        id         : v.id
-      }
+    x      = m.x()
+    y      = m.y()
+    width  = m.width()  * MC.canvas.GRID_WIDTH
+    height = m.height() * MC.canvas.GRID_HEIGHT
 
-    vl = []
-    for v in Design.instance().component( @id ).get("volumeList") or vl
-      vl.push {
-        deleted    : if not v.hasAppResource() then "deleted" else ""
-        name       : v.get("name")
-        snapshotId : v.get("snapshotId")
-        size       : v.get("volumeSize")
-        id         : v.id
-      }
+    node = Canvon.group().append(
 
-    vl
+      Canvon.rectangle(0,0,width,height).attr({'class':'node-background','rx':5,'ry':5}),
+      Canvon.image( MC.IMG_URL+option.image, option.imageX, option.imageY, option.imageW, option.imageH )
 
-  CanvasElement.instance.prototype.listVolume = ( appId )->
-    vl = []
-    resource_list = MC.data.resource_list[Design.instance().region()]
-    if not resource_list then return vl
+    ).attr({
+      'id'         : m.id
+      'class'      : 'dragable node ' + m.type.replace(/\./g, "-")
+      'data-type'  : 'node'
+      'data-class' : m.type
+    })
 
-    data = MC.data.resource_list[Design.instance().region()][ appId ]
-    if data and data.blockDeviceMapping and data.blockDeviceMapping.item
-      for v in data.blockDeviceMapping.item
-        if data.rootDeviceName is v.deviceName
-          continue
-        volume = resource_list[ v.ebs.volumeId ]
-        if volume
-          #volume exist
-          vl.push {
-            name       : v.deviceName
-            snapshotId : volume.snapshotId || ""
-            size       : volume.size
-            id         : volume.volumeId
-          }
-        else
-          if @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-            #in asg,volume data maybe delay
-            vl.push {
-              name       : v.deviceName
-              snapshotId : v.ebs.snapshotId || ""
-              size       : ""
-              id         : v.ebs.volumeId
-            }
-          else
-            #volume not exist
-            vl.push {
-              name       : v.deviceName
-              snapshotId : v.ebs.snapshotId || ""
-              size       : ""
-              id         : v.ebs.volumeId
-              deleted    : "deleted"
-            }
+    if option.labelBg
+      node.append(
+        Canvon.rectangle(2,76,86,13).attr({'class':'node-label-name-bg','rx':3,'ry':3})
+      )
 
+    if option.label
+      node.append(
+        Canvon.text( width/2, height-4, MC.canvasName(option.label) ).attr({
+          'class' : 'node-label' + if option.labelBg then ' node-label-name' else ''
+        })
+      )
 
-    vl
+    if option.sg
+      node.append(
+        Canvon.group().append(
+          Canvon.rectangle(10, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(20, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(30, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(40, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'}),
+          Canvon.rectangle(50, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
+        ).attr({ 'class':'node-sg-color-group', 'transform':'translate(8, 62)' })
+      )
 
-  CanvasElement.instance.prototype.list = ()->
-    list = CanvasElement.prototype.list.call( this )
-    instance = Design.instance().component( this.id )
-    list.background = instance.iconUrl()
-    list.volume     = (instance.get("volumeList") || []).length
-    list
+    node
 
-  CanvasElement.instance.prototype.addVolume = ( attribute )->
-    attribute = $.extend {}, attribute
-    attribute.owner = Design.instance().component( this.id )
-    VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
-    v = new VolumeModel( attribute )
-    if v.id
-      return {
-        id         : v.id
-        deleted    : not v.hasAppResource()
-        name       : v.get("name")
-        snapshotId : v.get("snapshotId")
-        size       : v.get("volumeSize")
-      }
-    else
-      return false
+  CanvasElement.prototype.createGroup = ( name )->
+    # A helper function to create a SVG Element to represent a group
+    m = @model
 
-  CanvasElement.instance.prototype.removeVolume = ( volumeId )->
-    Design.instance().component( volumeId ).remove()
+    x      = m.x()
+    y      = m.y()
+    width  = m.width()  * MC.canvas.GRID_WIDTH
+    height = m.height() * MC.canvas.GRID_HEIGHT
+
+    text_pos = MC.canvas.GROUP_LABEL_COORDINATE[ m.type ]
+
+    pad = 10
+
+    Canvon.group().append(
+      Canvon.rectangle( 0, 0, width, height ).attr({ 'class':'group', 'rx':5, 'ry':5 }),
+
+      Canvon.group().append(
+        Canvon.rectangle( pad, 0, width - 2 * pad, pad )
+              .attr({'class':'group-resizer resizer-top','data-direction':'top'}),
+
+        Canvon.rectangle( 0, pad, pad, height - 2 * pad )
+              .attr({'class':'group-resizer resizer-left', 'data-direction':'left'}),
+
+        Canvon.rectangle( width - pad, pad, pad, height - 2 * pad )
+              .attr({'class':'group-resizer resizer-right', "data-direction":"right"}),
+
+        Canvon.rectangle( pad, height - pad, width - 2 * pad, pad )
+              .attr({'class':'group-resizer resizer-bottom', "data-direction":"bottom"}),
+
+        Canvon.rectangle( 0, 0, pad, pad )
+              .attr({'class':'group-resizer resizer-topleft', "data-direction":"topleft"}),
+
+        Canvon.rectangle( width - pad, 0, pad, pad )
+              .attr({'class':'group-resizer resizer-topright',"data-direction":"topright"}),
+
+        Canvon.rectangle( 0, height - pad, pad, pad )
+              .attr({'class':'group-resizer resizer-bottomleft',"data-direction":"bottomleft"}),
+
+        Canvon.rectangle( width - pad, height - pad, pad, pad )
+              .attr({'class':'group-resizer resizer-bottomright',"data-direction":"bottomright"})
+
+      ).attr({'class':'resizer-wrap'}),
+
+      Canvon.text(text_pos[0], text_pos[1], name).attr({'class':'group-label name'})
+    ).attr({
+      'id'         : m.id
+      'class'      : 'dragable ' + m.type.replace(/\./g, "-")
+      'data-type'  : 'group'
+      'data-class' : m.type
+    })
+
+  #update deleted resource style
+  CanvasElement.prototype.updateAppState = ()->
+    m = @model
+
+    if m.design().modeIsStack() or not m.get("appId")
+      return
+
+    CanvasManager.removeClass @element(), "deleted"
+
+    # Get resource data
+    if not MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
+      CanvasManager.addClass @element(), "deleted"
     null
 
-  CanvasElement.instance.prototype.moveVolume = ( volumeId )->
-    design = Design.instance()
-    volume = design.component( volumeId )
-    result = volume.attachTo( design.component( @id ) )
-    if !result
-      return false
-    else
-      return $canvas( @id, true ).volume( volumeId )
-    null
-
-  CanvasElement.line = ( component )->
-    this.id   = component.id
-    this.type = component.get("lineType")
-    @id
-
-
-
-  CanvasElement.line.prototype.portName = ( targetId )->
-    Design.instance().component( this.id ).port( targetId, "name" )
-
-  CanvasElement.line.prototype.reConnect = ()->
-    Design.instance().component( this.id ).draw()
-    null
-
-  CanvasElement.line.prototype.select = ()->
-    MC.canvas.select( this.id )
-    ide_event.trigger ide_event.OPEN_PROPERTY, Design.instance().component( this.id ).type, this.id
-
-
-  CanvasElement.line.prototype.remove      = CanvasElement.prototype.remove
-  CanvasElement.line.prototype.isRemovable = CanvasElement.prototype.isRemovable
-  CanvasElement.line.prototype.element     = CanvasElement.prototype.element
-  CanvasElement.line.prototype.$element    = CanvasElement.prototype.$element
+  CanvasElement.prototype.detach = ()-> CanvasManager.remove( @element() )
 
   CanvasElement.setDesign = ( design )->
     Design = design

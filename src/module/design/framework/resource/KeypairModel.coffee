@@ -21,6 +21,8 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
     defaults :
       fingerprint : ""
 
+    isVisual : ()-> false
+
     remove : ()->
       # When a keypair is removed, make all usage to be DefaultKP
       defaultKp = KeypairModel.getDefaultKP()

@@ -14,56 +14,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( Comple
 
     type : constant.AWS_RESOURCE_TYPE.AWS_VPC_CustomerGateway
 
-    isDynamic : ()->
-      !!@get("bgpAsn")
-
-    draw : ( isCreate )->
-
-      if isCreate
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image   : "ide/icon/cgw-canvas.png"
-          imageX  : 13
-          imageY  : 8
-          imageW  : 151
-          imageH  : 76
-        })
-
-        node.append(
-          # Port
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-purple port-cgw-vpn',
-            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-            'data-name'     : 'cgw-vpn'
-            'data-position' : 'left'
-            'data-type'     : 'vpn'
-            'data-direction': 'in'
-            'data-x'        : 6
-            'data-y'        : 45
-          }),
-
-          Canvon.text(100, 95, MC.canvasName( @get("name") ) ).attr({'class': 'node-label'})
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.initNode node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-        # Update label
-        CanvasManager.update node.children(".node-label"), @get("name")
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
-
-
-
+    isDynamic : ()-> !!@get("bgpAsn")
 
     serialize : ()->
       layout =

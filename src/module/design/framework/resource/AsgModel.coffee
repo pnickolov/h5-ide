@@ -116,11 +116,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
     getLc : ()-> @attributes.originalAsg.get("lc")
 
-    amiIconUrl : ()->
-      lc = @get("originalAsg").get("lc")
-
-      if lc then lc.iconUrl() else "ide/ami/ami-not-available.png"
-
     disconnect : ( cn )->
       if cn.type isnt "ElbAmiAsso" then return
 
@@ -137,85 +132,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
 
       expandedList.push( @ )
       null
-
-    draw : ( isCreate )->
-
-      originalAsg = @get("originalAsg")
-
-      label   = originalAsg.get("name")
-      lcLabel = originalAsg.get("lc").get("name")
-
-      if isCreate
-
-        design = Design.instance()
-
-        x      = @x()
-        y      = @y()
-        width  = @width()  * MC.canvas.GRID_WIDTH
-        height = @height() * MC.canvas.GRID_HEIGHT
-
-        node = Canvon.group().append(
-
-          Canvon.rectangle( 1, 1, width - 1, height - 1 ).attr({
-            'class' : 'group group-asg'
-            'rx'    : 5
-            'ry'    : 5
-          }),
-
-          # title bg
-          Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'})
-
-          # title
-          Canvon.text( 4, 14, label ).attr({'class':'group-label'})
-
-          # lc icon
-          Canvon.image( MC.IMG_URL + "ide/icon/instance-canvas.png", 35, 39, 61, 62 )
-          Canvon.image( MC.IMG_URL + @amiIconUrl(), 50, 45, 39, 27 ).attr({"class":'ami-icon'})
-
-          # lc label
-          Canvon.text( 65, 116, lcLabel ).attr({'class':'node-label'})
-
-          # left port(blue)
-          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-            'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-left'
-            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-            'data-name'     : 'launchconfig-sg'
-            'data-position' : 'left'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-            'data-x' : 25
-            'data-y' : 45
-          }),
-
-          # right port(blue)
-          Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
-            'class'      : 'port port-blue port-launchconfig-sg port-launchconfig-sg-right'
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'launchconfig-sg'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'out'
-            'data-x' : 95
-            'data-y' : 45
-          })
-
-        ).attr({
-          'id'         : @id
-          'class'      : 'dragable AWS-AutoScaling-Group asg-expand'
-          'data-type'  : 'group'
-          'data-class' : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
-        })
-
-        # Move the node to right place
-        $("#asg_layer").append node
-        CanvasManager.initNode node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-
-        CanvasManager.update( node.children(".group-label"), label )
-        CanvasManager.update( node.children(".node-label"), lcLabel )
-        CanvasManager.update( node.children(".ami-icon"), @amiIconUrl(), "href" )
 
     serialize : ()->
       layout =
@@ -312,7 +228,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         for elb in oldLc.connectionTargets("ElbAmiAsso")
           @updateExpandedAsgAsso( elb, true )
 
-      @listenTo( lc, "change:name", @__drawExpandedAsg )
       @set "lc", lc
 
       for elb in lc.connectionTargets("ElbAmiAsso")
@@ -435,11 +350,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
       @get("expandedList").splice( @get("expandedList").indexOf(target), 1 )
       null
 
-    __drawExpandedAsg : ()->
-      for asg in @get("expandedList")
-        asg.draw()
-      null
-
     getExpandSubnets : ()->
       if @parent().type isnt constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet
         return []
@@ -462,67 +372,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManag
         azs = subnets
 
       azs
-
-    draw : ( isCreate )->
-
-      if isCreate
-
-        design = Design.instance()
-
-        x      = @x()
-        y      = @y()
-        width  = @width()  * MC.canvas.GRID_WIDTH
-        height = @height() * MC.canvas.GRID_HEIGHT
-
-        node = Canvon.group().append(
-
-          Canvon.rectangle( 1, 1, width - 1, height - 1 ).attr({
-            'class' : 'group group-asg'
-            'rx'    : 5
-            'ry'    : 5
-          }),
-
-          # title bg
-          Canvon.path( MC.canvas.PATH_ASG_TITLE ).attr({'class':'asg-title'}),
-
-          # dragger
-          Canvon.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', width - 21, 0, 22, 21).attr({
-            'class'        : 'asg-resource-dragger tooltip'
-            'data-tooltip' : 'Expand the group by drag-and-drop in other availability zone.'
-          }),
-
-          # prompt
-          Canvon.group().append(
-            Canvon.text(25, 45,  'Drop AMI from'),
-            Canvon.text(20, 65,  'resource panel to'),
-            Canvon.text(30, 85,  'create launch'),
-            Canvon.text(30, 105, 'configuration')
-          ).attr({ 'class' : 'prompt_text'}),
-
-          # title
-          Canvon.text( 4, 14, @get("name") ).attr({'class':'group-label'})
-
-        ).attr({
-          'id'         : @id
-          'class'      : 'dragable AWS-AutoScaling-Group'
-          'data-type'  : 'group'
-          'data-class' : @type
-        })
-
-        # Move the node to right place
-        $("#asg_layer").append node
-        CanvasManager.position node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-        CanvasManager.update( node.children(".group-label"), @get("name") )
-        @__drawExpandedAsg()
-
-
-      hasLC = !!@get("lc")
-      CanvasManager.toggle( node.children(".prompt_text"), !hasLC )
-      CanvasManager.toggle( node.children(".asg-resource-dragger"), hasLC )
-      null
 
     serialize : ()->
       layout =

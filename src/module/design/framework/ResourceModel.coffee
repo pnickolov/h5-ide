@@ -94,14 +94,25 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
     # newNameTmpl : String
         description : This string is used to create a name for an resource
 
-
     ++ Object Method ++
 
     # allObjects() : Array
         description : returns a array containing all objects of this type of Model.
 
+    # createRef() : String
+        description : returns an string that can be used to serialized.
+
+    # listenTo() :
+        description : Override Backbone.Events.listenTo. This method will make sure that when other is removed, this will stop listen to it.
+
+    # design() : Design
+        description : returns the Design object which manages this ResourceModel object.
+
     # isDesignAwake() : Boolean
         description : return true if the object is in current tab. Otherwise, return false.
+
+    # isRemoved() : Boolean
+        description : return true if this object has already been removed.
 
     # isRemovable() : Boolean / Object / String
         description : Returns true to indicate the resource can be removed. Returns string to show as an warning asking user if he/she wants to delete anyway. Returns {error:String} to show as an error.
@@ -141,91 +152,6 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
 
     classId : _.uniqueId("dfc_")
     type    : "Framework_R"
-
-    # Associate Map, consisted of key, type and suffix
-    __asso: []
-
-    # Do Associate, bind asso to the couple model
-    associate: ( resolve, uid ) ->
-      if resolve instanceof ResourceModel
-        model = resolve
-        @addToStorage model
-        model.addToStorage @
-      else if _.isFunction resolve
-        if uid
-          model = resolve uid
-          @associate model
-        else
-          for attr in @__asso
-            keys = attr.key.split '.'
-            masterKey = keys.pop()
-            arns = @get keys
-
-            for k in keys
-              arns = arns[ k ]
-
-            if _.isString arns
-              arns = [ arns ]
-
-            if _.isArray arns
-              for arn in arns
-                uid = MC.extractID arn
-                model = resolve uid
-                if model
-                  @associate model
-              if not keys.length
-                @unset attr.key
-      null
-
-    disassociate: ( filter ) ->
-      removed = @removeFromStorage filter
-      for model in removed
-        model.removeFromStorage @
-
-    # Storage is created when necessary
-    storage : ()->
-      if not this.__storage
-        this.__storage = new Backbone.Collection()
-
-      this.__storage
-
-    getFromStorage : ( filter ) ->
-      storage = this.storage()
-
-      if _.isString filter
-        models = _.filter storage.models, ( res )-> res.type is filter
-
-      else if _.isFunction filter
-        models = _.filter storage.models, filter
-
-      else
-        models = storage.models
-
-      new Backbone.Collection( models )
-
-    removeFromStorage: ( filter ) ->
-      storage = this.storage()
-
-      if _.isString filter
-        models = _.filter storage.models, ( res )-> res.type is filter
-
-      else if _.isFunction filter
-        models = _.filter storage.models, filter
-
-      else if filter instanceof ResourceModel
-        models = filter
-
-      if models
-        storage.remove models
-      else
-        storage.reset()
-
-      models
-
-    addToStorage : ( resource ) ->
-      storage = this.storage()
-      storage.add resource
-      null
 
     constructor : ( attributes, options )->
 
@@ -287,6 +213,8 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         !!@get("appId") and MC.data.resource_list[ Design.instance().region() ][ @get("appId") ]
       else
         true
+
+    design : ()-> @__design
 
     isDesignAwake : ()-> Design.instance() is @__design
 
@@ -373,6 +301,92 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
         other.once "__remove", ()-> that.stopListening( this ) # this here is `other`
 
       Backbone.Events.listenTo.call this, other, event, callback
+
+
+    # Do Associate, bind asso to the couple model
+    associate: ( resolve, uid ) ->
+      # Associate Map, consisted of key, type and suffix
+      if not @__asso
+        @__asso = []
+      if resolve instanceof ResourceModel
+        model = resolve
+        @addToStorage model
+        model.addToStorage @
+      else if _.isFunction resolve
+        if uid
+          model = resolve uid
+          @associate model
+        else
+          for attr in @__asso
+            keys = attr.key.split '.'
+            masterKey = keys.pop()
+            arns = @get keys
+
+            for k in keys
+              arns = arns[ k ]
+
+            if _.isString arns
+              arns = [ arns ]
+
+            if _.isArray arns
+              for arn in arns
+                uid = MC.extractID arn
+                model = resolve uid
+                if model
+                  @associate model
+              if not keys.length
+                @unset attr.key
+      null
+
+    disassociate: ( filter ) ->
+      removed = @removeFromStorage filter
+      for model in removed
+        model.removeFromStorage @
+
+    # Storage is created when necessary
+    storage : ()->
+      if not this.__storage
+        this.__storage = new Backbone.Collection()
+
+      this.__storage
+
+    getFromStorage : ( filter ) ->
+      storage = this.storage()
+
+      if _.isString filter
+        models = _.filter storage.models, ( res )-> res.type is filter
+
+      else if _.isFunction filter
+        models = _.filter storage.models, filter
+
+      else
+        models = storage.models
+
+      new Backbone.Collection( models )
+
+    removeFromStorage: ( filter ) ->
+      storage = this.storage()
+
+      if _.isString filter
+        models = _.filter storage.models, ( res )-> res.type is filter
+
+      else if _.isFunction filter
+        models = _.filter storage.models, filter
+
+      else if filter instanceof ResourceModel
+        models = filter
+
+      if models
+        storage.remove models
+      else
+        storage.reset()
+
+      models
+
+    addToStorage : ( resource ) ->
+      storage = this.storage()
+      storage.add resource
+      null
 
   }, {
 

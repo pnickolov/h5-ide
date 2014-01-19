@@ -189,61 +189,27 @@ define [], ()->
       if node.length
         node = node[0]
 
-      node.setAttribute( "data-x", x * 10 )
-      node.setAttribute( "data-y", y * 10 )
-
       MC.canvas.position( node, x, y )
-      null
-
-    initNode : ( node, x, y )->
-      @position( node, x, y )
-      @setPortPosition( node )
-      null
-
-    setPortPosition : ( node )->
-      if node.length then node = node[0]
-      for child in node.children || node.childNodes
-        if child.tagName is "PATH" or child.tagName is "path"
-          x = child.getAttribute("data-x")
-          if x is null or x is undefined then continue
-          y = child.getAttribute("data-y")
-          if y is null or y is undefined then continue
-
-          @setPoisition( child, x / 10, y / 10)
-      null
-
-    _getPort : ( node, port1Class )->
-      for child in node.children || node.childNodes
-          if ( child.getAttribute("class") || "" ).indexOf( port1Class ) != -1
-            return child
       null
 
     drawLine : ( connection )->
 
       # Calculate the ports
-      type_from = connection.port1Comp().type
-      type_to   = connection.port2Comp().type
-      id_from   = connection.port1Comp().id
-      id_to     = connection.port2Comp().id
-
-      item_from = document.getElementById( id_from )
-      item_to   = document.getElementById( id_to )
-
-      if not item_from or not item_to
-        return
+      item_from = connection.port1Comp().getCanvasView()
+      item_to   = connection.port2Comp().getCanvasView()
+      if not item_from or not item_to then return
 
       pos_from  = {
-        left : parseInt( item_from.getAttribute( "data-x" ), 10 ) || 0
-        top  : parseInt( item_from.getAttribute( "data-y" ), 10 ) || 0
+        left : connection.port1Comp().x() * 10
+        top  : connection.port1Comp().y() * 10
       }
       pos_to  = {
-        left : parseInt( item_to.getAttribute( "data-x" ), 10 ) || 0
-        top  : parseInt( item_to.getAttribute( "data-y" ), 10 ) || 0
+        left : connection.port2Comp().x() * 10
+        top  : connection.port2Comp().y() * 10
       }
 
-      from_port = "port-" + connection.port1("name")
-      to_port   = "port-" + connection.port2("name")
-
+      from_port = connection.port1("name")
+      to_port   = connection.port2("name")
       dirn_from = connection.port1("direction")
       dirn_to   = connection.port2("direction")
 
@@ -255,84 +221,64 @@ define [], ()->
           from_port += "-right"
           to_port   += "-left"
 
-        node_from = @_getPort( item_from, from_port )
-        node_to   = @_getPort( item_to,   to_port   )
+        pos_port_from = item_from.portPosition( from_port )
+        pos_port_to   = item_to.portPosition( to_port )
 
-        if not node_from or not node_to
-          return
-
-        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
-        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
-
-        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
-        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
+        pos_from.left += pos_port_from[0]
+        pos_from.top  += pos_port_from[1]
+        pos_to.left   += pos_port_to[0]
+        pos_to.top    += pos_port_to[1]
 
       else if dirn_from
 
-        node_to = @_getPort( item_to, to_port )
-        if not node_to
-          return
-
-        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
-        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
+        pos_port_to = item_to.portPosition( to_port )
+        pos_to.left += pos_port_to[0]
+        pos_to.top  += pos_port_to[1]
 
         if dirn_from is "vertical"
           from_port += if pos_to.top > pos_from.top then "-bottom" else "-top"
         else if dirn_from is "horizontal"
           from_port += if pos_to.left > pos_from.left then "-right" else "-left"
 
-        node_from = @_getPort( item_from, from_port )
-        if not node_from
-          return
-        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
-        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
+        pos_port_from = item_from.portPosition( from_port )
+        pos_from.left += pos_port_from[0]
+        pos_from.top  += pos_port_from[1]
 
       else if dirn_to
-        node_from = @_getPort( item_from, from_port )
-        if not node_from
-          return
-        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10) or 0
-        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10) or 0
+        pos_port_from = item_from.portPosition( from_port )
+        pos_from.left += pos_port_from[0]
+        pos_from.top  += pos_port_from[1]
 
         if dirn_to is "vertical"
           to_port += if pos_from.top > pos_to.top then "-bottom" else "-top"
         else if dirn_to is "horizontal"
           to_port += if pos_from.left > pos_to.left then "-right" else "-left"
 
-        node_to = @_getPort( item_to, to_port )
-        if not node_to
-          return
-
-        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10) or 0
-        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10) or 0
+        pos_port_to = item_to.portPosition( to_port )
+        pos_to.left += pos_port_to[0]
+        pos_to.top  += pos_port_to[1]
 
       else
+        pos_port_from = item_from.portPosition( from_port )
+        pos_port_to   = item_to.portPosition( to_port )
 
-        node_from = @_getPort( item_from, from_port )
-        node_to   = @_getPort( item_to,   to_port   )
-
-        if not node_from or not node_to
-          return
-
-        pos_from.left += parseInt( node_from.getAttribute("data-x"), 10 ) or 0
-        pos_from.top  += parseInt( node_from.getAttribute("data-y"), 10 ) or 0
-
-        pos_to.left += parseInt( node_to.getAttribute("data-x"), 10 ) or 0
-        pos_to.top  += parseInt( node_to.getAttribute("data-y"), 10 ) or 0
-
+        pos_from.left += pos_port_from[0]
+        pos_from.top  += pos_port_from[1]
+        pos_to.left   += pos_port_to[0]
+        pos_to.top    += pos_port_to[1]
 
       start0 =
         x     : pos_from.left
         y     : pos_from.top
-        angle : parseInt( node_from.getAttribute("data-angle"), 10 ) || 0
-        type  : type_from
+        angle : pos_port_from[2]
+        type  : connection.port1Comp().type
         name  : from_port
 
       end0 =
         x     : pos_to.left
         y     : pos_to.top
-        angle : parseInt( node_to.getAttribute("data-angle"), 10 ) || 0
-        type  : type_to
+        angle : pos_port_to[2]
+        type  : connection.port2Comp().type
         name  : to_port
 
 

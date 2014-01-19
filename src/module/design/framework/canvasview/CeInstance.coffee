@@ -1,0 +1,324 @@
+
+define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasElement, constant, CanvasManager, Design )->
+
+  ChildElement = ()-> CanvasElement.apply( this, arguments )
+  CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance )
+  ChildElementProto = ChildElement.prototype
+
+
+  ###
+  # Child Element's interface.
+  ###
+  ChildElementProto.portPosMap = {
+    "instance-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
+    "instance-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
+    "instance-attach"   : [ 78, 50, MC.canvas.PORT_RIGHT_ANGLE ]
+    "instance-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE  ]
+  }
+
+  ChildElementProto.iconUrl = ()->
+    ami = @model.getAmi() || @model.get("cachedAmi")
+
+    if not ami
+      base = "ide/ami/ami-not-available.png"
+    else
+      base = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+
+    MC.IMG_URL + base
+
+
+  ChildElementProto.draw = ( isCreate )->
+    m = @model
+
+    if isCreate
+
+      # Call parent's createNode to do basic creation
+      node = @createNode({
+        image   : "ide/icon/instance-canvas.png"
+        imageX  : 15
+        imageY  : 9
+        imageW  : 61
+        imageH  : 62
+        label   : m.get("name")
+        labelBg : true
+        sg      : true
+      })
+
+      # Insert Volume / Eip / Port
+      node.append(
+        # Ami Icon
+        Canvon.image( @iconUrl(), 30, 15, 39, 27 ),
+
+        # Volume Image
+        Canvon.image( "", 21, 44, 29, 24 ).attr({
+          'id'    : "#{m.id}_volume_status"
+          'class' : 'volume-image'
+        }),
+        # Volume Label
+        Canvon.text( 35, 56, "" ).attr({'class':'node-label volume-number'}),
+        # Volume Hotspot
+        Canvon.rectangle(21, 44, 29, 24).attr({
+          'data-target-id' : m.id
+          'class'          : 'instance-volume'
+          'fill'           : 'none'
+        }),
+
+        # Eip
+        Canvon.image( "", 53, 47, 12, 14).attr({'class':'eip-status tooltip'}),
+
+        # Child number
+        Canvon.group().append(
+          Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
+          Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
+        ).attr({
+          'id'      : "#{m.id}_instance-number-group"
+          'class'   : 'instance-number-group'
+          "display" : "none"
+        }),
+
+
+        # left port(blue)
+        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-left'
+          'data-name'      : 'instance-sg' #for identify port
+          'data-alias'     : 'instance-sg-left'
+          'data-position'  : 'left' #port position: for calc point of junction
+          'data-type'      : 'sg'   #color of line
+          'data-direction' : 'in'   #direction
+        }),
+
+        # right port(blue)
+        Canvon.path(MC.canvas.PATH_PORT_DIAMOND).attr({
+          'class'          : 'port port-blue port-instance-sg port-instance-sg-right'
+          'data-name'      : 'instance-sg'
+          'data-alias'     : 'instance-sg-right'
+          'data-position'  : 'right'
+          'data-type'      : 'sg'
+          'data-direction' : 'out'
+        })
+      )
+
+      if not Design.instance().typeIsClassic()
+        # Show RTB/ENI Port in VPC Mode
+        node.append(
+          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
+            'class'      : 'port port-green port-instance-attach'
+            'data-name'     : 'instance-attach'
+            'data-position' : 'right'
+            'data-type'     : 'attachment'
+            'data-direction': 'out'
+          })
+
+          Canvon.path(MC.canvas.PATH_PORT_BOTTOM).attr({
+            'class'      : 'port port-blue port-instance-rtb'
+            'data-name'     : 'instance-rtb'
+            'data-position' : 'top'
+            'data-type'     : 'sg'
+            'data-direction': 'in'
+          })
+        )
+
+      if not Design.instance().modeIsStack() and m.get("appId")
+        # instance-state
+        node.append(
+          Canvon.circle(68, 15, 5,{}).attr({
+            'id'    : '#{m.id}_instance-state'
+            'class' : 'instance-state instance-state-unknown'
+          })
+        )
+
+      # Move the node to right place
+      $("#node_layer").append node
+      @initNode node, m.x(), m.y()
+
+    else
+      node = @element()
+      # update label
+      CanvasManager.update node.children(".node-label-name"), m.get("name")
+
+      # Update Instance State in app
+      @updateAppState()
+
+
+    # Update Server number
+    numberGroup = node.children(".instance-number-group")
+    if m.get("count") > 1
+      CanvasManager.toggle node.children(".instance-state"), false
+      CanvasManager.toggle node.children(".port-instance-rtb"), false
+      CanvasManager.toggle numberGroup, true
+      CanvasManager.update numberGroup.children("text"), m.get("count")
+    else
+      CanvasManager.toggle node.children(".instance-state"), true
+      CanvasManager.toggle node.children(".port-instance-rtb"), true
+      CanvasManager.toggle numberGroup, false
+
+    # Update Volume
+    volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
+    if volumeCount > 0
+      volumeImage = 'ide/icon/instance-volume-attached-normal.png'
+    else
+      volumeImage = 'ide/icon/instance-volume-not-attached.png'
+    CanvasManager.update node.children(".volume-image"), volumeImage, "href"
+    CanvasManager.update node.children(".volume-number"), volumeCount
+
+    # Update EIP
+    CanvasManager.updateEip node.children(".eip-status"), m
+
+    null
+
+  ChildElementProto.select = ( subId )->
+    m      = @model
+    type   = m.type
+    design = m.design()
+
+    if not subId
+      if design.modeIsApp()
+        if m.get("count") > 1
+          type = "component_server_group"
+
+      else if design.modeIsAppEdit() and m.get("appId")
+        type = "component_server_group"
+
+    @doSelect( type, subId or @model.id, @model.id )
+    true
+
+
+  ChildElementProto.updateAppState = ()->
+    m = @model
+    if m.design().modeIsStack() or not m.get("appId")
+      return
+
+    # Check icon
+    if $("#" + m.id + "_instance-state").length is 0
+      console.error '[InstanceModel._updateState] can not found "#' + m.id + '_instance-state"'
+      return null
+
+    # Init icon to unknown state
+    Canvon($("#" + m.id)).removeClass "deleted"
+
+    # Get instance state
+    instance_data = MC.data.resource_list[ Design.instance().region() ][ m.get("appId") ]
+    if instance_data
+      instanceState = instance_data.instanceState.name
+      Canvon($("#" + m.id)).addClass "deleted"  if instanceState is "terminated"
+    else
+      #instance data not found, or maybe instance already terminated
+      instanceState = "unknown"
+      Canvon("#" + m.id).addClass "deleted"
+
+    #update icon state and tooltip
+    $("#" + m.id + "_instance-state").attr({
+      "class" : "instance-state tooltip"
+    })
+
+    Canvon( "#" + m.id + "_instance-state" )
+    .addClass( "instance-state-" + instanceState + " instance-state-" + m.design().mode() )
+    .data( 'tooltip', instanceState )
+    .attr( 'data-tooltip', instanceState )
+
+    null
+
+  ChildElementProto.volume = ( volume_id )->
+    m = @model
+    design = m.design()
+
+    if volume_id
+      v = design.component( volume_id )
+      return {
+        deleted    : if not v.hasAppResource() then "deleted" else ""
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+        id         : v.id
+      }
+
+    vl = []
+    for v in design.component( m.id ).get("volumeList") or vl
+      vl.push {
+        deleted    : if not v.hasAppResource() then "deleted" else ""
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+        id         : v.id
+      }
+
+    vl
+
+  ChildElementProto.listVolume = ( appId )->
+    vl = []
+    resource_list = MC.data.resource_list[Design.instance().region()]
+    if not resource_list then return vl
+
+    data = MC.data.resource_list[Design.instance().region()][ appId ]
+    if data and data.blockDeviceMapping and data.blockDeviceMapping.item
+      for v in data.blockDeviceMapping.item
+        if data.rootDeviceName is v.deviceName
+          continue
+        volume = resource_list[ v.ebs.volumeId ]
+        if volume
+          #volume exist
+          vl.push {
+            name       : v.deviceName
+            snapshotId : volume.snapshotId || ""
+            size       : volume.size
+            id         : volume.volumeId
+          }
+        else
+          if @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+            #in asg,volume data maybe delay
+            vl.push {
+              name       : v.deviceName
+              snapshotId : v.ebs.snapshotId || ""
+              size       : ""
+              id         : v.ebs.volumeId
+            }
+          else
+            #volume not exist
+            vl.push {
+              name       : v.deviceName
+              snapshotId : v.ebs.snapshotId || ""
+              size       : ""
+              id         : v.ebs.volumeId
+              deleted    : "deleted"
+            }
+
+
+    vl
+
+  ChildElementProto.list = ()->
+    list = CanvasElement.prototype.list.call( this )
+    list.background = @iconUrl()
+    list.volume     = (@model.get("volumeList") || []).length
+    list
+
+  ChildElementProto.addVolume = ( attribute )->
+    attribute = $.extend {}, attribute
+    attribute.owner = @model
+    VolumeModel = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
+    v = new VolumeModel( attribute )
+    if v.id
+      return {
+        id         : v.id
+        deleted    : not v.hasAppResource()
+        name       : v.get("name")
+        snapshotId : v.get("snapshotId")
+        size       : v.get("volumeSize")
+      }
+    else
+      return false
+
+  ChildElementProto.removeVolume = ( volumeId )->
+    m.design().component( volumeId ).remove()
+    null
+
+  ChildElementProto.moveVolume = ( volumeId )->
+    design = @model.design()
+    volume = design.component( volumeId )
+    result = volume.attachTo( design.component( @model.id ) )
+    if !result
+      return false
+    else
+      return $canvas( @model.id, true ).volume( volumeId )
+    null
+
+  ChildElement

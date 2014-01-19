@@ -59,20 +59,6 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       @draw()
       true
 
-    draw : ( isCreate )->
-
-      label = "#{@get('name')} (#{ @get('cidr')})"
-
-      if isCreate
-        node = @createNode( label )
-        $('#vpc_layer').append node
-
-        # Move the group to right place
-        CanvasManager.position node, @x(), @y()
-
-      else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
-
     generateSubnetCidr : ( newCidr, subnetCidrAry )->
 
       subnets = Design.modelClassForType( constant.AWS_RESOURCE_TYPE.AWS_VPC_Subnet ).allObjects()

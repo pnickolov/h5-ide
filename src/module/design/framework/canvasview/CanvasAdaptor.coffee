@@ -5,16 +5,14 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
   ### $canvas is a adaptor for MC.canvas.js ###
   $canvas = ( id, defaultType )->
     component = Design.__instance.component(id)
-    if not component
-      component = { id : id, type : defaultType }
-      quick = true
+    if component
+      view = component.getCanvasView()
 
-    if component.node_line
-      new CanvasElement.line( component )
-    else if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-      new CanvasElement.instance( component, quick )
-    else
-      new CanvasElement( component, quick )
+    if not view
+      console.debug "Creating an view for an unfound component : ", defaultType, id
+      view = CanvasElement.createView( defaultType, component or id )
+
+    view
 
   $canvas.platform = ()-> Design.instance().type()
 
@@ -47,12 +45,11 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     for id, comp of Design.__instance.__canvasNodes
       if not comp.isVisual or comp.isVisual()
-        nodes.push( new CanvasElement( comp ) )
+        nodes.push( comp.getCanvasView() )
     nodes
 
   $canvas.group  = ()->
-    _.map Design.__instance.__canvasGroups, ( comp )->
-      new CanvasElement( comp )
+    _.map Design.__instance.__canvasGroups, ( comp )-> comp.getCanvasView()
 
   $canvas.clearSelected = ()->
     MC.canvas.event.clearSelected()
@@ -212,9 +209,8 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
 
     # # #
     # #
-    #
     # Quick fix, might improve latter.
-    #
+    # This is part of the MC.canvas.layout.init()
     # #
     # # #
     attr =
@@ -227,24 +223,18 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
     this
 
   Canvas.prototype.scale = ( ratio )->
-    if ratio is undefined
-      return this.scaleAry
-
+    if ratio is undefined then return this.scaleAry
     this.scaleAry = ratio
     null
 
   Canvas.prototype.offset = ( x, y )->
-    if x is undefined
-      return this.offsetAry
-
+    if x is undefined then return this.offsetAry
     this.offsetAry[0] = x
     this.offsetAry[1] = y
     null
 
   Canvas.prototype.size = ( w, h )->
-    if w is undefined
-      return this.sizeAry
-
+    if w is undefined then return this.sizeAry
     this.sizeAry[0] = w
     this.sizeAry[1] = h
     null

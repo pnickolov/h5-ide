@@ -1,5 +1,5 @@
 
-define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, CanvasManager, ResourceModel, constant )->
+define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview/CanvasElement" ], ( Design, CanvasManager, ResourceModel, constant, CanvasElement )->
 
   emptyArr = []
 
@@ -92,8 +92,8 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
           cns.length = cns.length - 1
 
       # Remove element in SVG
-      if @draw
-        CanvasManager.remove( document.getElementById( @id ) )
+      v = @getCanvasView()
+      if v then v.detach()
       null
 
     connect_base : ( connection )->
@@ -124,6 +124,24 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
         @disconnect( connection, reason )
       null
 
+    isVisual : ()-> true
+
+    getCanvasView : ()->
+      if @__view is undefined
+        @__view = CanvasElement.createView( @type, @ )
+        ### env:dev ###
+        if not @__view
+          console.warn "isVisual() is true, but cannot find corresponding canvasView for ComplexResModel : #{@type}"
+        ### env:dev:end ###
+
+      @__view
+
+    draw : ( isCreate )->
+      if not @isVisual() or not Design.instance().shouldDraw() then return
+      v = @getCanvasView()
+      if v
+        v.draw( isCreate )
+      null
 
     createNode : ( option )->
       # A helper function to create a SVG Element to represent a group
@@ -203,22 +221,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
 
       targets
 
-
-    #update deleted resource style
-    updateState : ()->
-
-      if !Design.instance().modeIsApp()
-        console.warn '[updateState] this method should be use in app view'
-        return null
-
-      Canvon($("#" + @id)).removeClass "deleted"
-
-      # Get resource data
-      res_data = MC.data.resource_list[ Design.instance().region() ][ @.get("appId") ]
-      if !res_data
-        Canvon("#" + @id).addClass "deleted"
-
-      null
 
     # ## ###########
     # AWS Related Logics

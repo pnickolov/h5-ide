@@ -175,46 +175,6 @@ define [ "constant",
       vpcCIDRIPStrAry[2] = String(resultSubnetNum)
       vpcCIDRIPStrAry.join('.') + '/24'
 
-    draw : ( isCreate )->
-
-      label = "#{@get('name')} (#{ @get('cidr')})"
-
-      if isCreate
-        node = @createNode( label )
-
-        portX = @width()  * MC.canvas.GRID_WIDTH + 4
-        portY = @height() * MC.canvas.GRID_HEIGHT / 2 - 5
-
-        node.append( Canvon.path( MC.canvas.PATH_PORT_RIGHT ).attr({
-          'class'      : 'port port-gray port-subnet-assoc-in'
-          'data-angle' : MC.canvas.PORT_LEFT_ANGLE # port angle
-          'data-name'     : 'subnet-assoc-in'
-          'data-position' : 'left'
-          'data-type'     : 'association'
-          'data-direction': 'in'
-          'data-x' : "-12"
-          'data-y' : portY
-        }) )
-
-        node.append( Canvon.path( MC.canvas.PATH_PORT_RIGHT ).attr({
-          'class'      : 'port port-gray port-subnet-assoc-out'
-          'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-          'data-name'     : 'subnet-assoc-out'
-          'data-position' : 'right'
-          'data-type'     : 'association'
-          'data-direction': 'out'
-          'data-x' : portX
-          'data-y' : portY
-        }) )
-
-        $('#subnet_layer').append node
-
-        # Move the group to right place
-        CanvasManager.initNode node, @x(), @y()
-
-      else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
-
     serialize : ()->
 
       layout =

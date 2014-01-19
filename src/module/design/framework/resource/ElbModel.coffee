@@ -152,9 +152,6 @@ define [ "CanvasManager",
       @set "healthCheckTarget", target[0] + ":" + target[1] + "/" + target[2]
       null
 
-    iconUrl : ()->
-      "ide/icon/elb-" + (if @get("internal") then "internal-canvas.png" else "internet-canvas.png")
-
     setInternal : ( isInternal )->
       @set "internal", !!isInternal
       @draw()
@@ -201,91 +198,6 @@ define [ "CanvasManager",
             return ami.parent().parent().get("name")
 
         return _.uniq azs.concat( @get("AvailabilityZones") )
-
-    draw : ( isCreate )->
-
-      if isCreate
-
-        design = Design.instance()
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image  : @iconUrl()
-          imageX : 9
-          imageY : 11
-          imageW : 70
-          imageH : 53
-          label  : @get "name"
-          sg     : not design.typeIsClassic()
-        })
-
-        # Port
-        if not design.typeIsClassic()
-          node.append(
-            # Left
-            Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-              'class'      : 'port port-blue port-elb-sg-in'
-              'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-              'data-name'     : 'elb-sg-in'
-              'data-position' : 'left'
-              'data-type'     : 'sg'
-              'data-direction': "in"
-              'data-x' : 2
-              'data-y' : 35
-            }),
-            # Right gray
-            Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-              'class'      : 'port port-gray port-elb-assoc'
-              'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-              'data-name'     : 'elb-assoc'
-              'data-position' : 'right'
-              'data-type'     : 'association'
-              'data-direction': 'out'
-              'data-x' : 79
-              'data-y' : 50
-            })
-          )
-
-          sgOutY = 20
-        else
-          sgOutY = 35
-
-        node.append(
-          Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-blue port-elb-sg-out'
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'elb-sg-out'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'out'
-            'data-x' : 79
-            'data-y' : sgOutY
-          })
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.initNode node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-        # Update label
-        CanvasManager.update node.children(".node-label"), @get("name")
-
-        # Update Image
-        CanvasManager.update node.children("image"), @iconUrl(), "href"
-
-      # Toggle left port
-      CanvasManager.toggle node.children(".port-elb-sg-in"), @get("internal")
-
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
-
 
     serialize : ()->
       layout =

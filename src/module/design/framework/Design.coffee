@@ -275,7 +275,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
       @__componentMap[ id ] = comp
 
       # Cache them into another cache if they are visual objects
-      if _.isFunction comp.draw
+      if comp.isVisual and comp.isVisual()
         if comp.node_group
           @__canvasGroups[ id ] = comp
         else if comp.node_line
@@ -315,7 +315,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     for id, a of componentMap
       if checked[ id ] then continue
       if a.node_line
-        if a.draw
+        if a.isVisual()
           checkedMap.line[ a.id ] = a
         else
           checkedMap.otherConnection[ a.id ] = a

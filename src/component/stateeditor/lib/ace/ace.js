@@ -12266,7 +12266,7 @@ overflow: hidden;\
 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;\
 font-size: 12px;\
 line-height: normal;\
-color: black;\
+color: #666;\
 -ms-user-select: none;\
 -moz-user-select: none;\
 -webkit-user-select: none;\

@@ -1127,12 +1127,12 @@
 }
 
 #node-state-wrap {
-	background-image: -ms-linear-gradient(top, #666666 0%, #000000 100%);
-	background-image: -moz-linear-gradient(top, #666666 0%, #000000 100%);
-	background-image: -o-linear-gradient(top, #666666 0%, #000000 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #666666), color-stop(1, #000000));
-	background-image: -webkit-linear-gradient(top, #666666 0%, #000000 100%);
-	background-image: linear-gradient(to bottom, #666666 0%, #000000 100%);
+	background: rgba(0,0,0,.7);
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
 
 	border-radius: 2px;
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
@@ -1144,12 +1144,7 @@
 }
 
 #node-state-wrap:hover {
-	background-image: -ms-linear-gradient(top, #888888 0%, #000000 100%);
-	background-image: -moz-linear-gradient(top, #888888 0%, #000000 100%);
-	background-image: -o-linear-gradient(top, #888888 0%, #000000 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #888888), color-stop(1, #000000));
-	background-image: -webkit-linear-gradient(top, #888888 0%, #000000 100%);
-	background-image: linear-gradient(to bottom, #888888 0%, #000000 100%);
+	background: rgba(0,0,0,.9);
 }
 
 #node-state-icon {

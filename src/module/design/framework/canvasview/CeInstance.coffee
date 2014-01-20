@@ -23,11 +23,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     ami = @model.getAmi() || @model.get("cachedAmi")
 
     if not ami
-      base = "ide/ami/ami-not-available.png"
+      "ide/ami/ami-not-available.png"
     else
-      base = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
-
-    MC.IMG_URL + base
+      "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
 
   ChildElementProto.draw = ( isCreate )->
@@ -50,7 +48,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       # Insert Volume / Eip / Port
       node.append(
         # Ami Icon
-        Canvon.image( @iconUrl(), 30, 15, 39, 27 ),
+        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
         # Volume Image
         Canvon.image( "", 21, 44, 29, 24 ).attr({
@@ -194,8 +192,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
 
     # Check icon
     if $("##{@id}_instance-state").length is 0
-      console.error "[InstanceModel._updateState] can not found '##{@id}_instance-state'"
-      return null
+      return
 
     # Init icon to unknown state
     el = @element()

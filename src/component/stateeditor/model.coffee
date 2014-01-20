@@ -2,10 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
-		 './component/stateeditor/lib/data',
-		 './component/stateeditor/lib/data1'
-], (MC, constant, state_model) ->
+define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -143,9 +140,13 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 				osPlatformDistro: osPlatformDistro
 			}
 
-		updateAllStateRef: (originOldRef, originNewRef) ->
+		updateAllStateRef: (newOldStateIdMap) ->
 
 			that = this
+
+			# update
+			allCompData = Design.instance().serialize().component
+			that.set('allCompData', allCompData)
 
 			oldRef = that.replaceParaNameToUID(originOldRef)
 			newRef = that.replaceParaNameToUID(originNewRef)
@@ -169,8 +170,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 							paraType = paraModelObj[paraName]['type']
 							if paraType is 'state'
 								newParaValue = _.map paraValue, (stateRef) ->
-									if stateRef is oldRef
-										return newRef
+									if newOldStateIdMap[stateRef]
+										return newOldStateIdMap[stateRef]
 									return stateRef
 								paraObj[paraName] = newParaValue
 							null

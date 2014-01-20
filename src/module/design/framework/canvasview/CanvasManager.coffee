@@ -1,17 +1,7 @@
 
 define [], ()->
 
-  Design = null
-
   CanvasManager = {
-
-    setDesign : (d)->
-      Design = d
-      null
-
-    remove : ( element )->
-      if element then MC.canvas.remove( element )
-      null
 
     removeClass : ( element, theClass )->
       if element.length
@@ -74,8 +64,8 @@ define [], ()->
         tootipStr = 'Associate Elastic IP to primary IP'
         imgUrl    = 'ide/icon/eip-off.png'
 
-      if Design.instance().modeIsApp()
-        resource_list = MC.data.resource_list[ Design.instance().region() ]
+      if targetModel.design().modeIsApp()
+        resource_list = MC.data.resource_list[ targetModel.design().region() ]
         res = resource_list[ targetModel.get("appId") ]
         if toggle and res
           if res.privateIpAddressesSet and res.privateIpAddressesSet.item and res.privateIpAddressesSet.item.length

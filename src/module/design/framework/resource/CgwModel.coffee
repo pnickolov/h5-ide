@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant" ], ( ComplexResModel, CanvasManager, Design, constant )->
+define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design, constant )->
 
   Model = ComplexResModel.extend {
 

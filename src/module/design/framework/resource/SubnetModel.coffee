@@ -2,10 +2,9 @@
 define [ "constant",
          "Design",
          "../GroupModel",
-         "CanvasManager",
          "../connection/RtbAsso",
          "i18n!nls/lang.js"
-], ( constant, Design, GroupModel, CanvasManager, RtbAsso, lang )->
+], ( constant, Design, GroupModel, RtbAsso, lang )->
 
   Model = GroupModel.extend {
 

@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, Design, constant, lang )->
+define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, Design, constant, lang )->
 
   emptyArray = []
 

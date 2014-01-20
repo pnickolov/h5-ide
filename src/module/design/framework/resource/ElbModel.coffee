@@ -1,6 +1,5 @@
 
-define [ "CanvasManager",
-         "Design",
+define [ "Design",
          "constant",
          "../ResourceModel",
          "../ComplexResModel",
@@ -8,7 +7,7 @@ define [ "CanvasManager",
          "./SgModel",
          "../connection/SgAsso"
          "../connection/ElbAsso"
-], ( CanvasManager, Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
+], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SgAsso )->
 
   Model = ComplexResModel.extend {
 

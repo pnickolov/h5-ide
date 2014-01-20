@@ -1,4 +1,4 @@
-define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "CanvasManager" ], ( constant, CanvasAdaptor, CanvasManager ) ->
+define [ "constant", "module/design/framework/canvasview/CanvasAdaptor" ], ( constant, CanvasAdaptor ) ->
 
   ###
     -------------------------------
@@ -535,8 +535,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     Backbone.Events.on.apply( this, arguments )
 
 
-  # Inject dependency, so that CanvasManager/CanvasAdaptor won't require Design.js
-  CanvasManager.setDesign( Design )
+  # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )
 
 

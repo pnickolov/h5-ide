@@ -1,5 +1,5 @@
 
-define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "CanvasManager", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, CanvasManager, Design, constant, lang )->
+define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
 
   NotificationModel = ResourceModel.extend {
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_NotificationConfiguration

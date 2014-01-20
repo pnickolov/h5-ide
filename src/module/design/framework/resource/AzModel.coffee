@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, CanvasManager, VpcModel, constant, lang )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, VpcModel, constant, lang )->
 
   Model = GroupModel.extend {
 

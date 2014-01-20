@@ -1,4 +1,6 @@
 define [ 'Design',
+         "CanvasManager",
+
          './connection/EniAttachment',
          './connection/VPNConnection',
          './resource/InstanceModel',
@@ -47,7 +49,7 @@ define [ 'Design',
 ], ( Design )->
 
   ### env:dev ###
-  require( ["./module/design/framework/util/DesignDebugger"], ()-> )
+  require ["./module/design/framework/util/DesignDebugger"], ()->
   ### env:dev:end ###
 
   window.Design = Design

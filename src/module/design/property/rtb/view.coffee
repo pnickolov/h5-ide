@@ -115,9 +115,9 @@ define [ '../base/view', 'text!./template/stack.html' ], ( PropertyView, templat
                 mainContent = "#{inputValue} is not a valid form of CIDR block."
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
-            else if inputValue isnt "0.0.0.0/0"
+            else
                 for cidr in allCidrAry
-                    if cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr )
+                    if inputValue is cidr or ( cidr isnt "0.0.0.0/0" and MC.aws.subnet.isSubnetConflict( inputValue, cidr ) )
                         mainContent = "#{inputValue} conflicts with other route."
                         descContent = 'Please choose a CIDR block not conflicting with existing route.'
                         break

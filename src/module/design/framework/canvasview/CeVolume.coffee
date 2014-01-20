@@ -2,8 +2,6 @@
 define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElement, constant, CanvasManager, ide_event )->
 
   ChildElement = ( component )->
-    CanvasElement.apply( this, arguments )
-
     if _.isString( component )
       @id = component
       @nodeType = "node"

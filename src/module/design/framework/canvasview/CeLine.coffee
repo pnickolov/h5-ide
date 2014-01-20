@@ -141,7 +141,7 @@ define [ "./CanvasElement", "CanvasManager" ], ( CanvasElement, CanvasManager )-
         'id'        : @id
       })
 
-      document.getElementById( "line_layer" ).appendChild( svg_line[0] )
+      @getLayer("line_layer").appendChild( svg_line[0] )
     null
 
   null

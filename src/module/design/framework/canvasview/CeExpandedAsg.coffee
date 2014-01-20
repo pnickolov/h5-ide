@@ -94,7 +94,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       })
 
       # Move the node to right place
-      $("#asg_layer").append node
+      @getLayer("asg_layer").append node
       @initNode node, m.x(), m.y()
 
     else

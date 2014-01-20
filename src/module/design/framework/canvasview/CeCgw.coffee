@@ -42,7 +42,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       )
 
       # Move the node to right place
-      $("#node_layer").append node
+      @getLayer("node_layer").append node
       @initNode node, m.x(), m.y()
 
     else

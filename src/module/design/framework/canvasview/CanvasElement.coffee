@@ -331,6 +331,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   # Helper functions for rendering and for model
   ###
+  CanvasElement.prototype.getLayer = ( layerName )-> $("##{layerName}")
+
   CanvasElement.prototype.portDirection = ( portName )->
     if this.portDirMap then this.portDirMap[ portName ] else null
 

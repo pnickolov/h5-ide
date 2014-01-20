@@ -23,7 +23,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
     if isCreate
       node = @createGroup( name )
-      $('#az_layer').append node
+      @getLayer("az_layer").append node
 
       # Move the group to right place
       CanvasManager.position node, m.x(), m.y()

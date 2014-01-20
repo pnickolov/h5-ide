@@ -44,7 +44,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         'data-direction': 'out'
       }) )
 
-      $('#subnet_layer').append node
+      @getLayer("subnet_layer").append node
 
       # Move the group to right place
       @initNode node, m.x(), m.y()

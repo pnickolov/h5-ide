@@ -40,7 +40,7 @@ define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
       )
 
       # Move the node to right place
-      $("#node_layer").append node
+      @getLayer("node_layer").append node
       @initNode node, m.x(), m.y()
 
 

@@ -91,7 +91,7 @@ define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasMan
       })
 
       # Move the node to right place
-      $("#asg_layer").append node
+      @getLayer("asg_layer").append node
       CanvasManager.position node, m.x(), m.y()
 
     else

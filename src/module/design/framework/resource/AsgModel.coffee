@@ -229,6 +229,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           @updateExpandedAsgAsso( elb, true )
 
       @set "lc", lc
+      @listenTo( lc, "change:name", @draw )
 
       for elb in lc.connectionTargets("ElbAmiAsso")
         @updateExpandedAsgAsso( elb )

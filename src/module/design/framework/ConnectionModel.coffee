@@ -223,7 +223,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       if not @isVisual() or not Design.instance().shouldDraw() then return
       v = @getCanvasView()
       if v
-        v.draw( isCreate )
+        v.draw( isCreate is true )
       null
 
   }, {

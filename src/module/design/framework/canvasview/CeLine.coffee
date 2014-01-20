@@ -141,7 +141,7 @@ define [ "./CanvasElement", "CanvasManager" ], ( CanvasElement, CanvasManager )-
         'id'        : @id
       })
 
-      @getLayer("line_layer").appendChild( svg_line[0] )
+      @getLayer("line_layer")[0].appendChild( svg_line[0] )
     null
 
   null

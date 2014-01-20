@@ -140,7 +140,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       if not @isVisual() or not Design.instance().shouldDraw() then return
       v = @getCanvasView()
       if v
-        v.draw( isCreate )
+        v.draw( isCreate is true )
       null
 
     createNode : ( option )->

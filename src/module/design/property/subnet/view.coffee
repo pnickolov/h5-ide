@@ -29,7 +29,6 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
             @refreshACLList()
-            @forceShow()
 
             @model.attributes.name
 

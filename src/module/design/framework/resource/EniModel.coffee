@@ -374,6 +374,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # But we also need to fill in IP/EIP data of ServerGroup Member Enis.
       for ipObj, idx in @get("ips")
 
+        hasEip = ipObj.hasEip
+
         ipObj = memberData.ips[ idx ]
         if servergroupOption.number > 1
           autoAssign = true
@@ -394,7 +396,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
             AllocationID      : ""
         }
 
-        if ipObj.hasEip
+        if hasEip
           # Create Eip Component
           eip = ipObj.eipData
 

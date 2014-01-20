@@ -13,6 +13,24 @@ body {
 	color: #666;
 }
 
+
+.ace_scroller.ace_scroll-left:after {
+	content: " ";
+	width: 15px;
+	height: 21px;
+	display: inline-block;
+	position: absolute;
+	z-index: 2;
+	background: rgba(255,255,255,1);
+	background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,0)));
+	background: -webkit-linear-gradient(left,rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+	background: -o-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+	background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=1 );
+}
+
 /* *************************************** atwho */
 
 .atwho-view {
@@ -84,6 +102,7 @@ body {
 	height: 500px;
 	background: #fff;
 	font-family: "OxygenMono", "Lucida Console", "Monaco", monospace;
+	font-size: 13px;
 }
 
 #state-editor.full {
@@ -171,7 +190,7 @@ body {
 	list-style: none;
 	position: absolute;
 	margin-top: -49px;
-	right: 195px;
+	left: 655px;
 }
 
 .modal-sidebar-toggle li {
@@ -186,14 +205,18 @@ body {
 
 }
 
-.modal-sidebar-toggle li {
+.modal-sidebar-toggle li  {
 	border-left: 1px solid #303030;
+}
+
+.modal-sidebar-toggle li:last-child {
+	border-right: 1px solid #303030;
 }
 
 .modal-sidebar-toggle li.active,
 .modal-sidebar-toggle li.active:hover {
 	background: #333;
-	color: #f0f0f0;
+	color: #fff;
 }
 
 .modal-sidebar-toggle li:hover {
@@ -258,9 +281,14 @@ body {
 	margin-right: 5px;
 }
 
-#state-editor .editable-area.ace_focus {
+#state-editor .editable-area.ace_focus,
+#state-editor .editable-area.ace_focus:hover {
 	color: #333;
 	border-bottom: 1px solid #69aadc;
+}
+
+#state-editor .editable-area:hover {
+	border-bottom: 1px solid #aaa;
 }
 
 #state-editor .editable-area.disabled {
@@ -281,7 +309,7 @@ body {
 #state-editor .editable-area.line {
 	white-space: nowrap !important;
 	display: inline !important;
-	height: 15px !important;
+	height: 13px !important;
 	line-height: 17px !important;
 	padding-top: 3px !important;
 	overflow: hidden !important;
@@ -371,6 +399,24 @@ body {
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
 	width: 147px;
 	margin-right: 5px;
+	position: relative;
+}
+
+#state-editor .parameter-list .parameter-item.dict .parameter-value:last-child {
+	padding-left: 10px;
+}
+
+#state-editor .parameter-list .parameter-item.dict .parameter-dict-item {
+	position: relative;
+	height: 26px;
+}
+
+#state-editor .parameter-list .parameter-item.dict .parameter-dict-item:after {
+	content: ":";
+	position: absolute;
+	left: 155px;
+	top: 6px;
+	color: #ccc;
 }
 
 #state-editor .parameter-remove {
@@ -428,6 +474,7 @@ body {
 
 #state-editor .state-item.view .state-view {
 	display: block;
+	font-size: 12px;
 }
 
 #state-editor .command-view-value {
@@ -485,7 +532,6 @@ body {
 	float: none;
 	position: relative;
 	overflow: auto;
-	background-color: #ccc;
 	padding-left: 25px;
 	cursor: pointer;
 	background: #fcfcfc;

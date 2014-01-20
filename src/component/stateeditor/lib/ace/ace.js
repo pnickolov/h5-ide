@@ -12266,7 +12266,7 @@ overflow: hidden;\
 font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;\
 font-size: 12px;\
 line-height: normal;\
-color: black;\
+color: #666;\
 -ms-user-select: none;\
 -moz-user-select: none;\
 -webkit-user-select: none;\
@@ -16641,7 +16641,7 @@ background: #e8e8e8;\
 background-color: #6B72E6;\
 }\
 .ace-tm {\
-background-color: #FFFFFF;\
+background-color: transparent;\
 }\
 .ace-tm .ace_cursor {\
 color: black;\

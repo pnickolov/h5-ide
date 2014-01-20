@@ -768,6 +768,10 @@ define [ 'event',
                     cmdName = $stateItem.attr('data-command')
                     if cmdName
                         that.refreshDescription(cmdName)
+
+                    if that.readOnlyMode
+                        that.setEditorReadOnlyMode()
+
                 else
                     that.refreshStateView($stateItem)
                     $stateItem.addClass('view')
@@ -918,7 +922,9 @@ define [ 'event',
                 newStateId = $stateItem.find('.state-id').text()
                 oldStateId = $stateItem.attr('data-id')
                 if oldStateId and newStateId isnt oldStateId
-                    newOldStateIdMap[oldStateId] = newStateId
+                    oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
+                    newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
+                    newOldStateIdMap[oldStateIdRef] = newStateIdRef
 
                 moduleObj = that.cmdModuleMap[cmdName]
 
@@ -1273,8 +1279,8 @@ define [ 'event',
 
             that = this
 
-            if that.readOnlyMode
-                return
+            # if that.readOnlyMode
+            #     return
 
             if not editorElem then return
 
@@ -1450,11 +1456,7 @@ define [ 'event',
         updateStateIdBySort: (newOldStateIdMap) ->
 
             that = this
-
-            _.each newOldStateIdMap, (newStateId, oldStateId) ->
-                oldStateIdRef = "@{#{that.resName}.state.#{oldStateId}}"
-                newStateIdRef = "@{#{that.resName}.state.#{newStateId}}"
-                that.model.updateAllStateRef(oldStateIdRef, newStateIdRef)
+            that.model.updateAllStateRef(newOldStateIdMap)
 
         refreshStateLogList: () ->
 
@@ -1487,13 +1489,13 @@ define [ 'event',
 
             that = this
 
-            # editableAreaAry = that.$stateList.find('.editable-area')
-            # _.each editableAreaAry, (editableArea) ->
-            #     $editableArea = $(editableArea)
-            #     editor = $editableArea.data('editor')
-            #     if editor
-            #         editor.setReadOnly(true)
-            #     null
+            editableAreaAry = that.$stateList.find('.editable-area')
+            _.each editableAreaAry, (editableArea) ->
+                $editableArea = $(editableArea)
+                editor = $editableArea.data('editor')
+                if editor
+                    editor.setReadOnly(true)
+                null
 
             that.$stateList.find('.state-drag').hide()
             that.$stateList.find('.state-add').hide()

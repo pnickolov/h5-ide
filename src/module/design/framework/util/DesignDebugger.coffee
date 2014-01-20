@@ -53,15 +53,15 @@ define [ "Design" ], ( Design )->
     window.open 'test/jsondiff/index.htm#' + encodeURIComponent(param)
     null
 
-  Design.debug.toJSON = ( toString )->
+  Design.debug.json = ( notToString )->
     data = Design.instance().serialize()
-    if toString
+    if not notToString
       return JSON.stringify( data )
     else
       console.log( data )
     null
 
   window.D  = Design
-  window.ds = Design.debug.toJSON
+  window.ds = ()-> Design.debug.json( true )
 
   ### env:dev:end ###

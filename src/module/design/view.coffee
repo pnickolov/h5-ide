@@ -150,7 +150,7 @@ define [ 'event', 'text!./module/design/template.html', 'constant', 'i18n!nls/la
                 .text failed
 
         loadStateStatusBar: ->
-            appStoped = Design.instance().getState() is 'Stopped'
+            appStoped = MC.canvas_data.state is 'Stopped'
             if appStoped
                 return
 

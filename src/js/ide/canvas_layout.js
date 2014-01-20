@@ -26,7 +26,8 @@ var listen = function ()
 			.on('mousedown' + name_space, '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
 			.on('mousedown' + name_space, '.AWS-EC2-Instance .instance-number-group', MC.canvas.instanceList.show)
 			.on('mousedown' + name_space, '.AWS-VPC-NetworkInterface .eni-number-group', MC.canvas.eniList.show)
-			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown);
+			.on('mousedown' + name_space, MC.canvas.event.ctrlMove.mousedown)
+			.on('mousedown' + name_space, '#node-state-wrap', MC.canvas.event.nodeStatePopup);
 	}
 
 	if (canvas_state === 'appedit')

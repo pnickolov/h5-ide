@@ -11,6 +11,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     @id    = model.id
     @model = model
     @type  = model.type
+
     if model.node_group is true
       @nodeType = "group"
     else if model.node_line is true
@@ -46,8 +47,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   CanvasElement.prototype.getModel = ()-> @model
 
-  CanvasElement.prototype.element  = ()-> document.getElementById( @model.id )
-  CanvasElement.prototype.$element = ()-> $( document.getElementById( @model.id ) )
+  CanvasElement.prototype.element  = ()-> document.getElementById( @id )
+  CanvasElement.prototype.$element = ()-> $( document.getElementById( @id ) )
 
   CanvasElement.prototype.move = ( x, y )->
     if x is @model.x() and y is @model.y() then return
@@ -140,7 +141,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEdit() and not @model.get("supportAppEdit")
+    if @model.design().modeIsAppEdit() and not @model.get("supportAppEdit")
         notification "error", "This operation is not supported yet."
         return false
     #
@@ -149,6 +150,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
 
     res = @isRemovable()
+    comp = @model
     comp_name = comp.get("name")
 
     # Ask user to confirm to delete an non-empty group
@@ -162,11 +164,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
         content : res
       }
       modal template, true
-      theID = this.id
 
+      that = this
       $("#canvas-op-confirm").one "click", ()->
-        comp = Design.instance().component( theID )
-        if comp and not comp.isRemoved()
+        if that.model.isRemoved()
           comp.remove()
           ide_event.trigger ide_event.OPEN_PROPERTY
         null
@@ -191,7 +192,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     null
 
   CanvasElement.prototype.select = ()->
-    @doSelect( @model.type, @model.id, @model.id )
+    @doSelect( @type, @id, @id )
     true
 
   CanvasElement.prototype.doSelect = ( type, propertyId, canvasId )->
@@ -205,15 +206,15 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       if cn.get("lineType")
         cns.push {
           line   : cn.id
-          target : @model.id
-          port   : cn.port( @model.id, "name" )
+          target : @id
+          port   : cn.port( @id, "name" )
         }
     cns
 
   CanvasElement.prototype.toggleEip = ()->
     console.assert( @model.setPrimaryEip, "The component doesn't support setting EIP" )
 
-    toggle = !comp.hasPrimaryEip()
+    toggle = !@model.hasPrimaryEip()
     @model.setPrimaryEip( toggle )
 
     if toggle
@@ -230,7 +231,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
     if parentId is "canvas" then parentId = ""
 
-    if this.parentId is parentId
+    oldPid = @model.parent()
+    if oldPid then oldPid = oldPid.id else null
+
+    if oldPid is parentId
       execCB.call( this )
       return false
 
@@ -238,27 +242,26 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEdit()
+    if @model.design().modeIsAppEdit()
       notification "error", "This operation is not supported yet."
       return
     #
     # #
     # # #
 
-    parent = Design.instance().component( parentId )
+    parent = @model.design().component( parentId )
     if not parent
       console.warn( "Cannot find parent when changing parent" )
       return false
 
-    child = Design.instance().component( this.id )
-    res   = child.isReparentable( parent )
+    res = @model.isReparentable( parent )
 
     if _.isString( res )
       # Error
       notification "error", res
 
     else if res is true
-      parent.addChild( child )
+      parent.addChild( @model )
       execCB.call( this )
       return true
 
@@ -269,45 +272,44 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
   # Return an connection of serverGroupMember
   CanvasElement.prototype.list = ()->
-    component = Design.instance().component( this.id )
-    members = component.groupMembers()
+    component = @model
+    members = @model.groupMembers()
     if members.length is 0 then return []
 
-    id   = component.id
-    name = component.get("name")
+    id   = @id
+    name = @model.get("name")
 
-    resource_list = MC.data.resource_list[ Design.instance().region() ]
+    resource_list = MC.data.resource_list[ @model.design().region() ]
 
     ###
     # Quick hack for Lc
     ###
-    if component.type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    if @type isnt constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
 
-      state = ""
-      if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
-        instance_data = MC.data.resource_list[ Design.instance().get('region') ][ component.get("appId") ]
-        state = if instance_data then instance_data.instanceState.name  else "unknown"
+      if @type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+        instance_data = resource_list[ @model.get("appId") ]
+        state = if instance_data then instance_data.instanceState.name else "unknown"
 
       list = [{
         id      : id
         name    : name
-        appId   : component.get("appId")
-        state   : state
-        deleted : if resource_list[ component.get("appId") ] then "" else " deleted"
+        appId   : @model.get("appId")
+        state   : state || ""
+        deleted : if resource_list[ @model.get("appId") ] then "" else " deleted"
       }]
 
       list.id   = id
       list.name = name
     else
       list = []
-      list.id   = component.parent().id
-      list.name = component.parent().get("name")
+      list.id   = @model.parent().id
+      list.name = @model.parent().get("name")
 
-    for member, idx in component.groupMembers()
+    for member, idx in @model.groupMembers()
 
       state = ""
-      if component.type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or component.type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
-        instance_data = MC.data.resource_list[ Design.instance().get('region') ][ member.appId ]
+      if @type is constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance or @type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+        instance_data = resource_list[ member.appId ]
         state = if instance_data then instance_data.instanceState.name  else "unknown"
 
       list.push {
@@ -315,7 +317,7 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
         name    : name
         appId   : member.appId
         state   : state
-        deleted : if not Design.instance().modeIsStack() and not resource_list[ component.get("appId") ] then " deleted" else ""
+        deleted : if not @model.design().modeIsStack() and not resource_list[ @model.get("appId") ] then " deleted" else ""
       }
 
     list
@@ -327,6 +329,9 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
   ###
   # Helper functions for rendering and for model
   ###
+  CanvasElement.prototype.portDirection = ( portName )->
+    if this.portDirMap then this.portDirMap[ portName ] else null
+
   CanvasElement.prototype.portPosition = ( portName )->
     if this.portPosMap then this.portPosMap[ portName ] else null
 
@@ -358,10 +363,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       Canvon.image( MC.IMG_URL+option.image, option.imageX, option.imageY, option.imageW, option.imageH )
 
     ).attr({
-      'id'         : m.id
-      'class'      : 'dragable node ' + m.type.replace(/\./g, "-")
+      'id'         : @id
+      'class'      : 'dragable node ' + @type.replace(/\./g, "-")
       'data-type'  : 'node'
-      'data-class' : m.type
+      'data-class' : @type
     })
 
     if option.labelBg
@@ -434,27 +439,28 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
       Canvon.text(text_pos[0], text_pos[1], name).attr({'class':'group-label name'})
     ).attr({
-      'id'         : m.id
-      'class'      : 'dragable ' + m.type.replace(/\./g, "-")
+      'id'         : @id
+      'class'      : 'dragable ' + @type.replace(/\./g, "-")
       'data-type'  : 'group'
-      'data-class' : m.type
+      'data-class' : @type
     })
 
   #update deleted resource style
   CanvasElement.prototype.updateAppState = ()->
     m = @model
+    design = m.design()
 
-    if m.design().modeIsStack() or not m.get("appId")
+    if design.modeIsStack() or not m.get("appId")
       return
 
     CanvasManager.removeClass @element(), "deleted"
 
     # Get resource data
-    if not MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
+    if not MC.data.resource_list[ design.region() ][ m.get("appId") ]
       CanvasManager.addClass @element(), "deleted"
     null
 
-  CanvasElement.prototype.detach = ()-> CanvasManager.remove( @element() )
+  CanvasElement.prototype.detach = ()-> MC.canvas.remove( @element() )
 
   CanvasElement.setDesign = ( design )->
     Design = design

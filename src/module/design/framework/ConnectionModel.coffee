@@ -195,7 +195,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
         @__port2Comp.disconnect_base( this, reason )
 
       # Try removing line element in SVG, if the line is visual
-      v = @getCanvasView()
+      v = @__view
       if v then v.detach()
       null
 

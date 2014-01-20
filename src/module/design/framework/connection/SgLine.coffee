@@ -89,7 +89,9 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
 
     # This method is used by Asg to remove its expanded asg's sgline.
     silentRemove : ()->
-      CanvasManager.remove( document.getElementById( @id ) )
+      v = @__view
+      if v then v.detach()
+
       ResourceModel.remove.apply( this, arguments )
       null
 

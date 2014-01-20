@@ -413,7 +413,7 @@ require.config {
 			deps       : [ 'ace' ]
 
 		'stateeditor'  :
-			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC' ]
+			deps       : [ 'stateeditor_view', 'stateeditor_model', 'MC', 'ace_ext_language_tools' ]
 }
 
 #requirejs.onError = ( err ) ->

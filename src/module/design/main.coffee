@@ -2,7 +2,7 @@
 #  Controller for design module
 ####################################
 
-define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', './module/design/framework/test' ], ( lang, constant, stateeditor ) ->
+define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', 'Design', './module/design/framework/test' ], ( lang, constant, stateeditor, Design ) ->
 
     #private
     loadModule = () ->
@@ -255,6 +255,12 @@ define [ 'i18n!nls/lang.js', 'constant', 'stateeditor', './module/design/framewo
 
             ide_event.onLongListen ide_event.UPDATE_RESOURCE_STATE, () ->
                 view.hideStatusbar()
+
+            ide_event.onLongListen ide_event.OPEN_STATE_EDITOR, (uid) ->
+              allCompData = Design.instance().serialize().component
+              compData = allCompData[uid]
+              if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                  stateeditor.loadModule(allCompData, uid)
 
             model.on "SET_PROPERTY_PANEL", ( property_panel ) ->
                 property_main.restore property_panel

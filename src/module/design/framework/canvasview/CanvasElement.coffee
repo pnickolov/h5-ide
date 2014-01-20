@@ -165,9 +165,8 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
       }
       modal template, true
 
-      that = this
       $("#canvas-op-confirm").one "click", ()->
-        if that.model.isRemoved()
+        if not comp.isRemoved()
           comp.remove()
           ide_event.trigger ide_event.OPEN_PROPERTY
         null
@@ -268,7 +267,10 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
     return false
 
   CanvasElement.prototype.children = ()->
-    _.map @model.children() || [], ( c )-> c.getCanvasView()
+    if @model.children
+      _.map @model.children() || [], ( c )-> c.getCanvasView()
+    else
+      []
 
   # Return an connection of serverGroupMember
   CanvasElement.prototype.list = ()->

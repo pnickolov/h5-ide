@@ -51,7 +51,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
         # Volume Image
         Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 31, 44, 29, 24 ).attr({
-            'id': '#{m.id}_volume_status'
+            'id': '#{@id}_volume_status'
             'class':'volume-image'
           }),
         # Volume Label

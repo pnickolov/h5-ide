@@ -84,10 +84,10 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "Design", "
         Canvon.text( 4, 14, m.get("name") ).attr({'class':'group-label'})
 
       ).attr({
-        'id'         : m.id
+        'id'         : @id
         'class'      : 'dragable AWS-AutoScaling-Group'
         'data-type'  : 'group'
-        'data-class' : m.type
+        'data-class' : @type
       })
 
       # Move the node to right place

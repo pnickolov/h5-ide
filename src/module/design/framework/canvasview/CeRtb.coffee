@@ -15,6 +15,11 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     "rtb-src-top"    : [ 40, 3,  MC.canvas.PORT_UP_ANGLE ]
     "rtb-src-bottom" : [ 40, 77, MC.canvas.PORT_DOWN_ANGLE ]
   }
+  ChildElementProto.portDirMap = {
+    "rtb-tgt" : "horizontal"
+    "rtb-src" : "vertical"
+  }
+
 
   ChildElementProto.iconUrl = ()->
       if @model.get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"

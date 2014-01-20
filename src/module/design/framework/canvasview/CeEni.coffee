@@ -16,6 +16,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     "eni-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE    ]
   }
 
+  ChildElementProto.portDirMap = {
+    "eni-sg" : "horizontal"
+  }
+
   ChildElementProto.iconUrl = ()->
     if @model.connections( "EniAttachment" ).length
       "ide/icon/eni-canvas-attached.png"

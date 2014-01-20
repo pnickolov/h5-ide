@@ -14,6 +14,9 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     "launchconfig-sg-left"  : [ 10, 20, MC.canvas.PORT_LEFT_ANGLE ]
     "launchconfig-sg-right" : [ 80, 20, MC.canvas.PORT_RIGHT_ANGLE ]
   }
+  ChildElementProto.portDirMap = {
+    "launchconfig-sg" : "horizontal"
+  }
 
   ChildElementProto.iconUrl = ()->
     ami = @model.getAmi() || @model.get("cachedAmi")

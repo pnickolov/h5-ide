@@ -200,8 +200,8 @@ define [], ()->
 
       from_port = connection.port1("name")
       to_port   = connection.port2("name")
-      dirn_from = connection.port1("direction")
-      dirn_to   = connection.port2("direction")
+      dirn_from = item_from.portDirection(from_port)
+      dirn_to   = item_to.portDirection(to_port)
 
       if dirn_from and dirn_to
         if pos_from.left > pos_to.left

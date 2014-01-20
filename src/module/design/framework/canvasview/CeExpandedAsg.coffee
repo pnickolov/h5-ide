@@ -17,6 +17,9 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     "launchconfig-sg-left"  : [ 30,  50, MC.canvas.PORT_LEFT_ANGLE ]
     "launchconfig-sg-right" : [ 100, 50, MC.canvas.PORT_RIGHT_ANGLE ]
   }
+  ChildElementProto.portDirMap = {
+    "launchconfig-sg" : "horizontal"
+  }
 
   ChildElementProto.select = ()->
     m = @model.get("originalAsg")

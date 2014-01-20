@@ -15,6 +15,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
     "instance-attach"   : [ 78, 50, MC.canvas.PORT_RIGHT_ANGLE ]
     "instance-rtb"      : [ 45, 0,  MC.canvas.PORT_UP_ANGLE  ]
   }
+  ChildElementProto.portDirMap = {
+    "instance-sg" : "horizontal"
+  }
 
   ChildElementProto.iconUrl = ()->
     ami = @model.getAmi() || @model.get("cachedAmi")

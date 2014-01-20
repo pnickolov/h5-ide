@@ -50,7 +50,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
       node.append(
         Canvon.image( "", 44,37,12,14 ).attr({
-          'id'    : "#{m.id}_eip_status"
+          'id'    : "#{@id}_eip_status"
           'class' : 'eip-status tooltip'
         }),
 

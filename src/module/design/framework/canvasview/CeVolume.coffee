@@ -26,8 +26,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
     # Quick Hack for supporting AppEdit
     # Ask the component if it supports AppEdit Mode
     #
-    if Design.instance().modeIsAppEdit()
-      if @model.get("owner") and @model.get("owner").type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
+    if @model.design().modeIsAppEdit()
+      if (@model.get("owner") || {}).type is constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
         notification "error", "This operation is not supported yet."
         return false
     #
@@ -37,8 +37,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
 
 
   ChildElementProto.select = ( subId )->
-    ide_event.trigger ide_event.OPEN_PROPERTY, @model.type, subId or @model.id
-    MC.canvas.volume.select( @model.id )
+    ide_event.trigger ide_event.OPEN_PROPERTY, @type, subId or @id
+    MC.canvas.volume.select( @id )
     true
 
   null

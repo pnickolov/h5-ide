@@ -50,7 +50,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
         Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ),
 
         # Volume Image
-        Canvon.image( MC.IMG_URL + 'ide/icon/instance-volume-attached-normal.png' , 31, 44, 29, 24 ).attr({
+        Canvon.image( "" , 31, 44, 29, 24 ).attr({
             'id': "#{@id}_volume_status"
             'class':'volume-image'
           }),
@@ -59,7 +59,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
 
         # Volume Hotspot
         Canvon.rectangle(31, 44, 29, 24).attr({
-          'data-target-id' : m.id
+          'data-target-id' : @id
           'class'          : 'instance-volume'
           'fill'           : 'none'
         }),
@@ -89,7 +89,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
           Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
           Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
         ).attr({
-          'id'      : "#{m.id}_instance-number-group"
+          'id'      : "#{@id}_instance-number-group"
           'class'   : 'instance-number-group'
           "display" : "none"
         })
@@ -103,7 +103,8 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       node = @$element()
 
       # Node Label
-      CanvasManager.update node.children(".node-label-name"), @get("name")
+      CanvasManager.update node.children(".node-label-name"), m.get("name")
+
 
     # Volume Number
     volumeCount = (m.get("volumeList") || []).length
@@ -113,6 +114,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     else
       volumeImage = 'ide/icon/instance-volume-not-attached.png'
     CanvasManager.update node.children(".volume-image"), volumeImage, "href"
+
 
     # In app mode, show number
     if not m.design().modeIsStack() and m.parent()

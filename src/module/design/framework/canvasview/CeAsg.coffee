@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "Design", "CanvasManager" ], ( CanvasElement, ide_event, lang, constant, Design, CanvasManager )->
+define [ "./CanvasElement", 'i18n!nls/lang.js', "constant", "Design", "CanvasManager" ], ( CanvasElement, lang, constant, Design, CanvasManager )->
 
 
   CeAsg = ()-> CanvasElement.apply( this, arguments )

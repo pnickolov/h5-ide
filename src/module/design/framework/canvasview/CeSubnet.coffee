@@ -18,6 +18,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
     else
       [ m.width()  * MC.canvas.GRID_WIDTH + 4, portY, MC.canvas.PORT_RIGHT_ANGLE ]
 
+
   ChildElementProto.draw = ( isCreate )->
 
     m = @model

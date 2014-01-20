@@ -54,14 +54,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
 
         # Volume Image
         Canvon.image( "", 21, 44, 29, 24 ).attr({
-          'id'    : "#{m.id}_volume_status"
+          'id'    : "#{@id}_volume_status"
           'class' : 'volume-image'
         }),
         # Volume Label
         Canvon.text( 35, 56, "" ).attr({'class':'node-label volume-number'}),
         # Volume Hotspot
         Canvon.rectangle(21, 44, 29, 24).attr({
-          'data-target-id' : m.id
+          'data-target-id' : @id
           'class'          : 'instance-volume'
           'fill'           : 'none'
         }),
@@ -74,7 +74,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
           Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
           Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
         ).attr({
-          'id'      : "#{m.id}_instance-number-group"
+          'id'      : "#{@id}_instance-number-group"
           'class'   : 'instance-number-group'
           "display" : "none"
         }),
@@ -101,7 +101,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
         })
       )
 
-      if not Design.instance().typeIsClassic()
+      if not @model.design().typeIsClassic()
         # Show RTB/ENI Port in VPC Mode
         node.append(
           Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
@@ -121,11 +121,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
           })
         )
 
-      if not Design.instance().modeIsStack() and m.get("appId")
+      if not @model.design().modeIsStack() and m.get("appId")
         # instance-state
         node.append(
           Canvon.circle(68, 15, 5,{}).attr({
-            'id'    : '#{m.id}_instance-state'
+            'id'    : '#{@id}_instance-state'
             'class' : 'instance-state instance-state-unknown'
           })
         )
@@ -154,6 +154,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       CanvasManager.toggle node.children(".instance-state"), true
       CanvasManager.toggle node.children(".port-instance-rtb"), true
       CanvasManager.toggle numberGroup, false
+
 
     # Update Volume
     volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
@@ -192,33 +193,28 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       return
 
     # Check icon
-    if $("#" + m.id + "_instance-state").length is 0
-      console.error '[InstanceModel._updateState] can not found "#' + m.id + '_instance-state"'
+    if $("##{@id}_instance-state").length is 0
+      console.error "[InstanceModel._updateState] can not found '##{@id}_instance-state'"
       return null
 
     # Init icon to unknown state
-    Canvon($("#" + m.id)).removeClass "deleted"
+    el = @element()
+    CanvasManager.removeClass el, "deleted"
 
     # Get instance state
-    instance_data = MC.data.resource_list[ Design.instance().region() ][ m.get("appId") ]
+    instance_data = MC.data.resource_list[ m.design().region() ][ m.get("appId") ]
     if instance_data
       instanceState = instance_data.instanceState.name
-      Canvon($("#" + m.id)).addClass "deleted"  if instanceState is "terminated"
+      CanvasManager.addClass el, "deleted" if instanceState is "terminated"
     else
       #instance data not found, or maybe instance already terminated
       instanceState = "unknown"
-      Canvon("#" + m.id).addClass "deleted"
+      CanvasManager.addClass el, "deleted"
 
     #update icon state and tooltip
-    $("#" + m.id + "_instance-state").attr({
-      "class" : "instance-state tooltip"
-    })
-
-    Canvon( "#" + m.id + "_instance-state" )
-    .addClass( "instance-state-" + instanceState + " instance-state-" + m.design().mode() )
-    .data( 'tooltip', instanceState )
-    .attr( 'data-tooltip', instanceState )
-
+    stateClass = "instance-state tooltip instance-state-#{instanceState} instance-state-#{m.design().mode()}"
+    stateEl = $("##{@id}_instance-state").attr({ "class" : stateClass })
+    CanvasManager.update stateEl, instanceState, "update"
     null
 
   ChildElementProto.volume = ( volume_id )->
@@ -236,7 +232,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       }
 
     vl = []
-    for v in design.component( m.id ).get("volumeList") or vl
+    for v in @model.get("volumeList") or vl
       vl.push {
         deleted    : if not v.hasAppResource() then "deleted" else ""
         name       : v.get("name")
@@ -249,10 +245,13 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
 
   ChildElementProto.listVolume = ( appId )->
     vl = []
-    resource_list = MC.data.resource_list[Design.instance().region()]
+    design = @model.design()
+
+    resource_list = MC.data.resource_list[ design.region() ]
     if not resource_list then return vl
 
-    data = MC.data.resource_list[Design.instance().region()][ appId ]
+    data = resource_list[ appId ]
+
     if data and data.blockDeviceMapping and data.blockDeviceMapping.item
       for v in data.blockDeviceMapping.item
         if data.rootDeviceName is v.deviceName
@@ -311,17 +310,17 @@ define [ "./CanvasElement", "constant", "CanvasManager", "Design" ], ( CanvasEle
       return false
 
   ChildElementProto.removeVolume = ( volumeId )->
-    m.design().component( volumeId ).remove()
+    @model.design().component( volumeId ).remove()
     null
 
   ChildElementProto.moveVolume = ( volumeId )->
     design = @model.design()
     volume = design.component( volumeId )
-    result = volume.attachTo( design.component( @model.id ) )
+    result = volume.attachTo( @model )
     if !result
       return false
     else
-      return $canvas( @model.id, true ).volume( volumeId )
+      return @volume( volumeId )
     null
 
   ChildElement

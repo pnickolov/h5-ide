@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
   ChildElement = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_VPC_InternetGateway )

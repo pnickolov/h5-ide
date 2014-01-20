@@ -23,7 +23,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
   ChildElementProto.select = ()->
     m = @model.get("originalAsg")
-    @doSelect( m.type, m.id, @model.id )
+    @doSelect( @type, m.id, @id )
     true
 
   ChildElementProto.amiIconUrl = ()->
@@ -87,10 +87,10 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
         })
 
       ).attr({
-        'id'         : m.id
+        'id'         : @id
         'class'      : 'dragable AWS-AutoScaling-Group asg-expand'
         'data-type'  : 'group'
-        'data-class' : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_Group
+        'data-class' : @type
       })
 
       # Move the node to right place

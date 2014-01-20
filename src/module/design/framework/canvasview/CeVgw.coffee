@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant" ], ( CanvasElement, constant )->
 
   ChildElement = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_VPC_VPNGateway )
@@ -33,20 +33,20 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       node.append(
         # Left port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-blue port-vgw-tgt'
-          'data-name'     : 'vgw-tgt'
-          'data-position' : 'left'
-          'data-type'     : 'sg'
-          'data-direction': 'in'
+          'class'          : 'port port-blue port-vgw-tgt'
+          'data-name'      : 'vgw-tgt'
+          'data-position'  : 'left'
+          'data-type'      : 'sg'
+          'data-direction' : 'in'
         }),
 
         # Right port
         Canvon.path(MC.canvas.PATH_PORT_RIGHT).attr({
-          'class'      : 'port port-purple port-vgw-vpn'
-          'data-name'     : 'vgw-vpn'
-          'data-position' : 'right'
-          'data-type'     : 'vpn'
-          'data-direction': 'out'
+          'class'          : 'port port-purple port-vgw-vpn'
+          'data-name'      : 'vgw-vpn'
+          'data-position'  : 'right'
+          'data-type'      : 'vpn'
+          'data-direction' : 'out'
         })
       )
 

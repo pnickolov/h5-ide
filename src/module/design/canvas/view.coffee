@@ -2,11 +2,7 @@
 #  View(UI logic) for design/canvas
 #############################
 
-define [ 'text!./template.html', "event", "canvas_layout", 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, canvas_layout ) ->
-         'lib/forge/app',
-         'stateeditor'
-         'MC.canvas', 'backbone', 'jquery'
-], ( ide_event, canvas_layout, constant, forge_app, stateeditor ) ->
+define [ 'text!./template.html', "event", "constant", "canvas_layout", 'stateeditor', 'MC.canvas', 'backbone', 'jquery' ], ( template, ide_event, constant, canvas_layout, stateeditor ) ->
 
     CanvasView = Backbone.View.extend {
 
@@ -22,25 +18,26 @@ define [ 'text!./template.html', "event", "canvas_layout", 'MC.canvas', 'backbon
 
 
         render : () ->
-                .on( 'STATE_ICON_CLICKED',          '#svg_canvas', this.openStateEditor )
+
             console.log 'canvas render'
             $( '#canvas' ).html this.template
-            #
             ide_event.trigger ide_event.DESIGN_SUB_COMPLETE
 
         reRender   : ( template ) ->
+            
             console.log 're-canvas render'
             if $("#canvas").is(":empty") then $( '#canvas' ).html this.template
-            null
+
+            $("#svg_canvas").on( 'STATE_ICON_CLICKED', this.openStateEditor)
 
             null
 
         openStateEditor : ( event, uid ) ->
 
-            compObj = MC.canvas_data.component[uid]
-            compType = compObj.type
-            if compObj and compType in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
-                stateeditor.loadModule(MC.canvas_data, uid)
+            allCompData = Design.instance().serialize().component
+            compData = allCompData[uid]
+            if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+                stateeditor.loadModule(allCompData, uid)
     }
 
     return CanvasView

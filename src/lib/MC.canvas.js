@@ -4622,8 +4622,8 @@ MC.canvas.event.nodeState = function (id)
 		)
 	)
 	{
-		var compData = MC.canvas_data.component[id];
-		var stateAry = compData.state;
+		var resModel = Design.instance().component(id);
+		var stateAry = resModel.getStateData();
 		var stateNum = 0;
 		if (stateAry && _.isArray(stateAry)) {
 			stateNum = stateAry.length;

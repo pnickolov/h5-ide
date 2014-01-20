@@ -5,7 +5,7 @@
 define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_caret', 'jquery_atwho', 'jquery_markdown' ], ( ide_event ) ->
 
     #private
-    loadModule = ( canvas_data, uid ) ->
+    loadModule = ( allCompData, uid ) ->
 
         #
         require [ 'stateeditor_view', 'stateeditor_model' ], ( View, Model ) ->
@@ -13,11 +13,12 @@ define [ 'event', 'ace', 'ace_ext_language_tools',  'UI.modal', 'jquery_caret', 
             # add test
             # MC.forge.other.addSEList canvas_data
 
-            allCompData = canvas_data.component
             compData = allCompData[uid]
+            resModel = Design.instance().component(uid)
 
             model = new Model({
                 compData: compData,
+                resModel: resModel,
                 allCompData: allCompData
             })
             view  = new View({

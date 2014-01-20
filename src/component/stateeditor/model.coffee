@@ -180,16 +180,19 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 
 			that = this
 			compData = that.get('compData')
-			compData.state = stateData
+			resModel = that.get('resModel')
+			resModel.setStateData(stateData)
 			MC.canvas.event.nodeState(compData.uid)
 
 		getStateData: () ->
 
 			that = this
 			compData = that.get('compData')
-			if compData and compData.state
-				if _.isArray(compData.state)
-					return compData.state
+			resModel = that.get('resModel')
+			if compData
+				stateData = resModel.getStateData()
+				if _.isArray(stateData)
+					return stateData
 
 			return null
 

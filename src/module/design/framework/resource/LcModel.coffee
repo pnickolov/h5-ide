@@ -17,6 +17,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       monitoring   : false
       userData     : ""
       publicIp     : Design.instance().typeIsDefaultVpc()
+      state        : undefined
 
     type : constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration
     newNameTmpl : "launch-config-"
@@ -102,6 +103,12 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         if cn.type is "SgRuleLine"
           @parent().updateExpandedAsgSgLine( cn.getOtherTarget( constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration ), true )
       null
+
+    getStateData : () ->
+      @get("state")
+
+    setStateData : (stateAryData) ->
+      @set("state", stateAryData)
 
     getAmi                : InstanceModel.prototype.getAmi
     getDetailedOSFamily   : InstanceModel.prototype.getDetailedOSFamily
@@ -244,6 +251,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
         type : @type
         uid  : @id
         name : @get("name")
+        state : @get("state")
         resource :
           UserData                 : @get("userData")
           LaunchConfigurationARN   : @get("appId")
@@ -275,6 +283,7 @@ define [ "../ComplexResModel", "./InstanceModel", "CanvasManager", "Design", "co
       attr = {
         id    : data.uid
         name  : data.name
+        state : data.state
         appId : data.resource.LaunchConfigurationARN
 
         imageId      : data.resource.ImageId

@@ -28,6 +28,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
       supportAppEdit : true
 
+      state : undefined
+
     initialize : ( attr, option )->
 
       if option and option.createByUser
@@ -608,6 +610,7 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
         number : @get("count")
         serverGroupUid  : @id
         serverGroupName : @get("name")
+        state : @get("state")
         resource :
           UserData : {
             Base64Encoded : false
@@ -636,7 +639,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           SecurityGroupId       : securitygroupsId
           PrivateIpAddress      : ""
         #reserved
-        state    : ""
         software : {}
 
       component
@@ -660,6 +662,14 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
           NetworkInterfaceOwnerId : ""
           PublicIp                : eipData.publicIp or ""
       }
+
+    getStateData : () ->
+
+      @get("state")
+
+    setStateData : (stateAryData) ->
+
+      @set("state", stateAryData)
 
     serialize : ()->
 
@@ -786,6 +796,8 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "constant", "i18n!nls/
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+
+        state : data.state
 
       if data.resource.EipResource
         attr.hasEip  = true

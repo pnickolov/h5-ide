@@ -1,7 +1,21 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElement, constant, CanvasManager, ide_event )->
 
-  ChildElement = ()-> CanvasElement.apply( this, arguments )
+  ChildElement = ( component )->
+    CanvasElement.apply( this, arguments )
+
+    if _.isString( component )
+      @id = component
+      @nodeType = "node"
+      @model = {
+        type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
+        id   : component
+      }
+    else
+      CanvasElement.apply( this, arguments )
+    null
+
+
   CanvasElement.extend( ChildElement, constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume )
   ChildElementProto = ChildElement.prototype
 

@@ -107,7 +107,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       @initNode node, m.x(), m.y()
 
     else
-      node = @element()
+      node = @$element()
       # Update label
       CanvasManager.update node.children(".node-label"), m.get("name")
 

@@ -21,7 +21,7 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       CanvasManager.position node, m.x(), m.y()
 
     else
-      CanvasManager.update( @element().children("text"), label )
+      CanvasManager.update( @$element().children("text"), label )
 
     null
 

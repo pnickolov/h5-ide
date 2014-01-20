@@ -95,7 +95,7 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "Design", "
       CanvasManager.position node, m.x(), m.y()
 
     else
-      node = @element()
+      node = @$element()
       CanvasManager.update( node.children(".group-label"), m.get("name") )
       @__drawExpandedAsg()
 

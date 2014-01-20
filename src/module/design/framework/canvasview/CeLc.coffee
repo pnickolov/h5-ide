@@ -100,7 +100,7 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
       @initNode node, m.x(), m.y()
 
     else
-      node = @element()
+      node = @$element()
 
       # Node Label
       CanvasManager.update node.children(".node-label-name"), @get("name")

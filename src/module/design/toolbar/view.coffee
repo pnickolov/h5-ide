@@ -25,7 +25,6 @@ define [ 'MC', 'event',
         events     :
             ### env:dev ###
             'click #toolbar-jsondiff'       : 'clickOpenJSONDiff'
-            'click #toolbar-jsonview'       : 'clickOpenJSONView'
             ### env:dev:end ###
 
             #line style
@@ -465,16 +464,7 @@ define [ 'MC', 'event',
 
         #for debug
         clickOpenJSONDiff : ->
-            #
-            # a = MC.canvas_property.original_json.split('"').join('\\"')
-            # b = JSON.stringify(MC.canvas_data).split('"').join('\\"')
-            # param = '{"d":{"a":"'+a+'","b":"'+b+'"}}'
-            # #
-            # window.open 'test/jsondiff/jsondiff.htm#' + encodeURIComponent(param)
-            null
-
-        clickOpenJSONView : ->
-            window.open 'http://jsonviewer.stack.hu/'
+            Design.debug.diff()
             null
 
         #request cloudformation

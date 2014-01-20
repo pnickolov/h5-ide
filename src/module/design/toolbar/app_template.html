@@ -36,8 +36,8 @@
     <ul class="dropdown" tabindex="-1">
       <li id="toolbar-export-png"><i class="icon-export-png"></i>{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
       <!-- env:dev -->
-      <li id="toolbar-jsondiff"><i class="icon-toolbar-jsondiff-png"></i>Open JSON Diff</li>
-      <li id="toolbar-jsonview"><i class="icon-toolbar-jsonview-png"></i>Open JSON View</li>
+      <li><a href="javascript:D.debug.diff();" style="color:#333;display:block;">Open JSON Diff</a></li>
+      <li><a href="http://jsonviewer.stack.hu/" style="color:#333;display:block;" target="_blank">Open JSON View</a></li>
       <!-- env:dev:end -->
     </ul>
   </div>

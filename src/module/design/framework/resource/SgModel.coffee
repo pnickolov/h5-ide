@@ -56,6 +56,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     setAsElbSg : ()-> @set "isElbSg", true
 
     isDefault : ()-> @attributes.name is "DefaultSG"
+    isVisual  : ()-> false
 
     createIpTarget : ( ipAddress )-> new SgTargetModel( ipAddress )
 

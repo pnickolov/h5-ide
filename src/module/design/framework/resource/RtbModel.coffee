@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, CanvasManager, Design, Route, RtbAsso, VpcModel, constant, lang )->
+define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/RtbAsso", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, Design, Route, RtbAsso, VpcModel, constant, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -83,97 +83,6 @@ define [ "../ComplexResModel", "CanvasManager", "Design", "../connection/Route",
       if propagating isnt undefined
         connection.setPropagate propagating
       null
-
-    iconUrl : ()->
-      if @get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"
-
-    draw : ( isCreate )->
-
-      if isCreate
-
-        design = Design.instance()
-
-        # Call parent's createNode to do basic creation
-        node = @createNode({
-          image   : @iconUrl()
-          imageX  : 10
-          imageY  : 13
-          imageW  : 60
-          imageH  : 57
-        })
-
-        node.append(
-          # Left port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-rtb-tgt-left'
-            'class'      : 'port port-blue port-rtb-tgt port-rtb-tgt-left'
-            'transform'  : 'translate(2, 30)' + MC.canvas.PORT_LEFT_ROTATE
-            'data-angle' : MC.canvas.PORT_LEFT_ANGLE
-            'data-name'     : 'rtb-tgt'
-            'data-position' : 'left'
-            'data-type'     : 'sg'
-            'data-direction': 'out'
-          }),
-
-          # Right port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-rtb-tgt-right'
-            'class'      : 'port port-blue  port-rtb-tgt port-rtb-tgt-right'
-            'transform'  : 'translate(70, 30)' + MC.canvas.PORT_RIGHT_ROTATE
-            'data-angle' : MC.canvas.PORT_RIGHT_ANGLE
-            'data-name'     : 'rtb-tgt'
-            'data-position' : 'right'
-            'data-type'     : 'sg'
-            'data-direction': 'out'
-          }),
-
-          # Top port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-rtb-src-top'
-            'class'      : 'port port-gray port-rtb-src port-rtb-src-top'
-            'transform'  : 'translate(37, 2)' + MC.canvas.PORT_UP_ROTATE
-            'data-angle' : MC.canvas.PORT_UP_ANGLE
-            'data-name'     : 'rtb-src'
-            'data-position' : 'top'
-            'data-type'     : 'association'
-            'data-direction': 'in'
-          }),
-
-          # Bottom port
-          Canvon.path(MC.canvas.PATH_D_PORT).attr({
-            'id'         : @id + '_port-rtb-src-bottom'
-            'class'      : 'port port-gray port-rtb-src port-rtb-src-bottom'
-            'transform'  : 'translate(36, 69)' + MC.canvas.PORT_DOWN_ROTATE
-            'data-angle' : MC.canvas.PORT_DOWN_ANGLE
-            'data-name'     : 'rtb-src'
-            'data-position' : 'bottom'
-            'data-type'     : 'association'
-            'data-direction': 'in'
-          }),
-
-          Canvon.text(41, 27, @get("name")).attr({
-            'class' : 'node-label node-label-rtb-name'
-          })
-        )
-
-        # Move the node to right place
-        $("#node_layer").append node
-        CanvasManager.position node, @x(), @y()
-
-      else
-        node = $( document.getElementById( @id ) )
-        # Update label
-        CanvasManager.update node.children(".node-label"), @get("name")
-
-        # Update Image
-        CanvasManager.update node.children("image"), @iconUrl(), "href"
-
-      # Update Resource State in app view
-      if not Design.instance().modeIsStack() and @.get("appId")
-        @updateState()
-
-      null
-
 
     serialize : ()->
       component =

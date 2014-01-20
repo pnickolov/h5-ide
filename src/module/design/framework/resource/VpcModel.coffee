@@ -1,5 +1,5 @@
 
-define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( constant, GroupModel, CanvasManager, DhcpModel )->
+define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, DhcpModel )->
 
   Model = GroupModel.extend {
 
@@ -58,20 +58,6 @@ define [ "constant", "../GroupModel", "CanvasManager", "./DhcpModel" ], ( consta
       @set("cidr", cidr)
       @draw()
       true
-
-    draw : ( isCreate )->
-
-      label = "#{@get('name')} (#{ @get('cidr')})"
-
-      if isCreate
-        node = @createNode( label )
-        $('#vpc_layer').append node
-
-        # Move the group to right place
-        CanvasManager.position node, @x(), @y()
-
-      else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), label )
 
     generateSubnetCidr : ( newCidr, subnetCidrAry )->
 

@@ -55,6 +55,7 @@ define [ '../base/model', "Design", "constant" ], ( PropertyModel, Design, const
 
             if vpn.vgwTelemetry and vpn.vgwTelemetry.item
               vpn.vgwTelemetry.item = _.map vpn.vgwTelemetry.item, ( item, idx ) ->
+                item = $.extend true, {}, item
                 item.index = idx + 1
                 item.stateColor = twoStateColorMap[item.status]
                 item

@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, CanvasManager, VpcModel, constant, lang )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js" ], ( GroupModel, VpcModel, constant, lang )->
 
   Model = GroupModel.extend {
 
@@ -56,18 +56,6 @@ define [ "../GroupModel", "CanvasManager", "./VpcModel", "constant", "i18n!nls/l
 
       maxIpCount = MC.aws.eni.getAvailableIPCountInCIDR( cidr )
       maxIpCount >= ipCount
-
-    draw : ( isCreate ) ->
-
-      if isCreate
-        node = @createNode( @get "name" )
-        $('#az_layer').append node
-
-        # Move the group to right place
-        CanvasManager.position node, @x(), @y()
-
-      else
-        CanvasManager.update( $( document.getElementById( @id ) ).children("text"), @get("name") )
 
     serialize : ()->
       layout =

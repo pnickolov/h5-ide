@@ -39,6 +39,9 @@ define [ "../ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       null
 
+
+    isVisual : ()-> false
+
     groupMembers : ()->
       if not @__groupMembers then @__groupMembers = []
       return @__groupMembers

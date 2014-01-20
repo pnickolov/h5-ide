@@ -1339,11 +1339,15 @@ define [ 'event',
                     if $editorElem.hasClass('command-value')
                         value = e.args
                         $stateItem = $editorElem.parents('.state-item')
-                        $stateItem.attr('data-command', value)
-                        that.refreshDescription(value)
-                        $paraListElem = $stateItem.find('.parameter-list')
-                        that.refreshParaList($paraListElem, value)
-                        that.refreshStateView($stateItem)
+                        originCMDName = $stateItem.attr('data-command')
+
+                        if originCMDName isnt value
+                            
+                            $stateItem.attr('data-command', value)
+                            that.refreshDescription(value)
+                            $paraListElem = $stateItem.find('.parameter-list')
+                            that.refreshParaList($paraListElem, value)
+                            that.refreshStateView($stateItem)
             )
 
             editor.on("focus", (e, thatEditor) ->
@@ -1564,11 +1568,15 @@ define [ 'event',
 
             if moduleObj
 
-                $stateItem.attr('data-command', currentValue)
-                that.refreshDescription(currentValue)
-                $paraListElem = $stateItem.find('.parameter-list')
-                that.refreshParaList($paraListElem, currentValue)
-                that.refreshStateView($stateItem)
+                originCMDName = $stateItem.attr('data-command')
+
+                if originCMDName isnt currentValue
+
+                    $stateItem.attr('data-command', currentValue)
+                    that.refreshDescription(currentValue)
+                    $paraListElem = $stateItem.find('.parameter-list')
+                    that.refreshParaList($paraListElem, currentValue)
+                    that.refreshStateView($stateItem)
 
     }
 

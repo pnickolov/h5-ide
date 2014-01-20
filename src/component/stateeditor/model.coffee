@@ -155,6 +155,8 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 			cmdParaObjMap = that.get('cmdParaObjMap')
 			_.each allCompData, (compObj) ->
 				stateObj = compObj.state
+				compUID = compObj.uid
+				resModel = Design.instance().component(compUID)
 				if stateObj and stateObj.length > 0
 					_.each stateObj, (stateItemObj) ->
 						paraObj = stateItemObj.parameter
@@ -173,6 +175,7 @@ define [ 'MC', 'constant', 'state_model', 'backbone', 'jquery', 'underscore',
 								paraObj[paraName] = newParaValue
 							null
 						null
+					resModel.setStateData(stateObj)
 				null
 			null
 

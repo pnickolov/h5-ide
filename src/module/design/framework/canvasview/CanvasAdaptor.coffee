@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasElement, ide_event, lang, constant )->
+define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "stateeditor" ], ( CanvasElement, ide_event, lang, constant, stateeditor )->
 
   Design = null
 
@@ -195,6 +195,12 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant" ], ( CanvasE
       if info
         notification 'warning', info , false
       null
+
+    STATE_ICON_CLICKED : (uid) ->
+      allCompData = Design.instance().serialize().component
+      compData = allCompData[uid]
+      if compData and compData.type in [constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance, constant.AWS_RESOURCE_TYPE.AWS_AutoScaling_LaunchConfiguration]
+          stateeditor.loadModule(allCompData, uid)
   }
 
   window.$canvas = $canvas

@@ -3103,6 +3103,9 @@ MC.canvas.event.dragable = {
 					$canvas.trigger("CANVAS_PLACE_OVERLAP");
 				}
 			}
+
+			$canvas(target_id).select();
+			MC.canvas.event.nodeState(target_id);
 		}
 
 		event_data.shadow.remove();

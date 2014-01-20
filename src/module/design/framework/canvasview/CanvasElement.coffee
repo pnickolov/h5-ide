@@ -67,16 +67,14 @@ define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "MC.canvas.co
 
     if x is oldx and y is oldy then return
 
-    component.set { x : x, y : y }
+    @model.set { x : x, y : y }
 
-    el = this.element()
+    el = @element()
     if el
       MC.canvas.position( el, x, y )
     null
 
   CanvasElement.prototype.size = ( w, h )->
-
-    component = Design.instance().component( this.id )
 
     oldw = @model.width()
     oldh = @model.height()

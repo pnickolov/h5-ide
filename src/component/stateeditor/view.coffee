@@ -22,6 +22,8 @@ define [ 'event',
             'keyup .parameter-item.state .parameter-value': 'onArrayInputChange'
             'blur .parameter-item.state .parameter-value': 'onArrayInputBlur'
 
+            'blur .command-value': 'onCommandInputBlur'
+
             'focus .editable-area': 'onFocusInput'
             # 'click .state-toolbar .state-id': 'onStateIdClick'
             'click .state-toolbar': 'onStateToolbarClick'
@@ -1549,6 +1551,24 @@ define [ 'event',
             if currentValue
                 $paraItem = $currentInputElem.parents('.parameter-item')
                 $paraItem.removeClass('disabled')
+
+        onCommandInputBlur: (event) ->
+
+            that = this
+
+            $currentElem = $(event.currentTarget)
+            $stateItem = $currentElem.parents('.state-item')
+            currentValue = that.getPlainText($currentElem)
+
+            moduleObj = that.cmdModuleMap[currentValue]
+
+            if moduleObj
+
+                $stateItem.attr('data-command', currentValue)
+                that.refreshDescription(currentValue)
+                $paraListElem = $stateItem.find('.parameter-list')
+                that.refreshParaList($paraListElem, currentValue)
+                that.refreshStateView($stateItem)
 
     }
 

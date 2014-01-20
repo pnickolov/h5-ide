@@ -5,10 +5,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "event" ], ( CanvasElem
     if _.isString( component )
       @id = component
       @nodeType = "node"
-      @model = {
-        type : constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
-        id   : component
-      }
+      @type = constant.AWS_RESOURCE_TYPE.AWS_EBS_Volume
     else
       CanvasElement.apply( this, arguments )
     null

@@ -214,9 +214,13 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
       else
         true
 
-    design : ()-> @__design
 
     isDesignAwake : ()-> Design.instance() is @__design
+    design : ()-> @__design
+
+    getAllObjects : ( awsType )->
+      if not awsType then awsType = @type
+      @design().classCacheForCid( this.prototype.classId ).slice(0)
 
     isRemoved   : ()-> !@__design
     isRemovable : () -> true
@@ -391,6 +395,7 @@ define [ "Design", "event", "backbone" ], ( Design, ideEvent )->
   }, {
 
     allObjects : ()->
+      console.warn "ResourceModel.allObjects() is deprecated. Please use this.getAllObjects(awsType) instead."
       Design.instance().classCacheForCid( this.prototype.classId ).slice(0)
 
     deserialize : ()->

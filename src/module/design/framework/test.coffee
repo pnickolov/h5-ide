@@ -45,5 +45,10 @@ define [ 'Design',
          "./canvasview/CeLc"
 
 ], ( Design )->
+
+  ### env:dev ###
+  require( ["./module/design/framework/util/DesignDebugger"], ()-> )
+  ### env:dev:end ###
+
   window.Design = Design
   null

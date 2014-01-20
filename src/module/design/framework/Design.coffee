@@ -87,7 +87,7 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__canvasLines  = {}
     @__canvasGroups = {}
     @__classCache   = {}
-    @__backup       = {}
+    @__backingStore = {}
 
     @__mode = options.mode
 
@@ -293,46 +293,6 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
     @__deserializeVisitors.push func
     null
 
-  ### env:dev ###
-  Design.debug = ()->
-    componentMap = Design.instance().__componentMap
-    canvasNodes  = Design.instance().__canvasNodes
-    canvasGroups = Design.instance().__canvasGroups
-    checkedMap   = {
-      "line"            : {}
-      "node"            : {}
-      "group"           : {}
-      "otherResource"   : {}
-      "otherConnection" : {}
-    }
-    checked = {}
-    for id, a of canvasNodes
-      checked[ id ] = true
-      checkedMap.node[ a.id ] = a
-    for id, a of canvasGroups
-      checked[ id ] = true
-      checkedMap.group[ a.id] = a
-    for id, a of componentMap
-      if checked[ id ] then continue
-      if a.node_line
-        if a.isVisual()
-          checkedMap.line[ a.id ] = a
-        else
-          checkedMap.otherConnection[ a.id ] = a
-      else
-        checkedMap.otherResource[ a.id ] = a
-
-    checkedMap
-
-  Design.debug.selectedComp = ()->
-    Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
-
-  window.ds = ()->
-    data = Design.instance().serialize()
-    console.log( data )
-    return JSON.stringify( data )
-  ### env:dev:end ###
-
   ### Private Interface End ###
 
 
@@ -388,8 +348,8 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
   DesignImpl.prototype.save = ( canvas_data )->
 
     if canvas_data
-      @__backup.component = canvas_data.component
-      @__backup.layout    = canvas_data.layout
+      @__backingStore.component = canvas_data.component
+      @__backingStore.layout    = canvas_data.layout
 
       # Delete these two attributes before copying canvas_data.
       delete canvas_data.component
@@ -397,28 +357,28 @@ define [ "constant", "module/design/framework/canvasview/CanvasAdaptor", "Canvas
 
       @attributes = $.extend true, {}, canvas_data
 
-      canvas_data.component = @__backup.component
-      canvas_data.layout    = @__backup.layout
+      canvas_data.component = @__backingStore.component
+      canvas_data.layout    = @__backingStore.layout
 
     else
       newData = @serialize()
-      @__backup.component = newData.component
-      @__backup.layout    = newData.layout
+      @__backingStore.component = newData.component
+      @__backingStore.layout    = newData.layout
 
-    @__backup.name = @attributes.name
+    @__backingStore.name = @attributes.name
     null
 
   DesignImpl.prototype.isModified = ()->
 
     if Design.instance().modeIsApp() then return false
 
-    if @__backup.name isnt @attributes.name
+    if @__backingStore.name isnt @attributes.name
       return true
 
     newData = @serialize()
 
-    if _.isEqual( @__backup.component, newData.component )
-      if _.isEqual( @__backup.layout, newData.layout )
+    if _.isEqual( @__backingStore.component, newData.component )
+      if _.isEqual( @__backingStore.layout, newData.layout )
         return false
 
     true

@@ -128,12 +128,13 @@ define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager" ], ( Can
     null
 
 
-  CanvasElement.prototype.select = ( subId )->
-    type = @model.type
+  ChildElementProto.select = ( subId )->
 
-    if subId and @model.get("appId")
+    if subId
       type = constant.AWS_RESOURCE_TYPE.AWS_EC2_Instance
+    else
+      type = @model.type
 
-    @doSelect( type, subId or @model.id, @model.id )
+    @doSelect( type, subId or @id, @id )
 
   null

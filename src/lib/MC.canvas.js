@@ -4644,16 +4644,17 @@ MC.canvas.event.nodeState = function (id)
 				'left': offset.left - canvas_offset.left + offset.width + 5,
 				'top': offset.top - canvas_offset.top
 			})
-
-			.on('mousedown', function (event)
-			{
-				event.stopImmediatePropagation();
-
-				$("#svg_canvas").trigger("STATE_ICON_CLICKED", id);
-
-				return false;
-			});
+			.attr('data-id', id);
 	}
+};
+
+MC.canvas.event.nodeStatePopup = function (event)
+{
+	event.stopImmediatePropagation();
+
+	$canvas.trigger("STATE_ICON_CLICKED", $(this).data('id'));
+
+	return false;
 };
 
 MC.canvas.keypressed = [];
